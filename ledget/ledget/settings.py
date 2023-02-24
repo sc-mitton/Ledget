@@ -36,17 +36,22 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+DEFAULT_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
-    'rest_framework',
-    'rest_framework.authtoken',
+
 ]
+THIRD_PARTY_APPS = [
+    'social_django'
+]
+LOCAL_APPS = [
+    'core',
+]
+INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'ledget.urls'
@@ -75,6 +81,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect'
             ],
         },
     },
@@ -117,6 +126,18 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = 'core.User'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+)
+
+LOGIN_REDIRECT_URL = 'home'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'GOOGLE_OAUTH2_KEY'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'GOOGLE_OAUTH2_SECRET'
+SOCIAL_AUTH_FACEBOOK_KEY = 'FACEBOOK_KEY'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'FACEBOOK_SECRET'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

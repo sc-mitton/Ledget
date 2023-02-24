@@ -1,0 +1,44 @@
+<!-- templates/login.html -->
+{% extends 'base.html' %}
+{% block title %} Sign in {% endblock %}
+{% block content %}
+{% load static %}
+<div class="login-logo">
+    <a href="{% url 'home' %}">
+        <img src="{% static 'images/logo.svg' %}" />
+    </a>
+</div>
+
+<div class="login-window-container">
+    <h2 class="sign-in-title">Sign In</h2>
+    <form class="login-form" action="login" method="post">
+        {% csrf_token %}
+        <div>
+            <input type="text" id="email" name="username" placeholder="Email">
+        </div>
+        <div>
+            <input type="password" id="password" name="password" placeholder="Password">
+        </div>
+        <div class="forgot-password-container">
+            <label class="checkmark" for="remember-me">
+                <input type="checkbox" id="remember-me" name="remember-me">
+                Remember for 30 days
+            </label>
+            <a id="forgot-password" href="#">Forgot Password?</a>
+        </div>
+        <div>
+            <input type="submit" id="continue" value="Continue">
+        </div>
+    </form>
+    <div class="or-container">
+        <span>OR</span>
+    </div>
+    <div class="social-login-container">
+        <a id="google-login-button" href="{% url 'social:begin' 'google-oauth2' %}">Google</a>
+        <a id="facebook-login-button" href="{% url 'social:begin' 'facebook' %}">Facebook</a>
+    </div>
+</div>
+<div class="sign-up-text-container">
+    <p class="sign-up-text">Don't have an account? <a href="#">Sign up</a></p>
+</div>
+{% endblock %}

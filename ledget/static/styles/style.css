@@ -1,4 +1,16 @@
 /* Main */
+:root {
+    --logo-dark: #363636;
+    --medium-dark-text: #504f4f;
+    --light-gray: #8a8989;
+    --light-light-gray: #b7b7b7;
+    --standard-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+    --mute-blue: rgb(133, 172, 244);
+    --mute-red: rgb(244, 133, 148);
+    --hover-blue: rgb(58, 104, 219);
+    --hover-red: rgb(216, 81, 99);
+}
+
 img {
     max-width: 100%;
     max-height: 100%;
@@ -12,7 +24,36 @@ body {
 
 a {
     text-decoration: none;
-    color: #000;
+    cursor: default;
+    color: var(--logo-dark);
+}
+
+input,
+button {
+    border: none;
+    outline: none;
+    font-size: 12px;
+}
+
+input::placeholder {
+    color: var(--light-gray)
+}
+
+.checkmark {
+    cursor: pointer;
+}
+
+.checkbox-symbol {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    user-select: none;
+}
+
+input[type="checkbox"] {
+    vertical-align: bottom;
+    margin: 0;
 }
 
 /* ------------------ Header ------------------ */
@@ -85,7 +126,7 @@ a {
     border: 2px solid #363636;
 }
 
-.login-container button {
+.login-button-container button {
     margin: 0 8px;
     padding: 10px 14px;
     border-radius: 18px;
@@ -94,6 +135,133 @@ a {
     border: none;
 }
 
-.login-container button:hover {
+.login-button-container button:hover {
     background-color: #7d7c7c;
+}
+
+/* ------------------ Login ------------------ */
+
+.login-logo {
+    width: 20%;
+    max-width: 112px;
+    margin: 0 auto;
+    padding: 24px;
+    margin-top: 64px;
+    margin-bottom: 32px;
+}
+
+.login-window-container {
+    text-align: center;
+    background-color: #e6e6e6;
+    width: 50%;
+    max-width: 300px;
+    margin: 0 auto;
+    border-radius: 8px;
+    padding: 20px;
+    font-size: 12px;
+    box-shadow: var(--standard-drop-shadow);
+}
+
+.login-window-container h2 {
+    text-align: left;
+    font-size: 24px;
+    font-weight: 10000;
+    padding-left: 8px;
+    color: var(--light-gray)
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"],
+.login-form input[type="submit"] {
+    width: 100%;
+    padding: 8px;
+    margin: 4px 0;
+    box-sizing: border-box;
+}
+
+#continue {
+    margin-top: 16px;
+    background-color: var(--light-gray);
+    color: rgb(256, 256, 256);
+    transition: background-color 0.15s ease;
+}
+
+#continue:hover {
+    background-color: var(--logo-dark);
+}
+
+.or-container {
+    margin: 32px 0 8px 0;
+    color: #9a9a9a;
+}
+
+.forgot-password-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    padding: 6px 0px;
+    margin: 0px 4px;
+}
+
+.forgot-password-container a,
+.forgot-password-container label {
+    color: var(--light-gray);
+}
+
+.forgot-password-container a:hover {
+    color: var(--logo-dark);
+}
+
+#remember-me {
+    position: relative;
+    top: -1px;
+}
+
+.social-login-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#facebook-login-button {
+    background-color: var(--mute-blue);
+    width: 100%;
+    padding: 8px;
+    margin-left: 4px;
+    box-sizing: border-box;
+    color: #fff;
+    transition: background-color 0.15s ease;
+}
+
+#google-login-button {
+    background-color: var(--mute-red);
+    width: 100%;
+    padding: 8px;
+    margin-right: 4px;
+    box-sizing: border-box;
+    color: #fff;
+    transition: background-color 0.15s ease;
+}
+
+#facebook-login-button:hover {
+    background-color: var(--hover-blue);
+}
+
+#google-login-button:hover {
+    background-color: var(--hover-red);
+}
+
+.sign-up-text-container {
+    text-align: center;
+    color: var(--light-gray);
+    font-size: 12px;
+}
+
+.sign-up-text-container a {
+    color: var(--light-gray);
+}
+
+.sign-up-text-container a:hover {
+    color: var(--logo-dark);
 }
