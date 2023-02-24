@@ -1,0 +1,99 @@
+/* Main */
+img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    /* remove extra space below image */
+}
+
+body {
+    font-family: 'Roboto', sans-serif, 'Arial', Helvetica;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+/* ------------------ Header ------------------ */
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 840px;
+    min-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+
+    height: 48px;
+}
+
+.left-container {
+    display: flex;
+    justify-content: left;
+}
+
+.right-container {
+    display: flex;
+    justify-content: right;
+}
+
+.logo-container {
+    width: 100px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+}
+
+.nav-container ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-container li {
+    margin: 0 10px;
+}
+
+.nav-container a {
+    padding: 2px 4px;
+    border-radius: 2px;
+    border-width: 2px;
+    border: 2px solid #ffffff;
+}
+
+.nav-container a:hover {
+    border: 2px solid #363636;
+}
+
+.login-container button {
+    margin: 0 8px;
+    padding: 10px 14px;
+    border-radius: 18px;
+    background-color: #363636;
+    color: #fff;
+    border: none;
+}
+
+.login-container button:hover {
+    background-color: #7d7c7c;
+}

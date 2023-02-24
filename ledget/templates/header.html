@@ -1,0 +1,24 @@
+{% load static %}
+<header>
+    <div class="header-container">
+        <div class="left-container">
+            <div class="logo-container">
+                <img src="{% static 'images/logo.svg' %}" />
+            </div>
+        </div>
+        <div class="right-container">
+            <nav class="nav-container">
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Help</a></li>
+                </ul>
+            </nav>
+            <div class="login-container">
+                <a href={% url 'login' %}>
+                    <button>Sign In</button>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</header>
