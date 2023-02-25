@@ -1,13 +1,16 @@
 /* Main */
 :root {
-    --logo-dark: #363636;
+    --logo-dark: rgb(54, 54, 54);
+    --medium-dark-gray: rgb(101, 101, 101);
     --medium-dark-text: #504f4f;
-    --light-gray: #8a8989;
+    --light-gray: rgb(138, 137, 137);
     --light-light-gray: #b7b7b7;
     --standard-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
-    --mute-blue: rgb(133, 172, 244);
-    --mute-red: rgb(244, 133, 148);
-    --hover-blue: rgb(58, 104, 219);
+    --check-box-hover: rgba(54, 54, 54, .06);
+    --mute-blue: rgb(122, 166, 248);
+    --check-box-blue: rgb(107, 155, 246);
+    --mute-red: rgb(244, 119, 136);
+    --hover-blue: rgb(47, 101, 236);
     --hover-red: rgb(216, 81, 99);
 }
 
@@ -39,6 +42,9 @@ input::placeholder {
     color: var(--light-gray)
 }
 
+
+/* Check mark */
+
 .checkmark {
     cursor: pointer;
 }
@@ -51,9 +57,76 @@ input::placeholder {
     user-select: none;
 }
 
-input[type="checkbox"] {
-    vertical-align: bottom;
-    margin: 0;
+.checkbox-container {
+    box-sizing: border-box;
+    color: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox-container * {
+    box-sizing: border-box;
+}
+
+.checkbox-input {
+    position: absolute;
+    visibility: hidden;
+}
+
+.checkbox {
+    user-select: none;
+    cursor: pointer;
+    padding: 6px 0px 6px 0px;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox span {
+    vertical-align: middle;
+}
+
+.checkbox span:first-child {
+    width: 14px;
+    height: 14px;
+    transform: scale(1);
+    border: 1.5px solid var(--light-gray);
+    transition: all 0.3s ease;
+}
+
+.checkbox span:first-child svg {
+    fill: none;
+    stroke: #fff;
+    stroke-dasharray: 16px;
+    stroke-dashoffset: 16px;
+    transition: all 0.3s ease;
+}
+
+.checkbox span:last-child {
+    padding-left: 8px;
+}
+
+.checkbox:hover span:first-child {
+    border-color: var(--logo-dark);
+}
+
+.checkbox-input:checked+.checkbox span:first-child {
+    background: var(--check-box-blue);
+    border-color: var(--check-box-blue);
+    animation: zoom-in-out 0.3s ease;
+}
+
+.checkbox-input:checked+.checkbox span:first-child svg {
+    stroke-dashoffset: 0;
+}
+
+@keyframes zoom-in-out {
+    50% {
+        transform: scale(0.9);
+    }
 }
 
 /* ------------------ Header ------------------ */
@@ -73,7 +146,6 @@ input[type="checkbox"] {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-
     height: 48px;
 }
 
@@ -162,14 +234,6 @@ input[type="checkbox"] {
     box-shadow: var(--standard-drop-shadow);
 }
 
-.login-window-container h2 {
-    text-align: left;
-    font-size: 24px;
-    font-weight: 10000;
-    padding-left: 8px;
-    color: var(--light-gray)
-}
-
 .login-form input[type="text"],
 .login-form input[type="password"],
 .login-form input[type="submit"] {
@@ -191,7 +255,7 @@ input[type="checkbox"] {
 }
 
 .or-container {
-    margin: 32px 0 8px 0;
+    margin: 16px 0 8px 0;
     color: #9a9a9a;
 }
 
@@ -200,7 +264,6 @@ input[type="checkbox"] {
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
-    padding: 6px 0px;
     margin: 0px 4px;
 }
 
@@ -220,6 +283,7 @@ input[type="checkbox"] {
 
 .social-login-container {
     width: 100%;
+    height: 32px;
     display: flex;
     justify-content: center;
 }
@@ -232,6 +296,9 @@ input[type="checkbox"] {
     box-sizing: border-box;
     color: #fff;
     transition: background-color 0.15s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #google-login-button {
@@ -242,6 +309,9 @@ input[type="checkbox"] {
     box-sizing: border-box;
     color: #fff;
     transition: background-color 0.15s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #facebook-login-button:hover {
@@ -252,10 +322,21 @@ input[type="checkbox"] {
     background-color: var(--hover-red);
 }
 
+#facebook-login-button img {
+    height: 85%;
+}
+
+#google-login-button img {
+    height: 100%;
+    position: relative;
+    top: 2px;
+}
+
 .sign-up-text-container {
     text-align: center;
     color: var(--light-gray);
-    font-size: 12px;
+    font-size: 14px;
+    margin-top: 24px;
 }
 
 .sign-up-text-container a {
@@ -264,4 +345,5 @@ input[type="checkbox"] {
 
 .sign-up-text-container a:hover {
     color: var(--logo-dark);
+    transition: color 0.15s ease;
 }

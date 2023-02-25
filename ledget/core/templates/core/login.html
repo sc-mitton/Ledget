@@ -10,7 +10,6 @@
 </div>
 
 <div class="login-window-container">
-    <h2 class="sign-in-title">Sign In</h2>
     <form class="login-form" action="login" method="post">
         {% csrf_token %}
         <div>
@@ -20,25 +19,47 @@
             <input type="password" id="password" name="password" placeholder="Password">
         </div>
         <div class="forgot-password-container">
-            <label class="checkmark" for="remember-me">
-                <input type="checkbox" id="remember-me" name="remember-me">
-                Remember for 30 days
-            </label>
+            <svg class="checkbox-symbol">
+                <symbol id="check" viewbox="0 0 12 10">
+                    <polyline points="1.5 6 4.5 9 10.5 1" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2">
+                    </polyline>
+                </symbol>
+            </svg>
+            <div class="checkbox-container">
+                <input class="checkbox-input" id="remember-pass" type="checkbox" />
+                <label class="checkbox" for="remember-pass">
+                    <span>
+                        <svg width="12px" height="10px">
+                            <use xlink:href="#check"></use>
+                        </svg>
+                    </span>
+                    <span>Remember</span>
+                </label>
+            </div>
             <a id="forgot-password" href="#">Forgot Password?</a>
         </div>
         <div>
-            <input type="submit" id="continue" value="Continue">
+            <input type="submit" id="continue" value="Sign In">
         </div>
     </form>
     <div class="or-container">
         <span>OR</span>
     </div>
     <div class="social-login-container">
-        <a id="google-login-button" href="{% url 'social:begin' 'google-oauth2' %}">Google</a>
-        <a id="facebook-login-button" href="{% url 'social:begin' 'facebook' %}">Facebook</a>
+        <a id="google-login-button" href="{% url 'social:begin' 'google-oauth2' %}">
+            <img src="{% static 'images/google-logo.svg' %}" />
+        </a>
+        <a id="facebook-login-button" href="{% url 'social:begin' 'facebook' %}">
+            <img src="{% static 'images/fb-logo.svg' %}" />
+        </a>
     </div>
 </div>
 <div class="sign-up-text-container">
-    <p class="sign-up-text">Don't have an account? <a href="#">Sign up</a></p>
+    <span>Don't have an account?</span>
+    <a href="#">
+        Sign Up
+    </a>
 </div>
+
 {% endblock %}
