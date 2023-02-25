@@ -95,6 +95,9 @@ input::placeholder {
     transform: scale(1);
     border: 1.5px solid var(--light-gray);
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .checkbox span:first-child svg {
@@ -135,18 +138,15 @@ input::placeholder {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    max-width: 840px;
+    max-width: 1000px;
     min-width: 400px;
+    padding: 10px;
+    height: 48px;
     margin: 0 auto;
     padding: 20px;
-}
-
-.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    height: 48px;
 }
 
 .left-container {
@@ -211,7 +211,7 @@ input::placeholder {
     background-color: #7d7c7c;
 }
 
-/* ------------------ Login ------------------ */
+/* ------------------ Login Page ------------------ */
 
 .login-logo {
     width: 20%;
@@ -225,12 +225,11 @@ input::placeholder {
 .login-window-container {
     text-align: center;
     background-color: #e6e6e6;
-    width: 50%;
-    max-width: 300px;
+    width: 40%;
+    max-width: 350px;
     margin: 0 auto;
-    border-radius: 8px;
     padding: 20px;
-    font-size: 12px;
+    font-size: 14px;
     box-shadow: var(--standard-drop-shadow);
 }
 
@@ -255,7 +254,7 @@ input::placeholder {
 }
 
 .or-container {
-    margin: 16px 0 8px 0;
+    margin: 24px 0 8px 0;
     color: #9a9a9a;
 }
 
@@ -263,7 +262,6 @@ input::placeholder {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 12px;
     margin: 0px 4px;
 }
 
@@ -336,7 +334,7 @@ input::placeholder {
     text-align: center;
     color: var(--light-gray);
     font-size: 14px;
-    margin-top: 24px;
+    margin-top: 20px;
 }
 
 .sign-up-text-container a {
