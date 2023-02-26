@@ -128,6 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'core.User'
 
 AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
 )

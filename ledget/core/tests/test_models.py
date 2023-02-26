@@ -11,35 +11,41 @@ class TestModels(TestCase):
     def test_create_new_user(self):
         """Test creating a new user with an email is successful"""
         email = 'test1@example.com'
-        name = "John Doe"
+        first_name = "John"
+        last_name = "Doe"
         password = 'testpass123'
 
         user = get_user_model().objects.create_user(
             email=email,
-            name=name,
+            first_name=first_name,
+            last_name=last_name,
             password=password,
         )
 
         self.assertEqual(user.email, email)
-        self.assertEqual(user.name, name)
+        self.assertEqual(user.first_name, first_name)
+        self.assertEqual(user.last_name, last_name)
         self.assertEqual(user.is_staff, False)
         self.assertEqual(user.is_superuser, False)
 
     def test_create_new_superuser(self):
         """Test creating a new superuser"""
         email = 'test2@example.com'
-        name = "Jane Doe"
+        first_name = "Jane"
+        last_name = "Doe"
         password = 'testpass123'
 
         # create superuser with information
         user = get_user_model().objects.create_superuser(
             email=email,
-            name=name,
+            first_name=first_name,
+            last_name=last_name,
             password=password,
         )
 
         self.assertEqual(user.email, email)
-        self.assertEqual(user.name, name)
+        self.assertEqual(user.first_name, first_name)
+        self.assertEqual(user.last_name, last_name)
         self.assertEqual(user.is_staff, True)
         self.assertEqual(user.is_superuser, True)
 
@@ -55,7 +61,8 @@ class TestModels(TestCase):
         for email, expected in sample_emails:
             user = get_user_model().objects.create_user(
                 email=email,
-                name='John Doe',
+                first_name='John',
+                last_name='Doe',
                 password='password123',
             )
             self.assertEqual(user.email, expected)
