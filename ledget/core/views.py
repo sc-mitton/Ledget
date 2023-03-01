@@ -1,7 +1,9 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib import messages
+from django.urls import resolve
 from django.views import View
+from django.contrib.auth.views import LogoutView
 from django.views.generic import TemplateView
 from core.forms import LoginForm, RegisterForm
 
@@ -23,11 +25,15 @@ class UserGatewayView(View):
     form_classes = {
         'login': LoginForm,
         'register': RegisterForm,
-        'forgot_password': '',
+        'forgot-password': '',
     }
 
     def dispatch(self, request, *args, **kwargs):
-        self.page = kwargs.get('page', None)
+        url_name = resolve(request.path_info).url_name
+        if url_name in self.form_classes:
+            self.page = url_name
+        else:
+            self.page = None
         self.form_class = self.form_classes.get(self.page, None)
         return super().dispatch(request, *args, **kwargs)
 

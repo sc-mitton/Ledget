@@ -15,11 +15,16 @@
                 </ul>
             </nav>
             <div class="login-button-container">
-                <a href="{% url 'user_gateway' page='login' %}">
+                <a href="{% url 'login' %}">
                     <button>Sign In</button>
                 </a>
             </div>
 
         </div>
     </div>
+    {% if request.user.is_authenticated %}
+    <div style="text-align: center; margin: auto; margin-top: 200px">
+        Welcome {{ request.user.first_name }}!
+    </div>
+    {% endif %}
 </header>

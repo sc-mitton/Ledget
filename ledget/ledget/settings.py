@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
-from environ import Env
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,11 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-env = Env()
-# reading .env file
-env.read_env()
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'SECRET_KEY'
+load_dotenv()
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,11 +39,16 @@ DEFAULT_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
-
 ]
 THIRD_PARTY_APPS = [
-    'social_django'
+    'sslserver',
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.facebook",
 ]
 LOCAL_APPS = [
     'core',
@@ -61,7 +63,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'ledget.urls'
@@ -72,7 +73,6 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'templates',
             BASE_DIR / 'core' / 'templates' / 'core',
-
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -82,8 +82,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect'
             ],
         },
     },
@@ -100,7 +98,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'LedgetDev',
         'USER': 'scmitton',
-        'PASSWORD': 'LEDGET_DB_PASSWORD',
+        'PASSWORD': os.getenv('LEDGET_DB_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -129,16 +127,53 @@ AUTH_USER_MODEL = 'core.User'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
 )
 
 LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'GOOGLE_OAUTH2_KEY'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'GOOGLE_OAUTH2_SECRET'
-SOCIAL_AUTH_FACEBOOK_KEY = 'FACEBOOK_KEY'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'FACEBOOK_SECRET'
+
+# Social auth settings
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_CLIENT_ID'),
+            'secret': os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET'),
+        }
+    },
+    'facebook': {
+        'APP': {
+            'client_id': os.getenv('SOCIAL_AUTH_FACEBOOK_APP_ID'),
+            'secret': os.getenv('SOCIAL_AUTH_FACEBOOK_SECRET'),
+        }
+    }
+}
+
+SITE_ID = 1
+
+# HTTPS development server settings
+if DEBUG:
+    # SSL certificate and key for development server
+    SSL_CERTIFICATE_PATH = BASE_DIR / 'ssl' / 'ledget.app.crt'
+    SSL_KEY_PATH = BASE_DIR / 'ssl' / 'ledget.app.key'
+    SECURE_SSL_REDIRECT = True
+
+    # Development server settings
+    ALLOWED_HOSTS = ['ledget.app', '127.0.0.1', 'localhost']
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_HTTPONLY = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SSLPORT = 8443
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

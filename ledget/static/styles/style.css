@@ -206,9 +206,8 @@ input::placeholder {
 .header-container {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 90%;
     max-width: 1000px;
-    min-width: 400px;
     padding: 10px;
     height: 48px;
     margin: 0 auto;
@@ -268,7 +267,8 @@ input::placeholder {
 }
 
 .login-button-container button {
-    margin: 0 8px;
+    margin: 0 12px;
+
     padding: 10px 14px;
     border-radius: 18px;
     background-color: #363636;
