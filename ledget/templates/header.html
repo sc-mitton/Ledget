@@ -9,12 +9,13 @@
         <div class="right-container">
             <nav class="nav-container">
                 <ul>
+                    <li><a href="#">Blog</a></li>
                     <li><a href="#">FAQ</a></li>
                     <li><a href="#">Help</a></li>
                 </ul>
             </nav>
             <div class="login-button-container">
-                <a href="{% url 'login' %}">
+                <a href="{% url 'user_gateway' page='login' %}">
                     <button>Sign In</button>
                 </a>
             </div>

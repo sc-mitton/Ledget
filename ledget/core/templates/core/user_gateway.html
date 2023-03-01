@@ -1,0 +1,133 @@
+<!-- templates/login.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<div class="login-logo">
+    <a href="{% url 'home' %}">
+        <img src="{% static 'images/logo.svg' %}" />
+    </a>
+</div>
+
+{% if page == 'login' %}
+<div class="window login-container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} wrong-credentials">
+        <img src="{% static 'images/alert.svg' %}" />
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <form class="login-form" method="post">
+        {% csrf_token %}
+        <div>
+            <input type="text" id="email" name="email" placeholder="Email">
+        </div>
+        <div>
+            <input {% if messages.error %} class="error" {% endif %} type="password" id="password" name="password"
+                placeholder="Password">
+        </div>
+        <div class="forgot-password-container">
+            <svg class="checkbox-symbol">
+                <symbol id="check" viewbox="0 0 12 10">
+                    <polyline points="1.5 6 4.5 9 10.5 1" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2">
+                    </polyline>
+                </symbol>
+            </svg>
+            <div class="checkbox-container">
+                <input class="checkbox-input" id="remember-pass" type="checkbox" />
+                <label class="checkbox" for="remember-pass">
+                    <span>
+                        <svg>
+                            <use xlink:href="#check"></use>
+                        </svg>
+                    </span>
+                    <span>Remember</span>
+                </label>
+            </div>
+            <a id="forgot-password" href="#">Forgot Password?</a>
+        </div>
+        <div>
+            <input type="submit" id="login" value="Sign In">
+        </div>
+    </form>
+    <div class="or-container">
+        <span>OR</span>
+    </div>
+    <div class="social-login-container">
+        <a id="google-login-button" href="{% url 'social:begin' 'google-oauth2' %}">
+            <img src="{% static 'images/google-logo.svg' %}" />
+        </a>
+        <a id="facebook-login-button" href="{% url 'social:begin' 'facebook' %}">
+            <img src="{% static 'images/fb-logo.svg' %}" />
+        </a>
+    </div>
+</div>
+<div class="sign-up-prompt-container">
+    <span>Don't have an account?</span>
+    <a href="{% url 'user_gateway' page='register' %}">
+        Sign Up
+    </a>
+</div>
+{% endif %}
+
+{% if page == 'register' %}
+<div class="window sign-up-container">
+    <div class="left-elements">
+        <h1>Sign Up</h1>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} wrong-credentials">
+            <img src="{% static 'images/alert.svg' %}" />
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <form class="register-form" method="post">
+            {% csrf_token %}
+            <div>
+                <input type="text" id="email" name="email" placeholder="Email">
+            </div>
+            <div>
+                <input type="password" id="password" name="password" placeholder="Password">
+            </div>
+            <div>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password">
+            </div>
+            <div>
+                <input type="submit" id="continue" value="Continue">
+            </div>
+        </form>
+        <div id="sign-up-with">Sign Up With</div>
+
+        <div class="social-login-container">
+            <a id="google-login-button" href="{% url 'social:begin' 'google-oauth2' %}">
+                <img src="{% static 'images/google-logo.svg' %}" />
+            </a>
+            <a id="facebook-login-button" href="{% url 'social:begin' 'facebook' %}">
+                <img src="{% static 'images/fb-logo.svg' %}" />
+            </a>
+        </div>
+    </div>
+    <div class="right-elements">
+        <div class="login-prompt-container">
+            <span>Already using Ledget?</span>
+            <a href="{% url 'user_gateway' page='login' %}">
+                Sign In
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if page == 'pricing' %}
+
+{% endif %}
+
+{% if page == 'forgot-password' %}
+
+{% endif %}
+
+{% endblock %}

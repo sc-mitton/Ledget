@@ -5,7 +5,8 @@
     --medium-dark-text: #504f4f;
     --light-gray: rgb(138, 137, 137);
     --light-light-gray: #b7b7b7;
-    --standard-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+    --active-input: #f2f2f2;
+    --standard-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
     --check-box-hover: rgba(54, 54, 54, .06);
     --mute-blue: rgb(122, 166, 248);
     --check-box-blue: rgb(107, 155, 246);
@@ -13,6 +14,7 @@
     --hover-blue: rgb(47, 101, 236);
     --hover-red: rgb(216, 81, 99);
     --alert-red: rgb(242, 73, 73);
+    --window-box-gray: rgb(230, 230, 230);
 }
 
 img {
@@ -23,28 +25,77 @@ img {
 }
 
 body {
-    font-family: 'Roboto', sans-serif, 'Arial', Helvetica;
+    font-family: "source-sans-3", 'Roboto', sans-serif, 'Arial', Helvetica;
+}
+
+
+
+h1 {
+    font-weight: 600;
+    font-family: "source-sans-3", 'Roboto', sans-serif, 'Arial', Helvetica;
 }
 
 a {
     text-decoration: none;
-    cursor: default;
     color: var(--logo-dark);
+    cursor: pointer;
 }
 
-input:-webkit-autofill,
+input {
+    border: none;
+    border-radius: 4px;
+}
+
+input[type="text"],
+input[type="password"] {
+    border-bottom: 2px solid var(--light-gray);
+    color: var(--logo-dark);
+    border-radius: 0;
+    padding: 12px 4px;
+    margin: 4px 0;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    background-color: var(--medium-dark-gray);
+    color: rgb(256, 256, 256);
+    transition: background-color 0.15s ease;
+    padding: 12px 4px;
+}
+
+input[type="submit"]:hover {
+    cursor: pointer;
+    background-color: var(--logo-dark);
+}
+
+input:focus {
+    outline: none;
+    background-color: none;
+    border-bottom: 2px solid var(--check-box-blue);
+}
+
+input:focus::placeholder {
+    color: var(--check-box-blue);
+}
+
+input:--webkit-autofill {
+    border: none;
+}
+
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+input:-webkit-autofill:active,
+input:-webkit-autofill::after {
     -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
-input,
-button {
+input:--webkit-autofill::after {
     border: none;
-    outline: none;
-    font-size: 12px;
-    border-radius: 4px;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: inset 0 0 0px 1000px white;
+    border-bottom: 2px solid var(--check-box-blue);
 }
 
 input::placeholder {
@@ -89,8 +140,7 @@ input::placeholder {
 
 .checkbox {
     user-select: none;
-    cursor: pointer;
-    padding: 6px 0px 6px 0px;
+    padding: 6px 2px 6px 2px;
     overflow: hidden;
     transition: all 0.3s ease;
     display: flex;
@@ -105,7 +155,7 @@ input::placeholder {
     width: 14px;
     height: 14px;
     transform: scale(1);
-    border: 1.5px solid var(--light-gray);
+    border: 1.5px solid var(--medium-dark-gray);
     border-radius: 2px;
     transition: all 0.3s ease;
     display: flex;
@@ -116,9 +166,6 @@ input::placeholder {
 .checkbox span:first-child svg {
     fill: none;
     stroke: #fff;
-    stroke-dasharray: 16px;
-    stroke-dashoffset: 16px;
-    transition: all 0.3s ease;
 }
 
 .checkbox span:last-child {
@@ -126,7 +173,8 @@ input::placeholder {
 }
 
 .checkbox:hover span:first-child {
-    border-color: var(--logo-dark);
+    border-color: var(--check-box-blue);
+    transform: scale(1.2);
 }
 
 .checkbox-input:checked+.checkbox span:first-child {
@@ -136,13 +184,21 @@ input::placeholder {
 }
 
 .checkbox-input:checked+.checkbox span:first-child svg {
-    stroke-dashoffset: 0;
+    stroke: #fff;
 }
 
 @keyframes zoom-in-out {
     50% {
         transform: scale(0.9);
     }
+}
+
+.window {
+    border: 2px solid var(--logo-dark);
+    box-shadow: var(--standard-drop-shadow);
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: "source-sans-3", 'Roboto', sans-serif, 'Arial', Helvetica;
 }
 
 /* ------------------ Header ------------------ */
@@ -235,34 +291,23 @@ input::placeholder {
     margin-bottom: 32px;
 }
 
-.login-window-container {
+.login-container {
     text-align: center;
-    background-color: #e6e6e6;
     width: 40%;
     max-width: 350px;
     margin: 0 auto;
     padding: 20px;
-    font-size: 14px;
-    border-radius: 4px;
-    box-shadow: var(--standard-drop-shadow);
 }
 
 .login-form input[type="text"],
 .login-form input[type="password"],
 .login-form input[type="submit"] {
     width: 100%;
-    padding: 12px;
-    margin: 4px 0;
-    box-sizing: border-box;
-}
-
-.login-form input[type="text"] .error {
-    border: 1px solid red;
 }
 
 .wrong-credentials {
     text-align: left;
-    margin: 8px 4px 8px 4px;
+    margin: 2px 4px 8px 4px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -274,15 +319,8 @@ input::placeholder {
     margin-right: .5em;
 }
 
-#sign-in {
+.login-form input[type="submit"] {
     margin-top: 16px;
-    background-color: var(--light-gray);
-    color: rgb(256, 256, 256);
-    transition: background-color 0.15s ease;
-}
-
-#sign-in:hover {
-    background-color: var(--logo-dark);
 }
 
 .or-container {
@@ -294,16 +332,17 @@ input::placeholder {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0px 4px;
+    margin: 4px 4px;
+    font-size: 12px;
 }
 
 .forgot-password-container a,
 .forgot-password-container label {
-    color: var(--light-gray);
+    color: var(--medium-dark-gray);
 }
 
 .forgot-password-container a:hover {
-    color: var(--logo-dark);
+    color: var(--check-box-blue);
 }
 
 #remember-me {
@@ -364,18 +403,83 @@ input::placeholder {
     top: 2px;
 }
 
-.sign-up-text-container {
+.sign-up-prompt-container {
     text-align: center;
-    color: var(--light-gray);
-    font-size: 14px;
+    color: var(--medium-dark-gray);
+    font-size: 12px;
     margin-top: 20px;
 }
 
-.sign-up-text-container a {
-    color: var(--light-gray);
+.sign-up-prompt-container a {
+    color: var(--medium-dark-gray);
 }
 
-.sign-up-text-container a:hover {
-    color: var(--logo-dark);
+.sign-up-prompt-container a:hover {
+    color: var(--check-box-blue);
     transition: color 0.15s ease;
+}
+
+/* ------------------ Sign Up ------------------ */
+
+.sign-up-container {
+    text-align: center;
+    width: 60%;
+    min-width: 350px;
+    max-width: 600px;
+    padding: 24px 36px 48px 48px;
+    margin: 0 auto;
+    display: flex;
+}
+
+.sign-up-container .right-elements {
+    width: 50%;
+    display: flex;
+    align-items: bottom;
+}
+
+.sign-up-container .left-elements {
+    width: 50%;
+    text-align: left;
+    display: block;
+}
+
+.left-elements div input {
+    width: 100%;
+}
+
+.right-elements {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.login-prompt-container {
+    text-align: center;
+    color: var(--medium-dark-gray);
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    right: -5%;
+    padding: 8px 0;
+}
+
+.login-prompt-container a {
+    color: var(--medium-dark-gray);
+}
+
+.login-prompt-container a:hover {
+    color: var(--check-box-blue);
+    transition: color 0.15s ease;
+
+}
+
+#continue {
+    margin: 24px 0;
+}
+
+#sign-up-with {
+    margin: 16px 0px 8px 0px;
+    text-align: center;
+    color: var(--medium-dark-gray);
+    text-align: center;
 }
