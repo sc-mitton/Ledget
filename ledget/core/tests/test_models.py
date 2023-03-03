@@ -21,6 +21,7 @@ class TestModels(TestCase):
         self.assertEqual(user.email, email)
         self.assertEqual(user.is_staff, False)
         self.assertEqual(user.is_superuser, False)
+        self.assertEqual(user.is_subscriber, False)
 
     def test_create_new_superuser(self):
         """Test creating a new superuser"""

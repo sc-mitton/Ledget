@@ -73,6 +73,7 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'templates',
             BASE_DIR / 'core' / 'templates' / 'core',
+            BASE_DIR / 'templates' / 'allauth',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -81,6 +82,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # allauth specific context processors
+                'django.template.context_processors.request',
 
             ],
         },
@@ -126,44 +130,49 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'core.User'
 
 AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
-
-# Social auth settings
-
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+# Stuff for allauth
+SITE_ID = 1
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
+SOCIALACCOUNT_LOGIN_ON_GET=True
+SOCIALACCOUNT_ADAPTER = 'core.adapters.CustomSocialAdapter'
 
-# Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_CLIENT_ID'),
-            'secret': os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET'),
-        }
+            'client_id': os.getenv('GOOGLE_CLIENT_ID'),
+            'secret': os.getenv('GOOGLE_SECRET_KEY'),
+        },
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
     },
     'facebook': {
         'APP': {
-            'client_id': os.getenv('SOCIAL_AUTH_FACEBOOK_APP_ID'),
-            'secret': os.getenv('SOCIAL_AUTH_FACEBOOK_SECRET'),
+            'client_id': os.getenv('FACEBOOK_CLIENT_ID'),
+            'secret': os.getenv('FACEBOOK_SECRET_KEY'),
+        },
+        "AUTH_PARAMS": {
+            "access_type": "online",
         }
     }
 }
-
-SITE_ID = 1
 
 # HTTPS development server settings
 if DEBUG:
     # SSL certificate and key for development server
     SSL_CERTIFICATE_PATH = BASE_DIR / 'ssl' / 'ledget.app.crt'
     SSL_KEY_PATH = BASE_DIR / 'ssl' / 'ledget.app.key'
-    SECURE_SSL_REDIRECT = True
 
     # Development server settings
     ALLOWED_HOSTS = ['ledget.app', '127.0.0.1', 'localhost']
@@ -173,7 +182,6 @@ if DEBUG:
     CSRF_COOKIE_HTTPONLY = True
     SESSION_COOKIE_HTTPONLY = True
     SECURE_BROWSER_XSS_FILTER = True
-    SSLPORT = 8443
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

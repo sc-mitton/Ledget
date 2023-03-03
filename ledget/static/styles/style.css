@@ -2,11 +2,10 @@
 :root {
     --logo-dark: rgb(54, 54, 54);
     --medium-dark-gray: rgb(101, 101, 101);
-    --medium-dark-text: #504f4f;
-    --light-gray: rgb(138, 137, 137);
-    --light-light-gray: #b7b7b7;
+    --light-gray: rgb(172, 172, 172);
+    --light-light-gray: #cbcaca;
     --active-input: #f2f2f2;
-    --standard-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
+    --standard-drop-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
     --check-box-hover: rgba(54, 54, 54, .06);
     --mute-blue: rgb(122, 166, 248);
     --check-box-blue: rgb(107, 155, 246);
@@ -26,13 +25,32 @@ img {
 
 body {
     font-family: "source-sans-3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    font-size: 14px;
+    color: var(--medium-dark-gray);
+    background-color: #fffcfc;
 }
 
-
+div,
+p,
+span,
+a,
+input,
+label,
+button,
+textarea,
+select,
+option {
+    font-family: "source-sans-3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    font-size: 14px;
+    color: var(--medium-dark-gray);
+}
 
 h1 {
     font-weight: 600;
     font-family: "source-sans-3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    color: var(--medium-dark-gray);
+    margin: 0;
+    margin-bottom: 32px;
 }
 
 a {
@@ -43,16 +61,21 @@ a {
 
 input {
     border: none;
-    border-radius: 4px;
+    font-family: "source-sans-3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    font-size: 14px;
+    color: var(--medium-dark-gray);
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: var(--light-gray);
 }
 
 input[type="text"],
 input[type="password"] {
     border-bottom: 2px solid var(--light-gray);
-    color: var(--logo-dark);
-    border-radius: 0;
-    padding: 12px 4px;
-    margin: 4px 0;
+    padding: 4px 4px;
+    margin: 12px 0;
     box-sizing: border-box;
 }
 
@@ -61,11 +84,18 @@ input[type="submit"] {
     color: rgb(256, 256, 256);
     transition: background-color 0.15s ease;
     padding: 12px 4px;
+    border-radius: 8px;
 }
 
 input[type="submit"]:hover {
     cursor: pointer;
     background-color: var(--logo-dark);
+}
+
+input[type=password]:not(:placeholder-shown) {
+    font-family: 'pass', 'Roboto', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
 }
 
 input:focus {
@@ -80,6 +110,7 @@ input:focus::placeholder {
 
 input:--webkit-autofill {
     border: none;
+    font-size: 14px;
 }
 
 input:-webkit-autofill:hover,
@@ -102,9 +133,31 @@ input::placeholder {
     color: var(--light-gray)
 }
 
+#continue {
+    font-size: 14px;
+}
+
+#login {
+    font-size: 14px;
+}
+
 .alert-error {
-    font-size: 12px;
+    font-size: 14px;
+    text-align: left;
+    margin: 8px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     color: var(--mute-red);
+}
+
+.alert-error span {
+    margin-left: 8px;
+}
+
+.alert-error img {
+    height: 1em;
+    margin-right: .5em;
 }
 
 
@@ -194,10 +247,10 @@ input::placeholder {
 }
 
 .window {
-    border: 2px solid var(--logo-dark);
+    background-color: white;
     box-shadow: var(--standard-drop-shadow);
-    border-radius: 4px;
-    font-size: 12px;
+    border-radius: 8px;
+    font-size: 14px;
     font-family: "source-sans-3", 'Roboto', sans-serif, 'Arial', Helvetica;
 }
 
@@ -237,6 +290,7 @@ input::placeholder {
 .logo-container img {
     max-height: 100%;
     max-width: 100%;
+    cursor: default;
 }
 
 .nav-container {
@@ -259,7 +313,6 @@ input::placeholder {
     padding: 2px 4px;
     border-radius: 2px;
     border-width: 2px;
-    border: 2px solid #ffffff;
 }
 
 .nav-container a:hover {
@@ -296,7 +349,7 @@ input::placeholder {
     width: 40%;
     max-width: 350px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 32px;
 }
 
 .login-form input[type="text"],
@@ -305,41 +358,22 @@ input::placeholder {
     width: 100%;
 }
 
-.wrong-credentials {
-    text-align: left;
-    margin: 2px 4px 8px 4px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    color: var(--mute-red);
-}
-
-.wrong-credentials img {
-    height: 1em;
-    margin-right: .5em;
-}
-
 .login-form input[type="submit"] {
     margin-top: 16px;
 }
 
 .or-container {
-    margin: 24px 0 8px 0;
-    color: #9a9a9a;
+    margin: 32px 0 8px 0;
 }
 
 .forgot-password-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 4px 4px;
-    font-size: 12px;
+    margin: 12px 4px;
+    font-size: 13px;
 }
 
-.forgot-password-container a,
-.forgot-password-container label {
-    color: var(--medium-dark-gray);
-}
 
 .forgot-password-container a:hover {
     color: var(--check-box-blue);
@@ -352,16 +386,15 @@ input::placeholder {
 
 .social-login-container {
     width: 100%;
-    height: 32px;
+    height: 36px;
     display: flex;
     justify-content: center;
 }
 
 #facebook-login-button {
     background-color: var(--mute-blue);
-    border-radius: 4px;
+    border-radius: 8px;
     width: 100%;
-    padding: 8px;
     margin-left: 4px;
     box-sizing: border-box;
     color: #fff;
@@ -373,9 +406,8 @@ input::placeholder {
 
 #google-login-button {
     background-color: var(--mute-red);
-    border-radius: 4px;
+    border-radius: 8px;
     width: 100%;
-    padding: 8px;
     margin-right: 4px;
     box-sizing: border-box;
     color: #fff;
@@ -394,24 +426,19 @@ input::placeholder {
 }
 
 #facebook-login-button img {
-    height: 85%;
+    height: 45%;
 }
 
 #google-login-button img {
-    height: 100%;
+    height: 52%;
     position: relative;
     top: 2px;
 }
 
 .sign-up-prompt-container {
     text-align: center;
-    color: var(--medium-dark-gray);
-    font-size: 12px;
+    font-size: 14px;
     margin-top: 20px;
-}
-
-.sign-up-prompt-container a {
-    color: var(--medium-dark-gray);
 }
 
 .sign-up-prompt-container a:hover {
@@ -423,12 +450,12 @@ input::placeholder {
 
 .sign-up-container {
     text-align: center;
-    width: 60%;
-    min-width: 350px;
-    max-width: 600px;
-    padding: 24px 36px 48px 48px;
+    width: 70%;
+    max-width: 700px;
+    padding: 48px;
     margin: 0 auto;
     display: flex;
+    border-radius: 12px;
 }
 
 .sign-up-container .right-elements {
@@ -455,16 +482,15 @@ input::placeholder {
 
 .login-prompt-container {
     text-align: center;
-    color: var(--medium-dark-gray);
-    font-size: 12px;
+    font-size: 14px;
     text-align: center;
     position: relative;
     right: -5%;
-    padding: 8px 0;
+    padding: 8px;
 }
 
 .login-prompt-container a {
-    color: var(--medium-dark-gray);
+    text-decoration: underline;
 }
 
 .login-prompt-container a:hover {
@@ -474,12 +500,11 @@ input::placeholder {
 }
 
 #continue {
-    margin: 24px 0;
+    margin: 28px 0;
 }
 
 #sign-up-with {
     margin: 16px 0px 8px 0px;
     text-align: center;
-    color: var(--medium-dark-gray);
     text-align: center;
 }

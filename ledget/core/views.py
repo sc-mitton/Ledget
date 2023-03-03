@@ -3,7 +3,6 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib import messages
 from django.urls import resolve
 from django.views import View
-from django.contrib.auth.views import LogoutView
 from django.views.generic import TemplateView
 from core.forms import LoginForm, RegisterForm
 
@@ -74,17 +73,19 @@ class UserGatewayView(View):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
 
-            if not get_user_model().objects.filter(email=email).exists():
-                # Send password reset email
-                pass
-
-            user = self.create_user(email, password)
-            login(
-                request,
-                user,
-                backend='django.contrib.auth.backends.ModelBackend'
-            )
-
+            user_exists = get_user_model().objects.filter(email=email).exists()
+            if user_exists:
+                # Send password reset email and redirect to
+                messages.error(request, "Email is already taken.")
+                context = {'page': self.page}
+                return render(request, self.template_name, context=context)
+            else:
+                user = self.create_user(email, password)
+                login(
+                    request,
+                    user,
+                    backend='django.contrib.auth.backends.ModelBackend'
+                )
         return redirect('home')
 
     def create_user(self, email, password):

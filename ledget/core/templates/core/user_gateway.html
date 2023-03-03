@@ -8,14 +8,15 @@
         <img src="{% static 'images/logo.svg' %}" />
     </a>
 </div>
-
+{% include 'checkmark.html' %}
 {% if page == 'login' %}
+{% load socialaccount %}
 <div class="window login-container">
     {% if messages %}
     {% for message in messages %}
     <div class="alert alert-{{ message.tags }} wrong-credentials">
         <img src="{% static 'images/alert.svg' %}" />
-        {{ message }}
+        <span>{{ message }}</span>
     </div>
     {% endfor %}
     {% endif %}
@@ -25,17 +26,10 @@
             <input type="text" id="email" name="email" placeholder="Email" required>
         </div>
         <div>
-            <input {% if messages.error %} class="error" {% endif %} type="password" id="password" name="password"
-                placeholder="Password" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
         </div>
         <div class="forgot-password-container">
-            <svg class="checkbox-symbol">
-                <symbol id="check" viewbox="0 0 12 10">
-                    <polyline points="1.5 6 4.5 9 10.5 1" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2">
-                    </polyline>
-                </symbol>
-            </svg>
+
             <div class="checkbox-container">
                 <input class="checkbox-input" id="remember-pass" type="checkbox" />
                 <label class="checkbox" for="remember-pass">
@@ -54,14 +48,14 @@
         </div>
     </form>
     <div class="or-container">
-        <span>OR</span>
+        <span>Or continue with</span>
     </div>
     <div class="social-login-container">
-        <a id="google-login-button" href="{% provider_login_url 'google' %}">
-            <img src="{% static 'images/google-logo.svg' %}" />
+        <a id="google-login-button" href="{% provider_login_url 'google' %}?next=/">
+            <img src="{% static 'images/google-logo.svg' process='login' %}" />
         </a>
-        <a id="facebook-login-button" href="{% provder_login_url 'facebook' %}">
-            <img src="{% static 'images/fb-logo.svg' %}" />
+        <a id="facebook-login-button" href="{% provider_login_url 'facebook' %}?next=/">
+            <img src="{% static 'images/fb-logo.svg' process='login' %}" />
         </a>
     </div>
 </div>
@@ -74,6 +68,8 @@
 {% endif %}
 
 {% if page == 'register' %}
+{% load socialaccount %}
+<script src="{% static 'js/register.js' %}"></script>
 <div class="window sign-up-container">
     <div class="left-elements">
         <h1>Sign Up</h1>
@@ -101,13 +97,14 @@
                 <input type="submit" id="continue" value="Continue">
             </div>
         </form>
-        <div id="sign-up-with">Sign Up With</div>
 
+        <div id="sign-up-with">Sign up with</div>
         <div class="social-login-container">
-            <a id="google-login-button" href="{% url 'social:begin' 'google-oauth2' %}">
+            <a id="google-login-button" href="{% provider_login_url 'google' process='connect' %}?next=/">
                 <img src="{% static 'images/google-logo.svg' %}" />
             </a>
-            <a id="facebook-login-button" href="{% url 'social:begin' 'facebook' %}">
+            <a id="facebook-login-button"
+                href="{% provider_login_url 'facebook' process='connect' method='oauth2' %}?next=/">
                 <img src="{% static 'images/fb-logo.svg' %}" />
             </a>
         </div>
