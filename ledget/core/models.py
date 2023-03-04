@@ -44,11 +44,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=50, blank=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    is_subscriber = models.BooleanField(default=False, null=False)
-    subscription_period = models.CharField(
-        max_length=1,
-        choices=[('M', 'Month'), ('Y', 'Year')], default='M'
-    )
 
     objects = UserManager()
 
@@ -57,3 +52,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    stripeid = models.CharField(max_length=255)
+    stripe_subscription_id = models.CharField(max_length=255)
+    cancel_at_period_end = models.BooleanField(default=False)
+    membership = models.BooleanField(default=False)

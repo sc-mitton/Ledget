@@ -3,4 +3,5 @@ env
 .flake8
 .ssl
 inspiration
-.DS_STOREs
+.DS_STORE
+./ledget/subscription_use_cases/

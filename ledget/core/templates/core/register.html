@@ -51,13 +51,32 @@
         </div>
     </div>
     {% elif page == 'subscribe' %}
+    <div class="left-elements">
+        <h2>Sign Up</h2>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} wrong-credentials">
+            <img src="{% static 'images/alert.svg' %}" />
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <form class="register-form" method="post">
+            {% csrf_token %}
+            <div>
+                <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+            </div>
+            <div>
+                <input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+            </div>
+        </form>
+    </div>
+    <div class="right-elements">
 
+    </div>
     {% else %}
     <!-- Success -->
     {% endif %}
 </div>
-
-{% if page == 'subscribe' %}
-{% endif %}
 
 {% endblock %}

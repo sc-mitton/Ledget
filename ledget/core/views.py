@@ -59,12 +59,12 @@ class LoginView(View):
     def get_login_redirect_url(self, user):
         """Find the url to redirect to after a successful login."""
         login_redirect_url = 'landing'
-        if user.is_active and user.is_subscriber:
-            login_redirect_url = 'app:home'
-        elif user.is_active and not user.is_subscriber:
-            login_redirect_url = 'subscription'
-        elif not user.is_active:
-            login_redirect_url = 'subscription' # TODO redirect to reactivation page
+        # if user.is_active and user.is_subscriber:
+        #     login_redirect_url = 'app:home'
+        # elif user.is_active and not user.is_subscriber:
+        #     login_redirect_url = 'subscription'
+        # elif not user.is_active:
+        #     login_redirect_url = 'subscription' # TODO redirect to reactivation page
         return login_redirect_url
 
 
@@ -80,31 +80,31 @@ class RegisterView(View):
     }
 
     def dispatch(self, request, *args, **kwargs):
+
         url_name = resolve(request.path_info).url_name
-        if url_name in self.form_classes:
+        if request.GET and 'page' in request.GET:
+            self.page = request.GET['page']
+        elif url_name in self.form_classes:
             self.page = url_name
         else:
             self.page = None
-        self.form_class = self.form_classes.get(self.page, None)
+
+        self.form_class = self.form_classes.get(self.page, 'home')
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-
         return render(request, self.template_name, context={'page': self.page})
 
     def post(self, request, *args, **kwargs):
-
         if self.page == 'register':
             self.register(request, *args, **kwargs)
-            redirect = 'subscribe'
-            return render(request, self.template_name,
-                        context={'page': 'subscribe'})
         elif self.page == 'subscribe':
             self.subscribe(request, *args, **kwargs)
-            return redirect('app:home')
+        return render(request, self.template_name)
 
     def register(self, request, *args, **kwargs):
-        """Handle a post request from the sign up form."""
+        """Handle a post request from the sign up form to create a new
+        user."""
         form = self.form_class(request.POST)
 
         if form.is_valid():
@@ -115,8 +115,6 @@ class RegisterView(View):
             if user_exists:
                 # Send password reset email and redirect to
                 messages.error(request, "Email is already taken")
-                context = {'page': self.page}
-                return render(request, self.template_name, context=context)
             else:
                 user = self.create_user(email, password)
                 login(
@@ -124,8 +122,18 @@ class RegisterView(View):
                     user,
                     backend='django.contrib.auth.backends.ModelBackend'
                 )
+                self.page = 'subscribe'
+
+        context = {'page': self.page}
+        return render(request, self.template_name, context=context)
 
     def subscribe(self, request, *args, **kwargs):
+        """Handle a post request from the subscription form to create a new
+        customer."""
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
 
     def create_user(self, email, password):
         """Create a new user with the given email and password."""

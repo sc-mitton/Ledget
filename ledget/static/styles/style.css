@@ -49,7 +49,7 @@ option {
 .sign-up-container h2 {
     font-weight: 600;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    color: var(--medium-dark-gray);
+    color: var(--logo-dark);
     margin: 0;
     margin-bottom: 32px;
 }
@@ -62,7 +62,7 @@ a {
 input {
     border: none;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--medium-dark-gray);
 }
 
@@ -259,7 +259,6 @@ input::placeholder {
 
 /* ------------------ Home Page ------------------ */
 
-
 .landing-message h1 {
     margin-top: 300px;
 }
@@ -435,7 +434,7 @@ input::placeholder {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 12px 4px;
+    margin: px 4px;
     font-size: 13px;
 }
 
@@ -516,7 +515,7 @@ input::placeholder {
 .sign-up-container {
     text-align: center;
     width: 70%;
-    max-width: 700px;
+    max-width: 600px;
     padding: 48px;
     margin: 0 auto;
     display: flex;
@@ -548,7 +547,6 @@ input::placeholder {
 .login-prompt-container {
     text-align: center;
     font-size: 14px;
-    text-align: center;
     position: relative;
     right: -5%;
     padding: 8px;
@@ -557,15 +555,14 @@ input::placeholder {
 .login-prompt-container a:hover {
     color: var(--check-box-blue);
     transition: color 0.15s ease;
-
 }
 
 #continue {
-    margin: 28px 0;
+    margin: 24px 0 0;
 }
 
 #sign-up-with {
-    margin: 16px 0px 8px 0px;
+    margin: 24px 0px 8px 0;
     text-align: center;
     text-align: center;
 }
