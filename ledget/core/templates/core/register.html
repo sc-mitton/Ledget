@@ -1,0 +1,63 @@
+{% extends 'core/user_gateway.html' %}
+{% block window %}
+{% load static %}
+{% load socialaccount %}
+<div class="window sign-up-container">
+    {% if page == 'register' %}
+    <div class="left-elements">
+        <h2>Sign Up</h2>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} wrong-credentials">
+            <img src="{% static 'images/alert.svg' %}" />
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <form class="register-form" method="post">
+            {% csrf_token %}
+            <div>
+                <input type="text" id="email" name="email" placeholder="Email" required>
+            </div>
+            <div>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            <div>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password"
+                    required>
+            </div>
+            <div>
+                <input type="submit" id="continue" value="Continue">
+            </div>
+        </form>
+
+        <div id="sign-up-with">Sign up with</div>
+        <div class="social-login-container">
+            <a id="google-login-button" href="{% provider_login_url 'google' process='connect' %}?next=/">
+                <img src="{% static 'images/google-logo.svg' %}" />
+            </a>
+            <a id="facebook-login-button"
+                href="{% provider_login_url 'facebook' process='connect' method='oauth2' %}?next=/">
+                <img src="{% static 'images/fb-logo.svg' %}" />
+            </a>
+        </div>
+    </div>
+    <div class="right-elements">
+        <div class="login-prompt-container">
+            <span>Already using Ledget?</span>
+            <a href="{% url 'login' %}">
+                Sign In
+            </a>
+        </div>
+    </div>
+    {% elif page == 'subscribe' %}
+
+    {% else %}
+    <!-- Success -->
+    {% endif %}
+</div>
+
+{% if page == 'subscribe' %}
+{% endif %}
+
+{% endblock %}

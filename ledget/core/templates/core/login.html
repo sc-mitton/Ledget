@@ -1,12 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'user_gateway.html' %}
 
-{% block content %}
+{% block window %}
 {% load static %}
-<div class="login-logo">
-    <a href="{% url 'landing' %}">
-        <img src="{% static 'images/logo.svg' %}" />
-    </a>
-</div>
 {% if page == 'login' %}
 {% load socialaccount %}
 <div class="window login-container">
@@ -66,4 +61,4 @@
 {% endif %}
 {% if page == 'forgot-password' %}
 {% endif %}
-{% endblck %}
+{% endblock %}

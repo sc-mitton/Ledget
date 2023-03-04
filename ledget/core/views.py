@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.urls import resolve
 from django.views import View
 from django.views.generic import TemplateView
-from core.forms import LoginForm, RegisterForm
+from core.forms import LoginForm, RegisterForm, SubscribeForm
 
 
 class LandingView(TemplateView):
@@ -15,16 +15,68 @@ class LandingView(TemplateView):
 # TODO On client side add js to check if passwords match during signup
 # TODO On client side add js to check if email is valid during signup
 
-class UserGatewayView(View):
+
+class LoginView(View):
+    template_name = 'login.html'
+    form_classes = {
+        'login': LoginForm,
+        'forgot-password': '',
+    }
+
+    def dispatch(self, request, *args, **kwargs):
+        url_name = resolve(request.path_info).url_name
+        if url_name in self.form_classes:
+            self.page = url_name
+        else:
+            self.page = None
+        self.form_class = self.form_classes.get(self.page, 'home')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, context={'page': self.page})
+
+    def login(self, request, *args, **kwargs):
+        """Handle a post request from the sign in form."""
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(email=email, password=password)
+            if user is not None:
+                login(
+                    request,
+                    user,
+                    backend='django.contrib.auth.backends.ModelBackend'
+                )
+                login_redirect_url = self.get_login_redirect_url(user)
+                return redirect(login_redirect_url)
+            messages.error(
+                request,
+                "The username or password you entered was incorrect."
+            )
+        return redirect('login')
+
+    def get_login_redirect_url(self, user):
+        """Find the url to redirect to after a successful login."""
+        login_redirect_url = 'landing'
+        if user.is_active and user.is_subscriber:
+            login_redirect_url = 'app:home'
+        elif user.is_active and not user.is_subscriber:
+            login_redirect_url = 'subscription'
+        elif not user.is_active:
+            login_redirect_url = 'subscription' # TODO redirect to reactivation page
+        return login_redirect_url
+
+
+class RegisterView(View):
     """
     The user gateway view that is for logging in, registering new users,
     and resetting forgotten passwords.
     """
-    template_name = 'user_gateway.html'
+    template_name = 'register.html'
     form_classes = {
-        'login': LoginForm,
         'register': RegisterForm,
-        'forgot-password': '',
+        'subscribe': SubscribeForm
     }
 
     def dispatch(self, request, *args, **kwargs):
@@ -42,29 +94,14 @@ class UserGatewayView(View):
 
     def post(self, request, *args, **kwargs):
 
-        if self.page == 'login':
-            return self.login(request, *args, **kwargs)
         if self.page == 'register':
-            return self.register(request, *args, **kwargs)
-        return render(request, self.template_name, context={'page': self.page})
-
-    def login(self, request, *args, **kwargs):
-        """Handle a post request from the sign in form."""
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            user = authenticate(email=email, password=password)
-            if user is not None:
-                login(request, user,
-                      backend='django.contrib.auth.backends.ModelBackend')
-                login_redirect_url = self.get_login_redirect_url(user)
-                return redirect(login_redirect_url)
-            messages.error(
-                request,
-                "The username or password you entered was incorrect."
-            )
-        return redirect('login')
+            self.register(request, *args, **kwargs)
+            redirect = 'subscribe'
+            return render(request, self.template_name,
+                        context={'page': 'subscribe'})
+        elif self.page == 'subscribe':
+            self.subscribe(request, *args, **kwargs)
+            return redirect('app:home')
 
     def register(self, request, *args, **kwargs):
         """Handle a post request from the sign up form."""
@@ -87,7 +124,8 @@ class UserGatewayView(View):
                     user,
                     backend='django.contrib.auth.backends.ModelBackend'
                 )
-        return redirect('landing')
+
+    def subscribe(self, request, *args, **kwargs):
 
     def create_user(self, email, password):
         """Create a new user with the given email and password."""
@@ -96,21 +134,3 @@ class UserGatewayView(View):
         user.is_active = False
         user.save()
         return user
-
-    def get_login_redirect_url(self, user):
-        """Find the url to redirect to after a successful login."""
-        login_redirect_url = 'landing'
-        if user.is_active and user.is_subscriber:
-            login_redirect_url = 'app:home'
-        elif user.is_active and not user.is_subscriber:
-            login_redirect_url = 'subscription'
-        elif not user.is_active:
-            login_redirect_url = 'subscription' # TODO redirect to reactivation page
-        return login_redirect_url
-
-
-class SubscriptionView(View):
-    template_name = 'subscription.html'
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
