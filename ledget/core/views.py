@@ -7,8 +7,8 @@ from django.views.generic import TemplateView
 from core.forms import LoginForm, RegisterForm
 
 
-class HomeView(TemplateView):
-    template_name = 'home.html'
+class LandingView(TemplateView):
+    template_name = 'landing.html'
 
 
 # TODO On client side, add js to check strength of password during signup
@@ -58,12 +58,13 @@ class UserGatewayView(View):
             if user is not None:
                 login(request, user,
                       backend='django.contrib.auth.backends.ModelBackend')
-                return redirect('home')
+                login_redirect_url = self.get_login_redirect_url(user)
+                return redirect(login_redirect_url)
             messages.error(
                 request,
                 "The username or password you entered was incorrect."
             )
-        return render(request, self.template_name, context={'page': self.page})
+        return redirect('login')
 
     def register(self, request, *args, **kwargs):
         """Handle a post request from the sign up form."""
@@ -76,7 +77,7 @@ class UserGatewayView(View):
             user_exists = get_user_model().objects.filter(email=email).exists()
             if user_exists:
                 # Send password reset email and redirect to
-                messages.error(request, "Email is already taken.")
+                messages.error(request, "Email is already taken")
                 context = {'page': self.page}
                 return render(request, self.template_name, context=context)
             else:
@@ -86,7 +87,7 @@ class UserGatewayView(View):
                     user,
                     backend='django.contrib.auth.backends.ModelBackend'
                 )
-        return redirect('home')
+        return redirect('landing')
 
     def create_user(self, email, password):
         """Create a new user with the given email and password."""
@@ -95,3 +96,18 @@ class UserGatewayView(View):
         user.is_active = False
         user.save()
         return user
+
+    def get_login_redirect_url(self, user):
+        """Find the url to redirect to after a successful login."""
+        login_redirect_url = "landing"
+        if user.is_active and user.is_subscriber:
+            login_redirect_url = 'app:home'
+        elif user.is_active and not user.is_subscriber:
+            login_redirect_url = 'subscriptions'
+        elif not user.is_active:
+            login_redirect_url = 'subscriptions'
+        return login_redirect_url
+
+
+class SubscriptionView(View):
+    template_name = 'subscription.html'

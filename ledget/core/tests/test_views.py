@@ -29,13 +29,13 @@ class TestViews(TestCase):
         response = self.client.post(
             self.login_url, {'email': email, 'password': password})
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('home'))
+        self.assertRedirects(response, reverse('landing'))
 
     def test_login_invalid_credentials(self):
         response = self.client.post(
             self.login_url,
             {'email': 'invalid@example.com', 'password': 'invalidpassword'})
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertTemplateUsed(response, 'user_gateway.html')
         self.assertContains(
             response,
@@ -48,7 +48,7 @@ class TestViews(TestCase):
             self.register_url,
             {'email': email, 'password': password})
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('home'))
+        self.assertRedirects(response, reverse('landing'))
 
     def test_register_existing_user(self):
         email = 'newuser@example.com'
@@ -60,5 +60,5 @@ class TestViews(TestCase):
             {'email': email, 'password': password})
         self.assertContains(
             response,
-            'Email is already taken.')
+            'Email is already taken')
 

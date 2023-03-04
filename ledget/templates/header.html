@@ -14,17 +14,26 @@
                     <li><a href="#">Help</a></li>
                 </ul>
             </nav>
-            <div class="login-button-container">
-                <a href="{% url 'login' %}">
-                    <button>Sign In</button>
-                </a>
+            <div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">
+                    {% else %}
+                    <a href="{% url 'login' %}">
+                        {% endif %}
+                        <button class="auth-button">
+                            {% if user.is_authenticated %}
+                            <span>Logout</span>
+                            {% else %}
+                            <span>Sign In</span>
+                            {% endif %}
+                            <svg width="20" height="16" viewBox="0 0 20 18">
+                                <polyline points="2,12 19,12" stroke="white" stroke-width="2" fill="none" />
+                                <polyline points="15,17 20,12, 15,7" stroke="white" stroke-width="2" fill="none" />
+                                <polyline points="15,7 20,12, 15,17" stroke="white" stroke-width="2" fill="none" />
+                            </svg>
+                        </button>
+                    </a>
             </div>
-
         </div>
     </div>
-    {% if request.user.is_authenticated %}
-    <div style="text-align: center; margin: auto; margin-top: 200px">
-        Welcome {{ request.user.first_name }}!
-    </div>
-    {% endif %}
 </header>

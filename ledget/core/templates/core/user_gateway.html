@@ -72,7 +72,7 @@
 <script src="{% static 'js/register.js' %}"></script>
 <div class="window sign-up-container">
     <div class="left-elements">
-        <h1>Sign Up</h1>
+        <h2>Sign Up</h2>
         {% if messages %}
         {% for message in messages %}
         <div class="alert alert-{{ message.tags }} wrong-credentials">
@@ -118,10 +118,6 @@
         </div>
     </div>
 </div>
-{% endif %}
-
-{% if page == 'pricing' %}
-
 {% endif %}
 
 {% if page == 'forgot-password' %}
