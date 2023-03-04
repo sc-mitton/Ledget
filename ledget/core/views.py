@@ -99,15 +99,18 @@ class UserGatewayView(View):
 
     def get_login_redirect_url(self, user):
         """Find the url to redirect to after a successful login."""
-        login_redirect_url = "landing"
+        login_redirect_url = 'landing'
         if user.is_active and user.is_subscriber:
             login_redirect_url = 'app:home'
         elif user.is_active and not user.is_subscriber:
-            login_redirect_url = 'subscriptions'
+            login_redirect_url = 'subscription'
         elif not user.is_active:
-            login_redirect_url = 'subscriptions'
+            login_redirect_url = 'subscription' # TODO redirect to reactivation page
         return login_redirect_url
 
 
 class SubscriptionView(View):
     template_name = 'subscription.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
