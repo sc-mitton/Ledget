@@ -1,11 +1,15 @@
+import json
+
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib import messages
 from django.urls import resolve
 from django.views import View
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
 from core.forms import LoginForm, RegisterForm, SubscribeForm
-
+import stripe
 
 class LandingView(TemplateView):
     template_name = 'landing.html'
@@ -34,6 +38,13 @@ class LoginView(View):
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, context={'page': self.page})
+
+    def post(self, request, *args, **kwargs):
+        if self.page == 'login':
+            return self.login(request, *args, **kwargs)
+        elif self.page == 'forgot-password':
+            return self.forgot_password(request, *args, **kwargs)
+        return redirect('login')
 
     def login(self, request, *args, **kwargs):
         """Handle a post request from the sign in form."""
@@ -93,6 +104,10 @@ class RegisterView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        """Return the template for the current page. If the user
+        is not authenticated, redirect to the register page."""
+        if self.page != 'register' and not request.user.is_authenticated:
+            return redirect('register')
         return render(request, self.template_name, context={'page': self.page})
 
     def post(self, request, *args, **kwargs):
@@ -134,6 +149,18 @@ class RegisterView(View):
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
+            user = request.user
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+
+    def create_customer(self, request, *args, **kwargs):
+        """Create a new customer with the given email and password."""
+        pass
+
+    def create_subscription(self, request, *args, **kwargs):
+        """Create a new subscription for the given customer."""
+        pass
 
     def create_user(self, email, password):
         """Create a new user with the given email and password."""

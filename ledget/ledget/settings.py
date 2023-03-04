@@ -184,6 +184,12 @@ if DEBUG:
     SESSION_COOKIE_HTTPONLY = True
     SECURE_BROWSER_XSS_FILTER = True
 
+# Stripe Info
+STRIPE_SK_TEST = os.getenv('STRIPE_SK_TEST')
+STRIPE_PK_TEST = os.getenv('STRIPE_PK_TEST')
+STRIPE_MONTHLY_PRICE_ID = os.getenv('STRIPE_MONTHLY_PRICE_ID')
+STRIPE_YEARLY_PRICE_ID = os.getenv('STRIPE_YEARLY_PRICE_ID')
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
