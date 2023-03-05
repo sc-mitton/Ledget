@@ -73,7 +73,7 @@ input[type="password"]::placeholder {
 
 input[type="text"],
 input[type="password"] {
-    border-bottom: 2px solid var(--light-gray);
+    border-bottom: 2px solid var(--light-light-gray);
     padding: 4px 4px;
     margin: 12px 0;
     box-sizing: border-box;
@@ -222,6 +222,8 @@ input::placeholder {
 .checkbox span:first-child svg {
     fill: none;
     stroke: #fff;
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
 }
 
 .checkbox span:last-child {
@@ -241,6 +243,13 @@ input::placeholder {
 
 .checkbox-input:checked+.checkbox span:first-child svg {
     stroke: #fff;
+    animation: draw 0.5s ease-in-out forwards;
+}
+
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
 }
 
 @keyframes zoom-in-out {
@@ -372,7 +381,7 @@ input::placeholder {
 .auth-button svg {
     visibility: hidden;
     width: 0;
-    transition: width .25s ease-in;
+    transition: width .15s ease-in;
 }
 
 .auth-button:hover svg {
@@ -387,7 +396,7 @@ input::placeholder {
 }
 
 .auth-button:hover .path {
-    animation: dash-in 1s ease .1s forwards;
+    animation: dash-in 1s ease .15s forwards;
     color: white;
 }
 

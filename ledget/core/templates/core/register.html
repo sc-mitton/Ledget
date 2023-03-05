@@ -50,7 +50,8 @@
             </a>
         </div>
     </div>
-    {% elif page == 'subscribe' and user.is_authenticated %}
+    {% elif page == 'checkout' %}
+    <script src="{% static 'js/subscribe.js' %}"></script>
     <div class="left-elements">
         <h2>Sign Up</h2>
         {% if messages %}
