@@ -1,7 +1,7 @@
 from django.urls import include, path
 
-from core.views import LoginView, RegisterView
-from core.views import CheckoutView
+from core.views import LoginView
+from core.register_views import RegisterView, CheckoutView
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [

@@ -1,20 +1,22 @@
 /* Main */
 :root {
-    --background-color: #fffcfc;
-    --logo-dark: rgb(54, 54, 54);
+    --background-color: rgb(255, 252, 252);
+    --window: rgb(255, 252, 252);
+    --logo-dark: rgb(79, 78, 78);
     --medium-dark-gray: rgb(101, 101, 101);
     --light-gray: rgb(172, 172, 172);
     --light-light-gray: #cbcaca;
     --active-input: #f2f2f2;
-    --standard-drop-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
+    --standard-drop-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
+    --inner-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
     --check-box-hover: rgba(54, 54, 54, .06);
     --mute-blue: rgb(122, 166, 248);
     --check-box-blue: rgb(107, 155, 246);
     --mute-red: rgb(244, 119, 136);
-    --hover-blue: rgb(47, 101, 236);
-    --hover-red: rgb(216, 81, 99);
+    --hover-blue: rgb(78, 135, 242);
+    --hover-red: rgb(248, 89, 110);
     --alert-red: rgb(242, 73, 73);
-    --window-box-gray: rgb(230, 230, 230);
+    --window-box-gray: rgb(255, 252, 252);
 }
 
 img {
@@ -46,14 +48,6 @@ option {
     color: var(--medium-dark-gray);
 }
 
-.sign-up-container h2 {
-    font-weight: 600;
-    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    color: var(--logo-dark);
-    margin: 0;
-    margin-bottom: 32px;
-}
-
 a {
     text-decoration: none;
     cursor: pointer;
@@ -62,8 +56,9 @@ a {
 input {
     border: none;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    font-size: 16px;
     color: var(--medium-dark-gray);
+    background-color: var(--window);
+    font-size: 16px;
 }
 
 input[type="text"]::placeholder,
@@ -74,8 +69,9 @@ input[type="password"]::placeholder {
 input[type="text"],
 input[type="password"] {
     border-bottom: 2px solid var(--light-light-gray);
+    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.03);
     padding: 4px 4px;
-    margin: 12px 0;
+    margin: 8px 0;
     box-sizing: border-box;
     height: 100%;
 }
@@ -84,8 +80,8 @@ input[type="submit"] {
     background-color: var(--medium-dark-gray);
     color: rgb(256, 256, 256);
     transition: background-color 0.15s ease;
-    padding: 12px 4px;
-    border-radius: 8px;
+    padding: 8px 4px;
+    border-radius: 4px;
 }
 
 input[type="submit"]:hover {
@@ -259,7 +255,7 @@ input::placeholder {
 }
 
 .window {
-    background-color: white;
+    background-color: var(--window);
     box-shadow: var(--standard-drop-shadow);
     border-radius: 8px;
     font-size: 14px;
@@ -422,7 +418,7 @@ input::placeholder {
     width: 40%;
     max-width: 350px;
     margin: 0 auto;
-    padding: 32px;
+    padding: 48px;
 }
 
 .login-form input[type="text"],
@@ -466,7 +462,7 @@ input::placeholder {
 
 #facebook-login-button {
     background-color: var(--mute-blue);
-    border-radius: 8px;
+    border-radius: 4px;
     width: 100%;
     margin-left: 4px;
     box-sizing: border-box;
@@ -479,7 +475,7 @@ input::placeholder {
 
 #google-login-button {
     background-color: var(--mute-red);
-    border-radius: 8px;
+    border-radius: 4px;
     width: 100%;
     margin-right: 4px;
     box-sizing: border-box;
@@ -499,11 +495,11 @@ input::placeholder {
 }
 
 #facebook-login-button img {
-    height: 45%;
+    height: 40%;
 }
 
 #google-login-button img {
-    height: 52%;
+    height: 47%;
     position: relative;
     top: 2px;
 }
@@ -524,23 +520,33 @@ input::placeholder {
 .sign-up-container {
     text-align: center;
     width: 70%;
-    max-width: 600px;
-    padding: 48px;
+    max-width: 700px;
     margin: 0 auto;
     display: flex;
     border-radius: 12px;
+}
+
+.sign-up-container h2,
+.checkout-container h2 {
+    font-weight: 600;
+    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    color: var(--logo-dark);
+    margin: 0;
+    margin-bottom: 32px;
 }
 
 .sign-up-container .right-elements {
     width: 50%;
     display: flex;
     align-items: bottom;
+    padding:
 }
 
 .sign-up-container .left-elements {
     width: 50%;
     text-align: left;
     display: block;
+    padding: 48px 30px 60px 60px;
 }
 
 .left-elements div input {
@@ -551,13 +557,14 @@ input::placeholder {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    padding: 48px 60px 60px 30px;
 }
 
 .login-prompt-container {
     text-align: center;
     font-size: 14px;
     position: relative;
-    right: -5%;
+    right: -8%;
     padding: 8px;
 }
 
@@ -574,4 +581,77 @@ input::placeholder {
     margin: 24px 0px 8px 0;
     text-align: center;
     text-align: center;
+}
+
+/* ------------------ Checkout ------------------ */
+
+.checkout-container {
+    display: flex;
+    width: 40%;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 48px;
+}
+
+.checkout-form-container {
+    width: 100%;
+}
+
+/* name inputs */
+.name-inputs {
+    display: inline-block;
+}
+
+.name-inputs input[type="text"] {
+    width: 50%;
+    box-sizing: border-box;
+}
+
+/* subscription radios */
+
+.subscription-plans {
+    width: 100%;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+
+.subscription-plans h3 {
+    margin: 0;
+    font-weight: 400;
+}
+
+.subscription {
+    margin: 8px;
+}
+
+.subscription label {
+    color: var(--medium-dark-gray);
+    padding: 8px;
+    font-size: 1.4em;
+}
+
+.subscription label span {
+    color: var(--medium-dark-gray);
+    font-size: .6em;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:not(checked)+label {
+    border: 3px solid var(--window);
+    border-radius: 8px;
+}
+
+input[type="radio"]:checked+label span {
+    color: var(--check-box-blue);
+}
+
+input[type="radio"]:checked+label {
+    border: 3px solid var(--check-box-blue);
+    border-radius: 8px;
+    color: var(--check-box-blue);
 }

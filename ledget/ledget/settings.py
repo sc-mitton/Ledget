@@ -27,6 +27,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+DEVELOPMENT = True
+PRODUCTION = not DEVELOPMENT
 
 ALLOWED_HOSTS = []
 
@@ -170,23 +172,33 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # HTTPS development server settings
-if DEBUG:
+if DEVELOPMENT:
     # SSL certificate and key for development server
     SSL_CERTIFICATE_PATH = BASE_DIR / 'ssl' / 'ledget.app.crt'
     SSL_KEY_PATH = BASE_DIR / 'ssl' / 'ledget.app.key'
 
-    # Development server settings
     ALLOWED_HOSTS = ['ledget.app', '127.0.0.1', 'localhost']
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
     CSRF_COOKIE_HTTPONLY = True
     SESSION_COOKIE_HTTPONLY = True
     SECURE_BROWSER_XSS_FILTER = True
 
+if PRODUCTION:
+    SECURE_HSTS_SECONDS = 31536000
+
+
 # Stripe Info
-STRIPE_SK_TEST = os.getenv('STRIPE_SK_TEST')
-STRIPE_PK_TEST = os.getenv('STRIPE_PK_TEST')
+if DEVELOPMENT:
+    STRIPE_SK = os.getenv('STRIPE_SK_TEST')
+    STRIPE_PK = os.getenv('STRIPE_PK_TEST')
+elif PRODUCTION:
+    STRIPE_SK = os.getenv('STRIPE_SK')
+    STRIPE_PK = os.getenv('STRIPE_PK')
+    # TODO: Add production keys in .env
 STRIPE_MONTHLY_PRICE_ID = os.getenv('STRIPE_MONTHLY_PRICE_ID')
 STRIPE_YEARLY_PRICE_ID = os.getenv('STRIPE_YEARLY_PRICE_ID')
 

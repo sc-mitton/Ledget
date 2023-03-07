@@ -2,8 +2,8 @@
 {% block window %}
 {% load static %}
 {% load socialaccount %}
+{% if page == 'register' %}
 <div class="window sign-up-container">
-    {% if page == 'register' %}
     <div class="left-elements">
         <h2>Sign Up</h2>
         {% if messages %}
@@ -50,34 +50,40 @@
             </a>
         </div>
     </div>
-    {% elif page == 'checkout' %}
-    <script src="{% static 'js/subscribe.js' %}"></script>
-    <div class="left-elements">
-        <h2>Sign Up</h2>
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} wrong-credentials">
-            <img src="{% static 'images/alert.svg' %}" />
-            {{ message }}
-        </div>
-        {% endfor %}
-        {% endif %}
-        <form class="register-form" method="post">
+</div>
+
+{% elif page == 'checkout' %}
+<script src="{% static 'js/subscribe.js' %}"></script>
+<div class="window checkout-container">
+
+
+    <div class="checkout-form-container">
+        <form class="checkout-form" method="post">
             {% csrf_token %}
-            <div>
-                <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+            <div class="subscription-plans">
+                <div class="subscription">
+                    <input type="radio" id="yearly" name="plan" value="plan1" checked>
+                    <label for="yearly">
+                        $6<span> / month</span>
+                    </label>
+                </div>
+                <div class="subscription">
+                    <input type="radio" id="monthly" name="plan" value="plan2">
+                    <label for="monthly">
+                        $8<span> / month</span>
+                    </label>
+                </div>
             </div>
-            <div>
+            <div class="name-inputs">
+                <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
                 <input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
             </div>
         </form>
     </div>
-    <div class="right-elements">
 
-    </div>
-    {% else %}
-    <!-- Success -->
-    {% endif %}
 </div>
+{% else %}
+<!-- Success -->
+{% endif %}
 
 {% endblock %}

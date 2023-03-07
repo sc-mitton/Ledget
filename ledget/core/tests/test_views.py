@@ -1,8 +1,7 @@
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from core.forms import LoginForm, RegisterForm
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import get_user_model
 
 
 class TestViews(TestCase):
@@ -84,6 +83,7 @@ class TestViews(TestCase):
     def test_authenticated_user_cant_access_login(self):
         response = self.authenticated_client.get(self.login_url)
         self.assertEqual(response.status_code, 302)
+        # TODO assert that the app home page is loaded
 
     def test_inactive_user_goes_to_reactivate(self):
         # TODO
