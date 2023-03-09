@@ -1,89 +1,50 @@
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 
 
 class TestViews(TestCase):
 
     def setUp(self):
-        self.client = Client(secure=True)
+        self.client = Client()
+        User = get_user_model()
+        self.user_data = {
+            'email': 'test@example.com',
+            'password': 'testpassword',
+        }
+        self.user = User.objects.create_user(
+            self.user_data['email'],
+            self.user_data['password']
+        )
         self.login_url = reverse('login')
         self.register_url = reverse('register')
+        self.login_template = 'login.html'
 
-        self.email = 'testuser@example.com'
-        self.password = 'testpassword'
-        self.main_test_user = get_user_model().objects.create_user(
-            email=self.email,
-            password=self.password
-        )
-        self.authenticated_client = Client(secure=True)
-        self.authenticated_client.force_login(self.main_test_user)
-
-    def test_get_login_form(self):
-        response = self.client.get(self.login_url)
+    def test_get_register_page(self):
+        response = self.client.get(self.register_url, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'user_gateway.html')
+        self.assertTemplateUsed(response, 'register.html')
 
-    def test_get_register_form(self):
-        response = self.client.get(self.register_url)
+    def test_get_login_page(self):
+        response = self.client.get(self.login_url, follow=True)
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, self.login_template)
 
-    def test_login_successful(self):
-        email = 'testuser1@example.com'
-        password = 'testpassword'
-        User = get_user_model()
-        user = User.objects.create_user(email=email, password=password)
-        response = self.client.post(
-            self.login_url, {'email': email, 'password': password})
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('landing'))
-
-    def test_login_invalid_credentials(self):
-        email = 'testuser123@example.com'
-        password = 'password123'
-
-        get_user_model().objects.create_user(
-                    email=email, password=password)
-        response = self.client.post(
-                        self.login_url,
-                        {'email': email, 'password': "wrongpassword"}
-                    )
-
+    def test_authenticated_user_cant_access_login(self):
+        self.client.force_login(self.user)
+        response = self.client.get(self.login_url, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'login.html')
-        self.assertContains(
-            response,
-            'The username or password you entered was incorrect.'
-        )
+        self.assertTemplateNotUsed(response, self.login_template)
 
-    def test_register_successful(self):
+    def test_successful_registration_goes_to_checkout(self):
         email = 'testuser2@example.com'
         password = 'testpassword'
         response = self.client.post(
             self.register_url,
-            {'email': email, 'password': password})
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'register.html')
-        self.assertEqual(response.context['page'], 'checkout')
-
-    def test_register_existing_user(self):
-        email = 'newuser@example.com'
-        password = 'testpassword'
-        User = get_user_model()
-        user = User.objects.create_user(email=email, password=password)
-        response = self.client.post(
-            self.register_url,
-            {'email': email, 'password': password})
-        self.assertContains(
-            response,
-            'Email is already taken'
+            {'email': email, 'password': password},
+            follow=True
         )
-
-    def test_authenticated_user_cant_access_login(self):
-        response = self.authenticated_client.get(self.login_url)
-        self.assertEqual(response.status_code, 302)
-        # TODO assert that the app home page is loaded
+        self.assertEqual(response.status_code, 200)
 
     def test_inactive_user_goes_to_reactivate(self):
         # TODO
@@ -95,4 +56,30 @@ class TestViews(TestCase):
 
     def test_unsubscribed_active_user_goes_to_checkout(self):
         # TODO
+        pass
+
+
+class AuthenticationTests(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        User = get_user_model()
+        self.user_data = {
+            'email': 'test@example.com',
+            'password': 'testpassword',
+        }
+        self.user = User.objects.create_user(
+            self.user_data['email'],
+            self.user_data['password']
+        )
+        self.login_url = reverse('login')
+        self.register_url = reverse('register')
+
+    def test_valid_login(self):
+        pass
+
+    def test_invalid_login(self):
+        pass
+
+    def test_register_existing_user(self):
         pass

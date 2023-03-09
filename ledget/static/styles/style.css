@@ -8,6 +8,7 @@
     --light-light-gray: #cbcaca;
     --active-input: #f2f2f2;
     --standard-drop-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
+    --window-box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
     --inner-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
     --check-box-hover: rgba(54, 54, 54, .06);
     --mute-blue: rgb(122, 166, 248);
@@ -70,7 +71,7 @@ input[type="text"],
 input[type="password"] {
     border-bottom: 2px solid var(--light-light-gray);
     box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.03);
-    padding: 4px 4px;
+    padding: 8px 8px;
     margin: 8px 0;
     box-sizing: border-box;
     height: 100%;
@@ -100,6 +101,9 @@ input:focus {
     background-color: none;
     border-bottom: 2px solid var(--check-box-blue);
     min-height: 100%;
+    outline: none;
+    box-shadow: 0 1px 0px rgb(212, 212, 212);
+    /* add a blue shadow below the input */
 }
 
 input:focus::placeholder {
@@ -256,7 +260,7 @@ input::placeholder {
 
 .window {
     background-color: var(--window);
-    box-shadow: var(--standard-drop-shadow);
+    box-shadow: var(--window-box-shadow);
     border-radius: 8px;
     font-size: 14px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
@@ -539,14 +543,13 @@ input::placeholder {
     width: 50%;
     display: flex;
     align-items: bottom;
-    padding:
 }
 
 .sign-up-container .left-elements {
     width: 50%;
     text-align: left;
     display: block;
-    padding: 48px 30px 60px 60px;
+    padding: 48px 0px 60px 60px;
 }
 
 .left-elements div input {
@@ -557,7 +560,7 @@ input::placeholder {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 48px 60px 60px 30px;
+    padding: 48px 60px 60px 0px;
 }
 
 .login-prompt-container {
@@ -588,23 +591,13 @@ input::placeholder {
 .checkout-container {
     display: flex;
     width: 40%;
-    max-width: 350px;
+    max-width: 375px;
     margin: 0 auto;
     padding: 48px;
 }
 
 .checkout-form-container {
     width: 100%;
-}
-
-/* name inputs */
-.name-inputs {
-    display: inline-block;
-}
-
-.name-inputs input[type="text"] {
-    width: 50%;
-    box-sizing: border-box;
 }
 
 /* subscription radios */
@@ -623,13 +616,24 @@ input::placeholder {
 }
 
 .subscription {
-    margin: 8px;
+    display: flex;
+    margin: 8px 12px;
+    flex-direction: column;
+    align-items: top;
+    justify-content: center;
 }
 
 .subscription label {
     color: var(--medium-dark-gray);
     padding: 8px;
     font-size: 1.4em;
+    cursor: pointer;
+    text-align: center;
+}
+
+.subscription label span:first-child {
+    font-size: .7em;
+    font-weight: 500;
 }
 
 .subscription label span {
@@ -654,4 +658,29 @@ input[type="radio"]:checked+label {
     border: 3px solid var(--check-box-blue);
     border-radius: 8px;
     color: var(--check-box-blue);
+}
+
+
+/* name inputs */
+.name-inputs {
+    display: flex;
+}
+
+.name-inputs input {
+    width: 50%;
+}
+
+.name-inputs input[type="text"]:first-child {
+    margin-right: 8px;
+}
+
+.name-inputs input[type="text"]:last-child {
+    margin-left: 8px;
+}
+
+/* payment inputs */
+.checkout-form .checkbox-container {
+    margin: 4px 0;
+    display: flex;
+    justify-content: left;
 }

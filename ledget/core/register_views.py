@@ -1,16 +1,18 @@
-from django.shortcuts import render
+import json
+
+from django.shortcuts import redirect, render
 from django.contrib.auth import login, get_user_model
 from django.contrib import messages
 from django.urls import resolve
 from django.views import View
-from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.http.response import JsonResponse, HttpResponse
 import stripe
 
+from core.models import Customer
 from core.forms import RegisterForm, SubscribeForm
-
-stripe.api_key = settings.STRIPE_SK
 
 # TODO On client side, add js to check strength of password during signup
 # TODO On client side add js to check if passwords match during signup
@@ -39,7 +41,9 @@ class RegisterView(View):
         if self.page == 'register':
             self.register(request, *args, **kwargs)
 
-        return render(request, self.template_name, context={'page': self.page})
+        if messages.get_messages(request):
+            return redirect('register')
+        return redirect('checkout')
 
     def register(self, request, *args, **kwargs):
         """Handle a post request from the sign up form to create a new
@@ -63,7 +67,6 @@ class RegisterView(View):
                     user,
                     backend='django.contrib.auth.backends.ModelBackend'
                 )
-                self.page = 'checkout'
 
 
 class CheckoutView(LoginRequiredMixin, View):
@@ -112,3 +115,82 @@ class CheckoutView(LoginRequiredMixin, View):
         user.is_active = False
         user.save()
         return user
+
+    def webhook_received(self, request, *args, **kwargs):
+        """Handle a webhook from Stripe."""
+        pass
+
+
+@csrf_exempt
+def stripe_config(request):
+    if request.method == 'GET':
+        stripe_config = {'publicKey': settings.STRIPE_PK}
+        return JsonResponse(stripe_config, safe=False)
+
+
+@csrf_exempt
+def create_checkout_session(request):
+    if request.method == 'GET':
+        domain_url = settings.DOMAIN_URL
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                client_reference_id=request.user.id if request.user.is_authenticated else None,
+                success_url=domain_url + 'success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=domain_url + 'cancel/',
+                payment_method_types=['card'],
+                mode='subscription',
+                line_items=[
+                    {
+                        'price': settings.STRIPE_PRICE_ID,
+                        'quantity': 1,
+                    }
+                ]
+            )
+            return JsonResponse({'sessionId': checkout_session['id']})
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+
+
+class StripeWebhook(View):
+    """Handle a webhook from Stripe."""
+
+    @csrf_exempt
+    def post(self, request, *args, **kwargs):
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        webhook_secret = settings.STRIPE_WEBHOOK_SECRET
+        request_data = json.loads(request.data)
+
+        if webhook_secret:
+            # Retrieve the event by verifying the signature using the raw
+            # body and secret if webhook signing is configured.
+            try:
+                event = stripe.Webhook.construct_event(
+                    payload=request.data,
+                    sig_header=request.META['HTTP_STRIPE_SIGNATURE'],
+                    secret=webhook_secret
+                )
+                data = event['data']
+            except Exception as e:
+                return e
+            # Get the type of webhook event sent - used to check the status
+            event_type = event['type']
+        else:
+            data = request_data['data']
+            event_type = request_data['type']
+        data_object = data['object']
+
+        if event_type == 'checkout.session.completed':
+            # Payment is successful and the subscription is created.
+            # Provision subscription and save the relevant details
+            pass
+        elif event_type == 'invoice.paid':
+            # Continue to provision the subscription as payments continue to be made.
+            # Store the status in the db
+            pass
+        elif event_type == 'invoice.payment_failed':
+            # The payment failed or the customer does not have a valid payment method.
+            # Notify customer and send them to the customer portal to update their payment information
+            pass
+
+        return JsonResponse({'status': 'success'})

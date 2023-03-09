@@ -3,6 +3,10 @@
 import os
 import sys
 
+os.environ.setdefault(
+    'DJANGO_SETTINGS_MODULE',
+    "ledget.settings.development"
+)
 
 def main():
     """Run administrative tasks."""

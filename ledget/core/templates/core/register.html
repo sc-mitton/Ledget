@@ -54,22 +54,26 @@
 
 {% elif page == 'checkout' %}
 <script src="{% static 'js/subscribe.js' %}"></script>
+
 <div class="window checkout-container">
 
-
     <div class="checkout-form-container">
-        <form class="checkout-form" method="post">
+        <form action="/create-checkout-session" class="checkout-form" method="post">
             {% csrf_token %}
             <div class="subscription-plans">
                 <div class="subscription">
                     <input type="radio" id="yearly" name="plan" value="plan1" checked>
                     <label for="yearly">
+                        <span>YEAR</span>
+                        </br>
                         $6<span> / month</span>
                     </label>
                 </div>
                 <div class="subscription">
                     <input type="radio" id="monthly" name="plan" value="plan2">
                     <label for="monthly">
+                        <span>MONTH</span>
+                        </br>
                         $8<span> / month</span>
                     </label>
                 </div>
@@ -77,6 +81,18 @@
             <div class="name-inputs">
                 <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
                 <input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+            </div>
+            {% include 'checkmark.html' %}
+            <div class="checkbox-container">
+                <input class="checkbox-input" id="free-trial" type="checkbox" />
+                <label class="checkbox" for="free-trial">
+                    <span>
+                        <svg>
+                            <use xlink:href="#check"></use>
+                        </svg>
+                    </span>
+                    <span>Start 10-day free trial</span>
+                </label>
             </div>
         </form>
     </div>

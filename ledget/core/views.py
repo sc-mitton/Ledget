@@ -53,7 +53,9 @@ class LoginView(View):
         if self.page == 'login':
             self.login(request, *args, **kwargs)
         elif self.page == 'forgot-password':
-            self.forgot_password(request, *args, **kwargs)
+            pass
+            # TODO
+            # self.forgot_password(request, *args, **kwargs)
 
         if messages.get_messages(request):
             context = {'page': self.page}
@@ -73,7 +75,7 @@ class LoginView(View):
                 backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, user, backend=backend)
             else:
-                msg = "The username or password you entered was incorrect."
+                msg = "The username or password you entered was incorrect"
                 messages.error(request, msg)
 
     def get_login_redirect_url(self, user):
