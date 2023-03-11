@@ -9,6 +9,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALLOWED_HOSTS = ['localhost', 'ledget.app']
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'https://localhost:3000',
+    'https://localhost:8000',
+    'https://ledget.app:8000',
+    'https://ledget.app:3000',
+]
 
 # Application definition
 
@@ -31,6 +39,7 @@ DEFAULT_APPS = [
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 THIRD_PARTY_APPS = [
     'sslserver',
@@ -44,7 +53,7 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     'core',
-    'app',
+    'api'
 ]
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -94,7 +103,7 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-MIDDLEWARE = [
+DEFAULT_MIDDLE_WARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -103,6 +112,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+THIRD_PARTY_MIDDLE_WARE = [
+    'corsheaders.middleware.CorsMiddleware',
+]
+LOCAL_MIDDLE_WARE = []
+
+MIDDLEWARE = DEFAULT_MIDDLE_WARE + THIRD_PARTY_MIDDLE_WARE + LOCAL_MIDDLE_WARE
 
 ROOT_URLCONF = 'ledget.urls'
 

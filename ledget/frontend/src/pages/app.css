@@ -1,0 +1,176 @@
+.app-logo {
+    width: 20%;
+    max-width: 112px;
+    margin: 0 auto;
+    padding: 24px;
+    margin-top: 64px;
+    margin-bottom: 32px;
+    cursor: pointer;
+}
+
+/* Login Window */
+.login-window {
+    text-align: center;
+    width: 40%;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 48px;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"],
+.login-form input[type="submit"] {
+    width: 100%;
+}
+
+.login-form input[type="submit"] {
+    margin-top: 16px;
+}
+
+.forgot-password-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: px 4px;
+    font-size: 13px;
+}
+
+.forgot-password-container a:hover {
+    color: var(--check-box-blue);
+}
+
+#remember-me {
+    position: relative;
+    top: -1px;
+}
+
+.or-continue-with {
+    text-align: center;
+    margin-top: 28px;
+}
+
+.social-buttons-container {
+    margin-top: 12px;
+    width: 100%;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+}
+
+#facebook-auth-button {
+    background-color: var(--mute-blue);
+    border-radius: 4px;
+    width: 50%;
+    margin-left: 4px;
+    box-sizing: border-box;
+    color: #fff;
+    transition: background-color 0.15s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 1px 0px .5px var(--hover-blue);
+}
+
+#google-auth-button {
+    background-color: var(--mute-red);
+    border-radius: 4px;
+    width: 50%;
+    margin-right: 4px;
+    box-sizing: border-box;
+    color: #fff;
+    transition: background-color 0.15s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 1px 0px 1px var(--hover-red);
+}
+
+#facebook-auth-button:hover {
+    background-color: var(--hover-blue);
+}
+
+#google-auth-button:hover {
+    background-color: var(--hover-red);
+}
+
+#facebook-auth-button img {
+    height: 40%;
+}
+
+#google-auth-button img {
+    height: 47%;
+    position: relative;
+    top: 2px;
+}
+
+.sign-up-prompt-container {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.sign-up-prompt-container a:hover {
+    color: var(--check-box-blue);
+    transition: color 0.15s ease;
+}
+
+/* Sign Up Window */
+
+.sign-up-window {
+    text-align: center;
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    border-radius: 12px;
+}
+
+.sign-up- h2,
+.checkout-container h2 {
+    font-weight: 600;
+    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    color: var(--logo-dark);
+    margin: 0;
+    margin-bottom: 32px;
+}
+
+.left-elements {
+    width: 50%;
+    text-align: left;
+    display: block;
+    padding: 48px 0px 60px 60px;
+}
+
+.left-elements div input {
+    width: 100%;
+}
+
+.password-container {
+    display: flex;
+}
+
+.right-elements {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 48px 60px 60px 0px;
+}
+
+.login-prompt-container {
+    text-align: center;
+    font-size: 14px;
+    position: relative;
+    right: -5%;
+    padding: 8px;
+    width: 100%;
+}
+
+.login-prompt-container a:hover {
+    color: var(--check-box-blue);
+    transition: color 0.15s ease;
+}
+
+#continue {
+    margin: 24px 0 0;
+}
