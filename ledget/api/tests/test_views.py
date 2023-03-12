@@ -1,4 +1,0 @@
-
-
-class TestAuthApi(TestCase):
-    pass
