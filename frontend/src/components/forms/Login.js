@@ -50,7 +50,7 @@ function LoginWindow() {
             <div class="sign-up-prompt-container">
                 <span>Don't have an account? </span>
 
-                <Link to="/signup">Sign Up</Link>
+                <Link to="/register">Sign Up</Link>
             </div>
         </div>
     )

@@ -1,5 +1,9 @@
 from django.urls import path
-from .views import getRoutes
+from .views import (
+    getRoutes,
+    CustomTokenObtainPairSerializer,
+    CustomTokenObtainPairView
+)
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,

@@ -235,4 +235,5 @@ input::placeholder {
     border-radius: 8px;
     font-size: 14px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    border: 2px solid var(--light-gray);
 }

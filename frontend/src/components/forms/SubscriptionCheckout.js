@@ -26,7 +26,7 @@ function CheckoutForm() {
                 <input type="text" id="first_name" name="first_name" placeholder="First Name" required />
                 <input type="text" id="last_name" name="last_name" placeholder="Last Name" required />
             </div>
-            <Checkbox id="free-trial" text="Sign up for 10-day free trial" />
+            <Checkbox id="free-trial" text="Start 10-day free trial" />
         </form>
     )
 }

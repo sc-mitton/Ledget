@@ -52,7 +52,7 @@ function SignUpWindow() {
             <div className="right-elements">
                 <div class="login-prompt-container">
                     <span>Already using Ledget? </span>
-                    <Link to="/">Sign In</Link>
+                    <Link to="/login">Sign In</Link>
                 </div>
             </div>
         </div>
