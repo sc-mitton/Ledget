@@ -13,7 +13,7 @@ function App() {
         <main>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/app" element={<Dashboard />} />
                     <Route path="/login" element={AddLogoHeader(LoginWindow)} />
                     <Route path="/register" element={AddLogoHeader(SignUpWindow)} />
                     <Route path="/checkout" element={AddLogoHeader(SubscriptionCheckout)} />

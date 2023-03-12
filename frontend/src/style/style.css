@@ -8,7 +8,7 @@
     --light-light-gray: #d2d1d1;
     --active-input: #f2f2f2;
     --standard-drop-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
-    --window-box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    --window-box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 18px 0px;
     --inner-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
     --check-box-hover: rgba(54, 54, 54, .06);
     --mute-blue: rgb(122, 166, 248);
@@ -18,6 +18,7 @@
     --hover-red: rgb(248, 89, 110);
     --alert-red: rgb(242, 73, 73);
     --window-box-gray: rgb(255, 252, 252);
+    --window-border: rgb(120, 120, 120)
 }
 
 body {
@@ -235,5 +236,5 @@ input::placeholder {
     border-radius: 8px;
     font-size: 14px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    border: 2px solid var(--light-gray);
+    /* border: 2px solid var(--window-border); */
 }
