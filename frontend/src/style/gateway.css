@@ -119,7 +119,7 @@
 .sign-up-window {
     text-align: center;
     width: 90%;
-    max-width: 800px;
+    max-width: 750px;
     margin: 0 auto;
     display: flex;
     border-radius: 12px;
@@ -185,7 +185,7 @@
     padding: 48px;
 }
 
-.checkout-form-container {
+.checkout-form {
     width: 100%;
 }
 
@@ -199,11 +199,6 @@
     justify-content: center;
 }
 
-.subscription-plans h3 {
-    margin: 0;
-    font-weight: 400;
-}
-
 .subscription {
     display: flex;
     margin: 8px 12px;
@@ -213,6 +208,7 @@
 }
 
 .subscription label {
+    width: 60px;
     color: var(--medium-dark-gray);
     padding: 8px;
     font-size: 1.4em;
@@ -220,14 +216,20 @@
     text-align: center;
 }
 
-.subscription label span:first-child {
+.subscription-period {
     font-size: .7em;
-    font-weight: 500;
+    font-weight: 4s00;
+    color: var(--medium-dark-gray);
 }
 
-.subscription label span {
+.subscription-price {
+    font-size: 1em;
     color: var(--medium-dark-gray);
-    font-size: .6em;
+}
+
+.subscription-price span {
+    font-size: .55em;
+    color: var(--medium-dark-gray);
 }
 
 input[type="radio"] {
@@ -239,7 +241,9 @@ input[type="radio"]:not(checked)+label {
     border-radius: 8px;
 }
 
-input[type="radio"]:checked+label span {
+input[type="radio"]:checked+label .subscription-period,
+input[type="radio"]:checked+label .subscription-price,
+input[type="radio"]:checked+label .subscription-price span {
     color: var(--check-box-blue);
 }
 

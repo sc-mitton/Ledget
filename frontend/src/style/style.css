@@ -1,5 +1,5 @@
 :root {
-    --background-color: rgb(255, 252, 252);
+    --background-color: rgb(255, 254, 252);
     --window: rgb(255, 252, 252);
     --logo-dark: rgb(79, 78, 78);
     --main-text-gray: rgb(117, 116, 116);
@@ -8,15 +8,15 @@
     --light-light-gray: #d2d1d1;
     --active-input: #f2f2f2;
     --standard-drop-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
-    --window-box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 18px 0px;
+    --window-box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 18px 0px;
     --inner-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
     --check-box-hover: rgba(54, 54, 54, .06);
     --mute-blue: rgb(122, 166, 248);
     --check-box-blue: rgb(107, 155, 246);
     --mute-red: rgb(244, 119, 136);
-    --hover-blue: rgb(86, 141, 244);
+    --hover-blue: rgb(92, 145, 245);
     --hover-red: rgb(248, 89, 110);
-    --alert-red: rgb(242, 73, 73);
+    --alert-red: rgb(243, 80, 80);
     --window-box-gray: rgb(255, 252, 252);
     --window-border: rgb(120, 120, 120)
 }
@@ -46,7 +46,7 @@ option {
 h1,
 h2,
 h3 {
-    color: var(--medium-dark-gray);
+    color: var(--logo-dark);
 }
 
 a {
@@ -60,7 +60,7 @@ input {
     font-weight: 500;
     color: var(--main-text-gray);
     background-color: var(--window);
-    font-size: 16px;
+    font-size: 14px;
 }
 
 input[type="text"]::placeholder,
@@ -104,7 +104,7 @@ input:focus {
     border-bottom: 2px solid var(--check-box-blue);
     min-height: 100%;
     outline: none;
-    box-shadow: 0 1px 0px rgb(212, 212, 212);
+    box-shadow: 0 1px 0px rgb(230, 230, 230);
     /* add a blue shadow below the input */
 }
 

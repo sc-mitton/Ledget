@@ -8,17 +8,23 @@ function CheckoutForm() {
                 <div class="subscription">
                     <input type="radio" id="yearly" name="plan" value="plan1" checked />
                     <label for="yearly">
-                        <span>YEAR</span>
-                        <br />
-                        $6<span> / month</span>
+                        <div className="subscription-period">
+                            YEAR
+                        </div>
+                        <div className="subscription-price">
+                            $6<span> / year</span>
+                        </div>
                     </label>
                 </div>
                 <div class="subscription">
                     <input type="radio" id="monthly" name="plan" value="plan2" />
                     <label for="monthly">
-                        <span>MONTH</span>
-                        <br />
-                        $8<span> / month</span>
+                        <div className="subscription-period">
+                            MONTH
+                        </div>
+                        <div className="subscription-price">
+                            $8<span> / month</span>
+                        </div>
                     </label>
                 </div>
             </div>
