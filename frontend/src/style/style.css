@@ -1,14 +1,14 @@
 :root {
-    --background-color: rgb(255, 254, 252);
-    --window: rgb(255, 252, 252);
-    --logo-dark: rgb(79, 78, 78);
-    --main-text-gray: rgb(117, 116, 116);
-    --medium-dark-gray: rgb(103, 102, 102);
+    --background-color: rgb(252, 252, 252);
+    --window: rgb(248, 248, 248);
+    --logo-dark: rgb(36, 36, 36);
+    --button-charcoal: rgb(78, 78, 78);
+    --main-text-gray: rgb(77, 77, 77);
+    --button-gray: rgb(103, 102, 102);
+    --button-hover-gray: rgb(69, 68, 68);
     --light-gray: rgb(191, 191, 191);
-    --light-light-gray: #d2d1d1;
-    --active-input: #f2f2f2;
     --standard-drop-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
-    --window-box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 18px 0px;
+    --window-box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 20px, rgba(0, 0, 0, 0.14) 0px 6px 6px;
     --inner-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
     --check-box-hover: rgba(54, 54, 54, .06);
     --mute-blue: rgb(122, 166, 248);
@@ -18,14 +18,20 @@
     --hover-red: rgb(248, 89, 110);
     --alert-red: rgb(243, 80, 80);
     --window-box-gray: rgb(255, 252, 252);
-    --window-border: rgb(120, 120, 120)
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-size: 14px;
-    color: var(--medium-dark-gray);
-    background-color: var(--background-color);
+    height: 100%;
+    background-color: var(--window);
 }
 
 div,
@@ -70,8 +76,8 @@ input[type="password"]::placeholder {
 
 input[type="text"],
 input[type="password"] {
-    border-bottom: 2.5px solid var(--light-light-gray);
-    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.03);
+    border-bottom: 2px solid var(--light-gray);
+    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     padding: 8px 8px;
     margin: 8px 0;
     box-sizing: border-box;
@@ -79,17 +85,17 @@ input[type="password"] {
 }
 
 input[type="submit"] {
-    background-color: var(--medium-dark-gray);
+    background-color: var(--button-gray);
     color: rgb(256, 256, 256);
     transition: background-color 0.15s ease;
     padding: 8px 4px;
-    border-radius: 4px;
-    box-shadow: 0 1px 0px .5px var(--logo-dark);
+    border-radius: 2px;
+    box-shadow: 0 1px 0px .5px var(--button-hover-gray);
 }
 
 input[type="submit"]:hover {
     cursor: pointer;
-    background-color: var(--logo-dark);
+    background-color: var(--button-hover-gray);
 }
 
 input[type=password]:not(:placeholder-shown) {
@@ -233,8 +239,8 @@ input::placeholder {
 .window {
     background-color: var(--window);
     box-shadow: var(--window-box-shadow);
-    border-radius: 8px;
     font-size: 14px;
+    border-radius: 2px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    /* border: 2px solid var(--window-border); */
+    /* border: 1px solid var(--window-border); */
 }

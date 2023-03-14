@@ -12,7 +12,7 @@
 .login-window {
     text-align: center;
     width: 40%;
-    max-width: 350px;
+    max-width: 300px;
     margin: 0 auto;
     padding: 48px;
 }
@@ -59,7 +59,7 @@
 
 #facebook-auth-button {
     background-color: var(--mute-blue);
-    border-radius: 4px;
+    border-radius: 2px;
     width: 50%;
     margin-left: 4px;
     box-sizing: border-box;
@@ -73,7 +73,7 @@
 
 #google-auth-button {
     background-color: var(--mute-red);
-    border-radius: 4px;
+    border-radius: 2px;
     width: 50%;
     margin-right: 4px;
     box-sizing: border-box;
@@ -119,10 +119,9 @@
 .sign-up-window {
     text-align: center;
     width: 90%;
-    max-width: 750px;
+    max-width: 700px;
     margin: 0 auto;
     display: flex;
-    border-radius: 12px;
 }
 
 .sign-up- h2,
@@ -194,42 +193,37 @@
 .subscription-plans {
     width: 100%;
     margin-bottom: 30px;
-    box-sizing: border-box;
     display: flex;
     justify-content: center;
 }
 
 .subscription {
-    display: flex;
-    margin: 8px 12px;
-    flex-direction: column;
-    align-items: top;
-    justify-content: center;
+    margin: 0 12px;
 }
 
 .subscription label {
-    width: 60px;
-    color: var(--medium-dark-gray);
-    padding: 8px;
-    font-size: 1.4em;
+    display: block;
+    width: 80px;
+    color: var(--logo-dark);
+    padding: 12px 0px;
     cursor: pointer;
     text-align: center;
 }
 
 .subscription-period {
-    font-size: .7em;
-    font-weight: 4s00;
-    color: var(--medium-dark-gray);
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--logo-dark);
 }
 
 .subscription-price {
-    font-size: 1em;
-    color: var(--medium-dark-gray);
+    font-size: 1.4em;
+    color: var(--logo-dark);
 }
 
 .subscription-price span {
     font-size: .55em;
-    color: var(--medium-dark-gray);
+    color: var(--logo-dark);
 }
 
 input[type="radio"] {
@@ -238,21 +232,16 @@ input[type="radio"] {
 
 input[type="radio"]:not(checked)+label {
     border: 3px solid var(--window);
-    border-radius: 8px;
-}
-
-input[type="radio"]:checked+label .subscription-period,
-input[type="radio"]:checked+label .subscription-price,
-input[type="radio"]:checked+label .subscription-price span {
-    color: var(--check-box-blue);
+    border-radius: 4px;
 }
 
 input[type="radio"]:checked+label {
     border: 3px solid var(--check-box-blue);
-    border-radius: 8px;
-    color: var(--check-box-blue);
 }
 
+input[type="radio"]:checked+label * {
+    color: var(--check-box-blue);
+}
 
 /* name inputs */
 .name-inputs {

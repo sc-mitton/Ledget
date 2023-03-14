@@ -41,13 +41,14 @@ function SocialLogin() {
 }
 
 function LoginWindow() {
+
     return (
         <div>
             <div className='window login-window'>
                 <LoginForm />
                 <SocialLogin />
             </div>
-            <div class="sign-up-prompt-container">
+            <div className="sign-up-prompt-container">
                 <span>Don't have an account? </span>
 
                 <Link to="/register">Sign Up</Link>

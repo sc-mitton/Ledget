@@ -27,7 +27,7 @@ function SocialSignup() {
             <div className="or-continue-with">
                 <span>Or sign up with</span>
             </div>
-            <div class="social-buttons-container">
+            <div className="social-buttons-container">
                 <a id="google-auth-button" href="/">
                     <img src={googleLogo} alt="Google" />
                 </a>
@@ -50,7 +50,7 @@ function SignUpWindow() {
                 <SocialSignup />
             </div>
             <div className="right-elements">
-                <div class="login-prompt-container">
+                <div className="login-prompt-container">
                     <span>Already using Ledget? </span>
                     <Link to="/login">Sign In</Link>
                 </div>

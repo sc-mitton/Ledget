@@ -6,15 +6,18 @@ import SubscriptionCheckout from './components/forms/SubscriptionCheckout';
 import logo from './assets/images/logo.svg'
 import "./style/gateway.css"
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
+import PrivateRoutes from './utils/PrivateRoutes';
 
 function App() {
+
     return (
         <main>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/app" element={<Dashboard />} />
-                    <Route path="/login" element={AddLogoHeader(LoginWindow)} />
+                    <Route element={<PrivateRoutes />} >
+                        <Route path="/app" />
+                    </Route>
+                    <Route exact path="/login" element={AddLogoHeader(LoginWindow)} />
                     <Route path="/register" element={AddLogoHeader(SignUpWindow)} />
                     <Route path="/checkout" element={AddLogoHeader(SubscriptionCheckout)} />
                 </Routes>
