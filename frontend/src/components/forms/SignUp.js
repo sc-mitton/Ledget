@@ -1,10 +1,11 @@
 import React from "react"
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
+import homeGraphic from "../../assets/images/homeGraphic.svg"
 import alert from "../../assets/icons/alert.svg"
 import { Link } from "react-router-dom"
 import { useState } from "react"
-
+import PasswordInput from "./PasswordInput"
 
 
 function SignUpForm() {
@@ -17,7 +18,7 @@ function SignUpForm() {
         const confirmPassword = event.target['confirm-password'].value;
 
         if (password !== confirmPassword) {
-            setError('Passwords do not match.');
+            setError('Passwords do not match');
         } else {
             // submit the form
         }
@@ -26,16 +27,10 @@ function SignUpForm() {
     return (
         <form className="sign-up-form" method="post" onSubmit={handleSubmit}>
             <div>
-                <input type="text" id="email" name="email" placeholder="Email" required />
+                <input type="email" id="email" name="email" placeholder="Email" required />
             </div>
-            <div>
-                <input type="password" id="password" name="password" placeholder="Password" required />
-            </div>
-            <div>
-                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password"
-                    required />
-            </div>
-            {error && <div className="error"><img src={alert} alt='' />{error}</div>}
+            <PasswordInput confirmPassword={true} />
+            {error && <div className="error"><img src={alert} />{error}</div>}
             <div>
                 <input type="submit" id="continue" value="Continue" />
             </div>
@@ -62,20 +57,17 @@ function SocialSignup() {
     )
 }
 
-
 function SignUpWindow() {
     return (
-        <div className="window sign-up-window">
-            <div className="left-elements">
+        <div>
+            <div className='window sign-up-window'>
                 <h2>Sign Up</h2>
                 <SignUpForm />
                 <SocialSignup />
             </div>
-            <div className="right-elements">
-                <div className="login-prompt-container">
-                    <span>Already using Ledget? </span>
-                    <Link to="/login">Sign In</Link>
-                </div>
+            <div className="login-prompt-container">
+                <span>Already using Ledget?  </span>
+                <Link to="/login">Sign In</Link>
             </div>
         </div>
     )

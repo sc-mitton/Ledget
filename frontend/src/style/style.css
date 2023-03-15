@@ -75,7 +75,8 @@ input[type="password"]::placeholder {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="email"] {
     border-bottom: 2px solid var(--border-bottom-gray);
     box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     padding: 8px 8px;
@@ -242,5 +243,4 @@ input::placeholder {
     font-size: 14px;
     border-radius: 4px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    /* border: 1px solid var(--window-border); */
 }

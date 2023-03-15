@@ -15,7 +15,7 @@ function LoginForm(status = 'empty') {
     return (
         <form onSubmit={loginUser} className="login-form">
             <div>
-                <input type="text" id="email" name="email" placeholder="Email" required />
+                <input type="email" id="email" name="email" placeholder="Email" required />
                 <PasswordInput />
             </div>
             <div className="forgot-password-container">
@@ -57,7 +57,6 @@ function LoginWindow() {
             </div>
             <div className="sign-up-prompt-container">
                 <span>Don't have an account? </span>
-
                 <Link to="/register">Sign Up</Link>
             </div>
         </div>
