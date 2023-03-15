@@ -7,7 +7,6 @@ import logo from './assets/images/logo.svg'
 import "./style/gateway.css"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PrivateRoutes from './utils/PrivateRoutes';
-import UserContextLayout from './utils/UserContextLayout';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {

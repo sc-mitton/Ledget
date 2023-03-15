@@ -3,10 +3,10 @@
     --window: rgb(248, 248, 248);
     --logo-dark: rgb(36, 36, 36);
     --button-charcoal: rgb(78, 78, 78);
-    --main-text-gray: rgb(77, 77, 77);
-    --button-gray: rgb(103, 102, 102);
-    --button-hover-gray: rgb(69, 68, 68);
-    --light-gray: rgb(191, 191, 191);
+    --main-text-gray: rgb(36, 36, 36);
+    --button-gray: rgb(70, 70, 70);
+    --button-hover-gray: rgb(36, 36, 36);
+    --border-bottom-gray: rgb(191, 191, 191);
     --standard-drop-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
     --window-box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 20px, rgba(0, 0, 0, 0.14) 0px 6px 6px;
     --inner-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
@@ -71,12 +71,12 @@ input {
 
 input[type="text"]::placeholder,
 input[type="password"]::placeholder {
-    color: var(--light-gray);
+    color: var(--border-bottom-gray);
 }
 
 input[type="text"],
 input[type="password"] {
-    border-bottom: 2px solid var(--light-gray);
+    border-bottom: 2px solid var(--border-bottom-gray);
     box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     padding: 8px 8px;
     margin: 8px 0;
@@ -89,7 +89,7 @@ input[type="submit"] {
     color: rgb(256, 256, 256);
     transition: background-color 0.15s ease;
     padding: 8px 4px;
-    border-radius: 2px;
+    border-radius: 4px;
     box-shadow: 0 1px 0px .5px var(--button-hover-gray);
 }
 
@@ -140,7 +140,7 @@ input:-webkit-autofill {
 }
 
 input::placeholder {
-    color: var(--light-gray)
+    color: var(--border-bottom-gray)
 }
 
 
@@ -240,7 +240,7 @@ input::placeholder {
     background-color: var(--window);
     box-shadow: var(--window-box-shadow);
     font-size: 14px;
-    border-radius: 2px;
+    border-radius: 4px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     /* border: 1px solid var(--window-border); */
 }

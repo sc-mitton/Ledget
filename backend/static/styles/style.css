@@ -164,7 +164,7 @@ a {
 .auth-button {
     margin: 0 8px;
     padding: 8px 12px;
-    border-radius: 4px;
+    border-radius: 20px;
     background-color: var(--logo-dark);
     display: flex;
     align-items: center;

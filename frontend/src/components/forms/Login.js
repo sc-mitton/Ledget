@@ -2,9 +2,12 @@ import React from "react"
 import Checkbox from "./Inputs"
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
+import alert from "../../assets/icons/alert.svg"
+import PasswordInput from "./PasswordInput"
 import { Link } from "react-router-dom"
 import AuthContext from "../../context/AuthContext"
 import { useContext } from "react"
+import { useState } from "react"
 
 function LoginForm(status = 'empty') {
     let { loginUser } = useContext(AuthContext)
@@ -13,7 +16,7 @@ function LoginForm(status = 'empty') {
         <form onSubmit={loginUser} className="login-form">
             <div>
                 <input type="text" id="email" name="email" placeholder="Email" required />
-                <input type="password" id="password" name="password" placeholder="Password" required />
+                <PasswordInput />
             </div>
             <div className="forgot-password-container">
                 <Checkbox id="remember-pass" required="True" text="Remember Me" />
