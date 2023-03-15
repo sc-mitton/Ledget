@@ -5,23 +5,27 @@ import Dashboard from './pages/Dashboard';
 import SubscriptionCheckout from './components/forms/SubscriptionCheckout';
 import logo from './assets/images/logo.svg'
 import "./style/gateway.css"
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PrivateRoutes from './utils/PrivateRoutes';
+import UserContextLayout from './utils/UserContextLayout';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
 
     return (
         <main>
-            <BrowserRouter>
-                <Routes>
-                    <Route element={<PrivateRoutes />} >
-                        <Route path="/app" />
-                    </Route>
-                    <Route exact path="/login" element={AddLogoHeader(LoginWindow)} />
-                    <Route path="/register" element={AddLogoHeader(SignUpWindow)} />
-                    <Route path="/checkout" element={AddLogoHeader(SubscriptionCheckout)} />
-                </Routes>
-            </BrowserRouter>
+            <AuthProvider>
+                <Router>
+                    <Routes>
+                        <Route element={<PrivateRoutes />} >
+                            <Route path="/app" element={<Dashboard />} />
+                        </Route>
+                        <Route exact path="/login" element={AddLogoHeader(LoginWindow)} />
+                        <Route path="/checkout" element={AddLogoHeader(SubscriptionCheckout)} />
+                        <Route path="/register" element={AddLogoHeader(SignUpWindow)} />
+                    </Routes>
+                </Router>
+            </AuthProvider>
         </main>
     )
 }

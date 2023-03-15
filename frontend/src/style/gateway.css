@@ -33,6 +33,7 @@
     align-items: center;
     margin: 4px 4px;
     font-size: 13px;
+    white-space: nowrap;
 }
 
 .forgot-password-container a:hover {
@@ -42,6 +43,11 @@
 #remember-me {
     position: relative;
     top: -1px;
+    margin-right: 12px;
+}
+
+#forgot-password {
+    margin-left: 12px;
 }
 
 .or-continue-with {

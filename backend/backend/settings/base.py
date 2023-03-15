@@ -16,6 +16,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://ledget.app:8000',
     'https://ledget.app:3000',
 ]
+APPEND_SLASH = False
 
 # Application definition
 

@@ -3,10 +3,14 @@ import Checkbox from "./Inputs"
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
 import { Link } from "react-router-dom"
+import AuthContext from "../../context/AuthContext"
+import { useContext } from "react"
 
-function LoginForm() {
+function LoginForm(status = 'empty') {
+    let { loginUser } = useContext(AuthContext)
+
     return (
-        <form className="login-form" method="post">
+        <form onSubmit={loginUser} className="login-form">
             <div>
                 <input type="text" id="email" name="email" placeholder="Email" required />
                 <input type="password" id="password" name="password" placeholder="Password" required />
