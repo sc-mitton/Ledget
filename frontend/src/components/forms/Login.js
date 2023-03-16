@@ -8,12 +8,26 @@ import { Link } from "react-router-dom"
 import AuthContext from "../../context/AuthContext"
 import { useContext } from "react"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 function LoginForm(status = 'empty') {
     let { loginUser } = useContext(AuthContext)
+    const [loginStatus, setLoginStatus] = useState("");
+    const navigate = useNavigate();
+
+    const handleLogin = async (event) => {
+
+        try {
+            await loginUser(event);
+            setLoginStatus("success");
+            navigate('/app')
+        } catch (error) {
+            setLoginStatus("error");
+        }
+    };
 
     return (
-        <form onSubmit={loginUser} className="login-form">
+        <form onSubmit={handleLogin} className="login-form">
             <div>
                 <input type="email" id="email" name="email" placeholder="Email" required />
                 <PasswordInput />
@@ -22,6 +36,11 @@ function LoginForm(status = 'empty') {
                 <Checkbox id="remember-pass" required="True" text="Remember Me" />
                 <a id="forgot-password" href="/">Forgot Password?</a>
             </div>
+            {loginStatus === "error" &&
+                <div className="error">
+                    <img src={alert} alt='' />Invalid email or password
+                </div>
+            }
             <div>
                 <input type="submit" id="login" value="Sign In" />
             </div>

@@ -8,14 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:8000',
-    'https://localhost:3000',
-    'https://localhost:8000',
-    'https://ledget.app:8000',
-    'https://ledget.app:3000',
-]
+
 APPEND_SLASH = False
 
 # Application definition
@@ -41,10 +34,10 @@ DEFAULT_APPS = [
     'django.contrib.staticfiles',
 ]
 THIRD_PARTY_APPS = [
-    'corsheaders',
     'sslserver',
-    "rest_framework",
-    "rest_framework_simplejwt.token_blacklist",
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 LOCAL_APPS = [
     'core.apps.CoreConfig',

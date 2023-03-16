@@ -20,8 +20,8 @@ const PasswordInput = (props) => {
     }
 
     return (
-        <div class="password-container">
-            <div class="password-input">
+        <div className="password-container">
+            <div className="password-input">
                 <input
                     type={passwordVisible ? 'text' : 'password'}
                     id="password"
@@ -52,7 +52,7 @@ const PasswordInput = (props) => {
             {props.confirmPassword && (
                 <input
                     type={passwordVisible ? 'text' : 'password'}
-                    id="password"
+                    id="confirm-password"
                     name="confirm-password"
                     placeholder="Confirm Password"
                     required

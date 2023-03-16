@@ -1,26 +1,29 @@
 import React from "react"
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
-import homeGraphic from "../../assets/images/homeGraphic.svg"
 import alert from "../../assets/icons/alert.svg"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import PasswordInput from "./PasswordInput"
-
+import AuthContext from "../../context/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 function SignUpForm() {
     const [error, setError] = useState(null);
+    let { registerUser } = React.useContext(AuthContext);
+    const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const email = event.target.email.value;
-        const password = event.target.password.value;
-        const confirmPassword = event.target['confirm-password'].value;
-
-        if (password !== confirmPassword) {
+        if (event.target.password.value !== event.target['confirm-password'].value) {
             setError('Passwords do not match');
         } else {
-            // submit the form
+            try {
+                await registerUser(event)
+                navigate('/checkout')
+            } catch (error) {
+                setError(error.message)
+            }
         }
     };
 
@@ -30,7 +33,7 @@ function SignUpForm() {
                 <input type="email" id="email" name="email" placeholder="Email" required />
             </div>
             <PasswordInput confirmPassword={true} />
-            {error && <div className="error"><img src={alert} />{error}</div>}
+            {error && <div className="error"><img src={alert} alt='' />{error}</div>}
             <div>
                 <input type="submit" id="continue" value="Continue" />
             </div>

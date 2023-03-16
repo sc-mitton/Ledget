@@ -9,7 +9,9 @@ export default AuthContext;
 export const AuthProvider = ({ children }) => {
 
     let [authTokens, setAuthTokens] = useState(
-        () => localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null
+        () => localStorage.getItem('authTokens')
+            ? JSON.parse(localStorage.getItem('authTokens'))
+            : null
     )
     let [user, setUser] = useState(
         () => {
@@ -48,6 +50,28 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const registerUser = async (event) => {
+        event.preventDefault();
+        let response = await fetch('https://localhost:8000/api/v1/user/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 'email': event.target.email.value, 'password': event.target.password.value })
+        })
+        let data = await response.json()
+        console.log('Response', response)
+        console.log('Response data: ', data)
+
+        if (response.status === 201) {
+            setAuthTokens(data)
+            setUser(jwt_decode(data.access))
+            localStorage.setItem('authTokens', JSON.stringify(data))
+        } else if (response.status === 400 && data.email) {
+            throw new Error("Email already taken.")
+        } else {
+            throw new Error("Something went wrong, please try again.")
+        }
+    }
+
     const refreshTokens = async () => {
         let response = await fetch('https://localhost:8000/api/token/refresh/', {
             method: 'POST',
@@ -55,7 +79,7 @@ export const AuthProvider = ({ children }) => {
             body: JSON.stringify({ 'refresh': authTokens ? authTokens.refresh : null })
         })
         let data = await response.json()
-        if (data.response === 200) {
+        if (response.status === 200) {
             setAuthTokens(data)
             setUser(jwt_decode(data.access))
             localStorage.setItem('authTokens', JSON.stringify(data))
@@ -71,7 +95,11 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
 
         if (loading) {
-            refreshTokens()
+            if (authTokens) {
+                refreshTokens()
+            } else {
+                setLoading(false)
+            }
         }
 
         let interval = setInterval(() => {
@@ -92,7 +120,8 @@ export const AuthProvider = ({ children }) => {
     let contextData = {
         'user': user,
         loginUser: loginUser,
-        logoutUser: logoutUser
+        logoutUser: logoutUser,
+        registerUser: registerUser
     };
 
     return (
