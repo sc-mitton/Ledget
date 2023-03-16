@@ -34,99 +34,102 @@ export const AuthProvider = ({ children }) => {
     );
     let [loading, setLoading] = useState(true);
 
-    const loginUser = async (event) => {
-        event.preventDefault();
-        let response = await fetch('https://localhost:8000/api/token/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'email': event.target.email.value, 'password': event.target.password.value })
-        })
-        let data = await response.json()
+    const setAuthTokenCookie = (token) => {
+        setCookie()
 
-        if (response.status === 200) {
-            setAuthTokens(data)
-            setUser(jwt_decode(data.access))
-            localStorage.setItem('authTokens', JSON.stringify(data))
-        }
-    }
+        const loginUser = async (event) => {
+            event.preventDefault();
+            let response = await fetch('https://localhost:8000/api/token/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'email': event.target.email.value, 'password': event.target.password.value })
+            })
+            let data = await response.json()
 
-    const registerUser = async (event) => {
-        event.preventDefault();
-        let response = await fetch('https://localhost:8000/api/v1/user/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'email': event.target.email.value, 'password': event.target.password.value })
-        })
-        let data = await response.json()
-        console.log('Response', response)
-        console.log('Response data: ', data)
-
-        if (response.status === 201) {
-            setAuthTokens(data)
-            setUser(jwt_decode(data.access))
-            localStorage.setItem('authTokens', JSON.stringify(data))
-        } else if (response.status === 400 && data.email) {
-            throw new Error("Email already taken.")
-        } else {
-            throw new Error("Something went wrong, please try again.")
-        }
-    }
-
-    const refreshTokens = async () => {
-        let response = await fetch('https://localhost:8000/api/token/refresh/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'refresh': authTokens ? authTokens.refresh : null })
-        })
-        let data = await response.json()
-        if (response.status === 200) {
-            setAuthTokens(data)
-            setUser(jwt_decode(data.access))
-            localStorage.setItem('authTokens', JSON.stringify(data))
-        } else {
-            logoutUser()
+            if (response.status === 200) {
+                setAuthTokens(data)
+                setUser(jwt_decode(data.access))
+                localStorage.setItem('authTokens', JSON.stringify(data))
+            }
         }
 
-        if (loading) {
-            setLoading(false)
-        }
-    };
+        const registerUser = async (event) => {
+            event.preventDefault();
+            let response = await fetch('https://localhost:8000/api/v1/user/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'email': event.target.email.value, 'password': event.target.password.value })
+            })
+            let data = await response.json()
+            console.log('Response', response)
+            console.log('Response data: ', data)
 
-    useEffect(() => {
-
-        if (loading) {
-            if (authTokens) {
-                refreshTokens()
+            if (response.status === 201) {
+                setAuthTokens(data)
+                setUser(jwt_decode(data.access))
+                localStorage.setItem('authTokens', JSON.stringify(data))
+            } else if (response.status === 400 && data.email) {
+                throw new Error("Email already taken.")
             } else {
+                throw new Error("Something went wrong, please try again.")
+            }
+        }
+
+        const refreshTokens = async () => {
+            let response = await fetch('https://localhost:8000/api/token/refresh/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'refresh': authTokens ? authTokens.refresh : null })
+            })
+            let data = await response.json()
+            if (response.status === 200) {
+                setAuthTokens(data)
+                setUser(jwt_decode(data.access))
+                localStorage.setItem('authTokens', JSON.stringify(data))
+            } else {
+                logoutUser()
+            }
+
+            if (loading) {
                 setLoading(false)
             }
-        }
+        };
 
-        let interval = setInterval(() => {
-            if (authTokens) {
-                refreshTokens()
+        useEffect(() => {
+
+            if (loading) {
+                if (authTokens) {
+                    refreshTokens()
+                } else {
+                    setLoading(false)
+                }
             }
-        }, 1000 * 60 * 4)
-        return () => clearInterval(interval)
 
-    }, [authTokens, loading])
+            let interval = setInterval(() => {
+                if (authTokens) {
+                    refreshTokens()
+                }
+            }, 1000 * 60 * 4)
+            return () => clearInterval(interval)
 
-    const logoutUser = () => {
-        setAuthTokens(null)
-        setUser(null)
-        localStorage.removeItem('authTokens')
-    };
+        }, [authTokens, loading])
 
-    let contextData = {
-        'user': user,
-        loginUser: loginUser,
-        logoutUser: logoutUser,
-        registerUser: registerUser
-    };
+        const logoutUser = () => {
+            setAuthTokens(null)
+            setUser(null)
+            localStorage.removeItem('authTokens')
+        };
 
-    return (
-        <AuthContext.Provider value={contextData}>
-            {loading ? null : children}
-        </AuthContext.Provider>
-    )
-}
+        let contextData = {
+            'user': user,
+            loginUser: loginUser,
+            logoutUser: logoutUser,
+            registerUser: registerUser
+        };
+
+        return (
+            <AuthContext.Provider value={contextData}>
+                {loading ? null : children}
+            </AuthContext.Provider>
+        )
+    }

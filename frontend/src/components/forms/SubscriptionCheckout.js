@@ -7,7 +7,7 @@ const Subscription = (props) => {
         <div className="subscription">
             <input type="radio" id={props.id} name="plan" value={props.value}
                 checked={props.checked} onChange={props.onChange} />
-            <label for={props.id}>
+            <label htmlFor={props.id}>
                 <div className="subscription-period">
                     {props.subscriptionTitle}
                 </div>

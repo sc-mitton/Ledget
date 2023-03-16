@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom"
 function LoginForm(status = 'empty') {
     let { loginUser } = useContext(AuthContext)
     const [loginStatus, setLoginStatus] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (event) => {
@@ -26,6 +27,10 @@ function LoginForm(status = 'empty') {
         }
     };
 
+    const handleRememberMe = (event) => {
+        setRememberMe(event.target.checked);
+    };
+
     return (
         <form onSubmit={handleLogin} className="login-form">
             <div>
@@ -33,7 +38,8 @@ function LoginForm(status = 'empty') {
                 <PasswordInput />
             </div>
             <div className="forgot-password-container">
-                <Checkbox id="remember-pass" required="True" text="Remember Me" />
+                <Checkbox id="remember-pass" required="True"
+                    text="Remember" onChange={handleRememberMe} />
                 <a id="forgot-password" href="/">Forgot Password?</a>
             </div>
             {loginStatus === "error" &&

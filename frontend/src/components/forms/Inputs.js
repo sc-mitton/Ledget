@@ -11,7 +11,7 @@ const Checkbox = (props) => {
                 </symbol>
             </svg>
             <input className="checkbox-input" id={id} type="checkbox" />
-            <label className="checkbox" htmlFor={id}>
+            <label className="checkbox" htmlFor={id} onSubmit={props.onSubmit}>
                 <span>
                     <svg>
                         <use xlinkHref="#check"></use>
