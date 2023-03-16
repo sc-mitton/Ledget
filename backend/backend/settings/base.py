@@ -88,6 +88,15 @@ SIMPLE_JWT = {
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
+
+    # Custom
+    'AUTH_COOKIE': 'access_token',
+    'AUTH_COOKIE_DOMAIN': 'ledget.app',
+    'AUTH_COOKIE_SECURE': True,
+    'AUTH_COOKIE_PATH': '/',
+    'AUTH_COOKIE_HTTP_ONLY': True,
+    'AUTH_COOKIE_SAMESITE': 'None',
+
 }
 
 DEFAULT_MIDDLE_WARE = [
