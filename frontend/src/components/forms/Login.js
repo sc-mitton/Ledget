@@ -5,34 +5,28 @@ import googleLogo from "../../assets/images/googleLogo.svg"
 import alert from "../../assets/icons/alert.svg"
 import PasswordInput from "./PasswordInput"
 import { Link } from "react-router-dom"
-import AuthContext from "../../context/AuthContext"
-import { useContext } from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAuth0 } from "@auth0/auth0-react";
+
+
+const LoginButton = () => {
+    const { loginWithRedirect } = useAuth0();
+
+    return <button onClick={() => loginWithRedirect()}>Log In</button>;
+};
 
 function LoginForm(status = 'empty') {
-    let { loginUser } = useContext(AuthContext)
     const [loginStatus, setLoginStatus] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
-
-    const handleLogin = async (event) => {
-
-        try {
-            await loginUser(event);
-            setLoginStatus("success");
-            navigate('/app')
-        } catch (error) {
-            setLoginStatus("error");
-        }
-    };
 
     const handleRememberMe = (event) => {
         setRememberMe(event.target.checked);
     };
 
     return (
-        <form onSubmit={handleLogin} className="login-form">
+        <form className="login-form">
             <div>
                 <input type="email" id="email" name="email" placeholder="Email" required />
                 <PasswordInput />

@@ -1,6 +1,7 @@
 import React from 'react';
 import Checkbox from './Inputs';
 import { useState } from 'react';
+import logo from '../../assets/images/logo.svg';
 
 const Subscription = (props) => {
     return (

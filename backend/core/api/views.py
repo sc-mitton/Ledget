@@ -57,7 +57,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 
 class CustomTokenRefreshView(TokenRefreshView):
-
+    pass
 
 @api_view(['GET'])
 def getRoutes(request):

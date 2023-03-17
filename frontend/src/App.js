@@ -13,18 +13,16 @@ function App() {
 
     return (
         <main>
-            <AuthProvider>
-                <Router>
-                    <Routes>
-                        <Route element={<PrivateRoutes />} >
-                            <Route path="/app" element={<Dashboard />} />
-                        </Route>
-                        <Route exact path="/login" element={AddLogoHeader(LoginWindow)} />
-                        <Route path="/checkout" element={AddLogoHeader(SubscriptionCheckout)} />
-                        <Route path="/register" element={AddLogoHeader(SignUpWindow)} />
-                    </Routes>
-                </Router>
-            </AuthProvider>
+            <Router>
+                <Routes>
+                    <Route element={<PrivateRoutes />} >
+                        <Route path="/app" element={<Dashboard />} />
+                    </Route>
+                    <Route exact path="/login" element={AddLogoHeader(LoginWindow)} />
+                    <Route path="/checkout" element={AddLogoHeader(SubscriptionCheckout)} />
+                    <Route path="/register" element={AddLogoHeader(SignUpWindow)} />
+                </Routes>
+            </Router>
         </main>
     )
 }

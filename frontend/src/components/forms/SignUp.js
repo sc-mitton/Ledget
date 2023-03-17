@@ -5,30 +5,14 @@ import alert from "../../assets/icons/alert.svg"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import PasswordInput from "./PasswordInput"
-import AuthContext from "../../context/AuthContext"
 import { useNavigate } from "react-router-dom"
 
 function SignUpForm() {
     const [error, setError] = useState(null);
-    let { registerUser } = React.useContext(AuthContext);
     const navigate = useNavigate();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        if (event.target.password.value !== event.target['confirm-password'].value) {
-            setError('Passwords do not match');
-        } else {
-            try {
-                await registerUser(event)
-                navigate('/checkout')
-            } catch (error) {
-                setError(error.message)
-            }
-        }
-    };
-
     return (
-        <form className="sign-up-form" method="post" onSubmit={handleSubmit}>
+        <form className="sign-up-form" method="post">
             <div>
                 <input type="email" id="email" name="email" placeholder="Email" required />
             </div>

@@ -34,7 +34,7 @@
 .login-window {
     text-align: center;
     width: 40%;
-    max-width: 300px;
+    max-width: 250px;
     margin: 0 auto;
     padding: 48px;
 }
@@ -55,7 +55,7 @@
     justify-content: space-between;
     align-items: center;
     margin: 4px 4px;
-    font-size: 13px;
+    font-size: 12px;
     white-space: nowrap;
 }
 
@@ -185,7 +185,7 @@
 
 .sign-up-window {
     width: 40%;
-    max-width: 300px;
+    max-width: 250px;
     margin: 0 auto;
     padding: 48px;
 }
