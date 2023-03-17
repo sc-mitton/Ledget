@@ -46,8 +46,14 @@ function CheckoutForm() {
 
 function SubscriptionCheckout() {
     return (
+
         <div className='window checkout-window'>
-            <CheckoutForm />
+            <div className="app-logo-checkout" >
+                <img src={logo} alt="Ledget" />
+            </div>
+            <div className="checkout-form-container">
+                <CheckoutForm />
+            </div>
         </div>
     )
 }

@@ -49,6 +49,9 @@ function SignUpWindow() {
     return (
         <div>
             <div className='window sign-up-window'>
+                <div className="app-logo" >
+                    <img src={logo} alt="Ledget" />
+                </div>
                 <h3>Create Account</h3>
                 <SignUpForm />
                 <SocialSignup />

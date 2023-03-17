@@ -72,6 +72,9 @@ function LoginWindow() {
     return (
         <div>
             <div className='window login-window'>
+                <div className="app-logo" >
+                    <img src={logo} alt="Ledget" />
+                </div>
                 <LoginForm />
                 <SocialLogin />
             </div>

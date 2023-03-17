@@ -1,16 +1,13 @@
+.app-logo {
+    width: 50%;
+    margin-bottom: 32px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .error img {
     height: .8em;
     margin-right: 8px;
-}
-
-
-.app-logo {
-    width: 10%;
-    margin-bottom: 24px;
-    cursor: pointer;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 128px;
 }
 
 .window .error {
@@ -36,6 +33,7 @@
     width: 40%;
     max-width: 250px;
     margin: 0 auto;
+    margin-top: 128px;
     padding: 48px;
 }
 
@@ -188,6 +186,7 @@
     max-width: 250px;
     margin: 0 auto;
     padding: 48px;
+    margin-top: 128px;
 }
 
 .sign-up-window h3,
@@ -231,12 +230,21 @@
 
 /* Checkout Window */
 
+.app-logo-checkout {
+    width: 30%;
+    margin-bottom: 24px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .checkout-window {
     display: flex;
+    flex-direction: column;
     width: 40%;
     max-width: 375px;
     margin: 0 auto;
     padding: 48px;
+    margin-top: 128px;
 }
 
 .checkout-form {

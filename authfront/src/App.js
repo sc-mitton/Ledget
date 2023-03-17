@@ -18,24 +18,14 @@ function App() {
                     <Route element={<PrivateRoutes />} >
                         <Route path="/app" element={<Dashboard />} />
                     </Route>
-                    <Route exact path="/login" element={AddLogoHeader(LoginWindow)} />
-                    <Route path="/checkout" element={AddLogoHeader(SubscriptionCheckout)} />
-                    <Route path="/register" element={AddLogoHeader(SignUpWindow)} />
+                    <Route exact path="/login" element={<LoginWindow />} />
+                    <Route path="/checkout" element={<SubscriptionCheckout />} />
+                    <Route path="/register" element={<SignUpWindow />} />
                 </Routes>
             </Router>
         </main>
     )
 }
 
-const AddLogoHeader = (Window) => {
-    return (
-        <div>
-            <div className="app-logo" >
-                <img src={logo} alt="Ledget" />
-            </div>
-            <Window />
-        </div>
-    )
-}
 
 export default App
