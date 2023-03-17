@@ -1,6 +1,7 @@
 import React from "react"
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
+import logo from "../../assets/images/logo.svg"
 import alert from "../../assets/icons/alert.svg"
 import { Link } from "react-router-dom"
 import { useState } from "react"
@@ -48,7 +49,7 @@ function SignUpWindow() {
     return (
         <div>
             <div className='window sign-up-window'>
-                <h2>Sign Up</h2>
+                <h3>Create Account</h3>
                 <SignUpForm />
                 <SocialSignup />
             </div>

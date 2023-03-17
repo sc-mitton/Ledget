@@ -8,7 +8,7 @@
     --button-hover-gray: rgb(36, 36, 36);
     --border-bottom-gray: rgb(167, 167, 167);
     --standard-drop-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
-    --window-box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 20px, rgba(0, 0, 0, 0.14) 0px 6px 6px;
+    /* --window-box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 20px, rgba(0, 0, 0, 0.14) 0px 6px 6px; */
     --inner-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
     --check-box-hover: rgba(54, 54, 54, .06);
     --mute-blue: rgb(122, 166, 248);
@@ -241,6 +241,7 @@ input::placeholder {
     background-color: var(--window);
     box-shadow: var(--window-box-shadow);
     font-size: 14px;
-    border-radius: 4px;
+    border-radius: 12px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    border: 1px solid rgb(200, 200, 200)
 }
