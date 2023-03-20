@@ -1,41 +1,54 @@
 import React from "react"
-import Checkbox from "./Inputs"
+import { Link } from "react-router-dom"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
 import logo from "../../assets/images/logo.svg"
 import alert from "../../assets/icons/alert.svg"
 import PasswordInput from "./PasswordInput"
-import { Link } from "react-router-dom"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-
+import Checkbox from "./Inputs"
+import AuthContext from "../../context/AuthContext"
 
 function LoginForm(status = 'empty') {
     const [loginStatus, setLoginStatus] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
+    const { loginUser } = React.useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleRememberMe = (event) => {
         setRememberMe(event.target.checked);
     };
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            await loginUser(event);
+            navigate('/home');
+        }
+        catch (error) {
+            setLoginStatus("error");
+        }
+    };
+
 
     return (
-        <form className="login-form">
+        <form onSubmit={handleSubmit} className="login-form">
             <div>
                 <input type="email" id="email" name="email" placeholder="Email" required />
                 <PasswordInput />
             </div>
+            {loginStatus === "error" &&
+                <div className="error">
+                    <img src={alert} alt='' />Wrong email or password
+                </div>
+            }
             <div className="forgot-password-container">
                 <Checkbox id="remember-pass" required="True"
                     text="Remember" onChange={handleRememberMe} />
                 <a id="forgot-password" href="/">Forgot Password?</a>
             </div>
-            {loginStatus === "error" &&
-                <div className="error">
-                    <img src={alert} alt='' />Invalid email or password
-                </div>
-            }
             <div>
                 <input type="submit" id="login" value="Sign In" />
             </div>

@@ -7,19 +7,21 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView
 )
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model
 from django.conf import settings
 
-from .serializers import UserSerializer, CustomTokenObtainPairSerializer
+from .serializers import (
+    CustomTokenObtainPairSerializer,
+    UserSerializer
+)
 
 
-def _set_jwt_cookie(response, data) -> Response:
+def _set_jwt_cookie(response, token) -> Response:
     """Creates a cookiie with the JWT token pair and
     returns it in the response with a 200 status code."""
     response.set_cookie(
         key=settings.SIMPLE_JWT['AUTH_COOKIE'],
-        value=data,
+        value=token,
         httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
         secure=settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
         max_age=settings.SIMPLE_JWT[
@@ -31,32 +33,25 @@ def _set_jwt_cookie(response, data) -> Response:
     return response
 
 
-class CustomTokenObtainPairView(TokenObtainPairView):
+class LoginTokenObtainPairView(TokenObtainPairView):
     """Class for creating JWT token pair when a user logs in."""
-
-    serializer_class = CustomTokenObtainPairSerializer
+    token_serializer_class = CustomTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
 
-        print(request)
-        serializer = self.get_serializer(data=request.data)
-
-        if not serializer.is_valid(raise_exception=True):
-            response = Response(serializer.errors,
-                                status=status.HTTP_400_BAD_REQUEST)
+        password = request.data.get('password')
+        email = request.data.get('email')
+        user = get_user_model().objects.get(email=email)
+        if user and user.check_password(password):
+            refresh = self.token_serializer_class.get_token(user=user)
+            token = {
+                'refresh': refresh,
+                'access': refresh.access_token
+            }
+            response = _set_jwt_cookie(Response(status.HTTP_200_OK), token)
         else:
-            user = serializer.validated_data.get('user') or request.user
-            data = self.get_token_for_user(user)
-            response = Response(data, status=status.HTTP_200_OK)
-            response = _set_jwt_cookie(response, data)
-
+            response = Response(status.HTTP_401_UNAUTHORIZED)
         return response
-
-    def get_token_for_user(self, user):
-        refresh = self.get_token(user)
-        data = {'refresh': str(refresh),
-                'access': str(refresh.access_token)}
-        return data
 
 
 class CustomTokenRefreshView(TokenRefreshView):
@@ -72,9 +67,9 @@ def getRoutes(request):
     return Response(routes)
 
 
-class CreateUserView(CreateAPIView, CustomTokenObtainPairSerializer):
+class CreateUserView(CreateAPIView):
+    token_serializer_class = CustomTokenObtainPairSerializer
     serializer_class = UserSerializer
-    token_serializer_class = TokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
@@ -82,9 +77,11 @@ class CreateUserView(CreateAPIView, CustomTokenObtainPairSerializer):
             user = get_user_model().objects.get(email=request.data['email'])
             refresh = self.token_serializer_class.get_token(user=user)
 
-            data = {'refresh': str(refresh),
-                    'access': str(refresh.access_token)}
+            token = {
+                'refresh': refresh,
+                'access': refresh.access_token
+            }
 
-            response = _set_jwt_cookie(response, data)
+            response = _set_jwt_cookie(response, token)
 
         return response

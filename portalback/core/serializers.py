@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from models import Customer
+from core.models import Customer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
@@ -26,14 +26,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
 
-        # Add custom claims
         token['email'] = user.email
         token['full_name'] = user.full_name
-        # ...
 
         return token
 
@@ -41,9 +40,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['id', 'first_name', 'last_name', 'stripe_customer_id',
+        fields = ['user_id', 'first_name', 'last_name', 'stripe_customer_id',
                   'stripe_subscription_id']
-        read_only_fields = ['id', 'stripe_customer_id',
+        read_only_fields = ['user_id', 'stripe_customer_id',
                             'stripe_subscription_id']
         extra_kwargs = {
             'first_name': {'required': True},

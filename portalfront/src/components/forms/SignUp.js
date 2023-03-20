@@ -1,19 +1,40 @@
 import React from "react"
+import { Link } from "react-router-dom"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
 import logo from "../../assets/images/logo.svg"
 import alert from "../../assets/icons/alert.svg"
-import { Link } from "react-router-dom"
-import { useState } from "react"
 import PasswordInput from "./PasswordInput"
-import { useNavigate } from "react-router-dom"
+import AuthContext from "../../context/AuthContext"
 
 function SignUpForm() {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const { registerUser } = React.useContext(AuthContext);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const password = event.target.password.value;
+        const confirmPassword = event.target.confirmPassword.value;
+        if (password !== confirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
+        try {
+            registerUser(event)
+            navigate('/home')
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setError(null);
+        }
+    }
 
     return (
-        <form className="sign-up-form" method="post">
+        <form onSubmit={handleSubmit} className="sign-up-form" method="post">
             <div>
                 <input type="email" id="email" name="email" placeholder="Email" required />
             </div>

@@ -7,60 +7,72 @@ import SignUpWindow from './components/forms/SignUp';
 import SubscriptionWindow from './components/forms/Subscription';
 import CheckoutWindow from './components/forms/Checkout';
 import PrivateRoutes from './utils/PrivateRoutes';
+import { AuthProvider } from './context/AuthContext';
 import "./style/gateway.css"
 
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
-import axios from 'axios';
+// import { loadStripe } from '@stripe/stripe-js';
+// import { Elements } from '@stripe/react-stripe-js';
+// import axios from 'axios';
 
-const StripePro = loadStripe(process.env.REACT_APP_STRIPE_PK);
+// const StripePro = loadStripe(process.env.REACT_APP_STRIPE_PK);
+
+const Dashboard = () => {
+    return (
+        <div className="dashboard">
+            <h1>Dashboard</h1>
+        </div>
+    )
+}
 
 function App() {
 
     return (
         <main>
             <Router>
-                <Routes>
-                    <Route element={<PrivateRoutes />} >
-                    </Route>
-                    < Route path="/subscription" element={<SubscriptionWindow />} />
-                    <Route path="/checkout" element={addStripeElements(CheckoutWindow)} />
-                    <Route exact path="/login" element={<LoginWindow />} />
-                    <Route path="/register" element={<SignUpWindow />} />
-                </Routes>
+                <AuthProvider>
+                    <Routes>
+                        <Route element={<PrivateRoutes />} >
+                            <Route path="/home" element={<Dashboard />} />
+                        </Route>
+                        < Route path="/subscription" element={<SubscriptionWindow />} />
+                        <Route path="/checkout" element={<CheckoutWindow />} />
+                        <Route exact path="/login" element={<LoginWindow />} />
+                        <Route path="/register" element={<SignUpWindow />} />
+                    </Routes>
+                </AuthProvider>
             </Router>
         </main>
     )
 }
 
-const addStripeElements = (Component) => {
-    const [clientSecret, setClientSecret] = useState(null);
+// const addStripeElements = (Component) => {
+//     const [clientSecret, setClientSecret] = useState(null);
 
-    useEffect(() => {
-        // Make an API request to your server to get the client secret
-        axios.post('/api/subscription', { /* add any necessary parameters */ })
-            .then(response => {
-                setClientSecret(response.data.client_secret);
-            })
-            .catch(error => {
-                console.error('Error getting client secret:', error);
-            });
-    }, []);
+//     useEffect(() => {
+//         // Make an API request to your server to get the client secret
+//         axios.post('/api/subscription', { /* add any necessary parameters */ })
+//             .then(response => {
+//                 setClientSecret(response.data.client_secret);
+//             })
+//             .catch(error => {
+//                 console.error('Error getting client secret:', error);
+//             });
+//     }, []);
 
-    const appearance = {
-        theme: 'minimal',
-    };
+//     const appearance = {
+//         theme: 'minimal',
+//     };
 
-    const options = {
-        clientSecret,
-        appearance
-    }
+//     const options = {
+//         clientSecret,
+//         appearance
+//     }
 
-    return (
-        <Elements stripe={StripePro} options={options}>
-            <Component />
-        </Elements>
-    )
-}
+//     return (
+//         <Elements stripe={StripePro} options={options}>
+//             <Component />
+//         </Elements>
+//     )
+// }
 
 export default App;

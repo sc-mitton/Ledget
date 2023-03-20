@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 import jwt_decode from 'jwt-decode';
 
 const AuthContext = createContext();
+const SERVER_DOMAIN = process.env.SERVER_DOMAIN
 
 export default AuthContext;
 
@@ -34,11 +35,11 @@ export const AuthProvider = ({ children }) => {
         }
     );
     let [loading, setLoading] = useState(true);
-    let [cookies, setCookie, removeCookie] = useCookies(['authToken']);
 
     const loginUser = async (event) => {
         event.preventDefault();
-        let response = await fetch('https://localhost:8000/api/token/', {
+        console.log(`${SERVER_DOMAIN}/api/v1/token/`)
+        let response = await fetch(`${SERVER_DOMAIN}/api/v1/token/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'email': event.target.email.value, 'password': event.target.password.value })
@@ -54,7 +55,7 @@ export const AuthProvider = ({ children }) => {
 
     const registerUser = async (event) => {
         event.preventDefault();
-        let response = await fetch('https://localhost:8000/api/v1/user/', {
+        let response = await fetch(`${SERVER_DOMAIN}/api/v1/user/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'email': event.target.email.value, 'password': event.target.password.value })
@@ -75,7 +76,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const refreshTokens = async () => {
-        let response = await fetch('https://localhost:8000/api/token/refresh/', {
+        let response = await fetch(`${SERVER_DOMAIN}/api/v1/token/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'refresh': authTokens ? authTokens.refresh : null })

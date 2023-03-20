@@ -27,9 +27,9 @@ function FinePrint(props) {
 
     const finePrint = () => {
         if (props.subscription === 'monthly') {
-            return <span>*Billed month-to-month</span>
+            return <span>Month-to-Month</span>
         } else {
-            return <span>*Billed annually</span>
+            return <span>Billed monthly for 12 months</span>
         }
     }
 

@@ -8,11 +8,11 @@ from rest_framework.status import (
 from django.conf import settings
 import stripe
 
-from serializers import CustomerSerializer
-from models import Customer
+from core.serializers import CustomerSerializer
+from core.models import Customer
 
 stripe.api_key = settings.STRIPE_SK
-CHECKOUT_DOMAIN = settings.DOMAIN_URL / 'checkout'
+CHECKOUT_DOMAIN = settings.DOMAIN_URL + 'checkout/'
 
 
 class CustomerView(CreateAPIView):
