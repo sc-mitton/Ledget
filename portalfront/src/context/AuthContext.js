@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import jwt_decode from 'jwt-decode';
 
 const AuthContext = createContext();
-const SERVER_DOMAIN = process.env.SERVER_DOMAIN
+const SERVER_DOMAIN = process.env.REACT_APP_SERVER_DOMAIN
 
 export default AuthContext;
 
@@ -37,19 +37,25 @@ export const AuthProvider = ({ children }) => {
     let [loading, setLoading] = useState(true);
 
     const loginUser = async (event) => {
-        event.preventDefault();
-        console.log(`${SERVER_DOMAIN}/api/v1/token/`)
-        let response = await fetch(`${SERVER_DOMAIN}/api/v1/token/`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'email': event.target.email.value, 'password': event.target.password.value })
-        })
-        let data = await response.json()
+        try {
+            event.preventDefault();
+            let response = await fetch(`${SERVER_DOMAIN}/api/v1/token/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'email': event.target.email.value, 'password': event.target.password.value })
+            })
+            console.log(response)
+            let data = await response.json()
+            console.log(data)
 
-        if (response.status === 200) {
-            setAuthTokens(data)
-            setUser(jwt_decode(data.access))
-            localStorage.setItem('authTokens', JSON.stringify(data))
+            if (response.status === 200) {
+                setAuthTokens(data)
+                setUser(jwt_decode(data.access))
+                localStorage.setItem('authTokens', JSON.stringify(data))
+            }
+        }
+        catch (e) {
+            console.log(e)
         }
     }
 

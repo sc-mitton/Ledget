@@ -1,10 +1,11 @@
 from django.test import TestCase
-from unittest import skip
-from rest_framework.test import APIClient
-from django.contrib.auth import get_user_model
-from rest_framework import status
 from django.urls import reverse
+from django.contrib.auth import get_user_model
+from rest_framework.test import APIClient
+from rest_framework import status
 
+from unittest import skip # noqa
+import json
 
 USER_ENDPOINT = reverse('user')
 
@@ -16,7 +17,10 @@ class TestCoreApiViews(TestCase):
         self.email = 'testuser@example.com'
         self.password = 'testpassword'
         User = get_user_model()
-        self.user = User.objects.create_user(self.email, self.password)
+        self.user = User.objects.create_user(
+            email=self.email,
+            password=self.password
+        )
 
     def test_create_user(self):
         """
@@ -27,16 +31,20 @@ class TestCoreApiViews(TestCase):
             - return a new JWT pair
         """
         email = 'test123@example.com'
-        password = 'testpassword'
+        password = 'testpassword123'
         payload = {'email': email, 'password': password}
+        response = self.client.post(
+            USER_ENDPOINT,
+            payload,
+            format='json',
+            secure=True
+        )
 
-        response = self.client.post(USER_ENDPOINT,
-                                    payload, format='json', secure=True)
         user = get_user_model().objects.get(email=email)
         self.assertEqual(user.email, email)
         self.assertEqual(user.check_password(password), True)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertIn('access_token', response.cookies)
+        self.assertIn('refresh_token', response.cookies)
 
     def test_create_user_with_email_that_exists(self):
         """Test that creating a user with an email that already
@@ -49,8 +57,8 @@ class TestCoreApiViews(TestCase):
             secure=True
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data['email'][0],
-                         'user with this email already exists.')
+        self.assertIn('error', response.data.keys())
+        self.assertIn('email', response.data['error'])
 
     def test_token_endpoint_returns_jwt_pair(self):
         """Test that the token endpoint returns a JWT pair."""
@@ -62,8 +70,28 @@ class TestCoreApiViews(TestCase):
             secure=True
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('access_token', response.cookies)
+        self.assertIn('refresh_token', response.cookies)
 
     def test_refresh_token(self):
         """Test that the refresh token endpoint returns a new JWT pair."""
-        pass
+        payload = {'email': self.email, 'password': self.password}
+        response = self.client.post(
+            reverse('token_obtain_pair'),
+            data=payload,
+            format='json',
+            secure=True
+        )
+
+        refresh_token = response.cookies['refresh_token'].value
+        refresh_token = refresh_token.replace("'", '"')
+        refresh_token = json.loads(refresh_token)
+
+        response = self.client.post(
+            reverse('token_refresh'),
+            data={'refresh': refresh_token['refresh']},
+            format='json',
+            secure=True
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('refresh_token', response.cookies)

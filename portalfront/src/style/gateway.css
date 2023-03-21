@@ -12,8 +12,7 @@
 
 .window .error {
     color: var(--alert-red);
-    margin-top: 8px;
-    margin-left: 8px;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -52,30 +51,24 @@
 
 .forgot-password-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
-    margin: 4px 4px;
+    margin: 4px 2px 4px 4px;
     font-size: 12px;
     white-space: nowrap;
+}
+
+.forgot-password-container a {
+    font-size: 12px;
 }
 
 .forgot-password-container a:hover {
     color: var(--check-box-blue);
 }
 
-#remember-me {
-    position: relative;
-    top: -1px;
-    margin-right: 12px;
-}
-
-#forgot-password {
-    margin-left: 12px;
-}
-
 .or-continue-with {
     text-align: center;
-    margin-top: 36px;
+    margin-top: 48px;
 }
 
 .social-buttons-container {
@@ -205,7 +198,7 @@
 }
 
 .sign-up-window input[type="submit"] {
-    margin-top: 16px;
+    margin-top: 24px;
 }
 
 .login-prompt-container {

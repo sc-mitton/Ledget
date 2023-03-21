@@ -35,18 +35,16 @@ function LoginForm(status = 'empty') {
 
     return (
         <form onSubmit={handleSubmit} className="login-form">
-            <div>
-                <input type="email" id="email" name="email" placeholder="Email" required />
-                <PasswordInput />
-            </div>
             {loginStatus === "error" &&
                 <div className="error">
                     <img src={alert} alt='' />Wrong email or password
                 </div>
             }
+            <div>
+                <input type="email" id="email" name="email" placeholder="Email" required />
+                <PasswordInput />
+            </div>
             <div className="forgot-password-container">
-                <Checkbox id="remember-pass" required="True"
-                    text="Remember" onChange={handleRememberMe} />
                 <a id="forgot-password" href="/">Forgot Password?</a>
             </div>
             <div>

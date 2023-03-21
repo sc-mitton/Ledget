@@ -2,7 +2,11 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from core.models import Customer
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import (
+    TokenObtainPairSerializer,
+    TokenRefreshSerializer
+)
+from rest_framework_simplejwt.exceptions import InvalidToken
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,17 +28,49 @@ class UserSerializer(serializers.ModelSerializer):
             user.save()
         return user
 
+    def validate(self, data):
+        email = data.get('email')
+        password = data.get('password')
+
+        # validate email
+        if not email:
+            raise serializers.ValidationError('Email is required.')
+        if get_user_model().objects.filter(email=email).exists():
+            raise serializers.ValidationError('Email is already taken.')
+
+        # validate password
+        if not password:
+            raise serializers.ValidationError('Password is required')
+        if len(password) < 8:
+            raise serializers.ValidationError(
+                'Password must be at least 8 characters long')
+
+        return data
+
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """Custom serializer for jwt token pair, that adds email
+    and full name to the token payload."""
 
     @classmethod
     def get_token(cls, user):
-        token = super().get_token(user)
 
+        token = super().get_token(user)
         token['email'] = user.email
         token['full_name'] = user.full_name
 
         return token
+
+
+class CustomTokenRefreshSerializer(TokenRefreshSerializer):
+    refresh = serializers.CharField()
+
+    def validate(self, attrs):
+        if attrs['refresh']:
+            return super().validate(attrs)
+        else:
+            raise InvalidToken(
+                "No valid token found in cookie 'token'")
 
 
 class CustomerSerializer(serializers.ModelSerializer):

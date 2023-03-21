@@ -38,6 +38,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'corsheaders'
 ]
 LOCAL_APPS = [
     'core.apps.CoreConfig',
@@ -91,7 +92,7 @@ WSGI_APPLICATION = 'portalback.wsgi.application'
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False,
@@ -123,7 +124,7 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 
     "TOKEN_OBTAIN_SERIALIZER":
-        "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+        "core.serializers.CustomTokenObtainPairSerializer",
     "TOKEN_REFRESH_SERIALIZER":
         "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
     "TOKEN_VERIFY_SERIALIZER":
@@ -136,7 +137,6 @@ SIMPLE_JWT = {
         "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 
     # Custom
-    'AUTH_COOKIE': 'access_token',
     'AUTH_COOKIE_DOMAIN': 'ledget.app',
     'AUTH_COOKIE_SECURE': True,
     'AUTH_COOKIE_PATH': '/',
