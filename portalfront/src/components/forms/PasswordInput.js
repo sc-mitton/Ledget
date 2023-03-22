@@ -8,16 +8,16 @@ const PasswordInput = (props) => {
     const [visibilityIcon, setVisibilityIcon] = useState(false)
 
     const handlePasswordInput = (e) => {
-        if (e.target.value.length > 0) {
+        if (e.target.value !== '') {
             setVisibilityIcon(true)
         } else {
             setVisibilityIcon(false)
         }
-        props.setPwd(e.target.value)
+        props.pwdRef.current = e.target.value
     }
 
     const VisibilityIcon = () => {
-        {
+        return (
             visibilityIcon ? (
                 passwordVisible ? (
                     <img
@@ -35,7 +35,7 @@ const PasswordInput = (props) => {
                     />
                 )
             ) : null
-        }
+        )
     }
 
     return (

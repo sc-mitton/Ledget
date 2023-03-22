@@ -16,6 +16,7 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
+import jwt
 from .serializers import (
     CustomTokenRefreshSerializer,
     UserSerializer
@@ -44,7 +45,16 @@ class CookieTokenObtainPairView(TokenObtainPairView):
     """Custom view that extends the default TokenObtainPairView
     in order to set the refresh token as a HTTP only cookie."""
 
+    def decode_jwt(self, token):
+        decoded_jwt = jwt.decode(
+            token,
+            settings.SECRET_KEY,
+            algorithms=['HS256']
+        )
+        return decoded_jwt
+
     def finalize_response(self, request, response, *args, **kwargs):
+        print(request.data)
         if response.data.get('refresh'):
             response.set_cookie(
                 'refresh',
@@ -56,8 +66,16 @@ class CookieTokenObtainPairView(TokenObtainPairView):
                 response.data['access'],
                 **cookie_args
             )
+
+            decoded_jwt = self.decode_jwt(response.data['access'])
+            email = decoded_jwt['email']
+            full_name = decoded_jwt['full_name']
+            response.data['email'] = email
+            response.data['full_name'] = full_name
             del response.data['refresh']
             del response.data['access']
+            print(f"DEBUGGING {response}")
+
         return super().finalize_response(request, response, *args, **kwargs)
 
 
@@ -97,7 +115,6 @@ class CookieTokenRefreshView(TokenRefreshView):
         serializer = self.get_serializer(
             data=request.COOKIES,
         )
-        print(f"DEBUGGING in post: {request.COOKIES}")
 
         try:
             serializer.is_valid(raise_exception=True)
@@ -112,7 +129,6 @@ class CookieTokenRefreshView(TokenRefreshView):
         if response.data.get('refresh'):
             # If the refresh token is expird, this block wont ever
             # get exeuted
-            print(f"DEBUGGING IN FINALIZE RESPONSE: {response.data}")
             response.set_cookie(
                 'refresh',
                 response.data['refresh'],

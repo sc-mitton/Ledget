@@ -1,6 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import LoginWindow from './components/forms/Login';
 import SignUpWindow from './components/forms/SignUp';
@@ -24,20 +23,17 @@ const Dashboard = () => {
 }
 
 function App() {
-
     return (
         <main>
-            <Router>
-                <Routes>
-                    <Route element={<PrivateRoutes />} >
-                        <Route path="/home" element={<Dashboard />} />
-                    </Route>
-                    <Route path="/subscription" element={<SubscriptionWindow />} />
-                    <Route path="/checkout" element={<CheckoutWindow />} />
-                    <Route exact path="/login" element={<LoginWindow />} />
-                    <Route path="/register" element={<SignUpWindow />} />
-                </Routes>
-            </Router>
+            <Routes>
+                <Route element={<PrivateRoutes />} >
+                    <Route path="/home" element={<Dashboard />} />
+                </Route>
+                <Route path="/subscription" element={<SubscriptionWindow />} />
+                <Route path="/checkout" element={<CheckoutWindow />} />
+                <Route exact path="/login" element={<LoginWindow />} />
+                <Route path="/register" element={<SignUpWindow />} />
+            </Routes>
         </main>
     )
 }

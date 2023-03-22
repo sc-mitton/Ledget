@@ -19,44 +19,39 @@ function LoginForm(status = 'empty') {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/home";
 
     const emailRef = useRef();
-    const errRef = useRef();
+    const errRef = useRef('');
+    const userRef = useRef('');
+    const pwdRef = useRef('');
 
-    const [user, setUser] = useState('');
-    const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
         emailRef.current.focus();
     }, [])
 
-    useEffect(() => {
-        setErrMsg('');
-    }, [user])
-
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
             const response = await axios.post(
-                `${API_URL}/token/`,
-                JSON.stringify({ user, pwd }),
+                `${API_URL}token/`,
                 {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
+                    'email': emailRef.current,
+                    'password': pwdRef.current,
+                },
+                { headers: { 'Content-Type': 'application/json' }, }
             )
-            console.log("I think it succeeded.")
             navigate(from, { replace: true });
         } catch (err) {
             if (err && !err.response) {
                 setErrMsg('No Server Response');
-            } else if (err.response?.status === 400) {
-                setErrMsg('Wrong username or password.');
             } else if (err.response?.status === 401) {
-                setErrMsg('Unauthorized');
+                setErrMsg('Wrong username or password.');
+            } else if (err.response?.status === 400) {
+                setErrMsg('Bad Request');
             } else {
                 setErrMsg('Login Failed');
             }
@@ -76,13 +71,13 @@ function LoginForm(status = 'empty') {
                     type="email"
                     id="email"
                     name="email"
-                    val={user}
-                    onChange={(e) => setUser(e.target.value)}
+                    val={emailRef}
+                    onChange={(e) => emailRef.current = e.target.value}
                     placeholder="Email"
                     ref={emailRef}
                     required
                 />
-                <PasswordInput setPwd={setPwd} />
+                <PasswordInput pwdRef={pwdRef} />
             </div>
             <div className="forgot-password-container">
                 <a id="forgot-password" href="/">Forgot Password?</a>

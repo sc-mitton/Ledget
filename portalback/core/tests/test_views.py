@@ -24,7 +24,6 @@ class TestCoreApiViews(TestCase):
             password=self.password
         )
 
-    @skip('disable for now')
     def test_create_user(self):
         """
         Test the api endpoint for creating a new user.
@@ -49,7 +48,6 @@ class TestCoreApiViews(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn('refresh', response.cookies)
 
-    @skip('disable for now')
     def test_create_user_with_email_that_exists(self):
         """Test that creating a user with an email that already
         exists fails."""
@@ -64,7 +62,6 @@ class TestCoreApiViews(TestCase):
         self.assertIn('error', response.data.keys())
         self.assertIn('email', response.data['error'])
 
-    @skip('disable for now')
     def test_token_endpoint_returns_jwt_pair(self):
         """Test that the token endpoint returns a JWT pair."""
         payload = {'email': self.email, 'password': self.password}
@@ -78,7 +75,6 @@ class TestCoreApiViews(TestCase):
         self.assertIn('refresh', response.cookies)
         self.assertIn('access', response.cookies)
 
-    @skip('disable for now')
     def test_refresh_token(self):
         """Test that the refresh token endpoint returns a new JWT pair."""
         payload = {'email': self.email, 'password': self.password}
@@ -105,12 +101,12 @@ class TestCoreApiViews(TestCase):
 
         refresh_token = RefreshToken.for_user(self.user)
 
-        refresh_token.set_iat(
-            datetime.now()
-            - settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME']
-            + timedelta(days=1)
-        )
+        token_lifetime = settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME']
+        new_exp = datetime.now() - token_lifetime - timedelta(days=1)
+        refresh_token.set_exp(from_time=new_exp)
+
         new_client = APIClient()
+        new_client.cookies['refresh'] = refresh_token
 
         response = new_client.post(
             reverse('token_refresh'),
