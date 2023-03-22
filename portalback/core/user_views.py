@@ -1,7 +1,9 @@
 
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
-    HTTP_201_CREATED
+    HTTP_401_UNAUTHORIZED,
+    HTTP_201_CREATED,
+    HTTP_200_OK
 )
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -9,6 +11,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView
 )
+from rest_framework_simplejwt.exceptions import TokenError
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -44,8 +47,13 @@ class CookieTokenObtainPairView(TokenObtainPairView):
     def finalize_response(self, request, response, *args, **kwargs):
         if response.data.get('refresh'):
             response.set_cookie(
-                'refresh_token',
-                response.data,
+                'refresh',
+                response.data['refresh'],
+                **cookie_args
+            )
+            response.set_cookie(
+                'access',
+                response.data['access'],
                 **cookie_args
             )
             del response.data['refresh']
@@ -84,10 +92,34 @@ class CookieTokenRefreshView(TokenRefreshView):
 
     serializer_class = CustomTokenRefreshSerializer
 
+    def post(self, request, *args, **kwargs):
+
+        serializer = self.get_serializer(
+            data=request.COOKIES,
+        )
+        print(f"DEBUGGING in post: {request.COOKIES}")
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            return Response({'error': str(e)}, status=HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.validated_data, status=HTTP_200_OK)
+
     def finalize_response(self, request, response, *args, **kwargs):
         if response.data.get('refresh'):
+            # If the refresh token is expird, this block wont ever
+            # get exeuted
+            print(f"DEBUGGING IN FINALIZE RESPONSE: {response.data}")
             response.set_cookie(
-                'refresh_token',
+                'refresh',
+                response.data['refresh'],
+                **cookie_args
+            )
+            response.set_cookie(
+                'access',
                 response.data['access'],
                 **cookie_args
             )

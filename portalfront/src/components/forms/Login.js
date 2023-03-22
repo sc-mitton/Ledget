@@ -34,7 +34,7 @@ function LoginForm(status = 'empty') {
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd])
+    }, [user])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -66,21 +66,23 @@ function LoginForm(status = 'empty') {
 
     return (
         <form onSubmit={handleSubmit} className="login-form">
-            (errMsg &&
-            <div className="error" ref={errRef}>
-                <img src={alert} alt='' />{errMsg}
-            </div>
-            )
+            {errMsg &&
+                <div className="error" ref={errRef}>
+                    <img src={alert} alt='' />{errMsg}
+                </div>
+            }
             <div>
                 <input
                     type="email"
                     id="email"
                     name="email"
+                    val={user}
+                    onChange={(e) => setUser(e.target.value)}
                     placeholder="Email"
                     ref={emailRef}
                     required
                 />
-                <PasswordInput />
+                <PasswordInput setPwd={setPwd} />
             </div>
             <div className="forgot-password-container">
                 <a id="forgot-password" href="/">Forgot Password?</a>

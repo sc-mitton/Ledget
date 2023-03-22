@@ -32,7 +32,7 @@ function App() {
                     <Route element={<PrivateRoutes />} >
                         <Route path="/home" element={<Dashboard />} />
                     </Route>
-                    < Route path="/subscription" element={<SubscriptionWindow />} />
+                    <Route path="/subscription" element={<SubscriptionWindow />} />
                     <Route path="/checkout" element={<CheckoutWindow />} />
                     <Route exact path="/login" element={<LoginWindow />} />
                     <Route path="/register" element={<SignUpWindow />} />

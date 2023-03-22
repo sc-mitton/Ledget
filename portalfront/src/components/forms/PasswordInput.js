@@ -7,15 +7,34 @@ const PasswordInput = (props) => {
     const [passwordVisible, setPasswordVisible] = useState(false)
     const [visibilityIcon, setVisibilityIcon] = useState(false)
 
-    const togglePasswordVisibility = () => {
-        setPasswordVisible(!passwordVisible)
-    }
-
-    const handlePasswordInput = (event) => {
-        if (event.target.value !== '') {
+    const handlePasswordInput = (e) => {
+        if (e.target.value.length > 0) {
             setVisibilityIcon(true)
         } else {
             setVisibilityIcon(false)
+        }
+        props.setPwd(e.target.value)
+    }
+
+    const VisibilityIcon = () => {
+        {
+            visibilityIcon ? (
+                passwordVisible ? (
+                    <img
+                        src={hidePassword}
+                        alt="toggle visibility"
+                        className="hide-password-icon"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                    />
+                ) : (
+                    <img
+                        src={showPassword}
+                        alt="toggle visibility"
+                        className="show-password-icon"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                    />
+                )
+            ) : null
         }
     }
 
@@ -30,33 +49,18 @@ const PasswordInput = (props) => {
                     required
                     onChange={handlePasswordInput}
                 />
-                {visibilityIcon ? (
-                    passwordVisible ? (
-                        <img
-                            src={hidePassword}
-                            alt="toggle visibility"
-                            className="hide-password-icon"
-                            onClick={togglePasswordVisibility}
-                        />
-                    ) : (
-                        <img
-                            src={showPassword}
-                            alt="toggle visibility"
-                            className="show-password-icon"
-                            onClick={togglePasswordVisibility}
-                        />
-                    )
-                ) : null}
+                <VisibilityIcon />
             </div>
-
             {props.confirmPassword && (
-                <input
-                    type={passwordVisible ? 'text' : 'password'}
-                    id="confirm-password"
-                    name="confirm-password"
-                    placeholder="Confirm Password"
-                    required
-                />
+                <div>
+                    <input
+                        type={passwordVisible ? 'text' : 'password'}
+                        id="confirm-password"
+                        name="confirm-password"
+                        placeholder="Confirm Password"
+                        required
+                    />
+                </div>
             )}
         </div>
     )
