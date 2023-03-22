@@ -7,7 +7,6 @@ import SignUpWindow from './components/forms/SignUp';
 import SubscriptionWindow from './components/forms/Subscription';
 import CheckoutWindow from './components/forms/Checkout';
 import PrivateRoutes from './utils/PrivateRoutes';
-import { AuthProvider } from './context/AuthContext';
 import "./style/gateway.css"
 
 // import { loadStripe } from '@stripe/stripe-js';
@@ -29,17 +28,15 @@ function App() {
     return (
         <main>
             <Router>
-                <AuthProvider>
-                    <Routes>
-                        <Route element={<PrivateRoutes />} >
-                            <Route path="/home" element={<Dashboard />} />
-                        </Route>
-                        < Route path="/subscription" element={<SubscriptionWindow />} />
-                        <Route path="/checkout" element={<CheckoutWindow />} />
-                        <Route exact path="/login" element={<LoginWindow />} />
-                        <Route path="/register" element={<SignUpWindow />} />
-                    </Routes>
-                </AuthProvider>
+                <Routes>
+                    <Route element={<PrivateRoutes />} >
+                        <Route path="/home" element={<Dashboard />} />
+                    </Route>
+                    < Route path="/subscription" element={<SubscriptionWindow />} />
+                    <Route path="/checkout" element={<CheckoutWindow />} />
+                    <Route exact path="/login" element={<LoginWindow />} />
+                    <Route path="/register" element={<SignUpWindow />} />
+                </Routes>
             </Router>
         </main>
     )

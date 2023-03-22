@@ -25,6 +25,7 @@ const Subscription = (props) => {
 
 function FinePrint(props) {
 
+    const nodeRef = React.useRef(null);
     const finePrint = () => {
         if (props.subscription === 'monthly') {
             return <span>Month-to-Month</span>
@@ -39,9 +40,10 @@ function FinePrint(props) {
                 <CSSTransition
                     key={props.subscription}
                     classNames="fine-print"
-                    timeout={225}
+                    timeout={150}
+                    nodeRef={nodeRef}
                 >
-                    <div className="fine-print">
+                    <div className="fine-print" ref={nodeRef}>
                         {finePrint()}
                     </div>
                 </CSSTransition>
@@ -56,8 +58,8 @@ function ContinueButton() {
             <button type="submit" className="continue-to-payment-button">
                 Payment
                 <svg width="16" height="16" viewBox="4 0 20 18">
-                    <path class="path" d="M15 15L20 10L15 5" stroke="white" stroke-width="2" fill="none" />
-                    <path class="path" d="M15 5L20 10L15 15" stroke="white" stroke-width="2" fill="none" />
+                    <path className="path" d="M15 15L20 10L15 5" stroke="white" strokeWidth="2" fill="none" />
+                    <path className="path" d="M15 5L20 10L15 15" stroke="white" strokeWidth="2" fill="none" />
                 </svg>
             </button>
         </div>
@@ -66,7 +68,6 @@ function ContinueButton() {
 
 function SubscriptionForm() {
     let [subscription, setSubscription] = useState('monthly')
-    let [finePrintClass, setFinePrintClass] = useState('fine-print');
 
     const handleSubscriptionChange = (event) => {
         setSubscription(event.target.value)

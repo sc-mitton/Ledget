@@ -67,7 +67,7 @@ a {
 input {
     border: none;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    font-weight: 500;
+    font-weight: 400;
     color: var(--main-text-gray);
     background-color: var(--window);
     font-size: 14px;

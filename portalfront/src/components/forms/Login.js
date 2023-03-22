@@ -1,47 +1,85 @@
-import React from "react"
-import { Link } from "react-router-dom"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import React from 'react';
+import { useRef, useState, useEffect } from "react"
+import { useNavigate, useLocation, Link } from "react-router-dom"
 
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
 import logo from "../../assets/images/logo.svg"
 import alert from "../../assets/icons/alert.svg"
 import PasswordInput from "./PasswordInput"
-import Checkbox from "./Inputs"
-import AuthContext from "../../context/AuthContext"
+import useAuth from "../../hooks/useAuth"
+
+import axios from "axios"
+
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 function LoginForm(status = 'empty') {
-    const [loginStatus, setLoginStatus] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
-    const { loginUser } = React.useContext(AuthContext);
-    const navigate = useNavigate();
+    const { setAuth } = useAuth(); // TODO
 
-    const handleRememberMe = (event) => {
-        setRememberMe(event.target.checked);
-    };
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
+
+    const emailRef = useRef();
+    const errRef = useRef();
+
+    const [user, setUser] = useState('');
+    const [pwd, setPwd] = useState('');
+    const [errMsg, setErrMsg] = useState('');
+
+    useEffect(() => {
+        emailRef.current.focus();
+    }, [])
+
+    useEffect(() => {
+        setErrMsg('');
+    }, [user, pwd])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
         try {
-            await loginUser(event);
-            navigate('/home');
-        }
-        catch (error) {
-            setLoginStatus("error");
+            const response = await axios.post(
+                `${API_URL}/token/`,
+                JSON.stringify({ user, pwd }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            )
+            console.log("I think it succeeded.")
+            navigate(from, { replace: true });
+        } catch (err) {
+            if (err && !err.response) {
+                setErrMsg('No Server Response');
+            } else if (err.response?.status === 400) {
+                setErrMsg('Wrong username or password.');
+            } else if (err.response?.status === 401) {
+                setErrMsg('Unauthorized');
+            } else {
+                setErrMsg('Login Failed');
+            }
+            errRef.current.focus();
         }
     };
 
-
     return (
         <form onSubmit={handleSubmit} className="login-form">
-            {loginStatus === "error" &&
-                <div className="error">
-                    <img src={alert} alt='' />Wrong email or password
-                </div>
-            }
+            (errMsg &&
+            <div className="error" ref={errRef}>
+                <img src={alert} alt='' />{errMsg}
+            </div>
+            )
             <div>
-                <input type="email" id="email" name="email" placeholder="Email" required />
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Email"
+                    ref={emailRef}
+                    required
+                />
                 <PasswordInput />
             </div>
             <div className="forgot-password-container">

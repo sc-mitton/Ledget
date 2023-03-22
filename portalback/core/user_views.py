@@ -9,6 +9,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView
 )
+from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
@@ -53,13 +54,14 @@ class CookieTokenObtainPairView(TokenObtainPairView):
 
 
 class CreateUserView(CookieTokenObtainPairView):
+    """Custom view for obtaining token pair when logging in."""
     user_serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
 
         try:
-            serializer = self.user_serializer_class(data=request.data)
-            if serializer.is_valid(raise_exception=True):
+            user_serializer = self.user_serializer_class(data=request.data)
+            if user_serializer.is_valid(raise_exception=True):
                 get_user_model().objects.create_user(
                     email=request.data['email'],
                     password=request.data['password']
@@ -67,6 +69,9 @@ class CreateUserView(CookieTokenObtainPairView):
 
             response = super().post(request, *args, **kwargs)
             response.status_code = HTTP_201_CREATED
+        except ValidationError:
+            response = Response({'error': 'Wrong email or password.'},
+                                status=HTTP_400_BAD_REQUEST)
         except Exception as e:
             response = Response({'error': str(e)}, status=HTTP_400_BAD_REQUEST)
 
