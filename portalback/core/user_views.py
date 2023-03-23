@@ -23,15 +23,6 @@ from .serializers import (
 )
 
 
-cookie_args = {
-    'httponly': settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
-    'secure': settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
-    'max_age': settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds(),
-    'domain': settings.SIMPLE_JWT['AUTH_COOKIE_DOMAIN'],
-    'samesite': settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
-}
-
-
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
@@ -41,20 +32,28 @@ def getRoutes(request):
     return Response(routes)
 
 
+cookie_args = {
+    'httponly': settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
+    'secure': settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
+    'max_age': settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds(),
+    'domain': settings.SIMPLE_JWT['AUTH_COOKIE_DOMAIN'],
+}
+
+
+def _decode_jwt(token):
+    decoded_jwt = jwt.decode(
+        token,
+        settings.SECRET_KEY,
+        algorithms=['HS256']
+    )
+    return decoded_jwt
+
+
 class CookieTokenObtainPairView(TokenObtainPairView):
     """Custom view that extends the default TokenObtainPairView
     in order to set the refresh token as a HTTP only cookie."""
 
-    def decode_jwt(self, token):
-        decoded_jwt = jwt.decode(
-            token,
-            settings.SECRET_KEY,
-            algorithms=['HS256']
-        )
-        return decoded_jwt
-
     def finalize_response(self, request, response, *args, **kwargs):
-        print(request.data)
         if response.data.get('refresh'):
             response.set_cookie(
                 'refresh',
@@ -66,21 +65,19 @@ class CookieTokenObtainPairView(TokenObtainPairView):
                 response.data['access'],
                 **cookie_args
             )
-
-            decoded_jwt = self.decode_jwt(response.data['access'])
-            email = decoded_jwt['email']
-            full_name = decoded_jwt['full_name']
-            response.data['email'] = email
-            response.data['full_name'] = full_name
+            decoded_jwt = _decode_jwt(response.data['access'])
+            response.data['email'] = decoded_jwt['email']
+            response.data['full_name'] = decoded_jwt['full_name']
+            response.data['expiration'] = decoded_jwt['exp']
             del response.data['refresh']
             del response.data['access']
-            print(f"DEBUGGING {response}")
 
         return super().finalize_response(request, response, *args, **kwargs)
 
 
 class CreateUserView(CookieTokenObtainPairView):
-    """Custom view for obtaining token pair when logging in."""
+    """Custom view for creating a new user and returning
+    token pair ."""
     user_serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
@@ -111,7 +108,6 @@ class CookieTokenRefreshView(TokenRefreshView):
     serializer_class = CustomTokenRefreshSerializer
 
     def post(self, request, *args, **kwargs):
-
         serializer = self.get_serializer(
             data=request.COOKIES,
         )
@@ -130,15 +126,20 @@ class CookieTokenRefreshView(TokenRefreshView):
             # If the refresh token is expird, this block wont ever
             # get exeuted
             response.set_cookie(
-                'refresh',
-                response.data['refresh'],
-                **cookie_args
-            )
-            response.set_cookie(
                 'access',
                 response.data['access'],
                 **cookie_args
             )
+            response.set_cookie(
+                'refresh',
+                response.data['refresh'],
+                **cookie_args
+            )
+            decoded_jwt = _decode_jwt(response.data['access'])
+            response.data['email'] = decoded_jwt['email']
+            response.data['full_name'] = decoded_jwt['full_name']
+            response.data['expiration'] = decoded_jwt['exp']
             del response.data['refresh']
             del response.data['access']
+
         return super().finalize_response(request, response, *args, **kwargs)

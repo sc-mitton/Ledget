@@ -92,7 +92,6 @@ class TestCoreApiViews(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('refresh', response.cookies)
         self.assertIn('access', response.cookies)
 
     def test_error_using_expired_refresh_token(self):

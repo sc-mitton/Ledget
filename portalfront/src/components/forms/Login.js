@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useContext } from "react"
 import { useNavigate, useLocation, Link } from "react-router-dom"
 
 import fbLogo from "../../assets/images/fbLogo.svg"
@@ -7,15 +7,14 @@ import googleLogo from "../../assets/images/googleLogo.svg"
 import logo from "../../assets/images/logo.svg"
 import alert from "../../assets/icons/alert.svg"
 import PasswordInput from "./PasswordInput"
-import useAuth from "../../hooks/useAuth"
-
-import axios from "axios"
+import AuthContext from "../../context/AuthContext"
+import api from "../../api/axios"
 
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 function LoginForm(status = 'empty') {
-    const { setAuth } = useAuth(); // TODO
+    const { setAuth, setTokenExpiration } = useContext(AuthContext);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -23,7 +22,6 @@ function LoginForm(status = 'empty') {
 
     const emailRef = useRef();
     const errRef = useRef('');
-    const userRef = useRef('');
     const pwdRef = useRef('');
 
     const [errMsg, setErrMsg] = useState('');
@@ -32,35 +30,41 @@ function LoginForm(status = 'empty') {
         emailRef.current.focus();
     }, [])
 
-    const handleSubmit = async (event) => {
+    const handleError = (err) => {
+        if (err && !err.response) {
+            setErrMsg('No Server Response');
+        } else if (err.response?.status === 401) {
+            setErrMsg('Wrong username or password.');
+        } else if (err.response?.status === 400) {
+            setErrMsg('Bad Request');
+        } else {
+            setErrMsg('Login Failed');
+        }
+    };
+
+    const handleLoginSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await axios.post(
-                `${API_URL}token/`,
-                {
-                    'email': emailRef.current,
-                    'password': pwdRef.current,
-                },
+            const response = await api.post(
+                'token/',
+                { 'email': emailRef.current, 'password': pwdRef.current, },
                 { headers: { 'Content-Type': 'application/json' }, }
             )
-            navigate(from, { replace: true });
+            console.log(response.headers)
+            console.log(response.data)
+            setAuth(response.data?.full_name)
+            setTokenExpiration(response.data?.expiration)
+
+            navigate(from, { replace: true })
         } catch (err) {
-            if (err && !err.response) {
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 401) {
-                setErrMsg('Wrong username or password.');
-            } else if (err.response?.status === 400) {
-                setErrMsg('Bad Request');
-            } else {
-                setErrMsg('Login Failed');
-            }
-            errRef.current.focus();
+            console.log(err.message)
+            handleError(err);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleLoginSubmit} className="login-form">
             {errMsg &&
                 <div className="error" ref={errRef}>
                     <img src={alert} alt='' />{errMsg}

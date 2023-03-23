@@ -58,6 +58,7 @@ const PasswordInput = (props) => {
                         id="confirm-password"
                         name="confirm-password"
                         placeholder="Confirm Password"
+                        ref={props.confirmPwdRef}
                         required
                     />
                 </div>

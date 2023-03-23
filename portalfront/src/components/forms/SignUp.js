@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 
 import fbLogo from "../../assets/images/fbLogo.svg"
@@ -9,14 +9,25 @@ import logo from "../../assets/images/logo.svg"
 import alert from "../../assets/icons/alert.svg"
 import PasswordInput from "./PasswordInput"
 import AuthContext from "../../context/AuthContext"
+import api from "../../api/axios"
+
 
 function SignUpForm() {
+    const { setAuth, setTokenExpiration } = React.useContext(AuthContext);
+
     const [error, setError] = useState(null);
+    const [errMsg, setErrMsg] = useState('');
     const navigate = useNavigate();
-    const { registerUser } = React.useContext(AuthContext);
+
+    const errRef = useRef('');
+    const pwdRef = useRef('');
+    const confirmPwdRef = useRef('');
+    const emailRef = useRef('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+
         const password = event.target.password.value;
         const confirmPassword = event.target.confirmPassword.value;
         if (password !== confirmPassword) {
@@ -24,24 +35,45 @@ function SignUpForm() {
             return;
         }
         try {
-            registerUser(event)
+
+
+
             navigate('/home')
         } catch (error) {
+
+
             setError(error.message);
         } finally {
+
+
             setError(null);
         }
     }
 
     return (
         <form onSubmit={handleSubmit} className="sign-up-form" method="post">
+            {errMsg &&
+                <div className="error" ref={errRef}>
+                    <img src={alert} alt='' />{errMsg}
+                </div>
+            }
             <div>
-                <input type="email" id="email" name="email" placeholder="Email" required />
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Email"
+                    ref={emailRef}
+                    required
+                />
             </div>
-            <PasswordInput confirmPassword={true} />
-            {error && <div className="error"><img src={alert} alt='' />{error}</div>}
+            <PasswordInput
+                pwdRef={pwdRef}
+                confirmPwdRef={confirmPwdRef}
+                confirmPassword={true}
+            />
             <div>
-                <input type="submit" id="continue" value="Continue" />
+                <input type="submit" id="sign-up" value="Sign Up" />
             </div>
         </form>
     )

@@ -1,6 +1,5 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -13,6 +12,7 @@ module.exports = {
         publicPath: '/'
     },
     devServer: {
+        https: true,
         static: {
             directory: path.join(__dirname, 'public'),
         },
@@ -21,9 +21,6 @@ module.exports = {
         historyApiFallback: true,
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'public', 'index.html')
-        }),
         new Dotenv({
             path: path.resolve(__dirname, '.env'),
         })

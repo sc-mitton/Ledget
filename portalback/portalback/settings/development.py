@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 from .base import * # noqa
+from corsheaders.defaults import default_headers
 
 DEBUG = True
 
@@ -29,13 +30,14 @@ CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
 
-# Cores
-CORS_ALLOWED_ORIGINS = [
+
+CORS_ORIGIN_WHITELIST = [
+    'http://127.0.0.1:3000',
     'http://localhost:3000',
-    'http://localhost:8000',
+    'https://127.0.0.1:3000',
     'https://localhost:3000',
-    'https://localhost:8000',
-    'https://ledget.app:8000',
     'https://ledget.app:3000',
 ]
 CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
+CORS_ALLOW_HEADERS = list(default_headers) + ['Set-Cookie']
+CORS_ALLOW_CREDENTIALS = True
