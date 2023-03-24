@@ -7,6 +7,7 @@ from rest_framework_simplejwt.serializers import (
     TokenRefreshSerializer
 )
 from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework.exceptions import ValidationError
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -34,15 +35,15 @@ class UserSerializer(serializers.ModelSerializer):
 
         # validate email
         if not email:
-            raise serializers.ValidationError('Email is required.')
+            raise ValidationError('Email is required.')
         if get_user_model().objects.filter(email=email).exists():
-            raise serializers.ValidationError('Email is already taken.')
+            raise ValidationError('Email is already taken.')
 
         # validate password
         if not password:
-            raise serializers.ValidationError('Password is required')
+            raise ValidationError('Password is required')
         if len(password) < 8:
-            raise serializers.ValidationError(
+            raise ValidationError(
                 'Password must be at least 8 characters long')
 
         return data

@@ -60,7 +60,6 @@ class TestCoreApiViews(TestCase):
             format='json',
             secure=True
         )
-        print(response.data)
 
         self.assertTrue(response.status_code >= 400
                         and response.status_code < 500)
@@ -76,8 +75,7 @@ class TestCoreApiViews(TestCase):
             secure=True
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn('error', response.data.keys())
-        self.assertIn('email', response.data['error'])
+        self.assertIn('email', response.data.keys())
 
     def test_token_endpoint_returns_jwt_pair(self):
         """Test that the token endpoint returns a JWT pair when logging in."""

@@ -1,7 +1,5 @@
 
 from rest_framework.status import (
-    HTTP_400_BAD_REQUEST,
-    HTTP_401_UNAUTHORIZED,
     HTTP_201_CREATED,
     HTTP_200_OK
 )
@@ -13,9 +11,10 @@ from rest_framework_simplejwt.views import (
     TokenBlacklistView
 )
 from rest_framework_simplejwt.exceptions import TokenError
-from django.core.exceptions import ValidationError
+from rest_framework_simplejwt.exceptions import InvalidToken
 from django.conf import settings
 from django.contrib.auth import get_user_model
+
 
 import jwt
 from .serializers import (
@@ -80,25 +79,18 @@ class CookieTokenObtainPairView(TokenObtainPairView):
 class CreateUserView(CookieTokenObtainPairView):
     """Custom view for creating a new user and returning
     token pair ."""
-    user_serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
 
-        try:
-            user_serializer = self.user_serializer_class(data=request.data)
-            if user_serializer.is_valid(raise_exception=True):
-                get_user_model().objects.create_user(
-                    email=request.data['email'],
-                    password=request.data['password']
-                )
+        user_serializer = UserSerializer(data=request.data)
+        if user_serializer.is_valid(raise_exception=True):
+            get_user_model().objects.create_user(
+                email=request.data['email'],
+                password=request.data['password']
+            )
 
-            response = super().post(request, *args, **kwargs)
-            response.status_code = HTTP_201_CREATED
-        except ValidationError:
-            response = Response({'error': 'Wrong email or password.'},
-                                status=HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            response = Response({'error': str(e)}, status=HTTP_400_BAD_REQUEST)
+        response = super().post(request, *args, **kwargs)
+        response.status_code = HTTP_201_CREATED
 
         return response
 
@@ -117,9 +109,7 @@ class CookieTokenRefreshView(TokenRefreshView):
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
-            return Response({'error': str(e)}, status=HTTP_401_UNAUTHORIZED)
-        except Exception as e:
-            return Response({'error': str(e)}, status=HTTP_400_BAD_REQUEST)
+            raise InvalidToken(e.args[0])
 
         return Response(serializer.validated_data, status=HTTP_200_OK)
 
@@ -159,8 +149,6 @@ class LogoutView(TokenBlacklistView):
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
-            return Response({'error': str(e)}, status=HTTP_401_UNAUTHORIZED)
-        except Exception as e:
-            return Response({'error': str(e)}, status=HTTP_400_BAD_REQUEST)
+            raise InvalidToken(e.args[0])
 
         return Response(serializer.validated_data, status=HTTP_200_OK)
