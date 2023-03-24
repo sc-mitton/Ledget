@@ -38,6 +38,7 @@ cookie_args = {
     'secure': settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
     'max_age': settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds(),
     'domain': settings.SIMPLE_JWT['AUTH_COOKIE_DOMAIN'],
+    'samesite': settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE'],
 }
 
 

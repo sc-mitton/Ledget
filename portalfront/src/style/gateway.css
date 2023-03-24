@@ -65,6 +65,7 @@
 
 .forgot-password-container a:hover {
     color: var(--check-box-blue);
+    transition: color .15s ease;
 }
 
 .or-continue-with {

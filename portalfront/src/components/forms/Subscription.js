@@ -1,10 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 
 import Checkmark from './Inputs';
 import logo from '../../assets/images/logo.svg';
-import PageTransition from '../animations/PageTransition';
+import apiAuth from '../../api/axios';
+
 
 const appearance = {
     theme: 'minimal',
@@ -59,8 +61,20 @@ function ContinueButton() {
             <button type="submit" className="continue-to-payment-button">
                 Payment
                 <svg width="16" height="16" viewBox="4 0 20 18">
-                    <path className="path" d="M15 15L20 10L15 5" stroke="white" strokeWidth="2" fill="none" />
-                    <path className="path" d="M15 5L20 10L15 15" stroke="white" strokeWidth="2" fill="none" />
+                    <path
+                        className="path"
+                        d="M15 15L20 10L15 5"
+                        stroke="white"
+                        strokeWidth="2"
+                        fill="none"
+                    />
+                    <path
+                        className="path"
+                        d="M15 5L20 10L15 15"
+                        stroke="white"
+                        strokeWidth="2"
+                        fill="none"
+                    />
                 </svg>
             </button>
         </div>
@@ -69,13 +83,28 @@ function ContinueButton() {
 
 function SubscriptionForm() {
     let [subscription, setSubscription] = useState('monthly')
+    naviagte = useNavigate()
 
-    const handleSubscriptionChange = (event) => {
-        setSubscription(event.target.value)
+    const handleLoginSubmit = async (event) => {
+        event.preventDefault();
+        const response = await apiAuth.post(
+            'checkout-session/',
+            { 'email': emailRef.current.value, 'password': pwdRef.current.value }
+        ).then(response => {
+            // TO DO
+        }).catch((error) => {
+            if (error.response) {
+                setErrMsg(error.response.data?.detail)
+            } else if (error.request) {
+                setErrMsg("Server is not responding")
+            } else {
+                setErrMsg("Hmmm, something went wrong, please try again.")
+            }
+        })
     }
 
     return (
-        <form action="/create-checkout-session" className="subscription-form" method="post">
+        <form onSubmit={handleSubmit} className="subscription-form" method="post">
             <div className="subscription-plans">
                 <Subscription
                     id="monthly"
@@ -83,7 +112,7 @@ function SubscriptionForm() {
                     subscriptionTitle="MONTHLY"
                     subscriptionPrice="$7"
                     checked={subscription === 'monthly'}
-                    onChange={handleSubscriptionChange}
+                    onChange={(e) => { setSubscription(e.target.value) }}
                 />
                 <Subscription
                     id="yearly"
@@ -91,7 +120,7 @@ function SubscriptionForm() {
                     subscriptionTitle="YEARLY"
                     subscriptionPrice="$5"
                     checked={subscription === 'yearly'}
-                    onChange={handleSubscriptionChange}
+                    onChange={(e) => { setSubscription(e.target.value) }}
                 />
             </div>
             <FinePrint subscription={subscription} />

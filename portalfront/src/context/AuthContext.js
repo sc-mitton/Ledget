@@ -1,32 +1,34 @@
 import React from 'react';
 import { createContext, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import api from '../api/axios';
+import apiAuth from '../api/axios';
 
 const AuthContext = createContext();
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState({});
+    const [subscribed, setSubscribed] = useState(false);
     const navigate = useNavigate();
     const [tokenExpiration, setTokenExpiration] = useState('');
     const [loading, setLoading] = useState(true);
 
     let updateToken = async () => {
         console.log('Updating token...')
-        let response = await api.post(
+        let response = await apiAuth.post(
             'token/refresh/',
-            { headers: { 'Content-Type': 'application/json' } },
-            { withCredentials: true }
-        )
-        if (response.status === 200) {
+        ).then(response => {
             setAuth(response.data.full_name)
             setTokenExpiration(response.data.expiration)
-        } else if (response.status === 401) {
-            logout()
-        } else {
-            // TODO handle error with refreshing token
-        }
+        }).catch((error) => {
+            if (error.response) {
+                console.log(error.response.data.detail) // TODO make this better for ui
+            } else if (error.request) {
+                console.log("Server is not responding") // TODO make this better for ui
+            } else {
+                console.log("Hmmm, something went wrong, please try again.") // TODO make this better for ui
+            }
+        })
 
         if (loading) {
             setLoading(false)
@@ -38,14 +40,19 @@ export const AuthProvider = ({ children }) => {
             'logout/',
             { headers: { 'Content-Type': 'application/json' } },
             { withCredentials: true }
-        )
-        if (response.status === 200) {
+        ).then(response => {
             setAuth({})
             setTokenExpiration('')
             navigate('/login')
-        } else {
-            // TODO handle error with logging out
-        }
+        }).catch((error) => {
+            if (error.response) {
+                console.log(error.response.data.detail) // TODO make this better for ui
+            } else if (error.request) {
+                console.log("Server is not responding") // TODO make this better for ui
+            } else {
+                console.log("Hmmm, something went wrong, please try again.") // TODO make this better for ui
+            }
+        })
     }
 
     // Get the interval of the token expiration
@@ -82,6 +89,8 @@ export const AuthProvider = ({ children }) => {
     const contextData = {
         auth,
         setAuth,
+        subscribed,
+        setSubscribed,
         setTokenExpiration
     }
 

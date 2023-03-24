@@ -9,7 +9,7 @@ import logo from "../../assets/images/logo.svg"
 import alert from "../../assets/icons/alert.svg"
 import PasswordInput from "./PasswordInput"
 import AuthContext from "../../context/AuthContext"
-import api from "../../api/axios"
+import apiAuth from "../../api/axios"
 
 function SignUpForm() {
     const navigate = useNavigate();
@@ -20,49 +20,36 @@ function SignUpForm() {
     const emailRef = useRef('');
     const pwdRef = useRef('');
     const confirmPwdRef = useRef('');
-    const errRef = useRef('');
+    const errRef = useRef([]);
 
-    // Handle bad responses from the server
-    const handleBadResponse = (response) => {
-        if (response.status === 400) {
-            setErrMsg('That email is already taken.')
-        } else if (response.status === 408) {
-            setErrMsg('Unable to reach server, please try again later.')
-        } else if (response.status === 404) {
-            setErrMsg('404 Resource not found.')
-        } else {
-            setErrMsg('Sign up failed.');
-        }
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        try {
-            registerUser(event)
-        } catch (err) {
-            setErrMsg('Sign up failed.');
-        }
+    function getErrorDetails(errors) {
+        console.log(errors)
+        let errorDetails = JSON.parse(errors.replace(/'/g, '"'))
+        console.log(typeof errorDetails)
     }
 
-    const registerUser = async () => {
-        console.log(pwdRef.current.value)
-        const response = await api.post(
+    const handleRegisterSubmit = async (event) => {
+        event.preventDefault();
+        const response = await apiAuth.post(
             'user/',
-            { 'email': emailRef.current.value, 'password': pwdRef.current.value },
-            { 'headers': { 'Content-Type': 'application/json' } }
-        )
-        if (response.status === 201) {
+            { 'email': emailRef.current.value, 'password': pwdRef.current.value }
+        ).then(response => {
             setAuth(response.data?.full_name)
             setTokenExpiration(response.data?.expiration)
-            navigate('/subscriptions')
-        } else {
-            handleBadResponse(response);
-        }
+            navigate(from, { replace: true })
+        }).catch((error) => {
+            if (error.response) {
+                setErrMsg(getErrorDetails(error.response.data.error))
+            } else if (error.request) {
+                setErrMsg("Server is not responding.")
+            } else {
+                setErrMsg("Hmmm, something went wrong, please try again.")
+            }
+        })
     }
 
-
     return (
-        <form onSubmit={handleSubmit} className="sign-up-form" method="post">
+        <form onSubmit={handleRegisterSubmit} className="sign-up-form" method="post">
             {errMsg &&
                 <div className="error" ref={errRef}>
                     <img src={alert} alt='' />{errMsg}

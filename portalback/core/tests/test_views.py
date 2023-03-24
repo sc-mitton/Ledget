@@ -50,6 +50,21 @@ class TestCoreApiViews(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn('refresh', response.cookies)
 
+    def test_wrong_credentials_login(self):
+        """Test that trying to log in with wrong credentials returns
+        an error."""
+
+        response = self.client.post(
+            reverse('token_obtain_pair'),
+            data={'email': self.email, 'password': 'wrongpassword'},
+            format='json',
+            secure=True
+        )
+        print(response.data)
+
+        self.assertTrue(response.status_code >= 400
+                        and response.status_code < 500)
+
     def test_create_user_with_email_that_exists(self):
         """Test that creating a user with an email that already
         exists fails."""

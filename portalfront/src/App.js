@@ -6,14 +6,9 @@ import SignUpWindow from './components/forms/SignUp';
 import SubscriptionWindow from './components/forms/Subscription';
 import CheckoutWindow from './components/forms/Checkout';
 import PrivateRoutes from './utils/PrivateRoutes';
-import "./style/gateway.css"
 import { AuthProvider } from './context/AuthContext';
+import "./style/gateway.css"
 
-// import { loadStripe } from '@stripe/stripe-js';
-// import { Elements } from '@stripe/react-stripe-js';
-// import axios from 'axios';
-
-// const StripePro = loadStripe(process.env.REACT_APP_STRIPE_PK);
 
 const Dashboard = () => {
     return (
@@ -33,10 +28,10 @@ function App() {
                         <Route element={<PrivateRoutes />} >
                             <Route path="/home" element={<Dashboard />} />
                         </Route>
-                        <Route path="/subscriptions" element={<SubscriptionWindow />} />
-                        <Route path="/checkout" element={<CheckoutWindow />} />
                         <Route exact path="/login" element={<LoginWindow />} />
                         <Route path="/register" element={<SignUpWindow />} />
+                        <Route path="/subscriptions" element={<SubscriptionWindow />} />
+                        <Route path="/checkout" element={<CheckoutWindow />} />
                     </Routes>
                 </AuthProvider>
             </BrowserRouter>

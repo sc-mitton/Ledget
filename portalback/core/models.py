@@ -64,8 +64,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 related_name='customer')
-    first_name = models.CharField(max_length=50, null=False, blank=False)
-    last_name = models.CharField(max_length=50, null=False, blank=False)
     stripe_customer_id = models.CharField(max_length=255, unique=True)
     stripe_subscription_id = models.CharField(max_length=255)
 

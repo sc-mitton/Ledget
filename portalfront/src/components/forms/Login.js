@@ -8,12 +8,10 @@ import logo from "../../assets/images/logo.svg"
 import alert from "../../assets/icons/alert.svg"
 import PasswordInput from "./PasswordInput"
 import AuthContext from "../../context/AuthContext"
-import api from "../../api/axios"
+import apiAuth from "../../api/axios"
 
 
-const API_URL = process.env.REACT_APP_API_URL;
-
-function LoginForm(status = 'empty') {
+function LoginForm() {
     const { setAuth, setTokenExpiration } = useContext(AuthContext);
 
     const navigate = useNavigate();
@@ -30,40 +28,24 @@ function LoginForm(status = 'empty') {
         emailRef.current.focus();
     }, [])
 
-    const handleBadResponse = (response) => {
-        if (response.status === 401) {
-            setErrMsg('Wrong username or password.');
-        } else if (response.status === 400) {
-            setErrMsg('Bad Request');
-        } else if (response.status === 404 || response.status === 408) {
-            setErrMsg('Unable to reach server, please try again later.')
-        } else {
-            setErrMsg('Login Failed');
-        }
-    };
-
-    const handleLoginSubmit = (event) => {
+    const handleLoginSubmit = async (event) => {
         event.preventDefault();
-        try {
-            login()
-        } catch (err) {
-            setErrMsg('Login Failed');
-        }
-    };
-
-    const login = async () => {
-        const response = await api.post(
+        const response = await apiAuth.post(
             'token/',
-            { 'email': emailRef.current, 'password': pwdRef.current, },
-            { headers: { 'Content-Type': 'application/json' }, }
-        )
-        if (response.status === 200) {
+            { 'email': emailRef.current.value, 'password': pwdRef.current.value }
+        ).then(response => {
             setAuth(response.data?.full_name)
             setTokenExpiration(response.data?.expiration)
-        } else {
-            handleBadResponse(response)
-        }
-        navigate(from, { replace: true })
+            navigate(from, { replace: true })
+        }).catch((error) => {
+            if (error.response) {
+                setErrMsg(error.response.data?.detail)
+            } else if (error.request) {
+                setErrMsg("Server is not responding")
+            } else {
+                setErrMsg("Hmmm, something went wrong, please try again.")
+            }
+        })
     }
 
     return (
@@ -79,7 +61,6 @@ function LoginForm(status = 'empty') {
                     id="email"
                     name="email"
                     val={emailRef}
-                    onChange={(e) => emailRef.current = e.target.value}
                     placeholder="Email"
                     ref={emailRef}
                     required
