@@ -4,6 +4,7 @@ import { SwitchTransition, CSSTransition } from 'react-transition-group';
 
 import Checkmark from './Inputs';
 import logo from '../../assets/images/logo.svg';
+import PageTransition from '../animations/PageTransition';
 
 const appearance = {
     theme: 'minimal',

@@ -21,8 +21,8 @@ function LoginForm(status = 'empty') {
     const from = location.state?.from?.pathname || "/home";
 
     const emailRef = useRef();
+    const pwdRef = useRef();
     const errRef = useRef('');
-    const pwdRef = useRef('');
 
     const [errMsg, setErrMsg] = useState('');
 
@@ -30,38 +30,41 @@ function LoginForm(status = 'empty') {
         emailRef.current.focus();
     }, [])
 
-    const handleError = (err) => {
-        if (err && !err.response) {
-            setErrMsg('No Server Response');
-        } else if (err.response?.status === 401) {
+    const handleBadResponse = (response) => {
+        if (response.status === 401) {
             setErrMsg('Wrong username or password.');
-        } else if (err.response?.status === 400) {
+        } else if (response.status === 400) {
             setErrMsg('Bad Request');
+        } else if (response.status === 404 || response.status === 408) {
+            setErrMsg('Unable to reach server, please try again later.')
         } else {
             setErrMsg('Login Failed');
         }
     };
 
-    const handleLoginSubmit = async (event) => {
+    const handleLoginSubmit = (event) => {
         event.preventDefault();
-
         try {
-            const response = await api.post(
-                'token/',
-                { 'email': emailRef.current, 'password': pwdRef.current, },
-                { headers: { 'Content-Type': 'application/json' }, }
-            )
-            console.log(response.headers)
-            console.log(response.data)
-            setAuth(response.data?.full_name)
-            setTokenExpiration(response.data?.expiration)
-
-            navigate(from, { replace: true })
+            login()
         } catch (err) {
-            console.log(err.message)
-            handleError(err);
+            setErrMsg('Login Failed');
         }
     };
+
+    const login = async () => {
+        const response = await api.post(
+            'token/',
+            { 'email': emailRef.current, 'password': pwdRef.current, },
+            { headers: { 'Content-Type': 'application/json' }, }
+        )
+        if (response.status === 200) {
+            setAuth(response.data?.full_name)
+            setTokenExpiration(response.data?.expiration)
+        } else {
+            handleBadResponse(response)
+        }
+        navigate(from, { replace: true })
+    }
 
     return (
         <form onSubmit={handleLoginSubmit} className="login-form">
@@ -81,7 +84,9 @@ function LoginForm(status = 'empty') {
                     ref={emailRef}
                     required
                 />
-                <PasswordInput pwdRef={pwdRef} />
+                <PasswordInput
+                    pwdRef={pwdRef}
+                />
             </div>
             <div className="forgot-password-container">
                 <a id="forgot-password" href="/">Forgot Password?</a>

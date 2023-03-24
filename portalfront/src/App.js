@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 import LoginWindow from './components/forms/Login';
 import SignUpWindow from './components/forms/SignUp';
@@ -7,6 +7,7 @@ import SubscriptionWindow from './components/forms/Subscription';
 import CheckoutWindow from './components/forms/Checkout';
 import PrivateRoutes from './utils/PrivateRoutes';
 import "./style/gateway.css"
+import { AuthProvider } from './context/AuthContext';
 
 // import { loadStripe } from '@stripe/stripe-js';
 // import { Elements } from '@stripe/react-stripe-js';
@@ -23,18 +24,23 @@ const Dashboard = () => {
 }
 
 function App() {
+
     return (
         <main>
-            <Routes>
-                <Route element={<PrivateRoutes />} >
-                    <Route path="/home" element={<Dashboard />} />
-                </Route>
-                <Route path="/subscription" element={<SubscriptionWindow />} />
-                <Route path="/checkout" element={<CheckoutWindow />} />
-                <Route exact path="/login" element={<LoginWindow />} />
-                <Route path="/register" element={<SignUpWindow />} />
-            </Routes>
-        </main>
+            <BrowserRouter>
+                <AuthProvider>
+                    <Routes>
+                        <Route element={<PrivateRoutes />} >
+                            <Route path="/home" element={<Dashboard />} />
+                        </Route>
+                        <Route path="/subscriptions" element={<SubscriptionWindow />} />
+                        <Route path="/checkout" element={<CheckoutWindow />} />
+                        <Route exact path="/login" element={<LoginWindow />} />
+                        <Route path="/register" element={<SignUpWindow />} />
+                    </Routes>
+                </AuthProvider>
+            </BrowserRouter>
+        </main >
     )
 }
 

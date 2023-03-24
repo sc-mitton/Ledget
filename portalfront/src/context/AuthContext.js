@@ -1,6 +1,6 @@
 import React from 'react';
 import { createContext, useState, useEffect } from "react";
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 
 const AuthContext = createContext();
@@ -8,6 +8,7 @@ export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState({});
+    const navigate = useNavigate();
     const [tokenExpiration, setTokenExpiration] = useState('');
     const [loading, setLoading] = useState(true);
 
@@ -21,9 +22,10 @@ export const AuthProvider = ({ children }) => {
         if (response.status === 200) {
             setAuth(response.data.full_name)
             setTokenExpiration(response.data.expiration)
+        } else if (response.status === 401) {
+            logout()
         } else {
-            console.log('Error...')
-            // logout()
+            // TODO handle error with refreshing token
         }
 
         if (loading) {
@@ -31,10 +33,19 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    let logout = () => {
-        // TODO
-        setAuth({})
-        setTokenExpiration('')
+    let logout = async () => {
+        let response = await api.post(
+            'logout/',
+            { headers: { 'Content-Type': 'application/json' } },
+            { withCredentials: true }
+        )
+        if (response.status === 200) {
+            setAuth({})
+            setTokenExpiration('')
+            navigate('/login')
+        } else {
+            // TODO handle error with logging out
+        }
     }
 
     // Get the interval of the token expiration
@@ -67,7 +78,7 @@ export const AuthProvider = ({ children }) => {
 
     }, [tokenExpiration, auth])
 
-    // The context data is what is passed to
+    // The context data is what is passed to the child components
     const contextData = {
         auth,
         setAuth,

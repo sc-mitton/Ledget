@@ -9,7 +9,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
-    TokenRefreshView
+    TokenRefreshView,
+    TokenBlacklistView
 )
 from rest_framework_simplejwt.exceptions import TokenError
 from django.core.exceptions import ValidationError
@@ -143,3 +144,22 @@ class CookieTokenRefreshView(TokenRefreshView):
             del response.data['access']
 
         return super().finalize_response(request, response, *args, **kwargs)
+
+
+class LogoutView(TokenBlacklistView):
+    """Custom view for logging out a user."""
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(
+            data=request.COOKIES,
+        )
+
+        # validating the token will blacklist it
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            return Response({'error': str(e)}, status=HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.validated_data, status=HTTP_200_OK)

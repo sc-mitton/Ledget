@@ -22,7 +22,6 @@ function CheckoutForm() {
 
 function CheckoutWindow() {
     return (
-
         <div className='window checkout-window'>
             <div className="app-logo-subscription" >
                 <img src={logo} alt="Ledget" />

@@ -11,44 +11,55 @@ import PasswordInput from "./PasswordInput"
 import AuthContext from "../../context/AuthContext"
 import api from "../../api/axios"
 
-
 function SignUpForm() {
-    const { setAuth, setTokenExpiration } = React.useContext(AuthContext);
-
-    const [error, setError] = useState(null);
-    const [errMsg, setErrMsg] = useState('');
     const navigate = useNavigate();
 
-    const errRef = useRef('');
+    const { setAuth, setTokenExpiration } = React.useContext(AuthContext);
+    const [errMsg, setErrMsg] = useState('');
+
+    const emailRef = useRef('');
     const pwdRef = useRef('');
     const confirmPwdRef = useRef('');
-    const emailRef = useRef('');
+    const errRef = useRef('');
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-
-        const password = event.target.password.value;
-        const confirmPassword = event.target.confirmPassword.value;
-        if (password !== confirmPassword) {
-            setError('Passwords do not match.');
-            return;
+    // Handle bad responses from the server
+    const handleBadResponse = (response) => {
+        if (response.status === 400) {
+            setErrMsg('That email is already taken.')
+        } else if (response.status === 408) {
+            setErrMsg('Unable to reach server, please try again later.')
+        } else if (response.status === 404) {
+            setErrMsg('404 Resource not found.')
+        } else {
+            setErrMsg('Sign up failed.');
         }
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
         try {
-
-
-
-            navigate('/home')
-        } catch (error) {
-
-
-            setError(error.message);
-        } finally {
-
-
-            setError(null);
+            registerUser(event)
+        } catch (err) {
+            setErrMsg('Sign up failed.');
         }
     }
+
+    const registerUser = async () => {
+        console.log(pwdRef.current.value)
+        const response = await api.post(
+            'user/',
+            { 'email': emailRef.current.value, 'password': pwdRef.current.value },
+            { 'headers': { 'Content-Type': 'application/json' } }
+        )
+        if (response.status === 201) {
+            setAuth(response.data?.full_name)
+            setTokenExpiration(response.data?.expiration)
+            navigate('/subscriptions')
+        } else {
+            handleBadResponse(response);
+        }
+    }
+
 
     return (
         <form onSubmit={handleSubmit} className="sign-up-form" method="post">
@@ -68,9 +79,9 @@ function SignUpForm() {
                 />
             </div>
             <PasswordInput
+                confirmPassword={true}
                 pwdRef={pwdRef}
                 confirmPwdRef={confirmPwdRef}
-                confirmPassword={true}
             />
             <div>
                 <input type="submit" id="sign-up" value="Sign Up" />

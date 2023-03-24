@@ -5,7 +5,9 @@ from django.conf import settings
 from rest_framework.test import APIClient
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 
+import jwt
 from unittest import skip # noqa
 from datetime import datetime, timedelta
 
@@ -63,7 +65,7 @@ class TestCoreApiViews(TestCase):
         self.assertIn('email', response.data['error'])
 
     def test_token_endpoint_returns_jwt_pair(self):
-        """Test that the token endpoint returns a JWT pair."""
+        """Test that the token endpoint returns a JWT pair when logging in."""
         payload = {'email': self.email, 'password': self.password}
         response = self.client.post(
             reverse('token_obtain_pair'),
@@ -76,7 +78,7 @@ class TestCoreApiViews(TestCase):
         self.assertIn('access', response.cookies)
 
     def test_refresh_token(self):
-        """Test that the refresh token endpoint returns a new JWT pair."""
+        """Test that the refresh token endpoint returns a new access token."""
         payload = {'email': self.email, 'password': self.password}
         response = self.client.post(
             reverse('token_obtain_pair'),
@@ -84,15 +86,14 @@ class TestCoreApiViews(TestCase):
             format='json',
             secure=True
         )
+        access_token1 = response.cookies['access']
 
         response = self.client.post(
             reverse('token_refresh'),
-            format='json',
             secure=True
         )
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('access', response.cookies)
+        self.assertNotEqual(response.cookies['access'], access_token1)
 
     def test_error_using_expired_refresh_token(self):
         """Test that trying to obtain a new JWT pair using an expired
@@ -112,4 +113,42 @@ class TestCoreApiViews(TestCase):
             format='json',
             secure=True,
         )
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_logout(self):
+        """Test that the logout endpoint deletes the refresh token from
+        the cookies and blacklists it."""
+
+        # Make sure client has a refresh token
+        response = self.client.post(
+            reverse('token_obtain_pair'),
+            {'email': self.email, 'password': self.password},
+            format='json',
+            secure=True
+        )
+        refresh_token = response.cookies['refresh']
+
+        # Log out the user
+        response = self.client.post(
+            reverse('logout'),
+            format='json',
+            secure=True
+        )
+
+        # Make sure cookies are unset
+        self.assertNotIn('refresh', response.cookies)
+        self.assertNotIn('access', response.cookies)
+
+        # Make sure the token is blacklisted
+        decoded_token = jwt.decode(
+            refresh_token.value,
+            settings.SECRET_KEY,
+            algorithms=['HS256']
+        )
+        jti = decoded_token.get("jti")
+        self.assertEqual(
+            BlacklistedToken.objects.filter(token__jti=jti).exists(), True
+        )
+
+        response = self.client.post(reverse('token_refresh'), secure=True)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
