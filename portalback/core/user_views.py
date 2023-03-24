@@ -1,7 +1,8 @@
 
 from rest_framework.status import (
     HTTP_201_CREATED,
-    HTTP_200_OK
+    HTTP_200_OK,
+    HTTP_400_BAD_REQUEST
 )
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -12,9 +13,9 @@ from rest_framework_simplejwt.views import (
 )
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework.exceptions import ValidationError
 from django.conf import settings
 from django.contrib.auth import get_user_model
-
 
 import jwt
 from .serializers import (
@@ -55,6 +56,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
     in order to set the refresh token as a HTTP only cookie."""
 
     def finalize_response(self, request, response, *args, **kwargs):
+
         if response.data.get('refresh'):
             response.set_cookie(
                 'refresh',
@@ -83,11 +85,16 @@ class CreateUserView(CookieTokenObtainPairView):
     def post(self, request, *args, **kwargs):
 
         user_serializer = UserSerializer(data=request.data)
-        if user_serializer.is_valid(raise_exception=True):
-            get_user_model().objects.create_user(
-                email=request.data['email'],
-                password=request.data['password']
-            )
+
+        try:
+            user_serializer.is_valid(raise_exception=True)
+        except ValidationError as e:
+            return Response(e.args[0], status=HTTP_400_BAD_REQUEST)
+
+        get_user_model().objects.create_user(
+            email=request.data['email'],
+            password=request.data['password']
+        )
 
         response = super().post(request, *args, **kwargs)
         response.status_code = HTTP_201_CREATED

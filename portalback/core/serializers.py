@@ -7,7 +7,6 @@ from rest_framework_simplejwt.serializers import (
     TokenRefreshSerializer
 )
 from rest_framework_simplejwt.exceptions import InvalidToken
-from rest_framework.exceptions import ValidationError
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -17,6 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
         write_only_fields = ('password')
         op_kwargs = {'first_name': {'required': False},
                      'last_name': {'required': False}}
+        extra_kwargs = {'email': {'validators': []}}
 
     def create(self, validated_data):
         return get_user_model().objects.create_user(**validated_data)
@@ -29,24 +29,22 @@ class UserSerializer(serializers.ModelSerializer):
             user.save()
         return user
 
-    def validate(self, data):
-        email = data.get('email')
-        password = data.get('password')
+    def validate_email(self, value):
+        if get_user_model().objects.filter(email=value).exists():
+            raise serializers.ValidationError('Email is already taken.',
+                                              code='unique')
+        if not value:
+            raise serializers.ValidationError('Email is required.')
+        return value
 
-        # validate email
-        if not email:
-            raise ValidationError('Email is required.')
-        if get_user_model().objects.filter(email=email).exists():
-            raise ValidationError('Email is already taken.')
-
+    def validate_password(self, value):
         # validate password
-        if not password:
-            raise ValidationError('Password is required')
-        if len(password) < 8:
-            raise ValidationError(
+        if not value:
+            raise serializers.ValidationError('Password is required')
+        if len(value) < 8:
+            raise serializers.ValidationError(
                 'Password must be at least 8 characters long')
-
-        return data
+        return value
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):

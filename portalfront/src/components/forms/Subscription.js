@@ -82,23 +82,23 @@ function ContinueButton() {
 }
 
 function SubscriptionForm() {
-    let [subscription, setSubscription] = useState('monthly')
+    let [subscriptionType, setSubscriptionType] = useState('month-to-month')
     naviagte = useNavigate()
 
-    const handleLoginSubmit = async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const response = await apiAuth.post(
             'checkout-session/',
-            { 'email': emailRef.current.value, 'password': pwdRef.current.value }
+            { 'subscription-type': subscriptionType }
         ).then(response => {
             // TO DO
         }).catch((error) => {
             if (error.response) {
-                setErrMsg(error.response.data?.detail)
+                setErrMsg(error.response.status)
             } else if (error.request) {
                 setErrMsg("Server is not responding")
             } else {
-                setErrMsg("Hmmm, something went wrong, please try again.")
+                setErrMsg("Hmm, something went wrong, please try again.")
             }
         })
     }
@@ -107,20 +107,20 @@ function SubscriptionForm() {
         <form onSubmit={handleSubmit} className="subscription-form" method="post">
             <div className="subscription-plans">
                 <Subscription
-                    id="monthly"
-                    value="monthly"
+                    id="month-to-month"
+                    value="month-to-month"
                     subscriptionTitle="MONTHLY"
                     subscriptionPrice="$7"
-                    checked={subscription === 'monthly'}
-                    onChange={(e) => { setSubscription(e.target.value) }}
+                    checked={subscription === 'month-to-month'}
+                    onChange={(e) => { setSubscriptionType(e.target.value) }}
                 />
                 <Subscription
-                    id="yearly"
-                    value="yearly"
+                    id="year"
+                    value="year"
                     subscriptionTitle="YEARLY"
                     subscriptionPrice="$5"
-                    checked={subscription === 'yearly'}
-                    onChange={(e) => { setSubscription(e.target.value) }}
+                    checked={subscription === 'year'}
+                    onChange={(e) => { setSubscriptionType(e.target.value) }}
                 />
             </div>
             <FinePrint subscription={subscription} />

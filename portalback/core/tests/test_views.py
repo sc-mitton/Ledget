@@ -8,10 +8,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 
 import jwt
-from unittest import skip # noqa
+from unittest import skip  # noqa
 from datetime import datetime, timedelta
-
-USER_ENDPOINT = reverse('user')
 
 
 class TestCoreApiViews(TestCase):
@@ -38,7 +36,7 @@ class TestCoreApiViews(TestCase):
         password = 'testpassword123'
         payload = {'email': email, 'password': password}
         response = self.client.post(
-            USER_ENDPOINT,
+            reverse('user'),
             payload,
             format='json',
             secure=True
@@ -69,11 +67,13 @@ class TestCoreApiViews(TestCase):
         exists fails."""
         payload = {'email': self.email, 'password': self.password}
         response = self.client.post(
-            USER_ENDPOINT,
+            reverse('user'),
             data=payload,
             format='json',
             secure=True
         )
+
+        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('email', response.data.keys())
 

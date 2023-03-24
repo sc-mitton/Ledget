@@ -39,11 +39,11 @@ function LoginForm() {
             navigate(from, { replace: true })
         }).catch((error) => {
             if (error.response) {
-                setErrMsg(error.response.data?.detail)
+                setErrMsg(error.response.status)
             } else if (error.request) {
                 setErrMsg("Server is not responding")
             } else {
-                setErrMsg("Hmmm, something went wrong, please try again.")
+                setErrMsg("Hmm, something went wrong, please try again.")
             }
         })
     }

@@ -3,7 +3,8 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
-    HTTP_201_CREATED
+    HTTP_201_CREATED,
+    HTTP_303_SEE_OTHER
 )
 from django.conf import settings
 import stripe
@@ -55,4 +56,22 @@ class Subscription(APIView):
 class CheckoutSession(APIView):
 
     def post(self, request, *args, **kwargs):
-        pass
+        try:
+            prices = stripe.Price.list(
+                lookup_keys=[request.data['subscription-type']]
+            )
+
+            checkout_session = stripe.checkout.Session.create(
+                line_items=[
+                    {
+                        'price': prices.data[0].id,
+                        'quantity': 1
+                    }
+                ],
+                mode='subscription',
+                success_url=settings.REACT_URL + '?success=true',
+                cancel_url=settings.REACT_URL + '?canceled=true'
+            )
+            return Response(checkout_session.url, HTTP_303_SEE_OTHER)
+        except Exception as e:
+            return Response({'error': e}, status=HTTP_400_BAD_REQUEST)

@@ -39,12 +39,11 @@ function SignUpForm() {
             navigate(from, { replace: true })
         }).catch((error) => {
             if (error.response) {
-                console.log(error.response.data)
-                setErrMsg('')
+                setErrMsg(error.response.status)
             } else if (error.request) {
                 setErrMsg("Server is not responding.")
             } else {
-                setErrMsg("Hmmm, something went wrong, please try again.")
+                setErrMsg("Hmm, something went wrong, please try again.")
             }
         })
     }

@@ -11,6 +11,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 ALLOWED_HOSTS = ['localhost', 'ledget.app']
 DOMAIN_URL = "https://ledget.app:8000/"
+REACT_URL = "https://ledget.app:3000/"
 
 # Stripe
 STRIPE_SK = os.getenv('STRIPE_SK_TEST')
