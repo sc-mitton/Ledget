@@ -1,8 +1,9 @@
 import React from "react";
 
 const Checkbox = (props) => {
-    const { id, text } = props;
-    checkboxRef = props.ref
+    let id = props.id
+    let text = props.text
+    let checkRef = props.checkRef
 
     return (
         <div className="checkbox-container">
@@ -11,7 +12,7 @@ const Checkbox = (props) => {
                     <polyline points="1.5 6 4.5 9 10.5 1" strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' />
                 </symbol>
             </svg>
-            <input className="checkbox-input" id={id} ref={checkboxRef} type="checkbox" />
+            <input className="checkbox-input" id={id} ref={checkRef} type="checkbox" />
             <label className="checkbox" htmlFor={id} onSubmit={props.onSubmit}>
                 <span>
                     <svg>

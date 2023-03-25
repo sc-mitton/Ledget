@@ -3,14 +3,10 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 
-import Checkmark from './Inputs';
+import Checkbox from './Inputs';
 import logo from '../../assets/images/logo.svg';
 import apiAuth from '../../api/axios';
 
-
-const appearance = {
-    theme: 'minimal',
-};
 
 const Subscription = (props) => {
     return (
@@ -28,9 +24,9 @@ const Subscription = (props) => {
 
 function FinePrint(props) {
 
-    const nodeRef = React.useRef(null);
+    const nodeRef = useRef(null);
     const finePrint = () => {
-        if (props.subscription === 'monthly') {
+        if (props.subscriptionType === 'month-to-month') {
             return <span>Month-to-Month</span>
         } else {
             return <span>Billed monthly for 12 months</span>
@@ -41,7 +37,7 @@ function FinePrint(props) {
         <div>
             <SwitchTransition mode="out-in">
                 <CSSTransition
-                    key={props.subscription}
+                    key={props.subscriptionType}
                     classNames="fine-print"
                     timeout={150}
                     nodeRef={nodeRef}
@@ -84,12 +80,12 @@ function ContinueButton() {
 function SubscriptionForm() {
     let [subscriptionType, setSubscriptionType] = useState('month-to-month')
     let freeTrialRef = useRef()
-    naviagte = useNavigate()
+    let navigate = useNavigate()
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const response = await apiAuth.post(
-            'subscription/',
+            '/api/subscription/',
             {
                 'subscription-type': subscriptionType,
                 'free-trial': freeTrialRef.current.checked
@@ -115,7 +111,7 @@ function SubscriptionForm() {
                     value="month-to-month"
                     subscriptionTitle="MONTHLY"
                     subscriptionPrice="$7"
-                    checked={subscription === 'month-to-month'}
+                    checked={subscriptionType === 'month-to-month'}
                     onChange={(e) => { setSubscriptionType(e.target.value) }}
                 />
                 <Subscription
@@ -123,12 +119,12 @@ function SubscriptionForm() {
                     value="year"
                     subscriptionTitle="YEARLY"
                     subscriptionPrice="$5"
-                    checked={subscription === 'year'}
+                    checked={subscriptionType === 'year'}
                     onChange={(e) => { setSubscriptionType(e.target.value) }}
                 />
             </div>
-            <FinePrint subscription={subscription} />
-            <Checkmark id='free-trial' text="Start 14-day free trial" ref={freeTrialRef} />
+            <FinePrint subscriptionType={subscriptionType} />
+            <Checkbox id='free-trial' text="Start 14-day free trial" checkRef={freeTrialRef} />
             <ContinueButton />
         </form >
     )

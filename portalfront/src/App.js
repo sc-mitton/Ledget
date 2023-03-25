@@ -4,7 +4,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import LoginWindow from './components/forms/Login';
 import SignUpWindow from './components/forms/SignUp';
 import SubscriptionWindow from './components/forms/Subscription';
-import CheckoutWindow from './components/forms/Checkout';
+import Checkout from './components/forms/Checkout';
 import PrivateRoutes from './utils/PrivateRoutes';
 import { AuthProvider } from './context/AuthContext';
 import "./style/gateway.css"
@@ -31,7 +31,8 @@ function App() {
                         <Route exact path="/login" element={<LoginWindow />} />
                         <Route path="/register" element={<SignUpWindow />} />
                         <Route path="/subscription" element={<SubscriptionWindow />} />
-                        <Route path="/checkout" element={<CheckoutWindow />} />
+                        <Route path="/subscription" element={<SubscriptionWindow />} />
+                        <Route path="/checkout" element={<Checkout />} />
                     </Routes>
                 </AuthProvider>
             </BrowserRouter>

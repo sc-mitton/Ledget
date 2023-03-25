@@ -1,36 +1,18 @@
 import React from 'react';
-import { useState } from 'react';
-import logo from '../../assets/images/logo.svg';
 
-const appearance = {
-    theme: 'minimal',
-};
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+import Payment from './Payment';
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST)
 
 
-function CheckoutForm() {
-    let [subscription, setSubscription] = useState('')
-
-    const handleSubscriptionChange = (event) => {
-        setSubscription(event.target.value)
-    }
-
+export default function Checkout() {
     return (
-        <form action="/create-checkout-session" className="checkout-form" method="post">
-        </form >
+        <Elements stripe={stripePromise}>
+            <Payment />
+        </Elements>
     )
 };
 
-function CheckoutWindow() {
-    return (
-        <div className='window checkout-window'>
-            <div className="app-logo-subscription" >
-                <img src={logo} alt="Ledget" />
-            </div>
-            <div className="checkout-form-container">
-                <CheckoutForm />
-            </div>
-        </div>
-    )
-};
-
-export default CheckoutWindow
