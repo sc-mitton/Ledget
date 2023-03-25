@@ -30,7 +30,7 @@ function App() {
                         </Route>
                         <Route exact path="/login" element={<LoginWindow />} />
                         <Route path="/register" element={<SignUpWindow />} />
-                        <Route path="/subscriptions" element={<SubscriptionWindow />} />
+                        <Route path="/subscription" element={<SubscriptionWindow />} />
                         <Route path="/checkout" element={<CheckoutWindow />} />
                     </Routes>
                 </AuthProvider>
@@ -38,35 +38,5 @@ function App() {
         </main >
     )
 }
-
-// const addStripeElements = (Component) => {
-//     const [clientSecret, setClientSecret] = useState(null);
-
-//     useEffect(() => {
-//         // Make an API request to your server to get the client secret
-//         axios.post('/api/subscription', { /* add any necessary parameters */ })
-//             .then(response => {
-//                 setClientSecret(response.data.client_secret);
-//             })
-//             .catch(error => {
-//                 console.error('Error getting client secret:', error);
-//             });
-//     }, []);
-
-//     const appearance = {
-//         theme: 'minimal',
-//     };
-
-//     const options = {
-//         clientSecret,
-//         appearance
-//     }
-
-//     return (
-//         <Elements stripe={StripePro} options={options}>
-//             <Component />
-//         </Elements>
-//     )
-// }
 
 export default App;

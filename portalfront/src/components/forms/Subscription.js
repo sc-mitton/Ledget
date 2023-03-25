@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 
@@ -83,13 +83,17 @@ function ContinueButton() {
 
 function SubscriptionForm() {
     let [subscriptionType, setSubscriptionType] = useState('month-to-month')
+    let freeTrialRef = useRef()
     naviagte = useNavigate()
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const response = await apiAuth.post(
-            'checkout-session/',
-            { 'subscription-type': subscriptionType }
+            'subscription/',
+            {
+                'subscription-type': subscriptionType,
+                'free-trial': freeTrialRef.current.checked
+            }
         ).then(response => {
             // TO DO
         }).catch((error) => {
@@ -124,7 +128,7 @@ function SubscriptionForm() {
                 />
             </div>
             <FinePrint subscription={subscription} />
-            <Checkmark id='free-trial' text="Start 14-day free trial" />
+            <Checkmark id='free-trial' text="Start 14-day free trial" ref={freeTrialRef} />
             <ContinueButton />
         </form >
     )

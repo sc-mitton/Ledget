@@ -62,9 +62,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,
-                                related_name='customer')
-    stripe_customer_id = models.CharField(max_length=255, unique=True)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='customer'
+    )
+    stripe_customer_id = models.CharField(
+        primary_key=True,
+        max_length=255,
+        unique=True
+    )
+    is_active = models.BooleanField(default=False)
+    signup_date = models.DateTimeField(auto_now_add=True)
+    trial_end = models.DateTimeField(null=True)
     stripe_subscription_id = models.CharField(max_length=255)
 
     def __str__(self):

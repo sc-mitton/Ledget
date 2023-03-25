@@ -36,7 +36,7 @@ function SignUpForm() {
         ).then(response => {
             setAuth(response.data?.full_name)
             setTokenExpiration(response.data?.expiration)
-            navigate(from, { replace: true })
+            navigate('subscription/')
         }).catch((error) => {
             if (error.response) {
                 setErrMsg(error.response.status)

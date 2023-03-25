@@ -70,16 +70,3 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         else:
             raise InvalidToken(
                 "No valid token found in cookie 'token'")
-
-
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = ['user_id', 'first_name', 'last_name', 'stripe_customer_id',
-                  'stripe_subscription_id']
-        read_only_fields = ['user_id', 'stripe_customer_id',
-                            'stripe_subscription_id']
-        extra_kwargs = {
-            'first_name': {'required': True},
-            'last_name': {'required': True},
-        }
