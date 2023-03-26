@@ -240,7 +240,7 @@
     width: 40%;
     max-width: 250px;
     margin: 0 auto;
-    padding: 24px;
+    padding: 32px;
     margin-top: 128px;
 }
 
@@ -383,15 +383,23 @@ button[type="submit"]:hover {
 
 .checkout-window {
     width: 40%;
-    max-width: 400px;
+    max-width: 300px;
     margin: 0 auto;
-    padding: 24px;
+    padding: 32px;
     margin-top: 128px;
 }
 
-/* name inputs */
-/* .name-inputs {
+.location-info-container {
     display: flex;
+    flex-flow: row wrap;
+    margin-bottom: 16px;
+}
+
+
+/* name inputs */
+.name-inputs {
+    display: flex;
+    margin: 16px 0px;
 }
 
 .name-inputs input {
@@ -399,9 +407,66 @@ button[type="submit"]:hover {
 }
 
 .name-inputs input[type="text"]:first-child {
-    margin-right: 8px;
+    margin-right: 4px;
+    margin-left: 4px;
 }
 
 .name-inputs input[type="text"]:last-child {
-    margin-left: 8px;
-} */
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+
+.payment-options {
+    width: 100%;
+    padding: 0 8px;
+}
+
+.card-container {
+    border-bottom: 2px solid var(--border-bottom-gray);
+    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
+    padding: 8px 2px 8px 4px;
+    margin: 6px 4px;
+    box-sizing: border-box;
+}
+
+/* Order Summary */
+.order-summary-container {
+    text-align: left;
+    display: flex;
+    justify-content: end;
+    border-radius: 4px;
+    padding: 12px;
+}
+
+.order-summary-container tr td {
+    text-align: right;
+}
+
+.order-summary-container tr td:first-child {
+    font-weight: 500;
+}
+
+#subscribe-button {
+    width: 100%;
+}
+
+/* Stripe */
+.stripe-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 16px;
+    opacity: .3;
+}
+
+.stripe-logo-container {
+    font-weight: 500;
+}
+
+.stripe-logo {
+    position: relative;
+    top: .2em;
+    height: 25px;
+}

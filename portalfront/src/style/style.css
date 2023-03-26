@@ -7,7 +7,8 @@
     --main-text-gray: rgb(36, 36, 36);
     --button-gray: rgb(70, 70, 70);
     --button-hover-gray: rgb(36, 36, 36);
-    --border-bottom-gray: rgb(167, 167, 167);
+    --border-bottom-gray: #a7a7a7;
+    --background-window-gray: rgb(241, 241, 241);
     --standard-drop-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
     /* --window-box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 20px, rgba(0, 0, 0, 0.14) 0px 6px 6px; */
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
@@ -20,7 +21,6 @@
     --hover-red: rgb(248, 98, 118);
     --alert-red: rgb(243, 80, 80);
     --window-box-gray: rgb(255, 252, 252);
-
     --inactive-gray: rgb(230, 230, 230);
 }
 

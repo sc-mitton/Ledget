@@ -31,7 +31,6 @@ function App() {
                         <Route exact path="/login" element={<LoginWindow />} />
                         <Route path="/register" element={<SignUpWindow />} />
                         <Route path="/subscription" element={<SubscriptionWindow />} />
-                        <Route path="/subscription" element={<SubscriptionWindow />} />
                         <Route path="/checkout" element={<Checkout />} />
                     </Routes>
                 </AuthProvider>
