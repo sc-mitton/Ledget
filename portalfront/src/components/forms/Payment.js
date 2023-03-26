@@ -6,13 +6,10 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import logo from '../../assets/images/logo.svg';
 import stripelogo from '../../assets/images/stripelogo.svg';
 
-const appearance = {
-    theme: 'minimal',
-};
-
 
 function PaymentForm(props) {
     let [subscription, setSubscription] = useState('')
+    let [formComplete, setFormComplete] = useState(false)
     const stripe = useStripe();
     const elements = useElements();
 
@@ -37,11 +34,8 @@ function PaymentForm(props) {
 
     return (
         <form action="/create-checkout-session" className="checkout-form" method="post">
-            <div className="name-inputs">
-                <input type="text" name="first-name" placeholder="First Name" />
-                <input type="text" name="last-name" placeholder="Last Name" />
-            </div>
             <div className="card-container">
+                <h4 id="card-input-header">Card</h4>
                 <CardElement options={cardStyle} />
             </div>
             <div className="order-summary-container">
@@ -49,21 +43,41 @@ function PaymentForm(props) {
                     <tbody>
                         <tr>
                             <td>Plan:</td>
-                            <td>$7/mo</td>
+                            <td>$5/mo</td>
                         </tr>
                         <tr>
                             <td>First Charge:</td>
                             <td>4/8/23</td>
                         </tr>
+                        <tr>
+                            <td>Renews:</td>
+                            <td>Yearly</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
             <div className="subscribe-button-container">
-                <input type="submit" value="Subscribe" id="subscribe-button" />
+                <input type="submit" value="Start Free Trial" id="subscribe-button" />
             </div>
         </form >
     )
 };
+
+const PoweredBy = () => {
+    return (
+        <div className="stripe-logo-container">
+            <div>
+                powered by
+            </div>
+            <div>
+                <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
+                    <img className="stripe-logo" src={stripelogo} alt="Stripe" />
+                </a>
+            </div>
+        </div>
+    )
+}
+
 
 function PaymentWindow() {
     return (
@@ -76,16 +90,7 @@ function PaymentWindow() {
                     <PaymentForm />
                 </div>
             </div>
-            <div className="stripe-logo-container">
-                <div>
-                    powered by
-                </div>
-                <div>
-                    <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
-                        <img className="stripe-logo" src={stripelogo} alt="Stripe" />
-                    </a>
-                </div>
-            </div>
+            < PoweredBy />
         </div>
     )
 };

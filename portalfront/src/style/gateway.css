@@ -70,7 +70,7 @@
 
 .or-continue-with {
     text-align: center;
-    margin-top: 48px;
+    margin-top: 32px;
 }
 
 .social-buttons-container {
@@ -165,13 +165,13 @@
 }
 
 .hide-password-icon {
-    padding-bottom: 4px;
-    top: 1.1em;
+    padding-bottom: 5px;
+    top: .9em;
 }
 
 .show-password-icon {
     padding-bottom: 3px;
-    top: .9em;
+    top: .75em;
 }
 
 /* ====================================================== */
@@ -247,7 +247,7 @@
 .subscription-window h3 {
     text-align: center;
     margin-top: 36px;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
 }
 
 .checkout-form {
@@ -283,12 +283,12 @@
 
 }
 
-.subscription-price {
+.unit-amount {
     font-size: 1.6em;
     color: var(--logo-dark);
 }
 
-.subscription-price span {
+.unit-amount span {
     font-size: .55em;
     color: var(--logo-dark);
 }
@@ -310,7 +310,7 @@ input[type="radio"]:checked+label * {
     color: var(--check-box-blue);
 }
 
-.fine-print {
+.description {
     font-size: 12px;
     text-align: center;
     margin-top: 12px;
@@ -318,26 +318,26 @@ input[type="radio"]:checked+label * {
     transition: all 0.3s ease;
 }
 
-.fine-print span {
+.description span {
     color: var(--check-box-blue);
 }
 
-.fine-print-enter {
+.description-enter {
     opacity: 0;
     transform: translateX(-10px);
 }
 
-.fine-print-enter-active {
+.description-enter-active {
     opacity: 1;
     transform: translateX(0);
 }
 
-.fine-print-exit {
+.description-exit {
     opacity: 1;
     transform: translateX(0);
 }
 
-.fine-print-exit-active {
+.description-exit-active {
     opacity: 0;
     transform: translateX(10px);
 
@@ -353,6 +353,7 @@ input[type="radio"]:checked+label * {
 }
 
 .continue-to-payment-button-container {
+    margin-top: 32px;
     display: flex;
     justify-content: center;
 }
@@ -396,37 +397,16 @@ button[type="submit"]:hover {
 }
 
 
-/* name inputs */
-.name-inputs {
-    display: flex;
-    margin: 16px 0px;
-}
-
-.name-inputs input {
-    width: 50%;
-}
-
-.name-inputs input[type="text"]:first-child {
-    margin-right: 4px;
-    margin-left: 4px;
-}
-
-.name-inputs input[type="text"]:last-child {
-    margin-left: 4px;
-    margin-right: 4px;
-}
-
-
-.payment-options {
-    width: 100%;
-    padding: 0 8px;
+/* Card Element */
+#card-input-header {
+    margin: 0 0 12px -4px;
 }
 
 .card-container {
     border-bottom: 2px solid var(--border-bottom-gray);
     box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    padding: 8px 2px 8px 4px;
-    margin: 6px 4px;
+    padding: 8px 0px 10px 4px;
+    margin: 4px;
     box-sizing: border-box;
 }
 
@@ -436,7 +416,8 @@ button[type="submit"]:hover {
     display: flex;
     justify-content: end;
     border-radius: 4px;
-    padding: 12px;
+    padding: 12px 8px;
+    margin: 12px 0 0 0;
 }
 
 .order-summary-container tr td {
@@ -445,6 +426,7 @@ button[type="submit"]:hover {
 
 .order-summary-container tr td:first-child {
     font-weight: 500;
+    padding-right: 8px;
 }
 
 #subscribe-button {
@@ -457,7 +439,7 @@ button[type="submit"]:hover {
     align-items: center;
     justify-content: center;
     text-align: center;
-    margin-top: 16px;
+    margin-top: 12px;
     opacity: .3;
 }
 

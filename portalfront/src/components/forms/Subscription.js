@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
@@ -11,22 +11,28 @@ import apiAuth from '../../api/axios';
 const Subscription = (props) => {
     return (
         <div className="subscription">
-            <input type="radio" id={props.id} name="plan" value={props.value}
-                checked={props.checked} onChange={props.onChange} />
+            <input
+                type="radio"
+                id={props.id}
+                name="plan"
+                value={props.unitAmount}
+                checked={props.checked}
+                onChange={props.onChange}
+            />
             <label htmlFor={props.id}>
-                <div className="subscription-price">
-                    {props.subscriptionPrice}<span> / mo</span>
+                <div className="unit-amount">
+                    ${props.unitAmount}<span> / mo</span>
                 </div>
             </label>
         </div>
     )
 };
 
-function FinePrint(props) {
+function Description(props) {
 
     const nodeRef = useRef(null);
-    const finePrint = () => {
-        if (props.subscriptionType === 'month-to-month') {
+    const description = () => {
+        if (props.lookupKey === 'month-to-month') {
             return <span>Month-to-Month</span>
         } else {
             return <span>Billed monthly for 12 months</span>
@@ -37,13 +43,13 @@ function FinePrint(props) {
         <div>
             <SwitchTransition mode="out-in">
                 <CSSTransition
-                    key={props.subscriptionType}
-                    classNames="fine-print"
+                    key={props.lookupKey}
+                    classNames="description"
                     timeout={150}
                     nodeRef={nodeRef}
                 >
-                    <div className="fine-print" ref={nodeRef}>
-                        {finePrint()}
+                    <div className="description" ref={nodeRef}>
+                        {description()}
                     </div>
                 </CSSTransition>
             </SwitchTransition>
@@ -77,19 +83,15 @@ function ContinueButton() {
     )
 }
 
-function SubscriptionForm() {
-    let [subscriptionType, setSubscriptionType] = useState('month-to-month')
-    let freeTrialRef = useRef()
+function SubscriptionForm(props) {
+    let [lookupKey, setLookupKey] = useState('month-to-month')
     let navigate = useNavigate()
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const response = await apiAuth.post(
             '/api/subscription/',
-            {
-                'subscription-type': subscriptionType,
-                'free-trial': freeTrialRef.current.checked
-            }
+            { 'lookup-key': lookupKey }
         ).then(response => {
             // TO DO
         }).catch((error) => {
@@ -106,31 +108,47 @@ function SubscriptionForm() {
     return (
         <form onSubmit={handleSubmit} className="subscription-form" method="post">
             <div className="subscription-plans">
-                <Subscription
-                    id="month-to-month"
-                    value="month-to-month"
-                    subscriptionTitle="MONTHLY"
-                    subscriptionPrice="$7"
-                    checked={subscriptionType === 'month-to-month'}
-                    onChange={(e) => { setSubscriptionType(e.target.value) }}
-                />
-                <Subscription
-                    id="year"
-                    value="year"
-                    subscriptionTitle="YEARLY"
-                    subscriptionPrice="$5"
-                    checked={subscriptionType === 'year'}
-                    onChange={(e) => { setSubscriptionType(e.target.value) }}
-                />
+                {props.prices.map(price => (
+                    <Subscription
+                        key={price.lookup_key}
+                        id={price.lookup_key}
+                        unitAmount={price.unit_amount / 100}
+                        checked={lookupKey === price.lookup_key}
+                        onChange={() => setLookupKey(price.lookup_key)}
+                    />
+                ))}
             </div>
-            <FinePrint subscriptionType={subscriptionType} />
-            <Checkbox id='free-trial' text="Start 14-day free trial" checkRef={freeTrialRef} />
+            <Description lookupKey={lookupKey} />
             <ContinueButton />
         </form >
     )
 };
 
 function SubscriptionWindow() {
+    // Get the prices from the server
+    const [prices, setPrices] = useState([])
+    const [pricesLoaded, setPricesLoaded] = useState(false)
+
+    const fetchPrices = async () => {
+        try {
+            const response = await apiAuth.get('price/')
+            return { success: true, prices: response.data.prices }
+        } catch (error) {
+            return { success: false }
+        }
+    }
+
+    useEffect(() => {
+        (async () => {
+            setPricesLoaded(false)
+            let res = await fetchPrices()
+            if (res.success) {
+                setPrices(res.prices)
+                setPricesLoaded(true)
+            }
+        })();
+    }, [])
+
     return (
         <div className='window subscription-window'>
             <div className="app-logo-subscription" >
@@ -138,7 +156,7 @@ function SubscriptionWindow() {
             </div>
             <h3>Select a Plan</h3>
             <div className="subscription-form-container">
-                <SubscriptionForm />
+                <SubscriptionForm prices={prices} />
             </div>
         </div>
     )

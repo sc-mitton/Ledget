@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
             } else {
                 console.log("Hmmm, something went wrong, please try again.") // TODO make this better for ui
             }
+            logout()
         })
 
         if (loading) {

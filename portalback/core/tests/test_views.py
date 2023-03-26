@@ -73,7 +73,6 @@ class TestCoreApiViews(TestCase):
             secure=True
         )
 
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('email', response.data.keys())
 
@@ -165,3 +164,9 @@ class TestCoreApiViews(TestCase):
 
         response = self.client.post(reverse('token_refresh'), secure=True)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_price_list_view(self):
+        """Test that the product list view returns a list of products."""
+        response = self.client.get(reverse('price'), secure=True)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data.get('prices')), 2)
