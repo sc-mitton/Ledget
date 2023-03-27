@@ -7,7 +7,7 @@
     --main-text-gray: rgb(36, 36, 36);
     --button-gray: rgb(70, 70, 70);
     --button-hover-gray: rgb(36, 36, 36);
-    --border-bottom-gray: #a7a7a7;
+    --border-bottom-gray: #b9b9b9;
     --background-window-gray: rgb(241, 241, 241);
     --standard-drop-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
     /* --window-box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 20px, rgba(0, 0, 0, 0.14) 0px 6px 6px; */
@@ -119,6 +119,7 @@ input:focus {
     /* add a blue shadow below the input */
 }
 
+
 input:focus::placeholder {
     color: var(--check-box-blue);
 }
@@ -148,6 +149,34 @@ input::placeholder {
     color: var(--border-bottom-gray)
 }
 
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+select {
+    border-bottom: 2px solid var(--border-bottom-gray);
+    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 0;
+    padding: 8px 4px;
+    background-color: var(--window);
+}
+
+select:focus {
+    border-bottom: 2px solid var(--check-box-blue);
+    outline: none;
+    box-shadow: 0 1px 0px rgb(230, 230, 230);
+    color: var(--check-box-blue)
+}
+
+option[value=""][disabled] {
+    display: none;
+}
 
 .checkmark {
     cursor: pointer;

@@ -384,30 +384,49 @@ button[type="submit"]:hover {
 
 .checkout-window {
     width: 40%;
-    max-width: 300px;
+    max-width: 332px;
     margin: 0 auto;
     padding: 32px;
     margin-top: 128px;
 }
 
-.location-info-container {
+.inputs-container h3 {
+    margin: 20px 0 8px 2px;
+}
+
+/* Billing Info */
+#name-on-card {
+    width: 100%;
+}
+
+.location-inputs-container {
     display: flex;
-    flex-flow: row wrap;
-    margin-bottom: 16px;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.location-inputs-container input:first-child {
+    flex: 1;
+}
+
+.location-inputs-container input:last-child {
+    width: 100px;
+    margin-left: 8px;
 }
 
 
 /* Card Element */
-#card-input-header {
-    margin: 0 0 12px -4px;
-}
-
 .card-container {
     border-bottom: 2px solid var(--border-bottom-gray);
     box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     padding: 8px 0px 10px 4px;
-    margin: 4px;
+    margin: 4px 0;
     box-sizing: border-box;
+}
+
+.focus {
+    border-bottom: 2px solid var(--check-box-blue);
+    box-shadow: 0 1px 0px rgb(230, 230, 230);
 }
 
 /* Order Summary */
@@ -416,7 +435,7 @@ button[type="submit"]:hover {
     display: flex;
     justify-content: end;
     border-radius: 4px;
-    padding: 12px 8px;
+    padding: 16px 4px 20px 0;
     margin: 12px 0 0 0;
 }
 
@@ -433,7 +452,7 @@ button[type="submit"]:hover {
     width: 100%;
 }
 
-/* Stripe */
+/* Stripe Logo */
 .stripe-logo-container {
     display: flex;
     align-items: center;
