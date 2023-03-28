@@ -1,27 +1,33 @@
 :root {
-    --background-color: rgb(252, 252, 252);
-    --window: rgb(248, 248, 248);
     --logo-dark: rgb(36, 36, 36);
+
+    --background-color: rgb(252, 252, 252);
+
+    --window: rgb(248, 248, 248);
     --window-border: rgb(150, 150, 150);
-    --button-charcoal: rgb(78, 78, 78);
+    --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
+
     --main-text-gray: rgb(36, 36, 36);
     --button-gray: rgb(70, 70, 70);
     --button-hover-gray: rgb(36, 36, 36);
     --border-bottom-gray: #b9b9b9;
-    --background-window-gray: rgb(241, 241, 241);
-    --standard-drop-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
-    /* --window-box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 20px, rgba(0, 0, 0, 0.14) 0px 6px 6px; */
-    --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    --inner-drop-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
-    --check-box-hover: rgba(54, 54, 54, .06);
+
     --mute-blue: rgb(122, 166, 248);
-    --check-box-blue: rgb(107, 155, 246);
-    --mute-red: rgb(244, 119, 136);
+    --main-blue: rgb(107, 155, 246);
     --hover-blue: rgb(92, 145, 245);
+
+    --mute-red: rgb(244, 119, 136);
     --hover-red: rgb(248, 98, 118);
     --alert-red: rgb(243, 80, 80);
+
     --window-box-gray: rgb(255, 252, 252);
-    --inactive-gray: rgb(230, 230, 230);
+
+    /* Subscription Radios */
+    --inactive-gray: rgb(215, 215, 215);
+
+    /* Input Colors */
+    --input-color: rgb(237, 237, 237);
+    --input-placeholder: rgb(132, 132, 132);
 }
 
 html,
@@ -69,22 +75,25 @@ input {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-weight: 400;
     color: var(--main-text-gray);
-    background-color: var(--window);
+    background-color: var(--input-color);
     font-size: 14px;
 }
 
 input[type="text"]::placeholder,
-input[type="password"]::placeholder {
-    color: var(--border-bottom-gray);
+input[type="password"]::placeholder,
+input[type="email"]::placeholder {
+    color: var(--input-placeholder);
+    font-weight: 400;
 }
 
 input[type="text"],
 input[type="password"],
 input[type="email"] {
-    border-bottom: 2px solid var(--border-bottom-gray);
+    background-color: var(--input-color);
+    border-radius: 4px;
     box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    padding: 8px 8px;
-    margin: 4px 0;
+    padding: 8px 12px;
+    margin: 6px 0;
     box-sizing: border-box;
     height: 100%;
 }
@@ -112,7 +121,7 @@ input[type=password]:not(:placeholder-shown) {
 input:focus {
     outline: none;
     background-color: none;
-    border-bottom: 2px solid var(--check-box-blue);
+    border: 1px solid var(--main-blue);
     min-height: 100%;
     outline: none;
     box-shadow: 0 1px 0px rgb(230, 230, 230);
@@ -121,7 +130,7 @@ input:focus {
 
 
 input:focus::placeholder {
-    color: var(--check-box-blue);
+    color: var(--main-blue);
 }
 
 input:--webkit-autofill {
@@ -142,36 +151,11 @@ input:--webkit-autofill::after {
 
 input:-webkit-autofill {
     -webkit-box-shadow: inset 0 0 0px 1000px white;
-    border-bottom: 2px solid var(--check-box-blue);
+    border-bottom: 2px solid var(--main-blue);
 }
 
 input::placeholder {
     color: var(--border-bottom-gray)
-}
-
-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background: none;
-    border: none;
-    outline: none;
-    box-shadow: none;
-}
-
-select {
-    border-bottom: 2px solid var(--border-bottom-gray);
-    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    border-radius: 0;
-    padding: 8px 4px;
-    background-color: var(--window);
-}
-
-select:focus {
-    border-bottom: 2px solid var(--check-box-blue);
-    outline: none;
-    box-shadow: 0 1px 0px rgb(230, 230, 230);
-    color: var(--check-box-blue)
 }
 
 option[value=""][disabled] {
@@ -243,13 +227,13 @@ option[value=""][disabled] {
 }
 
 .checkbox:hover span:first-child {
-    border-color: var(--check-box-blue);
+    border-color: var(--main-blue);
     transform: scale(1.2);
 }
 
 .checkbox-input:checked+.checkbox span:first-child {
-    background: var(--check-box-blue);
-    border-color: var(--check-box-blue);
+    background: var(--main-blue);
+    border-color: var(--main-blue);
     animation: zoom-in-out 0.3s ease;
 }
 

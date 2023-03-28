@@ -1,4 +1,5 @@
-import React from "react";
+import React, { forwardRef } from "react";
+import Select from 'react-select';
 
 const Checkbox = (props) => {
     let id = props.id
@@ -25,4 +26,51 @@ const Checkbox = (props) => {
     )
 }
 
-export default Checkbox;
+const CustomSelect = forwardRef(({ ...Props }, ref) => {
+
+    let dropDownStyles = {
+        control: (baseStyles, state) => ({
+            ...baseStyles,
+            backgroundColor: "#ededed",
+            paddingLeft: "12px",
+            paddingRight: "8px",
+            borderRadius: "4px",
+            font: "inherit",
+            fontWeight: "400",
+            border: (state.isFocused) ? "1px solid #6b9bf6" : null,
+        }),
+        placeholder: (baseStyles, state) => ({
+            ...baseStyles,
+            color: "#848484"
+        }),
+        menu: (baseStyles, state) => ({
+            ...baseStyles,
+            borderRadius: "0 0 4px 4px",
+            backgroundColor: "#ededed",
+            boxShadow: "0 4px 6px -5px rgba(0, 0, 0, 0.5)",
+        }),
+        dropdownIndicator: (baseStyles, state) => ({
+            ...baseStyles,
+            color: state.isSelected ? "#242424" : "#848484",
+        }),
+        option: (baseStyles, state) => ({
+            ...baseStyles,
+            backgroundColor: state.isSelected ? "#bbd1f9" : "#ededed",
+            borderRadius: "4px",
+            padding: "4px",
+            width: "100%",
+            textAlign: "center",
+        })
+    }
+
+    return (
+        <Select
+            unstyled={true}
+            styles={dropDownStyles}
+            ref={ref}
+            {...Props}
+        />
+    )
+})
+
+export { Checkbox, CustomSelect };

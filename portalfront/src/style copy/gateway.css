@@ -63,7 +63,7 @@
 }
 
 .forgot-password-container a:hover {
-    color: var(--check-box-blue);
+    color: var(--main-blue);
 }
 
 .or-continue-with {
@@ -132,7 +132,7 @@
 }
 
 .sign-up-prompt-container a:hover {
-    color: var(--check-box-blue);
+    color: var(--main-blue);
     transition: color 0.15s ease;
 }
 
@@ -158,7 +158,7 @@
 .password-input:focus-within .show-password-icon,
 .password-input:focus-within .hide-password-icon {
     outline: none;
-    border-bottom: 2px solid var(--check-box-blue);
+    border-bottom: 2px solid var(--main-blue);
     box-shadow: 0 1px 0px rgb(230, 230, 230);
 }
 
@@ -208,7 +208,7 @@
 }
 
 .login-prompt-container a:hover {
-    color: var(--check-box-blue);
+    color: var(--main-blue);
     transition: color 0.15s ease;
 }
 
@@ -301,11 +301,11 @@ input[type="radio"]:not(checked)+label {
 }
 
 input[type="radio"]:checked+label {
-    border: 3px solid var(--check-box-blue);
+    border: 3px solid var(--main-blue);
 }
 
 input[type="radio"]:checked+label * {
-    color: var(--check-box-blue);
+    color: var(--main-blue);
 }
 
 .fine-print {
@@ -317,7 +317,7 @@ input[type="radio"]:checked+label * {
 }
 
 .fine-print span {
-    color: var(--check-box-blue);
+    color: var(--main-blue);
 }
 
 .fine-print-enter {

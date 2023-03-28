@@ -64,7 +64,7 @@
 }
 
 .forgot-password-container a:hover {
-    color: var(--check-box-blue);
+    color: var(--main-blue);
     transition: color .15s ease;
 }
 
@@ -134,7 +134,7 @@
 }
 
 .sign-up-prompt-container a:hover {
-    color: var(--check-box-blue);
+    color: var(--main-blue);
     transition: color 0.15s ease;
 }
 
@@ -152,7 +152,7 @@
     height: 1.6em;
     position: relative;
     padding: 0px 10px 0 0px;
-    border-bottom: 2px solid var(--border-bottom-gray);
+    border: 1px solid var(--border-bottom-gray);
     box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     cursor: pointer;
 }
@@ -160,7 +160,7 @@
 .password-input:focus-within .show-password-icon,
 .password-input:focus-within .hide-password-icon {
     outline: none;
-    border-bottom: 2px solid var(--check-box-blue);
+    border-bottom: 2px solid var(--main-blue);
     box-shadow: 0 1px 0px rgb(230, 230, 230);
 }
 
@@ -210,7 +210,7 @@
 }
 
 .login-prompt-container a:hover {
-    color: var(--check-box-blue);
+    color: var(--main-blue);
     transition: color 0.15s ease;
 }
 
@@ -298,16 +298,16 @@ input[type="radio"] {
 }
 
 input[type="radio"]:not(checked)+label {
-    border: 3px solid var(--inactive-gray);
+    border: 1px solid var(--inactive-gray);
     border-radius: 6px;
 }
 
 input[type="radio"]:checked+label {
-    border: 3px solid var(--check-box-blue);
+    border: 1px solid var(--main-blue);
 }
 
 input[type="radio"]:checked+label * {
-    color: var(--check-box-blue);
+    color: var(--main-blue);
 }
 
 .description {
@@ -319,7 +319,7 @@ input[type="radio"]:checked+label * {
 }
 
 .description span {
-    color: var(--check-box-blue);
+    color: var(--main-blue);
 }
 
 .description-enter {
@@ -390,42 +390,57 @@ button[type="submit"]:hover {
     margin-top: 128px;
 }
 
-.inputs-container h3 {
-    margin: 20px 0 8px 2px;
+.inputs-container h4 {
+    margin: 8px 0 8px 2px;
+}
+
+.inputs-container {
+    padding: 0 4px;
 }
 
 /* Billing Info */
 #name-on-card {
     width: 100%;
+    font-weight: 400;
 }
 
 .location-inputs-container {
     display: flex;
     align-items: center;
+    width: 100%;
     box-sizing: border-box;
 }
 
-.location-inputs-container input:first-child {
+.location-inputs-container input {
+    width: 100%;
+}
+
+#city-container {
     flex: 1;
 }
 
-.location-inputs-container input:last-child {
-    width: 100px;
-    margin-left: 8px;
+#zip-container {
+    width: 25%;
 }
 
+#state-container {
+    min-width: 20%;
+    margin: 0 8px;
+}
 
 /* Card Element */
 .card-container {
-    border-bottom: 2px solid var(--border-bottom-gray);
+    background-color: var(--input-color);
+    border-radius: 4px;
     box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    padding: 8px 0px 10px 4px;
+    z-index: 0;
+    padding: 10px 12px;
     margin: 4px 0;
     box-sizing: border-box;
 }
 
 .focus {
-    border-bottom: 2px solid var(--check-box-blue);
+    border: 1px solid var(--main-blue);
     box-shadow: 0 1px 0px rgb(230, 230, 230);
 }
 
@@ -435,7 +450,7 @@ button[type="submit"]:hover {
     display: flex;
     justify-content: end;
     border-radius: 4px;
-    padding: 16px 4px 20px 0;
+    padding: 16px 8px 20px 0;
     margin: 12px 0 0 0;
 }
 
