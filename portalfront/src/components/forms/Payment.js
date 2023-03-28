@@ -64,8 +64,9 @@ let StripeCardElement = () => {
                 fontSmoothing: "antialiased",
                 fontSize: "15px",
                 "::placeholder": {
-                    color: "#848484",
+                    color: cardFocus ? "#6b9bf6" : "#848484",
                 },
+                iconColor: cardFocus ? "#4784f6" : "#242424"
             },
             invalid: {
                 fontFamily: 'Arial, sans-serif',

@@ -121,13 +121,15 @@ input[type=password]:not(:placeholder-shown) {
 input:focus {
     outline: none;
     background-color: none;
-    border: 1px solid var(--main-blue);
     min-height: 100%;
     outline: none;
     box-shadow: 0 1px 0px rgb(230, 230, 230);
-    /* add a blue shadow below the input */
+    box-shadow: inset 0 0 0 1px var(--main-blue);
 }
 
+.CustomSelect input[type="text"] {
+    box-shadow: none;
+}
 
 input:focus::placeholder {
     color: var(--main-blue);

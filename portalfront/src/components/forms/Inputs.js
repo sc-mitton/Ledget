@@ -10,11 +10,25 @@ const Checkbox = (props) => {
         <div className="checkbox-container">
             <svg className="checkbox-symbol">
                 <symbol id="check" viewBox="0 0 12 10">
-                    <polyline points="1.5 6 4.5 9 10.5 1" strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' />
+                    <polyline
+                        points="1.5 6 4.5 9 10.5 1"
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth='2'
+                    />
                 </symbol>
             </svg>
-            <input className="checkbox-input" id={id} ref={checkRef} type="checkbox" />
-            <label className="checkbox" htmlFor={id} onSubmit={props.onSubmit}>
+            <input
+                className="checkbox-input"
+                id={id}
+                ref={checkRef}
+                type="checkbox"
+            />
+            <label
+                className="checkbox"
+                htmlFor={id}
+                onSubmit={props.onSubmit}
+            >
                 <span>
                     <svg>
                         <use xlinkHref="#check"></use>
@@ -41,7 +55,7 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
         }),
         placeholder: (baseStyles, state) => ({
             ...baseStyles,
-            color: "#848484"
+            color: "#848484",
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,
@@ -60,7 +74,11 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
             width: "100%",
             textAlign: "center",
             cursor: "pointer",
-        })
+        }),
+        input: (baseStyles, state) => ({
+            ...baseStyles,
+            backgroundColor: "#red",
+        }),
     }
 
     return (
@@ -69,6 +87,7 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
             styles={dropDownStyles}
             ref={ref}
             {...Props}
+            className="CustomSelect"
         />
     )
 })
