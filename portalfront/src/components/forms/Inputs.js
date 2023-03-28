@@ -55,11 +55,11 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
-            backgroundColor: state.isSelected ? "#bbd1f9" : "#ededed",
-            borderRadius: "4px",
+            backgroundColor: state.isSelected || state.isFocused ? "#c3d7fc" : "#ededed",
             padding: "4px",
             width: "100%",
             textAlign: "center",
+            cursor: "pointer",
         })
     }
 
