@@ -77,7 +77,7 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
         }),
         input: (baseStyles, state) => ({
             ...baseStyles,
-            backgroundColor: "#red",
+            inputMode: "text",
         }),
     }
 

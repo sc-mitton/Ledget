@@ -39,7 +39,11 @@ function LoginForm() {
             navigate(from, { replace: true })
         }).catch((error) => {
             if (error.response) {
-                setErrMsg(error.response.status)
+                if (error.response.status === 401) {
+                    setErrMsg("Wrong email or password.")
+                } else {
+                    setErrMsg(error.response.error)
+                }
             } else if (error.request) {
                 setErrMsg("Server is not responding")
             } else {

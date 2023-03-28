@@ -55,7 +55,7 @@ const PasswordInput = (props) => {
                 {pwdInput && <VisibilityIcon />}
             </div>
             {confirmPassword && (
-                <div>
+                <div className="password-input confirm">
                     <input
                         type={passwordVisible ? 'text' : 'password'}
                         id="confirm-password"

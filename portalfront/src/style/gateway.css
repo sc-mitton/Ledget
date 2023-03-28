@@ -12,7 +12,6 @@
 
 .window .error {
     margin-bottom: 4px;
-    margin-left: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,10 +20,6 @@
 
 .window .error {
     font-weight: 500;
-}
-
-.window .error img {
-    margin-right: 8px;
 }
 
 /* ====================================================== */
@@ -92,7 +87,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 1px 0px .5px var(--hover-blue);
+    border: 1px solid var(--hover-blue);
 }
 
 #google-auth-button {
@@ -106,7 +101,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 1px 0px 1px var(--hover-red);
+    border: 1px solid var(--hover-red);
 }
 
 #facebook-auth-button:hover {
@@ -138,41 +133,6 @@
     transition: color 0.15s ease;
 }
 
-/* Password Visibility */
-.password-input {
-    display: flex;
-}
-
-.password-container input[type="password"] {
-    width: 100%;
-}
-
-.hide-password-icon,
-.show-password-icon {
-    height: 1.6em;
-    position: relative;
-    padding: 0px 10px 0 0px;
-    border: 1px solid var(--border-bottom-gray);
-    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    cursor: pointer;
-}
-
-.password-input:focus-within .show-password-icon,
-.password-input:focus-within .hide-password-icon {
-    outline: none;
-    border-bottom: 2px solid var(--main-blue);
-    box-shadow: 0 1px 0px rgb(230, 230, 230);
-}
-
-.hide-password-icon {
-    padding-bottom: 5px;
-    top: .9em;
-}
-
-.show-password-icon {
-    padding-bottom: 3px;
-    top: .75em;
-}
 
 /* ====================================================== */
 /* =================== Sign Up Window =================== */
@@ -298,12 +258,12 @@ input[type="radio"] {
 }
 
 input[type="radio"]:not(checked)+label {
-    border: 1px solid var(--inactive-gray);
+    border: 2px solid var(--inactive-gray);
     border-radius: 6px;
 }
 
 input[type="radio"]:checked+label {
-    border: 1px solid var(--main-blue);
+    border: 2px solid var(--main-blue);
 }
 
 input[type="radio"]:checked+label * {
@@ -365,7 +325,7 @@ input[type="radio"]:checked+label * {
 
 button[type="submit"] {
     background-color: var(--button-gray);
-    box-shadow: 0 1px 0px .5px var(--button-hover-gray);
+    border: 1px solid var(--button-hover-gray);
     border: none;
     border-radius: 4px;
     padding: 8px 10px 8px 12px;
