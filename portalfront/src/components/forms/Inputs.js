@@ -43,15 +43,22 @@ const Checkbox = (props) => {
 const CustomSelect = forwardRef(({ ...Props }, ref) => {
 
     let dropDownStyles = {
+        container: (baseStyles, state) => ({
+            ...baseStyles,
+            width: "100%",
+            maxHeight: "35px",
+            backgroundColor: "#ededed",
+            border: (state.isFocused) ? "1px solid #6b9bf6" : null,
+            borderRadius: "4px",
+            boxShadow: "0 1px 0px 0 rgba(0, 0, 0, 0.05)",
+        }),
         control: (baseStyles, state) => ({
             ...baseStyles,
-            backgroundColor: "#ededed",
             paddingLeft: "12px",
             paddingRight: "8px",
-            borderRadius: "4px",
+            paddingBottom: "2px",
             font: "inherit",
             fontWeight: "400",
-            border: (state.isFocused) ? "1px solid #6b9bf6" : null,
         }),
         placeholder: (baseStyles, state) => ({
             ...baseStyles,

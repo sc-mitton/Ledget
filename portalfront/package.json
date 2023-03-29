@@ -21,7 +21,8 @@
     "react-transition-group": "^4.4.5",
     "svg-inline-loader": "^0.8.2",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.13.1"
+    "webpack-dev-server": "^4.13.1",
+    "yup": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",

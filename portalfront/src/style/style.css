@@ -54,7 +54,7 @@ button,
 textarea,
 select,
 option {
-    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    font-family: "Source Sans 3";
     font-size: 14px;
     color: var(--main-text-gray);
 }
@@ -72,7 +72,7 @@ a {
 
 input {
     border: none;
-    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    font-family: 'Source Sans Pro', 'Roboto', 'Arial', Helvetica, sans-serif;
     font-weight: 400;
     color: var(--main-text-gray);
     background-color: var(--input-color);
@@ -82,7 +82,7 @@ input {
 input[type="text"]::placeholder,
 input[type="email"]::placeholder {
     color: var(--input-placeholder);
-    font-weight: 400;
+    font-family: 'Source Sans Pro', 'Roboto', 'Arial', Helvetica, sans-serif
 }
 
 input[type="text"],
@@ -122,12 +122,15 @@ input[type="email"]:focus {
     background-color: none;
     min-height: 100%;
     outline: none;
-    box-shadow: 0 1px 0px rgb(230, 230, 230);
     box-shadow: inset 0 0 0 1px var(--main-blue);
 }
 
 .CustomSelect input[type="text"] {
     box-shadow: none;
+}
+
+.custom-select-container:focus-within {
+    box-shadow: inset 0 0 0 1px var(--main-blue);
 }
 
 input:focus::placeholder {

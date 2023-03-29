@@ -3,6 +3,8 @@ import { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { CardElement } from '@stripe/react-stripe-js';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { CustomSelect } from './Inputs';
 import { states } from '../../assets/data/states';
@@ -16,36 +18,39 @@ let BillingInfo = () => {
         <div className="billing-info-container" >
             <div className='name-on-card-input-container'>
                 <input
-                    type="text"
-                    id="name-on-card"
-                    placeholder="Name on card"
-                    {...register("name-on-card", { required: true })}
+                    type='text'
+                    id='name-on-card'
+                    name='name-on-card'
+                    placeholder='Name on card'
+                    {...register('name-on-card', { required: true })}
                 />
             </div>
-            <div className="location-inputs-container">
-                <div id="city-container">
+            <div className='location-inputs-container'>
+                <div id='city-container'>
                     <input
-                        type="text"
-                        id="city"
-                        placeholder="City"
-                        {...register("city", { required: true })}
+                        type='text'
+                        id='city'
+                        name='city'
+                        placeholder='City'
+                        {...register('city', { required: true })}
                     />
                 </div>
-                <div id="state-container">
+                <div id='state-container'>
                     <CustomSelect
                         options={states}
-                        placeholder="ST"
+                        placeholder='ST'
                         unstyled={true}
                         maxMenuHeight={175}
-                        {...register("state", { required: true })}
+                        {...register('state', { required: true })}
                     />
                 </div>
-                <div id="zip-container">
+                <div id='zip-container'>
                     <input
-                        type="text"
-                        id="zip"
-                        placeholder="Zip"
-                        {...register("city", { required: true })}
+                        type='text'
+                        id='zip'
+                        name='zip'
+                        placeholder='Zip'
+                        {...register('city', { required: true })}
                     />
                 </div>
             </div>
@@ -60,18 +65,18 @@ let StripeCardElement = () => {
         style: {
             base: {
                 fontFamily: "Source Sans Pro, sans-serif",
-                color: "#242424",
-                fontSmoothing: "antialiased",
-                fontSize: "15px",
-                "::placeholder": {
-                    color: cardFocus ? "#6b9bf6" : "#848484",
+                color: '#242424',
+                fontSmoothing: 'antialiased',
+                fontSize: '15px',
+                '::placeholder': {
+                    color: cardFocus ? '#6b9bf6' : '#848484',
                 },
-                iconColor: cardFocus ? "#4784f6" : "#242424"
+                iconColor: cardFocus ? '#4784f6' : '#242424'
             },
             invalid: {
                 fontFamily: 'Arial, sans-serif',
-                color: "#fa755a",
-                iconColor: "#fa755a"
+                color: '#fa755a',
+                iconColor: '#fa755a'
             }
         }
     };
@@ -88,6 +93,18 @@ let StripeCardElement = () => {
 }
 
 let OrderSummary = ({ unitAmount, firstCharge, renewalFrequency }) => {
+    const getTrialEnd = () => {
+        var currentDate = new Date()
+        var futureDate = new Date(
+            currentDate.getTime() + (14 * 24 * 60 * 60 * 1000))
+        var futureDateString =
+            (futureDate.getMonth() + 1)
+            + '/' + futureDate.getDate()
+            + '/' + ('' + futureDate.getFullYear()).slice(-2)
+
+        return futureDateString
+    }
+
     return (
         <div className="order-summary-container">
             <table>
@@ -98,7 +115,7 @@ let OrderSummary = ({ unitAmount, firstCharge, renewalFrequency }) => {
                     </tr>
                     <tr>
                         <td>First Charge:</td>
-                        <td>{firstCharge}</td>
+                        <td>{getTrialEnd()}</td>
                     </tr>
                     <tr>
                         <td>Renews:</td>
@@ -131,8 +148,7 @@ function PaymentForm(props) {
             </div>
             <OrderSummary
                 unitAmount={props.unitAmount}
-                firstCharge={'4/8/23'}
-                renewalFrequency={'Yearly'}
+                renewalFrequency={props.renews}
             />
             <div className="subscribe-button-container">
                 <input type="submit" value="Start Free Trial" id="subscribe-button" />
@@ -163,7 +179,10 @@ function PaymentWindow({ price }) {
                 <div className="app-logo-subscription" >
                     <img src={logo} alt="Ledget" />
                 </div>
-                <PaymentForm unitAmount={price.unit_amount / 100} />
+                <PaymentForm
+                    unitAmount={price.unit_amount / 100}
+                    renews={price.renews}
+                />
             </div>
             < PoweredBy />
         </div>
