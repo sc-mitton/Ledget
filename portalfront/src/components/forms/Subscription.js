@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 
-import Checkbox from './Inputs';
 import logo from '../../assets/images/logo.svg';
-import apiAuth from '../../api/axios';
-
+import usePrices from '../../api/hooks/usePrices';
 
 const Subscription = (props) => {
     return (
@@ -15,7 +12,7 @@ const Subscription = (props) => {
                 type="radio"
                 id={props.id}
                 name="plan"
-                value={props.unitAmount}
+                value={props.value}
                 checked={props.checked}
                 onChange={props.onChange}
             />
@@ -83,35 +80,24 @@ function ContinueButton() {
     )
 }
 
-function SubscriptionForm(props) {
+function SubscriptionForm({ setPrice }) {
     let [lookupKey, setLookupKey] = useState('month-to-month')
-    let navigate = useNavigate()
+    let { prices, loading, error } = usePrices()
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const response = await apiAuth.post(
-            '/api/subscription/',
-            { 'lookup-key': lookupKey }
-        ).then(response => {
-            // TO DO
-        }).catch((error) => {
-            if (error.response) {
-                setErrMsg(error.response.status)
-            } else if (error.request) {
-                setErrMsg("Server is not responding")
-            } else {
-                setErrMsg("Hmm, something went wrong, please try again.")
-            }
-        })
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        let price = prices.find(price => price.lookup_key === lookupKey)
+        setPrice(price)
     }
 
     return (
-        <form onSubmit={handleSubmit} className="subscription-form" method="post">
+        <form onSubmit={handleSubmit} className="subscription-form">
             <div className="subscription-plans">
-                {props.prices.map(price => (
+                {prices.map(price => (
                     <Subscription
                         key={price.lookup_key}
                         id={price.lookup_key}
+                        value={price}
                         unitAmount={price.unit_amount / 100}
                         checked={lookupKey === price.lookup_key}
                         onChange={() => setLookupKey(price.lookup_key)}
@@ -124,30 +110,7 @@ function SubscriptionForm(props) {
     )
 };
 
-function SubscriptionWindow() {
-    // Get the prices from the server
-    const [prices, setPrices] = useState([])
-    const [pricesLoaded, setPricesLoaded] = useState(false)
-
-    const fetchPrices = async () => {
-        try {
-            const response = await apiAuth.get('price/')
-            return { success: true, prices: response.data.prices }
-        } catch (error) {
-            return { success: false }
-        }
-    }
-
-    useEffect(() => {
-        (async () => {
-            setPricesLoaded(false)
-            let res = await fetchPrices()
-            if (res.success) {
-                setPrices(res.prices)
-                setPricesLoaded(true)
-            }
-        })();
-    }, [])
+function SubscriptionWindow({ setPrice }) {
 
     return (
         <div className='window subscription-window'>
@@ -156,7 +119,7 @@ function SubscriptionWindow() {
             </div>
             <h3>Select a Plan</h3>
             <div className="subscription-form-container">
-                <SubscriptionForm prices={prices} />
+                <SubscriptionForm setPrice={setPrice} />
             </div>
         </div>
     )

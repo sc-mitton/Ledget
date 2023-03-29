@@ -1,9 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
 import PaymentWindow from './Payment';
+import SubscriptionWindow from './Subscription';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST)
 
@@ -14,10 +16,16 @@ let options = {
 }
 
 export default function Checkout() {
+    let [price, setPrice] = useState(null)
 
     return (
-        <Elements stripe={stripePromise} options={options}>
-            <PaymentWindow />
-        </Elements >
+        <div>
+            {price
+                ? <Elements stripe={stripePromise} options={options}>
+                    <PaymentWindow price={price} />
+                </Elements >
+                : <SubscriptionWindow setPrice={setPrice} />
+            }
+        </div>
     )
 };

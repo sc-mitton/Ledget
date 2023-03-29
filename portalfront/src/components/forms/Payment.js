@@ -130,7 +130,7 @@ function PaymentForm(props) {
                 <StripeCardElement />
             </div>
             <OrderSummary
-                unitAmount={5}
+                unitAmount={props.unitAmount}
                 firstCharge={'4/8/23'}
                 renewalFrequency={'Yearly'}
             />
@@ -156,14 +156,14 @@ const PoweredBy = () => {
     )
 }
 
-function PaymentWindow() {
+function PaymentWindow({ price }) {
     return (
         <div>
             <div className='window checkout-window'>
                 <div className="app-logo-subscription" >
                     <img src={logo} alt="Ledget" />
                 </div>
-                <PaymentForm />
+                <PaymentForm unitAmount={price.unit_amount / 100} />
             </div>
             < PoweredBy />
         </div>
