@@ -170,7 +170,11 @@ function PaymentForm(props) {
                 renewalFrequency={props.renews}
             />
             <div className="subscribe-button-container">
-                <input type="submit" value="Start Free Trial" id="subscribe-button" />
+                <input
+                    type="submit"
+                    value="Start Free Trial"
+                    id="subscribe-button"
+                />
             </div>
         </form >
     )
