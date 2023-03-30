@@ -2,27 +2,48 @@ import React from 'react';
 import { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
-import { CardElement } from '@stripe/react-stripe-js';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { object, string } from 'yup';
+import { CardElement } from '@stripe/react-stripe-js';
 
 import { CustomSelect } from './Inputs';
 import { states } from '../../assets/data/states';
 import logo from '../../assets/images/logo.svg';
 import stripelogo from '../../assets/images/stripelogo.svg';
 
-let BillingInfo = () => {
-    const { register } = useForm();
+
+const schema = object({
+    name: string()
+        .required('Please enter your first and last name.')
+        .test('Please enter your first and last name.', (value) => {
+            if (value) {
+                const words = value.trim().split(' ');
+                return words.length === 2;
+            }
+            return true;
+        }),
+    city: string().required("Please enter your city."),
+    zip: string("Please enter your zip code.")
+        .matches(/^\d{5}(?:[-\s]\d{4})?$/).required("Please enter a valid zip code."),
+})
+
+
+let BillingInfo = (props) => {
+
+    const hasError = (field) => {
+        return props.errors[field] !== undefined;
+    }
 
     return (
-        <div className="billing-info-container" >
+        <>
             <div className='name-on-card-input-container'>
                 <input
                     type='text'
                     id='name-on-card'
-                    name='name-on-card'
+                    name='name'
                     placeholder='Name on card'
-                    {...register('name-on-card', { required: true })}
+                    className={hasError('name') ? 'input-error' : ''}
+                    {...props.register('name')}
                 />
             </div>
             <div className='location-inputs-container'>
@@ -32,16 +53,15 @@ let BillingInfo = () => {
                         id='city'
                         name='city'
                         placeholder='City'
-                        {...register('city', { required: true })}
+                        className={hasError('city') ? 'input-error' : ''}
+                        {...props.register('city')}
                     />
                 </div>
                 <div id='state-container'>
                     <CustomSelect
                         options={states}
-                        placeholder='ST'
-                        unstyled={true}
+                        placeholder='State'
                         maxMenuHeight={175}
-                        {...register('state', { required: true })}
                     />
                 </div>
                 <div id='zip-container'>
@@ -50,15 +70,16 @@ let BillingInfo = () => {
                         id='zip'
                         name='zip'
                         placeholder='Zip'
-                        {...register('city', { required: true })}
+                        className={hasError('zip') ? 'input-error' : ''}
+                        {...props.register('zip')}
                     />
                 </div>
             </div>
-        </div >
+        </>
     )
 }
 
-let StripeCardElement = () => {
+let StripeCard = () => {
     let [cardFocus, setCardFocus] = useState(false)
 
     const cardStyle = {
@@ -128,23 +149,21 @@ let OrderSummary = ({ unitAmount, firstCharge, renewalFrequency }) => {
 }
 
 function PaymentForm(props) {
-    let [subscription, setSubscription] = useState('')
-    let [formComplete, setFormComplete] = useState(false)
-    const { handleSubmit } = useForm();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm(
+        { resolver: yupResolver(schema) }
+    );
 
-    const handleSubscriptionChange = (event) => {
-        setSubscription(event.target.value)
+    const onSubmit = data => {
+        console.log(data)
     }
-
-    const onSubmit = data => console.log(data);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="checkout-form" method="post">
             <div className="inputs-container">
                 <h4 id="billing-info-header">Billing Info</h4>
-                <BillingInfo />
+                <BillingInfo register={register} errors={errors} />
                 <h4 id="card-input-header">Card</h4>
-                <StripeCardElement />
+                <StripeCard />
             </div>
             <OrderSummary
                 unitAmount={props.unitAmount}

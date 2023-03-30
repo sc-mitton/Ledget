@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, } from "react";
 import Select from 'react-select';
 
 const Checkbox = (props) => {
@@ -45,28 +45,44 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
     let dropDownStyles = {
         container: (baseStyles, state) => ({
             ...baseStyles,
-            width: "100%",
-            maxHeight: "35px",
-            backgroundColor: "#ededed",
-            border: (state.isFocused) ? "1px solid #6b9bf6" : null,
             borderRadius: "4px",
-            boxShadow: "0 1px 0px 0 rgba(0, 0, 0, 0.05)",
+            height: "37px",
+        }),
+        valueContainer: (baseStyles, state) => ({
+            ...baseStyles,
+            appearace: "none",
         }),
         control: (baseStyles, state) => ({
             ...baseStyles,
-            paddingLeft: "12px",
-            paddingRight: "8px",
-            paddingBottom: "2px",
+            backgroundColor: "#ededed",
             font: "inherit",
             fontWeight: "400",
+            height: "0",
+            border: "none",
+            border: state.isFocused ? 0 : 0,
+            // This line disable the blue border
+            boxShadow: state.isFocused ? "inset 0 0 0 1px var(--main-blue)" : 0,
+            '&:hover': {
+                border: state.isFocused ? 0 : 0
+            }
+        }),
+        indicatorSeparator: (baseStyles, state) => ({
+            ...baseStyles,
+            display: "none",
+        }),
+        indicatorsContainer: (baseStyles, state) => ({
+            ...baseStyles,
+            paddingLeft: "0",
+            paddingRight: "0", // trying to get the padding right still
         }),
         placeholder: (baseStyles, state) => ({
             ...baseStyles,
-            color: "#848484",
+            color: state.isFocused ? "#6b9bf6" : "#848484"
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,
-            borderRadius: "0 0 4px 4px",
+            marginTop: "2px",
+            borderRadius: "4px",
             backgroundColor: "#ededed",
             boxShadow: "0 4px 6px -5px rgba(0, 0, 0, 0.5)",
         }),
@@ -77,24 +93,22 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
         option: (baseStyles, state) => ({
             ...baseStyles,
             backgroundColor: state.isSelected || state.isFocused ? "#c3d7fc" : "#ededed",
+            borderRadius: "2px",
             padding: "4px",
             width: "100%",
             textAlign: "center",
             cursor: "pointer",
-        }),
-        input: (baseStyles, state) => ({
-            ...baseStyles,
-            inputMode: "text",
-        }),
+            color: "#242424"
+        })
     }
 
     return (
         <Select
-            unstyled={true}
+            unstyled={false}
             styles={dropDownStyles}
+            className='CustomSelect'
             ref={ref}
             {...Props}
-            className="CustomSelect"
         />
     )
 })
