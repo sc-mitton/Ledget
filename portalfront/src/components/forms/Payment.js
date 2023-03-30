@@ -36,7 +36,7 @@ let BillingInfo = (props) => {
 
     return (
         <>
-            <div className='name-on-card-input-container'>
+            <div className={`input-container`}>
                 <input
                     type='text'
                     id='name-on-card'
@@ -47,7 +47,7 @@ let BillingInfo = (props) => {
                 />
             </div>
             <div className='location-inputs-container'>
-                <div id='city-container'>
+                <div className={`input-container`} id='city-container'>
                     <input
                         type='text'
                         id='city'
@@ -57,14 +57,14 @@ let BillingInfo = (props) => {
                         {...props.register('city')}
                     />
                 </div>
-                <div id='state-container'>
+                <div className="select-container" id='state-container'>
                     <CustomSelect
                         options={states}
                         placeholder='State'
                         maxMenuHeight={175}
                     />
                 </div>
-                <div id='zip-container'>
+                <div className={`input-container`} id='zip-container'>
                     <input
                         type='text'
                         id='zip'

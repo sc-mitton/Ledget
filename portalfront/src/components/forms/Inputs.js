@@ -46,7 +46,6 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
         container: (baseStyles, state) => ({
             ...baseStyles,
             borderRadius: "4px",
-            height: "37px",
         }),
         valueContainer: (baseStyles, state) => ({
             ...baseStyles,
