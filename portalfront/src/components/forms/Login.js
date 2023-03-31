@@ -1,11 +1,12 @@
 import React from 'react';
 import { useRef, useState, useEffect, useContext } from "react"
+
 import { useNavigate, useLocation, Link } from "react-router-dom"
 
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
 import logo from "../../assets/images/logo.svg"
-import alert from "../../assets/icons/alert.svg"
+import alert2 from "../../assets/icons/alert2.svg"
 import PasswordInput from "./PasswordInput"
 import AuthContext from "../../context/AuthContext"
 import apiAuth from "../../api/axios"
@@ -55,20 +56,23 @@ function LoginForm() {
     return (
         <form onSubmit={handleLoginSubmit} className="login-form">
             {errMsg &&
-                <div className="error" ref={errRef}>
-                    <img src={alert} alt='' />{errMsg}
+                <div className="inline-error" ref={errRef}>
+                    <img src={alert2} alt='' />
+                    {errMsg}
                 </div>
             }
             <div>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    val={emailRef}
-                    placeholder="Email"
-                    ref={emailRef}
-                    required
-                />
+                <div className="input-container">
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        val={emailRef}
+                        placeholder="Email"
+                        ref={emailRef}
+                        required
+                    />
+                </div>
                 <PasswordInput
                     pwdRef={pwdRef}
                 />
@@ -111,10 +115,10 @@ function LoginWindow() {
                 </div>
                 <LoginForm />
                 <SocialLogin />
-            </div>
-            <div className="sign-up-prompt-container">
-                <span>Don't have an account? </span>
-                <Link to="/register">Sign Up</Link>
+                <div className="sign-up-prompt-container">
+                    <span>Don't have an account? </span>
+                    <Link to="/register">Sign Up</Link>
+                </div>
             </div>
         </div>
     )

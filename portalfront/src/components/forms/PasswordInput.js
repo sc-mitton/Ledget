@@ -3,14 +3,9 @@ import hidePassword from "../../assets/icons/hidePassword.svg"
 import showPassword from "../../assets/icons/showPassword.svg"
 import { useState, useEffect, useRef } from 'react'
 
-const PasswordInput = (props) => {
+const PasswordInput = ({ confirmPassword, register }) => {
     const [passwordVisible, setPasswordVisible] = useState(false)
     const [pwdInput, setPwdInput] = useState('')
-    const { confirmPassword } = props
-
-    const pwdRef = props.pwdRef
-    const confirmPwdRef = props.confirmPwdRef
-    // errRef is in the props
 
     const handlePasswordInput = (e) => {
         if (e.target.value !== '') {
@@ -48,9 +43,8 @@ const PasswordInput = (props) => {
                     id="password"
                     name="password"
                     placeholder="Password"
-                    ref={pwdRef}
                     onChange={handlePasswordInput}
-                    required
+
                 />
                 {pwdInput && <VisibilityIcon />}
             </div>
@@ -61,8 +55,6 @@ const PasswordInput = (props) => {
                         id="confirm-password"
                         name="confirm-password"
                         placeholder="Confirm Password"
-                        ref={confirmPwdRef}
-                        required
                     />
                 </div>
             )}

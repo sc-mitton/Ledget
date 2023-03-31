@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
 import { CardElement } from '@stripe/react-stripe-js';
 
-import { CustomSelect } from './Inputs';
+import { CustomSelect } from './CustomInputs';
 import { states } from '../../assets/data/states';
 import logo from '../../assets/images/logo.svg';
 import stripelogo from '../../assets/images/stripelogo.svg';
@@ -38,7 +38,7 @@ let BillingInfo = (props) => {
 
     return (
         <>
-            <div className='input-container'>
+            <div id="name-on-card-container" className='input-container'>
                 <input
                     type='text'
                     id='name-on-card'
@@ -223,8 +223,8 @@ function PaymentWindow({ price }) {
                     unitAmount={price.unit_amount / 100}
                     renews={price.renews}
                 />
+                < PoweredBy />
             </div>
-            < PoweredBy />
         </div>
     )
 };

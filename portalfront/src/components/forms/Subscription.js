@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useRef } from 'react';
+
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 
 import logo from '../../assets/images/logo.svg';
