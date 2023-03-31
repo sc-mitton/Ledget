@@ -320,12 +320,13 @@ input[type="submit"]:hover {
 
 .error-tip {
     position: relative;
+    width: 0;
 }
 
 .error-tip-icon {
     position: relative;
     top: -15px;
-    left: 16px;
+    left: 4px;
     height: 1.05em;
     animation: pop 0.1s ease;
 }

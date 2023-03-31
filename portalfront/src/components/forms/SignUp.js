@@ -11,7 +11,8 @@ import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
 import logo from "../../assets/images/logo.svg"
 import alert from "../../assets/icons/alert.svg"
-import PasswordInput from "./PasswordInput"
+import hidePassword from "../../assets/icons/hidePassword.svg"
+import showPassword from "../../assets/icons/showPassword.svg"
 import { FormErrorTip } from "./Widgets"
 import AuthContext from "../../context/AuthContext"
 import apiAuth from "../../api/axios"
@@ -28,14 +29,16 @@ const schema = object().shape({
 })
 
 function SignUpForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors, dirtyFields } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onBlur'
     })
     const [serverError, setServerError] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(false)
+    const [visibleIcon, setVisibleIcon] = useState(false)
+
     const navigate = useNavigate();
     const { setAuth, setTokenExpiration } = React.useContext(AuthContext);
-
 
     const onSubmit = (data) => {
         console.log(data)
@@ -43,6 +46,26 @@ function SignUpForm() {
 
     const hasError = (field) => {
         return errors[field] ? true : false;
+    }
+
+    const VisibilityIcon = () => {
+        return (
+            passwordVisible ? (
+                <img
+                    src={hidePassword}
+                    alt="toggle visibility"
+                    className="hide-password-icon"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                />
+            ) : (
+                <img
+                    src={showPassword}
+                    alt="toggle visibility"
+                    className="show-password-icon"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                />
+            )
+        )
     }
 
     return (
@@ -64,12 +87,27 @@ function SignUpForm() {
                 {hasError('email') && <FormErrorTip msg={''} />}
             </div>
             <div className="inline-error">{errors.email?.message}</div>
-            <PasswordInput
-                confirmPassword={true}
-                register={register}
-            />
-            <span>{errors.password?.message}</span>
-            <span>{errors.confirmPassword?.message}</span>
+            <div className="input-container">
+                <input
+                    type={passwordVisible ? 'text' : 'password'}
+                    name="password"
+                    placeholder="Password"
+                    {...register('password')}
+                />
+                {dirtyFields.password && <VisibilityIcon />}
+                {hasError('password') && <FormErrorTip msg={''} />}
+            </div>
+            <div className="input-container">
+                <input
+                    type={passwordVisible ? 'text' : 'password'}
+                    name="confirm-password"
+                    placeholder="Confirm Password"
+                    {...register('confirmPassword')}
+                />
+                {hasError('confirmPassword') && <FormErrorTip msg={''} />}
+            </div>
+            <div className="inline-error">{errors.password?.message}</div>
+            <div className="inline-error">{errors.confirmPassword?.message}</div>
             <div>
                 <input type="submit" id="sign-up" value="Sign Up" />
             </div>

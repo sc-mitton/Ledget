@@ -48,16 +48,6 @@ const PasswordInput = ({ confirmPassword, register }) => {
                 />
                 {pwdInput && <VisibilityIcon />}
             </div>
-            {confirmPassword && (
-                <div className="password-input confirm">
-                    <input
-                        type={passwordVisible ? 'text' : 'password'}
-                        id="confirm-password"
-                        name="confirm-password"
-                        placeholder="Confirm Password"
-                    />
-                </div>
-            )}
         </div>
     )
 }

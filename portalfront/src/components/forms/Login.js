@@ -73,9 +73,7 @@ function LoginForm() {
                         required
                     />
                 </div>
-                <PasswordInput
-                    pwdRef={pwdRef}
-                />
+                <PasswordInput />
             </div>
             <div className="forgot-password-container">
                 <a id="forgot-password" href="/">Forgot Password?</a>
