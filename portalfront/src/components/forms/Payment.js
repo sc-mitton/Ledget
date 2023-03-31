@@ -6,17 +6,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
 import { CardElement } from '@stripe/react-stripe-js';
 
-import { CustomSelect } from './CustomInputs';
-import { states } from '../../assets/data/states';
 import logo from '../../assets/images/logo.svg';
 import stripelogo from '../../assets/images/stripelogo.svg';
-import { FormErrorTip } from './Widgets';
+import alert2 from '../../assets/icons/alert2.svg';
 
 
 const schema = object({
     name: string()
         .required('Please enter your first and last name.')
-        .test('two-words', 'Please enter both a first and last name.', (value) => {
+        .test('two-words', 'Enter first and last name', (value) => {
             if (value) {
                 const words = value.trim().split(' ');
                 return words.length === 2;
@@ -25,8 +23,9 @@ const schema = object({
         }),
     city: string().required("Please enter your city."),
     zip: string()
-        .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Please enter a valid zip code.')
-        .required("Please enter your zip code."),
+        .required("Please enter your zip code.")
+        .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
+
 })
 
 
@@ -45,13 +44,19 @@ let BillingInfo = (props) => {
                     name='name'
                     placeholder='Name on card'
                     {...props.register('name')}
+                    onBlur={(e) => {
+                        if (e.target.value) {
+                            props.trigger("name");
+                        }
+                    }}
                 />
-                {hasError('name') &&
-                    <FormErrorTip
-                        msg={props.errors.name.message}
-                    />
-                }
             </div>
+            {hasError('name') &&
+                <div className="form-error">
+                    <img src={alert2} className="error-tip-icon" />
+                    {props.errors.name?.message}
+                </div>
+            }
             <div className='location-inputs-container'>
                 <div className='input-container' id='city-container'>
                     <input
@@ -60,18 +65,11 @@ let BillingInfo = (props) => {
                         name='city'
                         placeholder='City'
                         {...props.register('city')}
-                    />
-                    {hasError('city') &&
-                        <FormErrorTip
-                            msg={props.errors.city.message}
-                        />
-                    }
-                </div>
-                <div className="select-container" id='state-container'>
-                    <CustomSelect
-                        options={states}
-                        placeholder='State'
-                        maxMenuHeight={175}
+                        onBlur={(e) => {
+                            if (e.target.value) {
+                                props.trigger("city");
+                            }
+                        }}
                     />
                 </div>
                 <div className='input-container' id='zip-container'>
@@ -81,11 +79,29 @@ let BillingInfo = (props) => {
                         name='zip'
                         placeholder='Zip'
                         {...props.register('zip')}
+                        onBlur={(e) => {
+                            if (e.target.value) {
+                                props.trigger("zip");
+                            }
+                        }}
                     />
+                </div>
+            </div>
+            <div id="location-input-errors">
+                <div id="city-error">
+                    {hasError('city') &&
+                        <div className="form-error">
+                            <img src={alert2} className="error-tip-icon" />
+                            {props.errors.city?.message}
+                        </div>
+                    }
+                </div>
+                <div id="zip-error">
                     {hasError('zip') &&
-                        <FormErrorTip
-                            msg={props.errors.zip.message}
-                        />
+                        <div className="form-error">
+                            <img src={alert2} className="error-tip-icon" />
+                            {props.errors.zip?.message}
+                        </div>
                     }
                 </div>
             </div>
@@ -109,9 +125,9 @@ let StripeCard = () => {
                 iconColor: cardFocus ? '#4784f6' : '#242424'
             },
             invalid: {
-                fontFamily: 'Arial, sans-serif',
-                color: '#fa755a',
-                iconColor: '#fa755a'
+                fontFamily: 'Source Sans Pro, sans-serif',
+                color: '#f47788',
+                iconColor: '#f47788'
             }
         }
     };
@@ -163,7 +179,7 @@ let OrderSummary = ({ unitAmount, firstCharge, renewalFrequency }) => {
 }
 
 function PaymentForm(props) {
-    const { register, handleSubmit, formState: { errors } } = useForm(
+    const { register, handleSubmit, formState: { errors }, trigger } = useForm(
         {
             resolver: yupResolver(schema),
             mode: 'onBlur'
@@ -178,7 +194,7 @@ function PaymentForm(props) {
         <form onSubmit={handleSubmit(onSubmit)} className="checkout-form" method="post">
             <div className="inputs-container">
                 <h4 id="billing-info-header">Billing Info</h4>
-                <BillingInfo register={register} errors={errors} />
+                <BillingInfo register={register} trigger={trigger} errors={errors} />
                 <h4 id="card-input-header">Card</h4>
                 <StripeCard />
             </div>
@@ -214,17 +230,15 @@ const PoweredBy = () => {
 
 function PaymentWindow({ price }) {
     return (
-        <div>
-            <div className='window checkout-window'>
-                <div className="app-logo-subscription" >
-                    <img src={logo} alt="Ledget" />
-                </div>
-                <PaymentForm
-                    unitAmount={price.unit_amount / 100}
-                    renews={price.renews}
-                />
-                < PoweredBy />
+        <div className='window checkout-window'>
+            <div className="app-logo-subscription" >
+                <img src={logo} alt="Ledget" />
             </div>
+            <PaymentForm
+                unitAmount={price.unit_amount / 100}
+                renews={price.renews}
+            />
+            < PoweredBy />
         </div>
     )
 };

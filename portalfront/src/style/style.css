@@ -73,9 +73,15 @@ a {
     cursor: pointer;
 }
 
-input:--webkit-autofill {
+/* Override default browser styles */
+
+input:-webkit-autofill {
+    -webkit-box-shadow: inset 0 0 0px 9999px var(--input-color) !important;
+    background-color: none;
+    background-clip: content-box !important;
     border: none;
     font-size: 14px;
+    outline: none;
 }
 
 input {
@@ -87,10 +93,12 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active,
 input:-webkit-autofill::after {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
     border: none;
+    background-color: #fafafa !important;
+    background-clip: content-box !important;
 }
 
+/* End override default browser styles */
 
 input {
     border: none;
@@ -100,6 +108,10 @@ input {
     font-family: inherit;
     font-size: inherit;
     color: inherit;
+}
+
+input:focus {
+    outline: none;
 }
 
 input[type="text"]::placeholder,
@@ -312,12 +324,12 @@ input[type="submit"]:hover {
 
     /* Center horizontally and vertically */
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 50%;
-    transform: translate(-40%, -50%);
-
+    transform: translate(-50%, -50%);
 }
 
+/* Error Tool Tips & Icon */
 .error-tip {
     position: relative;
     width: 0;
@@ -328,7 +340,7 @@ input[type="submit"]:hover {
     top: -15px;
     left: 4px;
     height: 1.05em;
-    animation: pop 0.1s ease;
+    animation: pop 0.3s ease;
 }
 
 .error-tip-msg {
@@ -336,12 +348,12 @@ input[type="submit"]:hover {
     position: absolute;
     text-align: center;
     bottom: 180%;
-    /* left: 50% */
-    margin-left: -60px;
+    margin-left: -80px;
     left: 30px;
     width: 120px;
     padding: 8px;
     border-radius: 4px;
+    font-size: 12px;
     background-color: var(--button-gray);
     color: var(--window);
 }
@@ -357,7 +369,7 @@ input[type="submit"]:hover {
     font-size: 12px;
     margin-left: 10px;
     color: var(--mute-red);
-    animation: pop 2 ease;
+    animation: pop .2s ease;
     margin-top: 2px;
     text-align: left;
 }
@@ -367,6 +379,33 @@ input[type="submit"]:hover {
     margin-right: 4px;
     position: relative;
     top: 2px;
+}
+
+#signup-error-container {
+    position: relative;
+    top: -12px;
+    display: flex;
+    height: 10px;
+}
+
+.form-error {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--mute-red);
+    margin-top: 4px;
+}
+
+.form-error span {
+    margin-left: 4px;
+}
+
+.form-error img {
+    height: 1em;
+    margin-left: 8px;
+    margin-right: 8px;
+    position: relative;
+    top: 2px;
+    text-align: left;
 }
 
 @keyframes show {
@@ -381,7 +420,7 @@ input[type="submit"]:hover {
 
 @keyframes pop {
     0% {
-        transform: scale(0.8);
+        transform: scale(0.7);
     }
 
     50% {

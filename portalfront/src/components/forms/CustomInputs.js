@@ -1,6 +1,10 @@
 import React, { forwardRef, } from "react";
+import { useState } from 'react'
 
 import Select from 'react-select';
+import hidePassword from "../../assets/icons/hidePassword.svg"
+import showPassword from "../../assets/icons/showPassword.svg"
+import { FormErrorTip } from "./Widgets"
 
 const Checkbox = (props) => {
     let id = props.id
@@ -92,13 +96,13 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
-            backgroundColor: state.isSelected || state.isFocused ? "#c3d7fc" : "#ededed",
+            backgroundColor: state.isFocused ? "#c3d7fc" : "#ededed",
             borderRadius: "2px",
             padding: "4px",
             width: "100%",
             textAlign: "center",
             cursor: "pointer",
-            color: "#242424"
+            color: state.isSelected ? "#5c90f9" : "#242424"
         })
     }
 
@@ -113,4 +117,43 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
     )
 })
 
-export { Checkbox, CustomSelect };
+const PasswordInput = (props) => {
+    const [input, setInput] = useState('')
+
+    const VisibilityIcon = () => {
+        return (
+            <img
+                src={props.visible ? hidePassword : showPassword}
+                alt="toggle visibility"
+                className="hide-password-icon"
+                onClick={() => props.setVisible(!props.visible)}
+            />
+        )
+    }
+
+    return (
+        <div className="password-container">
+            <div className="password-input">
+                <input
+                    type={props.visible ? 'text' : 'password'}
+                    name={props.name}
+                    placeholder={props.placeholder}
+                    {...props.register(props.name, {
+                        onChange: (e) => {
+                            e.target.value != '' ?
+                                setInput(true)
+                                : setInput(false)
+                        }
+                    })}
+                />
+                {input && props.visIcon && <VisibilityIcon />}
+            </div>
+        </div>
+    )
+}
+
+PasswordInput.defaultProps = {
+    visIcon: true
+}
+
+export { Checkbox, CustomSelect, PasswordInput };

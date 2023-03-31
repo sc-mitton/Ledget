@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Form, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { object, string, ref } from "yup"
@@ -11,21 +11,21 @@ import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
 import logo from "../../assets/images/logo.svg"
 import alert from "../../assets/icons/alert.svg"
-import hidePassword from "../../assets/icons/hidePassword.svg"
-import showPassword from "../../assets/icons/showPassword.svg"
-import { FormErrorTip } from "./Widgets"
 import AuthContext from "../../context/AuthContext"
 import apiAuth from "../../api/axios"
-
+import { PasswordInput } from "./CustomInputs"
+import alert2 from '../../assets/icons/alert2.svg';
 
 const schema = object().shape({
-    email: string().email("Please enter a valid email address.")
-        .required("Please enter your email address."),
+    email: string()
+        .email("Please enter a valid email address")
+        .required("Please enter your email address"),
     password: string()
-        .test("Password must be at least 10 characters long.",
+        .test("length", "Must be at least 10 characters long",
             (value) => value.length >= (10) ? true : false
-        ).required("Password must be at least 10 characters long."),
-    confirmPassword: string().oneOf([ref('password'), null], 'Passwords must match.')
+        ).required("Enter a password at least 10 characters long"),
+    confirmPassword: string()
+        .oneOf([ref('password'), null], 'Passwords must match')
 })
 
 function SignUpForm() {
@@ -34,38 +34,16 @@ function SignUpForm() {
         mode: 'onBlur'
     })
     const [serverError, setServerError] = useState('');
-    const [passwordVisible, setPasswordVisible] = useState(false)
-    const [visibleIcon, setVisibleIcon] = useState(false)
-
-    const navigate = useNavigate();
+    const [visible, setVisible] = useState(false)
     const { setAuth, setTokenExpiration } = React.useContext(AuthContext);
-
-    const onSubmit = (data) => {
-        console.log(data)
-    }
+    const navigate = useNavigate();
 
     const hasError = (field) => {
         return errors[field] ? true : false;
     }
 
-    const VisibilityIcon = () => {
-        return (
-            passwordVisible ? (
-                <img
-                    src={hidePassword}
-                    alt="toggle visibility"
-                    className="hide-password-icon"
-                    onClick={() => setPasswordVisible(!passwordVisible)}
-                />
-            ) : (
-                <img
-                    src={showPassword}
-                    alt="toggle visibility"
-                    className="show-password-icon"
-                    onClick={() => setPasswordVisible(!passwordVisible)}
-                />
-            )
-        )
+    const onSubmit = (data) => {
+        console.log(data)
     }
 
     return (
@@ -84,30 +62,48 @@ function SignUpForm() {
                     required
                     {...register('email')}
                 />
-                {hasError('email') && <FormErrorTip msg={''} />}
             </div>
-            <div className="inline-error">{errors.email?.message}</div>
-            <div className="input-container">
-                <input
-                    type={passwordVisible ? 'text' : 'password'}
-                    name="password"
-                    placeholder="Password"
-                    {...register('password')}
-                />
-                {dirtyFields.password && <VisibilityIcon />}
-                {hasError('password') && <FormErrorTip msg={''} />}
-            </div>
-            <div className="input-container">
-                <input
-                    type={passwordVisible ? 'text' : 'password'}
-                    name="confirm-password"
-                    placeholder="Confirm Password"
-                    {...register('confirmPassword')}
-                />
-                {hasError('confirmPassword') && <FormErrorTip msg={''} />}
-            </div>
-            <div className="inline-error">{errors.password?.message}</div>
-            <div className="inline-error">{errors.confirmPassword?.message}</div>
+            {hasError('email') &&
+                <div id="signup-error-container">
+
+                    <div className="form-error">
+                        <img src={alert2} className="error-tip-icon" />
+                        {errors.email?.message}
+                    </div>
+                </div>
+            }
+            <PasswordInput
+                name="password"
+                placeholder="Password"
+                register={register}
+                visible={visible}
+                setVisible={setVisible}
+            />
+            {hasError('password') &&
+                <div id="signup-error-container">
+
+                    <div className="form-error">
+                        <img src={alert2} className="error-tip-icon" />
+                        {errors.password?.message}
+                    </div>
+                </div>
+            }
+            <PasswordInput
+                name="confirmPassword"
+                placeholder="Confirm password"
+                register={register}
+                visIcon={false}
+                visible={visible}
+                setVisible={setVisible}
+            />
+            {hasError('confirmPassword') &&
+                <div id="signup-error-container">
+                    <div className="form-error">
+                        <img src={alert2} className="error-tip-icon" />
+                        {errors.confirmPassword?.message}
+                    </div>
+                </div>
+            }
             <div>
                 <input type="submit" id="sign-up" value="Sign Up" />
             </div>

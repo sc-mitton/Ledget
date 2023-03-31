@@ -6,8 +6,9 @@ import { useNavigate, useLocation, Link } from "react-router-dom"
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
 import logo from "../../assets/images/logo.svg"
+import hidePassword from "../../assets/icons/hidePassword.svg"
+import showPassword from "../../assets/icons/showPassword.svg"
 import alert2 from "../../assets/icons/alert2.svg"
-import PasswordInput from "./PasswordInput"
 import AuthContext from "../../context/AuthContext"
 import apiAuth from "../../api/axios"
 
@@ -22,12 +23,27 @@ function LoginForm() {
     const emailRef = useRef();
     const pwdRef = useRef();
     const errRef = useRef('');
+    const [pswdVisible, setPswdVisible] = useState(false);
+    const [pwdInput, setPwdInput] = useState('');
 
     const [errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
         emailRef.current.focus();
     }, [])
+
+    const VisibilityIcon = () => {
+        return (
+            pwdInput ? (
+                <img
+                    src={pswdVisible ? hidePassword : showPassword}
+                    alt="toggle visibility"
+                    className="hide-password-icon"
+                    onClick={() => setPswdVisible(!pswdVisible)}
+                />
+            ) : null
+        )
+    }
 
     const handleLoginSubmit = async (event) => {
         event.preventDefault();
@@ -73,13 +89,26 @@ function LoginForm() {
                         required
                     />
                 </div>
-                <PasswordInput />
-            </div>
-            <div className="forgot-password-container">
-                <a id="forgot-password" href="/">Forgot Password?</a>
-            </div>
-            <div>
-                <input type="submit" id="login" value="Sign In" />
+                <div className="input-container">
+                    <input
+                        type={pswdVisible ? "text" : "password"}
+                        placeholder="Password"
+                        val={pwdRef}
+                        onChange={(e) => {
+                            e.target.value !== '' ?
+                                setPwdInput(true)
+                                : setPwdInput(false)
+                        }}
+                        required
+                    />
+                    {pwdInput ? <VisibilityIcon /> : null}
+                </div>
+                <div className="forgot-password-container">
+                    <a id="forgot-password" href="/">Forgot Password?</a>
+                </div>
+                <div>
+                    <input type="submit" id="login" value="Sign In" />
+                </div>
             </div>
         </form>
     )

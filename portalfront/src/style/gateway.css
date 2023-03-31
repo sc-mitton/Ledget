@@ -385,17 +385,22 @@ button[type="submit"]:hover {
     width: 100%;
 }
 
-#city-container {
+#city-container,
+#city-error {
     flex: 1;
+    margin-right: 8px;
 }
 
-#zip-container {
-    width: 25%;
+#zip-container,
+#zip-error {
+    width: 30%;
 }
 
-#state-container {
-    min-width: 20%;
-    margin: 0 8px;
+#location-input-errors {
+    position: relative;
+    top: -12px;
+    display: flex;
+    height: 50%;
 }
 
 /* Card Element */
