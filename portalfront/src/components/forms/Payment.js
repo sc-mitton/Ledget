@@ -10,12 +10,13 @@ import { CustomSelect } from './Inputs';
 import { states } from '../../assets/data/states';
 import logo from '../../assets/images/logo.svg';
 import stripelogo from '../../assets/images/stripelogo.svg';
+import { FormErrorTip } from './Widgets';
 
 
 const schema = object({
     name: string()
         .required('Please enter your first and last name.')
-        .test('Please enter your first and last name.', (value) => {
+        .test('two-words', 'Please enter both a first and last name.', (value) => {
             if (value) {
                 const words = value.trim().split(' ');
                 return words.length === 2;
@@ -23,39 +24,48 @@ const schema = object({
             return true;
         }),
     city: string().required("Please enter your city."),
-    zip: string("Please enter your zip code.")
-        .matches(/^\d{5}(?:[-\s]\d{4})?$/).required("Please enter a valid zip code."),
+    zip: string()
+        .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Please enter a valid zip code.')
+        .required("Please enter your zip code."),
 })
 
 
 let BillingInfo = (props) => {
 
     const hasError = (field) => {
-        return props.errors[field] !== undefined;
+        return props.errors[field] ? true : false;
     }
 
     return (
         <>
-            <div className={`input-container`}>
+            <div className='input-container'>
                 <input
                     type='text'
                     id='name-on-card'
                     name='name'
                     placeholder='Name on card'
-                    className={hasError('name') ? 'input-error' : ''}
                     {...props.register('name')}
                 />
+                {hasError('name') &&
+                    <FormErrorTip
+                        msg={props.errors.name.message}
+                    />
+                }
             </div>
             <div className='location-inputs-container'>
-                <div className={`input-container`} id='city-container'>
+                <div className='input-container' id='city-container'>
                     <input
                         type='text'
                         id='city'
                         name='city'
                         placeholder='City'
-                        className={hasError('city') ? 'input-error' : ''}
                         {...props.register('city')}
                     />
+                    {hasError('city') &&
+                        <FormErrorTip
+                            msg={props.errors.city.message}
+                        />
+                    }
                 </div>
                 <div className="select-container" id='state-container'>
                     <CustomSelect
@@ -64,15 +74,19 @@ let BillingInfo = (props) => {
                         maxMenuHeight={175}
                     />
                 </div>
-                <div className={`input-container`} id='zip-container'>
+                <div className='input-container' id='zip-container'>
                     <input
                         type='text'
                         id='zip'
                         name='zip'
                         placeholder='Zip'
-                        className={hasError('zip') ? 'input-error' : ''}
                         {...props.register('zip')}
                     />
+                    {hasError('zip') &&
+                        <FormErrorTip
+                            msg={props.errors.zip.message}
+                        />
+                    }
                 </div>
             </div>
         </>
@@ -149,8 +163,11 @@ let OrderSummary = ({ unitAmount, firstCharge, renewalFrequency }) => {
 }
 
 function PaymentForm(props) {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm(
-        { resolver: yupResolver(schema) }
+    const { register, handleSubmit, formState: { errors } } = useForm(
+        {
+            resolver: yupResolver(schema),
+            mode: 'onBlur'
+        }
     );
 
     const onSubmit = data => {

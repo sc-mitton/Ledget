@@ -360,7 +360,7 @@ button[type="submit"]:hover {
 
 /* Billing Info */
 #billing-info-header {
-    margin-bottom: 4px;
+    margin-bottom: 10px;
 }
 
 #name-on-card {

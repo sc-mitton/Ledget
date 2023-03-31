@@ -28,6 +28,9 @@
     /* Input Colors */
     --input-color: rgb(237, 237, 237);
     --input-placeholder: rgb(132, 132, 132);
+
+    --tooltip-background: rgb(166, 166, 166);
+
 }
 
 html,
@@ -104,7 +107,7 @@ input[type="email"]::placeholder {
     color: var(--input-placeholder);
 }
 
-input:focus::placeholder {
+.input-container input:focus::placeholder {
     color: var(--main-blue);
 }
 
@@ -116,13 +119,13 @@ input:focus::placeholder {
     margin: 6px 0;
     box-sizing: border-box;
     height: 100%;
+    display: flex;
 }
 
 .input-container:focus-within {
     outline: none;
     box-shadow: inset 0 0 0 1px var(--main-blue);
 }
-
 
 .CustomSelect input[type="text"] {
     box-shadow: none;
@@ -307,4 +310,61 @@ input[type="submit"]:hover {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     border: 1px solid var(--window-border);
     box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
+}
+
+.error-tip {
+    position: relative;
+}
+
+.error-tip-icon {
+    position: relative;
+    top: -15px;
+    left: 16px;
+    height: .95em;
+    animation: pop 0.1s ease;
+}
+
+.error-tip-msg {
+    visibility: hidden;
+    position: absolute;
+    text-align: center;
+    bottom: 180%;
+    /* left: 50% */
+    margin-left: -60px;
+    left: 30px;
+    width: 120px;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: var(--button-gray);
+    color: var(--window);
+}
+
+
+.error-tip-icon:hover+.error-tip-msg {
+    visibility: visible;
+    animation: show .12s ease;
+}
+
+@keyframes show {
+    0% {
+        transform: scale(0.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
