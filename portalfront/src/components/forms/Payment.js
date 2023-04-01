@@ -111,7 +111,7 @@ let BillingInfo = (props) => {
     )
 }
 
-let StripeCard = () => {
+let Payment = () => {
     let [cardFocus, setCardFocus] = useState(false)
 
     const cardStyle = {
@@ -187,7 +187,7 @@ function PaymentForm(props) {
             mode: 'onBlur'
         }
     );
-
+    let [cardFocus, setCardFocus] = useState(false)
     const onSubmit = data => {
         console.log(data)
     }
@@ -198,7 +198,7 @@ function PaymentForm(props) {
                 <h4 id="billing-info-header">Billing Info</h4>
                 <BillingInfo register={register} trigger={trigger} errors={errors} />
                 <h4 id="card-input-header">Card</h4>
-                <StripeCard />
+                <Payment />
             </div>
             <OrderSummary
                 unitAmount={props.unitAmount}

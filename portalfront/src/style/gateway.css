@@ -313,16 +313,12 @@ input[type="radio"]:checked+label * {
 button[type="submit"] {
     background-color: var(--button-gray);
     border: 1px solid var(--button-hover-gray);
-    border: none;
     border-radius: 4px;
     padding: 8px 10px 8px 12px;
     color: var(--window);
-    cursor: pointer;
-    transition: background-color 0.15s ease;
 }
 
 button[type="submit"]:hover {
-    cursor: pointer;
     background-color: var(--button-hover-gray);
 }
 

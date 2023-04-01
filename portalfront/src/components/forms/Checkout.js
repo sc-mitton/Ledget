@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import PaymentWindow from './Payment';
 import SubscriptionWindow from './Subscription';
@@ -28,4 +29,4 @@ export default function Checkout() {
             }
         </div>
     )
-};
+}
