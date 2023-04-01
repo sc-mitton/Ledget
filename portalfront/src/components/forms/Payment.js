@@ -87,24 +87,26 @@ let BillingInfo = (props) => {
                     />
                 </div>
             </div>
-            <div id="location-input-errors">
-                <div id="city-error">
-                    {hasError('city') &&
-                        <div className="form-error">
-                            <img src={alert2} className="error-tip-icon" />
-                            {props.errors.city?.message}
-                        </div>
-                    }
+            {hasError('city') || hasError('zip') &&
+                <div id="location-input-errors">
+                    <div id="city-error">
+                        {hasError('city') &&
+                            <div className="form-error">
+                                <img src={alert2} className="error-tip-icon" />
+                                {props.errors.city?.message}
+                            </div>
+                        }
+                    </div>
+                    <div id="zip-error">
+                        {hasError('zip') &&
+                            <div className="form-error">
+                                <img src={alert2} className="error-tip-icon" />
+                                {props.errors.zip?.message}
+                            </div>
+                        }
+                    </div>
                 </div>
-                <div id="zip-error">
-                    {hasError('zip') &&
-                        <div className="form-error">
-                            <img src={alert2} className="error-tip-icon" />
-                            {props.errors.zip?.message}
-                        </div>
-                    }
-                </div>
-            </div>
+            }
         </>
     )
 }

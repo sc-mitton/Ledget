@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom'
 
-import AnimatedRoutes from './utils/AnimatedRoutes';
+import AnimatedRoutes from './AnimatedRoutes';
 import { AuthProvider } from './context/AuthContext';
 import "./style/gateway.css"
 

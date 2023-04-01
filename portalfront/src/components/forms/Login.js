@@ -12,7 +12,6 @@ import alert2 from "../../assets/icons/alert2.svg"
 import AuthContext from "../../context/AuthContext"
 import apiAuth from "../../api/axios"
 
-
 function LoginForm() {
     const { setAuth, setTokenExpiration } = useContext(AuthContext);
 
@@ -53,7 +52,7 @@ function LoginForm() {
         ).then(response => {
             setAuth(response.data?.full_name)
             setTokenExpiration(response.data?.expiration)
-            navigate(from, { replace: true })
+            navigate(from, { replace: true }, { state: { direction: 1 } })
         }).catch((error) => {
             if (error.response) {
                 if (error.response.status === 401) {
@@ -72,7 +71,7 @@ function LoginForm() {
     return (
         <form onSubmit={handleLoginSubmit} className="login-form">
             {errMsg &&
-                <div className="inline-error" ref={errRef}>
+                <div className="server-error" ref={errRef}>
                     <img src={alert2} alt='' />
                     {errMsg}
                 </div>
@@ -135,17 +134,18 @@ function SocialLogin() {
 function LoginWindow() {
 
     return (
-        <div>
-            <div className='window login-window'>
-                <div className="app-logo" >
-                    <img src={logo} alt="Ledget" />
-                </div>
-                <LoginForm />
-                <SocialLogin />
-                <div className="sign-up-prompt-container">
-                    <span>Don't have an account? </span>
-                    <Link to="/register">Sign Up</Link>
-                </div>
+        <div className='window login-window'>
+            <div className="app-logo" >
+                <img src={logo} alt="Ledget" />
+            </div>
+            <LoginForm />
+            <SocialLogin />
+            <div className="sign-up-prompt-container">
+                <span>Don't have an account? </span>
+                <Link to={{
+                    pathname: "/register",
+                    state: { direction: 1 }
+                }}>Sign Up</Link>
             </div>
         </div>
     )

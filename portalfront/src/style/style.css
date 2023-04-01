@@ -208,10 +208,10 @@ input[type="password"]:focus::placeholder {
 input[type="submit"] {
     background-color: var(--button-gray);
     color: rgb(256, 256, 256);
-    transition: background-color 0.15s ease;
     padding: 8px 4px;
     border-radius: 4px;
-    border: 1px solid var(--button-hover-gray)
+    border: 1px solid var(--button-hover-gray);
+    transition: background-color 0.3s ease;
 }
 
 input[type="submit"]:hover {
@@ -323,11 +323,13 @@ input[type="submit"]:hover {
     box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
 
     /* Center horizontally and vertically */
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+
 
 /* Error Tool Tips & Icon */
 .error-tip {
@@ -364,7 +366,7 @@ input[type="submit"]:hover {
     animation: show .12s ease;
 }
 
-.inline-error {
+.server-error {
     display: block;
     font-size: 12px;
     margin-left: 10px;
@@ -374,7 +376,7 @@ input[type="submit"]:hover {
     text-align: left;
 }
 
-.inline-error img {
+.server-error img {
     height: 1em;
     margin-right: 4px;
     position: relative;

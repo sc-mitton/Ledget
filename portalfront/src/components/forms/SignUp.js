@@ -11,11 +11,12 @@ import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
 import logo from "../../assets/images/logo.svg"
 import alert from "../../assets/icons/alert.svg"
+import alert2 from '../../assets/icons/alert2.svg';
 import AuthContext from "../../context/AuthContext"
 import apiAuth from "../../api/axios"
 import { PasswordInput } from "./CustomInputs"
-import alert2 from '../../assets/icons/alert2.svg';
 
+// Schema for yup form validation
 const schema = object().shape({
     email: string()
         .email("Please enter a valid email address")
@@ -29,7 +30,7 @@ const schema = object().shape({
 })
 
 function SignUpForm() {
-    const { register, handleSubmit, formState: { errors, dirtyFields } } = useForm({
+    const { register, handleSubmit, formState: { errors }, trigger } = useForm({
         resolver: yupResolver(schema),
         mode: 'onBlur'
     })
@@ -49,7 +50,7 @@ function SignUpForm() {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="sign-up-form" method="post">
             {serverError &&
-                <div className="error" ref={errRef}>
+                <div className="server-error" ref={errRef}>
                     <img src={alert} alt='' />{serverError}
                 </div>
             }
@@ -61,6 +62,11 @@ function SignUpForm() {
                     placeholder="Email"
                     required
                     {...register('email')}
+                    onBlur={(e) => {
+                        if (e.target.value) {
+                            trigger("email");
+                        }
+                    }}
                 />
             </div>
             {hasError('email') &&
@@ -76,6 +82,7 @@ function SignUpForm() {
                 name="password"
                 placeholder="Password"
                 register={register}
+                trigger={trigger}
                 visible={visible}
                 setVisible={setVisible}
             />
@@ -92,6 +99,7 @@ function SignUpForm() {
                 name="confirmPassword"
                 placeholder="Confirm password"
                 register={register}
+                trigger={trigger}
                 visIcon={false}
                 visible={visible}
                 setVisible={setVisible}
@@ -141,10 +149,12 @@ function SignUpWindow() {
             <SocialSignup />
             <div className="login-prompt-container">
                 <span>Already using Ledget?  </span>
-                <Link to="/login">Sign In</Link>
+                <Link to={{
+                    pathname: "/login",
+                    state: { direction: 1 }
+                }}>Sign In</Link>
             </div>
         </div>
-
     )
 }
 
