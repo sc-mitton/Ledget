@@ -196,8 +196,9 @@ function PaymentForm(props) {
 
     const onSubmit = data => {
         console.log(data)
-        // Update the user info
-        // Create a
+        // Update the user info via user/update
+        // Create subscription via subscription/create
+        // a customer will also be created in this step before the subscription
     }
 
     return (
