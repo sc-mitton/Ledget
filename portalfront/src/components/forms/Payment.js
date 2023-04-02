@@ -111,7 +111,7 @@ let BillingInfo = (props) => {
     )
 }
 
-let Payment = () => {
+let Payment = ({ setPayment }) => {
     let [cardFocus, setCardFocus] = useState(false)
 
     const cardStyle = {
@@ -132,13 +132,14 @@ let Payment = () => {
                 iconColor: '#f47788'
             }
         }
-    };
+    }
 
     return (
         <div className={`card-container ${cardFocus ? 'focus' : ''}`}>
             <CardElement
                 onBlur={() => setCardFocus(false)}
                 onFocus={() => setCardFocus(true)}
+                onChange={(e) => { e.complete && setPayment(true) }}
                 options={cardStyle}
             />
         </div>
@@ -181,15 +182,22 @@ let OrderSummary = ({ unitAmount, firstCharge, renewalFrequency }) => {
 }
 
 function PaymentForm(props) {
-    const { register, handleSubmit, formState: { errors }, trigger } = useForm(
+    const { register, handleSubmit, formState: { errors, isValid }, trigger } = useForm(
         {
             resolver: yupResolver(schema),
             mode: 'onBlur'
         }
     );
-    let [cardFocus, setCardFocus] = useState(false)
+    let [payment, setPayment] = useState(null)
+    const [succeeded, setSucceeded] = useState(false)
+    const [error, setError] = useState(null)
+    const [processing, setProcessing] = useState(false)
+    const [clientSecret, setClientSecret] = useState('')
+
     const onSubmit = data => {
         console.log(data)
+        // Update the user info
+        // Create a
     }
 
     return (
@@ -198,14 +206,15 @@ function PaymentForm(props) {
                 <h4 id="billing-info-header">Billing Info</h4>
                 <BillingInfo register={register} trigger={trigger} errors={errors} />
                 <h4 id="card-input-header">Card</h4>
-                <Payment />
+                <Payment setPayment={setPayment} />
             </div>
             <OrderSummary
-                unitAmount={props.unitAmount}
-                renewalFrequency={props.renews}
+                unitAmount={props.price.unit_amount / 100}
+                renewalFrequency={props.price.renews}
             />
             <div className="subscribe-button-container">
                 <input
+                    className={`${(isValid && payment) ? 'valid' : 'invalid'}-submit`}
                     type="submit"
                     value="Start Free Trial"
                     id="subscribe-button"
@@ -213,7 +222,7 @@ function PaymentForm(props) {
             </div>
         </form >
     )
-};
+}
 
 const PoweredBy = () => {
     return (
@@ -237,8 +246,7 @@ function PaymentWindow({ price }) {
                 <img src={logo} alt="Ledget" />
             </div>
             <PaymentForm
-                unitAmount={price.unit_amount / 100}
-                renews={price.renews}
+                price={price}
             />
             < PoweredBy />
         </div>
