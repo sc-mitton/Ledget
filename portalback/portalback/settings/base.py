@@ -56,7 +56,9 @@ DEFAULT_MIDDLE_WARE = [
 THIRD_PARTY_MIDDLE_WARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
-LOCAL_MIDDLE_WARE = []
+LOCAL_MIDDLE_WARE = [
+    'core.middleware.jwt_middleware.JWTRequestUserMiddleware'
+]
 
 MIDDLEWARE = DEFAULT_MIDDLE_WARE + THIRD_PARTY_MIDDLE_WARE + LOCAL_MIDDLE_WARE
 

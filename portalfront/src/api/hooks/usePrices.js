@@ -13,6 +13,10 @@ const usePrices = () => {
         const response = await apiAuth.get('price/')
             .then(response => {
                 setPrices(response.data.prices)
+                sessionStorage.setItem(
+                    'prices',
+                    JSON.stringify(response.data.prices)
+                )
                 setLoading(false)
             })
             .catch(error => {
@@ -23,7 +27,14 @@ const usePrices = () => {
 
     useEffect(() => {
         if (!loaded) {
-            fetchPrices()
+            if (sessionStorage.getItem('prices')) {
+                setPrices(
+                    JSON.parse(sessionStorage.getItem('prices'))
+                )
+                setLoading(false)
+            } else {
+                fetchPrices()
+            }
         }
     }, [])
 

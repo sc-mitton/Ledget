@@ -138,12 +138,13 @@ const PasswordInput = (props) => {
                     type={props.visible ? 'text' : 'password'}
                     name={props.name}
                     placeholder={props.placeholder}
-                    {...props.register(props.name)}
-                    onBlur={(e) => {
-                        if (e.target.value) {
-                            props.trigger(props.name);
+                    {...props.register(props.name, {
+                        onChange: (e) => {
+                            e.target.value != '' ?
+                                setInput(true)
+                                : setInput(false)
                         }
-                    }}
+                    })}
                 />
                 {input && props.visIcon && <VisibilityIcon />}
             </div>

@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form"
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
 import logo from "../../assets/images/logo.svg"
-import alert from "../../assets/icons/alert.svg"
 import alert2 from '../../assets/icons/alert2.svg';
 import AuthContext from "../../context/AuthContext"
 import apiAuth from "../../api/axios"
@@ -30,11 +29,9 @@ const schema = object().shape({
 })
 
 function SignUpForm() {
-    const { register, handleSubmit, formState: { errors }, trigger } = useForm({
-        resolver: yupResolver(schema),
-        mode: 'onBlur'
-    })
-    const [serverError, setServerError] = useState('');
+    const { register, handleSubmit, formState: { errors, isValid }, trigger, setError }
+        = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
+    const [errMsg, setErrMsg] = useState('');
     const [visible, setVisible] = useState(false)
     const { setAuth, setTokenExpiration } = React.useContext(AuthContext);
     const navigate = useNavigate();
@@ -44,14 +41,29 @@ function SignUpForm() {
     }
 
     const onSubmit = (data) => {
-        console.log(data)
+        apiAuth.post('/user/create', data)
+            .then((res) => {
+                if (res.data.success) {
+                    setAuth(true);
+                    setTokenExpiration(res.data.tokenExpiration);
+                    navigate('/checkout');
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+                if (err.response.data.email) {
+                    setError('email', { type: 'manual', message: err.response.data.email })
+                } else {
+                    setErrMsg(err.response.status)
+                }
+            })
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="sign-up-form" method="post">
-            {serverError &&
-                <div className="server-error" ref={errRef}>
-                    <img src={alert} alt='' />{serverError}
+            {errMsg &&
+                <div className="server-error">
+                    <img src={alert2} alt='' />{errMsg}
                 </div>
             }
             <div className="input-container">
@@ -113,7 +125,11 @@ function SignUpForm() {
                 </div>
             }
             <div>
-                <input type="submit" id="sign-up" value="Sign Up" />
+                <input
+                    className={`${isValid ? 'valid' : 'invalid'}-submit`}
+                    type="submit"
+                    value="Sign Up"
+                />
             </div>
         </form>
     )

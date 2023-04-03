@@ -21,7 +21,6 @@ function LoginForm() {
 
     const emailRef = useRef();
     const pwdRef = useRef();
-    const errRef = useRef('');
     const [pswdVisible, setPswdVisible] = useState(false);
     const [pwdInput, setPwdInput] = useState('');
 
@@ -69,7 +68,7 @@ function LoginForm() {
     return (
         <form onSubmit={handleLoginSubmit} className="login-form">
             {errMsg &&
-                <div className="server-error" ref={errRef}>
+                <div className="server-error">
                     <img src={alert2} alt='' />
                     {errMsg}
                 </div>
@@ -105,7 +104,11 @@ function LoginForm() {
                     <a id="forgot-password" href="/">Forgot Password?</a>
                 </div>
                 <div>
-                    <input type="submit" id="login" value="Sign In" />
+                    <input
+                        className="submit-button"
+                        type="submit"
+                        value="Sign In"
+                    />
                 </div>
             </div>
         </form>

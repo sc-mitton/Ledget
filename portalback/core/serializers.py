@@ -1,27 +1,43 @@
 
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from core.models import Customer
 from rest_framework_simplejwt.serializers import (
     TokenObtainPairSerializer,
     TokenRefreshSerializer
 )
 from rest_framework_simplejwt.exceptions import InvalidToken
 
+from core.models import BillingInfo
+
+
+class BillingInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BillingInfo
+        fields = ['city', 'state', 'postal_code']
+
 
 class UserSerializer(serializers.ModelSerializer):
+    billing_info = BillingInfoSerializer(required=False)
+
     class Meta:
         model = get_user_model()
-        fields = ['id', 'email', 'first_name', 'last_name', 'password']
-        write_only_fields = ('password')
-        op_kwargs = {'first_name': {'required': False},
-                     'last_name': {'required': False}}
+        fields = ['id', 'email', 'password', 'first_name',
+                  'last_name', 'billing_info']
+        write_only_fields = ('password',)
         extra_kwargs = {'email': {'validators': []}}
 
     def create(self, validated_data):
         return get_user_model().objects.create_user(**validated_data)
 
     def update(self, instance, validated_data):
+
+        billing_info = validated_data.pop('billing_info', None)
+        if billing_info:
+            BillingInfo.objects.update_or_create(
+                user=instance,
+                **billing_info
+            )
+
         password = validated_data.pop('password', None)
         user = super().update(instance, validated_data)
         if password:
@@ -39,11 +55,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_password(self, value):
         # validate password
-        if not value:
-            raise serializers.ValidationError('Password is required')
-        if len(value) < 8:
+        if len(value) < 10:
             raise serializers.ValidationError(
-                'Password must be at least 8 characters long')
+                'Password must be at least 10 characters long'
+            )
         return value
 
 

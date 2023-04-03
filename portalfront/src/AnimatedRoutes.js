@@ -20,7 +20,7 @@ function AnimatedRoutes() {
                 exit={{ opacity: 0 }}
                 key={location.pathname}
                 transition={{
-                    opacity: { duration: .35, ease: "easeOut" }
+                    opacity: { duration: .25, ease: "easeOut" }
                 }}
             >
                 <Routes location={location} key={location.pathname} >

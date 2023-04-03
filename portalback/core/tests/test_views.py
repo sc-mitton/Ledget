@@ -8,7 +8,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 
 import jwt
-from unittest import skip  # noqa
 from datetime import datetime, timedelta
 
 
@@ -36,7 +35,7 @@ class TestCoreApiViews(TestCase):
         password = 'testpassword123'
         payload = {'email': email, 'password': password}
         response = self.client.post(
-            reverse('user'),
+            reverse('create-user'),
             payload,
             format='json',
             secure=True
@@ -67,7 +66,7 @@ class TestCoreApiViews(TestCase):
         exists fails."""
         payload = {'email': self.email, 'password': self.password}
         response = self.client.post(
-            reverse('user'),
+            reverse('create-user'),
             data=payload,
             format='json',
             secure=True
@@ -170,3 +169,71 @@ class TestCoreApiViews(TestCase):
         response = self.client.get(reverse('price'), secure=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data.get('prices')), 2)
+
+    def test_update_user(self):
+        """Test that the user can update their email and password."""
+
+        # Login user first
+        response = self.client.post(
+            reverse('token_obtain_pair'),
+            {'email': self.email, 'password': self.password},
+            secure=True
+        )
+
+        # Update user
+        new_email = 'newemail@example.com'
+        response = self.client.patch(
+            reverse('update-user'),
+            {'email': new_email},
+            secure=True
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(
+            get_user_model().objects.filter(email=new_email).exists()
+        )
+
+    def test_update_user_while_unauthenticated(self):
+        """Test that trying to update the user while unauthenticated
+        returns an error."""
+
+        new_email = 'newemail@example.com'
+        response = self.client.patch(
+            reverse('update-user'),
+            {'email': new_email},
+            secure=True
+        )
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+
+    def test_add_billing_info(self):
+
+        # Login user first
+        response = self.client.post(
+            reverse('token_obtain_pair'),
+            {'email': self.email, 'password': self.password},
+            secure=True
+        )
+
+        city = "Anchorage"
+        state = "Alaska"
+        postal_code = "99501"
+        payload = {
+            'billing_info': {
+                'city': city,
+                'state': state,
+                'postal_code': postal_code
+            }
+        }
+
+        response = self.client.patch(
+            reverse('update-user'),
+            payload,
+            secure=True,
+            format='json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        user = get_user_model().objects.get(email=self.email)
+        self.assertEqual(user.billing_info.city, city)
+        self.assertEqual(user.billing_info.state, state)
+        self.assertEqual(user.billing_info.postal_code, postal_code)

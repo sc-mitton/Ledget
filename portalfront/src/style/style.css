@@ -7,7 +7,6 @@
     --window-border: rgb(150, 150, 150);
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
 
-    --main-text-gray: rgb(36, 36, 36);
     --button-gray: rgb(70, 70, 70);
     --button-hover-gray: rgb(36, 36, 36);
     --border-bottom-gray: #b9b9b9;
@@ -27,10 +26,12 @@
 
     /* Input Colors */
     --input-color: rgb(237, 237, 237);
-    --input-placeholder: rgb(132, 132, 132);
-
     --tooltip-background: rgb(166, 166, 166);
 
+    /* Text */
+    --main-text-gray: rgb(36, 36, 36);
+    --input-placeholder: rgb(132, 132, 132);
+    --invalid-submit-text: rgb(120, 120, 120);
 }
 
 html,
@@ -121,6 +122,7 @@ input[type="email"]::placeholder {
 
 .input-container input:focus::placeholder {
     color: var(--main-blue);
+    transition: color .2s ease;
 }
 
 .input-container {
@@ -132,6 +134,7 @@ input[type="email"]::placeholder {
     box-sizing: border-box;
     height: 100%;
     display: flex;
+    transition: border .2s ease;
 }
 
 .input-container:focus-within {
@@ -158,6 +161,7 @@ button[type="submit"],
 
 /* Password Input */
 input[type=password]:not(:placeholder-shown) {
+    /* For spacing out the dots text */
     font-family: 'pass', 'Roboto', Helvetica, Arial, sans-serif;
     font-size: 14px;
     letter-spacing: 2px;
@@ -165,6 +169,7 @@ input[type=password]:not(:placeholder-shown) {
 
 input[type="password"]::placeholder {
     color: var(--input-placeholder);
+    transition: color .2s ease;
 }
 
 input[type="password"]:focus::placeholder {
@@ -178,6 +183,7 @@ input[type="password"]:focus::placeholder {
     border-radius: 4px;
     display: flex;
     border: 1px solid var(--window);
+    transition: border .2s ease;
 }
 
 .password-input:focus-within {
@@ -211,17 +217,28 @@ input[type="password"]:focus::placeholder {
 
 /* End Password Input */
 
-/* Submit Button */
-input[type="submit"] {
+/* Submit Buttons */
+.invalid-submit,
+.valid-submit,
+.submit-button {
     background-color: var(--button-gray);
-    color: rgb(256, 256, 256);
     padding: 8px 4px;
     border-radius: 4px;
     border: 1px solid var(--button-hover-gray);
     transition: background-color 0.3s ease;
 }
 
-input[type="submit"]:hover {
+.invalid-submit {
+    color: var(--invalid-submit-text);
+}
+
+.valid-submit,
+.submit-button {
+    color: var(--window);
+}
+
+.valid-submit:hover,
+.submit-button:hover {
     cursor: pointer;
     background-color: var(--button-hover-gray);
 }

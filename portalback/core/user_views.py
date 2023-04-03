@@ -2,9 +2,10 @@
 from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_200_OK,
-    HTTP_400_BAD_REQUEST
+    HTTP_400_BAD_REQUEST,
 )
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -14,8 +15,9 @@ from rest_framework_simplejwt.views import (
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework.exceptions import ValidationError
+
 from django.conf import settings
-from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 import jwt
 from .serializers import (
@@ -80,26 +82,39 @@ class CookieTokenObtainPairView(TokenObtainPairView):
 
 class CreateUserView(CookieTokenObtainPairView):
     """Custom view for creating a new user and returning
-    token pair ."""
+    token pair."""
 
     def post(self, request, *args, **kwargs):
 
         user_serializer = UserSerializer(data=request.data)
-
+        print(request.data)
         try:
             user_serializer.is_valid(raise_exception=True)
+            user_serializer.save()
         except ValidationError as e:
             return Response(e.args[0], status=HTTP_400_BAD_REQUEST)
-
-        get_user_model().objects.create_user(
-            email=request.data['email'],
-            password=request.data['password']
-        )
 
         response = super().post(request, *args, **kwargs)
         response.status_code = HTTP_201_CREATED
 
         return response
+
+
+class UpdateUserView(LoginRequiredMixin, APIView):
+    """View for updating user information."""
+
+    def patch(self, request, *args, **kwargs):
+
+        user = request.user
+        user_serializer = UserSerializer(user, data=request.data, partial=True)
+
+        try:
+            user_serializer.is_valid(raise_exception=True)
+            user_serializer.save()
+        except ValidationError as e:
+            return Response(e.args[0], status=HTTP_400_BAD_REQUEST)
+
+        return Response(user_serializer.data, status=HTTP_200_OK)
 
 
 class CookieTokenRefreshView(TokenRefreshView):

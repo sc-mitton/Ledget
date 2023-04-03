@@ -9,7 +9,7 @@ import { CardElement } from '@stripe/react-stripe-js';
 import logo from '../../assets/images/logo.svg';
 import stripelogo from '../../assets/images/stripelogo.svg';
 import alert2 from '../../assets/icons/alert2.svg';
-
+import apiAuth from "../../api/axios"
 
 const schema = object({
     name: string()
@@ -27,7 +27,6 @@ const schema = object({
         .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
 
 })
-
 
 let BillingInfo = (props) => {
 
@@ -194,11 +193,50 @@ function PaymentForm(props) {
     const [processing, setProcessing] = useState(false)
     const [clientSecret, setClientSecret] = useState('')
 
+    const formatData = (data) => {
+        data['state'] = data['city'].split(',')[1].trim()
+        data['city'] = data['city'].split(',')[0].trim()
+        return data
+    }
+
     const onSubmit = data => {
-        console.log(data)
-        // Update the user info via user/update
-        // Create subscription via subscription/create
-        // a customer will also be created in this step before the subscription
+        formatData(data)
+        setProcessing(true)
+        apiAuth.patch('user/update/', { "billing_info": data })
+            .then(
+                createSubscription()
+            ).then(
+                confirmPayment()
+            ).catch(
+                setError('Something went wrong. Please try again.')
+            )
+    }
+
+    const createSubscription = async () => {
+        apiAuth.post('subscription/create/')
+            .then(
+                (response) => {
+                    setClientSecret(response.data.client_secret)
+                }
+            ).catch(
+                setError('Something went wrong. Please try again.')
+            )
+    }
+
+    const confirmPayment = async () => {
+        stripe.confirmCardPayment(
+            clientSecret,
+            { payment_method: { card: elements.getElement(CardElement) } }
+        ).then((result) => {
+            if (result.error) {
+                setError(`Payment failed ${result.error.message}`)
+            } else {
+                setError(null)
+                setSucceeded(true)
+            }
+        }).finally(
+            setProcessing(false)
+        )
     }
 
     return (
@@ -217,7 +255,7 @@ function PaymentForm(props) {
                 <input
                     className={`${(isValid && payment) ? 'valid' : 'invalid'}-submit`}
                     type="submit"
-                    value="Start Free Trial"
+                    value={`Start ${props.price.trial_period_days}-day Free Trial`}
                     id="subscribe-button"
                 />
             </div>

@@ -41,12 +41,12 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(max_length=255, unique=True, blank=False)
-    first_name = models.CharField(max_length=50, blank=True)
-    last_name = models.CharField(max_length=50, blank=True)
     is_staff = models.BooleanField(default=True)
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False
     )
+    first_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=50, blank=True)
 
     objects = UserManager()
 
@@ -61,13 +61,27 @@ class User(AbstractBaseUser, PermissionsMixin):
         return f'{self.first_name} {self.last_name}'
 
 
+class BillingInfo(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='billing_info'
+    )
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=20, blank=True)
+    postal_code = models.CharField(max_length=10, blank=True)
+
+    def __str__(self):
+        return self.user.email
+
+
 class Customer(models.Model):
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         related_name='customer'
     )
-    stripe_customer_id = models.CharField(
+    customer_id = models.CharField(
         primary_key=True,
         max_length=255,
         unique=True
@@ -75,7 +89,7 @@ class Customer(models.Model):
     is_active = models.BooleanField(default=False)
     signup_date = models.DateTimeField(auto_now_add=True)
     trial_end = models.DateTimeField(null=True)
-    stripe_subscription_id = models.CharField(max_length=255)
+    subscription_id = models.CharField(max_length=255)
 
     def __str__(self):
         return self.user.email
