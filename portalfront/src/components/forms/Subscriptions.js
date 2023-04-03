@@ -5,6 +5,7 @@ import { SwitchTransition, CSSTransition } from 'react-transition-group';
 
 import logo from '../../assets/images/logo.svg';
 import usePrices from '../../api/hooks/usePrices';
+import { useNavigate } from 'react-router-dom';
 
 const Subscription = (props) => {
     return (
@@ -81,14 +82,15 @@ function ContinueButton() {
     )
 }
 
-function SubscriptionForm({ setPrice }) {
+function SubscriptionForm() {
     let [lookupKey, setLookupKey] = useState('month-to-month')
+    const navigate = useNavigate()
     let { prices, loading, error } = usePrices()
 
     const handleSubmit = (e) => {
         e.preventDefault()
         let price = prices.find(price => price.lookup_key === lookupKey)
-        setPrice(price)
+        navigate('/checkout', { state: { price: price } })
     }
 
     return (
@@ -111,7 +113,7 @@ function SubscriptionForm({ setPrice }) {
     )
 };
 
-function SubscriptionWindow({ setPrice }) {
+function SubscriptionsWindow({ setPrice }) {
 
     return (
         <div className='window subscription-window'>
@@ -126,4 +128,4 @@ function SubscriptionWindow({ setPrice }) {
     )
 };
 
-export default SubscriptionWindow
+export default SubscriptionsWindow

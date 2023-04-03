@@ -55,6 +55,7 @@ function LoginForm() {
                 console.log(response.data)
                 setUser(response.data?.user)
                 setTokenExpiration(response.data?.access_token_expiration)
+
                 navigate(from, { replace: true }, { state: { direction: 1 } })
             }).catch((error) => {
                 if (error.response) {

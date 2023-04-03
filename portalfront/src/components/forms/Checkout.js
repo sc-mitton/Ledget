@@ -6,7 +6,8 @@ import { Elements } from '@stripe/react-stripe-js';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import PaymentWindow from './Payment';
-import SubscriptionWindow from './Subscription';
+import SubscriptionWindow from './Subscriptions';
+import { useLocation } from 'react-router-dom';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST)
 
@@ -17,16 +18,12 @@ let options = {
 }
 
 export default function Checkout() {
-    let [price, setPrice] = useState(null)
+    const { state } = useLocation()
+    const { price } = state
 
     return (
-        <div>
-            {price
-                ? <Elements stripe={stripePromise} options={options}>
-                    <PaymentWindow price={price} />
-                </Elements >
-                : <SubscriptionWindow setPrice={setPrice} />
-            }
-        </div>
+        <Elements stripe={stripePromise} options={options}>
+            <PaymentWindow price={price} />
+        </Elements >
     )
 }

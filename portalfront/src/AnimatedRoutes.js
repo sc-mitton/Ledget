@@ -7,10 +7,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import LoginWindow from './components/forms/Login';
 import SignUpWindow from './components/forms/SignUp';
 import Checkout from './components/forms/Checkout';
-import PrivateRoutes from './utils/PrivateRoutes';
+import PrivateRoute from './utils/PrivateRoute';
+import SubscriptionsWindow from './components/forms/Subscriptions';
 
 function AnimatedRoutes() {
-    const location = useLocation();
+    const location = useLocation()
 
     return (
         <AnimatePresence mode="wait">
@@ -26,7 +27,8 @@ function AnimatedRoutes() {
                 <Routes location={location} key={location.pathname} >
                     <Route exact path="/login" element={<LoginWindow />} />
                     <Route path="/register" element={<SignUpWindow />} />
-                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/checkout" element={PrivateRoute(<Checkout />)} />
+                    <Route path="/plans" element={PrivateRoute(<SubscriptionsWindow />)} />
                 </Routes>
             </motion.div >
         </AnimatePresence>
