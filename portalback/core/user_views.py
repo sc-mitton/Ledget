@@ -70,10 +70,12 @@ class CookieTokenObtainPairView(TokenObtainPairView):
                 response.data['access'],
                 **cookie_args
             )
-            decoded_jwt = _decode_jwt(response.data['access'])
-            response.data['email'] = decoded_jwt['email']
-            response.data['full_name'] = decoded_jwt['full_name']
-            response.data['expiration'] = decoded_jwt['exp']
+            decoded_access_jwt = _decode_jwt(response.data['access'])
+            payload = {
+                'user': decoded_access_jwt['user'],
+                'access_token_expiration': decoded_access_jwt['exp']
+            }
+            response.data.update(payload)
             del response.data['refresh']
             del response.data['access']
 
@@ -87,7 +89,6 @@ class CreateUserView(CookieTokenObtainPairView):
     def post(self, request, *args, **kwargs):
 
         user_serializer = UserSerializer(data=request.data)
-        print(request.data)
         try:
             user_serializer.is_valid(raise_exception=True)
             user_serializer.save()
@@ -137,7 +138,7 @@ class CookieTokenRefreshView(TokenRefreshView):
 
     def finalize_response(self, request, response, *args, **kwargs):
         if response.data.get('refresh'):
-            # If the refresh token is expird, this block wont ever
+            # If the refresh token is expired, this block wont ever
             # get exeuted
             response.set_cookie(
                 'access',
@@ -149,10 +150,12 @@ class CookieTokenRefreshView(TokenRefreshView):
                 response.data['refresh'],
                 **cookie_args
             )
-            decoded_jwt = _decode_jwt(response.data['access'])
-            response.data['email'] = decoded_jwt['email']
-            response.data['full_name'] = decoded_jwt['full_name']
-            response.data['expiration'] = decoded_jwt['exp']
+            decoded_access_jwt = _decode_jwt(response.data['access'])
+            payload = {
+                'user': decoded_access_jwt['user'],
+                'access_token_expiration': decoded_access_jwt['exp']
+            }
+            response.data.update(payload)
             del response.data['refresh']
             del response.data['access']
 

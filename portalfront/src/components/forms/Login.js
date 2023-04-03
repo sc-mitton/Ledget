@@ -42,31 +42,38 @@ function LoginForm() {
     }
 
     const handleLoginSubmit = async (event) => {
-        event.preventDefault();
-        const response = await apiAuth.post(
-            'token/',
-            { 'email': emailRef.current.value, 'password': pwdRef.current.value }
-        ).then(response => {
-            setAuth(response.data?.full_name)
-            setTokenExpiration(response.data?.expiration)
-            navigate(from, { replace: true }, { state: { direction: 1 } })
-        }).catch((error) => {
-            if (error.response) {
-                if (error.response.status === 401) {
-                    setErrMsg("Wrong email or password.")
+        event.preventDefault()
+        if (emailRef.current.value === '') {
+            emailRef.current.focus()
+        } else if (pwdRef.current.value === '') {
+            pwdRef.current.focus()
+        } else {
+            apiAuth.post(
+                'token/',
+                { 'email': emailRef.current.value, 'password': pwdRef.current.value }
+            ).then(response => {
+                console.log(response.data)
+                setUser(response.data?.user)
+                setTokenExpiration(response.data?.access_token_expiration)
+                navigate(from, { replace: true }, { state: { direction: 1 } })
+            }).catch((error) => {
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        setErrMsg("Wrong email or password.")
+                    } else {
+                        setErrMsg(error.response.error)
+                    }
+                } else if (error.request) {
+                    setErrMsg("Server is not responding")
                 } else {
-                    setErrMsg(error.response.error)
+                    setErrMsg("Hmm, something went wrong, please try again.")
                 }
-            } else if (error.request) {
-                setErrMsg("Server is not responding")
-            } else {
-                setErrMsg("Hmm, something went wrong, please try again.")
-            }
-        })
+            })
+        }
     }
 
     return (
-        <form onSubmit={handleLoginSubmit} className="login-form">
+        <form onSubmit={handleLoginSubmit} className="login-form" noValidate>
             {errMsg &&
                 <div className="server-error">
                     <img src={alert2} alt='' />

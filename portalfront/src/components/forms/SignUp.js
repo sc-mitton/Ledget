@@ -33,7 +33,7 @@ function SignUpForm() {
         = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const [errMsg, setErrMsg] = useState('');
     const [visible, setVisible] = useState(false)
-    const { setAuth, setTokenExpiration } = React.useContext(AuthContext);
+    const { setUser, setTokenExpiration } = React.useContext(AuthContext);
     const navigate = useNavigate();
 
     const hasError = (field) => {
@@ -44,15 +44,20 @@ function SignUpForm() {
         apiAuth.post('/user/create', data)
             .then((res) => {
                 if (res.data.success) {
-                    setAuth(true);
-                    setTokenExpiration(res.data.tokenExpiration);
+                    setUser(response.data?.user)
+                    setTokenExpiration(
+                        response.data?.access_token_expiration
+                    )
                     navigate('/checkout');
                 }
             })
             .catch((err) => {
                 console.log(err)
                 if (err.response.data.email) {
-                    setError('email', { type: 'manual', message: err.response.data.email })
+                    setError(
+                        'email',
+                        { type: 'manual', message: err.response.data.email }
+                    )
                 } else {
                     setErrMsg(err.response.status)
                 }
@@ -60,7 +65,7 @@ function SignUpForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="sign-up-form" method="post">
+        <form onSubmit={handleSubmit(onSubmit)} className="sign-up-form" noValidate>
             {errMsg &&
                 <div className="server-error">
                     <img src={alert2} alt='' />{errMsg}

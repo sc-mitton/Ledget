@@ -7,7 +7,7 @@ const AuthContext = createContext();
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
-    const [auth, setAuth] = useState({});
+    const [user, setUser] = useState({});
     const [subscribed, setSubscribed] = useState(false);
     const navigate = useNavigate();
     const [tokenExpiration, setTokenExpiration] = useState('');
@@ -18,8 +18,8 @@ export const AuthProvider = ({ children }) => {
         let response = await apiAuth.post(
             'token/refresh/',
         ).then(response => {
-            setAuth(response.data.full_name)
-            setTokenExpiration(response.data.expiration)
+            setUser(response.data.user)
+            setTokenExpiration(response.data.access_token_expiration)
         }).catch((error) => {
             if (error.response) {
                 console.log(error.response.data.detail) // TODO make this better for ui
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
             { headers: { 'Content-Type': 'application/json' } },
             { withCredentials: true }
         ).then(response => {
-            setAuth({})
+            setUser({})
             setTokenExpiration('')
             navigate('/login')
         }).catch((error) => {
@@ -84,14 +84,12 @@ export const AuthProvider = ({ children }) => {
 
         return () => clearInterval(interval)
 
-    }, [tokenExpiration, auth])
+    }, [tokenExpiration, user])
 
     // The context data is what is passed to the child components
     const contextData = {
-        auth,
-        setAuth,
-        subscribed,
-        setSubscribed,
+        user,
+        setUser,
         setTokenExpiration
     }
 
