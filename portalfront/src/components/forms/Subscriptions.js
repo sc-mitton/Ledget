@@ -25,7 +25,7 @@ const Subscription = (props) => {
             </label>
         </div>
     )
-};
+}
 
 function Description(props) {
 
@@ -58,8 +58,8 @@ function Description(props) {
 
 function ContinueButton() {
     return (
-        <div className="continue-to-payment-button-container">
-            <button type="submit" className="continue-to-payment-button">
+        <div id="continue-to-payment-button-container">
+            <button type="submit" className="continue-to-payment-button valid-submit">
                 Payment
                 <svg width="16" height="16" viewBox="4 0 20 18">
                     <path

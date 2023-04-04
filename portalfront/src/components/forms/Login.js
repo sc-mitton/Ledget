@@ -13,7 +13,7 @@ import AuthContext from "../../context/AuthContext"
 import apiAuth from "../../api/axios"
 
 function LoginForm() {
-    const { setAuth, setTokenExpiration } = useContext(AuthContext);
+    const { setTokenExpiration } = useContext(AuthContext);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -52,11 +52,13 @@ function LoginForm() {
                 'token/',
                 { 'email': emailRef.current.value, 'password': pwdRef.current.value }
             ).then(response => {
-                console.log(response.data)
-                setUser(response.data?.user)
                 setTokenExpiration(response.data?.access_token_expiration)
-
-                navigate(from, { replace: true }, { state: { direction: 1 } })
+                sessionStorage.setItem('user', JSON.stringify(response.data.user))
+                if (response.data.user.is_customer) {
+                    console.log("navigating to dashboard...") // TODO
+                } else {
+                    navigate('/plans')
+                }
             }).catch((error) => {
                 if (error.response) {
                     if (error.response.status === 401) {

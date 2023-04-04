@@ -1,6 +1,7 @@
 import React from 'react';
 
-import alert2 from '../../assets/icons/alert2.svg';
+import alert2 from '../assets/icons/alert2.svg'
+import "./widgets.css"
 
 export const FormErrorTip = (props) => {
     return (
@@ -14,3 +15,10 @@ export const FormErrorTip = (props) => {
     )
 }
 
+export const LoadingRing = () => {
+    return (
+        <>
+            <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </>
+    )
+}

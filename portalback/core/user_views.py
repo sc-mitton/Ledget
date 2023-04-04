@@ -125,6 +125,7 @@ class CookieTokenRefreshView(TokenRefreshView):
     serializer_class = CustomTokenRefreshSerializer
 
     def post(self, request, *args, **kwargs):
+        print(request.COOKIES)
         serializer = self.get_serializer(
             data=request.COOKIES,
         )
@@ -140,6 +141,7 @@ class CookieTokenRefreshView(TokenRefreshView):
         if response.data.get('refresh'):
             # If the refresh token is expired, this block wont ever
             # get exeuted
+            print(response.data)
             response.set_cookie(
                 'access',
                 response.data['access'],

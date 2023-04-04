@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Select from 'react-select';
 import hidePassword from "../../assets/icons/hidePassword.svg"
 import showPassword from "../../assets/icons/showPassword.svg"
-import { FormErrorTip } from "./Widgets"
+import { FormErrorTip } from "../../widgets/Widgets"
 
 const Checkbox = (props) => {
     let id = props.id

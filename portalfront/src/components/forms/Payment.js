@@ -1,16 +1,18 @@
-import React from 'react';
-import { useState } from 'react';
+import React from 'react'
+import { useState } from 'react'
 
-import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { object, string } from 'yup';
-import { CardElement } from '@stripe/react-stripe-js';
+import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { object, string } from 'yup'
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
-import logo from '../../assets/images/logo.svg';
-import stripelogo from '../../assets/images/stripelogo.svg';
-import alert2 from '../../assets/icons/alert2.svg';
-import apiAuth from "../../api/axios"
+
+import logo from '../../assets/images/logo.svg'
+import stripelogo from '../../assets/images/stripelogo.svg'
+import alert2 from '../../assets/icons/alert2.svg'
+import apiAuth from '../../api/axios'
+import { LoadingRing } from '../../widgets/Widgets'
 
 const schema = object({
     name: string()
@@ -190,9 +192,11 @@ function PaymentForm(props) {
     );
     let [payment, setPayment] = useState(null)
     const [succeeded, setSucceeded] = useState(false)
-    const [error, setError] = useState(null)
+    const [errMsg, setErrMsg] = useState(null)
     const [processing, setProcessing] = useState(false)
     const [clientSecret, setClientSecret] = useState('')
+    const stripe = useStripe()
+    const elements = useElements()
 
     const formatData = (data) => {
         data['state'] = data['city'].split(',')[1].trim()
@@ -205,11 +209,11 @@ function PaymentForm(props) {
         setProcessing(true)
         apiAuth.patch('user/update/', { "billing_info": data })
             .then(
-                createSubscription()
+                createSubscription({ 'price': props.price })
             ).then(
                 confirmPayment()
             ).catch(
-                setError('Something went wrong. Please try again.')
+                setErrMsg('Something went wrong. Please try again.')
             )
     }
 
@@ -220,7 +224,7 @@ function PaymentForm(props) {
                     setClientSecret(response.data.client_secret)
                 }
             ).catch(
-                setError('Something went wrong. Please try again.')
+                setErrMsg('Something went wrong. Please try again.')
             )
     }
 
@@ -244,21 +248,34 @@ function PaymentForm(props) {
         <form onSubmit={handleSubmit(onSubmit)} className="checkout-form" method="post">
             <div className="inputs-container">
                 <h4 id="billing-info-header">Billing Info</h4>
-                <BillingInfo register={register} trigger={trigger} errors={errors} />
+                <BillingInfo
+                    register={register}
+                    trigger={trigger}
+                    errors={errors}
+                />
                 <h4 id="card-input-header">Card</h4>
                 <Payment setPayment={setPayment} />
+                {errMsg &&
+                    <div className="server-error">
+                        <img src={alert2} alt='' />
+                        {errMsg}
+                    </div>
+                }
             </div>
             <OrderSummary
                 unitAmount={props.price.unit_amount / 100}
                 renewalFrequency={props.price.renews}
             />
             <div className="subscribe-button-container">
-                <input
-                    className={`${(isValid && payment) ? 'valid' : 'invalid'}-submit`}
-                    type="submit"
-                    value={`Start ${props.price.trial_period_days}-day Free Trial`}
+                <button
+                    className={`${(isValid && payment && !processing) ? 'valid' : 'invalid'}-submit`}
                     id="subscribe-button"
-                />
+                    type='submit'
+                >
+                    {processing ?
+                        <LoadingRing />
+                        : <span>{`Start ${props.price.trial_period_days}-day Free Trial`}</span>}
+                </button>
             </div>
         </form >
     )

@@ -32,7 +32,7 @@ def create_customer(request):
     return customer
 
 
-class PriceView(APIView):
+class PriceView(LoginRequiredMixin, APIView):
     """Class for getting the list of prices from Stripe"""
 
     def get_prices(self, request):
@@ -84,7 +84,8 @@ class SubscriptionView(LoginRequiredMixin, APIView):
                 'save_default_payment_method': 'on_subscription'
             },
             trial_period_days=request.data.get('price')
-                                          .get('trial_period_days')
+                                          .get('trial_period_days'),
+            automatic_tax={"enabled": True}
         )
         payload = {
             'subscriptionId': subscription.id,
@@ -99,5 +100,52 @@ class SubscriptionView(LoginRequiredMixin, APIView):
 
 class StripeHookView(APIView):
     """Class for handling the Stripe webhook"""
+
     def post(self, request, *args, **kwargs):
-        pass
+
+        webhook_secret = settings.STRIPE_WH_SECRET_TEST
+        request_data = request.data
+
+        if webhook_secret:
+            # Retrieve the event by verifying the signature using
+            # the raw body and secret if webhook signing is configured.
+            signature = request.headers.get('stripe-signature')
+            try:
+                event = stripe.Webhook.construct_event(
+                    payload=request.data,
+                    sig_header=signature,
+                    secret=webhook_secret
+                )
+                data = event['data']
+            except Exception as e:
+                return e
+            # Get the type of webhook event sent - used to
+            # check the status of PaymentIntents.
+            event_type = event['type']
+        else:
+            data = request_data['data']
+            event_type = request_data['type']
+
+        data_object = data['object']
+
+        if event_type == 'invoice.paid':
+            # Used to provision services after the trial has ended.
+            # The status of the invoice will show up as paid. Store the
+            # status in your database to reference when a user accesses
+            # your service to avoid hitting rate limits.
+            print(data)
+
+        if event_type == 'invoice.payment_failed':
+            # If the payment fails or the customer does not have a valid
+            # payment method, an invoice.payment_failed event is sent, the
+            # subscription becomes past_due. Use this webhook to notify your
+            # user that their payment has failed and to retrieve new card
+            # details.
+            print(data)
+
+        if event_type == 'customer.subscription.deleted':
+            # handle subscription canceled automatically based
+            # upon your subscription settings. Or if the user cancels it.
+            print(data)
+
+        return Response(status=HTTP_200_OK)

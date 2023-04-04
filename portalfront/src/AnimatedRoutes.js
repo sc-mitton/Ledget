@@ -27,8 +27,10 @@ function AnimatedRoutes() {
                 <Routes location={location} key={location.pathname} >
                     <Route exact path="/login" element={<LoginWindow />} />
                     <Route path="/register" element={<SignUpWindow />} />
-                    <Route path="/checkout" element={PrivateRoute(<Checkout />)} />
-                    <Route path="/plans" element={PrivateRoute(<SubscriptionsWindow />)} />
+                    <Route path="/" element={<PrivateRoute />}>
+                        <Route path="/plans" element={<SubscriptionsWindow />} />
+                        <Route path="/checkout" element={<Checkout />} />
+                    </Route>
                 </Routes>
             </motion.div >
         </AnimatePresence>

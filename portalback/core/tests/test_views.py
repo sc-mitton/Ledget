@@ -124,7 +124,7 @@ class TestCoreApiViews(TestCase):
             format='json',
             secure=True,
         )
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
     def test_logout(self):
         """Test that the logout endpoint deletes the refresh token from

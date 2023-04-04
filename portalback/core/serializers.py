@@ -72,10 +72,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token['user'] = {
             'email': user.email,
-            'full_name': user.full_name
+            'full_name': user.full_name,
+            'is_customer': hasattr(user, 'customer')
         }
-        if hasattr(user, 'customer'):
-            token['user']['is_customer'] = user.customer.is_active
 
         return token
 

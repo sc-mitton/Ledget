@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 
 import { loadStripe } from '@stripe/stripe-js';
@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import PaymentWindow from './Payment';
 import SubscriptionWindow from './Subscriptions';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST)
 
@@ -19,7 +19,14 @@ let options = {
 
 export default function Checkout() {
     const { state } = useLocation()
-    const { price } = state
+    const navigate = useNavigate()
+    const { price } = state ?? {}
+
+    useEffect(() => {
+        if (!price) {
+            navigate('/plans')
+        }
+    }, [navigate, price])
 
     return (
         <Elements stripe={stripePromise} options={options}>

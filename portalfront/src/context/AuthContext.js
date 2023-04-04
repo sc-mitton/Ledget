@@ -7,54 +7,9 @@ const AuthContext = createContext();
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState({});
-    const [subscribed, setSubscribed] = useState(false);
     const navigate = useNavigate();
     const [tokenExpiration, setTokenExpiration] = useState('');
     const [loading, setLoading] = useState(true);
-
-    let updateToken = async () => {
-        console.log('Updating token...')
-        let response = await apiAuth.post(
-            'token/refresh/',
-        ).then(response => {
-            setUser(response.data.user)
-            setTokenExpiration(response.data.access_token_expiration)
-        }).catch((error) => {
-            if (error.response) {
-                console.log(error.response.data.detail) // TODO make this better for ui
-            } else if (error.request) {
-                console.log("Server is not responding") // TODO make this better for ui
-            } else {
-                console.log("Hmmm, something went wrong, please try again.") // TODO make this better for ui
-            }
-            logout()
-        })
-
-        if (loading) {
-            setLoading(false)
-        }
-    }
-
-    let logout = async () => {
-        let response = await api.post(
-            'logout/',
-            { headers: { 'Content-Type': 'application/json' } },
-            { withCredentials: true }
-        ).then(response => {
-            setUser({})
-            setTokenExpiration('')
-            navigate('/login')
-        }).catch((error) => {
-            if (error.response) {
-                console.log(error.response.data.detail) // TODO make this better for ui
-            } else if (error.request) {
-                console.log("Server is not responding") // TODO make this better for ui
-            } else {
-                console.log("Hmmm, something went wrong, please try again.") // TODO make this better for ui
-            }
-        })
-    }
 
     // Get the interval of the token expiration
     // since the jwt expiration comes as a timestamp
@@ -62,34 +17,75 @@ export const AuthProvider = ({ children }) => {
         const nowTimestamp = Math.floor(Date.now() / 1000);
         let timer = timestamp - nowTimestamp;
         timer = Math.floor(timer * .75) * 1000;
-        return timer;
+        return timer
     }
-    // Update the token on an interval
-    // of it's expiration time
+    const isExpired = (timestamp) => {
+        return (timestamp ?
+            timestamp < Math.floor(Date.now() / 1000)
+            : null)
+    }
+
     useEffect(() => {
-
-        if (loading) {
-            if (tokenExpiration) {
-                updateToken()
-            } else {
-                setLoading(false)
-            }
+        if (tokenExpiration && isExpired(tokenExpiration)) {
+            updateToken()
         }
+        setLoading(false)
+    }, [])
 
-        let interval = setInterval(() => {
-            if (tokenExpiration) {
+    useEffect(() => {
+        if (tokenExpiration) {
+            let interval = setInterval(() => {
                 updateToken()
-            }
-        }, getRefreshInterval(tokenExpiration))
+            }, getRefreshInterval(tokenExpiration))
+            return () => clearInterval(interval)
+        }
+    }, [tokenExpiration])
 
-        return () => clearInterval(interval)
+    let updateToken = async () => {
+        console.log('Updating token...')
+        let response = await axios.post(
+            'token/refresh/',
+            { withCredentials: true },
+            { 'Content-Type': 'application/json' }
+        ).then(
+            console.log(response)
+        )
+        // let response = await apiAuth.post(
+        //     'token/refresh/',
+        // ).then(response => {
+        //     sessionStorage.setItem('user', response.data.user)
+        //     setTokenExpiration(response.data.access_token_expiration)
+        // }).catch((error) => {
+        //     if (error.response) {
+        //         console.log(error.response.data.detail) // TODO make this better for ui
+        //     } else if (error.request) {
+        //         console.log("Server is not responding") // TODO make this better for ui
+        //     } else {
+        //         console.log("Hmmm, something went wrong, please try again.") // TODO make this better for ui
+        //     }
+        //     logout()
+        // })
+    }
 
-    }, [tokenExpiration, user])
+    let logout = async () => {
+        await apiAuth.post('logout/')
+            .catch((error) => {
+                if (error.response) {
+                    console.log(error.response.data.detail) // TODO make this better for ui
+                } else if (error.request) {
+                    console.log("Server is not responding") // TODO make this better for ui
+                } else {
+                    console.log("Hmmm, something went wrong, please try again.") // TODO make this better for ui
+                }
+            }).finally(() => {
+                setUser({})
+                setTokenExpiration('')
+                navigate('/login')
+            })
+    }
 
     // The context data is what is passed to the child components
     const contextData = {
-        user,
-        setUser,
         setTokenExpiration
     }
 

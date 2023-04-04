@@ -16,6 +16,7 @@ REACT_URL = "https://ledget.app:3000/"
 # Stripe
 STRIPE_SK = os.getenv('STRIPE_SK_TEST')
 STRIPE_PK = os.getenv('STRIPE_PK_TEST')
+STRIPE_WH_SECRET_TEST = os.getenv('STRIPE_WH_SECRET_TEST')
 
 # SSL certificate and key for development server
 SSL_CERTIFICATE_PATH = BASE_DIR / 'ssl' / 'ledget.app.crt'
