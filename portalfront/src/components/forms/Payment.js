@@ -25,7 +25,7 @@ const schema = object({
             return true;
         }),
     city: string().required("Please enter your city."),
-    zip: string()
+    postal_code: string()
         .required("Please enter your zip code.")
         .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
 
@@ -74,22 +74,22 @@ let BillingInfo = (props) => {
                         }}
                     />
                 </div>
-                <div className='input-container' id='zip-container'>
+                <div className='input-container' id='postal-code-container'>
                     <input
                         type='text'
-                        id='zip'
-                        name='zip'
+                        id='postal-code'
+                        name='postal_code'
                         placeholder='Zip'
-                        {...props.register('zip')}
+                        {...props.register('postal_code')}
                         onBlur={(e) => {
                             if (e.target.value) {
-                                props.trigger("zip");
+                                props.trigger("postal_code");
                             }
                         }}
                     />
                 </div>
             </div>
-            {hasError('city') || hasError('zip') &&
+            {hasError('city') || hasError('postal_code') &&
                 <div id="location-input-errors">
                     <div id="city-error">
                         {hasError('city') &&
@@ -99,11 +99,11 @@ let BillingInfo = (props) => {
                             </div>
                         }
                     </div>
-                    <div id="zip-error">
-                        {hasError('zip') &&
+                    <div id="postal-code-error">
+                        {hasError('postal_code') &&
                             <div className="form-error">
                                 <img src={alert2} className="error-tip-icon" />
-                                {props.errors.zip?.message}
+                                {props.errors.postal_code?.message}
                             </div>
                         }
                     </div>
@@ -207,14 +207,15 @@ function PaymentForm(props) {
     const onSubmit = data => {
         formatData(data)
         setProcessing(true)
+        console.log(data)
         apiAuth.patch('user/update/', { "billing_info": data })
             .then(
-                createSubscription({ 'price': props.price })
-            ).then(
-                confirmPayment()
-            ).catch(
-                setErrMsg('Something went wrong. Please try again.')
-            )
+            // createSubscription({ 'price': props.price })
+        ).then(
+            // confirmPayment()
+        ).catch(
+            setErrMsg('Something went wrong. Please try again.')
+        )
     }
 
     const createSubscription = async () => {

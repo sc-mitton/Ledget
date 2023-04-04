@@ -166,6 +166,14 @@ class TestCoreApiViews(TestCase):
 
     def test_price_list_view(self):
         """Test that the product list view returns a list of products."""
+
+        # Login user first
+        response = self.client.post(
+            reverse('token_obtain_pair'),
+            {'email': self.email, 'password': self.password},
+            secure=True
+        )
+
         response = self.client.get(reverse('price'), secure=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data.get('prices')), 2)

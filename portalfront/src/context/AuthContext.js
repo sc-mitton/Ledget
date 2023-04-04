@@ -26,6 +26,9 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        setTokenExpiration(
+            sessionStorage.getItem('access_token_expiration')
+        )
         if (tokenExpiration && isExpired(tokenExpiration)) {
             updateToken()
         }
@@ -43,28 +46,23 @@ export const AuthProvider = ({ children }) => {
 
     let updateToken = async () => {
         console.log('Updating token...')
-        let response = await axios.post(
+        apiAuth.post(
             'token/refresh/',
-            { withCredentials: true },
-            { 'Content-Type': 'application/json' }
-        ).then(
-            console.log(response)
-        )
-        // let response = await apiAuth.post(
-        //     'token/refresh/',
-        // ).then(response => {
-        //     sessionStorage.setItem('user', response.data.user)
-        //     setTokenExpiration(response.data.access_token_expiration)
-        // }).catch((error) => {
-        //     if (error.response) {
-        //         console.log(error.response.data.detail) // TODO make this better for ui
-        //     } else if (error.request) {
-        //         console.log("Server is not responding") // TODO make this better for ui
-        //     } else {
-        //         console.log("Hmmm, something went wrong, please try again.") // TODO make this better for ui
-        //     }
-        //     logout()
-        // })
+        ).then(response => {
+            setTokenExpiration(response.data.access_token_expiration)
+        }).catch((error) => {
+            if (error.response) {
+                console.log(error.response.data.detail)
+                // TODO make this better for ui
+            } else if (error.request) {
+                console.log("Server is not responding")
+                // TODO make this better for ui
+            } else {
+                console.log("Hmmm, something went wrong, please try again.")
+                // TODO make this better for ui
+            }
+            logout()
+        })
     }
 
     let logout = async () => {

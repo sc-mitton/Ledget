@@ -18,7 +18,7 @@ urlpatterns = [
          name='token_obtain_pair'),
     path('token/refresh/', CookieTokenRefreshView.as_view(),
          name='token_refresh'),
-    path('user/create/', CreateUserView.as_view(), name='create-user'),
+    path('user/', CreateUserView.as_view(), name='create-user'),
     path('user/update/', UpdateUserView.as_view(), name='update-user'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('price/', PriceView.as_view(), name='price'),

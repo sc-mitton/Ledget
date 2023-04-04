@@ -40,7 +40,8 @@ cookie_args = {
     'secure': settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
     'max_age': settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds(),
     'domain': settings.SIMPLE_JWT['AUTH_COOKIE_DOMAIN'],
-    'samesite': settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE'],
+    # 'samesite': settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE'],
+    # # this breaks things in development
 }
 
 
@@ -105,7 +106,6 @@ class UpdateUserView(LoginRequiredMixin, APIView):
     """View for updating user information."""
 
     def patch(self, request, *args, **kwargs):
-
         user = request.user
         user_serializer = UserSerializer(user, data=request.data, partial=True)
 
@@ -118,14 +118,13 @@ class UpdateUserView(LoginRequiredMixin, APIView):
         return Response(user_serializer.data, status=HTTP_200_OK)
 
 
-class CookieTokenRefreshView(TokenRefreshView):
+class CookieTokenRefreshView(LoginRequiredMixin, TokenRefreshView):
     """Custom view that extends the default TokenRefreshView
     in order to set the refresh token as a HTTP only cookie."""
 
     serializer_class = CustomTokenRefreshSerializer
 
     def post(self, request, *args, **kwargs):
-        print(request.COOKIES)
         serializer = self.get_serializer(
             data=request.COOKIES,
         )
@@ -141,7 +140,6 @@ class CookieTokenRefreshView(TokenRefreshView):
         if response.data.get('refresh'):
             # If the refresh token is expired, this block wont ever
             # get exeuted
-            print(response.data)
             response.set_cookie(
                 'access',
                 response.data['access'],

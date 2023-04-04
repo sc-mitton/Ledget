@@ -356,12 +356,12 @@ input[type="radio"]:checked+label * {
     margin-right: 8px;
 }
 
-#zip-container,
-#zip-error {
+#postal-code-container,
+#postal-code-error {
     width: 30%;
 }
 
-#zip-error,
+#postal-code-error,
 #city-error {
     height: 0px;
 }

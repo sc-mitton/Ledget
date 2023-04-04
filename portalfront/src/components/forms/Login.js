@@ -41,6 +41,34 @@ function LoginForm() {
         )
     }
 
+    const handleSuccessfulResponse = (response) => {
+        setTokenExpiration(response.data?.access_token_expiration)
+        sessionStorage.setItem(
+            'access_token_expiration',
+            response.data?.access_token_expiration
+        )
+        sessionStorage.setItem('user', JSON.stringify(response.data.user))
+        if (response.data.user.is_customer) {
+            console.log("navigating to dashboard...") // TODO
+        } else {
+            navigate('/plans')
+        }
+    }
+
+    const handleErrorResponse = (error) => {
+        if (error.response) {
+            if (error.response.status === 401) {
+                setErrMsg("Wrong email or password.")
+            } else {
+                setErrMsg(error.response.error)
+            }
+        } else if (error.request) {
+            setErrMsg("Server is not responding")
+        } else {
+            setErrMsg("Hmm, something went wrong, please try again.")
+        }
+    }
+
     const handleLoginSubmit = async (event) => {
         event.preventDefault()
         if (emailRef.current.value === '') {
@@ -52,25 +80,9 @@ function LoginForm() {
                 'token/',
                 { 'email': emailRef.current.value, 'password': pwdRef.current.value }
             ).then(response => {
-                setTokenExpiration(response.data?.access_token_expiration)
-                sessionStorage.setItem('user', JSON.stringify(response.data.user))
-                if (response.data.user.is_customer) {
-                    console.log("navigating to dashboard...") // TODO
-                } else {
-                    navigate('/plans')
-                }
+                handleSuccessfulResponse(response)
             }).catch((error) => {
-                if (error.response) {
-                    if (error.response.status === 401) {
-                        setErrMsg("Wrong email or password.")
-                    } else {
-                        setErrMsg(error.response.error)
-                    }
-                } else if (error.request) {
-                    setErrMsg("Server is not responding")
-                } else {
-                    setErrMsg("Hmm, something went wrong, please try again.")
-                }
+                handleErrorResponse(error)
             })
         }
     }

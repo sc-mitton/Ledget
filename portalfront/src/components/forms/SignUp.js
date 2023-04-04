@@ -41,7 +41,7 @@ function SignUpForm() {
     }
 
     const onSubmit = (data) => {
-        apiAuth.post('/user/create', data)
+        apiAuth.post('/user', data)
             .then((res) => {
                 if (res.data.success) {
                     setUser(response.data?.user)
