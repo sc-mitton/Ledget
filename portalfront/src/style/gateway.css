@@ -366,7 +366,6 @@ input[type="radio"]:checked+label * {
     height: 0px;
 }
 
-
 #location-input-errors {
     position: relative;
     top: -12px;
