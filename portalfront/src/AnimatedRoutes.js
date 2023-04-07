@@ -29,7 +29,7 @@ function AnimatedRoutes() {
                     <Route path="/register" element={<SignUpWindow />} />
                     <Route path="/" element={<PrivateRoute />}>
                         <Route path="/plans" element={<SubscriptionsWindow />} />
-                        <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/checkout/*" element={<Checkout />} />
                     </Route>
                 </Routes>
             </motion.div >

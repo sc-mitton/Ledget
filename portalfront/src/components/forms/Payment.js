@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
-
 
 import logo from '../../assets/images/logo.svg'
 import stripelogo from '../../assets/images/stripelogo.svg'
@@ -25,7 +24,7 @@ const schema = object({
             return true;
         }),
     city: string().required("Please enter your city."),
-    postal_code: string()
+    zip: string()
         .required("Please enter your zip code.")
         .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
 
@@ -59,7 +58,7 @@ let BillingInfo = (props) => {
                     {props.errors.name?.message}
                 </div>
             }
-            <div className='location-inputs-container'>
+            <div id='location-inputs-container'>
                 <div className='input-container' id='city-container'>
                     <input
                         type='text'
@@ -74,22 +73,22 @@ let BillingInfo = (props) => {
                         }}
                     />
                 </div>
-                <div className='input-container' id='postal-code-container'>
+                <div className='input-container' id='zip-container'>
                     <input
                         type='text'
-                        id='postal-code'
-                        name='postal_code'
+                        id='zip'
+                        name='zip'
                         placeholder='Zip'
-                        {...props.register('postal_code')}
+                        {...props.register('zip')}
                         onBlur={(e) => {
                             if (e.target.value) {
-                                props.trigger("postal_code");
+                                props.trigger("zip");
                             }
                         }}
                     />
                 </div>
             </div>
-            {hasError('city') || hasError('postal_code') &&
+            {hasError('city') || hasError('zip') &&
                 <div id="location-input-errors">
                     <div id="city-error">
                         {hasError('city') &&
@@ -99,11 +98,11 @@ let BillingInfo = (props) => {
                             </div>
                         }
                     </div>
-                    <div id="postal-code-error">
-                        {hasError('postal_code') &&
+                    <div id="zip-error">
+                        {hasError('zip') &&
                             <div className="form-error">
                                 <img src={alert2} className="error-tip-icon" />
-                                {props.errors.postal_code?.message}
+                                {props.errors.zip?.message}
                             </div>
                         }
                     </div>
@@ -113,10 +112,10 @@ let BillingInfo = (props) => {
     )
 }
 
-let Payment = ({ setPayment }) => {
+let Payment = (props) => {
     let [cardFocus, setCardFocus] = useState(false)
 
-    const cardStyle = {
+    const options = {
         style: {
             base: {
                 fontFamily: "Source Sans Pro, sans-serif",
@@ -133,7 +132,8 @@ let Payment = ({ setPayment }) => {
                 color: '#f47788',
                 iconColor: '#f47788'
             }
-        }
+        },
+        disabled: props.disabled
     }
 
     return (
@@ -141,8 +141,8 @@ let Payment = ({ setPayment }) => {
             <CardElement
                 onBlur={() => setCardFocus(false)}
                 onFocus={() => setCardFocus(true)}
-                onChange={(e) => { e.complete && setPayment(true) }}
-                options={cardStyle}
+                onChange={(e) => { e.complete && props.setPayment(true) }}
+                options={options}
             />
         </div>
     )
@@ -183,102 +183,137 @@ let OrderSummary = ({ unitAmount, firstCharge, renewalFrequency }) => {
     )
 }
 
-function PaymentForm(props) {
-    const { register, handleSubmit, formState: { errors, isValid }, trigger } = useForm(
+function PaymentForm({ price }) {
+    const { register, handleSubmit, formState: { errors, isValid }, trigger, getValues } = useForm(
         {
             resolver: yupResolver(schema),
             mode: 'onBlur'
         }
     );
-    let [payment, setPayment] = useState(null)
+    let [payment, setPayment] = useState(null) // checks if the payment is entered
     const [succeeded, setSucceeded] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
     const [processing, setProcessing] = useState(false)
-    const [clientSecret, setClientSecret] = useState('')
+    const navigate = useNavigate()
+    let clientSecret = null
     const stripe = useStripe()
     const elements = useElements()
 
-    const formatData = (data) => {
-        data['state'] = data['city'].split(',')[1].trim()
-        data['city'] = data['city'].split(',')[0].trim()
-        return data
-    }
+    const getPayload = (data) => {
+        const values = getValues()
+        let payload = {}
+        payload['first_name'] = values.name.split(' ')[0]
+        payload['last_name'] = values.name.split(' ')[1]
+        payload['billing_info'] = {}
+        payload['billing_info']['postal_code'] = values.zip
+        payload['billing_info']['city'] = values.city.split(',')[0]
+        payload['billing_info']['state'] = values.city.split(',')[1]
 
-    const onSubmit = data => {
-        formatData(data)
-        setProcessing(true)
-        console.log(data)
-        apiAuth.patch('user/update/', { "billing_info": data })
-            .then(
-            // createSubscription({ 'price': props.price })
-        ).then(
-            // confirmPayment()
-        ).catch(
-            setErrMsg('Something went wrong. Please try again.')
-        )
+        return payload
     }
 
     const createSubscription = async () => {
-        apiAuth.post('subscription/create/')
-            .then(
-                (response) => {
-                    setClientSecret(response.data.client_secret)
-                }
-            ).catch(
-                setErrMsg('Something went wrong. Please try again.')
-            )
+        try {
+            const response = await apiAuth.post('subscription', {
+                'price_id': price.price_id,
+                'trial_period_days': price.trial_period_days
+            })
+            clientSecret = response.data.client_secret
+        } catch (error) {
+            setErrMsg("Something went wrong. Please try again.")
+        }
     }
 
-    const confirmPayment = async () => {
-        stripe.confirmCardPayment(
-            clientSecret,
-            { payment_method: { card: elements.getElement(CardElement) } }
-        ).then((result) => {
-            if (result.error) {
-                setError(`Payment failed ${result.error.message}`)
-            } else {
-                setError(null)
+    const confirmSetup = async (data) => {
+        const values = getValues()
+        try {
+            const result = await stripe.confirmCardSetup(
+                clientSecret,
+                {
+                    payment_method: {
+                        card: elements.getElement(CardElement),
+                        billing_details: {
+                            name: values.name,
+                            email: JSON.parse(sessionStorage.getItem("user")).email,
+                            address: {
+                                city: values.city.split(',')[0],
+                                state: values.city.split(',')[1],
+                                postal_code: values.zip
+                            }
+                        }
+                    }
+                }
+            )
+            if (result.setupIntent.status === 'succeeded') {
                 setSucceeded(true)
             }
-        }).finally(
+        } catch (error) {
+            setErrMsg(result.error.message)
+        }
+    }
+
+    const onSubmit = async () => {
+        setProcessing(true)
+        const user_id = JSON.parse(sessionStorage.getItem("user")).id
+
+        try {
+            await apiAuth.patch(`user/${user_id}`, getPayload())
+            await createSubscription()
+            await confirmSetup()
+        } catch (error) {
+            console.log(error)
+            setErrMsg("Something went wrong. Please try again.")
+        } finally {
             setProcessing(false)
-        )
+        }
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="checkout-form" method="post">
-            <div className="inputs-container">
-                <h4 id="billing-info-header">Billing Info</h4>
-                <BillingInfo
-                    register={register}
-                    trigger={trigger}
-                    errors={errors}
+        <fieldset disabled={processing || succeeded}>
+            <form onSubmit={handleSubmit(onSubmit)} className="checkout-form" method="post">
+                <div className="inputs-container">
+                    <h4 id="billing-info-header">Billing Info</h4>
+                    <BillingInfo
+                        register={register}
+                        trigger={trigger}
+                        errors={errors}
+                        disabled={processing || succeeded}
+                    />
+                    <h4 id="card-input-header">Card</h4>
+                    <Payment setPayment={setPayment} disabled={processing || succeeded} />
+                    {errMsg &&
+                        <div className="server-error">
+                            <img src={alert2} alt='' />
+                            {errMsg}
+                        </div>
+                    }
+                </div>
+                <OrderSummary
+                    unitAmount={price.unit_amount / 100}
+                    renewalFrequency={price.renews}
                 />
-                <h4 id="card-input-header">Card</h4>
-                <Payment setPayment={setPayment} />
-                {errMsg &&
-                    <div className="server-error">
-                        <img src={alert2} alt='' />
-                        {errMsg}
-                    </div>
-                }
-            </div>
-            <OrderSummary
-                unitAmount={props.price.unit_amount / 100}
-                renewalFrequency={props.price.renews}
-            />
-            <div className="subscribe-button-container">
-                <button
-                    className={`${(isValid && payment && !processing) ? 'valid' : 'invalid'}-submit`}
-                    id="subscribe-button"
-                    type='submit'
-                >
-                    {processing ?
-                        <LoadingRing />
-                        : <span>{`Start ${props.price.trial_period_days}-day Free Trial`}</span>}
-                </button>
-            </div>
-        </form >
+                <div className="subscribe-button-container">
+                    <button
+                        className={`${(isValid && payment && !processing && !succeeded) ? 'valid' : 'invalid'}-submit`}
+                        id="subscribe-button"
+                        type='submit'
+                    >
+                        {processing
+                            ? <LoadingRing />
+                            : null
+                        }
+                        {!processing && !succeeded
+                            ? <span>{`Start ${price.trial_period_days}-day Free Trial`}</span>
+                            : null
+                        }
+                        {succeeded
+                            ? <span id="payment-success-message">Success</span>
+                            : null
+                        }
+                    </button>
+                </div>
+            </form >
+        </fieldset>
     )
 }
 

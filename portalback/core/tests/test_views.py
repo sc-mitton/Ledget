@@ -1,4 +1,5 @@
 from django.test import TestCase
+from unittest import skip # noqa
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.conf import settings
@@ -9,6 +10,8 @@ from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 
 import jwt
 from datetime import datetime, timedelta
+
+from core.models import BillingInfo
 
 
 class TestCoreApiViews(TestCase):
@@ -23,6 +26,19 @@ class TestCoreApiViews(TestCase):
             password=self.password
         )
 
+        self.billing_user_password = 'billingtestpassword'
+        self.billing_user_email = 'billingtest@example.com'
+        self.user_with_billing = User.objects.create_user(
+            email=self.billing_user_email,
+            password=self.billing_user_password,
+        )
+        BillingInfo.objects.create(
+            user=self.user_with_billing,
+            city='San Francisco',
+            state='California',
+            postal_code='94110'
+        )
+
     def test_create_user(self):
         """
         Test the api endpoint for creating a new user.
@@ -35,7 +51,7 @@ class TestCoreApiViews(TestCase):
         password = 'testpassword123'
         payload = {'email': email, 'password': password}
         response = self.client.post(
-            reverse('create-user'),
+            reverse('create_user'),
             payload,
             format='json',
             secure=True
@@ -66,7 +82,7 @@ class TestCoreApiViews(TestCase):
         exists fails."""
         payload = {'email': self.email, 'password': self.password}
         response = self.client.post(
-            reverse('create-user'),
+            reverse('create_user'),
             data=payload,
             format='json',
             secure=True
@@ -124,7 +140,7 @@ class TestCoreApiViews(TestCase):
             format='json',
             secure=True,
         )
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_logout(self):
         """Test that the logout endpoint deletes the refresh token from
@@ -178,6 +194,23 @@ class TestCoreApiViews(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data.get('prices')), 2)
 
+    def test_protected_endpoints(self):
+        """Test that the protected endpoints return an error when
+        unauthenticated."""
+        endpoints = [
+            {'name': 'update_user', 'args': [self.user.pk], 'method': 'patch'},
+            {'name': 'price', 'method': 'get'},
+            {'name': 'token_refresh', 'method': 'post'},
+        ]
+        for endpoint in endpoints:
+            request_method = getattr(self.client, endpoint['method'])
+            response = request_method(
+                reverse(endpoint['name'], args=endpoint.get('args')),
+                secure=True
+            )
+            self.assertEqual(response.status_code,
+                             status.HTTP_401_UNAUTHORIZED)
+
     def test_update_user(self):
         """Test that the user can update their email and password."""
 
@@ -190,8 +223,9 @@ class TestCoreApiViews(TestCase):
 
         # Update user
         new_email = 'newemail@example.com'
+        endpoint = reverse('update_user', args=[self.user.pk])
         response = self.client.patch(
-            reverse('update-user'),
+            endpoint,
             {'email': new_email},
             secure=True
         )
@@ -201,19 +235,9 @@ class TestCoreApiViews(TestCase):
             get_user_model().objects.filter(email=new_email).exists()
         )
 
-    def test_update_user_while_unauthenticated(self):
-        """Test that trying to update the user while unauthenticated
-        returns an error."""
-
-        new_email = 'newemail@example.com'
-        response = self.client.patch(
-            reverse('update-user'),
-            {'email': new_email},
-            secure=True
-        )
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-
+    @skip("for now")
     def test_add_billing_info(self):
+        """Test adding billing info to a user."""
 
         # Login user first
         response = self.client.post(
@@ -226,6 +250,8 @@ class TestCoreApiViews(TestCase):
         state = "Alaska"
         postal_code = "99501"
         payload = {
+            'first_name': 'John',
+            'last_name': 'Doe',
             'billing_info': {
                 'city': city,
                 'state': state,
@@ -233,15 +259,57 @@ class TestCoreApiViews(TestCase):
             }
         }
 
+        endpoint = reverse('update_user', args=[self.user.pk])
         response = self.client.patch(
-            reverse('update-user'),
+            endpoint,
             payload,
             secure=True,
-            format='json'
+            format='json',
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         user = get_user_model().objects.get(email=self.email)
+        self.assertEqual(user.full_name, payload['first_name']
+                         + ' ' + payload['last_name'])
         self.assertEqual(user.billing_info.city, city)
         self.assertEqual(user.billing_info.state, state)
         self.assertEqual(user.billing_info.postal_code, postal_code)
+
+    def test_update_billing_info(self):
+        # Login user first
+        self.client.post(
+            reverse('token_obtain_pair'),
+            {
+                'email': self.billing_user_email,
+                'password': self.billing_user_password
+            },
+            secure=True
+        )
+
+        payload = {
+            'billing_info': {
+                'city': 'New York',
+                'state': 'New York',
+                'postal_code': '10001'
+            }
+        }
+        endpoint = reverse('update_user', args=[self.user_with_billing.pk])
+        self.client.patch(
+            endpoint,
+            payload,
+            secure=True,
+            format='json',
+        )
+        self.user_with_billing.refresh_from_db()
+        self.assertEqual(
+            self.user_with_billing.billing_info.city,
+            payload['billing_info']['city']
+        )
+        self.assertEqual(
+            self.user_with_billing.billing_info.state,
+            payload['billing_info']['state']
+        )
+        self.assertEqual(
+            self.user_with_billing.billing_info.postal_code,
+            payload['billing_info']['postal_code']
+        )

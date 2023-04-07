@@ -33,34 +33,43 @@ function SignUpForm() {
         = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const [errMsg, setErrMsg] = useState('');
     const [visible, setVisible] = useState(false)
-    const { setUser, setTokenExpiration } = React.useContext(AuthContext);
+    const { setTokenExpiration } = React.useContext(AuthContext);
     const navigate = useNavigate();
 
     const hasError = (field) => {
         return errors[field] ? true : false;
     }
 
+    const handleSuccessfulResponse = (response) => {
+        sessionStorage.setItem(
+            'access_token_expiration',
+            response.data?.access_token_expiration
+        )
+        sessionStorage.setItem(
+            'user',
+            JSON.stringify(response.data.user)
+        )
+        navigate('/checkout');
+    }
+
+    const handleErrorResponse = (err) => {
+        if (err.response.data.email) {
+            setError(
+                'email',
+                { type: 'manual', message: err.response.data.email }
+            )
+        } else {
+            setErrMsg(err.response.status)
+        }
+    }
+
     const onSubmit = (data) => {
         apiAuth.post('/user', data)
-            .then((res) => {
-                if (res.data.success) {
-                    setUser(response.data?.user)
-                    setTokenExpiration(
-                        response.data?.access_token_expiration
-                    )
-                    navigate('/checkout');
-                }
+            .then((response) => {
+                handleSuccessfulResponse(response)
             })
             .catch((err) => {
-                console.log(err)
-                if (err.response.data.email) {
-                    setError(
-                        'email',
-                        { type: 'manual', message: err.response.data.email }
-                    )
-                } else {
-                    setErrMsg(err.response.status)
-                }
+                handleErrorResponse(err)
             })
     }
 

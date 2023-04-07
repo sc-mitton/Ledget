@@ -56,9 +56,7 @@ DEFAULT_MIDDLE_WARE = [
 THIRD_PARTY_MIDDLE_WARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
-LOCAL_MIDDLE_WARE = [
-    'core.middleware.jwt_middleware.JWTRequestUserMiddleware'
-]
+LOCAL_MIDDLE_WARE = []
 
 MIDDLEWARE = DEFAULT_MIDDLE_WARE + THIRD_PARTY_MIDDLE_WARE + LOCAL_MIDDLE_WARE
 
@@ -93,7 +91,7 @@ WSGI_APPLICATION = 'portalback.wsgi.application'
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=20),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -110,6 +108,8 @@ SIMPLE_JWT = {
 
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    # inconsequential since tokens are in HTTP_COOKIE header
+    # and a custom AUTH_TOKEN_CLASS is used
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
     "USER_AUTHENTICATION_RULE":
@@ -151,6 +151,7 @@ SIMPLE_JWT = {
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'portalback.authentication.CustomJWTAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),

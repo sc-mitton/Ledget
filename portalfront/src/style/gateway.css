@@ -339,14 +339,14 @@ input[type="radio"]:checked+label * {
     margin-bottom: 0px;
 }
 
-.location-inputs-container {
+#location-inputs-container {
     display: flex;
     align-items: center;
     width: 100%;
     box-sizing: border-box;
 }
 
-.location-inputs-container input {
+#location-inputs-container input {
     width: 100%;
 }
 
@@ -356,12 +356,12 @@ input[type="radio"]:checked+label * {
     margin-right: 8px;
 }
 
-#postal-code-container,
-#postal-code-error {
+#zip-container,
+#zip-error {
     width: 30%;
 }
 
-#postal-code-error,
+#zip-error,
 #city-error {
     height: 0px;
 }

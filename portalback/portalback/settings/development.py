@@ -43,3 +43,11 @@ CORS_ORIGIN_WHITELIST = [
 CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
 CORS_ALLOW_HEADERS = list(default_headers) + ['Set-Cookie']
 CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:3000',
+    'http://localhost:3000',
+    'https://127.0.0.1:3000',
+    'https://localhost:3000',
+    'https://ledget.app:3000',
+]

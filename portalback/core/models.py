@@ -56,23 +56,40 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    @classmethod
+    def create(cls, **kwargs):
+        billing_info_data = kwargs.pop('billinginfo', None)
+        user = cls.objects.create(**kwargs)
+        if billing_info_data:
+            BillingInfo.objects.create(
+                user=user, **billing_info_data
+            )
+        return user
+
     @property
     def full_name(self):
-        return f'{self.first_name} {self.last_name}'
+        if self.first_name and self.last_name:
+            full_name = f'{self.first_name} {self.last_name}'
+        else:
+            full_name = ''
+        return full_name.strip()
 
 
 class BillingInfo(models.Model):
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
-        related_name='billing_info'
+        related_name='billing_info',
+    )
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False
     )
     city = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=20, blank=True)
     postal_code = models.CharField(max_length=10, blank=True)
 
     def __str__(self):
-        return self.user.email
+        return f"{self.city}, {self.state} {self.postal_code}"
 
 
 class Customer(models.Model):

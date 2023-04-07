@@ -2,28 +2,27 @@
 from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_200_OK,
-    HTTP_400_BAD_REQUEST,
 )
 from rest_framework.decorators import api_view
-from rest_framework.views import APIView
+from rest_framework.generics import (
+    UpdateAPIView,
+)
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenBlacklistView
 )
-from rest_framework_simplejwt.exceptions import TokenError
-from rest_framework_simplejwt.exceptions import InvalidToken
-from rest_framework.exceptions import ValidationError
-
+from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 import jwt
+
 from .serializers import (
     CustomTokenRefreshSerializer,
-    UserSerializer
+    UserSerializer,
 )
+from portalback.authentication import CustomJWTAuthentication
 
 
 @api_view(['GET'])
@@ -90,49 +89,34 @@ class CreateUserView(CookieTokenObtainPairView):
     def post(self, request, *args, **kwargs):
 
         user_serializer = UserSerializer(data=request.data)
-        try:
-            user_serializer.is_valid(raise_exception=True)
-            user_serializer.save()
-        except ValidationError as e:
-            return Response(e.args[0], status=HTTP_400_BAD_REQUEST)
+        user_serializer.is_valid(raise_exception=True)
+        user_serializer.save()
 
         response = super().post(request, *args, **kwargs)
         response.status_code = HTTP_201_CREATED
-
         return response
 
 
-class UpdateUserView(LoginRequiredMixin, APIView):
-    """View for updating user information."""
+class UpdateUserView(UpdateAPIView):
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
 
-    def patch(self, request, *args, **kwargs):
-        user = request.user
-        user_serializer = UserSerializer(user, data=request.data, partial=True)
-
-        try:
-            user_serializer.is_valid(raise_exception=True)
-            user_serializer.save()
-        except ValidationError as e:
-            return Response(e.args[0], status=HTTP_400_BAD_REQUEST)
-
-        return Response(user_serializer.data, status=HTTP_200_OK)
+    def get_object(self):
+        return self.request.user
 
 
-class CookieTokenRefreshView(LoginRequiredMixin, TokenRefreshView):
+class CookieTokenRefreshView(TokenRefreshView):
     """Custom view that extends the default TokenRefreshView
     in order to set the refresh token as a HTTP only cookie."""
-
     serializer_class = CustomTokenRefreshSerializer
+    authentication_classes = (CustomJWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(
             data=request.COOKIES,
         )
-
-        try:
-            serializer.is_valid(raise_exception=True)
-        except TokenError as e:
-            raise InvalidToken(e.args[0])
+        serializer.is_valid(raise_exception=True)
 
         return Response(serializer.validated_data, status=HTTP_200_OK)
 
@@ -164,6 +148,8 @@ class CookieTokenRefreshView(LoginRequiredMixin, TokenRefreshView):
 
 class LogoutView(TokenBlacklistView):
     """Custom view for logging out a user."""
+    authentication_classes = (CustomJWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(
@@ -171,9 +157,6 @@ class LogoutView(TokenBlacklistView):
         )
 
         # validating the token will blacklist it
-        try:
-            serializer.is_valid(raise_exception=True)
-        except TokenError as e:
-            raise InvalidToken(e.args[0])
+        serializer.is_valid(raise_exception=True)
 
         return Response(serializer.validated_data, status=HTTP_200_OK)

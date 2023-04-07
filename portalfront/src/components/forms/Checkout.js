@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
-import { useState } from 'react';
 
+import { Outlet, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-import { AnimatePresence, motion } from 'framer-motion';
+import { Routes, Route } from 'react-router-dom';
 
 import PaymentWindow from './Payment';
-import SubscriptionWindow from './Subscriptions';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST)
 
@@ -22,15 +20,25 @@ export default function Checkout() {
     const navigate = useNavigate()
     const { price } = state ?? {}
 
-    useEffect(() => {
-        if (!price) {
-            navigate('/plans')
-        }
-    }, [navigate, price])
+    let CheckoutRoot = () => {
+        return (
+            <Elements stripe={stripePromise} options={options}>
+                <PaymentWindow price={price} />
+            </Elements >
+        )
+    }
+
+    let PrivateRoute = () => {
+        return (
+            price ? <Outlet /> : <Navigate to="/plans" />
+        )
+    }
 
     return (
-        <Elements stripe={stripePromise} options={options}>
-            <PaymentWindow price={price} />
-        </Elements >
+        <Routes>
+            <Route path='*' element={<PrivateRoute />} >
+                <Route path='' element={<CheckoutRoot />} />
+            </Route>
+        </Routes>
     )
 }

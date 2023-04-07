@@ -111,7 +111,7 @@ function SubscriptionForm() {
             <ContinueButton />
         </form >
     )
-};
+}
 
 function SubscriptionsWindow({ setPrice }) {
 
@@ -126,6 +126,6 @@ function SubscriptionsWindow({ setPrice }) {
             </div>
         </div>
     )
-};
+}
 
 export default SubscriptionsWindow

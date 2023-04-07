@@ -33,6 +33,7 @@
     --main-text-gray: rgb(36, 36, 36);
     --input-placeholder: rgb(132, 132, 132);
     --invalid-submit-text: rgb(120, 120, 120);
+    --success-green: rgb(205, 248, 205);
 }
 
 html,
@@ -114,6 +115,12 @@ input:-webkit-autofill::after {
     border: none;
     background-color: #fafafa !important;
     background-clip: content-box !important;
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 /* End override default browser styles */
@@ -416,7 +423,7 @@ input[type="password"]:focus::placeholder {
 
 .server-error img {
     height: 1em;
-    margin-right: 4px;
+    margin-right: 8px;
     position: relative;
     top: 2px;
 }
@@ -456,4 +463,8 @@ input[type="password"]:focus::placeholder {
     100% {
         transform: scale(1);
     }
+}
+
+#payment-success-message {
+    color: var(--success-green);
 }

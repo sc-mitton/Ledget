@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     const getRefreshInterval = (timestamp) => {
         const nowTimestamp = Math.floor(Date.now() / 1000);
         let timer = timestamp - nowTimestamp;
-        timer = Math.floor(timer * .75) * 1000;
+        timer = Math.floor(timer * .95) * 1000;
         return timer
     }
     const isExpired = (timestamp) => {
@@ -45,11 +45,16 @@ export const AuthProvider = ({ children }) => {
     }, [tokenExpiration])
 
     let updateToken = async () => {
-        console.log('Updating token...')
         apiAuth.post(
-            'token/refresh/',
+            'token/refresh',
         ).then(response => {
-            setTokenExpiration(response.data.access_token_expiration)
+            setTokenExpiration(
+                response.data.access_token_expiration
+            )
+            sessionStorage.setItem(
+                'access_token_expiration',
+                response.data.access_token_expiration
+            )
         }).catch((error) => {
             if (error.response) {
                 console.log(error.response.data.detail)
@@ -66,17 +71,21 @@ export const AuthProvider = ({ children }) => {
     }
 
     let logout = async () => {
-        await apiAuth.post('logout/')
+        await apiAuth.post('logout')
             .catch((error) => {
                 if (error.response) {
-                    console.log(error.response.data.detail) // TODO make this better for ui
+                    console.log(error.response.data.detail)
+                    // TODO make this better for ui
                 } else if (error.request) {
-                    console.log("Server is not responding") // TODO make this better for ui
+                    console.log("Server is not responding")
+                    // TODO make this better for ui
                 } else {
-                    console.log("Hmmm, something went wrong, please try again.") // TODO make this better for ui
+                    console.log("Hmmm, something went wrong, please try again.")
+                    // TODO make this better for ui
                 }
             }).finally(() => {
-                setUser({})
+                sessionStorage.removeItem('user')
+                sessionStorage.removeItem('access_token_expiration')
                 setTokenExpiration('')
                 navigate('/login')
             })

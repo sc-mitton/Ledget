@@ -47,7 +47,10 @@ function LoginForm() {
             'access_token_expiration',
             response.data?.access_token_expiration
         )
-        sessionStorage.setItem('user', JSON.stringify(response.data.user))
+        sessionStorage.setItem(
+            'user',
+            JSON.stringify(response.data.user)
+        )
         if (response.data.user.is_customer) {
             console.log("navigating to dashboard...") // TODO
         } else {
@@ -77,7 +80,7 @@ function LoginForm() {
             pwdRef.current.focus()
         } else {
             apiAuth.post(
-                'token/',
+                'token',
                 { 'email': emailRef.current.value, 'password': pwdRef.current.value }
             ).then(response => {
                 handleSuccessfulResponse(response)
