@@ -57,9 +57,11 @@ export const AuthProvider = ({ children }) => {
             )
         }).catch((error) => {
             if (error.response) {
+                console.log('error.response for logging out')
                 console.log(error.response.data.detail)
                 // TODO make this better for ui
             } else if (error.request) {
+                console.log('error.request for logging out')
                 console.log("Server is not responding")
                 // TODO make this better for ui
             } else {

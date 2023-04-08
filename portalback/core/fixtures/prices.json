@@ -1,0 +1,32 @@
+[
+    {
+        "model": "core.price",
+        "pk": "price_1MhxZwH1cVZqyCpVQ4kk1Vt1",
+        "fields": {
+            "unit_amount": 500,
+            "currency": "usd",
+            "active": true,
+            "created": 1677945900,
+            "livemode": false,
+            "lookup_key": "year",
+            "description": "Your card will be charged once a month for 12 months. When you get close to your renewal date, we'll send you an email reminder.",
+            "contract_length": 12,
+            "trial_period_days": 14
+        }
+    },
+    {
+        "model": "core.price",
+        "pk": "price_1MhxZwH1cVZqyCpVsOJT27pk",
+        "fields": {
+            "unit_amount": 700,
+            "currency": "usd",
+            "active": true,
+            "created": 1677945900,
+            "livemode": false,
+            "lookup_key": "month-to-month",
+            "description": "Your card will be charged on a month to month basis.",
+            "contract_length": 1,
+            "trial_period_days": 14
+        }
+    }
+]

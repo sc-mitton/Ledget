@@ -58,7 +58,6 @@ class CookieTokenObtainPairView(TokenObtainPairView):
     in order to set the refresh token as a HTTP only cookie."""
 
     def finalize_response(self, request, response, *args, **kwargs):
-
         if response.data.get('refresh'):
             response.set_cookie(
                 'refresh',
@@ -72,7 +71,8 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             )
             decoded_access_jwt = _decode_jwt(response.data['access'])
             payload = {
-                'user': decoded_access_jwt['user'],
+                'user_id': decoded_access_jwt['user']['id'],
+                'full_name': decoded_access_jwt['user']['full_name'],
                 'access_token_expiration': decoded_access_jwt['exp']
             }
             response.data.update(payload)
@@ -136,7 +136,8 @@ class CookieTokenRefreshView(TokenRefreshView):
             )
             decoded_access_jwt = _decode_jwt(response.data['access'])
             payload = {
-                'user': decoded_access_jwt['user'],
+                'user_id': decoded_access_jwt['user']['id'],
+                'full_name': decoded_access_jwt['user']['full_name'],
                 'access_token_expiration': decoded_access_jwt['exp']
             }
             response.data.update(payload)
@@ -159,4 +160,8 @@ class LogoutView(TokenBlacklistView):
         # validating the token will blacklist it
         serializer.is_valid(raise_exception=True)
 
-        return Response(serializer.validated_data, status=HTTP_200_OK)
+        response = Response(serializer.validated_data, status=HTTP_200_OK)
+        response.delete_cookie('access')
+        response.delete_cookie('refresh')
+
+        return response

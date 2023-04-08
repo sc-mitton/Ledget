@@ -10,6 +10,7 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import logo from '../../assets/images/logo.svg'
 import stripelogo from '../../assets/images/stripelogo.svg'
 import alert2 from '../../assets/icons/alert2.svg'
+import successIcon from '../../assets/icons/successIcon.svg'
 import apiAuth from '../../api/axios'
 import { LoadingRing } from '../../widgets/Widgets'
 
@@ -179,7 +180,7 @@ let OrderSummary = ({ unitAmount, firstCharge, renewalFrequency }) => {
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div >
     )
 }
 
@@ -216,7 +217,6 @@ function PaymentForm({ price }) {
         try {
             const response = await apiAuth.post('subscription', {
                 'price_id': price.price_id,
-                'trial_period_days': price.trial_period_days
             })
             clientSecret = response.data.client_secret
         } catch (error) {
@@ -283,7 +283,7 @@ function PaymentForm({ price }) {
                     <Payment setPayment={setPayment} disabled={processing || succeeded} />
                     {errMsg &&
                         <div className="server-error">
-                            <img src={alert2} alt='' />
+                            <img src={alert2} alt="error icon" />
                             {errMsg}
                         </div>
                     }
@@ -307,7 +307,10 @@ function PaymentForm({ price }) {
                             : null
                         }
                         {succeeded
-                            ? <span id="payment-success-message">Success</span>
+                            ? <span id="payment-success-message">
+                                <img src={successIcon} alt='success icon' className='success-icon' />
+                                Success
+                            </span>
                             : null
                         }
                     </button>
@@ -344,6 +347,6 @@ function PaymentWindow({ price }) {
             < PoweredBy />
         </div>
     )
-};
+}
 
 export default PaymentWindow

@@ -1,0 +1,28 @@
+[
+    {
+        "model": "core.user",
+        "pk": "15c72fba-ed86-4916-b2d3-3d305a0ce311",
+        "fields": {
+            "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$N2lwZGkwampsVERYZWNNVUNZU1FqSA$mOdM6JeN/Vd6XwU2KNqcW2PquuCpRJtxRdf662XJrPw",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "testcustomer1@example.com",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "core.user",
+        "pk": "a0548d18-4eee-4648-8d08-66ef38fa16d7",
+        "fields": {
+            "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$VFh2OTBKRFZ4c0tFRFNPWldpOENuRQ$7MIACC3mb1/uflAk4M1B1WMo4TuaaSilPZajXtpJJYM",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "testcustomer2@example.com",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

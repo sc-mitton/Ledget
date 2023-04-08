@@ -21,7 +21,7 @@ urlpatterns = [
     path('user/<uuid:pk>', UpdateUserView.as_view(), name='update_user'),
     path('logout', LogoutView.as_view(), name='logout'),
 
-    path('prices', PriceView.as_view(), name='price'),
+    path('prices', PriceView.as_view(), name='prices'),
     path('subscription', SubscriptionView.as_view(), name='create_subscription'), # noqa
     path('stripe-hook', StripeHookView.as_view(), name='stripe_hook'),
 ]

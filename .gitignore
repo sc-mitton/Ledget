@@ -9,3 +9,4 @@ inspiration
 ./ledget/subscription_use_cases/
 ./frontend/node_modules
 sandbox.ipynb
+.ipynb_checkpoints

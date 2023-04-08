@@ -9,37 +9,30 @@ from rest_framework_simplejwt.serializers import (
 from rest_framework_simplejwt.exceptions import InvalidToken
 import stripe
 
-from core.models import BillingInfo
-from core.models import Customer
-
-from datetime import datetime, timedelta
+from core.models import (
+    Customer,
+    Subscription,
+    Price
+)
 
 
 stripe.api_key = settings.STRIPE_SK
 
 
-class TrialEnd:
-    trial_end = datetime.now().replace(hour=0, minute=0, microsecond=0) \
-            + timedelta(days=14)
+class CustomerSerializer(serializers.ModelSerializer):
+    """Serializer for customer model"""
 
-    @classmethod
-    def unix(cls):
-        return int(cls.trial_end.timestamp())
-
-
-class BillingInfoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BillingInfo
-        fields = ('id', 'user_id', 'city', 'state', 'postal_code')
+        model = Customer
+        fields = '__all__'
 
 
 class UserSerializer(serializers.ModelSerializer):
-    billing_info = BillingInfoSerializer(required=False)
+    customer = CustomerSerializer(required=False)
 
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'password', 'first_name',
-                  'last_name', 'billing_info')
+        fields = ('id', 'email', 'password', 'customer')
         write_only_fields = ('password',)
         extra_kwargs = {'email': {'validators': []}}
 
@@ -47,14 +40,14 @@ class UserSerializer(serializers.ModelSerializer):
         return get_user_model().objects.create_user(**validated_data)
 
     def update(self, instance, validated_data):
-        billing_info_data = validated_data.pop('billing_info', None)
-        if billing_info_data:
-            billing_info, created = BillingInfo.objects.update_or_create(
+        customer_data = validated_data.pop('customer', None)
+        if customer_data:
+            customer, created = Customer.objects.update_or_create(
                 user=instance,
-                defaults=billing_info_data
+                defaults=customer_data
             )
             if created:
-                billing_info.save()
+                customer.save()
 
         # password should be updated via separate endpoint
         validated_data.pop('password', None)
@@ -85,15 +78,11 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     @classmethod
     def get_token(cls, user):
-        customer = getattr(user, 'customer', None)
-        is_active = getattr(customer, 'is_active', False)
-
         token = super().get_token(user)
+
         token['user'] = {
             'id': str(user.id),
-            'email': user.email,
             'full_name': user.full_name,
-            'is_active': is_active,
         }
 
         return token
@@ -106,74 +95,36 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         if attrs['refresh']:
             return super().validate(attrs)
         else:
-            raise InvalidToken(
-                "No valid token found in cookie 'token'")
+            raise InvalidToken("No valid token found in cookie 'token'")
 
 
-class SubscriptionSerializer(serializers.Serializer):
+class PriceSerializer(serializers.ModelSerializer):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['price_id'] = serializers.CharField(required=True)
-        self.fields['trial_period_days'] = serializers.IntegerField(
-            required=True
+    class Meta:
+        model = Price
+        fields = (
+            'id', 'unit_amount', 'currency', 'active', 'created',
+            'lookup_key', 'description', 'contract_length', 'trial_period_days'
         )
 
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    price = PriceSerializer()
+
+    class Meta:
+        models = Subscription
+        fields = ('price')
+
     def create(self, validated_data):
+        """Method for creating a subscription """
 
         user = self.context['request'].user
         if not hasattr(user, 'customer'):
-            self.create_customer(user)
+            Customer.objects.create(user=user)
 
-        subscription = self.create_subscription(
-            user,
-            validated_data['price_id'],
-            validated_data['trial_period_days']
+        subscription = Subscription.objects.create(
+            customer=user.customer,
+            **validated_data
         )
+
         return subscription
-
-    def create_subscription(self, user, price_id, trial_period_days=0):
-        subscription_paylod = self.build_subscription_payload(
-            user.customer.customer_id,
-            price_id,
-            trial_period_days
-        )
-        subscription = stripe.Subscription.create(
-            **subscription_paylod
-        )
-        user.customer.subscription_id = subscription.get('id')
-        user.customer.save()
-        return subscription
-
-    def create_customer(self, user):
-        """Create a Stripe customer in stripe and the database."""
-        customer = stripe.Customer.create(
-            email=user.email,
-            name=user.full_name,
-            address={
-                "country": "US",
-                "city": user.billing_info.city,
-                "postal_code": user.billing_info.postal_code
-            }
-        )
-        Customer.objects.create(
-            user=user,
-            customer_id=customer.get('id'),
-        )
-        return customer.id
-
-    def build_subscription_payload(self, customer_id,
-                                   price_id, trial_period_days=0):
-        return {
-            'customer': customer_id,
-            'items': [{'price': price_id}],
-            'payment_behavior': 'default_incomplete',
-            'payment_settings': {
-                'save_default_payment_method': 'on_subscription'
-            },
-            'expand': ['pending_setup_intent'],
-            'trial_end': TrialEnd.unix(),
-            'proration_behavior': 'none',
-            # 'automatic_tax': {"enabled": True},
-            # deactivated for now, reactivate in production
-        }

@@ -390,13 +390,17 @@ input[type="radio"]:checked+label * {
 }
 
 /* Order Summary */
+#order-summary-line {
+    display: inline-block
+}
+
 .order-summary-container {
     text-align: left;
     display: flex;
     justify-content: end;
-    border-radius: 4px;
-    padding: 16px 8px 20px 0;
-    margin: 12px 0 0 0;
+    padding: 12px 0px;
+    margin: 32px 8px 0 8px;
+    border-top: rgba(0, 0, 0, 0.1) 1px solid;
 }
 
 .order-summary-container tr td {
@@ -413,6 +417,19 @@ input[type="radio"]:checked+label * {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#payment-success-message {
+    animation: show .1s ease;
+    color: var(--success-green);
+}
+
+.success-icon {
+    fill: var(--success-green);
+    height: 1.1em;
+    margin-right: 2px;
+    position: relative;
+    top: 2px;
 }
 
 /* Stripe Logo */

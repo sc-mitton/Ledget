@@ -1,0 +1,30 @@
+[
+    {
+        "model": "core.customer",
+        "pk": "cus_Ng39ZGFZeUYuPQ",
+        "fields": {
+            "user": "15c72fba-ed86-4916-b2d3-3d305a0ce311",
+            "first_name": "John",
+            "last_name": "Doe",
+            "city": "San Fransisco",
+            "country": "US",
+            "postal_code": "94016",
+            "state": "CA",
+            "signup_date": "2015-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "core.customer",
+        "pk": "cus_Ng3KBBtT98SSPz",
+        "fields": {
+            "user": "a0548d18-4eee-4648-8d08-66ef38fa16d7",
+            "first_name": null,
+            "last_name": null,
+            "city": null,
+            "country": null,
+            "postal_code": null,
+            "state": null,
+            "signup_date": "2015-01-01T00:00:00Z"
+        }
+    }
+]
