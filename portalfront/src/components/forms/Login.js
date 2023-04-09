@@ -23,6 +23,8 @@ function LoginForm() {
     const pwdRef = useRef();
     const [pswdVisible, setPswdVisible] = useState(false);
     const [pwdInput, setPwdInput] = useState('');
+    const submitButtonRef = useRef(null);
+
 
     const [errMsg, setErrMsg] = useState('');
 
@@ -90,6 +92,13 @@ function LoginForm() {
         }
     }
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Tab' && !e.shiftKey) {
+            e.preventDefault();
+            submitButtonRef.current.focus();
+        }
+    }
+
     return (
         <form onSubmit={handleLoginSubmit} className="login-form" noValidate>
             {errMsg &&
@@ -121,6 +130,7 @@ function LoginForm() {
                                 setPwdInput(true)
                                 : setPwdInput(false)
                         }}
+                        onKeyDown={handleKeyDown}
                         required
                     />
                     {pwdInput ? <VisibilityIcon /> : null}
@@ -133,6 +143,7 @@ function LoginForm() {
                         className="submit-button"
                         type="submit"
                         value="Sign In"
+                        ref={submitButtonRef}
                     />
                 </div>
             </div>

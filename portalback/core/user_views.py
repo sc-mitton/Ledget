@@ -6,6 +6,7 @@ from rest_framework.status import (
 from rest_framework.decorators import api_view
 from rest_framework.generics import (
     UpdateAPIView,
+    CreateAPIView
 )
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import (
@@ -21,6 +22,7 @@ import jwt
 from .serializers import (
     CustomTokenRefreshSerializer,
     UserSerializer,
+    CustomerSerializer
 )
 from portalback.authentication import CustomJWTAuthentication
 
@@ -71,8 +73,10 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             )
             decoded_access_jwt = _decode_jwt(response.data['access'])
             payload = {
-                'user_id': decoded_access_jwt['user']['id'],
-                'full_name': decoded_access_jwt['user']['full_name'],
+                'user': {
+                    'id': decoded_access_jwt['user']['id'],
+                    'full_name': decoded_access_jwt['user']['full_name'],
+                },
                 'access_token_expiration': decoded_access_jwt['exp']
             }
             response.data.update(payload)
@@ -98,11 +102,25 @@ class CreateUserView(CookieTokenObtainPairView):
 
 
 class UpdateUserView(UpdateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = CustomerSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_object(self):
         return self.request.user
+
+
+class CreateCustomerView(CreateAPIView):
+    serializer_class = CustomerSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            status=HTTP_200_OK,
+            content_type='application/json'
+        )
 
 
 class CookieTokenRefreshView(TokenRefreshView):

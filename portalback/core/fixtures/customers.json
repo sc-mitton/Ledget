@@ -9,8 +9,7 @@
             "city": "San Fransisco",
             "country": "US",
             "postal_code": "94016",
-            "state": "CA",
-            "signup_date": "2015-01-01T00:00:00Z"
+            "state": "CA"
         }
     },
     {
@@ -21,10 +20,9 @@
             "first_name": null,
             "last_name": null,
             "city": null,
-            "country": null,
-            "postal_code": null,
             "state": null,
-            "signup_date": "2015-01-01T00:00:00Z"
+            "country": null,
+            "postal_code": null
         }
     }
 ]

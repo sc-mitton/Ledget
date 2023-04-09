@@ -151,6 +151,10 @@
     margin-top: 12px;
 }
 
+#submit-button-container {
+    margin-top: 24px;
+}
+
 .login-prompt-container {
     text-align: center;
     font-size: 14px;
@@ -398,8 +402,8 @@ input[type="radio"]:checked+label * {
     text-align: left;
     display: flex;
     justify-content: end;
-    padding: 12px 0px;
-    margin: 32px 8px 0 8px;
+    padding: 16px 0px;
+    margin: 24px 8px 0 8px;
     border-top: rgba(0, 0, 0, 0.1) 1px solid;
 }
 

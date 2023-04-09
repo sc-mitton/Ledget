@@ -42,9 +42,11 @@ class SubscriptionView(CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         subscription = serializer.save()
+
         data = {
-            'client_secret': subscription.pending_setup_intent.client_secret
+            'client_secret': subscription.client_secret
         }
         return Response(
             data,
@@ -83,6 +85,4 @@ class StripeHookView(APIView):
         return Response(status=HTTP_200_OK)
 
     def handle_event(self, event):
-        print('\n')
         print(event['type'])
-        print('\n')

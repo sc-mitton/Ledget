@@ -4,6 +4,7 @@ from core.user_views import (
     CreateUserView,
     UpdateUserView,
     LogoutView,
+    CreateCustomerView
 )
 from .user_views import CookieTokenObtainPairView, CookieTokenRefreshView
 from .checkout_views import (
@@ -19,6 +20,7 @@ urlpatterns = [
 
     path('user', CreateUserView.as_view(), name='create_user'),
     path('user/<uuid:pk>', UpdateUserView.as_view(), name='update_user'),
+    path('customer', CreateCustomerView.as_view(), name='create_customer'),
     path('logout', LogoutView.as_view(), name='logout'),
 
     path('prices', PriceView.as_view(), name='prices'),

@@ -24,7 +24,15 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Customer
-        fields = '__all__'
+        fields = ['city', 'state', 'postal_code', 'country',
+                  'first_name', 'last_name']
+
+    def create(self, validated_data):
+        customer = Customer.objects.create(
+            user=self.context['request'].user,
+            **validated_data
+        )
+        return customer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -39,22 +47,6 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return get_user_model().objects.create_user(**validated_data)
 
-    def update(self, instance, validated_data):
-        customer_data = validated_data.pop('customer', None)
-        if customer_data:
-            customer, created = Customer.objects.update_or_create(
-                user=instance,
-                defaults=customer_data
-            )
-            if created:
-                customer.save()
-
-        # password should be updated via separate endpoint
-        validated_data.pop('password', None)
-
-        user = super().update(instance, validated_data)
-        return user
-
     def validate_email(self, value):
         if get_user_model().objects.filter(email=value).exists():
             raise serializers.ValidationError('Email is already taken.',
@@ -67,7 +59,7 @@ class UserSerializer(serializers.ModelSerializer):
         # validate password
         if len(value) < 10:
             raise serializers.ValidationError(
-                'Password must be at least 10 characters long'
+                'Password must be at least 10 characters long.'
             )
         return value
 
@@ -99,12 +91,15 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
 
 
 class PriceSerializer(serializers.ModelSerializer):
+    """Serializer for price model"""
+    id = serializers.CharField(required=False)
 
     class Meta:
         model = Price
         fields = (
             'id', 'unit_amount', 'currency', 'active', 'created',
-            'lookup_key', 'description', 'contract_length', 'trial_period_days'
+            'lookup_key', 'description', 'contract_length',
+            'trial_period_days', 'renews'
         )
 
 
@@ -112,18 +107,26 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     price = PriceSerializer()
 
     class Meta:
-        models = Subscription
-        fields = ('price')
+        model = Subscription
+        fields = ('price',)
 
     def create(self, validated_data):
         """Method for creating a subscription """
 
         user = self.context['request'].user
         if not hasattr(user, 'customer'):
-            Customer.objects.create(user=user)
+            raise serializers.ValidationError(
+                'User does not have a customer account.'
+            )
+
+        price_data = validated_data.pop('price')
+        price_serializer = PriceSerializer(data=price_data)
+        price_serializer.is_valid(raise_exception=True)
+        price = Price.objects.get(id=price_data['id'])
 
         subscription = Subscription.objects.create(
             customer=user.customer,
+            price=price,
             **validated_data
         )
 

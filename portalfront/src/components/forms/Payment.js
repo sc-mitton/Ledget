@@ -203,12 +203,12 @@ function PaymentForm({ price }) {
     const getPayload = (data) => {
         const values = getValues()
         let payload = {}
+
         payload['first_name'] = values.name.split(' ')[0]
         payload['last_name'] = values.name.split(' ')[1]
-        payload['billing_info'] = {}
-        payload['billing_info']['postal_code'] = values.zip
-        payload['billing_info']['city'] = values.city.split(',')[0]
-        payload['billing_info']['state'] = values.city.split(',')[1]
+        payload['postal_code'] = values.zip
+        payload['city'] = values.city.split(',')[0]
+        payload['state'] = values.city.split(',')[1]
 
         return payload
     }
@@ -216,8 +216,9 @@ function PaymentForm({ price }) {
     const createSubscription = async () => {
         try {
             const response = await apiAuth.post('subscription', {
-                'price_id': price.price_id,
+                'price': price,
             })
+            console.log(response)
             clientSecret = response.data.client_secret
         } catch (error) {
             setErrMsg("Something went wrong. Please try again.")
@@ -257,7 +258,7 @@ function PaymentForm({ price }) {
         const user_id = JSON.parse(sessionStorage.getItem("user")).id
 
         try {
-            await apiAuth.patch(`user/${user_id}`, getPayload())
+            await apiAuth.post(`customer`, getPayload())
             await createSubscription()
             await confirmSetup()
         } catch (error) {

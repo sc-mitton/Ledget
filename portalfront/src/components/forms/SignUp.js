@@ -1,7 +1,7 @@
 import React from "react"
 
 import { Link } from "react-router-dom"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { object, string, ref } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -29,12 +29,15 @@ const schema = object().shape({
 })
 
 function SignUpForm() {
-    const { register, handleSubmit, formState: { errors, isValid }, trigger, setError }
+    const { register, handleSubmit, formState: { errors, isValid, }, watch, trigger, setError }
         = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
-    const [errMsg, setErrMsg] = useState('');
+    const [errMsg, setErrMsg] = useState('')
     const [visible, setVisible] = useState(false)
-    const { setTokenExpiration } = React.useContext(AuthContext);
-    const navigate = useNavigate();
+    const { setTokenExpiration } = React.useContext(AuthContext)
+    const navigate = useNavigate()
+    const password = watch({ name: 'password' })
+    const submitButtonRef = useRef(null);
+
 
     const hasError = (field) => {
         return errors[field] ? true : false;
@@ -73,6 +76,13 @@ function SignUpForm() {
             })
     }
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Tab' && !e.shiftKey) {
+            e.preventDefault();
+            submitButtonRef.current.focus();
+        }
+    }
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="sign-up-form" noValidate>
             {errMsg &&
@@ -93,6 +103,7 @@ function SignUpForm() {
                             trigger("email");
                         }
                     }}
+                    tabIndex={1}
                 />
             </div>
             {hasError('email') &&
@@ -108,13 +119,12 @@ function SignUpForm() {
                 name="password"
                 placeholder="Password"
                 register={register}
-                trigger={trigger}
                 visible={visible}
                 setVisible={setVisible}
+                tabIndex={2}
             />
             {hasError('password') &&
                 <div id="signup-error-container">
-
                     <div className="form-error">
                         <img src={alert2} className="error-tip-icon" />
                         {errors.password?.message}
@@ -125,10 +135,11 @@ function SignUpForm() {
                 name="confirmPassword"
                 placeholder="Confirm password"
                 register={register}
-                trigger={trigger}
                 visIcon={false}
                 visible={visible}
                 setVisible={setVisible}
+                tabIndex={3}
+                onKeyDown={handleKeyDown}
             />
             {hasError('confirmPassword') &&
                 <div id="signup-error-container">
@@ -138,12 +149,15 @@ function SignUpForm() {
                     </div>
                 </div>
             }
-            <div>
-                <input
+            <div id="submit-button-container">
+                <button
                     className={`${isValid ? 'valid' : 'invalid'}-submit`}
-                    type="submit"
-                    value="Sign Up"
-                />
+                    id="subscribe-button"
+                    type='submit'
+                    ref={submitButtonRef}
+                >
+                    Sign Up
+                </button>
             </div>
         </form>
     )

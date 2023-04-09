@@ -1,10 +1,9 @@
-import React, { forwardRef, } from "react";
+import React, { forwardRef, useEffect, } from "react";
 import { useState } from 'react'
 
 import Select from 'react-select';
 import hidePassword from "../../assets/icons/hidePassword.svg"
 import showPassword from "../../assets/icons/showPassword.svg"
-import { FormErrorTip } from "../../widgets/Widgets"
 
 const Checkbox = (props) => {
     let id = props.id
@@ -117,19 +116,21 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
     )
 })
 
-const PasswordInput = (props) => {
-    const [input, setInput] = useState('')
+const VisibilityIcon = (props) => {
+    // Needs to be set outside the PasswordInput component
+    // to prevent rerendering of the icon
+    return (
+        <img
+            src={props.visible ? hidePassword : showPassword}
+            alt="toggle visibility"
+            className="hide-password-icon"
+            onClick={() => props.setVisible(!props.visible)}
+        />
+    )
+}
 
-    const VisibilityIcon = () => {
-        return (
-            <img
-                src={props.visible ? hidePassword : showPassword}
-                alt="toggle visibility"
-                className="hide-password-icon"
-                onClick={() => props.setVisible(!props.visible)}
-            />
-        )
-    }
+const PasswordInput = (props) => {
+    const [pwdInput, setPwdInput] = useState(false)
 
     return (
         <div className="password-container">
@@ -140,13 +141,21 @@ const PasswordInput = (props) => {
                     placeholder={props.placeholder}
                     {...props.register(props.name, {
                         onChange: (e) => {
-                            e.target.value != '' ?
-                                setInput(true)
-                                : setInput(false)
+                            if (e.target.value == "" && pwdInput) {
+                                setPwdInput(false)
+                            } else if (e.target.value.length == 1) {
+                                setPwdInput(true)
+                            }
                         }
                     })}
+                    onKeyDown={props.onKeyDown}
                 />
-                {input && props.visIcon && <VisibilityIcon />}
+                {pwdInput && props.visIcon &&
+                    <VisibilityIcon
+                        visible={props.visible}
+                        setVisible={props.setVisible}
+                    />
+                }
             </div>
         </div>
     )
@@ -156,4 +165,4 @@ PasswordInput.defaultProps = {
     visIcon: true
 }
 
-export { Checkbox, CustomSelect, PasswordInput };
+export { Checkbox, CustomSelect, PasswordInput }

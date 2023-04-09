@@ -12,10 +12,10 @@ const usePrices = () => {
     const fetchPrices = async () => {
         const response = await apiAuth.get('prices')
             .then(response => {
-                setPrices(response.data.prices)
+                setPrices(response.data)
                 sessionStorage.setItem(
                     'prices',
-                    JSON.stringify(response.data.prices)
+                    JSON.stringify(response.data)
                 )
                 setLoading(false)
             })
