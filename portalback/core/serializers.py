@@ -19,22 +19,6 @@ from core.models import (
 stripe.api_key = settings.STRIPE_SK
 
 
-class CustomerSerializer(serializers.ModelSerializer):
-    """Serializer for customer model"""
-
-    class Meta:
-        model = Customer
-        fields = ['city', 'state', 'postal_code', 'country',
-                  'first_name', 'last_name']
-
-    def create(self, validated_data):
-        customer = Customer.objects.create(
-            user=self.context['request'].user,
-            **validated_data
-        )
-        return customer
-
-
 class UserSerializer(serializers.ModelSerializer):
     customer = CustomerSerializer(required=False)
 
@@ -88,6 +72,22 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
             return super().validate(attrs)
         else:
             raise InvalidToken("No valid token found in cookie 'token'")
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    """Serializer for customer model"""
+
+    class Meta:
+        model = Customer
+        fields = ['city', 'state', 'postal_code', 'country',
+                  'first_name', 'last_name']
+
+    def create(self, validated_data):
+        customer = Customer.objects.create(
+            user=self.context['request'].user,
+            **validated_data
+        )
+        return customer
 
 
 class PriceSerializer(serializers.ModelSerializer):

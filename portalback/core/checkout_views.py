@@ -22,6 +22,7 @@ from core.serializers import (
 )
 
 import threading
+import os
 
 stripe.api_key = settings.STRIPE_SK
 endpoint_secret = settings.STRIPE_ENDPOINT_SECRET_TEST
@@ -77,12 +78,51 @@ class StripeHookView(APIView):
 
         # Handle the event
         t = threading.Thread(
-            target=self.handle_event,
+            target=self.dispatch_handle_event,
             args=(event,)
         )
         t.start()
 
         return Response(status=HTTP_200_OK)
 
-    def handle_event(self, event):
-        print(event['type'])
+    def dispatch_handle_event(self, event):
+        handler = getattr(self, f"handle_{event.type.replace('.', '_')}", None)
+        if handler:
+            handler(event)
+        os.makedirs("./stripe_events", exist_ok=True)
+        with open(f"./stripe_events/{event.id}.json", "w") as f:
+            f.write(str(event))
+
+    def handle_customer_created(self, event):
+        pass
+
+    def handle_setup_intent_created(self, event):
+        pass
+
+    def handle_customer_updated(self, event):
+        pass
+
+    def handle_invoice_created(self, event):
+        pass
+
+    def handle_invoice_finalized(self, event):
+        pass
+
+    def handle_invoice_paid(self, event):
+        pass
+
+    def handle_invoice_payment_succeeded(self, event):
+        pass
+
+    def handle_customer_subscription_created(self, event):
+        pass
+
+    def handle_payment_method_attached(self, event):
+        pass
+
+    def handle_setup_intent_succeeded(self, event):
+        pass
+
+    def handle_customer_subscription_updated(self, event):
+        pass
+
