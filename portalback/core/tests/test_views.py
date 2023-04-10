@@ -190,14 +190,16 @@ class TestCoreApiViews(TestCase):
             (number_of_prices > 0 and number_of_prices <= 4), True
         )
 
-    @skip('for now')
     def test_protected_endpoints(self):
         """Test that the protected endpoints return an error when
         unauthenticated."""
         endpoints = [
-            {'name': 'update_user', 'args': [self.user.pk], 'method': 'patch'},
-            {'name': 'price', 'method': 'get'},
             {'name': 'token_refresh', 'method': 'post'},
+            {'name': 'prices', 'method': 'get'},
+            {'name': 'update_user', 'args': [self.user.pk], 'method': 'patch'},
+            {'name': 'create_customer', 'method': 'post'},
+            {'name': 'logout', 'method': 'post'},
+            {'name': 'create_subscription', 'method': 'post'}
         ]
         for endpoint in endpoints:
             request_method = getattr(self.client, endpoint['method'])
@@ -207,106 +209,3 @@ class TestCoreApiViews(TestCase):
             )
             self.assertEqual(response.status_code,
                              status.HTTP_401_UNAUTHORIZED)
-
-    @skip('for now')
-    def test_update_user(self):
-        """Test that the user can update their email and password."""
-
-        # Login user first
-        response = self.client.post(
-            reverse('token_obtain_pair'),
-            {'email': self.email, 'password': self.password},
-            secure=True
-        )
-
-        # Update user
-        new_email = 'newemail@example.com'
-        endpoint = reverse('update_user', args=[self.user.pk])
-        response = self.client.patch(
-            endpoint,
-            {'email': new_email},
-            secure=True
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(
-            get_user_model().objects.filter(email=new_email).exists()
-        )
-
-    def test_add_customer_info(self):
-        """Test adding billing info to a user."""
-
-        # Login user first
-        response = self.client.post(
-            reverse('token_obtain_pair'),
-            {
-                'email': self.fixture_user_email2,
-                'password': self.fixture_password
-            },
-            secure=True
-        )
-
-        payload = {
-            'customer': {
-                'first_name': 'Chuck',
-                'last_name': 'Norris',
-                'city': "Anchorage",
-                'state': "Alaska",
-                'postal_code': "99501"
-            }
-        }
-
-        endpoint = reverse('update_user', args=[self.user.pk])
-        response = self.client.patch(
-            endpoint,
-            payload,
-            secure=True,
-            format='json',
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        user = get_user_model().objects.get(email=self.fixture_user_email2)
-        self.assertEqual(
-            user.full_name,
-            payload['customer']['first_name']
-            + ' ' + payload['customer']['last_name']
-        )
-        self.assertEqual(user.customer.city, payload['customer']['city'])
-        self.assertEqual(user.customer.state, payload['customer']['state'])
-        self.assertEqual(
-            user.customer.postal_code,
-            payload['customer']['postal_code']
-        )
-
-    def test_update_customer_info(self):
-        # Login user first
-        self.client.post(
-            reverse('token_obtain_pair'),
-            {
-                'email': self.fixture_user_email1,
-                'password': self.fixture_password
-            },
-            secure=True
-        )
-
-        payload = {
-            'customer': {
-                'city': 'New York',
-                'state': 'New York',
-                'postal_code': '10001'
-            }
-        }
-        user = get_user_model().objects.get(email=self.fixture_user_email1)
-        self.client.patch(
-            reverse('update_user', args=[user.pk]),
-            payload,
-            secure=True, format='json'
-        )
-
-        user.refresh_from_db()
-        self.assertEqual(user.customer.city, payload['customer']['city'])
-        self.assertEqual(user.customer.state, payload['customer']['state'])
-        self.assertEqual(
-            user.customer.postal_code,
-            payload['customer']['postal_code']
-        )

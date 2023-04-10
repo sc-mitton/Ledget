@@ -19,6 +19,34 @@ from core.models import (
 stripe.api_key = settings.STRIPE_SK
 
 
+class CustomerSerializer(serializers.ModelSerializer):
+    """Serializer for customer model"""
+
+    class Meta:
+        model = Customer
+        fields = ['city', 'state', 'postal_code', 'country',
+                  'first_name', 'last_name']
+
+    def create(self, validated_data):
+        """Create and return a new stripe customer."""
+
+        user = self.context['user']
+        first_name = validated_data['first_name']
+        last_name = validated_data['last_name']
+
+        address_items = ['city', 'state', 'postal_code', 'country']
+        address = {item: validated_data[item]
+                   for item in validated_data
+                   if item in address_items}
+        address['country'] = 'US'  # hardcode country for now
+
+        stripe.Customer.create(
+            email=user.email,
+            name=first_name + ' ' + last_name,
+            address=address,
+        )
+
+
 class UserSerializer(serializers.ModelSerializer):
     customer = CustomerSerializer(required=False)
 
@@ -60,6 +88,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             'id': str(user.id),
             'full_name': user.full_name,
         }
+        if hasattr(user, 'customer'):
+            token['user']['customer'] = CustomerSerializer(
+                user.customer
+            ).data
 
         return token
 
@@ -72,22 +104,6 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
             return super().validate(attrs)
         else:
             raise InvalidToken("No valid token found in cookie 'token'")
-
-
-class CustomerSerializer(serializers.ModelSerializer):
-    """Serializer for customer model"""
-
-    class Meta:
-        model = Customer
-        fields = ['city', 'state', 'postal_code', 'country',
-                  'first_name', 'last_name']
-
-    def create(self, validated_data):
-        customer = Customer.objects.create(
-            user=self.context['request'].user,
-            **validated_data
-        )
-        return customer
 
 
 class PriceSerializer(serializers.ModelSerializer):
@@ -111,7 +127,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         fields = ('price',)
 
     def create(self, validated_data):
-        """Method for creating a subscription """
+        """Create and return a new stripe subscription."""
 
         user = self.context['request'].user
         if not hasattr(user, 'customer'):
@@ -122,12 +138,31 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         price_data = validated_data.pop('price')
         price_serializer = PriceSerializer(data=price_data)
         price_serializer.is_valid(raise_exception=True)
-        price = Price.objects.get(id=price_data['id'])
-
-        subscription = Subscription.objects.create(
-            customer=user.customer,
-            price=price,
-            **validated_data
+        stripe_subscription = self.create_stripe_subscription(
+            user.customer.id,
+            price_serializer.validated_data
         )
 
-        return subscription
+        return stripe_subscription
+
+    def create_stripe_subscription(self, customer_id, price, **kwargs):
+
+        default_args = {
+            'payment_behavior': 'default_incomplete',
+            'payment_settings': {
+                'save_default_payment_method': 'on_subscription'
+            },
+            'expand': ['pending_setup_intent'],
+            'proration_behavior': 'none',
+            # 'automatic_tax': {"enabled": True},
+            # deactivated for now, reactivate in production
+        }
+        default_args.update(kwargs)
+
+        stripe_subscription = stripe.Subscription.create(
+            customer=customer_id,
+            trial_period_days=price['trial_period_days'],
+            items=[{'price': price['id']}],
+            **default_args
+        )
+        return stripe_subscription

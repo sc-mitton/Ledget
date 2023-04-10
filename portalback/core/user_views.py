@@ -2,6 +2,7 @@
 from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_200_OK,
+    HTTP_400_BAD_REQUEST,
 )
 from rest_framework.decorators import api_view
 from rest_framework.generics import (
@@ -16,6 +17,7 @@ from rest_framework_simplejwt.views import (
 )
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
+import stripe
 
 import jwt
 
@@ -114,9 +116,19 @@ class CreateCustomerView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+
+        try:
+            serializer.save()
+        except stripe.error.InvalidRequestError as e:
+            return Response(
+                data={'error': str(e)},
+                status=HTTP_400_BAD_REQUEST,
+                content_type='application/json'
+            )
+
         return Response(
             status=HTTP_200_OK,
             content_type='application/json'

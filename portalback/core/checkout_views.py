@@ -10,11 +10,13 @@ from rest_framework.status import (
     HTTP_200_OK,
 )
 from django.conf import settings
+from django.contrib.auth import get_user_model
 import stripe
 
 from core.models import (
     Customer,
-    Price
+    Price,
+    Subscription
 )
 from core.serializers import (
     SubscriptionSerializer,
@@ -22,10 +24,11 @@ from core.serializers import (
 )
 
 import threading
-import os
+import logging
 
 stripe.api_key = settings.STRIPE_SK
 endpoint_secret = settings.STRIPE_ENDPOINT_SECRET_TEST
+stripe_logger = logging.getLogger('core.stripe')
 
 
 class PriceView(ListAPIView):
@@ -44,10 +47,18 @@ class SubscriptionView(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        subscription = serializer.save()
+        try:
+            stripe_subscription = serializer.save()
+        except stripe.error.InvalidRequestError as e:
+            return Response(
+                data={'error': str(e)},
+                status=HTTP_400_BAD_REQUEST,
+                content_type='application/json'
+            )
 
         data = {
-            'client_secret': subscription.client_secret
+            'client_secret':
+            stripe_subscription.latest_invoice.payment_intent.client_secret
         }
         return Response(
             data,
@@ -86,43 +97,102 @@ class StripeHookView(APIView):
         return Response(status=HTTP_200_OK)
 
     def dispatch_handle_event(self, event):
-        handler = getattr(self, f"handle_{event.type.replace('.', '_')}", None)
+        ignore_events = [
+            'invoice_created', 'invoice_updated', 'invoice_payment_succeeded',
+            'payment_method_attached', 'setup_intent_created'
+        ]
+
+        event_type = event.type.replace('.', '_')
+        handler = getattr(self, f"handle_{event_type}", None)
         if handler:
             handler(event)
-        os.makedirs("./stripe_events", exist_ok=True)
-        with open(f"./stripe_events/{event.id}.json", "w") as f:
-            f.write(str(event))
+        if not handler and event_type not in ignore_events:
+            stripe_logger.info(f"No handler for event type: {event.type}")
 
+    # Create handlers
     def handle_customer_created(self, event):
-        pass
+        """Create corresponding customer in our database."""
 
-    def handle_setup_intent_created(self, event):
-        pass
-
-    def handle_customer_updated(self, event):
-        pass
-
-    def handle_invoice_created(self, event):
-        pass
-
-    def handle_invoice_finalized(self, event):
-        pass
-
-    def handle_invoice_paid(self, event):
-        pass
-
-    def handle_invoice_payment_succeeded(self, event):
-        pass
+        data = event.data.object
+        user = get_user_model().objects.filter(
+            email=event.data.object.email
+        ).first()
+        customer = Customer.objects.create(
+            user=user,
+            id=data.id,
+            first_name=data.name,
+            last_name=data.name,
+            city=data.address.city,
+            state=data.address.state,
+            postal_code=data.address.postal_code,
+            country=data.address.country,
+            delinquent=data.delinquent,
+            created=data.created,
+        )
+        customer.save()
 
     def handle_customer_subscription_created(self, event):
-        pass
+        """Create corresponding subscription in our database."""
 
-    def handle_payment_method_attached(self, event):
-        pass
+        data = event.data.object
+        subscription = Subscription.objects.create(
+            id=data.id,
+            customer=Customer.objects.get(id=data.customer),
+            price=Price.objects.get(id=data.items.data[0].price.id),
+            current_period_end=data.current_period_end,
+            status=data.status,
+            cancel_at_period_end=data.cancel_at_period_end,
+            default_payment_method=data.default_payment_method,
+            created=data.created,
+            trial_start=data.trial_start,
+            trial_end=data.trial_end,
+        )
+        subscription.save()
 
-    def handle_setup_intent_succeeded(self, event):
-        pass
+    # Update handlers
+    def update_instance(self, instance, changing_data):
+        """Generic method for updating the data in the db with
+        the data from Stripe."""
+
+        for field in changing_data.keys():
+            if hasattr(instance, field):
+                setattr(instance, field, changing_data[field])
+        instance.save()
+
+    def get_changing_data(self, data):
+        """Parce the data from Stripe and return the dict
+        of data that is being updated."""
+
+        changing_fields = data.previous_attributes.keys()
+
+        changing_data = {}
+        for field in changing_fields:
+            changing_data[field] = data.object[field]
+
+        return changing_data
+
+    def handle_customer_updated(self, event):
+        """Update corresponding customer in our database."""
+
+        data = event.data.object
+        changing_data = self.get_changing_data(data)
+        customer = Customer.objects.get(id=data.id)
+        self.update_instance(customer, changing_data)
 
     def handle_customer_subscription_updated(self, event):
-        pass
+        """Update corresponding subscription in our database."""
 
+        data = event.data.object
+        changing_data = self.get_changing_data(data)
+        subscription = Subscription.objects.get(id=data.id)
+        self.update_instance(subscription, changing_data)
+
+    # Setup Intent handlers
+    def handle_setup_intent_succeeded(self, event):
+        """Provision the service for the user."""
+
+        user = get_user_model().objects.get(
+            customer__id=event.data.object.customer
+        )
+        user.provision_service = True
+        user.save()

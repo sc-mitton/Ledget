@@ -1,17 +1,12 @@
 from django.db import models
-from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import (
     AbstractBaseUser,
     PermissionsMixin,
     BaseUserManager
 )
-import stripe
-import stripe.error
 
 import uuid
-
-
-stripe.api_key = settings.STRIPE_SK
 
 
 class UserManager(BaseUserManager):
@@ -41,11 +36,23 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    REVOKED_SERVICE_REASON = [
+        ('', 'No reason'),
+        ('not_paid', 'Not paid'),
+        ('service_abuse', 'Service abuse'),
+    ]
 
     email = models.EmailField(max_length=255, unique=True, blank=False)
     is_staff = models.BooleanField(default=True)
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False
+    )
+    provision_service = models.BooleanField(default=False)
+    revoke_service_reason = models.CharField(
+        max_length=20,
+        choices=REVOKED_SERVICE_REASON,
+        default=None,
+        null=True,
     )
 
     objects = UserManager()
@@ -73,42 +80,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             return ''
 
 
-class CustomerManager(models.Manager):
-
-    def create(self, **kwargs):
-        address_kwargs = ('city', 'state', 'postal_code', 'country')
-        address = {address_kwarg: kwargs.pop(address_kwarg)
-                   for address_kwarg in address_kwargs
-                   if address_kwarg in kwargs}
-
-        stripe_customer = stripe.Customer.create(
-            email=kwargs['user'].email,
-            name=kwargs['first_name'] + ' ' + kwargs['last_name'],
-            address=address,
-        )
-
-        return super().create(
-            id=stripe_customer.id,
-            **kwargs)
-
-    def save(self, update_stripe=True, *args, **kwargs):
-        if update_stripe:
-            self.update_stripe(*args, **kwargs)
-
-        super().save(*args, **kwargs)
-
-    def update_stripe(self, *args, **kwargs):
-
-        address_kwargs = {'city', 'state', 'postal_code', 'country'}
-        for address_kwarg in address_kwargs:
-            if address_kwarg in kwargs:
-                kwargs['address'] = {
-                    address_kwarg: kwargs.pop(address_kwarg)
-                }
-
-        stripe.Customer.modify(
-           *args, **kwargs
-        )
+# Stripe Models #
+# The models related to stripe objects typically shouldn't
+# modified directly, only through the stripe webhook view
+# in response to stripe events.
 
 
 class Customer(models.Model):
@@ -128,11 +103,13 @@ class Customer(models.Model):
     country = models.CharField(max_length=20, null=True, blank=True)
 
     delinquent = models.BooleanField(default=False)
+    default_payment_method = models.CharField(
+        max_length=100, null=True, blank=True
+    )
+    created = models.IntegerField(null=False, editable=False)
 
     def __str__(self):
         return self.full_name
-
-    objects = CustomerManager()
 
     @property
     def full_name(self):
@@ -140,29 +117,6 @@ class Customer(models.Model):
             return f'{self.first_name} {self.last_name}'
         else:
             return ''
-
-
-class PriceManager(models.Manager):
-
-    def save(self, update_stripe=True, *args, **kwargs):
-        if update_stripe:
-            self.update_stripe(*args, **kwargs)
-
-        super().save(*args, **kwargs)
-
-    def update_stripe(self, *args, **kwargs):
-
-        meta_data_keys = ('description', 'contract_length',
-                          'trial_period_days')
-        for key in meta_data_keys:
-            if key in kwargs:
-                kwargs['metadata'][key] = kwargs.pop(key)
-
-        stripe.Price.modify(
-            self.id,
-            *args,
-            **kwargs
-        )
 
 
 class Price(models.Model):
@@ -180,71 +134,25 @@ class Price(models.Model):
     trial_period_days = models.IntegerField(default=0)
     renews = models.CharField(max_length=20, default='monthly')
 
-    objects = PriceManager()
-
     def __str__(self):
         return self.id
 
 
 class SubscriptionManager(models.Manager):
 
-    def create(self, **kwargs):
+    def create(self, *args, **kwargs):
+        """Make sure that a user can only have one ongoing subscription
+        at a time. A customer may have multiple canceled subscriptions."""
+        customer = kwargs.get('customer')
+        subscription = self.filter(customer=customer) \
+                           .exclude(status__in=['canceled'])
 
-        customer = kwargs.pop('customer')
-        price = kwargs.pop('price')
+        if subscription.exists():
+            raise ValidationError(
+                "User can only have one ongoing subscription at a time."
+            )
 
-        default_args = {
-            'payment_behavior': 'default_incomplete',
-            'payment_settings': {
-                'save_default_payment_method': 'on_subscription'
-            },
-            'expand': ['pending_setup_intent'],
-            'proration_behavior': 'none',
-            # 'automatic_tax': {"enabled": True},
-            # deactivated for now, reactivate in production
-        }
-        default_args.update(kwargs)
-
-        stripe_subscription = stripe.Subscription.create(
-            customer=customer.id,
-            trial_period_days=price.trial_period_days,
-            items=[{'price': price.id}],
-            **default_args
-        )
-        subscription = super().create(
-            id=stripe_subscription.id,
-            customer=customer,
-            price=price,
-            status=stripe_subscription.status,
-            created=stripe_subscription.created,
-            trial_start=stripe_subscription.trial_start,
-            client_secret=stripe_subscription.pending_setup_intent.client_secret # noqa
-        )
-
-        return subscription
-
-    def save(self, update_stripe=True, *args, **kwargs):
-
-        if update_stripe:
-            self.update_stripe(*args, **kwargs)
-
-        super().save(*args, **kwargs)
-
-    def update_stripe(self, *args, **kwargs):
-
-        subscription = stripe.Subscription.retrieve(self.id)
-
-        if 'price' in kwargs:
-            kwargs['items'] = [{
-                'id': subscription['items']['data'][0].id,
-                'price': kwargs.pop('price').id
-            }]
-
-        stripe.Subscription.modify(
-            self.id,
-            *args,
-            **kwargs
-        )
+        return super().create(*args, **kwargs)
 
 
 class Subscription(models.Model):
@@ -274,7 +182,7 @@ class Subscription(models.Model):
     default_payment_method = models.CharField(max_length=100, null=True)
     created = models.IntegerField(editable=False)
     trial_start = models.IntegerField(editable=False)
-    client_secret = models.CharField(max_length=100)
+    trial_end = models.IntegerField(null=True)
 
     objects = SubscriptionManager()
 

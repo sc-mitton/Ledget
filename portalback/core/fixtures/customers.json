@@ -9,7 +9,9 @@
             "city": "San Fransisco",
             "country": "US",
             "postal_code": "94016",
-            "state": "CA"
+            "state": "CA",
+            "delinquent": false,
+            "created": 1649376000
         }
     },
     {
@@ -22,7 +24,9 @@
             "city": null,
             "state": null,
             "country": null,
-            "postal_code": null
+            "postal_code": null,
+            "delinquent": false,
+            "created": 1649376000
         }
     }
 ]

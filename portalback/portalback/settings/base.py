@@ -1,6 +1,7 @@
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import sys
 from datetime import timedelta
 
 
@@ -12,7 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 APPEND_SLASH = False
 SITE_ID = 1
 
-# ~~~~~~~~~ Application Defenition ~~~~~~~~ #
+# -------------------------------------------------------------- #
+#                  Application Defenition                        #
+# -------------------------------------------------------------- #
 
 DATABASES = {
     'default': {
@@ -89,7 +92,9 @@ STATIC_URL = '/static/'
 WSGI_APPLICATION = 'portalback.wsgi.application'
 
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# --------------------------------------------------------------- #
+#                         JWT                                     #
+# --------------------------------------------------------------- #
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
@@ -148,7 +153,9 @@ SIMPLE_JWT = {
 
 }
 
-# ~~~~~~~~ Authentication Settings ~~~~~~~~ #
+# ---------------------------------------------------------------- #
+#                 Authentication Settings                          #
+# ---------------------------------------------------------------- #
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -203,3 +210,69 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ---------------------------------------------------------------- #
+#                        Logging Settings                          #
+# ---------------------------------------------------------------- #
+LOG_LEVEL = 'DEBUG'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': LOG_LEVEL,
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/debug.log'),
+            'formatter': 'verbose',
+        },
+        'stripe': {
+            'level': LOG_LEVEL,
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/stripe.log'),
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': LOG_LEVEL,
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'WARNING'
+        },
+        'ledget': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG'
+        },
+        'core.stripe': {
+            'handlers': ['stripe', 'console'],
+        },
+    }
+}
+
+TEST = {
+    'LOGGING_OVERRIDE': {
+        'console': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    }
+}
+
+if 'test' in sys.argv or 'test_coverage' in sys.argv:
+    # Covers regular testing and coverage testing
+    LOGGING['handlers'].update(TEST['LOGGING_OVERRIDE'])
