@@ -4,11 +4,11 @@ import os
 import sys
 from datetime import timedelta
 
-
 # SECURITY WARNING: keep the secret key used in production secret!
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+DOMAIN = 'ledget.app'
 
 APPEND_SLASH = False
 SITE_ID = 1
@@ -145,7 +145,7 @@ SIMPLE_JWT = {
         "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 
     # Custom
-    'AUTH_COOKIE_DOMAIN': 'ledget.app',
+    'AUTH_COOKIE_DOMAIN': DOMAIN,
     'AUTH_COOKIE_SECURE': True,
     'AUTH_COOKIE_PATH': '/',
     'AUTH_COOKIE_HTTP_ONLY': True,
@@ -251,7 +251,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['file', 'console'],
-            'level': 'WARNING'
+            'level': 'INFO'
         },
         'ledget': {
             'handlers': ['file', 'console'],
@@ -259,6 +259,7 @@ LOGGING = {
         },
         'core.stripe': {
             'handlers': ['stripe', 'console'],
+            'levels': 'INFO'
         },
     }
 }
@@ -266,7 +267,7 @@ LOGGING = {
 TEST = {
     'LOGGING_OVERRIDE': {
         'console': {
-            'level': 'ERROR',
+            'level': 'CRITICAL',
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
         },

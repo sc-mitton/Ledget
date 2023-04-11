@@ -2,13 +2,9 @@
 from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_200_OK,
-    HTTP_400_BAD_REQUEST,
 )
 from rest_framework.decorators import api_view
-from rest_framework.generics import (
-    UpdateAPIView,
-    CreateAPIView
-)
+from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -17,7 +13,6 @@ from rest_framework_simplejwt.views import (
 )
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
-import stripe
 
 import jwt
 
@@ -26,7 +21,6 @@ from .serializers import (
     UserSerializer,
     CustomerSerializer
 )
-from portalback.authentication import CustomJWTAuthentication
 
 
 @api_view(['GET'])
@@ -75,12 +69,10 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             )
             decoded_access_jwt = _decode_jwt(response.data['access'])
             payload = {
-                'user': {
-                    'id': decoded_access_jwt['user']['id'],
-                    'full_name': decoded_access_jwt['user']['full_name'],
-                },
+                'user': decoded_access_jwt['user'],
                 'access_token_expiration': decoded_access_jwt['exp']
             }
+
             response.data.update(payload)
             del response.data['refresh']
             del response.data['access']
@@ -111,36 +103,10 @@ class UpdateUserView(UpdateAPIView):
         return self.request.user
 
 
-class CreateCustomerView(CreateAPIView):
-    serializer_class = CustomerSerializer
-    permission_classes = (IsAuthenticated,)
-
-    def post(self, request, *args, **kwargs):
-
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        try:
-            serializer.save()
-        except stripe.error.InvalidRequestError as e:
-            return Response(
-                data={'error': str(e)},
-                status=HTTP_400_BAD_REQUEST,
-                content_type='application/json'
-            )
-
-        return Response(
-            status=HTTP_200_OK,
-            content_type='application/json'
-        )
-
-
 class CookieTokenRefreshView(TokenRefreshView):
     """Custom view that extends the default TokenRefreshView
     in order to set the refresh token as a HTTP only cookie."""
     serializer_class = CustomTokenRefreshSerializer
-    authentication_classes = (CustomJWTAuthentication,)
-    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(
@@ -151,9 +117,7 @@ class CookieTokenRefreshView(TokenRefreshView):
         return Response(serializer.validated_data, status=HTTP_200_OK)
 
     def finalize_response(self, request, response, *args, **kwargs):
-        if response.data.get('refresh'):
-            # If the refresh token is expired, this block wont ever
-            # get exeuted
+        if response.data.get('refresh') and response.status_code == 200:
             response.set_cookie(
                 'access',
                 response.data['access'],
@@ -166,10 +130,10 @@ class CookieTokenRefreshView(TokenRefreshView):
             )
             decoded_access_jwt = _decode_jwt(response.data['access'])
             payload = {
-                'user_id': decoded_access_jwt['user']['id'],
-                'full_name': decoded_access_jwt['user']['full_name'],
+                'user': {'id': decoded_access_jwt['user']},
                 'access_token_expiration': decoded_access_jwt['exp']
             }
+
             response.data.update(payload)
             del response.data['refresh']
             del response.data['access']
@@ -179,14 +143,20 @@ class CookieTokenRefreshView(TokenRefreshView):
 
 class LogoutView(TokenBlacklistView):
     """Custom view for logging out a user."""
-    authentication_classes = (CustomJWTAuthentication,)
-    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(
-            data=request.COOKIES,
-        )
 
+        data = {}
+        if 'access' in request.COOKIES:
+            data['access'] = request.COOKIES.get('access')
+        if 'refresh' in request.COOKIES:
+            data['refresh'] = request.COOKIES.get('refresh')
+        if not data:
+            return Response(status=HTTP_200_OK)
+
+        serializer = self.get_serializer(
+            data=data,
+        )
         # validating the token will blacklist it
         serializer.is_valid(raise_exception=True)
 

@@ -200,25 +200,13 @@ function PaymentForm({ price }) {
     const stripe = useStripe()
     const elements = useElements()
 
-    const getPayload = (data) => {
-        const values = getValues()
-        let payload = {}
-
-        payload['first_name'] = values.name.split(' ')[0]
-        payload['last_name'] = values.name.split(' ')[1]
-        payload['postal_code'] = values.zip
-        payload['city'] = values.city.split(',')[0]
-        payload['state'] = values.city.split(',')[1]
-
-        return payload
-    }
 
     const createSubscription = async () => {
         try {
             const response = await apiAuth.post('subscription', {
-                'price': price,
+                'price_id': price.id,
+                'trial_period_days': price.trial_period_days
             })
-            console.log(response)
             clientSecret = response.data.client_secret
         } catch (error) {
             setErrMsg("Something went wrong. Please try again.")
@@ -239,7 +227,8 @@ function PaymentForm({ price }) {
                             address: {
                                 city: values.city.split(',')[0],
                                 state: values.city.split(',')[1],
-                                postal_code: values.zip
+                                postal_code: values.zip,
+                                country: values.country
                             }
                         }
                     }
@@ -253,12 +242,24 @@ function PaymentForm({ price }) {
         }
     }
 
+    const getCustomerPayload = () => {
+        const values = getValues()
+        let payload = {}
+        payload['first_name'] = values.name.split(' ')[0]
+        payload['last_name'] = values.name.split(' ')[1]
+        payload['city'] = values.city.split(',')[0]
+        payload['state'] = values.city.split(',')[1]
+        payload['postal_code'] = values.zip
+
+        return payload
+    }
+
     const onSubmit = async () => {
         setProcessing(true)
-        const user_id = JSON.parse(sessionStorage.getItem("user")).id
-
         try {
-            await apiAuth.post(`customer`, getPayload())
+            if (!JSON.parse(sessionStorage.getItem("user")).is_customer) {
+                await apiAuth.post(`customer`, getCustomerPayload())
+            }
             await createSubscription()
             await confirmSetup()
         } catch (error) {
@@ -283,7 +284,7 @@ function PaymentForm({ price }) {
                     <h4 id="card-input-header">Card</h4>
                     <Payment setPayment={setPayment} disabled={processing || succeeded} />
                     {errMsg &&
-                        <div className="server-error">
+                        <div className="server-error" id="payment-error">
                             <img src={alert2} alt="error icon" />
                             {errMsg}
                         </div>

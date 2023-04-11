@@ -140,7 +140,7 @@ function LoginForm() {
                 </div>
                 <div>
                     <input
-                        className="submit-button"
+                        className="valid-submit"
                         type="submit"
                         value="Sign In"
                         ref={submitButtonRef}

@@ -36,21 +36,19 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    REVOKED_SERVICE_REASON = [
-        ('', 'No reason'),
+    ACCOUNT_FLAG_CHOICES = [
         ('not_paid', 'Not paid'),
+        ('payment_decline', 'Payment decline'),
         ('service_abuse', 'Service abuse'),
     ]
 
     email = models.EmailField(max_length=255, unique=True, blank=False)
     is_staff = models.BooleanField(default=True)
-    id = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False
-    )
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     provision_service = models.BooleanField(default=False)
-    revoke_service_reason = models.CharField(
+    account_flag = models.CharField(
         max_length=20,
-        choices=REVOKED_SERVICE_REASON,
+        choices=ACCOUNT_FLAG_CHOICES,
         default=None,
         null=True,
     )
@@ -76,8 +74,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def full_name(self):
         if hasattr(self, 'customer'):
             return self.customer.full_name
-        else:
-            return ''
 
 
 # Stripe Models #
@@ -117,6 +113,17 @@ class Customer(models.Model):
             return f'{self.first_name} {self.last_name}'
         else:
             return ''
+
+    @property
+    def billing_info(self):
+        return {
+            'name': self.full_name,
+            'city': self.city,
+            'state': self.state,
+            'postal_code': self.postal_code,
+            'country': self.country,
+            'default_payment_method': self.default_payment_method,
+        }
 
 
 class Price(models.Model):

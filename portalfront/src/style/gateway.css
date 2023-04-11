@@ -388,6 +388,10 @@ input[type="radio"]:checked+label * {
     box-sizing: border-box;
 }
 
+#payment-error {
+    margin-left: 14px;
+}
+
 .focus {
     border: 1px solid var(--main-blue);
     transition: border .2s ease;
@@ -430,7 +434,7 @@ input[type="radio"]:checked+label * {
 
 .success-icon {
     fill: var(--success-green);
-    height: 1.1em;
+    height: 1em;
     margin-right: 2px;
     position: relative;
     top: 2px;

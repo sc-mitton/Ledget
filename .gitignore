@@ -10,3 +10,4 @@ inspiration
 ./frontend/node_modules
 sandbox.ipynb
 .ipynb_checkpoints
+**/logs

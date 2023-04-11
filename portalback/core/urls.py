@@ -3,14 +3,14 @@ from core.user_views import (
     getRoutes,
     CreateUserView,
     UpdateUserView,
-    LogoutView,
-    CreateCustomerView
+    LogoutView
 )
 from .user_views import CookieTokenObtainPairView, CookieTokenRefreshView
 from .checkout_views import (
     PriceView,
     StripeHookView,
     SubscriptionView,
+    CreateCustomerView
 )
 
 urlpatterns = [

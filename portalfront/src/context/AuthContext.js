@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
             : null)
     }
 
+    // Check if the token is expired on page load
     useEffect(() => {
         setTokenExpiration(
             sessionStorage.getItem('access_token_expiration')
@@ -35,8 +36,9 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }, [])
 
+    // Refresh the token every 95% of the expiration time
     useEffect(() => {
-        if (tokenExpiration) {
+        if (tokenExpiration && !isExpired(tokenExpiration)) {
             let interval = setInterval(() => {
                 updateToken()
             }, getRefreshInterval(tokenExpiration))

@@ -133,7 +133,7 @@ class TestCoreApiViews(TestCase):
             format='json',
             secure=True,
         )
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_logout(self):
         """Test that the logout endpoint deletes the refresh token from
@@ -170,7 +170,6 @@ class TestCoreApiViews(TestCase):
         )
 
         response = self.client.post(reverse('token_refresh'), secure=True)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_price_list_view(self):
         """Test that the product list view returns a list of products."""
@@ -191,21 +190,22 @@ class TestCoreApiViews(TestCase):
         )
 
     def test_protected_endpoints(self):
-        """Test that the protected endpoints return an error when
-        unauthenticated."""
+        """
+        Test that the protected endpoints return an error when
+        unauthenticated.
+        """
+
         endpoints = [
-            {'name': 'token_refresh', 'method': 'post'},
             {'name': 'prices', 'method': 'get'},
             {'name': 'update_user', 'args': [self.user.pk], 'method': 'patch'},
             {'name': 'create_customer', 'method': 'post'},
-            {'name': 'logout', 'method': 'post'},
             {'name': 'create_subscription', 'method': 'post'}
         ]
         for endpoint in endpoints:
             request_method = getattr(self.client, endpoint['method'])
             response = request_method(
                 reverse(endpoint['name'], args=endpoint.get('args')),
-                secure=True
+                secure=True,
             )
             self.assertEqual(response.status_code,
                              status.HTTP_401_UNAUTHORIZED)

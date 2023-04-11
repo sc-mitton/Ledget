@@ -6,12 +6,12 @@ from rest_framework_simplejwt.serializers import (
     TokenObtainPairSerializer,
     TokenRefreshSerializer
 )
-from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from rest_framework_simplejwt.serializers import ValidationError
 import stripe
 
 from core.models import (
     Customer,
-    Subscription,
     Price
 )
 
@@ -24,27 +24,27 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Customer
-        fields = ['city', 'state', 'postal_code', 'country',
+        fields = ['city', 'state', 'postal_code',
                   'first_name', 'last_name']
 
-    def create(self, validated_data):
+    def create_stripe_customer(self):
         """Create and return a new stripe customer."""
+        validated_data = self.validated_data
 
-        user = self.context['user']
+        user = self.context['request'].user
         first_name = validated_data['first_name']
         last_name = validated_data['last_name']
 
-        address_items = ['city', 'state', 'postal_code', 'country']
-        address = {item: validated_data[item]
-                   for item in validated_data
-                   if item in address_items}
+        address_items = ['city', 'state', 'postal_code']
+        address = {item: validated_data[item] for item in address_items}
         address['country'] = 'US'  # hardcode country for now
 
-        stripe.Customer.create(
+        customer = stripe.Customer.create(
             email=user.email,
             name=first_name + ' ' + last_name,
             address=address,
         )
+        return customer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -83,16 +83,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
         token['user'] = {
-            'id': str(user.id),
-            'full_name': user.full_name,
+            'is_customer': hasattr(user, 'customer'),
+            'email': user.email,
         }
-        if hasattr(user, 'customer'):
-            token['user']['customer'] = CustomerSerializer(
-                user.customer
-            ).data
-
         return token
 
 
@@ -100,10 +94,13 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
     refresh = serializers.CharField()
 
     def validate(self, attrs):
-        if attrs['refresh']:
-            return super().validate(attrs)
-        else:
-            raise InvalidToken("No valid token found in cookie 'token'")
+        try:
+            validated_data = super().validate(attrs)
+            return validated_data
+        except TokenError:
+            raise ValidationError('Refresh token is invalid or expired.')
+        except InvalidToken:
+            raise ValidationError('Refresh token is invalid or expired.')
 
 
 class PriceSerializer(serializers.ModelSerializer):
@@ -119,33 +116,48 @@ class PriceSerializer(serializers.ModelSerializer):
         )
 
 
-class SubscriptionSerializer(serializers.ModelSerializer):
-    price = PriceSerializer()
+class LeanPriceListSerializer(serializers.ModelSerializer):
+    """Serializer for price model"""
+    id = serializers.CharField(required=False)
 
     class Meta:
-        model = Subscription
-        fields = ('price',)
+        model = Price
+        fields = ('id', 'trial_period_days')
 
-    def create(self, validated_data):
-        """Create and return a new stripe subscription."""
-
-        user = self.context['request'].user
-        if not hasattr(user, 'customer'):
+    def validate_trial_period_days(self, value):
+        if value > 30:
             raise serializers.ValidationError(
-                'User does not have a customer account.'
+                'Trial period cannot be longer than 30 days.'
             )
+        return value
 
-        price_data = validated_data.pop('price')
-        price_serializer = PriceSerializer(data=price_data)
-        price_serializer.is_valid(raise_exception=True)
-        stripe_subscription = self.create_stripe_subscription(
-            user.customer.id,
-            price_serializer.validated_data
+
+class CreateSubscriptionSerializer(serializers.Serializer):
+    price_id = serializers.CharField()
+    trial_period_days = serializers.IntegerField()
+
+    def validate_trial_period_days(self, value):
+        if value > 30:
+            raise serializers.ValidationError(
+                'Trial period cannot be longer than 30 days.'
+            )
+        return value
+
+    def create_stripe_subscription(self):
+        """Create and return a new stripe subscription."""
+        validated_data = self.validated_data
+        customer_id = self.context['request'].COOKIES['customer_id']
+
+        stripe_subscription = self.susbcription_create_api(
+            customer_id,
+            validated_data['price_id'],
+            validated_data['trial_period_days']
         )
 
         return stripe_subscription
 
-    def create_stripe_subscription(self, customer_id, price, **kwargs):
+    def susbcription_create_api(
+            self, customer_id, price_id, trial_period_days, **kwargs):
 
         default_args = {
             'payment_behavior': 'default_incomplete',
@@ -161,8 +173,8 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
         stripe_subscription = stripe.Subscription.create(
             customer=customer_id,
-            trial_period_days=price['trial_period_days'],
-            items=[{'price': price['id']}],
+            trial_period_days=trial_period_days,
+            items=[{'price': price_id}],
             **default_args
         )
         return stripe_subscription
