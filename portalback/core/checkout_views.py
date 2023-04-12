@@ -147,38 +147,21 @@ class StripeHookView(APIView):
         return response
 
     def dispatch_event(self, event):
-        ignore_events = [
-            'invoice_created', 'invoice_updated', 'invoice_payment_succeeded',
-            'invoice_finalized', 'invoice_paid', 'payment_method_attached',
-            'setup_intent_created'
-        ]
 
         event_type = event.type.replace('.', '_')
         handler = getattr(self, f"handle_{event_type}", None)
-        handler_success = False
         max_attempts = 3
 
         if handler:
             for i in range(max_attempts):
                 try:
                     handler(event)
-                    handler_success = True
                     break
                 except Exception as e:
                     stripe_logger.error(
-                        stripe_logger.error(
-                            f"⚠️ {event_type} handler: {e}"
-                        )
+                        f"⚠️ Attempt {i} for {event_type} handler: {e}"
                     )
                     time.sleep(1)
-
-        if not handler and event_type not in ignore_events:
-            stripe_logger.info(f"No handler for event type: {event.type}")
-
-        if not handler_success and event_type not in ignore_events:
-            stripe_logger.error(
-                f"⚠️ {event_type} handler: max attempts reached."
-            )
 
     # Create handlers
     def handle_customer_created(self, event):
@@ -221,7 +204,7 @@ class StripeHookView(APIView):
         )
         db_subscription.save()
 
-    # Update handlers
+    # Update handlers/helpers
     def update_instance(self, instance, new_values):
         """Generic method for updating the data in the db with
         the data from Stripe."""
@@ -253,10 +236,6 @@ class StripeHookView(APIView):
             object,
             event.data.previous_attributes
         )
-
-        stripe_logger.info(
-            f"Updating {new_values.keys()} on {object.id} customer."
-        )
         customer = Customer.objects.get(id=object.id)
         self.update_instance(customer, new_values)
 
@@ -269,35 +248,54 @@ class StripeHookView(APIView):
             event.data.previous_attributes
         )
 
-        stripe_logger.info(
-            f"Updating {new_values.keys()} on {object.id} subscription."
-        )
         subscription = Subscription.objects.get(id=object.id)
         self.update_instance(subscription, new_values)
 
     # Setup Intent handlers
     def handle_setup_intent_succeeded(self, event):
-        """Provision the service for the user."""
+        """Provision the service for the customer."""
 
-        user = get_user_model().objects.get(
-            customer__id=event.data.object.customer
-        )
-        user.provision_service = True
-        user.save()
+        customer = Customer.objects.get(id=event.data.object.customer)
+        customer.service_provisioned = True
+        customer.save()
 
     # Delete Handlers
-    def handle_customer_delete(self, event):
+    def handle_customer_deleted(self, event):
         """Delete the customer in the db."""
         try:
             customer = Customer.objects.get(id=event.data.object.id)
             user = get_user_model().objects.get(
-                customer__id=event.data.object.id
+                customer__id=customer.id
             )
             user.provision_service = False
 
             customer.delete()
             user.save()
         except Customer.DoesNotExist:
-            pass
+            stripe_logger.error(
+                f"⚠️ Can't delete customer: {event.data.object.id}, "
+                "does not exist."
+            )
         except get_user_model().DoesNotExist:
-            pass
+            stripe_logger.error(
+                f"⚠️ Can't update user: {event.data.object.id}, "
+                "does not exist."
+            )
+
+    def handle_customer_subscription_deleted(self, event):
+        try:
+            subscription = Subscription.objects.get(id=event.data.object.id)
+            subscription.delete()
+        except Subscription.DoesNotExist:
+            stripe_logger.error(
+                f"⚠️ Can't delete subscription: {event.data.object.id}, "
+                "does not exist."
+            )
+
+    # Error handling?
+    #   invoice payment failed
+    #   invoice finalization failed
+
+    # TODO
+    #   customer subscription paused
+    #   customer subscription resumed

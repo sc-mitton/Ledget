@@ -37,15 +37,12 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     ACCOUNT_FLAG_CHOICES = [
-        ('not_paid', 'Not paid'),
-        ('payment_decline', 'Payment decline'),
         ('service_abuse', 'Service abuse'),
     ]
 
     email = models.EmailField(max_length=255, unique=True, blank=False)
     is_staff = models.BooleanField(default=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    provision_service = models.BooleanField(default=False)
     account_flag = models.CharField(
         max_length=20,
         choices=ACCOUNT_FLAG_CHOICES,
@@ -99,9 +96,7 @@ class Customer(models.Model):
     country = models.CharField(max_length=20, null=True, blank=True)
 
     delinquent = models.BooleanField(default=False)
-    default_payment_method = models.CharField(
-        max_length=100, null=True, blank=True
-    )
+    service_provisioned = models.BooleanField(default=False)
     created = models.IntegerField(null=False, editable=False)
 
     def __str__(self):
@@ -132,7 +127,7 @@ class Price(models.Model):
     currency = models.CharField(max_length=10)
     active = models.BooleanField(default=True)
     created = models.IntegerField(editable=False)
-    livemode = models.BooleanField(default=False)
+    livemode = models.BooleanField(default=False)  # useful for prototyping
     lookup_key = models.CharField(max_length=30, blank=True)
 
     # metadata fields

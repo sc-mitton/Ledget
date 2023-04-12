@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import React from 'react'
+import { useState, useRef } from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { set, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { object, string } from 'yup'
+import { bool, object, string } from 'yup'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
 import logo from '../../assets/images/logo.svg'
@@ -190,55 +190,68 @@ function PaymentForm({ price }) {
             resolver: yupResolver(schema),
             mode: 'onBlur'
         }
-    );
+    )
+    const navigate = useNavigate()
+    const stripe = useStripe()
+    const elements = useElements()
+
     let [payment, setPayment] = useState(null) // checks if the payment is entered
     const [succeeded, setSucceeded] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
     const [processing, setProcessing] = useState(false)
-    const navigate = useNavigate()
-    let clientSecret = null
-    const stripe = useStripe()
-    const elements = useElements()
 
+    const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem("clientSecret")))
+    const isCustomerRef = useRef(JSON.parse(sessionStorage.getItem("user")).is_customer)
 
-    const createSubscription = async () => {
-        try {
-            const response = await apiAuth.post('subscription', {
-                'price_id': price.id,
-                'trial_period_days': price.trial_period_days
-            })
-            clientSecret = response.data.client_secret
-        } catch (error) {
-            setErrMsg("Something went wrong. Please try again.")
+    const createCustomer = async () => {
+        const response = await apiAuth.post('customer', getCustomerPayload())
+        if (response.status === 200) {
+            let user = JSON.parse(sessionStorage.getItem("user"))
+            user.is_customer = true
+            isCustomerRef.current = true
+            sessionStorage.setItem("user", JSON.stringify(user))
+        } else {
+            setErrMsg('Hmmm... something went wrong. Please try again.')
         }
     }
 
-    const confirmSetup = async (data) => {
+    const createSubscription = async () => {
+        const response = await apiAuth.post('subscription', {
+            'price_id': price.id,
+            'trial_period_days': price.trial_period_days
+        })
+        if (response.status === 200) {
+            sessionStorage.setItem("clientSecret", JSON.stringify(response.data.client_secret))
+            clientSecretRef.current = response.data.client_secret
+        } else {
+            setErrMsg('Hmm... something went wrong. Please try again.')
+        }
+    }
+
+    const confirmSetup = async () => {
         const values = getValues()
-        try {
-            const result = await stripe.confirmCardSetup(
-                clientSecret,
-                {
-                    payment_method: {
-                        card: elements.getElement(CardElement),
-                        billing_details: {
-                            name: values.name,
-                            email: JSON.parse(sessionStorage.getItem("user")).email,
-                            address: {
-                                city: values.city.split(',')[0],
-                                state: values.city.split(',')[1],
-                                postal_code: values.zip,
-                                country: values.country
-                            }
+        const result = await stripe.confirmCardSetup(
+            clientSecretRef.current,
+            {
+                payment_method: {
+                    card: elements.getElement(CardElement),
+                    billing_details: {
+                        name: values.name,
+                        email: JSON.parse(sessionStorage.getItem("user")).email,
+                        address: {
+                            city: values.city.split(',')[0],
+                            state: values.city.split(',')[1],
+                            postal_code: values.zip,
+                            country: values.country
                         }
                     }
                 }
-            )
-            if (result.setupIntent.status === 'succeeded') {
-                setSucceeded(true)
             }
-        } catch (error) {
-            setErrMsg(result.error.message)
+        )
+        if (result.setupIntent?.status === 'succeeded') {
+            setSucceeded(true)
+        } else if (result.error) {
+            setErrMsg(result.error?.message)
         }
     }
 
@@ -257,14 +270,19 @@ function PaymentForm({ price }) {
     const onSubmit = async () => {
         setProcessing(true)
         try {
-            if (!JSON.parse(sessionStorage.getItem("user")).is_customer) {
-                await apiAuth.post(`customer`, getCustomerPayload())
+            if (!isCustomerRef.current) {
+                await createCustomer();
             }
-            await createSubscription()
-            await confirmSetup()
-        } catch (error) {
-            console.log(error)
-            setErrMsg("Something went wrong. Please try again.")
+            if (!clientSecretRef.current) {
+                await createSubscription()
+            }
+            if (isCustomerRef.current && clientSecretRef.current) {
+                await confirmSetup()
+            }
+        } catch (err) {
+            if (!errMsg) {
+                setErrMsg('Hmm... something went wrong. Please try again.')
+            }
         } finally {
             setProcessing(false)
         }
