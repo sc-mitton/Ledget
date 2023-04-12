@@ -51,21 +51,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     objects = UserManager()
-
     USERNAME_FIELD = 'email'
 
     def __str__(self):
         return self.email
-
-    @classmethod
-    def create(cls, **kwargs):
-        customer_data = kwargs.pop('customer', None)
-        user = cls.objects.create(**kwargs)
-        if customer_data:
-            Customer.objects.create(
-                user=user, **customer_data
-            )
-        return user
 
     @property
     def full_name(self):
@@ -86,18 +75,18 @@ class Customer(models.Model):
         related_name='customer'
     )
     id = models.CharField(primary_key=True, max_length=50, editable=False)
+    created = models.IntegerField(null=False, editable=False)
+
+    # Billing info
     first_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
-
-    # Address
     city = models.CharField(max_length=30, null=True, blank=True)
     state = models.CharField(max_length=20, null=True, blank=True)
     postal_code = models.CharField(max_length=10, null=True, blank=True)
     country = models.CharField(max_length=20, null=True, blank=True)
 
     delinquent = models.BooleanField(default=False)
-    service_provisioned = models.BooleanField(default=False)
-    created = models.IntegerField(null=False, editable=False)
+    service_expiration = models.IntegerField(default=0, null=False)
 
     def __str__(self):
         return self.full_name
@@ -127,7 +116,7 @@ class Price(models.Model):
     currency = models.CharField(max_length=10)
     active = models.BooleanField(default=True)
     created = models.IntegerField(editable=False)
-    livemode = models.BooleanField(default=False)  # useful for prototyping
+    livemode = models.BooleanField(default=False)  # useful for testing
     lookup_key = models.CharField(max_length=30, blank=True)
 
     # metadata fields
@@ -168,7 +157,6 @@ class Subscription(models.Model):
         ('unpaid', 'unpaid')
     ]
 
-    id = models.CharField(max_length=70, primary_key=True, editable=False)
     customer = models.ForeignKey(
         Customer,
         on_delete=models.CASCADE,
@@ -178,11 +166,15 @@ class Subscription(models.Model):
         Price,
         on_delete=models.PROTECT
     )
-    current_period_end = models.IntegerField(null=True)
+
+    id = models.CharField(max_length=70, primary_key=True, editable=False)
+    created = models.IntegerField(editable=False)
     status = models.CharField(max_length=20, choices=status_choices)
+    client_secret = models.CharField(max_length=100, null=True)
+
+    current_period_end = models.IntegerField(null=True)
     cancel_at_period_end = models.BooleanField(default=False)
     default_payment_method = models.CharField(max_length=100, null=True)
-    created = models.IntegerField(editable=False)
     trial_start = models.IntegerField(editable=False)
     trial_end = models.IntegerField(null=True)
 

@@ -19,8 +19,8 @@ const schema = object({
         .required('Please enter your first and last name.')
         .test('two-words', 'Enter first and last name', (value) => {
             if (value) {
-                const words = value.trim().split(' ');
-                return words.length === 2;
+                const words = value.trim().split(' ')
+                return words.length === 2
             }
             return true;
         }),
@@ -34,7 +34,7 @@ const schema = object({
 let BillingInfo = (props) => {
 
     const hasError = (field) => {
-        return props.errors[field] ? true : false;
+        return props.errors[field] ? true : false
     }
 
     return (
@@ -55,7 +55,7 @@ let BillingInfo = (props) => {
             </div>
             {hasError('name') &&
                 <div className="form-error">
-                    <img src={alert2} className="error-tip-icon" />
+                    <img src={alert2} className="error-icon" />
                     {props.errors.name?.message}
                 </div>
             }
@@ -83,7 +83,7 @@ let BillingInfo = (props) => {
                         {...props.register('zip')}
                         onBlur={(e) => {
                             if (e.target.value) {
-                                props.trigger("zip");
+                                props.trigger("zip")
                             }
                         }}
                     />
@@ -94,7 +94,7 @@ let BillingInfo = (props) => {
                     <div id="city-error">
                         {hasError('city') &&
                             <div className="form-error">
-                                <img src={alert2} className="error-tip-icon" />
+                                <img src={alert2} className="error-icon" />
                                 {props.errors.city?.message}
                             </div>
                         }
@@ -102,7 +102,7 @@ let BillingInfo = (props) => {
                     <div id="zip-error">
                         {hasError('zip') &&
                             <div className="form-error">
-                                <img src={alert2} className="error-tip-icon" />
+                                <img src={alert2} className="error-icon" />
                                 {props.errors.zip?.message}
                             </div>
                         }
@@ -126,7 +126,11 @@ let Payment = (props) => {
                 '::placeholder': {
                     color: cardFocus ? '#6b9bf6' : '#848484',
                 },
-                iconColor: cardFocus ? '#4784f6' : '#242424'
+                iconColor: cardFocus ? '#4784f6' : '#242424',
+                ':disabled': {
+                    color: '#848484',
+                    iconColor: '#848484'
+                }
             },
             invalid: {
                 fontFamily: 'Source Sans Pro, sans-serif',

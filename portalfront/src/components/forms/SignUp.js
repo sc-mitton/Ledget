@@ -110,7 +110,7 @@ function SignUpForm() {
                 <div id="signup-error-container">
 
                     <div className="form-error">
-                        <img src={alert2} className="error-tip-icon" />
+                        <img src={alert2} className="error-icon" />
                         {errors.email?.message}
                     </div>
                 </div>
@@ -126,7 +126,7 @@ function SignUpForm() {
             {hasError('password') &&
                 <div id="signup-error-container">
                     <div className="form-error">
-                        <img src={alert2} className="error-tip-icon" />
+                        <img src={alert2} className="error-icon" />
                         {errors.password?.message}
                     </div>
                 </div>
@@ -144,7 +144,7 @@ function SignUpForm() {
             {hasError('confirmPassword') &&
                 <div id="signup-error-container">
                     <div className="form-error">
-                        <img src={alert2} className="error-tip-icon" />
+                        <img src={alert2} className="error-icon" />
                         {errors.confirmPassword?.message}
                     </div>
                 </div>

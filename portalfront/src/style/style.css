@@ -387,7 +387,7 @@ input[type="password"]:focus::placeholder {
     width: 0;
 }
 
-.error-tip-icon {
+.error-icon {
     position: relative;
     top: -15px;
     left: 4px;
@@ -411,7 +411,7 @@ input[type="password"]:focus::placeholder {
 }
 
 
-.error-tip-icon:hover+.error-tip-msg {
+.error-icon:hover+.error-tip-msg {
     visibility: visible;
     animation: show .12s ease;
 }

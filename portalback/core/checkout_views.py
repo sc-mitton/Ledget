@@ -150,18 +150,18 @@ class StripeHookView(APIView):
 
         event_type = event.type.replace('.', '_')
         handler = getattr(self, f"handle_{event_type}", None)
-        max_attempts = 3
+        if not handler:
+            return
 
-        if handler:
-            for i in range(max_attempts):
-                try:
-                    handler(event)
-                    break
-                except Exception as e:
-                    stripe_logger.error(
-                        f"⚠️ Attempt {i} for {event_type} handler: {e}"
-                    )
-                    time.sleep(1)
+        for i in range(3):
+            try:
+                handler(event)
+                break
+            except Exception as e:
+                stripe_logger.error(
+                    f"⚠️ Attempt {i} for {event_type} handler: {e}"
+                )
+                time.sleep(1)
 
     # Create handlers
     def handle_customer_created(self, event):
@@ -186,7 +186,7 @@ class StripeHookView(APIView):
 
     def handle_customer_subscription_created(self, event):
         """Create corresponding subscription in our database."""
-
+        print(event)
         subscription = event.data.object
         price_id = subscription['items']['data'][0]['price']['id']
 
@@ -201,6 +201,7 @@ class StripeHookView(APIView):
             created=subscription.created,
             trial_start=subscription.trial_start,
             trial_end=subscription.trial_end,
+            client_secret=subscription.pending_setup_intent.client_secret,
         )
         db_subscription.save()
 
@@ -292,10 +293,13 @@ class StripeHookView(APIView):
                 "does not exist."
             )
 
+    # What invoice events do I need to handle?
     # Error handling?
     #   invoice payment failed
     #   invoice finalization failed
 
-    # TODO
+    # TODO: modifying subscriptions
+    #   setup intent created
+    #   setup intent succeeded
     #   customer subscription paused
     #   customer subscription resumed

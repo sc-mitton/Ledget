@@ -97,6 +97,23 @@ class TestCoreApiViews(TestCase):
         self.assertIn('refresh', response.cookies)
         self.assertIn('access', response.cookies)
 
+    def test_token_endpoint_response(self):
+        """Test that the response from the token endpoint contains the
+        necessary fields."""
+
+        payload = {'email': self.email, 'password': self.password}
+        response = self.client.post(
+            reverse('token_obtain_pair'),
+            data=payload,
+            format='json',
+            secure=True
+        )
+        self.assertIn('user', response.data)
+        self.assertIn('access_token_expiration', response.data)
+        self.assertIn('email', response.data['user'])
+        self.assertIn('is_customer', response.data['user'])
+        self.assertIn('subscription_status', response.data['user'])
+
     def test_refresh_token(self):
         """Test that the refresh token endpoint returns a new access token."""
         payload = {'email': self.email, 'password': self.password}
