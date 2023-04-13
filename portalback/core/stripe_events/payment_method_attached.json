@@ -1,0 +1,47 @@
+{
+  "billing_details": {
+    "address": {
+      "city": "Tampa",
+      "country": null,
+      "line1": null,
+      "line2": null,
+      "postal_code": "33716",
+      "state": " FL"
+    },
+    "email": "allisonhmitton@gmail.com",
+    "name": "Allison Mitton",
+    "phone": null
+  },
+  "card": {
+    "brand": "visa",
+    "checks": {
+      "address_line1_check": null,
+      "address_postal_code_check": "pass",
+      "cvc_check": "pass"
+    },
+    "country": "US",
+    "exp_month": 4,
+    "exp_year": 2024,
+    "fingerprint": "qtIHqLM00wFjhOWT",
+    "funding": "credit",
+    "generated_from": null,
+    "last4": "4242",
+    "networks": {
+      "available": [
+        "visa"
+      ],
+      "preferred": null
+    },
+    "three_d_secure_usage": {
+      "supported": true
+    },
+    "wallet": null
+  },
+  "created": 1681314548,
+  "customer": "cus_NhUuB3jLNZjZoQ",
+  "id": "pm_1Mw5uyH1cVZqyCpVNJkxvtPG",
+  "livemode": false,
+  "metadata": {},
+  "object": "payment_method",
+  "type": "card"
+}

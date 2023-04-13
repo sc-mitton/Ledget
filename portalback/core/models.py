@@ -61,6 +61,24 @@ class User(AbstractBaseUser, PermissionsMixin):
         if hasattr(self, 'customer'):
             return self.customer.full_name
 
+    @property
+    def is_customer(self):
+        return hasattr(self, 'customer')
+
+    @property
+    def has_default_payment_method(self):
+        customer = getattr(self, 'customer', None)
+        subscription = getattr(customer, 'subscription', None)
+        return bool(getattr(subscription, 'default_payment_method', None))
+
+    @property
+    def subscription_status(self):
+        customer = getattr(self, 'customer', None)
+        if customer:
+            return customer.subscription.status \
+                    if customer.subscription else None
+        else:
+            return None
 
 # Stripe Models #
 # The models related to stripe objects typically shouldn't
@@ -85,7 +103,6 @@ class Customer(models.Model):
     postal_code = models.CharField(max_length=10, null=True, blank=True)
     country = models.CharField(max_length=20, null=True, blank=True)
 
-    delinquent = models.BooleanField(default=False)
     service_expiration = models.IntegerField(default=0, null=False)
 
     def __str__(self):
@@ -108,6 +125,12 @@ class Customer(models.Model):
             'country': self.country,
             'default_payment_method': self.default_payment_method,
         }
+
+    @property
+    def subscription(self):
+        return self.subscriptions.exclude(
+                status__in=['canceled', 'incomplete_expired']
+                ).first()
 
 
 class Price(models.Model):
@@ -147,22 +170,25 @@ class SubscriptionManager(models.Manager):
 
 
 class Subscription(models.Model):
+    """Read more about the status choices here:
+    https://stripe.com/docs/billing/subscriptions/overview#subscription-statuses""" # noqa
+
     status_choices = [
-        ('incomplete', 'incomplete'),
-        ('incomplete_expired', 'incomplete_expired'),
         ('trialing', 'trialing'),
         ('active', 'active'),
+        ('incomplete', 'incomplete'),
+        ('incomplete_expired', 'incomplete_expired'),
         ('past_due', 'past_due'),
+        ('unpaid', 'unpaid'),
         ('canceled', 'canceled'),
-        ('unpaid', 'unpaid')
     ]
 
     customer = models.ForeignKey(
         Customer,
         on_delete=models.CASCADE,
-        related_name='subscription'
+        related_name='subscriptions'
     )
-    price = models.ForeignKey(
+    price = models.OneToOneField(
         Price,
         on_delete=models.PROTECT
     )

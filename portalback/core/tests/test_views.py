@@ -113,6 +113,7 @@ class TestCoreApiViews(TestCase):
         self.assertIn('email', response.data['user'])
         self.assertIn('is_customer', response.data['user'])
         self.assertIn('subscription_status', response.data['user'])
+        self.assertIn('has_default_payment_method', response.data['user'])
 
     def test_refresh_token(self):
         """Test that the refresh token endpoint returns a new access token."""

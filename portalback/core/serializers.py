@@ -13,7 +13,6 @@ import stripe
 from core.models import (
     Customer,
     Price,
-    Subscription
 )
 
 
@@ -83,15 +82,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     @classmethod
     def get_token(cls, user):
-        current_sub = Subscription.objects.filter(
-            customer__user=user
-        ).exclude(status__in=['canceled']).first()
-        subscription_status = current_sub.status if current_sub else None
 
         token = super().get_token(user)
         token['user'] = {
-            'is_customer': hasattr(user, 'customer'),
-            'subscription_status': subscription_status,
+            'is_customer': user.is_customer,
+            'has_default_payment_method': user.has_default_payment_method,
+            'subscription_status': user.subscription_status,
             'email': user.email,
         }
         return token

@@ -1,0 +1,1 @@
+stripe setup_intents create --customer cus_NhUyMcaz2nyFoa

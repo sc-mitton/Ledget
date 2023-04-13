@@ -87,6 +87,7 @@ class SubscriptionView(CreateAPIView):
     """Class for handling the subscription creation and updating"""
     permission_classes = [IsAuthenticated]
     serializer_class = CreateSubscriptionSerializer
+    grace_period = timedelta(days=1).total_seconds()
 
     def post(self, request, *args, **kwargs):
         if not request.COOKIES.get('customer_id'):
@@ -151,9 +152,10 @@ class StripeHookView(APIView):
         event_type = event.type.replace('.', '_')
         handler = getattr(self, f"handle_{event_type}", None)
         if not handler:
+            stripe_logger.error(f"⚠️ No handler for {event_type} event")
             return
 
-        for i in range(3):
+        for i in range(1, 4):
             try:
                 handler(event)
                 break
@@ -167,9 +169,7 @@ class StripeHookView(APIView):
     def handle_customer_created(self, event):
         """Create corresponding customer in our database."""
         object = event.data.object
-        user = get_user_model().objects.filter(
-            email=object.email
-        ).first()
+        user = get_user_model().objects.get(email=object.email)
         customer = Customer.objects.create(
             user=user,
             id=object.id,
@@ -186,7 +186,6 @@ class StripeHookView(APIView):
 
     def handle_customer_subscription_created(self, event):
         """Create corresponding subscription in our database."""
-        print(event)
         subscription = event.data.object
         price_id = subscription['items']['data'][0]['price']['id']
 
@@ -201,7 +200,6 @@ class StripeHookView(APIView):
             created=subscription.created,
             trial_start=subscription.trial_start,
             trial_end=subscription.trial_end,
-            client_secret=subscription.pending_setup_intent.client_secret,
         )
         db_subscription.save()
 
@@ -254,10 +252,16 @@ class StripeHookView(APIView):
 
     # Setup Intent handlers
     def handle_setup_intent_succeeded(self, event):
-        """Provision the service for the customer."""
+        """Provision the service for the customer. This is done
+        by setting the timestamp for when the user will have service
+        until."""
+        customer = Customer.object.get(id=event.data.object.customer)
+        trial_length_seconds = timedelta(
+            customer.subscription.price.trial_length_days
+        ).total_seconds()
 
-        customer = Customer.objects.get(id=event.data.object.customer)
-        customer.service_provisioned = True
+        customer.service_expiration = \
+            int(time.time()) + trial_length_seconds + self.grace_period
         customer.save()
 
     # Delete Handlers
@@ -293,13 +297,20 @@ class StripeHookView(APIView):
                 "does not exist."
             )
 
-    # What invoice events do I need to handle?
-    # Error handling?
-    #   invoice payment failed
-    #   invoice finalization failed
+    # Invoice handlers
+    def handle_invoice_paid(self, event):
+        """Update the service expiration for the customer."""
+        customer = Customer.objects.get(id=event.data.object.customer)
+        customer.service_expiration = \
+            event.data.object.period_end + self.grace_period
+        customer.save()
 
-    # TODO: modifying subscriptions
-    #   setup intent created
-    #   setup intent succeeded
-    #   customer subscription paused
-    #   customer subscription resumed
+    def handle_invoice_payment_failed(self, event):
+        """Update the service expiration for the customer."""
+        customer = Customer.objects.get(id=event.data.object.customer)
+        customer.service_expiration = int(time.time()) - 1
+        customer.save()
+
+    # Events listed in docs that don't have handlers
+    #   customer.subscription.paused *
+    #   customer.subscription.resumed *

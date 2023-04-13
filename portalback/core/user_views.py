@@ -130,7 +130,7 @@ class CookieTokenRefreshView(TokenRefreshView):
             )
             decoded_access_jwt = _decode_jwt(response.data['access'])
             payload = {
-                'user': {'id': decoded_access_jwt['user']},
+                'user': decoded_access_jwt['user'],
                 'access_token_expiration': decoded_access_jwt['exp']
             }
 

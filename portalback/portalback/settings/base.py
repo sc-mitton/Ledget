@@ -255,11 +255,11 @@ LOGGING = {
         },
         'ledget': {
             'handlers': ['file', 'console'],
-            'level': 'DEBUG'
+            'level': LOG_LEVEL
         },
         'core.stripe': {
             'handlers': ['stripe', 'console'],
-            'levels': 'INFO'
+            'levels': LOG_LEVEL
         },
     }
 }
