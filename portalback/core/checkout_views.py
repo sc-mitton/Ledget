@@ -173,8 +173,8 @@ class StripeHookView(APIView):
         customer = Customer.objects.create(
             user=user,
             id=object.id,
-            first_name=object.name,
-            last_name=object.name,
+            first_name=object.name.split(' ')[0],
+            last_name=object.name.split(' ')[1],
             city=object.address.city,
             state=object.address.state,
             postal_code=object.address.postal_code,
@@ -311,6 +311,6 @@ class StripeHookView(APIView):
         customer.service_expiration = int(time.time()) - 1
         customer.save()
 
-    # Events listed in docs that don't have handlers
+    # TODO
     #   customer.subscription.paused *
     #   customer.subscription.resumed *

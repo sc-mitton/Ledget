@@ -13,6 +13,9 @@ import alert2 from '../../assets/icons/alert2.svg'
 import successIcon from '../../assets/icons/successIcon.svg'
 import apiAuth from '../../api/axios'
 import { LoadingRing } from '../../widgets/Widgets'
+import { CustomSelect } from './CustomInputs'
+import { states } from '../../assets/data/states';
+
 
 const schema = object({
     name: string()
@@ -72,6 +75,14 @@ let BillingInfo = (props) => {
                                 props.trigger("city");
                             }
                         }}
+                    />
+                </div>
+                <div id="state-container">
+                    <CustomSelect
+                        options={states}
+                        placeholder="ST"
+                        unstyled={true}
+                        maxMenuHeight={175}
                     />
                 </div>
                 <div className='input-container' id='zip-container'>
@@ -189,7 +200,7 @@ let OrderSummary = ({ unitAmount, firstCharge, renewalFrequency }) => {
 }
 
 function PaymentForm({ price }) {
-    const { register, handleSubmit, formState: { errors, isValid }, trigger, getValues } = useForm(
+    const { register, handleSubmit, formState: { errors, isValid }, trigger, getValues, control } = useForm(
         {
             resolver: yupResolver(schema),
             mode: 'onBlur'
@@ -302,6 +313,7 @@ function PaymentForm({ price }) {
                         trigger={trigger}
                         errors={errors}
                         disabled={processing || succeeded}
+                        control={control}
                     />
                     <h4 id="card-input-header">Card</h4>
                     <Payment setPayment={setPayment} disabled={processing || succeeded} />

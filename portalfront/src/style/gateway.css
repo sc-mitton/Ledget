@@ -357,12 +357,16 @@ input[type="radio"]:checked+label * {
 #city-container,
 #city-error {
     flex: 1;
-    margin-right: 8px;
+}
+
+#state-container {
+    margin: 0 8px;
+    width: 20%;
 }
 
 #zip-container,
 #zip-error {
-    width: 30%;
+    width: 25%;
 }
 
 #zip-error,

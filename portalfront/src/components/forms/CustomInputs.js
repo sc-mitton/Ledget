@@ -44,12 +44,11 @@ const Checkbox = (props) => {
     )
 }
 
-const CustomSelect = forwardRef(({ ...Props }, ref) => {
+const CustomSelect = forwardRef(({ ...Props }) => {
 
     let dropDownStyles = {
         container: (baseStyles, state) => ({
             ...baseStyles,
-            borderRadius: "4px",
         }),
         valueContainer: (baseStyles, state) => ({
             ...baseStyles,
@@ -57,6 +56,9 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
         }),
         control: (baseStyles, state) => ({
             ...baseStyles,
+            borderRadius: "4px",
+            paddingLeft: "12px",
+            paddingRight: "8px",
             backgroundColor: "#ededed",
             font: "inherit",
             fontWeight: "400",
@@ -76,7 +78,7 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
         indicatorsContainer: (baseStyles, state) => ({
             ...baseStyles,
             paddingLeft: "0",
-            paddingRight: "0", // trying to get the padding right still
+            paddingRight: "0", // get the padding
         }),
         placeholder: (baseStyles, state) => ({
             ...baseStyles,
@@ -84,37 +86,42 @@ const CustomSelect = forwardRef(({ ...Props }, ref) => {
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,
-            marginTop: "2px",
-            borderRadius: "4px",
-            backgroundColor: "#ededed",
+            marginTop: "4px",
+            backgroundColor: "#464646",
             boxShadow: "0 4px 6px -5px rgba(0, 0, 0, 0.5)",
+            borderRadius: "4px",
+        }),
+        menuList: (baseStyles, state) => ({
+            ...baseStyles,
+            borderRadius: "4px"
         }),
         dropdownIndicator: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isSelected ? "#242424" : "#848484",
+            color: state.isFocused ? "#6b9bf6" : "#848484",
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
-            backgroundColor: state.isFocused ? "#c3d7fc" : "#ededed",
+            backgroundColor: state.isSelected ? "#6b9bf6" : (state.isFocused ? "#717070" : "#464646"),
             borderRadius: "2px",
             padding: "4px",
             width: "100%",
             textAlign: "center",
             cursor: "pointer",
-            color: state.isSelected ? "#5c90f9" : "#242424"
+            color: "#f8f8f8"
         })
     }
 
     return (
         <Select
-            unstyled={false}
+            unstyled={true}
             styles={dropDownStyles}
             className='CustomSelect'
-            ref={ref}
             {...Props}
         />
     )
 })
+
+
 
 const VisibilityIcon = (props) => {
     // Needs to be set outside the PasswordInput component
