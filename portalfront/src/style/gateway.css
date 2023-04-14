@@ -315,8 +315,8 @@ input[type="radio"]:checked+label * {
 /* ====================================================== */
 
 .checkout-window {
-    width: 40%;
-    max-width: 332px;
+    max-width: 340px;
+    min-width: 280px;
     margin: 0 auto;
     padding: 32px;
     background: linear-gradient(to bottom, var(--window) 70%, #f1f1f1 100%);
@@ -368,6 +368,7 @@ input[type="radio"]:checked+label * {
 #state-container {
     margin: 0 8px;
     width: 20%;
+    min-width: 60px;
 }
 
 #zip-container,
