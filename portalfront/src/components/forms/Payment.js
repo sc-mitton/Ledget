@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState, useRef } from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { set, useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { bool, object, string } from 'yup'
+import { object, string } from 'yup'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
 import logo from '../../assets/images/logo.svg'
@@ -27,107 +27,142 @@ const schema = object({
             }
             return true;
         }),
-    city: string().required("Please enter your city."),
+    city: string().required("Required"),
+    state: string().required("Required"),
     zip: string()
-        .required("Please enter your zip code.")
+        .required("Required")
         .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
 
 })
 
-let BillingInfo = (props) => {
+let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
+    const { register, handleSubmit, formState: { errors, isValid }, trigger, getValues, control } =
+        useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
 
     const hasError = (field) => {
-        return props.errors[field] ? true : false
+        return errors[field] ? true : false
     }
+
+    useEffect(() => {
+        onValidityChange(isValid)
+    }, [isValid])
 
     return (
         <>
-            <div id="name-on-card-container" className='input-container'>
-                <input
-                    type='text'
-                    id='name-on-card'
-                    name='name'
-                    placeholder='Name on card'
-                    {...props.register('name')}
-                    onBlur={(e) => {
-                        if (e.target.value) {
-                            props.trigger("name");
-                        }
-                    }}
-                />
-            </div>
-            {hasError('name') &&
-                <div className="form-error">
-                    <img src={alert2} className="error-icon" />
-                    {props.errors.name?.message}
-                </div>
-            }
-            <div id='location-inputs-container'>
-                <div className='input-container' id='city-container'>
-                    <input
-                        type='text'
-                        id='city'
-                        name='city'
-                        placeholder='City'
-                        {...props.register('city')}
-                        onBlur={(e) => {
-                            if (e.target.value) {
-                                props.trigger("city");
-                            }
-                        }}
-                    />
-                </div>
-                <div id="state-container">
-                    <CustomSelect
-                        options={states}
-                        placeholder="ST"
-                        unstyled={true}
-                        maxMenuHeight={175}
-                    />
-                </div>
-                <div className='input-container' id='zip-container'>
-                    <input
-                        type='text'
-                        id='zip'
-                        name='zip'
-                        placeholder='Zip'
-                        {...props.register('zip')}
-                        onBlur={(e) => {
-                            if (e.target.value) {
-                                props.trigger("zip")
-                            }
-                        }}
-                    />
-                </div>
-            </div>
-            {hasError('city') || hasError('zip') &&
-                <div id="location-input-errors">
-                    <div id="city-error">
-                        {hasError('city') &&
-                            <div className="form-error">
-                                <img src={alert2} className="error-icon" />
-                                {props.errors.city?.message}
-                            </div>
-                        }
+            <fieldset disabled={disabled}>
+                <form onSubmit={handleSubmit(onSubmit)} className="checkout-form" id={id}>
+                    <div id="name-on-card-container" className='input-container'>
+                        <input
+                            type='text'
+                            id='name-on-card'
+                            name='name'
+                            placeholder='Name on card'
+                            {...register('name')}
+                            onBlur={(e) => {
+                                if (e.target.value) {
+                                    trigger("name");
+                                }
+                            }}
+                        />
                     </div>
-                    <div id="zip-error">
-                        {hasError('zip') &&
-                            <div className="form-error">
-                                <img src={alert2} className="error-icon" />
-                                {props.errors.zip?.message}
-                            </div>
-                        }
+                    {hasError('name') &&
+                        <div className="form-error">
+                            <img src={alert2} className="error-icon" />
+                            {errors.name?.message}
+                        </div>
+                    }
+                    <div id='location-inputs-container'>
+                        <div className='input-container' id='city-container'>
+                            <input
+                                type='text'
+                                id='city'
+                                name='city'
+                                placeholder='City'
+                                {...register('city')}
+                                onBlur={(e) => {
+                                    if (e.target.value) {
+                                        trigger("city");
+                                    }
+                                }}
+                            />
+                        </div>
+                        <div id="state-container">
+                            <Controller
+                                control={control}
+                                name='state'
+                                render={({ field }) => (
+                                    <CustomSelect
+                                        options={states}
+                                        placeholder="ST"
+                                        unstyled={true}
+                                        maxMenuHeight={175}
+                                        value={field.value}
+                                        onBlur={field.onBlur}
+                                        onChange={field.onChange}
+                                    />
+                                )}
+                            />
+                        </div>
+                        <div className='input-container' id='zip-container'>
+                            <input
+                                type='text'
+                                id='zip'
+                                name='zip'
+                                placeholder='Zip'
+                                {...register('zip')}
+                                onBlur={(e) => {
+                                    if (e.target.value) {
+                                        trigger("zip")
+                                    }
+                                }}
+                            />
+                        </div>
                     </div>
-                </div>
-            }
+                    <div id="location-input-errors">
+                        <div id="city-error">
+                            {hasError('city') &&
+                                <div className="form-error">
+                                    <img src={alert2} className="error-icon" />
+                                    {errors.city?.message}
+                                </div>
+                            }
+                        </div>
+                        <div id="zip-error">
+                            {hasError('zip') &&
+                                <div className="form-error">
+                                    <img src={alert2} className="error-icon" />
+                                    {errors.zip?.message}
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </form >
+            </fieldset>
         </>
     )
+
 }
 
-let Payment = (props) => {
+
+function Form({ price }) {
+
+    const navigate = useNavigate()
+    const stripe = useStripe()
+    const elements = useElements()
+
+    let [payment, setPayment] = useState(null)
+    let [inputsValid, setInputsValid] = useState(false)
+    const [succeeded, setSucceeded] = useState(false)
+    const [cardErrMsg, setCardErrMsg] = useState(null)
+    const [errMsg, setErrMsg] = useState("Hmm... something went wrong. Please try again.")
+    const [processing, setProcessing] = useState(false)
     let [cardFocus, setCardFocus] = useState(false)
 
-    const options = {
+    const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem("clientSecret")))
+    const isCustomerRef = useRef(JSON.parse(sessionStorage.getItem("user")).is_customer)
+    const submitButtonRef = useRef()
+
+    const cardElementOptions = {
         style: {
             base: {
                 fontFamily: "Source Sans Pro, sans-serif",
@@ -149,26 +184,13 @@ let Payment = (props) => {
                 iconColor: '#f47788'
             }
         },
-        disabled: props.disabled
+        disabled: processing || succeeded,
     }
 
-    return (
-        <div className={`card-container ${cardFocus ? 'focus' : ''}`}>
-            <CardElement
-                onBlur={() => setCardFocus(false)}
-                onFocus={() => setCardFocus(true)}
-                onChange={(e) => { e.complete && props.setPayment(true) }}
-                options={options}
-            />
-        </div>
-    )
-}
-
-let OrderSummary = ({ unitAmount, trial_period_days, renewalFrequency }) => {
-    const getTrialEnd = () => {
+    const getTrialEndString = () => {
         var currentDate = new Date()
         var futureDate = new Date(
-            currentDate.getTime() + (trial_period_days * 24 * 60 * 60 * 1000))
+            currentDate.getTime() + (price.trial_period_days * 24 * 60 * 60 * 1000))
         var futureDateString =
             (futureDate.getMonth() + 1)
             + '/' + futureDate.getDate()
@@ -177,49 +199,19 @@ let OrderSummary = ({ unitAmount, trial_period_days, renewalFrequency }) => {
         return futureDateString
     }
 
-    return (
-        <div className="order-summary-container">
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Plan:</td>
-                        <td>{`\$${unitAmount}/mo`}</td>
-                    </tr>
-                    <tr>
-                        <td>First Charge:</td>
-                        <td>{getTrialEnd()}</td>
-                    </tr>
-                    <tr>
-                        <td>Renews:</td>
-                        <td>{renewalFrequency}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div >
-    )
-}
+    const extractCustomerData = (data) => {
+        let payload = {}
+        payload['first_name'] = data.name.split(' ')[0]
+        payload['last_name'] = data.name.split(' ')[1]
+        payload['city'] = data.city
+        payload['state'] = data.state
+        payload['postal_code'] = data.zip
 
-function PaymentForm({ price }) {
-    const { register, handleSubmit, formState: { errors, isValid }, trigger, getValues, control } = useForm(
-        {
-            resolver: yupResolver(schema),
-            mode: 'onBlur'
-        }
-    )
-    const navigate = useNavigate()
-    const stripe = useStripe()
-    const elements = useElements()
+        return payload
+    }
 
-    let [payment, setPayment] = useState(null) // checks if the payment is entered
-    const [succeeded, setSucceeded] = useState(false)
-    const [errMsg, setErrMsg] = useState(null)
-    const [processing, setProcessing] = useState(false)
-
-    const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem("clientSecret")))
-    const isCustomerRef = useRef(JSON.parse(sessionStorage.getItem("user")).is_customer)
-
-    const createCustomer = async () => {
-        const response = await apiAuth.post('customer', getCustomerPayload())
+    const createCustomer = async (payload) => {
+        const response = await apiAuth.post('customer', payload)
         if (response.status === 200) {
             let user = JSON.parse(sessionStorage.getItem("user"))
             user.is_customer = true
@@ -243,21 +235,20 @@ function PaymentForm({ price }) {
         }
     }
 
-    const confirmSetup = async () => {
-        const values = getValues()
+    const confirmSetup = async (data) => {
         const result = await stripe.confirmCardSetup(
             clientSecretRef.current,
             {
                 payment_method: {
                     card: elements.getElement(CardElement),
                     billing_details: {
-                        name: values.name,
+                        name: data.name,
                         email: JSON.parse(sessionStorage.getItem("user")).email,
                         address: {
-                            city: values.city.split(',')[0],
-                            state: values.city.split(',')[1],
-                            postal_code: values.zip,
-                            country: values.country
+                            city: data.city.split(',')[0],
+                            state: data.city.split(',')[1],
+                            postal_code: data.zip,
+                            country: data.country
                         }
                     }
                 }
@@ -266,109 +257,110 @@ function PaymentForm({ price }) {
         if (result.setupIntent?.status === 'succeeded') {
             setSucceeded(true)
         } else if (result.error) {
-            setErrMsg(result.error?.message)
+            setCardErrMsg(result.error?.message)
         }
     }
 
-    const getCustomerPayload = () => {
-        const values = getValues()
-        let payload = {}
-        payload['first_name'] = values.name.split(' ')[0]
-        payload['last_name'] = values.name.split(' ')[1]
-        payload['city'] = values.city.split(',')[0]
-        payload['state'] = values.city.split(',')[1]
-        payload['postal_code'] = values.zip
-
-        return payload
+    const onSubmit = async (data) => {
+        // setProcessing(true)
+        // try {
+        //     if (!isCustomerRef.current) {
+        //         await createCustomer(extractCustomerData(data))
+        //     }
+        //     if (!clientSecretRef.current) {
+        //         await createSubscription()
+        //     }
+        //     if (isCustomerRef.current && clientSecretRef.current) {
+        //         await confirmSetup(data)
+        //     }
+        // } catch (err) {
+        //     if (!cardErrMsg) {
+        //         setErrMsg('Hmm... something went wrong. Please try again later.')
+        //     }
+        // } finally {
+        //     setProcessing(false)
+        // }
     }
 
-    const onSubmit = async () => {
-        setProcessing(true)
-        try {
-            if (!isCustomerRef.current) {
-                await createCustomer();
-            }
-            if (!clientSecretRef.current) {
-                await createSubscription()
-            }
-            if (isCustomerRef.current && clientSecretRef.current) {
-                await confirmSetup()
-            }
-        } catch (err) {
-            if (!errMsg) {
-                setErrMsg('Hmm... something went wrong. Please try again.')
-            }
-        } finally {
-            setProcessing(false)
-        }
-    }
-
-    return (
-        <fieldset disabled={processing || succeeded}>
-            <form onSubmit={handleSubmit(onSubmit)} className="checkout-form" method="post">
-                <div className="inputs-container">
-                    <h4 id="billing-info-header">Billing Info</h4>
-                    <BillingInfo
-                        register={register}
-                        trigger={trigger}
-                        errors={errors}
-                        disabled={processing || succeeded}
-                        control={control}
-                    />
-                    <h4 id="card-input-header">Card</h4>
-                    <Payment setPayment={setPayment} disabled={processing || succeeded} />
-                    {errMsg &&
-                        <div className="server-error" id="payment-error">
-                            <img src={alert2} alt="error icon" />
-                            {errMsg}
-                        </div>
+    let SubmitButton = ({ form }) => {
+        return (
+            <div className="subscribe-button-container">
+                <button
+                    className={`${(inputsValid && payment && !processing && !succeeded) ? 'valid' : 'invalid'}-submit`}
+                    id="subscribe-button"
+                    type='submit'
+                    form={form}
+                    ref={submitButtonRef}
+                >
+                    {!processing && !succeeded &&
+                        <span>{`Start ${price.trial_period_days}-day Free Trial`}</span>
                     }
-                </div>
-                <OrderSummary
-                    unitAmount={price.unit_amount / 100}
-                    renewalFrequency={price.renews}
-                    trial_period_days={price.trial_period_days}
-                />
-                <div className="subscribe-button-container">
-                    <button
-                        className={`${(isValid && payment && !processing && !succeeded) ? 'valid' : 'invalid'}-submit`}
-                        id="subscribe-button"
-                        type='submit'
-                    >
-                        {processing
-                            ? <LoadingRing />
-                            : null
-                        }
-                        {!processing && !succeeded
-                            ? <span>{`Start ${price.trial_period_days}-day Free Trial`}</span>
-                            : null
-                        }
-                        {succeeded
-                            ? <span id="payment-success-message">
-                                <img src={successIcon} alt='success icon' className='success-icon' />
-                                Success
-                            </span>
-                            : null
-                        }
-                    </button>
-                </div>
-            </form >
-        </fieldset>
-    )
-}
+                    {!processing && succeeded &&
+                        <span id="payment-success-message">
+                            <img src={successIcon} alt='success icon' className='success-icon' />
+                            Success
+                        </span>
+                    }
+                    {processing && !succeeded &&
+                        < LoadingRing />
+                    }
+                </button>
+            </div>
+        )
+    }
 
-const PoweredBy = () => {
     return (
-        <div className="stripe-logo-container">
-            <div>
-                powered by
+        <>
+            <div className="inputs-container">
+                <h4 id="billing-info-header">Billing Info</h4>
+                <BillingForm
+                    id={'billing-form'}
+                    onSubmit={onSubmit}
+                    disabled={succeeded || processing}
+                    onValidityChange={(valid) => setInputsValid(valid)}
+                />
+                <h4 id="card-input-header">Card</h4>
+                <div className={`card-container ${cardFocus ? 'focus' : ''}`}>
+                    <CardElement
+                        onBlur={() => setCardFocus(false)}
+                        onFocus={() => setCardFocus(true)}
+                        onChange={(e) => { e.complete && setPayment(true) }}
+                        options={cardElementOptions}
+                    />
+                </div>
+                {cardErrMsg &&
+                    <div className="form-error" id="payment-error">
+                        <img src={alert2} alt="error icon" />
+                        {errMsg}
+                    </div>
+                }
+                {errMsg &&
+                    <div className="general-error" >
+                        <img src={alert2} alt="error icon" />
+                        {errMsg}
+                    </div>
+                }
             </div>
-            <div>
-                <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
-                    <img className="stripe-logo" src={stripelogo} alt="Stripe" />
-                </a>
-            </div>
-        </div>
+            <div className="order-summary-container">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Plan:</td>
+                            <td>{`\$${price.unit_amount / 100}/mo`}</td>
+                        </tr>
+                        <tr>
+                            <td>First Charge:</td>
+                            <td>{getTrialEndString()}</td>
+                        </tr>
+                        <tr>
+                            <td>Renews:</td>
+                            <td>{price.renews}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div >
+            <SubmitButton form={'billing-form'} />
+        </>
     )
 }
 
@@ -378,10 +370,17 @@ function PaymentWindow({ price }) {
             <div className="app-logo-subscription" >
                 <img src={logo} alt="Ledget" />
             </div>
-            <PaymentForm
-                price={price}
-            />
-            < PoweredBy />
+            <Form price={price} />
+            <div className="stripe-logo-container">
+                <div>
+                    powered by
+                </div>
+                <div>
+                    <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
+                        <img className="stripe-logo" src={stripelogo} alt="Stripe" />
+                    </a>
+                </div>
+            </div>
         </div>
     )
 }

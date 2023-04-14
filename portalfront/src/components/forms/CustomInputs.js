@@ -44,7 +44,7 @@ const Checkbox = (props) => {
     )
 }
 
-const CustomSelect = forwardRef(({ ...Props }) => {
+const CustomSelect = forwardRef(({ onChange, onBlur, value, ...props }) => {
 
     let dropDownStyles = {
         container: (baseStyles, state) => ({
@@ -93,7 +93,7 @@ const CustomSelect = forwardRef(({ ...Props }) => {
         }),
         menuList: (baseStyles, state) => ({
             ...baseStyles,
-            borderRadius: "4px"
+            borderRadius: "4px",
         }),
         dropdownIndicator: (baseStyles, state) => ({
             ...baseStyles,
@@ -101,6 +101,7 @@ const CustomSelect = forwardRef(({ ...Props }) => {
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
+            textAlign: "left",
             backgroundColor: state.isSelected ? "#6b9bf6" : (state.isFocused ? "#717070" : "#464646"),
             borderRadius: "2px",
             padding: "4px",
@@ -111,12 +112,23 @@ const CustomSelect = forwardRef(({ ...Props }) => {
         })
     }
 
+    const handleChange = (selectedOption) => {
+        onChange(selectedOption.value)
+    }
+
+    const findSelectedOption = (value) => {
+        return props.options.find((option) => option.value === value)
+    }
+
     return (
         <Select
             unstyled={true}
             styles={dropDownStyles}
             className='CustomSelect'
-            {...Props}
+            onChange={handleChange}
+            onBlur={onBlur}
+            value={findSelectedOption(value)}
+            {...props}
         />
     )
 })

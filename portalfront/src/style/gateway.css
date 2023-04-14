@@ -366,7 +366,7 @@ input[type="radio"]:checked+label * {
 
 #zip-container,
 #zip-error {
-    width: 25%;
+    width: 28%;
 }
 
 #zip-error,
@@ -378,7 +378,7 @@ input[type="radio"]:checked+label * {
     position: relative;
     top: -12px;
     display: flex;
-    height: 12px;
+    height: 14px;
 }
 
 /* Card Element */
@@ -422,6 +422,21 @@ input[type="radio"]:checked+label * {
 .order-summary-container tr td:first-child {
     font-weight: 500;
     padding-right: 8px;
+}
+
+.general-error {
+    margin-top: 24px;
+    text-align: center;
+    color: var(--mute-red);
+}
+
+.general-error img {
+    height: 1em;
+    margin-right: 8px;
+    position: relative;
+    top: 2px;
+    text-align: left;
+    animation: pop .22s ease;
 }
 
 #subscribe-button {

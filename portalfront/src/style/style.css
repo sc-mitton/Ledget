@@ -381,66 +381,7 @@ input[type="password"]:focus::placeholder {
     }
 }
 
-/* Error Tool Tips & Icon */
-.error-tip {
-    position: relative;
-    width: 0;
-}
-
-.error-icon {
-    position: relative;
-    top: -15px;
-    left: 4px;
-    height: 1.05em;
-    animation: pop 0.3s ease;
-}
-
-.error-tip-msg {
-    visibility: hidden;
-    position: absolute;
-    text-align: center;
-    bottom: 180%;
-    margin-left: -80px;
-    left: 30px;
-    width: 120px;
-    padding: 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    background-color: var(--button-gray);
-    color: var(--window);
-}
-
-
-.error-icon:hover+.error-tip-msg {
-    visibility: visible;
-    animation: show .12s ease;
-}
-
-.server-error {
-    display: block;
-    font-size: 12px;
-    margin-left: 10px;
-    color: var(--mute-red);
-    animation: pop .2s ease;
-    margin-top: 2px;
-    text-align: left;
-}
-
-@keyframes pop {
-    0% {
-        transform: scale(0.7);
-    }
-
-    50% {
-        transform: scale(1.1);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-.server-error img {
+.error img {
     height: 1em;
     margin-right: 8px;
     position: relative;
@@ -472,7 +413,24 @@ input[type="password"]:focus::placeholder {
     position: relative;
     top: 2px;
     text-align: left;
+    animation: pop .22s ease;
 }
+
+
+@keyframes pop {
+    0% {
+        transform: scale(0.7);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
 
 @keyframes show {
     0% {
