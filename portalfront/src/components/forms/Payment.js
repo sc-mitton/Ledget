@@ -154,7 +154,7 @@ function Form({ price }) {
     let [inputsValid, setInputsValid] = useState(false)
     const [succeeded, setSucceeded] = useState(false)
     const [cardErrMsg, setCardErrMsg] = useState(null)
-    const [errMsg, setErrMsg] = useState("Hmm... something went wrong. Please try again.")
+    const [errMsg, setErrMsg] = useState(null)
     const [processing, setProcessing] = useState(false)
     let [cardFocus, setCardFocus] = useState(false)
 
