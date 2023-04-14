@@ -164,11 +164,11 @@ let Payment = (props) => {
     )
 }
 
-let OrderSummary = ({ unitAmount, firstCharge, renewalFrequency }) => {
+let OrderSummary = ({ unitAmount, trial_period_days, renewalFrequency }) => {
     const getTrialEnd = () => {
         var currentDate = new Date()
         var futureDate = new Date(
-            currentDate.getTime() + (14 * 24 * 60 * 60 * 1000))
+            currentDate.getTime() + (trial_period_days * 24 * 60 * 60 * 1000))
         var futureDateString =
             (futureDate.getMonth() + 1)
             + '/' + futureDate.getDate()
@@ -327,6 +327,7 @@ function PaymentForm({ price }) {
                 <OrderSummary
                     unitAmount={price.unit_amount / 100}
                     renewalFrequency={price.renews}
+                    trial_period_days={price.trial_period_days}
                 />
                 <div className="subscribe-button-container">
                     <button
