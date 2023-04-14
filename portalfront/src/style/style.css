@@ -404,6 +404,7 @@ input[type=password]:not(:placeholder-shown) {
     font-size: 12px;
     color: var(--mute-red);
     margin-top: 4px;
+    margin-left: 4px;
 }
 
 .form-error span {
@@ -413,7 +414,7 @@ input[type=password]:not(:placeholder-shown) {
 .form-error img {
     height: 1em;
     margin-left: 8px;
-    margin-right: 8px;
+    margin-right: 5px;
     position: relative;
     top: 2px;
     text-align: left;

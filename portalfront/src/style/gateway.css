@@ -335,12 +335,17 @@ input[type="radio"]:checked+label * {
     margin-bottom: 10px;
 }
 
+#billing-form {
+    padding-bottom: 0px;
+}
+
 #name-on-card {
     width: 100%;
     font-weight: 400;
 }
 
 #name-on-card-container {
+    margin-top: 0px;
     margin-bottom: 0px;
 }
 

@@ -20,7 +20,7 @@ import { states } from '../../assets/data/states';
 const schema = object({
     name: string()
         .required('Please enter your first and last name.')
-        .test('two-words', 'Enter first and last name', (value) => {
+        .test('two-words', 'Missing last name', (value) => {
             if (value) {
                 const words = value.trim().split(' ')
                 return words.length === 2
@@ -118,24 +118,26 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
                             />
                         </div>
                     </div>
-                    <div id="location-input-errors">
-                        <div id="city-error">
-                            {hasError('city') &&
-                                <div className="form-error">
-                                    <img src={alert2} className="error-icon" />
-                                    {errors.city?.message}
-                                </div>
-                            }
+                    {hasError('city') || hasError('zip') &&
+                        <div id="location-input-errors">
+                            <div id="city-error">
+                                {hasError('city') &&
+                                    <div className="form-error">
+                                        <img src={alert2} className="error-icon" />
+                                        {errors.city?.message}
+                                    </div>
+                                }
+                            </div>
+                            <div id="zip-error">
+                                {hasError('zip') &&
+                                    <div className="form-error">
+                                        <img src={alert2} className="error-icon" />
+                                        {errors.zip?.message}
+                                    </div>
+                                }
+                            </div>
                         </div>
-                        <div id="zip-error">
-                            {hasError('zip') &&
-                                <div className="form-error">
-                                    <img src={alert2} className="error-icon" />
-                                    {errors.zip?.message}
-                                </div>
-                            }
-                        </div>
-                    </div>
+                    }
                 </form >
             </fieldset>
         </>
