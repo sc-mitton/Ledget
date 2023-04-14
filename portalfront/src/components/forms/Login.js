@@ -102,7 +102,7 @@ function LoginForm() {
     return (
         <form onSubmit={handleLoginSubmit} className="login-form" noValidate>
             {errMsg &&
-                <div className="server-error">
+                <div className="form-error">
                     <img src={alert2} alt='' />
                     {errMsg}
                 </div>

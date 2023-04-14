@@ -19,6 +19,11 @@ module.exports = {
         port: 3000,
         open: true,
         historyApiFallback: true,
+        open: {
+            app: {
+                name: 'firefox',
+            },
+        },
     },
     plugins: [
         new Dotenv({

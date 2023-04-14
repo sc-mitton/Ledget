@@ -44,7 +44,7 @@ const Checkbox = (props) => {
     )
 }
 
-const CustomSelect = forwardRef(({ onChange, onBlur, value, ...props }) => {
+const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
 
     let dropDownStyles = {
         container: (baseStyles, state) => ({
@@ -131,8 +131,7 @@ const CustomSelect = forwardRef(({ onChange, onBlur, value, ...props }) => {
             {...props}
         />
     )
-})
-
+}
 
 
 const VisibilityIcon = (props) => {

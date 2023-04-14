@@ -2,7 +2,7 @@ env
 */.env
 *__pycache__
 .flake8
-.ssl
+certs
 .vscode
 inspiration
 .DS_STORE

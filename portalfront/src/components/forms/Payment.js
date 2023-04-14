@@ -262,24 +262,24 @@ function Form({ price }) {
     }
 
     const onSubmit = async (data) => {
-        // setProcessing(true)
-        // try {
-        //     if (!isCustomerRef.current) {
-        //         await createCustomer(extractCustomerData(data))
-        //     }
-        //     if (!clientSecretRef.current) {
-        //         await createSubscription()
-        //     }
-        //     if (isCustomerRef.current && clientSecretRef.current) {
-        //         await confirmSetup(data)
-        //     }
-        // } catch (err) {
-        //     if (!cardErrMsg) {
-        //         setErrMsg('Hmm... something went wrong. Please try again later.')
-        //     }
-        // } finally {
-        //     setProcessing(false)
-        // }
+        setProcessing(true)
+        try {
+            if (!isCustomerRef.current) {
+                await createCustomer(extractCustomerData(data))
+            }
+            if (!clientSecretRef.current) {
+                await createSubscription()
+            }
+            if (isCustomerRef.current && clientSecretRef.current) {
+                await confirmSetup(data)
+            }
+        } catch (err) {
+            if (!cardErrMsg) {
+                setErrMsg('Hmm... something went wrong. Please try again later.')
+            }
+        } finally {
+            setProcessing(false)
+        }
     }
 
     let SubmitButton = ({ form }) => {
