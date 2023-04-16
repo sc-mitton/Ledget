@@ -82,7 +82,7 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
         }),
         placeholder: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "var(--main-blue)" : "var(--input-placeholder)",
+            color: state.isFocused ? "var(--main-blue)" : "#848484",
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,
@@ -97,12 +97,14 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
         }),
         dropdownIndicator: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "var(--main-blue)" : "var(--input-placeholder)",
+            color: state.isFocused ? "var(--main-blue)" : "#848484",
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
             textAlign: "left",
-            backgroundColor: state.isSelected ? "var(--main-blue)" : (state.isFocused ? "#717070" : "var(--button-gray)"),
+            backgroundColor: state.isSelected
+                ? "var(--main-blue)"
+                : (state.isFocused ? "#717070" : "var(--button-gray)"),
             borderRadius: "2px",
             padding: "4px",
             width: "100%",
