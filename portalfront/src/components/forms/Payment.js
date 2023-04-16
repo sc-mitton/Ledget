@@ -12,7 +12,7 @@ import stripelogo from '../../assets/images/stripelogo.svg'
 import alert2 from '../../assets/icons/alert2.svg'
 import successIcon from '../../assets/icons/successIcon.svg'
 import apiAuth from '../../api/axios'
-import { LoadingRing } from '../../widgets/Widgets'
+import { LoadingRing } from '../widgets/Widgets'
 import { CustomSelect } from './CustomInputs'
 import { states } from '../../assets/data/states';
 
@@ -27,7 +27,9 @@ const schema = object({
             }
             return true;
         }),
-    city: string().required("Required"),
+    city: string()
+        .required("Required")
+        .matches(/^[a-zA-Z ]+$/, 'Invalid city'),
     state: string().required("Required"),
     zip: string()
         .required("Required")
@@ -99,6 +101,7 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
                                         value={field.value}
                                         onBlur={field.onBlur}
                                         onChange={field.onChange}
+                                        isDisabled={disabled}
                                     />
                                 )}
                             />
@@ -118,7 +121,7 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
                             />
                         </div>
                     </div>
-                    {hasError('city') || hasError('zip') &&
+                    {(hasError('city') || hasError('zip')) &&
                         <div id="location-input-errors">
                             <div id="city-error">
                                 {hasError('city') &&
@@ -214,10 +217,11 @@ function Form({ price }) {
 
     const createCustomer = async (payload) => {
         const response = await apiAuth.post('customer', payload)
+
         if (response.status === 200) {
+            isCustomerRef.current = true
             let user = JSON.parse(sessionStorage.getItem("user"))
             user.is_customer = true
-            isCustomerRef.current = true
             sessionStorage.setItem("user", JSON.stringify(user))
         } else {
             setErrMsg('Hmmm... something went wrong. Please try again.')
@@ -284,30 +288,26 @@ function Form({ price }) {
         }
     }
 
-    let SubmitButton = ({ form }) => {
+    let OrdeSummary = () => {
         return (
-            <div className="subscribe-button-container">
-                <button
-                    className={`${(inputsValid && payment && !processing && !succeeded) ? 'valid' : 'invalid'}-submit`}
-                    id="subscribe-button"
-                    type='submit'
-                    form={form}
-                    ref={submitButtonRef}
-                >
-                    {!processing && !succeeded &&
-                        <span>{`Start ${price.trial_period_days}-day Free Trial`}</span>
-                    }
-                    {!processing && succeeded &&
-                        <span id="payment-success-message">
-                            <img src={successIcon} alt='success icon' className='success-icon' />
-                            Success
-                        </span>
-                    }
-                    {processing && !succeeded &&
-                        < LoadingRing />
-                    }
-                </button>
-            </div>
+            <div className="order-summary-container">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Plan:</td>
+                            <td>{`\$${price.unit_amount / 100}/mo`}</td>
+                        </tr>
+                        <tr>
+                            <td>First Charge:</td>
+                            <td>{getTrialEndString()}</td>
+                        </tr>
+                        <tr>
+                            <td>Renews:</td>
+                            <td>{price.renews}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div >
         )
     }
 
@@ -343,25 +343,29 @@ function Form({ price }) {
                     </div>
                 }
             </div>
-            <div className="order-summary-container">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Plan:</td>
-                            <td>{`\$${price.unit_amount / 100}/mo`}</td>
-                        </tr>
-                        <tr>
-                            <td>First Charge:</td>
-                            <td>{getTrialEndString()}</td>
-                        </tr>
-                        <tr>
-                            <td>Renews:</td>
-                            <td>{price.renews}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div >
-            <SubmitButton form={'billing-form'} />
+            <OrdeSummary />
+            <div className="subscribe-button-container">
+                <button
+                    className={`${(inputsValid && payment && !processing && !succeeded) ? 'valid' : 'invalid'}-submit`}
+                    id="subscribe-button"
+                    type='submit'
+                    form='billing-form'
+                    ref={submitButtonRef}
+                >
+                    {!processing && !succeeded &&
+                        <span>{`Start ${price.trial_period_days}-day Free Trial`}</span>
+                    }
+                    {!processing && succeeded &&
+                        <span id="payment-success-message">
+                            <img src={successIcon} alt='success icon' className='success-icon' />
+                            Success
+                        </span>
+                    }
+                    {processing && !succeeded &&
+                        < LoadingRing />
+                    }
+                </button>
+            </div>
         </>
     )
 }
