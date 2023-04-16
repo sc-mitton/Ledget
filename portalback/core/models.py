@@ -66,12 +66,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return hasattr(self, 'customer')
 
     @property
-    def has_default_payment_method(self):
-        customer = getattr(self, 'customer', None)
-        subscription = getattr(customer, 'subscription', None)
-        return bool(getattr(subscription, 'default_payment_method', None))
-
-    @property
     def subscription_status(self):
         customer = getattr(self, 'customer', None)
         if customer:
@@ -128,9 +122,13 @@ class Customer(models.Model):
 
     @property
     def subscription(self):
-        return self.subscriptions.exclude(
-                status__in=['canceled', 'incomplete_expired']
-                ).first()
+        return self.subscriptions\
+                .exclude(
+                    status__in=['canceled', 'incomplete_expired'],
+                ).filter(
+                  default_payment_method__isnull=False
+                )\
+                .first()
 
 
 class Price(models.Model):
@@ -156,10 +154,17 @@ class SubscriptionManager(models.Manager):
 
     def create(self, *args, **kwargs):
         """Make sure that a user can only have one ongoing subscription
-        at a time. A customer may have multiple canceled subscriptions."""
+        at a time. A customer may have multiple canceled orincomplete_expired
+        subscriptions."""
+
         customer = kwargs.get('customer')
-        subscription = self.filter(customer=customer) \
-                           .exclude(status__in=['canceled'])
+        subscription = self.filter(
+                                customer=customer,
+                                default_payment_method__isnull=False
+                            )\
+                           .exclude(
+                               status__in=['canceled', 'incomplete_expired']
+                            )
 
         if subscription.exists():
             raise ValidationError(
@@ -190,18 +195,19 @@ class Subscription(models.Model):
     )
     price = models.OneToOneField(
         Price,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        null=False,
     )
 
     id = models.CharField(max_length=70, primary_key=True, editable=False)
-    created = models.IntegerField(editable=False)
+    created = models.IntegerField(editable=False, null=False)
     status = models.CharField(max_length=20, choices=status_choices)
     client_secret = models.CharField(max_length=100, null=True)
 
     current_period_end = models.IntegerField(null=True)
     cancel_at_period_end = models.BooleanField(default=False)
     default_payment_method = models.CharField(max_length=100, null=True)
-    trial_start = models.IntegerField(editable=False)
+    trial_start = models.IntegerField(editable=False, null=True)
     trial_end = models.IntegerField(null=True)
 
     objects = SubscriptionManager()

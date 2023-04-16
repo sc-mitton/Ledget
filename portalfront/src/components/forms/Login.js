@@ -53,7 +53,8 @@ function LoginForm() {
             'user',
             JSON.stringify(response.data.user)
         )
-        if (response.data.user.is_customer) {
+        if (response.data.user.is_customer
+            && response.data.user.subscription_status) {
             console.log("navigating to dashboard...") // TODO
         } else {
             navigate('/plans')
@@ -154,9 +155,7 @@ function LoginForm() {
 function SocialLogin() {
     return (
         <div className="social-login-container">
-            <div className="or-continue-with">
-                <span>Or continue with</span>
-            </div>
+            <div className="or-continue-with">Or continue with</div>
             <div className="social-buttons-container">
                 <a id="google-auth-button" href="/">
                     <img src={googleLogo} alt="Google" />

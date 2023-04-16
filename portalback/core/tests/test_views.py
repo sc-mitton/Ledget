@@ -11,6 +11,8 @@ from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 import jwt
 from datetime import datetime, timedelta
 
+from core.models import Price
+
 
 class TestCoreApiViews(TestCase):
     fixtures = ['prices.json', 'users.json', 'customers.json']
@@ -108,12 +110,12 @@ class TestCoreApiViews(TestCase):
             format='json',
             secure=True
         )
-        self.assertIn('user', response.data)
         self.assertIn('access_token_expiration', response.data)
+
+        self.assertIn('user', response.data)
         self.assertIn('email', response.data['user'])
         self.assertIn('is_customer', response.data['user'])
         self.assertIn('subscription_status', response.data['user'])
-        self.assertIn('has_default_payment_method', response.data['user'])
 
     def test_refresh_token(self):
         """Test that the refresh token endpoint returns a new access token."""
@@ -227,3 +229,61 @@ class TestCoreApiViews(TestCase):
             )
             self.assertEqual(response.status_code,
                              status.HTTP_401_UNAUTHORIZED)
+
+    def test_subscription_create_with_invalid_trial_period(self):
+        """Test that creating a subscription with an invalid trial period
+        is invalid."""
+
+        # Login first
+        self.client.post(
+            reverse('token_obtain_pair'),
+            {
+                'email': self.fixture_user_email1,
+                'password': self.fixture_password
+            },
+            secure=True
+        )
+
+        price = Price.objects.first()
+        # Attempt subscription creationg
+        response = self.client.post(
+            reverse('create_subscription'),
+            {
+                'trial_period_days': price.trial_period_days + 1,
+                'price_id': price.id
+            },
+            format='json',
+            secure=True
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('Invalid trial period.',
+                      response.data['non_field_errors'][0])
+
+    def test_not_customer_cant_create_sub(self):
+        """Test that a user that is not a customer can't
+        create a subscription."""
+
+        # Login first
+        self.client.post(
+            reverse('token_obtain_pair'),
+            {
+                'email': self.email,
+                'password': self.password
+            },
+            secure=True
+        )
+
+        price = Price.objects.first()
+        # Attempt subscription creationg
+        response = self.client.post(
+            reverse('create_subscription'),
+            {
+                'trial_period_days': price.trial_period_days,
+                'price_id': price.id
+            },
+            format='json',
+            secure=True
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('Only customers can create subscriptions.',
+                      response.data['non_field_errors'][0])

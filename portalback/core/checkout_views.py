@@ -59,7 +59,7 @@ class CreateCustomerView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
 
         try:
-            stripe_customer = serializer.create_stripe_customer()
+            serializer.create_customer()
         except stripe.error.InvalidRequestError as e:
             return Response(
                 data={'error': str(e)},
@@ -71,14 +71,6 @@ class CreateCustomerView(CreateAPIView):
             status=HTTP_200_OK,
             content_type='application/json'
         )
-        response.set_cookie(
-            'customer_id',
-            stripe_customer.id,
-            httponly=True,
-            secure=True,
-            max_age=timedelta(hours=1).total_seconds(),
-            domain=settings.DOMAIN,
-        )
 
         return response
 
@@ -87,36 +79,24 @@ class SubscriptionView(CreateAPIView):
     """Class for handling the subscription creation and updating"""
     permission_classes = [IsAuthenticated]
     serializer_class = CreateSubscriptionSerializer
-    grace_period = timedelta(days=1).total_seconds()
 
     def post(self, request, *args, **kwargs):
-        if not request.COOKIES.get('customer_id'):
-            raise NoCustomerIdException('No customer_id cookie')
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        try:
-            stripe_subscription = serializer.create_stripe_subscription()
-        except stripe.error.InvalidRequestError as e:
-            response = Response(
-                data={'error': str(e)},
-                status=HTTP_400_BAD_REQUEST,
-                content_type='application/json'
-            )
-        else:
-            response = Response(
-                {'client_secret':
-                    stripe_subscription.pending_setup_intent.client_secret},
-                status=HTTP_200_OK,
-                content_type='application/json'
-            )
-
-        return response
+        stripe_subscription = serializer.create_subscription()
+        return Response(
+            {'client_secret':
+                stripe_subscription.pending_setup_intent.client_secret},
+            status=HTTP_200_OK,
+            content_type='application/json'
+        )
 
 
 class StripeHookView(APIView):
     """Class for handling the Stripe webhook"""
+    grace_period = timedelta(days=1).total_seconds()
 
     def post(self, request, *args, **kwargs):
 
@@ -152,7 +132,6 @@ class StripeHookView(APIView):
         event_type = event.type.replace('.', '_')
         handler = getattr(self, f"handle_{event_type}", None)
         if not handler:
-            stripe_logger.error(f"⚠️ No handler for {event_type} event")
             return
 
         for i in range(1, 4):
@@ -164,44 +143,6 @@ class StripeHookView(APIView):
                     f"⚠️ Attempt {i} for {event_type} handler: {e}"
                 )
                 time.sleep(1)
-
-    # Create handlers
-    def handle_customer_created(self, event):
-        """Create corresponding customer in our database."""
-        object = event.data.object
-        user = get_user_model().objects.get(email=object.email)
-        customer = Customer.objects.create(
-            user=user,
-            id=object.id,
-            first_name=object.name.split(' ')[0],
-            last_name=object.name.split(' ')[1],
-            city=object.address.city,
-            state=object.address.state,
-            postal_code=object.address.postal_code,
-            country=object.address.country,
-            delinquent=object.delinquent,
-            created=object.created,
-        )
-        customer.save()
-
-    def handle_customer_subscription_created(self, event):
-        """Create corresponding subscription in our database."""
-        subscription = event.data.object
-        price_id = subscription['items']['data'][0]['price']['id']
-
-        db_subscription = Subscription.objects.create(
-            id=subscription.id,
-            customer_id=subscription.customer,
-            price_id=price_id,
-            current_period_end=subscription.current_period_end,
-            status=subscription.status,
-            cancel_at_period_end=subscription.cancel_at_period_end,
-            default_payment_method=subscription.default_payment_method,
-            created=subscription.created,
-            trial_start=subscription.trial_start,
-            trial_end=subscription.trial_end,
-        )
-        db_subscription.save()
 
     # Update handlers/helpers
     def update_instance(self, instance, new_values):
@@ -255,9 +196,9 @@ class StripeHookView(APIView):
         """Provision the service for the customer. This is done
         by setting the timestamp for when the user will have service
         until."""
-        customer = Customer.object.get(id=event.data.object.customer)
+        customer = Customer.objects.get(id=event.data.object.customer)
         trial_length_seconds = timedelta(
-            customer.subscription.price.trial_length_days
+            customer.subscription.price.trial_period_days
         ).total_seconds()
 
         customer.service_expiration = \
@@ -273,8 +214,10 @@ class StripeHookView(APIView):
                 customer__id=customer.id
             )
             user.provision_service = False
-
             customer.delete()
+            stripe_logger.info(
+                f"🗑 Deleted customer: {event.data.object.id}"
+            )
             user.save()
         except Customer.DoesNotExist:
             stripe_logger.error(
@@ -291,6 +234,9 @@ class StripeHookView(APIView):
         try:
             subscription = Subscription.objects.get(id=event.data.object.id)
             subscription.delete()
+            stripe_logger.info(
+                f"🗑 Deleted subscription: {event.data.object.id}"
+            )
         except Subscription.DoesNotExist:
             stripe_logger.error(
                 f"⚠️ Can't delete subscription: {event.data.object.id}, "

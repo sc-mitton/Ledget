@@ -12,12 +12,12 @@
     --button-hover-gray: rgb(36, 36, 36);
     --border-bottom-gray: #b9b9b9;
 
-    --mute-blue: rgb(113, 161, 250);
+    --mute-blue: rgb(122, 168, 254);
+    --hover-blue: rgb(97, 151, 252);
     --main-blue: rgb(107, 155, 246);
-    --hover-blue: rgb(92, 145, 245);
 
-    --mute-red: rgb(244, 119, 136);
-    --hover-red: rgb(248, 98, 118);
+    --mute-red: rgb(253, 130, 146);
+    --hover-red: rgb(251, 106, 126);
     --alert-red: rgb(243, 80, 80);
 
     --window-box-gray: rgb(255, 252, 252);
@@ -32,7 +32,7 @@
 
     /* Text */
     --main-text-gray: rgb(36, 36, 36);
-    --input-placeholder: #848484;
+    --input-placeholder: rgb(132, 132, 132);
     --invalid-submit-text: rgb(120, 120, 120);
     --success-green: rgb(205, 248, 205);
     --input-focus: rgb(107, 155, 246);
@@ -150,6 +150,7 @@ input {
 input:focus {
     outline: none;
 }
+
 
 .input-container input::placeholder,
 input[type="password"]::placeholder {

@@ -82,12 +82,12 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
         }),
         placeholder: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "#6b9bf6" : "#848484"
+            color: state.isFocused ? "var(--main-blue)" : "var(--input-placeholder)",
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,
             marginTop: "4px",
-            backgroundColor: "#464646",
+            backgroundColor: "var(--button-gray)",
             boxShadow: "0 4px 6px -5px rgba(0, 0, 0, 0.5)",
             borderRadius: "4px",
         }),
@@ -97,18 +97,22 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
         }),
         dropdownIndicator: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "#6b9bf6" : "#848484",
+            color: state.isFocused ? "var(--main-blue)" : "var(--input-placeholder)",
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
             textAlign: "left",
-            backgroundColor: state.isSelected ? "#6b9bf6" : (state.isFocused ? "#717070" : "#464646"),
+            backgroundColor: state.isSelected ? "var(--main-blue)" : (state.isFocused ? "#717070" : "var(--button-gray)"),
             borderRadius: "2px",
             padding: "4px",
             width: "100%",
             textAlign: "center",
             cursor: "pointer",
             color: "#f8f8f8"
+        }),
+        singleValue: (baseStyles, state) => ({
+            ...baseStyles,
+            color: props.isDisabled ? "var(--input-placeholder)" : "var(--main-text-gray)",
         })
     }
 

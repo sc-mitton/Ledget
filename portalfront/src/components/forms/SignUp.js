@@ -166,9 +166,7 @@ function SignUpForm() {
 function SocialSignup() {
     return (
         <div className="social-signup-container">
-            <div className="or-continue-with">
-                <span>Or sign up with</span>
-            </div>
+            <div className="or-continue-with">Or sign up with</div>
             <div className="social-buttons-container">
                 <a id="google-auth-button" href="/">
                     <img src={googleLogo} alt="Google" />

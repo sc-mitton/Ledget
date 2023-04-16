@@ -25,28 +25,36 @@ class TestModels(TestCase):
     def test_multiple_subscriptions_error(self):
         """Test that a user can only have one ongoing subscription
         at a time."""
-        price1 = Price.objects.all().first()
-        price2 = Price.objects.all().last()
+        price = Price.objects.all().first()
 
         Subscription.objects.create(
             id='randomchar1',
-            price=price1,
+            price=price,
             customer=self.testuser1.customer,
             created=int(datetime.now().timestamp()),
             trial_start=int(datetime.now().timestamp()),
+            default_payment_method='pm_card_visa',
         ).save()
 
         self.assertRaises(
             ValidationError,
             Subscription.objects.create,
             id='randomchar2',
-            price=price2,
+            price=price,
             customer=self.testuser1.customer,
             created=int(datetime.now().timestamp()),
             trial_start=int(datetime.now().timestamp()),
+            default_payment_method='pm_card_visa',
         )
         uncanceled_subscriptions = \
-            Subscription.objects.filter(customer=self.testuser1.customer) \
-                                .exclude(status__in=['canceled'])
+            Subscription.objects.filter(
+                customer=self.testuser1.customer,
+                default_payment_method__isnull=False
+            ).exclude(
+                status__in=[
+                    'canceled',
+                    'incomplete_expired'
+                ]
+            )
 
         self.assertEqual(uncanceled_subscriptions.count(), 1)

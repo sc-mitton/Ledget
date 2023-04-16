@@ -56,6 +56,25 @@
 .or-continue-with {
     text-align: center;
     margin-top: 32px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: row;
+}
+
+.or-continue-with:before,
+.or-continue-with:after {
+    content: "";
+    flex: 1 1;
+    border-top: rgba(0, 0, 0, 0.15) 1px solid;
+    margin: auto;
+}
+
+.or-continue-with:before {
+    margin-right: 10px
+}
+
+.or-continue-with:after {
+    margin-left: 10px
 }
 
 .social-buttons-container {
