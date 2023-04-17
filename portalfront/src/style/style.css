@@ -4,7 +4,7 @@
     --background-color: rgb(252, 252, 252);
 
     --window: rgb(248, 248, 248);
-    --window-border: rgb(150, 150, 150);
+    --window-border: rgb(161, 160, 160);
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
 
     --button-gray: #464646;
@@ -20,6 +20,9 @@
     --hover-red: rgb(251, 106, 126);
     --alert-red: rgb(243, 80, 80);
 
+    /* Social Auth Buttons */
+    --button-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
+
     --window-box-gray: rgb(255, 252, 252);
 
     /* Subscription Radios */
@@ -33,7 +36,6 @@
     /* Text */
     --main-text-gray: rgb(36, 36, 36);
     --input-placeholder: rgb(132, 132, 132);
-    --invalid-submit-text: rgb(120, 120, 120);
     --success-green: rgb(205, 248, 205);
     --input-focus: rgb(107, 155, 246);
 }
@@ -89,13 +91,11 @@ a {
 }
 
 .window {
-    /* background-color: var(--window); */
-    box-shadow: var(--window-box-shadow);
+    border: 1px solid var(--window-border);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     font-size: 14px;
     border-radius: 8px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    border: 1px solid var(--window-border);
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
 
     /* Center horizontally and vertically */
     position: fixed;
@@ -249,22 +249,13 @@ input[type=password]:not(:placeholder-shown) {
 .invalid-submit,
 .valid-submit,
 .submit-button {
-    background-color: var(--button-gray);
     padding: 8px 12px;
-    border-radius: 5px;
-    border: 1.5px solid var(--button-border-gray);
-    transition: background-color 0.3s ease;
-}
-
-.invalid-submit,
-.invalid-submit span {
-    color: var(--invalid-submit-text);
-}
-
-.valid-submit,
-.submit-button,
-.valid-submit span {
     color: var(--window);
+    background-color: var(--button-gray);
+    border: 1.5px solid var(--button-border-gray);
+    box-shadow: var(--button-drop-shadow);
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .valid-submit:hover,
@@ -276,14 +267,16 @@ input[type=password]:not(:placeholder-shown) {
 .valid-submit,
 .submit-button {
     outline: none;
-    border: 1.5px solid var(--window);
+    cursor: pointer;
+    /* border: 1.5px solid var(--window); */
 }
 
 
 .valid-submit:focus-within,
 .submit-button:focus-within {
     outline: none;
-    border: 1.5px solid var(--main-blue);
+    box-shadow: inset 0 0 1px 1.5px var(--main-blue);
+    /* border: 1.5px solid var(--main-blue); */
 }
 
 

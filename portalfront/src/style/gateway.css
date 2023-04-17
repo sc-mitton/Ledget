@@ -65,7 +65,7 @@
 .or-continue-with:after {
     content: "";
     flex: 1 1;
-    border-top: rgba(0, 0, 0, 0.15) 1px solid;
+    border-top: rgba(0, 0, 0, 0.1) 1px solid;
     margin: auto;
 }
 
@@ -96,7 +96,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid var(--hover-blue);
+    box-shadow: var(--button-drop-shadow);
 }
 
 #google-auth-button {
@@ -110,7 +110,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid var(--hover-red);
+    box-shadow: var(--button-drop-shadow);
 }
 
 #facebook-auth-button:hover {
@@ -384,10 +384,11 @@ input[type="radio"]:checked+label * {
     flex: 1;
 }
 
-#state-container {
+#state-container,
+#state-error {
     margin: 0 8px;
-    width: 20%;
-    min-width: 60px;
+    width: 25%;
+    min-width: 75px;
 }
 
 #zip-container,
@@ -478,6 +479,10 @@ input[type="radio"]:checked+label * {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#subscribe-button span {
+    color: var(--window);
 }
 
 #payment-success-message {

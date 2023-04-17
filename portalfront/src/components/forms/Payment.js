@@ -19,7 +19,7 @@ import { states } from '../../assets/data/states';
 
 const schema = object({
     name: string()
-        .required('Please enter your first and last name.')
+        .required('Required')
         .test('two-words', 'Missing last name', (value) => {
             if (value) {
                 const words = value.trim().split(' ')
@@ -99,7 +99,11 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
                                         unstyled={true}
                                         maxMenuHeight={175}
                                         value={field.value}
-                                        onBlur={field.onBlur}
+                                        onBlur={(e) => {
+                                            if (e.target.value) {
+                                                trigger("state")
+                                            }
+                                        }}
                                         onChange={field.onChange}
                                         isDisabled={disabled}
                                     />
@@ -121,13 +125,21 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
                             />
                         </div>
                     </div>
-                    {(hasError('city') || hasError('zip')) &&
+                    {(hasError('city') || hasError('state') || hasError('zip')) &&
                         <div id="location-input-errors">
                             <div id="city-error">
                                 {hasError('city') &&
                                     <div className="form-error">
                                         <img src={alert2} className="error-icon" />
                                         {errors.city?.message}
+                                    </div>
+                                }
+                            </div>
+                            <div id="state-error">
+                                {hasError('state') &&
+                                    <div className="form-error">
+                                        <img src={alert2} className="error-icon" />
+                                        {errors.state?.message}
                                     </div>
                                 }
                             </div>
