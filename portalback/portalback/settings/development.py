@@ -34,11 +34,7 @@ SECURE_BROWSER_XSS_FILTER = True
 
 
 CORS_ORIGIN_WHITELIST = [
-    'http://127.0.0.1:3000',
-    'http://localhost:3000',
-    'https://127.0.0.1:3000',
-    'https://localhost:3000',
-    'https://ledget.app:3000',
+    'https://secure.ledget.app:3000',
 ]
 CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
 CORS_ALLOW_HEADERS = list(default_headers) + ['Set-Cookie']
