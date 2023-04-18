@@ -64,7 +64,7 @@ LOCAL_MIDDLE_WARE = []
 
 MIDDLEWARE = DEFAULT_MIDDLE_WARE + THIRD_PARTY_MIDDLE_WARE + LOCAL_MIDDLE_WARE
 
-ROOT_URLCONF = 'portalback.urls'
+ROOT_URLCONF = 'back.urls'
 
 TEMPLATES = [
     {
@@ -89,7 +89,7 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = '/static/'
 
-WSGI_APPLICATION = 'portalback.wsgi.application'
+WSGI_APPLICATION = 'back.wsgi.application'
 
 
 # --------------------------------------------------------------- #
@@ -159,7 +159,7 @@ SIMPLE_JWT = {
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'portalback.authentication.CustomJWTAuthentication',
+        'back.authentication.CustomJWTAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),

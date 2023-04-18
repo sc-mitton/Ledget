@@ -1,5 +1,5 @@
 """
-ASGI config for portalback project.
+ASGI config for back project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
