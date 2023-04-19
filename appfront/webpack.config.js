@@ -1,6 +1,6 @@
-const path = require('path');
-const Dotenv = require('dotenv-webpack');
-const fs = require('fs');
+const path = require('path')
+const Dotenv = require('dotenv-webpack')
+const fs = require('fs')
 
 module.exports = {
     mode: 'development',
@@ -13,23 +13,16 @@ module.exports = {
         publicPath: '/'
     },
     devServer: {
-        host: 'secure.ledget.app',
-        allowedHosts: [
-            'secure.ledget.app',
-            'ledget.app',
-        ],
-        http2: true,
-        https: {
-            key: fs.readFileSync('../certs/secure.ledget.app.key'),
-            cert: fs.readFileSync('../certs/secure.ledget.app.crt'),
-            ca: fs.readFileSync('../certs/ledgetCA.pem'),
-        },
         static: {
             directory: path.join(__dirname, 'public'),
         },
+        https: {
+            key: fs.readFileSync('../certs/ledget.app.key'),
+            cert: fs.readFileSync('../certs/ledget.app.crt'),
+            ca: fs.readFileSync('../certs/ledgetCA.pem')
+        },
         port: 3000,
-        open: true,
-        historyApiFallback: true,
+        host: 'ledget.app',
         open: {
             app: {
                 name: 'firefox',
@@ -71,4 +64,4 @@ module.exports = {
             }
         ]
     }
-};
+}

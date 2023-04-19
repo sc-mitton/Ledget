@@ -1,22 +1,22 @@
-import React from 'react';
-import { createContext, useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
-import apiAuth from '../api/axios';
+import React from 'react'
+import { createContext, useState, useEffect } from "react"
+import { useNavigate } from 'react-router-dom'
+import apiAuth from '../api/axios'
 
-const AuthContext = createContext();
-export default AuthContext;
+const AuthContext = createContext()
+export default AuthContext
 
 export const AuthProvider = ({ children }) => {
-    const navigate = useNavigate();
-    const [tokenExpiration, setTokenExpiration] = useState('');
-    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate()
+    const [tokenExpiration, setTokenExpiration] = useState('')
+    const [loading, setLoading] = useState(true)
 
     // Get the interval of the token expiration
     // since the jwt expiration comes as a timestamp
     const getRefreshInterval = (timestamp) => {
-        const nowTimestamp = Math.floor(Date.now() / 1000);
-        let timer = timestamp - nowTimestamp;
-        timer = Math.floor(timer * .95) * 1000;
+        const nowTimestamp = Math.floor(Date.now() / 1000)
+        let timer = timestamp - nowTimestamp
+        timer = Math.floor(timer * .95) * 1000
         return timer
     }
     const isExpired = (timestamp) => {

@@ -1,7 +1,7 @@
-import React, { forwardRef, useEffect, } from "react";
+import React, { forwardRef, useEffect, } from "react"
 import { useState } from 'react'
 
-import Select from 'react-select';
+import Select from 'react-select'
 import hidePassword from "../../assets/icons/hidePassword.svg"
 import showPassword from "../../assets/icons/showPassword.svg"
 

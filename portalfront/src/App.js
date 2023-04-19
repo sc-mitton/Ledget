@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 
-import AnimatedRoutes from './AnimatedRoutes';
-import { AuthProvider } from './context/AuthContext';
+import AnimatedRoutes from './AnimatedRoutes'
+import { AuthProvider } from './context/AuthContext'
 import "./style/gateway.css"
 
 function App() {
@@ -18,4 +18,4 @@ function App() {
     )
 }
 
-export default App;
+export default App

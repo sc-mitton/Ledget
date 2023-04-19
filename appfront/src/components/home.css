@@ -1,0 +1,117 @@
+#dashboard {
+    width: 100%;
+}
+
+.window {
+    background-color: var(--window-background-color);
+    box-shadow: 0px 1px 0px 0px rgba(27, 31, 36, 0.04);
+    border-radius: 4px;
+    padding: 8px 16px;
+}
+
+#dashboard-row-1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 24px 0;
+}
+
+#dashboard-row-2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 24px 0;
+}
+
+.window-header {
+    margin: 8px;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* header buttons */
+.window-header-buttons,
+.window-header-button,
+.window-header-button-selected {
+    display: flex;
+    align-items: center;
+}
+
+.window-header-button {
+    background-color: var(--icon-light-gray);
+}
+
+.window-header-button-selected {
+    background-color: var(--icon-dark-gray);
+}
+
+.window-header-button,
+.window-header-button-selected {
+    padding: 5px;
+    margin: 0 4px;
+    border-radius: 4px;
+}
+
+.window-header-button:hover {
+    transition: background-color 0.2s ease-out;
+    background-color: var(--icon-hover-light-gray);
+}
+
+.window-header-icon-selected,
+.window-header-icon {
+    height: 1.3em;
+    width: 1.3em;
+}
+
+.window-header-icon {
+    fill: var(--icon-dark-gray);
+}
+
+.window-header-icon-selected {
+    fill: var(--icon-white);
+}
+
+/* -------------------------------------------------------------------------- */
+/*                            Budget Window Styling                           */
+/* -------------------------------------------------------------------------- */
+
+#budget-window {
+    flex-basis: 65%;
+    margin-right: 12px;
+}
+
+#month-picker {
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                            Assets Window Styling                           */
+/* -------------------------------------------------------------------------- */
+
+#assets-window {
+    flex-basis: 35%;
+    margin-left: 12px;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                            Items Window Styling                            */
+/* -------------------------------------------------------------------------- */
+
+#items-window {
+    flex: 1;
+    margin-left: 12px;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              New Items Styling                             */
+/* -------------------------------------------------------------------------- */
+
+#new-items-window {
+    flex: 1;
+    margin-right: 12px;
+}

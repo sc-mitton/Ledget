@@ -1,0 +1,455 @@
+:root {
+    --logo-dark: rgb(36, 36, 36);
+
+    --background-color: rgb(252, 252, 252);
+
+    --window: rgb(248, 248, 248);
+    --window-border: rgb(161, 160, 160);
+    --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
+
+    --button-gray: #464646;
+    --buton-border-gray: rgb(60, 60, 60);
+    --button-hover-gray: rgb(36, 36, 36);
+    --border-bottom-gray: #b9b9b9;
+
+    --light-blue: rgb(199, 221, 252);
+    --mute-blue: rgb(122, 168, 254);
+    --hover-blue: rgb(97, 151, 252);
+    --main-blue: rgb(107, 155, 246);
+
+    --mute-red: rgb(253, 130, 146);
+    --hover-red: rgb(251, 106, 126);
+    --alert-red: rgb(243, 80, 80);
+
+    /* Social Auth Buttons */
+    --button-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
+
+    --window-box-gray: rgb(255, 252, 252);
+
+    /* Subscription Radios */
+    --inactive-gray: rgb(215, 215, 215);
+
+    /* Input Colors */
+    --input-color: rgb(237, 237, 237);
+    --tooltip-background: rgb(166, 166, 166);
+    /* rgb(56, 123, 248);
+
+    /* Text */
+    --main-text-gray: rgb(36, 36, 36);
+    --input-placeholder: rgb(132, 132, 132);
+    --success-green: rgb(205, 248, 205);
+    --input-focus: rgb(107, 155, 246);
+
+    /* Windows */
+    --window-background-color: rgb(241, 241, 241);
+
+    /* Icons & Buttons */
+    --icon-dark-gray: #464646;
+    --icon-light-gray: rgb(223, 223, 223);
+    --icon-hover-light-gray: rgb(211, 211, 211);
+    --icon-white: rgb(227, 227, 227);
+}
+
+/* Override color values for Firefox */
+@-moz-document url-prefix() {
+    :root {
+        --input-focus: rgb(31, 108, 252);
+        --input-placeholder: #343434;
+        --main-text-gray: rgb(44, 44, 44);
+    }
+}
+
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    width: 75%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+body {
+    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    font-size: 14px;
+    height: 100%;
+    background-color: var(--window);
+}
+
+div,
+p,
+span,
+a,
+input,
+label,
+button,
+textarea,
+select,
+option {
+    font-family: "Source Sans 3";
+    font-size: 14px;
+    color: var(--main-text-gray);
+}
+
+h1,
+h2,
+h3 {
+    color: var(--logo-dark);
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+/* Override default browser styles */
+
+input:-webkit-autofill {
+    -webkit-box-shadow: inset 0 0 0px 9999px var(--input-color) !important;
+    background-color: none;
+    background-clip: content-box !important;
+    border: none;
+    font-size: 14px;
+    outline: none;
+}
+
+input {
+    --webkit-text-security: disc;
+    outline: none;
+}
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-webkit-autofill::after {
+    border: none;
+    background-color: #fafafa !important;
+    background-clip: content-box !important;
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* End override default browser styles */
+
+input {
+    border: none;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+input:focus {
+    outline: none;
+}
+
+
+.input-container input::placeholder,
+input[type="password"]::placeholder {
+    color: var(--input-placeholder);
+}
+
+.input-container input:focus::placeholder,
+input[type="password"]:focus::placeholder {
+    color: var(--input-focus);
+    transition: color .2s ease;
+}
+
+.input-container {
+    background-color: var(--input-color);
+    border: 1px solid var(--window);
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 12px 0;
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    transition: border .2s ease;
+}
+
+.input-container:focus-within {
+    outline: none;
+    border: 1px solid var(--main-blue);
+}
+
+#facebook-auth-button,
+#google-auth-button {
+    transition: background-color 0.15s ease;
+    cursor: pointer;
+}
+
+.CustomSelect input[type="text"] {
+    box-shadow: none;
+}
+
+.select-container {
+    background-color: var(--input-color);
+    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+/* Password Input */
+input[type=password]:not(:placeholder-shown) {
+    /* For spacing out the dots text */
+    font-family: 'pass', 'Roboto', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.password-input {
+    background-color: var(--input-color);
+    padding: 8px 12px;
+    margin: 12px 0;
+    border-radius: 4px;
+    display: flex;
+    border: 1px solid var(--window);
+    transition: border .2s ease;
+}
+
+.password-input:focus-within {
+    outline: none;
+    border: 1px solid var(--main-blue);
+    box-sizing: border-box;
+}
+
+.password-input input {
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    border: none;
+}
+
+.password-input input:focus {
+    box-shadow: none;
+}
+
+.hide-password-icon,
+.show-password-icon {
+    height: 1.4em;
+    cursor: pointer;
+    padding: 1px 5px 0 5px;
+}
+
+.confirm {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* End Password Input */
+
+/* Submit Buttons */
+.invalid-submit,
+.valid-submit,
+.submit-button {
+    padding: 8px 12px;
+    color: var(--window);
+    background-color: var(--button-gray);
+    border: 1.5px solid var(--button-border-gray);
+    box-shadow: var(--button-drop-shadow);
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.valid-submit:hover,
+.submit-button:hover {
+    cursor: pointer;
+    background-color: var(--button-hover-gray);
+}
+
+.valid-submit,
+.submit-button {
+    outline: none;
+    cursor: pointer;
+    /* border: 1.5px solid var(--window); */
+}
+
+
+.valid-submit:focus-within,
+.submit-button:focus-within {
+    outline: none;
+    box-shadow: inset 0 0 1px 1.5px var(--main-blue);
+    /* border: 1.5px solid var(--main-blue); */
+}
+
+
+.invalid-submit:focus-within {
+    outline: none;
+    border: none;
+}
+
+/* End Submit Button */
+
+.checkmark {
+    cursor: pointer;
+}
+
+.checkbox-symbol {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    user-select: none;
+}
+
+.checkbox-container {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox-container * {
+    box-sizing: border-box;
+}
+
+.checkbox-input {
+    position: absolute;
+    visibility: hidden;
+}
+
+.checkbox {
+    user-select: none;
+    padding: 6px 2px 6px 2px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox span {
+    vertical-align: middle;
+}
+
+.checkbox span:first-child {
+    width: 14px;
+    height: 14px;
+    transform: scale(1);
+    border: 1.5px solid var(--main-text-gray);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox span:first-child svg {
+    fill: none;
+    stroke: #fff;
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+}
+
+.checkbox span:last-child {
+    padding-left: 8px;
+}
+
+.checkbox:hover span:first-child {
+    border-color: var(--main-blue);
+    transform: scale(1.2);
+}
+
+.checkbox-input:checked+.checkbox span:first-child {
+    background: var(--main-blue);
+    border-color: var(--main-blue);
+    animation: zoom-in-out 0.3s ease;
+}
+
+.checkbox-input:checked+.checkbox span:first-child svg {
+    stroke: #fff;
+    animation: draw 0.5s ease-in-out forwards;
+}
+
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes zoom-in-out {
+    50% {
+        transform: scale(0.9);
+    }
+}
+
+.error img {
+    height: 1em;
+    margin-right: 8px;
+    position: relative;
+    top: 2px;
+}
+
+#signup-error-container {
+    position: relative;
+    top: -12px;
+    display: flex;
+    height: 10px;
+}
+
+.form-error {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--mute-red);
+    margin-top: 4px;
+    margin-left: 4px;
+}
+
+.form-error span {
+    margin-left: 4px;
+}
+
+.form-error img {
+    height: 1em;
+    margin-left: 8px;
+    margin-right: 5px;
+    position: relative;
+    top: 2px;
+    text-align: left;
+    animation: pop .22s ease;
+}
+
+
+@keyframes pop {
+    0% {
+        transform: scale(0.7);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+@keyframes show {
+    0% {
+        transform: scale(0.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

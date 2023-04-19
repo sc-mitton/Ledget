@@ -14,7 +14,7 @@ import successIcon from '../../assets/icons/successIcon.svg'
 import apiAuth from '../../api/axios'
 import { LoadingRing } from '../widgets/Widgets'
 import { CustomSelect } from './CustomInputs'
-import { states } from '../../assets/data/states';
+import { states } from '../../assets/data/states'
 
 
 const schema = object({
@@ -25,7 +25,7 @@ const schema = object({
                 const words = value.trim().split(' ')
                 return words.length === 2
             }
-            return true;
+            return true
         }),
     city: string()
         .required("Required")
@@ -62,7 +62,7 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
                             {...register('name')}
                             onBlur={(e) => {
                                 if (e.target.value) {
-                                    trigger("name");
+                                    trigger("name")
                                 }
                             }}
                         />
@@ -83,7 +83,7 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
                                 {...register('city')}
                                 onBlur={(e) => {
                                     if (e.target.value) {
-                                        trigger("city");
+                                        trigger("city")
                                     }
                                 }}
                             />

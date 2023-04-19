@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 import alert2 from '../../assets/icons/alert2.svg'
 import "./widgets.css"

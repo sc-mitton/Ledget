@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { useRef, useState, useEffect, useContext } from "react"
 
 import { useNavigate, useLocation, Link } from "react-router-dom"
@@ -13,23 +13,23 @@ import AuthContext from "../../context/AuthContext"
 import apiAuth from "../../api/axios"
 
 function LoginForm() {
-    const { setTokenExpiration } = useContext(AuthContext);
+    const { setTokenExpiration } = useContext(AuthContext)
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/home";
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || "/home"
 
-    const emailRef = useRef();
-    const pwdRef = useRef();
-    const [pswdVisible, setPswdVisible] = useState(false);
-    const [pwdInput, setPwdInput] = useState('');
-    const submitButtonRef = useRef(null);
+    const emailRef = useRef()
+    const pwdRef = useRef()
+    const [pswdVisible, setPswdVisible] = useState(false)
+    const [pwdInput, setPwdInput] = useState('')
+    const submitButtonRef = useRef(null)
 
 
-    const [errMsg, setErrMsg] = useState('');
+    const [errMsg, setErrMsg] = useState('')
 
     useEffect(() => {
-        emailRef.current.focus();
+        emailRef.current.focus()
     }, [])
 
     const VisibilityIcon = () => {
@@ -95,8 +95,8 @@ function LoginForm() {
 
     const handleKeyDown = (e) => {
         if (e.key === 'Tab' && !e.shiftKey) {
-            e.preventDefault();
-            submitButtonRef.current.focus();
+            e.preventDefault()
+            submitButtonRef.current.focus()
         }
     }
 

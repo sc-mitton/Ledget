@@ -1,14 +1,14 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion'
 
-import LoginWindow from './components/forms/Login';
-import SignUpWindow from './components/forms/SignUp';
-import Checkout from './components/forms/Checkout';
-import PrivateRoute from './utils/PrivateRoute';
-import SubscriptionsWindow from './components/forms/Subscriptions';
+import LoginWindow from './components/forms/Login'
+import SignUpWindow from './components/forms/SignUp'
+import Checkout from './components/forms/Checkout'
+import PrivateRoute from './utils/PrivateRoute'
+import SubscriptionsWindow from './components/forms/Subscriptions'
 
 function AnimatedRoutes() {
     const location = useLocation()

@@ -4,13 +4,13 @@ import { Link } from "react-router-dom"
 import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { object, string, ref } from "yup"
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 
 import fbLogo from "../../assets/images/fbLogo.svg"
 import googleLogo from "../../assets/images/googleLogo.svg"
 import logo from "../../assets/images/logo.svg"
-import alert2 from '../../assets/icons/alert2.svg';
+import alert2 from '../../assets/icons/alert2.svg'
 import AuthContext from "../../context/AuthContext"
 import apiAuth from "../../api/axios"
 import { PasswordInput } from "./CustomInputs"
@@ -36,11 +36,11 @@ function SignUpForm() {
     const { setTokenExpiration } = React.useContext(AuthContext)
     const navigate = useNavigate()
     const password = watch({ name: 'password' })
-    const submitButtonRef = useRef(null);
+    const submitButtonRef = useRef(null)
 
 
     const hasError = (field) => {
-        return errors[field] ? true : false;
+        return errors[field] ? true : false
     }
 
     const handleSuccessfulResponse = (response) => {
@@ -52,7 +52,7 @@ function SignUpForm() {
             'user',
             JSON.stringify(response.data.user)
         )
-        navigate('/checkout');
+        navigate('/checkout')
     }
 
     const handleErrorResponse = (err) => {
@@ -78,8 +78,8 @@ function SignUpForm() {
 
     const handleKeyDown = (e) => {
         if (e.key === 'Tab' && !e.shiftKey) {
-            e.preventDefault();
-            submitButtonRef.current.focus();
+            e.preventDefault()
+            submitButtonRef.current.focus()
         }
     }
 
@@ -100,7 +100,7 @@ function SignUpForm() {
                     {...register('email')}
                     onBlur={(e) => {
                         if (e.target.value) {
-                            trigger("email");
+                            trigger("email")
                         }
                     }}
                     tabIndex={1}

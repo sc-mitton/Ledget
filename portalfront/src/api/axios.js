@@ -10,4 +10,4 @@ const apiAuth = axios.create({
     withCredentials: true,
 })
 
-export default apiAuth;
+export default apiAuth

@@ -1,11 +1,11 @@
-import React from 'react';
-import { useState, useRef } from 'react';
+import React from 'react'
+import { useState, useRef } from 'react'
 
-import { SwitchTransition, CSSTransition } from 'react-transition-group';
+import { SwitchTransition, CSSTransition } from 'react-transition-group'
 
-import logo from '../../assets/images/logo.svg';
-import usePrices from '../../api/hooks/usePrices';
-import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/images/logo.svg'
+import usePrices from '../../api/hooks/usePrices'
+import { useNavigate } from 'react-router-dom'
 
 const Subscription = (props) => {
     return (
@@ -29,7 +29,7 @@ const Subscription = (props) => {
 
 function Description(props) {
 
-    const nodeRef = useRef(null);
+    const nodeRef = useRef(null)
     const description = () => {
         if (props.lookupKey === 'month-to-month') {
             return <span>Month-to-Month</span>

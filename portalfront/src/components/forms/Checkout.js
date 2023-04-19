@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 
-import { Outlet, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
-import { Routes, Route } from 'react-router-dom';
+import { Outlet, Navigate, useNavigate, useLocation } from 'react-router-dom'
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
+import { Routes, Route } from 'react-router-dom'
 
-import PaymentWindow from './Payment';
+import PaymentWindow from './Payment'
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST)
 

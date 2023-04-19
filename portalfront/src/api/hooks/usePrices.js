@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react'
 import apiAuth from '../axios'
 
 const usePrices = () => {
-    const [prices, setPrices] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [loaded, setLoaded] = useState(false);
-    const [error, setError] = useState(false);
+    const [prices, setPrices] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [loaded, setLoaded] = useState(false)
+    const [error, setError] = useState(false)
 
     const fetchPrices = async () => {
         const response = await apiAuth.get('prices')
