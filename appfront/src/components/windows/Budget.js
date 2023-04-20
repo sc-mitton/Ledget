@@ -1,44 +1,112 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 import CashFlow from '../../assets/images/CashFlow'
 import Graph from '../../assets/images/Graph'
 import Arrow from '../../assets/images/Arrow'
 
-function Budget() {
-    let months = [
-        'January', 'February', 'March',
-        'April', 'May', 'June', 'July',
-        'August', 'September', 'October',
-        'November', 'December'
-    ]
-    let years = [
-        2020, 2021, 2022, 2023,
-    ]
-    const currentDate = new Date()
-    const [month, setMonth] = useState(
-        months.indexOf(months[currentDate.getMonth()])
-    )
-    const [year, setYear] = useState(
-        years.indexOf(currentDate.getFullYear())
-    )
-    const [graphView, setGraphView] = useState(true)
+const monthMappings = [
+    ['Jan', 'January'],
+    ['Feb', 'February'],
+    ['Mar', 'March'],
+    ['Apr', 'April'],
+    ['May', 'May'],
+    ['Jun', 'June'],
+    ['Jul', 'July'],
+    ['Aug', 'August'],
+    ['Sep', 'September'],
+    ['Oct', 'October'],
+    ['Nov', 'November'],
+    ['Dec', 'December'],
+]
 
+function Budget() {
+    const dates = {
+        2021: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        2022: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        2023: [1, 2, 3, 4],
+    }
+    const [year, setYear] = useState(
+        Object.keys(dates)[Object.keys(dates).length - 1]
+    )
+    const [month, setMonth] = useState(dates[year][dates[year].length - 1])
+    const [graphView, setGraphView] = useState(true)
 
     const MonthPicker = () => {
         const [picker, setPicker] = useState(false)
-        const [pickerMonth, setPickerMonth] = useState('')
         const [pickerYear, setPickerYear] = useState(year)
+        const [pickerMonth, setPickerMonth] = useState(month)
+        const monthPickerRef = useRef(null)
 
         const handleArrowClick = () => setPicker(!picker)
 
-        return (
-            <div id="month-picker">
-                <h2>{months[month]} {years[year]}</h2>
-                <button className='arrow' onClick={handleArrowClick} >
-                    <Arrow />
-                </button>
+        useEffect(() => {
+            document.addEventListener("click", handleClickOutside);
+            return () => {
+                document.removeEventListener("click", handleClickOutside);
+            }
+        }, [])
 
+        const renderMonths = () => {
+            return dates[pickerYear].map((index) => {
+                return (
+                    <div
+                        key={index}
+                        className={
+                            `month-picker-item${(pickerMonth === index && year == pickerYear) ? '-selected' : ''}`
+                        }
+                        onClick={() => {
+                            setPicker(false)
+                            setYear(pickerYear)
+                            setMonth(index)
+                        }}
+                    >
+                        {monthMappings[index - 1][0]}
+                    </div>
+                )
+            })
+        }
+
+        const incrementYear = () => {
+            if (pickerYear < Object.keys(dates)[Object.keys(dates).length - 1]) {
+                setPickerYear(pickerYear + 1)
+            }
+        }
+
+        const decrementYear = () => {
+            if (pickerYear > Object.keys(dates)[0]) {
+                setPickerYear(pickerYear - 1)
+            }
+        }
+
+        const handleClickOutside = (event) => {
+            if (monthPickerRef.current && !monthPickerRef.current.contains(event.target)) {
+                setPicker(false);
+            }
+        }
+
+        return (
+            <div id="month-picker" ref={monthPickerRef}>
+                <h2>{monthMappings[month - 1][1]} {year}</h2>
+                <button id='header-arrow' onClick={handleArrowClick} >
+                    <Arrow scale={.7} strokeWidth={4} />
+                </button>
+                {picker &&
+                    <div id="picker-container">
+                        <div id="year-navigation">
+                            <button className="arrow-nav" onClick={decrementYear}>
+                                <Arrow stroke='#f8f8f8' scale={.45} rotation={90} />
+                            </button>
+                            <div>{pickerYear}</div>
+                            <button className="arrow-nav" onClick={incrementYear}>
+                                <Arrow stroke='#f8f8f8' scale={.45} rotation={-90} />
+                            </button>
+                        </div>
+                        <div className="month-picker-grid">
+                            {renderMonths()}
+                        </div>
+                    </div>
+                }
             </div>
         )
     }

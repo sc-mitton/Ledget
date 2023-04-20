@@ -85,6 +85,78 @@
 #month-picker {
     display: flex;
     flex-direction: row;
+    position: relative;
+}
+
+#header-arrow {
+    padding-top: 5px;
+}
+
+#picker-container {
+    position: absolute;
+    top: 80%;
+    background-color: var(--drop-down-background);
+    border-radius: 4px;
+    padding: 8px;
+    animation: drop-down 0.2s ease;
+}
+
+.arrow-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 3px;
+}
+
+#year-navigation * {
+    color: var(--window);
+}
+
+#year-navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.month-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 8px;
+}
+
+@keyframes drop-down {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.month-picker-item {
+    transition: background-color 0.2s ease;
+}
+
+.month-picker-item,
+.month-picker-item-selected {
+    color: var(--window);
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.month-picker-item-selected {
+    background-color: var(--main-blue);
+}
+
+.month-picker-item:hover {
+    background-color: var(--drop-down-hover-background);
 }
 
 

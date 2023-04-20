@@ -30,7 +30,7 @@ header {
     position: absolute;
     top: 60px;
     right: -92px;
-    background-color: rgb(52, 52, 52);
+    background-color: var(--drop-down-background);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     padding: 8px 0;
     border-radius: 4px;
@@ -59,7 +59,7 @@ header {
 }
 
 .dropdown-item:hover {
-    background-color: rgb(103, 103, 103);
+    background-color: var(--drop-down-hover-background);
     cursor: pointer;
     height: 100%;
 }
