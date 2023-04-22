@@ -1,9 +1,18 @@
 import React from 'react'
 
 function Items() {
+
+    const Header = () => {
+        return (
+            <div className="window-header">
+                <h2>Items</h2>
+            </div>
+        )
+    }
+
     return (
         <div className='window' id='items-window'>
-            <h3>Items</h3>
+            <Header />
         </div>
     )
 }
