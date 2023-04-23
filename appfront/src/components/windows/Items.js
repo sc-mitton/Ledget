@@ -5,7 +5,7 @@ function Items() {
     const Header = () => {
         return (
             <div className="window-header">
-                <h2>Items</h2>
+                <h3>Items</h3>
             </div>
         )
     }

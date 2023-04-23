@@ -1,0 +1,28 @@
+#new-items-window {
+    background-color: var(--window);
+    position: relative;
+    box-shadow: none;
+}
+
+#new-items-header h2 {
+    margin-bottom: 0;
+}
+
+.new-items-container {
+    position: relative;
+    overflow: scroll;
+    top: 0px;
+    left: 0px;
+    padding: 0px 12px 6px 12px;
+    height: 100%;
+}
+
+.new-item {
+    background-color: var(--window-background-color);
+    border-radius: 4px;
+    padding: 24px;
+    margin: 8px 0px;
+    font-weight: 500;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 2px 0px;
+    margin-right: 4px;
+}

@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from 'react'
 import logo from '../assets/images/logo.svg'
 import profile from '../assets/images/profile.svg'
 import settings from '../assets/images/settings.svg'
-import notifications from '../assets/images/notifications.svg'
 import help from '../assets/images/help.svg'
 import './header.css'
 
@@ -42,10 +41,6 @@ function Header() {
                             <div className="dropdown-item">
                                 <img className="dropdown-icon" src={settings} alt="settings" />
                                 Settings
-                            </div>
-                            <div className="dropdown-item">
-                                <img className="dropdown-icon" src={notifications} alt="notifications" />
-                                Notifications
                             </div>
                             <div className="dropdown-item">
                                 <img className="dropdown-icon" src={help} alt="help" />

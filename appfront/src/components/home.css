@@ -1,5 +1,8 @@
 #dashboard {
-    width: 100%;
+    width: 75%;
+    max-width: 1100px;
+    margin: 0 auto;
+    margin-top: 24px;
 }
 
 .window {
@@ -7,24 +10,26 @@
     box-shadow: 0px 1px 0px 0px rgba(27, 31, 36, 0.04);
     border-radius: 4px;
     padding: 8px 16px;
+    box-sizing: border-box;
 }
 
 #dashboard-row-1 {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 24px 0;
+    margin: 12px 0;
+    max-height: 250px;
 }
 
 #dashboard-row-2 {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 24px 0;
+    margin: 12px 0;
 }
 
 .window-header {
-    margin: 8px 12px;
+    padding: 8px 12px;
     height: 40px;
     display: flex;
     justify-content: space-between;
@@ -44,14 +49,14 @@
 }
 
 .window-header-button-selected {
-    background-color: var(--icon-dark-gray);
+    background-color: var(--mute-blue);
 }
 
 .window-header-button,
 .window-header-button-selected {
     padding: 5px;
     margin: 0 4px;
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 .window-header-button:hover {
@@ -79,7 +84,7 @@
 
 #budget-window {
     flex-basis: 65%;
-    margin-right: 12px;
+    margin-right: 6px;
 }
 
 #month-picker {
@@ -96,7 +101,7 @@
     position: absolute;
     top: 80%;
     background-color: var(--drop-down-background);
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 8px;
     animation: drop-down 0.2s ease;
 }
@@ -146,7 +151,7 @@
 .month-picker-item-selected {
     color: var(--window);
     padding: 8px;
-    border-radius: 4px;
+    border-radius: 2px;
     cursor: pointer;
     font-weight: 500;
 }
@@ -167,7 +172,7 @@
 
 #assets-window {
     flex-basis: 35%;
-    margin-left: 12px;
+    margin-left: 6px;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -176,7 +181,9 @@
 
 #items-window {
     flex: 1;
-    margin-left: 12px;
+    margin-left: 6px;
+    height: inherit;
+    max-height: inherit;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -185,5 +192,9 @@
 
 #new-items-window {
     flex: 1;
-    margin-right: 12px;
+    margin: auto 0;
+    margin-right: 0px;
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
 }
