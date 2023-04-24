@@ -2,8 +2,8 @@ header {
     height: 50px;
     display: flex;
     justify-content: center;
-    background-color: var(--logo-dark);
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+    /* background-color: var(--logo-dark); */
+    /* box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.35); */
 }
 
 #header-container {
@@ -22,6 +22,7 @@ header {
     align-items: center;
     height: 100%;
     position: relative;
+    margin: 0 8px;
 }
 
 #header-logo img {
@@ -36,8 +37,8 @@ header {
 
 .dropdown-menu {
     position: absolute;
-    top: 60px;
-    right: -90px;
+    top: 50px;
+    right: -65px;
     background-color: var(--drop-down-background);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     padding: 8px 0;

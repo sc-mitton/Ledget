@@ -21,7 +21,7 @@ module.exports = {
             cert: fs.readFileSync('../certs/ledget.app.crt'),
             ca: fs.readFileSync('../certs/ledgetCA.pem')
         },
-        port: 3000,
+        port: 3001,
         host: 'ledget.app',
         open: {
             app: {

@@ -1,25 +1,17 @@
-#new-items-window {
-    background-color: var(--window);
-    position: relative;
-    box-shadow: none;
-}
-
-#new-items-header h2 {
-    margin-bottom: 0;
-}
-
 .new-items-container {
-    position: relative;
-    overflow: scroll;
     top: 0px;
     left: 0px;
-    padding: 0px 12px 6px 12px;
+    margin-bottom: 12px;
+    margin-left: 8px;
     height: 100%;
+    overflow: scroll;
+    max-height: 200px;
+    background-color: var(--window);
 }
 
 .new-item {
     background-color: var(--window-background-color);
-    border-radius: 4px;
+    border-radius: 8px;
     padding: 24px;
     margin: 8px 0px;
     font-weight: 500;

@@ -87,7 +87,7 @@ function Budget() {
 
         return (
             <div id="month-picker" ref={monthPickerRef}>
-                <h3>{monthMappings[month - 1][1]} {year}</h3>
+                <h2>{monthMappings[month - 1][1]} {year}</h2>
                 <button id='header-arrow' onClick={handleArrowClick} >
                     <Arrow scale={.7} strokeWidth={4} />
                 </button>
