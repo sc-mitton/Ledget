@@ -1,27 +1,5 @@
 import React from 'react'
-import './Items.css'
-
-const testItems = [
-    ' ', ' ', ' ', ' ', ' ',
-    ' ', ' ', ' ', ' ', ' ',
-]
-
-const NewItemsStack = ({ item }) => {
-    return (
-        <div className='new-items-container' >
-            {
-                testItems.map((item, index) => {
-                    return (
-                        <div key={index} className={`new-item`} >
-                            <div>{item}</div>
-                        </div>
-                    )
-                })
-            }
-        </div>
-    )
-}
-
+import NewItemsStack from './NewItems'
 
 function Items() {
 

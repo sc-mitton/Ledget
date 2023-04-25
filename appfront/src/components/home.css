@@ -4,13 +4,13 @@
     margin: 0 auto;
     display: grid;
     grid-template-columns: 3fr 2fr;
-    margin-top: 24px;
+    margin-top: 32px;
 }
 
 .window {
     background-color: var(--window-background-color);
     box-shadow: 0px 1px 0px 0px rgba(27, 31, 36, 0.04);
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 8px 16px;
     box-sizing: border-box;
 }
@@ -36,14 +36,14 @@
 }
 
 .window-header-button-selected {
-    background-color: var(--mute-blue);
+    background-color: var(--icon-dark-gray);
 }
 
 .window-header-button,
 .window-header-button-selected {
     padding: 5px;
     margin: 0 4px;
-    border-radius: 2px;
+    border-radius: 3px;
 }
 
 .window-header-button:hover {
@@ -138,7 +138,7 @@
 .month-picker-item-selected {
     color: var(--window);
     padding: 8px;
-    border-radius: 2px;
+    border-radius: 3px;
     cursor: pointer;
     font-weight: 500;
 }

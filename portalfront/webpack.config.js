@@ -14,6 +14,9 @@ module.exports = {
     },
     devServer: {
         host: 'secure.ledget.app',
+        allowedHosts: [
+            'secure.ledget.app',
+        ],
         https: {
             key: fs.readFileSync('../certs/secure.ledget.app.key'),
             cert: fs.readFileSync('../certs/secure.ledget.app.crt'),
@@ -23,6 +26,7 @@ module.exports = {
             directory: path.join(__dirname, 'public'),
         },
         port: 3000,
+        historyApiFallback: true,
         open: {
             app: {
                 name: 'firefox',

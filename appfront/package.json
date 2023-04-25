@@ -23,6 +23,7 @@
     "webpack-dev-server": "^4.13.3"
   },
   "dependencies": {
+    "@react-spring/web": "^9.7.2",
     "css-loader": "^6.7.3",
     "dotenv-webpack": "^8.0.1",
     "file-loader": "^6.2.0",

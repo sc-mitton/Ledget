@@ -22,6 +22,7 @@ module.exports = {
             ca: fs.readFileSync('../certs/ledgetCA.pem')
         },
         port: 3001,
+        historyApiFallback: true,
         host: 'ledget.app',
         open: {
             app: {

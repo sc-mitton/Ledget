@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Graph = ({ className }) => {
+const CashFlow = ({ className }) => {
     return (
         <svg
             className={className}
@@ -24,4 +24,4 @@ const Graph = ({ className }) => {
     )
 }
 
-export default Graph
+export default CashFlow

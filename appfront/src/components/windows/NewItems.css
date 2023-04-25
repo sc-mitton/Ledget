@@ -1,0 +1,46 @@
+.new-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.new-item-data {
+    font-weight: 600;
+}
+
+.new-item-icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.checkmark-icon,
+.split-icon,
+.category-icon {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: background-color .3s ease-out;
+}
+
+.category-icon {
+    margin-right: 8px;
+    border-radius: 8px;
+    border: 1.5px solid var(--mute-blue);
+    color: var(--main-blue);
+}
+
+.checkmark-icon:hover {
+    border-radius: 4px;
+    background-color: rgb(0, 0, 0, .1);
+}
+
+.ellipsis-icon {
+    display: flex;
+    align-items: center;
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+/* border-left: 1.5px solid rgb(0, 0, 0, .1); */
