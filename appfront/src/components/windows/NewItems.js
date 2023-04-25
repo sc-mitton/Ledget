@@ -6,6 +6,7 @@ import { useSprings, useSpring, animated } from '@react-spring/web'
 import "./NewItems.css"
 import Ellipsis from "../../assets/images/Ellipsis"
 import CheckMark from "../../assets/images/CheckMark"
+import Collapse from "../../assets/images/Collapse"
 
 const testItems = [
     'Publix', 'Movies', 'Gas', 'Rent', 'Clothes',
@@ -47,59 +48,72 @@ const NewItemsStack = () => {
             }
         }))
         containerApi.start({
-            maxHeight: expanded ? '200px' : '140px',
+            maxHeight: expanded ? '270px' : '140px',
             config: { duration: 300 }
         })
     }, [expanded])
 
     return (
-        <animated.div
-            className="new-items-container"
-            onClick={handleClick}
-            style={{
-                ...containerSpring,
-                position: "relative",
-                overflow: expanded ? "scroll" : "hidden",
-                backgroundColor: "var(--window)",
-                marginBottom: "12px",
-                paddingRight: "16px",
-                paddingLeft: "20px"
-            }}
+        <>
+            <animated.div
+                className="new-items-container"
+                style={{
+                    ...containerSpring,
+                    position: "relative",
+                    overflow: expanded ? "scroll" : "hidden",
+                    backgroundColor: "var(--window)",
+                    paddingRight: "16px",
+                    paddingLeft: "20px"
+                }}
 
-        >
-            {springs.map((props, index) => (
-                <animated.div
-                    key={index}
-                    className="new-item"
-                    style={{
-                        ...props,
-                        position: 'relative',
-                        zIndex: (testItems.length - index),
-                        backgroundColor: "var(--window-background-color)",
-                        borderRadius: "8px",
-                        padding: "20px",
-                        margin: "8px 0px",
-                        fontWeight: "400",
-                        boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 1px 0px"
-                    }}
-                >
-                    <div className='new-item-data'>
-                        {testItems[index]}
-                    </div>
-                    <div className='new-item-icons'>
-                        <div className='category-icon'>
-                            Groceries
+            >
+                {springs.map((props, index) => (
+                    <animated.div
+                        key={index}
+                        className="new-item"
+                        style={{
+                            ...props,
+                            position: 'relative',
+                            zIndex: (testItems.length - index),
+                            backgroundColor: "var(--window-background-color)",
+                            borderRadius: "8px",
+                            padding: "20px",
+                            margin: "8px 0px",
+                            fontWeight: "400",
+                            boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 1px 0px"
+                        }}
+                    >
+                        <div className='new-item-data'>
+                            {testItems[index]}
                         </div>
-                        <div className='checkmark-icon'>
-                            <CheckMark />
+                        <div className='new-item-icons'>
+                            <div className='category-icon'>
+                                Groceries
+                            </div>
+                            <div className='icon'>
+                                <CheckMark />
+                            </div>
+                            <div className='icon'>
+                                <Ellipsis />
+                            </div>
                         </div>
-                        <div className='ellipsis-icon'>
-                            <Ellipsis />
-                        </div>
-                    </div>
-                </animated.div>
-            ))}
-        </animated.div>
+                    </animated.div>
+                ))}
+
+            </animated.div>
+            {expanded ?
+                <div id="collapse-button-container">
+                    <button className="icon" id="collapse-button" onClick={handleClick}>
+                        <Collapse />
+                    </button>
+                </div>
+                : <div id="expand-button-container">
+                    <button id="expand-button" onClick={handleClick}>
+                        {`${Math.min(testItems.length, 5)}${testItems.length > 5 ? '+' : ''} new items`}
+                    </button>
+                </div>
+            }
+        </>
     )
 }
 

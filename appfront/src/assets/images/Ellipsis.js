@@ -8,8 +8,8 @@ const Ellipsis = ({
 }) => {
 
     return (
+
         <svg
-            className={className}
             width={width}
             height={height}
             viewBox="0 0 144 144"
@@ -21,6 +21,7 @@ const Ellipsis = ({
             <circle class="st0" cx="72" cy="26.82" r="13.4" />
             <circle class="st0" cx="72" cy="117.18" r="13.4" />
         </svg>
+
     )
 }
 

@@ -17,30 +17,59 @@
 .checkmark-icon,
 .split-icon,
 .category-icon {
-    display: flex;
-    align-items: center;
     padding: 4px 8px;
     cursor: pointer;
     transition: background-color .3s ease-out;
+    border-radius: 4px;
 }
 
 .category-icon {
     margin-right: 8px;
-    border-radius: 8px;
     border: 1.5px solid var(--mute-blue);
     color: var(--main-blue);
 }
 
-.checkmark-icon:hover {
+.ellipsis-icon {
+    margin: 0 4px;
     border-radius: 4px;
+}
+
+.checkmark-icon:hover,
+.ellipsis-icon:hover {
     background-color: rgb(0, 0, 0, .1);
 }
 
-.ellipsis-icon {
+/* Expand Button */
+#expand-button-container {
+    margin-bottom: 12px;
+    margin-top: 4px;
+}
+
+#expand-button-container {
     display: flex;
-    align-items: center;
-    margin-left: 4px;
+    flex-direction: row;
+    justify-content: end;
+}
+
+#expand-button {
+    margin: 0 auto;
     cursor: pointer;
+    font-weight: 600;
+    background-color: transparent;
+    transition: background-color .3s ease-out;
+    padding: 3px 12px;
+    border-radius: 4px;
+}
+
+/* Collapse Button */
+#collapse-button-container {
+    display: flex;
+    justify-content: end;
+    margin: 12px 20px 12px 20px;
+}
+
+#expand-button:hover {
+    background-color: var(--icon-light-gray);
 }
 
 /* border-left: 1.5px solid rgb(0, 0, 0, .1); */

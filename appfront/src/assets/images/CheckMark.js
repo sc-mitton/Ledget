@@ -9,7 +9,6 @@ const CheckMark = ({
 
     return (
         <svg
-            className={className}
             width={width}
             height={height}
             viewBox="0 0 100 100"
