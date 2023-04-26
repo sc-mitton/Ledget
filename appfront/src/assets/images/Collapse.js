@@ -2,9 +2,9 @@ import React from 'react'
 
 const Ellipsis = ({
     className = null,
-    width = "1.2em",
-    height = "1.2em",
-    stroke = "#242424",
+    width = ".8em",
+    height = ".8em",
+    stroke = "#f8f8f8",
     strokeWidth = "16"
 }) => {
 

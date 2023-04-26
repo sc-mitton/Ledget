@@ -16,7 +16,7 @@ const testItems = [
 const NewItemsStack = () => {
     const stackMax = 4;
     const [expanded, setExpanded] = useState(false)
-    const [springs, springApi] = useSprings(testItems.length, index => ({
+    const [springs, springsApi] = useSprings(testItems.length, index => ({
         from: { transform: `translate3d(0, ${index * 0}px, 0) scale(1)` },
         to: {
             transform:
@@ -28,15 +28,17 @@ const NewItemsStack = () => {
                 }px`
         }
     }))
-    const [containerSpring, containerApi] = useSpring(() => ({ maxHeight: '140px' }));
-
+    const [containerSpring, containerApi] = useSpring(() => ({ maxHeight: '140px' }))
+    const rotationSpring = useSpring({
+        transform: `rotate(${expanded ? 0 : 180}deg)`
+    })
 
     const handleClick = () => {
         setExpanded(!expanded)
     }
 
     useEffect(() => {
-        springApi.start(index => ({
+        springsApi.start(index => ({
             to: {
                 transform:
                     `translate3d(0, 0, 0)
@@ -53,23 +55,30 @@ const NewItemsStack = () => {
         })
     }, [expanded])
 
+    const handleFoo = () => {
+        springsApi.start(index => ({
+            to: {
+                transform:
+                    `translate3d(0, -1, 0)`,
+            }
+        }))
+    }
+
     const BottomButtons = () => {
         return (
-            <>
-                {
-                    expanded ?
-                        <div id="collapse-button-container">
-                            < button className="icon" id="collapse-button" onClick={handleClick} >
-                                <Collapse />
-                            </button >
-                        </div >
-                        : <div id="expand-button-container">
-                            <button id="expand-button" onClick={handleClick}>
-                                {`${Math.min(testItems.length, 5)}${testItems.length > 5 ? '+' : ''} new items`}
-                            </button>
-                        </div>
-                }
-            </>
+            <div id="collapse-button-container" onClick={handleClick}>
+                <div>
+                    {!expanded && testItems.length + `${testItems.length > 10 ? "+" : ""}`}
+                    < animated.button
+                        className="icon"
+                        id="collapse-button"
+                        style={rotationSpring}
+                    >
+                        <Collapse />
+                    </animated.button >
+                </div>
+            </div >
+
         )
     }
 
@@ -124,6 +133,9 @@ const NewItemsStack = () => {
                 </animated.div >
             </div>
             <BottomButtons />
+            <button onClick={handleFoo} >
+                Pop
+            </button>
         </>
     )
 }

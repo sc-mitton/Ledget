@@ -17,9 +17,9 @@ const Ellipsis = ({
             x="0px"
             y="0px"
         >
-            <circle class="st0" cx="72" cy="72" r="13.4" />
-            <circle class="st0" cx="72" cy="26.82" r="13.4" />
-            <circle class="st0" cx="72" cy="117.18" r="13.4" />
+            <circle cx="72" cy="72" r="13.4" />
+            <circle cx="72" cy="26.82" r="13.4" />
+            <circle cx="72" cy="117.18" r="13.4" />
         </svg>
 
     )

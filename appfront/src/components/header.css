@@ -14,7 +14,7 @@ header {
     margin: 8px 0px;
     width: 75%;
     max-width: 1100px;
-    z-index: 100;
+    z-index: 300;
 }
 
 #header-logo,
@@ -32,7 +32,7 @@ header {
 }
 
 #profile-icon {
-    margin-right: 12px;
+    margin-right: 16px;
     height: 50%;
     cursor: pointer;
 }
