@@ -87,7 +87,7 @@
 
 #facebook-auth-button {
     background-color: var(--mute-blue);
-    border-radius: 4px;
+    border-radius: 6px;
     width: 50%;
     margin-left: 4px;
     box-sizing: border-box;
@@ -101,7 +101,7 @@
 
 #google-auth-button {
     background-color: var(--mute-red);
-    border-radius: 4px;
+    border-radius: 6px;
     width: 50%;
     margin-right: 4px;
     box-sizing: border-box;
@@ -411,7 +411,7 @@ input[type="radio"]:checked+label * {
 /* Card Element */
 .card-container {
     background-color: var(--input-color);
-    border-radius: 4px;
+    border-radius: 6px;
     border: 1px solid var(--window);
     z-index: 0;
     padding: 10px 8px 11px 8px;

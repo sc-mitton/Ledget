@@ -36,14 +36,14 @@
 }
 
 .window-header-button-selected {
-    background-color: var(--button-hover-gray);
+    background-color: var(--button-gray);
 }
 
 .window-header-button,
 .window-header-button-selected {
     padding: 4px;
     margin: 0 4px;
-    border-radius: 3px;
+    border-radius: 6px;
 }
 
 .window-header-button:hover {
@@ -58,7 +58,7 @@
 }
 
 .window-header-icon {
-    fill: var(--icon-dark-gray);
+    fill: "#f35050";
 }
 
 .window-header-icon-selected {

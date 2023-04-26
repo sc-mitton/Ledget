@@ -120,13 +120,13 @@ function Budget() {
                         onClick={() => setGraphView(!graphView)}
                         className={`window-header-button${!graphView ? '-selected' : ''}`}
                     >
-                        <CashFlow className={`window-header-icon${!graphView ? '-selected' : ''}`} />
+                        <CashFlow fill={!graphView ? "var(--window)" : null} />
                     </button>
                     <button
                         onClick={() => setGraphView(!graphView)}
                         className={`window-header-button${graphView ? '-selected' : ''}`}
                     >
-                        <Graph className={`window-header-icon${graphView ? '-selected' : ''}`} />
+                        <Graph fill={graphView ? "var(--window)" : null} />
                     </button>
                 </div>
             </div>

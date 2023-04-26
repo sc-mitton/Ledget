@@ -13,28 +13,32 @@ const data = [
     'Pizza', 'Movies', 'Gas', 'Rent', 'Clothes',
 ]
 
-const fn = (order, down, originalIndex, curIndex, y) => (index) => {
-
-}
-
 const NewItemsStack = () => {
     const stackMax = 2
-    const scaleFactor = .97
-    const translate = 93
+    const scaleFactor = .05
+    const translate = 60
+
     const [expanded, setExpanded] = useState(false)
-    const [testItems, setTestItems] = useState(data) // will eventually use hook to pull in api data
+    const [testItems, setTestItems] = useState(data)
     const containerRef = useRef(null)
+    const [containerSpring, containerApi] = useSpring(() => ({
+        zIndex: 100,
+        overflowY: expanded ? "scroll" : "hidden",
+
+        overflowX: 'hidden',
+        maxHeight: '110px',
+        backgroundColor: "var(--window)",
+        paddingRight: "20px",
+        paddingLeft: "24px",
+    }))
     const [springs, setSprings] = useSprings(testItems.length, index => ({
-        transform:
-            `translate3d(0,
-                    ${expanded || index === 0
-                ? 0
-                : -translate - (translate * (index - 1))}%
-                , 0)
-                scale(${!expanded ? (Math.pow(scaleFactor, index)) : 1})`,
-        opacity: !expanded && index > stackMax ? 0 : 1,
-        position: 'relative',
+        x: 0,
+        y: expanded || index === 0 ? 0 : -1 * translate * index,
+        transform: `scale(${!expanded ? (Math.pow(scaleFactor, index)) : 1})`,
         zIndex: (testItems.length - index),
+        opacity: !expanded && index > stackMax ? 0 : 1,
+
+        position: 'relative',
         backgroundColor: "var(--window-background-color)",
         borderRadius: "8px",
         padding: "20px",
@@ -42,30 +46,20 @@ const NewItemsStack = () => {
         fontWeight: "400",
         boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 1px 0px"
     }))
-    const [containerSpring, containerApi] = useSpring(() => ({
-        maxHeight: '110px',
-        position: "relative",
-        overflow: expanded ? "scroll" : "scroll",
-        backgroundColor: "var(--window)",
-        paddingRight: "20px",
-        paddingLeft: "24px",
-        zIndex: 100,
-    }))
     const rotationSpring = useSpring({ transform: `rotate(${expanded ? 0 : 180}deg)` })
 
     useEffect(() => {
         setSprings.start(index => ({
-            transform:
-                `translate3d(0,
-                        ${expanded || index === 0
-                    ? 0
-                    : -translate - (translate * (index - 1))}%
-                    , 0)
-                    scale(${!expanded ? (Math.pow(scaleFactor, index)) : 1})`,
+            x: 0,
+            y: expanded || index === 0 ? 0 : -1 * translate * index,
+            transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
             opacity: !expanded && index > stackMax ? 0 : 1,
+            zIndex: (testItems.length - index)
         }))
+
         containerApi.start({
             maxHeight: expanded ? '270px' : '110px',
+            overflowY: expanded ? "scroll" : "hidden",
             config: { duration: 300 },
             onStart: () => {
                 if (!expanded && containerRef.current) {
@@ -75,17 +69,19 @@ const NewItemsStack = () => {
         })
     }, [expanded])
 
-    const foo = () => {
+    const onSuccessfulDelete = (i) => {
+        // Call backend to update database
+        // Remove item from testItems
+        setTestItems(testItems.filter((item, index) => index !== i));
+    }
+
+    const handleCheckClick = (i) => {
         setSprings.start(index => ({
-            to: {
-                transform:
-                    `translate3d(0,
-                        ${expanded || index === 0
-                        ? -100
-                        : -translate}%
-                    , 0)
-                    scale(${!expanded ? (2 - scaleFactor) : 1})`,
-                opacity: !expanded && index > stackMax ? 0 : 1,
+            x: i === index ? 500 : 0,
+            y: index > i ? (expanded ? -77 : (-1 * translate * index - 17)) : null,
+            opacity: !expanded && index > stackMax + 1 ? 0 : 1,
+            onRest: () => {
+                index === (springs.length - 1) && onSuccessfulDelete(i)
             }
         }))
     }
@@ -129,7 +125,11 @@ const NewItemsStack = () => {
                                 <div className='category-icon'>
                                     Groceries
                                 </div>
-                                <div className='icon' id="checkmark-icon" onClick={foo}>
+                                <div
+                                    className='icon'
+                                    id="checkmark-icon"
+                                    onClick={() => handleCheckClick(index)}
+                                >
                                     <CheckMark />
                                 </div>
                                 <div className='icon' id="ellipsis-icon">
