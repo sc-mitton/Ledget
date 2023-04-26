@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import { useSprings, useSpring, animated } from '@react-spring/web'
 
@@ -8,67 +8,93 @@ import Ellipsis from "../../assets/images/Ellipsis"
 import CheckMark from "../../assets/images/CheckMark"
 import Collapse from "../../assets/images/Collapse"
 
-const testItems = [
+const data = [
     'Publix', 'Movies', 'Gas', 'Rent', 'Clothes',
     'Pizza', 'Movies', 'Gas', 'Rent', 'Clothes',
 ]
 
-const NewItemsStack = () => {
-    const stackMax = 4;
-    const [expanded, setExpanded] = useState(false)
-    const [springs, springsApi] = useSprings(testItems.length, index => ({
-        from: { transform: `translate3d(0, ${index * 0}px, 0) scale(1)` },
-        to: {
-            transform:
-                `translate3d(0, 0, 0)
-                scale(${!expanded ? (1 - index * .03) : 1})`,
-            top: `${!expanded && index > 0 ?
-                (index < stackMax ? -60 * index : -78 * index)
-                : 0
-                }px`
-        }
-    }))
-    const [containerSpring, containerApi] = useSpring(() => ({ maxHeight: '140px' }))
-    const rotationSpring = useSpring({
-        transform: `rotate(${expanded ? 0 : 180}deg)`
-    })
+const fn = (order, down, originalIndex, curIndex, y) => (index) => {
 
-    const handleClick = () => {
-        setExpanded(!expanded)
-    }
+}
+
+const NewItemsStack = () => {
+    const stackMax = 2
+    const scaleFactor = .97
+    const translate = 93
+    const [expanded, setExpanded] = useState(false)
+    const [testItems, setTestItems] = useState(data) // will eventually use hook to pull in api data
+    const containerRef = useRef(null)
+    const [springs, setSprings] = useSprings(testItems.length, index => ({
+        transform:
+            `translate3d(0,
+                    ${expanded || index === 0
+                ? 0
+                : -translate - (translate * (index - 1))}%
+                , 0)
+                scale(${!expanded ? (Math.pow(scaleFactor, index)) : 1})`,
+        opacity: !expanded && index > stackMax ? 0 : 1,
+        position: 'relative',
+        zIndex: (testItems.length - index),
+        backgroundColor: "var(--window-background-color)",
+        borderRadius: "8px",
+        padding: "20px",
+        margin: "8px 0px",
+        fontWeight: "400",
+        boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 1px 0px"
+    }))
+    const [containerSpring, containerApi] = useSpring(() => ({
+        maxHeight: '110px',
+        position: "relative",
+        overflow: expanded ? "scroll" : "scroll",
+        backgroundColor: "var(--window)",
+        paddingRight: "20px",
+        paddingLeft: "24px",
+        zIndex: 100,
+    }))
+    const rotationSpring = useSpring({ transform: `rotate(${expanded ? 0 : 180}deg)` })
 
     useEffect(() => {
-        springsApi.start(index => ({
-            to: {
-                transform:
-                    `translate3d(0, 0, 0)
-                    scale(${!expanded ? (1 - index * .03) : 1})`,
-                top: `${!expanded && index > 0 ?
-                    (index < stackMax ? -60 * index : -78 * index)
-                    : 0
-                    }px`
-            }
+        setSprings.start(index => ({
+            transform:
+                `translate3d(0,
+                        ${expanded || index === 0
+                    ? 0
+                    : -translate - (translate * (index - 1))}%
+                    , 0)
+                    scale(${!expanded ? (Math.pow(scaleFactor, index)) : 1})`,
+            opacity: !expanded && index > stackMax ? 0 : 1,
         }))
         containerApi.start({
-            maxHeight: expanded ? '270px' : '140px',
-            config: { duration: 300 }
+            maxHeight: expanded ? '270px' : '110px',
+            config: { duration: 300 },
+            onStart: () => {
+                if (!expanded && containerRef.current) {
+                    containerRef.current.scrollTop = 0
+                }
+            }
         })
     }, [expanded])
 
-    const handleFoo = () => {
-        springsApi.start(index => ({
+    const foo = () => {
+        setSprings.start(index => ({
             to: {
                 transform:
-                    `translate3d(0, -1, 0)`,
+                    `translate3d(0,
+                        ${expanded || index === 0
+                        ? -100
+                        : -translate}%
+                    , 0)
+                    scale(${!expanded ? (2 - scaleFactor) : 1})`,
+                opacity: !expanded && index > stackMax ? 0 : 1,
             }
         }))
     }
 
     const BottomButtons = () => {
         return (
-            <div id="collapse-button-container" onClick={handleClick}>
+            <div id="collapse-button-container" onClick={() => setExpanded(!expanded)}>
                 <div>
-                    {!expanded && testItems.length + `${testItems.length > 10 ? "+" : ""}`}
+                    {!expanded && `${testItems.length} items`}
                     < animated.button
                         className="icon"
                         id="collapse-button"
@@ -78,7 +104,6 @@ const NewItemsStack = () => {
                     </animated.button >
                 </div>
             </div >
-
         )
     }
 
@@ -88,31 +113,14 @@ const NewItemsStack = () => {
                 <div className="shadow shadow-bottom"></div>
                 <animated.div
                     className="new-items-container"
-                    style={{
-                        ...containerSpring,
-                        position: "relative",
-                        overflow: expanded ? "scroll" : "hidden",
-                        backgroundColor: "var(--window)",
-                        paddingRight: "20px",
-                        paddingLeft: "24px",
-                        zIndex: 100
-                    }}
+                    style={containerSpring}
+                    ref={containerRef}
                 >
                     {springs.map((props, index) => (
                         <animated.div
                             key={index}
                             className="new-item"
-                            style={{
-                                ...props,
-                                position: 'relative',
-                                zIndex: (testItems.length - index),
-                                backgroundColor: "var(--window-background-color)",
-                                borderRadius: "8px",
-                                padding: "20px",
-                                margin: "8px 0px",
-                                fontWeight: "400",
-                                boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 1px 0px"
-                            }}
+                            style={props}
                         >
                             <div className='new-item-data'>
                                 {testItems[index]}
@@ -121,7 +129,7 @@ const NewItemsStack = () => {
                                 <div className='category-icon'>
                                     Groceries
                                 </div>
-                                <div className='icon' id="checkmark-icon">
+                                <div className='icon' id="checkmark-icon" onClick={foo}>
                                     <CheckMark />
                                 </div>
                                 <div className='icon' id="ellipsis-icon">
@@ -131,11 +139,8 @@ const NewItemsStack = () => {
                         </animated.div>
                     ))}
                 </animated.div >
-            </div>
-            <BottomButtons />
-            <button onClick={handleFoo} >
-                Pop
-            </button>
+            </div >
+            {testItems.length > 1 && <BottomButtons />}
         </>
     )
 }
