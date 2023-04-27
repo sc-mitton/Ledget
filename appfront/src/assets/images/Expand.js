@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Ellipsis = ({
+const Expand = ({
     className = null,
     width = ".8em",
     height = ".8em",
@@ -37,4 +37,4 @@ const Ellipsis = ({
     )
 }
 
-export default Ellipsis
+export default Expand

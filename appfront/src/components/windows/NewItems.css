@@ -1,3 +1,5 @@
+/*
+
 /* Bottom Shadow */
 .new-items {
     display: flex;
@@ -83,24 +85,30 @@
 }
 
 /* Collapse Button */
-#collapse-button-container {
+#expand-button-container {
     display: flex;
     justify-content: center;
     margin: 8px 0px 18px 0px;
+    z-index: 200;
 }
 
-#collapse-button-container div:first-child {
+#expand-button {
+    padding: 2px 4px 2px 8px;
     background-color: var(--button-gray);
     transition: background-color .3s ease-out;
     color: var(--window);
     border-radius: 8px;
-    padding: 2px 8px;
-    margin-right: 4px;
     display: flex;
     align-items: center;
     cursor: pointer;
 }
 
-#collapse-button-container div:first-child:hover {
+#expand-button-icon {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+}
+
+#expand-button:hover {
     background-color: var(--button-hover-gray);
 }

@@ -88,7 +88,7 @@
     position: absolute;
     top: 80%;
     background-color: var(--drop-down-background);
-    border-radius: 3px;
+    border-radius: 5px;
     padding: 8px;
     animation: drop-down 0.2s ease;
 }

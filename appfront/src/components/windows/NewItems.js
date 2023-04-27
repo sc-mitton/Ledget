@@ -6,13 +6,31 @@ import { useSprings, useSpring, animated } from '@react-spring/web'
 import "./NewItems.css"
 import Ellipsis from "../../assets/images/Ellipsis"
 import CheckMark from "../../assets/images/CheckMark"
-import Collapse from "../../assets/images/Collapse"
+import Expand from "../../assets/images/Expand"
 
 // TODO: pull this data in from backend
 const data = [
     'Publix', 'Movies', 'Gas', 'Rent', 'Clothes',
     'Pizza', 'Movies', 'Gas', 'Rent', 'Clothes'
 ]
+
+const springsConfig = {
+    position: 'relative',
+    backgroundColor: "var(--window-background-color)",
+    borderRadius: "8px",
+    padding: "20px",
+    margin: "8px 0px",
+    fontWeight: "400",
+    boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 1px 0px"
+}
+
+const containerSpringConfig = {
+    overflowX: 'hidden',
+    maxHeight: '110px',
+    backgroundColor: "var(--window)",
+    paddingRight: "20px",
+    paddingLeft: "24px",
+}
 
 const NewItemsStack = () => {
     const stackMax = 2
@@ -25,43 +43,45 @@ const NewItemsStack = () => {
     const [containerSpring, containerApi] = useSpring(() => ({
         zIndex: 100,
         overflowY: expanded ? "scroll" : "hidden",
-
-        overflowX: 'hidden',
-        maxHeight: '110px',
-        backgroundColor: "var(--window)",
-        paddingRight: "20px",
-        paddingLeft: "24px",
+        ...containerSpringConfig
     }))
     const [springs, setSprings] = useSprings(testItems.length, index => ({
-        x: 0,
-        y: expanded || index === 0 ? 0 : -1 * translate * index,
-        transform: `scale(${!expanded ? (Math.pow(scaleFactor, index)) : 1})`,
-        zIndex: (testItems.length - index),
-        opacity: !expanded && index > stackMax ? 0 : 1,
-
-        position: 'relative',
-        backgroundColor: "var(--window-background-color)",
-        borderRadius: "8px",
-        padding: "20px",
-        margin: "8px 0px",
-        fontWeight: "400",
-        boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 1px 0px"
+        from: {
+            x: 0,
+            y: (-1 * translate * index) + 30 * (index + 1),
+        },
+        to: {
+            x: 0,
+            y: expanded || index === 0 ? 0 : -1 * translate * index,
+            transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
+            zIndex: (testItems.length - index),
+            opacity: !expanded && index > stackMax ? 0 : 1,
+            backgroundColor: index === 0 || expanded
+                ? "var(--window-background-color)"
+                : `hsl(240, 0%, ${100 - ((index + 2) * 4)}%)`,
+            ...springsConfig
+        },
+        config: { tension: 100, friction: 15 },
     }))
     const rotationSpring = useSpring({ transform: `rotate(${expanded ? 0 : 180}deg)` })
 
     useEffect(() => {
         setSprings.start(index => ({
-            x: 0,
-            y: expanded || index === 0 ? 0 : -1 * translate * index,
-            transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
-            opacity: !expanded && index > stackMax ? 0 : 1,
-            zIndex: (testItems.length - index)
+            to: {
+                x: 0,
+                y: expanded || index === 0 ? 0 : -1 * translate * index,
+                transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
+                opacity: !expanded && index > stackMax ? 0 : 1,
+                zIndex: (testItems.length - index),
+                backgroundColor: index === 0 || expanded
+                    ? "var(--window-background-color)"
+                    : `hsl(240, 0%, ${100 - ((index + 2) * 4)}%)`,
+            }
         }))
 
         containerApi.start({
             maxHeight: expanded ? '270px' : '110px',
             overflowY: expanded ? "scroll" : "hidden",
-            config: { duration: 300 },
             onStart: () => {
                 if (!expanded && containerRef.current) {
                     containerRef.current.scrollTop = 0
@@ -92,17 +112,18 @@ const NewItemsStack = () => {
         }))
     }
 
-    const BottomButtons = () => {
+    const BottomButtons = ({ visible }) => {
         return (
-            <div id="collapse-button-container" onClick={() => setExpanded(!expanded)}>
-                <div>
-                    {`items`}
+            visible &&
+            <div id="expand-button-container" onClick={() => setExpanded(!expanded)}>
+                <div id="expand-button">
+                    {`${testItems.length} items`}
                     < animated.button
                         className="icon"
-                        id="collapse-button"
+                        id="expand-button"
                         style={rotationSpring}
                     >
-                        <Collapse />
+                        <Expand />
                     </animated.button >
                 </div>
             </div >
@@ -144,19 +165,17 @@ const NewItemsStack = () => {
 
     return (
         <>
-            {testItems.length > 0 &&
-                <div className="new-items">
+            <div className="new-items">
+                <animated.div
+                    className="new-items-container"
+                    style={containerSpring}
+                    ref={containerRef}
+                >
                     <div className="shadow shadow-bottom"></div>
-                    <animated.div
-                        className="new-items-container"
-                        style={containerSpring}
-                        ref={containerRef}
-                    >
-                        <Stack />
-                    </animated.div >
-                </div >
-            }
-            {testItems.length > 1 && <BottomButtons />}
+                    <Stack />
+                </animated.div >
+            </div >
+            <BottomButtons visible={testItems.length > 1} />
         </>
     )
 }
