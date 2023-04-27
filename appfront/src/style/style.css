@@ -459,7 +459,7 @@ input[type=password]:not(:placeholder-shown) {
     align-items: center;
     padding: 6px;
     background-color: transparent;
-    border-radius: 6px;
+    border-radius: 4px;
     transition: background-color .3s ease;
     cursor: pointer
 }

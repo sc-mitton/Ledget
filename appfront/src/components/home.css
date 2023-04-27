@@ -10,7 +10,7 @@
 .window {
     background-color: var(--window-background-color);
     box-shadow: 0px 1px 0px 0px rgba(27, 31, 36, 0.04);
-    border-radius: 10px;
+    border-radius: 6px;
     padding: 8px 16px;
     box-sizing: border-box;
 }
@@ -43,7 +43,7 @@
 .window-header-button-selected {
     padding: 4px;
     margin: 0 4px;
-    border-radius: 6px;
+    border-radius: 3px;
 }
 
 .window-header-button:hover {
@@ -88,7 +88,7 @@
     position: absolute;
     top: 80%;
     background-color: var(--drop-down-background);
-    border-radius: 6px;
+    border-radius: 3px;
     padding: 8px;
     animation: drop-down 0.2s ease;
 }

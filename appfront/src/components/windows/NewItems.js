@@ -8,9 +8,10 @@ import Ellipsis from "../../assets/images/Ellipsis"
 import CheckMark from "../../assets/images/CheckMark"
 import Collapse from "../../assets/images/Collapse"
 
+// TODO: pull this data in from backend
 const data = [
     'Publix', 'Movies', 'Gas', 'Rent', 'Clothes',
-    'Pizza', 'Movies', 'Gas', 'Rent', 'Clothes',
+    'Pizza', 'Movies', 'Gas', 'Rent', 'Clothes'
 ]
 
 const NewItemsStack = () => {
@@ -69,20 +70,25 @@ const NewItemsStack = () => {
         })
     }, [expanded])
 
-    const onSuccessfulDelete = (i) => {
-        // Call backend to update database
-        // Remove item from testItems
-        setTestItems(testItems.filter((item, index) => index !== i));
+    const removeNewItem = (i) => {
+        setTestItems(testItems.filter((item, index) => index !== i))
+        setSprings.set(index => ({
+            x: 0,
+            y: expanded || index === 0 ? 0 : -1 * translate * index,
+            transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
+            opacity: !expanded && index > stackMax ? 0 : 1,
+            zIndex: (testItems.length - index)
+        }))
+        // TODO: remove item from backend
     }
 
-    const handleCheckClick = (i) => {
+    const handleConfirm = (i) => {
         setSprings.start(index => ({
             x: i === index ? 500 : 0,
             y: index > i ? (expanded ? -77 : (-1 * translate * index - 17)) : null,
+            transform: `scale(${!expanded ? 1 - ((index - 1) * scaleFactor) : 1})`,
             opacity: !expanded && index > stackMax + 1 ? 0 : 1,
-            onRest: () => {
-                index === (springs.length - 1) && onSuccessfulDelete(i)
-            }
+            onRest: () => index === i && removeNewItem(i)
         }))
     }
 
@@ -90,7 +96,7 @@ const NewItemsStack = () => {
         return (
             <div id="collapse-button-container" onClick={() => setExpanded(!expanded)}>
                 <div>
-                    {!expanded && `${testItems.length} items`}
+                    {`items`}
                     < animated.button
                         className="icon"
                         id="collapse-button"
@@ -103,43 +109,53 @@ const NewItemsStack = () => {
         )
     }
 
+    const Stack = () => {
+        return (
+            <>
+                {springs.map((props, index) => (
+                    <animated.div
+                        key={index}
+                        className="new-item"
+                        style={props}
+                    >
+                        <div className='new-item-data'>
+                            {testItems[index]}
+                        </div>
+                        <div className='new-item-icons'>
+                            <div className='category-icon'>
+                                Groceries
+                            </div>
+                            <div
+                                className='icon'
+                                id="checkmark-icon"
+                                onClick={() => handleConfirm(index)}
+                            >
+                                <CheckMark />
+                            </div>
+                            <div className='icon' id="ellipsis-icon">
+                                <Ellipsis />
+                            </div>
+                        </div>
+                    </animated.div>
+                ))}
+            </>
+        )
+    }
+
     return (
         <>
-            <div className="new-items">
-                <div className="shadow shadow-bottom"></div>
-                <animated.div
-                    className="new-items-container"
-                    style={containerSpring}
-                    ref={containerRef}
-                >
-                    {springs.map((props, index) => (
-                        <animated.div
-                            key={index}
-                            className="new-item"
-                            style={props}
-                        >
-                            <div className='new-item-data'>
-                                {testItems[index]}
-                            </div>
-                            <div className='new-item-icons'>
-                                <div className='category-icon'>
-                                    Groceries
-                                </div>
-                                <div
-                                    className='icon'
-                                    id="checkmark-icon"
-                                    onClick={() => handleCheckClick(index)}
-                                >
-                                    <CheckMark />
-                                </div>
-                                <div className='icon' id="ellipsis-icon">
-                                    <Ellipsis />
-                                </div>
-                            </div>
-                        </animated.div>
-                    ))}
-                </animated.div >
-            </div >
+            {testItems.length > 0 &&
+                <div className="new-items">
+                    <div className="shadow shadow-bottom"></div>
+                    <animated.div
+                        className="new-items-container"
+                        style={containerSpring}
+                        ref={containerRef}
+                    >
+                        <Stack />
+                    </animated.div >
+                </div >
+            }
             {testItems.length > 1 && <BottomButtons />}
         </>
     )
