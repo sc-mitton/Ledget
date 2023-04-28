@@ -88,18 +88,18 @@ function Budget() {
         return (
             <div id="month-picker" ref={monthPickerRef}>
                 <h2>{monthMappings[month - 1][1]} {year}</h2>
-                <button id='header-arrow' onClick={handleArrowClick} >
-                    <Arrow scale={.7} strokeWidth={4} />
+                <button className='icon' id='header-arrow' onClick={handleArrowClick} >
+                    <Arrow />
                 </button>
                 {picker &&
                     <div id="picker-container">
                         <div id="year-navigation">
                             <button className="arrow-nav" onClick={decrementYear}>
-                                <Arrow stroke='#f8f8f8' scale={.45} rotation={90} />
+                                <Arrow stroke='#f8f8f8' scale={.7} rotation={90} />
                             </button>
                             <div>{pickerYear}</div>
                             <button className="arrow-nav" onClick={incrementYear}>
-                                <Arrow stroke='#f8f8f8' scale={.45} rotation={-90} />
+                                <Arrow stroke='#f8f8f8' scale={.7} rotation={-90} />
                             </button>
                         </div>
                         <div className="month-picker-grid">

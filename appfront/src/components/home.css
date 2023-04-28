@@ -80,13 +80,9 @@
     position: relative;
 }
 
-#header-arrow {
-    padding-top: 5px;
-}
-
 #picker-container {
     position: absolute;
-    top: 80%;
+    top: 100%;
     background-color: var(--drop-down-background);
     border-radius: 5px;
     padding: 8px;
@@ -100,6 +96,10 @@
     padding-bottom: 3px;
 }
 
+#header-arrow {
+    margin-left: 4px;
+}
+
 #year-navigation * {
     color: var(--window);
 }
@@ -109,6 +109,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin-bottom: 4px;
 }
 
 .month-picker-grid {
@@ -137,8 +138,8 @@
 .month-picker-item,
 .month-picker-item-selected {
     color: var(--window);
-    padding: 8px;
-    border-radius: 3px;
+    padding: 2px 8px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
 }
@@ -150,7 +151,6 @@
 .month-picker-item:hover {
     background-color: var(--drop-down-hover-background);
 }
-
 
 
 /* -------------------------------------------------------------------------- */

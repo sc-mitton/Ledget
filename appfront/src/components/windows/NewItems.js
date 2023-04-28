@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 
-import { useSprings, useSpring, animated, useTransition } from '@react-spring/web'
+import { useSpring, animated, useTransition } from '@react-spring/web'
 
 import "./NewItems.css"
 import Ellipsis from "../../assets/images/Ellipsis"
@@ -10,18 +10,25 @@ import Expand from "../../assets/images/Expand"
 
 // TODO: pull this data in from backend
 let data = [
-    'Publix', 'Movies', 'Gas', 'Rent', 'Clothes',
-    'Pizza', 'Movies', 'Gas', 'Rent', 'Clothes'
+    { 'id': 0, 'data': 'Publix' },
+    { 'id': 1, 'data': 'Movies' },
+    { 'id': 2, 'data': 'Gas' },
+    { 'id': 3, 'data': 'Rent' },
+    { 'id': 4, 'data': 'Clothes' },
+    { 'id': 5, 'data': 'Pizza' },
+    { 'id': 6, 'data': 'Movies' },
+    { 'id': 7, 'data': 'Gas' },
+    { 'id': 8, 'data': 'Rent' },
+    { 'id': 9, 'data': 'Clothes' }
 ]
 
 const springsConfig = {
     position: 'relative',
-    backgroundColor: "var(--window-background-color)",
     borderRadius: "8px",
     padding: "20px",
     margin: "8px 0px",
     fontWeight: "400",
-    boxShadow: "rgba(0, 0, 0, 0.05) 0px 1px 1px 0px",
+    boxShadow: "rgba(0, 0, 0, 0.03) 0px 1px 1px 0px",
     x: 0,
 }
 
@@ -39,45 +46,49 @@ const NewItemsStack = () => {
     const translate = 60
 
     const [expanded, setExpanded] = useState(false)
-    const [ItemsLength, setItemsLength] = useState(data.length)
+    const [items, setItems] = useState(data)
     const containerRef = useRef(null)
     const [containerSpring, containerApi] = useSpring(() => ({
         zIndex: 100,
         overflowY: expanded ? "scroll" : "hidden",
         ...containerSpringConfig
     }))
-    const [springs, setSprings] = useSprings(data.length, index => ({
-        from: {
-            y: (-1 * translate * index) + 30 * (index + 1),
-        },
-        to: {
-            y: expanded || index === 0 ? 0 : -1 * translate * index,
-            transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
-            zIndex: (data.length - index),
-            opacity: !expanded && index > stackMax ? 0 : 1,
-            backgroundColor: index === 0 || expanded
-                ? "var(--window-background-color)"
-                : `hsl(0, 0%, ${95 - (index * 4)}%)`,
-            ...springsConfig
-        },
-        config: { tension: 100, friction: 15 },
-    }))
-    const rotationSpring = useSpring({ transform: `rotate(${expanded ? 0 : 180}deg)` })
-
-
-    useEffect(() => {
-        setSprings.start(index => ({
-            to: {
+    const transitions = useTransition(
+        items,
+        {
+            from: (item, index) => ({
+                y: (-1 * translate * index) + 30 * (index + 1),
+                transform: `scale(${!expanded ? 1 - ((index + 1) * scaleFactor * 2) : 1})`,
+            }),
+            enter: (item, index) => ({
                 y: expanded || index === 0 ? 0 : -1 * translate * index,
                 transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
-                opacity: !expanded && index > stackMax ? 0 : 1,
                 zIndex: (data.length - index),
+                opacity: !expanded && index > stackMax ? 0 : 1,
                 backgroundColor: index === 0 || expanded
                     ? "var(--window-background-color)"
                     : `hsl(0, 0%, ${95 - (index * 4)}%)`,
-            }
-        }))
+                ...springsConfig
+            }),
+            update: (item, index, state) => {
+                return {
+                    y: expanded || index === 0 ? 0 : -1 * translate * index,
+                    transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
+                    zIndex: (data.length - index),
+                    opacity: !expanded && index > stackMax ? 0 : 1,
+                    backgroundColor: index === 0 || expanded
+                        ? "var(--window-background-color)"
+                        : `hsl(0, 0%, ${95 - (index * 4)}%)`,
+                }
+            },
+            leave: [{ x: 700, opacity: 0, height: '0%' }],
+            config: { tension: 100, friction: 15 },
+        }
+    )
+    const rotationSpring = useSpring({ transform: `rotate(${expanded ? 0 : 180}deg)` })
 
+    useEffect(() => {
+        // update container spring
         containerApi.start({
             maxHeight: expanded ? '270px' : '110px',
             overflowY: expanded ? "scroll" : "hidden",
@@ -89,35 +100,11 @@ const NewItemsStack = () => {
         })
     }, [expanded])
 
-    const handleRemove = i => {
-        setSprings.start(index => {
-            if (index === i) {
-                return {
-                    opacity: 0,
-                    x: 500,
-                    transform: `scale(0.5)`,
-                    onRest: () => {
-                        setSprings.delete(i)
-                        springs.splice(i, 1)
-                    }
-                }
-            } else if (index > i) {
-                return {
-                    y: expanded ? -77 : (-1 * translate * index - 17),
-                    transform: `scale(${!expanded ? 1 - ((index - 1) * scaleFactor) : 1})`,
-                    backgroundColor: index === 0 || expanded
-                        ? "var(--window-background-color)"
-                        : `hsl(0, 0%, ${95 - ((index - 1) * 4)}%)`,
-                    opacity: !expanded && index > stackMax + 1 ? 0 : 1
-                }
-            }
-        })
-    }
-
     const handleConfirm = i => {
-        handleRemove(i)
-        // setItemsLength(ItemsLength - 1)
-        // remove item from backend
+        setItems(items.filter(
+            (item) => item.id !== i
+        ))
+        // // remove item from backend
     }
 
     const BottomButtons = ({ visible }) => {
@@ -125,7 +112,7 @@ const NewItemsStack = () => {
             visible &&
             <div id="expand-button-container" >
                 <div id="expand-button" onClick={() => setExpanded(!expanded)}>
-                    {`${ItemsLength} items `}
+                    {`${items.length} items `}
                     < animated.button
                         id="expand-button-icon"
                         style={rotationSpring}
@@ -140,14 +127,14 @@ const NewItemsStack = () => {
     const Stack = () => {
         return (
             <>
-                {springs.map((props, index) => (
+                {transitions((style, item) => (
                     <animated.div
-                        key={`new-item${index}`}
+                        key={`item-${item.id}`}
                         className="new-item"
-                        style={props}
+                        style={style}
                     >
                         <div className='new-item-data'>
-                            {data[index]}
+                            {item.data}
                         </div>
                         <div className='new-item-icons'>
                             <div className='category-icon'>
@@ -156,7 +143,7 @@ const NewItemsStack = () => {
                             <div
                                 className='icon'
                                 id="checkmark-icon"
-                                onClick={() => handleConfirm(index)}
+                                onClick={() => handleConfirm(item.id)}
                             >
                                 <CheckMark />
                             </div>
@@ -182,7 +169,7 @@ const NewItemsStack = () => {
                     <Stack />
                 </animated.div >
             </div >
-            <BottomButtons visible={ItemsLength > 1} />
+            <BottomButtons visible={items.length > 1} />
         </>
     )
 }

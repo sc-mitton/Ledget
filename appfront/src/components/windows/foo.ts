@@ -34,7 +34,6 @@ function MessageHub({
 
     const transitions = useTransition(items, {
         from: { opacity: 0, height: 0, life: '100%' },
-        keys: item => item.key,
         enter: item => async (next, cancel) => {
             cancelMap.set(item, cancel)
             await next({ opacity: 1, height: refMap.get(item).offsetHeight })
