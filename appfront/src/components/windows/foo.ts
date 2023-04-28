@@ -1,63 +1,100 @@
-import React, { useRef } from 'react'
-import { useSprings, animated } from '@react-spring/web'
-import { useDrag } from 'react-use-gesture'
-import clamp from 'lodash.clamp'
-import swap from 'lodash-move'
+import React, { useRef, useState, useMemo, useEffect, MouseEvent } from 'react'
+import { loremIpsum } from 'lorem-ipsum'
+import { X } from 'react-feather'
+import { useTransition } from '@react-spring/web'
+import { Main, Container, Message, Button, Content, Life } from './styles'
 
-import styles from './styles.module.css'
+let id = 0
 
-const fn = (order: number[], active = false, originalIndex = 0, curIndex = 0, y = 0) => (index: number) =>
-    active && index === originalIndex
-        ? {
-            y: curIndex * 50 + y,
-            scale: 1.1,
-            zIndex: 1,
-            shadow: 15,
-            immediate: (key: string) => key === 'y' || key === 'zIndex',
-        }
-        : {
-            y: order.indexOf(index) * 50,
-            scale: 1,
-            zIndex: 0,
-            shadow: 1,
-            immediate: false,
-        }
+interface MessageHubProps {
+    config?: {
+        tension: number
+        friction: number
+        precision: number
+    }
+    timeout?: number
+    children: (add: AddFunction) => void
+}
 
-function DraggableList({ items }: { items: string[] }) {
-    const order = useRef(items.map((_, index) => index)) // Store indicies as a local ref, this represents the item order
-    const [springs, api] = useSprings(items.length, fn(order.current)) // Create springs, each corresponds to an item, controlling its transform, scale, etc.
-    const bind = useDrag(({ args: [originalIndex], active, movement: [, y] }) => {
-        const curIndex = order.current.indexOf(originalIndex)
-        const curRow = clamp(Math.round((curIndex * 100 + y) / 100), 0, items.length - 1)
-        const newOrder = swap(order.current, curIndex, curRow)
-        api.start(fn(newOrder, active, originalIndex, curIndex, y)) // Feed springs new style data, they'll animate the view without causing a single render
-        if (!active) order.current = newOrder
+type AddFunction = (msg: string) => void
+
+interface Item {
+    key: number
+    msg: string
+}
+
+function MessageHub({
+    config = { tension: 125, friction: 20, precision: 0.1 },
+    timeout = 3000,
+    children,
+}: MessageHubProps) {
+    const refMap = useMemo(() => new WeakMap(), [])
+    const cancelMap = useMemo(() => new WeakMap(), [])
+    const [items, setItems] = useState<Item[]>([])
+
+    const transitions = useTransition(items, {
+        from: { opacity: 0, height: 0, life: '100%' },
+        keys: item => item.key,
+        enter: item => async (next, cancel) => {
+            cancelMap.set(item, cancel)
+            await next({ opacity: 1, height: refMap.get(item).offsetHeight })
+            await next({ life: '0%' })
+        },
+        leave: [{ opacity: 0 }, { height: 0 }],
+        onRest: (result, ctrl, item) => {
+            setItems(state =>
+                state.filter(i => {
+                    return i.key !== item.key
+                })
+            )
+        },
+        config: (item, index, phase) => key => phase === 'enter' && key === 'life' ? { duration: timeout } : config,
     })
+
+    useEffect(() => {
+        children((msg: string) => {
+            setItems(state => [...state, { key: id++, msg }])
+        })
+    }, [])
+
     return (
-        <div className= { styles.content } style = {{ height: items.length * 50 }
+        <Container>
+        { transitions(({ life, ...style }, item) => (
+            <Message style= { style } >
+            <Content ref={ (ref: HTMLDivElement) => ref && refMap.set(item, ref) }>
+                <Life style={ { right: life } } />
+                    < p > { item.msg } < /p>
+                    < Button
+    onClick = {(e: MouseEvent) => {
+        e.stopPropagation()
+        if (cancelMap.has(item) && life.get() !== '0%') cancelMap.get(item)()
+    }
 }>
-{
-    springs.map(({ zIndex, shadow, y, scale }, i) => (
-        <animated.div
-          { ...bind(i) }
-          key = { i }
-          style = {{
-        zIndex,
-        boxShadow: shadow.to(s => `rgba(0, 0, 0, 0.15) 0px ${s}px ${2 * s}px 0px`),
-        y,
-        scale,
-    }}
-children = { items[i]}
-    />
+    <X size={ 18 } />
+        < /Button>
+        < /Content>
+        < /Message>
       ))}
-</div>
+</Container>
   )
 }
 
 export default function App() {
+    const ref = useRef<null | AddFunction>(null)
+
+    const handleClick = () => {
+        ref.current?.(loremIpsum())
+    }
+
     return (
-        <div className= { styles.container } >
-        <DraggableList items={ 'Lorem ipsum dolor sit'.split(' ') } />
-            < /div>
+        <Main onClick= { handleClick } >
+        Click here to create notifications
+            < MessageHub
+    children = {(add: AddFunction) => {
+        ref.current = add
+    }
+}
+/>
+    < /Main>
   )
 }
