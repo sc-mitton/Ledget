@@ -66,34 +66,13 @@
 #expand-button-container {
     margin-bottom: 12px;
     margin-top: 4px;
-}
-
-#expand-button-container {
+    z-index: 200;
     display: flex;
     flex-direction: row;
-    justify-content: end;
-}
-
-#expand-button {
-    margin: 0 auto;
-    cursor: pointer;
-    font-weight: 600;
-    background-color: transparent;
-    transition: background-color .3s ease-out;
-    padding: 3px 12px;
-    border-radius: 4px;
-}
-
-/* Collapse Button */
-#expand-button-container {
-    display: flex;
     justify-content: center;
-    margin: 8px 0px 18px 0px;
-    z-index: 200;
 }
 
 #expand-button {
-    padding: 2px 4px 2px 8px;
     background-color: var(--button-gray);
     transition: background-color .3s ease-out;
     color: var(--window);
@@ -101,12 +80,14 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    padding-left: 8px;
 }
 
 #expand-button-icon {
     display: flex;
     align-items: center;
-    padding: 0 4px;
+    padding: 4px;
+    margin-right: 4px;
 }
 
 #expand-button:hover {

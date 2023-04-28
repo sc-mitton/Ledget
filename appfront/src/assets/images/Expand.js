@@ -2,8 +2,8 @@ import React from 'react'
 
 const Expand = ({
     className = null,
-    width = ".8em",
-    height = ".8em",
+    width = ".7em",
+    height = ".7em",
     stroke = "#f8f8f8",
     strokeWidth = "16"
 }) => {

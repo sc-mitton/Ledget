@@ -7,7 +7,7 @@
     --window-border: rgb(161, 160, 160);
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
 
-    --button-gray: #464646;
+    --button-gray: rgb(70, 70, 70);
     --buton-border-gray: rgb(60, 60, 60);
     --button-hover-gray: rgb(36, 36, 36);
     --border-bottom-gray: #b9b9b9;
@@ -41,7 +41,7 @@
     --input-focus: rgb(107, 155, 246);
 
     /* Windows */
-    --window-background-color: rgb(241, 241, 241);
+    --window-background-color: #f1f1f1;
 
     /* Icons & Buttons */
     --icon-dark-gray: #464646;
@@ -457,7 +457,7 @@ input[type=password]:not(:placeholder-shown) {
 .icon {
     display: flex;
     align-items: center;
-    padding: 6px;
+    padding: 4px;
     background-color: transparent;
     border-radius: 4px;
     transition: background-color .3s ease;
