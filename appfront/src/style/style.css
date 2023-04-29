@@ -50,6 +50,9 @@
     --icon-white: rgb(252, 252, 252);
     --drop-down-background: rgb(52, 52, 52);
     --drop-down-hover-background: rgb(103, 103, 103);
+
+    /* Misc */
+    --scroll-bar: rgb(199, 221, 252);
 }
 
 /* Override color values for Firefox */

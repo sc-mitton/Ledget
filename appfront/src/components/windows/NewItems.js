@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 
-import { useSpring, animated, useTransition } from '@react-spring/web'
+import { useSpring, animated, useTransition, SpringRef } from '@react-spring/web'
 
 import "./NewItems.css"
 import Ellipsis from "../../assets/images/Ellipsis"
@@ -22,11 +22,21 @@ let data = [
     { 'id': 9, 'data': 'Clothes' }
 ]
 
+const stackMax = 2
+const scaleFactor = .05
+const translate = 12
+const expandedTranslate = 75
+const collapsedHeight = 94
+const expandedHeight = 270
+
 const springsConfig = {
-    position: 'relative',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    marginRight: '12px',
+    marginLeft: '16px',
     borderRadius: "8px",
     padding: "20px",
-    margin: "8px 0px",
     fontWeight: "400",
     boxShadow: "rgba(0, 0, 0, 0.03) 0px 1px 1px 0px",
     x: 0,
@@ -34,16 +44,14 @@ const springsConfig = {
 
 const containerSpringConfig = {
     overflowX: 'hidden',
-    maxHeight: '110px',
+    boxSize: 'border-box',
+    height: collapsedHeight,
     backgroundColor: "var(--window)",
-    paddingRight: "20px",
-    paddingLeft: "24px",
+    position: 'relative',
+    margin: '0 8px',
 }
 
 const NewItemsStack = () => {
-    const stackMax = 2
-    const scaleFactor = .05
-    const translate = 60
 
     const [expanded, setExpanded] = useState(false)
     const [items, setItems] = useState(data)
@@ -57,11 +65,11 @@ const NewItemsStack = () => {
         items,
         {
             from: (item, index) => ({
-                y: (-1 * translate * index) + 30 * (index + 1),
+                top: (1 * translate * index) + 30 * (index + 1),
                 transform: `scale(${!expanded ? 1 - ((index + 1) * scaleFactor * 2) : 1})`,
             }),
             enter: (item, index) => ({
-                y: expanded || index === 0 ? 0 : -1 * translate * index,
+                top: expanded || index === 0 ? 0 : 1 * translate * index,
                 transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
                 zIndex: (data.length - index),
                 opacity: !expanded && index > stackMax ? 0 : 1,
@@ -72,7 +80,7 @@ const NewItemsStack = () => {
             }),
             update: (item, index, state) => {
                 return {
-                    y: expanded || index === 0 ? 0 : -1 * translate * index,
+                    top: expanded || index === 0 ? index * expandedTranslate : 1 * translate * index,
                     transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
                     zIndex: (data.length - index),
                     opacity: !expanded && index > stackMax ? 0 : 1,
@@ -81,24 +89,50 @@ const NewItemsStack = () => {
                         : `hsl(0, 0%, ${95 - (index * 4)}%)`,
                 }
             },
-            leave: [{ x: 700, opacity: 0, height: '0%' }],
-            config: { tension: 100, friction: 15 },
+            leave: (item, index) => async (next, cancel) => {
+                // cancel the animation if the item is removed before it's finished animating
+                const id = item.id;
+                await next({ x: 100, opacity: 0, config: { duration: 100 } });
+                if (index === items.findIndex(item => item.id === id)) {
+                    setItems(items => items.filter(item => item.id !== id));
+                }
+            },
+            config: { precision: 0.1 }
         }
     )
-    const rotationSpring = useSpring({ transform: `rotate(${expanded ? 0 : 180}deg)` })
+    const rotationSpring = useSpring({
+        transform: `rotate(${expanded ? 0 : 180}deg)`
+    })
+    const buttomProps = useSpring({
+        marginTop: items.length === 0 ? '0px' : '4px',
+        height: items.length > 1 ? '1.3em' : '0em',
+        marginBottom: items.length > 1 ? '12px' : '0px',
+        zIndex: "200",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center"
+    })
 
     useEffect(() => {
         // update container spring
+
+        // Since items inside container are absolutely positioned
+        // we can auto size it, and we have to shrink it when there
+        // is empty space at the bottom due to items being removed
         containerApi.start({
-            maxHeight: expanded ? '270px' : '110px',
-            overflowY: expanded ? "scroll" : "hidden",
+            height: expanded
+                ? Math.min(expandedHeight, items.length * expandedTranslate)
+                : (items.length > 0 ? collapsedHeight : 0),
+            overflowY: expanded
+                ? (expandedHeight < items.length * expandedTranslate ? 'scroll' : 'hidden')
+                : 'hidden',
             onStart: () => {
                 if (!expanded && containerRef.current) {
                     containerRef.current.scrollTop = 0
                 }
             }
         })
-    }, [expanded])
+    }, [expanded, items])
 
     const handleConfirm = i => {
         setItems(items.filter(
@@ -107,20 +141,24 @@ const NewItemsStack = () => {
         // // remove item from backend
     }
 
-    const BottomButtons = ({ visible }) => {
+    const BottomButtons = () => {
         return (
-            visible &&
-            <div id="expand-button-container" >
+            <animated.div
+                id="expand-button-container"
+                className="bottom-buttons"
+                style={buttomProps}
+            >
                 <div id="expand-button" onClick={() => setExpanded(!expanded)}>
-                    {`${items.length} items `}
+                    {`${items.length} `}
                     < animated.button
+
                         id="expand-button-icon"
                         style={rotationSpring}
                     >
                         <Expand />
                     </animated.button >
                 </div>
-            </div >
+            </animated.div>
         )
     }
 
@@ -160,16 +198,16 @@ const NewItemsStack = () => {
     return (
         <>
             <div className="new-items">
+                <div className="shadow shadow-bottom"></div>
                 <animated.div
                     className="new-items-container"
                     style={containerSpring}
                     ref={containerRef}
                 >
-                    <div className="shadow shadow-bottom"></div>
                     <Stack />
                 </animated.div >
             </div >
-            <BottomButtons visible={items.length > 1} />
+            <BottomButtons />
         </>
     )
 }
