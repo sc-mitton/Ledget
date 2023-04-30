@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 
-import { useSpring, animated, useTransition, SpringRef } from '@react-spring/web'
+import { useSpring, animated, useTransition } from '@react-spring/web'
 
 import "./NewItems.css"
 import Ellipsis from "../../assets/images/Ellipsis"

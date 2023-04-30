@@ -98,6 +98,14 @@ h1,
 h2,
 h3 {
     color: var(--logo-dark);
+}
+
+h1 {
+    margin-top: 0
+}
+
+h2,
+h3 {
     margin: 0
 }
 
@@ -262,7 +270,7 @@ input[type=password]:not(:placeholder-shown) {
 .invalid-submit,
 .valid-submit,
 .submit-button {
-    padding: 8px 12px;
+    padding: 5px 12px;
     color: var(--window);
     background-color: var(--button-gray);
     border: 1.5px solid var(--button-border-gray);
@@ -454,9 +462,7 @@ input[type=password]:not(:placeholder-shown) {
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                 Icon Styles                                */
-/* -------------------------------------------------------------------------- */
+/* ------------------------------- Icon Styles ------------------------------ */
 
 .icon {
     display: flex;
@@ -470,4 +476,17 @@ input[type=password]:not(:placeholder-shown) {
 
 .icon:hover {
     background-color: rgb(0, 0, 0, .07);
+}
+
+/* ---------------------------- Sub Header Styles --------------------------- */
+
+.sub-header,
+.sub-header-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sub-header {
+    margin: 4px 0;
 }

@@ -1,0 +1,57 @@
+.modal-footer {
+    margin-top: 32px;
+    display: flex;
+    justify-content: end;
+    margin-top: 32px;
+    font-weight: 500;
+}
+
+.exit-button {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    z-index: 303;
+    padding: 6px;
+}
+
+
+.edit-button {
+    padding: 4px 12px;
+    font-weight: 500;
+}
+
+.edit-button:hover {
+    background-color: var(--icon-hover-light-gray);
+    transition: 0.3s;
+    border-radius: 4px;
+}
+
+.cancel-button {
+    padding: 4px 8px;
+    font-weight: 500;
+    margin: 0 4px;
+}
+
+.cancel-button:hover {
+    background-color: var(--icon-hover-light-gray);
+    transition: 0.3s;
+    border-radius: 4px;
+}
+
+.modal-icon {
+    animation: pop 0.5s ease-in-out;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(0.7);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
