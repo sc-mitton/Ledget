@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
 import './modal.css'
@@ -17,7 +17,7 @@ const modalConfig = {
     justifyContent: 'center',
     alignItems: 'center',
     background: 'rgba(49, 49, 49, 0.85)',
-    backdropFilter: 'blur(4px)'
+    backdropFilter: 'blur(5px)'
 }
 
 const contentConfig = {
@@ -36,29 +36,19 @@ function withModal(WrappedComponent) {
         const modalRef = useRef(null)
         const [visible, setVisible] = useState(true)
 
-        // useEffect(() => {
-        //     function handleClickOutside(event) {
-        //         if (modalRef.current && !modalRef.current.contains(event.target)) {
-        //             setVisible(false);
-        //         }
-        //     }
-        //     document.addEventListener('mousedown', handleClickOutside);
-        //     return () => {
-        //         document.removeEventListener('mousedown', handleClickOutside);
-        //     };
-        // }, [modalRef])
-
         const opacityTransitions = useTransition(visible, {
             from: { opacity: 0 },
             enter: { opacity: 1, ...modalConfig },
             leave: { opacity: 0 },
+            config: { duration: 200 },
             onDestroyed: () => props.cleanUp(),
         });
 
         const scaleTransitions = useTransition(visible, {
-            from: { scale: 0.9 },
+            from: { scale: 0.95 },
             enter: { scale: 1, ...contentConfig },
-            leave: { scale: 0.9 },
+            leave: { scale: 0.95 },
+            config: { duration: 200 },
         })
 
         const Exit = () => {
