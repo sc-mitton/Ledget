@@ -34,12 +34,17 @@ function LoginForm() {
 
     const VisibilityIcon = () => {
         return (
-            <img
-                src={pswdVisible ? hidePassword : showPassword}
-                alt="toggle visibility"
-                className="hide-password-icon"
+            <button
                 onClick={() => setPswdVisible(!pswdVisible)}
-            />
+                className="hide-password-button"
+                aria-label="toggle password visibility"
+            >
+                <img
+                    src={pswdVisible ? hidePassword : showPassword}
+                    alt="toggle visibility"
+                    className="hide-password-icon"
+                />
+            </button>
         )
     }
 
@@ -124,6 +129,7 @@ function LoginForm() {
                     <input
                         type={pswdVisible ? "text" : "password"}
                         placeholder="Password"
+                        name="password"
                         val={pwdRef}
                         ref={pwdRef}
                         onChange={(e) => {
@@ -142,6 +148,7 @@ function LoginForm() {
                 <div>
                     <input
                         className="valid-submit"
+                        name="submit"
                         type="submit"
                         value="Sign In"
                         ref={submitButtonRef}

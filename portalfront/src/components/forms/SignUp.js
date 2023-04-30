@@ -155,6 +155,7 @@ function SignUpForm() {
                     id="subscribe-button"
                     type='submit'
                     ref={submitButtonRef}
+                    aria-label="Submit form"
                 >
                     Sign Up
                 </button>

@@ -9,6 +9,7 @@ export const FormErrorTip = (props) => {
             <img
                 src={alert2}
                 className="error-tip-icon"
+                alt="Error"
             />
             {props.msg && <span className="error-tip-msg">{props.msg}</span>}
         </div>

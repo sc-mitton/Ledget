@@ -14,10 +14,18 @@ function Items() {
                     <h2>Items</h2>
                 </div>
                 <div className="window-header-buttons">
-                    <button className="icon" id="funnel-icon">
+                    <button
+                        className="icon"
+                        id="funnel-icon"
+                        aria-label="Filter items"
+                    >
                         <Funnel />
                     </button>
-                    <button className="icon" id="add-icon">
+                    <button
+                        className="icon"
+                        id="add-icon"
+                        aria-label="Manually add item"
+                    >
                         <Plus />
                     </button>
                 </div>

@@ -105,7 +105,7 @@ const NewItemsStack = () => {
     })
     const buttomProps = useSpring({
         marginTop: items.length === 0 ? '0px' : '4px',
-        height: items.length > 1 ? '1.3em' : '0em',
+        height: items.length > 1 ? '1.6em' : '0em',
         marginBottom: items.length > 1 ? '12px' : '0px',
         zIndex: "200",
         display: "flex",
@@ -151,9 +151,9 @@ const NewItemsStack = () => {
                 <div id="expand-button" onClick={() => setExpanded(!expanded)}>
                     {`${items.length} `}
                     < animated.button
-
                         id="expand-button-icon"
                         style={rotationSpring}
+                        aria-label="Expand new item stack"
                     >
                         <Expand />
                     </animated.button >
@@ -175,19 +175,27 @@ const NewItemsStack = () => {
                             {item.data}
                         </div>
                         <div className='new-item-icons'>
-                            <div className='category-icon'>
+                            <button
+                                className='category-icon'
+                                aria-label="Choose budget category"
+                            >
                                 Groceries
-                            </div>
-                            <div
+                            </button>
+                            <button
                                 className='icon'
                                 id="checkmark-icon"
                                 onClick={() => handleConfirm(item.id)}
+                                aria-label="Confirm item"
                             >
                                 <CheckMark />
-                            </div>
-                            <div className='icon' id="ellipsis-icon">
+                            </button>
+                            <button
+                                className='icon'
+                                id="ellipsis-icon"
+                                aria-label="More options"
+                            >
                                 <Ellipsis />
-                            </div>
+                            </button>
                         </div>
                     </animated.div>
                 ))}

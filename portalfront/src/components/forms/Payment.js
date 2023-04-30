@@ -363,6 +363,7 @@ function Form({ price }) {
                     type='submit'
                     form='billing-form'
                     ref={submitButtonRef}
+                    aria-label="Submit payment information"
                 >
                     {!processing && !succeeded &&
                         <span>{`Start ${price.trial_period_days}-day Free Trial`}</span>

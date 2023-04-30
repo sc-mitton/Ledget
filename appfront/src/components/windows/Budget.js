@@ -88,17 +88,30 @@ function Budget() {
         return (
             <div id="month-picker" ref={monthPickerRef}>
                 <h2>{monthMappings[month - 1][1]} {year}</h2>
-                <button className='icon' id='header-arrow' onClick={handleArrowClick} >
+                <button
+                    className='icon'
+                    id='header-arrow'
+                    onClick={handleArrowClick}
+                    aria-label="Open month picker"
+                >
                     <Arrow />
                 </button>
                 {picker &&
                     <div id="picker-container">
                         <div id="year-navigation">
-                            <button className="arrow-nav" onClick={decrementYear}>
+                            <button
+                                className="arrow-nav"
+                                onClick={decrementYear}
+                                aria-label="Decrement year"
+                            >
                                 <Arrow stroke='#f8f8f8' scale={.7} rotation={90} />
                             </button>
                             <div>{pickerYear}</div>
-                            <button className="arrow-nav" onClick={incrementYear}>
+                            <button
+                                className="arrow-nav"
+                                onClick={incrementYear}
+                                aria-label="Increment year"
+                            >
                                 <Arrow stroke='#f8f8f8' scale={.7} rotation={-90} />
                             </button>
                         </div>
@@ -119,12 +132,14 @@ function Budget() {
                     <button
                         onClick={() => setGraphView(!graphView)}
                         className={`window-header-button${!graphView ? '-selected' : ''}`}
+                        aria-label="Toggle cash flow view"
                     >
                         <CashFlow fill={!graphView ? "var(--window)" : null} />
                     </button>
                     <button
                         onClick={() => setGraphView(!graphView)}
                         className={`window-header-button${graphView ? '-selected' : ''}`}
+                        aria-label="Toggle graph view"
                     >
                         <Graph fill={graphView ? "var(--window)" : null} />
                     </button>

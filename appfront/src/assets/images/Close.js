@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Expand = ({
+const Close = ({
     className = null,
     width = "1em",
     height = "1em",
@@ -44,4 +44,4 @@ const Expand = ({
     )
 }
 
-export default Expand
+export default Close

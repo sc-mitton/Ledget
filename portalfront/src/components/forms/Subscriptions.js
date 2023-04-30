@@ -59,7 +59,11 @@ function Description(props) {
 function ContinueButton() {
     return (
         <div id="continue-to-payment-button-container">
-            <button type="submit" className="continue-to-payment-button valid-submit">
+            <button
+                type="submit"
+                className="continue-to-payment-button valid-submit"
+                arial-label="Continue to Payment"
+            >
                 Payment
                 <svg width="16" height="16" viewBox="4 0 20 18">
                     <path

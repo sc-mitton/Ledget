@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
 import './modal.css'
-import Close from '../../assets/images/Cancel'
+import Close from '../../assets/images/Close'
 
 const modalConfig = {
     width: '100vw',
@@ -53,9 +53,13 @@ function withModal(WrappedComponent) {
 
         const Exit = () => {
             return (
-                <div className="exit-button icon" onClick={() => setVisible(false)}>
+                <button
+                    className="exit-button icon"
+                    onClick={() => setVisible(false)}
+                    arial-label="Close modal"
+                >
                     <Close />
-                </div>
+                </button>
             )
         }
 

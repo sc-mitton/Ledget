@@ -33,28 +33,31 @@ function Header() {
     const Menu = () => {
         return (
             <div className="dropdown-menu">
-                <div
+                <button
                     className="dropdown-item"
                     onClick={() =>
                         setModal('account')}
+                    aria-label="Account menu item"
                 >
                     <Profile className="dropdown-icon" />
                     Account
-                </div>
-                <div
+                </button>
+                <button
                     className="dropdown-item"
                     onClick={() => setModal('settings')}
+                    aria-label="Settings menu item"
                 >
                     <img className="dropdown-icon" src={settings} alt="settings" />
                     Settings
-                </div>
-                <div
+                </button>
+                <button
                     className="dropdown-item"
                     onClick={() => setModal('help')}
+                    aria-label="Help menu item"
                 >
                     <img className="dropdown-icon" src={help} alt="help" />
                     Help
-                </div>
+                </button>
             </div>
         )
     }
@@ -66,14 +69,15 @@ function Header() {
                     <div id="header-logo">
                         <img src={logo} alt="Ledget Logo" />
                     </div>
-                    <div
+                    <button
                         id="header-profile"
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                         ref={dropdownRef}
+                        aria-label="Open profile menu"
                     >
                         <img id="profile-icon" src={profile} alt="Profile" />
                         {isDropdownOpen && <Menu />}
-                    </div>
+                    </button>
                 </div>
             </header>
             {modal === 'settings' && <Settings cleanUp={() => setModal('')} />}
