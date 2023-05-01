@@ -169,13 +169,18 @@ function SocialSignup() {
         <div className="social-signup-container">
             <div className="or-continue-with">Or sign up with</div>
             <div className="social-buttons-container">
-                <a id="google-auth-button" href="/">
+                <button
+                    id="google-auth-button"
+                    aria-label="Google sign up"
+                >
                     <img src={googleLogo} alt="Google" />
-                </a>
-                <a id="facebook-auth-button"
-                    href="/">
+                </button>
+                <button
+                    id="facebook-auth-button"
+                    aria-label="Facebook sign up"
+                >
                     <img src={fbLogo} alt="Facebook" />
-                </a>
+                </button>
             </div>
         </div>
     )

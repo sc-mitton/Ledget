@@ -87,6 +87,7 @@
 
 #facebook-auth-button {
     background-color: var(--mute-blue);
+    border: none;
     border-radius: 4px;
     width: 50%;
     margin-left: 4px;
@@ -101,6 +102,7 @@
 
 #google-auth-button {
     background-color: var(--mute-red);
+    border: none;
     border-radius: 4px;
     width: 50%;
     margin-right: 4px;

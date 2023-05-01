@@ -7,7 +7,7 @@ import Edit from '../../assets/images/Edit'
 
 
 function AccountContent(props) {
-    const [edit, setEdit] = useState(false)
+    const [hasUpdates, setHasUpdates] = useState(false)
 
     const handleSave = () => {
         // TODO: Save changes to database
@@ -15,16 +15,19 @@ function AccountContent(props) {
         props.setVisible(false)
     }
 
+    const handleAddInstitution = () => {
+        console.log('Add institution')
+        // TODO: Handle adding institutions
+    }
+
     const Info = () => {
         return (
             <div className='sub-header'>
                 <h3>Personal Info</h3>
                 <div className='sub-header-buttons'>
-                    {edit &&
-                        <button className='icon modal-icon' id='edit-icon'>
-                            <Edit />
-                        </button>
-                    }
+                    <button className='icon modal-icon' id='edit-icon'>
+                        <Edit />
+                    </button>
                 </div>
             </div>
         )
@@ -34,13 +37,6 @@ function AccountContent(props) {
         return (
             <div className='sub-header'>
                 <h3>Plan</h3>
-                <div className='sub-header-buttons'>
-                    {edit &&
-                        <button className='icon modal-icon' id='edit-icon'>
-                            <Edit />
-                        </button>
-                    }
-                </div>
             </div>
         )
     }
@@ -50,25 +46,25 @@ function AccountContent(props) {
             <div className='sub-header'>
                 <h3>Connected Institutions</h3>
                 <div className='sub-header-buttons'>
-                    {edit &&
-                        <>
-                            <button className='icon modal-icon' id='edit-icon'>
-                                <Edit />
-                            </button>
-                            <button className='icon modal-icon' id='add-icon'>
-                                <Plus />
-                            </button>
-                        </>
-                    }
+                    <>
+                        <button
+                            className='icon modal-icon'
+                            id='edit-icon'
+                            onClick={handleAddInstitution}
+                            aria-label="Edit institutions"
+                        >
+                            <Edit />
+                        </button>
+                        <button
+                            className='icon modal-icon'
+                            id='add-icon'
+                            onClick={handleAddInstitution}
+                            aria-label="Add institution"
+                        >
+                            <Plus />
+                        </button>
+                    </>
                 </div>
-            </div>
-        )
-    }
-
-    const EditFooter = () => {
-        return (
-            <div className='modal-footer'>
-                <button className="edit-button" onClick={() => setEdit(true)}>Edit</button>
             </div>
         )
     }
@@ -76,8 +72,20 @@ function AccountContent(props) {
     const SubmitFooter = () => {
         return (
             <div className='modal-footer'>
-                <button className="cancel-button" onClick={() => setEdit(false)}>Cancel</button>
-                <button className="submit-button" onClick={handleSave}>Save</button>
+                <button
+                    className="cancel-button"
+                    onClick={() => setEdit(false)}
+                    arial-label="Cancel changes"
+                >
+                    Cancel
+                </button>
+                <button
+                    className="submit-button"
+                    onClick={handleSave}
+                    arial-label="Save changes"
+                >
+                    Save
+                </button>
             </div>
         )
     }
@@ -89,7 +97,7 @@ function AccountContent(props) {
                 <Info />
                 <Plan />
                 <Institutions />
-                {edit ? <SubmitFooter /> : <EditFooter />}
+                {hasUpdates && <SubmitFooter />}
             </div>
         </>
     )

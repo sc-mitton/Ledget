@@ -164,12 +164,18 @@ function SocialLogin() {
         <div className="social-login-container">
             <div className="or-continue-with">Or continue with</div>
             <div className="social-buttons-container">
-                <a id="google-auth-button" href="/">
+                <button
+                    id="google-auth-button"
+                    aria-label="Google login"
+                >
                     <img src={googleLogo} alt="Google" />
-                </a>
-                <a id="facebook-auth-button" href="/">
+                </button>
+                <button
+                    id="facebook-auth-button"
+                    aria-label="Facebook login"
+                >
                     <img src={fbLogo} alt="Facebook" />
-                </a>
+                </button>
             </div >
         </div>
     )

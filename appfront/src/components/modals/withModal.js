@@ -45,7 +45,7 @@ function withModal(WrappedComponent) {
         });
 
         const scaleTransitions = useTransition(visible, {
-            from: { scale: 0.95 },
+            from: { scale: 0.95, ...contentConfig },
             enter: { scale: 1, ...contentConfig },
             leave: { scale: 0.95 },
             config: { duration: 200 },
