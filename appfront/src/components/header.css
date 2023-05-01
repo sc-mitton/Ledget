@@ -22,14 +22,23 @@ header {
     display: flex;
     align-items: center;
     height: 100%;
-    position: relative;
     margin: 0 12px;
+    position: relative;
 }
 
 #header-logo img {
     height: 55%;
     cursor: pointer;
     margin-left: 8px;
+}
+
+#profile-button {
+    display: flex;
+    align-items: center;
+    margin: 4px 12px;
+    position: relative;
+    cursor: pointer;
+    padding: 0;
 }
 
 #profile-icon {
@@ -41,12 +50,13 @@ header {
 .dropdown-menu {
     position: absolute;
     top: 50px;
-    right: -48px;
+    right: -52px;
     background-color: var(--drop-down-background);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     padding: 8px 0;
     border-radius: 4px;
     animation: drop-down 0.2s ease;
+    z-index: 1000;
 }
 
 .dropdown-menu * {

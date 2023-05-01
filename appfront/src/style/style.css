@@ -125,6 +125,17 @@ button {
     color: inherit;
 }
 
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible) {
+    outline: none;
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 1.5px solid var(--main-blue);
+    border-radius: 2px;
+}
+
 /* Override default browser styles */
 
 input:-webkit-autofill {

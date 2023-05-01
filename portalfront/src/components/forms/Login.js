@@ -21,6 +21,7 @@ function LoginForm() {
 
     const emailRef = useRef()
     const pwdRef = useRef()
+    const forgotPasswordRef = useRef()
     const [pswdVisible, setPswdVisible] = useState(false)
     const [pwdInput, setPwdInput] = useState('')
     const submitButtonRef = useRef(null)
@@ -143,7 +144,7 @@ function LoginForm() {
                     {pwdInput ? <VisibilityIcon /> : null}
                 </div>
                 <div className="forgot-password-container">
-                    <a id="forgot-password" href="/">Forgot Password?</a>
+                    <Link to="#" ref={forgotPasswordRef} tabIndex={0}  >Forgot Password?</Link>
                 </div>
                 <div>
                     <input
@@ -175,7 +176,7 @@ function SocialLogin() {
                     aria-label="Facebook login"
                 >
                     <img src={fbLogo} alt="Facebook" />
-                </button>
+                </button >
             </div >
         </div>
     )
@@ -190,12 +191,13 @@ function LoginWindow() {
             </div>
             <LoginForm />
             <SocialLogin />
-            <div className="sign-up-prompt-container">
+            <div
+                className="sign-up-prompt-container"
+            >
                 <span>Don't have an account? </span>
-                <Link to={{
-                    pathname: "/register",
-                    state: { direction: 1 }
-                }}>Sign Up</Link>
+                <Link to={{ pathname: "/register", state: { direction: 1 } }}>
+                    Sign Up
+                </Link>
             </div>
         </div>
     )

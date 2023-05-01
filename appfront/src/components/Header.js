@@ -2,9 +2,9 @@ import React from 'react'
 import { useState, useRef, useEffect } from 'react'
 
 import logo from '../assets/images/logo.svg'
-import profile from '../assets/images/profile.svg'
+import Profile1 from '../assets/images/Profile1'
+import Profile2 from '../assets/images/Profile2'
 import settings from '../assets/images/settings.svg'
-import Profile from '../assets/images/Profile'
 import help from '../assets/images/help.svg'
 import Help from './modals/Help'
 import Settings from './modals/Settings'
@@ -30,29 +30,37 @@ function Header() {
         }
     }, [dropdownRef])
 
+    const handleMenuClick = (e) => {
+        e.preventDefault()
+        setIsDropdownOpen(!isDropdownOpen)
+        setModal(e.target.id)
+    }
+
     const Menu = () => {
         return (
             <div className="dropdown-menu">
                 <button
+                    id="account"
                     className="dropdown-item"
-                    onClick={() =>
-                        setModal('account')}
+                    onClick={handleMenuClick}
                     aria-label="Account menu item"
                 >
-                    <Profile className="dropdown-icon" />
+                    <Profile2 className="dropdown-icon" />
                     Account
                 </button>
                 <button
+                    id="settings"
                     className="dropdown-item"
-                    onClick={() => setModal('settings')}
+                    onClick={handleMenuClick}
                     aria-label="Settings menu item"
                 >
                     <img className="dropdown-icon" src={settings} alt="settings" />
                     Settings
                 </button>
                 <button
+                    id="help"
                     className="dropdown-item"
-                    onClick={() => setModal('help')}
+                    onClick={handleMenuClick}
                     aria-label="Help menu item"
                 >
                     <img className="dropdown-icon" src={help} alt="help" />
@@ -69,20 +77,21 @@ function Header() {
                     <div id="header-logo">
                         <img src={logo} alt="Ledget Logo" />
                     </div>
-                    <button
-                        id="header-profile"
-                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        ref={dropdownRef}
-                        aria-label="Open profile menu"
-                    >
-                        <img id="profile-icon" src={profile} alt="Profile" />
+                    <div id="header-profile" ref={dropdownRef}>
+                        <button
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            aria-label="Open profile menu"
+                            id="profile-button"
+                        >
+                            <Profile1 />
+                        </button>
                         {isDropdownOpen && <Menu />}
-                    </button>
+                    </div>
                 </div>
             </header>
             {modal === 'settings' && <Settings cleanUp={() => setModal('')} />}
-            {modal === 'help' && <Help cleanUp={() => setModal('')} />}
             {modal === 'account' && <Account cleanUp={() => setModal('')} />}
+            {modal === 'help' && <Help cleanUp={() => setModal('')} />}
         </>
     )
 }

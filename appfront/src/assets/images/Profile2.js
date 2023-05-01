@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CashFlow = ({
+const Profile = ({
     className = null,
     width = "1.1em",
     height = "1.1em",
@@ -24,4 +24,4 @@ const CashFlow = ({
     )
 }
 
-export default CashFlow
+export default Profile

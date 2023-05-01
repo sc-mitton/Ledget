@@ -33,7 +33,6 @@ const contentConfig = {
 
 function withModal(WrappedComponent) {
     return function WithModal(props) {
-        const modalRef = useRef(null)
         const [visible, setVisible] = useState(true)
 
         const opacityTransitions = useTransition(visible, {
@@ -73,7 +72,6 @@ function withModal(WrappedComponent) {
                                     <animated.div
                                         className="modal-content"
                                         style={scaleStyles}
-                                        ref={modalRef}
                                     >
                                         <Exit />
                                         <WrappedComponent {...props} setVisible={setVisible} />
