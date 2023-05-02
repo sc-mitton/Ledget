@@ -123,12 +123,19 @@
     background-color: var(--hover-red);
 }
 
+#facebook-auth-button:focus,
+#google-auth-button:focus {
+    box-shadow: 0 0 0 1.5px var(--main-blue);
+    border-radius: 4px;
+    --webkit-border-radius: 4px;
+}
+
 #facebook-auth-button img {
-    height: 40%;
+    height: 46%;
 }
 
 #google-auth-button img {
-    height: 47%;
+    height: 58%;
     position: relative;
     top: 2px;
 }

@@ -62,7 +62,7 @@ function ContinueButton() {
             <button
                 type="submit"
                 className="continue-to-payment-button valid-submit"
-                arial-label="Continue to Payment"
+                aria-label="Continue to Payment"
             >
                 Payment
                 <svg width="16" height="16" viewBox="4 0 20 18">

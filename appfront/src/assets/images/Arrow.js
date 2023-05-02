@@ -9,10 +9,15 @@ const Arrow = ({
     height = "1.1em",
 }) => {
     const centerX = 144 / 2
-    const centerY = 88 / 2
+    const centerY = 144 / 2
 
     return (
-        <svg width={width} height={height} viewBox={`0 0 ${144} ${88}`}>
+        <svg
+            width={width}
+            height={height}
+            viewBox={`0 0 ${144} ${144}`}
+            aria-label="Arrow"
+        >
             <g transform={
                 `translate(${centerX}, ${centerY})
                 scale(${scale})
@@ -25,7 +30,7 @@ const Arrow = ({
                     strokeLinecap='round'
                     strokeLinejoin='round'
                     fill="none"
-                    points="131.28,15.05 72,74.32 12.72,15.05 "
+                    points="124.9,49.5 72,102.5 19.1,49.5 "
                 />
             </g>
         </svg >

@@ -50,7 +50,7 @@ function Budget() {
         const renderMonths = () => {
             return dates[pickerYear].map((index) => {
                 return (
-                    <div
+                    <button
                         key={index}
                         className={
                             `month-picker-item${(pickerMonth === index && year == pickerYear) ? '-selected' : ''}`
@@ -62,7 +62,7 @@ function Budget() {
                         }}
                     >
                         {monthMappings[index - 1][0]}
-                    </div>
+                    </button>
                 )
             })
         }
@@ -88,31 +88,33 @@ function Budget() {
         return (
             <div id="month-picker" ref={monthPickerRef}>
                 <h2>{monthMappings[month - 1][1]} {year}</h2>
-                <button
-                    className='icon'
-                    id='header-arrow'
-                    onClick={handleArrowClick}
-                    aria-label="Open month picker"
-                >
-                    <Arrow />
-                </button>
+                <div id="header-arrow-container">
+                    <button
+                        className='icon'
+                        id='header-arrow'
+                        onClick={handleArrowClick}
+                        aria-label="Open month picker"
+                    >
+                        <Arrow />
+                    </button>
+                </div>
                 {picker &&
                     <div id="picker-container">
                         <div id="year-navigation">
                             <button
-                                className="arrow-nav"
+                                className="arrow-nav icon"
                                 onClick={decrementYear}
                                 aria-label="Decrement year"
                             >
-                                <Arrow stroke='#f8f8f8' scale={.7} rotation={90} />
+                                <Arrow stroke='#f8f8f8' scale={.8} rotation={90} />
                             </button>
                             <div>{pickerYear}</div>
                             <button
-                                className="arrow-nav"
+                                className="arrow-nav icon"
                                 onClick={incrementYear}
                                 aria-label="Increment year"
                             >
-                                <Arrow stroke='#f8f8f8' scale={.7} rotation={-90} />
+                                <Arrow stroke='#f8f8f8' scale={.8} rotation={-90} />
                             </button>
                         </div>
                         <div className="month-picker-grid">

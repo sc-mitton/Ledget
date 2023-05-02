@@ -89,8 +89,8 @@ function Header() {
                     </div>
                 </div>
             </header>
-            {modal === 'settings' && <Settings cleanUp={() => setModal('')} />}
             {modal === 'account' && <Account cleanUp={() => setModal('')} />}
+            {modal === 'settings' && <Settings cleanUp={() => setModal('')} />}
             {modal === 'help' && <Help cleanUp={() => setModal('')} />}
         </>
     )

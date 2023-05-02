@@ -6,7 +6,7 @@ import Header from './components/Header'
 
 function App() {
     return (
-        <main>
+        <main tabIndex={0}>
             <BrowserRouter>
                 <Header />
                 <Routes >

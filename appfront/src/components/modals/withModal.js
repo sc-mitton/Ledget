@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
 import './modal.css'
@@ -34,6 +34,11 @@ const contentConfig = {
 function withModal(WrappedComponent) {
     return function WithModal(props) {
         const [visible, setVisible] = useState(true)
+        const modalRef = useRef(null)
+
+        useEffect(() => {
+            modalRef.current.focus();
+        }, []);
 
         const opacityTransitions = useTransition(visible, {
             from: { opacity: 0 },
@@ -55,7 +60,8 @@ function withModal(WrappedComponent) {
                 <button
                     className="exit-button icon"
                     onClick={() => setVisible(false)}
-                    arial-label="Close modal"
+                    aria-label="Close modal"
+                    tabIndex="0"
                 >
                     <Close />
                 </button>
@@ -66,7 +72,12 @@ function withModal(WrappedComponent) {
             <>
                 {opacityTransitions((opacityStyles, item1) =>
                     item1 && (
-                        <animated.div className="modal" style={opacityStyles}>
+                        <animated.div
+                            className="modal"
+                            style={opacityStyles}
+                            aria-modal="true"
+                            ref={modalRef}
+                        >
                             {scaleTransitions((scaleStyles, item2) =>
                                 item2 && (
                                     <animated.div

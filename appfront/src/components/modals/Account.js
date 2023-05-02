@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import withModal from './withModal'
 import { useState } from 'react'
 
@@ -8,6 +8,7 @@ import Edit from '../../assets/images/Edit'
 
 function AccountContent(props) {
     const [hasUpdates, setHasUpdates] = useState(false)
+    const [editConnectedInstitutions, setEditConnectedInstitutions] = useState(false)
 
     const handleSave = () => {
         // TODO: Save changes to database
@@ -50,7 +51,7 @@ function AccountContent(props) {
                         <button
                             className='icon modal-icon'
                             id='edit-icon'
-                            onClick={handleAddInstitution}
+                            onClick={() => setEditConnectedInstitutions(true)}
                             aria-label="Edit institutions"
                         >
                             <Edit />
@@ -58,7 +59,7 @@ function AccountContent(props) {
                         <button
                             className='icon modal-icon'
                             id='add-icon'
-                            onClick={handleAddInstitution}
+                            onClick={() => console.log('Open finicity connect')}
                             aria-label="Add institution"
                         >
                             <Plus />
@@ -75,14 +76,14 @@ function AccountContent(props) {
                 <button
                     className="cancel-button"
                     onClick={() => setEdit(false)}
-                    arial-label="Cancel changes"
+                    aria-label="Cancel changes"
                 >
                     Cancel
                 </button>
                 <button
                     className="submit-button"
                     onClick={handleSave}
-                    arial-label="Save changes"
+                    aria-label="Save changes"
                 >
                     Save
                 </button>

@@ -12,7 +12,7 @@
     --button-hover-gray: rgb(36, 36, 36);
     --border-bottom-gray: #b9b9b9;
 
-    --light-blue: rgb(199, 221, 252);
+    --light-blue: rgb(159, 198, 252);
     --mute-blue: rgb(122, 168, 254);
     --hover-blue: rgb(97, 151, 252);
     --main-blue: rgb(107, 155, 246);
@@ -109,6 +109,8 @@ h3 {
     margin: 0
 }
 
+
+
 a {
     text-decoration: none;
     cursor: pointer;
@@ -125,16 +127,27 @@ button {
     color: inherit;
 }
 
-a:focus:not(:focus-visible),
-button:focus:not(:focus-visible) {
-    outline: none;
+main {
+    min-height: 100vh;
 }
 
-a:focus-visible,
-button:focus-visible {
-    outline: 1.5px solid var(--main-blue);
-    border-radius: 2px;
+/* Accessibility Focus Styling */
+main:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 2px 2px var(--light-blue);
 }
+
+button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 2px 2px var(--light-blue);
+}
+
+a:focus-visible {
+    outline: none;
+    border-bottom: 2px solid var(--light-blue);
+}
+
+/* *** */
 
 /* Override default browser styles */
 

@@ -15,6 +15,7 @@ const CheckMark = ({
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
             y="0px"
+            aria-label="Checkmark"
         >
             <g>
                 <path d="M39.1,90.8c-2.3,0-4.4-0.9-5.8-2.4L7.6,61.2c-2.9-2.7-2.7-7,0.3-9.5c3-2.5,7.9-2.4,10.7,0.3

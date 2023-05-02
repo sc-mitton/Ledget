@@ -12,6 +12,7 @@
     --button-hover-gray: rgb(36, 36, 36);
     --border-bottom-gray: #b9b9b9;
 
+    --light-blue: rgb(159, 198, 252);
     --mute-blue: rgb(122, 168, 254);
     --hover-blue: rgb(97, 151, 252);
     --main-blue: rgb(107, 155, 246);
@@ -64,6 +65,10 @@ body {
     background-color: var(--window);
 }
 
+main {
+    min-height: 100vh;
+}
+
 div,
 p,
 span,
@@ -85,6 +90,10 @@ h3 {
     color: var(--logo-dark);
 }
 
+svg {
+    background: transparent;
+}
+
 button {
     cursor: pointer;
     border: none;
@@ -95,19 +104,26 @@ button {
 a {
     text-decoration: none;
     cursor: pointer;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
+    border-bottom: 1.5px solid transparent;
 }
 
-a:focus:not(:focus-visible),
-button:focus:not(:focus-visible) {
+/* Accessibility Focus Styling */
+main:focus-visible {
     outline: none;
+    box-shadow: inset 0 0 2px 2px var(--light-blue);
 }
 
-a:focus-visible,
 button:focus-visible {
-    outline: 1.5px solid var(--main-blue);
+    outline: none;
+    box-shadow: 0 0 2px 2px var(--light-blue);
 }
+
+a:focus-visible {
+    outline: none;
+    border-bottom: 2px solid var(--light-blue);
+}
+
+/* *** */
 
 .window {
     border: 1px solid var(--window-border);

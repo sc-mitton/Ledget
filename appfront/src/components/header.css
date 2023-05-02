@@ -39,6 +39,8 @@ header {
     position: relative;
     cursor: pointer;
     padding: 0;
+    background-color: transparent;
+    border-radius: 24px;
 }
 
 #profile-icon {
@@ -68,15 +70,16 @@ header {
     transition: background-color 0.4s ease;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
 .dropdown-item {
     display: flex;
     align-items: center;
-    width: 100%;
     font-weight: 400;
-    padding: 6px 12px;
-    box-sizing: border-box;
+    margin: 4px 8px;
+    padding: 2px 4px;
+    border-radius: 2px;
     transition: background-color 0.4s ease;
 }
 

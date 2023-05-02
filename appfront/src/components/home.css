@@ -80,6 +80,15 @@
     position: relative;
 }
 
+#header-arrow {
+    margin-left: 4px;
+}
+
+#header-arrow-container {
+    display: flex;
+    align-items: center;
+}
+
 #picker-container {
     position: absolute;
     top: 110%;
@@ -94,10 +103,7 @@
     flex-direction: row;
     align-items: center;
     padding-bottom: 3px;
-}
-
-#header-arrow {
-    margin-left: 4px;
+    margin: 0 4px;
 }
 
 #year-navigation * {
