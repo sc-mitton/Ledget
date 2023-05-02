@@ -147,16 +147,18 @@ function LoginForm() {
                     <Link to="#" ref={forgotPasswordRef} tabIndex={0}  >Forgot Password?</Link>
                 </div>
                 <div>
-                    <input
+                    <button
+                        id="login-submit"
                         className="valid-submit"
                         name="submit"
                         type="submit"
-                        value="Sign In"
                         ref={submitButtonRef}
-                    />
+                    >
+                        Sign In
+                    </button>
                 </div>
             </div>
-        </form>
+        </form >
     )
 }
 

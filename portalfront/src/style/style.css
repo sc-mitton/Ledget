@@ -200,7 +200,6 @@ input[type="password"]:focus::placeholder {
 
 .input-container {
     background-color: var(--input-color);
-    border: 1px solid var(--window);
     border-radius: 4px;
     padding: 8px 12px;
     margin: 12px 0;
@@ -212,13 +211,7 @@ input[type="password"]:focus::placeholder {
 
 .input-container:focus-within {
     outline: none;
-    border: 1px solid var(--main-blue);
-}
-
-#facebook-auth-button,
-#google-auth-button {
-    transition: background-color 0.15s ease;
-    cursor: pointer;
+    box-shadow: 0 0 1px 1px var(--light-blue);
 }
 
 .CustomSelect input[type="text"] {
@@ -245,13 +238,12 @@ input[type=password]:not(:placeholder-shown) {
     margin: 12px 0;
     border-radius: 4px;
     display: flex;
-    border: 1px solid var(--window);
     transition: border .2s ease;
 }
 
 .password-input:focus-within {
     outline: none;
-    border: 1px solid var(--main-blue);
+    box-shadow: 0 0 1px 1px var(--light-blue);
     box-sizing: border-box;
 }
 
@@ -297,7 +289,6 @@ input[type=password]:not(:placeholder-shown) {
     padding: 8px 12px;
     color: var(--window);
     background-color: var(--button-gray);
-    border: 1.5px solid var(--button-border-gray);
     box-shadow: var(--button-drop-shadow);
     border-radius: 4px;
     transition: background-color 0.3s ease;
@@ -316,18 +307,17 @@ input[type=password]:not(:placeholder-shown) {
     /* border: 1.5px solid var(--window); */
 }
 
-
 .valid-submit:focus-within,
 .submit-button:focus-within {
     outline: none;
-    box-shadow: inset 0 0 1px 1.5px var(--main-blue);
-    /* border: 1.5px solid var(--main-blue); */
+    box-shadow: 0 0 1.5px 1.5px var(--light-blue);
 }
 
 
 .invalid-submit:focus-within {
     outline: none;
     border: none;
+    box-shadow: 0 0 1.5px 1.5px var(--light-blue);
 }
 
 /* End Submit Button */
