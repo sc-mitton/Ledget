@@ -137,7 +137,7 @@
 }
 
 #facebook-auth-button img {
-    height: 46%;
+    height: 43%;
 }
 
 #google-auth-button img {
@@ -431,7 +431,6 @@ input[type="radio"]:checked+label * {
 .card-container {
     background-color: var(--input-color);
     border-radius: 4px;
-    border: 1px solid var(--window);
     z-index: 0;
     padding: 10px 8px 11px 8px;
     margin: 6px 0;
@@ -443,7 +442,7 @@ input[type="radio"]:checked+label * {
 }
 
 .focus {
-    border: 1px solid var(--main-blue);
+    box-shadow: 0 0 1px 1px var(--light-blue);
     transition: border .2s ease;
 }
 

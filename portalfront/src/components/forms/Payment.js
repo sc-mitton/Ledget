@@ -95,7 +95,7 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
                                 render={({ field }) => (
                                     <CustomSelect
                                         options={states}
-                                        placeholder="ST"
+                                        placeholder="State"
                                         unstyled={true}
                                         maxMenuHeight={175}
                                         value={field.value}

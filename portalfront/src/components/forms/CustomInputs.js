@@ -61,12 +61,11 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
             paddingRight: "8px",
             backgroundColor: "#ededed",
             font: "inherit",
-            fontWeight: "400",
             height: "0",
             border: "none",
             border: state.isFocused ? 0 : 0,
             // This line disable the blue border
-            boxShadow: state.isFocused ? "inset 0 0 0 1px var(--main-blue)" : 0,
+            boxShadow: state.isFocused ? "0 0 1px 1px var(--light-blue)" : 0,
             '&:hover': {
                 border: state.isFocused ? 0 : 0
             }

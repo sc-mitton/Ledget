@@ -33,7 +33,7 @@ function Header() {
     const handleMenuClick = (e) => {
         e.preventDefault()
         setIsDropdownOpen(!isDropdownOpen)
-        setModal(e.target.id)
+        setModal(e.currentTarget.id)
     }
 
     const Menu = () => {

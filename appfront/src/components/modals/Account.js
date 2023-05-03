@@ -1,24 +1,19 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import withModal from './withModal'
 import { useState } from 'react'
 
 import Plus from '../../assets/images/Plus'
 import Edit from '../../assets/images/Edit'
 
-
 function AccountContent(props) {
     const [hasUpdates, setHasUpdates] = useState(false)
     const [editConnectedInstitutions, setEditConnectedInstitutions] = useState(false)
+    const [finicityConnect, setFinicityConnect] = useState(false)
 
     const handleSave = () => {
         // TODO: Save changes to database
         setEdit(false)
         props.setVisible(false)
-    }
-
-    const handleAddInstitution = () => {
-        console.log('Add institution')
-        // TODO: Handle adding institutions
     }
 
     const Info = () => {
@@ -42,6 +37,9 @@ function AccountContent(props) {
         )
     }
 
+    const handleAddInstitution = () => {
+    }
+
     const Institutions = () => {
         return (
             <div className='sub-header'>
@@ -59,7 +57,7 @@ function AccountContent(props) {
                         <button
                             className='icon modal-icon'
                             id='add-icon'
-                            onClick={() => console.log('Open finicity connect')}
+                            onClick={() => handleAddInstitution()}
                             aria-label="Add institution"
                         >
                             <Plus />
@@ -91,15 +89,35 @@ function AccountContent(props) {
         )
     }
 
-    return (
-        <>
-            <div>
+    const DefaultContent = () => {
+        return (
+            <>
                 <h1>Account</h1>
                 <Info />
                 <Plan />
                 <Institutions />
                 {hasUpdates && <SubmitFooter />}
+            </>
+        )
+    }
+
+    const FinicityConnect = () => {
+        return (
+
+            <div className="modal-footer">
+                <button
+                    className="cancel-button"
+                    onClick={() => setFinicityConnect(false)}
+                >
+                    cancel
+                </button>
             </div>
+        )
+    }
+
+    return (
+        <>
+            <DefaultContent key="default-content" />
         </>
     )
 }

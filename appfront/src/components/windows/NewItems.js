@@ -148,21 +148,25 @@ const NewItemsStack = () => {
                 className="bottom-buttons"
                 style={buttomProps}
             >
-                <div id="expand-button" onClick={() => setExpanded(!expanded)}>
+                <button id="expand-button" onClick={() => setExpanded(!expanded)}>
                     {`${items.length} `}
-                    < animated.button
+                    < animated.div
                         id="expand-button-icon"
                         style={rotationSpring}
                         aria-label="Expand new item stack"
                     >
                         <Expand />
-                    </animated.button >
-                </div>
+                    </animated.div >
+                </button>
             </animated.div>
         )
     }
 
     const Stack = () => {
+        const getTabIndex = (id) => {
+            return id > items[0].id && !expanded ? "-1" : "0"
+        }
+
         return (
             <>
                 {transitions((style, item) => (
@@ -178,6 +182,7 @@ const NewItemsStack = () => {
                             <button
                                 className='category-icon'
                                 aria-label="Choose budget category"
+                                tabIndex={getTabIndex(item.id)}
                             >
                                 Groceries
                             </button>
@@ -186,6 +191,7 @@ const NewItemsStack = () => {
                                 id="checkmark-icon"
                                 onClick={() => handleConfirm(item.id)}
                                 aria-label="Confirm item"
+                                tabIndex={getTabIndex(item.id)}
                             >
                                 <CheckMark />
                             </button>
@@ -193,6 +199,7 @@ const NewItemsStack = () => {
                                 className='icon'
                                 id="ellipsis-icon"
                                 aria-label="More options"
+                                tabIndex={getTabIndex(item.id)}
                             >
                                 <Ellipsis />
                             </button>

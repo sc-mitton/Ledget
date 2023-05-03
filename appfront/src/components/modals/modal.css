@@ -14,7 +14,6 @@
     padding: 6px;
 }
 
-
 .edit-button {
     padding: 4px 12px;
     font-weight: 500;
@@ -30,13 +29,18 @@
     padding: 4px 8px;
     font-weight: 500;
     margin: 0 4px;
+    background-color: var(--button-gray);
+    color: var(--window);
+    border-radius: 4px;
 }
 
 .cancel-button:hover {
-    background-color: var(--icon-hover-light-gray);
+    background-color: var(--button-hover-gray);
+    transition: 0.3s ease-in-out;
     transition: 0.3s;
     border-radius: 4px;
 }
+
 
 @keyframes faid {
     0% {
