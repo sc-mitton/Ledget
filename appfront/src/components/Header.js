@@ -1,11 +1,13 @@
 import React from 'react'
 import { useState, useRef, useEffect } from 'react'
 
-import logo from '../assets/images/logo.svg'
-import Profile1 from '../assets/images/Profile1'
-import Profile2 from '../assets/images/Profile2'
-import settings from '../assets/images/settings.svg'
-import help from '../assets/images/help.svg'
+import { Menu } from '@headlessui/react'
+
+import logo from '../assets/svg/logo.svg'
+import Profile1 from '../assets/svg/Profile1'
+import Profile2 from '../assets/svg/Profile2'
+import SettingsIcon from '../assets/svg/Settings'
+import HelpIcon from '../assets/svg/Help'
 import Help from './modals/Help'
 import Settings from './modals/Settings'
 import Account from './modals/Account'
@@ -13,60 +15,44 @@ import './header.css'
 
 
 function Header() {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const dropdownRef = useRef(null)
     const [modal, setModal] = useState('')
 
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsDropdownOpen(false)
-            }
-        }
-
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
-        }
-    }, [dropdownRef])
-
-    const handleMenuClick = (e) => {
-        e.preventDefault()
-        setIsDropdownOpen(!isDropdownOpen)
-        setModal(e.currentTarget.id)
-    }
-
-    const Menu = () => {
+    const DropDownMenu = () => {
         return (
-            <div className="dropdown-menu">
-                <button
-                    id="account"
-                    className="dropdown-item"
-                    onClick={handleMenuClick}
-                    aria-label="Account menu item"
-                >
-                    <Profile2 className="dropdown-icon" />
-                    Account
-                </button>
-                <button
-                    id="settings"
-                    className="dropdown-item"
-                    onClick={handleMenuClick}
-                    aria-label="Settings menu item"
-                >
-                    <img className="dropdown-icon" src={settings} alt="settings" />
-                    Settings
-                </button>
-                <button
-                    id="help"
-                    className="dropdown-item"
-                    onClick={handleMenuClick}
-                    aria-label="Help menu item"
-                >
-                    <img className="dropdown-icon" src={help} alt="help" />
-                    Help
-                </button>
-            </div>
+            <Menu>
+                <Menu.Button id='profile-button'>
+                    <Profile1 />
+                </Menu.Button>
+                <Menu.Items className='dropdown profile-dropdown'>
+                    <Menu.Item>
+                        <button
+                            className="dropdown-item"
+                            onClick={() => setModal('account')}
+                        >
+                            <Profile2 className="dropdown-icon" />
+                            Account
+                        </button>
+                    </Menu.Item>
+                    <Menu.Item>
+                        <button
+                            className="dropdown-item"
+                            onClick={() => setModal('settings')}
+                        >
+                            <SettingsIcon className="dropdown-icon" />
+                            Settings
+                        </button>
+                    </Menu.Item>
+                    <Menu.Item>
+                        <button
+                            className="dropdown-item"
+                            onClick={() => setModal('help')}
+                        >
+                            <HelpIcon className="dropdown-icon" />
+                            Help
+                        </button>
+                    </Menu.Item>
+                </Menu.Items>
+            </Menu >
         )
     }
 
@@ -77,15 +63,8 @@ function Header() {
                     <div id="header-logo">
                         <img src={logo} alt="Ledget Logo" />
                     </div>
-                    <div id="header-profile" ref={dropdownRef}>
-                        <button
-                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                            aria-label="Open profile menu"
-                            id="profile-button"
-                        >
-                            <Profile1 />
-                        </button>
-                        {isDropdownOpen && <Menu />}
+                    <div id="header-profile">
+                        <DropDownMenu />
                     </div>
                 </div>
             </header>

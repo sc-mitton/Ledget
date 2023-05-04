@@ -4,9 +4,12 @@ import { useState, useEffect, useRef } from 'react'
 import { useSpring, animated, useTransition } from '@react-spring/web'
 
 import "./NewItems.css"
-import Ellipsis from "../../assets/images/Ellipsis"
-import CheckMark from "../../assets/images/CheckMark"
-import Expand from "../../assets/images/Expand"
+import Ellipsis from "../../assets/svg/Ellipsis"
+import CheckMark from "../../assets/svg/CheckMark"
+import Expand from "../../assets/svg/Expand"
+import Note from "../../assets/svg/Note"
+import Split from "../../assets/svg/Split"
+
 
 // TODO: pull this data in from backend
 let data = [
@@ -162,50 +165,72 @@ const NewItemsStack = () => {
         )
     }
 
-    const Stack = () => {
+    const NewItem = ({ item, style }) => {
         const getTabIndex = (id) => {
             return id > items[0].id && !expanded ? "-1" : "0"
         }
+        const [dropDown, setDropDown] = useState(false)
+
+        const DropDown = () => {
+            return (
+                <div className='dropdown-menu'>
+                    <div className='dropdown-item'>
+                        <button><Split /> Split</button>
+                    </div>
+                    <div className='dropdown-item'>
+                        <button><Note /> Add Note</button>
+                    </div>
+                </div>
+            )
+        }
 
         return (
-            <>
-                {transitions((style, item) => (
-                    <animated.div
-                        key={`item-${item.id}`}
-                        className="new-item"
-                        style={style}
+            <animated.div
+                key={`item-${item.id}`}
+                className="new-item"
+                style={style}
+            >
+                <div className='new-item-data'>
+                    {item.data}
+                </div>
+                <div className='new-item-icons'>
+                    <button
+                        className='category-icon'
+                        aria-label="Choose budget category"
+                        tabIndex={getTabIndex(item.id)}
                     >
-                        <div className='new-item-data'>
-                            {item.data}
-                        </div>
-                        <div className='new-item-icons'>
-                            <button
-                                className='category-icon'
-                                aria-label="Choose budget category"
-                                tabIndex={getTabIndex(item.id)}
-                            >
-                                Groceries
-                            </button>
-                            <button
-                                className='icon'
-                                id="checkmark-icon"
-                                onClick={() => handleConfirm(item.id)}
-                                aria-label="Confirm item"
-                                tabIndex={getTabIndex(item.id)}
-                            >
-                                <CheckMark />
-                            </button>
-                            <button
-                                className='icon'
-                                id="ellipsis-icon"
-                                aria-label="More options"
-                                tabIndex={getTabIndex(item.id)}
-                            >
-                                <Ellipsis />
-                            </button>
-                        </div>
-                    </animated.div>
-                ))}
+                        Groceries
+                    </button>
+                    <button
+                        className='icon'
+                        id="checkmark-icon"
+                        onClick={() => handleConfirm(item.id)}
+                        aria-label="Confirm item"
+                        tabIndex={getTabIndex(item.id)}
+                    >
+                        <CheckMark />
+                    </button>
+                    <button
+                        className='icon'
+                        id="ellipsis-icon"
+                        aria-label="More options"
+                        tabIndex={getTabIndex(item.id)}
+                        onClick={() => setDropDown(!dropDown)}
+                    >
+                        <Ellipsis />
+                    </button>
+                    {dropDown && <DropDown />}
+                </div>
+            </animated.div>
+        )
+    }
+
+    const Stack = () => {
+        return (
+            <>
+                {transitions((style, item) =>
+                    <NewItem item={item} style={style} />)
+                }
             </>
         )
     }

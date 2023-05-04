@@ -4,7 +4,7 @@ const Close = ({
     className = null,
     width = "1em",
     height = "1em",
-    stroke = "#363636",
+    stroke = "#242424",
     strokeWidth = "24"
 }) => {
 

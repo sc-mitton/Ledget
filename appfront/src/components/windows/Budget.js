@@ -1,9 +1,10 @@
 import React from 'react'
 import { useState, useRef, useEffect } from 'react'
 
-import CashFlow from '../../assets/images/CashFlow'
-import Graph from '../../assets/images/Graph'
-import Arrow from '../../assets/images/Arrow'
+import CashFlow from '../../assets/svg/CashFlow'
+import Graph from '../../assets/svg/Graph'
+import Arrow from '../../assets/svg/Arrow'
+import './Budget.css'
 
 const monthMappings = [
     ['Jan', 'January'],
@@ -99,10 +100,10 @@ function Budget() {
                     </button>
                 </div>
                 {picker &&
-                    <div id="picker-container">
+                    <div className="dropdown" id="picker-container">
                         <div id="year-navigation">
                             <button
-                                className="arrow-nav icon"
+                                className="arrow-nav"
                                 onClick={decrementYear}
                                 aria-label="Decrement year"
                             >
@@ -110,7 +111,7 @@ function Budget() {
                             </button>
                             <div>{pickerYear}</div>
                             <button
-                                className="arrow-nav icon"
+                                className="arrow-nav"
                                 onClick={incrementYear}
                                 aria-label="Increment year"
                             >

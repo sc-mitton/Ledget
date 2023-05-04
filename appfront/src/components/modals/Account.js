@@ -1,9 +1,11 @@
-import React from 'react'
-import withModal from './withModal'
+import React, { useEffect } from 'react'
+import withModal from '../utils/withModal'
 import { useState } from 'react'
 
-import Plus from '../../assets/images/Plus'
-import Edit from '../../assets/images/Edit'
+import Plus from '../../assets/svg/Plus'
+import Edit from '../../assets/svg/Edit'
+import FinicityConnect from './FinicityConnect'
+
 
 function AccountContent(props) {
     const [hasUpdates, setHasUpdates] = useState(false)
@@ -37,8 +39,13 @@ function AccountContent(props) {
         )
     }
 
-    const handleAddInstitution = () => {
-    }
+    useEffect(() => {
+        if (finicityConnect) {
+            props.setHideModal(true)
+        } else {
+            props.setHideModal(false)
+        }
+    }, [finicityConnect])
 
     const Institutions = () => {
         return (
@@ -57,7 +64,7 @@ function AccountContent(props) {
                         <button
                             className='icon modal-icon'
                             id='add-icon'
-                            onClick={() => handleAddInstitution()}
+                            onClick={() => setFinicityConnect(true)}
                             aria-label="Add institution"
                         >
                             <Plus />
@@ -101,23 +108,14 @@ function AccountContent(props) {
         )
     }
 
-    const FinicityConnect = () => {
-        return (
-
-            <div className="modal-footer">
-                <button
-                    className="cancel-button"
-                    onClick={() => setFinicityConnect(false)}
-                >
-                    cancel
-                </button>
-            </div>
-        )
-    }
-
     return (
         <>
             <DefaultContent key="default-content" />
+            {finicityConnect && <FinicityConnect
+                cleanUp={() => setFinicityConnect(false)}
+                background='transparent'
+                hasExit={false}
+            />}
         </>
     )
 }

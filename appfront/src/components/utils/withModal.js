@@ -1,28 +1,20 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { useTransition, animated, useSpringRef } from '@react-spring/web'
+import { useTransition, animated } from '@react-spring/web'
 
 import './modal.css'
-import Close from '../../assets/images/Close'
+import Close from '../../assets/svg/Close'
 
 
 function withModal(WrappedComponent) {
     return function WithModal(props) {
         const [visible, setVisible] = useState(true)
         const modalRef = useRef(null)
+        const [hideModal, setHideModal] = useState(false)
         const {
             cleanUp = () => { },
+            background = 'rgba(49, 49, 49, 0.85)',
+            hasExit = true,
         } = props
-
-        const contentConfig = {
-            backgroundColor: 'var(--window-background-color)',
-            width: "70%",
-            maxWidth: "400px",
-            top: "-10%",
-            borderRadius: '6px',
-            padding: '28px',
-            zIndex: 301,
-            position: "relative"
-        }
 
         const modalConfig = {
             width: '100vw',
@@ -36,34 +28,50 @@ function withModal(WrappedComponent) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            background: 'rgba(49, 49, 49, 0.85)',
+            background: background,
             backdropFilter: 'blur(5px)',
         }
 
-        const backgroundApi = useSpringRef()
         const backgroundTransitions = useTransition(visible, {
-            ref: backgroundApi,
             from: { opacity: 0 },
             enter: { opacity: 1, ...modalConfig },
             leave: { opacity: 0 },
-            config: { duration: 200 },
+            config: { duration: 300 },
             onDestroyed: () => cleanUp(),
         })
 
-        const modalContainerApi = useSpringRef()
+        const contentConfig = {
+            width: "70%",
+            maxWidth: "400px",
+            top: "-10%",
+            borderRadius: '6px',
+            padding: '28px',
+            zIndex: 301,
+            position: "relative"
+        }
+
         const modalContainerTransitions = useTransition(visible, {
-            ref: modalContainerApi,
-            from: { scale: 0.95, ...contentConfig },
-            enter: { scale: 1, ...contentConfig },
+            from: {
+                opacity: 0,
+                scale: 0.95,
+                ...contentConfig
+            },
+            enter: {
+                opacity: 1,
+                scale: 1,
+                backgroundColor: hideModal
+                    ? 'transparent'
+                    : 'var(--window-background-color)',
+                ...contentConfig,
+            },
+            update: {
+                backgroundColor: hideModal
+                    ? 'transparent'
+                    : 'var(--window-background-color)',
+            },
             leave: { opacity: 0 },
             config: { duration: 300 },
         })
-
-        useEffect(() => {
-            modalRef.current.focus()
-            backgroundApi.start()
-            modalContainerApi.start()
-        }, [visible])
 
         const Exit = () => {
             return (
@@ -96,10 +104,11 @@ function withModal(WrappedComponent) {
                                         className="modal-content"
                                         style={scaleStyles}
                                     >
-                                        <Exit />
+                                        {!hideModal && hasExit && <Exit />}
                                         <WrappedComponent
                                             {...props}
                                             setVisible={setVisible}
+                                            setHideModal={setHideModal}
                                         />
                                     </animated.div>
                                 )

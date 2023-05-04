@@ -23,6 +23,7 @@
     "webpack-dev-server": "^4.13.3"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.14",
     "@react-spring/web": "^9.7.2",
     "css-loader": "^6.7.3",
     "dotenv-webpack": "^8.0.1",
