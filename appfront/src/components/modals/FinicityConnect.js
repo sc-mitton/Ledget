@@ -2,17 +2,35 @@ import React from 'react'
 import { useState } from 'react'
 
 import withModal from '../utils/withModal'
+import { LoadingRing } from '../widgets/Widgets'
 import './FinicityConnect.css'
 
 const FinicityConnect = (props) => {
     const [loading, setLoading] = useState(true)
 
     return (
-        <>
-            <div id="connect-container">
-                <iframe seamless width='300px' height='600px'>
-                </iframe>
-            </div>
+        <div id="finicity-connect-container">
+            {loading ? (
+                <div
+                    id="loading-ring-container"
+                    style={{
+                        width: '340px',
+                        height: '670px',
+                        padding: '0',
+                        margin: '0',
+                    }}
+                >
+                    <div style={{ scale: '2' }} onClick={() => setLoading(false)}>
+                        <LoadingRing />
+                    </div>
+                </div>
+            ) : (
+                <iframe
+                    seamless
+                    width="340px"
+                    height="670px"
+                />
+            )}
             <div id="connect-footer">
                 <button
                     className="cancel-button"
@@ -21,7 +39,7 @@ const FinicityConnect = (props) => {
                     cancel
                 </button>
             </div>
-        </>
+        </div>
     )
 }
 
