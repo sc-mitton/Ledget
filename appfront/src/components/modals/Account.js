@@ -39,14 +39,6 @@ function AccountContent(props) {
         )
     }
 
-    useEffect(() => {
-        if (finicityConnect) {
-            props.setHideModal(true)
-        } else {
-            props.setHideModal(false)
-        }
-    }, [finicityConnect])
-
     const Institutions = () => {
         return (
             <div className='sub-header'>
@@ -113,8 +105,9 @@ function AccountContent(props) {
             <DefaultContent key="default-content" />
             {finicityConnect && <FinicityConnect
                 cleanUp={() => setFinicityConnect(false)}
-                background='transparent'
+                hasBackground={false}
                 hasExit={false}
+                zIndex={1005}
             />}
         </>
     )

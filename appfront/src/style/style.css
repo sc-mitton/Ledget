@@ -35,7 +35,7 @@
     --input-focus: rgb(107, 155, 246);
 
     /* Windows */
-    --window-background-color: #f1f1f1;
+    --window-background-color: hsl(0, 0%, 94%);
 
     /* Icons & Buttons */
     --icon-dark-gray: rgb(70, 70, 70);
@@ -262,8 +262,22 @@ input {
     box-sizing: border-box;
     border-radius: 4px;
     z-index: 1000;
+    animation: fade-in 0.2s ease;
+    transform-origin: top;
 }
 
 .dropdown * {
     color: rgb(232, 232, 232);
+}
+
+@keyframes fade-in {
+    from {
+        scale: .8;
+        opacity: 0;
+    }
+
+    to {
+        scale: 1;
+        opacity: 1;
+    }
 }

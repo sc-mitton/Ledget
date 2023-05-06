@@ -42,11 +42,66 @@ function Budget() {
         const handleArrowClick = () => setPicker(!picker)
 
         useEffect(() => {
-            document.addEventListener("click", handleClickOutside);
+            document.addEventListener("mousedown", handleClickOutside)
+            document.addEventListener("keydown", handleKeyDown)
             return () => {
-                document.removeEventListener("click", handleClickOutside);
+                document.removeEventListener("mousedown", handleClickOutside)
+                document.removeEventListener("keydown", handleKeyDown)
             }
         }, [])
+
+        useEffect(() => {
+            if (picker && monthPickerRef.current) {
+                monthPickerRef.current.focus();
+            }
+        }, [picker]);
+
+        const handleClickOutside = (event) => {
+            if (monthPickerRef.current && !monthPickerRef.current.contains(event.target)) {
+                setPicker(false)
+            }
+        }
+
+        const handleArrowNavigation = (event) => {
+            // Handle arrow navigation in the month picker
+
+            if (picker && monthPickerRef.current) {
+                const buttons = monthPickerRef.current.querySelectorAll('button');
+                const currentIndex = Array.from(buttons).findIndex((button) => button === document.activeElement)
+
+                if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+                    event.preventDefault()
+
+                    const columns = 3; // The number of columns in the month picker grid
+                    const nextIndex = currentIndex + (event.key === 'ArrowUp' ? -columns : columns)
+
+                    if (nextIndex >= 0 && nextIndex < buttons.length) {
+                        buttons[nextIndex].focus()
+                    }
+                } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                    event.preventDefault()
+
+                    const nextIndex = currentIndex + (event.key === 'ArrowLeft' ? -1 : 1)
+
+                    if (nextIndex >= 0 && nextIndex < buttons.length) {
+                        buttons[nextIndex].focus()
+                    }
+                }
+            }
+        }
+
+        useEffect(() => {
+            document.addEventListener("keydown", handleArrowNavigation);
+            return () => {
+                document.removeEventListener("keydown", handleArrowNavigation);
+            };
+        }, [picker])
+
+        const handleKeyDown = (event) => {
+            if (monthPickerRef.current && ['Escape', 'Esc', 'Tab'].includes(event.key)) {
+                setPicker(false)
+            }
+        }
 
         const renderMonths = () => {
             return dates[pickerYear].map((index) => {
@@ -77,12 +132,6 @@ function Budget() {
         const decrementYear = () => {
             if (pickerYear > Object.keys(dates)[0]) {
                 setPickerYear(pickerYear - 1)
-            }
-        }
-
-        const handleClickOutside = (event) => {
-            if (monthPickerRef.current && !monthPickerRef.current.contains(event.target)) {
-                setPicker(false);
             }
         }
 

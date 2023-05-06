@@ -9,14 +9,16 @@ function withModal(WrappedComponent) {
     return function WithModal(props) {
         const [visible, setVisible] = useState(true)
         const modalRef = useRef(null)
-        const [hideModal, setHideModal] = useState(false)
         const {
             cleanUp = () => { },
-            background = 'rgba(49, 49, 49, 0.85)',
+            hasBackground = true,
             hasExit = true,
+            width = '70%',
+            maxWidth = '400px',
+            zIndex = 1000,
         } = props
 
-        const modalConfig = {
+        const backgroundConfig = {
             width: '100vw',
             height: '100vh',
             top: 0,
@@ -24,53 +26,45 @@ function withModal(WrappedComponent) {
             right: 0,
             bottom: 0,
             position: 'fixed',
-            zIndex: 300,
+            zIndex: zIndex,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            background: background,
-            backdropFilter: 'blur(5px)',
+            background: hasBackground ? 'rgba(49, 49, 49, 0.85)' : 'transparent',
+            backdropFilter: hasBackground ? 'blur(5px)' : 'none',
         }
 
         const backgroundTransitions = useTransition(visible, {
             from: { opacity: 0 },
-            enter: { opacity: 1, ...modalConfig },
+            enter: { opacity: 1, ...backgroundConfig },
             leave: { opacity: 0 },
-            config: { duration: 300 },
+            config: { duration: 200 },
             onDestroyed: () => cleanUp(),
         })
 
         const contentConfig = {
-            width: "70%",
-            maxWidth: "400px",
-            top: "-10%",
+            width: width,
+            maxWidth: maxWidth,
             borderRadius: '6px',
             padding: '28px',
-            zIndex: 301,
-            position: "relative"
+            zIndex: zIndex + 1,
+            position: "relative",
         }
 
         const modalContainerTransitions = useTransition(visible, {
             from: {
                 opacity: 0,
-                scale: 0.95,
+                scale: 0.92,
                 ...contentConfig
             },
             enter: {
                 opacity: 1,
                 scale: 1,
-                backgroundColor: hideModal
-                    ? 'transparent'
-                    : 'var(--window-background-color)',
+                backgroundColor: 'var(--window-background-color)',
                 ...contentConfig,
             },
-            update: {
-                backgroundColor: hideModal
-                    ? 'transparent'
-                    : 'var(--window-background-color)',
-            },
-            leave: { opacity: 0 },
-            config: { duration: 300 },
+            leave: { opacity: 0, scale: .92 },
+            config: { duration: 200 },
         })
 
         const Exit = () => {
@@ -81,6 +75,7 @@ function withModal(WrappedComponent) {
                         onClick={() => setVisible(false)}
                         aria-label="Close modal"
                         tabIndex="0"
+                        style={{ zIndex: zIndex + 2 }}
                     >
                         <Close />
                     </button>
@@ -104,11 +99,10 @@ function withModal(WrappedComponent) {
                                         className="modal-content"
                                         style={scaleStyles}
                                     >
-                                        {!hideModal && hasExit && <Exit />}
+                                        {hasExit && <Exit />}
                                         <WrappedComponent
                                             {...props}
                                             setVisible={setVisible}
-                                            setHideModal={setHideModal}
                                         />
                                     </animated.div>
                                 )

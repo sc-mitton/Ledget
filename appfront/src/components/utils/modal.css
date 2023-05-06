@@ -10,7 +10,6 @@
     position: absolute;
     right: 12px;
     top: 12px;
-    z-index: 303;
     padding: 6px;
 }
 
@@ -36,9 +35,7 @@
 
 .cancel-button:hover {
     background-color: var(--button-hover-gray);
-    transition: 0.3s ease-in-out;
-    transition: 0.3s;
-    border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
 
