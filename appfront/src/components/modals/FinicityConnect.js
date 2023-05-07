@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 
+
 import withModal from '../utils/withModal'
 import { LoadingRing } from '../widgets/Widgets'
 import './FinicityConnect.css'
@@ -8,22 +9,29 @@ import './FinicityConnect.css'
 const FinicityConnect = (props) => {
     const [loading, setLoading] = useState(true)
 
+    const Loading = () => {
+        return (
+            <div
+                id="loading-ring-container"
+                style={{
+                    width: '340px',
+                    height: '670px',
+                    padding: '0',
+                    margin: '0',
+                }}
+            >
+                <div style={{ scale: '2' }} onClick={() => setLoading(false)}>
+                    <LoadingRing />
+                </div>
+            </div>
+        )
+    }
+
+
     return (
         <div id="finicity-connect-container">
             {loading ? (
-                <div
-                    id="loading-ring-container"
-                    style={{
-                        width: '340px',
-                        height: '670px',
-                        padding: '0',
-                        margin: '0',
-                    }}
-                >
-                    <div style={{ scale: '2' }} onClick={() => setLoading(false)}>
-                        <LoadingRing />
-                    </div>
-                </div>
+                <Loading />
             ) : (
                 <iframe
                     seamless

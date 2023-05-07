@@ -5,7 +5,15 @@
     justify-content: center;
 }
 
-iframe {
+#loading-ring-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#finicity-connect-container iframe {
     border: none;
     padding: 0;
     margin: 0;
@@ -16,12 +24,4 @@ iframe {
     display: flex;
     justify-content: end;
     margin-top: 12px;
-}
-
-#loading-ring-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }

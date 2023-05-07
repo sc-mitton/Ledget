@@ -27,9 +27,9 @@ let data = [
 
 const stackMax = 2
 const scaleFactor = .07
-const translate = 14
+const translate = 15
 const expandedTranslate = 75
-const collapsedHeight = 100
+const collapsedHeight = 105
 const expandedHeight = 270
 
 const springsConfig = {
@@ -41,7 +41,7 @@ const springsConfig = {
     borderRadius: "8px",
     padding: "20px",
     fontWeight: "400",
-    boxShadow: "rgba(0, 0, 0, 0.04) 0px 1px 2px 0px",
+    boxShadow: "rgba(0, 0, 0, 0.07) 0px 2px 2px 0px",
     x: 0,
 }
 
@@ -78,7 +78,7 @@ const NewItemsStack = () => {
                 opacity: !expanded && index > stackMax ? 0 : 1,
                 backgroundColor: index === 0 || expanded
                     ? "var(--window-background-color)"
-                    : `hsl(0, 0%, ${98 - (index * 10)}%)`,
+                    : `hsl(0, 0%, ${95 - (index * 3)}%)`,
                 ...springsConfig
             }),
             update: (item, index, state) => {
@@ -89,7 +89,7 @@ const NewItemsStack = () => {
                     opacity: !expanded && index > stackMax ? 0 : 1,
                     backgroundColor: index === 0 || expanded
                         ? "var(--window-background-color)"
-                        : `hsl(0, 0%, ${98 - (index * 10)}%)`,
+                        : `hsl(0, 0%, ${95 - (index * 3)}%)`,
                 }
             },
             leave: (item, index) => async (next, cancel) => {
