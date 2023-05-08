@@ -29,10 +29,10 @@ const stackMax = 2
 const scaleFactor = .07
 const translate = 15
 const expandedTranslate = 75
-const collapsedHeight = 105
+const collapsedHeight = 100
 const expandedHeight = 270
 
-const springsConfig = {
+const newItemsSpringConfig = {
     position: 'absolute',
     left: 0,
     right: 0,
@@ -41,7 +41,6 @@ const springsConfig = {
     borderRadius: "8px",
     padding: "20px",
     fontWeight: "400",
-    boxShadow: "rgba(0, 0, 0, 0.07) 0px 2px 2px 0px",
     x: 0,
 }
 
@@ -76,10 +75,13 @@ const NewItemsStack = () => {
                 transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
                 zIndex: (data.length - index),
                 opacity: !expanded && index > stackMax ? 0 : 1,
+                boxShadow: !expanded && index < stackMax
+                    ? "rgba(0, 0, 0, 0.1) 0px 1px 2px 0px"
+                    : 'rgba(0, 0, 0, 0) 0px 1px 2px 0px',
                 backgroundColor: index === 0 || expanded
                     ? "var(--window-background-color)"
-                    : `hsl(0, 0%, ${95 - (index * 3)}%)`,
-                ...springsConfig
+                    : `hsl(0, 0%, ${93 - (index * 3)}%)`,
+                ...newItemsSpringConfig
             }),
             update: (item, index, state) => {
                 return {
@@ -87,9 +89,12 @@ const NewItemsStack = () => {
                     transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
                     zIndex: (data.length - index),
                     opacity: !expanded && index > stackMax ? 0 : 1,
+                    boxShadow: !expanded && index < stackMax
+                        ? "rgba(0, 0, 0, 0.1) 0px 1px 2px 0px"
+                        : 'rgba(0, 0, 0, 0) 0px 1px 2px 0px',
                     backgroundColor: index === 0 || expanded
                         ? "var(--window-background-color)"
-                        : `hsl(0, 0%, ${95 - (index * 3)}%)`,
+                        : `hsl(0, 0%, ${93 - (index * 3)}%)`,
                 }
             },
             leave: (item, index) => async (next, cancel) => {
@@ -103,18 +108,6 @@ const NewItemsStack = () => {
             config: { precision: 0.1 }
         }
     )
-    const rotationSpring = useSpring({
-        transform: `rotate(${expanded ? 0 : 180}deg)`
-    })
-    const buttomProps = useSpring({
-        marginTop: items.length === 0 ? '0px' : '4px',
-        height: items.length > 1 ? '1.6em' : '0em',
-        marginBottom: items.length > 1 ? '12px' : '0px',
-        zIndex: "200",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center"
-    })
 
     useEffect(() => {
         // update container spring
@@ -144,12 +137,27 @@ const NewItemsStack = () => {
         // // remove item from backend
     }
 
+    const buttonContainerProps = useSpring({
+        marginTop: items.length === 0 ? '0px' : '4px',
+        opacity: items.length > 1 ? 1 : 0,
+        height: items.length > 1 ? '1.6em' : '0em',
+        marginBottom: items.length > 1 ? '12px' : '0px',
+        zIndex: "200",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center"
+    })
+
+    const rotationSpring = useSpring({
+        transform: `rotate(${expanded ? 0 : 180}deg)`
+    })
+
     const BottomButtons = () => {
         return (
             <animated.div
                 id="expand-button-container"
                 className="bottom-buttons"
-                style={buttomProps}
+                style={buttonContainerProps}
             >
                 <button id="expand-button" onClick={() => setExpanded(!expanded)}>
                     {`${items.length} `}
@@ -167,6 +175,7 @@ const NewItemsStack = () => {
 
     const NewItem = ({ item, style }) => {
         const getTabIndex = (id) => {
+            if (items.length === 0) return "0"
             return id > items[0].id && !expanded ? "-1" : "0"
         }
         const [dropDown, setDropDown] = useState(false)
