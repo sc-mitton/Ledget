@@ -1,12 +1,21 @@
 import React from 'react'
 import { useState } from 'react'
 
+import {
+    FinicityConnect,
+    ConnectEventHandlers,
+    ConnectOptions,
+    ConnectDoneEvent,
+    ConnectCancelEvent,
+    ConnectErrorEvent,
+    ConnectRouteEvent
+} from '@finicity/connect-web-sdk'
 
 import withModal from '../utils/withModal'
 import { LoadingRing } from '../widgets/Widgets'
 import './FinicityConnect.css'
 
-const FinicityConnect = (props) => {
+const Connect = (props) => {
     const [loading, setLoading] = useState(true)
 
     const Loading = () => {
@@ -51,6 +60,6 @@ const FinicityConnect = (props) => {
     )
 }
 
-const FinicityConnectModal = withModal(FinicityConnect)
+const ConnectModal = withModal(Connect)
 
-export default FinicityConnectModal
+export default ConnectModal

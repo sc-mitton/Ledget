@@ -14,8 +14,8 @@ const Expand = ({
             height={height}
             viewBox="0 0 144 144"
             xmlns="http://www.w3.org/2000/svg"
-            x="0px"
-            y="0px"
+            x="72px"
+            y="72px"
             aria-label="Expand or collapse"
         >
             <polyline

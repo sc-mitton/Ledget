@@ -23,8 +23,10 @@
     "webpack-dev-server": "^4.13.3"
   },
   "dependencies": {
+    "@finicity/connect-web-sdk": "^1.0.0-rc.4",
     "@headlessui/react": "^1.7.14",
     "@react-spring/web": "^9.7.2",
+    "core-js": "^3.30.2",
     "css-loader": "^6.7.3",
     "dotenv-webpack": "^8.0.1",
     "file-loader": "^6.2.0",

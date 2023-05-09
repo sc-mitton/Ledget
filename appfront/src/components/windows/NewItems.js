@@ -142,6 +142,7 @@ const NewItemsStack = () => {
         opacity: items.length > 1 ? 1 : 0,
         height: items.length > 1 ? '1.6em' : '0em',
         marginBottom: items.length > 1 ? '12px' : '0px',
+        scale: "1.05",
         zIndex: "200",
         display: "flex",
         flexDirection: "row",
@@ -179,6 +180,7 @@ const NewItemsStack = () => {
             return id > items[0].id && !expanded ? "-1" : "0"
         }
         const [dropDown, setDropDown] = useState(false)
+        const [checkHover, setCheckHover] = useState(false)
 
         const DropDown = () => {
             return (
@@ -216,8 +218,10 @@ const NewItemsStack = () => {
                         onClick={() => handleConfirm(item.id)}
                         aria-label="Confirm item"
                         tabIndex={getTabIndex(item.id)}
+                        onMouseOver={() => setCheckHover(true)}
+                        onMouseLeave={() => setCheckHover(false)}
                     >
-                        <CheckMark />
+                        <CheckMark fill={checkHover ? '#2ecd80' : '#242424'} />
                     </button>
                     <button
                         className='icon'

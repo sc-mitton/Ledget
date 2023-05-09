@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import withModal from '../utils/withModal'
 import { useState } from 'react'
 
+import withModal from '../utils/withModal'
 import Plus from '../../assets/svg/Plus'
 import Edit from '../../assets/svg/Edit'
 import FinicityConnect from './FinicityConnect'
