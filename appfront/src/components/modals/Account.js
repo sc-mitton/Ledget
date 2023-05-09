@@ -4,13 +4,13 @@ import { useState } from 'react'
 import withModal from '../utils/withModal'
 import Plus from '../../assets/svg/Plus'
 import Edit from '../../assets/svg/Edit'
-import FinicityConnect from './FinicityConnect'
+import Connect from './Connect'
 
 
 function AccountContent(props) {
     const [hasUpdates, setHasUpdates] = useState(false)
     const [editConnectedInstitutions, setEditConnectedInstitutions] = useState(false)
-    const [finicityConnect, setFinicityConnect] = useState(false)
+    const [connect, setConnect] = useState(false)
 
     const handleSave = () => {
         // TODO: Save changes to database
@@ -56,7 +56,7 @@ function AccountContent(props) {
                         <button
                             className='icon modal-icon'
                             id='add-icon'
-                            onClick={() => setFinicityConnect(true)}
+                            onClick={() => setConnect(true)}
                             aria-label="Add institution"
                         >
                             <Plus />
@@ -103,11 +103,12 @@ function AccountContent(props) {
     return (
         <>
             <DefaultContent key="default-content" />
-            {finicityConnect && <FinicityConnect
-                cleanUp={() => setFinicityConnect(false)}
+            {connect && <Connect
+                cleanUp={() => setConnect(false)}
                 hasBackground={false}
                 hasExit={false}
                 zIndex={1005}
+                padding={0}
             />}
         </>
     )

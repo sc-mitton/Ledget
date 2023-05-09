@@ -37,7 +37,7 @@
     --input-focus: rgb(107, 155, 246);
 
     /* Windows */
-    --window-background-color: hsl(0, 0%, 94%);
+    --window-background-color: rgb(240, 240, 240);
 
     /* Icons & Buttons */
     --icon-dark-gray: rgb(70, 70, 70);
@@ -135,6 +135,12 @@ main:focus-visible {
 button:focus-visible {
     outline: none;
     box-shadow: 0 0 2px 2px var(--light-blue);
+}
+
+div:focus-visible {
+    outline: none;
+    box-shadow: 0 0 2px 2px var(--light-blue);
+    border-radius: 4px;
 }
 
 a:focus-visible {

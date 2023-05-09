@@ -16,6 +16,7 @@ function withModal(WrappedComponent) {
             width = '70%',
             maxWidth = '400px',
             zIndex = 1000,
+            padding = '28px',
         } = props
 
         const backgroundConfig = {
@@ -46,7 +47,7 @@ function withModal(WrappedComponent) {
             width: width,
             maxWidth: maxWidth,
             borderRadius: '6px',
-            padding: '28px',
+            padding: padding,
             zIndex: zIndex + 1,
             position: "relative",
         }

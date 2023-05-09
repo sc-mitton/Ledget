@@ -13,15 +13,16 @@
     justify-content: center;
 }
 
-#finicity-connect-container iframe {
-    border: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
+#finicity-connect-container {
+    height: 90vh;
+    border-radius: 6px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
 }
 
-#connect-footer {
-    display: flex;
-    justify-content: end;
-    margin-top: 12px;
+#finicity-connect-container iframe {
+    border: none;
+    border-radius: 6px;
 }
