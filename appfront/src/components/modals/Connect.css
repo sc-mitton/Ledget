@@ -17,12 +17,12 @@
     height: 90vh;
     border-radius: 6px;
     background-color: transparent;
-    display: flex;
-    flex-direction: column;
-    justify-self: center;
 }
 
 #finicity-connect-container iframe {
-    border: none;
+    min-width: 320px;
+    display: block;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
     border-radius: 6px;
 }

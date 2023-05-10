@@ -85,7 +85,7 @@ function Header() {
                     </div>
                 </div>
             </header>
-            {modal === 'account' && <Account cleanUp={() => setModal('')} />}
+            {modal === 'account' && <Account cleanUp={() => setModal('')} maxWidth={'340px'} />}
             {modal === 'settings' && <Settings cleanUp={() => setModal('')} />}
             {modal === 'help' && <Help cleanUp={() => setModal('')} />}
         </>

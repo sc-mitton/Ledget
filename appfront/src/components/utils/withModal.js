@@ -16,7 +16,6 @@ function withModal(WrappedComponent) {
             width = '70%',
             maxWidth = '400px',
             zIndex = 1000,
-            padding = '28px',
         } = props
 
         const backgroundConfig = {
@@ -32,7 +31,7 @@ function withModal(WrappedComponent) {
             justifyContent: 'center',
             alignItems: 'center',
             background: hasBackground ? 'rgba(49, 49, 49, 0.85)' : 'transparent',
-            backdropFilter: hasBackground ? 'blur(5px)' : 'none',
+            backdropFilter: hasBackground ? 'blur(5px)' : 'none'
         }
 
         const backgroundTransitions = useTransition(visible, {
@@ -47,9 +46,10 @@ function withModal(WrappedComponent) {
             width: width,
             maxWidth: maxWidth,
             borderRadius: '6px',
-            padding: padding,
+            padding: '28px',
             zIndex: zIndex + 1,
             position: "relative",
+            backgroundColor: 'var(--window-background-color)'
         }
 
         const modalContainerTransitions = useTransition(visible, {
