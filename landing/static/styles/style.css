@@ -164,7 +164,7 @@ a {
 
 .auth-button {
     margin: 0 8px;
-    padding: 6px 12px;
+    padding: 6px 8px 6px 12px;
     border-radius: 16px;
     background-color: var(--button-gray);
     display: flex;
@@ -192,35 +192,10 @@ a {
     stroke-dashoffset: 0;
 }
 
+.auth-button .arrow-head {
+    transition: transform 0.2s ease-in;
+}
+
 .auth-button:hover .arrow-head {
-    transform: translateX(2px);
-}
-
-/*
-.auth-button svg {
-    visibility: hidden;
-    width: 20px;
-    transition: width .15s ease-in;
-}
-
-.auth-button:hover svg {
-    visibility: visible;
-    width: 20px;
-}
-
-.auth-button .path {
-    stroke-dasharray: 50;
-    stroke-dashoffset: 50;
-    cursor: pointer;
-}
-
-.auth-button:hover .path {
-    animation: dash-in 1s ease .15s forwards;
-    color: white;
-} */
-
-@keyframes dash-in {
-    to {
-        stroke-dashoffset: 0;
-    }
+    transform: translateX(3px);
 }
