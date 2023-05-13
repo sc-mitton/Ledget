@@ -12,7 +12,7 @@
     --button-hover-gray: rgb(36, 36, 36);
     --border-bottom-gray: #b9b9b9;
 
-    --light-blue: rgb(159, 198, 252);
+    --light-blue: rgb(112, 172, 255);
     --mute-blue: rgb(122, 168, 254);
     --hover-blue: rgb(97, 151, 252);
     --main-blue: rgb(107, 155, 246);
@@ -125,7 +125,7 @@ a:focus-visible {
 /* *** */
 
 .window {
-    box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 0px 0px 1px 0px;
+    box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.8) 0px 0px 1px 0px;
     font-size: 14px;
     border-radius: 10px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
@@ -209,7 +209,7 @@ input[type="password"]:focus::placeholder {
 
 .input-container:focus-within {
     outline: none;
-    box-shadow: 0 0 1px 1px var(--light-blue);
+    box-shadow: 0 0 1.5px 1px var(--light-blue);
 }
 
 .CustomSelect input[type="text"] {

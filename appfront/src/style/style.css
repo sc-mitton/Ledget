@@ -7,12 +7,7 @@
     --window-border: rgb(161, 160, 160);
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
 
-    --button-gray: rgb(70, 70, 70);
-    --buton-border-gray: rgb(60, 60, 60);
-    --button-hover-gray: rgb(36, 36, 36);
-    --border-bottom-gray: #b9b9b9;
-
-    --light-blue: rgb(159, 198, 252);
+    --light-blue: rgb(112, 172, 255);
     --mute-blue: rgb(122, 168, 254);
     --hover-blue: rgb(97, 151, 252);
     --main-blue: #6b9bf6;
@@ -40,6 +35,10 @@
     --window-background-color: rgb(240, 240, 240);
 
     /* Icons & Buttons */
+    --button-gray: rgb(70, 70, 70);
+    --buton-border-gray: rgb(60, 60, 60);
+    --button-hover-gray: rgb(36, 36, 36);
+    --border-bottom-gray: #b9b9b9;
     --icon-dark-gray: rgb(70, 70, 70);
     --icon-light-gray: rgb(223, 223, 223);
     --icon-hover-light-gray: rgb(219, 219, 219);
