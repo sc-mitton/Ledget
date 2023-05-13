@@ -2,85 +2,37 @@ import React from "react"
 
 import { Link } from "react-router-dom"
 import { useState, useRef, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { object, string, ref } from "yup"
+import { object, string } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 
-import fbLogo from "../../assets/images/fbLogo.svg"
-import googleLogo from "../../assets/images/googleLogo.svg"
-import logo from "../../assets/images/logo.svg"
+import './style/SignUp.css'
+import FacebookLogo from "../../assets/icons/FacebookLogo"
+import GoogleLogo from "../../assets/icons/GoogleLogo"
 import alert2 from '../../assets/icons/alert2.svg'
-import AuthContext from "../../context/AuthContext"
-import apiAuth from "../../api/axios"
-import { PasswordInput } from "./CustomInputs"
 
 // Schema for yup form validation
 const schema = object().shape({
-    email: string()
-        .email("Please enter a valid email address")
-        .required("Please enter your email address"),
-    password: string()
-        .test("length", "Must be at least 10 characters long",
-            (value) => value.length >= (10) ? true : false
-        ).required("Enter a password at least 10 characters long"),
-    confirmPassword: string()
-        .oneOf([ref('password'), null], 'Passwords must match')
+    identifier: string()
+        .required('Email or Phone is required')
 })
 
 function SignUpForm() {
     const { register, handleSubmit, formState: { errors, isValid, }, watch, trigger, setError }
         = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const [errMsg, setErrMsg] = useState('')
-    const [visible, setVisible] = useState(false)
-    const { setTokenExpiration } = React.useContext(AuthContext)
-    const navigate = useNavigate()
-    const password = watch({ name: 'password' })
-    const submitButtonRef = useRef(null)
+    const identifierRef = useRef()
 
+    useEffect(() => {
+        identifierRef.current.focus()
+    }, [])
+
+    const onSubmit = (data) => {
+        console.log(data)
+    }
 
     const hasError = (field) => {
         return errors[field] ? true : false
-    }
-
-    const handleSuccessfulResponse = (response) => {
-        sessionStorage.setItem(
-            'access_token_expiration',
-            response.data?.access_token_expiration
-        )
-        sessionStorage.setItem(
-            'user',
-            JSON.stringify(response.data.user)
-        )
-        navigate('/checkout')
-    }
-
-    const handleErrorResponse = (err) => {
-        if (err.response.data.email) {
-            setError(
-                'email',
-                { type: 'manual', message: err.response.data.email }
-            )
-        } else {
-            setErrMsg(err.response.status)
-        }
-    }
-
-    const onSubmit = (data) => {
-        apiAuth.post('/user', data)
-            .then((response) => {
-                handleSuccessfulResponse(response)
-            })
-            .catch((err) => {
-                handleErrorResponse(err)
-            })
-    }
-
-    const handleKeyDown = (e) => {
-        if (e.key === 'Tab' && !e.shiftKey) {
-            e.preventDefault()
-            submitButtonRef.current.focus()
-        }
     }
 
     return (
@@ -92,72 +44,35 @@ function SignUpForm() {
             }
             <div className="input-container">
                 <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Email"
+                    id="identifier"
+                    name="identifier"
+                    placeholder="Email or Phone"
                     required
-                    {...register('email')}
+                    {...register('identifier')}
                     onBlur={(e) => {
                         if (e.target.value) {
-                            trigger("email")
+                            trigger("identifier")
                         }
                     }}
-                    tabIndex={1}
+                    ref={identifierRef}
                 />
             </div>
-            {hasError('email') &&
-                <div id="signup-error-container">
-
-                    <div className="form-error">
-                        <img src={alert2} className="error-icon" />
-                        {errors.email?.message}
-                    </div>
-                </div>
-            }
-            <PasswordInput
-                name="password"
-                placeholder="Password"
-                register={register}
-                visible={visible}
-                setVisible={setVisible}
-                tabIndex={2}
-            />
-            {hasError('password') &&
+            {hasError('identifier') &&
                 <div id="signup-error-container">
                     <div className="form-error">
                         <img src={alert2} className="error-icon" />
-                        {errors.password?.message}
+                        {errors.identifier?.message}
                     </div>
                 </div>
             }
-            <PasswordInput
-                name="confirmPassword"
-                placeholder="Confirm password"
-                register={register}
-                visIcon={false}
-                visible={visible}
-                setVisible={setVisible}
-                tabIndex={3}
-                onKeyDown={handleKeyDown}
-            />
-            {hasError('confirmPassword') &&
-                <div id="signup-error-container">
-                    <div className="form-error">
-                        <img src={alert2} className="error-icon" />
-                        {errors.confirmPassword?.message}
-                    </div>
-                </div>
-            }
-            <div id="submit-button-container">
+            <div>
                 <button
                     className={`${isValid ? 'valid' : 'invalid'}-submit`}
                     id="subscribe-button"
                     type='submit'
-                    ref={submitButtonRef}
                     aria-label="Submit form"
                 >
-                    Sign Up
+                    Next
                 </button>
             </div>
         </form>
@@ -166,21 +81,23 @@ function SignUpForm() {
 
 function SocialSignup() {
     return (
-        <div className="social-signup-container">
-            <div className="or-continue-with">Or sign up with</div>
-            <div className="social-buttons-container">
+        <div className="social-login-container">
+            <div>Or sign up with</div>
+            <div>
                 <button
-                    id="google-auth-button"
-                    aria-label="Google sign up"
+                    className="social-auth-button"
+                    id='google-login'
+                    aria-label="Google login"
                 >
-                    <img src={googleLogo} alt="Google" />
+                    <GoogleLogo />
                 </button>
                 <button
-                    id="facebook-auth-button"
-                    aria-label="Facebook sign up"
+                    className="social-auth-button"
+                    id='facebook-login'
+                    aria-label="Facebook login"
                 >
-                    <img src={fbLogo} alt="Facebook" />
-                </button>
+                    <FacebookLogo />
+                </button >
             </div>
         </div>
     )
@@ -189,14 +106,11 @@ function SocialSignup() {
 function SignUpWindow() {
     return (
         <div className='window sign-up-window'>
-            <div className="app-logo" >
-                <img src={logo} alt="Ledget" />
-            </div>
-            <h3>Create Account</h3>
+            <h2>Create Account</h2>
             <SignUpForm />
             <SocialSignup />
-            <div className="login-prompt-container">
-                <span>Already using Ledget?  </span>
+            <div className="below-window-container">
+                <span>Have an account?  </span>
                 <Link to={{
                     pathname: "/login",
                     state: { direction: 1 }

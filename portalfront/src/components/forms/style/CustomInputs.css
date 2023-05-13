@@ -1,0 +1,160 @@
+/* ------------------------------- Check Marks ------------------------------- */
+.checkmark {
+    cursor: pointer;
+}
+
+.checkbox-symbol {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    user-select: none;
+}
+
+.checkbox-container {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox-container * {
+    box-sizing: border-box;
+}
+
+.checkbox-input {
+    position: absolute;
+    visibility: hidden;
+}
+
+.checkbox {
+    user-select: none;
+    padding: 6px 2px 6px 2px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox span {
+    vertical-align: middle;
+}
+
+.checkbox span:first-child {
+    width: 14px;
+    height: 14px;
+    transform: scale(1);
+    border: 1.5px solid var(--main-text-gray);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox span:first-child svg {
+    fill: none;
+    stroke: #fff;
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+}
+
+.checkbox span:last-child {
+    padding-left: 8px;
+}
+
+.checkbox:hover span:first-child {
+    border-color: var(--main-blue);
+    transform: scale(1.2);
+}
+
+.checkbox-input:checked+.checkbox span:first-child {
+    background: var(--main-blue);
+    border-color: var(--main-blue);
+    animation: zoom-in-out 0.3s ease;
+}
+
+.checkbox-input:checked+.checkbox span:first-child svg {
+    stroke: #fff;
+    animation: draw 0.5s ease-in-out forwards;
+}
+
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes zoom-in-out {
+    50% {
+        transform: scale(0.9);
+    }
+}
+
+/* ----------------------------- Password Inputs ---------------------------- */
+input[type=password]:not(:placeholder-shown) {
+    /* For spacing out the dots text */
+    font-family: 'pass', 'Roboto', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.password-input {
+    background-color: var(--input-color);
+    padding: 8px 12px;
+    margin: 12px 0;
+    border-radius: 4px;
+    display: flex;
+    transition: border .2s ease;
+}
+
+.password-input:focus-within {
+    outline: none;
+    box-shadow: 0 0 1px 1px var(--light-blue);
+    box-sizing: border-box;
+}
+
+.password-input input {
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    border: none;
+}
+
+.password-input input:focus {
+    box-shadow: none;
+}
+
+.hide-password-button {
+    background-color: transparent;
+    border-radius: 2px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.hide-password-icon,
+.show-password-icon {
+    height: 1.4em;
+    cursor: pointer;
+    padding: 1px 5px 0 5px;
+}
+
+.confirm {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ---------------------------------- Select ---------------------------------- */
+.CustomSelect input[type="text"] {
+    box-shadow: none;
+}
+
+.select-container {
+    background-color: var(--input-color);
+    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}

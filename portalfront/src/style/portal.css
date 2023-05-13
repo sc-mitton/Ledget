@@ -1,0 +1,244 @@
+/* Style page for any styling not specific to one component or window */
+
+.app-logo {
+    width: 100%;
+    margin-bottom: 36px;
+    display: flex;
+    justify-content: center;
+}
+
+.app-logo img {
+    height: 40px;
+}
+
+#portal {
+    position: fixed;
+    width: 100%;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
+}
+
+.window-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.window {
+    box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.8) 0px 0px 1px 0px;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 10px;
+    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    width: 40%;
+    max-width: 250px;
+    padding: 32px 40px;
+}
+
+.window h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+.next {
+    width: 100%;
+}
+
+/* --------------------------------- Buttons -------------------------------- */
+
+.charcoal-button {
+    background-color: var(--button-gray);
+    color: var(--window);
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 4px 0;
+    cursor: pointer;
+}
+
+.charcoal-button:hover {
+    background-color: var(--button-hover-gray);
+}
+
+
+/* ----------------------------- Submit Buttons ----------------------------- */
+.invalid-submit,
+.valid-submit,
+.submit-button {
+    padding: 8px 12px;
+    color: var(--window);
+    background-color: var(--button-gray);
+    box-shadow: var(--button-drop-shadow);
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.valid-submit:hover,
+.submit-button:hover {
+    cursor: pointer;
+    background-color: var(--button-hover-gray);
+}
+
+.valid-submit,
+.submit-button {
+    outline: none;
+    cursor: pointer;
+    /* border: 1.5px solid var(--window); */
+}
+
+.valid-submit:focus-within,
+.submit-button:focus-within {
+    outline: none;
+    box-shadow: 0 0 1.5px 1.5px var(--light-blue);
+}
+
+
+.invalid-submit:focus-within {
+    outline: none;
+    border: none;
+    box-shadow: 0 0 1.5px 1.5px var(--light-blue);
+}
+
+/* ----------------------------- Social Buttons ----------------------------- */
+
+.social-login-container div:first-child {
+    text-align: center;
+    margin-top: 28px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: row;
+}
+
+.social-login-container div:first-child:before,
+.social-login-container div:first-child:after {
+    content: "";
+    flex: 1 1;
+    border-top: rgba(0, 0, 0, 0.1) 1px solid;
+    margin: auto;
+}
+
+.social-login-container div:first-child:before {
+    margin-right: 10px
+}
+
+.social-login-container div:first-child:after {
+    margin-left: 10px
+}
+
+.social-login-container div:last-child {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-auth-button {
+    box-shadow: var(--button-drop-shadow);
+    background-color: var(--social-button);
+    border-radius: 4px;
+    flex: 1;
+    padding: 8px;
+    margin: 4px;
+    box-sizing: border-box;
+    transition: background-color 0.15s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.social-auth-button:hover {
+    background-color: var(--social-button-hover);
+}
+
+.social-auth-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 1.5px 1px var(--light-blue);
+}
+
+/* ------------------------------- Form Errors ------------------------------ */
+
+.error img {
+    height: 1em;
+    margin-right: 8px;
+    position: relative;
+    top: 2px;
+}
+
+#signup-error-container {
+    position: relative;
+    top: -12px;
+    display: flex;
+    height: 10px;
+}
+
+.form-error {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--mute-red);
+    margin-top: 4px;
+    margin-left: 4px;
+}
+
+.form-error span {
+    margin-left: 4px;
+}
+
+.form-error img {
+    height: 1em;
+    margin-left: 8px;
+    margin-right: 5px;
+    position: relative;
+    top: 2px;
+    text-align: left;
+    animation: pop .22s ease;
+}
+
+
+@keyframes pop {
+    0% {
+        transform: scale(0.7);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+@keyframes show {
+    0% {
+        transform: scale(0.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* ---------------------------- Below Window CSS ---------------------------- */
+.below-window-container {
+    text-align: center;
+    font-size: 14px;
+    height: 0;
+    position: relative;
+    bottom: -48px;
+}
+
+.below-window-container a {
+    color: var(--main-blue);
+    text-decoration: underline 0.1em rgba(0, 0, 0, 0);
+    transition: text-decoration-color 300ms;
+    text-decoration-skip-ink: none;
+    text-underline-offset: 4px;
+}
+
+.below-window-container a:hover {
+    text-decoration-color: var(--main-blue);
+}

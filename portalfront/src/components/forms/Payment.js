@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
+import './style/Payment.css'
 import logo from '../../assets/images/logo.svg'
 import stripelogo from '../../assets/images/stripelogo.svg'
 import alert2 from '../../assets/icons/alert2.svg'

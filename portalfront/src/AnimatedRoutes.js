@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 
 import { AnimatePresence, motion } from 'framer-motion'
 
+import logo from "./assets/images/logo.svg"
 import LoginWindow from './components/forms/Login'
 import SignUpWindow from './components/forms/SignUp'
 import Checkout from './components/forms/Checkout'
@@ -14,26 +15,32 @@ function AnimatedRoutes() {
     const location = useLocation()
 
     return (
-        <AnimatePresence mode="wait">
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                key={location.pathname}
-                transition={{
-                    opacity: { duration: .25, ease: "easeIn" }
-                }}
-            >
-                <Routes location={location} key={location.pathname} >
-                    <Route exact path="/login" element={<LoginWindow />} />
-                    <Route path="/register" element={<SignUpWindow />} />
-                    <Route path="/" element={<PrivateRoute />}>
-                        <Route path="/plans" element={<SubscriptionsWindow />} />
-                        <Route path="/checkout/*" element={<Checkout />} />
-                    </Route>
-                </Routes>
-            </motion.div >
-        </AnimatePresence>
+        <div id="portal">
+            <div className="app-logo" >
+                <img src={logo} alt="Ledget" />
+            </div>
+            <AnimatePresence mode="wait">
+                <motion.div
+                    className="window-container"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    key={location.pathname}
+                    transition={{
+                        opacity: { duration: .25, ease: "easeIn" }
+                    }}
+                >
+                    <Routes location={location} key={location.pathname} >
+                        <Route exact path="/login" element={<LoginWindow />} />
+                        <Route path="/register" element={<SignUpWindow />} />
+                        <Route path="/" element={<PrivateRoute />}>
+                            <Route path="/plans" element={<SubscriptionsWindow />} />
+                            <Route path="/checkout/*" element={<Checkout />} />
+                        </Route>
+                    </Routes>
+                </motion.div >
+            </AnimatePresence>
+        </div>
     )
 }
 

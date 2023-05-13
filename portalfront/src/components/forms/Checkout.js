@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+import './style/Checkout.css'
 import { Outlet, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'

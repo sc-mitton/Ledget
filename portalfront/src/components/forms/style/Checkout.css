@@ -1,0 +1,190 @@
+.checkout-container h3 {
+    font-weight: 600;
+    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    color: var(--logo-dark);
+    margin: 0 0 0 4px;
+    margin-bottom: 12px;
+}
+
+.checkout-window {
+    max-width: 340px;
+    min-width: 280px;
+    margin: 0 auto;
+    padding: 32px;
+    background: linear-gradient(to bottom, var(--window) 70%, #f1f1f1 100%);
+}
+
+.inputs-container h4 {
+    margin: 4px 0 8px 2px;
+}
+
+.inputs-container {
+    padding: 0 4px;
+}
+
+/* Billing Info */
+#billing-info-header {
+    margin-bottom: 10px;
+}
+
+#billing-form {
+    padding-bottom: 0px;
+}
+
+#name-on-card {
+    width: 100%;
+    font-weight: 400;
+}
+
+#name-on-card-container {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#location-inputs-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#location-inputs-container input {
+    width: 100%;
+}
+
+#city-container,
+#city-error {
+    flex: 1;
+}
+
+#state-container,
+#state-error {
+    margin: 0 8px;
+    width: 25%;
+    min-width: 75px;
+}
+
+#zip-container,
+#zip-error {
+    width: 28%;
+}
+
+#zip-error,
+#city-error {
+    height: 0px;
+}
+
+#location-input-errors {
+    position: relative;
+    top: -12px;
+    display: flex;
+    height: 14px;
+}
+
+/* Card Element */
+.card-container {
+    background-color: var(--input-color);
+    border-radius: 4px;
+    z-index: 0;
+    padding: 10px 8px 11px 8px;
+    margin: 6px 0;
+    box-sizing: border-box;
+}
+
+#payment-error {
+    margin-left: 14px;
+}
+
+.focus {
+    box-shadow: 0 0 1.5px 1px var(--light-blue);
+    transition: border .2s ease;
+}
+
+/* Order Summary */
+#order-summary-line {
+    display: inline-block
+}
+
+.order-summary-container {
+    text-align: left;
+    display: flex;
+    justify-content: end;
+    padding: 16px 0px;
+    margin: 24px 8px 0 8px;
+    border-top: rgba(0, 0, 0, 0.1) 1px solid;
+}
+
+.order-summary-container tr td {
+    text-align: right;
+}
+
+.order-summary-container table {
+    border-collapse: collapse;
+}
+
+.order-summary-container tr {
+    line-height: 1.3;
+}
+
+.order-summary-container tr td:first-child {
+    font-weight: 500;
+    padding-right: 8px;
+}
+
+.general-error {
+    margin-top: 24px;
+    text-align: center;
+    color: var(--mute-red);
+}
+
+.general-error img {
+    height: 1em;
+    margin-right: 8px;
+    position: relative;
+    top: 2px;
+    text-align: left;
+    animation: pop .22s ease;
+}
+
+#subscribe-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#subscribe-button span {
+    color: var(--window);
+}
+
+#payment-success-message {
+    animation: show .1s ease;
+    color: var(--success-green);
+}
+
+.success-icon {
+    fill: var(--success-green);
+    height: 1em;
+    margin-right: 2px;
+    position: relative;
+    top: 2px;
+}
+
+/* Stripe Logo */
+.stripe-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: .3;
+}
+
+.stripe-logo-container {
+    font-weight: 500;
+}
+
+.stripe-logo {
+    position: relative;
+    top: .2em;
+    height: 25px;
+}

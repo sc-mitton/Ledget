@@ -3,6 +3,7 @@ import { useState, useRef } from 'react'
 
 import { SwitchTransition, CSSTransition } from 'react-transition-group'
 
+import './style/Subscriptions.css'
 import logo from '../../assets/images/logo.svg'
 import usePrices from '../../api/hooks/usePrices'
 import { useNavigate } from 'react-router-dom'
@@ -121,10 +122,7 @@ function SubscriptionsWindow({ setPrice }) {
 
     return (
         <div className='window subscription-window'>
-            <div className="app-logo-subscription" >
-                <img src={logo} alt="Ledget" />
-            </div>
-            <h3>Select a Plan</h3>
+            <h2>Select a Plan</h2>
             <div className="subscription-form-container">
                 <SubscriptionForm setPrice={setPrice} />
             </div>

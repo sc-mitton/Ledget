@@ -1,0 +1,7 @@
+.sign-up-window input {
+    width: 100%;
+}
+
+#signup-error-container {
+    margin: 8px 0;
+}
