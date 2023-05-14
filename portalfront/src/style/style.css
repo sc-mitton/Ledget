@@ -8,11 +8,7 @@
     --window: rgb(248, 248, 248);
     --window-border: rgb(161, 160, 160);
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-
-    --button-gray: #464646;
-    --buton-border-gray: rgb(60, 60, 60);
-    --button-hover-gray: rgb(36, 36, 36);
-    --border-bottom-gray: #b9b9b9;
+    --window-box-gray: rgb(255, 252, 252);
 
     --light-blue: rgb(112, 172, 255);
     --mute-blue: rgb(122, 168, 254);
@@ -23,12 +19,14 @@
     --hover-red: rgb(251, 106, 126);
     --alert-red: rgb(243, 80, 80);
 
-    /* Social Auth Buttons */
+    /* Buttons */
     --button-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --social-button: rgb(239, 239, 239);
     --social-button-hover: rgb(230, 230, 230);
-
-    --window-box-gray: rgb(255, 252, 252);
+    --button-gray: #464646;
+    --buton-border-gray: rgb(60, 60, 60);
+    --button-hover-gray: rgb(36, 36, 36);
+    --border-bottom-gray: #b9b9b9;
 
     /* Subscription Radios */
     --inactive-gray: rgb(215, 215, 215);
@@ -40,6 +38,7 @@
 
     /* Text */
     --main-text-gray: rgb(36, 36, 36);
+    --muted-text-gray: rgb(132, 132, 132);
     --input-placeholder: rgb(132, 132, 132);
     --success-green: rgb(205, 248, 205);
     --input-focus: rgb(107, 155, 246);
@@ -104,12 +103,6 @@ button {
     background: transparent;
 }
 
-a {
-    text-decoration: none;
-    cursor: pointer;
-    border-bottom: 1.5px solid transparent;
-}
-
 /* Accessibility Focus Styling */
 main:focus-visible {
     outline: none;
@@ -121,10 +114,22 @@ button:focus-visible {
     box-shadow: 0 0 2px 2px var(--light-blue);
 }
 
-a:focus-visible {
+a {
     outline: none;
-    border-bottom: 2px solid var(--light-blue);
+    text-decoration: none;
+    border-bottom: 1.5px solid rgb(0, 0, 0, 0);
+    color: var(--main-blue);
+    text-decoration-skip-ink: none;
+    transition: border-bottom .2s ease;
+    text-underline-offset: 4px;
+    cursor: pointer;
 }
+
+a:focus-visible,
+a:hover {
+    border-bottom: 1.5px solid var(--main-blue);
+}
+
 
 /* *** */
 
@@ -142,6 +147,7 @@ input:-webkit-autofill {
 input {
     --webkit-text-security: disc;
     outline: none;
+    width: 100%;
 }
 
 input:-webkit-autofill:hover,

@@ -10,21 +10,23 @@ import './style/SignUp.css'
 import FacebookLogo from "../../assets/icons/FacebookLogo"
 import GoogleLogo from "../../assets/icons/GoogleLogo"
 import alert2 from '../../assets/icons/alert2.svg'
+import { Checkbox } from './CustomInputs'
 
 // Schema for yup form validation
 const schema = object().shape({
-    identifier: string()
-        .required('Email or Phone is required')
+    email: string()
+        .email('Email is invalid.')
+        .required('Please enter your email address.')
 })
 
 function SignUpForm() {
     const { register, handleSubmit, formState: { errors, isValid, }, watch, trigger, setError }
         = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const [errMsg, setErrMsg] = useState('')
-    const identifierRef = useRef()
+    const emailRef = useRef()
 
     useEffect(() => {
-        identifierRef.current.focus()
+        emailRef.current.focus()
     }, [])
 
     const onSubmit = (data) => {
@@ -44,30 +46,33 @@ function SignUpForm() {
             }
             <div className="input-container">
                 <input
-                    id="identifier"
-                    name="identifier"
-                    placeholder="Email or Phone"
+                    id="email"
+                    name="email"
+                    placeholder="Email"
                     required
-                    {...register('identifier')}
+                    {...register('email')}
                     onBlur={(e) => {
                         if (e.target.value) {
-                            trigger("identifier")
+                            trigger("email")
                         }
                     }}
-                    ref={identifierRef}
+                    ref={emailRef}
                 />
             </div>
-            {hasError('identifier') &&
+            {hasError('email') &&
                 <div id="signup-error-container">
                     <div className="form-error">
                         <img src={alert2} className="error-icon" />
-                        {errors.identifier?.message}
+                        {errors.email?.message}
                     </div>
                 </div>
             }
+            <div id="remember-me-checkbox-container">
+                <Checkbox id='remember-me' label='Remember' />
+            </div>
             <div>
                 <button
-                    className={`${isValid ? 'valid' : 'invalid'}-submit`}
+                    className='charcoal-button'
                     id="subscribe-button"
                     type='submit'
                     aria-label="Submit form"

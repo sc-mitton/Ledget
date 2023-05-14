@@ -6,19 +6,59 @@
     width: 100%;
 }
 
+#sign-in {
+    width: 100%;
+}
+
+#forgot-password {
+    text-align: left;
+    margin-left: 12px;
+    margin-top: 8px;
+
+}
+
+/* -------------------------- Passwordless Section -------------------------- */
+#authentication-content-container {
+    text-align: left;
+}
+
 #passwordless-options {
-    margin-top: 12px;
+    margin-top: 32px;
+    margin-left: 6px;
+    margin-right: 6px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
+#passwordless-options div:first-child {
+    text-align: center;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: row;
+}
 
-#passwordless-options {
-    margin-top: 8px;
+#passwordless-options div:first-child:before,
+#passwordless-options div:first-child:after {
+    content: "";
+    flex: 1 1;
+    border-top: rgba(0, 0, 0, 0.1) 1px solid;
+    margin: auto;
+}
+
+#passwordless-options div:first-child:before {
+    margin-right: 10px
+}
+
+#passwordless-options div:first-child:after {
+    margin-left: 10px
+}
+
+#passwordless-options div:last-child {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
 }
 
 #passwordless-options button {
@@ -45,16 +85,5 @@
 
 #webauthn-icon {
     height: 40px;
-    opacity: .5;
+    opacity: .7;
 }
-
-
-/* <div id="passwordless-options">
-<button
-    name="enter-password"
-    type="submit"
-    ref={submitButtonRef}
->
-    <img src={webAuthn} id="webauthn-icon" alt='webauthn icon' />
-</button>
-</div> */

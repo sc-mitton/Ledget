@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, } from "react"
+import React from "react"
 import { useState } from 'react'
 
 import './style/CustomInputs.css'
@@ -8,8 +8,7 @@ import showPassword from "../../assets/icons/showPassword.svg"
 
 const Checkbox = (props) => {
     let id = props.id
-    let text = props.text
-    let checkRef = props.checkRef
+    let label = props.label
 
     return (
         <div className="checkbox-container">
@@ -26,7 +25,6 @@ const Checkbox = (props) => {
             <input
                 className="checkbox-input"
                 id={id}
-                ref={checkRef}
                 type="checkbox"
             />
             <label
@@ -39,7 +37,7 @@ const Checkbox = (props) => {
                         <use xlinkHref="#check"></use>
                     </svg>
                 </span>
-                <span>{text}</span>
+                <span>{label}</span>
             </label>
         </div >
     )
@@ -140,45 +138,50 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
 }
 
 
-const VisibilityIcon = (props) => {
-    // Needs to be set outside the PasswordInput component
-    // to prevent rerendering of the icon
-    return (
-        <img
-            src={props.visible ? hidePassword : showPassword}
-            alt="toggle visibility"
-            className="hide-password-icon"
-            onClick={() => props.setVisible(!props.visible)}
-        />
-    )
-}
-
 const PasswordInput = (props) => {
     const [pwdInput, setPwdInput] = useState(false)
+    const [pwdVisible, setPwdVisible] = useState(false)
+    const pwdInputRef = React.createRef()
+
+    const VisibilityIcon = (props) => {
+        // Needs to be set outside the PasswordInput component
+        // to prevent rerendering of the icon
+        const [showIcon, setShowIcon] = useState(pwdVisible)
+
+        return (
+            <>
+                <img
+                    src={!showIcon ? hidePassword : showPassword}
+                    alt="toggle visibility"
+                    className="password-visibility-icon"
+                    onClick={() =>
+                        setPwdVisible(!pwdVisible) &&
+                        setShowIcon(!showIcon) && props.onClick()
+                    }
+                />
+            </>
+        )
+    }
 
     return (
         <div className="password-container">
             <div className="password-input">
                 <input
-                    type={props.visible ? 'text' : 'password'}
+                    type={pwdVisible ? 'text' : 'password'}
                     name={props.name}
                     placeholder={props.placeholder}
-                    {...props.register(props.name, {
-                        onChange: (e) => {
-                            if (e.target.value == "" && pwdInput) {
-                                setPwdInput(false)
-                            } else if (e.target.value.length == 1) {
+                    ref={pwdInputRef}
+                    onChange={
+                        () => {
+                            if (pwdInputRef.current.value.length > 0) {
                                 setPwdInput(true)
+                            } else {
+                                setPwdInput(false)
                             }
-                        }
-                    })}
-                    onKeyDown={props.onKeyDown}
+                        }}
                 />
-                {pwdInput && props.visIcon &&
-                    <VisibilityIcon
-                        visible={props.visible}
-                        setVisible={props.setVisible}
-                    />
+                {pwdInput && props.inputType != 'confirm-password' &&
+                    <VisibilityIcon />
                 }
             </div>
         </div>
@@ -186,7 +189,10 @@ const PasswordInput = (props) => {
 }
 
 PasswordInput.defaultProps = {
-    visIcon: true
+    inputType: 'password',
+    name: 'password',
+    placeholder: 'Password'
 }
+
 
 export { Checkbox, CustomSelect, PasswordInput }

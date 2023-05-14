@@ -9,6 +9,7 @@
 
 .app-logo img {
     height: 40px;
+    margin-left: 4px;
 }
 
 #portal {
@@ -42,19 +43,25 @@
     margin-bottom: 24px;
 }
 
-.next {
-    width: 100%;
+#remember-me-checkbox-container {
+    margin-top: -8px;
+    margin-bottom: 2px;
 }
 
+
 /* --------------------------------- Buttons -------------------------------- */
+
+button {
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+
+}
 
 .charcoal-button {
     background-color: var(--button-gray);
     color: var(--window);
-    border-radius: 4px;
-    padding: 8px 12px;
     margin: 4px 0;
-    cursor: pointer;
 }
 
 .charcoal-button:hover {
@@ -229,16 +236,4 @@
     height: 0;
     position: relative;
     bottom: -48px;
-}
-
-.below-window-container a {
-    color: var(--main-blue);
-    text-decoration: underline 0.1em rgba(0, 0, 0, 0);
-    transition: text-decoration-color 300ms;
-    text-decoration-skip-ink: none;
-    text-underline-offset: 4px;
-}
-
-.below-window-container a:hover {
-    text-decoration-color: var(--main-blue);
 }

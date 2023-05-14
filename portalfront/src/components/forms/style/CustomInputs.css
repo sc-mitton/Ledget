@@ -12,9 +12,13 @@
 }
 
 .checkbox-container {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 10px;
+    font-size: 12px;
     box-sizing: border-box;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
 }
 
@@ -31,7 +35,6 @@
     user-select: none;
     padding: 6px 2px 6px 2px;
     overflow: hidden;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
 }
@@ -44,7 +47,7 @@
     width: 14px;
     height: 14px;
     transform: scale(1);
-    border: 1.5px solid var(--main-text-gray);
+    border: 1.5px solid var(--button-gray);
     border-radius: 2px;
     transition: all 0.3s ease;
     display: flex;
@@ -64,14 +67,14 @@
 }
 
 .checkbox:hover span:first-child {
-    border-color: var(--main-blue);
-    transform: scale(1.2);
+    transform: scale(1.15);
+    transition: all 0.2s ease;
 }
 
 .checkbox-input:checked+.checkbox span:first-child {
     background: var(--main-blue);
     border-color: var(--main-blue);
-    animation: zoom-in-out 0.3s ease;
+    animation: zoom-in-out 0.2s ease;
 }
 
 .checkbox-input:checked+.checkbox span:first-child svg {
@@ -87,7 +90,7 @@
 
 @keyframes zoom-in-out {
     50% {
-        transform: scale(0.9);
+        transform: scale(0.97);
     }
 }
 
@@ -104,8 +107,11 @@ input[type=password]:not(:placeholder-shown) {
     padding: 8px 12px;
     margin: 12px 0;
     border-radius: 4px;
-    display: flex;
     transition: border .2s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .password-input:focus-within {
@@ -119,28 +125,22 @@ input[type=password]:not(:placeholder-shown) {
     margin: 0;
     box-shadow: none;
     border: none;
+    height: 20px;
 }
 
 .password-input input:focus {
     box-shadow: none;
 }
 
-.hide-password-button {
+.password-visibility-icon {
+    height: 1.3em;
+    margin: 0 4px;
+    cursor: pointer;
     background-color: transparent;
     border-radius: 2px;
-    padding: 0;
-    margin: 0;
     border: none;
-    cursor: pointer;
     display: flex;
     align-items: center;
-}
-
-.hide-password-icon,
-.show-password-icon {
-    height: 1.4em;
-    cursor: pointer;
-    padding: 1px 5px 0 5px;
 }
 
 .confirm {
