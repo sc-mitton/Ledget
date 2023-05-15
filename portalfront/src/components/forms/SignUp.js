@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 
 import './style/SignUp.css'
+import logo from "../../assets/images/logo.svg"
 import FacebookLogo from "../../assets/icons/FacebookLogo"
 import GoogleLogo from "../../assets/icons/GoogleLogo"
 import alert2 from '../../assets/icons/alert2.svg'
@@ -14,27 +15,32 @@ import { Checkbox } from './CustomInputs'
 
 // Schema for yup form validation
 const schema = object().shape({
+    name: string()
+        .required('Please enter your name')
+        .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, 'Please enter a valid name')
+        .test('two-words', 'Missing last name', (value) => {
+            if (value) {
+                const words = value.trim().split(' ')
+                return words.length === 2
+            }
+            return true
+        }),
     email: string()
-        .email('Email is invalid.')
-        .required('Please enter your email address.')
+        .email('Email is invalid')
+        .required('Please enter your email address'),
 })
 
 function SignUpForm() {
     const { register, handleSubmit, formState: { errors, isValid, }, watch, trigger, setError }
         = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const [errMsg, setErrMsg] = useState('')
-    const emailRef = useRef()
-
-    useEffect(() => {
-        emailRef.current.focus()
-    }, [])
-
-    const onSubmit = (data) => {
-        console.log(data)
-    }
 
     const hasError = (field) => {
         return errors[field] ? true : false
+    }
+
+    const onSubmit = async (data) => {
+        console.log(data)
     }
 
     return (
@@ -42,6 +48,27 @@ function SignUpForm() {
             {errMsg &&
                 <div className="server-error">
                     <img src={alert2} alt='' />{errMsg}
+                </div>
+            }
+            <div className="input-container">
+                <input
+                    id="name"
+                    name="name"
+                    placeholder="First and last name"
+                    {...register('name')}
+                    onBlur={(e) => {
+                        if (e.target.value) {
+                            trigger("name")
+                        }
+                    }}
+                />
+            </div>
+            {hasError('name') &&
+                <div id="signup-error-container">
+                    <div className="form-error">
+                        <img src={alert2} className="error-icon" />
+                        {errors.name?.message}
+                    </div>
                 </div>
             }
             <div className="input-container">
@@ -56,7 +83,6 @@ function SignUpForm() {
                             trigger("email")
                         }
                     }}
-                    ref={emailRef}
                 />
             </div>
             {hasError('email') &&
@@ -67,17 +93,13 @@ function SignUpForm() {
                     </div>
                 </div>
             }
-            <div id="remember-me-checkbox-container">
-                <Checkbox id='remember-me' label='Remember' />
-            </div>
             <div>
                 <button
-                    className='charcoal-button'
-                    id="subscribe-button"
+                    className='charcoal-button continue-button'
                     type='submit'
                     aria-label="Submit form"
                 >
-                    Next
+                    Continue
                 </button>
             </div>
         </form>
@@ -111,6 +133,9 @@ function SocialSignup() {
 function SignUpWindow() {
     return (
         <div className='window sign-up-window'>
+            <div className="app-logo" >
+                <img src={logo} alt="Ledget" />
+            </div>
             <h2>Create Account</h2>
             <SignUpForm />
             <SocialSignup />

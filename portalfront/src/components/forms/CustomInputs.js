@@ -56,8 +56,8 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
         control: (baseStyles, state) => ({
             ...baseStyles,
             borderRadius: "4px",
-            paddingLeft: "12px",
-            paddingRight: "8px",
+            paddingLeft: "16px",
+            paddingRight: "12px",
             backgroundColor: "#ededed",
             font: "inherit",
             height: "0",

@@ -83,7 +83,7 @@ textarea,
 select,
 option {
     font-family: "Source Sans 3";
-    font-size: 14px;
+    font-size: 15px;
     color: var(--main-text-gray);
 }
 
@@ -140,7 +140,7 @@ input:-webkit-autofill {
     background-color: none;
     background-clip: content-box !important;
     border: none;
-    font-size: 14px;
+    font-size: 15px;
     outline: none;
 }
 
@@ -166,45 +166,3 @@ fieldset {
 }
 
 /* End override default browser styles */
-
-/* --------------------------------- Inputs --------------------------------- */
-input {
-    border: none;
-    outline: none;
-    background: transparent;
-    box-shadow: none;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-}
-
-input:focus {
-    outline: none;
-}
-
-.input-container input::placeholder,
-input[type="password"]::placeholder {
-    color: var(--input-placeholder);
-}
-
-.input-container input:focus::placeholder,
-input[type="password"]:focus::placeholder {
-    color: var(--input-focus);
-    transition: color .2s ease;
-}
-
-.input-container {
-    background-color: var(--input-color);
-    border-radius: 4px;
-    padding: 8px 12px;
-    margin: 12px 0;
-    box-sizing: border-box;
-    height: 100%;
-    display: flex;
-    transition: border .2s ease;
-}
-
-.input-container:focus-within {
-    outline: none;
-    box-shadow: 0 0 1.5px 1px var(--light-blue);
-}

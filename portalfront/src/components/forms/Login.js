@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import './style/Login.css'
 import webAuthn from "../../assets/icons/webAuthn.svg"
 import Help from "../../assets/icons/Help"
+import logo from "../../assets/images/logo.svg"
 import FacebookLogo from "../../assets/icons/FacebookLogo"
 import GoogleLogo from "../../assets/icons/GoogleLogo"
 import alert2 from "../../assets/icons/alert2.svg"
@@ -113,19 +114,17 @@ function LoginWindow() {
                         />
                     </div>
                     <div id="remember-me-checkbox-container">
-                        <Checkbox id='remember-me' label='Remember' />
+                        <Checkbox id='remember-me' label='Save login method' />
                     </div>
-                    <div>
-                        <button
-                            className='charcoal-button'
-                            id="next"
-                            name="enter-password"
-                            type="submit"
-                            aria-label="Next"
-                        >
-                            Next
-                        </button>
-                    </div>
+                    <button
+                        className='charcoal-button'
+                        id="next"
+                        name="enter-password"
+                        type="submit"
+                        aria-label="Next"
+                    >
+                        Continue
+                    </button>
                 </div>
             </form >
         )
@@ -134,6 +133,9 @@ function LoginWindow() {
     const InitialContent = () => {
         return (
             <>
+                <div className="app-logo" >
+                    <img src={logo} alt="Ledget" />
+                </div>
                 <h2>Sign In</h2>
                 <LoginForm />
                 <SocialLogin />
@@ -156,6 +158,9 @@ function LoginWindow() {
 
         return (
             <>
+                <div className="app-logo" >
+                    <img src={logo} alt="Ledget" />
+                </div>
                 <form id="authentication-content-container">
                     <PasswordInput />
                     <div>

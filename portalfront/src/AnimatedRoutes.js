@@ -16,9 +16,6 @@ function AnimatedRoutes() {
 
     return (
         <div id="portal">
-            <div className="app-logo" >
-                <img src={logo} alt="Ledget" />
-            </div>
             <AnimatePresence mode="wait">
                 <motion.div
                     className="window-container"
