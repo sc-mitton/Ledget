@@ -1,11 +1,11 @@
-import React from 'react'
-import { useRef, useState, useEffect, useContext } from "react"
+import React, { useRef, useState, useEffect, useContext } from "react"
 
 import { useNavigate, Link } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 
 import './style/Login.css'
 import webAuthn from "../../assets/icons/webAuthn.svg"
+import Help from "../../assets/icons/Help"
 import FacebookLogo from "../../assets/icons/FacebookLogo"
 import GoogleLogo from "../../assets/icons/GoogleLogo"
 import alert2 from "../../assets/icons/alert2.svg"
@@ -154,7 +154,6 @@ function LoginWindow() {
 
     const AuthenticateContent = () => {
 
-
         return (
             <>
                 <form id="authentication-content-container">
@@ -171,13 +170,13 @@ function LoginWindow() {
                         </button>
                     </div>
                 </form>
-                <div
-                    id="forgot-password"
-                >
-                    <Link to="#" tabIndex={0} >Forgot Password?</Link>
-                </div>
                 <div id="passwordless-options">
-                    <div>Passwordless Options</div>
+                    <div id="passwordless-options-header">
+                        Passwordless Options
+                        <div className="help-icon">
+                            <Help />
+                        </div>
+                    </div>
                     <div>
                         <button
                             name="passwordless-options"
@@ -186,6 +185,11 @@ function LoginWindow() {
                             <img src={webAuthn} id="webauthn-icon" alt='webauthn icon' />
                         </button>
                     </div>
+                </div>
+                <div
+                    className="below-window-container"
+                >
+                    <Link to="#" tabIndex={0} >Forgot Password?</Link>
                 </div>
             </>
         )

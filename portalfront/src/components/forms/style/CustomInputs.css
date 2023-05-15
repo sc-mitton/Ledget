@@ -67,7 +67,7 @@
 }
 
 .checkbox:hover span:first-child {
-    transform: scale(1.15);
+    transform: scale(1.12);
     transition: all 0.2s ease;
 }
 
@@ -90,7 +90,7 @@
 
 @keyframes zoom-in-out {
     50% {
-        transform: scale(0.97);
+        transform: scale(0.95);
     }
 }
 

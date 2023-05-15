@@ -10,80 +10,75 @@
     width: 100%;
 }
 
-#forgot-password {
-    text-align: left;
-    margin-left: 12px;
-    margin-top: 8px;
-
-}
-
-/* -------------------------- Passwordless Section -------------------------- */
 #authentication-content-container {
     text-align: left;
 }
 
+/* -------------------------- Passwordless Section -------------------------- */
+
 #passwordless-options {
-    margin-top: 32px;
-    margin-left: 6px;
-    margin-right: 6px;
+    margin: 32px 6px 12px 6px;
+    justify-content: center;
+    text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
 }
 
-#passwordless-options div:first-child {
-    text-align: center;
-    margin-bottom: 12px;
+#passwordless-options-header {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
 }
 
-#passwordless-options div:first-child:before,
-#passwordless-options div:first-child:after {
+#passwordless-options-header:before,
+#passwordless-options-header:after {
     content: "";
     flex: 1 1;
     border-top: rgba(0, 0, 0, 0.1) 1px solid;
     margin: auto;
 }
 
-#passwordless-options div:first-child:before {
+#passwordless-options-header:before {
     margin-right: 10px
 }
 
-#passwordless-options div:first-child:after {
+#passwordless-options-header:after {
     margin-left: 10px
+}
+
+.help-icon {
+    margin-left: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: .8;
 }
 
 #passwordless-options div:last-child {
     display: flex;
-    flex-direction: row;
     justify-content: center;
-    align-items: center;
 }
 
 #passwordless-options button {
     color: rgb(0, 0, 0, .5);
-    padding: 4px 8px;
+    padding: 4px;
     transition: background-color .2s;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
     cursor: pointer;
-    border-radius: 4px;
-
+    border-radius: 8px;
 }
 
 #passwordless-options button:hover {
     background-color: var(--social-button);
 }
 
-#passwordless-options button:focus {
-    outline: none;
-    box-shadow: 0 0 1.5px 1.5px var(--light-blue);
-}
-
 #webauthn-icon {
     height: 40px;
-    opacity: .7;
+    opacity: .8;
 }

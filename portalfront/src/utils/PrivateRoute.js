@@ -7,7 +7,7 @@ const PrivateRoute = () => {
     const user = sessionStorage.getItem('user')
 
     return (
-        true ? <Outlet /> : <Navigate to="/login" />
+        user ? <Outlet /> : <Navigate to="/login" />
     )
 }
 

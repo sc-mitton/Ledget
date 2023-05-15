@@ -36,7 +36,9 @@ function AnimatedRoutes() {
                         <Route path="/" element={<PrivateRoute />}>
                             <Route path="/plans" element={<SubscriptionsWindow />} />
                             <Route path="/checkout/*" element={<Checkout />} />
+                            {/* Change Password page */}
                         </Route>
+                        {/* Forgot password page */}
                     </Routes>
                 </motion.div >
             </AnimatePresence>
