@@ -13,13 +13,13 @@ module.exports = {
         publicPath: '/'
     },
     devServer: {
-        static: {
-            directory: path.join(__dirname, 'public'),
-        },
         https: {
             key: fs.readFileSync('../certs/ledget.app.key'),
             cert: fs.readFileSync('../certs/ledget.app.crt'),
             ca: fs.readFileSync('../certs/ledgetCA.pem')
+        },
+        static: {
+            directory: path.join(__dirname, 'public'),
         },
         port: 3001,
         historyApiFallback: true,

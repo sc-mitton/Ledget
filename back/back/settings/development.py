@@ -11,7 +11,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 ALLOWED_HOSTS = ['localhost', 'ledget.app']
 DOMAIN_URL = "https://ledget.app:8000/"
-REACT_URL = "https://ledget.app:3000/"
+REACT_URL = "https://ledget.app:3001/"
 
 # Stripe
 STRIPE_SK = os.getenv('STRIPE_SK_TEST')
@@ -34,7 +34,7 @@ SECURE_BROWSER_XSS_FILTER = True
 
 
 CORS_ORIGIN_WHITELIST = [
-    'https://secure.ledget.app:3000',
+    'https://accounts.ledget.app:3000',
     'https://ledget.app:3001',
 ]
 CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']

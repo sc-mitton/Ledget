@@ -13,20 +13,20 @@ module.exports = {
         publicPath: '/'
     },
     devServer: {
-        host: 'secure.ledget.app',
+        https: {
+            key: fs.readFileSync('../certs/accounts.ledget.app.key'),
+            cert: fs.readFileSync('../certs/accounts.ledget.app.crt'),
+            ca: fs.readFileSync('../certs/ledgetCA.pem')
+        },
         allowedHosts: [
             'secure.ledget.app',
         ],
-        https: {
-            key: fs.readFileSync('../certs/secure.ledget.app.key'),
-            cert: fs.readFileSync('../certs/secure.ledget.app.crt'),
-            ca: fs.readFileSync('../certs/ledgetCA.pem'),
-        },
         static: {
             directory: path.join(__dirname, 'public'),
         },
         port: 3000,
         historyApiFallback: true,
+        host: 'accounts.ledget.app',
         open: {
             app: {
                 name: 'firefox',

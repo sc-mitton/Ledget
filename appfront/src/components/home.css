@@ -4,7 +4,7 @@
     margin: 0 auto;
     display: grid;
     grid-template-columns: 3fr 2fr;
-    margin-top: 32px;
+    margin-top: 16px;
 }
 
 .window {

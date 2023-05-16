@@ -96,8 +96,9 @@
 input[type=password]:not(:placeholder-shown) {
     /* For spacing out the dots text */
     font-family: 'pass', 'Roboto', Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    letter-spacing: 2px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 3px;
 }
 
 .password-input {

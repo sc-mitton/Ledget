@@ -1,9 +1,9 @@
 header {
-    height: 50px;
+    height: 55px;
     display: flex;
     justify-content: center;
+    align-items: center;
     /* background-color: var(--logo-dark); */
-    /* box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.35); */
 }
 
 #header-container {

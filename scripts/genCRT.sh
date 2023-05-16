@@ -10,10 +10,10 @@ while getopts ":d:k:p:" opt; do
       DOMAIN=$OPTARG
       ;;
     k )
-      KEY=$OPTARG
+      CAKEY=$OPTARG
       ;;
     p )
-      PEM=$OPTARG
+      CAPEM=$OPTARG
       ;;
     \? )
       echo "Invalid option: -$OPTARG" 1>&2
@@ -27,14 +27,14 @@ while getopts ":d:k:p:" opt; do
 done
 
 # Check that required options are present
-if [ -z "${DOMAIN}" ] || [ -z "${KEY}" ] || [ -z "${PEM}" ]; then
-  echo "Usage: $0 -d DOMAIN -k KEY -p PEM" >&2
+if [ -z "${DOMAIN}" ] || [ -z "${CAKEY}" ] || [ -z "${CAPEM}" ]; then
+  echo "Usage: $0 -d DOMAIN -k CAKEY -p CAPEM" >&2
   exit 1
 fi
 
 # Check that files exist
-if [ ! -f "${KEY}" ] || [ ! -f "${PEM}" ]; then
-  echo "Error: key or PEM file not found." >&2
+if [ ! -f "${CAKEY}" ] || [ ! -f "${CAPEM}" ]; then
+  echo "Error: key or CAPEM file not found." >&2
   exit 1
 fi
 
