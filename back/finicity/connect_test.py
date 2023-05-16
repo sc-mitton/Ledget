@@ -13,7 +13,8 @@ class TestConnect(unittest.TestCase):
             host="https://api.finicity.com"
         )
         configuration.api_key['FinicityAppToken'] = 'gpHlJ7peNf57s2wCKFBy'
-        configuration.api_key['FinicityAppKey'] = 'a090dd74eedcd5df7329054ea7ea4835'
+        configuration.api_key['FinicityAppKey'] = \
+            'a090dd74eedcd5df7329054ea7ea4835'
 
         with openapi_client.ApiClient(configuration) as api_client:
             api_instance = connect_api.ConnectApi(api_client)

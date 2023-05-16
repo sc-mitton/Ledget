@@ -46,7 +46,7 @@
     height: 14px;
     transform: scale(1);
     border: 1.5px solid var(--button-gray);
-    border-radius: 2px;
+    border-radius: 3px;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
