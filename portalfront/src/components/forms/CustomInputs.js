@@ -6,9 +6,17 @@ import Select from 'react-select'
 import hidePassword from "../../assets/icons/hidePassword.svg"
 import showPassword from "../../assets/icons/showPassword.svg"
 
-const Checkbox = (props) => {
-    let id = props.id
-    let label = props.label
+const Checkbox = React.forwardRef((props, ref) => {
+    const { id, label, name, defaultChecked, onChange } = props
+
+    const handleLabelKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            const inputEl = document.getElementById(event.target.htmlFor)
+            if (inputEl) {
+                inputEl.click()
+            }
+        }
+    }
 
     return (
         <div className="checkbox-container">
@@ -26,11 +34,19 @@ const Checkbox = (props) => {
                 className="checkbox-input"
                 id={id}
                 type="checkbox"
+                name={name}
+                defaultChecked={defaultChecked}
+                onChange={onChange}
+                ref={ref}
+                aria-label={label}
             />
             <label
                 className="checkbox"
                 htmlFor={id}
-                onSubmit={props.onSubmit}
+                onKeyDown={handleLabelKeyDown}
+                tabIndex="0"
+                role="checkbox"
+                aria-checked={ref.current?.checked}
             >
                 <span>
                     <svg>
@@ -41,7 +57,7 @@ const Checkbox = (props) => {
             </label>
         </div >
     )
-}
+})
 
 const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
 

@@ -54,7 +54,6 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    opacity: .8;
 }
 
 #passwordless-options div:last-child {

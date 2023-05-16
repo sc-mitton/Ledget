@@ -43,11 +43,13 @@ function LoginWindow() {
     const { setTokenExpiration } = useContext(AuthContext)
     const [email, setEmail] = useState('')
 
+
     const navigate = useNavigate()
 
     const LoginForm = () => {
         const [errMsg, setErrMsg] = useState('')
         const emailRef = useRef()
+        const rememberRef = useRef()
 
         useEffect(() => {
             emailRef.current.focus()
@@ -114,7 +116,12 @@ function LoginWindow() {
                         />
                     </div>
                     <div id="remember-me-checkbox-container">
-                        <Checkbox id='remember-me' label='Save login method' />
+                        <Checkbox
+                            id='remember'
+                            label='Remember'
+                            name='remember'
+                            ref={rememberRef}
+                        />
                     </div>
                     <button
                         className='charcoal-button'

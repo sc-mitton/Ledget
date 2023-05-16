@@ -130,6 +130,12 @@ a:hover {
     border-bottom: 1.5px solid var(--main-blue);
 }
 
+label:focus-visible {
+    outline: none;
+    box-shadow: 0 0 2px 2px var(--light-blue);
+    border-radius: 4px;
+}
+
 
 /* *** */
 

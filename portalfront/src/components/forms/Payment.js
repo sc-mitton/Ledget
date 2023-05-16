@@ -161,7 +161,6 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
 
 }
 
-
 function Form({ price }) {
 
     const navigate = useNavigate()
