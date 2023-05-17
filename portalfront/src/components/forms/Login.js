@@ -118,7 +118,7 @@ function LoginWindow() {
                     <div id="remember-me-checkbox-container">
                         <Checkbox
                             id='remember'
-                            label='Remember'
+                            label='Remember me'
                             name='remember'
                             ref={rememberRef}
                         />

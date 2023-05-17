@@ -3,7 +3,7 @@ import NewItemsStack from './NewItems'
 
 import Plus from '../../assets/svg/Plus'
 import Funnel from '../../assets/svg/Funnel'
-import './Items.css'
+import './style/Items.css'
 
 function Items() {
 
@@ -34,9 +34,9 @@ function Items() {
     }
 
     return (
-        <div>
+        <div id="items-window">
             <NewItemsStack />
-            <div className='window' id='items-window'>
+            <div className='window' id="all-items-window">
                 <Header />
             </div>
         </div>

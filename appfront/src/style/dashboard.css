@@ -1,16 +1,15 @@
 #dashboard {
-    width: 80%;
-    max-width: 1700px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    margin-top: 16px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 16px auto;
+    display: flex;
+    height: 100%;
 }
 
 .window {
     background-color: var(--window-background-color);
     box-shadow: 0px 1px 0px 0px rgba(27, 31, 36, 0.04);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 8px 16px;
     box-sizing: border-box;
 }
@@ -69,8 +68,8 @@
 /*                            Budget Window Styling                           */
 /* -------------------------------------------------------------------------- */
 
-#budget-window {
-    flex-basis: 60%;
+#spending-window {
+    flex: 1.8;
     margin-right: 6px;
 }
 
@@ -84,4 +83,10 @@
     margin-left: 6px;
     height: inherit;
     max-height: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+#all-items-window {
+    flex-grow: 1;
 }

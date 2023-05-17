@@ -1,21 +1,22 @@
-import React, { useEffect } from 'react'
-import { useState, Fragment } from 'react'
+import React from 'react'
+import { useState } from 'react'
 
-import { Menu, Tab, Transition } from '@headlessui/react'
+import { useNavigate, useLocation } from "react-router-dom"
+import { Menu } from '@headlessui/react'
 
-import logo from '../assets/svg/logo.svg'
-import Profile1 from '../assets/svg/Profile1'
-import Profile2 from '../assets/svg/Profile2'
-import SettingsIcon from '../assets/svg/Settings'
-import HelpIcon from '../assets/svg/Help'
-import Help from './modals/Help'
-import Settings from './modals/Settings'
-import Account from './modals/Account'
-import './header.css'
+import logo from './assets/svg/logo.svg'
+import Profile1 from './assets/svg/Profile1'
+import Profile2 from './assets/svg/Profile2'
+import SettingsIcon from './assets/svg/Settings'
+import HelpIcon from './assets/svg/Help'
+import Help from './components/modals/Help'
+import Account from './components/modals/Account'
+import './style/header.css'
 
 
-function Header() {
+function Header({ isNarrow }) {
     const [modal, setModal] = useState('')
+    const navigate = useNavigate()
 
     const DropDownMenu = () => {
         return (
@@ -37,7 +38,7 @@ function Header() {
                         <Menu.Item>
                             <button
                                 className="dropdown-item"
-                                onClick={() => setModal("settings")}
+                                onClick={() => navigate("/settings")}
                             >
                                 <SettingsIcon className="dropdown-icon" />
                                 Settings
@@ -58,18 +59,37 @@ function Header() {
         )
     }
 
-    const Tabs = () => {
+    const Navigation = () => {
+        const location = useLocation()
+
         return (
-            <Tab.Group>
-                <Tab.List>
-                    <Tab>Tab 1</Tab>
-                    <Tab>Tab 2</Tab>
-                </Tab.List>
-                <Tab.Panels>
-                    <Tab.Panel>Tab 1</Tab.Panel>
-                    <Tab.Panel>Tab 2</Tab.Panel>
-                </Tab.Panels>
-            </Tab.Group>
+            <nav>
+                <ul className="navigation">
+                    <li className={`${location.pathname === "/spending" ? "current-" : ""}nav-item`}>
+                        <button
+                            onClick={() => navigate("/spending")}
+                        >
+                            Spending
+                        </button>
+                    </li>
+                    <li className={`${location.pathname === "/accounts" ? "current-" : ""}nav-item`}>
+                        <button
+                            onClick={() => navigate("/accounts")}
+                        >
+                            Accounts
+                        </button>
+                    </li>
+                    {isNarrow && <li>
+                        <button
+                            className={`${location.pathname === "/items" ? "current-" : ""}nav-item`}
+                            onClick={() => navigate("/items")}
+                        >
+                            Items
+                        </button>
+                    </li>
+                    }
+                </ul>
+            </nav>
         )
     }
 
@@ -81,12 +101,12 @@ function Header() {
                         <img src={logo} alt="Ledget Logo" />
                     </div>
                     <div id="header-profile">
+                        <Navigation />
                         <DropDownMenu />
                     </div>
                 </div>
             </header>
             {modal === 'account' && <Account cleanUp={() => setModal('')} maxWidth={'340px'} />}
-            {modal === 'settings' && <Settings cleanUp={() => setModal('')} />}
             {modal === 'help' && <Help cleanUp={() => setModal('')} />}
         </>
     )

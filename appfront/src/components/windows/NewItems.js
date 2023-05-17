@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 
 import { useSpring, animated, useTransition } from '@react-spring/web'
 
-import "./NewItems.css"
+import "./style/NewItems.css"
 import Ellipsis from "../../assets/svg/Ellipsis"
 import CheckMark from "../../assets/svg/CheckMark"
 import Expand from "../../assets/svg/Expand"
@@ -32,16 +32,16 @@ const expandedTranslate = 75
 const collapsedHeight = 100
 const expandedHeight = 270
 
+// CSS for the new item notification component
 const newItemsSpringConfig = {
     position: 'absolute',
     left: 0,
     right: 0,
-    marginRight: '12px',
-    marginLeft: '16px',
-    borderRadius: "8px",
+    margin: '0 auto',
+    borderRadius: "12px",
     padding: "20px",
     fontWeight: "400",
-    x: 0,
+    x: 0
 }
 
 const containerSpringConfig = {
@@ -51,6 +51,7 @@ const containerSpringConfig = {
     backgroundColor: "var(--window)",
     position: 'relative',
     margin: '0 8px',
+    padding: '0 16px',
 }
 
 const NewItemsStack = () => {
@@ -104,8 +105,7 @@ const NewItemsStack = () => {
                 if (index === items.findIndex(item => item.id === id)) {
                     setItems(items => items.filter(item => item.id !== id));
                 }
-            },
-            config: { precision: 0.1 }
+            }
         }
     )
 
@@ -250,16 +250,15 @@ const NewItemsStack = () => {
 
     return (
         <>
-            <div className="new-items">
+            <div id="new-items-container">
                 <div className="shadow shadow-bottom"></div>
                 <animated.div
-                    className="new-items-container"
                     style={containerSpring}
                     ref={containerRef}
                 >
                     <Stack />
                 </animated.div >
-            </div >
+            </div>
             <BottomButtons />
         </>
     )

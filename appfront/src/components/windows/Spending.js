@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import CashFlow from '../../assets/svg/CashFlow'
 import Graph from '../../assets/svg/Graph'
 import Arrow from '../../assets/svg/Arrow'
-import './Budget.css'
+import './style/Spending.css'
 
 const monthMappings = [
     ['Jan', 'January'],
@@ -21,7 +21,7 @@ const monthMappings = [
     ['Dec', 'December'],
 ]
 
-function Budget() {
+function Spending() {
     const dates = {
         2021: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         2022: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
@@ -201,10 +201,11 @@ function Budget() {
     }
 
     return (
-        <div className='window' id="budget-window">
+        <div className='window' id="spending-window">
             <Header />
         </div>
     )
 }
 
-export default Budget
+export default Spending
+
