@@ -42,7 +42,11 @@ function SocialLogin() {
 function LoginWindow() {
     const { setTokenExpiration } = useContext(AuthContext)
     const [email, setEmail] = useState('')
+    const [loaded, setLoaded] = useState(false)
 
+    useEffect(() => {
+        setLoaded(true)
+    }, [])
 
     const navigate = useNavigate()
 
@@ -162,14 +166,27 @@ function LoginWindow() {
     }
 
     const AuthenticateContent = () => {
+        const pwdRef = useRef()
+
+        useEffect(() => {
+            pwdRef.current.focus()
+        }, [])
 
         return (
             <>
                 <div className="app-logo" >
                     <img src={logo} alt="Ledget" />
                 </div>
+                <div id="email-container">
+                    <span>{`${email}`}</span>
+                    <a
+                        onClick={() => setEmail('')}
+                    >
+                        change
+                    </a>
+                </div>
                 <form id="authentication-content-container">
-                    <PasswordInput />
+                    <PasswordInput ref={pwdRef} />
                     <div>
                         <button
                             className='charcoal-button'
@@ -184,7 +201,7 @@ function LoginWindow() {
                 </form>
                 <div id="passwordless-options">
                     <div id="passwordless-options-header">
-                        Passwordless Options
+                        Passwordless Option
                         <div className="help-icon">
                             <Help />
                         </div>
@@ -213,6 +230,7 @@ function LoginWindow() {
                 <motion.div
                     className='window login-window'
                     key="initial"
+                    initial={{ opacity: 0, x: !loaded ? 0 : -30 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -30 }}
                     transition={{ ease: "easeInOut", duration: 0.25 }}
@@ -225,6 +243,7 @@ function LoginWindow() {
                     key="authenticate"
                     initial={{ opacity: 0, x: 30 }}
                     animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 30 }}
                     transition={{ ease: "easeInOut", duration: 0.25 }}
                 >
                     <AuthenticateContent />

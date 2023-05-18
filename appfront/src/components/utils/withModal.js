@@ -45,7 +45,7 @@ function withModal(WrappedComponent) {
         const contentConfig = {
             width: width,
             maxWidth: maxWidth,
-            borderRadius: '6px',
+            borderRadius: '12px',
             padding: '28px',
             zIndex: zIndex + 1,
             position: "relative",

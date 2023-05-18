@@ -9,7 +9,7 @@
 .window {
     background-color: var(--window-background-color);
     box-shadow: 0px 1px 0px 0px rgba(27, 31, 36, 0.04);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 8px 16px;
     box-sizing: border-box;
 }
@@ -70,7 +70,7 @@
 
 #spending-window {
     flex: 1.8;
-    margin-right: 6px;
+    margin-right: 8px;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -80,7 +80,7 @@
 #items-window {
     flex: 1;
     min-width: 300px;
-    margin-left: 6px;
+    margin-left: 8px;
     height: inherit;
     max-height: inherit;
     display: flex;

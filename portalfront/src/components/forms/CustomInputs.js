@@ -154,7 +154,7 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
 }
 
 
-const PasswordInput = (props) => {
+const PasswordInput = React.forwardRef((props, ref) => {
     const [pwdInput, setPwdInput] = useState(false)
     const [pwdVisible, setPwdVisible] = useState(false)
     const pwdInputRef = React.createRef()
@@ -186,7 +186,7 @@ const PasswordInput = (props) => {
                     type={pwdVisible ? 'text' : 'password'}
                     name={props.name}
                     placeholder={props.placeholder}
-                    ref={pwdInputRef}
+                    ref={ref}
                     onChange={
                         () => {
                             if (pwdInputRef.current.value.length > 0) {
@@ -202,7 +202,7 @@ const PasswordInput = (props) => {
             </div>
         </div>
     )
-}
+})
 
 PasswordInput.defaultProps = {
     inputType: 'password',

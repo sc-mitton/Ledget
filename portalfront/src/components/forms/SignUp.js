@@ -11,7 +11,6 @@ import logo from "../../assets/images/logo.svg"
 import FacebookLogo from "../../assets/icons/FacebookLogo"
 import GoogleLogo from "../../assets/icons/GoogleLogo"
 import alert2 from '../../assets/icons/alert2.svg'
-import { Checkbox } from './CustomInputs'
 
 // Schema for yup form validation
 const schema = object().shape({

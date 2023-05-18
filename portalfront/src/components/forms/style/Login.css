@@ -14,6 +14,34 @@
     text-align: left;
 }
 
+#email-container {
+    width: '100%';
+    text-align: center;
+    margin-left: 4px;
+    margin-bottom: 24px;
+}
+
+#email-container span {
+    opacity: .5;
+    margin-right: 8px;
+}
+
+#email-container button {
+    color: var(--light-blue);
+    font-weight: 500;
+}
+
+#email-container button:hover {
+    outline: none;
+    text-decoration: none;
+    border-bottom: 1.5px solid rgb(0, 0, 0, 0);
+    color: var(--main-blue);
+    text-decoration-skip-ink: none;
+    transition: border-bottom .2s ease;
+    text-underline-offset: 4px;
+    cursor: pointer;
+}
+
 /* -------------------------- Passwordless Section -------------------------- */
 
 #passwordless-options {
