@@ -15,7 +15,7 @@ import FacebookLogo from "../../assets/icons/FacebookLogo"
 import GoogleLogo from "../../assets/icons/GoogleLogo"
 import { PasswordInput } from "./CustomInputs"
 import { Checkbox } from "./CustomInputs"
-import { FormError } from "../widgets/Widgets"
+import { FormError, WindowLoadingBar } from "../widgets/Widgets"
 
 function SocialLogin() {
     return (
@@ -125,17 +125,24 @@ const Initial = ({ setEmail }) => {
     )
 }
 
-const AuthenticationForm = ({ flow, onSubmit, email, setEmail, active }) => {
+const AuthenticationForm = ({ flow, onSubmit, email, setEmail }) => {
+    const pwdRef = useRef()
+
+    useEffect(() => {
+        if (flow?.ui?.action != "") {
+            pwdRef.current.focus()
+        }
+    }, [flow])
+
     return (
         <form
             action={flow.ui.action}
             method={flow.ui.method}
             onSubmit={onSubmit}
             id="authentication-form"
-            active={active}
         >
-            <PasswordInput />
-            <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
+            <PasswordInput ref={pwdRef} />
+            <input type="hidden" name="csrf_token" value={flow.csrf_token} />
             <input type="hidden" name="email" value={email} />
             <div>
                 <button
@@ -168,24 +175,12 @@ const AuthenticationForm = ({ flow, onSubmit, email, setEmail, active }) => {
     )
 }
 
-const LoadingForm = () => {
-    return (
-        <div className="loading-container">
-            <div className="shimmer shimmer-input"></div>
-            <div className="shimmer shimmer-button"></div>
-            <div id="shimmer-passwordless-options">
-                <div className="shimmer shimmer-header"></div>
-                <div className="shimmer shimmer-narrow-button"></div>
-            </div>
-        </div>
-    )
-}
 
 const Authenticate = ({ email, setEmail }) => {
     const [flow, setFlow] = useState(null)
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
-
+    const emptyFlow = { ui: { action: "", method: "" }, csrf_token: "" }
     const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", true)
 
     const getFlow = useCallback(
@@ -325,15 +320,15 @@ const Authenticate = ({ email, setEmail }) => {
                     change
                 </a>
             </div>
-            {flow ?
-                <AuthenticationForm
-                    flow={flow}
-                    onSubmit={submit}
-                    email={email}
-                    setEmail={setEmail}
-                />
-                : <LoadingForm />
+            {!flow &&
+                <WindowLoadingBar />
             }
+            <AuthenticationForm
+                flow={flow ? flow : emptyFlow}
+                onSubmit={submit}
+                email={email}
+                setEmail={setEmail}
+            />
             <div className="below-window-container">
                 <Link to="#" tabIndex={0} >Forgot Password?</Link>
             </div>

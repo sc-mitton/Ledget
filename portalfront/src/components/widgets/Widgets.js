@@ -34,3 +34,12 @@ export const FormError = (props) => {
         </div>
     )
 }
+
+export const WindowLoadingBar = () => {
+    return (
+        <div className="loading-bar-container">
+            <div className="loading-bar-edges"></div>
+            <div className="loading-bar-shimmer"></div>
+        </div>
+    )
+}

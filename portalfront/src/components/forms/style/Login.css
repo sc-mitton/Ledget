@@ -38,17 +38,6 @@
     cursor: pointer;
 }
 
-#shimmer-passwordless-options {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 49px;
-    margin-bottom: 30px;
-}
-
-
-
 /* -------------------------- Passwordless Section -------------------------- */
 
 #passwordless-options {
