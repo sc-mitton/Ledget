@@ -14,8 +14,8 @@ module.exports = {
     },
     devServer: {
         https: {
-            key: fs.readFileSync('../certs/ledget.app.key'),
-            cert: fs.readFileSync('../certs/ledget.app.crt'),
+            key: fs.readFileSync('../certs/localhost.key'),
+            cert: fs.readFileSync('../certs/localhost.crt'),
             ca: fs.readFileSync('../certs/ledgetCA.pem')
         },
         static: {
@@ -23,7 +23,7 @@ module.exports = {
         },
         port: 3001,
         historyApiFallback: true,
-        host: 'ledget.app',
+        host: 'localhost',
         open: {
             app: {
                 name: 'firefox',

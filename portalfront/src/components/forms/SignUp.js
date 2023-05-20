@@ -10,7 +10,7 @@ import './style/SignUp.css'
 import logo from "../../assets/images/logo.svg"
 import FacebookLogo from "../../assets/icons/FacebookLogo"
 import GoogleLogo from "../../assets/icons/GoogleLogo"
-import alert2 from '../../assets/icons/alert2.svg'
+import { FormError } from "../widgets/Widgets"
 
 // Schema for yup form validation
 const schema = object().shape({
@@ -30,7 +30,7 @@ const schema = object().shape({
 })
 
 function SignUpForm() {
-    const { register, handleSubmit, formState: { errors, isValid, }, watch, trigger, setError }
+    const { register, handleSubmit, formState: { errors }, trigger, setError }
         = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const [errMsg, setErrMsg] = useState('')
 
@@ -62,14 +62,7 @@ function SignUpForm() {
                     }}
                 />
             </div>
-            {hasError('name') &&
-                <div id="signup-error-container">
-                    <div className="form-error">
-                        <img src={alert2} className="error-icon" />
-                        {errors.name?.message}
-                    </div>
-                </div>
-            }
+            {hasError('name') && <FormError>{errors.name?.message}</FormError>}
             <div className="input-container">
                 <input
                     id="email"

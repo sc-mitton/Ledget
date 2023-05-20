@@ -14,8 +14,8 @@ module.exports = {
     },
     devServer: {
         https: {
-            key: fs.readFileSync('../certs/accounts.ledget.app.key'),
-            cert: fs.readFileSync('../certs/accounts.ledget.app.crt'),
+            key: fs.readFileSync('../certs/localhost.key'),
+            cert: fs.readFileSync('../certs/localhost.crt'),
             ca: fs.readFileSync('../certs/ledgetCA.pem')
         },
         allowedHosts: [
@@ -26,7 +26,7 @@ module.exports = {
         },
         port: 3000,
         historyApiFallback: true,
-        host: 'accounts.ledget.app',
+        host: 'localhost',
         open: {
             app: {
                 name: 'firefox',
@@ -65,7 +65,12 @@ module.exports = {
                         },
                     },
                 ],
-            }
+            },
+            {
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                use: 'ts-loader',
+            },
         ]
     }
 }

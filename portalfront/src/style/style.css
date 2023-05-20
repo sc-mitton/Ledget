@@ -3,45 +3,45 @@
 :root {
     --logo-dark: rgb(36, 36, 36);
 
-    --background-color: rgb(252, 252, 252);
+    --background-color: #fcfcfc;
 
-    --window: rgb(248, 248, 248);
-    --window-border: rgb(161, 160, 160);
+    --window: #f8f8f8;
+    --window-border: #a1a0a0;
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    --window-box-gray: rgb(255, 252, 252);
+    --window-box-gray: #fffcfc;
 
-    --light-blue: rgb(112, 172, 255);
-    --mute-blue: rgb(122, 168, 254);
-    --hover-blue: rgb(97, 151, 252);
-    --main-blue: rgb(107, 155, 246);
+    --light-blue: #70acff;
+    --mute-blue: #7aa8fe;
+    --hover-blue: #6197fc;
+    --main-blue: #6b9bf6;
 
-    --mute-red: rgb(253, 130, 146);
-    --hover-red: rgb(251, 106, 126);
-    --alert-red: rgb(243, 80, 80);
+    --mute-red: #fd8292;
+    --hover-red: #fb6a7e;
+    --alert-red: #f35050;
 
     /* Buttons */
     --button-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    --social-button: rgb(239, 239, 239);
-    --social-button-hover: rgb(230, 230, 230);
+    --social-button: #efefef;
+    --social-button-hover: #e6e6e6;
     --button-gray: #464646;
-    --buton-border-gray: rgb(60, 60, 60);
-    --button-hover-gray: rgb(36, 36, 36);
+    --buton-border-gray: #3c3c3c;
+    --button-hover-gray: #242424;
     --border-bottom-gray: #b9b9b9;
 
     /* Subscription Radios */
-    --inactive-gray: rgb(215, 215, 215);
+    --inactive-gray: #d7d7d7;
 
     /* Input Colors */
-    --input-color: rgb(237, 237, 237);
-    --tooltip-background: rgb(166, 166, 166);
+    --input-color: #ededed;
+    --tooltip-background: #a6a6a6;
     /* rgb(56, 123, 248);
 
     /* Text */
-    --main-text-gray: rgb(36, 36, 36);
-    --muted-text-gray: rgb(132, 132, 132);
-    --input-placeholder: rgb(132, 132, 132);
-    --success-green: rgb(205, 248, 205);
-    --input-focus: rgb(107, 155, 246);
+    --main-text-gray: #242424;
+    --muted-text-gray: #848484;
+    --input-placeholder: #848484;
+    --success-green: #cdf8cd;
+    --input-focus: #6b9bf6;
 }
 
 /* Override color values for Firefox */

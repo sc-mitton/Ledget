@@ -5,3 +5,8 @@ curl --request DELETE -sL \
   --header "Authorization: Bearer ory_pat_CbQ3g6DlI1BKMDiSlMhmn5tkpohSDTEO" \
   --header "Content-Type: application/json" \
 https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/admin/identities/5bc8071c-a643-4785-ade7-1408a61b3af2
+
+
+// Start tunnel
+ory tunnel http://localhost:3000 --project reverent-lewin-bqqp1o2zws --dev
+

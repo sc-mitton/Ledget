@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useState } from 'react'
 
 import './style/CustomInputs.css'
@@ -154,10 +154,14 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
 }
 
 
-const PasswordInput = React.forwardRef((props, ref) => {
+const PasswordInput = (props) => {
     const [pwdInput, setPwdInput] = useState(false)
     const [pwdVisible, setPwdVisible] = useState(false)
-    const pwdInputRef = React.createRef()
+    const ref = React.createRef()
+
+    useEffect(() => {
+        ref.current.focus()
+    }, [])
 
     const VisibilityIcon = (props) => {
         // Needs to be set outside the PasswordInput component
@@ -189,7 +193,7 @@ const PasswordInput = React.forwardRef((props, ref) => {
                     ref={ref}
                     onChange={
                         () => {
-                            if (pwdInputRef.current.value.length > 0) {
+                            if (ref.current.value.length > 0) {
                                 setPwdInput(true)
                             } else {
                                 setPwdInput(false)
@@ -202,7 +206,7 @@ const PasswordInput = React.forwardRef((props, ref) => {
             </div>
         </div>
     )
-})
+}
 
 PasswordInput.defaultProps = {
     inputType: 'password',

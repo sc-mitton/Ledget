@@ -54,3 +54,67 @@
         transform: rotate(360deg);
     }
 }
+
+
+/* ------------------------------- Form Errors ------------------------------ */
+
+.error img {
+    height: 1em;
+    margin-right: 8px;
+    position: relative;
+    top: 2px;
+}
+
+#signup-error-container {
+    position: relative;
+    top: -12px;
+    display: flex;
+    height: 10px;
+}
+
+.form-error {
+    display: inline-block;
+    font-size: 14px;
+    color: var(--mute-red);
+    margin-top: 6px;
+}
+
+.form-error span {
+    margin-left: 4px;
+}
+
+.form-error img {
+    height: 1em;
+    margin-left: 8px;
+    margin-right: 5px;
+    position: relative;
+    top: 2px;
+    text-align: left;
+    animation: pop .22s ease;
+}
+
+
+@keyframes pop {
+    0% {
+        transform: scale(0.7);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+@keyframes show {
+    0% {
+        transform: scale(0.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
