@@ -9,7 +9,7 @@ import LoginWindow from './components/forms/Login'
 import SignUpWindow from './components/forms/SignUp'
 import Checkout from './components/forms/Checkout'
 import PrivateRoute from './utils/PrivateRoute'
-import SubscriptionsWindow from './components/forms/Subscriptions'
+import PlansWindow from './components/forms/Plans'
 
 function AnimatedRoutes() {
     const location = useLocation()
@@ -31,7 +31,7 @@ function AnimatedRoutes() {
                         <Route exact path="/login" element={<LoginWindow />} />
                         <Route path="/register" element={<SignUpWindow />} />
                         <Route path="/" element={<PrivateRoute />}>
-                            <Route path="/plans" element={<SubscriptionsWindow />} />
+                            <Route path="/plans" element={<PlansWindow />} />
                             <Route path="/checkout/*" element={<Checkout />} />
                             {/* Change Password page */}
                         </Route>

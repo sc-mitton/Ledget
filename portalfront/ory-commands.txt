@@ -10,3 +10,19 @@ https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/admin/identities/5bc8071c
 // Start tunnel
 ory tunnel http://localhost:3000 --project reverent-lewin-bqqp1o2zws --dev
 
+// Create Flow
+curl -X GET \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' \
+    -c cookies.txt \
+    https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/self-service/login/browser
+
+// Login
+curl -X POST \
+    -H 'Content-Type: application/json'\
+    -H 'Accept: application/json' \
+    -d '{"method":"password","csrf_token":"dRpiq5QClGF+m1Jt9lFZwZ/5vhDKsK5R+YnT17FleII=", "identifier":"smitton.byu@gmail.com","password":"Arepa2022"}' \
+    -b cookies.txt \
+    -c cookies.txt \
+    "https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/self-service/login?flow=5e482277-8125-4615-a768-9b53349d2e89"
+

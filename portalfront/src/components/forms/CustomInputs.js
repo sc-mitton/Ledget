@@ -6,8 +6,9 @@ import Select from 'react-select'
 import hidePassword from "../../assets/icons/hidePassword.svg"
 import showPassword from "../../assets/icons/showPassword.svg"
 
-const Checkbox = React.forwardRef((props, ref) => {
+const Checkbox = (props) => {
     const { id, label, name, defaultChecked, onChange } = props
+    const ref = React.useRef(null)
 
     const handleLabelKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -57,7 +58,7 @@ const Checkbox = React.forwardRef((props, ref) => {
             </label>
         </div >
     )
-})
+}
 
 const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
 

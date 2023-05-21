@@ -157,7 +157,7 @@ input[type="password"]:focus::placeholder {
 
 .social-login-container div:first-child {
     text-align: center;
-    margin-top: 36px;
+    margin-top: 44px;
     margin-bottom: 12px;
     display: flex;
     flex-direction: row;
@@ -167,7 +167,7 @@ input[type="password"]:focus::placeholder {
 .social-login-container div:first-child:after {
     content: "";
     flex: 1 1;
-    border-top: rgba(0, 0, 0, 0.1) 1px solid;
+    border-top: rgba(0, 0, 0, 0.1) 2px solid;
     margin: auto;
 }
 

@@ -10,15 +10,18 @@
     width: 100%;
 }
 
-
 #email-container {
     width: '100%';
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
+}
+
+#email-container h2 {
+    margin-bottom: 0;
 }
 
 #email-container span {
-    opacity: .5;
+    opacity: .4;
     margin-right: 8px;
 }
 
@@ -60,7 +63,7 @@
 #passwordless-options-header:after {
     content: "";
     flex: 1 1;
-    border-top: rgba(0, 0, 0, 0.1) 1px solid;
+    border-top: rgba(0, 0, 0, 0.1) 2px solid;
     margin: auto;
 }
 

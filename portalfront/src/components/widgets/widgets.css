@@ -137,7 +137,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 95%;
-    height: 4px;
+    height: 2px;
     background: linear-gradient(to right, rgba(248, 248, 248, 100) 0%, rgba(248, 248, 248, 0) 20%, rgba(248, 248, 248, 0) 80%, rgba(248, 248, 248, 100) 100%);
     z-index: 3;
 }
@@ -145,9 +145,11 @@
 .loading-bar-shimmer {
     position: absolute;
     bottom: 0;
-    margin-left: 10px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     width: 95%;
-    height: 4px;
+    height: 2px;
     background: linear-gradient(to right, rgba(248, 248, 248, 0) 0%, rgba(83, 138, 247, 1) 80%, rgba(248, 248, 248, 0) 100%);
     z-index: 2;
     animation: shimmer 1s linear infinite;

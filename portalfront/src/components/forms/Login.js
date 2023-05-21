@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext, useCallback } from "react"
 
-import { useNavigate, Link, useSearchParams } from "react-router-dom"
+import { useNavigate, Link, useSearchParams, useLocation } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import { object, string } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -16,6 +16,7 @@ import GoogleLogo from "../../assets/icons/GoogleLogo"
 import { PasswordInput } from "./CustomInputs"
 import { Checkbox } from "./CustomInputs"
 import { FormError, WindowLoadingBar } from "../widgets/Widgets"
+
 
 function SocialLogin() {
     return (
@@ -79,7 +80,6 @@ const LoginForm = ({ onLoginSubmit }) => {
                         id='remember'
                         label='Remember me'
                         name='remember'
-                        ref={rememberRef}
                     />
                 </div>
                 <button
@@ -125,13 +125,18 @@ const Initial = ({ setEmail }) => {
     )
 }
 
-const AuthenticationForm = ({ flow, onSubmit, email, setEmail }) => {
+const AuthenticationForm = ({ flow, onSubmit, email }) => {
     const pwdRef = useRef()
+    const [csrf, setCsrf] = useState('')
 
     useEffect(() => {
-        if (flow?.ui?.action != "") {
-            pwdRef.current.focus()
-        }
+        flow.ui.action !== '' && pwdRef.current.focus()
+        setCsrf(
+            flow.ui.nodes?.find(
+                node => node.group === 'default'
+                    && node.attributes.name === 'csrf_token'
+            )?.attributes.value
+        )
     }, [flow])
 
     return (
@@ -142,19 +147,25 @@ const AuthenticationForm = ({ flow, onSubmit, email, setEmail }) => {
             id="authentication-form"
         >
             <PasswordInput ref={pwdRef} />
-            <input type="hidden" name="csrf_token" value={flow.csrf_token} />
-            <input type="hidden" name="email" value={email} />
-            <div>
-                <button
-                    className='charcoal-button'
-                    id="sign-in"
-                    name="sign-in"
-                    type="submit"
-                    aria-label="Sign in"
-                >
-                    Sign In
-                </button>
-            </div>
+            <input
+                type="hidden"
+                name="csrf_token"
+                value={csrf || ''}
+            />
+            <input
+                type="hidden"
+                name="email"
+                value={email || ''}
+            />
+            <button
+                className='charcoal-button'
+                id="sign-in"
+                name="sign-in"
+                type="submit"
+                aria-label="Sign in"
+            >
+                Sign In
+            </button>
             <div id="passwordless-options">
                 <div id="passwordless-options-header">
                     Passwordless
@@ -180,8 +191,8 @@ const Authenticate = ({ email, setEmail }) => {
     const [flow, setFlow] = useState(null)
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
-    const emptyFlow = { ui: { action: "", method: "" }, csrf_token: "" }
     const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", true)
+    const emptyFlow = { ui: { action: "", method: "" } }
 
     const getFlow = useCallback(
         (flowId) =>
@@ -233,7 +244,6 @@ const Authenticate = ({ email, setEmail }) => {
 
     const submit = (event) => {
         event.preventDefault()
-
         // map the entire form data to JSON for the request body
         const form = event.currentTarget
         const formData = new FormData(form)
@@ -267,52 +277,13 @@ const Authenticate = ({ email, setEmail }) => {
             })
     }
 
-    const mapUINode = (node, key) => {
-        // other node types are also supported
-        // if (isUiNodeTextAttributes(node.attributes)) {
-        // if (isUiNodeImageAttributes(node.attributes)) {
-        // if (isUiNodeAnchorAttributes(node.attributes)) {
-        if (isUiNodeInputAttributes(node.attributes)) {
-            const attrs = node.attributes
-            const nodeType = attrs.type
-
-            switch (nodeType) {
-                case "button":
-                case "submit":
-                    return (
-                        <button
-                            type={attrs.type}
-                            name={attrs.name}
-                            value={attrs.value}
-                            key={key}
-                        />
-                    )
-                default:
-                    return (
-                        <input
-                            name={attrs.name}
-                            type={attrs.type}
-                            autoComplete={
-                                attrs.autocomplete || attrs.name === "identifier"
-                                    ? "username"
-                                    : ""
-                            }
-                            defaultValue={attrs.value}
-                            required={attrs.required}
-                            disabled={attrs.disabled}
-                            key={key}
-                        />
-                    )
-            }
-        }
-    }
-
     return (
         <>
             <div className="app-logo" >
                 <img src={logo} alt="Ledget" />
             </div>
             <div id="email-container">
+                <h2>Sign In</h2>
                 <span>{`${email}`}</span>
                 <a
                     onClick={() => setEmail('')}
@@ -320,16 +291,14 @@ const Authenticate = ({ email, setEmail }) => {
                     change
                 </a>
             </div>
-            {!flow &&
-                <WindowLoadingBar />
-            }
+            {!flow && <WindowLoadingBar />}
             <AuthenticationForm
                 flow={flow ? flow : emptyFlow}
                 onSubmit={submit}
                 email={email}
                 setEmail={setEmail}
             />
-            <div className="below-window-container">
+            <div className="below-window-container" onClick={() => navigate('/login')}>
                 <Link to="#" tabIndex={0} >Forgot Password?</Link>
             </div>
         </>
@@ -340,6 +309,7 @@ function LoginWindow() {
     const [email, setEmail] = useState('')
     const [loaded, setLoaded] = useState(false)
     const navigate = useNavigate()
+    const state = useLocation().state
 
     useEffect(() => {
         setLoaded(true)

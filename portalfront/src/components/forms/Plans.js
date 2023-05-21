@@ -118,7 +118,7 @@ function SubscriptionForm() {
     )
 }
 
-function SubscriptionsWindow({ setPrice }) {
+function PlansWindow({ setPrice }) {
 
     return (
         <div className='window subscription-window'>
@@ -130,4 +130,4 @@ function SubscriptionsWindow({ setPrice }) {
     )
 }
 
-export default SubscriptionsWindow
+export default PlansWindow
