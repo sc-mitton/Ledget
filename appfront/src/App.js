@@ -7,6 +7,7 @@ import Header from './Header'
 import Spending from './components/windows/Spending'
 import Items from './components/windows/Items'
 import Settings from './components/windows/Settings'
+import Accounts from './components/windows/Accounts'
 
 function App() {
     const dashboardRef = useRef(null)
@@ -45,7 +46,7 @@ function App() {
                 }>
                 </Route>
                 {isNarrow && <Route path="items" element={<Items />} />}
-                <Route path="accounts" element={<h1>Accounts</h1>} />
+                <Route path="accounts" element={<Accounts />} />
                 <Route path="settings" element={<Settings />} />
             </Routes >
         )

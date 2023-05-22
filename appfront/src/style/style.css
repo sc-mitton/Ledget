@@ -1,54 +1,52 @@
 :root {
-    --logo-dark: rgb(36, 36, 36);
+    --logo-dark: #242424;
 
-    --background-color: rgb(252, 252, 252);
+    --background-color: #fcfcfc;
 
-    --window: rgb(248, 248, 248);
-    --window-border: rgb(161, 160, 160);
+    --window: #f8f8f8;
+    --window-border: #a1a0a0;
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
 
-    --light-blue: rgb(112, 172, 255);
-    --mute-blue: rgb(122, 168, 254);
-    --hover-blue: rgb(97, 151, 252);
+    --light-blue: #70acff;
+    --mute-blue: #7aa8fe;
+    --hover-blue: #6197fc;
     --main-blue: #6b9bf6;
 
-    --mute-red: rgb(253, 130, 146);
-    --hover-red: rgb(251, 106, 126);
-    --alert-red: rgb(243, 80, 80);
+    --mute-red: #fd8292;
+    --hover-red: #fb6a7e;
+    --alert-red: #f35050;
 
     --main-green: #2ecd80;
 
-    --button-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
+    --button-drop-shadow: 0 1px 0px 0 #0000000d;
 
     /* Input Colors */
-    --input-color: rgb(237, 237, 237);
-    --tooltip-background: rgb(166, 166, 166);
+    --input-color: #ededed;
+    --tooltip-background: #a6a6a6;
     /* rgb(56, 123, 248);
 
     /* Text */
-    --main-text-gray: rgb(36, 36, 36);
-    --input-placeholder: rgb(132, 132, 132);
-    --success-green: rgb(205, 248, 205);
-    --input-focus: rgb(107, 155, 246);
+    --main-text-gray: #242424;
+    --input-placeholder: #848484;
+    --success-green: #cdf8cd;
+    --input-focus: #6b9bf6;
 
     /* Windows */
-    --window-background-color: rgb(240, 240, 240);
+    --window-background-color: #f0f0f0;
 
     /* Icons & Buttons */
-    --button-gray: rgb(70, 70, 70);
-    --buton-border-gray: rgb(60, 60, 60);
-    --button-hover-gray: rgb(36, 36, 36);
+    --button-gray: #464646;
+    --buton-border-gray: #3c3c3c;
+    --button-hover-gray: #242424;
     --border-bottom-gray: #b9b9b9;
-    --icon-dark-gray: rgb(70, 70, 70);
-    --icon-light-gray: rgb(223, 223, 223);
-    --icon-hover-light-gray: rgb(219, 219, 219);
-    --icon-hover-gray: rgb(196, 196, 196);
-    --icon-white: rgb(252, 252, 252);
-    --drop-down-background: rgb(52, 52, 52);
-    --drop-down-hover-background: rgb(103, 103, 103);
+    --icon-dark-gray: #464646;
+    --icon-light-gray: #dfdfdf;
+    --icon-hover-light-gray: #dbdbdb;
+    --icon-hover-gray: #c4c4c4;
+    --icon-white: #fcfcfc;
+    --drop-down-background: #343434;
+    --drop-down-hover-background: #676767;
 
-    /* Misc */
-    --scroll-bar: rgb(199, 221, 252);
 }
 
 /* Override color values for Firefox */

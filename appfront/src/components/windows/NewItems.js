@@ -64,6 +64,8 @@ const NewItemsStack = () => {
         overflowY: expanded ? "scroll" : "hidden",
         ...containerSpringConfig
     }))
+
+
     const transitions = useTransition(
         items,
         {

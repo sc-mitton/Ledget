@@ -21,8 +21,8 @@ curl -X GET \
 curl -X POST \
     -H 'Content-Type: application/json'\
     -H 'Accept: application/json' \
-    -d '{"method":"password","csrf_token":"dRpiq5QClGF+m1Jt9lFZwZ/5vhDKsK5R+YnT17FleII=", "identifier":"smitton.byu@gmail.com","password":"Arepa2022"}' \
+    -d '{"method":"password","csrf_token":"AkquEX/c9xTIAi6ZLoKmjcp0W/AcYLe/HTm3GKhNFJI=", "identifier":"smitton.byu@gmail.com","password":"Arepa2022"}' \
     -b cookies.txt \
     -c cookies.txt \
-    "https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/self-service/login?flow=5e482277-8125-4615-a768-9b53349d2e89"
+    "https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/self-service/login?flow=7a32fdcf-b5e0-4471-8176-883f21afc02d"
 

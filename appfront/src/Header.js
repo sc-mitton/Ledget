@@ -79,9 +79,8 @@ function Header({ isNarrow }) {
                             Accounts
                         </button>
                     </li>
-                    {isNarrow && <li>
+                    {isNarrow && <li className={`${location.pathname === "/items" ? "current-" : ""}nav-item`}>
                         <button
-                            className={`${location.pathname === "/items" ? "current-" : ""}nav-item`}
                             onClick={() => navigate("/items")}
                         >
                             Items
