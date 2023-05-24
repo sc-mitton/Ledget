@@ -153,7 +153,7 @@ input[type="password"]:focus::placeholder {
 
 /* ----------------------------- Social Buttons ----------------------------- */
 
-.social-login-container div:first-child {
+#social-login-header {
     text-align: center;
     margin-top: 44px;
     margin-bottom: 12px;
@@ -161,27 +161,20 @@ input[type="password"]:focus::placeholder {
     flex-direction: row;
 }
 
-.social-login-container div:first-child:before,
-.social-login-container div:first-child:after {
+#social-login-header:before,
+#social-login-header:after {
     content: "";
     flex: 1 1;
     border-top: rgba(0, 0, 0, 0.1) 2px solid;
     margin: auto;
 }
 
-.social-login-container div:first-child:before {
+#social-login-header:before {
     margin-right: 10px
 }
 
-.social-login-container div:first-child:after {
+#social-login-header:after {
     margin-left: 10px
-}
-
-.social-login-container div:last-child {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
 }
 
 #social-login-form {

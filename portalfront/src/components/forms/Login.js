@@ -76,7 +76,9 @@ const FlowContextProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        if (!flow) return
+        if (!flow) {
+            return
+        }
         setCsrf(
             flow.ui.nodes?.find(
                 node => node.group === 'default'
@@ -151,7 +153,7 @@ const FlowContextProvider = ({ children }) => {
     )
 }
 
-function SocialLogin() {
+function SocialLoginForm() {
     const { flow, submit, CsrfToken } = useContext(FlowContext)
 
     const SocialLoginButtons = () => {
@@ -166,6 +168,7 @@ function SocialLogin() {
                             type={node.attributes.type}
                             name={node.attributes.name}
                             value={node.attributes.value}
+                            disabled={node.attributes.disabled}
                             aria-label={`${node.attributes.value} login`}
                         >
                             {node.attributes.value === 'google' && <GoogleLogo />}
@@ -199,9 +202,11 @@ function SocialLogin() {
 
     return (
         <div className="social-login-container">
-            <div>Or sign in with</div>
+            <div id="social-login-header">Or sign in with</div>
             <form
                 onSubmit={submit}
+                action={flow && flow.ui.action}
+                method={flow && flow.ui.method}
                 id="social-login-form"
                 noValidate
             >
@@ -228,8 +233,7 @@ const LoginForm = () => {
 
     useEffect(() => {
         flow && emailRef.current.focus()
-    },
-        [flow])
+    }, [flow])
 
     return (
         <form
@@ -283,7 +287,7 @@ const Initial = () => {
             </div>
             <h2>Sign In</h2>
             <LoginForm />
-            <SocialLogin />
+            <SocialLoginForm />
             <div
                 className="below-window-container"
             >
@@ -307,7 +311,9 @@ const Authenticate = () => {
     const { flow, email, setEmail, submit, sdkSubmitError } = useContext(FlowContext)
 
     useEffect(() => {
-        if (!sdkSubmitError) return
+        if (!sdkSubmitError) {
+            return
+        }
         if (sdkSubmitError.response.status === 400) {
             // user input error
             // show the error messages in the UI
