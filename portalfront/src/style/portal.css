@@ -200,7 +200,7 @@ input[type="password"]:focus::placeholder {
 }
 
 .social-auth-button svg {
-    opacity: .7;
+    opacity: .6;
 }
 
 .social-auth-button:hover {

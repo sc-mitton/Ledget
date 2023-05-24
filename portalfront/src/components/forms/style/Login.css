@@ -13,7 +13,7 @@
 #email-container {
     width: '100%';
     text-align: center;
-    margin-top: -24px;
+    margin-top: -28px;
     margin-bottom: 40px;
 }
 
@@ -29,14 +29,14 @@
 
 #email-container a {
     color: var(--main-text-gray);
-    transition: border-bottom .2s ease, opacity .2s ease;
+    transition: color .2s ease, opacity .2s ease;
     font-weight: 600;
     opacity: .6;
     border-bottom: none;
 }
 
 #email-container a:hover {
-    border-bottom: 1.5px solid var(--main-text-gray);
+    color: var(--main-blue);
     opacity: 1;
 }
 
