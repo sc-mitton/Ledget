@@ -23,10 +23,11 @@ const FlowContextProvider = ({ children }) => {
     const [flow, setFlow] = useState(null)
     const [email, setEmail] = useState('')
     const [csrf, setCsrf] = useState(null)
-    const [sdkSubmitError, setSdkSubmitError] = useState(null)
+    const [responseError, setResponseError] = useState(null)
     const [searchParams, setSearchParams] = useSearchParams()
+    const [authenticating, setAuthenticating] = useState(false)
 
-    const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", true)
+    const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
 
     const getFlow = useCallback(
         (flowId) =>
@@ -88,9 +89,9 @@ const FlowContextProvider = ({ children }) => {
     }, [flow])
 
     const submit = (event) => {
-        console.log(event)
         event.preventDefault()
         // map the entire form data to JSON for the request body
+        setAuthenticating(true)
         const form = event.currentTarget
         const formData = new FormData(form)
         let body = Object.fromEntries(formData)
@@ -108,7 +109,6 @@ const FlowContextProvider = ({ children }) => {
                 ...{ [method.name]: method.value },
             }
         }
-        console.log(body)
 
         sdk
             .updateLoginFlow({
@@ -116,11 +116,11 @@ const FlowContextProvider = ({ children }) => {
                 updateLoginFlowBody: body,
             })
             .then((res) => {
-                console.log(res)
                 const returnTo = searchParams.get("return_to") || "https://localhost:3001/"
                 window.location.href = returnTo; // Navigate to a different subdomain
             })
             .catch(sdkErrorHandler)
+            .finally(() => setAuthenticating(false))
     }
 
     const CsrfToken = () => {
@@ -140,8 +140,9 @@ const FlowContextProvider = ({ children }) => {
         email,
         setEmail,
         submit,
-        sdkSubmitError,
+        responseError,
         CsrfToken,
+        authenticating
     }
 
     return (
@@ -302,31 +303,11 @@ const Initial = () => {
 }
 
 const Authenticate = () => {
-    const [authenticating, setAuthenticating] = useState(false)
-    const [searchParams, setSearchParams] = useSearchParams()
     const [error, setError] = useState('')
-    const { flow, email, setEmail, submit, sdkSubmitError } = useContext(FlowContext)
-
-    useEffect(() => {
-        if (!sdkSubmitError) {
-            return
-        }
-        if (sdkSubmitError.response.status === 400) {
-            // user input error
-            // show the error messages in the UI
-            setError("Wrong email or password.")
-        } else {
-            // internal server error
-            // show a generic error message
-            setError("Something went wrong. Please try again later.")
-        }
-    }, [sdkSubmitError])
-
-    const navigate = useNavigate()
+    const { flow, email, setEmail, submit, responseError, authenticating } = useContext(FlowContext)
 
     const AuthenticationForm = () => {
         const pwdRef = useRef()
-        const [csrf, setCsrf] = useState('')
         const { flow, CsrfToken } = useContext(FlowContext)
 
         useEffect(() => {
@@ -342,6 +323,7 @@ const Authenticate = () => {
             >
                 <PasswordInput ref={pwdRef} />
                 {error && <FormError msg={error} />}
+                {responseError && <FormError msg={responseError} />}
                 <div id="forgot-password-container">
                     <Link to="#" tabIndex={0} >Forgot Password?</Link>
                 </div>
@@ -394,7 +376,7 @@ const Authenticate = () => {
                     change
                 </a>
             </div>
-            {(!flow || authenticating) && <WindowLoadingBar />}
+            {authenticating && <WindowLoadingBar />}
             <AuthenticationForm />
         </>
     )

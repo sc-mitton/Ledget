@@ -1,8 +1,6 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback } from "react";
-
-import axios from "axios";
+import { useCallback } from "react";
 
 import { Configuration, FrontendApi } from "@ory/client";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +24,7 @@ export const sdkError = (
     getFlow,
     setFlow,
     defaultNav,
+    setResponseError,
     fatalToDash = false,
 ) => {
     const navigate = useNavigate();
@@ -33,20 +32,24 @@ export const sdkError = (
     return useCallback(
         (error) => {
             const responseData = error.response?.data || {};
+            const errorMessages = responseData.ui?.messages.filter((m) => m.type === "error") || [];
 
             switch (error.response?.status) {
                 case 400: {
-                    if (error.response.data?.error?.id === "session_already_available") {
+                    if (errorMessages[0].text.includes("credentials are invalid")) {
+                        setResponseError('Wrong email or password.')
+                        return Promise.resolve();
+                    } else if (errorMessages[0].text.includes("valid session was detected")) {
                         console.warn(
                             "sdkError 400: `session_already_available`. Navigate to /"
                         );
                         navigate("/", { replace: true });
                         return Promise.resolve();
                     }
-                    // the request could contain invalid parameters which would set error messages in the flow
                     if (setFlow !== undefined) {
+                        // the request could contain invalid parameters which would set error messages in the flow
                         console.warn("sdkError 400: update flow data");
-                        console.log(responseData)
+                        // console.log(responseData)
                         setFlow(responseData);
                         return Promise.resolve();
                     }
