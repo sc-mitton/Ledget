@@ -26,7 +26,7 @@ export const LoadingRing = () => {
 
 export const FormError = (props) => {
     return (
-        <div id="signup-error-container">
+        <div className="error-container">
             <div className="form-error">
                 <img src={alert2} className="error-icon" />
                 {props.msg}

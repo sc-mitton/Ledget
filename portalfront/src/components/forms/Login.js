@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect, useContext, useCallback } from "react"
+import React, { useRef, useState, useEffect, useContext, createContext, useCallback } from "react"
 
-import { useNavigate, Link, useSearchParams, useLocation } from "react-router-dom"
+import { useNavigate, Link, useSearchParams } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import { object, string } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from "react-hook-form"
+import { set, useForm } from "react-hook-form"
 
 import { sdk, sdkError } from "../../api/sdk"
 import './style/Login.css'
@@ -17,182 +17,16 @@ import { PasswordInput } from "./CustomInputs"
 import { Checkbox } from "./CustomInputs"
 import { FormError, WindowLoadingBar } from "../widgets/Widgets"
 
+const FlowContext = createContext(null)
 
-function SocialLogin() {
-    return (
-        <div className="social-login-container">
-            <div>Or sign in with</div>
-            <div>
-                <button
-                    className="social-auth-button"
-                    id='google-login'
-                    aria-label="Google login"
-                >
-                    <GoogleLogo />
-                </button>
-                <button
-                    className="social-auth-button"
-                    id='facebook-login'
-                    aria-label="Facebook login"
-                >
-                    <FacebookLogo />
-                </button >
-            </div>
-        </div>
-    )
-}
-
-const schema = object().shape({
-    email: string().email("Invalid email address."),
-})
-
-const LoginForm = ({ onLoginSubmit }) => {
-    const [errMsg, setErrMsg] = useState('')
-    const rememberRef = useRef()
-    const { register, handleSubmit, formState: { errors } } =
-        useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
-    const emailRef = useRef()
-    const { ref, ...rest } = register('email')
-
-    useEffect(() => {
-        emailRef.current.focus()
-    }, [])
-
-    return (
-        <form onSubmit={handleSubmit(onLoginSubmit)} className="login-form" noValidate>
-            <div>
-                {errors['email'] && <FormError msg={errors['email'].message} />}
-                <div className="input-container">
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Email"
-                        {...rest}
-                        ref={(e) => {
-                            ref(e)
-                            emailRef.current = e
-                        }}
-                    />
-                </div>
-                <div id="remember-me-checkbox-container">
-                    <Checkbox
-                        id='remember'
-                        label='Remember me'
-                        name='remember'
-                    />
-                </div>
-                <button
-                    className='charcoal-button'
-                    id="next"
-                    name="enter-password"
-                    type="submit"
-                    aria-label="Next"
-                >
-                    Continue
-                </button>
-            </div>
-        </form >
-    )
-}
-
-const Initial = ({ setEmail }) => {
-
-    const onLoginSubmit = (data) => {
-        setEmail(data.email)
-    }
-
-    return (
-        <>
-            <div className="app-logo" >
-                <img src={logo} alt="Ledget" />
-            </div>
-            <h2>Sign In</h2>
-            <LoginForm onLoginSubmit={onLoginSubmit} />
-            <SocialLogin />
-            <div
-                className="below-window-container"
-            >
-                <span>Don't have an account? </span>
-                <Link
-                    className="underline-link-animation"
-                    to={{ pathname: "/register", state: { direction: 1 } }}
-                >
-                    Sign Up
-                </Link>
-            </div>
-        </>
-    )
-}
-
-const AuthenticationForm = ({ flow, onSubmit, email }) => {
-    const pwdRef = useRef()
-    const [csrf, setCsrf] = useState('')
-
-    useEffect(() => {
-        flow.ui.action !== '' && pwdRef.current.focus()
-        setCsrf(
-            flow.ui.nodes?.find(
-                node => node.group === 'default'
-                    && node.attributes.name === 'csrf_token'
-            )?.attributes.value
-        )
-    }, [flow])
-
-    return (
-        <form
-            action={flow.ui.action}
-            method={flow.ui.method}
-            onSubmit={onSubmit}
-            id="authentication-form"
-        >
-            <PasswordInput ref={pwdRef} />
-            <input
-                type="hidden"
-                name="csrf_token"
-                value={csrf || ''}
-            />
-            <input
-                type="hidden"
-                name="email"
-                value={email || ''}
-            />
-            <button
-                className='charcoal-button'
-                id="sign-in"
-                name="sign-in"
-                type="submit"
-                aria-label="Sign in"
-            >
-                Sign In
-            </button>
-            <div id="passwordless-options">
-                <div id="passwordless-options-header">
-                    Passwordless
-                    <div className="help-icon">
-                        <Help />
-                    </div>
-                </div>
-                <div>
-                    <button
-                        name="passwordless-options"
-                        type="submit"
-                    >
-                        <img src={webAuthn} id="webauthn-icon" alt='webauthn icon' />
-                    </button>
-                </div>
-            </div>
-        </form >
-    )
-}
-
-
-const Authenticate = ({ email, setEmail }) => {
+const FlowContextProvider = ({ children }) => {
     const [flow, setFlow] = useState(null)
-    const navigate = useNavigate()
+    const [email, setEmail] = useState('')
+    const [csrf, setCsrf] = useState(null)
+    const [sdkSubmitError, setSdkSubmitError] = useState(null)
     const [searchParams, setSearchParams] = useSearchParams()
+
     const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", true)
-    const emptyFlow = { ui: { action: "", method: "" } }
 
     const getFlow = useCallback(
         (flowId) =>
@@ -209,10 +43,9 @@ const Authenticate = ({ email, setEmail }) => {
         const returnTo = searchParams.get("return_to")
 
         sdk
-            // aal2 is a query parameter that can be used to request Two-Factor authentication
+            // aal2 to request Two-Factor authentication
             // aal1 is the default authentication level (Single-Factor)
-            // we always pass refresh (true) on login so that the session can be
-            // refreshed when there is already an active session
+            // if the user has a session, refresh it
             .createBrowserLoginFlow({ refresh: true, aal: aal2 ? "aal2" : "aal1" })
             // flow contains the form fields and csrf token
             .then(({ data: flow }) => {
@@ -242,7 +75,18 @@ const Authenticate = ({ email, setEmail }) => {
         createFlow()
     }, [])
 
+    useEffect(() => {
+        if (!flow) return
+        setCsrf(
+            flow.ui.nodes?.find(
+                node => node.group === 'default'
+                    && node.attributes.name === 'csrf_token'
+            )?.attributes.value
+        )
+    }, [flow])
+
     const submit = (event) => {
+        console.log(event)
         event.preventDefault()
         // map the entire form data to JSON for the request body
         const form = event.currentTarget
@@ -251,8 +95,12 @@ const Authenticate = ({ email, setEmail }) => {
 
         // We need the method specified from the name and value of the submit button.
         // when multiple submit buttons are present, the clicked one's value is used.
+        // We need the method specified from the name and value of the submit button.
+        // when multiple submit buttons are present, the clicked one's value is used.
         if ("submitter" in event.nativeEvent) {
-            const method = event.nativeEvent.submitter;
+            const method = (
+                event.nativeEvent
+            ).submitter
             body = {
                 ...body,
                 ...{ [method.name]: method.value },
@@ -264,17 +112,270 @@ const Authenticate = ({ email, setEmail }) => {
                 flow: flow.id,
                 updateLoginFlowBody: body,
             })
-            .then(() => {
-                console.log('success')
+            .then((res) => {
+                console.log(res)
+                const returnTo = searchParams.get("return_to") || "https://localhost:3001/"
+                window.location.href = returnTo; // Navigate to a different subdomain
             })
             .catch((err) => {
-                // handle the error
-                if (err.response.status === 400) {
-                    // user input error
-                    // show the error messages in the UI
-                    setFlow(err.response.data)
+                console.log(err)
+                setSdkSubmitError(err)
+            })
+    }
+
+    const CsrfToken = () => {
+        return (
+            <>
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value={csrf || ''}
+                />
+            </>
+        )
+    }
+
+    const data = {
+        flow,
+        email,
+        setEmail,
+        submit,
+        sdkSubmitError,
+        CsrfToken,
+    }
+
+    return (
+        <FlowContext.Provider value={data}>
+            {children}
+        </FlowContext.Provider>
+    )
+}
+
+function SocialLogin() {
+    const { flow, submit, CsrfToken } = useContext(FlowContext)
+
+    const SocialLoginButtons = () => {
+        return (
+            flow.ui.nodes.map((node, index) => {
+                if (node.group === 'oidc') {
+                    return (
+                        <button
+                            className="social-auth-button"
+                            key={index}
+                            id={node.id}
+                            type={node.attributes.type}
+                            name={node.attributes.name}
+                            value={node.attributes.value}
+                            aria-label={`${node.attributes.value} login`}
+                        >
+                            {node.attributes.value === 'google' && <GoogleLogo />}
+                            {node.attributes.value === 'facebook' && <FacebookLogo />}
+                        </button>
+                    )
                 }
             })
+        )
+    }
+
+    const DefaultButtons = () => {
+        return (
+            <>
+                <button
+                    className="social-auth-button"
+                    id="google"
+                >
+                    <GoogleLogo />
+                </button>
+                <button
+                    className="social-auth-button"
+                    id="facebook"
+                >
+                    <FacebookLogo />
+                </button>
+
+            </>
+        )
+    }
+
+    return (
+        <div className="social-login-container">
+            <div>Or sign in with</div>
+            <form
+                onSubmit={submit}
+                id="social-login-form"
+                noValidate
+            >
+                {flow ?
+                    <SocialLoginButtons />
+                    : <DefaultButtons />
+                }
+                <CsrfToken />
+            </form>
+        </div>
+    )
+}
+
+const schema = object().shape({
+    email: string().email("Invalid email address."),
+})
+
+const LoginForm = () => {
+    const emailRef = useRef()
+    const { register, handleSubmit, formState: { errors } } =
+        useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
+    const { ref, ...rest } = register('email')
+    const { flow, setEmail } = useContext(FlowContext)
+
+    useEffect(() => {
+        flow && emailRef.current.focus()
+    },
+        [flow])
+
+    return (
+        <form
+            onSubmit={handleSubmit(() => setEmail(emailRef.current.value))}
+            className="login-form"
+            noValidate
+        >
+            <div>
+                <div className="input-container">
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Email"
+                        {...rest}
+                        ref={(e) => {
+                            ref(e)
+                            emailRef.current = e
+                        }}
+                    />
+                </div>
+                {errors['email'] && <FormError msg={errors['email'].message} />}
+                <div id="remember-me-checkbox-container">
+                    <Checkbox
+                        id='remember'
+                        label='Remember me'
+                        name='remember'
+                    />
+                </div>
+                <button
+                    className='charcoal-button'
+                    id="next"
+                    name="enter-password"
+                    aria-label="Continue"
+                    type="submit"
+                >
+                    Continue
+                </button>
+            </div>
+        </form >
+    )
+}
+
+const Initial = () => {
+    const { flow } = useContext(FlowContext)
+
+    return (
+        <>
+            <div className="app-logo" >
+                <img src={logo} alt="Ledget" />
+            </div>
+            <h2>Sign In</h2>
+            <LoginForm />
+            <SocialLogin />
+            <div
+                className="below-window-container"
+            >
+                <span>Don't have an account? </span>
+                <Link
+                    className="underline-link-animation"
+                    to={{ pathname: "/register", state: { direction: 1 } }}
+                >
+                    Sign Up
+                </Link>
+            </div>
+            {!flow && <WindowLoadingBar />}
+        </>
+    )
+}
+
+const Authenticate = () => {
+    const [authenticating, setAuthenticating] = useState(false)
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [error, setError] = useState('')
+    const { flow, email, setEmail, submit, sdkSubmitError } = useContext(FlowContext)
+
+    useEffect(() => {
+        if (!sdkSubmitError) return
+        if (sdkSubmitError.response.status === 400) {
+            // user input error
+            // show the error messages in the UI
+            setError("Wrong email or password.")
+        } else {
+            // internal server error
+            // show a generic error message
+            setError("Something went wrong. Please try again later.")
+        }
+    }, [sdkSubmitError])
+
+    const navigate = useNavigate()
+
+    const AuthenticationForm = () => {
+        const pwdRef = useRef()
+        const [csrf, setCsrf] = useState('')
+        const { flow, CsrfToken } = useContext(FlowContext)
+
+        useEffect(() => {
+            pwdRef.current.focus()
+        }, [])
+
+        return (
+            <form
+                action={flow.ui.action}
+                method={flow.ui.method}
+                onSubmit={submit}
+                id="authentication-form"
+            >
+                <PasswordInput ref={pwdRef} />
+                {error && <FormError msg={error} />}
+                <div id="forgot-password-container">
+                    <Link to="#" tabIndex={0} >Forgot Password?</Link>
+                </div>
+                <CsrfToken />
+                <input
+                    type="hidden"
+                    name="identifier"
+                    value={email || ''}
+                />
+                <button
+                    className='charcoal-button'
+                    id="sign-in"
+                    name="method"
+                    value="password"
+                    type="submit"
+                    aria-label="Sign in"
+                >
+                    Sign In
+                </button>
+                <div id="passwordless-options">
+                    <div id="passwordless-options-header" >
+                        Passwordless
+                        <div className="help-icon">
+                            <Help />
+                        </div>
+                    </div>
+                    <div id="passwordless-options-container">
+                        <button
+                            name="passwordless-options"
+                            type="submit"
+                        >
+                            <img src={webAuthn} id="webauthn-icon" alt='webauthn icon' />
+                        </button>
+                    </div>
+                </div>
+            </form >
+        )
     }
 
     return (
@@ -283,7 +384,6 @@ const Authenticate = ({ email, setEmail }) => {
                 <img src={logo} alt="Ledget" />
             </div>
             <div id="email-container">
-                <h2>Sign In</h2>
                 <span>{`${email}`}</span>
                 <a
                     onClick={() => setEmail('')}
@@ -291,25 +391,15 @@ const Authenticate = ({ email, setEmail }) => {
                     change
                 </a>
             </div>
-            {!flow && <WindowLoadingBar />}
-            <AuthenticationForm
-                flow={flow ? flow : emptyFlow}
-                onSubmit={submit}
-                email={email}
-                setEmail={setEmail}
-            />
-            <div className="below-window-container" onClick={() => navigate('/login')}>
-                <Link to="#" tabIndex={0} >Forgot Password?</Link>
-            </div>
+            {(!flow || authenticating) && <WindowLoadingBar />}
+            <AuthenticationForm />
         </>
     )
 }
 
-function LoginWindow() {
-    const [email, setEmail] = useState('')
+function AnimatedWindows() {
     const [loaded, setLoaded] = useState(false)
-    const navigate = useNavigate()
-    const state = useLocation().state
+    const { email } = useContext(FlowContext)
 
     useEffect(() => {
         setLoaded(true)
@@ -326,7 +416,7 @@ function LoginWindow() {
                     exit={{ opacity: 0, x: -30 }}
                     transition={{ ease: "easeInOut", duration: 0.2 }}
                 >
-                    <Initial setEmail={setEmail} />
+                    <Initial />
                 </motion.div>
                 :
                 <motion.div
@@ -337,10 +427,18 @@ function LoginWindow() {
                     exit={{ opacity: 0, x: 30 }}
                     transition={{ ease: "easeInOut", duration: 0.2 }}
                 >
-                    <Authenticate email={email} setEmail={setEmail} />
+                    <Authenticate />
                 </motion.div>
             }
         </AnimatePresence>
+    )
+}
+
+const LoginWindow = () => {
+    return (
+        <FlowContextProvider>
+            <AnimatedWindows />
+        </FlowContextProvider>
     )
 }
 

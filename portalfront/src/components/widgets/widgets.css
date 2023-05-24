@@ -65,18 +65,22 @@
     top: 2px;
 }
 
-#signup-error-container {
+.error-container {
+    margin-top: -4px;
+    margin-bottom: 10px;
+}
+
+/* .error-container {
     position: relative;
     top: -12px;
     display: flex;
     height: 10px;
-}
+} */
 
 .form-error {
     display: inline-block;
     font-size: 14px;
     color: var(--mute-red);
-    margin-top: 6px;
 }
 
 .form-error span {
@@ -85,7 +89,7 @@
 
 .form-error img {
     height: 1em;
-    margin-left: 8px;
+    margin-left: 6px;
     margin-right: 5px;
     position: relative;
     top: 2px;

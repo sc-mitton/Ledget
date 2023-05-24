@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
 
-import logo from './assets/svg/logo.svg'
+import logoIcon from './assets/svg/logoIcon.svg'
 import Profile1 from './assets/svg/Profile1'
 import Profile2 from './assets/svg/Profile2'
 import SettingsIcon from './assets/svg/Settings'
@@ -97,7 +97,7 @@ function Header({ isNarrow }) {
             <header>
                 <div id="header-container">
                     <div id="header-logo">
-                        <img src={logo} alt="Ledget Logo" />
+                        <img src={logoIcon} alt="Ledget Logo" />
                     </div>
                     <div id="header-profile">
                         <Navigation />

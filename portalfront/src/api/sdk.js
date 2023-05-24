@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback } from "react";
 
+import axios from "axios";
+
 import { Configuration, FrontendApi } from "@ory/client";
 import { useNavigate } from "react-router-dom";
 

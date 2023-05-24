@@ -13,7 +13,8 @@
 #email-container {
     width: '100%';
     text-align: center;
-    margin-bottom: 28px;
+    margin-top: -24px;
+    margin-bottom: 40px;
 }
 
 #email-container h2 {
@@ -21,13 +22,27 @@
 }
 
 #email-container span {
-    opacity: .4;
+    opacity: .6;
     margin-right: 8px;
+    font-weight: 14px;
 }
 
 #email-container button {
     color: var(--light-blue);
     font-weight: 500;
+}
+
+#email-container a {
+    color: var(--main-text-gray);
+    transition: color, opacity .2s ease, opacity .2s ease;
+    font-weight: 600;
+    opacity: .6;
+    border-bottom: none;
+}
+
+#email-container a:hover {
+    color: var(--main-blue);
+    opacity: 1;
 }
 
 #email-container button:hover {
@@ -41,10 +56,20 @@
     cursor: pointer;
 }
 
+#forgot-password-container {
+    margin-top: -4px;
+    margin-left: 8px;
+    margin-bottom: 2px;
+}
+
+#forgot-password-container * {
+    font-size: 14px;
+}
+
 /* -------------------------- Passwordless Section -------------------------- */
 
 #passwordless-options {
-    margin: 32px 6px 12px 6px;
+    margin-top: 40px;
     justify-content: center;
     text-align: center;
     display: flex;
@@ -106,5 +131,5 @@
 
 #webauthn-icon {
     height: 40px;
-    opacity: .8;
+    opacity: 1;
 }

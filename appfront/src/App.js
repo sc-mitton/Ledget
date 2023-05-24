@@ -27,12 +27,21 @@ function App() {
         const location = useLocation()
 
         useEffect(() => {
-            if (isNarrow && location.pathname === '/items') {
-                navigate('/items')
-            } else if (isNarrow && location.pathname === '/spending') {
-                navigate('/spending')
-            } else if (!isNarrow && location.pathname === '/items') {
-                navigate('/spending')
+            switch (location.pathname) {
+                case '/spending':
+                    navigate('/spending')
+                    break
+                case '/items':
+                    isNarrow ? navigate('/items') : navigate('/spending')
+                    break
+                case '/accounts':
+                    navigate('/accounts')
+                    break
+                case '/settings':
+                    navigate('/settings')
+                    break
+                default:
+                    navigate('/spending')
             }
         }, [isNarrow, navigate])
 
