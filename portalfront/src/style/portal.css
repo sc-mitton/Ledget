@@ -4,7 +4,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 28px;
+    margin-bottom: 36px;
 }
 
 .app-logo img {
@@ -189,7 +189,7 @@ input[type="password"]:focus::placeholder {
     background-color: var(--social-button);
     border-radius: 4px;
     flex: 1;
-    padding: 8px;
+    padding: 10px;
     margin: 4px;
     box-sizing: border-box;
     transition: background-color 0.15s ease;
@@ -197,6 +197,10 @@ input[type="password"]:focus::placeholder {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.social-auth-button svg {
+    opacity: .7;
 }
 
 .social-auth-button:hover {

@@ -44,11 +44,7 @@ function SignUpForm() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="sign-up-form" noValidate>
-            {errMsg &&
-                <div className="server-error">
-                    <img src={alert2} alt='' />{errMsg}
-                </div>
-            }
+            {errMsg && <FormError msg={errMsg} />}
             <div className="input-container">
                 <input
                     id="name"
@@ -62,7 +58,7 @@ function SignUpForm() {
                     }}
                 />
             </div>
-            {hasError('name') && <FormError>{errors.name?.message}</FormError>}
+            {hasError('name') && <FormError msg={errors.name?.message} />}
             <div className="input-container">
                 <input
                     id="email"
@@ -79,10 +75,7 @@ function SignUpForm() {
             </div>
             {hasError('email') &&
                 <div id="signup-error-container">
-                    <div className="form-error">
-                        <img src={alert2} className="error-icon" />
-                        {errors.email?.message}
-                    </div>
+                    <FormError msg={errors.email?.message} />
                 </div>
             }
             <div>
@@ -98,29 +91,66 @@ function SignUpForm() {
     )
 }
 
-function SocialSignup() {
-    return (
-        <div className="social-login-container">
-            <div>Or sign up with</div>
-            <div>
+function SocialLoginForm() {
+    // const { flow, submit, CsrfToken } = useContext(FlowContext)
+
+    // const SocialLoginButtons = () => {
+    //     return (
+    //         flow.ui.nodes.map((node, index) => {
+    //             if (node.group === 'oidc') {
+    //                 return (
+    //                     <button
+    //                         className="social-auth-button"
+    //                         key={index}
+    //                         id={node.id}
+    //                         type={node.attributes.type}
+    //                         name={node.attributes.name}
+    //                         value={node.attributes.value}
+    //                         disabled={node.attributes.disabled}
+    //                         aria-label={`${node.attributes.value} login`}
+    //                     >
+    //                         {node.attributes.value === 'google' && <GoogleLogo />}
+    //                         {node.attributes.value === 'facebook' && <FacebookLogo />}
+    //                     </button>
+    //                 )
+    //             }
+    //         })
+    //     )
+    // }
+
+    const DefaultButtons = () => {
+        return (
+            <>
                 <button
                     className="social-auth-button"
-                    id='google-login'
-                    aria-label="Google login"
+                    id="facebook"
                 >
-                    <GoogleLogo />
+                    <FacebookLogo />
                 </button>
                 <button
                     className="social-auth-button"
-                    id='facebook-login'
-                    aria-label="Facebook login"
+                    id="google"
                 >
-                    <FacebookLogo />
-                </button >
-            </div>
+                    <GoogleLogo />
+                </button>
+            </>
+        )
+    }
+
+    return (
+        <div className="social-login-container">
+            <div id="social-login-header">Or sign in with</div>
+            <form
+                onSubmit={() => { }}
+                id="social-login-form"
+                noValidate
+            >
+                <DefaultButtons />
+            </form>
         </div>
     )
 }
+
 
 function SignUpWindow() {
     return (
@@ -130,7 +160,7 @@ function SignUpWindow() {
             </div>
             <h2>Create Account</h2>
             <SignUpForm />
-            <SocialSignup />
+            <SocialLoginForm />
             <div className="below-window-container">
                 <span>Have an account?  </span>
                 <Link to={{

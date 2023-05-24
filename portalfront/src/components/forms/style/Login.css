@@ -27,33 +27,17 @@
     font-weight: 14px;
 }
 
-#email-container button {
-    color: var(--light-blue);
-    font-weight: 500;
-}
-
 #email-container a {
     color: var(--main-text-gray);
-    transition: color, opacity .2s ease, opacity .2s ease;
+    transition: border-bottom .2s ease, opacity .2s ease;
     font-weight: 600;
     opacity: .6;
     border-bottom: none;
 }
 
 #email-container a:hover {
-    color: var(--main-blue);
+    border-bottom: 1.5px solid var(--main-text-gray);
     opacity: 1;
-}
-
-#email-container button:hover {
-    outline: none;
-    text-decoration: none;
-    border-bottom: 1.5px solid rgb(0, 0, 0, 0);
-    color: var(--main-blue);
-    text-decoration-skip-ink: none;
-    transition: border-bottom .2s ease;
-    text-underline-offset: 4px;
-    cursor: pointer;
 }
 
 #forgot-password-container {

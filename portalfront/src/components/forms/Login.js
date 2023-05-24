@@ -108,6 +108,7 @@ const FlowContextProvider = ({ children }) => {
                 ...{ [method.name]: method.value },
             }
         }
+        console.log(body)
 
         sdk
             .updateLoginFlow({
@@ -119,10 +120,7 @@ const FlowContextProvider = ({ children }) => {
                 const returnTo = searchParams.get("return_to") || "https://localhost:3001/"
                 window.location.href = returnTo; // Navigate to a different subdomain
             })
-            .catch((err) => {
-                console.log(err)
-                setSdkSubmitError(err)
-            })
+            .catch(sdkErrorHandler)
     }
 
     const CsrfToken = () => {
@@ -185,17 +183,16 @@ function SocialLoginForm() {
             <>
                 <button
                     className="social-auth-button"
-                    id="google"
-                >
-                    <GoogleLogo />
-                </button>
-                <button
-                    className="social-auth-button"
                     id="facebook"
                 >
                     <FacebookLogo />
                 </button>
-
+                <button
+                    className="social-auth-button"
+                    id="google"
+                >
+                    <GoogleLogo />
+                </button>
             </>
         )
     }

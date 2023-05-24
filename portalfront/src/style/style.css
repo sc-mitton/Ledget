@@ -10,7 +10,7 @@
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-box-gray: #fffcfc;
 
-    --light-blue: #70acff;
+    --light-blue: #91bdfb;
     --mute-blue: #7aa8fe;
     --hover-blue: #6197fc;
     --main-blue: #6b9bf6;
@@ -18,6 +18,8 @@
     --mute-red: #fd8292;
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
+
+    /* Inputs */
 
     /* Buttons */
     --button-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
