@@ -116,8 +116,8 @@ const FlowContextProvider = ({ children }) => {
                 updateLoginFlowBody: body,
             })
             .then((res) => {
-                const returnTo = searchParams.get("return_to") || "https://localhost:3001/"
-                window.location.href = returnTo; // Navigate to a different subdomain
+                const returnTo = process.env.LOGIN_REDIRECT || "https://localhost:3001/"
+                window.location.href = returnTo // Navigate to a different subdomain
             })
             .catch(sdkErrorHandler)
             .finally(() => setAuthenticating(false))

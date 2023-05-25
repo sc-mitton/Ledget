@@ -129,10 +129,17 @@ export const sdkError = (
                             window.location.origin,
                         )
 
+                        // If hostnames are differnt, redirect to the redirect url
+                        if (currentUrl.hostname !== redirect.hostname) {
+                            console.warn("sdkError 422: Redirect browser to")
+                            window.location.href = responseData.redirect_browser_to
+                            return Promise.resolve()
+                        }
                         // Path has changed
                         if (currentUrl.pathname !== redirect.pathname) {
                             console.warn("sdkError 422: Update path")
-                            // remove /ui prefix from the path in case it is present (not setup correctly inside the project config)
+                            // remove /ui prefix from the path in case it is present
+                            // (not setup correctly inside the project config)
                             // since this is an SPA we don't need to redirect to the Account Experience.
                             redirect.pathname = redirect.pathname.replace("/ui", "")
                             navigate(redirect.pathname + redirect.search, {
