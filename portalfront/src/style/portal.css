@@ -187,7 +187,7 @@ input[type="password"]:focus::placeholder {
 .social-auth-button {
     box-shadow: var(--button-drop-shadow);
     background-color: var(--social-button);
-    border-radius: 4px;
+    border-radius: 6px;
     flex: 1;
     padding: 10px;
     margin: 4px;

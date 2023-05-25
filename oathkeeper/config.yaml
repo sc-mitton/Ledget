@@ -1,0 +1,4 @@
+access_rules:
+  repositories:
+    - file://oathkeeper/rules.json
+matching_strategy: regexp
