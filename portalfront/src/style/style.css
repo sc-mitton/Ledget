@@ -1,7 +1,7 @@
 /* Root css file for style variables and global styles */
 
 :root {
-    --logo-dark: rgb(36, 36, 36);
+    --logo-dark: #242424;
 
     --background-color: #fcfcfc;
 
