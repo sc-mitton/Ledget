@@ -20,12 +20,14 @@
     --alert-red: #f35050;
 
     /* Inputs */
+    --input-placeholder: #2a2a2a;
+    --input-focus: #6b9bf6;
 
     /* Buttons */
     --button-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --social-button: #efefef;
     --social-button-hover: #e6e6e6;
-    --button-gray: #464646;
+    --button-gray: #363636;
     --buton-border-gray: #3c3c3c;
     --button-hover-gray: #242424;
     --border-bottom-gray: #b9b9b9;
@@ -41,21 +43,18 @@
     /* Input Colors */
     --input-color: #ededed;
     --tooltip-background: #a6a6a6;
-    /* rgb(56, 123, 248);
 
     /* Text */
     --main-text-gray: #242424;
     --muted-text-gray: #848484;
-    --input-placeholder: #848484;
     --success-green: #cdf8cd;
-    --input-focus: #6b9bf6;
 }
 
 /* Override color values for Firefox */
 @-moz-document url-prefix() {
     :root {
         --input-focus: rgb(31, 108, 252);
-        --input-placeholder: #343434;
+        --input-placeholder: #2a2a2a;
         --main-text-gray: rgb(44, 44, 44);
     }
 }
