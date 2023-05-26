@@ -139,7 +139,7 @@ function SocialLoginForm() {
 
     return (
         <div className="social-login-container">
-            <div id="social-login-header">Or sign in with</div>
+            <div id="social-login-header">Or sign up with</div>
             <form
                 onSubmit={() => { }}
                 id="social-login-form"

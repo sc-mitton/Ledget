@@ -96,7 +96,7 @@
 }
 
 .focus {
-    box-shadow: 0 0 1.5px 1px var(--light-blue);
+    box-shadow: var(--focus-drop-shadow);
     transition: border .2s ease;
 }
 

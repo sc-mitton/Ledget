@@ -40,9 +40,8 @@ DEFAULT_APPS = [
 THIRD_PARTY_APPS = [
     'sslserver',
     'rest_framework',
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
     'corsheaders'
+
 ]
 LOCAL_APPS = [
     'core.apps.CoreConfig',
@@ -92,75 +91,12 @@ STATIC_URL = '/static/'
 WSGI_APPLICATION = 'back.wsgi.application'
 
 
-# --------------------------------------------------------------- #
-#                         JWT                                     #
-# --------------------------------------------------------------- #
-
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
-    "UPDATE_LAST_LOGIN": False,
-
-    "ALGORITHM": "HS256",
-    "SIGNING_KEY": SECRET_KEY,
-    "VERIFYING_KEY": "",
-    "AUDIENCE": None,
-    "ISSUER": None,
-    "JSON_ENCODER": None,
-    "JWK_URL": None,
-    "LEEWAY": 0,
-
-    "AUTH_HEADER_TYPES": ("Bearer",),
-    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
-    # inconsequential since tokens are in HTTP_COOKIE header
-    # and a custom AUTH_TOKEN_CLASS is used
-    "USER_ID_FIELD": "id",
-    "USER_ID_CLAIM": "user_id",
-    "USER_AUTHENTICATION_RULE":
-        "rest_framework_simplejwt.authentication.default_user_authentication_rule", # noqa
-
-    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-    "TOKEN_TYPE_CLAIM": "token_type",
-    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
-
-    "JTI_CLAIM": "jti",
-
-    # "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-    # "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
-    # "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=30),
-
-    "TOKEN_OBTAIN_SERIALIZER":
-        "core.serializers.CustomTokenObtainPairSerializer",
-    "TOKEN_REFRESH_SERIALIZER":
-        "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
-    "TOKEN_VERIFY_SERIALIZER":
-        "rest_framework_simplejwt.serializers.TokenVerifySerializer",
-    "TOKEN_BLACKLIST_SERIALIZER":
-        "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
-    "SLIDING_TOKEN_OBTAIN_SERIALIZER":
-        "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
-    "SLIDING_TOKEN_REFRESH_SERIALIZER":
-        "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
-
-    # Custom
-    'AUTH_COOKIE_DOMAIN': DOMAIN,
-    'AUTH_COOKIE_SECURE': True,
-    'AUTH_COOKIE_PATH': '/',
-    'AUTH_COOKIE_HTTP_ONLY': True,
-    'AUTH_COOKIE_SAMESITE': 'Strict',
-
-}
-
 # ---------------------------------------------------------------- #
 #                 Authentication Settings                          #
 # ---------------------------------------------------------------- #
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'back.authentication.CustomJWTAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
 }

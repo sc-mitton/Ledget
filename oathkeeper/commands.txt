@@ -1,0 +1,14 @@
+# Make sure the latest docker image is pulled for oathkeeper
+docker pull oryd/oathkeeper:v0.40.3
+
+# Build the docker image for the Dockerfile
+docker build -t ory-oathkeeper-ledget .
+
+# Run oathkeeper on docker
+docker run --rm \
+  --name ory-oathkeeper-ledget \
+  -p 7999:7999 \
+  -p 8000:8000 \
+  ory-oathkeeper-ledget \
+  --config /config.yaml \
+  serve

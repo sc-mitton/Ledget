@@ -108,7 +108,7 @@ input[type="password"]:focus::placeholder {
 
 .input-container:focus-within {
     outline: none;
-    box-shadow: 0 0 1.5px 1px var(--light-blue);
+    box-shadow: var(--input-focus-drop-shadow);
 }
 
 
@@ -141,14 +141,14 @@ input[type="password"]:focus::placeholder {
 .valid-submit:focus-within,
 .submit-button:focus-within {
     outline: none;
-    box-shadow: 0 0 1.5px 1.5px var(--light-blue);
+    box-shadow: var(--button-focus-drop-shadow);
 }
 
 
 .invalid-submit:focus-within {
     outline: none;
     border: none;
-    box-shadow: 0 0 1.5px 1.5px var(--light-blue);
+    box-shadow: var(--button-focus-drop-shadow);
 }
 
 /* ----------------------------- Social Buttons ----------------------------- */
@@ -209,7 +209,7 @@ input[type="password"]:focus::placeholder {
 
 .social-auth-button:focus-visible {
     outline: none;
-    box-shadow: 0 0 1.5px 1px var(--light-blue);
+    box-shadow: var(--button-focus-drop-shadow);
 }
 
 /* ---------------------------- Below Window CSS ---------------------------- */

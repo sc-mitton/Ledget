@@ -26,10 +26,10 @@ let data = [
 ]
 
 const stackMax = 2
-const scaleFactor = .07
-const translate = 15
+const scaleFactor = .08
+const translate = 12
 const expandedTranslate = 75
-const collapsedHeight = 100
+const collapsedHeight = 95
 const expandedHeight = 270
 
 // CSS for the new item notification component
@@ -78,12 +78,9 @@ const NewItemsStack = () => {
                 transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
                 zIndex: (data.length - index),
                 opacity: !expanded && index > stackMax ? 0 : 1,
-                boxShadow: !expanded && index < stackMax
-                    ? "rgba(0, 0, 0, 0.1) 0px 1px 2px 0px"
-                    : 'rgba(0, 0, 0, 0) 0px 1px 2px 0px',
                 backgroundColor: index === 0 || expanded
                     ? "var(--window-background-color)"
-                    : `hsl(0, 0%, ${93 - (index * 3)}%)`,
+                    : `hsl(0, 0%, ${95 - (index * 15)}%)`,
                 ...newItemsSpringConfig
             }),
             update: (item, index, state) => {
@@ -92,12 +89,9 @@ const NewItemsStack = () => {
                     transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
                     zIndex: (data.length - index),
                     opacity: !expanded && index > stackMax ? 0 : 1,
-                    boxShadow: !expanded && index < stackMax
-                        ? "rgba(0, 0, 0, 0.1) 0px 1px 2px 0px"
-                        : 'rgba(0, 0, 0, 0) 0px 1px 2px 0px',
                     backgroundColor: index === 0 || expanded
                         ? "var(--window-background-color)"
-                        : `hsl(0, 0%, ${93 - (index * 3)}%)`,
+                        : `hsl(0, 0%, ${95 - (index * 15)}%)`,
                 }
             },
             leave: (item, index) => async (next, cancel) => {

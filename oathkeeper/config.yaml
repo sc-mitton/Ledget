@@ -1,4 +1,10 @@
+serve:
+  proxy:
+    port: 7999
+  api:
+    port: 8000
+
+
 access_rules:
   repositories:
-    - file://oathkeeper/rules.json
-matching_strategy: regexp
+    - file://rules.json

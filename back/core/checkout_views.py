@@ -36,15 +36,8 @@ endpoint_secret = settings.STRIPE_ENDPOINT_SECRET_TEST
 stripe_logger = logging.getLogger('core.stripe')
 
 
-class NoCustomerIdException(APIException):
-    status_code = 400
-    default_detail = 'No customer id found'
-    default_code = 'no_customer_id'
-
-
 class PriceView(ListAPIView):
     """Class for getting the list of prices from Stripe"""
-    permission_classes = [IsAuthenticated]
     queryset = Price.objects.all().filter(active=True)
     serializer_class = PriceSerializer
 

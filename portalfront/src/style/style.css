@@ -10,7 +10,7 @@
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-box-gray: #fffcfc;
 
-    --light-blue: #85b6fb;
+    --light-blue: #97c1fc;
     --mute-blue: #7aa8fe;
     --hover-blue: #6197fc;
     --main-blue: #6b9bf6;
@@ -29,6 +29,11 @@
     --buton-border-gray: #3c3c3c;
     --button-hover-gray: #242424;
     --border-bottom-gray: #b9b9b9;
+
+    /* Drop Shadows */
+    --accessible-focus-drop-shadow: 0 0 .4px 1.5px rgb(0, 0, 0, .1);
+    --button-focus-drop-shadow: 0 0 .5px 1.5px var(--light-blue);
+    --input-focus-drop-shadow: 0 0 .5px 1.5px var(--light-blue);
 
     /* Subscription Radios */
     --inactive-gray: #d7d7d7;
@@ -113,7 +118,7 @@ main:focus-visible {
 
 button:focus-visible {
     outline: none;
-    box-shadow: 0 0 2px 2px var(--light-blue);
+    box-shadow: var(--button-focus-drop-shadow);
 }
 
 a {
@@ -134,7 +139,7 @@ a:hover {
 
 label:focus-visible {
     outline: none;
-    box-shadow: 0 0 2px 2px var(--light-blue);
+    box-shadow: var(--accessible-focus-drop-shadow);
     border-radius: 4px;
 }
 

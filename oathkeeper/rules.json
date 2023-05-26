@@ -1,26 +1,23 @@
 [
-  {
-    "id": "get_prices",
-    "version": "v0.36.0-beta.4",
-    "upstream": {
-      "url": "https://ledget.app:8000",
-      "preserve_host": false,
-      "strip_path": "/api/v1"
-    },
-    "match": {
-      "methods": [
-        "GET"
+   {
+      "authenticators": [
+         {
+            "config": {},
+            "handler": "noop"
+         }
       ],
-      "url": "https://ledget.app:8000/prices"
-    },
-    "authenticators": [
-      {
-        "handler": "noop"
-      }
-    ]
-  },
-  {
-    "id": "rule2",
-    "version": "v0.36.0-beta.4"
-  }
+      "id": "get_prices",
+      "match": {
+         "methods": [
+            "GET"
+         ],
+         "url": "https://ledget.app:8000/prices"
+      },
+      "upstream": {
+         "preserve_host": false,
+         "strip_path": "/api/v1",
+         "url": "https://ledget.app:8000"
+      },
+      "version": "v0.36.0-beta.4"
+   }
 ]

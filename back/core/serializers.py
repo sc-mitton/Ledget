@@ -2,12 +2,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.conf import settings
-from rest_framework_simplejwt.serializers import (
-    TokenObtainPairSerializer,
-    TokenRefreshSerializer
-)
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from rest_framework_simplejwt.serializers import ValidationError
 import stripe
 
 from core.models import (
@@ -104,35 +98,6 @@ class UserSerializer(serializers.ModelSerializer):
                 'Password must be at least 10 characters long.'
             )
         return value
-
-
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    """Custom serializer for jwt token pair, that adds email
-    and full name to the token payload."""
-
-    @classmethod
-    def get_token(cls, user):
-
-        token = super().get_token(user)
-        token['user'] = {
-            'is_customer': user.is_customer,
-            'subscription_status': user.subscription_status,
-            'email': user.email,
-        }
-        return token
-
-
-class CustomTokenRefreshSerializer(TokenRefreshSerializer):
-    refresh = serializers.CharField()
-
-    def validate(self, attrs):
-        try:
-            validated_data = super().validate(attrs)
-            return validated_data
-        except TokenError:
-            raise ValidationError('Refresh token is invalid or expired.')
-        except InvalidToken:
-            raise ValidationError('Refresh token is invalid or expired.')
 
 
 class PriceSerializer(serializers.ModelSerializer):
