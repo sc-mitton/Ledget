@@ -1,220 +1,30 @@
-import React, { useRef, useState, useEffect, useContext, createContext, useCallback } from "react"
+import React, { useRef, useState, useEffect, useContext, createContext } from "react"
 
-import { useNavigate, Link, useSearchParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import { object, string } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
-import { set, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
-import { sdk, sdkError } from "../../api/sdk"
 import './style/Login.css'
 import webAuthn from "../../assets/icons/webAuthn.svg"
 import Help from "../../assets/icons/Help"
 import logo from "../../assets/images/logo.svg"
-import FacebookLogo from "../../assets/icons/FacebookLogo"
-import GoogleLogo from "../../assets/icons/GoogleLogo"
+import SocialAuth from "./SocialAuth"
 import { PasswordInput } from "./CustomInputs"
 import { Checkbox } from "./CustomInputs"
 import { FormError, WindowLoadingBar } from "../widgets/Widgets"
+import { LoginFlowContext, LoginFlowContextProvider } from "../../context/Flow"
 
-const FlowContext = createContext(null)
+const emailContext = createContext(null)
 
-const FlowContextProvider = ({ children }) => {
-    const [flow, setFlow] = useState(null)
+const EmailContextProvider = ({ children }) => {
     const [email, setEmail] = useState('')
-    const [csrf, setCsrf] = useState(null)
-    const [responseError, setResponseError] = useState(null)
-    const [searchParams, setSearchParams] = useSearchParams()
-    const [authenticating, setAuthenticating] = useState(false)
-
-    const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
-
-    const getFlow = useCallback(
-        (flowId) =>
-            sdk
-                // the flow data contains the form fields, error messages and csrf token
-                .getLoginFlow({ id: flowId })
-                .then(({ data: flow }) => setFlow(flow))
-                .catch(sdkErrorHandler),
-        [],
-    )
-
-    const createFlow = () => {
-        const aal2 = searchParams.get("aal2")
-        const returnTo = searchParams.get("return_to")
-
-        sdk
-            // aal2 to request Two-Factor authentication
-            // aal1 is the default authentication level (Single-Factor)
-            // if the user has a session, refresh it
-            .createBrowserLoginFlow({ refresh: true, aal: aal2 ? "aal2" : "aal1" })
-            // flow contains the form fields and csrf token
-            .then(({ data: flow }) => {
-                // Update URI query params to include flow id
-                setSearchParams({
-                    flow: flow.id,
-                    return_to: returnTo || "/",
-                    aal: aal2 ? 'aal2' : 'aal1',
-                })
-                // Set the flow data
-                setFlow(flow)
-            })
-            .catch(sdkErrorHandler)
-    }
-
-    useEffect(() => {
-        // we might redirect to this page after the flow is initialized,
-        // so we check for the flowId in the URL
-        const flowId = searchParams.get("flow")
-        const returnTo = searchParams.get("return_to")
-        const aal2 = searchParams.get("aal2")
-        // the flow already exists
-        if (flowId) {
-            getFlow(flowId).catch(createFlow) // if the flow has expired, we need to get a new one
-            return
-        }
-        createFlow()
-    }, [])
-
-    useEffect(() => {
-        if (!flow) {
-            return
-        }
-        setCsrf(
-            flow.ui.nodes?.find(
-                node => node.group === 'default'
-                    && node.attributes.name === 'csrf_token'
-            )?.attributes.value
-        )
-    }, [flow])
-
-    const submit = (event) => {
-        event.preventDefault()
-        // map the entire form data to JSON for the request body
-        setAuthenticating(true)
-        const form = event.currentTarget
-        const formData = new FormData(form)
-        let body = Object.fromEntries(formData)
-
-        // We need the method specified from the name and value of the submit button.
-        // when multiple submit buttons are present, the clicked one's value is used.
-        // We need the method specified from the name and value of the submit button.
-        // when multiple submit buttons are present, the clicked one's value is used.
-        if ("submitter" in event.nativeEvent) {
-            const method = (
-                event.nativeEvent
-            ).submitter
-            body = {
-                ...body,
-                ...{ [method.name]: method.value },
-            }
-        }
-
-        sdk
-            .updateLoginFlow({
-                flow: flow.id,
-                updateLoginFlowBody: body,
-            })
-            .then((res) => {
-                const returnTo = process.env.LOGIN_REDIRECT || "https://localhost:3001/"
-                window.location.href = returnTo // Navigate to a different subdomain
-            })
-            .catch(sdkErrorHandler)
-            .finally(() => setAuthenticating(false))
-    }
-
-    const CsrfToken = () => {
-        return (
-            <>
-                <input
-                    type="hidden"
-                    name="csrf_token"
-                    value={csrf || ''}
-                />
-            </>
-        )
-    }
-
-    const data = {
-        flow,
-        email,
-        setEmail,
-        submit,
-        responseError,
-        CsrfToken,
-        authenticating
-    }
 
     return (
-        <FlowContext.Provider value={data}>
+        <emailContext.Provider value={{ email, setEmail }}>
             {children}
-        </FlowContext.Provider>
-    )
-}
-
-function SocialLoginForm() {
-    const { flow, submit, CsrfToken } = useContext(FlowContext)
-
-    const SocialLoginButtons = () => {
-        return (
-            flow.ui.nodes.map((node, index) => {
-                if (node.group === 'oidc') {
-                    return (
-                        <button
-                            className="social-auth-button"
-                            key={index}
-                            id={node.id}
-                            type={node.attributes.type}
-                            name={node.attributes.name}
-                            value={node.attributes.value}
-                            disabled={node.attributes.disabled}
-                            aria-label={`${node.attributes.value} login`}
-                        >
-                            {node.attributes.value === 'google' && <GoogleLogo />}
-                            {node.attributes.value === 'facebook' && <FacebookLogo />}
-                        </button>
-                    )
-                }
-            })
-        )
-    }
-
-    const DefaultButtons = () => {
-        return (
-            <>
-                <button
-                    className="social-auth-button"
-                    id="facebook"
-                >
-                    <FacebookLogo />
-                </button>
-                <button
-                    className="social-auth-button"
-                    id="google"
-                >
-                    <GoogleLogo />
-                </button>
-            </>
-        )
-    }
-
-    return (
-        <div className="social-login-container">
-            <div id="social-login-header">Or sign in with</div>
-            <form
-                onSubmit={submit}
-                action={flow && flow.ui.action}
-                method={flow && flow.ui.method}
-                id="social-login-form"
-                noValidate
-            >
-                {flow ?
-                    <SocialLoginButtons />
-                    : <DefaultButtons />
-                }
-                <CsrfToken />
-            </form>
-        </div>
+        </emailContext.Provider>
     )
 }
 
@@ -222,12 +32,13 @@ const schema = object().shape({
     email: string().email("Invalid email address."),
 })
 
-const LoginForm = () => {
+const EmailForm = () => {
     const emailRef = useRef()
     const { register, handleSubmit, formState: { errors } } =
         useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const { ref, ...rest } = register('email')
-    const { flow, setEmail } = useContext(FlowContext)
+    const { flow } = useContext(LoginFlowContext)
+    const { setEmail } = useContext(emailContext)
 
     useEffect(() => {
         flow && emailRef.current.focus()
@@ -275,8 +86,8 @@ const LoginForm = () => {
     )
 }
 
-const Initial = () => {
-    const { flow } = useContext(FlowContext)
+const InitialWindow = () => {
+    const { flow, submit, CsrfToken } = useContext(LoginFlowContext)
 
     return (
         <>
@@ -284,8 +95,8 @@ const Initial = () => {
                 <img src={logo} alt="Ledget" />
             </div>
             <h2>Sign In</h2>
-            <LoginForm />
-            <SocialLoginForm />
+            <EmailForm />
+            <SocialAuth flow={flow} submit={submit} CsrfToken={CsrfToken} />
             <div
                 className="below-window-container"
             >
@@ -302,19 +113,30 @@ const Initial = () => {
     )
 }
 
-const Authenticate = () => {
+const AuthenticationWindow = () => {
+    const pwdRef = useRef()
     const [error, setError] = useState('')
-    const { flow, email, setEmail, submit, responseError, authenticating } = useContext(FlowContext)
+    const { flow, submit, responseError, authenticating, CsrfToken } = useContext(LoginFlowContext)
+    const { email, setEmail } = useContext(emailContext)
 
-    const AuthenticationForm = () => {
-        const pwdRef = useRef()
-        const { flow, CsrfToken } = useContext(FlowContext)
+    useEffect(() => {
+        pwdRef.current.focus()
+    }, [])
 
-        useEffect(() => {
-            pwdRef.current.focus()
-        }, [])
-
-        return (
+    return (
+        <>
+            <div className="app-logo" >
+                <img src={logo} alt="Ledget" />
+            </div>
+            <div id="email-container">
+                <span>{`${email}`}</span>
+                <a
+                    onClick={() => setEmail('')}
+                >
+                    change
+                </a>
+            </div>
+            {authenticating && <WindowLoadingBar />}
             <form
                 action={flow.ui.action}
                 method={flow.ui.method}
@@ -360,31 +182,14 @@ const Authenticate = () => {
                     </div>
                 </div>
             </form >
-        )
-    }
-
-    return (
-        <>
-            <div className="app-logo" >
-                <img src={logo} alt="Ledget" />
-            </div>
-            <div id="email-container">
-                <span>{`${email}`}</span>
-                <a
-                    onClick={() => setEmail('')}
-                >
-                    change
-                </a>
-            </div>
-            {authenticating && <WindowLoadingBar />}
-            <AuthenticationForm />
         </>
     )
 }
 
+
 function AnimatedWindows() {
     const [loaded, setLoaded] = useState(false)
-    const { email } = useContext(FlowContext)
+    const { email } = useContext(emailContext)
 
     useEffect(() => {
         setLoaded(true)
@@ -401,7 +206,7 @@ function AnimatedWindows() {
                     exit={{ opacity: 0, x: -30 }}
                     transition={{ ease: "easeInOut", duration: 0.2 }}
                 >
-                    <Initial />
+                    <InitialWindow />
                 </motion.div>
                 :
                 <motion.div
@@ -412,7 +217,7 @@ function AnimatedWindows() {
                     exit={{ opacity: 0, x: 30 }}
                     transition={{ ease: "easeInOut", duration: 0.2 }}
                 >
-                    <Authenticate />
+                    <AuthenticationWindow />
                 </motion.div>
             }
         </AnimatePresence>
@@ -421,9 +226,11 @@ function AnimatedWindows() {
 
 const LoginWindow = () => {
     return (
-        <FlowContextProvider>
-            <AnimatedWindows />
-        </FlowContextProvider>
+        <LoginFlowContextProvider>
+            <EmailContextProvider>
+                <AnimatedWindows />
+            </EmailContextProvider>
+        </LoginFlowContextProvider>
     )
 }
 

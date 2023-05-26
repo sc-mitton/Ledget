@@ -1,16 +1,17 @@
-import React from "react"
+import React, { useContext } from "react"
 
 import { Link } from "react-router-dom"
-import { useState, useRef, useEffect } from "react"
+import { useState } from "react"
 import { object, string } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 
 import './style/SignUp.css'
 import logo from "../../assets/images/logo.svg"
-import FacebookLogo from "../../assets/icons/FacebookLogo"
-import GoogleLogo from "../../assets/icons/GoogleLogo"
+import SocialAuth from "./SocialAuth"
 import { FormError } from "../widgets/Widgets"
+import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/Flow"
+import { WindowLoadingBar } from "../widgets/Widgets"
 
 // Schema for yup form validation
 const schema = object().shape({
@@ -32,19 +33,14 @@ const schema = object().shape({
 function SignUpForm() {
     const { register, handleSubmit, formState: { errors }, trigger, setError }
         = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
-    const [errMsg, setErrMsg] = useState('')
+    const { CsrfToken, submit } = useContext(RegisterFlowContext)
 
     const hasError = (field) => {
         return errors[field] ? true : false
     }
 
-    const onSubmit = async (data) => {
-        console.log(data)
-    }
-
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="sign-up-form" noValidate>
-            {errMsg && <FormError msg={errMsg} />}
+        <form onSubmit={handleSubmit(submit)} className="sign-up-form" noValidate>
             <div className="input-container">
                 <input
                     id="name"
@@ -73,6 +69,7 @@ function SignUpForm() {
                     }}
                 />
             </div>
+            <CsrfToken />
             {hasError('email') &&
                 <div id="signup-error-container">
                     <FormError msg={errors.email?.message} />
@@ -91,68 +88,10 @@ function SignUpForm() {
     )
 }
 
-function SocialLoginForm() {
-    // const { flow, submit, CsrfToken } = useContext(FlowContext)
 
-    // const SocialLoginButtons = () => {
-    //     return (
-    //         flow.ui.nodes.map((node, index) => {
-    //             if (node.group === 'oidc') {
-    //                 return (
-    //                     <button
-    //                         className="social-auth-button"
-    //                         key={index}
-    //                         id={node.id}
-    //                         type={node.attributes.type}
-    //                         name={node.attributes.name}
-    //                         value={node.attributes.value}
-    //                         disabled={node.attributes.disabled}
-    //                         aria-label={`${node.attributes.value} login`}
-    //                     >
-    //                         {node.attributes.value === 'google' && <GoogleLogo />}
-    //                         {node.attributes.value === 'facebook' && <FacebookLogo />}
-    //                     </button>
-    //                 )
-    //             }
-    //         })
-    //     )
-    // }
+function AnimatedWindow() {
+    const { flow, submit, CsrfToken } = React.useContext(RegisterFlowContext)
 
-    const DefaultButtons = () => {
-        return (
-            <>
-                <button
-                    className="social-auth-button"
-                    id="facebook"
-                >
-                    <FacebookLogo />
-                </button>
-                <button
-                    className="social-auth-button"
-                    id="google"
-                >
-                    <GoogleLogo />
-                </button>
-            </>
-        )
-    }
-
-    return (
-        <div className="social-login-container">
-            <div id="social-login-header">Or sign up with</div>
-            <form
-                onSubmit={() => { }}
-                id="social-login-form"
-                noValidate
-            >
-                <DefaultButtons />
-            </form>
-        </div>
-    )
-}
-
-
-function SignUpWindow() {
     return (
         <div className='window sign-up-window'>
             <div className="app-logo" >
@@ -160,7 +99,7 @@ function SignUpWindow() {
             </div>
             <h2>Create Account</h2>
             <SignUpForm />
-            <SocialLoginForm />
+            <SocialAuth flow={flow} submit={submit} CsrfToken={CsrfToken} />
             <div className="below-window-container">
                 <span>Have an account?  </span>
                 <Link to={{
@@ -168,8 +107,18 @@ function SignUpWindow() {
                     state: { direction: 1 }
                 }}>Sign In</Link>
             </div>
+            {!flow && <WindowLoadingBar />}
         </div>
     )
 }
+
+const SignUpWindow = () => {
+    return (
+        <RegisterFlowContextProvider>
+            <AnimatedWindow />
+        </RegisterFlowContextProvider>
+    )
+}
+
 
 export default SignUpWindow
