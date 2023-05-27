@@ -1,20 +1,55 @@
-version: '2.18'
+version: '3.8'
+
+args:
+  &common-args
+  - DEV=${DEV}
 
 services:
-  app:
+
+  ledgetapi:
     build:
-      context: .
-      args:
-        - DEV=true
-      ports: -"8000:8000"
-      volumes:
-        - ./ledgetapi:/ledgetapi
+      <<: *common-args
+      context: ./ledgetapi
       command: >
         sh -c "
               python manage.py wait_for_db &&
               python manage.py makemigrations &&
               python manage.py migrate &&
-              python manage.py runsslserver --cert certs/ledget.app.cert --key cetrs/ledget.app.key"
+              python manage.py runsslserver --cert certs/ledget.app.cert --key certs/ledget.app.key"
+    depends_on:
+      - db
+
+  app:
+    build:
+      <<: *common-args
+      context: ./app
+      ports:
+        - "3000:3000"
+      command: >
+        sh -c "npm install && npm start"
+  portal:
+    build:
+      <<: *common-args
+      context: ./portal
+      ports:
+        - "3001:3001"
+      command: >
+        sh -c "npm install && npm start"
+
+  # reverse-proxy:
+  #   image: nginx:1.15.8-alpine
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx:/etc/nginx/conf.d
+  #     - ./certs:/etc/nginx/certs
+  #   depends_on:
+  #     - ledgetapi
+  oathkeeper:
+    image: ./oathkeeper
+    command: >
+      sh -c "oathkeeper serve --config /config/config.yml"
 
   db:
     image: postgres:15-alpine
@@ -25,5 +60,11 @@ services:
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
 
+  stripe-listener:
+    image: stripe/stripe-cli:latest
+    command: stripe listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
+
 volumes:
   dev-db-data:
+  nginx:
+  certs:

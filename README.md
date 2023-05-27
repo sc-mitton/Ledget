@@ -22,14 +22,10 @@ Ledget was started from frustration with the choice of personal budgeting apps. 
 
 ## Dev Environment
 
-### Mac
-
 First clone the git repo:
 
 `git clone git@github.com:sc-mitton/Ledget.git`
 
-Install the necessary command line tools
+Use docker compose to run the application in development mode:
 
-`brew update`
-`brew install oathkeeper stripe ory`
-
+`docker-compose up`

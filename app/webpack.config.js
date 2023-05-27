@@ -18,9 +18,6 @@ module.exports = {
             cert: fs.readFileSync('../certs/localhost.crt'),
             ca: fs.readFileSync('../certs/ledgetCA.pem')
         },
-        allowedHosts: [
-            'secure.ledget.app',
-        ],
         static: {
             directory: path.join(__dirname, 'public'),
         },
@@ -65,12 +62,7 @@ module.exports = {
                         },
                     },
                 ],
-            },
-            {
-                test: /\.tsx?$/,
-                exclude: /node_modules/,
-                use: 'ts-loader',
-            },
+            }
         ]
     }
 }

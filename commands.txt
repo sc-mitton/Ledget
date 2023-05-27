@@ -1,0 +1,3 @@
+# Run tests
+docker-compose run --rm ledgetapi sh -c "manage.py test"
+

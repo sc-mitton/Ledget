@@ -159,7 +159,7 @@
     height: 2px;
     background-color: var(--light-blue);
     z-index: 2;
-    animation: load 1s linear infinite;
+    animation: load .8s linear infinite;
 }
 
 @keyframes load {
