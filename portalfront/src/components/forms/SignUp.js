@@ -1,6 +1,6 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import { useState } from "react"
 import { object, string } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -89,8 +89,20 @@ function SignUpForm() {
 }
 
 
-function AnimatedWindow() {
-    const { flow, submit, CsrfToken } = React.useContext(RegisterFlowContext)
+function SignUpWindow() {
+    const { flow, submit, CsrfToken, createFlow, getFlow } = useContext(RegisterFlowContext)
+    const [searchParams] = useSearchParams()
+
+    useEffect(() => {
+        // we might redirect to this page after the flow is initialized,
+        // so we check for the flowId in the URL
+        const flowId = searchParams.get("flow")
+        if (flowId) {
+            getFlow(flowId).catch(createFlow) // Get new flow if it's expired
+            return
+        }
+        createFlow()
+    }, [])
 
     return (
         <div className='window sign-up-window'>
@@ -112,13 +124,13 @@ function AnimatedWindow() {
     )
 }
 
-const SignUpWindow = () => {
+const SignUp = () => {
     return (
         <RegisterFlowContextProvider>
-            <AnimatedWindow />
+            <SignUpWindow />
         </RegisterFlowContextProvider>
     )
 }
 
 
-export default SignUpWindow
+export default SignUp

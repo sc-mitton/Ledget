@@ -27,7 +27,7 @@ let data = [
 
 const stackMax = 2
 const scaleFactor = .08
-const translate = 12
+const translate = 13
 const expandedTranslate = 75
 const collapsedHeight = 95
 const expandedHeight = 270
@@ -65,6 +65,21 @@ const NewItemsStack = () => {
         ...containerSpringConfig
     }))
 
+    const getBackground = (index) => {
+        let r = 230 - (index ** 2 * 18)
+
+        if (expanded || index === 0) {
+            return "linear-gradient(0deg, rgba(240, 240, 240, .75) 0%,  \
+                    rgba(240, 240, 240, 1)25%, rgba(240, 240, 240, 1)"
+        } else {
+            return `linear-gradient(0deg, rgba(${r}, ${r}, ${r}, .75) 0%,
+             rgba(${r}, ${r}, ${r}, 1)25%, rgba(${r}, ${r}, ${r}, 1)`
+        }
+    }
+
+    const getOpacity = (index) => {
+        return !expanded && index > stackMax ? 0 : 1
+    }
 
     const transitions = useTransition(
         items,
@@ -77,10 +92,8 @@ const NewItemsStack = () => {
                 top: expanded || index === 0 ? 0 : 1 * translate * index,
                 transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
                 zIndex: (data.length - index),
-                opacity: !expanded && index > stackMax ? 0 : 1,
-                backgroundColor: index === 0 || expanded
-                    ? "var(--window-background-color)"
-                    : `hsl(0, 0%, ${95 - (index * 15)}%)`,
+                opacity: getOpacity(index),
+                background: getBackground(index),
                 ...newItemsSpringConfig
             }),
             update: (item, index, state) => {
@@ -88,10 +101,8 @@ const NewItemsStack = () => {
                     top: expanded || index === 0 ? index * expandedTranslate : 1 * translate * index,
                     transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
                     zIndex: (data.length - index),
-                    opacity: !expanded && index > stackMax ? 0 : 1,
-                    backgroundColor: index === 0 || expanded
-                        ? "var(--window-background-color)"
-                        : `hsl(0, 0%, ${95 - (index * 15)}%)`,
+                    opacity: getOpacity(index),
+                    background: getBackground(index),
                 }
             },
             leave: (item, index) => async (next, cancel) => {

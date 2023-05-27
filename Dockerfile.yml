@@ -1,0 +1,5 @@
+FROM python:3.11.3-alpine3.18
+LABEL maintainer="sc-mitton"
+
+COPY ./requirements.txt /requirements.txt
+COPY

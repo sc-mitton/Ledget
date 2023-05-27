@@ -51,20 +51,6 @@ function LoginFlowContextProvider({ children }) {
     }
 
     useEffect(() => {
-        // we might redirect to this page after the flow is initialized,
-        // so we check for the flowId in the URL
-        const flowId = searchParams.get("flow")
-        const returnTo = searchParams.get("return_to")
-        const aal2 = searchParams.get("aal2")
-        // the flow already exists
-        if (flowId) {
-            getFlow(flowId).catch(createFlow) // if the flow has expired, we need to get a new one
-            return
-        }
-        createFlow()
-    }, [])
-
-    useEffect(() => {
         if (!flow) {
             return
         }
@@ -124,6 +110,8 @@ function LoginFlowContextProvider({ children }) {
 
     const data = {
         flow,
+        createFlow,
+        getFlow,
         submit,
         responseError,
         CsrfToken,
@@ -141,7 +129,7 @@ function RegisterFlowContextProvider({ children }) {
     const [flow, setFlow] = useState(null)
     const [csrf, setCsrf] = useState(null)
     const [responseError, setResponseError] = useState(null)
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [, setSearchParams] = useSearchParams()
     const [registering, setRegistering] = useState(false)
 
     const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
@@ -164,17 +152,6 @@ function RegisterFlowContextProvider({ children }) {
             })
             .catch(sdkErrorHandler)
     }
-
-    useEffect(() => {
-        // we might redirect to this page after the flow is initialized,
-        // so we check for the flowId in the URL
-        const flowId = searchParams.get("flow")
-        if (flowId) {
-            getFlow(flowId).catch(createFlow) // Get new flow if it's expired
-            return
-        }
-        createFlow()
-    }, [])
 
     useEffect(() => {
         if (!flow) {
@@ -233,6 +210,8 @@ function RegisterFlowContextProvider({ children }) {
 
     const data = {
         flow,
+        createFlow,
+        getFlow,
         submit,
         responseError,
         CsrfToken,

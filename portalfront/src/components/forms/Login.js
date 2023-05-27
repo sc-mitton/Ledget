@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext, createContext } from "react"
 
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import { object, string } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -101,10 +101,7 @@ const InitialWindow = () => {
                 className="below-window-container"
             >
                 <span>Don't have an account? </span>
-                <Link
-                    className="underline-link-animation"
-                    to={{ pathname: "/register", state: { direction: 1 } }}
-                >
+                <Link to={{ pathname: "/register", state: { direction: 1 } }}>
                     Sign Up
                 </Link>
             </div>
@@ -187,12 +184,28 @@ const AuthenticationWindow = () => {
 }
 
 
-function AnimatedWindows() {
+function LoginWindow() {
     const [loaded, setLoaded] = useState(false)
     const { email } = useContext(emailContext)
+    const { getFlow, createFlow } = useContext(LoginFlowContext)
+    const [searchParams] = useSearchParams()
 
     useEffect(() => {
         setLoaded(true)
+    }, [])
+
+    useEffect(() => {
+        // we might redirect to this page after the flow is initialized,
+        // so we check for the flowId in the URL
+        const flowId = searchParams.get("flow")
+        const returnTo = searchParams.get("return_to")
+        const aal2 = searchParams.get("aal2")
+        // the flow already exists
+        if (flowId) {
+            getFlow(flowId).catch(createFlow) // if the flow has expired, we need to get a new one
+            return
+        }
+        createFlow()
     }, [])
 
     return (
@@ -224,14 +237,14 @@ function AnimatedWindows() {
     )
 }
 
-const LoginWindow = () => {
+const Login = () => {
     return (
         <LoginFlowContextProvider>
             <EmailContextProvider>
-                <AnimatedWindows />
+                <LoginWindow />
             </EmailContextProvider>
         </LoginFlowContextProvider>
     )
 }
 
-export default LoginWindow
+export default Login
