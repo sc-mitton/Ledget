@@ -24,9 +24,11 @@ Ledget was started from frustration with the choice of personal budgeting apps. 
 ### Mac
 
 First clone the git repo:
-```git clone git@github.com:sc-mitton/Ledget.git```
+
+`git clone git@github.com:sc-mitton/Ledget.git`
 
 Install the necessary command line tools
-```brew update```
-```brew install oathkeeper stripe ory```
+
+`brew update`
+`brew install oathkeeper stripe ory`
 
