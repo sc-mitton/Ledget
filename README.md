@@ -1,7 +1,7 @@
 # Ledget
 
 <div style="text-align:center">
-  <img src="media/logoIcon.png" alt="Logo" width="300" height="300">
+  <img src="media/logoIcon.png" alt="Logo" width="100" height="100">
 </div>
 Ledget simplifies financial lives.
 
