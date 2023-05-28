@@ -1,11 +1,9 @@
 from pathlib import Path
-from dotenv import load_dotenv
 import os
 import sys
 from datetime import timedelta
 
 # SECURITY WARNING: keep the secret key used in production secret!
-load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DOMAIN = 'ledget.app'
@@ -20,11 +18,11 @@ SITE_ID = 1
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'LedgetDev',
-        'USER': 'scmitton',
+        'NAME': os.getenv('LEDGET_DB_NAME'),
+        'USER': os.getenv('LEDGET_DB_USER'),
         'PASSWORD': os.getenv('LEDGET_DB_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': os.getenv('LEDGET_DB_HOST'),
+        'PORT': os.getenv('LEDGET_DB_PORT'),
     }
 }
 
@@ -41,10 +39,10 @@ THIRD_PARTY_APPS = [
     'sslserver',
     'rest_framework',
     'corsheaders'
-
 ]
 LOCAL_APPS = [
     'core.apps.CoreConfig',
+    'spending.apps.SpendingConfig',
 ]
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 

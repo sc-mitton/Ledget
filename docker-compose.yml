@@ -5,56 +5,33 @@ services:
     build:
       args:
         - DEV=true
-      context: .
+      context: ./ledgetapi
     command: >
       sh -c "
-            python manage.py wait_for_db &&
-            python manage.py makemigrations &&
-            python manage.py migrate &&
-            python manage.py runsslserver --cert certs/ledget.app.crt --key certs/ledget.app.key"
+        python manage.py wait_for_db &&
+        python manage.py runserver"
     depends_on:
       - db
-  app:
-    build:
-      args:
-        - DEV=true
-      context: .
-    ports:
-      - "3000:3000"
-    command: >
-      sh -c "npm start"
-  portal:
-    build:
-      args:
-        - DEV=true
-      context: .
-    ports:
-      - "3001:3001"
-    command: >
-      sh -c "npm start"
-  ory-tunnel:
-    build:
-      context: .
-    ports:
-      - "4000:4000"
-  oathkeeper:
-    build:
-      context: .
-    command: >
-      sh -c "oathkeeper serve --config /config.yml"
+    env_file:
+      - ./ledgetapi/.env.dev
+    environment:
+      LEDGET_DB: devdb
+      LEDGET_DB_USER: dbuser
+      LEDGET_DB_PASSWORD: dbpassword
+      LEDGET_DB_HOST: db
+      LEDGET_DB_PORT: 5432
+    volumes:
+      - ./certs:/certs
+      - ./logs:/ledgetapi/logs
   db:
     image: postgres:15-alpine
     volumes:
       - dev-db-data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_DB=LedgetDev
-      - POSTGRES_USER=devuser
-      - POSTGRES_PASSWORD=changeme
-  stripe-listener:
-    image: stripe/stripe-cli:latest
-    command: stripe listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
-
+      POSTGRES_DB: devdb
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpassword
 volumes:
   dev-db-data:
-  nginx:
   certs:
+  logs:

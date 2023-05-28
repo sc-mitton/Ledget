@@ -4,7 +4,9 @@ RUN apk update && \
     apk add --no-cache bash curl
 
 # Download and install ORY CLI
-RUN curl https://raw.githubusercontent.com/ory/meta/master/install.sh | sh -s ory
+RUN apk add --no-cache curl
+RUN curl -fsSL https://raw.githubusercontent.com/ory/meta/master/install.sh | sh -s -- -b . ory
+RUN mv ./ory /usr/local/bin/
 
 EXPOSE 4000
 

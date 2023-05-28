@@ -9,4 +9,3 @@ RUN if [ "$DEV" = "true" ]; then npm install; fi
 RUN npm run build
 
 EXPOSE 3000
-CMD ["npm", "start"]
