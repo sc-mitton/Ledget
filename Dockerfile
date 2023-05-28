@@ -1,8 +1,10 @@
-FROM ubuntu:latest
+FROM alpine:3.7
 
-RUN apt-get update && apt-get install -y curl
+RUN apk update && \
+    apk add --no-cache curl
 
 # Download and install ORY CLI
 RUN curl https://raw.githubusercontent.com/ory/meta/master/install.sh | sh -s ory
-RUN mv ./ory /usr/local/bin/
-EXPOSE 4000
+
+# Set the entrypoint command
+CMD ["ory"]

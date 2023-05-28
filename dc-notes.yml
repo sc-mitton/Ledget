@@ -17,7 +17,11 @@ app:
     command: npm start
     volumes:
       - ./certs:/certs
-
+  ory-tunnel:
+    build:
+      context: ./
+    ports:
+      - "4000:4000"
   oathkeeper:
     build:
       context: .
