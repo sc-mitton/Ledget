@@ -17,19 +17,9 @@ app:
     command: npm start
     volumes:
       - ./certs:/certs
-  ory-tunnel:
-    build:
-      context: .
-    ports:
-      - "4000:4000"
+
   oathkeeper:
     build:
       context: .
-  stripe-listener:
-    image: stripe/stripe-cli
-    environment:
-      STRIPE_API_KEY: sk_test_51Mgas3H1cVZqyCpV8SgkbjZn82O28lskezQ9xBBXBGhm8l2fmPM53lYdQqRu32neDP9XspJLEEkWl4HNkT0G3Zl9007I3NWBRU
-    command: |
-      stripe login --api-key $STRIPE_API_KEY &&
-      stripe listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
+
 
