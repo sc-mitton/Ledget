@@ -1,4 +1,5 @@
-.env*
+.env.finicity.dev
+.env.stripe.dev
 env
 *__pycache__
 .flake8
