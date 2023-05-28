@@ -22,10 +22,26 @@ Ledget was started from frustration with the choice of personal budgeting apps. 
 
 ## Dev Environment
 
-First clone the git repo:
+1. First clone the git repo:
 
 `git clone git@github.com:sc-mitton/Ledget.git`
 
-Use docker compose to run the application in development mode:
+2. Create a CA authority for self signed SSL certificates
+
+Use the becomeCA.sh script to generate a CA. The CA will automatically be added to your keychain if you're on a mac.
+
+`mkdir certs`
+
+`cd ./scripts`
+
+`./becomeCA.sh ledgetCA`
+
+3. Create a key pair and SSL cert for both the front end and back end
+
+`./
+
+4. Add a .env.dev & .env.stripe.dev files to /ledgetapi
+
+5. Use docker compose to run the application in development mode:
 
 `docker-compose up`
