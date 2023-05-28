@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 import sys
-from datetime import timedelta
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -10,6 +10,14 @@ DOMAIN = 'ledget.app'
 
 APPEND_SLASH = False
 SITE_ID = 1
+
+# -------------------------------------------------------------- #
+#                             Stripe                             #
+# -------------------------------------------------------------- #
+
+STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
+STRIPE_PK = os.getenv('STRIPE_PK')
+STRIPE_ENDPOINT_SECRET = os.getenv('STRIPE_ENDPOINT_SECRET')
 
 # -------------------------------------------------------------- #
 #                  Application Defenition                        #

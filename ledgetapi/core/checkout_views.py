@@ -31,7 +31,7 @@ from core.serializers import (
 )
 
 
-stripe.api_key = settings.STRIPE_SK
+stripe.api_key = settings.STRIPE_API_KEY
 endpoint_secret = settings.STRIPE_ENDPOINT_SECRET
 stripe_logger = logging.getLogger('core.stripe')
 

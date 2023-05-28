@@ -9,11 +9,13 @@ services:
     command: >
       sh -c "
         python manage.py wait_for_db &&
+        python manage.py migrate &&
         python manage.py runserver"
     depends_on:
       - db
     env_file:
       - ./ledgetapi/.env.dev
+      - ./ledgetapi/.env.stripe.dev
     environment:
       LEDGET_DB: devdb
       LEDGET_DB_USER: dbuser
@@ -31,6 +33,17 @@ services:
       POSTGRES_DB: devdb
       POSTGRES_USER: dbuser
       POSTGRES_PASSWORD: dbpassword
+  stripe-listener:
+    image: stripe/stripe-cli
+    env_file:
+      - ./ledgetapi/.env.stripe.dev
+    command: |
+      listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
+  ory-tunnel:
+    build:
+      context: .
+    ports:
+      - "4000:4000"
 volumes:
   dev-db-data:
   certs:

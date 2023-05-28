@@ -11,7 +11,7 @@ from core.models import (
 )
 
 
-stripe.api_key = settings.STRIPE_SK
+stripe.api_key = settings.STRIPE_API_KEY
 
 
 class CustomerSerializer(serializers.ModelSerializer):

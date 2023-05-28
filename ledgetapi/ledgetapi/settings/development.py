@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from .base import * # noqa
 from corsheaders.defaults import default_headers
@@ -9,11 +8,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 ALLOWED_HOSTS = ['localhost', 'ledget.app']
 DOMAIN_URL = "https://ledget.app:8000/"
 REACT_URL = "https://ledget.app:3001/"
-
-# Stripe
-STRIPE_SK = os.getenv('STRIPE_SK')
-STRIPE_PK = os.getenv('STRIPE_PK')
-STRIPE_ENDPOINT_SECRET = os.getenv('STRIPE_ENDPOINT_SECRET')
 
 # SSL certificate and key for development server
 SSL_CERTIFICATE_PATH = BASE_DIR / '..' / '.ssl' / 'ledget.app.cert'
