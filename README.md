@@ -38,7 +38,11 @@ Use the becomeCA.sh script to generate a CA. The CA will automatically be added 
 
 3. Create a key pair and SSL cert for both the front end and back end
 
-`./
+`./genCRT.sh -d localhost -k ledgetCA.key -p ledgetCA.pem`
+
+`./genCRT.sh -d ledget.app -k ledgetCA.key -p ledgetCA.pem`
+
+`find . -type f \( -name "*.crt" -o -name "*.key" \) ! -name "*CA*" -exec mv {} "../certs" \`
 
 4. Add a .env.dev & .env.stripe.dev files to /ledgetapi
 
