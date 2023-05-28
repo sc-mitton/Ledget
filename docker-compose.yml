@@ -41,7 +41,8 @@ services:
       listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
   ory-tunnel:
     build:
-      context: .
+      context: git@github.com:ory/cli.git
+      dockerfile: .docker/Dockerfile-alpine
     ports:
       - "4000:4000"
 volumes:

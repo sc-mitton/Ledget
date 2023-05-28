@@ -44,7 +44,7 @@ Use the becomeCA.sh script to generate a CA. The CA will automatically be added 
 
 `find . -type f \( -name "*.crt" -o -name "*.key" \) ! -name "*CA*" -exec mv {} "../certs" \`
 
-4. Add a .env.dev & .env.stripe.dev files to /ledgetapi
+4. Add .env.stripe.dev & .env.finicity.dev files to /ledgetapi
 
 5. Use docker compose to run the application in development mode:
 
