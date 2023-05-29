@@ -32,7 +32,7 @@ Use the becomeCA.sh script to generate a CA. The CA will automatically be added 
 
 `mkdir certs`
 
-`cd ./scripts`
+`cd ./certs`
 
 `./becomeCA.sh ledgetCA`
 
@@ -42,10 +42,14 @@ Use the becomeCA.sh script to generate a CA. The CA will automatically be added 
 
 `./genCRT.sh -d ledget.app -k ledgetCA.key -p ledgetCA.pem`
 
+4. Move the key pairs and certs to the secrets folder
+
 `find . -type f \( -name "*.crt" -o -name "*.key" \) ! -name "*CA*" -exec mv {} "../certs" \`
 
-4. Add .env.stripe.dev & .env.finicity.dev files to /ledgetapi
+5. Add the .env.stripe.dev file to the secrets folder
 
-5. Use docker compose to run the application in development mode:
+TODO
+
+6. Use docker compose to run the application in development mode:
 
 `docker-compose up`
