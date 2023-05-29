@@ -44,12 +44,36 @@ Use the becomeCA.sh script to generate a CA. The CA will automatically be added 
 
 4. Move the key pairs and certs to the secrets folder
 
+`mkdir -p ../secrets/certs`
+
 `find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')'  -a ! -name '*CA.key' -exec mv {} ../secrets/certs/ ';'`
 
-5. Add the .env.stripe.dev file to the secrets folder
+5. Generate django secret key
 
-TODO
+`cd ../scripts`
 
-6. Use docker compose to run the application in development mode:
+`chmod 755 get_random_secret_key.sh`
 
-`docker-compose up`
+`./get_random_secret_key > ../secrets/django_secret_key`
+
+6. Create postgres credentials in the secrets folder
+
+`cd ../secrets/`
+
+`echo dev_user > postgres_user`
+
+`echo dev_user_password > postgres_password`
+
+7. Download the stripe cli and login
+
+`brew install stripe`
+
+8. Get the api key (should start with sk_test) from the stripe dashboard and add it to a file /secrets/stripe_api_key and also to ./secrets/.env.stripe.dev
+
+9. Get the webhook secret from stripe. This command will output the secret which you should add to a file /secrets/stripe_webhook_secret
+
+`stripe listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify`
+
+10. Use docker compose to run the application in development mode:
+
+`docker-compose up -d`
