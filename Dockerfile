@@ -1,10 +1,10 @@
-FROM alpine:3.7
+FROM debian:11-slim
 
-RUN apk update && \
-    apk add --no-cache curl
+RUN apt-get update && \
+    apt-get install -y curl
 
-# Download and install ORY CLI
-RUN curl https://raw.githubusercontent.com/ory/meta/master/install.sh | sh -s ory
+RUN curl -o install.sh https://raw.githubusercontent.com/ory/meta/master/install.sh
+RUN chmod +x install.sh
+RUN ./install.sh ory
 
-# Set the entrypoint command
 CMD ["ory"]
