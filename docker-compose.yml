@@ -46,6 +46,20 @@ services:
     command: listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
     secrets:
       - stripe_api_key
+  app:
+    build:
+      args:
+        - DEV=true
+        - NAME=home
+      context: ./app
+      dockerfile: Dockerfile.dev
+    command: npm start
+    depends_on:
+      - api
+    secrets:
+      - localhost_ssl_cert
+      - localhost_ssl_key
+      - ca_cert
 
 volumes:
   dev-db-data:
@@ -62,6 +76,7 @@ secrets:
     file: ./secrets/stripe_api_key.txt
   django_secret_key:
     file: ./secrets/django_secret_key.txt
+  # SSL certs
   ledget_ssl_cert:
     file: ./secrets/certs/ledget.app.crt
   ledget_ssl_key:
@@ -70,3 +85,5 @@ secrets:
     file: ./secrets/certs/localhost.crt
   localhost_ssl_key:
     file: ./secrets/certs/localhost.key
+  ca_cert:
+    file: ./secrets/certs/ledgetCA.pem

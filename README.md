@@ -44,7 +44,7 @@ Use the becomeCA.sh script to generate a CA. The CA will automatically be added 
 
 4. Move the key pairs and certs to the secrets folder
 
-`find . -type f \( -name "*.crt" -o -name "*.key" \) ! -name "*CA*" -exec mv {} "../certs" \`
+`find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')'  -a ! -name '*CA.key' -exec mv {} ../secrets/certs/ ';'`
 
 5. Add the .env.stripe.dev file to the secrets folder
 

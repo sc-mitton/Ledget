@@ -1,0 +1,26 @@
+FROM node:14-alpine as build
+
+ARG NAME
+ARG DEV
+
+WORKDIR /"$NAME"
+COPY ./"$NAME"/package*.json .
+COPY ./"$NAME"/webpack.config.js .
+
+RUN npm install
+RUN npm run build
+
+
+###
+FROM node:14-alpine
+
+ARG NAME
+ARG DEV
+
+WORKDIR /"$NAME"
+COPY --from=build /node_modules .
+COPY ./$NAME/src .
+COPY ./$NAME/public .
+COPY ./$NAME/.env .
+
+EXPOSE 3000
