@@ -1,51 +1,72 @@
 version: '3.8'
 
 services:
-  ledgetapi:
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER_FILE=/run/secrets/postgres_user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+    secrets:
+      - postgres_user
+      - postgres_password
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data/
+  api:
     build:
       args:
         - DEV=true
-      context: ./ledgetapi
+      context: ./back
     command: >
       sh -c "
         python manage.py wait_for_db &&
+        python manage.py makemigrations &&
         python manage.py migrate &&
-        python manage.py runserver"
+        python manage.py runsslserver --cert /run/secrets/ledget_ssl_cert --key /run/secrets/ledget_ssl_key"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_PORT=5432
+    secrets:
+      - stripe_webhook_secret
+      - stripe_api_key
+      - django_secret_key
+      - postgres_user
+      - postgres_password
+      - ledget_ssl_cert
+      - ledget_ssl_key
+    volumes:
+      - ./logs:/ledgetapi/logs
     depends_on:
       - db
-    env_file:
-      - ./ledgetapi/.env.dev
-      - ./ledgetapi/.env.stripe.dev
-    environment:
-      LEDGET_DB: devdb
-      LEDGET_DB_USER: dbuser
-      LEDGET_DB_PASSWORD: dbpassword
-      LEDGET_DB_HOST: db
-      LEDGET_DB_PORT: 5432
-    volumes:
-      - ./certs:/certs
-      - ./logs:/ledgetapi/logs
-  db:
-    image: postgres:15-alpine
-    volumes:
-      - dev-db-data:/var/lib/postgresql/data/
-    environment:
-      POSTGRES_DB: devdb
-      POSTGRES_USER: dbuser
-      POSTGRES_PASSWORD: dbpassword
   stripe-listener:
     image: stripe/stripe-cli
     env_file:
-      - ./ledgetapi/.env.stripe.dev
-    command: |
-      listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
-  ory-tunnel:
-    build:
-      context: .
-    command: ory tunnel --dev --project reverent-lewin-bqqp1o2zws https://localhost:4000
-    ports:
-      - "4000:4000"
+      - ./secrets/.env.stripe.dev
+    command: listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
+    secrets:
+      - stripe_api_key
+
 volumes:
   dev-db-data:
-  certs:
-  logs:
+
+
+secrets:
+  postgres_user:
+    file: ./secrets/postgres_user.txt
+  postgres_password:
+    file: ./secrets/postgres_password.txt
+  stripe_webhook_secret:
+    file: ./secrets/stripe_webhook_secret.txt
+  stripe_api_key:
+    file: ./secrets/stripe_api_key.txt
+  django_secret_key:
+    file: ./secrets/django_secret_key.txt
+  ledget_ssl_cert:
+    file: ./secrets/certs/ledget.app.crt
+  ledget_ssl_key:
+    file: ./secrets/certs/ledget.app.key
+  localhost_ssl_cert:
+    file: ./secrets/certs/localhost.crt
+  localhost_ssl_key:
+    file: ./secrets/certs/localhost.key

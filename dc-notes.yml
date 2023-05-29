@@ -21,4 +21,9 @@ app:
     build:
       context: .
 
-
+  ory-tunnel:
+    build:
+      context: .
+    command: ory tunnel --dev --project reverent-lewin-bqqp1o2zws https://localhost:4000
+    ports:
+      - "4000:4000"

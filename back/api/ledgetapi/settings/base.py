@@ -1,38 +1,62 @@
 from pathlib import Path
 import os
 import sys
+import subprocess
+
+
+def get_django_secret_key():
+    with open('/run/secrets/django_secret_key', 'r') as f:
+        return f.read().strip()
+
+
+def get_stripe_api_key():
+    with open('/run/secrets/stripe_api_key', 'r') as f:
+        return f.read().strip()
+
+
+def get_stripe_webhook_secret():
+    with open('/run/secrets/stripe_webhook_secret', 'r') as f:
+        return f.read().strip()
+
+
+def get_db_user():
+    with open('/run/secrets/postgres_user', 'r') as f:
+        return f.read().strip()
+
+
+def get_db_password():
+    with open('/run/secrets/postgres_password', 'r') as f:
+        return f.read().strip()
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = get_django_secret_key()
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DOMAIN = 'ledget.app'
 
 APPEND_SLASH = False
 SITE_ID = 1
 
-# -------------------------------------------------------------- #
-#                             Stripe                             #
-# -------------------------------------------------------------- #
 
-STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
-STRIPE_PK = os.getenv('STRIPE_PK')
-STRIPE_ENDPOINT_SECRET = os.getenv('STRIPE_ENDPOINT_SECRET')
+# Stripe
+STRIPE_API_KEY = get_stripe_api_key()
+STRIPE_WEBHOOK_SECRET = get_stripe_webhook_secret()
+
+# Postgres
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
+        'USER': get_db_user(),
+        'PASSWORD': get_db_password(),
+    }
+}
 
 # -------------------------------------------------------------- #
 #                  Application Defenition                        #
 # -------------------------------------------------------------- #
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('LEDGET_DB_NAME'),
-        'USER': os.getenv('LEDGET_DB_USER'),
-        'PASSWORD': os.getenv('LEDGET_DB_PASSWORD'),
-        'HOST': os.getenv('LEDGET_DB_HOST'),
-        'PORT': os.getenv('LEDGET_DB_PORT'),
-    }
-}
 
 DEFAULT_APPS = [
     'django.contrib.admin',
@@ -54,6 +78,7 @@ LOCAL_APPS = [
 ]
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+# Middleware
 DEFAULT_MIDDLE_WARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
