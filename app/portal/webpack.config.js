@@ -14,24 +14,16 @@ module.exports = {
     },
     devServer: {
         https: {
-            key: fs.readFileSync('./certs/localhost.key'),
-            cert: fs.readFileSync('./certs/localhost.crt'),
-            ca: fs.readFileSync('./certs/ledgetCA.pem')
+            key: fs.readFileSync('/run/secrets/localhost_key'),
+            cert: fs.readFileSync('/run/secrets/localhost_crt'),
+            ca: fs.readFileSync('/run/secrets/ledget_ca_pem')
         },
-        allowedHosts: [
-            'secure.ledget.app',
-        ],
         static: {
             directory: path.join(__dirname, 'public'),
         },
         port: 3001,
         historyApiFallback: true,
         host: 'localhost',
-        open: {
-            app: {
-                name: 'firefox',
-            },
-        },
     },
     plugins: [
         new Dotenv({

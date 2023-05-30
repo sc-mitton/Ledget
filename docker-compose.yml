@@ -22,7 +22,7 @@ services:
         python manage.py wait_for_db &&
         python manage.py makemigrations &&
         python manage.py migrate &&
-        python manage.py runsslserver --cert /run/secrets/ledget_ssl_cert --key /run/secrets/ledget_ssl_key"
+        python manage.py runsslserver --cert /run/secrets/ledget_crt --key /run/secrets/ledget_key"
     environment:
       - DB_HOST=db
       - DB_NAME=devdb
@@ -33,8 +33,8 @@ services:
       - django_secret_key
       - postgres_user
       - postgres_password
-      - ledget_ssl_cert
-      - ledget_ssl_key
+      - ledget_crt
+      - ledget_key
     volumes:
       - ./logs:/ledgetapi/logs
     depends_on:
@@ -49,13 +49,35 @@ services:
   home:
     build:
       args:
-        - DEV=true
         - NAME=home
+        - PORT=3000
       context: ./app
       dockerfile: Dockerfile.dev
     command: npm start
     depends_on:
       - api
+    secrets:
+      - localhost_key
+      - localhost_crt
+      - ledget_ca_pem
+    ports:
+      - 3000:3000
+  portal:
+    build:
+      args:
+        - NAME=portal
+        - PORT=3001
+      context: ./app
+      dockerfile: Dockerfile.dev
+    command: npm start
+    depends_on:
+      - api
+    secrets:
+      - localhost_key
+      - localhost_crt
+      - ledget_ca_pem
+    ports:
+      - 3001:3001
 
 volumes:
   dev-db-data:
@@ -72,14 +94,13 @@ secrets:
     file: ./secrets/stripe_api_key
   django_secret_key:
     file: ./secrets/django_secret_key
-  # SSL certs
-  ledget_ssl_cert:
+  ledget_crt:
     file: ./secrets/certs/ledget.app.crt
-  ledget_ssl_key:
+  ledget_key:
     file: ./secrets/certs/ledget.app.key
-  localhost_ssl_cert:
+  localhost_crt:
     file: ./secrets/certs/localhost.crt
-  localhost_ssl_key:
+  localhost_key:
     file: ./secrets/certs/localhost.key
-  ca_cert:
+  ledget_ca_pem:
     file: ./secrets/certs/ledgetCA.pem

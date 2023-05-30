@@ -64,11 +64,6 @@ cd ./certs
 
 ```
 mkdir -p ../secrets/certs
-mkdir ../app/certs
-```
-
-```
-mv localhost* ../app/certs && cp ledgetCA.pem ../app/certs
 ```
 
 ```
