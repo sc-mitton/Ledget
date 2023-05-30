@@ -24,56 +24,107 @@ Ledget was started from frustration with the choice of personal budgeting apps. 
 
 1. First clone the git repo:
 
-`git clone git@github.com:sc-mitton/Ledget.git`
+```
+git clone git@github.com:sc-mitton/Ledget.git
+```
+
 
 2. Create a CA authority for self signed SSL certificates
 
 Use the becomeCA.sh script to generate a CA. The CA will automatically be added to your keychain if you're on a mac.
 
-`mkdir certs`
+```
+mkdir certs
+```
 
-`cd ./certs`
 
-`./becomeCA.sh ledgetCA`
+```
+cd ./certs
+```
+
+
+```
+./becomeCA.sh ledgetCA
+```
+
 
 3. Create a key pair and SSL cert for both the front end and back end
 
-`./genCRT.sh -d localhost -k ledgetCA.key -p ledgetCA.pem`
+```
+./genCRT.sh -d localhost -k ledgetCA.key -p ledgetCA.pem
+```
 
-`./genCRT.sh -d ledget.app -k ledgetCA.key -p ledgetCA.pem`
+
+```
+./genCRT.sh -d ledget.app -k ledgetCA.key -p ledgetCA.pem
+```
+
 
 4. Move the key pairs and certs to the secrets folder
 
-`mkdir -p ../secrets/certs`
+```
+mkdir -p ../secrets/certs
+```
 
-`find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')'  -a ! -name '*CA.key' -exec mv {} ../secrets/certs/ ';'`
+
+```
+find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')'  -a ! -name '*CA.key' -exec mv {} ../secrets/certs/ ';'
+```
+
 
 5. Generate django secret key
 
-`cd ../scripts`
+```
+cd ../scripts
+```
 
-`chmod 755 get_random_secret_key.sh`
 
-`./get_random_secret_key > ../secrets/django_secret_key`
+```
+chmod 755 get_random_secret_key.sh
+```
+
+
+```
+./get_random_secret_key > ../secrets/django_secret_key
+```
+
 
 6. Create postgres credentials in the secrets folder
 
-`cd ../secrets/`
+```
+cd ../secrets/
+```
 
-`echo dev_user > postgres_user`
 
-`echo dev_user_password > postgres_password`
+```
+echo dev_user > postgres_user
+```
+
+
+```
+echo dev_user_password > postgres_password
+```
+
 
 7. Download the stripe cli and login
 
-`brew install stripe`
+```
+brew install stripe
+```
+
 
 8. Get the api key (should start with sk_test) from the stripe dashboard and add it to a file /secrets/stripe_api_key and also to ./secrets/.env.stripe.dev
 
 9. Get the webhook secret from stripe. This command will output the secret which you should add to a file /secrets/stripe_webhook_secret
 
-`stripe listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify`
+```
+stripe listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
+```
+
 
 10. Use docker compose to run the application in development mode:
 
-`docker-compose up -d`
+```
+docker-compose up -d
+```
+
