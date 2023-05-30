@@ -50,7 +50,6 @@ services:
     build:
       args:
         - NAME=home
-        - PORT=3000
       context: ./app
       dockerfile: Dockerfile.dev
     command: npm start
@@ -66,7 +65,6 @@ services:
     build:
       args:
         - NAME=portal
-        - PORT=3001
       context: ./app
       dockerfile: Dockerfile.dev
     command: npm start
@@ -77,7 +75,7 @@ services:
       - localhost_crt
       - ledget_ca_pem
     ports:
-      - 3001:3001
+      - 3000:3001
 
 volumes:
   dev-db-data:

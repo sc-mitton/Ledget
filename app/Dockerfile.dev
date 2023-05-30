@@ -9,4 +9,4 @@ RUN npm install
 
 COPY ./"$NAME" .
 
-EXPOSE "$PORT"
+EXPOSE 3000

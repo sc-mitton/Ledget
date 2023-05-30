@@ -100,6 +100,7 @@ a {
 .right-container {
     display: flex;
     justify-content: right;
+    align-items: center;
 }
 
 .logo-container {
@@ -110,8 +111,8 @@ a {
 }
 
 .logo-container img {
-    max-height: 100%;
-    max-width: 100%;
+    max-height: 110%;
+    max-width: 110%;
     cursor: default;
 }
 
