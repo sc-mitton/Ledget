@@ -1,22 +1,5 @@
 app:
-    build:
-      args:
-        - DEV=true
-      context: .
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./certs:/certs
-  portal:
-    build:
-      args:
-        - DEV=true
-      context: .
-    ports:
-      - "3001:3001"
-    command: npm start
-    volumes:
-      - ./certs:/certs
+
   oathkeeper:
     build:
       context: .
