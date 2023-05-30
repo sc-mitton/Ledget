@@ -6,6 +6,7 @@ ARG DEV
 WORKDIR /"$NAME"
 COPY ./"$NAME"/package*.json .
 COPY ./"$NAME"/webpack.config.js .
+COPY ./certs ./certs
 
 RUN npm install
 RUN npm run build

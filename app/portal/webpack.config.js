@@ -14,9 +14,9 @@ module.exports = {
     },
     devServer: {
         https: {
-            key: fs.readFileSync('./run/secrets/localhost_ssl_key'),
-            cert: fs.readFileSync('./run/secrets/localhost_ssl_cert'),
-            ca: fs.readFileSync('./run/secrets/ca_cert')
+            key: fs.readFileSync('./certs/localhost.key'),
+            cert: fs.readFileSync('./certs/localhost.crt'),
+            ca: fs.readFileSync('./certs/ledgetCA.pem')
         },
         allowedHosts: [
             'secure.ledget.app',

@@ -56,24 +56,6 @@ services:
     command: npm start
     depends_on:
       - api
-    secrets:
-      - localhost_ssl_cert
-      - localhost_ssl_key
-      - ca_cert
-  portal:
-    build:
-      args:
-        - DEV=true
-        - NAME=portal
-      context: ./app
-      dockerfile: Dockerfile.dev
-    command: npm start
-    depends_on:
-      - api
-    secrets:
-      - localhost_ssl_cert
-      - localhost_ssl_key
-      - ca_cert
 
 volumes:
   dev-db-data:
