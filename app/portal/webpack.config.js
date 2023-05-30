@@ -23,7 +23,7 @@ module.exports = {
         },
         port: 3001,
         historyApiFallback: true,
-        host: 'localhost',
+        host: '0.0.0.0',
     },
     plugins: [
         new Dotenv({
