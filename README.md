@@ -33,18 +33,9 @@ git clone git@github.com:sc-mitton/Ledget.git
 
 Use the becomeCA.sh script to generate a CA. The CA will automatically be added to your keychain if you're on a mac.
 
-```
-mkdir certs
-```
-
 
 ```
-cd ./certs
-```
-
-
-```
-./becomeCA.sh ledgetCA
+cd ./scripts && ./becomeCA.sh ledgetCA
 ```
 
 
