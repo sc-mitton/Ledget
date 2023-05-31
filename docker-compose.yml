@@ -50,6 +50,7 @@ services:
     build:
       args:
         - NAME=home
+        - PORT=3000
       context: ./app
       dockerfile: Dockerfile.dev
     command: npm start
@@ -65,6 +66,7 @@ services:
     build:
       args:
         - NAME=portal
+        - PORT=3001
       context: ./app
       dockerfile: Dockerfile.dev
     command: npm start
@@ -75,8 +77,18 @@ services:
       - localhost_crt
       - ledget_ca_pem
     ports:
-      - 3000:3001
-
+      - 3001:3001
+  ory:
+    build:
+      context: ./ory
+    command: |
+      "./orylogin.sh /run/secrets/ory_email /run/secrets/ory_password &&
+        ory tunnel --dev --project reverent-lewin-bqqp1o2zws https://localhost:4000"
+    ports:
+      - "4000:4000"
+    secrets:
+      - ory_email
+      - ory_password
 volumes:
   dev-db-data:
 
@@ -102,3 +114,7 @@ secrets:
     file: ./secrets/certs/localhost.key
   ledget_ca_pem:
     file: ./secrets/certs/ledgetCA.pem
+  ory_email:
+    file: ./secrets/ory_email
+  ory_password:
+    file: ./secrets/ory_password

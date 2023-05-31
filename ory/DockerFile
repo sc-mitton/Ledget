@@ -1,0 +1,6 @@
+FROM oryd/ory:latest
+
+COPY ./orylogin.sh /
+RUN apk add expect
+
+EXPOSE 4000
