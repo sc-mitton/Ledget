@@ -3,7 +3,7 @@ const Dotenv = require('dotenv-webpack')
 const fs = require('fs')
 
 module.exports = {
-    mode: 'development',
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     entry: {
         bundle: path.resolve(__dirname, 'src', 'index.js')
     },
@@ -57,12 +57,7 @@ module.exports = {
                         },
                     },
                 ],
-            },
-            {
-                test: /\.tsx?$/,
-                exclude: /node_modules/,
-                use: 'ts-loader',
-            },
+            }
         ]
     }
 }

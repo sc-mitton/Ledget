@@ -36,9 +36,17 @@ services:
       - ledget_crt
       - ledget_key
     volumes:
-      - ./logs:/ledgetapi/logs
+      - ./logs:/api/logs
     depends_on:
       - db
+  proxy:
+    image: traefik:v2.10
+    command: --api.insecure=true --providers.docker
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - doker-events:/var/run/docker.sock:/var/run/docker.sock
   stripe-listener:
     image: stripe/stripe-cli
     env_file:
@@ -46,16 +54,13 @@ services:
     command: listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
     secrets:
       - stripe_api_key
-  home:
+  app:
     build:
       args:
-        - NAME=home
+        - APP=home
         - PORT=3000
       context: ./app
       dockerfile: Dockerfile.dev
-    command: npm start
-    depends_on:
-      - api
     secrets:
       - localhost_key
       - localhost_crt
@@ -65,13 +70,10 @@ services:
   portal:
     build:
       args:
-        - NAME=portal
+        - APP=portal
         - PORT=3001
       context: ./app
       dockerfile: Dockerfile.dev
-    command: npm start
-    depends_on:
-      - api
     secrets:
       - localhost_key
       - localhost_crt
@@ -81,16 +83,19 @@ services:
   ory:
     build:
       context: ./ory
-    command: |
-      "./orylogin.sh /run/secrets/ory_email /run/secrets/ory_password &&
-        ory tunnel --dev --project reverent-lewin-bqqp1o2zws https://localhost:4000"
     ports:
       - "4000:4000"
+    command: >
+      sh -c "
+        /orylogin.sh /run/secrets/ory_email /run/secrets/ory_password &&
+        ory tunnel --dev --project reverent-lewin-bqqp1o2zws https://localhost:3000"
     secrets:
       - ory_email
       - ory_password
+
 volumes:
   dev-db-data:
+  doker-events:
 
 
 secrets:

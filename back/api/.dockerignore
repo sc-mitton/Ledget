@@ -1,5 +1,0 @@
-logs
-*/__pychache__/
-*/migrations/
-env/
-Dockerfile
