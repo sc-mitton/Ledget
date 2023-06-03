@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  traefik:
+    image: traefik:v2.6
+    command:
+      - "--api.insecure=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=./certs"
+      - "--providers.file.watch=true"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./certs:/certs"
+  whoami:
+    image: "traefik/whoami"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.whoami.entrypoints=websecure
+      - traefik.http.routers.whoami.rule=Host(`localhost`)
+      - traefik.http.routers.whoami.tls=true
