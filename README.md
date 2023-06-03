@@ -54,11 +54,11 @@ cd ./scripts && ./becomeCA.sh ledgetCA
 4. Move the key pairs and certs to the secrets folder & a certs folder for the front end app
 
 ```
-mkdir -p ../secrets/certs
+mkdir ../certs
 ```
 
 ```
-find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')'  -a ! -name '*CA.key' -exec mv {} ../secrets/certs/ ';'
+find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')'  -a ! -name '*CA.key' -exec mv {} ../certs/ ';'
 ```
 
 

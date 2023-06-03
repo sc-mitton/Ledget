@@ -94,7 +94,7 @@ LOCAL_MIDDLE_WARE = []
 
 MIDDLEWARE = DEFAULT_MIDDLE_WARE + THIRD_PARTY_MIDDLE_WARE + LOCAL_MIDDLE_WARE
 
-ROOT_URLCONF = 'ledgetapi.urls'
+ROOT_URLCONF = 'api.urls'
 
 TEMPLATES = [
     {
@@ -119,7 +119,7 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = '/static/'
 
-WSGI_APPLICATION = 'ledgetapi.wsgi.application'
+WSGI_APPLICATION = 'api.wsgi.application'
 
 
 # ---------------------------------------------------------------- #

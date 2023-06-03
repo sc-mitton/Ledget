@@ -1,5 +1,7 @@
 FROM oryd/oathkeeper:latest
 
-COPY . /
+COPY ./config.yaml /config.yaml
+COPY ./rules.json /rules.json
+COPY ./jwks.json /jwks.json
 
 EXPOSE 4456
