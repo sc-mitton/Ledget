@@ -22,38 +22,40 @@ services:
         python manage.py wait_for_db &&
         python manage.py makemigrations &&
         python manage.py migrate &&
-        python manage.py runsslserver --cert /run/secrets/ledget_crt --key /run/secrets/ledget_key"
+        python manage.py runsslserver --cert /etc/ssl/certs/ledget.app.crt --key /etc/ssl/private/ledget.app.key"
     environment:
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_PORT=5432
+    volumes:
+      - ./certs/ledget.app.crt:/etc/ssl/certs/ledget.app.crt
+      - ./certs/ledget.app.key:/etc/ssl/private/ledget.app.key
+      - ./logs:/api/logs
     secrets:
       - stripe_webhook_secret
       - stripe_api_key
       - django_secret_key
       - postgres_user
       - postgres_password
-      - ledget_crt
-      - ledget_key
-    volumes:
-      - ./logs:/api/logs
     depends_on:
       - db
+    labels:
+      - traefik.http.routers.my-container.rule=Host(`ledget.app`)
   proxy:
     image: traefik:v2.10
-    command: --api.insecure=true --providers.docker
+    command: |
+      --api.insecure=true
+      --providers.docker
+      --configFile=/proxy/traefik.yml
     ports:
-      - 80:80
-      - 8080:8080
+      - 8000:8000
+      - 8443:8443
     volumes:
       - doker-events:/var/run/docker.sock:/var/run/docker.sock
-  stripe-listener:
-    image: stripe/stripe-cli
-    env_file:
-      - ./secrets/.env.stripe.dev
-    command: listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
-    secrets:
-      - stripe_api_key
+      - ./certs/
+  oathkeeper:
+    build:
+      context: ./oathkeeper
   app:
     build:
       args:
@@ -61,10 +63,10 @@ services:
         - PORT=3000
       context: ./app
       dockerfile: Dockerfile.dev
-    secrets:
-      - localhost_key
-      - localhost_crt
-      - ledget_ca_pem
+    volumes:
+      - ./certs/localhost.crt:/etc/ssl/certs/localhost.crt
+      - ./certs/localhost.key:/etc/ssl/private/localhost.key
+      - ./certs/ledgetCA.pem:/usr/local/share/ca-certificates/ledgetCA.pem
     ports:
       - 3000:3000
   portal:
@@ -74,12 +76,12 @@ services:
         - PORT=3001
       context: ./app
       dockerfile: Dockerfile.dev
-    secrets:
-      - localhost_key
-      - localhost_crt
-      - ledget_ca_pem
     ports:
       - 3001:3001
+    volumes:
+      - ./certs/localhost.crt:/etc/ssl/certs/localhost.crt
+      - ./certs/localhost.key:/etc/ssl/private/localhost.key
+      - ./certs/ledgetCA.pem:/usr/local/share/ca-certificates/ledgetCA.pem
   ory:
     build:
       context: ./ory
@@ -109,16 +111,6 @@ secrets:
     file: ./secrets/stripe_api_key
   django_secret_key:
     file: ./secrets/django_secret_key
-  ledget_crt:
-    file: ./secrets/certs/ledget.app.crt
-  ledget_key:
-    file: ./secrets/certs/ledget.app.key
-  localhost_crt:
-    file: ./secrets/certs/localhost.crt
-  localhost_key:
-    file: ./secrets/certs/localhost.key
-  ledget_ca_pem:
-    file: ./secrets/certs/ledgetCA.pem
   ory_email:
     file: ./secrets/ory_email
   ory_password:
