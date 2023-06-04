@@ -47,18 +47,18 @@ services:
       - traef.http.routers.api.middlewares=oathkeeper
   proxy:
     image: traefik:v2.10
-    command: |
-      - --api.insecure=true
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
-      - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
-      - --providers.file.directory=./certs
-      - --providers.file.watch=true
-      - --entrypoints.web.http.redirections.entryPoint.to=websecure
-      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+    command:
+      - "--api.insecure=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=./certs"
+      - "--providers.file.watch=true"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
     labels:
-      - traefik.http.middlewares.oathkeeper.forwardauth.address=http://ledget.app:4456/decisions
+      - traefik.http.middlewares.oathkeeper.forwardauth.address=http://oathkeeper:4456/decisions
       - traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-Id-Token,Authorization
     ports:
       - 80:80
@@ -72,7 +72,7 @@ services:
     command: serve --config /config.yml
     labels:
       - traefik.http.routers.oathkeeper.entrypoints=web
-      - traefik.http.routers.oathkeeper.rule=Host(`ledget.app`) && PathPrefix(`/oathkeeper`)
+      - traefik.http.routers.oathkeeper.rule=Host(`oathkeeper`)
       - traefik.http.services.oathkeeper.loadbalancer.server.port=4456
   app:
     build:
