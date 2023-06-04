@@ -29,4 +29,4 @@ COPY ./api .
 RUN chown -R python:python /api
 USER python
 
-EXPOSE 8000
+EXPOSE 443
