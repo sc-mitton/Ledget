@@ -14,6 +14,7 @@ ARG APP
 WORKDIR /"$APP"
 RUN export NODE_ENV=development
 COPY --from=build /node_modules ./node_modules
+COPY ./"$APP"/ .
 
 ARG PORT
 EXPOSE "$PORT"
