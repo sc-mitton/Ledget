@@ -1,7 +1,6 @@
-FROM oryd/oathkeeper:latest
+FROM oryd/oathkeeper:v0.40.3
 
-COPY ./config.yaml /config.yaml
+# Copy over config, rules, and jwks to run Oathkeeper
+COPY ./config.yml /config.yml
 COPY ./rules.json /rules.json
 COPY ./jwks.json /jwks.json
-
-EXPOSE 4456

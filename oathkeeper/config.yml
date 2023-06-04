@@ -1,0 +1,3 @@
+access_rules:
+  repositories:
+    - file://rules.json

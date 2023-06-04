@@ -22,14 +22,14 @@ services:
         python manage.py wait_for_db &&
         python manage.py makemigrations &&
         python manage.py migrate &&
-        python manage.py runsslserver --cert /etc/ssl/certs/ledget.app.crt --key /etc/ssl/private/ledget.app.key"
+        python manage.py runsslserver --cert /etc/ssl/certs/ledget.app.crt --key /etc/ssl/certs/ledget.app.key"
     environment:
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_PORT=5432
     volumes:
       - ./certs/ledget.app.crt:/etc/ssl/certs/ledget.app.crt
-      - ./certs/ledget.app.key:/etc/ssl/private/ledget.app.key
+      - ./certs/ledget.app.key:/etc/ssl/certs/ledget.app.key
       - ./logs:/api/logs
     secrets:
       - stripe_webhook_secret
@@ -41,24 +41,39 @@ services:
       - db
     labels:
       - traefik.enable=true
-      - traefik.http.routers.api.rule=Host(`ledget.app`)
       - traefik.http.routers.api.entrypoints=websecure
-  # proxy:
-  #   image: traefik:v2.10
-  #   command: |
-  #     --api.insecure=true
-  #     --providers.docker=true
-  #     --providers.docker.exposedbydefault=false
-  #     --entrypoints.api.address=:8000
-  #   ports:
-  #     - 8000:8000
-  #     - 8080:8080
-  #   volumes:
-  #     - doker-events:/var/run/docker.sock:/var/run/docker.sock
-  #     - ./certs
+      - traefik.http.routers.api.rule=Host(`ledget.app`) && PathPrefix(`/api`)
+      - traefik.http.routers.api.tls=true
+      - traef.http.routers.api.middlewares=oathkeeper
+  proxy:
+    image: traefik:v2.10
+    command: |
+      - --api.insecure=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=./certs
+      - --providers.file.watch=true
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+    labels:
+      - traefik.http.middlewares.oathkeeper.forwardauth.address=http://ledget.app:4456/decisions
+      - traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-Id-Token,Authorization
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - doker-events:/var/run/docker.sock:/var/run/docker.sock
   oathkeeper:
     build:
       context: ./oathkeeper
+    command: serve --config /config.yml
+    labels:
+      - traefik.http.routers.oathkeeper.entrypoints=web
+      - traefik.http.routers.oathkeeper.rule=Host(`ledget.app`) && PathPrefix(`/oathkeeper`)
+      - traefik.http.services.oathkeeper.loadbalancer.server.port=4456
   app:
     build:
       args:
@@ -66,12 +81,14 @@ services:
         - PORT=3000
       context: ./app
       dockerfile: Dockerfile.dev
-    volumes:
-      - ./certs/localhost.crt:/etc/ssl/certs/localhost.crt
-      - ./certs/localhost.key:/etc/ssl/private/localhost.key
-      - ./certs/ledgetCA.pem:/usr/local/share/ca-certificates/ledgetCA.pem
     ports:
-      - 3000:3000
+      - "3000:3000"
+    stdin_open: true
+    volumes:
+      - ./app/home:/home
+      - ./certs/localhost.crt:/etc/ssl/certs/localhost.crt
+      - ./certs/localhost.key:/etc/ssl/certs/localhost.key
+      - ./certs/ledgetCA.pem:/etc/ssl/certs/ledgetCA.pem
   portal:
     build:
       args:
@@ -80,11 +97,13 @@ services:
       context: ./app
       dockerfile: Dockerfile.dev
     ports:
-      - 3001:3001
+      - "3001:3001"
+    stdin_open: true
     volumes:
+      - ./app/portal:/portal
       - ./certs/localhost.crt:/etc/ssl/certs/localhost.crt
-      - ./certs/localhost.key:/etc/ssl/private/localhost.key
-      - ./certs/ledgetCA.pem:/usr/local/share/ca-certificates/ledgetCA.pem
+      - ./certs/localhost.key:/etc/ssl/certs/localhost.key
+      - ./certs/ledgetCA.pem:/etc/ssl/certs/ledgetCA.pem
   ory:
     build:
       context: ./ory
