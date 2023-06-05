@@ -14,9 +14,9 @@ module.exports = {
     },
     devServer: {
         https: {
-            key: fs.readFileSync('/etc/ssl/certs/localhost.key'),
-            cert: fs.readFileSync('/etc/ssl/certs/localhost.crt'),
-            ca: fs.readFileSync('/etc/ssl/certs/ledgetCA.pem')
+            key: fs.readFileSync('/run/secrets/localhost_key'),
+            cert: fs.readFileSync('/run/secrets/localhost_crt'),
+            ca: fs.readFileSync('/run/secrets/ca_pem')
         },
         static: {
             directory: path.join(__dirname, 'public'),

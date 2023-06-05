@@ -22,14 +22,13 @@ services:
         python manage.py wait_for_db &&
         python manage.py makemigrations &&
         python manage.py migrate &&
-        python manage.py runsslserver 0.0.0.0:443 --cert /etc/ssl/certs/ledget.app.crt --key /etc/ssl/certs/ledget.app.key"
+        python manage.py runserver"
     environment:
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_PORT=5432
     volumes:
-      - ./certs/ledget.app.crt:/etc/ssl/certs/ledget.app.crt
-      - ./certs/ledget.app.key:/etc/ssl/certs/ledget.app.key
+      - ./certs-back:/etc/ssl/certs
       - ./logs:/api/logs
     secrets:
       - stripe_webhook_secret
@@ -52,16 +51,16 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--providers.file.directory=./certs"
+      - "--providers.file.directory=/traefik"
       - "--providers.file.watch=true"
-      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
     ports:
       - 80:80
       - 443:443
       - 8080:8080
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - ./certs-back:/etc/ssl/certs
+      - ./traefik:/traefik
+      - /var/run/docker.sock:/var/run/docker.sock
   oathkeeper:
     build:
       context: ./oathkeeper
@@ -78,12 +77,13 @@ services:
       context: ./app
       dockerfile: Dockerfile.dev
     ports:
-      - "3000:3000"
+      - 3000:3000
     volumes:
       - ./app/home/src:/home/src
-      - ./certs/localhost.crt:/etc/ssl/certs/localhost.crt
-      - ./certs/localhost.key:/etc/ssl/certs/localhost.key
-      - ./certs/ledgetCA.pem:/etc/ssl/certs/ledgetCA.pem
+    secrets:
+      - localhost_crt
+      - localhost_key
+      - ca_pem
   portal:
     build:
       args:
@@ -92,12 +92,13 @@ services:
       context: ./app
       dockerfile: Dockerfile.dev
     ports:
-      - "3001:3001"
+      - 3001:3001
     volumes:
       - ./app/portal/src:/portal/src
-      - ./certs/localhost.crt:/etc/ssl/certs/localhost.crt
-      - ./certs/localhost.key:/etc/ssl/certs/localhost.key
-      - ./certs/ledgetCA.pem:/etc/ssl/certs/ledgetCA.pem
+    secrets:
+      - localhost_crt
+      - localhost_key
+      - ca_pem
   ory:
     build:
       context: ./ory
@@ -136,3 +137,9 @@ secrets:
     file: ./secrets/ory_email
   ory_password:
     file: ./secrets/ory_password
+  localhost_crt:
+    file: ./certs/localhost.crt
+  localhost_key:
+    file: ./certs/localhost.key
+  ca_pem:
+    file: ./certs/ledgetCA.pem
