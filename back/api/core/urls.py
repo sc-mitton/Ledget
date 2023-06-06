@@ -1,13 +1,10 @@
 from django.urls import path
-from .checkout_views import (
+from .views import (
     PriceView,
-    StripeHookView,
-    SubscriptionView,
-    CreateCustomerView
+    StripeHookView
 )
 
 urlpatterns = [
     path('prices', PriceView.as_view(), name='prices'),
-    path('subscription', SubscriptionView.as_view(), name='create_subscription'), # noqa
     path('stripe-hook', StripeHookView.as_view(), name='stripe_hook'),
 ]

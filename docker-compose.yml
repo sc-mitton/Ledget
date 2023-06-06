@@ -12,37 +12,18 @@ services:
       - postgres_password
     volumes:
       - dev-db-data:/var/lib/postgresql/data/
-  api:
+  oathkeeper:
     build:
-      args:
-        - DEV=true
-      context: ./back
-    command: >
-      sh -c "
-        python manage.py wait_for_db &&
-        python manage.py makemigrations &&
-        python manage.py migrate &&
-        python manage.py runserver"
-    environment:
-      - DB_HOST=db
-      - DB_NAME=devdb
-      - DB_PORT=5432
-    volumes:
-      - ./certs-back:/etc/ssl/certs
-      - ./logs:/api/logs
-    secrets:
-      - stripe_webhook_secret
-      - stripe_api_key
-      - django_secret_key
-      - postgres_user
-      - postgres_password
-    depends_on:
-      - db
+      context: ./oathkeeper
+    command: serve --config /config.yml
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.api.entrypoints=websecure
-      - traefik.http.routers.api.rule=Host(`ledget.app`) && PathPrefix(`/api/`)
-      - traefik.http.routers.api.tls=true
+      - "traefik.enable=true"
+      - "traefik.http.routers.oathkeeper.rule=Host(`oathkeeper`)"
+      - "traefik.http.routers.oathkeeper.entrypoints=web"
+      - "traefik.http.routers.oathkeeper.service=oathkeeper"
+      - "traefik.http.services.oathkeeper.loadbalancer.server.port=4456"
+      - "traefik.http.middlewares.oathkeeper.forwardauth.address=http://oathkeeper:4456/decisions"
+      - "traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-User"
   proxy:
     image: traefik:v2.10
     command:
@@ -61,14 +42,39 @@ services:
       - ./certs-back:/etc/ssl/certs
       - ./traefik:/traefik
       - /var/run/docker.sock:/var/run/docker.sock
-  oathkeeper:
+  api:
     build:
-      context: ./oathkeeper
-    command: serve --config /config.yml
+      args:
+        - DEV=true
+      context: ./back
+    command: >
+      sh -c "
+        python manage.py wait_for_db &&
+        python manage.py makemigrations &&
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000"
     labels:
-      - traefik.http.routers.oathkeeper.entrypoints=web
-      - traefik.http.routers.oathkeeper.rule=Host(`oathkeeper`)
-      - traefik.http.services.oathkeeper.loadbalancer.server.port=4456
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`ledget.app`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.middlewares=oathkeeper@docker"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_PORT=5432
+    volumes:
+      - ./back/api:/api
+      - ./certs-back:/etc/ssl/certs
+      - ./logs:/api/logs
+    secrets:
+      - stripe_webhook_secret
+      - stripe_api_key
+      - django_secret_key
+      - postgres_user
+      - postgres_password
+    depends_on:
+      - db
   app:
     build:
       args:

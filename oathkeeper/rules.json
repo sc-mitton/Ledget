@@ -2,21 +2,26 @@
    {
       "authenticators": [
          {
-            "config": {},
-            "handler": "noop"
+            "handler": "anonymous"
          }
       ],
+      "authorizer": {
+         "handler": "allow"
+      },
       "id": "get_prices",
       "match": {
          "methods": [
             "GET"
          ],
-         "url": "https://ledget.app:8000/prices"
+         "url": "https://ledget.app/api/v1/prices"
       },
+      "mutators": [
+         {
+            "handler": "noop"
+         }
+      ],
       "upstream": {
-         "preserve_host": false,
-         "strip_path": "/api/v1",
-         "url": "https://ledget.app:8000"
+         "url": "https://ledget.app/api/v1/prices"
       },
       "version": "v0.36.0-beta.4"
    }

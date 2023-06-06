@@ -1,12 +1,6 @@
 local version = 'v0.36.0-beta.4';
 local ory_project = 'reverent-lewin-bqqp1o2zws';
-local base_url = 'https://ledget.app:8000';
-
-local ledget_upstream = {
-  url: 'https://ledget.app:8000',
-  preserve_host: false,
-  strip_path: '/api/v1',
-};
+local base_url = 'https://ledget.app/api/v1';
 
 /* Authenticators */
 local noop_authenticator = {
@@ -25,7 +19,10 @@ local cookie_session_authenticator = {
 /* Authorizors */
 local allow_authorizer = {
   handler: 'allow',
-  config: {},
+};
+
+local deny_authorizer = {
+  handler: 'deny',
 };
 
 /* Mutators */
@@ -44,18 +41,21 @@ local noop_mutator = {
 
 local Base = {
   version: version,
-  upstream: ledget_upstream,
 };
-
 
 [
   Base
   {
+    upstream: {
+      url: base_url + '/prices',
+    },
     id: 'get_prices',
     match: {
       methods: ['GET'],
       url: base_url + '/prices',
     },
     authenticators: [noop_authenticator],
+    mutators: [noop_mutator],
+    authorizer: allow_authorizer,
   },
 ]
