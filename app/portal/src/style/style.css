@@ -33,7 +33,7 @@
     --border-bottom-gray: #b9b9b9;
 
     /* Drop Shadows */
-    --accessible-focus-drop-shadow: 0 0 .4px 1.5px rgb(0, 0, 0, .1);
+    --accessible-focus-drop-shadow: 0 0 .4px 1.5px var(--light-blue);
     --button-focus-drop-shadow: 0 0 .5px 1.5px var(--light-blue);
     --input-focus-drop-shadow: 0 0 .5px 1.5px var(--light-blue);
 

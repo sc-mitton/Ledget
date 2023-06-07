@@ -16,10 +16,10 @@ import { Checkbox } from "./CustomInputs"
 import { FormError, WindowLoadingBar } from "../widgets/Widgets"
 import { LoginFlowContext, LoginFlowContextProvider } from "../../context/Flow"
 
-const emailContext = createContext(null)
+const emailContext = createContext({})
 
 const EmailContextProvider = ({ children }) => {
-    const [email, setEmail] = useState('')
+    const [email, setEmail] = useState(null)
 
     return (
         <emailContext.Provider value={{ email, setEmail }}>
@@ -39,14 +39,21 @@ const EmailForm = () => {
     const { ref, ...rest } = register('email')
     const { flow } = useContext(LoginFlowContext)
     const { setEmail } = useContext(emailContext)
+    const rememberRef = useRef()
 
     useEffect(() => {
+        // Focus email once flow is set
         flow && emailRef.current.focus()
     }, [flow])
 
     return (
         <form
-            onSubmit={handleSubmit(() => setEmail(emailRef.current.value))}
+            onSubmit={handleSubmit((e) => {
+                setEmail({
+                    value: emailRef.current.value,
+                    remember: rememberRef.current.checked
+                })
+            })}
             className="login-form"
             noValidate
         >
@@ -70,6 +77,7 @@ const EmailForm = () => {
                         id='remember'
                         label='Remember me'
                         name='remember'
+                        ref={rememberRef}
                     />
                 </div>
                 <button
@@ -126,9 +134,9 @@ const AuthenticationWindow = () => {
                 <img src={logo} alt="Ledget" />
             </div>
             <div id="email-container">
-                <span>{`${email}`}</span>
+                <span>{`${email?.value}`}</span>
                 <a
-                    onClick={() => setEmail('')}
+                    onClick={() => setEmail(null)}
                 >
                     change
                 </a>
@@ -140,9 +148,9 @@ const AuthenticationWindow = () => {
                 onSubmit={submit}
                 id="authentication-form"
             >
+                {responseError && <FormError msg={responseError} />}
                 <PasswordInput ref={pwdRef} />
                 {error && <FormError msg={error} />}
-                {responseError && <FormError msg={responseError} />}
                 <div id="forgot-password-container">
                     <Link to="#" tabIndex={0} >Forgot Password?</Link>
                 </div>
@@ -152,6 +160,13 @@ const AuthenticationWindow = () => {
                     name="identifier"
                     value={email || ''}
                 />
+                {email?.remember &&
+                    <input
+                        type="hidden"
+                        name="remember"
+                        value={email?.remember}
+                    />
+                }
                 <button
                     className='charcoal-button'
                     id="sign-in"
@@ -184,15 +199,13 @@ const AuthenticationWindow = () => {
 }
 
 
-function LoginWindow() {
+function LoginFlow() {
     const [loaded, setLoaded] = useState(false)
     const { email } = useContext(emailContext)
     const { getFlow, createFlow } = useContext(LoginFlowContext)
     const [searchParams] = useSearchParams()
 
-    useEffect(() => {
-        setLoaded(true)
-    }, [])
+    useEffect(() => { setLoaded(true) }, [])
 
     useEffect(() => {
         // we might redirect to this page after the flow is initialized,
@@ -210,7 +223,7 @@ function LoginWindow() {
 
     return (
         <AnimatePresence mode="wait">
-            {email === '' ?
+            {email === null ?
                 <motion.div
                     className='window'
                     key="initial"
@@ -241,7 +254,7 @@ const Login = () => {
     return (
         <LoginFlowContextProvider>
             <EmailContextProvider>
-                <LoginWindow />
+                <LoginFlow />
             </EmailContextProvider>
         </LoginFlowContextProvider>
     )

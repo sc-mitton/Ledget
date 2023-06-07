@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { forwardRef, useRef } from "react"
 import { useState } from 'react'
 
 import './style/CustomInputs.css'
@@ -6,9 +6,9 @@ import Select from 'react-select'
 import hidePassword from "../../assets/icons/hidePassword.svg"
 import showPassword from "../../assets/icons/showPassword.svg"
 
-const Checkbox = (props) => {
-    const { id, label, name, defaultChecked, onChange } = props
-    const ref = React.useRef(null)
+const Checkbox = forwardRef((props, ref) => {
+    const localRef = useRef(null)
+    const inputRef = ref || localRef
 
     const handleLabelKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -33,32 +33,32 @@ const Checkbox = (props) => {
             </svg>
             <input
                 className="checkbox-input"
-                id={id}
+                id={props.id}
                 type="checkbox"
-                name={name}
-                defaultChecked={defaultChecked}
-                onChange={onChange}
-                ref={ref}
-                aria-label={label}
+                name={props.name}
+                defaultChecked={props.defaultChecked}
+                onChange={props.onChange}
+                ref={inputRef}
+                aria-label={props.label}
             />
             <label
                 className="checkbox"
-                htmlFor={id}
+                htmlFor={props.id}
                 onKeyDown={handleLabelKeyDown}
                 tabIndex="0"
                 role="checkbox"
-                aria-checked={ref.current?.checked}
+                aria-checked={inputRef.current?.checked}
             >
                 <span>
                     <svg>
                         <use xlinkHref="#check"></use>
                     </svg>
                 </span>
-                <span>{label}</span>
+                <span>{props.label}</span>
             </label>
         </div >
     )
-}
+})
 
 const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
 

@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useState, useEffect } from "react"
 import { useSearchParams } from "react-router-dom"
 
 import { sdk, sdkError } from "../api/sdk"
+import AuthContext from "./AuthContext"
 
 
 const LoginFlowContext = createContext(null)
@@ -15,6 +16,7 @@ function LoginFlowContextProvider({ children }) {
     const [responseError, setResponseError] = useState(null)
     const [searchParams, setSearchParams] = useSearchParams()
     const [authenticating, setAuthenticating] = useState(false)
+    const { setUser } = React.useContext(AuthContext)
 
     const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
 
@@ -97,13 +99,29 @@ function LoginFlowContextProvider({ children }) {
         }
 
         sdk
-            .createBrowserLoginFlow({ refresh: true, aal: aal2 ? "aal2" : "aal1" })
-            // flow contains the form fields and csrf token
-            .then(({ data: flow }) => {
-                // Update URI query params to include flow id
-                setSearchParams({})
-                // Set the flow data
-                setFlow(flow)
+            .updateLoginFlow({
+                flow: flow.id,
+                updateLoginFlowBody: body,
+            })
+            .then((response) => {
+                setUser(response.data.identity.traits)
+                // if remember is checked, store the user in local storage for future logins
+                body.remember && localStorage.setItem('user', JSON.stringify(response.data.identity.traits))
+                // if not a subscriber, redirect to subscription page
+                // else navigate to app
+            })
+            .catch((err) => {
+                // handle the error
+                if (err.response.status === 400) {
+                    // user input error
+                    // show the error messages in the UI
+                    err.response.data.ui.messages.forEach((message) => {
+                        message.text.includes("credentials are invalid")
+                            && setResponseError("Wrong email or password")
+                    })
+                } else {
+                    setResponseError('Something went wrong. Please try again later.')
+                }
             })
             .finally(() => setAuthenticating(false))
     }
@@ -202,8 +220,17 @@ function RegisterFlowContextProvider({ children }) {
         sdk
             .updateRegistrationFlow({ flow: flow.id, updateRegistrationFlowBody: body })
             .then(() => {
-                // we successfully submitted the login flow, so lets redirect to the dashboard
-                navigate("/", { replace: true })
+                // user successfully created, navigate to checkout
+                navigate("/checkout", { replace: true })
+            })
+            .catch((err) => {
+                console.log(err)
+                if (err.response.status === 400) {
+                    // user input error
+                    setResponseError(err.response.data)
+                } else {
+                    setResponseError('Something went wrong. Please try again later.')
+                }
             })
             .finally(() => setRegistering(false))
     }

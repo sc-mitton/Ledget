@@ -5,7 +5,6 @@ local base_url = 'https://ledget.app/api/v1';
 /* Authenticators */
 local noop_authenticator = {
   handler: 'noop',
-  config: {},
 };
 
 local cookie_session_authenticator = {
@@ -17,13 +16,8 @@ local cookie_session_authenticator = {
 };
 
 /* Authorizors */
-local allow_authorizer = {
-  handler: 'allow',
-};
-
-local deny_authorizer = {
-  handler: 'deny',
-};
+local allow_authorizer = { handler: 'allow' };
+local deny_authorizer = { handler: 'deny' };
 
 /* Mutators */
 local jwt_mutator = {
@@ -33,9 +27,7 @@ local jwt_mutator = {
   },
 };
 
-local noop_mutator = {
-  handler: 'noop',
-};
+local noop_mutator = { handler: 'noop' };
 
 /* ---------------------------------- Rules --------------------------------- */
 
