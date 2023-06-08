@@ -159,6 +159,7 @@ input[type="password"]:focus::placeholder {
     margin-bottom: 12px;
     display: flex;
     flex-direction: row;
+    font-weight: 500;
 }
 
 #social-login-header:before,
@@ -212,7 +213,8 @@ input[type="password"]:focus::placeholder {
     box-shadow: var(--button-focus-drop-shadow);
 }
 
-/* ---------------------------- Below Window CSS ---------------------------- */
+/* ---------------------------- Misc ---------------------------- */
+
 .below-window-container {
     text-align: center;
     font-size: 14px;

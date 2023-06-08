@@ -9,3 +9,14 @@
 .continue-button {
     width: 100%;
 }
+
+.signup-steps-container {
+    display: flex;
+    justify-content: center;
+    margin-top: -28px;
+    margin-bottom: 32px;
+}
+
+.signup-steps-container * {
+    font-weight: 700;
+}

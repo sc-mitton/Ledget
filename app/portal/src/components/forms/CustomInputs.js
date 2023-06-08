@@ -155,14 +155,20 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
 }
 
 
-const PasswordInput = React.forwardRef((props, ref) => {
+const PasswordInput = React.forwardRef(({ inputType, ...props }, ref) => {
     const [pwdInput, setPwdInput] = useState(false)
-    const [pwdVisible, setPwdVisible] = useState(false)
+    let [visible, setVisible] = useState(false)
+    const { onChange, ...rest } = props.register(props.name)
+
+    if (props.pwdVisible != null) {
+        visible = props.pwdVisible
+        setVisible = props.setPwdVisible
+    }
 
     const VisibilityIcon = (props) => {
         // Needs to be set outside the PasswordInput component
         // to prevent rerendering of the icon
-        const [showIcon, setShowIcon] = useState(pwdVisible)
+        const [showIcon, setShowIcon] = useState(visible)
 
         return (
             <>
@@ -171,7 +177,7 @@ const PasswordInput = React.forwardRef((props, ref) => {
                     alt="toggle visibility"
                     className="password-visibility-icon"
                     onClick={() =>
-                        setPwdVisible(!pwdVisible) &&
+                        setVisible(!visible) &&
                         setShowIcon(!showIcon) && props.onClick()
                     }
                 />
@@ -183,32 +189,37 @@ const PasswordInput = React.forwardRef((props, ref) => {
         <div className="password-container">
             <div className="password-input">
                 <input
-                    type={pwdVisible ? 'text' : 'password'}
+                    type={visible ? 'text' : 'password'}
                     name={props.name}
                     placeholder={props.placeholder}
-                    ref={ref}
-                    onChange={
-                        () => {
-                            if (ref.current.value.length > 0) {
-                                setPwdInput(true)
-                            } else {
-                                setPwdInput(false)
-                            }
-                        }}
+                    ref={ref || null}
+                    {...rest}
+                    onBlur={(e) => {
+                        if (e.target.value) {
+                            props.trigger(props.name)
+                        }
+                    }}
+                    onChange={(e) => {
+                        e.target.value.length > 0 ? setPwdInput(true) : setPwdInput(false)
+                        onChange(e)
+                    }}
                 />
-                {pwdInput && props.inputType != 'confirm-password' &&
-                    <VisibilityIcon />
-                }
+                {pwdInput && inputType != 'confirm-password' && < VisibilityIcon />}
             </div>
         </div>
     )
 })
 
+// Default values to fill in in case props are not passed
 PasswordInput.defaultProps = {
     inputType: 'password',
     name: 'password',
-    placeholder: 'Password'
+    placeholder: 'Password',
+    register: () => { },
+    onBlur: () => { },
+    setPwdVisible: () => { },
+    pwdVisible: null,
+    trigger: (a) => { }
 }
-
 
 export { Checkbox, CustomSelect, PasswordInput }

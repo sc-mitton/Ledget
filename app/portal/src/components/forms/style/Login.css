@@ -17,14 +17,10 @@
     margin-bottom: 40px;
 }
 
-#email-container h2 {
-    margin-bottom: 0;
-}
-
 #email-container span {
     opacity: .6;
     margin-right: 8px;
-    font-weight: 14px;
+    font-size: 14px;
 }
 
 #email-container a {

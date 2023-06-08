@@ -1,17 +1,20 @@
-import React, { useContext, useEffect, createContext, useState } from "react"
+import React, { useContext, useEffect, createContext, useState, useRef } from "react"
 
 import { Link, useSearchParams } from "react-router-dom"
-import { object, string } from "yup"
+import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 import { motion, AnimatePresence } from "framer-motion"
 
 import './style/SignUp.css'
 import logo from "../../assets/images/logo.svg"
+import Help from "../../assets/icons/Help"
+import webAuthn from "../../assets/icons/webAuthn.svg"
 import SocialAuth from "./SocialAuth"
 import { FormError } from "../widgets/Widgets"
 import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/Flow"
 import { WindowLoadingBar } from "../widgets/Widgets"
+import { PasswordInput } from "./CustomInputs"
 
 const userInfoContext = createContext({})
 
@@ -26,8 +29,8 @@ const UserInfoContextProvider = ({ children }) => {
 }
 
 // Schema for yup form validation
-const schema = object().shape({
-    name: string()
+const schema = yup.object().shape({
+    name: yup.string()
         .required('Please enter your name')
         .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, 'Please enter a valid name')
         .test('two-words', 'Missing last name', (value) => {
@@ -37,17 +40,11 @@ const schema = object().shape({
             }
             return true
         }),
-    email: string()
+    email: yup.string()
         .email('Email is invalid')
         .required('Please enter your email address'),
 })
 
-function SignUpForm() {
-    return (
-        <>
-        </>
-    )
-}
 
 function UserInfoForm() {
     const { register, handleSubmit, formState: { errors }, trigger, setError }
@@ -64,7 +61,7 @@ function UserInfoForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit((e) => submit(data))} className="sign-up-form" noValidate>
+        <form onSubmit={handleSubmit((e) => submit(e))} className="sign-up-form" noValidate>
             {responseError && <FormError msg={responseError} />}
             <div className="input-container">
                 <input
@@ -121,6 +118,9 @@ const SignUpWindow = () => {
             <div className="app-logo" >
                 <img src={logo} alt="Ledget" />
             </div>
+            <div className="signup-steps-container">
+                <span>Step 1 of 4</span>
+            </div>
             <h2>Create Account</h2>
             <UserInfoForm />
             <SocialAuth flow={flow} submit={submit} CsrfToken={CsrfToken} />
@@ -136,42 +136,61 @@ const SignUpWindow = () => {
     )
 }
 
+const passwordSchema = yup.object().shape({
+    password: yup.string()
+        .required('Please enter a password')
+        .min(10, 'Password must be at least 8 characters'),
+    confirmPassword: yup.string()
+        .required('Please confirm your password')
+        .oneOf([yup.ref('password'), null], 'Passwords must match')
+})
+
 const AuthSelectionWindow = () => {
-    const { userInfo, setUserInfo } = useContext(userInfoContext)
-    const { flow, responseError, CsrfToken, registering } = useContext(RegisterFlowContext)
+    const { userInfo } = useContext(userInfoContext)
+    const { flow, responseError, CsrfToken, registering, submit } = useContext(RegisterFlowContext)
+    const { register, handleSubmit, formState: { errors }, trigger } = useForm({
+        mode: 'onBlur',
+        resolver: yupResolver(passwordSchema)
+    })
+    const [pwdVisible, setPwdVisible] = useState(false)
 
     return (
         <>
             <div className="app-logo" >
                 <img src={logo} alt="Ledget" />
             </div>
-            <div id="email-container">
-                <span>{`${userInfo.email}`}</span>
-                <a
-                    onClick={() => setUserInfo({})}
-                >
-                    change
-                </a>
+            <div className="signup-steps-container">
+                <span>Step 2 of 4</span>
             </div>
             {registering && <WindowLoadingBar />}
             <form
                 action={flow.ui.action}
                 method={flow.ui.method}
-                onSubmit={submit}
+                onSubmit={handleSubmit(submit)}
                 id="authentication-form"
             >
                 {responseError && <FormError msg={responseError} />}
-                <PasswordInput ref={pwdRef} />
-                {error && <FormError msg={error} />}
-                <div id="forgot-password-container">
-                    <Link to="#" tabIndex={0} >Forgot Password?</Link>
-                </div>
-                <CsrfToken />
-                <input
-                    type="hidden"
-                    name="identifier"
-                    value={userInfo.email || ''}
+                <PasswordInput
+                    name='password'
+                    register={register}
+                    pwdVisible={pwdVisible}
+                    setPwdVisible={setPwdVisible}
+                    trigger={trigger}
                 />
+                {errors['password'] && <FormError msg={errors.password?.message} />}
+                <PasswordInput
+                    name='confirmPassword'
+                    inputType="confirm-password"
+                    placeholder="Confirm"
+                    register={register}
+                    pwdVisible={pwdVisible}
+                    setPwdVisible={setPwdVisible}
+                    trigger={trigger}
+                />
+                {errors['confirmPassword'] && <FormError msg={errors.confirmPassword?.message} />}
+                <CsrfToken />
+                <input type='hidden' name='traits.name.first' value={userInfo.name.split(' ')[0]} />
+                <input type='hidden' name='traits.name.last' value={userInfo.name.split(' ')[1]} />
                 <button
                     className='charcoal-button'
                     id="sign-in"
@@ -180,7 +199,7 @@ const AuthSelectionWindow = () => {
                     type="submit"
                     aria-label="Sign in"
                 >
-                    Continue
+                    Create
                 </button>
                 <div id="passwordless-options">
                     <div id="passwordless-options-header" >
@@ -224,7 +243,7 @@ function SignUpFlow() {
 
     return (
         <AnimatePresence mode="wait">
-            {userInfo ?
+            {Object.keys(userInfo).length === 0 ?
                 <motion.div
                     className='window'
                     key="sign-up"
