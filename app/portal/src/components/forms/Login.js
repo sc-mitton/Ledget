@@ -29,7 +29,7 @@ const EmailContextProvider = ({ children }) => {
 }
 
 const schema = object().shape({
-    email: string().email("Invalid email address."),
+    email: string().email("Invalid email address"),
 })
 
 const EmailForm = () => {
@@ -49,10 +49,14 @@ const EmailForm = () => {
     return (
         <form
             onSubmit={handleSubmit((e) => {
-                setEmail({
-                    value: emailRef.current.value,
-                    remember: rememberRef.current.checked
-                })
+                if (emailRef.current.value === '') {
+                    emailRef.current.focus()
+                } else {
+                    setEmail({
+                        value: emailRef.current.value,
+                        remember: rememberRef.current.checked
+                    })
+                }
             })}
             className="login-form"
             noValidate
@@ -113,20 +117,28 @@ const InitialWindow = () => {
                     Sign Up
                 </Link>
             </div>
-            {!flow && <WindowLoadingBar />}
+            <WindowLoadingBar visible={!flow} />
         </>
     )
 }
 
 const AuthenticationWindow = () => {
     const pwdRef = useRef()
-    const [error, setError] = useState('')
     const { flow, submit, responseError, authenticating, CsrfToken } = useContext(LoginFlowContext)
     const { email, setEmail } = useContext(emailContext)
 
     useEffect(() => {
         pwdRef.current.focus()
     }, [])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (pwdRef.current.value === '') {
+            pwdRef.current.focus()
+        } else {
+            submit()
+        }
+    }
 
     return (
         <>
@@ -141,16 +153,15 @@ const AuthenticationWindow = () => {
                     change
                 </a>
             </div>
-            {authenticating && <WindowLoadingBar />}
+            <WindowLoadingBar visible={authenticating} />
             <form
                 action={flow.ui.action}
                 method={flow.ui.method}
-                onSubmit={submit}
+                onSubmit={handleSubmit}
                 id="authentication-form"
             >
                 {responseError && <FormError msg={responseError} />}
                 <PasswordInput ref={pwdRef} />
-                {error && <FormError msg={error} />}
                 <div id="forgot-password-container">
                     <Link to="#" tabIndex={0} >Forgot Password?</Link>
                 </div>
@@ -177,14 +188,14 @@ const AuthenticationWindow = () => {
                 >
                     Sign In
                 </button>
-                <div id="passwordless-options">
-                    <div id="passwordless-options-header" >
+                <div className="passwordless-options">
+                    <div className="passwordless-options-header" >
                         Passwordless
                         <div className="help-icon">
                             <Help />
                         </div>
                     </div>
-                    <div id="passwordless-options-container">
+                    <div className="passwordless-options-container">
                         <button
                             name="passwordless-options"
                             type="submit"

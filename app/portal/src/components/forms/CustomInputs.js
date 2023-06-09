@@ -72,16 +72,18 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
         }),
         control: (baseStyles, state) => ({
             ...baseStyles,
-            borderRadius: "4px",
+            borderRadius: "6px",
             paddingLeft: "16px",
             paddingRight: "12px",
-            backgroundColor: "#ededed",
+            paddingTop: "12px",
+            paddingBottom: "36px",
+            backgroundColor: "#ebebeb",
             font: "inherit",
             height: "0",
             border: "none",
             border: state.isFocused ? 0 : 0,
             // This line disable the blue border
-            boxShadow: state.isFocused ? "0 0 1.5px 1px var(--light-blue)" : 0,
+            boxShadow: state.isFocused ? "0 0 .5px 1.5px var(--light-blue)" : 0,
             '&:hover': {
                 border: state.isFocused ? 0 : 0
             }
@@ -97,7 +99,7 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
         }),
         placeholder: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "var(--main-blue)" : "var(--input-placeholder)",
+            color: state.isFocused ? "#6b9bf6" : "#767676",
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,
@@ -112,7 +114,7 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
         }),
         dropdownIndicator: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "var(--main-blue)" : "var(--input-placeholder)",
+            color: state.isFocused ? "#6b9bf6" : "#767676",
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
@@ -154,11 +156,16 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
     )
 }
 
-
 const PasswordInput = React.forwardRef(({ inputType, ...props }, ref) => {
     const [pwdInput, setPwdInput] = useState(false)
     let [visible, setVisible] = useState(false)
-    const { onChange, ...rest } = props.register(props.name)
+    let { onChange, ...rest } = { onChange: () => { } }
+
+    if (Object.keys(props).includes('register')) {
+        const { onChange: registerOnChange, ...registerRest } = props.register(props.name)
+        onChange = registerOnChange
+        rest = registerRest
+    }
 
     if (props.pwdVisible != null) {
         visible = props.pwdVisible
@@ -215,7 +222,6 @@ PasswordInput.defaultProps = {
     inputType: 'password',
     name: 'password',
     placeholder: 'Password',
-    register: () => { },
     onBlur: () => { },
     setPwdVisible: () => { },
     pwdVisible: null,

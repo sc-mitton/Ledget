@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useState, useEffect } from "react"
 
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useNavigate } from "react-router-dom"
 
 import { sdk, sdkError } from "../api/sdk"
 import AuthContext from "./AuthContext"
@@ -13,7 +13,7 @@ const RegisterFlowContext = createContext(null)
 function LoginFlowContextProvider({ children }) {
     const [flow, setFlow] = useState(null)
     const [csrf, setCsrf] = useState(null)
-    const [responseError, setResponseError] = useState(null)
+    const [responseError, setResponseError] = useState('')
     const [searchParams, setSearchParams] = useSearchParams()
     const [authenticating, setAuthenticating] = useState(false)
     const { setUser } = React.useContext(AuthContext)
@@ -110,19 +110,7 @@ function LoginFlowContextProvider({ children }) {
                 // if not a subscriber, redirect to subscription page
                 // else navigate to app
             })
-            .catch((err) => {
-                // handle the error
-                if (err.response.status === 400) {
-                    // user input error
-                    // show the error messages in the UI
-                    err.response.data.ui.messages.forEach((message) => {
-                        message.text.includes("credentials are invalid")
-                            && setResponseError("Wrong email or password")
-                    })
-                } else {
-                    setResponseError('Something went wrong. Please try again later.')
-                }
-            })
+            .catch(sdkErrorHandler)
             .finally(() => setAuthenticating(false))
     }
 
@@ -146,9 +134,11 @@ function LoginFlowContextProvider({ children }) {
 function RegisterFlowContextProvider({ children }) {
     const [flow, setFlow] = useState(null)
     const [csrf, setCsrf] = useState(null)
-    const [responseError, setResponseError] = useState(null)
+    const [responseError, setResponseError] = useState('')
     const [, setSearchParams] = useSearchParams()
     const [registering, setRegistering] = useState(false)
+    const navigate = useNavigate()
+    const { setUser } = React.useContext(AuthContext)
 
     const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
 
@@ -196,7 +186,6 @@ function RegisterFlowContextProvider({ children }) {
     }
 
     const submit = (event) => {
-        event.preventDefault()
         // map the entire form data to JSON for the request body
         setRegistering(true)
         const form = event.currentTarget
@@ -216,22 +205,16 @@ function RegisterFlowContextProvider({ children }) {
                 ...{ [method.name]: method.value },
             }
         }
+        delete body.confirmPassword
 
         sdk
             .updateRegistrationFlow({ flow: flow.id, updateRegistrationFlowBody: body })
-            .then(() => {
+            .then((response) => {
+                setUser(response.data.identity.traits)
                 // user successfully created, navigate to checkout
                 navigate("/checkout", { replace: true })
             })
-            .catch((err) => {
-                console.log(err)
-                if (err.response.status === 400) {
-                    // user input error
-                    setResponseError(err.response.data)
-                } else {
-                    setResponseError('Something went wrong. Please try again later.')
-                }
-            })
+            .catch(sdkErrorHandler)
             .finally(() => setRegistering(false))
     }
 

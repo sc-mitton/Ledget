@@ -39,6 +39,9 @@ export const sdkError = (
                     if (errorMessages && errorMessages[0].text.includes("credentials are invalid")) {
                         setResponseError('Wrong email or password.')
                         return Promise.resolve();
+                    } else if (errorMessages && errorMessages[0].text.includes("An account with the same identifier")) {
+                        setResponseError('That email is already taken')
+                        return Promise.resolve();
                     } else if (errorMessages && errorMessages[0].text.includes("valid session was detected")) {
                         console.warn(
                             "sdkError 400: `session_already_available`. Navigate to /"

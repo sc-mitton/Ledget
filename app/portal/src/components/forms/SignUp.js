@@ -16,8 +16,8 @@ import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/
 import { WindowLoadingBar } from "../widgets/Widgets"
 import { PasswordInput } from "./CustomInputs"
 
+// Context for user info
 const userInfoContext = createContext({})
-
 const UserInfoContextProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState({})
 
@@ -45,8 +45,9 @@ const schema = yup.object().shape({
         .required('Please enter your email address'),
 })
 
-
 function UserInfoForm() {
+    // Form for user info
+
     const { register, handleSubmit, formState: { errors }, trigger, setError }
         = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const { CsrfToken, responseError } = useContext(RegisterFlowContext)
@@ -110,7 +111,9 @@ function UserInfoForm() {
     )
 }
 
-const SignUpWindow = () => {
+const UserInfoWindow = () => {
+    // Form window for entering user info (name, email), or signing in with social auth
+
     const { flow, submit, CsrfToken } = useContext(RegisterFlowContext)
 
     return (
@@ -119,7 +122,7 @@ const SignUpWindow = () => {
                 <img src={logo} alt="Ledget" />
             </div>
             <div className="signup-steps-container">
-                <span>Step 1 of 4</span>
+                <span>Step 1 of 3</span>
             </div>
             <h2>Create Account</h2>
             <UserInfoForm />
@@ -131,7 +134,7 @@ const SignUpWindow = () => {
                     state: { direction: 1 }
                 }}>Sign In</Link>
             </div>
-            {!flow && <WindowLoadingBar />}
+            <WindowLoadingBar visible={!flow} />
         </>
     )
 }
@@ -139,7 +142,7 @@ const SignUpWindow = () => {
 const passwordSchema = yup.object().shape({
     password: yup.string()
         .required('Please enter a password')
-        .min(10, 'Password must be at least 8 characters'),
+        .min(10, 'Password must be at least 10 characters'),
     confirmPassword: yup.string()
         .required('Please confirm your password')
         .oneOf([yup.ref('password'), null], 'Passwords must match')
@@ -154,19 +157,24 @@ const AuthSelectionWindow = () => {
     })
     const [pwdVisible, setPwdVisible] = useState(false)
 
+    const onSubmit = (e) => {
+        e.preventDefault()
+        handleSubmit(() => { })().then(submit(e))
+    }
+
     return (
         <>
             <div className="app-logo" >
                 <img src={logo} alt="Ledget" />
             </div>
             <div className="signup-steps-container">
-                <span>Step 2 of 4</span>
+                <span>Step 2 of 3</span>
             </div>
-            {registering && <WindowLoadingBar />}
+            <WindowLoadingBar visible={registering} />
             <form
                 action={flow.ui.action}
                 method={flow.ui.method}
-                onSubmit={handleSubmit(submit)}
+                onSubmit={onSubmit}
                 id="authentication-form"
             >
                 {responseError && <FormError msg={responseError} />}
@@ -189,6 +197,7 @@ const AuthSelectionWindow = () => {
                 />
                 {errors['confirmPassword'] && <FormError msg={errors.confirmPassword?.message} />}
                 <CsrfToken />
+                <input type='hidden' name='traits.email' value={userInfo.email} />
                 <input type='hidden' name='traits.name.first' value={userInfo.name.split(' ')[0]} />
                 <input type='hidden' name='traits.name.last' value={userInfo.name.split(' ')[1]} />
                 <button
@@ -201,14 +210,14 @@ const AuthSelectionWindow = () => {
                 >
                     Create
                 </button>
-                <div id="passwordless-options">
-                    <div id="passwordless-options-header" >
+                <div className="passwordless-options">
+                    <div className="passwordless-options-header" >
                         Passwordless
                         <div className="help-icon">
                             <Help />
                         </div>
                     </div>
-                    <div id="passwordless-options-container">
+                    <div className="passwordless-options-container">
                         <button
                             name="passwordless-options"
                             type="submit"
@@ -252,7 +261,7 @@ function SignUpFlow() {
                     exit={{ opacity: 0, x: -30 }}
                     transition={{ ease: "easeInOut", duration: 0.2 }}
                 >
-                    <SignUpWindow />
+                    <UserInfoWindow />
                 </motion.div>
                 :
                 <motion.div

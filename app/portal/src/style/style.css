@@ -20,13 +20,13 @@
     --alert-red: #f35050;
 
     /* Inputs */
-    --input-placeholder: #848484;
+    --input-placeholder: #767676;
     --input-focus: #6b9bf6;
 
     /* Buttons */
     --button-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    --social-button: #efefef;
-    --social-button-hover: #e6e6e6;
+    --social-button: #ebebeb;
+    --social-button-hover: #e0e0e0;
     --button-gray: #363636;
     --buton-border-gray: #3c3c3c;
     --button-hover-gray: #242424;
@@ -41,7 +41,7 @@
     --inactive-gray: #d7d7d7;
 
     /* Input Colors */
-    --input-color: #ededed;
+    --input-color: #ebebeb;
     --tooltip-background: #a6a6a6;
 
     /* Text */

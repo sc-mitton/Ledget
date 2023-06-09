@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 
-import './style/Payment.css'
+import './style/Checkout.css'
 import logo from '../../assets/images/logo.svg'
 import stripelogo from '../../assets/images/stripelogo.svg'
 import alert2 from '../../assets/icons/alert2.svg'
@@ -16,7 +17,15 @@ import apiAuth from '../../api/axios'
 import { LoadingRing } from '../widgets/Widgets'
 import { CustomSelect } from './CustomInputs'
 import { states } from '../../assets/data/states'
+import { FormError } from "../widgets/Widgets"
 
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST)
+
+let options = {
+    fonts: [{
+        cssSrc: "https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap"
+    }]
+}
 
 const schema = object({
     name: string()
@@ -68,12 +77,9 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
                             }}
                         />
                     </div>
-                    {hasError('name') &&
-                        <div className="form-error">
-                            <img src={alert2} className="error-icon" />
-                            {errors.name?.message}
-                        </div>
-                    }
+                    <div id="name-on-card-error">
+                        {hasError('name') && <FormError msg={errors.name?.message} />}
+                    </div>
                     <div id='location-inputs-container'>
                         <div className='input-container' id='city-container'>
                             <input
@@ -129,28 +135,13 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
                     {(hasError('city') || hasError('state') || hasError('zip')) &&
                         <div id="location-input-errors">
                             <div id="city-error">
-                                {hasError('city') &&
-                                    <div className="form-error">
-                                        <img src={alert2} className="error-icon" />
-                                        {errors.city?.message}
-                                    </div>
-                                }
+                                {hasError('city') && <FormError msg={errors.city?.message} />}
                             </div>
                             <div id="state-error">
-                                {hasError('state') &&
-                                    <div className="form-error">
-                                        <img src={alert2} className="error-icon" />
-                                        {errors.state?.message}
-                                    </div>
-                                }
+                                {hasError('state') && <FormError msg={errors.state?.message} />}
                             </div>
                             <div id="zip-error">
-                                {hasError('zip') &&
-                                    <div className="form-error">
-                                        <img src={alert2} className="error-icon" />
-                                        {errors.zip?.message}
-                                    </div>
-                                }
+                                {hasError('zip') && <FormError msg={errors.zip?.message} />}
                             </div>
                         </div>
                     }
@@ -161,9 +152,8 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
 
 }
 
-function Form({ price }) {
+function Checkout() {
 
-    const navigate = useNavigate()
     const stripe = useStripe()
     const elements = useElements()
 
@@ -175,8 +165,12 @@ function Form({ price }) {
     const [processing, setProcessing] = useState(false)
     let [cardFocus, setCardFocus] = useState(false)
 
-    const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem("clientSecret")))
-    const isCustomerRef = useRef(JSON.parse(sessionStorage.getItem("user")).is_customer)
+    // const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem("clientSecret")))
+    // const isCustomerRef = useRef(JSON.parse(sessionStorage.getItem("user")).is_customer)
+    const clientSecretRef = useRef('')
+    const isCustomerRef = useRef(false)
+    const price = { trial_period_days: 30, unit_amount: 700, id: 'price_1JQZ1tKX9jz4Z2Z0Z2Z0Z2Z0' }
+
     const submitButtonRef = useRef()
 
     const cardElementOptions = {
@@ -185,14 +179,14 @@ function Form({ price }) {
                 fontFamily: "Source Sans Pro, sans-serif",
                 color: '#242424',
                 fontSmoothing: 'antialiased',
-                fontSize: '15px',
+                fontSize: '16px',
                 '::placeholder': {
-                    color: cardFocus ? '#6b9bf6' : '#848484',
+                    color: cardFocus ? '#6b9bf6' : '#767676',
                 },
-                iconColor: cardFocus ? '#4784f6' : '#242424',
+                iconColor: cardFocus ? '#0059ff' : '#242424',
                 ':disabled': {
-                    color: '#848484',
-                    iconColor: '#848484'
+                    color: '#767676',
+                    iconColor: '#767676'
                 }
             },
             invalid: {
@@ -326,15 +320,15 @@ function Form({ price }) {
     return (
         <>
             <div className="inputs-container">
-                <h4 id="billing-info-header">Billing Info</h4>
+                <h3 id="billing-info-header">Billing Info</h3>
                 <BillingForm
                     id={'billing-form'}
                     onSubmit={onSubmit}
                     disabled={succeeded || processing}
                     onValidityChange={(valid) => setInputsValid(valid)}
                 />
-                <h4 id="card-input-header">Card</h4>
-                <div className={`card-container ${cardFocus ? 'focus' : ''}`}>
+                <h3 id="card-input-header">Card</h3>
+                <div className={`card-container${cardFocus ? '-focus' : ''}`}>
                     <CardElement
                         onBlur={() => setCardFocus(false)}
                         onFocus={() => setCardFocus(true)}
@@ -365,17 +359,12 @@ function Form({ price }) {
                     ref={submitButtonRef}
                     aria-label="Submit payment information"
                 >
-                    {!processing && !succeeded &&
-                        <span>{`Start ${price.trial_period_days}-day Free Trial`}</span>
-                    }
-                    {!processing && succeeded &&
-                        <span id="payment-success-message">
+                    {!succeeded
+                        ? <span>{`Start ${price.trial_period_days}-day Free Trial`}</span>
+                        : (<span id="payment-success-message">
                             <img src={successIcon} alt='success icon' className='success-icon' />
                             Success
-                        </span>
-                    }
-                    {processing && !succeeded &&
-                        < LoadingRing />
+                        </span>)
                     }
                 </button>
             </div>
@@ -385,23 +374,26 @@ function Form({ price }) {
 
 function CheckoutWindow({ price }) {
     return (
-        <div className='window checkout-window'>
-            <div className="app-logo-subscription" >
-                <img src={logo} alt="Ledget" />
-            </div>
-            <Form price={price} />
-            <div className="stripe-logo-container">
-                <div>
-                    powered by
+        <Elements stripe={stripePromise} options={options}>
+            <div className='window' id='checkout-window'>
+                <div className="app-logo" >
+                    <img src={logo} alt="Ledget" />
                 </div>
-                <div>
-                    <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
-                        <img className="stripe-logo" src={stripelogo} alt="Stripe" />
-                    </a>
+                <Checkout price={price} />
+                <div className="stripe-logo-container">
+                    <div>
+                        powered by
+                    </div>
+                    <div>
+                        <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
+                            <img className="stripe-logo" src={stripelogo} alt="Stripe" />
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Elements>
     )
 }
+
 
 export default CheckoutWindow

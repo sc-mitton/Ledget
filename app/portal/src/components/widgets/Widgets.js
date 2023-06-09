@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { AnimatePresence, motion } from 'framer-motion'
+
 import alert2 from '../../assets/icons/alert2.svg'
 import "./widgets.css"
 
@@ -35,11 +37,23 @@ export const FormError = (props) => {
     )
 }
 
-export const WindowLoadingBar = () => {
+export const WindowLoadingBar = ({ visible }) => {
+
+
     return (
-        <div className="loading-bar-container">
-            <div className="loading-bar-edges"></div>
-            <div className="loading-bar-shimmer"></div>
-        </div>
+        <AnimatePresence initial={false}>
+            {visible &&
+                <motion.div
+                    className="loading-bar-container"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: visible ? 1 : 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ ease: "easeInOut", duration: 0.2 }}
+                >
+                    <div className="loading-bar-edges"></div>
+                    <div className="loading-bar-shimmer"></div>
+                </motion.div>
+            }
+        </AnimatePresence>
     )
 }

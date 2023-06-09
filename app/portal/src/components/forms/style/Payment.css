@@ -1,7 +1,0 @@
-.stripe-logo-container,
-.sign-up-prompt-container,
-.login-prompt-container {
-    height: 0;
-    position: relative;
-    bottom: -65px;
-}

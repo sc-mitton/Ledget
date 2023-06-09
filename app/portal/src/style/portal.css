@@ -117,12 +117,10 @@ input[type="password"]:focus::placeholder {
 .invalid-submit,
 .valid-submit,
 .submit-button {
-    padding: 8px 12px;
     color: var(--window);
     background-color: var(--button-gray);
-    box-shadow: var(--button-drop-shadow);
-    border-radius: 4px;
     transition: background-color 0.3s ease;
+    cursor: default;
 }
 
 .valid-submit:hover,
@@ -212,6 +210,76 @@ input[type="password"]:focus::placeholder {
     outline: none;
     box-shadow: var(--button-focus-drop-shadow);
 }
+
+/* -------------------------- Passwordless Section -------------------------- */
+
+.passwordless-options {
+    margin-top: 40px;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.passwordless-options-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.passwordless-options-header:before,
+.passwordless-options-header:after {
+    content: "";
+    flex: 1 1;
+    border-top: rgba(0, 0, 0, 0.1) 2px solid;
+    margin: auto;
+}
+
+.passwordless-options-header:before {
+    margin-right: 10px
+}
+
+.passwordless-options-header:after {
+    margin-left: 10px
+}
+
+.help-icon {
+    margin-left: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.passwordless-options div:last-child {
+    display: flex;
+    justify-content: center;
+}
+
+.passwordless-options button {
+    color: rgb(0, 0, 0, .5);
+    padding: 4px;
+    transition: background-color .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.passwordless-options button:hover {
+    background-color: var(--social-button);
+}
+
+#webauthn-icon {
+    height: 40px;
+    opacity: 1;
+}
+
 
 /* ---------------------------- Misc ---------------------------- */
 
