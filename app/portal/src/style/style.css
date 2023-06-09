@@ -3,13 +3,16 @@
 :root {
     --logo-dark: #242424;
 
+    /* Background fills */
     --background-color: #fcfcfc;
-
     --window: #f8f8f8;
+    --dark-background: #242424;
+
     --window-border: #a1a0a0;
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-box-gray: #fffcfc;
 
+    /* Palet */
     --light-blue: #97c1fc;
     --mute-blue: #7aa8fe;
     --hover-blue: #6197fc;
@@ -38,7 +41,7 @@
     --input-focus-drop-shadow: 0 0 .5px 1.5px var(--light-blue);
 
     /* Subscription Radios */
-    --inactive-gray: #d7d7d7;
+    --inactive-gray: #4c4c4c;
 
     /* Input Colors */
     --input-color: #ebebeb;
@@ -48,6 +51,7 @@
     --main-text-gray: #242424;
     --muted-text-gray: #848484;
     --success-green: #cdf8cd;
+    --white-text: #f8f8f8;
 }
 
 /* Override color values for Firefox */

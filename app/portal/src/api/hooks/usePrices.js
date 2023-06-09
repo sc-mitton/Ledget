@@ -12,6 +12,7 @@ const usePrices = () => {
     const fetchPrices = async () => {
         const response = await apiAuth.get('prices')
             .then(response => {
+                console.log(response.data)
                 setPrices(response.data)
                 sessionStorage.setItem(
                     'prices',

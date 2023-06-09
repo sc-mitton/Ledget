@@ -9,15 +9,16 @@ import { CardElement, useStripe, useElements, Elements } from '@stripe/react-str
 import { loadStripe } from '@stripe/stripe-js'
 
 import './style/Checkout.css'
-import logo from '../../assets/images/logo.svg'
+import logoLight from '../../assets/images/logoLight.svg'
 import stripelogo from '../../assets/images/stripelogo.svg'
 import alert2 from '../../assets/icons/alert2.svg'
 import successIcon from '../../assets/icons/successIcon.svg'
 import apiAuth from '../../api/axios'
-import { LoadingRing } from '../widgets/Widgets'
 import { CustomSelect } from './CustomInputs'
 import { states } from '../../assets/data/states'
 import { FormError } from "../widgets/Widgets"
+import usePrices from '../../api/hooks/usePrices'
+import { WindowLoadingBar } from '../widgets/Widgets'
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST)
 
@@ -152,7 +153,7 @@ let BillingForm = ({ id, onSubmit, disabled, onValidityChange }) => {
 
 }
 
-function Checkout() {
+function Checkout({ price }) {
 
     const stripe = useStripe()
     const elements = useElements()
@@ -169,7 +170,6 @@ function Checkout() {
     // const isCustomerRef = useRef(JSON.parse(sessionStorage.getItem("user")).is_customer)
     const clientSecretRef = useRef('')
     const isCustomerRef = useRef(false)
-    const price = { trial_period_days: 30, unit_amount: 700, id: 'price_1JQZ1tKX9jz4Z2Z0Z2Z0Z2Z0' }
 
     const submitButtonRef = useRef()
 
@@ -201,7 +201,7 @@ function Checkout() {
     const getTrialEndString = () => {
         var currentDate = new Date()
         var futureDate = new Date(
-            currentDate.getTime() + (price.trial_period_days * 24 * 60 * 60 * 1000))
+            currentDate.getTime() + (price.metadata?.trial_period_days * 24 * 60 * 60 * 1000))
         var futureDateString =
             (futureDate.getMonth() + 1)
             + '/' + futureDate.getDate()
@@ -237,7 +237,7 @@ function Checkout() {
     const createSubscription = async () => {
         const response = await apiAuth.post('subscription', {
             'price_id': price.id,
-            'trial_period_days': price.trial_period_days
+            'trial_period_days': price.metadata?.trial_period_days
         })
         if (response.status === 200) {
             sessionStorage.setItem("clientSecret", JSON.stringify(response.data.client_secret))
@@ -300,8 +300,8 @@ function Checkout() {
                 <table>
                     <tbody>
                         <tr>
-                            <td>Plan:</td>
-                            <td>{`\$${price.unit_amount / 100}/mo`}</td>
+                            <td>Amount:</td>
+                            <td>{`\$${price.unit_amount / 100}`}</td>
                         </tr>
                         <tr>
                             <td>First Charge:</td>
@@ -309,7 +309,7 @@ function Checkout() {
                         </tr>
                         <tr>
                             <td>Renews:</td>
-                            <td>{price.renews}</td>
+                            <td>{price.metadata?.renews}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -318,7 +318,7 @@ function Checkout() {
     }
 
     return (
-        <>
+        <div id="checkout-container">
             <div className="inputs-container">
                 <h3 id="billing-info-header">Billing Info</h3>
                 <BillingForm
@@ -360,7 +360,7 @@ function Checkout() {
                     aria-label="Submit payment information"
                 >
                     {!succeeded
-                        ? <span>{`Start ${price.trial_period_days}-day Free Trial`}</span>
+                        ? <span>{`Start ${price.metadata?.trial_period_days}-day Free Trial`}</span>
                         : (<span id="payment-success-message">
                             <img src={successIcon} alt='success icon' className='success-icon' />
                             Success
@@ -368,32 +368,73 @@ function Checkout() {
                     }
                 </button>
             </div>
-        </>
+        </div>
     )
 }
 
-function CheckoutWindow({ price }) {
-    return (
-        <Elements stripe={stripePromise} options={options}>
-            <div className='window' id='checkout-window'>
-                <div className="app-logo" >
-                    <img src={logo} alt="Ledget" />
+function CheckoutWindow() {
+    const { prices, loading, error } = usePrices()
+    const [price, setPrice] = useState({})
+
+    useEffect(() => {
+        setPrice(prices[0])
+    }, [prices])
+
+    const Prices = () => {
+
+        return (
+            <div id="prices-container">
+                <div id="corner-logo">
+                    <img src={logoLight} alt="Ledget" />
                 </div>
-                <Checkout price={price} />
-                <div className="stripe-logo-container">
-                    <div>
-                        powered by
-                    </div>
-                    <div>
-                        <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
-                            <img className="stripe-logo" src={stripelogo} alt="Stripe" />
-                        </a>
-                    </div>
+                <div id="subscription-radios-container">
+                    {prices.map((p, i) =>
+                        <div className="subscription">
+                            <input
+                                type="radio"
+                                id={`price-${i}`}
+                                name="price"
+                                value={p.id}
+                                checked={p === price}
+                                onChange={() => setPrice(p)}
+                            />
+                            <label htmlFor={`price-${i}`} tabIndex={i}>
+                                <span className="price-nickname">{p.nickname}</span>
+                                <span className="unit-amount">
+                                    ${
+                                        p.nickname.toLowerCase() == 'year'
+                                            ? p.unit_amount / 1200
+                                            : p.unit_amount / 100
+                                    }<span> / mo</span>
+                                </span>
+                            </label>
+                        </div>
+                    )}
                 </div>
             </div>
-        </Elements>
+        )
+    }
+
+    return (
+        <div className='window' id='checkout-window'>
+            <Prices />
+            <Elements stripe={stripePromise} options={options}>
+                {price && <Checkout price={price} />}
+            </Elements>
+            <div className="stripe-logo-container">
+                <div>
+                    powered by
+                </div>
+                <div>
+                    <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
+                        <img className="stripe-logo" src={stripelogo} alt="Stripe" />
+                    </a>
+                </div>
+            </div>
+        </div>
     )
 }
 
 
 export default CheckoutWindow
+
