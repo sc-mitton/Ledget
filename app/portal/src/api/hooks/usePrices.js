@@ -10,7 +10,7 @@ const usePrices = () => {
     const [error, setError] = useState(false)
 
     const fetchPrices = async () => {
-        const response = await apiAuth.get('prices')
+        await apiAuth.get('prices')
             .then(response => {
                 console.log(response.data)
                 setPrices(response.data)
@@ -21,7 +21,7 @@ const usePrices = () => {
                 setLoading(false)
             })
             .catch(error => {
-                setError(true)
+                setError(error)
                 setLoading(false)
             })
     }
