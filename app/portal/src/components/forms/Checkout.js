@@ -384,7 +384,7 @@ function CheckoutWindow() {
 
         return (
             <div id="prices-container">
-                <div id="corner-logo">
+                <div id="prices-container-header">
                     <img src={logoLight} alt="Ledget" />
                 </div>
                 <div id="subscription-radios-container">
@@ -397,15 +397,20 @@ function CheckoutWindow() {
                                 value={p.id}
                                 checked={p === price}
                                 onChange={() => setPrice(p)}
+                                aria-checked={p === price}
                             />
-                            <label htmlFor={`price-${i}`} tabIndex={i}>
-                                <span className="price-nickname">{p.nickname}</span>
+                            <label
+                                htmlFor={`price-${i}`}
+                                tabIndex={i}
+                                onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && setPrice(p)}
+                            >
+                                <div className="nickname">{p.nickname.toUpperCase()}</div>
                                 <span className="unit-amount">
                                     ${
                                         p.nickname.toLowerCase() == 'year'
                                             ? p.unit_amount / 1200
                                             : p.unit_amount / 100
-                                    }<span> / mo</span>
+                                    }<span> /mo</span>
                                 </span>
                             </label>
                         </div>
