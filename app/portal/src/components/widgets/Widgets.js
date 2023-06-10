@@ -50,8 +50,10 @@ export const WindowLoadingBar = ({ visible }) => {
                     exit={{ opacity: 0 }}
                     transition={{ ease: "easeInOut", duration: 0.2 }}
                 >
-                    <div className="loading-bar-edges"></div>
-                    <div className="loading-bar-shimmer"></div>
+                    <div className="loading-bar">
+                        <div className="loading-bar-edges"></div>
+                        <div className="loading-bar-shimmer"></div>
+                    </div>
                 </motion.div>
             }
         </AnimatePresence>

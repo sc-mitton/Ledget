@@ -32,6 +32,7 @@
 
 .nickname {
     color: var(--white-text);
+    margin-right: 12px;
 }
 
 .subscription-period {
@@ -42,7 +43,7 @@
 }
 
 .unit-amount {
-    font-size: 1.6em;
+    font-size: 1.4em;
     color: var(--white-text);
 }
 
@@ -64,7 +65,7 @@ input[type="radio"] {
 .subscription label {
     display: block;
     color: var(--white-text);
-    padding: 8px 16px;
+    padding: 6px 16px;
     cursor: pointer;
     text-align: center;
     box-shadow: inset 0 0 6px rgba(222, 222, 222, .1);
