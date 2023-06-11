@@ -211,8 +211,6 @@ function RegisterFlowContextProvider({ children }) {
             .updateRegistrationFlow({ flow: flow.id, updateRegistrationFlowBody: body })
             .then((response) => {
                 setUser(response.data.identity.traits)
-                // user successfully created, navigate to checkout
-                navigate("/checkout", { replace: true })
             })
             .catch(sdkErrorHandler)
             .finally(() => setRegistering(false))

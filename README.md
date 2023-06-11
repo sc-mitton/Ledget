@@ -88,7 +88,7 @@ brew install stripe
 9. Get the webhook secret from stripe. This command will output the secret which you should add to a file /secrets/stripe_webhook_secret.
 
 ```
-stripe listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
+stripe listen --forward-to https://ledget.app:8000/api/v1/stripe --skip-verify
 ```
 
 

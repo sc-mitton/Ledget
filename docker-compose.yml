@@ -121,7 +121,7 @@ services:
     image: stripe/stripe-cli
     env_file:
       - ./secrets/.env.stripe
-    command: listen --forward-to https://ledget.app:8000/api/v1/stripe-hook --skip-verify
+    command: listen --forward-to https://ledget.app:8000/api/v1/stripe --skip-verify
 
 volumes:
   dev-db-data:

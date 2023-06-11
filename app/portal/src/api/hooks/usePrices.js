@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 
-import apiAuth from '../axios'
+import ledgetapi from '../axios'
 
 const usePrices = () => {
     const [prices, setPrices] = useState([])
@@ -10,9 +10,8 @@ const usePrices = () => {
     const [error, setError] = useState(false)
 
     const fetchPrices = async () => {
-        await apiAuth.get('prices')
+        await ledgetapi.get('prices')
             .then(response => {
-                console.log(response.data)
                 setPrices(response.data)
                 sessionStorage.setItem(
                     'prices',

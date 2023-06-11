@@ -6,7 +6,7 @@ from .models import User
 
 class CustomUserAdmin(UserAdmin):
     model = User
-    list_display = ("email", "is_staff", "full_name", "last_login",)
+    list_display = ("email", "is_staff", "last_login",)
     list_filter = ("email", "is_staff",)
     fieldsets = (
         ("User", {

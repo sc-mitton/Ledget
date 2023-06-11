@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, createContext, useState, useRef } from "react"
 
-import { Link, useSearchParams } from "react-router-dom"
+import { Link, useSearchParams, useNavigate } from "react-router-dom"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
@@ -15,6 +15,8 @@ import { FormError } from "../widgets/Widgets"
 import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/Flow"
 import { WindowLoadingBar } from "../widgets/Widgets"
 import { PasswordInput } from "./CustomInputs"
+import ledgetapi from "../../api/axios"
+import AuthContext from "../../context/AuthContext"
 
 // Context for user info
 const userInfoContext = createContext({})
@@ -156,10 +158,13 @@ const AuthSelectionWindow = () => {
         resolver: yupResolver(passwordSchema)
     })
     const [pwdVisible, setPwdVisible] = useState(false)
+    const navigate = useNavigate()
+    const { user } = useContext(AuthContext)
 
     const onSubmit = (e) => {
         e.preventDefault()
-        handleSubmit(() => { })().then(submit(e))
+        handleSubmit(() => { })()
+            .then(submit(e))
     }
 
     return (

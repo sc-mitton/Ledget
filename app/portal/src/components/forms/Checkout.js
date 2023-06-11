@@ -14,7 +14,7 @@ import logo from '../../assets/images/logo.svg'
 import stripelogo from '../../assets/images/stripelogo.svg'
 import alert2 from '../../assets/icons/alert2.svg'
 import Star from '../../assets/icons/Star'
-import apiAuth from '../../api/axios'
+import ledgetapi from '../../api/axios'
 import { CustomSelect } from './CustomInputs'
 import { states } from '../../assets/data/states'
 import { FormError } from "../widgets/Widgets"
@@ -114,8 +114,6 @@ const Prices = ({ prices }) => {
 }
 
 const Form = ({ onSubmit, id }) => {
-    const stripe = useStripe()
-    const elements = useElements()
 
     const Billing = () => {
         const { register, handleSubmit, formState: { errors }, trigger, control } =
@@ -325,6 +323,14 @@ function Checkout({ prices }) {
     const [errMsg, setErrMsg] = useState(null)
     const [processing, setProcessing] = useState(false)
     const [cardErrMsg, setCardErrMsg] = useState(null)
+    const stripe = useStripe()
+    const elements = useElements()
+
+    // pseudo code:
+    // 1. post request to backend to create customer -> await 201 response
+    // 2. post request to backend to create subscription -> which returns client secret
+    // 3. confirm card payment with client secret
+    // 4. configure backend webhook for stripe to listen to confirmed payment
 
     // const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem("clientSecret")))
     // const isCustomerRef = useRef(JSON.parse(sessionStorage.getItem("user")).is_customer)
@@ -343,7 +349,7 @@ function Checkout({ prices }) {
     }
 
     const createCustomer = async (payload) => {
-        const response = await apiAuth.post('customer', payload)
+        const response = await ledgetapi.post('customer', payload)
 
         if (response.status === 200) {
             isCustomerRef.current = true
@@ -357,7 +363,7 @@ function Checkout({ prices }) {
 
     const createSubscription = async () => {
         const { price } = useContext(PriceContext)
-        const response = await apiAuth.post('subscription', {
+        const response = await ledgetapi.post('subscription', {
             'price_id': price.id,
             'trial_period_days': price.metadata?.trial_period_days
         })
@@ -469,7 +475,6 @@ function Checkout({ prices }) {
 const CheckoutWindow = () => {
     const { prices, loading, error } = usePrices()
 
-
     return (
         <Elements stripe={stripePromise} options={options}>
             <PriceContextProvider>
@@ -479,6 +484,7 @@ const CheckoutWindow = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
+                            transition={{ duration: 0.5 }}
                         >
                             <div className="window" id="checkout-window-loading-error">
                                 <div className="app-logo" >
@@ -495,6 +501,7 @@ const CheckoutWindow = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
+                            transition={{ duration: 0.5 }}
                         >
                             <Checkout prices={prices} />
                         </motion.div>

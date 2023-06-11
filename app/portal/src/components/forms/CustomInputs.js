@@ -104,7 +104,7 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
         menu: (baseStyles, state) => ({
             ...baseStyles,
             marginTop: "4px",
-            backgroundColor: "var(--button-gray)",
+            backgroundColor: "var(--button-hover-gray)",
             boxShadow: "0 4px 6px -5px rgba(0, 0, 0, 0.5)",
             borderRadius: "4px",
         }),

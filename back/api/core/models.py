@@ -40,8 +40,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     ]
 
     email = models.EmailField(max_length=255, unique=True, blank=False)
-    is_staff = models.BooleanField(default=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    is_staff = models.BooleanField(default=True)
     account_flag = models.CharField(
         max_length=20,
         choices=ACCOUNT_FLAG_CHOICES,
@@ -56,19 +57,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     @property
-    def full_name(self):
-        if hasattr(self, 'customer'):
-            return self.customer.full_name
-
-    @property
     def is_customer(self):
         return hasattr(self, 'customer')
 
-    @property
-    def subscription_status(self):
-        customer = getattr(self, 'customer', None)
-        if customer:
-            return customer.subscription.status \
-                    if customer.subscription else None
-        else:
-            return None
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    subscription_status = models.CharField(max_length=255, blank=True)
+    customer_id = models.CharField(max_length=255, blank=True)
