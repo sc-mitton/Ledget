@@ -1,8 +1,8 @@
-import React, { forwardRef, useRef } from "react"
-import { useState } from 'react'
+import React, { forwardRef, useRef, useState } from "react"
+
+import Select from 'react-select'
 
 import './style/CustomInputs.css'
-import Select from 'react-select'
 import hidePassword from "../../assets/icons/hidePassword.svg"
 import showPassword from "../../assets/icons/showPassword.svg"
 

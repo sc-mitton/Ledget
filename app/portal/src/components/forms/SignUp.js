@@ -158,8 +158,6 @@ const AuthSelectionWindow = () => {
         resolver: yupResolver(passwordSchema)
     })
     const [pwdVisible, setPwdVisible] = useState(false)
-    const navigate = useNavigate()
-    const { user } = useContext(AuthContext)
 
     const onSubmit = (e) => {
         e.preventDefault()

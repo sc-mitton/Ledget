@@ -67,7 +67,7 @@ const Prices = ({ prices }) => {
 
     useEffect(() => {
         setPrice(prices[0])
-    }, [])
+    }, [prices])
 
     return (
         <div id="prices-container">
@@ -472,41 +472,51 @@ function Checkout({ prices }) {
     )
 }
 
-const CheckoutWindow = () => {
-    const { prices, loading, error } = usePrices()
+const AnimatedCheckout = () => {
+    const { prices, error } = usePrices()
 
+    useEffect(() => {
+        console.log('animated checkout mounted')
+    }, [])
+
+    return (
+        <AnimatePresence>
+            {error &&
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <div className="window" id="checkout-window-loading-error">
+                        <div className="app-logo" >
+                            <img src={logo} alt="Ledget" />
+                        </div>
+                        <div id="message">
+                            Well shoot, something went wrong.
+                        </div>
+                    </div>
+                </motion.div>
+            }
+            {prices &&
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <Checkout prices={prices} />
+                </motion.div>
+            }
+        </AnimatePresence>
+    )
+}
+
+const CheckoutWindow = () => {
     return (
         <Elements stripe={stripePromise} options={options}>
             <PriceContextProvider>
-                <AnimatePresence>
-                    {error &&
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <div className="window" id="checkout-window-loading-error">
-                                <div className="app-logo" >
-                                    <img src={logo} alt="Ledget" />
-                                </div>
-                                <div id="message">
-                                    Well shoot, something went wrong.
-                                </div>
-                            </div>
-                        </motion.div>
-                    }
-                    {(prices && !loading) &&
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <Checkout prices={prices} />
-                        </motion.div>
-                    }
-                </AnimatePresence>
+                <AnimatedCheckout />
             </PriceContextProvider>
         </Elements>
     )

@@ -262,6 +262,8 @@ function LoginFlow() {
 }
 
 const Login = () => {
+    console.log('Login')
+
     return (
         <LoginFlowContextProvider>
             <EmailContextProvider>
