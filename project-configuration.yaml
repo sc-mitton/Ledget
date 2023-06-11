@@ -97,7 +97,7 @@ selfservice:
                 type: api_key
                 config:
                   name: Authorization
-                  value: ory_pat_YDBNGzF4Ww2wRsZuQK4M8P0gVMyPkbo0
+                  value: "Bearer ory_pat_YDBNGzF4Ww2wRsZuQK4M8P0gVMyPkbo0"
                   in: header
         oidc:
           hooks:

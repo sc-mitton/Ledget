@@ -110,10 +110,10 @@ services:
       context: ./ory
     ports:
       - "4000:4000"
+    env_file:
+      - ./secrets/.env.ory
     command: >
-      sh -c "
-        /orylogin.sh /run/secrets/ory_email /run/secrets/ory_password &&
-        ory tunnel --dev --project reverent-lewin-bqqp1o2zws https://localhost:3000"
+      sh -c "ory tunnel --dev --project reverent-lewin-bqqp1o2zws https://localhost:3000"
     secrets:
       - ory_email
       - ory_password
