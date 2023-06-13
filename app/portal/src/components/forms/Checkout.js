@@ -475,10 +475,6 @@ function Checkout({ prices }) {
 const AnimatedCheckout = () => {
     const { prices, error } = usePrices()
 
-    useEffect(() => {
-        console.log('animated checkout mounted')
-    }, [])
-
     return (
         <AnimatePresence>
             {error &&

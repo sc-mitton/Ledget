@@ -23,10 +23,10 @@ RUN groupadd -g 999 python && \
 COPY --from=base /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
 COPY --from=base /usr/local/bin/ /usr/local/bin/
 
-WORKDIR /api
-COPY ./api .
+WORKDIR /ledgetback
+COPY ./ledgetback .
 
-RUN chown -R python:python /api
+RUN chown -R python:python /ledgetback
 USER python
 
 EXPOSE 8000

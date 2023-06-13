@@ -42,7 +42,7 @@ services:
       - ./certs-back:/etc/ssl/certs
       - ./traefik:/traefik
       - /var/run/docker.sock:/var/run/docker.sock
-  api:
+  ledgetback:
     build:
       args:
         - DEV=true
@@ -55,18 +55,18 @@ services:
         python manage.py runserver 0.0.0.0:8000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`ledget.app`)"
-      - "traefik.http.routers.api.entrypoints=websecure"
-      - "traefik.http.routers.api.tls=true"
-      - "traefik.http.routers.api.middlewares=oathkeeper@docker"
+      - "traefik.http.routers.back.rule=Host(`ledget.app`)"
+      - "traefik.http.routers.back.entrypoints=websecure"
+      - "traefik.http.routers.back.tls=true"
+      - "traefik.http.routers.back.middlewares=oathkeeper@docker"
     environment:
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_PORT=5432
     volumes:
-      - ./back/api:/api
+      - ./back/ledgetback:/ledgetback
       - ./certs-back:/etc/ssl/certs
-      - ./logs:/api/logs
+      - ./logs:/ledgetback/logs
     secrets:
       - stripe_webhook_secret
       - stripe_api_key
@@ -121,7 +121,7 @@ services:
     image: stripe/stripe-cli
     env_file:
       - ./secrets/.env.stripe
-    command: listen --forward-to https://ledget.app:8000/api/v1/stripe --skip-verify
+    command: listen --forward-to https://ledget.app:8000/hook/stripe --skip-verify
 
 volumes:
   dev-db-data:

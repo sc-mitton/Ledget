@@ -7,6 +7,8 @@ import "./style/portal.css"
 
 function App() {
 
+    console.log('mounting app')
+
     return (
         <main>
             <BrowserRouter>

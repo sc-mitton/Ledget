@@ -23,17 +23,3 @@ class PriceView(APIView):
 
 class SubscriptionView(CreateAPIView):
     pass
-
-
-class StripeHookView(APIView):
-    """Class for handling the Stripe webhook"""
-
-    def post(self, request, *args, **kwargs):
-        pass
-
-
-class OryHookView(APIView):
-    """Class for handling the Ory webhook"""
-
-    def post(self, request, *args, **kwargs):
-        pass

@@ -12,6 +12,8 @@ import PrivateRoute from './utils/PrivateRoute'
 function AnimatedRoutes() {
     const location = useLocation()
 
+    console.log('animates routes')
+
     return (
         <div id="portal">
             <AnimatePresence mode="wait">
