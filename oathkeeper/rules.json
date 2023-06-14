@@ -24,5 +24,30 @@
          "url": "https://ledget.app/api/v1/prices"
       },
       "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "handler": "anonymous"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "ory_hook",
+      "match": {
+         "methods": [
+            "POST"
+         ],
+         "url": "https://ledget.app/api/v1/hooks/ory"
+      },
+      "mutators": [
+         {
+            "handler": "noop"
+         }
+      ],
+      "upstream": {
+         "url": "https://ledget.app/api/v1/hooks/ory"
+      }
    }
 ]

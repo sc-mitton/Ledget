@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        setUser(sessionStorage.getItem('user' || null))
         setLoading(false)
     }, [])
 

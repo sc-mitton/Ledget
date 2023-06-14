@@ -140,7 +140,7 @@ function RegisterFlowContextProvider({ children }) {
     const navigate = useNavigate()
     const { setUser } = React.useContext(AuthContext)
 
-    const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
+    const sdkErrorHandler = sdkError(getFlow, setFlow, "/register", setResponseError, false)
 
     const getFlow = useCallback(
         (flowId) =>
@@ -158,7 +158,9 @@ function RegisterFlowContextProvider({ children }) {
                 setSearchParams({ ["flow"]: flow.id })
                 setFlow(flow)
             })
-            .catch(sdkErrorHandler)
+            .catch(
+                sdkErrorHandler
+            )
     }
 
     useEffect(() => {
@@ -210,7 +212,9 @@ function RegisterFlowContextProvider({ children }) {
         sdk
             .updateRegistrationFlow({ flow: flow.id, updateRegistrationFlowBody: body })
             .then((response) => {
+                console.log(response)
                 setUser(response.data.identity.traits)
+                sessionStorage.setItem('user', JSON.stringify(response.data.identity.traits))
             })
             .catch(sdkErrorHandler)
             .finally(() => setRegistering(false))

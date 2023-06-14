@@ -3,10 +3,9 @@ local ory_project = 'reverent-lewin-bqqp1o2zws';
 local base_url = 'https://ledget.app/api/v1';
 
 /* Authenticators */
-local noop_authenticator = {
-  handler: 'noop',
+local anonymous_authenticator = {
+  handler: 'anonymous',
 };
-
 local cookie_session_authenticator = {
   handler: 'cookie_session',
   config: {
@@ -46,7 +45,20 @@ local Base = {
       methods: ['GET'],
       url: base_url + '/prices',
     },
-    authenticators: [noop_authenticator],
+    authenticators: [anonymous_authenticator],
+    mutators: [noop_mutator],
+    authorizer: allow_authorizer,
+  },
+  {
+    upstream: {
+      url: base_url + '/hooks/ory',
+    },
+    id: 'ory_hook',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/hooks/ory',
+    },
+    authenticators: [anonymous_authenticator],
     mutators: [noop_mutator],
     authorizer: allow_authorizer,
   },

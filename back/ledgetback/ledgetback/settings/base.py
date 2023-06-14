@@ -3,33 +3,16 @@ import os
 import sys
 
 
-def get_django_secret_key():
-    with open('/run/secrets/django_secret_key', 'r') as f:
-        return f.read().strip()
-
-
-def get_stripe_api_key():
-    with open('/run/secrets/stripe_api_key', 'r') as f:
-        return f.read().strip()
-
-
-def get_stripe_webhook_secret():
-    with open('/run/secrets/stripe_webhook_secret', 'r') as f:
-        return f.read().strip()
-
-
-def get_db_user():
-    with open('/run/secrets/postgres_user', 'r') as f:
-        return f.read().strip()
-
-
-def get_db_password():
-    with open('/run/secrets/postgres_password', 'r') as f:
-        return f.read().strip()
+def get_secret(secret):
+    try:
+        with open(f'/run/secrets/{secret}', 'r') as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return ' '
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_django_secret_key()
+SECRET_KEY = get_secret('django_secret_key')
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DOMAIN = 'ledget.app'
 
@@ -38,8 +21,11 @@ SITE_ID = 1
 
 
 # Stripe
-STRIPE_API_KEY = get_stripe_api_key()
-STRIPE_WEBHOOK_SECRET = get_stripe_webhook_secret()
+STRIPE_API_KEY = get_secret('stripe_api_key')
+STRIPE_WEBHOOK_SECRET = get_secret('stripe_webhook_secret')
+
+# Ory
+ORY_API_KEY = get_secret('ory_api_key')
 
 # Postgres
 DATABASES = {
@@ -48,8 +34,8 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME'),
         'HOST': os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT'),
-        'USER': get_db_user(),
-        'PASSWORD': get_db_password(),
+        'USER': get_secret('postgres_user'),
+        'PASSWORD': get_secret('postgres_password'),
     }
 }
 
@@ -58,13 +44,10 @@ DATABASES = {
 # -------------------------------------------------------------- #
 
 DEFAULT_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.sites',
-    'django.contrib.staticfiles',
 ]
 THIRD_PARTY_APPS = [
     'sslserver',
@@ -72,8 +55,7 @@ THIRD_PARTY_APPS = [
     'corsheaders'
 ]
 LOCAL_APPS = [
-    'core.apps.CoreConfig',
-    'spending.apps.SpendingConfig',
+    'core.apps.CoreConfig'
 ]
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -81,10 +63,8 @@ INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 DEFAULT_MIDDLE_WARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware'
 ]
 THIRD_PARTY_MIDDLE_WARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -95,29 +75,6 @@ MIDDLEWARE = DEFAULT_MIDDLE_WARE + THIRD_PARTY_MIDDLE_WARE + LOCAL_MIDDLE_WARE
 
 ROOT_URLCONF = 'ledgetback.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'core' / 'templates',
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-STATIC_URL = '/static/'
-
 WSGI_APPLICATION = 'ledgetback.wsgi.application'
 
 
@@ -125,34 +82,6 @@ WSGI_APPLICATION = 'ledgetback.wsgi.application'
 #                 Authentication Settings                          #
 # ---------------------------------------------------------------- #
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-    ),
-}
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', # noqa
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', # noqa
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', # noqa
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', # noqa
-    },
-]
-
-PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.Argon2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
-    'django.contrib.auth.hashers.BCryptPasswordHasher'
-]
 
 AUTH_USER_MODEL = 'core.User'
 
@@ -160,8 +89,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 # Internationalization

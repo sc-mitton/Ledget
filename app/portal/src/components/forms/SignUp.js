@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, createContext, useState, useRef } from "react"
 
-import { Link, useSearchParams, useNavigate } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
@@ -15,8 +15,7 @@ import { FormError } from "../widgets/Widgets"
 import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/Flow"
 import { WindowLoadingBar } from "../widgets/Widgets"
 import { PasswordInput } from "./CustomInputs"
-import ledgetapi from "../../api/axios"
-import AuthContext from "../../context/AuthContext"
+import WebAuthnModal from "./modals/WebAuthn"
 
 // Context for user info
 const userInfoContext = createContext({})
@@ -158,15 +157,17 @@ const AuthSelectionWindow = () => {
         resolver: yupResolver(passwordSchema)
     })
     const [pwdVisible, setPwdVisible] = useState(false)
+    const [webAuthnModalVisible, setWebAuthnModalVisible] = useState(false)
 
     const onSubmit = (e) => {
         e.preventDefault()
         handleSubmit(() => { })()
-            .then(submit(e))
+        // .then(submit(e))
     }
 
     return (
         <>
+            <WebAuthnModal visible={webAuthnModalVisible} setVisible={setWebAuthnModalVisible} />
             <div className="app-logo" >
                 <img src={logo} alt="Ledget" />
             </div>
@@ -209,21 +210,27 @@ const AuthSelectionWindow = () => {
                     name="method"
                     value="password"
                     type="submit"
-                    aria-label="Sign in"
+                    aria-label="Create your account"
                 >
                     Create
                 </button>
                 <div className="passwordless-options">
                     <div className="passwordless-options-header" >
                         Passwordless
-                        <div className="help-icon">
+                        <button
+                            className="help-icon"
+                            onClick={() => setWebAuthnModalVisible(true)}
+                            aria-label="Learn more about passwordless options"
+                            type="button"
+                        >
                             <Help />
-                        </div>
+                        </button>
                     </div>
                     <div className="passwordless-options-container">
                         <button
                             name="passwordless-options"
                             type="submit"
+                            aria-label="Sign in with passwordless options"
                         >
                             <img src={webAuthn} id="webauthn-icon" alt='webauthn icon' />
                         </button>

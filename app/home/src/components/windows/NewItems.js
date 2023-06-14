@@ -69,7 +69,7 @@ const NewItemsStack = () => {
         let r = 230 - (index ** 2 * 18)
 
         if (expanded || index === 0) {
-            return "linear-gradient(0deg, rgba(240, 240, 240, .75) 0%,  \
+            return "linear-gradient(0deg, rgba(240, 240, 240, .85) 0%,  \
                     rgba(240, 240, 240, 1)25%, rgba(240, 240, 240, 1)"
         } else {
             return `linear-gradient(0deg, rgba(${r}, ${r}, ${r}, .75) 0%,

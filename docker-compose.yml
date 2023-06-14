@@ -66,9 +66,9 @@ services:
     volumes:
       - ./back/ledgetback:/ledgetback
       - ./certs-back:/etc/ssl/certs
-      - ./logs:/ledgetback/logs
     secrets:
       - stripe_webhook_secret
+      - ory_api_key
       - stripe_api_key
       - django_secret_key
       - postgres_user
@@ -113,15 +113,12 @@ services:
     env_file:
       - ./secrets/.env.ory
     command: >
-      sh -c "ory tunnel --dev --project reverent-lewin-bqqp1o2zws https://localhost:3000"
-    secrets:
-      - ory_email
-      - ory_password
+      sh -c "ory tunnel --dev --project reverent-lewin-bqqp1o2zws https://localhost:3001"
   stripe-listener:
     image: stripe/stripe-cli
     env_file:
       - ./secrets/.env.stripe
-    command: listen --forward-to https://ledget.app:8000/hook/stripe --skip-verify
+    command: listen --forward-to https://ledget.app/hooks/stripe --skip-verify
 
 volumes:
   dev-db-data:
@@ -139,13 +136,13 @@ secrets:
     file: ./secrets/stripe_api_key
   django_secret_key:
     file: ./secrets/django_secret_key
-  ory_email:
-    file: ./secrets/ory_email
-  ory_password:
-    file: ./secrets/ory_password
   localhost_crt:
     file: ./certs/localhost.crt
   localhost_key:
     file: ./certs/localhost.key
   ca_pem:
     file: ./certs/ledgetCA.pem
+  ory_api_key:
+    file: ./secrets/ory_api_key
+  ory_key:
+    file: ./secrets/.env.ory

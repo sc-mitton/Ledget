@@ -1,6 +1,5 @@
 env
 *__pycache__
-.flake8
 **/certs*
 .vscode
 inspiration

@@ -14,6 +14,16 @@ export const sdk = new FrontendApi(
     })
 )
 
+const getErrorMessage = (errorMessages) => {
+    if (errorMessages[0].text.includes("credentials are invalid")) {
+        return 'Wrong email or password.'
+    } else if (errorMessages[0].text.includes("An account with the same identifier")) {
+        return 'That email is already taken'
+    } else {
+        return 'Something went wrong'
+    }
+}
+
 /**
  * @param getFlow - Should be function to load a flow make it visible (Login.getFlow)
  * @param setFlow - Update flow data to view (Login.setFlow)
@@ -36,13 +46,7 @@ export const sdkError = (
 
             switch (error.response?.status) {
                 case 400: {
-                    if (errorMessages && errorMessages[0].text.includes("credentials are invalid")) {
-                        setResponseError('Wrong email or password.')
-                        return Promise.resolve();
-                    } else if (errorMessages && errorMessages[0].text.includes("An account with the same identifier")) {
-                        setResponseError('That email is already taken')
-                        return Promise.resolve();
-                    } else if (errorMessages && errorMessages[0].text.includes("valid session was detected")) {
+                    if (errorMessages[0].text?.includes("valid session was detected")) {
                         console.warn(
                             "sdkError 400: `session_already_available`. Navigate to /"
                         );
@@ -56,7 +60,8 @@ export const sdkError = (
                         setFlow(responseData);
                         return Promise.resolve();
                     }
-                    break;
+                    setResponseError(getErrorMessage(errorMessages))
+                    return Promise.resolve();
                 }
                 case 401: {
                     console.warn("sdkError 401: Navigate to /login");
@@ -174,6 +179,11 @@ export const sdkError = (
                             return Promise.resolve()
                         }
                     }
+                }
+                default: {
+                    setResponseError('Something went wrong. Please try again later.')
+                    navigate(defaultNav, { replace: true })
+                    return Promise.resolve();
                 }
             }
 

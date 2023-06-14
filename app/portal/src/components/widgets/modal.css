@@ -1,0 +1,47 @@
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(49, 49, 49, 0.85);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    border-radius: 12px;
+    padding: 28px;
+    z-index: 1001;
+    position: relative;
+    background-color: var(--window);
+}
+
+.exit-button {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    padding: 6px;
+    z-index: 1002;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.exit-button:hover {
+    background-color: var(--social-button-hover);
+}
+
+
+@keyframes faid {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

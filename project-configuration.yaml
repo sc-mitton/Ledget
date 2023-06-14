@@ -87,7 +87,7 @@ selfservice:
         hooks:
           - hook: web_hook
             config:
-              url: https://ledget.app/api/v1/ory
+              url: https://2546-72-186-110-153.ngrok.io/hooks/ory
               method: POST
               body: base64://ZnVuY3Rpb24oY3R4KSB7IHVzZXJfaWQ6IGN0eC5pZGVudGl0eS5pZCB9
               response:
@@ -97,7 +97,7 @@ selfservice:
                 type: api_key
                 config:
                   name: Authorization
-                  value: "Api-Key <API_KEY>"
+                  value: "Api-Key ldg_key_TtID6VH26LxojJmoQdlnYu16yjwMWOK_RX615crDFyD2jy5AI6CbxOi5qBTonOVMx7mZmF4g6g9_3kTeplahEXO5jy7LC_hYLYo"
                   in: header
         oidc:
           hooks:
