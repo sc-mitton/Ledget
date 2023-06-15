@@ -16,7 +16,7 @@ function LoginFlowContextProvider({ children }) {
     const [responseError, setResponseError] = useState('')
     const [searchParams, setSearchParams] = useSearchParams()
     const [authenticating, setAuthenticating] = useState(false)
-    const { setUser } = React.useContext(AuthContext)
+    const { user, setUser } = React.useContext(AuthContext)
 
     const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
 
@@ -80,7 +80,7 @@ function LoginFlowContextProvider({ children }) {
         event.preventDefault()
         // map the entire form data to JSON for the request body
         setAuthenticating(true)
-        const form = event.currentTarget
+        const form = event.target
         const formData = new FormData(form)
         let body = Object.fromEntries(formData)
 
@@ -104,9 +104,15 @@ function LoginFlowContextProvider({ children }) {
                 updateLoginFlowBody: body,
             })
             .then((response) => {
-                setUser(response.data.identity.traits)
-                // if remember is checked, store the user in local storage for future logins
-                body.remember && localStorage.setItem('user', JSON.stringify(response.data.identity.traits))
+                setUser(response.data.session.identity?.traits)
+                // if remember is checked, store the user in local storage
+                // for future logins
+                console.log(body)
+                console.log(response.data.session.identity?.traits)
+                body.remember == 'true' && localStorage.setItem(
+                    'user',
+                    JSON.stringify(response.data.session.identity?.traits)
+                )
                 // if not a subscriber, redirect to subscription page
                 // else navigate to app
             })
@@ -190,7 +196,7 @@ function RegisterFlowContextProvider({ children }) {
     const submit = (event) => {
         // map the entire form data to JSON for the request body
         setRegistering(true)
-        const form = event.currentTarget
+        const form = event.target
         const formData = new FormData(form)
         let body = Object.fromEntries(formData)
 
@@ -212,9 +218,8 @@ function RegisterFlowContextProvider({ children }) {
         sdk
             .updateRegistrationFlow({ flow: flow.id, updateRegistrationFlowBody: body })
             .then((response) => {
-                console.log(response)
                 setUser(response.data.identity.traits)
-                sessionStorage.setItem('user', JSON.stringify(response.data.identity.traits))
+                navigate('/checkout')
             })
             .catch(sdkErrorHandler)
             .finally(() => setRegistering(false))

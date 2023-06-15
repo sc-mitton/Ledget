@@ -144,8 +144,7 @@ input[type="radio"]:checked+label {
 
 #checkout-window {
     width: 90%;
-    max-width: 550px;
-    margin: 0 auto;
+    max-width: 500px;
     padding: 0;
     background: linear-gradient(to bottom, var(--window) 70%, #f1f1f1 100%);
 }

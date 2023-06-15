@@ -11,25 +11,10 @@
     height: 40px;
 }
 
-#portal {
-    position: fixed;
-    width: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0 auto;
-}
-
-.window-container {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    transform: translate(0, 0);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.page {
+    display: grid;
+    place-items: center;
+    height: 100vh;
 }
 
 .window {
@@ -40,7 +25,6 @@
     width: 40%;
     max-width: 325px;
     padding: 32px 40px;
-    transform: translate(-50%, -50%);
     position: relative;
 }
 

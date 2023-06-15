@@ -39,9 +39,9 @@
     --border-bottom-gray: #b9b9b9;
 
     /* Drop Shadows */
-    --accessible-focus-drop-shadow: 0 0 .4px 1.5px var(--light-blue);
-    --button-focus-drop-shadow: 0 0 .5px 1.5px var(--light-blue);
-    --input-focus-drop-shadow: 0 0 .5px 1.5px var(--light-blue);
+    --accessible-focus-drop-shadow: 0 0 .4px 1.7px var(--light-blue);
+    --button-focus-drop-shadow: 0 0 .5px 1.7px var(--light-blue);
+    --input-focus-drop-shadow: 0 0 .5px 1.7px var(--light-blue);
 
     /* Subscription Radios */
     --inactive-gray: #4c4c4c;

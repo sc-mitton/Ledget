@@ -136,7 +136,7 @@ const AuthenticationWindow = () => {
         if (pwdRef.current.value === '') {
             pwdRef.current.focus()
         } else {
-            submit()
+            submit(e)
         }
     }
 
@@ -169,7 +169,7 @@ const AuthenticationWindow = () => {
                 <input
                     type="hidden"
                     name="identifier"
-                    value={email || ''}
+                    value={email.value || ''}
                 />
                 {email?.remember &&
                     <input
@@ -184,7 +184,6 @@ const AuthenticationWindow = () => {
                     name="method"
                     value="password"
                     type="submit"
-                    aria-label="Sign in"
                 >
                     Sign In
                 </button>

@@ -114,7 +114,7 @@ input[type=password]:not(:placeholder-shown) {
 
 .password-input:focus-within {
     outline: none;
-    box-shadow: 0 0 1px 1px var(--light-blue);
+    box-shadow: var(--input-focus-drop-shadow);
     box-sizing: border-box;
 }
 
@@ -138,6 +138,7 @@ input[type=password]:not(:placeholder-shown) {
     border: none;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .confirm {
@@ -152,6 +153,5 @@ input[type=password]:not(:placeholder-shown) {
 
 .select-container {
     background-color: var(--input-color);
-    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     border-radius: 4px;
 }

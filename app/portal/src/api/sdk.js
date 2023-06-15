@@ -14,16 +14,6 @@ export const sdk = new FrontendApi(
     })
 )
 
-const getErrorMessage = (errorMessages) => {
-    if (errorMessages[0].text.includes("credentials are invalid")) {
-        return 'Wrong email or password.'
-    } else if (errorMessages[0].text.includes("An account with the same identifier")) {
-        return 'That email is already taken'
-    } else {
-        return 'Something went wrong'
-    }
-}
-
 /**
  * @param getFlow - Should be function to load a flow make it visible (Login.getFlow)
  * @param setFlow - Update flow data to view (Login.setFlow)
@@ -49,18 +39,17 @@ export const sdkError = (
                     if (errorMessages[0].text?.includes("valid session was detected")) {
                         console.warn(
                             "sdkError 400: `session_already_available`. Navigate to /"
-                        );
+                        )
                         navigate("/", { replace: true });
-                        return Promise.resolve();
-                    }
-                    if (setFlow !== undefined) {
+                    } else if (errorMessages[0].text.includes("credentials are invalid")) {
+                        setResponseError('Wrong email or password.')
+                    } else if (errorMessages[0].text.includes("An account with the same identifier")) {
+                        setResponseError('That email is already taken')
+                    } else if (setFlow !== undefined) {
                         // the request could contain invalid parameters which would set error messages in the flow
                         console.warn("sdkError 400: update flow data");
-                        // console.log(responseData)
                         setFlow(responseData);
-                        return Promise.resolve();
                     }
-                    setResponseError(getErrorMessage(errorMessages))
                     return Promise.resolve();
                 }
                 case 401: {
@@ -181,6 +170,7 @@ export const sdkError = (
                     }
                 }
                 default: {
+                    console.warn("error", error)
                     setResponseError('Something went wrong. Please try again later.')
                     navigate(defaultNav, { replace: true })
                     return Promise.resolve();

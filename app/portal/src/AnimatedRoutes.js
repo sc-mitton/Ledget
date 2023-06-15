@@ -16,7 +16,7 @@ function AnimatedRoutes() {
         <>
             <AnimatePresence mode="wait">
                 <motion.div
-                    className="window-container"
+                    className='page'
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -28,8 +28,8 @@ function AnimatedRoutes() {
                     <Routes location={location} key={location.pathname} >
                         <Route exact path="/login" element={<LoginWindow />} />
                         <Route path="/register" element={<SignUpWindow />} />
+                        <Route path="/checkout" element={<Checkout />} />
                         <Route path="/" element={<PrivateRoute />}>
-                            <Route path="/checkout" element={<Checkout />} />
                             {/* Change Password page */}
                         </Route>
                         {/* Forgot password page */}

@@ -447,7 +447,7 @@ function Checkout({ prices }) {
     }
 
     return (
-        <div className='window' id='checkout-window'>
+        <>
             <Prices prices={prices} />
             <div id="checkout-container">
                 <Form id="billing-form" onSubmit={onSubmit} />
@@ -468,7 +468,7 @@ function Checkout({ prices }) {
             </div>
             <StripeFooter />
             <WindowLoadingBar visible={processing} />
-        </div>
+        </>
     )
 }
 
@@ -496,6 +496,8 @@ const AnimatedCheckout = () => {
             }
             {prices &&
                 <motion.div
+                    className="window"
+                    id="checkout-window"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}

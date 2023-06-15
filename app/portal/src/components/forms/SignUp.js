@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, createContext, useState, useRef } from "react"
 
-import { Link, useSearchParams } from "react-router-dom"
+import { Form, Link, useSearchParams } from "react-router-dom"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
@@ -49,7 +49,7 @@ const schema = yup.object().shape({
 function UserInfoForm() {
     // Form for user info
 
-    const { register, handleSubmit, formState: { errors }, trigger, setError }
+    const { register, handleSubmit, formState: { errors }, trigger }
         = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const { CsrfToken, responseError } = useContext(RegisterFlowContext)
     const { setUserInfo } = useContext(userInfoContext)
@@ -159,12 +159,6 @@ const AuthSelectionWindow = () => {
     const [pwdVisible, setPwdVisible] = useState(false)
     const [webAuthnModalVisible, setWebAuthnModalVisible] = useState(false)
 
-    const onSubmit = (e) => {
-        e.preventDefault()
-        handleSubmit(() => { })()
-        // .then(submit(e))
-    }
-
     return (
         <>
             <WebAuthnModal visible={webAuthnModalVisible} setVisible={setWebAuthnModalVisible} />
@@ -178,7 +172,7 @@ const AuthSelectionWindow = () => {
             <form
                 action={flow.ui.action}
                 method={flow.ui.method}
-                onSubmit={onSubmit}
+                onSubmit={handleSubmit((data, e) => submit(e))}
                 id="authentication-form"
             >
                 {responseError && <FormError msg={responseError} />}
@@ -210,7 +204,6 @@ const AuthSelectionWindow = () => {
                     name="method"
                     value="password"
                     type="submit"
-                    aria-label="Create your account"
                 >
                     Create
                 </button>
