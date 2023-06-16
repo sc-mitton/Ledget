@@ -15,11 +15,16 @@ import { PasswordInput } from "./CustomInputs"
 import { Checkbox } from "./CustomInputs"
 import { FormError, WindowLoadingBar } from "../widgets/Widgets"
 import { LoginFlowContext, LoginFlowContextProvider } from "../../context/Flow"
+import WebAuthnModal from "./modals/WebAuthn"
 
 const emailContext = createContext({})
 
 const EmailContextProvider = ({ children }) => {
     const [email, setEmail] = useState(null)
+
+    useEffect(() => {
+        setEmail(JSON.parse(localStorage.getItem('loginEmail')))
+    }, [setEmail])
 
     return (
         <emailContext.Provider value={{ email, setEmail }}>
@@ -52,10 +57,12 @@ const EmailForm = () => {
                 if (emailRef.current.value === '') {
                     emailRef.current.focus()
                 } else {
-                    setEmail({
-                        value: emailRef.current.value,
-                        remember: rememberRef.current.checked
-                    })
+                    if (rememberRef.current.checked) {
+                        localStorage.setItem('loginEmail', JSON.stringify(emailRef.current.value))
+                    } else {
+                        localStorage.removeItem('loginEmail')
+                    }
+                    setEmail(emailRef.current.value)
                 }
             })}
             className="login-form"
@@ -126,6 +133,8 @@ const AuthenticationWindow = () => {
     const pwdRef = useRef()
     const { flow, submit, responseError, authenticating, CsrfToken } = useContext(LoginFlowContext)
     const { email, setEmail } = useContext(emailContext)
+    const initialEmailValue = useRef(email);
+    const [webAuthnModalVisible, setWebAuthnModalVisible] = useState(false)
 
     useEffect(() => {
         pwdRef.current.focus()
@@ -142,21 +151,22 @@ const AuthenticationWindow = () => {
 
     return (
         <>
+            <WebAuthnModal visible={webAuthnModalVisible} setVisible={setWebAuthnModalVisible} />
             <div className="app-logo" >
                 <img src={logo} alt="Ledget" />
             </div>
             <div id="email-container">
-                <span>{`${email?.value}`}</span>
+                <span>{`${initialEmailValue.current}`}</span>
                 <a
                     onClick={() => setEmail(null)}
                 >
                     change
                 </a>
             </div>
-            <WindowLoadingBar visible={authenticating} />
+            <WindowLoadingBar visible={authenticating || flow == null} />
             <form
-                action={flow.ui.action}
-                method={flow.ui.method}
+                action={flow?.ui.action}
+                method={flow?.ui.method}
                 onSubmit={handleSubmit}
                 id="authentication-form"
             >
@@ -169,15 +179,8 @@ const AuthenticationWindow = () => {
                 <input
                     type="hidden"
                     name="identifier"
-                    value={email.value || ''}
+                    value={email || ''}
                 />
-                {email?.remember &&
-                    <input
-                        type="hidden"
-                        name="remember"
-                        value={email?.remember}
-                    />
-                }
                 <button
                     className='charcoal-button'
                     id="sign-in"
@@ -190,9 +193,14 @@ const AuthenticationWindow = () => {
                 <div className="passwordless-options">
                     <div className="passwordless-options-header" >
                         Passwordless
-                        <div className="help-icon">
+                        <button
+                            className="help-icon"
+                            onClick={() => setWebAuthnModalVisible(true)}
+                            aria-label="Learn more about passwordless options"
+                            type="button"
+                        >
                             <Help />
-                        </div>
+                        </button>
                     </div>
                     <div className="passwordless-options-container">
                         <button
@@ -207,7 +215,6 @@ const AuthenticationWindow = () => {
         </>
     )
 }
-
 
 function LoginFlow() {
     const [loaded, setLoaded] = useState(false)
@@ -224,11 +231,9 @@ function LoginFlow() {
         const returnTo = searchParams.get("return_to")
         const aal2 = searchParams.get("aal2")
         // the flow already exists
-        if (flowId) {
-            getFlow(flowId).catch(createFlow) // if the flow has expired, we need to get a new one
-            return
-        }
-        createFlow()
+
+        // if the flow has expired, we need to get a new one
+        flowId ? getFlow(flowId).catch(createFlow) : createFlow()
     }, [])
 
     return (

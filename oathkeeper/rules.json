@@ -32,14 +32,20 @@
          }
       ],
       "authorizer": {
-         "handler": "allow"
+         "config": {
+            "headers": {
+               "Authorization": "Api-Key"
+            },
+            "remote": "https://ledget.app/hooks/ory/verification"
+         },
+         "handler": "remote"
       },
       "id": "ory_hook",
       "match": {
          "methods": [
             "POST"
          ],
-         "url": "https://ledget.app/api/v1/hooks/ory"
+         "url": "https://ledget.app/hooks/ory"
       },
       "mutators": [
          {
@@ -47,7 +53,7 @@
          }
       ],
       "upstream": {
-         "url": "https://ledget.app/api/v1/hooks/ory"
+         "url": "https://ledget.app/hooks/ory"
       }
    }
 ]

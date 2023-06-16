@@ -244,11 +244,8 @@ function SignUpFlow() {
         // we might redirect to this page after the flow is initialized,
         // so we check for the flowId in the URL
         const flowId = searchParams.get("flow")
-        if (flowId) {
-            getFlow(flowId).catch(createFlow) // Get new flow if it's expired
-            return
-        }
-        createFlow()
+        // Get new flow if it's expired
+        flowId ? getFlow(flowId).catch(createFlow) : createFlow()
     }, [])
 
     useEffect(() => { setLoaded(true) }, [])

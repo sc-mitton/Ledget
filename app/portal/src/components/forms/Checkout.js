@@ -17,7 +17,7 @@ import Star from '../../assets/icons/Star'
 import ledgetapi from '../../api/axios'
 import { CustomSelect } from './CustomInputs'
 import { states } from '../../assets/data/states'
-import { FormError } from "../widgets/Widgets"
+import { FormError, FormErrorTip } from "../widgets/Widgets"
 import usePrices from '../../api/hooks/usePrices'
 import { WindowLoadingBar } from '../widgets/Widgets'
 
@@ -31,7 +31,7 @@ let options = {
 
 const schema = object({
     name: string()
-        .required('Required')
+        .required()
         .test('two-words', 'Missing last name', (value) => {
             if (value) {
                 const words = value.trim().split(' ')
@@ -40,11 +40,11 @@ const schema = object({
             return true
         }),
     city: string()
-        .required("Required")
+        .required()
         .matches(/^[a-zA-Z ]+$/, 'Invalid city'),
-    state: string().required("Required"),
+    state: object().required(),
     zip: string()
-        .required("Required")
+        .required()
         .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
 
 })
@@ -113,154 +113,164 @@ const Prices = ({ prices }) => {
     )
 }
 
-const Form = ({ onSubmit, id }) => {
+const Card = ({ onComplete, hasError }) => {
+    let [cardFocus, setCardFocus] = useState(false)
 
-    const Billing = () => {
-        const { register, handleSubmit, formState: { errors }, trigger, control } =
-            useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
-
-        const hasError = (field) => {
-            return errors[field] ? true : false
-        }
-
-        return (
-            <>
-                <h3>Billing Info</h3>
-                <form onSubmit={handleSubmit(onSubmit)} className="checkout-form" id={id}>
-                    <div id="name-on-card-container" className='input-container'>
-                        <input
-                            type='text'
-                            id='name-on-card'
-                            name='name'
-                            placeholder='Name on card'
-                            {...register('name')}
-                            onBlur={(e) => {
-                                if (e.target.value) {
-                                    trigger("name")
-                                }
-                            }}
-                        />
-                    </div>
-                    <div id="name-on-card-error">
-                        {hasError('name') && <FormError msg={errors.name?.message} />}
-                    </div>
-                    <div id='location-inputs-container'>
-                        <div className='input-container' id='city-container'>
-                            <input
-                                type='text'
-                                id='city'
-                                name='city'
-                                placeholder='City'
-                                {...register('city')}
-                                onBlur={(e) => {
-                                    if (e.target.value) {
-                                        trigger("city")
-                                    }
-                                }}
-                            />
-                        </div>
-                        <div id="state-container">
-                            <Controller
-                                control={control}
-                                name='state'
-                                render={({ field }) => (
-                                    <CustomSelect
-                                        options={states}
-                                        placeholder="State"
-                                        unstyled={true}
-                                        maxMenuHeight={175}
-                                        value={field.value}
-                                        onBlur={(e) => {
-                                            if (e.target.value) {
-                                                trigger("state")
-                                            }
-                                        }}
-                                        onChange={field.onChange}
-                                    />
-                                )}
-                            />
-                        </div>
-                        <div className='input-container' id='zip-container'>
-                            <input
-                                type='text'
-                                id='zip'
-                                name='zip'
-                                placeholder='Zip'
-                                {...register('zip')}
-                                onBlur={(e) => {
-                                    if (e.target.value) {
-                                        trigger("zip")
-                                    }
-                                }}
-                            />
-                        </div>
-                    </div>
-                    {(hasError('city') || hasError('state') || hasError('zip')) &&
-                        <div id="location-input-errors">
-                            <div id="city-error">
-                                {hasError('city') && <FormError msg={errors.city?.message} />}
-                            </div>
-                            <div id="state-error">
-                                {hasError('state') && <FormError msg={errors.state?.message} />}
-                            </div>
-                            <div id="zip-error">
-                                {hasError('zip') && <FormError msg={errors.zip?.message} />}
-                            </div>
-                        </div>
-                    }
-                </form >
-            </>
-        )
-
-    }
-
-    const Card = () => {
-        let [cardFocus, setCardFocus] = useState(false)
-
-        const cardElementOptions = {
-            style: {
-                base: {
-                    fontFamily: "Source Sans Pro, sans-serif",
-                    color: '#242424',
-                    fontSmoothing: 'antialiased',
-                    fontSize: '16px',
-                    '::placeholder': {
-                        color: cardFocus ? '#6b9bf6' : '#767676',
-                    },
-                    iconColor: cardFocus ? '#0059ff' : '#242424',
-                    ':disabled': {
-                        color: '#767676',
-                        iconColor: '#767676'
-                    }
+    const cardElementOptions = {
+        style: {
+            base: {
+                fontFamily: "Source Sans Pro, sans-serif",
+                color: '#242424',
+                fontSmoothing: 'antialiased',
+                fontSize: '16px',
+                '::placeholder': {
+                    color: cardFocus ? '#6b9bf6' : '#767676',
                 },
-                invalid: {
-                    fontFamily: 'Source Sans Pro, sans-serif',
-                    color: '#f47788',
-                    iconColor: '#f47788'
+                iconColor: cardFocus ? '#0059ff' : '#242424',
+                ':disabled': {
+                    color: '#767676',
+                    iconColor: '#767676'
                 }
+            },
+            invalid: {
+                fontFamily: 'Source Sans Pro, sans-serif',
+                color: '#f47788',
+                iconColor: '#f47788'
             }
         }
-
-        return (
-            <>
-                <h3>Card</h3>
-                <div className={`card-container${cardFocus ? '-focused' : ''}`}>
-                    <CardElement
-                        onBlur={() => setCardFocus(false)}
-                        onFocus={() => setCardFocus(true)}
-                        options={cardElementOptions}
-                    />
-                </div>
-            </>
-        )
     }
 
     return (
         <>
-            <Billing />
-            <Card />
+            <h3>Card</h3>
+            <div className={`card-container${cardFocus ? '-focused' : ''}`}>
+                <CardElement
+                    onBlur={() => setCardFocus(false)}
+                    onFocus={() => setCardFocus(true)}
+                    onChange={(e) => onComplete(e.complete)}
+                    options={cardElementOptions}
+                />
+                {hasError && <FormErrorTip />}
+            </div>
         </>
     )
+}
+
+const Form = ({ onSubmit, id }) => {
+    const [paymentNotEnteredError, setPaymentNotEnteredError] = useState(false)
+    const [paymentEntered, setPaymentEntered] = useState(false)
+
+    const { register, handleSubmit, formState: { errors }, trigger, control } =
+        useForm({ resolver: yupResolver(schema), mode: 'onBlur', reValidateMode: 'onBlur' })
+
+    const submitBillingForm = (e) => {
+        e.preventDefault()
+        !paymentEntered && setPaymentNotEnteredError(true)
+        handleSubmit(
+            (data) => paymentEntered && onSubmit(data)
+        )(e)
+    }
+
+    const onPaymentComplete = (complete) => {
+        setPaymentEntered(complete)
+        setPaymentNotEnteredError(complete)
+    }
+
+    const hasSilentError = (field) => {
+        return errors[field] && errors[field]?.message.includes('required')
+    }
+
+    const hasErrorMsg = (field) => {
+        return errors[field]?.message && !errors[field]?.message.includes('required')
+    }
+
+    return (
+        <>
+            <h3>Billing Info</h3>
+            <form onSubmit={submitBillingForm} className="checkout-form" id={id}>
+                <div id="name-on-card-container" className='input-container'>
+                    <input
+                        type='text'
+                        id='name-on-card'
+                        name='name'
+                        placeholder='Name on card'
+                        {...register('name')}
+                        onBlur={(e) => {
+                            if (e.target.value) {
+                                trigger("name")
+                            }
+                        }}
+                    />
+                    {hasSilentError('name') && <FormErrorTip />}
+                </div>
+                <div id="name-on-card-error">
+                    {hasErrorMsg('name') && <FormError msg={errors.name.message} />}
+                </div>
+                <div id='location-inputs-container'>
+                    <div className='input-container' id='city-container'>
+                        <input
+                            type='text'
+                            id='city'
+                            name='city'
+                            placeholder='City'
+                            {...register('city')}
+                            onBlur={(e) => {
+                                if (e.target.value) {
+                                    trigger("city")
+                                }
+                            }}
+                        />
+                        {hasSilentError('city') && <FormErrorTip />}
+                    </div>
+                    <div id="state-container">
+                        <Controller
+                            control={control}
+                            name='state'
+                            render={({ field }) => (
+                                <CustomSelect
+                                    options={states}
+                                    placeholder="State"
+                                    maxMenuHeight={175}
+                                    field={field}
+                                />
+                            )}
+                        />
+                        {hasSilentError('state') && <FormErrorTip />}
+                    </div>
+                    <div className='input-container' id='zip-container'>
+                        <input
+                            type='text'
+                            id='zip'
+                            name='zip'
+                            placeholder='Zip'
+                            {...register('zip')}
+                            onBlur={(e) => {
+                                if (e.target.value) {
+                                    trigger("zip")
+                                }
+                            }}
+                        />
+                        {hasSilentError('zip') && <FormErrorTip />}
+                    </div>
+                </div>
+                {(hasErrorMsg('city') || hasErrorMsg('state') || hasErrorMsg('zip')) &&
+                    <div id="location-input-errors">
+                        <div id="city-error">
+                            {hasErrorMsg('city') && <FormError msg={errors.city?.message} />}
+                        </div>
+                        <div id="state-error">
+                            {hasErrorMsg('state') && <FormError msg={errors.state?.message} />}
+                        </div>
+                        <div id="zip-error">
+                            {hasErrorMsg('zip') && <FormError msg={errors.zip?.message} />}
+                        </div>
+                    </div>
+                }
+            </form >
+            <Card onComplete={onPaymentComplete} hasError={paymentNotEnteredError} />
+        </>
+    )
+
 }
 
 const OrderSummary = () => {
@@ -464,7 +474,7 @@ function Checkout({ prices }) {
                     </div>
                 }
                 <OrderSummary />
-                <SubmitButton />
+                <SubmitButton form={'billing-form'} />
             </div>
             <StripeFooter />
             <WindowLoadingBar visible={processing} />
@@ -494,7 +504,7 @@ const AnimatedCheckout = () => {
                     </div>
                 </motion.div>
             }
-            {prices &&
+            {prices && !error &&
                 <motion.div
                     className="window"
                     id="checkout-window"

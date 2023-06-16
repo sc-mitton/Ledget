@@ -58,6 +58,19 @@
 
 /* ------------------------------- Form Errors ------------------------------ */
 
+.error-tip {
+    position: absolute;
+    top: -8px;
+    right: -2px;
+    height: 12px;
+    width: 12px;
+}
+
+.error-tip-icon {
+    height: 1em;
+    animation: pop .22s ease;
+}
+
 .error img {
     height: 1em;
     margin-right: 8px;

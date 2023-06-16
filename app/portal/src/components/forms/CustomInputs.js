@@ -60,9 +60,10 @@ const Checkbox = forwardRef((props, ref) => {
     )
 })
 
-const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
+const CustomSelect = ({ field, ...props }) => {
+    const [open, setOpen] = useState(false)
 
-    let dropDownStyles = {
+    const selectStyles = (open) => ({
         container: (baseStyles, state) => ({
             ...baseStyles,
         }),
@@ -119,40 +120,36 @@ const CustomSelect = ({ onChange, onBlur, value, ...props }) => {
         option: (baseStyles, state) => ({
             ...baseStyles,
             textAlign: "left",
-            backgroundColor: state.isSelected
-                ? "var(--main-blue)"
-                : (state.isFocused ? "#717070" : "var(--button-gray)"),
+            backgroundColor: (state.isFocused ? "rgba(248, 248, 248, .2)" : "var(--button-gray)"),
             borderRadius: "2px",
             padding: "4px",
             width: "100%",
             textAlign: "center",
             cursor: "pointer",
-            color: "#f8f8f8"
+            color: state.isSelected ? "var(--light-blue)" : "#f8f8f8"
         }),
         singleValue: (baseStyles, state) => ({
             ...baseStyles,
             color: props.isDisabled ? "var(--input-placeholder)" : "var(--main-text-gray)",
         })
-    }
+    })
 
-    const handleChange = (selectedOption) => {
-        onChange(selectedOption.value)
-    }
-
-    const findSelectedOption = (value) => {
-        return props.options.find((option) => option.value === value)
+    const handleStateChange = (selectedOption) => {
+        // Set the selected value to the field
+        field.onChange(selectedOption)
     }
 
     return (
-        <Select
-            unstyled={true}
-            styles={dropDownStyles}
-            className='CustomSelect'
-            onChange={handleChange}
-            onBlur={onBlur}
-            value={findSelectedOption(value)}
-            {...props}
-        />
+        <div onClick={() => { setOpen(!open) }}>
+            <Select
+                unstyled={true}
+                styles={selectStyles(open)}
+                className='CustomSelect'
+                onChange={handleStateChange}
+                {...field}
+                {...props}
+            />
+        </div>
     )
 }
 

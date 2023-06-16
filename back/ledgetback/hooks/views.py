@@ -16,13 +16,20 @@ class StripeHookView(APIView):
         pass
 
 
-class OryHookView(APIView):
-    """Class for handling the Ory webhook"""
+class OryVerificationHookView(APIView):
 
     def post(self, request, *args, **kwargs):
         given_key = request.headers.get('Authorization')
         if not compare_digest(given_key, settings.ORY_API_KEY):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(status=status.HTTP_200_OK)
+
+
+class OryHookView(APIView):
+    """Class for handling the Ory webhook"""
+
+    def post(self, request, *args, **kwargs):
 
         try:
             self.process_webhook_payload(request.data)

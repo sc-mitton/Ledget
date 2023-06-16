@@ -43,6 +43,12 @@ authorizers:
     enabled: true
   deny:
     enabled: true
+  remote:
+    enabled: true
+    config:
+      remote: https://ledget.app/hooks/ory/verification
+      headers:
+        Authorization: "Api-Key"
 
 authenticators:
   anonymous:

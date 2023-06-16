@@ -51,15 +51,21 @@ local Base = {
   },
   {
     upstream: {
-      url: base_url + '/hooks/ory',
+      url: 'https://ledget.app/hooks/ory',
     },
     id: 'ory_hook',
     match: {
       methods: ['POST'],
-      url: base_url + '/hooks/ory',
+      url: 'https://ledget.app/hooks/ory',
     },
     authenticators: [anonymous_authenticator],
     mutators: [noop_mutator],
-    authorizer: allow_authorizer,
+    authorizer: {
+      handler: 'remote',
+      config: {
+        remote: 'https://ledget.app/hooks/ory/verification',
+        headers: { Authorization: 'Api-Key' },
+      },
+    },
   },
 ]

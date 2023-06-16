@@ -105,14 +105,6 @@ function LoginFlowContextProvider({ children }) {
             })
             .then((response) => {
                 setUser(response.data.session.identity?.traits)
-                // if remember is checked, store the user in local storage
-                // for future logins
-                console.log(body)
-                console.log(response.data.session.identity?.traits)
-                body.remember == 'true' && localStorage.setItem(
-                    'user',
-                    JSON.stringify(response.data.session.identity?.traits)
-                )
                 // if not a subscriber, redirect to subscription page
                 // else navigate to app
             })

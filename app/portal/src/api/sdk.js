@@ -1,9 +1,9 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback } from "react";
+import { useCallback } from "react"
 
-import { Configuration, FrontendApi } from "@ory/client";
-import { useNavigate } from "react-router-dom";
+import { Configuration, FrontendApi } from "@ory/client"
+import { useNavigate } from "react-router-dom"
 
 export const sdk = new FrontendApi(
     new Configuration({
@@ -27,62 +27,63 @@ export const sdkError = (
     setResponseError,
     fatalToDash = false,
 ) => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     return useCallback(
         (error) => {
-            const responseData = error.response?.data || {};
-            const errorMessages = responseData.ui?.messages.filter((m) => m.type === "error") || [];
+            const responseData = error.response?.data || {}
+            const errorMessages = responseData.ui?.messages.filter((m) => m.type === "error") || []
+            const error_id = responseData.error?.id
 
             switch (error.response?.status) {
                 case 400: {
-                    if (errorMessages[0].text?.includes("valid session was detected")) {
+                    if (error_id === "session_already_available") {
                         console.warn(
                             "sdkError 400: `session_already_available`. Navigate to /"
                         )
-                        navigate("/", { replace: true });
+                        navigate("/", { replace: true }) // TODO redirect to app instead of login
                     } else if (errorMessages[0].text.includes("credentials are invalid")) {
                         setResponseError('Wrong email or password.')
                     } else if (errorMessages[0].text.includes("An account with the same identifier")) {
                         setResponseError('That email is already taken')
                     } else if (setFlow !== undefined) {
                         // the request could contain invalid parameters which would set error messages in the flow
-                        console.warn("sdkError 400: update flow data");
-                        setFlow(responseData);
+                        console.warn("sdkError 400: update flow data")
+                        setFlow(responseData)
                     }
-                    return Promise.resolve();
+                    return Promise.resolve()
                 }
                 case 401: {
-                    console.warn("sdkError 401: Navigate to /login");
-                    navigate("/login", { replace: true });
-                    return Promise.resolve();
+                    console.warn("sdkError 401: Navigate to /login")
+                    navigate("/login", { replace: true })
+                    return Promise.resolve()
                 }
                 case 403: {
                     // the user might have a session, but would require 2FA (Two-Factor Authentication)
                     if (responseData.error?.id === "session_aal2_required") {
-                        navigate("/login?aal2=true", { replace: true });
-                        return Promise.resolve();
+                        navigate("/login?aal2=true", { replace: true })
+                        return Promise.resolve()
                     }
 
                     if (
                         responseData.error?.id === "session_refresh_required" &&
                         responseData.redirect_browser_to
                     ) {
-                        console.warn("sdkError 403: Redirect browser to");
-                        window.location = responseData.redirect_browser_to;
-                        return Promise.resolve();
+                        console.warn("sdkError 403: Redirect browser to")
+                        window.location = responseData.redirect_browser_to
+                        return Promise.resolve()
                     }
-                    break;
+                    break
                 }
                 case 404: {
                     if (defaultNav !== undefined) {
-                        console.warn("sdkError 404: Navigate to Error");
+                        console.warn("sdkError 404: Navigate to Error")
                         const errorMsg = {
                             data: error.response?.data || error,
                             status: error.response?.status,
                             statusText: error.response?.statusText,
                             url: window.location.href,
-                        };
+                        }
 
                         navigate(
                             `/error?error=${encodeURIComponent(
@@ -91,10 +92,10 @@ export const sdkError = (
                             {
                                 replace: true,
                             }
-                        );
-                        return Promise.resolve();
+                        )
+                        return Promise.resolve()
                     }
-                    break;
+                    break
                 }
                 case 410: {
                     if (getFlow !== undefined && responseData.use_flow_id !== undefined) {
@@ -173,7 +174,7 @@ export const sdkError = (
                     console.warn("error", error)
                     setResponseError('Something went wrong. Please try again later.')
                     navigate(defaultNav, { replace: true })
-                    return Promise.resolve();
+                    return Promise.resolve()
                 }
             }
 

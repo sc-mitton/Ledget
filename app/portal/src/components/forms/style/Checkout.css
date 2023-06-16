@@ -197,11 +197,17 @@ input[type="radio"]:checked+label {
     flex: 1;
 }
 
-#state-container,
 #state-error {
     margin: 0 8px;
     width: 25%;
     min-width: 75px;
+}
+
+#state-container {
+    margin: 0 8px;
+    width: 25%;
+    min-width: 75px;
+    position: relative;
 }
 
 #zip-container,
@@ -229,6 +235,7 @@ input[type="radio"]:checked+label {
     padding: 16px 16px;
     margin: 6px 0;
     box-sizing: border-box;
+    position: relative;
 }
 
 .card-container-focused {
@@ -239,6 +246,7 @@ input[type="radio"]:checked+label {
     padding: 16px 16px;
     margin: 6px 0;
     box-sizing: border-box;
+    position: relative;
 }
 
 #payment-error {
