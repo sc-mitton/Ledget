@@ -1,44 +1,124 @@
-from secrets import compare_digest
+import logging
+import threading
+import time
 
-from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.status import (
+    HTTP_400_BAD_REQUEST,
+    HTTP_200_OK,
+)
 from django.contrib.auth import get_user_model
 from django.db.transaction import atomic
+from django.conf import settings
+import stripe
+
+from core.models import Customer
+from hooks.decorators import ory_api_key_auth
+
+stripe_logger = logging.getLogger('core.stripe')
+stripe.api_key = settings.STRIPE_API_KEY
+stripe_webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 
 
-# Create your views here.
 class StripeHookView(APIView):
     """Class for handling the Stripe webhook"""
 
     def post(self, request, *args, **kwargs):
-        pass
 
+        payload = request.body
+        sig_header = request.META['HTTP_STRIPE_SIGNATURE']
 
-class OryVerificationHookView(APIView):
-
-    def post(self, request, *args, **kwargs):
-        given_key = request.headers.get('Authorization')
-        if not compare_digest(given_key, settings.ORY_API_KEY):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        event = None
+        try:
+            event = stripe.Webhook.construct_event(
+                payload, sig_header, stripe_webhook_secret
+            )
+        except stripe.error.SignatureVerificationError as e:
+            print('⚠️  Webhook signature verification failed.' + str(e))
+            response = Response(status=HTTP_400_BAD_REQUEST)
+        except ValueError as e:
+            print('⚠️  Invalid payload' + str(e))
+            response = Response(status=HTTP_400_BAD_REQUEST)
         else:
-            return Response(status=status.HTTP_200_OK)
+            response = Response(status=HTTP_200_OK)
+
+        # Handle the event
+        if event:
+            t = threading.Thread(
+                target=self.dispatch_event,
+                args=(event,)
+            )
+            t.start()
+
+        return response
+
+    def dispatch_event(self, event):
+
+        event_type = event.type.replace('.', '_')
+        handler = getattr(self, f"handle_{event_type}", None)
+        if not handler:
+            return
+
+        for i in range(3):
+            try:
+                handler(event)
+                break
+            except Exception as e:
+                stripe_logger.error(
+                    f"⚠️ Attempt {i} for {event_type} handler: {e}"
+                )
+                time.sleep(1)
+
+    def handle_customer_created(self, event):
+        """Create corresponding customer in our database."""
+        object = event.data.object
+        user = get_user_model().objects.filter(email=object.email).first()
+        customer = Customer.objects.create(
+            user=user,
+            id=object.id,
+        )
+        customer.save()
+
+    # Setup Intent handlers
+    def handle_setup_intent_succeeded(self, event):
+        """Provision the service for the customer."""
+        # TODO
+
+        customer = Customer.objects.get(id=event.data.object.customer)
+        customer.save()
+
+    # Delete Handlers
+    def handle_customer_deleted(self, event):
+        """Delete the customer in the db."""
+        try:
+            customer = Customer.objects.get(id=event.data.object.id)
+            customer.delete()
+        except Customer.DoesNotExist:
+            stripe_logger.error(
+                f"⚠️ Can't delete customer: {event.data.object.id}, "
+                "does not exist."
+            )
 
 
 class OryHookView(APIView):
     """Class for handling the Ory webhook"""
 
+    # @ory_api_key_auth
     def post(self, request, *args, **kwargs):
+        print('Hello World')
+        # try:
+        #     self.process_webhook_payload(request.data)
+        # except Exception as e:
+        #     return Response(data={'error': str(e)},
+        #                     status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            self.process_webhook_payload(request.data)
-        except Exception as e:
-            return Response(error=str(e), status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_200_OK)
 
     @atomic
     def process_webhook_payload(self, payload):
-        # create user in the database
+
         user = get_user_model().objects.create_user(
             id=payload['id'],
         )

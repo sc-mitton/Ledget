@@ -6,5 +6,6 @@ from .views import (
 
 urlpatterns = [
     path('prices', PriceView.as_view(), name='prices'),
-    path('subscription', SubscriptionView.as_view(), name='subscription'),
+    path('user/<str:user_id>/subscription',
+         SubscriptionView.as_view(), name='subscription'),
 ]

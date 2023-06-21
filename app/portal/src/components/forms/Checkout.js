@@ -161,7 +161,7 @@ const Form = ({ onSubmit, id }) => {
     const [paymentEntered, setPaymentEntered] = useState(false)
 
     const { register, handleSubmit, formState: { errors }, trigger, control } =
-        useForm({ resolver: yupResolver(schema), mode: 'onBlur', reValidateMode: 'onBlur' })
+        useForm({ resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
 
     const submitBillingForm = (e) => {
         e.preventDefault()
@@ -176,7 +176,7 @@ const Form = ({ onSubmit, id }) => {
         setPaymentNotEnteredError(complete)
     }
 
-    const hasSilentError = (field) => {
+    const hasRequiredError = (field) => {
         return errors[field] && errors[field]?.message.includes('required')
     }
 
@@ -201,7 +201,7 @@ const Form = ({ onSubmit, id }) => {
                             }
                         }}
                     />
-                    {hasSilentError('name') && <FormErrorTip />}
+                    {hasRequiredError('name') && <FormErrorTip />}
                 </div>
                 <div id="name-on-card-error">
                     {hasErrorMsg('name') && <FormError msg={errors.name.message} />}
@@ -220,7 +220,7 @@ const Form = ({ onSubmit, id }) => {
                                 }
                             }}
                         />
-                        {hasSilentError('city') && <FormErrorTip />}
+                        {hasRequiredError('city') && <FormErrorTip />}
                     </div>
                     <div id="state-container">
                         <Controller
@@ -235,7 +235,7 @@ const Form = ({ onSubmit, id }) => {
                                 />
                             )}
                         />
-                        {hasSilentError('state') && <FormErrorTip />}
+                        {hasRequiredError('state') && <FormErrorTip />}
                     </div>
                     <div className='input-container' id='zip-container'>
                         <input
@@ -250,7 +250,7 @@ const Form = ({ onSubmit, id }) => {
                                 }
                             }}
                         />
-                        {hasSilentError('zip') && <FormErrorTip />}
+                        {hasRequiredError('zip') && <FormErrorTip />}
                     </div>
                 </div>
                 {(hasErrorMsg('city') || hasErrorMsg('state') || hasErrorMsg('zip')) &&
@@ -340,36 +340,12 @@ function Checkout({ prices }) {
     // 1. post request to backend to create customer -> await 201 response
     // 2. post request to backend to create subscription -> which returns client secret
     // 3. confirm card payment with client secret
-    // 4. configure backend webhook for stripe to listen to confirmed payment
+    // 4. configure backend webhook for stripe to listen to confirmed payment & update user's subscription status
 
     // const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem("clientSecret")))
     // const isCustomerRef = useRef(JSON.parse(sessionStorage.getItem("user")).is_customer)
     const clientSecretRef = useRef('')
     const isCustomerRef = useRef(false)
-
-    const extractCustomerData = (data) => {
-        let payload = {}
-        payload['first_name'] = data.name.split(' ')[0]
-        payload['last_name'] = data.name.split(' ')[1]
-        payload['city'] = data.city
-        payload['state'] = data.state
-        payload['postal_code'] = data.zip
-
-        return payload
-    }
-
-    const createCustomer = async (payload) => {
-        const response = await ledgetapi.post('customer', payload)
-
-        if (response.status === 200) {
-            isCustomerRef.current = true
-            let user = JSON.parse(sessionStorage.getItem("user"))
-            user.is_customer = true
-            sessionStorage.setItem("user", JSON.stringify(user))
-        } else {
-            setErrMsg('Hmmm... something went wrong. Please try again.')
-        }
-    }
 
     const createSubscription = async () => {
         const { price } = useContext(PriceContext)
@@ -414,9 +390,6 @@ function Checkout({ prices }) {
     const onSubmit = async (data) => {
         setProcessing(true)
         try {
-            if (!isCustomerRef.current) {
-                await createCustomer(extractCustomerData(data))
-            }
             if (!clientSecretRef.current) {
                 await createSubscription()
             }

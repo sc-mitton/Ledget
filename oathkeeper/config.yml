@@ -8,6 +8,20 @@ access_rules:
   repositories:
     - file:///rules.json
 
+authorizers:
+  allow:
+    enabled: true
+  deny:
+    enabled: true
+
+
+authenticators:
+  anonymous:
+    enabled: true
+    config:
+      subject: guest
+
+
 errors:
   fallback:
     - json
@@ -37,21 +51,3 @@ mutators:
     config:
       issuer_url: http://localhost:4455/
       jwks_url: file:///jwks.json
-
-authorizers:
-  allow:
-    enabled: true
-  deny:
-    enabled: true
-  remote:
-    enabled: true
-    config:
-      remote: https://ledget.app/hooks/ory/verification
-      headers:
-        Authorization: "Api-Key"
-
-authenticators:
-  anonymous:
-    enabled: true
-    config:
-      subject: guest

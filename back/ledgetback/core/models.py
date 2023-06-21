@@ -27,7 +27,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    is_staff = models.BooleanField(default=True)
     account_flag = models.CharField(
         max_length=20,
         choices=ACCOUNT_FLAG_CHOICES,
@@ -39,14 +38,31 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'id'
 
     def __str__(self):
-        return self.email
+        return self.id
 
     @property
     def is_customer(self):
         return hasattr(self, 'customer')
 
+    @property
+    def subscription_status(self):
+        if self.is_customer:
+            return self.customer.subscription_status
+        return None
+
 
 class Customer(models.Model):
+    status_choices = [
+        ('payment_failed', 'payment_failed'),
+        ('active', 'active'),
+        ('paused', 'paused'),
+    ]
+    # Canceled is not an option, when this happens, the data is
+    # deleted in the db while stripe and other services keep
+    # necessary data for analytics purposes
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    subscription_status = models.CharField(max_length=255, blank=True)
-    customer_id = models.CharField(max_length=255, blank=True)
+    id = models.CharField(max_length=255, blank=True, primary_key=True)
+    subscription_status = models.CharField(
+        choices=status_choices, max_length=20)
+    provisioned_until = models.IntegerField(default=0)

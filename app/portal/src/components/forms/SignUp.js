@@ -11,7 +11,7 @@ import logo from "../../assets/images/logo.svg"
 import Help from "../../assets/icons/Help"
 import webAuthn from "../../assets/icons/webAuthn.svg"
 import SocialAuth from "./SocialAuth"
-import { FormError } from "../widgets/Widgets"
+import { FormError, FormErrorTip } from "../widgets/Widgets"
 import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/Flow"
 import { WindowLoadingBar } from "../widgets/Widgets"
 import { PasswordInput } from "./CustomInputs"
@@ -32,7 +32,7 @@ const UserInfoContextProvider = ({ children }) => {
 // Schema for yup form validation
 const schema = yup.object().shape({
     name: yup.string()
-        .required('Please enter your name')
+        .required()
         .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, 'Please enter a valid name')
         .test('two-words', 'Missing last name', (value) => {
             if (value) {
@@ -42,20 +42,24 @@ const schema = yup.object().shape({
             return true
         }),
     email: yup.string()
-        .email('Email is invalid')
-        .required('Please enter your email address'),
+        .required()
+        .email('Email is invalid'),
 })
 
 function UserInfoForm() {
     // Form for user info
 
     const { register, handleSubmit, formState: { errors }, trigger }
-        = useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
+        = useForm({ resolver: yupResolver(schema), mode: 'onSubmt', reValidateMode: 'onBlur' })
     const { CsrfToken, responseError } = useContext(RegisterFlowContext)
     const { setUserInfo } = useContext(userInfoContext)
 
-    const hasError = (field) => {
-        return errors[field] ? true : false
+    const hasErrorMsg = (field) => {
+        return errors[field]?.message && !errors[field]?.message.includes('required')
+    }
+
+    const hasRequiredError = (field) => {
+        return errors[field] && errors[field]?.message.includes('required')
     }
 
     const submit = (data) => {
@@ -77,8 +81,9 @@ function UserInfoForm() {
                         }
                     }}
                 />
+                {hasRequiredError('name') && <FormErrorTip />}
             </div>
-            {hasError('name') && <FormError msg={errors.name?.message} />}
+            {hasErrorMsg('name') && <FormError msg={errors.name?.message} />}
             <div className="input-container">
                 <input
                     id="email"
@@ -92,9 +97,10 @@ function UserInfoForm() {
                         }
                     }}
                 />
+                {hasRequiredError('email') && <FormErrorTip />}
             </div>
             <CsrfToken />
-            {hasError('email') &&
+            {hasErrorMsg('email') &&
                 <div id="signup-error-container">
                     <FormError msg={errors.email?.message} />
                 </div>

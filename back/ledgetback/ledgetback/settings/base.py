@@ -55,7 +55,8 @@ THIRD_PARTY_APPS = [
     'corsheaders'
 ]
 LOCAL_APPS = [
-    'core.apps.CoreConfig'
+    'core.apps.CoreConfig',
+    'hooks.apps.HooksConfig'
 ]
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
