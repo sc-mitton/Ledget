@@ -30,8 +30,6 @@ function AnimatedRoutes() {
                         <Route path="/register" element={<SignUpWindow />} />
                         <Route path="/" element={<PrivateRoute />}>
                             <Route path="/checkout" element={<Checkout />} />
-
-                            {/* Change Password page */}
                         </Route>
                         {/* Forgot password page */}
                     </Routes>

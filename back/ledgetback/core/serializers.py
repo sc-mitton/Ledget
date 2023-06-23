@@ -19,7 +19,7 @@ class SubscriptionSerializer(serializers.Serializer):
     def create_stripe_subscription(self):
         """Create and return a new stripe subscription."""
         validated_data = self.validated_data
-        customer_id = self.context['request'].COOKIES['customer_id']
+        customer_id = self.context['request'].user.customer.id
 
         stripe_subscription = self.susbcription_create_api(
             customer_id,
@@ -30,9 +30,9 @@ class SubscriptionSerializer(serializers.Serializer):
         return stripe_subscription
 
     def susbcription_create_api(
-            self, customer_id, price_id, trial_period_days, **kwargs):
+            self, customer_id, price_id, trial_period_days):
 
-        default_args = {
+        args = {
             'payment_behavior': 'default_incomplete',
             'payment_settings': {
                 'save_default_payment_method': 'on_subscription'
@@ -42,12 +42,12 @@ class SubscriptionSerializer(serializers.Serializer):
             # 'automatic_tax': {"enabled": True},
             # deactivated for now, reactivate in production
         }
-        default_args.update(kwargs)
+        if trial_period_days:
+            args['trial_period_days'] = trial_period_days
 
         stripe_subscription = stripe.Subscription.create(
             customer=customer_id,
-            trial_period_days=trial_period_days,
             items=[{'price': price_id}],
-            **default_args
+            **args
         )
         return stripe_subscription

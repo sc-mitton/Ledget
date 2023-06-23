@@ -50,6 +50,7 @@ class StripeHookView(APIView):
                 target=self.dispatch_event,
                 args=(event,)
             )
+            # Stripe needs to get a response quick, so we use threads
             t.start()
 
         return response
@@ -71,22 +72,13 @@ class StripeHookView(APIView):
                 )
                 time.sleep(1)
 
-    def handle_customer_created(self, event):
-        """Create corresponding customer in our database."""
-        object = event.data.object
-        user = get_user_model().objects.filter(email=object.email).first()
-        customer = Customer.objects.create(
-            user=user,
-            id=object.id,
-        )
-        customer.save()
-
     # Setup Intent handlers
     def handle_setup_intent_succeeded(self, event):
         """Provision the service for the customer."""
-        # TODO
 
         customer = Customer.objects.get(id=event.data.object.customer)
+        customer.subscription_status = Customer.ACTIVE
+        # provision service until the end of the billing period
         customer.save()
 
     # Delete Handlers
@@ -101,25 +93,46 @@ class StripeHookView(APIView):
                 "does not exist."
             )
 
+    # We need to handle invoice events to extend service provision time
+
+    # We need to handle all of the events that could change
+    # the status of the subscription
+
+    # List of events mentioned by Stripe
+    # Subscription deleted (make subscription status null)
+    # Subscription paused (make subscription status paused)
+    # Subscription resumed (make subscription status active)
+    # Subscription updated (change provisioning date)
+    # Invoice paid (update provisioning date)
+    # Invoice payment failed (make subscription status payment_failed)
+    # Set up intent Succeeded (make subscription status active)
+
 
 class OryHookView(APIView):
-    """Class for handling the Ory webhook"""
+    """Handling the Ory webhook by creating a user and a customer."""
 
-    # @ory_api_key_auth
+    @ory_api_key_auth
     def post(self, request, *args, **kwargs):
-        print('Hello World')
-        # try:
-        #     self.process_webhook_payload(request.data)
-        # except Exception as e:
-        #     return Response(data={'error': str(e)},
-        #                     status=status.HTTP_400_BAD_REQUEST)
+        try:
+            self.process_webhook_payload(request.data)
+        except Exception as e:
+            return Response(data={'error': str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)
 
-    @atomic
     def process_webhook_payload(self, payload):
-
-        user = get_user_model().objects.create_user(
-            id=payload['id'],
+        self.create_user(payload['user_id'])
+        self.create_customer(
+            email=payload['email'],
+            name=payload['first_name'] + payload['last_name']
         )
-        user.save()
+
+    @atomic
+    def create_user(self, id):
+        get_user_model().objects.create_user(id=id)
+
+    def create_customer(self, email, name):
+        stripe_customer = stripe.Customer.create(email=email, name=name)
+        customer = Customer.objects.create(id=stripe_customer.id)
+        customer.save()

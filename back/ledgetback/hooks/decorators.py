@@ -11,7 +11,7 @@ def ory_api_key_auth(func):
 
     @wraps(func)
     def wrapper(self, request, *args, **kwargs):
-        given_api_key = request.META.get('Authorization')
+        given_api_key = request.META.get('HTTP_AUTHORIZATION')
 
         if not compare_digest(given_api_key, f'Api-Key {ory_api_key}'):
             return HttpResponseForbidden(

@@ -283,7 +283,6 @@ const OrderSummary = () => {
         var futureDateString =
             (futureDate.getMonth() + 1)
             + '/' + futureDate.getDate()
-            + '/' + ('' + futureDate.getFullYear()).slice(-2)
 
         return futureDateString
     }
@@ -301,10 +300,6 @@ const OrderSummary = () => {
                             <tr>
                                 <td>First Charge:</td>
                                 <td>{getTrialEndString()}</td>
-                            </tr>
-                            <tr>
-                                <td>Renews:</td>
-                                <td>{price.metadata?.renews}</td>
                             </tr>
                         </tbody>
                     </table>
