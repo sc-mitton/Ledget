@@ -105,7 +105,7 @@ class StripeHookView(APIView):
     # Subscription updated (change provisioning date)
     # Invoice paid (update provisioning date)
     # Invoice payment failed (make subscription status payment_failed)
-    # Set up intent Succeeded (make subscription status active)
+    # Set up intent succeeded (make subscription status active)
 
 
 class OryHookView(APIView):
@@ -114,25 +114,13 @@ class OryHookView(APIView):
     @ory_api_key_auth
     def post(self, request, *args, **kwargs):
         try:
-            self.process_webhook_payload(request.data)
+            self.create_user(request.data['user_id'])
         except Exception as e:
             return Response(data={'error': str(e)},
                             status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)
 
-    def process_webhook_payload(self, payload):
-        self.create_user(payload['user_id'])
-        self.create_customer(
-            email=payload['email'],
-            name=payload['first_name'] + payload['last_name']
-        )
-
     @atomic
     def create_user(self, id):
         get_user_model().objects.create_user(id=id)
-
-    def create_customer(self, email, name):
-        stripe_customer = stripe.Customer.create(email=email, name=name)
-        customer = Customer.objects.create(id=stripe_customer.id)
-        customer.save()

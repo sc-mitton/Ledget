@@ -28,6 +28,17 @@ class PriceView(APIView):
         return Response(data=result.data, status=HTTP_200_OK)
 
 
+class CustomerCreateView(APIView):
+    # permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        print(request.headers)
+        # email = request.user.info['email']
+        # name = request.user.info['name']
+        # stripe.Customer.create(email=email, name=name)
+        return Response(status=HTTP_200_OK)
+
+
 class SubscriptionView(CreateAPIView):
     """Class for handling the subscription creation and updating"""
     permission_classes = [IsAuthenticated]

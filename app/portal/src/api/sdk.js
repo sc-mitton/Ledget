@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom"
 
 export const sdk = new FrontendApi(
     new Configuration({
-        basePath: 'http://localhost:4000',
+        basePath: process.env.REACT_APP_ORY_TUNNEL,
         baseOptions: {
             withCredentials: true,
         },

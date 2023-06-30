@@ -1,6 +1,6 @@
 local version = 'v0.36.0-beta.4';
 local ory_project = 'reverent-lewin-bqqp1o2zws';
-local base_url = 'https://ledget.app/api/v1';
+local base_url = 'https://localhost/api/v1';
 
 /* Authenticators */
 local anonymous_authenticator = {
@@ -8,10 +8,11 @@ local anonymous_authenticator = {
 };
 local cookie_session_authenticator = {
   handler: 'cookie_session',
-  config: {
-    check_session_url: 'https://' + ory_project + '.projects.oryapis.com/sessions/whoami',
-    only: ['session_id'],
-  },
+  forward_http_headers: [
+    'X-Forwarded-For',
+    'Authorization',
+    'Cookie',
+  ],
 };
 
 /* Authorizors */
@@ -37,15 +38,23 @@ local Base = {
 [
   Base
   {
-    upstream: {
-      url: base_url + '/prices',
-    },
     id: 'get_prices',
     match: {
       methods: ['GET'],
       url: base_url + '/prices',
     },
     authenticators: [anonymous_authenticator],
+    mutators: [noop_mutator],
+    authorizer: allow_authorizer,
+  },
+  Base
+  {
+    id: 'customer',
+    match: {
+      methods: ['POST', 'GET'],
+      url: base_url + '/user/<[0-9a-zA-Z-]{20,40}>/customer',
+    },
+    authenticators: [cookie_session_authenticator],
     mutators: [noop_mutator],
     authorizer: allow_authorizer,
   },

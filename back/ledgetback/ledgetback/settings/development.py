@@ -5,9 +5,9 @@ from corsheaders.defaults import default_headers
 DEBUG = True
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-ALLOWED_HOSTS = ['localhost', 'ledget.app']
-DOMAIN_URL = "https://ledget.app:8000/"
-REACT_URL = "https://ledget.app:3001/"
+ALLOWED_HOSTS = ['localhost']
+DOMAIN_URL = "https://localhost:8000/"
+DOMAIN = 'localhost'
 
 # SSL certificate and key for development server
 SSL_CERTIFICATE_PATH = BASE_DIR / '..' / '.ssl' / 'ledget.app.cert'

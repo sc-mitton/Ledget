@@ -14,7 +14,6 @@ def get_secret(secret):
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_secret('django_secret_key')
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-DOMAIN = 'ledget.app'
 
 APPEND_SLASH = False
 SITE_ID = 1

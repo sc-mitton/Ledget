@@ -57,11 +57,11 @@ services:
         python manage.py runserver 0.0.0.0:8000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=(Host(`ledget.app`) && PathPrefix(`/api/v1/`))"
+      - "traefik.http.routers.api.rule=(Host(`localhost`) && PathPrefix(`/api/v1/`))"
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls=true"
       - "traefik.http.routers.api.middlewares=oathkeeper@docker"
-      - "traefik.http.routers.hooks.rule=(Host(`ledget.app`) && PathPrefix(`/hooks/ory`))"
+      - "traefik.http.routers.hooks.rule=(Host(`localhost`) && PathPrefix(`/hooks/ory`))"
       - "traefik.http.routers.hooks.entrypoints=websecure"
       - "traefik.http.routers.hooks.tls=true"
       - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.sourcerange=34.22.170.75, 35.242.228.133"
@@ -126,7 +126,7 @@ services:
     image: stripe/stripe-cli
     env_file:
       - ./secrets/.env.stripe
-    command: listen --forward-to https://ledget.app/hooks/stripe --skip-verify
+    command: listen --forward-to https://localhost/hooks/stripe --skip-verify
 
 volumes:
   dev-db-data:

@@ -13,16 +13,42 @@
          "methods": [
             "GET"
          ],
-         "url": "https://ledget.app/api/v1/prices"
+         "url": "https://localhost/api/v1/prices"
       },
       "mutators": [
          {
             "handler": "noop"
          }
       ],
-      "upstream": {
-         "url": "https://ledget.app/api/v1/prices"
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization",
+               "Cookie"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
       },
+      "id": "customer",
+      "match": {
+         "methods": [
+            "POST",
+            "GET"
+         ],
+         "url": "https://localhost/api/v1/user/<[0-9a-zA-Z-]{20,40}>/customer"
+      },
+      "mutators": [
+         {
+            "handler": "noop"
+         }
+      ],
       "version": "v0.36.0-beta.4"
    }
 ]
