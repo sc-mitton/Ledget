@@ -1,3 +1,5 @@
+# Global config for oathkeeper
+
 serve:
   proxy:
     port: 4455 # run the proxy at port 4455
@@ -6,7 +8,8 @@ serve:
 
 access_rules:
   repositories:
-    - file:///rules.json
+    - file://rules.json
+  matching_strategy: regexp
 
 authorizers:
   allow:
@@ -14,12 +17,16 @@ authorizers:
   deny:
     enabled: true
 
-
 authenticators:
   anonymous:
     enabled: true
     config:
       subject: guest
+  cookie_session:
+    enabled: true
+    config:
+      check_session_url: https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/sessions/whoami
+      preserve_path: true
 
 
 errors:
