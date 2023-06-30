@@ -11,7 +11,6 @@ local cookie_session_authenticator = {
   forward_http_headers: [
     'X-Forwarded-For',
     'Authorization',
-    'Cookie',
   ],
 };
 
@@ -20,13 +19,10 @@ local allow_authorizer = { handler: 'allow' };
 local deny_authorizer = { handler: 'deny' };
 
 /* Mutators */
-local jwt_mutator = {
+local id_token = {
   handler: 'id_token',
-  config: {
-    ttl: '60s',
-  },
-};
 
+};
 local noop_mutator = { handler: 'noop' };
 
 /* ---------------------------------- Rules --------------------------------- */
@@ -55,7 +51,7 @@ local Base = {
       url: base_url + '/user/<[0-9a-zA-Z-]{20,40}>/customer',
     },
     authenticators: [cookie_session_authenticator],
-    mutators: [noop_mutator],
+    mutators: [id_token],
     authorizer: allow_authorizer,
   },
 ]

@@ -25,6 +25,7 @@ STRIPE_WEBHOOK_SECRET = get_secret('stripe_webhook_secret')
 
 # Ory
 ORY_API_KEY = get_secret('ory_api_key')
+ORY_JWT_SECRET = ' '
 
 # Postgres
 DATABASES = {
@@ -69,7 +70,9 @@ DEFAULT_MIDDLE_WARE = [
 THIRD_PARTY_MIDDLE_WARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
-LOCAL_MIDDLE_WARE = []
+LOCAL_MIDDLE_WARE = [
+    'ledgetback.middleware.ory.CustomOryMiddleware'
+]
 
 MIDDLEWARE = DEFAULT_MIDDLE_WARE + THIRD_PARTY_MIDDLE_WARE + LOCAL_MIDDLE_WARE
 

@@ -1,9 +1,6 @@
 asgiref==3.7.2
 certifi==2023.5.7
-cffi==1.15.1
 charset-normalizer==3.1.0
-cryptography==41.0.1
-Deprecated==1.2.14
 Django==4.2.2
 django-cors-headers==4.1.0
 django-rest-framework==0.1.0
@@ -11,16 +8,13 @@ django-sslserver==0.22
 djangorestframework==3.14.0
 flake8==6.0.0
 idna==3.4
-jwcrypto==1.5.0
 mccabe==0.7.0
 psycopg2-binary==2.9.6
 pycodestyle==2.10.0
-pycparser==2.21
 pyflakes==3.0.1
-python-jwt==4.0.0
+PyJWT==2.7.0
 pytz==2023.3
 requests==2.31.0
 sqlparse==0.4.4
 stripe==5.4.0
 urllib3==2.0.3
-wrapt==1.15.0

@@ -27,8 +27,7 @@
          {
             "forward_http_headers": [
                "X-Forwarded-For",
-               "Authorization",
-               "Cookie"
+               "Authorization"
             ],
             "handler": "cookie_session"
          }
@@ -46,7 +45,7 @@
       },
       "mutators": [
          {
-            "handler": "noop"
+            "handler": "id_token"
          }
       ],
       "version": "v0.36.0-beta.4"

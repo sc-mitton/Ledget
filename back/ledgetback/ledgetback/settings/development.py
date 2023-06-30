@@ -4,16 +4,11 @@ from corsheaders.defaults import default_headers
 
 DEBUG = True
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
 ALLOWED_HOSTS = ['localhost']
 DOMAIN_URL = "https://localhost:8000/"
 DOMAIN = 'localhost'
 
-# SSL certificate and key for development server
-SSL_CERTIFICATE_PATH = BASE_DIR / '..' / '.ssl' / 'ledget.app.cert'
-SSL_KEY_PATH = BASE_DIR / '..' / '.ssl' / 'ledget.app.key'
-
-ALLOWED_HOSTS = ['ledget.app', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
 CSRF_COOKIE_SECURE = True

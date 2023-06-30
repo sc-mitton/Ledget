@@ -29,70 +29,34 @@ git clone git@github.com:sc-mitton/Ledget.git
 ```
 
 
-2. Create a CA authority for self signed SSL certificates
-
-Use the becomeCA.sh script to generate a CA. The CA will automatically be added to your keychain if you're on a mac.
+2. Run the setup script:
 
 
 ```
-cd ./scripts && ./becomeCA.sh ledgetCA
+chmod 755 setup.sh && ./setup.sh
 ```
 
 
-3. Create a key pair and SSL cert for both the front end and back end
+3. Get the stripe api key (should start with sk_test) from the stripe dashboard and add it to a file /secrets/stripe_api_key and also to ./secrets/.env.stripe.dev
 
-```
-./genCRT.sh -d localhost -k ledgetCA.key -p ledgetCA.pem
-```
+4. Get the webhook secret from stripe. This command will output the secret which you should add to a file /secrets/stripe_webhook_secret.
 
-
-```
-./genCRT.sh -d ledget.app -k ledgetCA.key -p ledgetCA.pem
-```
-
-
-4. Move the key pairs and certs to the secrets folder & a certs folder for the front end app
-
-```
-mkdir ../certs
-```
-
-```
-find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')'  -a ! -name '*CA.key' -exec mv {} ../certs/ ';'
-```
-
-
-5. Generate django secret key
-
-```
-cd ../scripts && chmod 755 get_random_secret_key.sh && ./get_random_secret_key > ../secrets/django_secret_key
-```
-
-
-6. Create postgres credentials in the secrets folder
-
-```
-cd ../secrets/ &&  echo dev_user > postgres_user && echo dev_user_password > postgres_password
-```
-
-
-7. Download the stripe cli
-
-```
-brew install stripe
-```
-
-
-8. Get the api key (should start with sk_test) from the stripe dashboard and add it to a file /secrets/stripe_api_key and also to ./secrets/.env.stripe.dev
-
-9. Get the webhook secret from stripe. This command will output the secret which you should add to a file /secrets/stripe_webhook_secret.
 
 ```
 stripe listen --forward-to https://ledget.app:8000/api/v1/stripe --skip-verify
 ```
 
 
-10. Use docker compose to run the application in development mode:
+5. Get the ory api key (should start ory_pat_) from the ory dashboard and run
+
+
+```
+echo ORY_API_KEY=<api key> > ./secrets/.env.ory
+```
+
+
+5. Use docker compose to run the application in development mode:
+
 
 ```
 docker-compose up -d

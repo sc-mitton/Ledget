@@ -33,6 +33,7 @@ class CustomerCreateView(APIView):
 
     def post(self, request, *args, **kwargs):
         print(request.headers)
+        print(request.user)
         # email = request.user.info['email']
         # name = request.user.info['name']
         # stripe.Customer.create(email=email, name=name)

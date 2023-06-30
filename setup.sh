@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 get_random_string() {
     local length=$1
@@ -19,4 +19,12 @@ get_random_secret_key() {
     echo "$random_string"
 }
 
-get_random_secret_key
+
+cd ./scripts && ./becomeCA.sh ledgetCA
+./genCRT.sh -d localhost -k ledgetCA.key -p ledgetCA.pem
+mkdir ../certs
+find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')' -exec mv {} ../certs/ ';'
+./get_random_secret_key > ../secrets/django_secret_key
+echo dev_user > ../secrets/postgres_user && echo ../secrets/dev_user_password > postgres_password
+brew install stripe
+oathkeeper credentials generate --alg RS256 > ./oathkeeper/jwks.json

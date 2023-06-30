@@ -8,8 +8,12 @@ serve:
 
 access_rules:
   repositories:
-    - file://rules.json
+    - file:///etc/config/oathkeeper/rules.json
   matching_strategy: regexp
+
+log:
+  level: debug
+  leak_sensitive_values: true
 
 authorizers:
   allow:
@@ -27,7 +31,10 @@ authenticators:
     config:
       check_session_url: https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/sessions/whoami
       preserve_path: true
-
+      only:
+        - ory_session_reverentlewinbqqp1o2zws
+      extra_from: "@this"
+      subject_from: "identity.id"
 
 errors:
   fallback:
@@ -43,18 +50,15 @@ errors:
         to: https://www.ory.sh/docs
 
 mutators:
-  header:
-    enabled: true
-    config:
-      headers:
-        X-User: "{{ print .Subject }}"
-        # You could add some other headers, for example with data from the
-        # session.
-        # X-Some-Arbitrary-Data: "{{ print .Extra.some.arbitrary.data }}"
   noop:
     enabled: true
   id_token:
     enabled: true
     config:
       issuer_url: http://localhost:4455/
-      jwks_url: file:///jwks.json
+      jwks_url: file:///etc/config/oathkeeper/jwks.json
+      ttl: 60s
+      claims: |
+        {
+          "session": {{ .Extra | toJson }}
+        }

@@ -1,4 +1,4 @@
 tls:
   certificates:
-    - certFile: /etc/ssl/certs/ledget.app.crt
-      keyFile: /etc/ssl/certs/ledget.app.key
+    - certFile: /etc/ssl/certs/localhost.crt
+      keyFile: /etc/ssl/certs/localhost.key

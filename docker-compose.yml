@@ -15,7 +15,7 @@ services:
   oathkeeper:
     build:
       context: ./oathkeeper
-    command: serve --config /config.yml
+    command: serve --config /etc/config/oathkeeper/config.yml
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.oathkeeper.rule=Host(`oathkeeper`)"
@@ -23,7 +23,7 @@ services:
       - "traefik.http.routers.oathkeeper.service=oathkeeper"
       - "traefik.http.services.oathkeeper.loadbalancer.server.port=4456"
       - "traefik.http.middlewares.oathkeeper.forwardauth.address=http://oathkeeper:4456/decisions"
-      - "traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-User"
+      - "traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-User, Authorization"
   proxy:
     image: traefik:v2.10
     command:
@@ -31,6 +31,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--entryPoints.websecure.forwardedHeaders.insecure"
+      # ^^ needed so that we can check ip address of the ory webhook response in the django middleware
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.file.directory=/traefik"
@@ -41,7 +42,7 @@ services:
       - 443:443
       - 8080:8080
     volumes:
-      - ./certs-back:/etc/ssl/certs
+      - ./certs:/etc/ssl/certs
       - ./traefik:/traefik
       - /var/run/docker.sock:/var/run/docker.sock
   ledgetback:
