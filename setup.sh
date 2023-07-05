@@ -39,3 +39,6 @@ oathkeeper credentials generate --alg RS256 > ./secrets/jwks.json
 mkdir back/ledget/ledgetback/logs
 touch back/ledget/ledgetback/logs/stripe.log
 touch back/ledget/ledgetback/logs/ledget.log
+
+# Download ory
+brew install ory/tap/cli

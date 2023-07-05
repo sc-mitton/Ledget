@@ -61,4 +61,16 @@ echo ORY_API_KEY=<api key> > ./secrets/.env.ory
 ```
 docker-compose up -d
 ```
+## Other Notes
 
+To test the ory webhook, you'll need to provide an ngrok tunnel, and then update the url for the webhook endpoint in the porject-configuration.yaml file for ory.
+
+```
+# Get the project config
+ory get identity-config reverent-lewin-bqqp1o2zws \\n  --format yaml > project-configuration.yaml
+```
+
+```
+ngrok http 127.0.0.1:443 --host-header='ledget.app' # open the tunnel
+ory update identity-config https://reverent-lewin-bqqp1o2zws.projects.oryapis.com -f project-configuration.yaml # update the webhook endpoint
+```
