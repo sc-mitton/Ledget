@@ -67,10 +67,13 @@ To test the ory webhook, you'll need to provide an ngrok tunnel, and then update
 
 ```
 # Get the project config
-ory get identity-config reverent-lewin-bqqp1o2zws \\n  --format yaml > project-configuration.yaml
+ory get identity-config reverent-lewin-bqqp1o2zws --format yaml > project-configuration.yaml
 ```
 
 ```
-ngrok http 127.0.0.1:443 --host-header='ledget.app' # open the tunnel
-ory update identity-config https://reverent-lewin-bqqp1o2zws.projects.oryapis.com -f project-configuration.yaml # update the webhook endpoint
+ngrok http 127.0.0.1:443
+--host-header='ledget.app'
+
+ory update identity-config https://reverent-lewin-bqqp1o2zws.projects.oryapis.com
+-f project-configuration.yaml
 ```
