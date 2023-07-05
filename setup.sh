@@ -20,11 +20,22 @@ get_random_secret_key() {
 }
 
 
+# Create the self signed ssl certs
 cd ./scripts && ./becomeCA.sh ledgetCA
 ./genCRT.sh -d localhost -k ledgetCA.key -p ledgetCA.pem
 mkdir ../certs
 find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')' -exec mv {} ../certs/ ';'
-./get_random_secret_key > ../secrets/django_secret_key
-echo dev_user > ../secrets/postgres_user && echo ../secrets/dev_user_password > postgres_password
+
+# Create secrets
+cd ..
+./get_random_secret_key > ./secrets/django_secret_key
+echo dev_user > ./secrets/postgres_user && echo ./secrets/dev_user_password > postgres_password
 brew install stripe
-oathkeeper credentials generate --alg RS256 > ./oathkeeper/jwks.json
+
+# Create jwks for oathkeeper
+oathkeeper credentials generate --alg RS256 > ./secrets/jwks.json
+
+# Make the log files
+mkdir back/ledget/ledgetback/logs
+touch back/ledget/ledgetback/logs/stripe.log
+touch back/ledget/ledgetback/logs/ledget.log

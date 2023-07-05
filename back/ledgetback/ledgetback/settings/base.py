@@ -1,6 +1,9 @@
 from pathlib import Path
 import os
 import sys
+import requests
+import jwt
+import json
 
 
 def get_secret(secret):
@@ -11,7 +14,6 @@ def get_secret(secret):
         return ' '
 
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_secret('django_secret_key')
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -25,7 +27,11 @@ STRIPE_WEBHOOK_SECRET = get_secret('stripe_webhook_secret')
 
 # Ory
 ORY_API_KEY = get_secret('ory_api_key')
-ORY_JWT_SECRET = ' '
+oathkeeper_endpoint = 'http://oathkeeper:4456/.well-known/jwks.json'
+jwks = requests.get(oathkeeper_endpoint).json()['keys']
+OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
+    json.dumps(jwks[0])
+)
 
 # Postgres
 DATABASES = {
@@ -64,14 +70,16 @@ INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 DEFAULT_MIDDLE_WARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware'
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 THIRD_PARTY_MIDDLE_WARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 LOCAL_MIDDLE_WARE = [
-    'ledgetback.middleware.ory.CustomOryMiddleware'
+    'ledgetback.middleware.oathkeeper.OathkeeperMiddleware'
 ]
 
 MIDDLEWARE = DEFAULT_MIDDLE_WARE + THIRD_PARTY_MIDDLE_WARE + LOCAL_MIDDLE_WARE
@@ -85,12 +93,14 @@ WSGI_APPLICATION = 'ledgetback.wsgi.application'
 #                 Authentication Settings                          #
 # ---------------------------------------------------------------- #
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'ledgetback.auth.ory.OryBackend',
+    ),
+}
 
 AUTH_USER_MODEL = 'core.User'
-
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-)
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend')
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -130,7 +140,7 @@ LOGGING = {
         'file': {
             'level': LOG_LEVEL,
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/debug.log'),
+            'filename': os.path.join(BASE_DIR, 'logs/ledget.log'),
             'formatter': 'verbose',
         },
         'stripe': {

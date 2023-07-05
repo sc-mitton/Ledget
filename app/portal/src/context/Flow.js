@@ -210,7 +210,7 @@ function RegisterFlowContextProvider({ children }) {
         sdk
             .updateRegistrationFlow({ flow: flow.id, updateRegistrationFlowBody: body })
             .then((response) => {
-                setUser(response.data.identity.traits)
+                setUser(response.data.identity)
                 navigate('/checkout')
             })
             .catch(sdkErrorHandler)

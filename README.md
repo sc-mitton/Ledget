@@ -37,9 +37,9 @@ chmod 755 setup.sh && ./setup.sh
 ```
 
 
-3. Get the stripe api key (should start with sk_test) from the stripe dashboard and add it to a file /secrets/stripe_api_key and also to ./secrets/.env.stripe.dev
+3. Get the stripe api key (should start with sk_test) from the stripe dashboard and add it to a file ./secrets/stripe_api_key and also to ./secrets/.env.stripe.dev
 
-4. Get the webhook secret from stripe. This command will output the secret which you should add to a file /secrets/stripe_webhook_secret.
+4. Get the webhook secret from stripe. This command will output the secret which you should add to a file ./secrets/stripe_webhook_secret.
 
 
 ```

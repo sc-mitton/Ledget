@@ -123,4 +123,5 @@ class OryHookView(APIView):
 
     @atomic
     def create_user(self, id):
-        get_user_model().objects.create_user(id=id)
+        user = get_user_model().objects.create_user(id=id)
+        user.save()

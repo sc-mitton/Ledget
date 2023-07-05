@@ -1,3 +1,5 @@
+import logging
+
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
@@ -8,9 +10,10 @@ from rest_framework.status import (
 )
 from django.conf import settings
 import stripe
-import logging
 
 from core.serializers import SubscriptionSerializer
+from core.models import Customer
+from core.permissions import IsUserOwner
 
 
 stripe.api_key = settings.STRIPE_API_KEY
@@ -28,15 +31,31 @@ class PriceView(APIView):
         return Response(data=result.data, status=HTTP_200_OK)
 
 
-class CustomerCreateView(APIView):
-    # permission_classes = [IsAuthenticated]
+class CustomerView(APIView):
+    permission_classes = [IsAuthenticated, IsUserOwner]
 
     def post(self, request, *args, **kwargs):
-        print(request.headers)
-        print(request.user)
-        # email = request.user.info['email']
-        # name = request.user.info['name']
-        # stripe.Customer.create(email=email, name=name)
+        if not request.user:
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        email = request.user.traits.get('email')
+        first_name = request.user.traits.get('name', {}).get('first')
+        last_name = request.user.traits.get('name', {}).get('last')
+
+        try:
+            stripe_customer = stripe.Customer.create(
+                email=email, name=f'{first_name} {last_name}'
+            )
+            Customer.objects.create(
+                user=request.user,
+                id=stripe_customer.id
+            ).save()
+        except Exception as e:
+            return Response(
+                data={'error': str(e)},
+                status=HTTP_400_BAD_REQUEST
+            )
+
         return Response(status=HTTP_200_OK)
 
 

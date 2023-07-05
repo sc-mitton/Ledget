@@ -330,9 +330,10 @@ function Checkout({ prices }) {
     const [cardErrMsg, setCardErrMsg] = useState(null)
     const stripe = useStripe()
     const elements = useElements()
+    const { user } = useContext(UserContext)
 
     // pseudo code:
-    // 1. post request to backend to create customer -> await 201 response
+    // 1. post request to backend to create customer -> await 201 response - Done
     // 2. post request to backend to create subscription -> which returns client secret
     // 3. confirm card payment with client secret
     // 4. configure backend webhook for stripe to listen to confirmed payment & update user's subscription status
@@ -341,6 +342,13 @@ function Checkout({ prices }) {
     // const isCustomerRef = useRef(JSON.parse(sessionStorage.getItem("user")).is_customer)
     const clientSecretRef = useRef('')
     const isCustomerRef = useRef(false)
+
+    const createCustomer = async () => {
+        ledgetapi.post(`user/${user.id}/customer`)
+            .catch((error) => {
+                setErrMsg('Hmm... something went wrong. Please try again.')
+            })
+    }
 
     const createSubscription = async () => {
         const { price } = useContext(PriceContext)
@@ -386,6 +394,7 @@ function Checkout({ prices }) {
         setProcessing(true)
         try {
             if (!clientSecretRef.current) {
+                await createCustomer()
                 await createSubscription()
             }
             if (isCustomerRef.current && clientSecretRef.current) {

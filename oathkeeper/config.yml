@@ -56,7 +56,7 @@ mutators:
     enabled: true
     config:
       issuer_url: http://localhost:4455/
-      jwks_url: file:///etc/config/oathkeeper/jwks.json
+      jwks_url: file:///run/secrets/jwks.json
       ttl: 60s
       claims: |
         {

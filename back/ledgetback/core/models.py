@@ -16,6 +16,7 @@ class UserManager(BaseUserManager):
 
         user = self.model(id, **extra_fields)
         user.save(using=self._db)
+        user.set_unusable_password()  # needed since Ory handles authentication
 
         return user
 
@@ -42,6 +43,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     USERNAME_FIELD = 'id'
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._traits = None
+
     def __str__(self):
         return self.id
 
@@ -54,6 +59,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.is_customer:
             return self.customer.subscription_status
         return None
+
+    @property
+    def traits(self):
+        return self._traits
+
+    @traits.setter
+    def traits(self, value: dict):
+        self._traits = value
 
 
 class Customer(models.Model):
