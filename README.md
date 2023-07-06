@@ -65,15 +65,10 @@ docker-compose up -d
 
 To test the ory webhook, you'll need to provide an ngrok tunnel, and then update the url for the webhook endpoint in the porject-configuration.yaml file for ory.
 
+
 ```
-# Get the project config
+ngrok http 127.0.0.1:443 --host-header='ledget.app'
+
 ory get identity-config reverent-lewin-bqqp1o2zws --format yaml > project-configuration.yaml
-```
-
-```
-ngrok http 127.0.0.1:443
---host-header='ledget.app'
-
-ory update identity-config https://reverent-lewin-bqqp1o2zws.projects.oryapis.com
--f project-configuration.yaml
+ory update identity-config "$(ory list projects | grep "ledget" | cut -f1)" -f project-configuration.yaml
 ```

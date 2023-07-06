@@ -21,17 +21,20 @@ class OryBackend(BaseAuthentication):
 
         token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[-1]
         decoded_token = self.get_decoded_token(token) if token else None
-        identity = decoded_token.get('session', {}).get('identity', {})
 
-        if not decoded_token \
-            or self.token_is_expired(decoded_token) \
-                or not identity.get('id'):
+        if not decoded_token or self.token_is_expired(decoded_token):
             return None
 
-        user = self.get_user(identity['id'])
-        user.traits = identity.get('traits', {})
-
-        return (user, None) if user else None
+        try:
+            identity = decoded_token['session']['identity']
+            user = get_user_model().objects.get(identity['id'])
+            user.traits = identity.get('traits')
+            return (user, None)
+        except get_user_model().DoesNotExist:
+            logger.error(f"User does not exist: {identity['id']}")
+            return None
+        except KeyError:
+            return None
 
     def token_is_expired(self, token: str) -> bool:
 
@@ -56,9 +59,3 @@ class OryBackend(BaseAuthentication):
             return None
 
         return decoded_token
-
-    def get_user(self, id):
-        try:
-            return get_user_model().objects.get(pk=id)
-        except get_user_model().DoesNotExist:
-            return None

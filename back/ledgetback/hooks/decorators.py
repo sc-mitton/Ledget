@@ -11,14 +11,14 @@ def ory_api_key_auth(func):
 
     @wraps(func)
     def wrapper(self, request, *args, **kwargs):
-        given_api_key = request.META.get('HTTP_AUTHORIZATION')
+        key = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[-1]
 
-        if not compare_digest(given_api_key, f'Api-Key {ory_api_key}'):
+        if key and compare_digest(key, ory_api_key):
+            return func(self, request, *args, **kwargs)
+        else:
             return HttpResponseForbidden(
                 'Incorrect token',
                 content_type='text/plain'
             )
-
-        return func(self, request, *args, **kwargs)
 
     return wrapper
