@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import LoginWindow from './components/forms/Login'
 import SignUpWindow from './components/forms/SignUp'
 import Checkout from './components/forms/Checkout'
-import PrivateRoute from './utils/PrivateRoute'
+import { PrivateCheckout, UnauthenticatedRoute } from './utils/PrivateRoutes'
 
 function AnimatedRoutes() {
     const location = useLocation()
@@ -26,9 +26,11 @@ function AnimatedRoutes() {
                     }}
                 >
                     <Routes location={location} key={location.pathname} >
-                        <Route exact path="/login" element={<LoginWindow />} />
-                        <Route path="/register" element={<SignUpWindow />} />
-                        <Route path="/" element={<PrivateRoute />}>
+                        <Route path="/" element={<UnauthenticatedRoute />}>
+                            <Route exact path="/login" element={<LoginWindow />} />
+                            <Route path="/register" element={<SignUpWindow />} />
+                        </Route>
+                        <Route path="/" element={<PrivateCheckout />}>
                             <Route path="/checkout" element={<Checkout />} />
                         </Route>
                         {/* Forgot password page */}

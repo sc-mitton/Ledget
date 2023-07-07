@@ -1,11 +1,10 @@
 from rest_framework.authentication import BaseAuthentication
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from jwt.exceptions import InvalidSignatureError
+from jwt.exceptions import InvalidSignatureError, ExpiredSignatureError
 from jwt import decode
 
 import logging
-import time
 
 logger = logging.getLogger('ledget')
 
@@ -19,43 +18,48 @@ class OryBackend(BaseAuthentication):
         or expired, return None.
         """
 
-        token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[-1]
-        decoded_token = self.get_decoded_token(token) if token else None
-
-        if not decoded_token or self.token_is_expired(decoded_token):
+        auth_header = request.META.get('HTTP_AUTHORIZATION', '').split(' ')
+        if auth_header[0].lower() != 'bearer':
             return None
+        else:
+            token = auth_header[-1]
+
+        try:
+            decoded_jwt = self.get_decoded_jwt(token)
+        except InvalidSignatureError:
+            logger.error(f"Invalid signature for token: {token}")
+            return None
+        except ExpiredSignatureError:
+            logger.error(f"Expired signature for token: {token}")
+            return None
+        else:
+            user = self.get_user(decoded_jwt)
+            return (user, None) if user else None
+
+    def get_decoded_jwt(self, token: str) -> dict | None:
+        """Validate the token against the JWK from Oathkeeper and
+        return it if valid. Otherwise, return None."""
+
+        public_key = settings.OATHKEEPER_PUBLIC_KEY
+        decoded_token = decode(
+            token,
+            key=public_key,
+            algorithms=['RS256'],
+            options={'verify_exp': True}
+        )
+
+        return decoded_token
+
+    def get_user(self, decoded_token: dict) -> get_user_model() | None:
+        """Return the user from the decoded token."""
 
         try:
             identity = decoded_token['session']['identity']
-            user = get_user_model().objects.get(identity['id'])
+            user = get_user_model().objects.get(pk=identity['id'])
             user.traits = identity.get('traits')
-            return (user, None)
+            return user
         except get_user_model().DoesNotExist:
             logger.error(f"User does not exist: {identity['id']}")
             return None
         except KeyError:
             return None
-
-    def token_is_expired(self, token: str) -> bool:
-
-        curent_unix_timestamp = int(time.time())
-        is_expired = token.get('exp', 0) < curent_unix_timestamp
-
-        return is_expired
-
-    def get_decoded_token(self, token: str) -> dict | None:
-        """Validate the token against the JWK from Oathkeeper and
-        return it if valid. Otherwise, return None."""
-
-        public_key = settings.OATHKEEPER_PUBLIC_KEY
-        try:
-            decoded_token = decode(
-                token,
-                key=public_key,
-                algorithms=['RS256'],
-            )
-        except InvalidSignatureError:
-            logger.error(f"InvalidSignatureError: {token}")
-            return None
-
-        return decoded_token

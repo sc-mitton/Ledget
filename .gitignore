@@ -10,4 +10,4 @@ out
 secrets
 scratch.py
 **/jwks.json
-# project-configuration.yaml
+project-configuration.yaml

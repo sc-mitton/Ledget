@@ -78,9 +78,7 @@ DEFAULT_MIDDLE_WARE = [
 THIRD_PARTY_MIDDLE_WARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
-LOCAL_MIDDLE_WARE = [
-    'ledgetback.middleware.oathkeeper.OathkeeperMiddleware'
-]
+LOCAL_MIDDLE_WARE = []
 
 MIDDLEWARE = DEFAULT_MIDDLE_WARE + THIRD_PARTY_MIDDLE_WARE + LOCAL_MIDDLE_WARE
 

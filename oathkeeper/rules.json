@@ -35,13 +35,12 @@
       "authorizer": {
          "handler": "allow"
       },
-      "id": "customer",
+      "id": "user",
       "match": {
          "methods": [
-            "POST",
-            "GET"
+            "POST"
          ],
-         "url": "https://localhost/api/v1/user/<[0-9a-zA-Z-]{20,40}>/customer"
+         "url": "https://localhost/api/v1/user/<[0-9a-zA-Z-]{20,40}>/<.*>"
       },
       "mutators": [
          {

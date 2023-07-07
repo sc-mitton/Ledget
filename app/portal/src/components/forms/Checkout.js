@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { useState, useRef } from 'react'
 
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, set } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js'
@@ -20,6 +20,8 @@ import { states } from '../../assets/data/states'
 import { FormError, FormErrorTip } from "../widgets/Widgets"
 import usePrices from '../../api/hooks/usePrices'
 import { WindowLoadingBar } from '../widgets/Widgets'
+import AuthContext from '../../context/AuthContext'
+import { components } from 'react-select'
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST)
 
@@ -113,7 +115,7 @@ const Prices = ({ prices }) => {
     )
 }
 
-const Card = ({ onComplete, hasError }) => {
+const Card = ({ cardNotEnteredError, setCardNotEnteredError, setCardEntered }) => {
     let [cardFocus, setCardFocus] = useState(false)
 
     const cardElementOptions = {
@@ -147,33 +149,35 @@ const Card = ({ onComplete, hasError }) => {
                 <CardElement
                     onBlur={() => setCardFocus(false)}
                     onFocus={() => setCardFocus(true)}
-                    onChange={(e) => onComplete(e.complete)}
+                    onChange={(e) => {
+                        if (e.complete) {
+                            setCardEntered(true)
+                            setCardNotEnteredError(false)
+                        } else {
+                            setCardEntered(false)
+                        }
+                    }}
                     options={cardElementOptions}
                 />
-                {hasError && <FormErrorTip />}
+                {cardNotEnteredError && <FormErrorTip />}
             </div>
         </>
     )
 }
 
 const Form = ({ onSubmit, id }) => {
-    const [paymentNotEnteredError, setPaymentNotEnteredError] = useState(false)
-    const [paymentEntered, setPaymentEntered] = useState(false)
+    const [cardEntered, setCardEntered] = useState(false)
+    const [cardNotEnteredError, setCardNotEnteredError] = useState(false)
 
     const { register, handleSubmit, formState: { errors }, trigger, control } =
         useForm({ resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
 
     const submitBillingForm = (e) => {
         e.preventDefault()
-        !paymentEntered && setPaymentNotEnteredError(true)
+        !cardEntered && setCardNotEnteredError(true)
         handleSubmit(
-            (data) => paymentEntered && onSubmit(data)
+            (data) => cardEntered && onSubmit(data)
         )(e)
-    }
-
-    const onPaymentComplete = (complete) => {
-        setPaymentEntered(complete)
-        setPaymentNotEnteredError(complete)
     }
 
     const hasRequiredError = (field) => {
@@ -182,6 +186,14 @@ const Form = ({ onSubmit, id }) => {
 
     const hasErrorMsg = (field) => {
         return errors[field]?.message && !errors[field]?.message.includes('required')
+    }
+
+    const CustomSingleValue = ({ children, data, ...props }) => {
+        return (
+            <components.SingleValue {...props}>
+                {data.abbreviation}
+            </components.SingleValue>
+        )
     }
 
     return (
@@ -232,6 +244,7 @@ const Form = ({ onSubmit, id }) => {
                                     placeholder="State"
                                     maxMenuHeight={175}
                                     field={field}
+                                    components={{ SingleValue: CustomSingleValue }}
                                 />
                             )}
                         />
@@ -267,7 +280,11 @@ const Form = ({ onSubmit, id }) => {
                     </div>
                 }
             </form >
-            <Card onComplete={onPaymentComplete} hasError={paymentNotEnteredError} />
+            <Card
+                cardNotEnteredError={cardNotEnteredError}
+                setCardNotEnteredError={setCardNotEnteredError}
+                setCardEntered={setCardEntered}
+            />
         </>
     )
 
@@ -276,15 +293,38 @@ const Form = ({ onSubmit, id }) => {
 const OrderSummary = () => {
     const { price } = useContext(PriceContext)
 
-    const getTrialEndString = () => {
-        var currentDate = new Date()
-        var futureDate = new Date(
-            currentDate.getTime() + (price.metadata?.trial_period_days * 24 * 60 * 60 * 1000))
-        var futureDateString =
-            (futureDate.getMonth() + 1)
-            + '/' + futureDate.getDate()
+    const getDaySuffix = (day) => {
+        if (day >= 11 && day <= 13) {
+            return "th";
+        }
+        switch (day % 10) {
+            case 1:
+                return "st"
+            case 2:
+                return "nd"
+            case 3:
+                return "rd"
+            default:
+                return "th"
+        }
+    }
 
-        return futureDateString
+    const getTrialEndString = () => {
+        const currentDate = new Date()
+        const futureDate = new Date(
+            currentDate.getTime() + (price.metadata?.trial_period_days * 24 * 60 * 60 * 1000)
+        )
+
+        const months = [
+            "Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.",
+            "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."
+        ]
+
+        const day = futureDate.getDate()
+        const month = months[futureDate.getMonth()];
+        const suffix = getDaySuffix(day)
+
+        return `${month} ${day}${suffix}`
     }
 
     return (
@@ -294,12 +334,12 @@ const OrderSummary = () => {
                     <table>
                         <tbody>
                             <tr>
-                                <td>Amount:</td>
-                                <td>{`\$${price.unit_amount / 100}`}</td>
-                            </tr>
-                            <tr>
                                 <td>First Charge:</td>
                                 <td>{getTrialEndString()}</td>
+                            </tr>
+                            <tr>
+                                <td>Amount:</td>
+                                <td>{`\$${price.unit_amount / 100}`}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -330,29 +370,22 @@ function Checkout({ prices }) {
     const [cardErrMsg, setCardErrMsg] = useState(null)
     const stripe = useStripe()
     const elements = useElements()
-    const { user } = useContext(UserContext)
+    const { user } = useContext(AuthContext)
 
-    // pseudo code:
-    // 1. post request to backend to create customer -> await 201 response - Done
-    // 2. post request to backend to create subscription -> which returns client secret
-    // 3. confirm card payment with client secret
-    // 4. configure backend webhook for stripe to listen to confirmed payment & update user's subscription status
-
-    // const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem("clientSecret")))
-    // const isCustomerRef = useRef(JSON.parse(sessionStorage.getItem("user")).is_customer)
-    const clientSecretRef = useRef('')
-    const isCustomerRef = useRef(false)
+    const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem('clientSecret')))
 
     const createCustomer = async () => {
         ledgetapi.post(`user/${user.id}/customer`)
             .catch((error) => {
-                setErrMsg('Hmm... something went wrong. Please try again.')
+                if (error.response?.status !== 422) {
+                    setErrMsg('Hmm... something went wrong. Please try again later.')
+                }
             })
     }
 
     const createSubscription = async () => {
         const { price } = useContext(PriceContext)
-        const response = await ledgetapi.post('subscription', {
+        const response = await ledgetapi.post(`user/${user.id}/subscription`, {
             'price_id': price.id,
             'trial_period_days': price.metadata?.trial_period_days
         })
@@ -360,7 +393,7 @@ function Checkout({ prices }) {
             sessionStorage.setItem("clientSecret", JSON.stringify(response.data.client_secret))
             clientSecretRef.current = response.data.client_secret
         } else {
-            setErrMsg('Hmm... something went wrong. Please try again.')
+            setErrMsg('Hmm... something went wrong. Please try again later.')
         }
     }
 
@@ -384,7 +417,8 @@ function Checkout({ prices }) {
             }
         )
         if (result.setupIntent?.status === 'succeeded') {
-            setSucceeded(true)
+            console.log('setup succeeded, navigating to app home...')
+            // TODO - navigate to app home
         } else if (result.error) {
             setCardErrMsg(result.error?.message)
         }
@@ -397,13 +431,11 @@ function Checkout({ prices }) {
                 await createCustomer()
                 await createSubscription()
             }
-            if (isCustomerRef.current && clientSecretRef.current) {
+            if (clientSecretRef.current) {
                 await confirmSetup(data)
             }
         } catch (err) {
-            if (!cardErrMsg) {
-                setErrMsg('Hmm... something went wrong. Please try again later.')
-            }
+            !cardErrMsg && setErrMsg('Hmm... something went wrong. Please try again later.')
         } finally {
             setProcessing(false)
         }

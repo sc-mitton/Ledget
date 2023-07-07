@@ -1,6 +1,5 @@
 import React from 'react'
 import { createContext, useState, useEffect } from "react"
-import { useNavigate } from 'react-router-dom'
 
 const AuthContext = createContext()
 export default AuthContext
@@ -16,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        setUser(sessionStorage.getItem('user' || null))
+        setUser(JSON.parse(sessionStorage.getItem('user' || null)))
         setLoading(false)
     }, [])
 

@@ -211,6 +211,7 @@ function RegisterFlowContextProvider({ children }) {
             .updateRegistrationFlow({ flow: flow.id, updateRegistrationFlowBody: body })
             .then((response) => {
                 setUser(response.data.identity)
+                sessionStorage.setItem('user', JSON.stringify(response.data.identity))
                 navigate('/checkout')
             })
             .catch(sdkErrorHandler)

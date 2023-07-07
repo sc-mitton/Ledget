@@ -45,10 +45,10 @@ local Base = {
   },
   Base
   {
-    id: 'customer',
+    id: 'user',
     match: {
-      methods: ['POST', 'GET'],
-      url: base_url + '/user/<[0-9a-zA-Z-]{20,40}>/customer',
+      methods: ['POST'],
+      url: base_url + '/user/<[0-9a-zA-Z-]{20,40}>/<.*>',
     },
     authenticators: [cookie_session_authenticator],
     mutators: [id_token],

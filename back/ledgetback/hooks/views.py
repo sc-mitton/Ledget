@@ -12,6 +12,7 @@ from rest_framework.status import (
 from django.contrib.auth import get_user_model
 from django.db.transaction import atomic
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 import stripe
 
 from core.models import Customer
@@ -66,6 +67,11 @@ class StripeHookView(APIView):
             try:
                 handler(event)
                 break
+            except ObjectDoesNotExist as e:
+                stripe_logger.error(
+                    f"⚠️ ObjectDoesNotExist for {event_type} handler: {e}"
+                )
+                break
             except Exception as e:
                 stripe_logger.error(
                     f"⚠️ Attempt {i} for {event_type} handler: {e}"
@@ -74,38 +80,63 @@ class StripeHookView(APIView):
 
     # Setup Intent handlers
     def handle_setup_intent_succeeded(self, event):
-        """Provision the service for the customer."""
-
+        print(event.data.object)
+        print(event)
         customer = Customer.objects.get(id=event.data.object.customer)
-        customer.subscription_status = Customer.ACTIVE
-        # provision service until the end of the billing period
+        customer.subscription_status = Customer.TRIALING
+        # TODO update the provisioning, add the trial period in seconds
+        # (add 1 day for buffer) to the current unix timestampe
+        customer.save()
+
+    def handle_setup_intent_setup_failed(self, event):
+        customer = Customer.objects.get(id=event.data.object.customer)
+        customer.subscription_status = Customer.INCOMPLETE
         customer.save()
 
     # Delete Handlers
     def handle_customer_deleted(self, event):
-        """Delete the customer in the db."""
-        try:
-            customer = Customer.objects.get(id=event.data.object.id)
-            customer.delete()
-        except Customer.DoesNotExist:
-            stripe_logger.error(
-                f"⚠️ Can't delete customer: {event.data.object.id}, "
-                "does not exist."
-            )
+        customer = Customer.objects.get(id=event.data.object.id)
+        customer.delete()
 
-    # We need to handle invoice events to extend service provision time
+    # Events that change subscription status
+    def handle_customer_subscription_paused(self, event):
+        customer = Customer.objects.get(id=event.data.object.customer)
+        customer.subscription_status = Customer.PAUSED
+        customer.provisioned_until = 0
+        customer.save()
 
-    # We need to handle all of the events that could change
-    # the status of the subscription
+    def handle_customer_subscription_deleted(self, event):
+        # Reverts the customer to no subscription (exactly the same as when
+        # customer is first created)
 
-    # List of events mentioned by Stripe
-    # Subscription deleted (make subscription status null)
-    # Subscription paused (make subscription status paused)
-    # Subscription resumed (make subscription status active)
-    # Subscription updated (change provisioning date)
-    # Invoice paid (update provisioning date)
-    # Invoice payment failed (make subscription status payment_failed)
-    # Set up intent succeeded (make subscription status active)
+        customer = Customer.objects.get(id=event.data.object.customer)
+        customer.subscription_status = None
+        customer.provisioned_until = 0
+        customer.save()
+
+    def handle_customer_subscription_resumed(self, event):
+        customer = Customer.objects.get(id=event.data.object.customer)
+        customer.subscription_status = Customer.ACTIVE
+        # TODO update the provisioning
+        customer.save()
+
+    def handle_invoice_paid(self, event):
+        customer = Customer.objects.get(id=event.data.object.customer)
+        # TODO update the provisioning
+        customer.save()
+
+    def handle_invoice_payment_failed(self, event):
+        customer = Customer.objects.get(id=event.data.object.customer)
+        customer.subscription_status = Customer.PAST_DUE
+        # TODO update the provisioning
+        customer.save()
+
+    def handle_customer_subscription_updated(self, event):
+        """ Event occurs whenever a subscription changes (e.g., switching from
+        one plan to another, or changing the status from trial to active). """
+        customer = Customer.objects.get(id=event.data.object.customer)
+        customer.subscription_status = Customer.ACTIVE
+        customer.save()
 
 
 class OryHookView(APIView):
@@ -123,5 +154,4 @@ class OryHookView(APIView):
 
     @atomic
     def create_user(self, id):
-        user = get_user_model().objects.create_user(id=id)
-        user.save()
+        get_user_model().objects.create_user(id=id)

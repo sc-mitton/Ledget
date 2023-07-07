@@ -21,7 +21,8 @@ SECURE_BROWSER_XSS_FILTER = True
 
 CORS_ORIGIN_WHITELIST = [
     'https://localhost:3001',
-    'https://localhost:3000'
+    'https://localhost:3000',
+    'http://localhost',
 ]
 CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
 CORS_ALLOW_HEADERS = list(default_headers) + ['Set-Cookie']

@@ -1,12 +1,12 @@
 import logging
 
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_200_OK,
+    HTTP_422_UNPROCESSABLE_ENTITY
 )
 from django.conf import settings
 import stripe
@@ -35,54 +35,86 @@ class CustomerView(APIView):
     permission_classes = [IsAuthenticated, IsUserOwner]
 
     def post(self, request, *args, **kwargs):
-        if not request.user:
-            return Response(status=HTTP_400_BAD_REQUEST)
+        if request.user.is_customer:
+            return Response(
+                {'error': 'Customer already exists.'},
+                status=HTTP_422_UNPROCESSABLE_ENTITY
+            )
 
-        email = request.user.traits.get('email')
-        first_name = request.user.traits.get('name', {}).get('first')
-        last_name = request.user.traits.get('name', {}).get('last')
+        email = request.user.traits.get('email', '')
+        first_name = request.user.traits.get('name', {}).get('first', '')
+        last_name = request.user.traits.get('name', {}).get('last', '')
 
         try:
             stripe_customer = stripe.Customer.create(
-                email=email, name=f'{first_name} {last_name}'
+                email=email,
+                name=f'{first_name} {last_name}'
             )
             Customer.objects.create(
                 user=request.user,
                 id=stripe_customer.id
             ).save()
         except Exception as e:
+            stripe_logger.error(f'Error creating customer: {e}')
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        return Response(status=HTTP_200_OK)
+
+
+class SubscriptionView(APIView):
+    """Class for handling the subscription creation and updating"""
+    permission_classes = [IsAuthenticated, IsUserOwner]
+    serializer_class = SubscriptionSerializer
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_customer:
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+
+            stripe_subscription = self.create_subscription(
+              customer_id=request.user.customer.id,
+              price_id=serializer.validated_data['price_id'],
+              trial_period_days=serializer.validated_data['trial_period_days']
+            )
+        except Exception as e:
             return Response(
                 data={'error': str(e)},
                 status=HTTP_400_BAD_REQUEST
             )
 
-        return Response(status=HTTP_200_OK)
+        return Response(
+            {
+                'client_secret':
+                stripe_subscription.pending_setup_intent.client_secret
+            },
+            status=HTTP_200_OK,
+            content_type='application/json'
+        )
 
+    def create_subscription(self, customer_id, price_id, trial_period_days):
 
-class SubscriptionView(CreateAPIView):
-    """Class for handling the subscription creation and updating"""
-    permission_classes = [IsAuthenticated]
-    serializer_class = SubscriptionSerializer
+        args = {
+            'payment_behavior': 'default_incomplete',
+            'payment_settings': {
+                'save_default_payment_method': 'on_subscription'
+            },
+            'expand': [
+                'pending_setup_intent'
+            ],
+            'proration_behavior': 'none',
+            # 'automatic_tax': {"enabled": True},
+            # deactivated for now, reactivate in production
+        }
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        if trial_period_days:
+            args['trial_period_days'] = trial_period_days
 
-        try:
-            stripe_subscription = serializer.create_stripe_subscription()
-        except stripe.error.InvalidRequestError as e:
-            response = Response(
-                data={'error': str(e)},
-                status=HTTP_400_BAD_REQUEST,
-                content_type='application/json'
-            )
-
-        else:
-            response = Response(
-                {'client_secret':
-                    stripe_subscription.pending_setup_intent.client_secret},
-                status=HTTP_200_OK,
-                content_type='application/json'
-            )
-
-        return response
+        stripe_subscription = stripe.Subscription.create(
+            customer=customer_id,
+            items=[{'price': price_id}],
+            **args
+        )
+        return stripe_subscription

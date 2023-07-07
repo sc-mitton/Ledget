@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import AuthContext from '../context/AuthContext'
 
-const PrivateRoute = () => {
+export const PrivateCheckout = () => {
     const { user } = React.useContext(AuthContext)
 
     return (
@@ -10,4 +10,10 @@ const PrivateRoute = () => {
     )
 }
 
-export default PrivateRoute
+export const UnauthenticatedRoute = () => {
+    const { user } = React.useContext(AuthContext)
+
+    return (
+        user ? <Navigate to="/checkout" /> : <Outlet />
+    )
+}

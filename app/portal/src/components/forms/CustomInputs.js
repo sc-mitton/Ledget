@@ -119,12 +119,11 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
-            textAlign: "left",
             backgroundColor: (state.isFocused ? "rgba(248, 248, 248, .2)" : "var(--button-gray)"),
             borderRadius: "2px",
-            padding: "4px",
+            padding: "4px 4px 4px 16px",
             width: "100%",
-            textAlign: "center",
+            textAlign: "left",
             cursor: "pointer",
             color: state.isSelected ? "var(--light-blue)" : "#f8f8f8"
         }),
