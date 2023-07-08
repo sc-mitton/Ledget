@@ -38,14 +38,11 @@ export const sdkError = (
             switch (error.response?.status) {
                 case 400: {
                     if (error_id === "session_already_available") {
-                        console.warn(
-                            "sdkError 400: `session_already_available`. Navigate to /"
-                        )
                         navigate("/", { replace: true }) // TODO redirect to app instead of login
                     } else if (errorMessages[0].text.includes("credentials are invalid")) {
                         setResponseError('Wrong email or password.')
                     } else if (errorMessages[0].text.includes("An account with the same identifier")) {
-                        setResponseError('That email is already taken')
+                        setResponseError("Hmm, something's not right. Please try again.")
                     } else if (setFlow !== undefined) {
                         // the request could contain invalid parameters which would set error messages in the flow
                         console.warn("sdkError 400: update flow data")

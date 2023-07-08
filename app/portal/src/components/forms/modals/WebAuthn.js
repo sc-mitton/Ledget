@@ -1,6 +1,6 @@
 import React from 'react'
 
-import withModal from '../../widgets/withModal'
+import withModal from '../utils/withModal'
 import './WebAuthn.css'
 import webAuthn from "../../../assets/icons/webAuthn.svg"
 
