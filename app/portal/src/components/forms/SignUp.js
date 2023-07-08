@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form"
 import { motion, AnimatePresence } from "framer-motion"
 
 import './style/SignUp.css'
-import logo from "../../assets/images/logo.svg"
 import Help from "../../assets/icons/Help"
 import webAuthn from "../../assets/icons/webAuthn.svg"
 import SocialAuth from "./SocialAuth"
@@ -16,6 +15,7 @@ import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/
 import { WindowLoadingBar } from "../widgets/Widgets"
 import { PasswordInput } from "./CustomInputs"
 import WebAuthnModal from "./modals/WebAuthn"
+import SignUpFlowHeader from "./SignUpFlowHeader"
 
 // Context for user info
 const userInfoContext = createContext({})
@@ -45,6 +45,7 @@ const schema = yup.object().shape({
         .required()
         .email('Email is invalid'),
 })
+
 
 function UserInfoForm() {
     // Form for user info
@@ -125,12 +126,7 @@ const UserInfoWindow = () => {
 
     return (
         <>
-            <div className="app-logo" >
-                <img src={logo} alt="Ledget" />
-            </div>
-            <div className="signup-steps-container">
-                <span>Step 1 of 3</span>
-            </div>
+            <SignUpFlowHeader step={1} steps={4} />
             <h2>Create Account</h2>
             <UserInfoForm />
             <SocialAuth flow={flow} submit={submit} CsrfToken={CsrfToken} />
@@ -168,13 +164,7 @@ const AuthSelectionWindow = () => {
     return (
         <>
             <WebAuthnModal visible={webAuthnModalVisible} setVisible={setWebAuthnModalVisible} />
-            <div className="app-logo" >
-                <img src={logo} alt="Ledget" />
-            </div>
-            <div className="signup-steps-container">
-                <span>Step 2 of 3</span>
-            </div>
-            <WindowLoadingBar visible={registering} />
+            <SignUpFlowHeader step={2} steps={4} />
             <form
                 action={flow.ui.action}
                 method={flow.ui.method}
@@ -236,6 +226,7 @@ const AuthSelectionWindow = () => {
                     </div>
                 </div>
             </form >
+            <WindowLoadingBar visible={registering} />
         </>
     )
 }

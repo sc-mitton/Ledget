@@ -31,8 +31,8 @@ function AnimatedRoutes() {
                             <Route exact path="/login" element={<LoginWindow />} />
                         </Route>
                         <Route path="/register" element={<SignUpWindow />} />
+                        <Route path="/verification" element={<VerificationWindow />} />
                         <Route path="/" element={<PrivateRoute />}>
-                            <Route path="/verification" element={<VerificationWindow />} />
                             <Route path="/checkout" element={<CheckoutWindow />} />
                         </Route>
                         {/* Forgot password page */}

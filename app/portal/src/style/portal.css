@@ -8,7 +8,32 @@
 }
 
 .app-logo img {
-    height: 40px;
+    height: 44px;
+}
+
+.signup-container-header {
+    margin-bottom: 32px;
+}
+
+.signup-container-header img {
+    height: 2.2em;
+}
+
+.signup-container-header div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.signup-steps-container {
+    margin-top: 8px;
+    margin-left: 4px;
+}
+
+.signup-steps-container span {
+    font-size: 16px;
+    font-weight: 500;
 }
 
 .page {

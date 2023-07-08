@@ -9,6 +9,7 @@ import { WindowLoadingBar } from "../widgets/Widgets"
 import "./style/Verification.css"
 import Replay from "../../assets/icons/Replay"
 import verifyEmail from "../../assets/icons/verifyEmail.svg"
+import SignUpFlowHeader from "./SignUpFlowHeader"
 
 const VerificationForm = () => {
     const { submit, CsrfToken } = useContext(VerificationContext)
@@ -39,12 +40,11 @@ const VerificationFlow = () => {
     123456
     return (
         <div className="window" id="verification-window">
-            <div id="verification-container-header">
-                <img src={logo} alt="Ledget" />
-            </div>
+            <SignUpFlowHeader step={3} steps={4} />
             <div id="verification-form-container">
                 <img id="verify-your-email" src={verifyEmail} alt="Verify Email" />
                 <h2>Verify your email address</h2>
+
                 <span>Enter the code we sent to your email address </span>
                 <br />
                 <span>to verify your account.</span>
@@ -64,7 +64,7 @@ const VerificationFlow = () => {
                     </button>
                 </div>
             </div>
-            <WindowLoadingBar visible={!flow} />
+            {/* <WindowLoadingBar visible={!flow} /> */}
         </div>
     )
 }
