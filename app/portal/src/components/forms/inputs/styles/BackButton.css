@@ -1,0 +1,30 @@
+.back-button {
+    float: left;
+    text-align: left;
+    font-weight: 600;
+    padding: 8px 4px;
+    display: flex;
+    align-items: center;
+}
+
+.back-button svg {
+    margin-right: 3px;
+}
+
+.back-button .arrow-tail {
+    stroke-dasharray: 100;
+    stroke-dashoffset: -100;
+    transition: stroke-dashoffset 0.2s ease-in;
+}
+
+.back-button:hover .arrow-tail {
+    stroke-dashoffset: 0;
+}
+
+.back-button .arrow-head {
+    transition: transform 0.2s ease-in;
+}
+
+.back-button:hover .arrow-head {
+    transform: translateX(3px);
+}

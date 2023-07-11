@@ -7,12 +7,12 @@ import Otc from "./Otc"
 import { VerificationFlowContextProvider, VerificationFlowContext } from "../../context/Flow"
 import { WindowLoadingBar } from "../widgets/Widgets"
 import "./style/Verification.css"
-import Replay from "../../assets/icons/Replay"
 import verifyEmail from "../../assets/icons/verifyEmail.svg"
 import SignUpFlowHeader from "./SignUpFlowHeader"
 import AuthContext from "../../context/AuthContext"
 import CsrfToken from "./inputs/CsrfToken"
 import { FormError } from "../widgets/Widgets"
+import ResendButton from "./inputs/ResendButton"
 
 const VerificationForm = () => {
     const { flow, submit, csrf, codeError } = useContext(VerificationFlowContext)
@@ -27,32 +27,6 @@ const VerificationForm = () => {
     useEffect(() => {
         codeError && setReset(true)
     }, [codeError])
-
-    const ResendButton = () => {
-        const [rotation, setRotation] = useState(0)
-
-        return (
-            <div id="resend-btn-container">
-                <motion.button
-                    id="resend-btn"
-                    type="submit"
-                    value="code"
-                    onClick={() => setRotation(rotation - 360)}
-                >
-                    <span>Resend</span>
-                    <motion.div
-                        animate={{
-                            rotate: rotation,
-                            transition: { duration: .5, type: 'spring', stiffness: 200, damping: 16 },
-                        }}
-                        id="resend-icon"
-                    >
-                        <Replay fill={'var(--main-green)'} />
-                    </motion.div>
-                </motion.button>
-            </div>
-        )
-    }
 
     return (
         <>

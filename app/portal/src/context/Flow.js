@@ -286,7 +286,6 @@ function VerificationFlowContextProvider({ children }) {
             })
             .then((response) => {
                 const messages = response.data.ui?.messages || []
-                console.log(response.data)
                 for (const message of messages) {
                     if (message.text.includes('code is invalid') || message.id === 4070006) {
                         setCodeError(true)
@@ -296,7 +295,9 @@ function VerificationFlowContextProvider({ children }) {
                 body.code && navigate('/checkout')
             })
             .catch((err) => {
-                setResponseError()
+                setResponseError(
+                    'Well this is awkward... something went wrong.\n Please try back again later.'
+                )
             })
             .finally(() => setVerifying(false))
     }
@@ -339,8 +340,15 @@ function RecoveryFlowContextProvider({ children }) {
         )
     }, [flow])
 
+    useEffect(() => {
+        if (!codeSent) {
+            setCodeSent(
+                Boolean(sessionStorage.getItem('recovery_email'))
+            )
+        }
+    }, [])
+
     const createFlow = () => {
-        console.log('creating recovery flow')
         sdk
             .createBrowserRecoveryFlow()
             .then(({ data: flow }) => {
@@ -351,7 +359,9 @@ function RecoveryFlowContextProvider({ children }) {
             .catch((err) => {
                 // Couldn't create login flow
                 // handle the error
-                console.log(err)
+                setResponseError(
+                    'Well this is awkward... something went wrong. Please try back again later.'
+                )
             })
     }
 
@@ -363,13 +373,17 @@ function RecoveryFlowContextProvider({ children }) {
         [],
     )
 
+    // Submit the form (handles both requesting the code and entering it)
     const submit = (event) => {
         event.preventDefault()
-        const form = event.target
-        const formData = new FormData(form)
-        let body = Object.fromEntries(formData)
+        const formData = new FormData(event.target)
 
-        console.log(body)
+        // Filter out any fields that shouldn't be submitted
+        let body = {}
+        const keys = ['csrf_token', 'email', 'code']
+        for (let [key, value] of formData.entries()) {
+            keys.includes(key) && (body[key] = value)
+        }
 
         // We need the method specified from the name and value of the submit button.
         // when multiple submit buttons are present, the clicked one's value is used.
@@ -378,18 +392,29 @@ function RecoveryFlowContextProvider({ children }) {
             body['method'] = method.value
         }
 
+        body.code && setRecovering(true)
         sdk
             .updateRecoveryFlow({
                 flow: flow.id,
                 updateRecoveryFlowBody: body,
             })
             .then((response) => {
-                console.log(response)
-                setCodeSent(true)
+                !codeSent && setCodeSent(true)
+
+                const messages = response.data.ui?.messages || []
+                for (const message of messages) {
+                    if (message.text.includes('code is invalid') || message.id === 4070006) {
+                        setCodeError(true)
+                        return
+                    }
+                }
             })
             .catch((err) => {
-                setResponseError()
+                setResponseError(
+                    'Well this is awkward... something went wrong. Please try back again later.'
+                )
             })
+            .finally(() => setRecovering(false))
     }
 
 
