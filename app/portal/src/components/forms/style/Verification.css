@@ -1,7 +1,7 @@
 #verification-window {
-    text-align: center;
-    max-width: fit-content;
-    width: auto;
+    max-width: 375px;
+    width: 60%;
+    padding: 40px 60px;
 }
 
 #verification-container-header {
@@ -11,28 +11,30 @@
     align-items: top;
 }
 
+/* Email Graphic */
+#verification-form-container div:first-child {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 #verification-container-header img {
     height: 2em;
 }
 
+/* ************* */
+
 #verify-your-email {
     height: 10em;
-}
-
-#verification-form-container {
-    margin: 0 40px;
 }
 
 #verification-form-container span {
     font-weight: 500;
 }
 
-#otc-container {
-    margin: 0 0 16px 0;
-}
-
 #verify-otc {
     width: 100%;
+    margin-top: 16px;
 }
 
 #verification-form-error-container * {

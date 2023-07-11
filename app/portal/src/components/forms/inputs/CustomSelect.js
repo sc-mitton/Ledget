@@ -19,7 +19,7 @@ const CustomSelect = ({ field, ...props }) => {
             borderRadius: "6px",
             paddingLeft: "16px",
             paddingRight: "12px",
-            paddingTop: "12px",
+            paddingTop: "14px",
             paddingBottom: "36px",
             backgroundColor: "#ebebeb",
             font: "inherit",

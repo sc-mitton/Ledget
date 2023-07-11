@@ -325,6 +325,7 @@ function RecoveryFlowContextProvider({ children }) {
     const [csrf, setCsrf] = useState(null)
     const [recovering, setRecovering] = useState(false)
     const [, setSearchParams] = useSearchParams()
+    const [codeSent, setCodeSent] = useState(false)
 
     useEffect(() => {
         if (!flow) {
@@ -384,6 +385,7 @@ function RecoveryFlowContextProvider({ children }) {
             })
             .then((response) => {
                 console.log(response)
+                setCodeSent(true)
             })
             .catch((err) => {
                 setResponseError()
@@ -396,6 +398,7 @@ function RecoveryFlowContextProvider({ children }) {
         csrf,
         responseError,
         recovering,
+        codeSent,
         createFlow,
         getFlow,
         submit

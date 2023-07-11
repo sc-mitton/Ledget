@@ -97,7 +97,7 @@ textarea,
 select,
 option {
     font-family: "Source Sans 3";
-    font-size: 15px;
+    font-size: 16px;
     color: var(--main-text-gray);
 }
 
@@ -160,7 +160,7 @@ input:-webkit-autofill {
     background-color: none;
     background-clip: content-box !important;
     border: none;
-    font-size: 15px;
+    font-size: 16px;
     outline: none;
 }
 

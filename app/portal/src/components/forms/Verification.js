@@ -137,7 +137,9 @@ const VerificationFlow = () => {
             <WindowLoadingBar visible={verifying} />
             <SignUpFlowHeader step={3} steps={4} />
             <div id="verification-form-container">
-                <img id="verify-your-email" src={verifyEmail} alt="Verify Email" />
+                <div>
+                    <img id="verify-your-email" src={verifyEmail} alt="Verify Email" />
+                </div>
                 {responseError
                     ?
                     <div id="verification-form-error-container">
@@ -146,10 +148,10 @@ const VerificationFlow = () => {
                     :
                     <>
                         <h2>Verify your email address</h2>
-
-                        <span>Enter the code we sent to your email address </span>
-                        <br />
-                        <span>to verify your account.</span>
+                        <div className="subheader">
+                            <span>Enter the code we sent to your email address </span>
+                            <span>to verify your account:</span>
+                        </div>
                         <VerificationForm />
                     </>
                 }

@@ -12,19 +12,19 @@
 
 #recovery-window {
     padding: 48px 56px;
+    width: auto;
 }
 
 #recovery-window h2 {
     margin-bottom: 8px;
 }
 
-#recovery-window #message {
-    opacity: .7;
-    padding-left: 4px;
+/* Send Recovery Email Button */
+.verification-button-container {
     margin-top: 12px;
 }
 
-#send-recovery-email-button {
+.verification-button {
     width: 100%;
     z-index: 1;
     position: relative;
@@ -59,4 +59,10 @@
     100% {
         transform: translateX(200%);
     }
+}
+
+#verify-recovery-code-button {
+    width: 100%;
+    z-index: 1;
+    position: relative;
 }

@@ -1,6 +1,4 @@
 .otc {
-    width: 320px;
-    padding-top: 32px;
     width: 100%;
 }
 
@@ -13,11 +11,11 @@
 .otc fieldset div {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .otc input[type="text"] {
-    width: 1.1em;
+    flex: 1;
     line-height: 1;
     margin: .1em;
     padding: 8px 4px;
@@ -40,31 +38,21 @@
     margin: 0;
 }
 
+.otc input[type="text"]:first-child,
+.otc input[type="text"]:last-child {
+    margin-left: 0;
+}
+
 /* 2 group of 3 items */
 .otc input[type="text"]:nth-child(n+4) {
     order: 2;
 }
 
 .otc div::before {
+    width: 20px;
     content: '';
     height: 3px;
-    width: 20px;
     margin: 0 .25em;
     order: 1;
     background: var(--lighter-green);
-}
-
-/* From: https://gist.github.com/ffoodd/000b59f431e3e64e4ce1a24d5bb36034 */
-.otc label {
-    border: 0 !important;
-    clip: rect(1px, 1px, 1px, 1px) !important;
-    -webkit-clip-path: inset(50%) !important;
-    clip-path: inset(50%) !important;
-    height: 1px !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-    position: absolute !important;
-    width: 1px !important;
-    white-space: nowrap !important;
 }
