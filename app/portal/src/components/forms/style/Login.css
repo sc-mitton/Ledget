@@ -19,21 +19,29 @@
 
 #email-container span {
     opacity: .6;
-    margin-right: 8px;
+    margin-right: 6px;
     font-size: 14px;
 }
 
-#email-container a {
+
+#change-email-button {
     color: var(--main-text-gray);
     transition: color .2s ease, opacity .2s ease;
     font-weight: 600;
     opacity: .6;
-    border-bottom: none;
+    padding: 0 4px;
 }
 
-#email-container a:hover {
+#change-email-button:hover {
     color: var(--main-blue);
     opacity: 1;
+}
+
+#remember-me-checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 4px;
 }
 
 #forgot-password-container {
@@ -42,6 +50,17 @@
     margin-bottom: 2px;
 }
 
-#forgot-password-container * {
+#forgot-password-container a {
+    color: var(--main-text-gray);
+    opacity: .8;
+    transition: color .2s ease;
+    font-weight: 500;
     font-size: 14px;
+}
+
+#forgot-password-container a:hover {
+    color: var(--main-blue);
+    transition: color .2s ease;
+    border-bottom: none;
+    opacity: 1;
 }

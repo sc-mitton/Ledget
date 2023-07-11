@@ -1,15 +1,14 @@
 import React, { createContext, useCallback, useState, useEffect } from "react"
 
-import { useSearchParams, useNavigate } from "react-router-dom"
+import { useSearchParams, useNavigate, createSearchParams } from "react-router-dom"
 
 import { sdk, sdkError } from "../api/sdk"
 import AuthContext from "./AuthContext"
 
-
 const LoginFlowContext = createContext(null)
 const RegisterFlowContext = createContext(null)
-const VerificationContext = createContext(null)
-
+const VerificationFlowContext = createContext(null)
+const RecoveryFlowContext = createContext(null)
 
 function LoginFlowContextProvider({ children }) {
     const [flow, setFlow] = useState(null)
@@ -17,7 +16,7 @@ function LoginFlowContextProvider({ children }) {
     const [responseError, setResponseError] = useState('')
     const [searchParams, setSearchParams] = useSearchParams()
     const [authenticating, setAuthenticating] = useState(false)
-    const { user, setUser } = React.useContext(AuthContext)
+    const { setUser } = React.useContext(AuthContext)
 
     const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
 
@@ -63,18 +62,6 @@ function LoginFlowContextProvider({ children }) {
         )
     }, [flow])
 
-    const CsrfToken = () => {
-        return (
-            <>
-                <input
-                    type="hidden"
-                    name="csrf_token"
-                    value={csrf || ''}
-                />
-            </>
-        )
-    }
-
     const submit = (event) => {
         event.preventDefault()
         // map the entire form data to JSON for the request body
@@ -113,12 +100,12 @@ function LoginFlowContextProvider({ children }) {
 
     const data = {
         flow,
+        responseError,
+        csrf,
+        authenticating,
         createFlow,
         getFlow,
         submit,
-        responseError,
-        CsrfToken,
-        authenticating
     }
 
     return (
@@ -132,8 +119,9 @@ function RegisterFlowContextProvider({ children }) {
     const [flow, setFlow] = useState(null)
     const [csrf, setCsrf] = useState(null)
     const [responseError, setResponseError] = useState('')
-    const [, setSearchParams] = useSearchParams()
     const [registering, setRegistering] = useState(false)
+
+    const [, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
     const { setUser } = React.useContext(AuthContext)
 
@@ -172,18 +160,6 @@ function RegisterFlowContextProvider({ children }) {
         )
     }, [flow])
 
-    const CsrfToken = () => {
-        return (
-            <>
-                <input
-                    type="hidden"
-                    name="csrf_token"
-                    value={csrf || ''}
-                />
-            </>
-        )
-    }
-
     const submit = (event) => {
         // map the entire form data to JSON for the request body
         setRegistering(true)
@@ -211,7 +187,13 @@ function RegisterFlowContextProvider({ children }) {
             .then((response) => {
                 setUser(response.data.identity)
                 sessionStorage.setItem('user', JSON.stringify(response.data.identity))
-                navigate('/verification')
+                const flow_id = response.data.continue_with?.[0].flow?.id
+                navigate({
+                    pathname: '/verification',
+                    search: createSearchParams({
+                        flow: flow_id
+                    }).toString(),
+                })
             })
             .catch(sdkErrorHandler)
             .finally(() => setRegistering(false))
@@ -219,12 +201,12 @@ function RegisterFlowContextProvider({ children }) {
 
     const data = {
         flow,
+        csrf,
+        responseError,
+        registering,
         createFlow,
         getFlow,
         submit,
-        responseError,
-        CsrfToken,
-        registering
     }
 
     return (
@@ -234,13 +216,15 @@ function RegisterFlowContextProvider({ children }) {
     )
 }
 
-function VerificationContextProvider({ children }) {
+function VerificationFlowContextProvider({ children }) {
     const [flow, setFlow] = useState(null)
-    const [, setSearchParams] = useSearchParams()
     const [responseError, setResponseError] = useState('')
+    const [codeError, setCodeError] = useState(false)
     const [csrf, setCsrf] = useState(null)
     const [verifying, setVerifying] = useState(false)
-    const { user, setUser } = React.useContext(AuthContext)
+
+    const [, setSearchParams] = useSearchParams()
+    const navigate = useNavigate()
 
     const getFlow = useCallback(
         (flowId) =>
@@ -249,18 +233,6 @@ function VerificationContextProvider({ children }) {
                 .then(({ data: flow }) => setFlow(flow)),
         [],
     )
-
-    const createFlow = () => {
-        sdk
-            .createBrowserVerificationFlow()
-            .then(({ data: flow }) => {
-                setSearchParams({ ["flow"]: flow.id })
-                setFlow(flow)
-            })
-            .catch((err) => {
-                setResponseError('Something went wrong. Please try again later.')
-            })
-    }
 
     useEffect(() => {
         if (!flow) {
@@ -274,72 +246,165 @@ function VerificationContextProvider({ children }) {
         )
     }, [flow])
 
-    const CsrfToken = () => {
-        return (
-            <>
-                <input
-                    type="hidden"
-                    name="csrf_token"
-                    value={csrf || ''}
-                />
-            </>
-        )
+    const createFlow = () => {
+        sdk
+            .createBrowserVerificationFlow()
+            .then(({ data: flow }) => {
+                setSearchParams({ ["flow"]: flow.id })
+                setFlow(flow)
+            })
+            .catch((err) => {
+                setResponseError(
+                    'Well this is awkward... something went wrong.\n Please try back again later.'
+                )
+            })
     }
 
     const submit = (event) => {
         event.preventDefault()
+        const formData = new FormData(event.target)
 
-        const form = event.currentTarget
-        const formData = new FormData(form)
-
-        // map the entire form data to JSON for the request body
-        let body = Object.fromEntries(
-            formData,
-        )
+        // Filter out any fields that shouldn't be submitted
+        let body = {}
+        const keys = ['csrf_token', 'email', 'code']
+        for (let [key, value] of formData.entries()) {
+            keys.includes(key) && (body[key] = value)
+        }
 
         // We need the method specified from the name and value of the submit button.
         // when multiple submit buttons are present, the clicked one's value is used.
         if ("submitter" in event.nativeEvent) {
-            const method = (
-                event.nativeEvent
-            ).submitter
-            body = {
-                ...body,
-                ...{ [method.name]: method.value },
-            }
+            const method = (event.nativeEvent).submitter
+            body['method'] = method.value
         }
 
+        body.code && setVerifying(true)
         sdk
             .updateVerificationFlow({
                 flow: flow.id,
                 updateVerificationFlowBody: body,
             })
             .then((response) => {
-                console.log(response)
+                const messages = response.data.ui?.messages || []
+                console.log(response.data)
+                for (const message of messages) {
+                    if (message.text.includes('code is invalid') || message.id === 4070006) {
+                        setCodeError(true)
+                        return
+                    }
+                }
+                body.code && navigate('/checkout')
             })
             .catch((err) => {
-                if (err.response.status === 400) {
-                    // user input error
-                    // show the error messages in the UI
-                    setResponseError(err.response.data.error.message)
-                }
+                setResponseError()
             })
+            .finally(() => setVerifying(false))
     }
 
     const data = {
         flow,
         responseError,
+        codeError,
         verifying,
+        csrf,
         createFlow,
         getFlow,
-        CsrfToken,
         submit
     }
 
     return (
-        <VerificationContext.Provider value={data}>
+        <VerificationFlowContext.Provider value={data}>
             {children}
-        </VerificationContext.Provider>
+        </VerificationFlowContext.Provider>
+    )
+}
+
+function RecoveryFlowContextProvider({ children }) {
+    const [flow, setFlow] = useState(null)
+    const [responseError, setResponseError] = useState('')
+    const [csrf, setCsrf] = useState(null)
+    const [recovering, setRecovering] = useState(false)
+    const [, setSearchParams] = useSearchParams()
+
+    useEffect(() => {
+        if (!flow) {
+            return
+        }
+        setCsrf(
+            flow.ui.nodes?.find(
+                node => node.group === 'default'
+                    && node.attributes.name === 'csrf_token'
+            )?.attributes.value
+        )
+    }, [flow])
+
+    const createFlow = () => {
+        console.log('creating recovery flow')
+        sdk
+            .createBrowserRecoveryFlow()
+            .then(({ data: flow }) => {
+                // set the flow data
+                setFlow(flow)
+                setSearchParams({ ["flow"]: flow.id })
+            })
+            .catch((err) => {
+                // Couldn't create login flow
+                // handle the error
+                console.log(err)
+            })
+    }
+
+    const getFlow = useCallback(
+        (flowId) =>
+            sdk
+                .getRecoveryFlow({ id: flowId })
+                .then(({ data: flow }) => setFlow(flow)),
+        [],
+    )
+
+    const submit = (event) => {
+        event.preventDefault()
+        const form = event.target
+        const formData = new FormData(form)
+        let body = Object.fromEntries(formData)
+
+        console.log(body)
+
+        // We need the method specified from the name and value of the submit button.
+        // when multiple submit buttons are present, the clicked one's value is used.
+        if ("submitter" in event.nativeEvent) {
+            const method = (event.nativeEvent).submitter
+            body['method'] = method.value
+        }
+
+        sdk
+            .updateRecoveryFlow({
+                flow: flow.id,
+                updateRecoveryFlowBody: body,
+            })
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((err) => {
+                setResponseError()
+            })
+    }
+
+
+    const data = {
+        flow,
+        csrf,
+        responseError,
+        recovering,
+        createFlow,
+        getFlow,
+        submit
+    }
+
+    return (
+        <RecoveryFlowContext.Provider value={data}>
+            {children}
+        </RecoveryFlowContext.Provider>
     )
 }
 
@@ -348,6 +413,8 @@ export {
     LoginFlowContextProvider,
     RegisterFlowContext,
     RegisterFlowContextProvider,
-    VerificationContext,
-    VerificationContextProvider
+    VerificationFlowContext,
+    VerificationFlowContextProvider,
+    RecoveryFlowContext,
+    RecoveryFlowContextProvider
 }

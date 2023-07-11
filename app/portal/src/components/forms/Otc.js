@@ -1,10 +1,18 @@
 import React, { useEffect, useState, useRef } from "react"
 import "./style/Otc.css"
+import { useSearchParams } from "react-router-dom"
 
-function Otc({ codeLength }) {
+function Otc({ codeLength, required, reset, setReset }) {
     const [inputStates, setInputStates] = useState([])
     const inputRefs = useRef([])
-    const [code, setCode] = useState(null)
+    const [code, setCode] = useState('')
+    const [searchParams] = useSearchParams()
+
+    // Default props
+    codeLength = codeLength || 6
+    required = required || true
+    reset = reset || false
+    setReset = setReset || (() => { })
 
     // Create list of refs and states
     useEffect(() => {
@@ -13,8 +21,36 @@ function Otc({ codeLength }) {
             states.push({ digit: "" })
         }
         setInputStates(states)
-        inputRefs.current = Array(codeLength).fill(null)
-    }, [codeLength])
+        inputRefs.current = Array(codeLength).fill('')
+    }, [])
+
+    // Reset the code when reset is set to true
+    useEffect(() => {
+        if (reset) {
+            const states = []
+            for (let i = 0; i < codeLength; i++) {
+                states.push({ digit: "" })
+            }
+            setInputStates(states)
+            inputRefs.current[0]?.focus()
+        }
+        return () => {
+            setReset(false)
+        }
+    }, [reset])
+
+    // Focus the first input on mount
+    // Timeout is needed to allow rendering of componenet
+    // before focusing
+    useEffect(() => {
+        const firstInputRef = inputRefs.current[0]
+        if (firstInputRef instanceof HTMLInputElement) {
+            const timer = setTimeout(() => {
+                firstInputRef.focus()
+            }, 0)
+            return () => clearTimeout(timer)
+        }
+    }, [inputRefs.current])
 
     // Update the code when all inputs are filled
     useEffect(() => {
@@ -23,9 +59,10 @@ function Otc({ codeLength }) {
             .join("")
 
         // provide the complete code only if it is complete
-        finalCode.length === codeLength ? setCode(finalCode) : setCode(null)
+        finalCode.length === codeLength ? setCode(finalCode) : setCode('')
     }, [inputStates, codeLength])
 
+    // Control the input of the digits
     const handleChange = (e, index) => {
         const entry = e.target.value
 
@@ -45,6 +82,7 @@ function Otc({ codeLength }) {
         }
     }
 
+    // Handle backspace
     const handleKeyDown = (e, index) => {
         if (e.key === "Backspace") {
             e.preventDefault()
@@ -54,15 +92,15 @@ function Otc({ codeLength }) {
                 const updatedStates = [...inputStates]
                 updatedStates[index] = { digit: "" }
                 setInputStates(updatedStates)
-                inputRefs.current[index - 1]?.focus()
             }
         }
     }
 
+    // Handle pasting in the whole code
     const handlePaste = (e) => {
-        console.log(e)
         e.preventDefault()
         const paste = e.clipboardData.getData("text")
+
         const updatedStates = [...inputStates]
         for (let i = 0; i < paste.length; i++) {
             if (i < codeLength) {
@@ -70,8 +108,19 @@ function Otc({ codeLength }) {
             }
         }
         setInputStates(updatedStates)
+
         inputRefs.current[codeLength - 1]?.focus()
     }
+
+    // Function for turning the code input into a controlled component
+    const ControlledCodeInput = ({ onChange, value }) => (
+        <input
+            type="hidden"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            name="code"
+        />
+    )
 
     return (
         <div className="otc">
@@ -79,19 +128,24 @@ function Otc({ codeLength }) {
                 <div>
                     {inputStates.map((input, index) => (
                         <input
+                            required={required}
                             key={index}
                             type="text"
+                            name={`otc-${index}`}
+                            id={`otc-${index}`}
                             value={input.digit}
                             autoComplete="one-time-code"
-                            id={`otc-${index}`}
                             onPaste={(e) => handlePaste(e)}
                             onChange={(e) => handleChange(e, index)}
                             onKeyDown={(e) => handleKeyDown(e, index)}
                             ref={(el) => (inputRefs.current[index] = el)}
-                            required
                         />
                     ))}
                 </div>
+                <ControlledCodeInput
+                    value={code}
+                    onChange={setCode}
+                />
             </fieldset>
         </div>
     )

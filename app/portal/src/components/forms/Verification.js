@@ -1,34 +1,107 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState, useRef } from "react"
 
 import { useSearchParams } from "react-router-dom"
-import logo from "../../assets/images/logo.svg"
+import { motion } from "framer-motion"
 
 import Otc from "./Otc"
-import { VerificationContextProvider, VerificationContext } from "../../context/Flow"
+import { VerificationFlowContextProvider, VerificationFlowContext } from "../../context/Flow"
 import { WindowLoadingBar } from "../widgets/Widgets"
 import "./style/Verification.css"
 import Replay from "../../assets/icons/Replay"
 import verifyEmail from "../../assets/icons/verifyEmail.svg"
 import SignUpFlowHeader from "./SignUpFlowHeader"
+import AuthContext from "../../context/AuthContext"
+import CsrfToken from "./inputs/CsrfToken"
+import { FormError } from "../widgets/Widgets"
 
 const VerificationForm = () => {
-    const { submit, CsrfToken } = useContext(VerificationContext)
+    const { flow, submit, csrf, codeError } = useContext(VerificationFlowContext)
+    const [otcDisabled, setOtcDisabled] = useState(false)
+    const { user } = useContext(AuthContext)
+    const [reset, setReset] = useState(false)
+
+    useEffect(() => {
+        flow ? setOtcDisabled(false) : setOtcDisabled(true)
+    }, [flow])
+
+    useEffect(() => {
+        codeError && setReset(true)
+    }, [codeError])
+
+    const ResendButton = () => {
+        const [rotation, setRotation] = useState(0)
+
+        return (
+            <div id="resend-btn-container">
+                <motion.button
+                    id="resend-btn"
+                    type="submit"
+                    value="code"
+                    onClick={() => setRotation(rotation - 360)}
+                >
+                    <span>Resend</span>
+                    <motion.div
+                        animate={{
+                            rotate: rotation,
+                            transition: { duration: .5, type: 'spring', stiffness: 200, damping: 16 },
+                        }}
+                        id="resend-icon"
+                    >
+                        <Replay fill={'var(--main-green)'} />
+                    </motion.div>
+                </motion.button>
+            </div>
+        )
+    }
 
     return (
-        <form onSubmit={(e) => submit(e)}>
-            <div id="otc-container">
-                <Otc codeLength={6} />
-            </div>
-            <CsrfToken />
-        </form>
+        <>
+            <form
+                action={flow?.ui.action}
+                method={flow?.ui.method}
+                onSubmit={submit}
+            >
+                <div id="otc-container">
+                    <Otc codeLength={6} reset={reset} setReset={setReset} />
+                </div>
+                <CsrfToken csrf={csrf} />
+                <input
+                    type="hidden"
+                    name="email"
+                    value={user?.traits?.email}
+                />
+                <button
+                    className="charcoal-button"
+                    id="verify-otc"
+                    type="submit"
+                    value="code"
+                    disabled={otcDisabled}
+                >
+                    Submit
+                </button>
+            </form>
+            <form
+                action={flow?.ui.action}
+                method={flow?.ui.method}
+                onSubmit={submit}
+            >
+                <ResendButton />
+                <CsrfToken csrf={csrf} />
+                <input
+                    type="hidden"
+                    name="email"
+                    value={user?.traits?.email}
+                />
+            </form>
+        </>
     )
 }
 
 const VerificationFlow = () => {
     {/* Add the verification flow */ }
-
     const [searchParams] = useSearchParams()
-    const { flow, getFlow, createFlow } = useContext(VerificationContext)
+    const { getFlow, createFlow, codeError, verifying, responseError } = useContext(VerificationFlowContext)
+    const [jiggle, setJiggle] = useState(false)
 
     useEffect(() => {
         // we might redirect to this page after the flow is initialized,
@@ -37,44 +110,61 @@ const VerificationFlow = () => {
         // Get new flow if it's expired
         flowId ? getFlow(flowId).catch(createFlow) : createFlow()
     }, [])
-    123456
+
+    useEffect(() => {
+        if (codeError) {
+            setJiggle(true)
+        }
+    }, [codeError])
+
+    const jiggleVariants = {
+        initial: { x: 0 },
+        jiggle: {
+            x: [-20, 20, 0],
+            transition: { duration: .2, type: 'spring', stiffness: 1000, damping: 10 },
+        },
+    }
+
     return (
-        <div className="window" id="verification-window">
+        < motion.div
+            className="window"
+            id="verification-window"
+            initial="initial"
+            animate={jiggle ? 'jiggle' : 'initial'}
+            variants={jiggleVariants}
+            onAnimationComplete={() => setJiggle(false)}
+        >
+            <WindowLoadingBar visible={verifying} />
             <SignUpFlowHeader step={3} steps={4} />
             <div id="verification-form-container">
                 <img id="verify-your-email" src={verifyEmail} alt="Verify Email" />
-                <h2>Verify your email address</h2>
+                {responseError
+                    ?
+                    <div id="verification-form-error-container">
+                        <FormError msg={responseError} />
+                    </div>
+                    :
+                    <>
+                        <h2>Verify your email address</h2>
 
-                <span>Enter the code we sent to your email address </span>
-                <br />
-                <span>to verify your account.</span>
-                <VerificationForm />
-                <button
-                    className="charcoal-button"
-                    id="verify-otc"
-                    type="submit"
-                    form="verification-form"
-                >
-                    Verify
-                </button>
-                <div id="resend-btn-container">
-                    <button id="resend-btn">
-                        <span>Resend</span>
-                        <Replay fill={'var(--main-green)'} />
-                    </button>
-                </div>
+                        <span>Enter the code we sent to your email address </span>
+                        <br />
+                        <span>to verify your account.</span>
+                        <VerificationForm />
+                    </>
+                }
             </div>
-            {/* <WindowLoadingBar visible={!flow} /> */}
-        </div>
+
+        </ motion.div>
     )
 }
 
 const VerificationWindow = () => {
 
     return (
-        <VerificationContextProvider>
+        <VerificationFlowContextProvider>
             <VerificationFlow />
-        </VerificationContextProvider>
+        </VerificationFlowContextProvider>
     )
 }
 

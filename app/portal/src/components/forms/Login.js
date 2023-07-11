@@ -11,11 +11,12 @@ import webAuthn from "../../assets/icons/webAuthn.svg"
 import Help from "../../assets/icons/Help"
 import logo from "../../assets/images/logo.svg"
 import SocialAuth from "./SocialAuth"
-import { PasswordInput } from "./CustomInputs"
-import { Checkbox } from "./CustomInputs"
+import PasswordInput from "./inputs/PasswordInput"
+import Checkbox from "./inputs/Checkbox"
 import { FormError, WindowLoadingBar } from "../widgets/Widgets"
 import { LoginFlowContext, LoginFlowContextProvider } from "../../context/Flow"
 import WebAuthnModal from "./modals/WebAuthn"
+import CsrfToken from "./inputs/CsrfToken"
 
 const emailContext = createContext({})
 
@@ -106,7 +107,7 @@ const EmailForm = () => {
 }
 
 const InitialWindow = () => {
-    const { flow, submit, CsrfToken } = useContext(LoginFlowContext)
+    const { flow, submit, csrf } = useContext(LoginFlowContext)
 
     return (
         <>
@@ -115,7 +116,7 @@ const InitialWindow = () => {
             </div>
             <h2>Sign In</h2>
             <EmailForm />
-            <SocialAuth flow={flow} submit={submit} CsrfToken={CsrfToken} />
+            <SocialAuth flow={flow} submit={submit} csrf={csrf} />
             <div
                 className="below-window-container"
             >
@@ -130,11 +131,11 @@ const InitialWindow = () => {
 }
 
 const AuthenticationWindow = () => {
-    const pwdRef = useRef()
-    const { flow, submit, responseError, authenticating, CsrfToken } = useContext(LoginFlowContext)
+    const { flow, submit, responseError, authenticating, csrf } = useContext(LoginFlowContext)
     const { email, setEmail } = useContext(emailContext)
-    const initialEmailValue = useRef(email);
     const [webAuthnModalVisible, setWebAuthnModalVisible] = useState(false)
+    const initialEmailValue = useRef(email)
+    const pwdRef = useRef()
 
     useEffect(() => {
         pwdRef.current.focus()
@@ -151,19 +152,20 @@ const AuthenticationWindow = () => {
 
     return (
         <>
+            <WindowLoadingBar visible={authenticating || flow == null} />
             <WebAuthnModal visible={webAuthnModalVisible} setVisible={setWebAuthnModalVisible} />
             <div className="app-logo" >
                 <img src={logo} alt="Ledget" />
             </div>
             <div id="email-container">
                 <span>{`${initialEmailValue.current}`}</span>
-                <a
+                <button
+                    id="change-email-button"
                     onClick={() => setEmail(null)}
                 >
                     change
-                </a>
+                </button>
             </div>
-            <WindowLoadingBar visible={authenticating || flow == null} />
             <form
                 action={flow?.ui.action}
                 method={flow?.ui.method}
@@ -173,9 +175,8 @@ const AuthenticationWindow = () => {
                 {responseError && <FormError msg={responseError} />}
                 <PasswordInput ref={pwdRef} />
                 <div id="forgot-password-container">
-                    <Link to="#" tabIndex={0} >Forgot Password?</Link>
+                    <Link to="/recovery" tabIndex={0} >Forgot Password?</Link>
                 </div>
-                <CsrfToken />
                 <input
                     type="hidden"
                     name="identifier"
@@ -192,15 +193,9 @@ const AuthenticationWindow = () => {
                 </button>
                 <div className="passwordless-options">
                     <div className="passwordless-options-header" >
-                        Passwordless
-                        <button
-                            className="help-icon"
-                            onClick={() => setWebAuthnModalVisible(true)}
-                            aria-label="Learn more about passwordless options"
-                            type="button"
-                        >
-                            <Help />
-                        </button>
+                        <div>
+                            Passwordless
+                        </div>
                     </div>
                     <div className="passwordless-options-container">
                         <button
@@ -211,6 +206,7 @@ const AuthenticationWindow = () => {
                         </button>
                     </div>
                 </div>
+                <CsrfToken />
             </form >
         </>
     )
@@ -262,6 +258,7 @@ function LoginFlow() {
                 </motion.div>
             }
         </AnimatePresence>
+
     )
 }
 

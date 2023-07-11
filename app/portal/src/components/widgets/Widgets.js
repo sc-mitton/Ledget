@@ -27,11 +27,16 @@ export const LoadingRing = () => {
 }
 
 export const FormError = (props) => {
+    const renderLines = (text) => {
+        const lines = text.split('\n')
+        return lines.map((line, index) => <React.Fragment key={index}>{line}<br /></React.Fragment>)
+    }
+
     return (
         <div className="error-container">
             <div className="form-error">
                 <img src={alert2} className="error-icon" />
-                {props.msg}
+                {renderLines(props.msg)}
             </div>
         </div>
     )

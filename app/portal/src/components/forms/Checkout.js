@@ -15,7 +15,7 @@ import stripelogo from '../../assets/images/stripelogo.svg'
 import alert2 from '../../assets/icons/alert2.svg'
 import Star from '../../assets/icons/Star'
 import ledgetapi from '../../api/axios'
-import { CustomSelect } from './CustomInputs'
+import CustomSelect from './inputs/CustomSelect'
 import { states } from '../../assets/data/states'
 import { FormError, FormErrorTip } from "../widgets/Widgets"
 import usePrices from '../../api/hooks/usePrices'
@@ -467,6 +467,7 @@ function Checkout({ prices }) {
 
     return (
         <>
+            <WindowLoadingBar visible={processing} />
             <Prices prices={prices} />
             <div id="checkout-container">
                 <Form id="billing-form" onSubmit={onSubmit} />
@@ -486,7 +487,6 @@ function Checkout({ prices }) {
                 <SubmitButton form={'billing-form'} />
             </div>
             <StripeFooter />
-            <WindowLoadingBar visible={processing} />
         </>
     )
 }

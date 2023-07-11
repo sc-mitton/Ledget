@@ -4,8 +4,9 @@ import { useLocation } from "react-router-dom"
 
 import FacebookLogo from "../../assets/icons/FacebookLogo"
 import GoogleLogo from "../../assets/icons/GoogleLogo"
+import CsrfToken from "./inputs/CsrfToken"
 
-function SocialAuth({ flow, submit, CsrfToken }) {
+function SocialAuth({ flow, submit, csrf }) {
     const location = useLocation()
 
     const SocialLoginButtons = () => {
@@ -70,7 +71,7 @@ function SocialAuth({ flow, submit, CsrfToken }) {
                     <SocialLoginButtons />
                     : <DefaultButtons />
                 }
-                <CsrfToken />
+                <CsrfToken csrf={csrf} />
             </form>
         </div>
     )

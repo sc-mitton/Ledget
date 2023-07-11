@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, createContext, useState, useRef } from "react"
+import React, { useContext, useEffect, createContext, useState } from "react"
 
-import { Form, Link, useSearchParams } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
@@ -13,9 +13,10 @@ import SocialAuth from "./SocialAuth"
 import { FormError, FormErrorTip } from "../widgets/Widgets"
 import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/Flow"
 import { WindowLoadingBar } from "../widgets/Widgets"
-import { PasswordInput } from "./CustomInputs"
+import PasswordInput from "./inputs/PasswordInput"
 import WebAuthnModal from "./modals/WebAuthn"
 import SignUpFlowHeader from "./SignUpFlowHeader"
+import CsrfToken from "./inputs/CsrfToken"
 
 // Context for user info
 const userInfoContext = createContext({})
@@ -52,7 +53,7 @@ function UserInfoForm() {
 
     const { register, handleSubmit, formState: { errors }, trigger }
         = useForm({ resolver: yupResolver(schema), mode: 'onSubmt', reValidateMode: 'onBlur' })
-    const { CsrfToken, responseError } = useContext(RegisterFlowContext)
+    const { csrf, responseError } = useContext(RegisterFlowContext)
     const { setUserInfo } = useContext(userInfoContext)
 
     const hasErrorMsg = (field) => {
@@ -100,7 +101,7 @@ function UserInfoForm() {
                 />
                 {hasRequiredError('email') && <FormErrorTip />}
             </div>
-            <CsrfToken />
+            <CsrfToken csrf={csrf} />
             {hasErrorMsg('email') &&
                 <div id="signup-error-container">
                     <FormError msg={errors.email?.message} />
@@ -122,14 +123,15 @@ function UserInfoForm() {
 const UserInfoWindow = () => {
     // Form window for entering user info (name, email), or signing in with social auth
 
-    const { flow, submit, CsrfToken } = useContext(RegisterFlowContext)
+    const { flow, submit, csrf } = useContext(RegisterFlowContext)
 
     return (
         <>
+            <WindowLoadingBar visible={!flow} />
             <SignUpFlowHeader step={1} steps={4} />
             <h2>Create Account</h2>
             <UserInfoForm />
-            <SocialAuth flow={flow} submit={submit} CsrfToken={CsrfToken} />
+            <SocialAuth flow={flow} submit={submit} csrf={csrf} />
             <div className="below-window-container">
                 <span>Have an account?  </span>
                 <Link to={{
@@ -137,7 +139,6 @@ const UserInfoWindow = () => {
                     state: { direction: 1 }
                 }}>Sign In</Link>
             </div>
-            <WindowLoadingBar visible={!flow} />
         </>
     )
 }
@@ -153,7 +154,7 @@ const passwordSchema = yup.object().shape({
 
 const AuthSelectionWindow = () => {
     const { userInfo } = useContext(userInfoContext)
-    const { flow, responseError, CsrfToken, registering, submit } = useContext(RegisterFlowContext)
+    const { flow, responseError, csrf, registering, submit } = useContext(RegisterFlowContext)
     const { register, handleSubmit, formState: { errors }, trigger } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(passwordSchema)
@@ -190,7 +191,7 @@ const AuthSelectionWindow = () => {
                     trigger={trigger}
                 />
                 {errors['confirmPassword'] && <FormError msg={errors.confirmPassword?.message} />}
-                <CsrfToken />
+                <CsrfToken csrf={csrf} />
                 <input type='hidden' name='traits.email' value={userInfo.email} />
                 <input type='hidden' name='traits.name.first' value={userInfo.name.split(' ')[0]} />
                 <input type='hidden' name='traits.name.last' value={userInfo.name.split(' ')[1]} />
@@ -285,6 +286,5 @@ const SignUp = () => {
         </RegisterFlowContextProvider>
     )
 }
-
 
 export default SignUp

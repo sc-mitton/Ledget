@@ -2,8 +2,8 @@ import React from 'react'
 
 const Refresh = ({
     className = null,
-    width = "1.1em",
-    height = "1.1em",
+    width = "1em",
+    height = "1em",
     fill = "#242424",
 }) => {
     return (

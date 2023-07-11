@@ -8,6 +8,7 @@ import LoginWindow from './components/forms/Login'
 import SignUpWindow from './components/forms/SignUp'
 import CheckoutWindow from './components/forms/Checkout'
 import VerificationWindow from './components/forms/Verification'
+import RecoveryWindow from './components/forms/Recovery'
 import { PrivateRoute, UnauthenticatedRoute } from './utils/PrivateRoutes'
 
 function AnimatedRoutes() {
@@ -29,10 +30,11 @@ function AnimatedRoutes() {
                     <Routes location={location} key={location.pathname} >
                         <Route path="/" element={<UnauthenticatedRoute />}>
                             <Route exact path="/login" element={<LoginWindow />} />
+                            <Route exact path="/recovery" element={<RecoveryWindow />} />
                         </Route>
                         <Route path="/register" element={<SignUpWindow />} />
-                        <Route path="/verification" element={<VerificationWindow />} />
                         <Route path="/" element={<PrivateRoute />}>
+                            <Route path="/verification" element={<VerificationWindow />} />
                             <Route path="/checkout" element={<CheckoutWindow />} />
                         </Route>
                         {/* Forgot password page */}
