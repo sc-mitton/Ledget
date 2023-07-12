@@ -1,0 +1,40 @@
+import React from 'react'
+
+import withModal from '../utils/withModal'
+import './PassKey.css'
+import PasskeyIcon from "../../../assets/icons/PasskeyIcon"
+
+function Content() {
+    return (
+        <div className='passkey-modal-content'>
+            <div>
+                <PasskeyIcon fill={'var(--main-green)'} />
+            </div>
+            <h1>Say goodby to passwords</h1>
+            <p>
+                Passkeys are a new way to sign in to applications without having to remember a password.
+            </p>
+            <h3>
+                How does it work?
+            </h3>
+            <p>
+                Just select the passkey sign in option, follow the prompts, and a secure key will be stored
+                on your device for sign in.
+            </p>
+            <h3>What if I sign in on a different device?</h3>
+            <p>
+                Passkeys are automatically synced across apple and google accounts, but if you want to
+                sign in on a device that doesn't have a passkey, you can scan a qr code from your phone
+                to create a new key on that device and register it.
+            </p>
+            <h3>Is it safe?</h3>
+            <p>Passkeys are even safer than passwords, and make it easier for you to use
+                your apps while worrying about attackers less. A win win!
+            </p>
+        </div>
+    )
+}
+
+const WebAuthnModal = withModal(Content)
+
+export default WebAuthnModal

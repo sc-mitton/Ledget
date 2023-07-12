@@ -7,14 +7,14 @@ import { useForm } from "react-hook-form"
 import { motion, AnimatePresence } from "framer-motion"
 
 import './style/SignUp.css'
-import Help from "../../assets/icons/Help"
-import webAuthn from "../../assets/icons/webAuthn.svg"
+import PasskeyIcon from "../../assets/icons/PasskeyIcon"
+import HelpIcon from "../../assets/icons/HelpIcon"
 import SocialAuth from "./SocialAuth"
 import { FormError, FormErrorTip } from "../widgets/Widgets"
 import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/Flow"
 import { WindowLoadingBar } from "../widgets/Widgets"
 import PasswordInput from "./inputs/PasswordInput"
-import WebAuthnModal from "./modals/WebAuthn"
+import PasskeyModal from "./modals/PassKey"
 import SignUpFlowHeader from "./SignUpFlowHeader"
 import CsrfToken from "./inputs/CsrfToken"
 
@@ -152,6 +152,38 @@ const passwordSchema = yup.object().shape({
         .oneOf([yup.ref('password'), null], 'Passwords must match')
 })
 
+const PasswordlessForm = () => {
+    const [passKeyModalVisible, setPassKeyModalVisible] = useState(false)
+
+    return (
+        <>
+            <PasskeyModal visible={passKeyModalVisible} setVisible={setPassKeyModalVisible} />
+            <div className="passwordless-button-container">
+                <div className="passwordless-option-header" >
+                    <div>
+                        or
+                    </div>
+                </div>
+                <button
+                    className='passwordless-button'
+                    name="passwordless-options"
+                    type="submit"
+                >
+                    <PasskeyIcon />
+                    Passkey
+                    <div
+                        className="help-icon-tip"
+                        onClick={() => setPassKeyModalVisible(true)}
+                        aria-label="Learn more about authentication with passkeys"
+                    >
+                        <HelpIcon />
+                    </div >
+                </button>
+            </div>
+        </>
+    )
+}
+
 const AuthSelectionWindow = () => {
     const { userInfo } = useContext(userInfoContext)
     const { flow, responseError, csrf, registering, submit } = useContext(RegisterFlowContext)
@@ -160,12 +192,12 @@ const AuthSelectionWindow = () => {
         resolver: yupResolver(passwordSchema)
     })
     const [pwdVisible, setPwdVisible] = useState(false)
-    const [webAuthnModalVisible, setWebAuthnModalVisible] = useState(false)
 
     return (
         <>
-            <WebAuthnModal visible={webAuthnModalVisible} setVisible={setWebAuthnModalVisible} />
+            <WindowLoadingBar visible={registering} />
             <SignUpFlowHeader step={2} steps={4} />
+            <h2>Sign In Method</h2>
             <form
                 action={flow.ui.action}
                 method={flow.ui.method}
@@ -195,39 +227,11 @@ const AuthSelectionWindow = () => {
                 <input type='hidden' name='traits.email' value={userInfo.email} />
                 <input type='hidden' name='traits.name.first' value={userInfo.name.split(' ')[0]} />
                 <input type='hidden' name='traits.name.last' value={userInfo.name.split(' ')[1]} />
-                <button
-                    className='charcoal-button'
-                    id="sign-in"
-                    name="method"
-                    value="password"
-                    type="submit"
-                >
+                <button className='charcoal-button main-submit' name="method" value="password" type="submit">
                     Create
                 </button>
-                <div className="passwordless-options">
-                    <div className="passwordless-options-header" >
-                        Passwordless
-                        <button
-                            className="help-icon"
-                            onClick={() => setWebAuthnModalVisible(true)}
-                            aria-label="Learn more about passwordless options"
-                            type="button"
-                        >
-                            <Help />
-                        </button>
-                    </div>
-                    <div className="passwordless-options-container">
-                        <button
-                            name="passwordless-options"
-                            type="submit"
-                            aria-label="Sign in with passwordless options"
-                        >
-                            <img src={webAuthn} id="webauthn-icon" alt='webauthn icon' />
-                        </button>
-                    </div>
-                </div>
             </form >
-            <WindowLoadingBar visible={registering} />
+            <PasswordlessForm />
         </>
     )
 }

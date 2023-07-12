@@ -7,15 +7,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 
 import './style/Login.css'
-import webAuthn from "../../assets/icons/webAuthn.svg"
-import Help from "../../assets/icons/Help"
+import PasskeyIcon from "../../assets/icons/PasskeyIcon"
 import logo from "../../assets/images/logo.svg"
 import SocialAuth from "./SocialAuth"
 import PasswordInput from "./inputs/PasswordInput"
 import Checkbox from "./inputs/Checkbox"
 import { FormError, WindowLoadingBar } from "../widgets/Widgets"
 import { LoginFlowContext, LoginFlowContextProvider } from "../../context/Flow"
-import WebAuthnModal from "./modals/WebAuthn"
 import CsrfToken from "./inputs/CsrfToken"
 
 const emailContext = createContext({})
@@ -133,7 +131,6 @@ const InitialWindow = () => {
 const AuthenticationWindow = () => {
     const { flow, submit, responseError, authenticating, csrf } = useContext(LoginFlowContext)
     const { email, setEmail } = useContext(emailContext)
-    const [webAuthnModalVisible, setWebAuthnModalVisible] = useState(false)
     const initialEmailValue = useRef(email)
     const pwdRef = useRef()
 
@@ -153,11 +150,11 @@ const AuthenticationWindow = () => {
     return (
         <>
             <WindowLoadingBar visible={authenticating || flow == null} />
-            <WebAuthnModal visible={webAuthnModalVisible} setVisible={setWebAuthnModalVisible} />
             <div className="app-logo" >
                 <img src={logo} alt="Ledget" />
             </div>
             <div id="email-container">
+                <h3>Welcome Back!</h3>
                 <span>{`${initialEmailValue.current}`}</span>
                 <button
                     id="change-email-button"
@@ -183,30 +180,29 @@ const AuthenticationWindow = () => {
                     value={email || ''}
                 />
                 <button
-                    className='charcoal-button'
-                    id="sign-in"
+                    className='charcoal-button main-submit'
                     name="method"
                     value="password"
                     type="submit"
                 >
                     Sign In
                 </button>
-                <div className="passwordless-options">
-                    <div className="passwordless-options-header" >
+                <div className="passwordless-button-container">
+                    <div className="passwordless-option-header" >
                         <div>
-                            Passwordless
+                            or
                         </div>
                     </div>
-                    <div className="passwordless-options-container">
-                        <button
-                            name="passwordless-options"
-                            type="submit"
-                        >
-                            <img src={webAuthn} id="webauthn-icon" alt='webauthn icon' />
-                        </button>
-                    </div>
+                    <button
+                        className='passwordless-button'
+                        name="passwordless-options"
+                        type="submit"
+                    >
+                        <PasskeyIcon />
+                        Passkey
+                    </button>
                 </div>
-                <CsrfToken />
+                <CsrfToken csrf={csrf} />
             </form >
         </>
     )

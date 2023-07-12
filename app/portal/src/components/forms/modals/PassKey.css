@@ -1,0 +1,27 @@
+.passkey-modal-content {
+    text-align: left;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.passkey-modal-content h1 {
+    color: var(--main-green);
+}
+
+.passkey-modal-content div:first-child {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.passkey-modal-content div:first-child img {
+    height: 1em;
+    transform: scale(1.2);
+}
+
+.passkey-modal-content svg {
+    transform: scale(3);
+}

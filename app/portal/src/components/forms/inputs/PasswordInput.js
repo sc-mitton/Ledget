@@ -28,7 +28,7 @@ const PasswordInput = React.forwardRef(({ inputType, ...props }, ref) => {
         return (
             <>
                 <img
-                    src={!showIcon ? hidePassword : showPassword}
+                    src={showIcon ? hidePassword : showPassword}
                     alt="toggle visibility"
                     className="password-visibility-icon"
                     onClick={() =>

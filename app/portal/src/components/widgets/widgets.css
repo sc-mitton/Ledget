@@ -147,7 +147,7 @@
     right: 0;
     margin: 0 auto;
     top: 0;
-    z-index: 0;
+    z-index: 1000;
     overflow: hidden;
     background-color: rgba(248, 248, 248, .4);
 }
@@ -171,7 +171,7 @@
     width: 100%;
     background-color: var(--mute-blue);
     animation: load .7s linear infinite;
-    z-index: 2;
+    z-index: 1002;
 }
 
 .loading-bar-edges {

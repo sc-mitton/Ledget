@@ -6,22 +6,22 @@
     width: 100%;
 }
 
-#sign-in {
-    width: 100%;
-}
-
 #email-container {
     width: '100%';
     text-align: center;
-    margin-top: -28px;
+    margin-top: -20px;
     margin-bottom: 40px;
+}
+
+#email-container h3 {
+    margin: 0;
+    margin-bottom: 4px;
 }
 
 #email-container span {
     opacity: .6;
     margin-right: 6px;
 }
-
 
 #change-email-button {
     color: var(--main-text-gray);
@@ -45,21 +45,11 @@
 
 #forgot-password-container {
     margin-top: -4px;
-    margin-left: 8px;
+    margin-left: 4px;
     margin-bottom: 2px;
 }
 
 #forgot-password-container a {
-    color: var(--main-text-gray);
-    opacity: .8;
-    transition: color .2s ease;
-    font-weight: 500;
     font-size: 15px;
-}
-
-#forgot-password-container a:hover {
-    color: var(--main-blue);
-    transition: color .2s ease;
-    border-bottom: none;
-    opacity: 1;
+    font-weight: 500;
 }

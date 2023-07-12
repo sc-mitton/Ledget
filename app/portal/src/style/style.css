@@ -135,7 +135,7 @@ a {
     color: var(--main-blue);
     text-decoration-skip-ink: none;
     transition: border-bottom .2s ease;
-    text-underline-offset: 4px;
+    text-underline-offset: 2px;
     cursor: pointer;
 }
 

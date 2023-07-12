@@ -14,7 +14,7 @@
 
 .modal-content {
     border-radius: 12px;
-    padding: 28px;
+    padding: 36px;
     z-index: 1001;
     position: relative;
     background-color: var(--window);
