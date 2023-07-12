@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react"
+import React, { useContext, useEffect, useState, useRef, useCallback } from "react"
 
 import { useSearchParams } from "react-router-dom"
 import { motion } from "framer-motion"
@@ -13,6 +13,7 @@ import AuthContext from "../../context/AuthContext"
 import CsrfToken from "./inputs/CsrfToken"
 import { FormError } from "../widgets/Widgets"
 import ResendButton from "./inputs/ResendButton"
+import { set } from "react-hook-form"
 
 const VerificationForm = () => {
     const { flow, submit, csrf, codeError } = useContext(VerificationFlowContext)
@@ -71,19 +72,14 @@ const VerificationForm = () => {
     )
 }
 
-const VerificationFlow = () => {
-    {/* Add the verification flow */ }
-    const [searchParams] = useSearchParams()
-    const { getFlow, createFlow, codeError, verifying, responseError } = useContext(VerificationFlowContext)
+const AnimatedVerification = () => {
     const [jiggle, setJiggle] = useState(false)
 
-    useEffect(() => {
-        // we might redirect to this page after the flow is initialized,
-        // so we check for the flowId in the URL
-        const flowId = searchParams.get("flow")
-        // Get new flow if it's expired
-        flowId ? getFlow(flowId).catch(createFlow) : createFlow()
-    }, [])
+    const {
+        codeError,
+        verifying,
+        responseError,
+    } = useContext(VerificationFlowContext)
 
     useEffect(() => {
         if (codeError) {
@@ -135,11 +131,62 @@ const VerificationFlow = () => {
     )
 }
 
+const VerifiactionFlow = () => {
+    const [searchParams] = useSearchParams()
+    const [resendEmail, setResendEmail] = useState(false)
+    const [newFlowCreated, setNewFlowCreated] = useState(false)
+    const [loaded, setLoaded] = useState(false)
+    const {
+        csrf,
+        getFlow,
+        createFlow,
+        callVerificationApi
+    } = useContext(VerificationFlowContext)
+    const { user } = useContext(AuthContext)
+
+    useEffect(() => {
+        if (loaded) { return }
+
+        // we might redirect to this page after the flow is initialized,
+        // so we check for the flowId in the URL
+        const flowId = searchParams.get("flow")
+        if (flowId) {
+            getFlow(flowId).catch(createFlow)
+        } else {
+            // Otherwise, create a new flow
+            createFlow()
+            setNewFlowCreated(true)
+        }
+
+        return setLoaded(true)
+    }, [])
+
+    useEffect(() => {
+        if (newFlowCreated) {
+            setResendEmail(true)
+        }
+    }, [csrf])
+
+    useEffect(() => {
+        if (resendEmail) {
+            console.log('resending email...')
+            callVerificationApi({
+                method: 'code',
+                csrf_token: csrf,
+                email: user?.traits?.email,
+            })
+        }
+        return setResendEmail(false)
+    }, [resendEmail])
+
+    return <AnimatedVerification />
+}
+
 const VerificationWindow = () => {
 
     return (
         <VerificationFlowContextProvider>
-            <VerificationFlow />
+            <VerifiactionFlow />
         </VerificationFlowContextProvider>
     )
 }

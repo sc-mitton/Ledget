@@ -111,7 +111,7 @@ const RecoveryVerificationForm = ({ email }) => {
 
 const AnimatedForms = () => {
     const [email, setEmail] = useState("")
-    const { codeSent } = useContext(RecoveryFlowContext)
+    const { codeSent, setCodeSent } = useContext(RecoveryFlowContext)
 
     useEffect(() => {
         const storedEmail = sessionStorage.getItem('recovery_email')
@@ -121,19 +121,18 @@ const AnimatedForms = () => {
     }, [])
 
     const handleBackButtonClick = (e) => {
-        console.log('clicked')
+        setCodeSent(false)
         sessionStorage.removeItem('recovery_email')
-        setEmail("")
     }
 
     return (
         <AnimatePresence mode="wait">
-            {(!codeSent || !email)
+            {!codeSent
                 ?
                 <motion.div
                     className="recovery-form-container"
                     key="recovery-form-container"
-                    initial={{ opacity: 0, x: email ? 0 : -30 }}
+                    initial={{ opacity: 0, x: email ? -30 : 0 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -30 }}
                     transition={{ ease: "easeInOut", duration: 0.2 }}
@@ -194,7 +193,10 @@ const RecoveryFlow = () => {
         <div className="window" id="recovery-window">
             {responseError
                 ?
-                <FormError msg={responseError} />
+                <>
+                    <SignUpFlowHeader />
+                    <FormError msg={responseError} />
+                </>
                 :
                 <AnimatedForms />
             }

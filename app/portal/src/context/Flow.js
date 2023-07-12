@@ -4,6 +4,7 @@ import { useSearchParams, useNavigate, createSearchParams } from "react-router-d
 
 import { sdk, sdkError } from "../api/sdk"
 import AuthContext from "./AuthContext"
+import { set } from "react-hook-form"
 
 const LoginFlowContext = createContext(null)
 const RegisterFlowContext = createContext(null)
@@ -260,6 +261,54 @@ function VerificationFlowContextProvider({ children }) {
             })
     }
 
+    const handleMessage = (message) => {
+        // Verification codes docs:
+        // https://www.ory.sh/docs/kratos/concepts/ui-user-interface#ui-error-codes
+        switch (message.id) {
+            case (4070006):
+                setCodeError(true)
+                break
+            case (407005 || 407003):
+                // Expired verification flow
+                // Send new email & navigate to verification page
+                // which will create a new verification flow
+                navigate('/verification')
+                break
+            case (1080002):
+                // Successful verification
+                navigate('/checkout')
+                break
+            case (1080003 || 1080002):
+                // Email w/ code/link sent
+                break
+            default:
+                setResponseError('Well this is awkward... something went wrong.\n Please try back again later.')
+                break
+        }
+    }
+
+    const callVerificationApi = async (body) => {
+
+        body.code && setVerifying(true)
+        sdk
+            .updateVerificationFlow({
+                flow: flow.id,
+                updateVerificationFlowBody: body,
+            })
+            .then((response) => {
+                const messages = response.data.ui?.messages || []
+                for (const message of messages) {
+                    handleMessage(message)
+                }
+            })
+            .catch((err) => {
+                setResponseError(
+                    'Well this is awkward... something went wrong.\n Please try back again later.'
+                )
+            })
+            .finally(() => setVerifying(false))
+    }
+
     const submit = (event) => {
         event.preventDefault()
         const formData = new FormData(event.target)
@@ -278,28 +327,7 @@ function VerificationFlowContextProvider({ children }) {
             body['method'] = method.value
         }
 
-        body.code && setVerifying(true)
-        sdk
-            .updateVerificationFlow({
-                flow: flow.id,
-                updateVerificationFlowBody: body,
-            })
-            .then((response) => {
-                const messages = response.data.ui?.messages || []
-                for (const message of messages) {
-                    if (message.text.includes('code is invalid') || message.id === 4070006) {
-                        setCodeError(true)
-                        return
-                    }
-                }
-                body.code && navigate('/checkout')
-            })
-            .catch((err) => {
-                setResponseError(
-                    'Well this is awkward... something went wrong.\n Please try back again later.'
-                )
-            })
-            .finally(() => setVerifying(false))
+        callVerificationApi(body)
     }
 
     const data = {
@@ -310,7 +338,8 @@ function VerificationFlowContextProvider({ children }) {
         csrf,
         createFlow,
         getFlow,
-        submit
+        submit,
+        callVerificationApi
     }
 
     return (
@@ -365,6 +394,48 @@ function RecoveryFlowContextProvider({ children }) {
             })
     }
 
+    const handleMessage = (message) => {
+        // Recovery codes docs:
+        // https://www.ory.sh/docs/kratos/concepts/ui-user-interface#ui-error-codes
+        switch (message.id) {
+            case (1060002 || 106003):
+                // Email w/ code/link sent
+                setCodeSent(true)
+                break
+            case (4060002 || 4060006 || 4060005 || 4060004):
+                // Flow in failure state  - 4060002
+                // Code already used or invalid  - 4060006
+                // Expired flow  - 4060005
+                // Token already used or invalid - 4060004
+                break
+            default:
+                setResponseError('Well this is awkward... something went wrong.\n Please try back again later.')
+                break
+        }
+    }
+
+    const callRecoveryApi = (body) => {
+        body.code && setRecovering(true)
+        sdk
+            .updateRecoveryFlow({
+                flow: flow.id,
+                updateRecoveryFlowBody: body,
+            })
+            .then((response) => {
+                !codeSent && setCodeSent(true)
+                const messages = response.data.ui?.messages || []
+                for (const message of messages) {
+                    handleMessage(message)
+                }
+            })
+            .catch((err) => {
+                setResponseError(
+                    'Well this is awkward... something went wrong. Please try back again later.'
+                )
+            })
+            .finally(() => setRecovering(false))
+    }
+
     const getFlow = useCallback(
         (flowId) =>
             sdk
@@ -392,29 +463,7 @@ function RecoveryFlowContextProvider({ children }) {
             body['method'] = method.value
         }
 
-        body.code && setRecovering(true)
-        sdk
-            .updateRecoveryFlow({
-                flow: flow.id,
-                updateRecoveryFlowBody: body,
-            })
-            .then((response) => {
-                !codeSent && setCodeSent(true)
-
-                const messages = response.data.ui?.messages || []
-                for (const message of messages) {
-                    if (message.text.includes('code is invalid') || message.id === 4070006) {
-                        setCodeError(true)
-                        return
-                    }
-                }
-            })
-            .catch((err) => {
-                setResponseError(
-                    'Well this is awkward... something went wrong. Please try back again later.'
-                )
-            })
-            .finally(() => setRecovering(false))
+        callRecoveryApi(body)
     }
 
 
@@ -424,6 +473,7 @@ function RecoveryFlowContextProvider({ children }) {
         responseError,
         recovering,
         codeSent,
+        setCodeSent,
         createFlow,
         getFlow,
         submit
