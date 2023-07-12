@@ -7,10 +7,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 
 import './style/Login.css'
-import PasskeyIcon from "../../assets/icons/PasskeyIcon"
 import logo from "../../assets/images/logo.svg"
 import SocialAuth from "./SocialAuth"
 import PasswordInput from "./inputs/PasswordInput"
+import PasswordlessFormSection from "./inputs/PasswordlessFormSection"
 import Checkbox from "./inputs/Checkbox"
 import { FormError, WindowLoadingBar } from "../widgets/Widgets"
 import { LoginFlowContext, LoginFlowContextProvider } from "../../context/Flow"
@@ -140,7 +140,9 @@ const AuthenticationWindow = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (pwdRef.current.value === '') {
+        const isPasswordSubmit = e.nativeEvent?.submitter?.value == 'password'
+
+        if (isPasswordSubmit && pwdRef.current.value === '') {
             pwdRef.current.focus()
         } else {
             submit(e)
@@ -154,7 +156,7 @@ const AuthenticationWindow = () => {
                 <img src={logo} alt="Ledget" />
             </div>
             <div id="email-container">
-                <h3>Welcome Back!</h3>
+                <h3>Welcome Back</h3>
                 <span>{`${initialEmailValue.current}`}</span>
                 <button
                     id="change-email-button"
@@ -187,21 +189,7 @@ const AuthenticationWindow = () => {
                 >
                     Sign In
                 </button>
-                <div className="passwordless-button-container">
-                    <div className="passwordless-option-header" >
-                        <div>
-                            or
-                        </div>
-                    </div>
-                    <button
-                        className='passwordless-button'
-                        name="passwordless-options"
-                        type="submit"
-                    >
-                        <PasskeyIcon />
-                        Passkey
-                    </button>
-                </div>
+                <PasswordlessFormSection helpIcon={false} />
                 <CsrfToken csrf={csrf} />
             </form >
         </>
@@ -222,7 +210,6 @@ function LoginFlow() {
         const flowId = searchParams.get("flow")
         const returnTo = searchParams.get("return_to")
         const aal2 = searchParams.get("aal2")
-        // the flow already exists
 
         // if the flow has expired, we need to get a new one
         flowId ? getFlow(flowId).catch(createFlow) : createFlow()

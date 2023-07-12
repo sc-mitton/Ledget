@@ -7,14 +7,12 @@ import { useForm } from "react-hook-form"
 import { motion, AnimatePresence } from "framer-motion"
 
 import './style/SignUp.css'
-import PasskeyIcon from "../../assets/icons/PasskeyIcon"
-import HelpIcon from "../../assets/icons/HelpIcon"
 import SocialAuth from "./SocialAuth"
 import { FormError, FormErrorTip } from "../widgets/Widgets"
 import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/Flow"
 import { WindowLoadingBar } from "../widgets/Widgets"
 import PasswordInput from "./inputs/PasswordInput"
-import PasskeyModal from "./modals/PassKey"
+import PasswordlessFormSection from "./inputs/PasswordlessFormSection"
 import SignUpFlowHeader from "./SignUpFlowHeader"
 import CsrfToken from "./inputs/CsrfToken"
 
@@ -152,38 +150,6 @@ const passwordSchema = yup.object().shape({
         .oneOf([yup.ref('password'), null], 'Passwords must match')
 })
 
-const PasswordlessForm = () => {
-    const [passKeyModalVisible, setPassKeyModalVisible] = useState(false)
-
-    return (
-        <>
-            <PasskeyModal visible={passKeyModalVisible} setVisible={setPassKeyModalVisible} />
-            <div className="passwordless-button-container">
-                <div className="passwordless-option-header" >
-                    <div>
-                        or
-                    </div>
-                </div>
-                <button
-                    className='passwordless-button'
-                    name="passwordless-options"
-                    type="submit"
-                >
-                    <PasskeyIcon />
-                    Passkey
-                    <div
-                        className="help-icon-tip"
-                        onClick={() => setPassKeyModalVisible(true)}
-                        aria-label="Learn more about authentication with passkeys"
-                    >
-                        <HelpIcon />
-                    </div >
-                </button>
-            </div>
-        </>
-    )
-}
-
 const AuthSelectionWindow = () => {
     const { userInfo } = useContext(userInfoContext)
     const { flow, responseError, csrf, registering, submit } = useContext(RegisterFlowContext)
@@ -230,8 +196,8 @@ const AuthSelectionWindow = () => {
                 <button className='charcoal-button main-submit' name="method" value="password" type="submit">
                     Create
                 </button>
+                <PasswordlessFormSection />
             </form >
-            <PasswordlessForm />
         </>
     )
 }

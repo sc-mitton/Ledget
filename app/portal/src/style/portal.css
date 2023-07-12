@@ -237,65 +237,6 @@ input[type="password"]:focus::placeholder {
     box-shadow: var(--button-focus-drop-shadow);
 }
 
-/* -------------------------- Passwordless Section -------------------------- */
-
-.passwordless-button-container {
-    margin-top: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.passwordless-option-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 12px;
-    font-weight: 500;
-    width: 40%;
-}
-
-.passwordless-option-header:before,
-.passwordless-option-header:after {
-    content: "";
-    flex: 1 1;
-    border-top: rgba(0, 0, 0, 0.07) 2px solid;
-    margin: auto;
-}
-
-.passwordless-option-header:before {
-    margin-right: 16px
-}
-
-.passwordless-option-header:after {
-    margin-left: 16px
-}
-
-.passwordless-button-container button {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    cursor: pointer;
-    border-radius: 8px;
-    background-color: var(--social-button);
-    transition: background-color 0.2s ease;
-    position: relative;
-    font-weight: 500;
-}
-
-.passwordless-button-container button:hover {
-    background-color: var(--social-button-hover);
-}
-
-.passwordless-button-container svg {
-    margin-right: 8px;
-}
-
-
 /* ---------------------------- Misc ---------------------------- */
 
 .below-window-container {
@@ -304,18 +245,4 @@ input[type="password"]:focus::placeholder {
     height: 0;
     position: relative;
     bottom: -48px;
-}
-
-/* -------------------------- Help Icon -------------------------- */
-
-.help-icon-tip {
-    position: absolute;
-    top: -8px;
-    right: -12px;
-    transform: scale(0);
-    transition: transform 0.2s ease;
-}
-
-button:hover .help-icon-tip {
-    transform: scale(1.2);
 }

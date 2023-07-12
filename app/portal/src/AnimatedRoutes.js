@@ -30,9 +30,9 @@ function AnimatedRoutes() {
                     <Routes location={location} key={location.pathname} >
                         <Route path="/" element={<UnauthenticatedRoute />}>
                             <Route exact path="/login" element={<LoginWindow />} />
+                            <Route path="/register" element={<SignUpWindow />} />
                             <Route exact path="/recovery" element={<RecoveryWindow />} />
                         </Route>
-                        <Route path="/register" element={<SignUpWindow />} />
                         <Route path="/" element={<PrivateRoute />}>
                             <Route path="/verification" element={<VerificationWindow />} />
                             <Route path="/checkout" element={<CheckoutWindow />} />

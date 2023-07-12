@@ -4,12 +4,13 @@ import { useSearchParams, useNavigate, createSearchParams } from "react-router-d
 
 import { sdk, sdkError } from "../api/sdk"
 import AuthContext from "./AuthContext"
-import { set } from "react-hook-form"
 
 const LoginFlowContext = createContext(null)
 const RegisterFlowContext = createContext(null)
 const VerificationFlowContext = createContext(null)
 const RecoveryFlowContext = createContext(null)
+
+const loginRedirectUri = process.env.REACT_APP_LOGIN_REDIRECT
 
 function LoginFlowContextProvider({ children }) {
     const [flow, setFlow] = useState(null)
@@ -33,18 +34,25 @@ function LoginFlowContextProvider({ children }) {
 
     const createFlow = () => {
         const aal2 = searchParams.get("aal2")
+        const returnTo = searchParams.get("return_to")
 
         sdk
             // aal2 to request Two-Factor authentication
             // aal1 is the default authentication level (Single-Factor)
             // if the user has a session, refresh it
-            .createBrowserLoginFlow({ refresh: true, aal: aal2 ? "aal2" : "aal1" })
+            .createBrowserLoginFlow({
+                returnTo: returnTo || loginRedirectUri,
+                refresh: true,
+                aal: aal2 ? "aal2" : "aal1"
+            })
             // flow contains the form fields and csrf token
             .then(({ data: flow }) => {
                 // Update URI query params to include flow id
+                console.log(flow)
                 setSearchParams({
                     flow: flow.id,
                     aal: aal2 ? 'aal2' : 'aal1',
+                    return_to: flow.return_to
                 })
                 // Set the flow data
                 setFlow(flow)
@@ -70,7 +78,6 @@ function LoginFlowContextProvider({ children }) {
         const form = event.target
         const formData = new FormData(form)
         let body = Object.fromEntries(formData)
-
         // We need the method specified from the name and value of the submit button.
         // when multiple submit buttons are present, the clicked one's value is used.
         // We need the method specified from the name and value of the submit button.
@@ -92,6 +99,7 @@ function LoginFlowContextProvider({ children }) {
             })
             .then((response) => {
                 setUser(response.data.session.identity?.traits)
+                sessionStorage.setItem('user', JSON.stringify(response.data.session.identity?.traits))
                 // if not a subscriber, redirect to subscription page
                 // else navigate to app
             })
