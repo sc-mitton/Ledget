@@ -8,9 +8,10 @@ import { useForm } from "react-hook-form"
 
 import './style/Login.css'
 import logo from "../../assets/images/logo.svg"
+import logoIcon from "../../assets/images/logoIcon.svg"
 import SocialAuth from "./SocialAuth"
 import PasswordInput from "./inputs/PasswordInput"
-import PasswordlessForm, { PasswordlessPlaceholder } from "./inputs/PasswordlessForm"
+import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import Checkbox from "./inputs/Checkbox"
 import { FormError, WindowLoadingBar } from "../widgets/Widgets"
 import { LoginFlowContext, LoginFlowContextProvider } from "../../context/Flow"
@@ -115,9 +116,7 @@ const InitialWindow = () => {
             <h2>Sign In</h2>
             <EmailForm />
             <SocialAuth flow={flow} submit={submit} csrf={csrf} />
-            <div
-                className="below-window-container"
-            >
+            <div className="below-window-container">
                 <span>Don't have an account? </span>
                 <Link to={{ pathname: "/register", state: { direction: 1 } }}>
                     Sign Up
@@ -175,8 +174,8 @@ const AuthenticationForm = () => {
                 >
                     Sign In
                 </button>
+                {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
             </form >
-            {flow ? <PasswordlessForm flow={flow} helpIcon={false} /> : <PasswordlessPlaceholder helpIcon={false} />}
         </>
     )
 }
@@ -190,7 +189,7 @@ const AuthenticationWindow = () => {
         <>
             <WindowLoadingBar visible={authenticating || flow == null} />
             <div className="app-logo" >
-                <img src={logo} alt="Ledget" />
+                <img src={logoIcon} alt="Ledget" />
             </div>
             <div id="email-container">
                 <h3>Welcome Back</h3>
@@ -210,7 +209,7 @@ const AuthenticationWindow = () => {
 function LoginFlow() {
     const [loaded, setLoaded] = useState(false)
     const { email } = useContext(emailContext)
-    const { getFlow, createFlow } = useContext(LoginFlowContext)
+    const { flow, getFlow, createFlow } = useContext(LoginFlowContext)
     const [searchParams] = useSearchParams()
 
     useEffect(() => { setLoaded(true) }, [])

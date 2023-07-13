@@ -194,12 +194,14 @@ const AuthenticationForm = () => {
                     Create
                 </button>
             </form >
-            <PasswordlessForm flow={flow}>
-                <input type='hidden' name='traits.email' value={userInfo.email} />
-                <input type='hidden' name='traits.name.first' value={userInfo.name.split(' ')[0]} />
-                <input type='hidden' name='traits.name.last' value={userInfo.name.split(' ')[1]} />
-            </PasswordlessForm>
-
+            {typeof (PublicKeyCredential) != "undefined" &&
+                <PasswordlessForm flow={flow}>
+                    <input type='hidden' name='traits.email' value={userInfo.email} />
+                    <input type='hidden' name='traits.name.first' value={userInfo.name.split(' ')[0]} />
+                    <input type='hidden' name='traits.name.last' value={userInfo.name.split(' ')[1]} />
+                    <input type='hidden' name='webauthn_register_displayname' value={userInfo.email} />
+                </PasswordlessForm>
+            }
         </>
     )
 }
@@ -211,7 +213,12 @@ const AuthSelectionWindow = () => {
         <>
             <WindowLoadingBar visible={registering} />
             <SignUpFlowHeader step={2} steps={4} />
-            <h2>Sign In Method</h2>
+            {typeof (PublicKeyCredential) != "undefined"
+                ?
+                <h2>Sign In Method</h2>
+                :
+                <h2>Create a Password</h2>
+            }
             <AuthenticationForm />
         </>
     )

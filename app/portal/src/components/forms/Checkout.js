@@ -429,7 +429,9 @@ function Checkout({ prices }) {
         try {
             if (!clientSecretRef.current) {
                 await createCustomer()
+                console.log('customer created')
                 await createSubscription()
+                console.log('subscription created')
             }
             if (clientSecretRef.current) {
                 await confirmSetup(data)

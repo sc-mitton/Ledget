@@ -7,6 +7,17 @@ import HelpIcon from "../../../assets/icons/HelpIcon"
 import PasskeyModal from "../modals/PassKey"
 import './styles/PasswordlessFormSection.css'
 
+
+const PasswordlessOptionsHeader = () => {
+    return (
+        <div className="passwordless-option-header" >
+            <div>
+                or
+            </div>
+        </div>
+    )
+}
+
 const PasswordlessForm = ({ flow = { flow }, helpIcon = true, children }) => {
     const [passKeyModalVisible, setPassKeyModalVisible] = useState(false)
 
@@ -52,121 +63,109 @@ const PasswordlessForm = ({ flow = { flow }, helpIcon = true, children }) => {
         }
     }, [flow.ui.nodes])
 
-    const Nodes = () => {
+    const WrappedHelpIcon = () => {
         return (
-            filterNodesByGroups({
-                nodes: flow.ui.nodes,
-                groups: ["webauthn"],
-                attributes: ["hidden", "submit", "button"],
-            }).map((node) => {
-                if (isUiNodeInputAttributes(node.attributes)) {
-                    const attrs = node.attributes
-                    const nodeType = attrs.type
-                    const submit = {
-                        type: attrs.type,
-                        name: attrs.name,
-                        ...(attrs.value && { value: attrs.value }),
-                    }
+            <div
+                className="help-icon-tip"
+                aria-label="Learn more about authentication with passkeys"
+                onClick={() => { setPassKeyModalVisible(true) }}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                tabIndex={0}
+            >
+                <HelpIcon />
+            </div >
+        )
+    }
 
-                    switch (nodeType) {
-                        case "button":
-                        case "submit":
-                            if (attrs.onclick) {
-                                // This is a bit hacky but it wouldn't work otherwise.
-                                const oc = attrs.onclick
-                                submit.onClick = () => {
-                                    eval(oc)
+    const Nodes = () => {
+
+        return (
+            <>
+                {filterNodesByGroups({
+                    nodes: flow.ui.nodes,
+                    groups: ["webauthn"],
+                    attributes: ['submit', 'button', 'hidden'],
+                }).map((node) => {
+                    if (isUiNodeInputAttributes(node.attributes)) {
+                        const attrs = node.attributes
+                        const nodeType = attrs.type
+                        const submit = {
+                            type: attrs.type,
+                            name: attrs.name,
+                            ...(attrs.value && { value: attrs.value }),
+                        }
+                        switch (nodeType) {
+                            case "button":
+                                if (attrs.onclick) {
+                                    // This is a bit hacky but it wouldn't work otherwise.
+                                    const oc = attrs.onclick
+                                    submit.onClick = () => {
+                                        eval(oc)
+                                    }
                                 }
-                            }
-                            return (
-                                <button
-                                    {...submit}
-                                    className='passwordless-button'
-                                    key={attrs.name}
-                                    disabled={attrs.disabled}
-                                >
-                                    <PasskeyIcon />
-                                    Passkey
-                                </button>
-                            )
-                        default:
-                            return (
-                                <input
-                                    name={attrs.name}
-                                    type={attrs.type}
-                                    key={attrs.name}
-                                    defaultValue={attrs.value}
-                                    required={attrs.required}
-                                    disabled={attrs.disabled}
-                                />
-                            )
+                                return (
+                                    <div className='passwordless-button-container' key={attrs.name}>
+                                        <button
+                                            className='passwordless-button'
+                                            disabled={attrs.disabled}
+                                            {...submit}
+                                        >
+                                            <PasskeyIcon />
+                                            Passkey
+                                        </button>
+                                        {helpIcon && <WrappedHelpIcon />}
+                                    </div>
+                                )
+                            default:
+                                return (
+                                    <input
+                                        key={attrs.name}
+                                        name={attrs.name}
+                                        type={attrs.type}
+                                        defaultValue={attrs.value}
+                                        required={attrs.required}
+                                        disabled={attrs.disabled}
+                                    />
+                                )
+                        }
                     }
-                }
-            })
+                })}
+            </>
         )
     }
 
     return (
         <>
             <PasskeyModal visible={passKeyModalVisible} setVisible={setPassKeyModalVisible} />
-            <form
-                action={flow.ui.action}
-                method={flow.ui.method}
-                id="passwordless-form"
-            >
+            <form action={flow.ui.action} method={flow.ui.method}>
                 <div className="passwordless-form-section-container">
-                    <div className="passwordless-option-header" >
-                        <div>
-                            or
-                        </div>
-                    </div>
-                    <div className='passwordless-button-container'>
-                        <Nodes />
-                        {helpIcon &&
-                            <div
-                                className="help-icon-tip"
-                                aria-label="Learn more about authentication with passkeys"
-                                onClick={() => { setPassKeyModalVisible(true) }}
-                                onFocus={handleFocus}
-                                onBlur={handleBlur}
-                                tabIndex={0}
-                            >
-                                <HelpIcon />
-                            </div >
-                        }
+                    <PasswordlessOptionsHeader />
+                    <div className='passwordless-inputs-container'>
+                        <Nodes attributes />
+                        {children}
                     </div>
                 </div>
-                {children}
             </form>
         </>
     )
 }
 
-export const PasswordlessPlaceholder = ({ helpIcon = true }) => {
+export const PasskeySignIn = () => {
     return (
-        <div className="passwordless-form-section-container">
-            <div className="passwordless-option-header" >
-                <div>
-                    or
-                </div>
-            </div>
-            <div className='passwordless-button-container'>
-                <button className='passwordless-button' name="passwordless-options">
-                    <PasskeyIcon />
-                    Passkey
-                </button>
-                {helpIcon &&
-                    <div
-                        className="help-icon-tip"
-                        aria-label="Learn more about authentication with passkeys"
-                        onClick={() => { setPassKeyModalVisible(true) }}
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
-                        tabIndex={0}
+        <div className='passwordless-form-section-container'>
+            <PasswordlessOptionsHeader />
+            <div className='passwordless-inputs-container'>
+                <div className='passwordless-button-container'>
+                    <button
+                        className='passwordless-button'
+                        name="method"
+                        value="webauthn"
                     >
-                        <HelpIcon />
-                    </div >
-                }
+                        <PasskeyIcon />
+                        Passkey
+                    </button>
+                </div>
             </div>
         </div>
     )

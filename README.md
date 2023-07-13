@@ -61,7 +61,7 @@ echo ORY_API_KEY=<api key> > ./secrets/.env.ory
 ```
 docker-compose up -d
 ```
-## Other Notes
+## Webhook Testing
 
 To test the ory webhook, you'll need to provide an ngrok tunnel, and then update the url for the webhook endpoint in the porject-configuration.yaml file for ory.
 
@@ -71,4 +71,10 @@ ngrok http 127.0.0.1:443 --host-header='ledget.app'
 
 ory get identity-config reverent-lewin-bqqp1o2zws --format yaml > project-configuration.yaml
 ory update identity-config "$(ory list projects | grep "ledget" | cut -f1)" -f project-configuration.yaml
+```
+
+For working with the stripe webhook, you'll also need to use the stripe cli:
+
+```
+stripe listen --forward-to https://localhost/hooks/stripe --skip-verify
 ```

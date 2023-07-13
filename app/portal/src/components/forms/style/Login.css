@@ -1,3 +1,14 @@
+.app-logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 36px;
+}
+
+.app-logo img {
+    height: 44px;
+}
+
 .login-form input {
     width: 100%;
 }
@@ -15,7 +26,7 @@
 
 #email-container h3 {
     margin: 0;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 #email-container span {

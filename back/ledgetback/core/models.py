@@ -41,9 +41,6 @@ class User(models.Model):
         super().__init__(*args, **kwargs)
         self._traits = None
 
-    def __str__(self):
-        return self.id
-
     @property
     def is_customer(self):
         return hasattr(self, 'customer')
@@ -109,7 +106,7 @@ class Customer(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    id = models.UUIDField(primary_key=True, editable=False)
+    id = models.CharField(max_length=40, primary_key=True, editable=False)
     subscription_status = models.CharField(
         choices=status_choices, max_length=20, null=True, default='incomplete')
     provisioned_until = models.IntegerField(default=0)

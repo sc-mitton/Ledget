@@ -38,6 +38,7 @@ export const sdkError = (
             switch (error.response?.status) {
                 case 400: {
                     if (error_id === "session_already_available") {
+                        console.log("session_already_available")
                         navigate("/", { replace: true }) // TODO redirect to app instead of login
                     } else if (errorMessages[0].text.includes("credentials are invalid")) {
                         setResponseError('Wrong email or password.')
@@ -178,7 +179,7 @@ export const sdkError = (
             console.error(error)
 
             if (fatalToDash) {
-                console.warn("sdkError: fatal error redirect to dashboard")
+                console.warn("sdkError: fatal error redirect to /")
                 navigate("/", { replace: true })
                 return Promise.resolve()
             }

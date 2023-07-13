@@ -97,6 +97,7 @@ function LoginFlowContextProvider({ children }) {
                 updateLoginFlowBody: body,
             })
             .then((response) => {
+                console.log(response)
                 setUser(response.data.session.identity?.traits)
                 sessionStorage.setItem('user', JSON.stringify(response.data.session.identity?.traits))
                 // if not a subscriber, redirect to subscription page

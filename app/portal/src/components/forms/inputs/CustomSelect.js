@@ -88,6 +88,7 @@ const CustomSelect = ({ field, ...props }) => {
                 styles={selectStyles(open)}
                 className='CustomSelect'
                 onChange={handleStateChange}
+                autoFill={true}
                 {...field}
                 {...props}
             />

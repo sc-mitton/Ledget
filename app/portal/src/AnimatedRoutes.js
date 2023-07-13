@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import React from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 
 import { AnimatePresence, motion } from 'framer-motion'
@@ -12,6 +12,16 @@ import RecoveryWindow from './components/forms/Recovery'
 import { PrivateRoute, UnauthenticatedRoute } from './utils/PrivateRoutes'
 
 function AnimatedRoutes() {
+    // Animated routes for the portal app
+    // The login and recovery page are protected against authenticated users
+    // and redirected to the dashboard if the user is already logged in
+    //
+    // The checkout and verification pages are protected against unauthenticated users
+    // and redirected to the login page if the user is not logged in
+    //
+    // The register does not have a protected route and instead handles redirects in the
+    // flow context provider
+
     const location = useLocation()
 
     return (
@@ -29,15 +39,15 @@ function AnimatedRoutes() {
                 >
                     <Routes location={location} key={location.pathname} >
                         <Route path="/" element={<UnauthenticatedRoute />}>
+                            <Route exact path="/" element={<Navigate to="/login" />} />
                             <Route exact path="/login" element={<LoginWindow />} />
-                            <Route path="/register" element={<SignUpWindow />} />
                             <Route exact path="/recovery" element={<RecoveryWindow />} />
                         </Route>
+                        <Route path="/register" element={<SignUpWindow />} />
                         <Route path="/" element={<PrivateRoute />}>
                             <Route path="/verification" element={<VerificationWindow />} />
                             <Route path="/checkout" element={<CheckoutWindow />} />
                         </Route>
-                        {/* Forgot password page */}
                     </Routes>
                 </motion.div >
             </AnimatePresence>

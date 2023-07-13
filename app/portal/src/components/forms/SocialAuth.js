@@ -61,11 +61,9 @@ function SocialAuth({ flow, submit, csrf }) {
                 }
             </div>
             <form
-                onSubmit={submit}
                 action={flow && flow.ui.action}
                 method={flow && flow.ui.method}
                 id="social-login-form"
-                noValidate
             >
                 {flow ?
                     <SocialLoginButtons />

@@ -1,16 +1,5 @@
 /* Style page for any styling not specific to one component or window */
 
-.app-logo {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 36px;
-}
-
-.app-logo img {
-    height: 44px;
-}
-
 .signup-container-header {
     margin-bottom: 32px;
 }

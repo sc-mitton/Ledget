@@ -124,11 +124,6 @@ services:
       - ./secrets/.env.ory
     command: >
       sh -c "ory tunnel --dev --project reverent-lewin-bqqp1o2zws https://localhost:3001"
-  stripe-listener:
-    image: stripe/stripe-cli
-    env_file:
-      - ./secrets/.env.stripe
-    command: listen --forward-to https://localhost/hooks/stripe --skip-verify
 
 volumes:
   dev-db-data:
