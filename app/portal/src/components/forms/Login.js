@@ -10,7 +10,7 @@ import './style/Login.css'
 import logo from "../../assets/images/logo.svg"
 import SocialAuth from "./SocialAuth"
 import PasswordInput from "./inputs/PasswordInput"
-import PasswordlessFormSection from "./inputs/PasswordlessFormSection"
+import PasswordlessForm, { PasswordlessPlaceholder } from "./inputs/PasswordlessForm"
 import Checkbox from "./inputs/Checkbox"
 import { FormError, WindowLoadingBar } from "../widgets/Widgets"
 import { LoginFlowContext, LoginFlowContextProvider } from "../../context/Flow"
@@ -128,26 +128,63 @@ const InitialWindow = () => {
     )
 }
 
-const AuthenticationWindow = () => {
-    const { flow, submit, responseError, authenticating, csrf } = useContext(LoginFlowContext)
-    const { email, setEmail } = useContext(emailContext)
-    const initialEmailValue = useRef(email)
+const AuthenticationForm = () => {
+    const { flow, submit, responseError, csrf } = useContext(LoginFlowContext)
+    const { email } = useContext(emailContext)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        if (pwdRef.current.value === '') {
+            pwdRef.current.focus()
+        } else {
+            submit(e)
+        }
+    }
+
     const pwdRef = useRef()
 
     useEffect(() => {
         pwdRef.current.focus()
     }, [])
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const isPasswordSubmit = e.nativeEvent?.submitter?.value == 'password'
+    return (
+        <>
+            <form
+                action={flow?.ui.action}
+                method={flow?.ui.method}
+                onSubmit={handleSubmit}
+                id="authentication-form"
+            >
+                {responseError && <FormError msg={responseError} />}
+                <PasswordInput ref={pwdRef} />
+                <div id="forgot-password-container">
+                    <Link to="/recovery" tabIndex={0} >Forgot Password?</Link>
+                </div>
+                <input
+                    type="hidden"
+                    name="identifier"
+                    value={email || ''}
+                />
+                <CsrfToken csrf={csrf} />
+                <button
+                    className='charcoal-button main-submit'
+                    name="method"
+                    value="password"
+                    type="submit"
+                >
+                    Sign In
+                </button>
+            </form >
+            {flow ? <PasswordlessForm flow={flow} helpIcon={false} /> : <PasswordlessPlaceholder helpIcon={false} />}
+        </>
+    )
+}
 
-        if (isPasswordSubmit && pwdRef.current.value === '') {
-            pwdRef.current.focus()
-        } else {
-            submit(e)
-        }
-    }
+const AuthenticationWindow = () => {
+    const { flow, authenticating, } = useContext(LoginFlowContext)
+    const { email, setEmail } = useContext(emailContext)
+    const initialEmailValue = useRef(email)
 
     return (
         <>
@@ -165,33 +202,7 @@ const AuthenticationWindow = () => {
                     change
                 </button>
             </div>
-            <form
-                action={flow?.ui.action}
-                method={flow?.ui.method}
-                onSubmit={handleSubmit}
-                id="authentication-form"
-            >
-                {responseError && <FormError msg={responseError} />}
-                <PasswordInput ref={pwdRef} />
-                <div id="forgot-password-container">
-                    <Link to="/recovery" tabIndex={0} >Forgot Password?</Link>
-                </div>
-                <input
-                    type="hidden"
-                    name="identifier"
-                    value={email || ''}
-                />
-                <button
-                    className='charcoal-button main-submit'
-                    name="method"
-                    value="password"
-                    type="submit"
-                >
-                    Sign In
-                </button>
-                <PasswordlessFormSection helpIcon={false} />
-                <CsrfToken csrf={csrf} />
-            </form >
+            <AuthenticationForm />
         </>
     )
 }
@@ -208,8 +219,6 @@ function LoginFlow() {
         // we might redirect to this page after the flow is initialized,
         // so we check for the flowId in the URL
         const flowId = searchParams.get("flow")
-        const returnTo = searchParams.get("return_to")
-        const aal2 = searchParams.get("aal2")
 
         // if the flow has expired, we need to get a new one
         flowId ? getFlow(flowId).catch(createFlow) : createFlow()
@@ -217,7 +226,8 @@ function LoginFlow() {
 
     return (
         <AnimatePresence mode="wait">
-            {email === null ?
+            {email === null
+                ?
                 <motion.div
                     className='window'
                     key="initial"

@@ -43,18 +43,30 @@ function withModal(WrappedComponent) {
             }
         }
 
+        const handleExit = (e) => {
+            if (e.key === 'Enter') {
+                setVisible(false)
+            }
+        }
+
         const Exit = () => {
             return (
                 <>
-                    <button
+                    <div
                         className="exit-button"
                         onClick={() => setVisible(false)}
+                        onFocus={() => {
+                            document.addEventListener('keydown', handleExit)
+                        }}
+                        onBlur={() => {
+                            document.removeEventListener('keydown', handleExit)
+                        }}
                         aria-label="Close modal"
                         ref={exitRef}
                         tabIndex="0"
                     >
                         <Close />
-                    </button>
+                    </div>
                 </>
             )
         }

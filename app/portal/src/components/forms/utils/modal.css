@@ -29,10 +29,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.exit-button:focus {
+    outline: none;
+    box-shadow: var(--accessible-focus-drop-shadow);
 }
 
 .exit-button:hover {
     background-color: var(--social-button-hover);
+}
+
+.exit-button:focus {
+    box-shadow: var(--accessible-focus-drop-shadow);
 }
 
 

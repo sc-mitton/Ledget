@@ -12,7 +12,7 @@ import { FormError, FormErrorTip } from "../widgets/Widgets"
 import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/Flow"
 import { WindowLoadingBar } from "../widgets/Widgets"
 import PasswordInput from "./inputs/PasswordInput"
-import PasswordlessFormSection from "./inputs/PasswordlessFormSection"
+import PasswordlessForm from "./inputs/PasswordlessForm"
 import SignUpFlowHeader from "./SignUpFlowHeader"
 import CsrfToken from "./inputs/CsrfToken"
 
@@ -150,20 +150,17 @@ const passwordSchema = yup.object().shape({
         .oneOf([yup.ref('password'), null], 'Passwords must match')
 })
 
-const AuthSelectionWindow = () => {
+const AuthenticationForm = () => {
+    const [pwdVisible, setPwdVisible] = useState(false)
     const { userInfo } = useContext(userInfoContext)
-    const { flow, responseError, csrf, registering, submit } = useContext(RegisterFlowContext)
+    const { flow, responseError, csrf, submit } = useContext(RegisterFlowContext)
     const { register, handleSubmit, formState: { errors }, trigger } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(passwordSchema)
     })
-    const [pwdVisible, setPwdVisible] = useState(false)
 
     return (
         <>
-            <WindowLoadingBar visible={registering} />
-            <SignUpFlowHeader step={2} steps={4} />
-            <h2>Sign In Method</h2>
             <form
                 action={flow.ui.action}
                 method={flow.ui.method}
@@ -196,8 +193,26 @@ const AuthSelectionWindow = () => {
                 <button className='charcoal-button main-submit' name="method" value="password" type="submit">
                     Create
                 </button>
-                <PasswordlessFormSection />
             </form >
+            <PasswordlessForm flow={flow}>
+                <input type='hidden' name='traits.email' value={userInfo.email} />
+                <input type='hidden' name='traits.name.first' value={userInfo.name.split(' ')[0]} />
+                <input type='hidden' name='traits.name.last' value={userInfo.name.split(' ')[1]} />
+            </PasswordlessForm>
+
+        </>
+    )
+}
+
+const AuthSelectionWindow = () => {
+    const { registering } = useContext(RegisterFlowContext)
+
+    return (
+        <>
+            <WindowLoadingBar visible={registering} />
+            <SignUpFlowHeader step={2} steps={4} />
+            <h2>Sign In Method</h2>
+            <AuthenticationForm />
         </>
     )
 }

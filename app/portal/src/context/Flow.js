@@ -48,7 +48,6 @@ function LoginFlowContextProvider({ children }) {
             // flow contains the form fields and csrf token
             .then(({ data: flow }) => {
                 // Update URI query params to include flow id
-                console.log(flow)
                 setSearchParams({
                     flow: flow.id,
                     aal: aal2 ? 'aal2' : 'aal1',
