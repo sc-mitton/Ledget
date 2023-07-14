@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { useState, useRef } from 'react'
 
-import { useForm, Controller, set } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js'
@@ -364,37 +364,46 @@ const StripeFooter = () => {
     )
 }
 
+
+
 function Checkout({ prices }) {
     const [errMsg, setErrMsg] = useState(null)
     const [processing, setProcessing] = useState(false)
     const [cardErrMsg, setCardErrMsg] = useState(null)
+    const [success, setSuccess] = useState(false)
     const stripe = useStripe()
     const elements = useElements()
     const { user } = useContext(AuthContext)
+    const { price } = useContext(PriceContext)
 
     const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem('clientSecret')))
 
     const createCustomer = async () => {
-        ledgetapi.post(`user/${user.id}/customer`)
+        await ledgetapi.post(`user/${user.id}/customer`)
             .catch((error) => {
                 if (error.response?.status !== 422) {
-                    setErrMsg('Hmm... something went wrong. Please try again later.')
+                    setErrMsg('Something went wrong. Please try again later.')
                 }
             })
     }
 
     const createSubscription = async () => {
-        const { price } = useContext(PriceContext)
-        const response = await ledgetapi.post(`user/${user.id}/subscription`, {
-            'price_id': price.id,
-            'trial_period_days': price.metadata?.trial_period_days
+        await ledgetapi.post(`user/${user.id}/subscription`, {
+            price_id: price.id,
+            trial_period_days: price.metadata?.trial_period_days
         })
-        if (response.status === 200) {
-            sessionStorage.setItem("clientSecret", JSON.stringify(response.data.client_secret))
-            clientSecretRef.current = response.data.client_secret
-        } else {
-            setErrMsg('Hmm... something went wrong. Please try again later.')
-        }
+            .then((response) => {
+                if (response.status === 200) {
+                    sessionStorage.setItem("clientSecret", JSON.stringify(response.data.client_secret))
+                    clientSecretRef.current = response.data.client_secret
+                } else {
+                    setErrMsg('Something went wrong. Please try again later.')
+                }
+            }).catch((error) => {
+                if (error.response?.status !== 422) {
+                    setErrMsg('Something went wrong. Please try again later.')
+                }
+            })
     }
 
     const confirmSetup = async (data) => {
@@ -417,7 +426,7 @@ function Checkout({ prices }) {
             }
         )
         if (result.setupIntent?.status === 'succeeded') {
-            console.log('setup succeeded, navigating to app home...')
+            setSuccess(true)
             // TODO - navigate to app home
         } else if (result.error) {
             setCardErrMsg(result.error?.message)
@@ -429,15 +438,13 @@ function Checkout({ prices }) {
         try {
             if (!clientSecretRef.current) {
                 await createCustomer()
-                console.log('customer created')
                 await createSubscription()
-                console.log('subscription created')
             }
             if (clientSecretRef.current) {
                 await confirmSetup(data)
             }
         } catch (err) {
-            !cardErrMsg && setErrMsg('Hmm... something went wrong. Please try again later.')
+            !cardErrMsg && setErrMsg('Something went wrong. Please try again later.')
         } finally {
             setProcessing(false)
         }
@@ -472,19 +479,14 @@ function Checkout({ prices }) {
             <WindowLoadingBar visible={processing} />
             <Prices prices={prices} />
             <div id="checkout-container">
-                <Form id="billing-form" onSubmit={onSubmit} />
-                {cardErrMsg &&
-                    <div className="form-error" id="payment-error">
-                        <img src={alert2} alt="error icon" />
-                        {errMsg}
-                    </div>
-                }
                 {errMsg &&
                     <div className="general-error" >
                         <img src={alert2} alt="error icon" />
                         {errMsg}
                     </div>
                 }
+                <Form id="billing-form" onSubmit={onSubmit} />
+                {cardErrMsg && <FormError msg={cardErrMsg} />}
                 <OrderSummary />
                 <SubmitButton form={'billing-form'} />
             </div>
