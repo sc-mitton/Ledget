@@ -4,10 +4,10 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-ro
 
 import './style/dashboard.css'
 import Header from './Header'
-import Spending from './components/windows/Spending'
-import Items from './components/windows/Items'
-import Settings from './components/windows/Settings'
-import Accounts from './components/windows/Accounts'
+import Spending from './components/Spending'
+import Items from './components/Items'
+import Settings from './components/Settings'
+import Accounts from './components/Accounts'
 
 function App() {
     const dashboardRef = useRef(null)

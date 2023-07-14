@@ -63,13 +63,19 @@ services:
       - "traefik.http.routers.api.rule=(Host(`localhost`) && PathPrefix(`/api/v1/`))"
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls=true"
-      - "traefik.http.routers.api.middlewares=oathkeeper@docker"
-      - "traefik.http.routers.hooks.rule=(Host(`localhost`) && PathPrefix(`/hooks/ory`))"
+      - "traefik.http.routers.api.middlewares=oathkeeper,cors"
+      - "traefik.http.routers.hooks.rule=(Host(`localhost`) && PathPrefix(`/hooks`))"
       - "traefik.http.routers.hooks.entrypoints=websecure"
       - "traefik.http.routers.hooks.tls=true"
-      - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.sourcerange=34.22.170.75, 35.242.228.133"
+      - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.sourcerange=3.18.12.63, 3.130.192.231, 13.235.14.237, 13.235.122.149, 18.211.135.69, 35.154.171.200, 52.15.183.38, 54.88.130.119, 54.88.130.237, 54.187.174.169, 54.187.205.235, 54.187.216.72, 34.22.170.75, 35.242.228.133"
       - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.ipstrategy.depth=1"
       - "traefik.http.routers.hooks.middlewares=hooksIpWhitelist@docker"
+      - "traefik.http.middlewares.cors.headers.accesscontrolallowmethods=*"
+      - "traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://localhost:3000, https://localhost:3001, https://localhost"
+      - "traefik.http.middlewares.cors.headers.accesscontrolallowcredentials=true"
+      - "traefik.http.middlewares.cors.headers.accesscontrolallowheaders=Content-Type"
+      - "traefik.http.middlewares.cors.headers.accesscontrolmaxage=100"
+      - "traefik.http.middlewares.cors.headers.addvaryheader=true"
     environment:
       - DB_HOST=db
       - DB_NAME=devdb

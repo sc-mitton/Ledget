@@ -16,12 +16,12 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         control: (baseStyles, state) => ({
             ...baseStyles,
-            borderRadius: "6px",
+            borderRadius: "8px",
             paddingLeft: "16px",
             paddingRight: "12px",
             paddingTop: "14px",
             paddingBottom: "36px",
-            backgroundColor: "#ebebeb",
+            backgroundColor: "#ededed",
             font: "inherit",
             height: "0",
             border: "none",
@@ -47,14 +47,18 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,
-            marginTop: "4px",
-            backgroundColor: "var(--button-hover-gray)",
-            boxShadow: "0 4px 6px -5px rgba(0, 0, 0, 0.5)",
+            marginTop: "8px",
+            backgroundColor: "var(--input-color)",
+            boxShadow: "0px 0px 4px 2px rgba(0, 0, 0, 0.3)",
+            webkitBoxShadow: "0px 0px 4px 2px rgba(0, 0, 0, 0.3)",
+            mozBoxShadow: "0px 0px 4px 2px rgba(0, 0, 0, 0.3)",
             borderRadius: "4px",
         }),
         menuList: (baseStyles, state) => ({
             ...baseStyles,
             borderRadius: "4px",
+            paddingLeft: "6px",
+            paddingRight: "6px",
         }),
         dropdownIndicator: (baseStyles, state) => ({
             ...baseStyles,
@@ -62,17 +66,18 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
-            backgroundColor: (state.isFocused ? "rgba(248, 248, 248, .2)" : "var(--button-gray)"),
-            borderRadius: "2px",
-            padding: "4px 4px 4px 16px",
+            backgroundColor: (state.isFocused ? "rgba(0, 0, 0, .05)" : "var(--input)"),
+            borderRadius: "4px",
+            padding: "2px 0px 2px 12px",
+            margin: "6px 0",
             width: "100%",
             textAlign: "left",
             cursor: "pointer",
-            color: state.isSelected ? "var(--light-blue)" : "#f8f8f8"
+            color: state.isSelected ? "var(--main-blue)" : "#767676",
         }),
         singleValue: (baseStyles, state) => ({
             ...baseStyles,
-            color: props.isDisabled ? "var(--input-placeholder)" : "var(--main-text-gray)",
+            color: props.isDisabled ? "var(--input-placeholder)" : "var(--input-placeholder)",
         })
     })
 

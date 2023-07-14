@@ -162,13 +162,14 @@ LOGGING = {
             'handlers': ['file', 'console'],
             'level': LOG_LEVEL
         },
-        'core.stripe': {
+        'stripe': {
             'handlers': ['stripe', 'console'],
             'levels': LOG_LEVEL
         },
     }
 }
 
+# When running tests, we don't want tons of logs being printed out
 TEST = {
     'LOGGING_OVERRIDE': {
         'console': {

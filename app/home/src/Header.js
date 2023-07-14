@@ -9,6 +9,7 @@ import Profile1 from './assets/svg/Profile1'
 import Profile2 from './assets/svg/Profile2'
 import SettingsIcon from './assets/svg/Settings'
 import HelpIcon from './assets/svg/Help'
+import Logout from './assets/svg/Logout'
 import Help from './components/modals/Help'
 import Account from './components/modals/Account'
 import './style/header.css'
@@ -31,7 +32,11 @@ function Header({ isNarrow }) {
                                 className="dropdown-item"
                                 onClick={() => setModal("account")}
                             >
-                                <Profile2 className="dropdown-icon" />
+                                <Profile2
+                                    className="dropdown-icon"
+                                    fill={'var(--main-text-gray)'}
+                                    stroke={'var(--main-text-gray)'}
+                                />
                                 Account
                             </button>
                         </Menu.Item>
@@ -40,7 +45,11 @@ function Header({ isNarrow }) {
                                 className="dropdown-item"
                                 onClick={() => navigate("/settings")}
                             >
-                                <SettingsIcon className="dropdown-icon" />
+                                <SettingsIcon
+                                    className="dropdown-icon"
+                                    fill={'var(--main-text-gray)'}
+                                    stroke={'var(--main-text-gray)'}
+                                />
                                 Settings
                             </button>
                         </Menu.Item>
@@ -49,8 +58,25 @@ function Header({ isNarrow }) {
                                 className="dropdown-item"
                                 onClick={() => setModal("help")}
                             >
-                                <HelpIcon className="dropdown-icon" />
+                                <HelpIcon
+                                    className="dropdown-icon"
+                                    fill={'var(--main-text-gray)'}
+                                    stroke={'var(--main-text-gray)'}
+                                />
                                 Help
+                            </button>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <button
+                                className="dropdown-item"
+                                onClick={() => navigate("/logout")}
+                            >
+                                <Logout
+                                    className="dropdown-icon"
+                                    fill={'var(--main-text-gray)'}
+                                    stroke={'var(--main-text-gray)'}
+                                />
+                                Logout
                             </button>
                         </Menu.Item>
                     </div>

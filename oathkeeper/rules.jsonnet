@@ -54,4 +54,15 @@ local Base = {
     mutators: [id_token],
     authorizer: allow_authorizer,
   },
+  Base
+  {
+    id: 'preflight',
+    match: {
+      methods: ['OPTIONS'],
+      url: base_url + '/<.*>',
+    },
+    authenticators: [anonymous_authenticator],
+    mutators: [noop_mutator],
+    authorizer: allow_authorizer,
+  },
 ]

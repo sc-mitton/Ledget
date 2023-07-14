@@ -55,15 +55,11 @@ echo ORY_API_KEY=<api key> > ./secrets/.env.ory
 ```
 
 
-5. Use docker compose to run the application in development mode:
-
 
 ```
 docker-compose up -d
 ```
 ## Webhook Testing
-
-To test the ory webhook, you'll need to provide an ngrok tunnel, and then update the url for the webhook endpoint in the porject-configuration.yaml file for ory.
 
 
 ```
@@ -76,5 +72,28 @@ ory update identity-config "$(ory list projects | grep "ledget" | cut -f1)" -f p
 For working with the stripe webhook, you'll also need to use the stripe cli:
 
 ```
-stripe listen --forward-to https://localhost/hooks/stripe --skip-verify
+stripe listen --forward-to https://localhost/hooks/stripe --skip-verify -H X-Forwarded-For:13.235.14.237
 ```
+
+## Subscription Status Docs
+
+Learn more about the subscription statuses here:
+https://stripe.com/docs/billing/subscriptions/overview#subscription-statuses
+
+trialing: When customer is first created and setup intent succeeds. Status will go to active after first bill.
+
+active: Good standing
+
+incomplete: Successfull payment needs to be made within 23 hours
+
+incomplete_expired: Initial payment failed and no payment was made within 23 hours
+
+past_due: Payment of last finalized invoice failed or wasn't attempted. Service is revoked until payment is made.
+
+canceled: A customer's subscription has been canceled. This is used for when a customer wants to take a break.
+They can come back later. If they are completely canceling their account, then the whole customer is deleted.
+
+
+Unused:
+UNPAID is unused because it is just a status that can be triggered after unpaid
+PAUSED is not used because we don't support it, we use canceling instead

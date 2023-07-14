@@ -55,23 +55,23 @@ header {
     text-align: left;
     display: flex;
     flex-direction: column;
-
-    top: 50px;
+    top: 55px;
     right: -50px;
-    padding: 8px 0;
 }
 
 .dropdown-icon {
-    margin-right: 8px;
+    margin-right: 12px;
 }
 
 .dropdown-item {
     display: flex;
     align-items: center;
-    font-weight: 400;
+    font-weight: 500;
     width: 100%;
-    padding: 6px 12px;
+    padding: 4px 8px;
+    margin: 2px 0;
     transition: background-color 0.4s ease;
+    border-radius: 6px;
 }
 
 .dropdown-item:hover {

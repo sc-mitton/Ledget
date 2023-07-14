@@ -32,7 +32,7 @@
 
     /* Buttons */
     --button-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    --social-button: #ebebeb;
+    --social-button: #ededed;
     --social-button-hover: #e0e0e0;
     --button-gray: #363636;
     --buton-border-gray: #3c3c3c;
@@ -48,7 +48,7 @@
     --inactive-gray: #4c4c4c;
 
     /* Input Colors */
-    --input-color: #ebebeb;
+    --input-color: #ededed;
     --tooltip-background: #a6a6a6;
 
     /* Text */

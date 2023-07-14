@@ -1,0 +1,44 @@
+.radial-fill-window {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 0;
+    z-index: 1000;
+    overflow: hidden;
+    background: var(--main-green);
+    animation: fillWindowAnimation 0.2s ease-out;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: center;
+    border-radius: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.radial-fill-window * {
+    color: var(--white-text);
+}
+
+.radial-fill-window span {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+@keyframes fillWindowAnimation {
+    0% {
+        opacity: 0;
+        transform: scale(.7);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

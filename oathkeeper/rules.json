@@ -48,5 +48,28 @@
          }
       ],
       "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "handler": "anonymous"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "preflight",
+      "match": {
+         "methods": [
+            "OPTIONS"
+         ],
+         "url": "https://localhost/api/v1/<.*>"
+      },
+      "mutators": [
+         {
+            "handler": "noop"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
    }
 ]

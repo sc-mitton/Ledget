@@ -1,6 +1,7 @@
 import logging
 
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import (
@@ -18,7 +19,7 @@ from core.permissions import IsUserOwner
 
 stripe.api_key = settings.STRIPE_API_KEY
 endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
-stripe_logger = logging.getLogger('core.stripe')
+stripe_logger = logging.getLogger('stripe')
 
 
 class PriceView(APIView):
@@ -37,7 +38,7 @@ class CustomerView(APIView):
     def post(self, request, *args, **kwargs):
         if request.user.is_customer:
             return Response(
-                {'error': 'Customer already exists.'},
+                {'error': 'user is already customer'},
                 status=HTTP_422_UNPROCESSABLE_ENTITY
             )
 
@@ -61,14 +62,17 @@ class CustomerView(APIView):
         return Response(status=HTTP_200_OK)
 
 
-class SubscriptionView(APIView):
+class SubscriptionView(GenericAPIView):
     """Class for handling the subscription creation and updating"""
     permission_classes = [IsAuthenticated, IsUserOwner]
     serializer_class = SubscriptionSerializer
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_customer:
-            return Response(status=HTTP_400_BAD_REQUEST)
+            return Response(
+                {'error': 'Customer does not exist.'},
+                status=HTTP_422_UNPROCESSABLE_ENTITY
+            )
 
         try:
             serializer = self.get_serializer(data=request.data)

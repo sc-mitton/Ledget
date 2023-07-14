@@ -209,7 +209,7 @@ const AuthenticationWindow = () => {
 function LoginFlow() {
     const [loaded, setLoaded] = useState(false)
     const { email } = useContext(emailContext)
-    const { flow, getFlow, createFlow } = useContext(LoginFlowContext)
+    const { getFlow, createFlow } = useContext(LoginFlowContext)
     const [searchParams] = useSearchParams()
 
     useEffect(() => { setLoaded(true) }, [])

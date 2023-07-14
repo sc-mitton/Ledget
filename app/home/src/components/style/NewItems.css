@@ -44,13 +44,14 @@
 
 .category-icon {
     margin-right: 8px;
-    border: 1.5px solid var(--mute-blue);
     color: var(--main-blue);
+    transform: scale(1);
+    transition: all .2s ease-out;
 }
 
 .category-icon:hover {
-    box-shadow: 0 0 0px 1px var(--light-blue);
-    transition: box-shadow .3s ease-out;
+    transform: scale(1.1);
+    transition: all .2s ease-out;
 }
 
 /**/
@@ -67,12 +68,14 @@
     margin-right: 4px;
     margin-top: 1px;
     margin-bottom: 1px;
+    transform: scale(1);
+    transition: all .2s ease-out;
 }
 
 #checkmark-icon:hover {
-    box-shadow: 0 0 0px 1.5px var(--main-green);
-    transition: box-shadow .2s ease-out;
+    transition: all .2s ease-out;
     background-color: transparent;
+    transform: scale(1.2);
 }
 
 #expand-button {

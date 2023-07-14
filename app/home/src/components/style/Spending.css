@@ -15,10 +15,7 @@
 
 #picker-container {
     position: absolute;
-    top: 110%;
-    background-color: var(--drop-down-background);
-    border-radius: 5px;
-    padding: 8px;
+    top: 140%;
 }
 
 .arrow-nav {
@@ -34,17 +31,12 @@
     transition: background-color 0.2s ease;
 }
 
-#year-navigation * {
-    color: var(--window);
-}
-
 #year-navigation {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     margin-bottom: 4px;
-    border-bottom: 1.5px solid rgba(255, 255, 255, 0.12);
     padding-bottom: 4px;
     margin: 0 6px 4px 6px;
 }
@@ -63,7 +55,6 @@
 
 .month-picker-item,
 .month-picker-item-selected {
-    color: var(--window);
     padding: 2px 8px;
     border-radius: 8px;
     cursor: pointer;
@@ -72,6 +63,7 @@
 
 .month-picker-item-selected {
     background-color: var(--main-blue);
+    color: var(--white-text);
 }
 
 .month-picker-item:hover,

@@ -4,11 +4,11 @@ import { useState, useEffect, useRef } from 'react'
 import { useSpring, animated, useTransition } from '@react-spring/web'
 
 import "./style/NewItems.css"
-import Ellipsis from "../../assets/svg/Ellipsis"
-import CheckMark from "../../assets/svg/CheckMark"
-import Expand from "../../assets/svg/Expand"
-import Note from "../../assets/svg/Note"
-import Split from "../../assets/svg/Split"
+import Ellipsis from "../assets/svg/Ellipsis"
+import CheckMark from "../assets/svg/CheckMark"
+import Expand from "../assets/svg/Expand"
+import Note from "../assets/svg/Note"
+import Split from "../assets/svg/Split"
 
 
 // TODO: pull this data in from backend
@@ -225,10 +225,8 @@ const NewItemsStack = () => {
                         onClick={() => handleConfirm(item.id)}
                         aria-label="Confirm item"
                         tabIndex={getTabIndex(item.id)}
-                        onMouseOver={() => setCheckHover(true)}
-                        onMouseLeave={() => setCheckHover(false)}
                     >
-                        <CheckMark fill={checkHover ? '#2ecd80' : '#242424'} />
+                        <CheckMark fill={'var(--main-text-gray)'} />
                     </button>
                     <button
                         className='icon'

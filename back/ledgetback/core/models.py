@@ -77,32 +77,22 @@ class User(models.Model):
 
 
 class Customer(models.Model):
-    """
-    Learn more about the subscription statuses here:
-    https://stripe.com/docs/billing/subscriptions/overview#subscription-statuses
+    """ See README for more information on the subscription statuses."""
 
-    INCOMPLETE_EXPIRED is unused because it exists in stripe only to
-    track customers who failed to activate their subscription
-
-    UNPAID is unused because it is a status that can be triggered after unpaid
-
-    CANCELED is not included as an status option, when this happens,
-    the data is deleted in the db while stripe and other services keep
-    necessary data for analytics purposes
-    """
-
+    INCOMPLETE = 'incomplete'
+    INCOMPLETE_EXPIRED = 'incomplete_expired'
     TRIALING = 'trialing'
     ACTIVE = 'active'
     PAST_DUE = 'past_due'
-    PAUSED = 'paused'
-    INCOMPLETE = 'incomplete'
+    CANCELED = 'canceled'
 
     status_choices = [
+        (INCOMPLETE, 'Incomplete'),
+        (INCOMPLETE_EXPIRED, 'Incomplete Expired'),
         (TRIALING, 'Trialing'),
         (ACTIVE, 'Active'),
-        (INCOMPLETE, 'Incomplete'),
         (PAST_DUE, 'Past Due'),
-        (PAUSED, 'Paused'),
+        (CANCELED, 'Canceled')
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)

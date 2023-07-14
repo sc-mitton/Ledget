@@ -1,9 +1,9 @@
 import React from 'react'
 import { useState, useRef, useEffect } from 'react'
 
-import CashFlow from '../../assets/svg/CashFlow'
-import Graph from '../../assets/svg/Graph'
-import Arrow from '../../assets/svg/Arrow'
+import CashFlow from '../assets/svg/CashFlow'
+import Graph from '../assets/svg/Graph'
+import Arrow from '../assets/svg/Arrow'
 import './style/Spending.css'
 
 const monthMappings = [
@@ -156,7 +156,7 @@ function Spending() {
                                 onClick={decrementYear}
                                 aria-label="Decrement year"
                             >
-                                <Arrow stroke='#f8f8f8' scale={.8} rotation={90} />
+                                <Arrow stroke='var(--main-text-gray)' scale={.8} rotation={90} />
                             </button>
                             <div>{pickerYear}</div>
                             <button
@@ -164,7 +164,7 @@ function Spending() {
                                 onClick={incrementYear}
                                 aria-label="Increment year"
                             >
-                                <Arrow stroke='#f8f8f8' scale={.8} rotation={-90} />
+                                <Arrow stroke='var(--main-text-gray)' scale={.8} rotation={-90} />
                             </button>
                         </div>
                         <div className="month-picker-grid">

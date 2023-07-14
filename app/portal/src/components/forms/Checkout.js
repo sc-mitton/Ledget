@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { useState, useRef } from 'react'
 
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, set } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js'
@@ -339,7 +339,7 @@ const OrderSummary = () => {
                             </tr>
                             <tr>
                                 <td>Amount:</td>
-                                <td>{`\$${price.unit_amount / 100}`}</td>
+                                <td>{`\$${price.unit_amount / 100}.`}<span>00</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -363,8 +363,6 @@ const StripeFooter = () => {
         </div>
     )
 }
-
-
 
 function Checkout({ prices }) {
     const [errMsg, setErrMsg] = useState(null)
@@ -427,7 +425,7 @@ function Checkout({ prices }) {
         )
         if (result.setupIntent?.status === 'succeeded') {
             setSuccess(true)
-            // TODO - navigate to app home
+            window.location.href = process.env.REACT_APP_LOGIN_REDIRECT
         } else if (result.error) {
             setCardErrMsg(result.error?.message)
         }
@@ -481,8 +479,7 @@ function Checkout({ prices }) {
             <div id="checkout-container">
                 {errMsg &&
                     <div className="general-error" >
-                        <img src={alert2} alt="error icon" />
-                        {errMsg}
+                        <FormError msg={errMsg} />
                     </div>
                 }
                 <Form id="billing-form" onSubmit={onSubmit} />

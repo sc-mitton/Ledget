@@ -1,8 +1,8 @@
 import React from 'react'
 import NewItemsStack from './NewItems'
 
-import Plus from '../../assets/svg/Plus'
-import Funnel from '../../assets/svg/Funnel'
+import Plus from '../assets/svg/Plus'
+import Funnel from '../assets/svg/Funnel'
 import './style/Items.css'
 
 function Items() {

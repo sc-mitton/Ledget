@@ -18,7 +18,7 @@ import stripe
 from core.models import Customer
 from hooks.decorators import ory_api_key_auth
 
-stripe_logger = logging.getLogger('core.stripe')
+stripe_logger = logging.getLogger('stripe')
 stripe.api_key = settings.STRIPE_API_KEY
 stripe_webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 
@@ -37,10 +37,12 @@ class StripeHookView(APIView):
                 payload, sig_header, stripe_webhook_secret
             )
         except stripe.error.SignatureVerificationError as e:
-            print('⚠️  Webhook signature verification failed.' + str(e))
+            stripe_logger.warn(
+                '⚠️  Webhook signature verification failed.' + str(e)
+            )
             response = Response(status=HTTP_400_BAD_REQUEST)
         except ValueError as e:
-            print('⚠️  Invalid payload' + str(e))
+            stripe_logger.error('⚠️  Invalid payload' + str(e))
             response = Response(status=HTTP_400_BAD_REQUEST)
         else:
             response = Response(status=HTTP_200_OK)
@@ -78,64 +80,36 @@ class StripeHookView(APIView):
                 )
                 time.sleep(1)
 
-    # Setup Intent handlers
-    def handle_setup_intent_succeeded(self, event):
-        print(event.data.object)
-        print(event)
-        customer = Customer.objects.get(id=event.data.object.customer)
-        customer.subscription_status = Customer.TRIALING
-        # TODO update the provisioning, add the trial period in seconds
-        # (add 1 day for buffer) to the current unix timestampe
-        customer.save()
-
-    def handle_setup_intent_setup_failed(self, event):
-        customer = Customer.objects.get(id=event.data.object.customer)
-        customer.subscription_status = Customer.INCOMPLETE
-        customer.save()
-
     # Delete Handlers
     def handle_customer_deleted(self, event):
         customer = Customer.objects.get(id=event.data.object.id)
         customer.delete()
 
-    # Events that change subscription status
-    def handle_customer_subscription_paused(self, event):
-        customer = Customer.objects.get(id=event.data.object.customer)
-        customer.subscription_status = Customer.PAUSED
-        customer.provisioned_until = 0
-        customer.save()
-
     def handle_customer_subscription_deleted(self, event):
-        # Reverts the customer to no subscription (exactly the same as when
-        # customer is first created)
+        # This is a permanent cancelation
 
-        customer = Customer.objects.get(id=event.data.object.customer)
-        customer.subscription_status = None
-        customer.provisioned_until = 0
-        customer.save()
+        try:
+            customer = Customer.objects.get(id=event.data.object.customer)
+        except ObjectDoesNotExist:
+            return  # Customer already deleted and we don't need to do anything
 
-    def handle_customer_subscription_resumed(self, event):
-        customer = Customer.objects.get(id=event.data.object.customer)
-        customer.subscription_status = Customer.ACTIVE
-        # TODO update the provisioning
-        customer.save()
+        customer.delete()
 
+    # Events that change subscription status
     def handle_invoice_paid(self, event):
-        customer = Customer.objects.get(id=event.data.object.customer)
-        # TODO update the provisioning
-        customer.save()
 
-    def handle_invoice_payment_failed(self, event):
+        lines = event.data.object.lines
         customer = Customer.objects.get(id=event.data.object.customer)
-        customer.subscription_status = Customer.PAST_DUE
-        # TODO update the provisioning
+        customer.provisioned_until = lines.data[0].period.end
         customer.save()
 
     def handle_customer_subscription_updated(self, event):
         """ Event occurs whenever a subscription changes (e.g., switching from
-        one plan to another, or changing the status from trial to active). """
+        one plan to another, changing the status from trial to active). """
+
         customer = Customer.objects.get(id=event.data.object.customer)
-        customer.subscription_status = Customer.ACTIVE
+        customer.subscription_status = \
+            getattr(Customer, event.data.object.status.upper())
         customer.save()
 
 
