@@ -30,21 +30,12 @@ const UserInfoContextProvider = ({ children }) => {
 
 // Schema for yup form validation
 const schema = yup.object().shape({
-    name: yup.string()
-        .required()
-        .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, 'Please enter a valid name')
-        .test('two-words', 'Missing last name', (value) => {
-            if (value) {
-                const words = value.trim().split(' ')
-                return words.length === 2
-            }
-            return true
-        }),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
     email: yup.string()
         .required()
         .email('Email is invalid'),
 })
-
 
 function UserInfoForm() {
     // Form for user info
@@ -72,18 +63,31 @@ function UserInfoForm() {
             <div className="input-container">
                 <input
                     id="name"
-                    name="name"
-                    placeholder="First and last name"
-                    {...register('name')}
+                    name="firstName"
+                    placeholder="First name"
+                    {...register('firstName')}
                     onBlur={(e) => {
                         if (e.target.value) {
-                            trigger("name")
+                            trigger("firstName")
                         }
                     }}
                 />
-                {hasRequiredError('name') && <FormErrorTip />}
+                {hasRequiredError('firstName') && <FormErrorTip />}
             </div>
-            {hasErrorMsg('name') && <FormError msg={errors.name?.message} />}
+            <div className="input-container">
+                <input
+                    id="name"
+                    name="lastName"
+                    placeholder="Last name"
+                    {...register('lastName')}
+                    onBlur={(e) => {
+                        if (e.target.value) {
+                            trigger("lastName")
+                        }
+                    }}
+                />
+                {hasRequiredError('lastName') && <FormErrorTip />}
+            </div>
             <div className="input-container">
                 <input
                     id="email"
@@ -188,8 +192,8 @@ const AuthenticationForm = () => {
                 {errors['confirmPassword'] && <FormError msg={errors.confirmPassword?.message} />}
                 <CsrfToken csrf={csrf} />
                 <input type='hidden' name='traits.email' value={userInfo.email} />
-                <input type='hidden' name='traits.name.first' value={userInfo.name.split(' ')[0]} />
-                <input type='hidden' name='traits.name.last' value={userInfo.name.split(' ')[1]} />
+                <input type='hidden' name='traits.name.first' value={userInfo.firstName} />
+                <input type='hidden' name='traits.name.last' value={userInfo.lastName} />
                 <button className='charcoal-button main-submit' name="method" value="password" type="submit">
                     Create
                 </button>
@@ -197,8 +201,8 @@ const AuthenticationForm = () => {
             {typeof (PublicKeyCredential) != "undefined" &&
                 <PasswordlessForm flow={flow}>
                     <input type='hidden' name='traits.email' value={userInfo.email} />
-                    <input type='hidden' name='traits.name.first' value={userInfo.name.split(' ')[0]} />
-                    <input type='hidden' name='traits.name.last' value={userInfo.name.split(' ')[1]} />
+                    <input type='hidden' name='traits.name.first' value={userInfo.firstName} />
+                    <input type='hidden' name='traits.name.last' value={userInfo.lastName} />
                     <input type='hidden' name='webauthn_register_displayname' value={userInfo.email} />
                 </PasswordlessForm>
             }

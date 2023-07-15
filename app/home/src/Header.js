@@ -20,13 +20,18 @@ function Header({ isNarrow }) {
     const navigate = useNavigate()
 
     const DropDownMenu = () => {
+        const [open, setOpen] = useState(false)
+
         return (
             <Menu>
-                <Menu.Button id="profile-button" >
+                <Menu.Button
+                    id="profile-button"
+                    onClick={() => setOpen(!open)}
+                >
                     <Profile1 />
                 </Menu.Button>
-                <Menu.Items>
-                    <div className="dropdown profile-dropdown">
+                <Menu.Items static>
+                    <DropAnimation visible={open} className="dropdown profile-dropdown">
                         <Menu.Item>
                             <button
                                 className="dropdown-item"
@@ -79,7 +84,7 @@ function Header({ isNarrow }) {
                                 Logout
                             </button>
                         </Menu.Item>
-                    </div>
+                    </DropAnimation>
                 </Menu.Items>
             </Menu >
         )
