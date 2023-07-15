@@ -11,7 +11,7 @@ function Items() {
         return (
             <div className="window-header">
                 <div>
-                    <h2>Items</h2>
+                    <h1>Items</h1>
                 </div>
                 <div className="window-header-buttons">
                     <button

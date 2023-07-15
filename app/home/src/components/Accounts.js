@@ -6,7 +6,7 @@ function Accounts() {
     return (
         <div className='window' id="accounts-window">
             <div className='window-header'>
-                <h2>Accounts</h2>
+                <h1>Accounts</h1>
             </div>
         </div>
     )

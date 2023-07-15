@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import Arrow from '../../assets/svg/Arrow'
 import { monthMappings } from '../../assets/data/monthMappings'
-import DropAnimation from '../widgets/DropAnimation'
+import DropAnimation from '../utils/DropAnimation'
 import './styles/MonthPicker.css'
 
 const MonthPicker = () => {
@@ -118,7 +118,7 @@ const MonthPicker = () => {
 
     return (
         <div id="month-picker" ref={monthPickerRef}>
-            <h2>{monthMappings[month - 1][1]} {year}</h2>
+            <h1>{monthMappings[month - 1][1]} {year}</h1>
             <div id="header-arrow-container">
                 <button
                     className='icon'
@@ -126,7 +126,7 @@ const MonthPicker = () => {
                     onClick={handleArrowClick}
                     aria-label="Open month picker"
                 >
-                    <Arrow />
+                    <Arrow width={'1.3em'} height={'1.3em'} />
                 </button>
             </div>
             <DropAnimation visible={picker} className="dropdown" id="picker-container">

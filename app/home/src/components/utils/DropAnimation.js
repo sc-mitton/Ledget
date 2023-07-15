@@ -5,9 +5,9 @@ import { useTransition, animated } from '@react-spring/web'
 const DropAnimation = ({ visible, children, ...rest }) => {
 
     const transitions = useTransition(visible, {
-        from: { opacity: 0, transform: 'scale(0.8)' },
-        enter: { opacity: 1, transform: 'scale(1)' },
-        leave: { opacity: 0, transform: 'scale(0.8)' },
+        from: { opacity: 0, transform: 'scale(0.8)', transformOrigin: 'top' },
+        enter: { opacity: 1, transform: 'scale(1)', transformOrigin: 'top' },
+        leave: { opacity: 0, transform: 'scale(0.8)', transformOrigin: 'top' },
         config: { duration: 80 },
     })
 

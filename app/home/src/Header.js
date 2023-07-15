@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
@@ -12,7 +11,7 @@ import HelpIcon from './assets/svg/Help'
 import Logout from './assets/svg/Logout'
 import Help from './components/modals/Help'
 import Account from './components/modals/Account'
-import DropAnimation from './components/widgets/DropAnimation'
+import DropAnimation from './components/utils/DropAnimation'
 import './style/header.css'
 
 function Header({ isNarrow }) {
@@ -21,16 +20,33 @@ function Header({ isNarrow }) {
 
     const DropDownMenu = () => {
         const [open, setOpen] = useState(false)
+        const menuRef = useRef()
+        const buttonRef = useRef()
+
+        // Close dropdown when clicking outside
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+                if (menuRef.current && !menuRef.current.contains(event.target)
+                    && buttonRef.current && !buttonRef.current.contains(event.target)) {
+                    setOpen(false)
+                }
+            }
+            window.addEventListener("mousedown", handleClickOutside)
+            return () => {
+                window.removeEventListener("mousedown", handleClickOutside)
+            }
+        }, [open])
 
         return (
             <Menu>
                 <Menu.Button
                     id="profile-button"
                     onClick={() => setOpen(!open)}
+                    ref={buttonRef}
                 >
                     <Profile1 />
                 </Menu.Button>
-                <Menu.Items static>
+                <Menu.Items static ref={menuRef}>
                     <DropAnimation visible={open} className="dropdown profile-dropdown">
                         <Menu.Item>
                             <button
