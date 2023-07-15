@@ -30,7 +30,7 @@ function withModal(WrappedComponent) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            background: hasBackground ? 'rgba(49, 49, 49, 0.85)' : 'transparent',
+            background: hasBackground ? 'rgba(49, 49, 49, 0.7)' : 'transparent',
             backdropFilter: hasBackground ? 'blur(5px)' : 'none'
         }
 
