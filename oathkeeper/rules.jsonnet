@@ -56,6 +56,17 @@ local Base = {
   },
   Base
   {
+    id: 'user',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/user/<.*>',
+    },
+    authenticators: [cookie_session_authenticator],
+    mutators: [id_token],
+    authorizer: allow_authorizer,
+  },
+  Base
+  {
     id: 'preflight',
     match: {
       methods: ['OPTIONS'],

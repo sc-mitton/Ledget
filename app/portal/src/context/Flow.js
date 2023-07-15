@@ -97,11 +97,9 @@ function LoginFlowContextProvider({ children }) {
                 updateLoginFlowBody: body,
             })
             .then((response) => {
-                console.log(response)
-                setUser(response.data.session.identity?.traits)
-                sessionStorage.setItem('user', JSON.stringify(response.data.session.identity?.traits))
-                // if not a subscriber, redirect to subscription page
-                // else navigate to app
+                if (response.status === 200) {
+                    window.location.href = process.env.REACT_APP_LOGIN_REDIRECT
+                }
             })
             .catch(sdkErrorHandler)
             .finally(() => setAuthenticating(false))

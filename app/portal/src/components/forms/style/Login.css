@@ -63,4 +63,9 @@
 #forgot-password-container a {
     font-size: 15px;
     font-weight: 500;
+    color: var(--mute-blue);
+}
+
+#forgot-password-container a:hover {
+    border-bottom: 1.5px solid var(--mute-blue);
 }

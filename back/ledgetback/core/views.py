@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_200_OK,
-    HTTP_422_UNPROCESSABLE_ENTITY
+    HTTP_422_UNPROCESSABLE_ENTITY,
 )
 from django.conf import settings
 import stripe
@@ -15,6 +15,7 @@ import stripe
 from core.serializers import SubscriptionSerializer
 from core.models import Customer
 from core.permissions import IsUserOwner
+from core.utils.stripe import stripe_error_handler, StripeError
 
 
 stripe.api_key = settings.STRIPE_API_KEY
@@ -122,3 +123,43 @@ class SubscriptionView(GenericAPIView):
             **args
         )
         return stripe_subscription
+
+
+class UserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+
+        try:
+            sub = self.get_stripe_subscription(request.user.customer.id)
+            subscription_data = {
+                'plan': {
+                    'nickname': sub.data[0].plan.nickname,
+                    'status': request.user
+                                     .customer
+                                     .get_subscription_status_display(),
+                    'current_period_end': sub.data[0].current_period_end,
+                    'amount': sub.data[0].plan.amount,
+                },
+            }
+        except StripeError:
+            stripe_logger.error(StripeError.message)
+            return Response(
+                {'error': StripeError.message},
+                status=StripeError.response_code
+            )
+
+        return Response(
+            data={
+                'email': request.user.traits.get('email', ''),
+                'name': request.user.traits.get('name', {}),
+                'is_customer': request.user.is_customer,
+                'verified': request.user.verified,
+                'subscription': subscription_data
+            },
+            status=HTTP_200_OK
+        )
+
+    @stripe_error_handler
+    def get_stripe_subscription(self, customer_id):
+        return stripe.Subscription.list(customer=customer_id)

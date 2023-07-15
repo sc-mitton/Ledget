@@ -108,8 +108,10 @@ class StripeHookView(APIView):
         one plan to another, changing the status from trial to active). """
 
         customer = Customer.objects.get(id=event.data.object.customer)
-        customer.subscription_status = \
-            getattr(Customer, event.data.object.status.upper())
+        customer.subscription_status = getattr(
+            Customer.SubscriptionStatus,
+            event.data.object.status.upper()
+        )
         customer.save()
 
 

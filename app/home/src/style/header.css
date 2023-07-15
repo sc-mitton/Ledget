@@ -70,7 +70,7 @@ header {
     padding: 4px 8px;
     margin: 2px 0;
     transition: background-color 0.4s ease;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .dropdown-item:hover {

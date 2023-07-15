@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(models.Manager):
@@ -40,6 +41,7 @@ class User(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._traits = None
+        self._verified = False
 
     @property
     def is_customer(self):
@@ -60,6 +62,14 @@ class User(models.Model):
         self._traits = value
 
     @property
+    def verified(self):
+        return self._verified
+
+    @verified.setter
+    def verified(self, value: bool):
+        self._verified = value
+
+    @property
     def is_authenticated(self):
         """
         Always return True. This is a way to tell if the user has been
@@ -78,25 +88,20 @@ class User(models.Model):
 
 class Customer(models.Model):
     """ See README for more information on the subscription statuses."""
-
-    INCOMPLETE = 'incomplete'
-    INCOMPLETE_EXPIRED = 'incomplete_expired'
-    TRIALING = 'trialing'
-    ACTIVE = 'active'
-    PAST_DUE = 'past_due'
-    CANCELED = 'canceled'
-
-    status_choices = [
-        (INCOMPLETE, 'Incomplete'),
-        (INCOMPLETE_EXPIRED, 'Incomplete Expired'),
-        (TRIALING, 'Trialing'),
-        (ACTIVE, 'Active'),
-        (PAST_DUE, 'Past Due'),
-        (CANCELED, 'Canceled')
-    ]
+    class SubscriptionStatus(models.TextChoices):
+        INCOMPLETE = 'incomplete', _('Incomplete')
+        INCOMPLETE_EXPIRED = 'incomplete_expired', _('Incomplete Expired')
+        TRIALING = 'trialing', _('Trialing')
+        ACTIVE = 'active', _('Active')
+        PAST_DUE = 'past_due', _('Past Due')
+        CANCELED = 'canceled', _('Canceled')
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     id = models.CharField(max_length=40, primary_key=True, editable=False)
     subscription_status = models.CharField(
-        choices=status_choices, max_length=20, null=True, default='incomplete')
+        choices=SubscriptionStatus.choices,
+        max_length=20,
+        null=True,
+        default=SubscriptionStatus.INCOMPLETE
+    )
     provisioned_until = models.IntegerField(default=0)

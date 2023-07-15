@@ -1,31 +1,46 @@
 import React, { createContext, useEffect, useState } from "react"
 
 import { ory } from "../api/ory"
-
-const route = (req) => {
-    ory
-        .createBrowserLogoutFlow({ cookie: req.header("cookie") })
-        .then(({ data }) => {
-            console.log(data.logout_url) // The logout URL
-            console.log(data.logout_token) // The logout token
-
-            // You can render the logout URL like so:
-            // <a href="{{data.logout_url}}>Logout</a>
-
-            // Or call the logout token:
-            // kratos.updateLogoutFlow(data.logout_token).then(() => {
-            // Logged out
-            // })
-        })
-}
+import { ledget } from "../api/ledget"
 
 const UserContext = createContext()
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null)
 
+    useEffect(() => {
+        const getUser = async () => {
+            ledget.get('/user/me')
+                .then(res => {
+                    setUser(res.data)
+                })
+                .catch(err => {
+                    window.location.href = process.env.REACT_APP_LOGOUT_REDIRECT_URL
+                })
+        }
+        getUser()
+    }, [])
+
+    useEffect(() => {
+        sessionStorage.setItem('user', JSON.stringify(user))
+    }, [user])
+
+    const logout = async () => {
+        try {
+            console.log("Logging out")
+            const { data: flow } = await ory.createBrowserLogoutFlow({
+                returnTo: process.env.REACT_APP_LOGOUT_REDIRECT_URL
+            })
+            await ory.updateLogoutFlow({ token: flow.logout_token })
+            setUser(null)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
     return (
-        <UserContext.Provider value={{ user }}>
+        <UserContext.Provider value={{ user, logout }}>
             {children}
         </UserContext.Provider>
     )

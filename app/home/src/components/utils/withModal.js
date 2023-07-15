@@ -14,7 +14,7 @@ function withModal(WrappedComponent) {
             hasBackground = true,
             hasExit = true,
             width = '70%',
-            maxWidth = '400px',
+            maxWidth = '450px',
             zIndex = 1000,
         } = props
 

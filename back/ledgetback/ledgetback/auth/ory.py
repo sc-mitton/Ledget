@@ -56,10 +56,17 @@ class OryBackend(BaseAuthentication):
         try:
             identity = decoded_token['session']['identity']
             user = get_user_model().objects.get(pk=identity['id'])
-            user.traits = identity.get('traits')
-            return user
         except get_user_model().DoesNotExist:
             logger.error(f"User does not exist: {identity['id']}")
             return None
         except KeyError:
             return None
+
+        user.traits = identity.get('traits', {})
+
+        try:
+            user.verified = identity['verifiable_addresses'][0]['verified']
+        except KeyError:
+            user.verified = False
+
+        return user

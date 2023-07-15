@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 
 import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
@@ -13,6 +13,7 @@ import Help from './components/modals/Help'
 import Account from './components/modals/Account'
 import DropAnimation from './components/utils/DropAnimation'
 import './style/header.css'
+import { UserContext } from './context/UserContext'
 
 function Header({ isNarrow }) {
     const [modal, setModal] = useState('')
@@ -22,6 +23,7 @@ function Header({ isNarrow }) {
         const [open, setOpen] = useState(false)
         const menuRef = useRef()
         const buttonRef = useRef()
+        const { logout } = useContext(UserContext)
 
         // Close dropdown when clicking outside
         useEffect(() => {
@@ -90,7 +92,7 @@ function Header({ isNarrow }) {
                         <Menu.Item>
                             <button
                                 className="dropdown-item"
-                                onClick={() => navigate("/logout")}
+                                onClick={() => logout()}
                             >
                                 <Logout
                                     className="dropdown-icon"
@@ -152,7 +154,7 @@ function Header({ isNarrow }) {
                     </div>
                 </div>
             </header>
-            {modal === 'account' && <Account cleanUp={() => setModal('')} maxWidth={'340px'} />}
+            {modal === 'account' && <Account cleanUp={() => setModal('')} />}
             {modal === 'help' && <Help cleanUp={() => setModal('')} />}
         </>
     )
