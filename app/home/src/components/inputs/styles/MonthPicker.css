@@ -62,8 +62,7 @@
 }
 
 .month-picker-item-selected {
-    background-color: var(--main-blue);
-    color: var(--white-text);
+    background-color: var(--main-green);
 }
 
 .month-picker-item:hover,

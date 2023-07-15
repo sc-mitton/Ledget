@@ -132,7 +132,7 @@ nav {
 }
 
 .nav-item:hover {
-    color: var(--main-blue);
+    color: var(--main-green);
     transition: color 0.3s ease;
 }
 

@@ -132,7 +132,7 @@ function RegisterFlowContextProvider({ children }) {
 
     const [, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
-    const { setUser } = Reac(UserContext)
+    const { setUser } = useContext(UserContext)
 
     const sdkErrorHandler = sdkError(getFlow, setFlow, "/register", setResponseError, false)
 

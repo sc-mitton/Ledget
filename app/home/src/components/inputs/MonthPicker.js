@@ -15,9 +15,9 @@ const MonthPicker = () => {
         Object.keys(dates)[Object.keys(dates).length - 1]
     )
     const [month, setMonth] = useState(dates[year][dates[year].length - 1])
+
     const [picker, setPicker] = useState(false)
     const [pickerYear, setPickerYear] = useState(year)
-    const [pickerMonth, setPickerMonth] = useState(month)
     const monthPickerRef = useRef(null)
 
     const handleArrowClick = () => setPicker(!picker)
@@ -90,7 +90,7 @@ const MonthPicker = () => {
                 <button
                     key={index}
                     className={
-                        `month-picker-item${(pickerMonth === index && year == pickerYear) ? '-selected' : ''}`
+                        `month-picker-item${(month === index && year == pickerYear) ? '-selected' : ''}`
                     }
                     onClick={() => {
                         setPicker(false)
