@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { FinicityConnect } from '@finicity/connect-web-sdk'
 
 import withModal from '../utils/withModal'
-import './Connect.css'
+import './styles/Connect.css'
 
 const connectURL = "https://connect2.finicity.com?customerId=6026249842&origin=url&partnerId=2445584185009&signature=48806eaf73c74d3d0a5ced35571edc0f56c68703b50e62b1221298a33dc6b829&timestamp=1684606735822&ttl=1684613935822"
 

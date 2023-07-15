@@ -7,6 +7,7 @@ const UserContext = createContext()
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null)
+    const [flow, setFlow] = useState(null)
 
     useEffect(() => {
         const getUser = async () => {
@@ -25,14 +26,28 @@ const UserProvider = ({ children }) => {
         sessionStorage.setItem('user', JSON.stringify(user))
     }, [user])
 
-    const logout = async () => {
+    useEffect(() => {
+        sessionStorage.setItem('flow', JSON.stringify(flow))
+    }, [flow])
+
+    const getLogoutFlow = async () => {
         try {
             console.log("Logging out")
-            const { data: flow } = await ory.createBrowserLogoutFlow({
-                returnTo: process.env.REACT_APP_LOGOUT_REDIRECT_URL
-            })
-            await ory.updateLogoutFlow({ token: flow.logout_token })
+            const { data: flow } = await ory.createBrowserLogoutFlow()
+            setFlow(flow)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    const logout = async () => {
+        try {
+            !flow && await getLogoutFlow()
             setUser(null)
+            setFlow(null)
+            await ory.updateLogoutFlow({ token: flow.logout_token })
+            window.location.href = process.env.REACT_APP_LOGOUT_REDIRECT_URL
         }
         catch (err) {
             console.log(err)
@@ -40,7 +55,7 @@ const UserProvider = ({ children }) => {
     }
 
     return (
-        <UserContext.Provider value={{ user, logout }}>
+        <UserContext.Provider value={{ user, getLogoutFlow, logout }}>
             {children}
         </UserContext.Provider>
     )

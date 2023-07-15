@@ -205,68 +205,6 @@ input {
     color: inherit;
 }
 
-.confirm {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-
-.invalid-submit,
-.valid-submit,
-.submit-button {
-    padding: 8px 12px;
-    color: var(--window);
-    background-color: var(--button-gray);
-    box-shadow: var(--button-drop-shadow);
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
-.valid-submit:hover,
-.submit-button:hover {
-    cursor: pointer;
-    background-color: var(--button-hover-gray);
-}
-
-.valid-submit,
-.submit-button {
-    outline: none;
-    cursor: pointer;
-    /* border: 1.5px solid var(--window); */
-}
-
-.valid-submit:focus-within,
-.submit-button:focus-within {
-    outline: none;
-    box-shadow: var(--focus-drop-shadow);
-}
-
-.invalid-submit:focus-within {
-    outline: none;
-    border: none;
-    box-shadow: var(--focus-drop-shadow);
-}
-
-.icon {
-    display: flex;
-    align-items: center;
-    padding: 4px;
-    background-color: transparent;
-    border-radius: 4px;
-    transition: background-color .3s ease;
-    cursor: pointer
-}
-
-.icon:hover {
-    background-color: var(--icon-hover-light-gray);
-}
-
-.sub-header-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .sub-header {
     display: flex;
     align-items: center;

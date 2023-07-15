@@ -8,12 +8,13 @@ import Profile1 from './assets/svg/Profile1'
 import Profile2 from './assets/svg/Profile2'
 import SettingsIcon from './assets/svg/Settings'
 import HelpIcon from './assets/svg/Help'
-import Logout from './assets/svg/Logout'
+import LogoutIcon from './assets/svg/LogoutIcon'
 import Help from './components/modals/Help'
 import Account from './components/modals/Account'
 import DropAnimation from './components/utils/DropAnimation'
-import './style/header.css'
+import Logout from './components/modals/Logout'
 import { UserContext } from './context/UserContext'
+import './style/header.css'
 
 function Header({ isNarrow }) {
     const [modal, setModal] = useState('')
@@ -23,7 +24,7 @@ function Header({ isNarrow }) {
         const [open, setOpen] = useState(false)
         const menuRef = useRef()
         const buttonRef = useRef()
-        const { logout } = useContext(UserContext)
+        const { getLogoutFlow } = useContext(UserContext)
 
         // Close dropdown when clicking outside
         useEffect(() => {
@@ -92,9 +93,9 @@ function Header({ isNarrow }) {
                         <Menu.Item>
                             <button
                                 className="dropdown-item"
-                                onClick={() => logout()}
+                                onClick={() => getLogoutFlow() && setModal("logout")}
                             >
-                                <Logout
+                                <LogoutIcon
                                     className="dropdown-icon"
                                     fill={'var(--main-text-gray)'}
                                     stroke={'var(--main-text-gray)'}
@@ -106,6 +107,29 @@ function Header({ isNarrow }) {
                 </Menu.Items>
             </Menu >
         )
+    }
+
+    const Modal = ({ selection }) => {
+        switch (selection) {
+            case "help":
+                return (
+                    <Help cleanUp={() => setModal('')} />
+                )
+            case "account":
+                return (
+                    <Account cleanUp={() => setModal('')} />
+                )
+            case "logout":
+                return (
+                    <Logout
+                        cleanUp={() => setModal('')}
+                        maxWidth={"300px"}
+                        hasExit={false}
+                    />
+                )
+            default:
+                return null
+        }
     }
 
     const Navigation = () => {
@@ -154,8 +178,7 @@ function Header({ isNarrow }) {
                     </div>
                 </div>
             </header>
-            {modal === 'account' && <Account cleanUp={() => setModal('')} />}
-            {modal === 'help' && <Help cleanUp={() => setModal('')} />}
+            <Modal selection={modal} />
         </>
     )
 }

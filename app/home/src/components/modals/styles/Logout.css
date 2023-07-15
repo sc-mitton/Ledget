@@ -1,0 +1,8 @@
+#logout-countdown {
+    margin: 12px 0 28px 0;
+}
+
+#logout-countdown * {
+    font-size: 15px;
+    font-weight: 500;
+}

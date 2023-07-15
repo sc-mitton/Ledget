@@ -22,7 +22,9 @@
     align-items: center;
 }
 
-/* header buttons */
+/* --------------------------------- buttons -------------------------------- */
+
+/* Header Buttons */
 .window-header-buttons,
 .window-header-button,
 .window-header-button-selected {
@@ -63,6 +65,97 @@
 .window-header-icon-selected {
     fill: var(--icon-white);
 }
+
+/****/
+
+.invalid-submit,
+.valid-submit,
+.submit-button {
+    padding: 8px 12px;
+    color: var(--window);
+    background-color: var(--button-gray);
+    box-shadow: var(--button-drop-shadow);
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.valid-submit:hover,
+.submit-button:hover {
+    cursor: pointer;
+    background-color: var(--button-hover-gray);
+}
+
+.valid-submit,
+.submit-button {
+    outline: none;
+    cursor: pointer;
+    /* border: 1.5px solid var(--window); */
+}
+
+.valid-submit:focus-within,
+.submit-button:focus-within {
+    outline: none;
+    box-shadow: var(--focus-drop-shadow);
+}
+
+.invalid-submit:focus-within {
+    outline: none;
+    border: none;
+    box-shadow: var(--focus-drop-shadow);
+}
+
+.sub-header-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-primary-green {
+    background-color: var(--main-green);
+    color: var(--white-text);
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color .3s ease;
+}
+
+.btn-primary-green:hover {
+    background-color: var(--main-green-darker);
+    transition: background-color .3s ease;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    color: var(--main-text-gray);
+    padding: 8px 12px;
+    margin: 0 4px;
+    border-radius: 6px;
+    font-weight: 500;
+    transform: scale(1);
+    transition: transform .3s ease;
+}
+
+.btn-secondary:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+    transition: transform .3s ease;
+}
+
+/* ---------------------------------- Icons --------------------------------- */
+.icon {
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    background-color: transparent;
+    border-radius: 4px;
+    transition: background-color .3s ease;
+    cursor: pointer
+}
+
+.icon:hover {
+    background-color: var(--icon-hover-light-gray);
+}
+
+
 
 /* -------------------------------------------------------------------------- */
 /*                            Budget Window Styling                           */
