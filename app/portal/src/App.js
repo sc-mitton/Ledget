@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 
 import AnimatedRoutes from './AnimatedRoutes'
-import { AuthProvider } from './context/AuthContext'
+import { UserProvider } from './context/UserContext'
 import "./style/portal.css"
 
 function App() {
@@ -10,9 +10,9 @@ function App() {
     return (
         <main>
             <BrowserRouter>
-                <AuthProvider>
+                <UserProvider>
                     <AnimatedRoutes />
-                </AuthProvider>
+                </UserProvider>
             </BrowserRouter>
         </main >
     )

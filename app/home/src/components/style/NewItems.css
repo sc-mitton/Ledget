@@ -44,9 +44,10 @@
 
 .category-icon {
     margin-right: 8px;
-    color: var(--main-blue);
+    color: var(--main-green-darker);
     transform: scale(1);
     transition: all .2s ease-out;
+    font-weight: 500;
 }
 
 .category-icon:hover {

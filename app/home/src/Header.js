@@ -12,8 +12,8 @@ import HelpIcon from './assets/svg/Help'
 import Logout from './assets/svg/Logout'
 import Help from './components/modals/Help'
 import Account from './components/modals/Account'
+import DropAnimation from './components/widgets/DropAnimation'
 import './style/header.css'
-
 
 function Header({ isNarrow }) {
     const [modal, setModal] = useState('')

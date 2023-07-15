@@ -1,9 +1,9 @@
-import React, { createContext, useCallback, useState, useEffect } from "react"
+import React, { createContext, useCallback, useState, useEffect, useContext } from "react"
 
 import { useSearchParams, useNavigate, createSearchParams } from "react-router-dom"
 
 import { sdk, sdkError } from "../api/sdk"
-import AuthContext from "./AuthContext"
+import UserContext from "./UserContext"
 
 const LoginFlowContext = createContext(null)
 const RegisterFlowContext = createContext(null)
@@ -18,7 +18,7 @@ function LoginFlowContextProvider({ children }) {
     const [responseError, setResponseError] = useState('')
     const [searchParams, setSearchParams] = useSearchParams()
     const [authenticating, setAuthenticating] = useState(false)
-    const { setUser } = React.useContext(AuthContext)
+    const { setUser } = useContext(UserContext)
 
     const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
 
@@ -132,7 +132,7 @@ function RegisterFlowContextProvider({ children }) {
 
     const [, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
-    const { setUser } = React.useContext(AuthContext)
+    const { setUser } = Reac(UserContext)
 
     const sdkErrorHandler = sdkError(getFlow, setFlow, "/register", setResponseError, false)
 

@@ -20,7 +20,7 @@ import { states } from '../../assets/data/states'
 import { FormError, FormErrorTip } from "../widgets/Widgets"
 import usePrices from '../../api/hooks/usePrices'
 import { WindowLoadingBar } from '../widgets/Widgets'
-import AuthContext from '../../context/AuthContext'
+import UserContext from '../../context/UserContext'
 import { components } from 'react-select'
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST)
@@ -371,7 +371,7 @@ function Checkout({ prices }) {
     const [success, setSuccess] = useState(false)
     const stripe = useStripe()
     const elements = useElements()
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(UserContext)
     const { price } = useContext(PriceContext)
 
     const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem('clientSecret')))

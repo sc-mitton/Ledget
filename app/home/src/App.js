@@ -8,6 +8,7 @@ import Spending from './components/Spending'
 import Items from './components/Items'
 import Settings from './components/Settings'
 import Accounts from './components/Accounts'
+import { UserProvider } from './context/UserContext'
 
 function App() {
     const dashboardRef = useRef(null)
@@ -46,18 +47,20 @@ function App() {
         }, [isNarrow, navigate])
 
         return (
-            <Routes>
-                <Route path="spending" element={
-                    <>
-                        <Spending />
-                        {!isNarrow && <Items />}
-                    </>
-                }>
-                </Route>
-                {isNarrow && <Route path="items" element={<Items />} />}
-                <Route path="accounts" element={<Accounts />} />
-                <Route path="settings" element={<Settings />} />
-            </Routes >
+            <UserProvider>
+                <Routes>
+                    <Route path="spending" element={
+                        <>
+                            <Spending />
+                            {!isNarrow && <Items />}
+                        </>
+                    }>
+                    </Route>
+                    {isNarrow && <Route path="items" element={<Items />} />}
+                    <Route path="accounts" element={<Accounts />} />
+                    <Route path="settings" element={<Settings />} />
+                </Routes >
+            </UserProvider>
         )
     }
 

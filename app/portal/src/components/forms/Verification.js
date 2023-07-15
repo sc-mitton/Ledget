@@ -9,7 +9,7 @@ import { WindowLoadingBar } from "../widgets/Widgets"
 import "./style/Verification.css"
 import verifyEmail from "../../assets/icons/verifyEmail.svg"
 import SignUpFlowHeader from "./SignUpFlowHeader"
-import AuthContext from "../../context/AuthContext"
+import UserContext from "../../context/UserContext"
 import CsrfToken from "./inputs/CsrfToken"
 import { FormError } from "../widgets/Widgets"
 import ResendButton from "./inputs/ResendButton"
@@ -18,7 +18,7 @@ import { set } from "react-hook-form"
 const VerificationForm = () => {
     const { flow, submit, csrf, codeError } = useContext(VerificationFlowContext)
     const [otcDisabled, setOtcDisabled] = useState(false)
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(UserContext)
     const [reset, setReset] = useState(false)
 
     useEffect(() => {
@@ -142,7 +142,7 @@ const VerifiactionFlow = () => {
         createFlow,
         callVerificationApi
     } = useContext(VerificationFlowContext)
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
         if (loaded) { return }

@@ -1,10 +1,10 @@
 import React from 'react'
 import { createContext, useState, useEffect } from "react"
 
-const AuthContext = createContext()
-export default AuthContext
+const UserContext = createContext()
+export default UserContext
 
-export const AuthProvider = ({ children }) => {
+export const UserProvider = ({ children }) => {
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(null)
 
@@ -20,8 +20,8 @@ export const AuthProvider = ({ children }) => {
     }, [])
 
     return (
-        <AuthContext.Provider value={contextData}>
+        <UserContext.Provider value={contextData}>
             {loading ? null : children}
-        </AuthContext.Provider>
+        </UserContext.Provider>
     )
 }

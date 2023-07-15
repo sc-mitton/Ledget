@@ -7,6 +7,7 @@
     --window-border: #a1a0a0;
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
 
+    /* Palet */
     --light-blue: #97c1fc;
     --mute-blue: #7aa8fe;
     --hover-blue: #6197fc;
@@ -16,7 +17,9 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
+    --lighter-green: #b3e2c8;
     --main-green: #48d487;
+    --main-green-darker: #43c77e;
 
     --button-drop-shadow: 0 1px 0px 0 #0000000d;
 
@@ -279,21 +282,8 @@ input {
     box-sizing: border-box;
     border-radius: 6px;
     z-index: 1000;
-    animation: fade-in 0.2s ease;
     transform-origin: top;
     padding: 6px;
     color: var(--main-text-gray);
     font-weight: 500;
-}
-
-@keyframes fade-in {
-    from {
-        scale: .8;
-        opacity: 0;
-    }
-
-    to {
-        scale: 1;
-        opacity: 1;
-    }
 }
