@@ -9,6 +9,37 @@ function withModal(WrappedComponent) {
     return function WithModal(props) {
         const [visible, setVisible] = useState(true)
         const modalRef = useRef(null)
+        const exitRef = useRef(null)
+
+        useEffect(() => {
+            // Add event listener for clickingoutside of modal
+            const handleClickOutside = (event) => {
+                if (modalRef.current && !modalRef.current.contains(event.target)) {
+                    setVisible(false)
+                }
+            }
+            window.addEventListener("mousedown", handleClickOutside)
+            return () => {
+                window.removeEventListener("mousedown", handleClickOutside)
+            }
+        }, [])
+
+        useEffect(() => {
+            const handleKeyDown = (event) => {
+                if (event.key === "Tab") {
+                    if (!modalRef.current.contains(document.activeElement)) {
+                        event.preventDefault()
+                        exitRef.current.focus()
+                    }
+                }
+            };
+
+            window.addEventListener("keydown", handleKeyDown)
+            return () => {
+                window.removeEventListener("keydown", handleKeyDown)
+            }
+        }, [])
+
         const {
             cleanUp = () => { },
             hasBackground = true,
@@ -75,8 +106,8 @@ function withModal(WrappedComponent) {
                         className="exit-button icon"
                         onClick={() => setVisible(false)}
                         aria-label="Close modal"
-                        tabIndex="0"
                         style={{ zIndex: zIndex + 2 }}
+                        ref={exitRef}
                     >
                         <Close />
                     </button>
@@ -92,13 +123,13 @@ function withModal(WrappedComponent) {
                             className="modal"
                             style={opacityStyles}
                             aria-modal="true"
-                            ref={modalRef}
                         >
                             {modalContainerTransitions((scaleStyles, item2) =>
                                 item2 && (
                                     <animated.div
                                         className="modal-content"
                                         style={scaleStyles}
+                                        ref={modalRef}
                                     >
                                         {hasExit && <Exit />}
                                         <WrappedComponent

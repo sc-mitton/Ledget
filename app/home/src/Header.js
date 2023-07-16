@@ -22,6 +22,7 @@ function Header({ isNarrow }) {
 
     const DropDownMenu = () => {
         const [open, setOpen] = useState(false)
+        const [menuFocused, setMenuFocused] = useState(false)
         const menuRef = useRef()
         const buttonRef = useRef()
         const { getLogoutFlow } = useContext(UserContext)
@@ -49,18 +50,14 @@ function Header({ isNarrow }) {
                 >
                     <Profile1 />
                 </Menu.Button>
-                <Menu.Items static ref={menuRef}>
+                <Menu.Items ref={menuRef} static>
                     <DropAnimation visible={open} className="dropdown profile-dropdown">
                         <Menu.Item>
                             <button
                                 className="dropdown-item"
                                 onClick={() => setModal("account")}
                             >
-                                <Profile2
-                                    className="dropdown-icon"
-                                    fill={'var(--main-text-gray)'}
-                                    stroke={'var(--main-text-gray)'}
-                                />
+                                <Profile2 className="dropdown-icon" />
                                 Account
                             </button>
                         </Menu.Item>
@@ -69,11 +66,7 @@ function Header({ isNarrow }) {
                                 className="dropdown-item"
                                 onClick={() => navigate("/settings")}
                             >
-                                <SettingsIcon
-                                    className="dropdown-icon"
-                                    fill={'var(--main-text-gray)'}
-                                    stroke={'var(--main-text-gray)'}
-                                />
+                                <SettingsIcon className="dropdown-icon" />
                                 Settings
                             </button>
                         </Menu.Item>
@@ -82,11 +75,7 @@ function Header({ isNarrow }) {
                                 className="dropdown-item"
                                 onClick={() => setModal("help")}
                             >
-                                <HelpIcon
-                                    className="dropdown-icon"
-                                    fill={'var(--main-text-gray)'}
-                                    stroke={'var(--main-text-gray)'}
-                                />
+                                <HelpIcon className="dropdown-icon" />
                                 Help
                             </button>
                         </Menu.Item>
@@ -95,11 +84,7 @@ function Header({ isNarrow }) {
                                 className="dropdown-item"
                                 onClick={() => getLogoutFlow() && setModal("logout")}
                             >
-                                <LogoutIcon
-                                    className="dropdown-icon"
-                                    fill={'var(--main-text-gray)'}
-                                    stroke={'var(--main-text-gray)'}
-                                />
+                                <LogoutIcon className="dropdown-icon" />
                                 Logout
                             </button>
                         </Menu.Item>
