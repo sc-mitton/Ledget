@@ -73,6 +73,10 @@ header {
     border-radius: 4px;
 }
 
+.menu-item-active {
+    box-shadow: var(--input-focus-drop-shadow);
+}
+
 .dropdown-item:hover {
     background-color: var(--drop-down-hover-background);
     cursor: pointer;

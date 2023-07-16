@@ -37,37 +37,49 @@ function Header({ isNarrow }) {
                                 className="dropdown profile-dropdown"
                                 static
                             >
-                                <Menu.Item
-                                    as="button"
-                                    className="dropdown-item"
-                                    onClick={() => setModal("account")}
-                                >
-                                    <Profile2 className="dropdown-icon" />
-                                    Account
+                                <Menu.Item as={React.Fragment}>
+                                    {({ active }) => (
+                                        <button
+                                            className={`dropdown-item ${active && "menu-item-active"}`}
+                                            onClick={() => setModal("account")}
+                                        >
+                                            <Profile2 className="dropdown-icon" />
+                                            Account
+                                        </button>
+                                    )}
                                 </Menu.Item>
-                                <Menu.Item
-                                    as="button"
-                                    className="dropdown-item"
-                                    onClick={() => navigate("/settings")}
-                                >
-                                    <SettingsIcon className="dropdown-icon" />
-                                    Settings
+                                <Menu.Item as={React.Fragment}>
+                                    {({ active }) => (
+                                        <button
+                                            className={`dropdown-item ${active && "menu-item-active"}`}
+                                            onClick={() => navigate("/settings")}
+                                        >
+                                            <SettingsIcon className="dropdown-icon" />
+                                            Settings
+                                        </button>
+                                    )}
                                 </Menu.Item>
-                                <Menu.Item
-                                    as="button"
-                                    className="dropdown-item"
-                                    onClick={() => setModal("help")}
-                                >
-                                    <HelpIcon className="dropdown-icon" />
-                                    Help
+                                <Menu.Item as={React.Fragment}>
+                                    {({ active }) => (
+                                        <button
+                                            className={`dropdown-item ${active && "menu-item-active"}`}
+                                            onClick={() => setModal("help")}
+                                        >
+                                            <HelpIcon className="dropdown-icon" />
+                                            Help
+                                        </button>
+                                    )}
                                 </Menu.Item>
-                                <Menu.Item
-                                    as="button"
-                                    className="dropdown-item"
-                                    onClick={() => getLogoutFlow() && setModal("logout")}
-                                >
-                                    <LogoutIcon className="dropdown-icon" />
-                                    Logout
+                                <Menu.Item as={React.Fragment}>
+                                    {({ active }) => (
+                                        <button
+                                            className={`dropdown-item ${active && "menu-item-active"}`}
+                                            onClick={() => getLogoutFlow() && setModal("logout")}
+                                        >
+                                            <LogoutIcon className="dropdown-icon" />
+                                            Logout
+                                        </button>
+                                    )}
                                 </Menu.Item>
                             </Menu.Items>
                         </DropAnimation>
