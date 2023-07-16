@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 
 import { useNavigate, useLocation } from "react-router-dom"
-import { Menu, Transition } from '@headlessui/react'
+import { useTransition, animated } from '@react-spring/web'
+import { Menu } from '@headlessui/react'
 
 import logoIcon from './assets/svg/logoIcon.svg'
 import Profile1 from './assets/svg/Profile1'
@@ -21,75 +22,57 @@ function Header({ isNarrow }) {
     const navigate = useNavigate()
 
     const DropDownMenu = () => {
-        const [open, setOpen] = useState(false)
-        const [menuFocused, setMenuFocused] = useState(false)
-        const menuRef = useRef()
-        const buttonRef = useRef()
         const { getLogoutFlow } = useContext(UserContext)
-
-        // Close dropdown when clicking outside
-        useEffect(() => {
-            const handleClickOutside = (event) => {
-                if (menuRef.current && !menuRef.current.contains(event.target)
-                    && buttonRef.current && !buttonRef.current.contains(event.target)) {
-                    setOpen(false)
-                }
-            }
-            window.addEventListener("mousedown", handleClickOutside)
-            return () => {
-                window.removeEventListener("mousedown", handleClickOutside)
-            }
-        }, [open])
 
         return (
             <Menu>
-                <Menu.Button
-                    id="profile-button"
-                    onClick={() => setOpen(!open)}
-                    ref={buttonRef}
-                >
-                    <Profile1 />
-                </Menu.Button>
-                <Menu.Items
-                    as="div"
-                    ref={menuRef}
-                    static
-                >
-                    <DropAnimation visible={open} className="dropdown profile-dropdown">
-                        <Menu.Item
-                            as="button"
-                            className="dropdown-item"
-                            onClick={() => setModal("account")}
-                        >
-                            <Profile2 className="dropdown-icon" />
-                            Account
-                        </Menu.Item>
-                        <Menu.Item
-                            as="button"
-                            className="dropdown-item"
-                            onClick={() => navigate("/settings")}
-                        >
-                            <SettingsIcon className="dropdown-icon" />
-                            Settings
-                        </Menu.Item>
-                        <Menu.Item
-                            as="button"
-                            className="dropdown-item"
-                            onClick={() => setModal("help")}
-                        >
-                            <HelpIcon className="dropdown-icon" />
-                            Help
-                        </Menu.Item>
-                        <Menu.Item
-                            as="button"
-                            className="dropdown-item"
-                            onClick={() => getLogoutFlow() && setModal("logout")}
-                        >
-                            <LogoutIcon className="dropdown-icon" />
-                            Logout
-                        </Menu.Item>
-                    </DropAnimation>
-                </Menu.Items>
+                {({ open }) => (
+                    <>
+                        <Menu.Button id="profile-button">
+                            <Profile1 />
+                        </Menu.Button>
+                        <DropAnimation visible={open}>
+                            <Menu.Items
+                                as="div"
+                                className="dropdown profile-dropdown"
+                                static
+                            >
+                                <Menu.Item
+                                    as="button"
+                                    className="dropdown-item"
+                                    onClick={() => setModal("account")}
+                                >
+                                    <Profile2 className="dropdown-icon" />
+                                    Account
+                                </Menu.Item>
+                                <Menu.Item
+                                    as="button"
+                                    className="dropdown-item"
+                                    onClick={() => navigate("/settings")}
+                                >
+                                    <SettingsIcon className="dropdown-icon" />
+                                    Settings
+                                </Menu.Item>
+                                <Menu.Item
+                                    as="button"
+                                    className="dropdown-item"
+                                    onClick={() => setModal("help")}
+                                >
+                                    <HelpIcon className="dropdown-icon" />
+                                    Help
+                                </Menu.Item>
+                                <Menu.Item
+                                    as="button"
+                                    className="dropdown-item"
+                                    onClick={() => getLogoutFlow() && setModal("logout")}
+                                >
+                                    <LogoutIcon className="dropdown-icon" />
+                                    Logout
+                                </Menu.Item>
+                            </Menu.Items>
+                        </DropAnimation>
+                    </>
+                )}
             </Menu >
         )
     }
