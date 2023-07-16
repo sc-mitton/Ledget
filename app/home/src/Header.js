@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 
 import { useNavigate, useLocation } from "react-router-dom"
-import { Menu } from '@headlessui/react'
+import { Menu, Transition } from '@headlessui/react'
 
 import logoIcon from './assets/svg/logoIcon.svg'
 import Profile1 from './assets/svg/Profile1'
@@ -50,43 +50,43 @@ function Header({ isNarrow }) {
                 >
                     <Profile1 />
                 </Menu.Button>
-                <Menu.Items ref={menuRef} static>
+                <Menu.Items
+                    as="div"
+                    ref={menuRef}
+                    static
+                >
                     <DropAnimation visible={open} className="dropdown profile-dropdown">
-                        <Menu.Item>
-                            <button
-                                className="dropdown-item"
-                                onClick={() => setModal("account")}
-                            >
-                                <Profile2 className="dropdown-icon" />
-                                Account
-                            </button>
+                        <Menu.Item
+                            as="button"
+                            className="dropdown-item"
+                            onClick={() => setModal("account")}
+                        >
+                            <Profile2 className="dropdown-icon" />
+                            Account
                         </Menu.Item>
-                        <Menu.Item>
-                            <button
-                                className="dropdown-item"
-                                onClick={() => navigate("/settings")}
-                            >
-                                <SettingsIcon className="dropdown-icon" />
-                                Settings
-                            </button>
+                        <Menu.Item
+                            as="button"
+                            className="dropdown-item"
+                            onClick={() => navigate("/settings")}
+                        >
+                            <SettingsIcon className="dropdown-icon" />
+                            Settings
                         </Menu.Item>
-                        <Menu.Item>
-                            <button
-                                className="dropdown-item"
-                                onClick={() => setModal("help")}
-                            >
-                                <HelpIcon className="dropdown-icon" />
-                                Help
-                            </button>
+                        <Menu.Item
+                            as="button"
+                            className="dropdown-item"
+                            onClick={() => setModal("help")}
+                        >
+                            <HelpIcon className="dropdown-icon" />
+                            Help
                         </Menu.Item>
-                        <Menu.Item>
-                            <button
-                                className="dropdown-item"
-                                onClick={() => getLogoutFlow() && setModal("logout")}
-                            >
-                                <LogoutIcon className="dropdown-icon" />
-                                Logout
-                            </button>
+                        <Menu.Item
+                            as="button"
+                            className="dropdown-item"
+                            onClick={() => getLogoutFlow() && setModal("logout")}
+                        >
+                            <LogoutIcon className="dropdown-icon" />
+                            Logout
                         </Menu.Item>
                     </DropAnimation>
                 </Menu.Items>
