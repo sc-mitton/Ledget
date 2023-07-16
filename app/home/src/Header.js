@@ -40,7 +40,7 @@ function Header({ isNarrow }) {
                                 <Menu.Item as={React.Fragment}>
                                     {({ active }) => (
                                         <button
-                                            className={`dropdown-item ${active && "menu-item-active"}`}
+                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
                                             onClick={() => setModal("account")}
                                         >
                                             <Profile2 className="dropdown-icon" />
@@ -51,7 +51,7 @@ function Header({ isNarrow }) {
                                 <Menu.Item as={React.Fragment}>
                                     {({ active }) => (
                                         <button
-                                            className={`dropdown-item ${active && "menu-item-active"}`}
+                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
                                             onClick={() => navigate("/settings")}
                                         >
                                             <SettingsIcon className="dropdown-icon" />
@@ -62,7 +62,7 @@ function Header({ isNarrow }) {
                                 <Menu.Item as={React.Fragment}>
                                     {({ active }) => (
                                         <button
-                                            className={`dropdown-item ${active && "menu-item-active"}`}
+                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
                                             onClick={() => setModal("help")}
                                         >
                                             <HelpIcon className="dropdown-icon" />
@@ -73,7 +73,7 @@ function Header({ isNarrow }) {
                                 <Menu.Item as={React.Fragment}>
                                     {({ active }) => (
                                         <button
-                                            className={`dropdown-item ${active && "menu-item-active"}`}
+                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
                                             onClick={() => getLogoutFlow() && setModal("logout")}
                                         >
                                             <LogoutIcon className="dropdown-icon" />

@@ -8,7 +8,6 @@
     --window: #f8f8f8;
     --dark-background: #242424;
 
-    --window-border: #a1a0a0;
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-box-gray: #fffcfc;
 
@@ -35,9 +34,7 @@
     --social-button: #ededed;
     --social-button-hover: #e0e0e0;
     --button-gray: #363636;
-    --buton-border-gray: #3c3c3c;
     --button-hover-gray: #242424;
-    --border-bottom-gray: #b9b9b9;
 
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 .4px 1.7px var(--mute-blue);
@@ -49,7 +46,6 @@
 
     /* Input Colors */
     --input-color: #ededed;
-    --tooltip-background: #a6a6a6;
 
     /* Text */
     --main-text-gray: #242424;

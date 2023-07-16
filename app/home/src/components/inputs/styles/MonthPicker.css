@@ -27,7 +27,7 @@
 }
 
 .arrow-nav:hover {
-    background-color: var(--drop-down-hover-background);
+    background-color: var(--icon-hover-gray);
     transition: background-color 0.2s ease;
 }
 

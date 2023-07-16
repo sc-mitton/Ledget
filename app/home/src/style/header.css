@@ -58,31 +58,6 @@ header {
     right: -58px;
 }
 
-.dropdown-icon {
-    margin-right: 12px;
-}
-
-.dropdown-item {
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-    width: 100%;
-    padding: 4px 8px;
-    margin: 2px 0;
-    transition: background-color 0.4s ease;
-    border-radius: 4px;
-}
-
-.menu-item-active {
-    box-shadow: var(--input-focus-drop-shadow);
-}
-
-.dropdown-item:hover {
-    background-color: var(--drop-down-hover-background);
-    cursor: pointer;
-    height: 100%;
-}
-
 /* ------------------------------- Header Nav ------------------------------- */
 nav {
     width: 100%;
