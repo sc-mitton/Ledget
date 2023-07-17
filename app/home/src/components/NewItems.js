@@ -10,6 +10,7 @@ import Expand from "../assets/svg/Expand"
 import Note from "../assets/svg/Note"
 import Split from "../assets/svg/Split"
 import DropAnimation from "./utils/DropAnimation"
+import { Menu } from '@headlessui/react'
 
 
 // TODO: pull this data in from backend
@@ -43,7 +44,12 @@ const newItemsSpringConfig = {
     borderRadius: "12px",
     padding: "20px",
     fontWeight: "400",
-    x: 0
+    x: 0,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    maxHeight: "inherit",
+    maxWidth: "400px"
 }
 
 const containerSpringConfig = {
@@ -89,7 +95,11 @@ const NewItemsStack = () => {
     }
 
     // Calculate the top position of new items
-    const getTop = useCallback((index) => {
+    const getTop = useCallback((index, loaded = true) => {
+        if (!loaded) {
+            return stackMax * translate + 15
+        }
+
         if (index === 0) {
             return 0
         } else if (expanded) {
@@ -101,18 +111,22 @@ const NewItemsStack = () => {
         }
     }, [expanded])
 
-    const getScale = useCallback((index, loaded) => {
-        const scaleFactor = .08
+    const getScale = useCallback((index, loaded = true) => {
+        const scale = .08
+
         if (!loaded) {
-            return `scale(${1 - ((index + 1) * scaleFactor * 2)})`
+            return 1 - ((index + 1) * scale * 2)
         }
 
-        if (!expanded) {
-            return `scale${1 - (index * scaleFactor)}`
+        if (expanded) {
+            return 1
         } else {
-            return `scale(1)`
+            if (index > stackMax) {
+                return 1 - (stackMax * scale)
+            } else {
+                return 1 - (index * scale)
+            }
         }
-
     }, [expanded])
 
     const transitions = useTransition(
@@ -120,11 +134,11 @@ const NewItemsStack = () => {
         {
             from: (item, index) => ({
                 top: getTop(index, false),
-                transform: `scale(${!expanded ? 1 - (index * .08) : 1})`,
+                transform: `scale(${getScale(index, false)})`,
             }),
             enter: (item, index) => ({
                 top: getTop(index),
-                transform: `scale(${!expanded ? 1 - (index * .08) : 1})`,
+                transform: `scale(${getScale(index)})`,
                 zIndex: (data.length - index),
                 opacity: getOpacity(index),
                 background: getBackground(index),
@@ -133,7 +147,7 @@ const NewItemsStack = () => {
             update: (item, index) => {
                 return {
                     top: getTop(index),
-                    transform: `scale(${!expanded ? 1 - (index * .08) : 1})`,
+                    transform: `scale(${getScale(index)})`,
                     zIndex: (data.length - index),
                     opacity: getOpacity(index),
                     background: getBackground(index),
@@ -217,6 +231,48 @@ const NewItemsStack = () => {
 
     const NewItem = ({ item, style }) => {
 
+        const Options = () => {
+            return (
+                <Menu>
+                    {({ open }) => (
+                        <>
+                            <Menu.Button className='narrow-icon'>
+                                <Ellipsis />
+                            </Menu.Button>
+                            <DropAnimation visible={open}>
+                                <Menu.Items
+                                    as="div"
+                                    className="dropdown options-dropdown"
+                                    static
+                                >
+                                    <Menu.Item as={React.Fragment}>
+                                        {({ active }) => (
+                                            <button
+                                                className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                            >
+                                                <Split className="dropdown-icon" />
+                                                Split
+                                            </button>
+                                        )}
+                                    </Menu.Item>
+                                    <Menu.Item as={React.Fragment}>
+                                        {({ active }) => (
+                                            <button
+                                                className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                            >
+                                                <Note className="dropdown-icon" />
+                                                Note
+                                            </button>
+                                        )}
+                                    </Menu.Item>
+                                </Menu.Items>
+                            </DropAnimation>
+                        </>
+                    )}
+                </Menu>
+            )
+        }
+
         return (
             <animated.div
                 key={`item-${item.id}`}
@@ -234,19 +290,13 @@ const NewItemsStack = () => {
                         Groceries
                     </button>
                     <button
-                        className='icon'
+                        className='icon2'
                         onClick={() => handleConfirm(item.id)}
                         aria-label="Confirm item"
                     >
                         <CheckMark />
                     </button>
-                    <button
-                        className='icon'
-                        id="ellipsis-icon"
-                        aria-label="More options"
-                    >
-                        <Ellipsis />
-                    </button>
+                    <Options />
                 </div>
             </animated.div>
         )
@@ -264,7 +314,7 @@ const NewItemsStack = () => {
 
     return (
         <>
-            <div id="new-items-container">
+            <div id="new-items-container" style={{ position: "relative" }}>
                 <div className="shadow shadow-bottom"></div>
                 <animated.div
                     style={containerSpring}

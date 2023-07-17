@@ -140,7 +140,34 @@
     cursor: pointer
 }
 
-.icon:hover {
+.icon2 {
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    background-color: transparent;
+    border-radius: 4px;
+    transition: background-color .3s ease;
+    cursor: pointer;
+    transition: transform .3s ease;
+}
+
+.icon2:hover {
+    transform: scale(1.2);
+    transition: transform .3s ease;
+}
+
+.narrow-icon {
+    display: flex;
+    align-items: center;
+    padding: 4px 2px;
+    background-color: transparent;
+    border-radius: 4px;
+    transition: background-color .3s ease;
+    cursor: pointer
+}
+
+.icon:hover,
+.narrow-icon:hover {
     background-color: var(--icon-hover-light-gray);
 }
 
