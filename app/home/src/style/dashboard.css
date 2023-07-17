@@ -68,8 +68,6 @@
 
 /****/
 
-.invalid-submit,
-.valid-submit,
 .submit-button {
     padding: 8px 12px;
     color: var(--window);
@@ -79,28 +77,19 @@
     transition: background-color 0.3s ease;
 }
 
-.valid-submit:hover,
 .submit-button:hover {
     cursor: pointer;
     background-color: var(--button-hover-gray);
 }
 
-.valid-submit,
 .submit-button {
     outline: none;
     cursor: pointer;
     /* border: 1.5px solid var(--window); */
 }
 
-.valid-submit:focus-within,
 .submit-button:focus-within {
     outline: none;
-    box-shadow: var(--focus-drop-shadow);
-}
-
-.invalid-submit:focus-within {
-    outline: none;
-    border: none;
     box-shadow: var(--focus-drop-shadow);
 }
 

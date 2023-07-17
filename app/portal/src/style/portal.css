@@ -102,8 +102,8 @@ input[type="password"]::placeholder {
 
 .input-container input:focus::placeholder,
 input[type="password"]:focus::placeholder {
-    color: var(--input-focus);
     transition: color .2s ease;
+    color: var(--green-text);
 }
 
 .input-container {
@@ -125,8 +125,6 @@ input[type="password"]:focus::placeholder {
 
 
 /* ----------------------------- Submit Buttons ----------------------------- */
-.invalid-submit,
-.valid-submit,
 .submit-button {
     color: var(--window);
     background-color: var(--button-gray);
@@ -134,30 +132,20 @@ input[type="password"]:focus::placeholder {
     cursor: default;
 }
 
-.valid-submit:hover,
 .submit-button:hover {
     cursor: pointer;
     background-color: var(--button-hover-gray);
 }
 
-.valid-submit,
 .submit-button {
     outline: none;
     cursor: pointer;
     /* border: 1.5px solid var(--window); */
 }
 
-.valid-submit:focus-within,
 .submit-button:focus-within {
     outline: none;
-    box-shadow: var(--button-focus-drop-shadow);
-}
-
-
-.invalid-submit:focus-within {
-    outline: none;
-    border: none;
-    box-shadow: var(--button-focus-drop-shadow);
+    box-shadow: var(--accessible-focus-drop-shadow);
 }
 
 .main-submit {
@@ -223,7 +211,7 @@ input[type="password"]:focus::placeholder {
 
 .social-auth-button:focus-visible {
     outline: none;
-    box-shadow: var(--button-focus-drop-shadow);
+    box-shadow: var(--accessible-focus-drop-shadow);
 }
 
 /* ---------------------------- Misc ---------------------------- */

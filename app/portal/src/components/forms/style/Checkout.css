@@ -95,7 +95,7 @@ input[type="radio"] {
 
 .subscription label:focus-visible {
     outline: none;
-    box-shadow: var(--button-focus-drop-shadow);
+    box-shadow: var(--accessible-focus-drop-shadow);
 }
 
 .subscription .fine-print {

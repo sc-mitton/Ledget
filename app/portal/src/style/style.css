@@ -21,13 +21,14 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --lighter-green: #b3e2c8;
+    --highlight-green: #a2e6c5;
+    --lighter-green: #83e2ae;
     --main-green: #48d487;
     --main-green-darker: #43c77e;
+    --accessible-green: #63e963;
 
     /* Inputs */
     --input-placeholder: #767676;
-    --input-focus: #6b9bf6;
 
     /* Buttons */
     --button-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
@@ -37,9 +38,8 @@
     --button-hover-gray: #242424;
 
     /* Drop Shadows */
-    --accessible-focus-drop-shadow: 0 0 .4px 1.7px var(--mute-blue);
-    --button-focus-drop-shadow: 0 0 .5px 1.7px var(--light-blue);
-    --input-focus-drop-shadow: 0 0 .5px 1.7px var(--light-blue);
+    --accessible-focus-drop-shadow: 0 0 1.5px 1px var(--accessible-green);
+    --input-focus-drop-shadow: 0 0 .5px 1.7px var(--lighter-green);
 
     /* Subscription Radios */
     --inactive-gray: #4c4c4c;
@@ -52,6 +52,7 @@
     --muted-text-gray: #848484;
     --success-green: #cdf8cd;
     --white-text: #f8f8f8;
+    --green-text: #0aa751;
 }
 
 /* Override color values for Firefox */
@@ -121,7 +122,7 @@ main:focus-visible {
 
 button:focus-visible {
     outline: none;
-    box-shadow: var(--button-focus-drop-shadow);
+    box-shadow: var(--accessible-focus-drop-shadow);
 }
 
 a {

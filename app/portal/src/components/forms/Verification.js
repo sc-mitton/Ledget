@@ -169,7 +169,6 @@ const VerifiactionFlow = () => {
 
     useEffect(() => {
         if (resendEmail) {
-            console.log('resending email...')
             callVerificationApi({
                 method: 'code',
                 csrf_token: csrf,

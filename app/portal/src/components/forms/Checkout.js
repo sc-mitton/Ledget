@@ -126,9 +126,9 @@ const Card = ({ cardNotEnteredError, setCardNotEnteredError, setCardEntered }) =
                 fontSmoothing: 'antialiased',
                 fontSize: '16px',
                 '::placeholder': {
-                    color: cardFocus ? '#6b9bf6' : '#767676',
+                    color: cardFocus ? '#48d487' : '#767676',
                 },
-                iconColor: cardFocus ? '#0059ff' : '#242424',
+                iconColor: cardFocus ? '#00da00' : '#242424',
                 ':disabled': {
                     color: '#767676',
                     iconColor: '#767676'
@@ -457,7 +457,7 @@ function Checkout({ prices }) {
                 {price &&
                     <div className="subscribe-button-container">
                         <button
-                            className={`valid-submit`}
+                            className="submit-button"
                             id="subscribe-button"
                             type='submit'
                             form={form}

@@ -27,7 +27,7 @@ const CustomSelect = ({ field, ...props }) => {
             border: "none",
             border: state.isFocused ? 0 : 0,
             // This line disable the blue border
-            boxShadow: state.isFocused ? "0 0 .5px 1.5px var(--light-blue)" : 0,
+            boxShadow: state.isFocused ? "var(--input-focus-drop-shadow)" : 0,
             '&:hover': {
                 border: state.isFocused ? 0 : 0
             }
@@ -43,7 +43,7 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         placeholder: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "#6b9bf6" : "#767676",
+            color: state.isFocused ? "var(--main-green)" : "#767676",
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,
@@ -62,7 +62,7 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         dropdownIndicator: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "#6b9bf6" : "#767676",
+            color: state.isFocused ? "var(--main-green)" : "#767676",
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
@@ -73,7 +73,7 @@ const CustomSelect = ({ field, ...props }) => {
             width: "100%",
             textAlign: "left",
             cursor: "pointer",
-            color: state.isSelected ? "var(--main-blue)" : "#767676",
+            color: state.isSelected ? "var(--green-text)" : "#767676",
         }),
         singleValue: (baseStyles, state) => ({
             ...baseStyles,

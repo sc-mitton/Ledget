@@ -23,7 +23,7 @@
     --accessible-green: #63e963;
 
     /* Drop Shadows */
-    --accessible-focus-drop-shadow: 0 0 1px 2px var(--accessible-green);
+    --accessible-focus-drop-shadow: 0 0 1.5px 1px var(--accessible-green);
     --input-focus-drop-shadow: 0 0 .5px 1.5px var(--light-blue);
     --mid-elevation-drop-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.2);
 
@@ -44,6 +44,7 @@
     --icon-light-gray: #dfdfdf;
     --icon-hover-light-gray: #dbdbdb;
     --icon-hover-gray: #c4c4c4;
+    --drop-down-hover-background: #dfdfdf;
 }
 
 /* Override color values for Firefox */
