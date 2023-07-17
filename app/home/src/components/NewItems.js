@@ -40,7 +40,7 @@ const newItemsSpringConfig = {
     position: 'absolute',
     left: 0,
     right: 0,
-    margin: '0 auto',
+    margin: '0 12px',
     borderRadius: "12px",
     padding: "20px",
     fontWeight: "400",
@@ -51,13 +51,10 @@ const newItemsSpringConfig = {
 }
 
 const containerSpringConfig = {
+    position: 'relative',
     overflowX: 'hidden',
     boxSize: 'border-box',
     height: collapsedHeight,
-    backgroundColor: "var(--window)",
-    position: 'relative',
-    margin: '0 8px',
-    padding: '0 16px',
 }
 
 const NewItemsStack = () => {
@@ -154,7 +151,7 @@ const NewItemsStack = () => {
             leave: (item, index) => async (next, cancel) => {
                 // cancel the animation if the item is removed before it's finished animating
                 const id = item.id;
-                await next({ x: 200, opacity: 0, config: { duration: 200 } });
+                await next({ x: 100, opacity: 0, config: { duration: 130 } });
                 if (index === items.findIndex(item => item.id === id)) {
                     setItems(items => items.filter(item => item.id !== id));
                 }
@@ -312,7 +309,7 @@ const NewItemsStack = () => {
 
     return (
         <>
-            <div id="new-items-container" style={{ position: "relative" }}>
+            <div id="new-items-container">
                 <div className="shadow shadow-bottom"></div>
                 <animated.div
                     style={containerSpring}
