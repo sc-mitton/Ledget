@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 import { useSpring, animated, useTransition } from '@react-spring/web'
 
@@ -9,6 +9,7 @@ import CheckMark from "../assets/svg/CheckMark"
 import Expand from "../assets/svg/Expand"
 import Note from "../assets/svg/Note"
 import Split from "../assets/svg/Split"
+import DropAnimation from "./utils/DropAnimation"
 
 
 // TODO: pull this data in from backend
@@ -26,9 +27,10 @@ let data = [
 ]
 
 const stackMax = 2
-const scaleFactor = .08
 const translate = 13
 const expandedTranslate = 75
+
+// New items container dimensions
 const collapsedHeight = 95
 const expandedHeight = 270
 
@@ -65,8 +67,11 @@ const NewItemsStack = () => {
         ...containerSpringConfig
     }))
 
+    // Calculate the background color of new items
+    // Items lower on the stack are darker
+    // Don't calculate past the stack max because it's not shown in unexpanded mode
     const getBackground = (index) => {
-        let r = 230 - (index ** 2 * 18)
+        let r = 230 - (Math.min(index, stackMax) ** 2 * 18)
 
         if (expanded || index === 0) {
             return "linear-gradient(0deg, rgba(240, 240, 240, .85) 0%,  \
@@ -77,29 +82,58 @@ const NewItemsStack = () => {
         }
     }
 
+    // Hide new items that are below the stack max in unexpanded mode
     const getOpacity = (index) => {
-        return !expanded && index > stackMax ? 0 : 1
+        const belowStackMax = index > stackMax
+        return !expanded && belowStackMax ? 0 : 1
     }
+
+    // Calculate the top position of new items
+    const getTop = useCallback((index) => {
+        if (index === 0) {
+            return 0
+        } else if (expanded) {
+            return index * expandedTranslate
+        } else {
+            return index > stackMax
+                ? stackMax * translate
+                : index * translate
+        }
+    }, [expanded])
+
+    const getScale = useCallback((index, loaded) => {
+        const scaleFactor = .08
+        if (!loaded) {
+            return `scale(${1 - ((index + 1) * scaleFactor * 2)})`
+        }
+
+        if (!expanded) {
+            return `scale${1 - (index * scaleFactor)}`
+        } else {
+            return `scale(1)`
+        }
+
+    }, [expanded])
 
     const transitions = useTransition(
         items,
         {
             from: (item, index) => ({
-                top: (1 * translate * index) + 30 * (index + 1),
-                transform: `scale(${!expanded ? 1 - ((index + 1) * scaleFactor * 2) : 1})`,
+                top: getTop(index, false),
+                transform: `scale(${!expanded ? 1 - (index * .08) : 1})`,
             }),
             enter: (item, index) => ({
-                top: expanded || index === 0 ? 0 : 1 * translate * index,
-                transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
+                top: getTop(index),
+                transform: `scale(${!expanded ? 1 - (index * .08) : 1})`,
                 zIndex: (data.length - index),
                 opacity: getOpacity(index),
                 background: getBackground(index),
                 ...newItemsSpringConfig
             }),
-            update: (item, index, state) => {
+            update: (item, index) => {
                 return {
-                    top: expanded || index === 0 ? index * expandedTranslate : 1 * translate * index,
-                    transform: `scale(${!expanded ? 1 - (index * scaleFactor) : 1})`,
+                    top: getTop(index),
+                    transform: `scale(${!expanded ? 1 - (index * .08) : 1})`,
                     zIndex: (data.length - index),
                     opacity: getOpacity(index),
                     background: getBackground(index),
@@ -108,7 +142,7 @@ const NewItemsStack = () => {
             leave: (item, index) => async (next, cancel) => {
                 // cancel the animation if the item is removed before it's finished animating
                 const id = item.id;
-                await next({ x: 100, opacity: 0, config: { duration: 100 } });
+                await next({ x: 200, opacity: 0, config: { duration: 200 } });
                 if (index === items.findIndex(item => item.id === id)) {
                     setItems(items => items.filter(item => item.id !== id));
                 }
@@ -141,7 +175,7 @@ const NewItemsStack = () => {
         setItems(items.filter(
             (item) => item.id !== i
         ))
-        // // remove item from backend
+        // TODO backend requests
     }
 
     const buttonContainerProps = useSpring({
@@ -182,25 +216,6 @@ const NewItemsStack = () => {
     }
 
     const NewItem = ({ item, style }) => {
-        const getTabIndex = (id) => {
-            if (items.length === 0) return "0"
-            return id > items[0].id && !expanded ? "-1" : "0"
-        }
-        const [dropDown, setDropDown] = useState(false)
-        const [checkHover, setCheckHover] = useState(false)
-
-        const DropDown = () => {
-            return (
-                <div className='dropdown-menu'>
-                    <div className='dropdown-item'>
-                        <button><Split /> Split</button>
-                    </div>
-                    <div className='dropdown-item'>
-                        <button><Note /> Add Note</button>
-                    </div>
-                </div>
-            )
-        }
 
         return (
             <animated.div
@@ -215,29 +230,23 @@ const NewItemsStack = () => {
                     <button
                         className='category-icon'
                         aria-label="Choose budget category"
-                        tabIndex={getTabIndex(item.id)}
                     >
                         Groceries
                     </button>
                     <button
                         className='icon'
-                        id="checkmark-icon"
                         onClick={() => handleConfirm(item.id)}
                         aria-label="Confirm item"
-                        tabIndex={getTabIndex(item.id)}
                     >
-                        <CheckMark fill={'var(--main-text-gray)'} />
+                        <CheckMark />
                     </button>
                     <button
                         className='icon'
                         id="ellipsis-icon"
                         aria-label="More options"
-                        tabIndex={getTabIndex(item.id)}
-                        onClick={() => setDropDown(!dropDown)}
                     >
                         <Ellipsis />
                     </button>
-                    {dropDown && <DropDown />}
                 </div>
             </animated.div>
         )

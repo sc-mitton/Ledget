@@ -35,9 +35,13 @@
     justify-content: space-between;
 }
 
+.new-item-icons button {
+    margin: 0 2px;
+}
+
 /* Category Icon */
 .category-icon {
-    padding: 2px 4px;
+    padding: 2px 6px;
     cursor: pointer;
     border-radius: 8px;
 }
@@ -48,6 +52,7 @@
     transform: scale(1);
     transition: all .2s ease-out;
     font-weight: 500;
+    font-size: 15px;
 }
 
 .category-icon:hover {
@@ -55,29 +60,6 @@
     transition: all .2s ease-out;
 }
 
-/**/
-
-#ellipsis-icon {
-    margin-right: 4px;
-    padding: 2px 0px;
-}
-
-#checkmark-icon {
-    padding: 6px;
-    background-color: none;
-    border-radius: 6px;
-    margin-right: 4px;
-    margin-top: 1px;
-    margin-bottom: 1px;
-    transform: scale(1);
-    transition: all .2s ease-out;
-}
-
-#checkmark-icon:hover {
-    transition: all .2s ease-out;
-    background-color: transparent;
-    transform: scale(1.2);
-}
 
 #expand-button {
     background-color: var(--button-gray);
@@ -98,4 +80,12 @@
 
 #expand-button:hover {
     background-color: var(--button-hover-gray);
+}
+
+/* -------------------------------- Dropdown -------------------------------- */
+
+.new-item-dropdown {
+    position: fixed;
+    top: 0;
+    right: 0;
 }
