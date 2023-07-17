@@ -48,8 +48,6 @@ const newItemsSpringConfig = {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    maxHeight: "inherit",
-    maxWidth: "400px"
 }
 
 const containerSpringConfig = {
@@ -68,7 +66,7 @@ const NewItemsStack = () => {
     const [items, setItems] = useState(data)
     const containerRef = useRef(null)
     const [containerSpring, containerApi] = useSpring(() => ({
-        zIndex: 100,
+        zIndex: 1,
         overflowY: expanded ? "scroll" : "hidden",
         ...containerSpringConfig
     }))
@@ -137,9 +135,9 @@ const NewItemsStack = () => {
                 transform: `scale(${getScale(index, false)})`,
             }),
             enter: (item, index) => ({
-                top: getTop(index),
+                top: getTop(index, true),
                 transform: `scale(${getScale(index)})`,
-                zIndex: (data.length - index),
+                zIndex: (-data.length + (data.length - index)),
                 opacity: getOpacity(index),
                 background: getBackground(index),
                 ...newItemsSpringConfig
@@ -148,7 +146,7 @@ const NewItemsStack = () => {
                 return {
                     top: getTop(index),
                     transform: `scale(${getScale(index)})`,
-                    zIndex: (data.length - index),
+                    zIndex: (-data.length + (data.length - index)),
                     opacity: getOpacity(index),
                     background: getBackground(index),
                 }
@@ -198,7 +196,7 @@ const NewItemsStack = () => {
         height: items.length > 1 ? '1.6em' : '0em',
         marginBottom: items.length > 1 ? '12px' : '0px',
         scale: "1.05",
-        zIndex: "200",
+        zIndex: "1",
         display: "flex",
         flexDirection: "row",
         justifyContent: "center"
