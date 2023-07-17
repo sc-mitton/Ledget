@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-import { useSpring, animated, useTransition } from '@react-spring/web'
+import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 
 import "./style/NewItems.css"
 import Ellipsis from "../assets/svg/Ellipsis"
@@ -32,11 +32,12 @@ const translate = 13
 const expandedTranslate = 75
 
 // New items container dimensions
-const collapsedHeight = 95
+const collapsedHeight = 100
 const expandedHeight = 270
 
 // CSS for the new item notification component
 const newItemsSpringConfig = {
+    x: 0,
     position: 'absolute',
     left: 0,
     right: 0,
@@ -44,7 +45,6 @@ const newItemsSpringConfig = {
     borderRadius: "12px",
     padding: "20px",
     fontWeight: "400",
-    x: 0,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -62,6 +62,8 @@ const NewItemsStack = () => {
     const [expanded, setExpanded] = useState(false)
     const [items, setItems] = useState(data)
     const containerRef = useRef(null)
+    const itemsApi = useSpringRef()
+
     const [containerSpring, containerApi] = useSpring(() => ({
         zIndex: 1,
         overflowY: expanded ? "scroll" : "hidden",
@@ -89,23 +91,6 @@ const NewItemsStack = () => {
         return !expanded && belowStackMax ? 0 : 1
     }
 
-    // Calculate the top position of new items
-    const getTop = useCallback((index, loaded = true) => {
-        if (!loaded) {
-            return stackMax * translate + 15
-        }
-
-        if (index === 0) {
-            return 0
-        } else if (expanded) {
-            return index * expandedTranslate
-        } else {
-            return index > stackMax
-                ? stackMax * translate
-                : index * translate
-        }
-    }, [expanded])
-
     const getScale = useCallback((index, loaded = true) => {
         const scale = .08
 
@@ -124,38 +109,46 @@ const NewItemsStack = () => {
         }
     }, [expanded])
 
+    const getY = useCallback((index, loaded = true) => {
+        if (!loaded) {
+            return stackMax * translate + 15
+        }
+
+        if (index === 0 || expanded) {
+            return index * expandedTranslate
+        } else {
+            return index * translate
+        }
+    }, [expanded])
+
     const transitions = useTransition(
         items,
         {
             from: (item, index) => ({
-                top: getTop(index, false),
+                // top: getTop(index, false),
+                y: getY(index, false),
                 transform: `scale(${getScale(index, false)})`,
             }),
             enter: (item, index) => ({
-                top: getTop(index, true),
+                // top: getTop(index, true),
+                y: getY(index, true),
                 transform: `scale(${getScale(index)})`,
-                zIndex: (-data.length + (data.length - index)),
+                zIndex: (-1 * index),
                 opacity: getOpacity(index),
                 background: getBackground(index),
                 ...newItemsSpringConfig
             }),
             update: (item, index) => {
                 return {
-                    top: getTop(index),
+                    // top: getTop(index),
+                    y: getY(index, true),
                     transform: `scale(${getScale(index)})`,
-                    zIndex: (-data.length + (data.length - index)),
+                    zIndex: (-1 * index),
                     opacity: getOpacity(index),
                     background: getBackground(index),
                 }
             },
-            leave: (item, index) => async (next, cancel) => {
-                // cancel the animation if the item is removed before it's finished animating
-                const id = item.id;
-                await next({ x: 100, opacity: 0, config: { duration: 130 } });
-                if (index === items.findIndex(item => item.id === id)) {
-                    setItems(items => items.filter(item => item.id !== id));
-                }
-            }
+            ref: itemsApi
         }
     )
 
@@ -178,12 +171,31 @@ const NewItemsStack = () => {
                 }
             }
         })
-    }, [expanded, items])
+    }, [expanded])
+
+    useEffect(() => {
+        itemsApi.start()
+    }, [items, expanded])
 
     const handleConfirm = i => {
-        setItems(items.filter(
-            (item) => item.id !== i
-        ))
+        itemsApi.start((item, index) => {
+            if (item === i) {
+                return {
+                    x: 100,
+                    opacity: 0,
+                    config: {
+                        duration: 130,
+                        tension: 170,
+                        friction: 26
+                    },
+                    onRest: () => {
+                        setItems(items.filter(
+                            (item) => item.id !== i
+                        ))
+                    },
+                }
+            }
+        })
         // TODO backend requests
     }
 
