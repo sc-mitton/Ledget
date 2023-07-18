@@ -1,8 +1,8 @@
 import React from 'react'
 
 const Edit = ({
-    width = "1.2em",
-    height = "1.2em",
+    width = "1em",
+    height = "1em",
     className = null,
     fill = "#242424",
 }) => {

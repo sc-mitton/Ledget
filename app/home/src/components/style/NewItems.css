@@ -78,14 +78,14 @@
 
 .options-dropdown {
     margin-top: 40px;
-    margin-left: -55px;
+    margin-left: -65px;
     position: fixed;
 }
 
 .options-dropdown::before {
     position: absolute;
     top: -7px;
-    left: 36px;
+    left: 46px;
     display: inline-block;
     border-right: 7px solid transparent;
     border-bottom: 7px solid #CCC;
@@ -96,7 +96,7 @@
 .options-dropdown::after {
     position: absolute;
     top: -6px;
-    left: 37px;
+    left: 47px;
     display: inline-block;
     border-right: 6px solid transparent;
     border-bottom: 6px solid var(--window);

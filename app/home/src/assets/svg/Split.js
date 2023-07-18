@@ -1,8 +1,8 @@
 import React from 'react'
 
 const Split = ({
-    width = "1.4em",
-    height = "1.4em",
+    width = "1em",
+    height = "1em",
     className = null,
     fill = "#292929"
 }) => {

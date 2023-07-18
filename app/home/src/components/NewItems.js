@@ -9,6 +9,8 @@ import CheckMark from "../assets/svg/CheckMark"
 import Expand from "../assets/svg/Expand"
 import Edit from "../assets/svg/Edit"
 import Split from "../assets/svg/Split"
+import Details from "../assets/svg/Info"
+import Snooze from "../assets/svg/Snooze"
 import DropAnimation from "./utils/DropAnimation"
 import { Menu } from '@headlessui/react'
 
@@ -66,18 +68,26 @@ const NewItemsStack = () => {
     const containerRef = useRef(null)
     const itemsApi = useSpringRef()
 
+    const buttonContainerProps = useSpring({
+        marginTop: items.length === 0 ? '0px' : '4px',
+        marginBottom: items.length > 1 ? '12px' : '0px',
+        opacity: items.length > 1 ? 1 : 0,
+        height: items.length > 1 ? '1.6em' : '0em',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        scale: "1.05",
+        zIndex: 100,
+    })
+
+    const rotationSpring = useSpring({
+        transform: `rotate(${expanded ? 0 : 180}deg)`
+    })
+
     const [containerSpring, containerApi] = useSpring(() => ({
         ...containerSpringConfig
     }))
 
-    const defaultOverflow = {
-        overflow: expanded
-            ? (expandedHeight < items.length * expandedTranslate) ? 'scroll' : 'visible'
-            : 'visible',
-    }
-
-    // Calculate the background color of new items
-    const getBackground = (index) => {
+    const getBackground = useCallback((index) => {
         let r = 230 - (Math.min(index, stackMax) ** 2 * 18)
         // Items lower on the stack are darker
         // Don't calculate past the stack max because
@@ -89,13 +99,12 @@ const NewItemsStack = () => {
             return `linear-gradient(0deg, rgba(${r}, ${r}, ${r}, .75) 0%,
              rgba(${r}, ${r}, ${r}, 1)25%, rgba(${r}, ${r}, ${r}, 1)`
         }
-    }
+    }, [expanded])
 
-    // Hide new items that are below the stack max in unexpanded mode
-    const getOpacity = (index) => {
+    const getOpacity = useCallback((index) => {
         const belowStackMax = index > stackMax
         return !expanded && belowStackMax ? 0 : 1
-    }
+    }, [expanded])
 
     const getScale = useCallback((index, loaded = true) => {
         const scale = .08
@@ -182,7 +191,6 @@ const NewItemsStack = () => {
         itemsApi.start()
     }, [expanded, items])
 
-
     const handleConfirm = i => {
         itemsApi.start((item, index) => {
             if (item === i) {
@@ -207,50 +215,48 @@ const NewItemsStack = () => {
         })
     }
 
-    const buttonContainerProps = useSpring({
-        marginTop: items.length === 0 ? '0px' : '4px',
-        marginBottom: items.length > 1 ? '12px' : '0px',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        opacity: items.length > 1 ? 1 : 0,
-        height: items.length > 1 ? '1.6em' : '0em',
-        scale: "1.05",
-        zIndex: 100,
-    })
+    const Options = ({ item }) => {
 
-    const rotationSpring = useSpring({
-        transform: `rotate(${expanded ? 0 : 180}deg)`
-    })
+        const Option = ({ optionName }) => {
 
-    const BottomButtons = () => {
-        return (
-            <animated.div
-                id="expand-button-container"
-                className="bottom-buttons"
-                style={buttonContainerProps}
-            >
-                <button id="expand-button" onClick={() => setExpanded(!expanded)}>
-                    {`${items.length} `}
-                    < animated.div
-                        id="expand-button-icon"
-                        style={rotationSpring}
-                        aria-label="Expand new item stack"
-                    >
-                        <Expand />
-                    </animated.div >
-                </button>
-            </animated.div>
-        )
-    }
+            const OptionContent = () => {
+                const options = {
+                    split: (
+                        <><Split className="dropdown-icon" />Split</>
+                    ),
+                    note: (
+                        <><Edit className="dropdown-icon" />Note</>
+                    ),
+                    snooze: (
+                        <><Snooze className="dropdown-icon" />Snooze</>
+                    ),
+                    details: (
+                        <><Details className="dropdown-icon" />Details</>
+                    ),
+                }
+                const optionContent = options[optionName] || null
+                return (<>{optionContent}</>)
+            }
 
-
-    const Options = () => {
+            return (
+                <Menu.Item as={React.Fragment}>
+                    {({ active }) => (
+                        <button className={`dropdown-item ${active && "active-dropdown-item"}`}>
+                            <OptionContent />
+                        </button>
+                    )}
+                </Menu.Item>
+            )
+        }
 
         return (
             <Menu>
                 {({ open }) => (
                     <>
-                        <Menu.Button className='narrow-icon'>
+                        <Menu.Button
+                            className='narrow-icon'
+                            tabIndex={item.id !== 0 && !expanded ? -1 : ''}
+                        >
                             <Ellipsis />
                         </Menu.Button>
                         <DropAnimation visible={open}>
@@ -259,34 +265,10 @@ const NewItemsStack = () => {
                                 className="dropdown options-dropdown"
                                 static
                             >
-                                <Menu.Item as={React.Fragment}>
-                                    {({ active }) => (
-                                        <button
-                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
-                                        >
-                                            <Split
-                                                className="dropdown-icon"
-                                                width={'1em'}
-                                                height={'1em'}
-                                            />
-                                            Split
-                                        </button>
-                                    )}
-                                </Menu.Item>
-                                <Menu.Item as={React.Fragment}>
-                                    {({ active }) => (
-                                        <button
-                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
-                                        >
-                                            <Edit
-                                                className="dropdown-icon"
-                                                width={'1em'}
-                                                height={'1em'}
-                                            />
-                                            Note
-                                        </button>
-                                    )}
-                                </Menu.Item>
+                                <Option optionName='split' />
+                                <Option optionName='note' />
+                                <Option optionName='snooze' />
+                                <Option optionName='details' />
                             </Menu.Items>
                         </DropAnimation>
                     </>
@@ -310,6 +292,7 @@ const NewItemsStack = () => {
                     <button
                         className='category-icon'
                         aria-label="Choose budget category"
+                        tabIndex={item.id !== 0 && !expanded ? -1 : ''}
                     >
                         Groceries
                     </button>
@@ -317,10 +300,11 @@ const NewItemsStack = () => {
                         className='icon2'
                         onClick={() => handleConfirm(item.id)}
                         aria-label="Confirm item"
+                        tabIndex={item.id !== 0 && !expanded ? -1 : ''}
                     >
                         <CheckMark />
                     </button>
-                    <Options />
+                    <Options item={item} />
                 </div>
             </animated.div>
         )
@@ -341,7 +325,22 @@ const NewItemsStack = () => {
                     }
                 </animated.div >
             </div>
-            <BottomButtons />
+            <animated.div
+                id="expand-button-container"
+                className="bottom-buttons"
+                style={buttonContainerProps}
+            >
+                <button id="expand-button" onClick={() => setExpanded(!expanded)}>
+                    {`${items.length} `}
+                    < animated.div
+                        id="expand-button-icon"
+                        style={rotationSpring}
+                        aria-label="Expand new item stack"
+                    >
+                        <Expand />
+                    </animated.div >
+                </button>
+            </animated.div>
         </>
     )
 }
