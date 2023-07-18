@@ -32,7 +32,7 @@ const translate = 13
 const expandedTranslate = 75
 
 // New items container dimensions
-const collapsedHeight = 100
+const collapsedHeight = 95
 const expandedHeight = 270
 
 // CSS for the new item notification component
@@ -52,30 +52,35 @@ const newItemsSpringConfig = {
 
 const containerSpringConfig = {
     position: 'relative',
-    overflowX: 'hidden',
+    zIndex: 1,
     boxSize: 'border-box',
     height: collapsedHeight,
 }
 
 const NewItemsStack = () => {
-
     const [expanded, setExpanded] = useState(false)
     const [items, setItems] = useState(data)
     const containerRef = useRef(null)
     const itemsApi = useSpringRef()
 
     const [containerSpring, containerApi] = useSpring(() => ({
-        zIndex: 1,
-        overflowY: expanded ? "scroll" : "hidden",
         ...containerSpringConfig
     }))
 
+    const setDefaultOverflow = () => {
+        containerApi.start({
+            overflow: expanded
+                ? (expandedHeight < items.length * expandedTranslate) ? 'scroll' : 'visible'
+                : 'visible',
+        })
+    }
+
     // Calculate the background color of new items
-    // Items lower on the stack are darker
-    // Don't calculate past the stack max because it's not shown in unexpanded mode
     const getBackground = (index) => {
         let r = 230 - (Math.min(index, stackMax) ** 2 * 18)
-
+        // Items lower on the stack are darker
+        // Don't calculate past the stack max because
+        // it's not shown in unexpanded mode
         if (expanded || index === 0) {
             return "linear-gradient(0deg, rgba(240, 240, 240, .85) 0%,  \
                     rgba(240, 240, 240, 1)25%, rgba(240, 240, 240, 1)"
@@ -136,45 +141,40 @@ const NewItemsStack = () => {
                 zIndex: (-1 * index),
                 opacity: getOpacity(index),
                 background: getBackground(index),
+                onRest: () => {
+                    setDefaultOverflow()
+                },
                 ...newItemsSpringConfig
             }),
-            update: (item, index) => {
-                return {
-                    // top: getTop(index),
-                    y: getY(index, true),
-                    transform: `scale(${getScale(index)})`,
-                    zIndex: (-1 * index),
-                    opacity: getOpacity(index),
-                    background: getBackground(index),
-                }
-            },
+            update: (item, index) => ({
+                // top: getTop(index),
+                y: getY(index, true),
+                transform: `scale(${getScale(index)})`,
+                zIndex: (-1 * index),
+                opacity: getOpacity(index),
+                background: getBackground(index)
+            }),
             ref: itemsApi
         }
     )
 
     useEffect(() => {
-        // update container spring
+        containerApi.start({ overflow: 'hidden' })
+        itemsApi.start()
 
-        // Since items inside container are absolutely positioned
-        // we can auto size it, and we have to shrink it when there
-        // is empty space at the bottom due to items being removed
         containerApi.start({
-            height: expanded
-                ? Math.min(expandedHeight, items.length * expandedTranslate)
-                : (items.length > 0 ? collapsedHeight : 0),
-            overflowY: expanded
-                ? (expandedHeight < items.length * expandedTranslate ? 'scroll' : 'hidden')
-                : 'hidden',
             onStart: () => {
                 if (!expanded && containerRef.current) {
                     containerRef.current.scrollTop = 0
                 }
+            },
+            height: expanded
+                ? Math.min(items.length * expandedTranslate, expandedHeight)
+                : (items.length > 0 ? collapsedHeight : 0),
+            onRest: () => {
+                setDefaultOverflow()
             }
         })
-    }, [expanded])
-
-    useEffect(() => {
-        itemsApi.start()
     }, [items, expanded])
 
     const handleConfirm = i => {
@@ -188,27 +188,29 @@ const NewItemsStack = () => {
                         tension: 170,
                         friction: 26
                     },
+                    onStart: () => {
+                        containerApi.start({ overflow: 'hidden' })
+                    },
                     onRest: () => {
                         setItems(items.filter(
                             (item) => item.id !== i
                         ))
+                        setDefaultoverflow()
                     },
                 }
             }
         })
-        // TODO backend requests
     }
 
     const buttonContainerProps = useSpring({
         marginTop: items.length === 0 ? '0px' : '4px',
+        marginBottom: items.length > 1 ? '12px' : '0px',
+        marginLeft: 'auto',
+        marginRight: 'auto',
         opacity: items.length > 1 ? 1 : 0,
         height: items.length > 1 ? '1.6em' : '0em',
-        marginBottom: items.length > 1 ? '12px' : '0px',
         scale: "1.05",
-        zIndex: "1",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center"
+        zIndex: 100,
     })
 
     const rotationSpring = useSpring({
@@ -239,6 +241,7 @@ const NewItemsStack = () => {
     const NewItem = ({ item, style }) => {
 
         const Options = () => {
+
             return (
                 <Menu>
                     {({ open }) => (
@@ -297,7 +300,7 @@ const NewItemsStack = () => {
                 <div className='new-item-data'>
                     {item.data}
                 </div>
-                <div className='new-item-icons'>
+                <div className='new-item-icons' >
                     <button
                         className='category-icon'
                         aria-label="Choose budget category"
@@ -330,7 +333,7 @@ const NewItemsStack = () => {
     return (
         <>
             <div id="new-items-container">
-                <div className="shadow shadow-bottom"></div>
+                {expanded && <div className="shadow shadow-bottom"></div>}
                 <animated.div
                     style={containerSpring}
                     ref={containerRef}

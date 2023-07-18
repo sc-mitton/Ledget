@@ -174,7 +174,7 @@
 /* -------------------------------- Dropdowns ------------------------------- */
 
 .dropdown {
-    background-color: var(--window-background-color);
+    background-color: var(--window);
     box-shadow: var(--mid-elevation-drop-shadow);
     -webkit-box-shadow: var(--mid-elevation-drop-shadow);
     -moz-box-shadow: var(--mid-elevation-drop-shadow);
@@ -182,7 +182,7 @@
     border-radius: 6px;
     z-index: 1000;
     transform-origin: top;
-    padding: 6px;
+    padding: 6px 4px;
     color: var(--main-text-gray);
     font-weight: 500;
 }
@@ -202,7 +202,7 @@
     align-items: center;
     font-weight: 500;
     width: 100%;
-    padding: 4px 8px;
+    padding: 4px 12px;
     margin: 2px 0;
     transition: background-color 0.4s ease;
     border-radius: 4px;

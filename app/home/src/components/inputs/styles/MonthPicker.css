@@ -64,6 +64,7 @@
 
 .month-picker-item-selected {
     background-color: var(--main-green);
+    color: var(--white-text);
 }
 
 .month-picker-item:hover,

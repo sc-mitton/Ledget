@@ -18,8 +18,16 @@ function withModal(WrappedComponent) {
                     setVisible(false)
                 }
             }
+            const handleEscape = (event) => {
+                if (event.key === "Escape") {
+                    setVisible(false)
+                }
+            }
+            window.addEventListener("keydown", handleEscape)
             window.addEventListener("mousedown", handleClickOutside)
+
             return () => {
+                window.removeEventListener("keydown", handleEscape)
                 window.removeEventListener("mousedown", handleClickOutside)
             }
         }, [])
