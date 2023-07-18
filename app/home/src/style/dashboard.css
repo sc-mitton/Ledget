@@ -194,7 +194,7 @@
 }
 
 .dropdown-icon {
-    margin-right: 12px;
+    margin-right: 16px;
 }
 
 .dropdown-item {
@@ -218,6 +218,7 @@
     height: 100%;
     box-shadow: none;
 }
+
 
 /* -------------------------------------------------------------------------- */
 /*                            Budget Window Styling                           */

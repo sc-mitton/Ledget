@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
+import { useSpring, animated, useTransition, useSpringRef, useChain } from '@react-spring/web'
 
 import "./style/NewItems.css"
 import Ellipsis from "../assets/svg/Ellipsis"
@@ -70,12 +70,10 @@ const NewItemsStack = () => {
         ...containerSpringConfig
     }))
 
-    const setDefaultOverflow = () => {
-        containerApi.start({
-            overflow: expanded
-                ? (expandedHeight < items.length * expandedTranslate) ? 'scroll' : 'visible'
-                : 'visible',
-        })
+    const defaultOverflow = {
+        overflow: expanded
+            ? (expandedHeight < items.length * expandedTranslate) ? 'scroll' : 'visible'
+            : 'visible',
     }
 
     // Calculate the background color of new items
@@ -148,9 +146,6 @@ const NewItemsStack = () => {
                 zIndex: (-1 * index),
                 opacity: getOpacity(index),
                 background: getBackground(index),
-                onRest: () => {
-                    setDefaultOverflow()
-                },
                 ...newItemsSpringConfig
             }),
             update: (item, index) => ({
@@ -159,8 +154,25 @@ const NewItemsStack = () => {
                 transform: `scale(${getScale(index)})`,
                 zIndex: (-1 * index),
                 opacity: getOpacity(index),
-                background: getBackground(index)
+                background: getBackground(index),
             }),
+            onStart: () => {
+                if (!expanded && containerRef.current) {
+                    containerRef.current.scrollTop = 0
+                }
+                containerApi.start({
+                    height: expanded
+                        ? Math.min(items.length * expandedTranslate, expandedHeight)
+                        : (items.length > 0 ? collapsedHeight : 0),
+                })
+            },
+            onRest: () => {
+                containerApi.start({
+                    overflow: expanded
+                        ? (expandedHeight < items.length * expandedTranslate) ? 'scroll' : 'visible'
+                        : 'visible',
+                })
+            },
             ref: itemsApi
         }
     )
@@ -168,21 +180,8 @@ const NewItemsStack = () => {
     useEffect(() => {
         containerApi.start({ overflow: 'hidden' })
         itemsApi.start()
+    }, [expanded, items])
 
-        containerApi.start({
-            onStart: () => {
-                if (!expanded && containerRef.current) {
-                    containerRef.current.scrollTop = 0
-                }
-            },
-            height: expanded
-                ? Math.min(items.length * expandedTranslate, expandedHeight)
-                : (items.length > 0 ? collapsedHeight : 0),
-            onRest: () => {
-                setDefaultOverflow()
-            }
-        })
-    }, [items, expanded])
 
     const handleConfirm = i => {
         itemsApi.start((item, index) => {
@@ -202,7 +201,6 @@ const NewItemsStack = () => {
                         setItems(items.filter(
                             (item) => item.id !== i
                         ))
-                        setDefaultoverflow()
                     },
                 }
             }

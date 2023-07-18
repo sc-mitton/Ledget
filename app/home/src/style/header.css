@@ -58,6 +58,29 @@ header {
     right: -58px;
 }
 
+.profile-dropdown::before {
+    position: absolute;
+    top: -7px;
+    left: 24px;
+    display: inline-block;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #CCC;
+    border-left: 6px solid transparent;
+    content: '';
+}
+
+.profile-dropdown::after {
+    position: absolute;
+    top: -6px;
+    left: 24px;
+    display: inline-block;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid var(--window);
+    border-left: 6px solid transparent;
+    content: '';
+}
+
+
 /* ------------------------------- Header Nav ------------------------------- */
 nav {
     width: 100%;
@@ -103,7 +126,6 @@ nav {
 
 .nav-item {
     box-sizing: border-box;
-    color: rgb(0, 0, 0, .4);
     cursor: pointer;
 }
 
