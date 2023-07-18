@@ -41,7 +41,6 @@ const newItemsSpringConfig = {
     x: 0,
     left: 0,
     right: 0,
-    maxWidth: '400px',
     margin: '0 24px',
     borderRadius: "12px",
     padding: "20px",
@@ -52,7 +51,10 @@ const newItemsSpringConfig = {
 }
 
 const containerSpringConfig = {
+    maxWidth: '400px',
     position: 'relative',
+    left: '50%',
+    transform: 'translateX(-50%)',
     zIndex: 1,
     boxSize: 'border-box',
     height: collapsedHeight,
