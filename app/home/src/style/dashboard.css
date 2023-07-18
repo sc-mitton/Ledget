@@ -234,7 +234,7 @@
 
 #items-window {
     flex: 1;
-    min-width: 350px;
+    min-width: 400px;
     margin-left: 12px;
     height: inherit;
     max-height: inherit;

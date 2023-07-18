@@ -7,7 +7,7 @@ import "./style/NewItems.css"
 import Ellipsis from "../assets/svg/Ellipsis"
 import CheckMark from "../assets/svg/CheckMark"
 import Expand from "../assets/svg/Expand"
-import Note from "../assets/svg/Note"
+import Edit from "../assets/svg/Edit"
 import Split from "../assets/svg/Split"
 import DropAnimation from "./utils/DropAnimation"
 import { Menu } from '@headlessui/react'
@@ -41,7 +41,7 @@ const newItemsSpringConfig = {
     position: 'absolute',
     left: 0,
     right: 0,
-    margin: '0 12px',
+    margin: '0 24px',
     borderRadius: "12px",
     padding: "20px",
     fontWeight: "400",
@@ -257,7 +257,11 @@ const NewItemsStack = () => {
                                             <button
                                                 className={`dropdown-item ${active && "active-dropdown-item"}`}
                                             >
-                                                <Split className="dropdown-icon" />
+                                                <Split
+                                                    className="dropdown-icon"
+                                                    width={'1em'}
+                                                    height={'1em'}
+                                                />
                                                 Split
                                             </button>
                                         )}
@@ -267,7 +271,11 @@ const NewItemsStack = () => {
                                             <button
                                                 className={`dropdown-item ${active && "active-dropdown-item"}`}
                                             >
-                                                <Note className="dropdown-icon" />
+                                                <Edit
+                                                    className="dropdown-icon"
+                                                    width={'1em'}
+                                                    height={'1em'}
+                                                />
                                                 Note
                                             </button>
                                         )}
