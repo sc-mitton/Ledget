@@ -43,7 +43,7 @@ const newItemsSpringConfig = {
     x: 0,
     left: 0,
     right: 0,
-    margin: '0 24px',
+    margin: '0 16px',
     borderRadius: "12px",
     padding: "20px",
     fontWeight: "400",
@@ -191,6 +191,14 @@ const NewItemsStack = () => {
         itemsApi.start()
     }, [expanded, items])
 
+    useEffect(() => {
+        containerApi.start({
+            height: expanded
+                ? Math.min(items.length * expandedTranslate, expandedHeight)
+                : (items.length > 0 ? collapsedHeight : 0),
+        })
+    }, [items])
+
     const handleConfirm = i => {
         itemsApi.start((item, index) => {
             if (item === i) {
@@ -304,6 +312,7 @@ const NewItemsStack = () => {
                     >
                         <CheckMark />
                     </button>
+
                     <Options item={item} />
                 </div>
             </animated.div>

@@ -213,7 +213,7 @@
 }
 
 .dropdown-item:hover {
-    background-color: #dcfdeb;
+    background-color: var(--green-highlight);
     cursor: pointer;
     height: 100%;
     box-shadow: none;

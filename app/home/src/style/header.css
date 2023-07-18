@@ -55,7 +55,7 @@ header {
     display: flex;
     flex-direction: column;
     top: 30px;
-    right: -58px;
+    right: -61px;
 }
 
 .profile-dropdown::before {
@@ -130,6 +130,6 @@ nav {
 }
 
 .nav-item button:hover {
-    background-color: var(--icon-light-gray);
+    background-color: var(--green-highlight);
     transition: color 0.3s ease;
 }
