@@ -37,10 +37,11 @@ const expandedHeight = 270
 
 // CSS for the new item notification component
 const newItemsSpringConfig = {
-    x: 0,
     position: 'absolute',
+    x: 0,
     left: 0,
     right: 0,
+    maxWidth: '400px',
     margin: '0 24px',
     borderRadius: "12px",
     padding: "20px",
@@ -122,7 +123,11 @@ const NewItemsStack = () => {
         if (index === 0 || expanded) {
             return index * expandedTranslate
         } else {
-            return index * translate
+            if (index > stackMax) {
+                return stackMax * translate
+            } else {
+                return index * translate
+            }
         }
     }, [expanded])
 
@@ -238,58 +243,59 @@ const NewItemsStack = () => {
         )
     }
 
+
+    const Options = () => {
+
+        return (
+            <Menu>
+                {({ open }) => (
+                    <>
+                        <Menu.Button className='narrow-icon'>
+                            <Ellipsis />
+                        </Menu.Button>
+                        <DropAnimation visible={open}>
+                            <Menu.Items
+                                as="div"
+                                className="dropdown options-dropdown"
+                                static
+                            >
+                                <Menu.Item as={React.Fragment}>
+                                    {({ active }) => (
+                                        <button
+                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                        >
+                                            <Split
+                                                className="dropdown-icon"
+                                                width={'1em'}
+                                                height={'1em'}
+                                            />
+                                            Split
+                                        </button>
+                                    )}
+                                </Menu.Item>
+                                <Menu.Item as={React.Fragment}>
+                                    {({ active }) => (
+                                        <button
+                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                        >
+                                            <Edit
+                                                className="dropdown-icon"
+                                                width={'1em'}
+                                                height={'1em'}
+                                            />
+                                            Note
+                                        </button>
+                                    )}
+                                </Menu.Item>
+                            </Menu.Items>
+                        </DropAnimation>
+                    </>
+                )}
+            </Menu>
+        )
+    }
+
     const NewItem = ({ item, style }) => {
-
-        const Options = () => {
-
-            return (
-                <Menu>
-                    {({ open }) => (
-                        <>
-                            <Menu.Button className='narrow-icon'>
-                                <Ellipsis />
-                            </Menu.Button>
-                            <DropAnimation visible={open}>
-                                <Menu.Items
-                                    as="div"
-                                    className="dropdown options-dropdown"
-                                    static
-                                >
-                                    <Menu.Item as={React.Fragment}>
-                                        {({ active }) => (
-                                            <button
-                                                className={`dropdown-item ${active && "active-dropdown-item"}`}
-                                            >
-                                                <Split
-                                                    className="dropdown-icon"
-                                                    width={'1em'}
-                                                    height={'1em'}
-                                                />
-                                                Split
-                                            </button>
-                                        )}
-                                    </Menu.Item>
-                                    <Menu.Item as={React.Fragment}>
-                                        {({ active }) => (
-                                            <button
-                                                className={`dropdown-item ${active && "active-dropdown-item"}`}
-                                            >
-                                                <Edit
-                                                    className="dropdown-icon"
-                                                    width={'1em'}
-                                                    height={'1em'}
-                                                />
-                                                Note
-                                            </button>
-                                        )}
-                                    </Menu.Item>
-                                </Menu.Items>
-                            </DropAnimation>
-                        </>
-                    )}
-                </Menu>
-            )
-        }
 
         return (
             <animated.div
@@ -320,25 +326,19 @@ const NewItemsStack = () => {
         )
     }
 
-    const Stack = () => {
-        return (
-            <>
-                {transitions((style, item) =>
-                    <NewItem item={item} style={style} />)
-                }
-            </>
-        )
-    }
-
     return (
         <>
             <div id="new-items-container">
-                {expanded && <div className="shadow shadow-bottom"></div>}
+                {expanded && items.length > stackMax &&
+                    <div className="shadow shadow-bottom"></div>
+                }
                 <animated.div
                     style={containerSpring}
                     ref={containerRef}
                 >
-                    <Stack />
+                    {transitions((style, item) =>
+                        <NewItem item={item} style={style} />)
+                    }
                 </animated.div >
             </div>
             <BottomButtons />

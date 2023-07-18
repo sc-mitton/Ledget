@@ -87,38 +87,27 @@ nav {
     font-size: 15px;
 }
 
-.current-nav-item {
-    box-sizing: border-box;
-    /* background:
-        radial-gradient(farthest-side at 50% 100%,
-            rgb(122, 168, 254, 1),
-            rgba(240, 240, 240, 0)) center bottom / 100% 3%;
-    background-repeat: no-repeat; */
+.navigation button {
+    border-radius: 12px;
+    padding: 4px 12px;
+    font-weight: 400;
+    transition: background-color 0.3s ease;
 }
 
-.current-nav-item * {
-    font-weight: 500;
+.current-nav-item button {
+    /* box-sizing: border-box; */
+    background-color: var(--button-hover-gray);
+    color: var(--white-text);
     cursor: auto;
-}
-
-.nav-item * {
-    font-weight: 500;
 }
 
 .nav-item {
     box-sizing: border-box;
-    cursor: pointer;
     color: rgb(0, 0, 0, .4);
+    cursor: pointer;
 }
 
-.nav-item:hover {
-    color: var(--main-green);
+.nav-item button:hover {
+    background-color: var(--icon-light-gray);
     transition: color 0.3s ease;
-}
-
-.navigation button {
-    display: block;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
 }
