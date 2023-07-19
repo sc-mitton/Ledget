@@ -76,6 +76,11 @@
 
 /* -------------------------------- Dropdown -------------------------------- */
 
+.options-dropdown-container:focus-visible {
+    box-shadow: none;
+    outline: none;
+}
+
 .options-dropdown::before {
     position: absolute;
     top: -7px;

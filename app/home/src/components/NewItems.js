@@ -41,6 +41,7 @@ const NewItemsStack = () => {
     const [expanded, setExpanded] = useState(false)
     const [items, setItems] = useState(data)
     const [optionsPos, setOptionsPos] = useState(null)
+    const [showOptionsMenu, setShowOptionsMenu] = useState(false)
     const newItemsContainerRef = useRef(null)
     const containerRef = useRef(null)
     const itemsApi = useSpringRef()
@@ -184,7 +185,9 @@ const NewItemsStack = () => {
         })
     }, [expanded, items])
 
-
+    useEffect(() => {
+        optionsPos ? setShowOptionsMenu(true) : setShowOptionsMenu(false)
+    }, [optionsPos])
 
     const handleConfirm = i => {
         itemsApi.start((item, index) => {
@@ -228,6 +231,7 @@ const NewItemsStack = () => {
                 key={`item-${item.id}`}
                 className="new-item"
                 style={style}
+                tabIndex={expanded ? 0 : -1}
             >
                 <div className='new-item-data'>
                     {item.data}
@@ -261,51 +265,71 @@ const NewItemsStack = () => {
         )
     }
 
-    const Options = () => {
-        const [showOptionsMenu, setShowOptionsMenu] = useState(false)
-
-        useEffect(() => {
-            optionsPos ? setShowOptionsMenu(true) : setShowOptionsMenu(false)
-        }, [optionsPos])
-
-        const MenuItemWrapper = ({ children }) => {
-            return (
-                <>
-                    <button className={`dropdown-item active-dropdown-item"}`}>
-                        {children}
-                    </button>
-                </>
-            )
+    const ItemOptionsMenu = ({ visible }) => {
+        const ref = useRef()
+        const refs = useRef([]);
+        for (let i = 0; i < 4; i++) {
+            refs.current[i] = useRef();
         }
 
+        useEffect(() => {
+            const handleKeyDown = (event) => {
+                if (event.key === 'Escape' || event.key === 'Tab') {
+                    setShowOptionsMenu(false)
+                    setOptionsPos(null)
+                } else if (event.key === 'ArrowUp') {
+                    event.preventDefault()
+                    const currentIndex = refs.current.findIndex((ref) => ref.current === document.activeElement)
+                    const previousIndex = Math.max(currentIndex - 1, 0)
+                    refs.current[previousIndex].current.focus()
+                } else if (event.key === 'ArrowDown') {
+                    event.preventDefault()
+                    const currentIndex = refs.current.findIndex((ref) => ref.current === document.activeElement)
+                    const nextIndex = Math.min((currentIndex + 1), refs.current.length - 1)
+                    refs.current[nextIndex].current.focus()
+                }
+            };
+            const handleClickOutside = (event) => {
+                if (ref.current && !ref.current.contains(event.target)) {
+                    setShowOptionsMenu(false)
+                    setOptionsPos(null)
+                }
+            }
+
+            window.addEventListener("mousedown", handleClickOutside)
+            window.addEventListener('keydown', handleKeyDown)
+            return () => {
+                window.removeEventListener('keydown', handleKeyDown)
+                window.removeEventListener("mousedown", handleClickOutside)
+            }
+        }, [])
+
+        useEffect(() => {
+            refs.current[0].current.focus()
+        }, [])
+
         return (
-            <DropAnimation
-                visible={showOptionsMenu}
-                style={{
-                    position: 'absolute',
-                    top: optionsPos ? optionsPos.y + 40 : 0,
-                    left: optionsPos ? optionsPos.x - 43 : 0,
-                    zIndex: 10,
-                }}
+            <div
+                className="options-dropdown-container"
+                ref={ref}
             >
-                <div
-                    className="dropdown options-dropdown"
-                    onMouseLeave={() => setOptionsPos(null)}
-                >
-                    <MenuItemWrapper>
-                        <><Split className="dropdown-icon" />Split</>
-                    </MenuItemWrapper>
-                    <MenuItemWrapper>
-                        <><Edit className="dropdown-icon" />Note</>
-                    </MenuItemWrapper>
-                    <MenuItemWrapper>
-                        <><Snooze className="dropdown-icon" />Snooze</>
-                    </MenuItemWrapper>
-                    <MenuItemWrapper>
-                        <><Details className="dropdown-icon" />Details</>
-                    </MenuItemWrapper>
-                </div>
-            </DropAnimation>
+                <button className={`dropdown-item`} ref={refs.current[0]}>
+                    <Split className="dropdown-icon" />
+                    Split
+                </button>
+                <button className={`dropdown-item`} ref={refs.current[1]}>
+                    <Edit className="dropdown-icon" />
+                    Note
+                </button>
+                <button className={`dropdown-item`} ref={refs.current[2]}>
+                    <Snooze className="dropdown-icon" />
+                    Snooze
+                </button>
+                <button className={`dropdown-item`} ref={refs.current[3]}>
+                    <Details className="dropdown-icon" />
+                    Details
+                </button>
+            </div>
         )
     }
 
@@ -318,21 +342,38 @@ const NewItemsStack = () => {
                 <animated.div
                     style={containerSpring}
                     ref={containerRef}
+                    onScroll={() => { setOptionsPos(null) && setShowOptionsMenu(false) }}
                 >
                     {transitions((style, item) =>
                         <NewItem item={item} style={style} />)
                     }
                 </animated.div >
-                <Options />
+                <DropAnimation
+                    visible={showOptionsMenu}
+                    className="dropdown options-dropdown"
+                    style={{
+                        position: 'absolute',
+                        top: optionsPos ? optionsPos.y + 40 : 0,
+                        left: optionsPos ? optionsPos.x - 43 : 0,
+                        zIndex: 10,
+                    }}
+                >
+                    <ItemOptionsMenu />
+                </DropAnimation>
             </div>
             <animated.div
                 id="expand-button-container"
                 className="bottom-buttons"
                 style={buttonContainerProps}
             >
-                <button id="expand-button" onClick={() => setExpanded(!expanded)}>
+                <button
+                    id="expand-button"
+                    onClick={() => setExpanded(!expanded)}
+                    aria-label="Expand new item stack"
+                    tabIndex={0}
+                >
                     {`${items.length} `}
-                    < animated.div
+                    <animated.div
                         id="expand-button-icon"
                         style={rotationSpring}
                         aria-label="Expand new item stack"
