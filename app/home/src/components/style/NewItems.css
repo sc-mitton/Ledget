@@ -76,12 +76,6 @@
 
 /* -------------------------------- Dropdown -------------------------------- */
 
-.options-dropdown {
-    margin-top: 40px;
-    margin-left: -65px;
-    position: fixed;
-}
-
 .options-dropdown::before {
     position: absolute;
     top: -7px;

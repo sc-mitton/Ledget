@@ -33,14 +33,13 @@ function withModal(WrappedComponent) {
         }, [])
 
         useEffect(() => {
+            modalRef.current.focus()
             const handleKeyDown = (event) => {
                 if (event.key === "Tab") {
-                    if (!modalRef.current.contains(document.activeElement)) {
-                        event.preventDefault()
-                        exitRef.current.focus()
-                    }
+                    event.preventDefault()
+                    exitRef.current.focus()
                 }
-            };
+            }
 
             window.addEventListener("keydown", handleKeyDown)
             return () => {

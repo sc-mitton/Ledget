@@ -129,7 +129,11 @@ const MonthPicker = () => {
                     <Arrow width={'1.3em'} height={'1.3em'} />
                 </button>
             </div>
-            <DropAnimation visible={picker} className="dropdown" id="picker-container">
+            <DropAnimation
+                visible={picker}
+                className="dropdown"
+                id="picker-container"
+            >
                 <div >
                     <div id="year-navigation">
                         <button

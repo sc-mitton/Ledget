@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-import { useSpring, animated, useTransition, useSpringRef, useChain } from '@react-spring/web'
+import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 
 import "./style/NewItems.css"
 import Ellipsis from "../assets/svg/Ellipsis"
@@ -29,42 +29,19 @@ let data = [
     { 'id': 9, 'data': 'Clothes' }
 ]
 
-const stackMax = 2
-const translate = 13
-const expandedTranslate = 75
-
-// New items container dimensions
-const collapsedHeight = 95
-const expandedHeight = 270
-
-// CSS for the new item notification component
-const newItemsSpringConfig = {
-    position: 'absolute',
-    x: 0,
-    left: 0,
-    right: 0,
-    margin: '0 16px',
-    borderRadius: "12px",
-    padding: "20px",
-    fontWeight: "400",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-}
-
-const containerSpringConfig = {
-    maxWidth: '400px',
-    position: 'relative',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    zIndex: 1,
-    boxSize: 'border-box',
-    height: collapsedHeight,
-}
-
 const NewItemsStack = () => {
+    const stackMax = 2
+    const translate = 13
+    const expandedTranslate = 75
+
+    // New items container dimensions
+    const collapsedHeight = 95
+    const expandedHeight = 270
+
     const [expanded, setExpanded] = useState(false)
     const [items, setItems] = useState(data)
+    const [optionsPos, setOptionsPos] = useState(null)
+    const newItemsContainerRef = useRef(null)
     const containerRef = useRef(null)
     const itemsApi = useSpringRef()
 
@@ -84,7 +61,13 @@ const NewItemsStack = () => {
     })
 
     const [containerSpring, containerApi] = useSpring(() => ({
-        ...containerSpringConfig
+        maxWidth: '400px',
+        position: 'relative',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 1,
+        boxSize: 'border-box',
+        height: collapsedHeight,
     }))
 
     const getBackground = useCallback((index) => {
@@ -155,7 +138,17 @@ const NewItemsStack = () => {
                 zIndex: (-1 * index),
                 opacity: getOpacity(index),
                 background: getBackground(index),
-                ...newItemsSpringConfig
+                position: 'absolute',
+                x: 0,
+                left: 0,
+                right: 0,
+                margin: '0 16px',
+                borderRadius: "12px",
+                padding: "20px",
+                fontWeight: "400",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
             }),
             update: (item, index) => ({
                 // top: getTop(index),
@@ -165,39 +158,33 @@ const NewItemsStack = () => {
                 opacity: getOpacity(index),
                 background: getBackground(index),
             }),
+            onRest: (item, index) => {
+                expanded &&
+                    containerApi.start({
+                        overflow: 'scroll',
+                    })
+            },
             onStart: () => {
+                containerApi.start({ overflow: 'hidden' })
                 if (!expanded && containerRef.current) {
                     containerRef.current.scrollTop = 0
                 }
-                containerApi.start({
-                    height: expanded
-                        ? Math.min(items.length * expandedTranslate, expandedHeight)
-                        : (items.length > 0 ? collapsedHeight : 0),
-                })
             },
-            onRest: () => {
-                containerApi.start({
-                    overflow: expanded
-                        ? (expandedHeight < items.length * expandedTranslate) ? 'scroll' : 'visible'
-                        : 'visible',
-                })
-            },
+            config: { tension: 200, friction: 22, mass: 1 },
             ref: itemsApi
         }
     )
 
     useEffect(() => {
-        containerApi.start({ overflow: 'hidden' })
         itemsApi.start()
-    }, [expanded, items])
-
-    useEffect(() => {
         containerApi.start({
             height: expanded
                 ? Math.min(items.length * expandedTranslate, expandedHeight)
-                : (items.length > 0 ? collapsedHeight : 0),
+                : (items.length > 0 ? collapsedHeight : 0)
         })
-    }, [items])
+    }, [expanded, items])
+
+
 
     const handleConfirm = i => {
         itemsApi.start((item, index) => {
@@ -214,78 +201,27 @@ const NewItemsStack = () => {
                         containerApi.start({ overflow: 'hidden' })
                     },
                     onRest: () => {
-                        setItems(items.filter(
-                            (item) => item.id !== i
-                        ))
+                        setItems(items.filter((item) => item.id !== i))
                     },
                 }
             }
         })
     }
 
-    const Options = ({ item }) => {
-
-        const Option = ({ optionName }) => {
-
-            const OptionContent = () => {
-                const options = {
-                    split: (
-                        <><Split className="dropdown-icon" />Split</>
-                    ),
-                    note: (
-                        <><Edit className="dropdown-icon" />Note</>
-                    ),
-                    snooze: (
-                        <><Snooze className="dropdown-icon" />Snooze</>
-                    ),
-                    details: (
-                        <><Details className="dropdown-icon" />Details</>
-                    ),
-                }
-                const optionContent = options[optionName] || null
-                return (<>{optionContent}</>)
-            }
-
-            return (
-                <Menu.Item as={React.Fragment}>
-                    {({ active }) => (
-                        <button className={`dropdown-item ${active && "active-dropdown-item"}`}>
-                            <OptionContent />
-                        </button>
-                    )}
-                </Menu.Item>
-            )
-        }
-
-        return (
-            <Menu>
-                {({ open }) => (
-                    <>
-                        <Menu.Button
-                            className='narrow-icon'
-                            tabIndex={item.id !== 0 && !expanded ? -1 : ''}
-                        >
-                            <Ellipsis />
-                        </Menu.Button>
-                        <DropAnimation visible={open}>
-                            <Menu.Items
-                                as="div"
-                                className="dropdown options-dropdown"
-                                static
-                            >
-                                <Option optionName='split' />
-                                <Option optionName='note' />
-                                <Option optionName='snooze' />
-                                <Option optionName='details' />
-                            </Menu.Items>
-                        </DropAnimation>
-                    </>
-                )}
-            </Menu>
-        )
-    }
-
     const NewItem = ({ item, style }) => {
+        const ellipsisRef = useRef(null)
+
+        const handleEllipsisClick = (e) => {
+            !optionsPos
+                ?
+                setOptionsPos({
+                    x: ellipsisRef.current.getBoundingClientRect().left
+                        - newItemsContainerRef.current.getBoundingClientRect().left,
+                    y: ellipsisRef.current.getBoundingClientRect().top
+                        - newItemsContainerRef.current.getBoundingClientRect().top,
+                })
+                : setOptionsPos(null)
+        }
 
         return (
             <animated.div
@@ -312,16 +248,70 @@ const NewItemsStack = () => {
                     >
                         <CheckMark />
                     </button>
-
-                    <Options item={item} />
+                    <button
+                        className='narrow-icon'
+                        tabIndex={item.id !== 0 && !expanded ? -1 : ''}
+                        ref={ellipsisRef}
+                        onClick={(e) => handleEllipsisClick(e)}
+                    >
+                        <Ellipsis />
+                    </button>
                 </div>
             </animated.div>
         )
     }
 
+    const Options = () => {
+        const [showOptionsMenu, setShowOptionsMenu] = useState(false)
+
+        useEffect(() => {
+            optionsPos ? setShowOptionsMenu(true) : setShowOptionsMenu(false)
+        }, [optionsPos])
+
+        const MenuItemWrapper = ({ children }) => {
+            return (
+                <>
+                    <button className={`dropdown-item active-dropdown-item"}`}>
+                        {children}
+                    </button>
+                </>
+            )
+        }
+
+        return (
+            <DropAnimation
+                visible={showOptionsMenu}
+                style={{
+                    position: 'absolute',
+                    top: optionsPos ? optionsPos.y + 40 : 0,
+                    left: optionsPos ? optionsPos.x - 43 : 0,
+                    zIndex: 10,
+                }}
+            >
+                <div
+                    className="dropdown options-dropdown"
+                    onMouseLeave={() => setOptionsPos(null)}
+                >
+                    <MenuItemWrapper>
+                        <><Split className="dropdown-icon" />Split</>
+                    </MenuItemWrapper>
+                    <MenuItemWrapper>
+                        <><Edit className="dropdown-icon" />Note</>
+                    </MenuItemWrapper>
+                    <MenuItemWrapper>
+                        <><Snooze className="dropdown-icon" />Snooze</>
+                    </MenuItemWrapper>
+                    <MenuItemWrapper>
+                        <><Details className="dropdown-icon" />Details</>
+                    </MenuItemWrapper>
+                </div>
+            </DropAnimation>
+        )
+    }
+
     return (
         <>
-            <div id="new-items-container">
+            <div id="new-items-container" ref={newItemsContainerRef}>
                 {expanded && items.length > stackMax &&
                     <div className="shadow shadow-bottom"></div>
                 }
@@ -333,6 +323,7 @@ const NewItemsStack = () => {
                         <NewItem item={item} style={style} />)
                     }
                 </animated.div >
+                <Options />
             </div>
             <animated.div
                 id="expand-button-container"
