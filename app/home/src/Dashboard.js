@@ -5,7 +5,7 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import Header from './Header'
 import Spending from './components/Spending'
 import Items from './components/Items'
-import Settings from './components/Settings'
+import Profile from './components/Profile'
 import Accounts from './components/Accounts'
 import './style/dashboard.css'
 
@@ -36,8 +36,8 @@ const Dashboard = () => {
             case '/accounts':
                 navigate('/accounts')
                 break
-            case '/settings':
-                navigate('/settings')
+            case '/profile':
+                navigate('/profile')
                 break
             default:
                 navigate('/spending')
@@ -58,7 +58,7 @@ const Dashboard = () => {
                     </Route>
                     {isNarrow && <Route path="items" element={<Items />} />}
                     <Route path="accounts" element={<Accounts />} />
-                    <Route path="settings" element={<Settings />} />
+                    <Route path="profile" element={<Profile />} />
                 </Routes >
             </div>
         </>

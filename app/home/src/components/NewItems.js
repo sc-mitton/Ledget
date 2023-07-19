@@ -7,12 +7,8 @@ import "./style/NewItems.css"
 import Ellipsis from "../assets/svg/Ellipsis"
 import CheckMark from "../assets/svg/CheckMark"
 import Expand from "../assets/svg/Expand"
-import Edit from "../assets/svg/Edit"
-import Split from "../assets/svg/Split"
-import Details from "../assets/svg/Info"
-import Snooze from "../assets/svg/Snooze"
 import DropAnimation from "./utils/DropAnimation"
-import { Menu } from '@headlessui/react'
+import ItemOptionsMenu from "./dropdowns/ItemOptionsMenu"
 
 
 // TODO: pull this data in from backend
@@ -40,6 +36,7 @@ const NewItemsStack = () => {
 
     const [expanded, setExpanded] = useState(false)
     const [items, setItems] = useState(data)
+    const [loaded, setLoaded] = useState(false)
     const [optionsPos, setOptionsPos] = useState(null)
     const [showOptionsMenu, setShowOptionsMenu] = useState(false)
     const newItemsContainerRef = useRef(null)
@@ -110,7 +107,7 @@ const NewItemsStack = () => {
 
     const getY = useCallback((index, loaded = true) => {
         if (!loaded) {
-            return stackMax * translate + 15
+            return (index ** 2) * 5 + 30
         }
 
         if (index === 0 || expanded) {
@@ -171,10 +168,12 @@ const NewItemsStack = () => {
                     containerRef.current.scrollTop = 0
                 }
             },
-            config: { tension: 200, friction: 22, mass: 1 },
+            config: { tension: 200, friction: loaded ? 22 : 40, mass: 1 },
             ref: itemsApi
         }
     )
+
+    useEffect(() => { setLoaded(true) }, [])
 
     useEffect(() => {
         itemsApi.start()
@@ -195,11 +194,7 @@ const NewItemsStack = () => {
                 return {
                     x: 100,
                     opacity: 0,
-                    config: {
-                        duration: 130,
-                        tension: 170,
-                        friction: 26
-                    },
+                    config: { duration: 130 },
                     onStart: () => {
                         containerApi.start({ overflow: 'hidden' })
                     },
@@ -265,74 +260,6 @@ const NewItemsStack = () => {
         )
     }
 
-    const ItemOptionsMenu = ({ visible }) => {
-        const ref = useRef()
-        const refs = useRef([]);
-        for (let i = 0; i < 4; i++) {
-            refs.current[i] = useRef();
-        }
-
-        useEffect(() => {
-            const handleKeyDown = (event) => {
-                if (event.key === 'Escape' || event.key === 'Tab') {
-                    setShowOptionsMenu(false)
-                    setOptionsPos(null)
-                } else if (event.key === 'ArrowUp') {
-                    event.preventDefault()
-                    const currentIndex = refs.current.findIndex((ref) => ref.current === document.activeElement)
-                    const previousIndex = Math.max(currentIndex - 1, 0)
-                    refs.current[previousIndex].current.focus()
-                } else if (event.key === 'ArrowDown') {
-                    event.preventDefault()
-                    const currentIndex = refs.current.findIndex((ref) => ref.current === document.activeElement)
-                    const nextIndex = Math.min((currentIndex + 1), refs.current.length - 1)
-                    refs.current[nextIndex].current.focus()
-                }
-            };
-            const handleClickOutside = (event) => {
-                if (ref.current && !ref.current.contains(event.target)) {
-                    setShowOptionsMenu(false)
-                    setOptionsPos(null)
-                }
-            }
-
-            window.addEventListener("mousedown", handleClickOutside)
-            window.addEventListener('keydown', handleKeyDown)
-            return () => {
-                window.removeEventListener('keydown', handleKeyDown)
-                window.removeEventListener("mousedown", handleClickOutside)
-            }
-        }, [])
-
-        useEffect(() => {
-            refs.current[0].current.focus()
-        }, [])
-
-        return (
-            <div
-                className="options-dropdown-container"
-                ref={ref}
-            >
-                <button className={`dropdown-item`} ref={refs.current[0]}>
-                    <Split className="dropdown-icon" />
-                    Split
-                </button>
-                <button className={`dropdown-item`} ref={refs.current[1]}>
-                    <Edit className="dropdown-icon" />
-                    Note
-                </button>
-                <button className={`dropdown-item`} ref={refs.current[2]}>
-                    <Snooze className="dropdown-icon" />
-                    Snooze
-                </button>
-                <button className={`dropdown-item`} ref={refs.current[3]}>
-                    <Details className="dropdown-icon" />
-                    Details
-                </button>
-            </div>
-        )
-    }
-
     return (
         <>
             <div id="new-items-container" ref={newItemsContainerRef}>
@@ -358,7 +285,12 @@ const NewItemsStack = () => {
                         zIndex: 10,
                     }}
                 >
-                    <ItemOptionsMenu />
+                    <ItemOptionsMenu
+                        callBack={() => {
+                            setShowOptionsMenu(false)
+                            setOptionsPos(null)
+                        }}
+                    />
                 </DropAnimation>
             </div>
             <animated.div

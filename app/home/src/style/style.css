@@ -149,7 +149,10 @@ a:focus-visible {
     border-bottom: var(--accessible-focus-drop-shadow);
 }
 
-
+li:focus-visible {
+    outline: none;
+    box-shadow: var(--accessible-focus-drop-shadow);
+}
 
 input:-webkit-autofill {
     -webkit-box-shadow: inset 0 0 0px 9999px var(--input-color) !important;

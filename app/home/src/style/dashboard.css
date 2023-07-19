@@ -209,8 +209,14 @@
     border-radius: 6px;
 }
 
+.dropdown-item:focus-visible {
+    outline: none;
+    background-color: var(--green-highlight);
+    box-shadow: none;
+}
+
 .active-dropdown-item {
-    box-shadow: var(--accessible-focus-drop-shadow);
+    background-color: var(--green-highlight);
 }
 
 .dropdown-item:hover {
@@ -247,4 +253,12 @@
 
 #all-items-window {
     flex-grow: 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                               Settings Window                              */
+/* -------------------------------------------------------------------------- */
+
+#settings-window {
+    flex: 1;
 }

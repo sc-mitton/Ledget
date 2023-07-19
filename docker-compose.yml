@@ -128,8 +128,7 @@ services:
       - "4000:4000"
     env_file:
       - ./secrets/.env.ory
-    command: >
-      sh -c "ory tunnel --project reverent-lewin-bqqp1o2zws --allowed-cors-origins https://localhost:3000 https://localhost:3001"
+    command: ""
 
 volumes:
   dev-db-data:
