@@ -69,13 +69,13 @@ const NewItemsStack = () => {
     }))
 
     const getBackground = useCallback((index) => {
-        let r = 230 - (Math.min(index, stackMax) ** 2 * 18)
+        let r = 230 - (Math.min(index, stackMax) ** 2 * 30)
         // Items lower on the stack are darker
         // Don't calculate past the stack max because
         // it's not shown in unexpanded mode
         if (expanded || index === 0) {
-            return "linear-gradient(0deg, rgba(240, 240, 240, .85) 0%,  \
-                    rgba(240, 240, 240, 1)25%, rgba(240, 240, 240, 1)"
+            return "linear-gradient(0deg, rgba(237, 237, 237, .85) 0%,  \
+                    rgba(237, 237, 237, 1)25%, rgba(237, 237, 237, 1)"
         } else {
             return `linear-gradient(0deg, rgba(${r}, ${r}, ${r}, .75) 0%,
              rgba(${r}, ${r}, ${r}, 1)25%, rgba(${r}, ${r}, ${r}, 1)`
