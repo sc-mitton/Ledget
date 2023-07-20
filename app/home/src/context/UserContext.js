@@ -16,6 +16,7 @@ const UserProvider = ({ children }) => {
                     setUser(res.data)
                 })
                 .catch(err => {
+                    console.log(err)
                     window.location.href = process.env.REACT_APP_LOGOUT_REDIRECT_URL
                 })
         }

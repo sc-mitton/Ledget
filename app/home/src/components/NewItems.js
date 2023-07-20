@@ -168,7 +168,11 @@ const NewItemsStack = () => {
                     containerRef.current.scrollTop = 0
                 }
             },
-            config: { tension: 200, friction: loaded ? 22 : 40, mass: 1 },
+            config: {
+                tension: 200,
+                friction: loaded ? 22 : 40,
+                mass: 1
+            },
             ref: itemsApi
         }
     )

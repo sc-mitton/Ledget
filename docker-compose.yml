@@ -122,13 +122,12 @@ services:
       - localhost_key
       - ca_pem
   ory:
-    build:
-      context: ./ory
+    image: oryd/ory
     ports:
-      - "4000:4000"
+      - 4000:4000
     env_file:
       - ./secrets/.env.ory
-    command: ""
+    command: tunnel --project reverent-lewin-bqqp1o2zws --allowed-cors-origins https://localhost:3000 https://localhost:3001
 
 volumes:
   dev-db-data:

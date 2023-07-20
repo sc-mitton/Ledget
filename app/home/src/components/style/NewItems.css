@@ -18,7 +18,7 @@
 }
 
 .new-item-data {
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .new-item-icons {
@@ -43,7 +43,7 @@
     color: var(--main-green-darker);
     transform: scale(1);
     transition: all .2s ease-out;
-    font-weight: 500;
+
     font-size: 15px;
 }
 

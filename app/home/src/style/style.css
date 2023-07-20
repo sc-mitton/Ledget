@@ -42,6 +42,7 @@
     /* Icons & Buttons */
     --button-gray: #363636;
     --button-hover-gray: #292929;
+    --button-black: rgb(36, 36, 36);
     --icon-light-gray: #dfdfdf;
     --icon-hover-light-gray: #dbdbdb;
     --icon-hover-gray: #c4c4c4;
@@ -80,18 +81,25 @@ main {
 }
 
 div,
-p,
-span,
 a,
 input,
 label,
 button,
-textarea,
 select,
-option {
+option,
+span {
     font-family: "Source Sans 3";
     font-size: 14px;
     color: var(--main-text-gray);
+}
+
+p,
+textarea {
+    font-family: "Open Sans" sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--main-text-gray);
+    opacity: .8
 }
 
 h1,
