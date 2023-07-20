@@ -37,15 +37,15 @@ const Navigation = ({ isNarrow }) => {
         backgroundColor: "var(--button-hover-gray)",
         borderRadius: '12px',
         height: "100%",
-        width: tabElements.find((tab) => tab.name === selectedKey)?.offsetWidth,
-        left: tabElements.find((tab) => tab.name === selectedKey)?.offsetLeft,
+        width: tabElements.find((tab) => tab.firstChild.name === selectedKey)?.offsetWidth,
+        left: tabElements.find((tab) => tab.firstChild.name === selectedKey)?.offsetLeft,
         top: 0,
         config: { tension: 200, friction: 22 },
         zIndex: -1
     })
 
     useEffect(() => {
-        let tabs = Array.from(navListRef.current.querySelectorAll("[role=link] a"))
+        let tabs = Array.from(navListRef.current.querySelectorAll("[role=link]"))
         if (tabElements.length != tabs.length) {
             setTabElements(tabs)
         }
@@ -59,8 +59,8 @@ const Navigation = ({ isNarrow }) => {
 
     const handleTabClick = (e) => {
         e.preventDefault()
-        setSelectedKey(e.target.name)
-        navigate(`/${e.target.name}`)
+        setSelectedKey(e.target.name || e.target.firstChild.name)
+        navigate(`/${e.target.name || e.target.firstChild.name}`)
     }
 
     return (
@@ -76,6 +76,7 @@ const Navigation = ({ isNarrow }) => {
                                 role="link"
                                 tabIndex={0}
                                 onClick={handleTabClick}
+                                onKeyDown={(e) => e.key === "Enter" && handleTabClick(e)}
                             >
                                 <a
                                     name={tab.name}

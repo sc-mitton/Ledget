@@ -148,6 +148,7 @@ header {
 
 .nav-item,
 .current-nav-item {
+    width: 100%;
     flex: 1;
     flex-shrink: 0;
     display: flex;
