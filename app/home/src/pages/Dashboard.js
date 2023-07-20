@@ -3,11 +3,11 @@ import React, { useRef, useLayoutEffect, useEffect } from 'react'
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 
 import Header from './Header'
-import Spending from './components/Spending'
-import Items from './components/Items'
-import Profile from './components/Profile'
-import Accounts from './components/Accounts'
-import './style/dashboard.css'
+import Spending from './Spending'
+import Items from './Items'
+import Profile from './Profile'
+import Accounts from './Accounts'
+import './styles/dashboard.css'
 
 
 const Dashboard = () => {

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './style/Accounts.css'
+import './styles/Accounts.css'
 
 function Accounts() {
     return (

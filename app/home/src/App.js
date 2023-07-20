@@ -3,7 +3,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { UserProvider } from './context/UserContext'
 
-import Dashboard from './Dashboard'
+import Dashboard from './pages/Dashboard'
 
 function App() {
 

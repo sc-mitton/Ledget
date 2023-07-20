@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 
 import { useSpring, animated } from '@react-spring/web'
 
-import withModal from '../utils/withModal'
+import withModal from '../../components/utils/withModal'
 import { UserContext } from '../../context/UserContext'
 import "./styles/Logout.css"
 

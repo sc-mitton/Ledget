@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import CashFlow from '../assets/svg/CashFlow'
 import Graph from '../assets/svg/Graph'
 
-import MonthPicker from './inputs/MonthPicker'
+import MonthPicker from '../components/inputs/MonthPicker'
 
 function Spending() {
     const [graphView, setGraphView] = useState(true)

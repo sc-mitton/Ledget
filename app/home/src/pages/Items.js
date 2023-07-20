@@ -1,9 +1,9 @@
 import React from 'react'
-import NewItemsStack from './NewItems'
+import NewItemsStack from '../components/NewItems'
 
 import Plus from '../assets/svg/Plus'
 import Funnel from '../assets/svg/Funnel'
-import './style/Items.css'
+import './styles/Items.css'
 
 function Items() {
 

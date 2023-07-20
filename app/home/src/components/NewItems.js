@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 
-import "./style/NewItems.css"
+import "./styles/NewItems.css"
 import Ellipsis from "../assets/svg/Ellipsis"
 import CheckMark from "../assets/svg/CheckMark"
 import Expand from "../assets/svg/Expand"

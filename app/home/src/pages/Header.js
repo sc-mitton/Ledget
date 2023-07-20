@@ -4,59 +4,35 @@ import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
 import { useSpring, animated } from '@react-spring/web'
 
-import './style/header.css'
-import logoIcon from './assets/svg/logoIcon.svg'
-import Profile1 from './assets/svg/Profile1'
-import Profile2 from './assets/svg/Profile2'
-import SettingsIcon from './assets/svg/Settings'
-import HelpIcon from './assets/svg/Help'
-import LogoutIcon from './assets/svg/LogoutIcon'
-import Help from './components/modals/Help'
-import DropAnimation from './components/utils/DropAnimation'
-import Logout from './components/modals/Logout'
-import { UserContext } from './context/UserContext'
+import './styles/header.css'
+import logoIcon from '../assets/svg/logoIcon.svg'
+import Profile1 from '../assets/svg/Profile1'
+import Profile2 from '../assets/svg/Profile2'
+import SettingsIcon from '../assets/svg/Settings'
+import HelpIcon from '../assets/svg/Help'
+import LogoutIcon from '../assets/svg/LogoutIcon'
+import Help from '../components/modals/Help'
+import DropAnimation from '../components/utils/DropAnimation'
+import Logout from '../components/modals/Logout'
+import { UserContext } from '../context/UserContext'
 
 
-const Navigation = ({ isNarrow }) => {
-    let tabs = [
-        { name: "spending", path: "/spending" },
-        { name: "accounts", path: "/accounts" },
-        { name: "items", path: "/items" },
-    ]
-
-    const location = useLocation()
-    const navListRef = useRef()
+const useAnimation = (update) => {
     const [tabElements, setTabElements] = useState([])
     const [tabElement, setTabElement] = useState()
-    const [pillWidth, setPillWidth] = useState(0)
-    const [pillLeft, setPillLeft] = useState(0)
-    const [loaded, setLoaded] = useState(false)
-    const navigate = useNavigate()
+    const navListRef = useRef()
 
     const tabsSpring = useSpring({
         position: "absolute",
         backgroundColor: "var(--button-hover-gray)",
         borderRadius: '12px',
         height: "100%",
-        width: pillWidth,
-        left: pillLeft,
+        width: tabElement?.offsetWidth || 0,
+        left: tabElement?.offsetLeft,
         top: 0,
         zIndex: -1,
         config: { tension: 200, friction: 22 },
-        onRest: () => {
-            setPillWidth(tabElement.offsetWidth)
-            setPillLeft(tabElement.offsetLeft)
-        }
     })
-
-    useEffect(() => { setLoaded(true) }, [])
-
-    useEffect(() => {
-        if (tabElement) {
-            setPillWidth(tabElement.offsetWidth)
-            setPillLeft(tabElement.offsetLeft)
-        }
-    }, [tabElement])
 
     useEffect(() => {
         if (tabElements.length > 0) {
@@ -68,11 +44,31 @@ const Navigation = ({ isNarrow }) => {
     }, [tabElements, location.pathname])
 
     useEffect(() => {
-        const elements = Array.from(
-            navListRef.current.querySelectorAll("[role=link]")
-        )
-        setTabElements(elements)
-    }, [isNarrow])
+        setTimeout(() => {
+            const elements = Array.from(
+                navListRef.current.querySelectorAll("[role=link]")
+            )
+            setTabElements(elements)
+        }, 0)
+    }, [update])
+
+    return {
+        tabsSpring,
+        navListRef,
+    }
+}
+
+
+const Navigation = ({ isNarrow }) => {
+    let tabs = [
+        { name: "spending", path: "/spending" },
+        { name: "accounts", path: "/accounts" },
+        { name: "items", path: "/items" },
+    ]
+
+    const location = useLocation()
+    const navigate = useNavigate()
+    const { tabsSpring, navListRef } = useAnimation(isNarrow)
 
     const handleTabClick = (e) => {
         e.preventDefault()
