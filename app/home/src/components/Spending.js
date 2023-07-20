@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import CashFlow from '../assets/svg/CashFlow'
 import Graph from '../assets/svg/Graph'
 
-import './style/Spending.css'
 import MonthPicker from './inputs/MonthPicker'
 
 function Spending() {

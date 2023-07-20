@@ -69,7 +69,7 @@ const NewItemsStack = () => {
     }))
 
     const getBackground = useCallback((index) => {
-        let r = 230 - (Math.min(index, stackMax) ** 2 * 30)
+        let r = 230 - (Math.min(index, stackMax) ** 2 * 40)
         // Items lower on the stack are darker
         // Don't calculate past the stack max because
         // it's not shown in unexpanded mode
@@ -84,7 +84,7 @@ const NewItemsStack = () => {
 
     const getOpacity = useCallback((index) => {
         const belowStackMax = index > stackMax
-        return !expanded && belowStackMax ? 0 : 1
+        return (!expanded && belowStackMax && index !== 0) ? 0 : 1
     }, [expanded])
 
     const getScale = useCallback((index, loaded = true) => {
@@ -169,7 +169,7 @@ const NewItemsStack = () => {
                 }
             },
             config: {
-                tension: 200,
+                tension: 180,
                 friction: loaded ? 22 : 40,
                 mass: 1
             },

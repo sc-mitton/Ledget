@@ -26,10 +26,11 @@ const Navigation = ({ isNarrow }) => {
 
     const location = useLocation()
     const navListRef = useRef()
-    const [selectedKey, setSelectedKey] = useState(
-        tabs.find((tab) => tab.path === location.pathname)?.name
-    )
-    let [tabElements, setTabElements] = useState([]);
+    const [tabElements, setTabElements] = useState([])
+    const [tabElement, setTabElement] = useState()
+    const [pillWidth, setPillWidth] = useState(0)
+    const [pillLeft, setPillLeft] = useState(0)
+    const [loaded, setLoaded] = useState(false)
     const navigate = useNavigate()
 
     const tabsSpring = useSpring({
@@ -37,29 +38,44 @@ const Navigation = ({ isNarrow }) => {
         backgroundColor: "var(--button-hover-gray)",
         borderRadius: '12px',
         height: "100%",
-        width: tabElements.find((tab) => tab.firstChild.name === selectedKey)?.offsetWidth,
-        left: tabElements.find((tab) => tab.firstChild.name === selectedKey)?.offsetLeft,
+        width: pillWidth,
+        left: pillLeft,
         top: 0,
+        zIndex: -1,
         config: { tension: 200, friction: 22 },
-        zIndex: -1
+        onRest: () => {
+            setPillWidth(tabElement.offsetWidth)
+            setPillLeft(tabElement.offsetLeft)
+        }
     })
 
-    useEffect(() => {
-        let tabs = Array.from(navListRef.current.querySelectorAll("[role=link]"))
-        if (tabElements.length != tabs.length) {
-            setTabElements(tabs)
-        }
-    }, [tabElements, isNarrow])
+    useEffect(() => { setLoaded(true) }, [])
 
     useEffect(() => {
-        setSelectedKey(
-            tabs.find((tab) => tab.path === location.pathname)?.name
+        if (tabElement) {
+            setPillWidth(tabElement.offsetWidth)
+            setPillLeft(tabElement.offsetLeft)
+        }
+    }, [tabElement])
+
+    useEffect(() => {
+        if (tabElements.length > 0) {
+            const element = tabElements.find(
+                (element) => element.firstChild.name === location.pathname.split("/")[1]
+            )
+            setTabElement(element)
+        }
+    }, [tabElements, location.pathname])
+
+    useEffect(() => {
+        const elements = Array.from(
+            navListRef.current.querySelectorAll("[role=link]")
         )
-    }, [location.pathname])
+        setTabElements(elements)
+    }, [isNarrow])
 
     const handleTabClick = (e) => {
         e.preventDefault()
-        setSelectedKey(e.target.name || e.target.firstChild.name)
         navigate(`/${e.target.name || e.target.firstChild.name}`)
     }
 

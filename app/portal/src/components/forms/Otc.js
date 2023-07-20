@@ -113,7 +113,7 @@ function Otc({ codeLength, required, reset, setReset }) {
     }
 
     // Function for turning the code input into a controlled component
-    const ControlledCodeInput = ({ onChange, value }) => (
+    const ControlledCodeInput = ({ value, onChange }) => (
         <input
             type="hidden"
             value={value}
