@@ -2,7 +2,7 @@ import React, { useRef, useLayoutEffect, useEffect } from 'react'
 
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 
-import Header from './Header'
+import Header from '../Header'
 import Spending from './Spending'
 import Items from './Items'
 import Profile from './Profile'
