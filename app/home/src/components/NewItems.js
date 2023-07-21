@@ -331,6 +331,7 @@ const Menu = ({ pos, show, setShow }) => {
 
 const NewItemsStack = ({ stackMax }) => {
     const { items, setItems } = useContext(NewItemsContext)
+    const newItemsContainerRef = useRef(null)
     const containerRef = useRef(null)
     const [expanded, setExpanded] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
@@ -377,7 +378,7 @@ const NewItemsStack = ({ stackMax }) => {
 
     return (
         <>
-            <div id="new-items-container">
+            <div id="new-items-container" ref={newItemsContainerRef}>
                 <Shadow visible={expanded && items.length > stackMax} />
                 <animated.div
                     style={containerProps}

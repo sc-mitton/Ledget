@@ -1,13 +1,9 @@
-import React, { useRef, useState, useEffect } from 'react'
-
-import { useSpring, animated } from '@react-spring/web'
+import React, { useState, useEffect } from 'react'
 
 import withModal from '../../components/utils/withModal'
-import { UserContext } from '../../context/UserContext'
 import "./styles/Logout.css"
 
 function Logout(props) {
-    const { logout } = React.useContext(UserContext)
     const [seconds, setSeconds] = useState(30);
 
     useEffect(() => {
@@ -21,10 +17,13 @@ function Logout(props) {
     }, [])
 
     useEffect(() => {
-        if (seconds === 0) {
-            logout()
-        }
-    }, [seconds])
+        // TODO REDUX: dispatch get logout action
+    }, [])
+
+    const logout = () => {
+        props.setVisible(false)
+        // TODO REDUX: dispatch logout action
+    }
 
     return (
         <div>

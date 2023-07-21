@@ -14,7 +14,6 @@ import LogoutIcon from '../assets/svg/LogoutIcon'
 import Help from '../components/modals/Help'
 import DropAnimation from '../components/utils/DropAnimation'
 import Logout from '../components/modals/Logout'
-import { UserContext } from '../context/UserContext'
 
 
 const useAnimation = (update) => {
@@ -123,7 +122,6 @@ function Header({ isNarrow }) {
     const navigate = useNavigate()
 
     const DropDownMenu = () => {
-        const { getLogoutFlow } = useContext(UserContext)
 
         const Wrapper = ({ onClick, children }) => {
 
@@ -166,7 +164,7 @@ function Header({ isNarrow }) {
                                     <HelpIcon className="dropdown-icon" />
                                     Help
                                 </Wrapper>
-                                <Wrapper onClick={() => getLogoutFlow() && setModal("logout")}>
+                                <Wrapper onClick={() => setModal("logout")}>
                                     <LogoutIcon className="dropdown-icon" />
                                     Logout
                                 </Wrapper>

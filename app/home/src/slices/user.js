@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { useSelector } from 'react-redux'
 import { ledget } from '../api/ledget'
 
 export const initialState = {
@@ -19,6 +20,7 @@ export const initialState = {
     }
 }
 
+// Slices
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -46,15 +48,12 @@ const userSlice = createSlice({
 })
 
 export const { getUser, getUserSuccess, getUserFailure, updateUser } = userSlice.actions
-
-export const userSelector = (state) => state.user
-
 export default userSlice.reducer
 
-export function fetchUser() {
-    return async (dispatch) => {
+// Thunk function
+export const fetchUser = () => (dispatch) => {
+    setTimeout(() => {
         dispatch(getUser())
-
         try {
             ledget.get('/user/me').
                 then((response) => {
@@ -64,5 +63,9 @@ export function fetchUser() {
         } catch (error) {
             dispatch(getUserFailure())
         }
-    }
+    }, 10000)
 }
+
+// Selectors - This is how we pull information from the Global store slice
+export const selectUser = (state) => state.user
+// user = useSelector(selectUser) this is how we use the selector in a component
