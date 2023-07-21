@@ -16,10 +16,9 @@ import DropAnimation from './components/utils/DropAnimation'
 import Logout from './components/modals/Logout'
 
 
-const useAnimation = (update) => {
+const useAnimation = (update, ref) => {
     const [tabElements, setTabElements] = useState([])
     const [tabElement, setTabElement] = useState()
-    const navListRef = useRef()
 
     const tabsSpring = useSpring({
         position: "absolute",
@@ -45,15 +44,14 @@ const useAnimation = (update) => {
     useEffect(() => {
         setTimeout(() => {
             const elements = Array.from(
-                navListRef.current.querySelectorAll("[role=link]")
+                ref.current.querySelectorAll("[role=link]")
             )
             setTabElements(elements)
         }, 0)
     }, [update])
 
     return {
-        tabsSpring,
-        navListRef,
+        tabsSpring
     }
 }
 
@@ -67,7 +65,8 @@ const Navigation = ({ isNarrow }) => {
 
     const location = useLocation()
     const navigate = useNavigate()
-    const { tabsSpring, navListRef } = useAnimation(isNarrow)
+    const navListRef = useRef()
+    const { tabsSpring } = useAnimation(isNarrow, navListRef)
 
     const handleTabClick = (e) => {
         e.preventDefault()

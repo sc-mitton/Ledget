@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import withModal from '../../components/utils/withModal'
+import withModal from '../utils/withModal'
 import "./styles/Logout.css"
 
 function Logout(props) {

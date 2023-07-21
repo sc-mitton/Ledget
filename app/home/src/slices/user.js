@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { useSelector } from 'react-redux'
 import { ledget } from '../api/ledget'
 
 export const initialState = {
@@ -63,9 +62,9 @@ export const fetchUser = () => (dispatch) => {
         } catch (error) {
             dispatch(getUserFailure())
         }
-    }, 10000)
+    }, 0)
 }
 
 // Selectors - This is how we pull information from the Global store slice
-export const selectUser = (state) => state.user
+// export const selectUser = (state) => state.user
 // user = useSelector(selectUser) this is how we use the selector in a component
