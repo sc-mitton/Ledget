@@ -15,10 +15,6 @@ import ItemOptionsMenu from "./dropdowns/ItemOptionsMenu"
 
 const NewItemsContext = createContext()
 
-const useNewItemsStack = () => {
-    return useContext(NewItemsContext)
-}
-
 const NewItemsProvider = ({ children }) => {
     let data = [
         { 'id': 0, 'data': 'Publix' },
@@ -33,20 +29,11 @@ const NewItemsProvider = ({ children }) => {
         { 'id': 9, 'data': 'Clothes' }
     ]// TODO pull this in from backend
 
-    const [expanded, setExpanded] = useState(false)
     const [items, setItems] = useState(data)
-    const [menuPos, setMenuPos] = useState(null)
-    const [showMenu, setShowMenu] = useState(false)
 
     const values = {
-        expanded,
-        setExpanded,
         items,
         setItems,
-        menuPos,
-        setMenuPos,
-        showMenu,
-        setShowMenu,
     }
     return (
         <NewItemsContext.Provider value={values}>
@@ -183,6 +170,17 @@ const useItemAnimations = (expanded, items, stackMax) => {
         }
     )
 
+    const buttonContainerProps = useSpring({
+        marginTop: items.length === 0 ? '0px' : '4px',
+        marginBottom: items.length > 1 ? '12px' : '0px',
+        opacity: items.length > 1 ? 1 : 0,
+        height: items.length > 1 ? '1.6em' : '0em',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        scale: "1.05",
+        zIndex: 100,
+    })
+
     useEffect(() => {
         itemsApi.start()
         containerApi.start({
@@ -196,7 +194,8 @@ const useItemAnimations = (expanded, items, stackMax) => {
         containerApi,
         containerProps,
         itemsApi,
-        itemTransitions
+        itemTransitions,
+        buttonContainerProps
     }
 }
 
@@ -248,71 +247,59 @@ const NewItem = (props) => {
     )
 }
 
-const ExpandButton = ({ children }) => {
-    const { items, expanded, setExpanded } = useNewItemsStack()
+const ExpandButton = ({ onClick, children }) => {
+    const [rotated, setRotated] = useState(false)
 
     const rotationProps = useSpring({
-        transform: `rotate(${expanded ? 0 : 180}deg)`
-    })
-
-    const buttonContainerProps = useSpring({
-        marginTop: items.length === 0 ? '0px' : '4px',
-        marginBottom: items.length > 1 ? '12px' : '0px',
-        opacity: items.length > 1 ? 1 : 0,
-        height: items.length > 1 ? '1.6em' : '0em',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        scale: "1.05",
-        zIndex: 100,
+        transform: `rotate(${rotated ? 0 : 180}deg)`
     })
 
     return (
-        <animated.div
-            id="expand-button-container"
-            className="bottom-buttons"
-            style={buttonContainerProps}
+
+        <button
+            id="expand-button"
+            onClick={() => {
+                setRotated(!rotated)
+                onClick()
+            }}
+            aria-label="Expand new item stack"
+            tabIndex={0}
         >
-            <button
-                id="expand-button"
-                onClick={() => setExpanded(!expanded)}
+            {children}
+            <animated.div
+                id="expand-button-icon"
+                style={rotationProps}
                 aria-label="Expand new item stack"
-                tabIndex={0}
             >
-                {children}
-                <animated.div
-                    id="expand-button-icon"
-                    style={rotationProps}
-                    aria-label="Expand new item stack"
-                >
-                    <ExpandIcon />
-                </animated.div >
-            </button>
-        </animated.div>
+                <ExpandIcon />
+            </animated.div >
+        </button>
     )
 }
 
-const Menu = () => {
-    const { menuPos, showMenu, setShowMenu } = useNewItemsStack()
+const Menu = ({ pos, show, setShow }) => {
     const menuRef = useRef('')
 
     useEffect(() => {
-        if (menuPos) {
-            setShowMenu(true)
+        if (pos) {
+            setShow(true)
         }
 
         const handleClick = (e) => {
             if (menuRef.current && !menuRef.current.contains(e.target)) {
-                setShowMenu(false)
+                setShow(false)
             }
-        }
+        };
+
         const handleKeyDown = (e) => {
             if (e.key === 'Escape' || e.key === 'Tab') {
-                setShowMenu(false)
+                setShow(false)
             }
-        }
+        };
+
         const handleWindowResize = () => {
-            setShowMenu(false)
-        }
+            setShow(false)
+        };
 
         window.addEventListener('click', handleClick)
         window.addEventListener('keydown', handleKeyDown)
@@ -323,16 +310,16 @@ const Menu = () => {
             window.removeEventListener('click', handleClick)
             window.removeEventListener('keydown', handleKeyDown)
         }
-    }, [menuPos])
+    }, [pos])
 
     return (
         <DropAnimation
-            visible={showMenu}
+            visible={show}
             className="dropdown options-dropdown"
             style={{
                 position: 'absolute',
-                top: menuPos ? menuPos.y + 35 : 0,
-                left: menuPos ? menuPos.x - 43 : 0,
+                top: pos ? pos.y + 35 : 0,
+                left: pos ? pos.x - 43 : 0,
                 zIndex: 10,
             }}
             ref={menuRef}
@@ -343,22 +330,23 @@ const Menu = () => {
 }
 
 const NewItemsStack = ({ stackMax }) => {
-    const { items, setItems, expanded, setMenuPos, showMenu, setShowMenu } = useNewItemsStack()
-    const newItemsContainerRef = useRef(null)
+    const { items, setItems } = useContext(NewItemsContext)
     const containerRef = useRef(null)
+    const [expanded, setExpanded] = useState(false)
+    const [showMenu, setShowMenu] = useState(false)
+    const [menuPos, setMenuPos] = useState(null)
 
     const {
         itemsApi,
         containerApi,
         containerProps,
         itemTransitions,
+        buttonContainerProps
     } = useItemAnimations(expanded, items, stackMax)
 
     useEffect(() => {
-        if (!expanded && containerRef.current) {
-            containerRef.current.scrollTop = 0
-        }
-    }, [expanded])
+        !showMenu && setMenuPos(null)
+    }, [showMenu])
 
     const handleConfirm = i => {
         itemsApi.start((item, index) => {
@@ -389,7 +377,7 @@ const NewItemsStack = ({ stackMax }) => {
 
     return (
         <>
-            <div id="new-items-container" ref={newItemsContainerRef}>
+            <div id="new-items-container">
                 <Shadow visible={expanded && items.length > stackMax} />
                 <animated.div
                     style={containerProps}
@@ -400,15 +388,27 @@ const NewItemsStack = ({ stackMax }) => {
                         <NewItem
                             item={item}
                             style={style}
-                            onEllipsis={(e) => !showMenu && handleEllipsis(e)}
+                            onEllipsis={(e) => handleEllipsis(e)}
                             onConfirm={() => handleConfirm(item.id)}
                             tabIndex={expanded || item.id === 0 ? 0 : -1}
                         />)
                     }
                 </animated.div >
-                <Menu />
+                <Menu
+                    show={showMenu}
+                    setShow={setShowMenu}
+                    pos={menuPos}
+                />
             </div>
-            <ExpandButton>{`${items.length} `}</ExpandButton>
+            <animated.div
+                id="expand-button-container"
+                className="bottom-buttons"
+                style={buttonContainerProps}
+            >
+                <ExpandButton onClick={() => setExpanded(!expanded)}>
+                    {`${items.length} `}
+                </ExpandButton>
+            </animated.div>
         </>
     )
 }
