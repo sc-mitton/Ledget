@@ -6,8 +6,8 @@ import Details from "../../assets/svg/Info"
 import Snooze from "../../assets/svg/Snooze"
 
 
-const ItemOptionsMenu = ({ visible, callBack }) => {
-    const ref = useRef()
+const ItemOptionsMenu = () => {
+
     const refs = useRef([]);
     for (let i = 0; i < 4; i++) {
         refs.current[i] = useRef();
@@ -15,9 +15,7 @@ const ItemOptionsMenu = ({ visible, callBack }) => {
 
     useEffect(() => {
         const handleKeyDown = (event) => {
-            if (event.key === 'Escape' || event.key === 'Tab') {
-                callBack()
-            } else if (event.key === 'ArrowUp') {
+            if (event.key === 'ArrowUp') {
                 event.preventDefault()
                 const currentIndex = refs.current.findIndex((ref) => ref.current === document.activeElement)
                 const previousIndex = Math.max(currentIndex - 1, 0)
@@ -28,18 +26,11 @@ const ItemOptionsMenu = ({ visible, callBack }) => {
                 const nextIndex = Math.min((currentIndex + 1), refs.current.length - 1)
                 refs.current[nextIndex].current.focus()
             }
-        };
-        const handleClickOutside = (event) => {
-            if (ref.current && !ref.current.contains(event.target)) {
-                callBack()
-            }
         }
 
-        window.addEventListener("mousedown", handleClickOutside)
         window.addEventListener('keydown', handleKeyDown)
         return () => {
             window.removeEventListener('keydown', handleKeyDown)
-            window.removeEventListener("mousedown", handleClickOutside)
         }
     }, [])
 
@@ -50,7 +41,6 @@ const ItemOptionsMenu = ({ visible, callBack }) => {
     return (
         <div
             className="options-dropdown-container"
-            ref={ref}
         >
             <button className={`dropdown-item`} ref={refs.current[0]}>
                 <Split className="dropdown-icon" />
