@@ -52,20 +52,6 @@
     background-color: var(--icon-hover-gray);
 }
 
-.window-header-icon-selected,
-.window-header-icon {
-    height: 1.3em;
-    width: 1.3em;
-}
-
-.window-header-icon {
-    fill: "#f35050";
-}
-
-.window-header-icon-selected {
-    fill: var(--window-background-color);
-}
-
 /****/
 
 .submit-button {

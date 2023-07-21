@@ -104,8 +104,10 @@ const Navigation = ({ isNarrow }) => {
                         className={`${location.pathname === "/items" ? "current-" : ""}nav-item`}
                         role="link"
                         tabIndex={0}
+                        onClick={handleTabClick}
+                        onKeyDown={(e) => e.key === "Enter" && handleTabClick(e)}
                     >
-                        <a name='items' onClick={handleTabClick}>Items</a>
+                        <a name='items'>Items</a>
                     </li>
                 }
                 {tabs.some(tab => tab.path === location.pathname) &&
