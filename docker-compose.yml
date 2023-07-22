@@ -98,6 +98,10 @@ services:
         - PORT=3000
       context: ./app
       dockerfile: Dockerfile.dev
+    environment:
+      - SSL_KEY_FILE=/run/secrets/localhost_key
+      - SSL_CERT_FILE=/run/secrets/localhost_crt
+      - SSL_CA_FILE=/run/secrets/ca_pem
     ports:
       - 3000:3000
     volumes:
@@ -118,17 +122,21 @@ services:
       - 3001:3001
     volumes:
       - ./app/portal/src:/portal/src
+    environment:
+      - SSL_KEY_FILE=/run/secrets/localhost_key
+      - SSL_CERT_FILE=/run/secrets/localhost_crt
+      - SSL_CA_FILE=/run/secrets/ca_pem
     secrets:
       - localhost_crt
       - localhost_key
       - ca_pem
   ory:
-    #   image: oryd/ory
-    #   ports:
-    #     - 4000:4000
-    #   env_file:
-    #     - ./secrets/.env.ory
-    #   command: tunnel --project reverent-lewin-bqqp1o2zws --allowed-cors-origins https://localhost:3000 https://localhost:3001
+    image: oryd/ory
+    ports:
+      - 4000:4000
+    env_file:
+      - ./secrets/.env.ory
+    command: tunnel --project reverent-lewin-bqqp1o2zws --allowed-cors-origins https://localhost:3000 https://localhost:3001
 
 volumes:
   dev-db-data:

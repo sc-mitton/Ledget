@@ -1,24 +1,30 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
-    build: {
-        outDir: '../dist',
-    },
-    mode: 'development',
-    server: {
-        watch: {
-            usePolling: true,
-            interval: 100,
+
+export default ({ mode }) => {
+    const isProduction = mode === 'production';
+
+    return {
+        build: {
+            outDir: isProduction ? '../dist' : 'dist-dev',
+            minify: isProduction,
+            sourcemap: !isProduction,
         },
-        port: 3000,
-        host: '0.0.0.0',
-        strictPort: true,
-        https: {
-            key: '/run/secrets/localhost_key',
-            cert: '/run/secrets/localhost_crt',
-            ca: '/run/secrets/ca_pem'
-        }
-    },
-    plugins: [react()],
-})
+        mode: 'development',
+        server: {
+            watch: {
+                usePolling: true,
+                interval: 100,
+            },
+            port: 3000,
+            host: '0.0.0.0',
+            strictPort: true,
+            https: {
+                key: process.env.SSL_KEY_FILE,
+                cert: process.env.SSL_CERT_FILE,
+                ca: process.env.SSL_CA_FILE,
+            }
+        },
+        plugins: [react()]
+    }
+}
