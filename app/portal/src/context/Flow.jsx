@@ -10,7 +10,7 @@ const RegisterFlowContext = createContext(null)
 const VerificationFlowContext = createContext(null)
 const RecoveryFlowContext = createContext(null)
 
-const loginRedirectUri = process.env.REACT_APP_LOGIN_REDIRECT
+const loginRedirectUri = import.meta.env.VITE_LOGIN_REDIRECT
 
 function LoginFlowContextProvider({ children }) {
     const [flow, setFlow] = useState(null)
@@ -98,7 +98,7 @@ function LoginFlowContextProvider({ children }) {
             })
             .then((response) => {
                 if (response.status === 200) {
-                    window.location.href = process.env.REACT_APP_LOGIN_REDIRECT
+                    window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
                 }
             })
             .catch(sdkErrorHandler)

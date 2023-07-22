@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom"
 
 export const sdk = new FrontendApi(
     new Configuration({
-        basePath: process.env.REACT_APP_ORY_TUNNEL,
+        basePath: import.meta.env.VITE_ORY_TUNNEL,
         baseOptions: {
             withCredentials: true,
         },

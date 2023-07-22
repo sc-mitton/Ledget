@@ -23,7 +23,7 @@ import { WindowLoadingBar } from '../widgets/Widgets'
 import UserContext from '../../context/UserContext'
 import { components } from 'react-select'
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_TEST)
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
 let options = {
     fonts: [{
@@ -425,7 +425,7 @@ function Checkout({ prices }) {
         )
         if (result.setupIntent?.status === 'succeeded') {
             setSuccess(true)
-            window.location.href = process.env.REACT_APP_LOGIN_REDIRECT
+            window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
         } else if (result.error) {
             setCardErrMsg(result.error?.message)
         }
