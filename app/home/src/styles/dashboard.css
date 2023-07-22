@@ -145,7 +145,7 @@
 .narrow-icon {
     display: flex;
     align-items: center;
-    padding: 4px 2px;
+    padding: 4px 0px;
     background-color: transparent;
     border-radius: 4px;
     transition: background-color .3s ease;
@@ -229,7 +229,7 @@
 
 #items-window {
     flex: 1;
-    min-width: 400px;
+    min-width: 430px;
     margin-left: 12px;
     height: inherit;
     max-height: inherit;

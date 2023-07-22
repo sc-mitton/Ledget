@@ -4,8 +4,8 @@ const Expand = ({
     className = null,
     width = ".7em",
     height = ".7em",
-    stroke = "#f8f8f8",
-    strokeWidth = "16"
+    stroke = "#292929",
+    strokeWidth = "18"
 }) => {
 
     return (

@@ -23,13 +23,9 @@ const App = () => {
         dispatch(fetchUser())
     }, [])
 
-    useEffect(() => {
-        console.log('render')
-    }, [])
-
     useLayoutEffect(() => {
         const handleResize = () => {
-            setIsNarrow(dashboardRef.current.offsetWidth < 850)
+            setIsNarrow(dashboardRef.current.offsetWidth < 950)
         }
         handleResize()
         window.addEventListener('resize', handleResize)

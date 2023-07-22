@@ -9,7 +9,8 @@ import CheckMark from "../assets/svg/CheckMark"
 import ExpandIcon from "../assets/svg/Expand"
 import DropAnimation from "./utils/DropAnimation"
 import ItemOptionsMenu from "./dropdowns/ItemOptionsMenu"
-
+import formatDateOrRelativeDate from "./utils/convertTImestamp"
+import Wells from "../assets/logos/Wells"
 
 // TODO: pull this data in from backend
 
@@ -17,16 +18,16 @@ const NewItemsContext = createContext()
 
 const NewItemsProvider = ({ children }) => {
     let data = [
-        { 'id': 0, 'data': 'Publix' },
-        { 'id': 1, 'data': 'Movies' },
-        { 'id': 2, 'data': 'Gas' },
-        { 'id': 3, 'data': 'Rent' },
-        { 'id': 4, 'data': 'Clothes' },
-        { 'id': 5, 'data': 'Pizza' },
-        { 'id': 6, 'data': 'Movies' },
-        { 'id': 7, 'data': 'Gas' },
-        { 'id': 8, 'data': 'Rent' },
-        { 'id': 9, 'data': 'Clothes' }
+        { 'id': 0, 'timestamp': 1690035917, 'name': 'Publix', 'amount': 8632, 'category': '🛒 Groceries' },
+        { 'id': 1, 'timestamp': 1689883555, 'name': 'Cinemark', 'amount': 3120, 'category': '❤️ Dates' },
+        { 'id': 2, 'timestamp': 1689624355, 'name': 'Shell', 'amount': 4321, 'category': '🚗 Transportation' },
+        { 'id': 3, 'timestamp': 1689537955, 'name': 'Venmo', 'amount': 1234, 'category': '🏠 Rent' },
+        { 'id': 4, 'timestamp': 1689451555, 'name': 'Banana Republic', 'amount': 12340, 'category': "🙋🏼‍♂️ Spencer" },
+        { 'id': 5, 'timestamp': 1689451555, 'name': 'Slice of the Berg', 'amount': 2010, 'category': '🍕 Food' },
+        { 'id': 6, 'timestamp': 1689278755, 'name': 'Cinemark', 'amount': 3120, 'category': '❤️ Dates' },
+        { 'id': 7, 'timestamp': 1689192355, 'name': '7 Eleven', 'amount': 4321, 'category': '🚗 Transportation' },
+        { 'id': 8, 'timestamp': 1689185155, 'name': 'Venmo', 'amount': 1234, 'category': '🏠 Rent' },
+        { 'id': 9, 'timestamp': 1689185155, 'name': 'Ann Taylor', 'amount': 12340, 'category': "💅🏽 Allie" },
     ]// TODO pull this in from backend
 
     const [items, setItems] = useState(data)
@@ -44,9 +45,9 @@ const NewItemsProvider = ({ children }) => {
 
 const useItemAnimations = (expanded, items, stackMax) => {
     const translate = 13
-    const expandedTranslate = 75
-    const expandedHeight = 270
-    const collapsedHeight = 95
+    const expandedTranslate = 85
+    const expandedHeight = 320
+    const collapsedHeight = 100
 
     const [loaded, setLoaded] = useState(false)
     const itemsApi = useSpringRef()
@@ -54,7 +55,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
     useEffect(() => { setLoaded(true) }, [])
 
     const [containerProps, containerApi] = useSpring(() => ({
-        maxWidth: '400px',
+        maxWidth: '430px',
         position: 'relative',
         left: '50%',
         transform: 'translateX(-50%)',
@@ -64,7 +65,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
     }))
 
     const getBackground = useCallback((index) => {
-        let r = 230 - (Math.min(index, stackMax) ** 2 * 40)
+        let r = 230 - (Math.min(index, stackMax) ** 2 * 20)
         // Items lower on the stack are darker
         // Don't calculate past the stack max because
         // it's not shown in unexpanded mode
@@ -135,9 +136,9 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 x: 0,
                 left: 0,
                 right: 0,
-                margin: '0 16px',
                 borderRadius: "12px",
-                padding: "20px",
+                padding: "16px 24px",
+                margin: '0 16px',
                 fontWeight: "400",
                 display: "flex",
                 flexDirection: "row",
@@ -170,17 +171,6 @@ const useItemAnimations = (expanded, items, stackMax) => {
         }
     )
 
-    const buttonContainerProps = useSpring({
-        marginTop: items.length === 0 ? '0px' : '4px',
-        marginBottom: items.length > 1 ? '12px' : '0px',
-        opacity: items.length > 1 ? 1 : 0,
-        height: items.length > 1 ? '1.6em' : '0em',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        scale: "1.05",
-        zIndex: 100,
-    })
-
     useEffect(() => {
         itemsApi.start()
         containerApi.start({
@@ -194,22 +184,53 @@ const useItemAnimations = (expanded, items, stackMax) => {
         containerApi,
         containerProps,
         itemsApi,
-        itemTransitions,
-        buttonContainerProps
+        itemTransitions
     }
 }
 
-const Shadow = ({ visible }) => {
+const Shadow = ({ visible, location }) => {
+    const styles = {
+        top: {
+            top: '0',
+            background: `-webkit-linear-gradient(180deg, rgba(248, 248, 248), transparent)`,
+            background: `linear-gradient(180deg, rgba(248, 248, 248), transparent)`
+        },
+        bottom: {
+            bottom: '0',
+            background: `-webkit-linear-gradient(0deg, rgba(248, 248, 248), transparent)`,
+            background: `linear-gradient(0deg, rgba(248, 248, 248), transparent)`
+        }
+    }
+
+    const transitions = useTransition(visible, {
+        from: { opacity: 0 },
+        enter: {
+            width: "100%",
+            height: "24px",
+            zIndex: 2,
+            opacity: 1,
+            width: "100%",
+            height: "24px",
+            zIndex: 2,
+            position: "absolute",
+            left: 0,
+            ...styles[location]
+        },
+        leave: { opacity: 0 },
+        config: { duration: 100 }
+    })
+
     return (
         <>
-            {visible && <div className="shadow shadow-bottom"></div>}
+            {transitions((style, item) =>
+                item && <animated.div style={style} className="shadow" />
+            )}
         </>
     )
 }
 
 const NewItem = (props) => {
     const { item, style, onEllipsis, onConfirm, tabIndex } = props
-
     return (
         <animated.div
             key={`item-${item.id}`}
@@ -217,7 +238,14 @@ const NewItem = (props) => {
             style={style}
         >
             <div className='new-item-data'>
-                {item.data}
+                <div>
+                    <span>{item.name}</span>&nbsp;&nbsp;
+                    <span>{`$${item.amount / 100}`}</span>
+                </div>
+                <div>
+                    <Wells />
+                    <span>{formatDateOrRelativeDate(item.timestamp)}</span>
+                </div>
             </div>
             <div className='new-item-icons' >
                 <button
@@ -225,10 +253,11 @@ const NewItem = (props) => {
                     aria-label="Choose budget category"
                     tabIndex={tabIndex}
                 >
-                    Groceries
+                    {item.category}
                 </button>
                 <button
                     className='icon2'
+                    id='confirm-button'
                     onClick={onConfirm}
                     aria-label="Confirm item"
                     tabIndex={tabIndex}
@@ -249,31 +278,48 @@ const NewItem = (props) => {
 
 const ExpandButton = ({ onClick, children }) => {
     const [rotated, setRotated] = useState(false)
+    const { items } = useContext(NewItemsContext)
 
     const rotationProps = useSpring({
         transform: `rotate(${rotated ? 0 : 180}deg)`
     })
 
-    return (
+    const buttonContainerProps = useSpring({
+        marginTop: items.length === 0 ? '0px' : '8px',
+        marginBottom: items.length > 1 ? '12px' : '0px',
+        opacity: items.length > 1 ? 1 : 0,
+        height: items.length > 1 ? '1.6em' : '0em',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        scale: "1.05",
+        zIndex: 100,
+    })
 
-        <button
-            id="expand-button"
-            onClick={() => {
-                setRotated(!rotated)
-                onClick()
-            }}
-            aria-label="Expand new item stack"
-            tabIndex={0}
+    return (
+        <animated.div
+            id="expand-button-container"
+            className="bottom-buttons"
+            style={buttonContainerProps}
         >
-            {children}
-            <animated.div
-                id="expand-button-icon"
-                style={rotationProps}
+            <button
+                id="expand-button"
+                onClick={() => {
+                    setRotated(!rotated)
+                    onClick()
+                }}
                 aria-label="Expand new item stack"
+                tabIndex={0}
             >
-                <ExpandIcon />
-            </animated.div >
-        </button>
+                {children}
+                <animated.div
+                    id="expand-button-icon"
+                    style={rotationProps}
+                    aria-label="Expand new item stack"
+                >
+                    <ExpandIcon />
+                </animated.div >
+            </button>
+        </animated.div>
     )
 }
 
@@ -329,20 +375,39 @@ const Menu = ({ pos, show, setShow }) => {
     )
 }
 
+const ConfirmAllButton = () => {
+
+    return (
+        <button
+            className='btn-primary-green'
+            aria-label="Confirm all items"
+            style={{
+                position: 'absolute',
+                bottom: '16px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+            }}
+        >
+            Confirm All
+        </button>
+    )
+}
+
 const NewItemsStack = ({ stackMax }) => {
     const { items, setItems } = useContext(NewItemsContext)
     const newItemsContainerRef = useRef(null)
     const containerRef = useRef(null)
     const [expanded, setExpanded] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
+    const [showShadowTop, setShowShadowTop] = useState(false)
+    const [showShadowBottom, setShowShadowBottom] = useState(true)
     const [menuPos, setMenuPos] = useState(null)
 
     const {
         itemsApi,
         containerApi,
         containerProps,
-        itemTransitions,
-        buttonContainerProps
+        itemTransitions
     } = useItemAnimations(expanded, items, stackMax)
 
     useEffect(() => {
@@ -376,14 +441,28 @@ const NewItemsStack = ({ stackMax }) => {
         })
     }
 
+    const handleScroll = (e) => {
+        setShowMenu(false)
+        setShowShadowBottom((e.target.scrollTopMax - e.target.scrollTop) !== 0)
+        setShowShadowTop(e.target.scrollTop !== 0)
+    }
+
+    useEffect(() => {
+        if (!expanded) {
+            setShowShadowBottom(true)
+            setShowShadowTop(false)
+        }
+    }, [expanded])
+
     return (
         <>
             <div id="new-items-container" ref={newItemsContainerRef}>
-                <Shadow visible={expanded && items.length > stackMax} />
+                <Shadow visible={expanded && showShadowBottom} location={'bottom'} />
+                <Shadow visible={expanded && showShadowTop} location={'top'} />
                 <animated.div
                     style={containerProps}
                     ref={containerRef}
-                    onScroll={() => { setShowMenu(false) }}
+                    onScroll={handleScroll}
                 >
                     {itemTransitions((style, item) =>
                         <NewItem
@@ -392,8 +471,8 @@ const NewItemsStack = ({ stackMax }) => {
                             onEllipsis={(e) => handleEllipsis(e)}
                             onConfirm={() => handleConfirm(item.id)}
                             tabIndex={expanded || item.id === 0 ? 0 : -1}
-                        />)
-                    }
+                        />
+                    )}
                 </animated.div >
                 <Menu
                     show={showMenu}
@@ -401,15 +480,9 @@ const NewItemsStack = ({ stackMax }) => {
                     pos={menuPos}
                 />
             </div>
-            <animated.div
-                id="expand-button-container"
-                className="bottom-buttons"
-                style={buttonContainerProps}
-            >
-                <ExpandButton onClick={() => setExpanded(!expanded)}>
-                    {`${items.length} `}
-                </ExpandButton>
-            </animated.div>
+            <ExpandButton onClick={() => setExpanded(!expanded)}>
+                {`${items.length} `}
+            </ExpandButton>
         </>
     )
 }
