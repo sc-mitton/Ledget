@@ -17,4 +17,4 @@ COPY ./"$APP"/ .
 
 ARG PORT
 EXPOSE "$PORT"
-CMD ["vite", "start"]
+CMD ["npm", "start"]

@@ -1,96 +1,96 @@
 version: '3.8'
 
 services:
-  # db:
-  #   image: postgres:15-alpine
-  #   environment:
-  #     - POSTGRES_DB=devdb
-  #     - POSTGRES_USER_FILE=/run/secrets/postgres_user
-  #     - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
-  #   secrets:
-  #     - postgres_user
-  #     - postgres_password
-  #   volumes:
-  #     - dev-db-data:/var/lib/postgresql/data/
-  # oathkeeper:
-  #   build:
-  #     context: ./oathkeeper
-  #   command: serve --config /etc/config/oathkeeper/config.yml
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.oathkeeper.rule=Host(`oathkeeper`)"
-  #     - "traefik.http.routers.oathkeeper.entrypoints=web"
-  #     - "traefik.http.routers.oathkeeper.service=oathkeeper"
-  #     - "traefik.http.services.oathkeeper.loadbalancer.server.port=4456"
-  #     - "traefik.http.middlewares.oathkeeper.forwardauth.address=http://oathkeeper:4456/decisions"
-  #     - "traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-User, Authorization"
-  #   secrets:
-  #     - jwks.json
-  # proxy:
-  #   image: traefik:v2.10
-  #   command:
-  #     - "--api.insecure=true"
-  #     - "--entrypoints.web.address=:80"
-  #     - "--entrypoints.websecure.address=:443"
-  #     - "--entryPoints.websecure.forwardedHeaders.insecure"
-  #     # ^^ needed so that we can check ip address of the ory webhook response in the django middleware
-  #     - "--providers.docker=true"
-  #     - "--providers.docker.exposedbydefault=false"
-  #     - "--providers.file.directory=/traefik"
-  #     - "--providers.file.watch=true"
-  #     - "--log.level=DEBUG"
-  #   ports:
-  #     - 80:80
-  #     - 443:443
-  #     - 8080:8080
-  #   volumes:
-  #     - ./certs:/etc/ssl/certs
-  #     - ./traefik:/traefik
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  # ledgetback:
-  #   build:
-  #     args:
-  #       - DEV=true
-  #     context: ./back
-  #   command: >
-  #     sh -c "
-  #       python manage.py wait_for_db &&
-  #       python manage.py makemigrations &&
-  #       python manage.py migrate &&
-  #       python manage.py runserver 0.0.0.0:8000"
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.api.rule=(Host(`localhost`) && PathPrefix(`/api/v1/`))"
-  #     - "traefik.http.routers.api.entrypoints=websecure"
-  #     - "traefik.http.routers.api.tls=true"
-  #     - "traefik.http.routers.api.middlewares=oathkeeper,cors"
-  #     - "traefik.http.routers.hooks.rule=(Host(`localhost`) && PathPrefix(`/hooks`))"
-  #     - "traefik.http.routers.hooks.entrypoints=websecure"
-  #     - "traefik.http.routers.hooks.tls=true"
-  #     - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.sourcerange=3.18.12.63, 3.130.192.231, 13.235.14.237, 13.235.122.149, 18.211.135.69, 35.154.171.200, 52.15.183.38, 54.88.130.119, 54.88.130.237, 54.187.174.169, 54.187.205.235, 54.187.216.72, 34.22.170.75, 35.242.228.133"
-  #     - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.ipstrategy.depth=1"
-  #     - "traefik.http.routers.hooks.middlewares=hooksIpWhitelist@docker"
-  #     - "traefik.http.middlewares.cors.headers.accesscontrolallowmethods=*"
-  #     - "traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://localhost:3000, https://localhost:3001, https://localhost"
-  #     - "traefik.http.middlewares.cors.headers.accesscontrolallowcredentials=true"
-  #     - "traefik.http.middlewares.cors.headers.accesscontrolallowheaders=Content-Type"
-  #     - "traefik.http.middlewares.cors.headers.accesscontrolmaxage=100"
-  #     - "traefik.http.middlewares.cors.headers.addvaryheader=true"
-  #   environment:
-  #     - DB_HOST=db
-  #     - DB_NAME=devdb
-  #     - DB_PORT=5432
-  #   volumes:
-  #     - ./back/ledgetback:/ledgetback
-  #   secrets:
-  #     - stripe_webhook_secret
-  #     - ory_api_key
-  #     - stripe_api_key
-  #     - django_secret_key
-  #     - postgres_user
-  #     - postgres_password
-  #   depends_on:
-  #     - db
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER_FILE=/run/secrets/postgres_user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+    secrets:
+      - postgres_user
+      - postgres_password
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data/
+  oathkeeper:
+    build:
+      context: ./oathkeeper
+    command: serve --config /etc/config/oathkeeper/config.yml
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.oathkeeper.rule=Host(`oathkeeper`)"
+      - "traefik.http.routers.oathkeeper.entrypoints=web"
+      - "traefik.http.routers.oathkeeper.service=oathkeeper"
+      - "traefik.http.services.oathkeeper.loadbalancer.server.port=4456"
+      - "traefik.http.middlewares.oathkeeper.forwardauth.address=http://oathkeeper:4456/decisions"
+      - "traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-User, Authorization"
+    secrets:
+      - jwks.json
+  proxy:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entryPoints.websecure.forwardedHeaders.insecure"
+      # ^^ needed so that we can check ip address of the ory webhook response in the django middleware
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/traefik"
+      - "--providers.file.watch=true"
+      - "--log.level=DEBUG"
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - ./certs:/etc/ssl/certs
+      - ./traefik:/traefik
+      - /var/run/docker.sock:/var/run/docker.sock
+  ledgetback:
+    build:
+      args:
+        - DEV=true
+      context: ./back
+    command: >
+      sh -c "
+        python manage.py wait_for_db &&
+        python manage.py makemigrations &&
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=(Host(`localhost`) && PathPrefix(`/api/v1/`))"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.middlewares=oathkeeper,cors"
+      - "traefik.http.routers.hooks.rule=(Host(`localhost`) && PathPrefix(`/hooks`))"
+      - "traefik.http.routers.hooks.entrypoints=websecure"
+      - "traefik.http.routers.hooks.tls=true"
+      - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.sourcerange=3.18.12.63, 3.130.192.231, 13.235.14.237, 13.235.122.149, 18.211.135.69, 35.154.171.200, 52.15.183.38, 54.88.130.119, 54.88.130.237, 54.187.174.169, 54.187.205.235, 54.187.216.72, 34.22.170.75, 35.242.228.133"
+      - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.ipstrategy.depth=1"
+      - "traefik.http.routers.hooks.middlewares=hooksIpWhitelist@docker"
+      - "traefik.http.middlewares.cors.headers.accesscontrolallowmethods=*"
+      - "traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://localhost:3000, https://localhost:3001, https://localhost"
+      - "traefik.http.middlewares.cors.headers.accesscontrolallowcredentials=true"
+      - "traefik.http.middlewares.cors.headers.accesscontrolallowheaders=Content-Type"
+      - "traefik.http.middlewares.cors.headers.accesscontrolmaxage=100"
+      - "traefik.http.middlewares.cors.headers.addvaryheader=true"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_PORT=5432
+    volumes:
+      - ./back/ledgetback:/ledgetback
+    secrets:
+      - stripe_webhook_secret
+      - ory_api_key
+      - stripe_api_key
+      - django_secret_key
+      - postgres_user
+      - postgres_password
+    depends_on:
+      - db
   app:
     build:
       args:
@@ -107,28 +107,28 @@ services:
       - localhost_key
       - ca_pem
     tty: true
-  # portal:
-  #   build:
-  #     args:
-  #       - APP=portal
-  #       - PORT=3001
-  #     context: ./app
-  #     dockerfile: Dockerfile.dev
-  #   ports:
-  #     - 3001:3001
-  #   volumes:
-  #     - ./app/portal/src:/portal/src
-  #   secrets:
-  #     - localhost_crt
-  #     - localhost_key
-  #     - ca_pem
-  # ory:
-  #   image: oryd/ory
-  #   ports:
-  #     - 4000:4000
-  #   env_file:
-  #     - ./secrets/.env.ory
-  #   command: tunnel --project reverent-lewin-bqqp1o2zws --allowed-cors-origins https://localhost:3000 https://localhost:3001
+  portal:
+    build:
+      args:
+        - APP=portal
+        - PORT=3001
+      context: ./app
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3001:3001
+    volumes:
+      - ./app/portal/src:/portal/src
+    secrets:
+      - localhost_crt
+      - localhost_key
+      - ca_pem
+  ory:
+    #   image: oryd/ory
+    #   ports:
+    #     - 4000:4000
+    #   env_file:
+    #     - ./secrets/.env.ory
+    #   command: tunnel --project reverent-lewin-bqqp1o2zws --allowed-cors-origins https://localhost:3000 https://localhost:3001
 
 volumes:
   dev-db-data:

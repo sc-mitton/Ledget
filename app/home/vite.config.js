@@ -15,9 +15,9 @@ export default defineConfig({
         host: '0.0.0.0',
         strictPort: true,
         https: {
-            key: './localhost.key',
-            cert: './localhost.crt',
-            ca: './ledgetCA.pem'
+            key: '/run/secrets/localhost_key',
+            cert: '/run/secrets/localhost_crt',
+            ca: '/run/secrets/ca_pem'
         }
     },
     plugins: [react()],
