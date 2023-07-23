@@ -3,8 +3,8 @@ import React from 'react'
 const CheckMark = ({
     className = 'checkmark',
     fill = "#292929",
-    width = "1.1em",
-    height = "1.1em"
+    width = "1em",
+    height = "1em"
 }) => {
 
     return (

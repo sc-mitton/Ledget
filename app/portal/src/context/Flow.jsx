@@ -20,8 +20,6 @@ function LoginFlowContextProvider({ children }) {
     const [authenticating, setAuthenticating] = useState(false)
     const { setUser } = useContext(UserContext)
 
-    const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
-
     const getFlow = useCallback(
         (flowId) =>
             sdk
@@ -31,6 +29,8 @@ function LoginFlowContextProvider({ children }) {
                 .catch(sdkErrorHandler),
         [],
     )
+
+    const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
 
     const createFlow = () => {
         const aal2 = searchParams.get("aal2")
@@ -132,8 +132,6 @@ function RegisterFlowContextProvider({ children }) {
     const navigate = useNavigate()
     const { setUser } = useContext(UserContext)
 
-    const sdkErrorHandler = sdkError(getFlow, setFlow, "/register", setResponseError, false)
-
     const getFlow = useCallback(
         (flowId) =>
             sdk
@@ -142,6 +140,8 @@ function RegisterFlowContextProvider({ children }) {
                 .then(({ data: flow }) => setFlow(flow)),
         [],
     )
+
+    const sdkErrorHandler = sdkError(getFlow, setFlow, "/register", setResponseError, false)
 
     const createFlow = () => {
         sdk

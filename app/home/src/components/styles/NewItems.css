@@ -6,10 +6,16 @@
     font-weight: 400;
 }
 
-.new-item-data div:first-child span {
+.new-item-data div:first-child span:first-child {
     font-weight: 600;
     font-size: 14px;
 }
+
+.new-item-data div:first-child span:last-child {
+    font-size: 13px;
+    opacity: .5;
+}
+
 
 .new-item-data div:last-child {
     font-weight: 400;
@@ -17,7 +23,6 @@
     display: flex;
     align-items: center;
 }
-
 
 .new-item-data div:last-child svg {
     border-radius: 4px;

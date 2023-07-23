@@ -11,6 +11,9 @@ import DropAnimation from "./utils/DropAnimation"
 import ItemOptionsMenu from "./dropdowns/ItemOptionsMenu"
 import formatDateOrRelativeDate from "./utils/convertTImestamp"
 import Wells from "../assets/logos/Wells"
+import Ally from "../assets/logos/Ally"
+import Discover from "../assets/logos/Discover"
+import Visa from "../assets/logos/Visa"
 
 // TODO: pull this data in from backend
 
@@ -18,16 +21,16 @@ const NewItemsContext = createContext()
 
 const NewItemsProvider = ({ children }) => {
     let data = [
-        { 'id': 0, 'timestamp': 1690035917, 'name': 'Publix', 'amount': 8632, 'category': '🛒 Groceries' },
-        { 'id': 1, 'timestamp': 1689883555, 'name': 'Cinemark', 'amount': 3120, 'category': '❤️ Dates' },
-        { 'id': 2, 'timestamp': 1689624355, 'name': 'Shell', 'amount': 4321, 'category': '🚗 Transportation' },
-        { 'id': 3, 'timestamp': 1689537955, 'name': 'Venmo', 'amount': 1234, 'category': '🏠 Rent' },
-        { 'id': 4, 'timestamp': 1689451555, 'name': 'Banana Republic', 'amount': 12340, 'category': "🙋🏼‍♂️ Spencer" },
-        { 'id': 5, 'timestamp': 1689451555, 'name': 'Slice of the Berg', 'amount': 2010, 'category': '🍕 Food' },
-        { 'id': 6, 'timestamp': 1689278755, 'name': 'Cinemark', 'amount': 3120, 'category': '❤️ Dates' },
-        { 'id': 7, 'timestamp': 1689192355, 'name': '7 Eleven', 'amount': 4321, 'category': '🚗 Transportation' },
-        { 'id': 8, 'timestamp': 1689185155, 'name': 'Venmo', 'amount': 1234, 'category': '🏠 Rent' },
-        { 'id': 9, 'timestamp': 1689185155, 'name': 'Ann Taylor', 'amount': 12340, 'category': "💅🏽 Allie" },
+        { 'id': 0, 'account': 'wells-fargo', 'timestamp': 1690035917, 'name': 'Publix', 'amount': 8632, 'category': '🛒 Groceries' },
+        { 'id': 1, 'account': 'ally-bank', 'timestamp': 1689883555, 'name': 'Cinemark', 'amount': 3120, 'category': '❤️ Dates' },
+        { 'id': 2, 'account': 'discover-card', 'timestamp': 1689624355, 'name': 'Shell', 'amount': 4321, 'category': '🚙 Transportation' },
+        { 'id': 3, 'account': 'wells-fargo', 'timestamp': 1689537955, 'name': 'Venmo', 'amount': 1234, 'category': '🏠 Rent' },
+        { 'id': 4, 'account': 'visa', 'timestamp': 1689451555, 'name': 'Banana Republic', 'amount': 12340, 'category': "🙋🏼‍♂️ Spencer" },
+        { 'id': 5, 'account': 'visa', 'timestamp': 1689451555, 'name': 'Slice of the Berg', 'amount': 2010, 'category': '🍕 Food' },
+        { 'id': 6, 'account': 'discover-card', 'timestamp': 1689278755, 'name': 'Cinemark', 'amount': 3120, 'category': '💖 Dates' },
+        { 'id': 7, 'account': 'discover-card', 'timestamp': 1689192355, 'name': '7 Eleven', 'amount': 4321, 'category': '🚙 Transportation' },
+        { 'id': 8, 'account': 'wells-fargo', 'timestamp': 1689185155, 'name': 'Venmo', 'amount': 1234, 'category': '🏠 Rent' },
+        { 'id': 9, 'account': 'visa', 'timestamp': 1689185155, 'name': 'Ann Taylor', 'amount': 12340, 'category': "💅🏽 Allie" },
     ]// TODO pull this in from backend
 
     const [items, setItems] = useState(data)
@@ -70,7 +73,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
         // Don't calculate past the stack max because
         // it's not shown in unexpanded mode
         if (expanded || index === 0) {
-            return "linear-gradient(0deg, rgba(237, 237, 237, .85) 0%,  \
+            return "linear-gradient(0deg, rgba(237, 237, 237, 1) 0%,  \
                     rgba(237, 237, 237, 1)25%, rgba(237, 237, 237, 1)"
         } else {
             return `linear-gradient(0deg, rgba(${r}, ${r}, ${r}, .75) 0%,
@@ -229,8 +232,25 @@ const Shadow = ({ visible, location }) => {
     )
 }
 
+const AccountLogo = ({ account }) => {
+    const logos = {
+        'wells-fargo': <Wells />,
+        'ally-bank': <Ally />,
+        'discover-card': <Discover />,
+        'visa': <Visa />,
+    }
+
+    return (
+        <>
+            {logos[account]}
+        </>
+    )
+}
+
 const NewItem = (props) => {
-    const { item, style, onEllipsis, onConfirm, tabIndex } = props
+    const { item, style, onEllipsis,
+        onConfirm, tabIndex } = props
+
     return (
         <animated.div
             key={`item-${item.id}`}
@@ -239,12 +259,12 @@ const NewItem = (props) => {
         >
             <div className='new-item-data'>
                 <div>
-                    <span>{item.name}</span>&nbsp;&nbsp;
-                    <span>{`$${item.amount / 100}`}</span>
+                    <span>{item.name}</span>&nbsp;&nbsp;&nbsp;
+                    <span>{formatDateOrRelativeDate(item.timestamp)}</span>
                 </div>
                 <div>
-                    <Wells />
-                    <span>{formatDateOrRelativeDate(item.timestamp)}</span>
+                    <AccountLogo account={item.account} />
+                    <span>{`$${item.amount / 100}`}</span>
                 </div>
             </div>
             <div className='new-item-icons' >
@@ -257,7 +277,6 @@ const NewItem = (props) => {
                 </button>
                 <button
                     className='icon2'
-                    id='confirm-button'
                     onClick={onConfirm}
                     aria-label="Confirm item"
                     tabIndex={tabIndex}
@@ -268,6 +287,7 @@ const NewItem = (props) => {
                     className='narrow-icon'
                     tabIndex={tabIndex}
                     onClick={onEllipsis}
+                    aria-label="More options menu"
                 >
                     <Ellipsis />
                 </button>
