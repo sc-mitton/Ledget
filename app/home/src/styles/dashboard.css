@@ -7,8 +7,8 @@
 }
 
 .window {
-    background: linear-gradient(0deg, rgba(240, 240, 240, .95) 0%, rgba(240, 240, 240, 1) 10%, rgba(240, 240, 240, 1));
-    box-shadow: 0px -1px 0px 0px rgba(27, 31, 36, 0.04);
+    /* background: linear-gradient(0deg, rgba(240, 240, 240, .95) 0%, rgba(240, 240, 240, 1) 10%, rgba(240, 240, 240, 1)); */
+    box-shadow: 0px .5px 0px 1.5px rgba(27, 31, 36, 0.1);
     border-radius: 12px;
     padding: 12px 20px;
     box-sizing: border-box;
@@ -191,7 +191,7 @@
     padding: 4px 12px;
     margin: 2px 0;
     background-color: var(--window);
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease-out;
     border-radius: 6px;
 }
 
@@ -207,7 +207,7 @@
 
 .dropdown-item:hover {
     background-color: var(--green-highlight);
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease-out;
     cursor: pointer;
     height: 100%;
     box-shadow: none;

@@ -4,8 +4,8 @@ const Expand = ({
     className = null,
     width = ".7em",
     height = ".7em",
-    stroke = "#292929",
-    strokeWidth = "18"
+    stroke = "#FFFFFF",
+    strokeWidth = "18",
 }) => {
 
     return (
@@ -17,6 +17,7 @@ const Expand = ({
             x="72px"
             y="72px"
             aria-label="Expand or collapse"
+            className={className}
         >
             <polyline
                 fill="none"

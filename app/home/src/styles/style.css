@@ -1,6 +1,6 @@
 :root {
     /* Windows */
-    --window: #f8f8f8;
+    --window: #fcf7f7;
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-background-color: #f0f0f0;
 
@@ -17,7 +17,7 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --green-highlight: #ccfce1;
+    --green-highlight: #cafce0;
     --lighter-green: #b3e2c8;
     --main-green: #48d487;
     --main-green-darker: #43c77e;
@@ -43,8 +43,8 @@
     --button-gray: #363636;
     --button-hover-gray: #292929;
     --button-black: rgb(36, 36, 36);
-    --icon-light-gray: #dfdfdf;
-    --icon-hover-light-gray: #dbdbdb;
+    --icon-light-gray: hsl(0, 0%, 92%);
+    --icon-hover-light-gray: hsl(0, 0%, 88%);
     --icon-hover-gray: #c4c4c4;
     --drop-down-hover-background: #dfdfdf;
 }

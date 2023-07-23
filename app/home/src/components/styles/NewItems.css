@@ -11,26 +11,21 @@
     font-size: 14px;
 }
 
-.new-item-data div:first-child span:last-child {
-    font-size: 13px;
-    opacity: .5;
-}
-
-
 .new-item-data div:last-child {
-    font-weight: 400;
+    font-weight: 500;
     font-size: 13px;
     display: flex;
     align-items: center;
 }
 
-.new-item-data div:last-child svg {
-    border-radius: 4px;
-    margin-right: 6px;
+.new-item-data div:last-child span:last-child {
+    opacity: .4;
+    font-weight: 400;
 }
 
-.new-item-data div:last-child span {
-    opacity: .5;
+.new-item-data div:last-child svg {
+    border-radius: 4px;
+    margin-right: 8px;
 }
 
 .new-item-icons {
@@ -96,7 +91,8 @@
 /* ------------------------------ Expand Button ----------------------------- */
 
 #expand-button {
-    background-color: var(--icon-light-gray);
+    background-color: var(--button-gray);
+    color: var(--white-text);
     transition: background-color .3s ease-out;
     font-weight: 500;
     border-radius: 8px;
@@ -114,5 +110,5 @@
 }
 
 #expand-button:hover {
-    background-color: var(--icon-hover-gray);
+    background-color: var(--button-hover-gray);
 }
