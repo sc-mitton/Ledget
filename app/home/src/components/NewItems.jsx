@@ -23,12 +23,12 @@ const NewItemsProvider = ({ children }) => {
     let data = [
         { 'id': 0, 'account': 'wells-fargo', 'timestamp': 1690035917, 'name': 'Publix', 'amount': 8632, 'category': '🛒 Groceries' },
         { 'id': 1, 'account': 'ally-bank', 'timestamp': 1689883555, 'name': 'Cinemark', 'amount': 3120, 'category': '❤️ Dates' },
-        { 'id': 2, 'account': 'discover-card', 'timestamp': 1689624355, 'name': 'Shell', 'amount': 4321, 'category': '🚙 Transportation' },
-        { 'id': 3, 'account': 'wells-fargo', 'timestamp': 1689537955, 'name': 'Venmo', 'amount': 1234, 'category': '🏠 Rent' },
+        { 'id': 2, 'account': 'discover-card', 'timestamp': 1689624355, 'name': 'Shell', 'amount': 4321, 'category': '⛽️ Gas' },
+        { 'id': 3, 'account': 'wells-fargo', 'timestamp': 1689537955, 'name': 'Venmo', 'amount': 140000, 'category': '🏠 Rent' },
         { 'id': 4, 'account': 'visa', 'timestamp': 1689451555, 'name': 'Banana Republic', 'amount': 12340, 'category': "🙋🏼‍♂️ Spencer" },
         { 'id': 5, 'account': 'visa', 'timestamp': 1689451555, 'name': 'Slice of the Berg', 'amount': 2010, 'category': '🍕 Food' },
         { 'id': 6, 'account': 'discover-card', 'timestamp': 1689278755, 'name': 'Cinemark', 'amount': 3120, 'category': '💖 Dates' },
-        { 'id': 7, 'account': 'discover-card', 'timestamp': 1689192355, 'name': '7 Eleven', 'amount': 4321, 'category': '🚙 Transportation' },
+        { 'id': 7, 'account': 'discover-card', 'timestamp': 1689192355, 'name': '7 Eleven', 'amount': 4321, 'category': '⛽️ Gas' },
         { 'id': 8, 'account': 'wells-fargo', 'timestamp': 1689185155, 'name': 'Venmo', 'amount': 1234, 'category': '🏠 Rent' },
         { 'id': 9, 'account': 'visa', 'timestamp': 1689185155, 'name': 'Ann Taylor', 'amount': 12340, 'category': "💅🏽 Allie" },
     ]// TODO pull this in from backend
@@ -259,12 +259,12 @@ const NewItem = (props) => {
         >
             <div className='new-item-data'>
                 <div>
-                    <span>{item.name}</span>&nbsp;&nbsp;&nbsp;
-                    <span>{formatDateOrRelativeDate(item.timestamp)}</span>
+                    <span>{item.name}</span>
                 </div>
                 <div>
                     <AccountLogo account={item.account} />
-                    <span>{`$${item.amount / 100}`}</span>
+                    <span>{`$${item.amount / 100}`}</span>&nbsp;&nbsp;&nbsp;
+                    <span> | &nbsp;{formatDateOrRelativeDate(item.timestamp)}</span>
                 </div>
             </div>
             <div className='new-item-icons' >
