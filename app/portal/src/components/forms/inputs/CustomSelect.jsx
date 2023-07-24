@@ -62,7 +62,7 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         dropdownIndicator: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "var(--main-green)" : "#767676",
+            color: state.isFocused ? "#80CFA3" : "#767676",
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
