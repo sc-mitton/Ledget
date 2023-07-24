@@ -21,10 +21,13 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --highlight-green: #a2e6c5;
+    --green-highlight: #8fffc0;
+    --green-highlight2: #cafce0;
+    --green-highlight3: #a2e6c5;
     --lighter-green: #83e2ae;
-    --main-green: #48d487;
-    --main-green-darker: #43c77e;
+    --main-green: #51ed97;
+    --main-green-darker: #5ae297;
+    --main-green-darker2: hsl(147, 60%, 55%);
     --accessible-green: #63e963;
 
     /* Inputs */
@@ -35,11 +38,11 @@
     --social-button: #ededed;
     --social-button-hover: #e0e0e0;
     --button-gray: #363636;
-    --button-hover-gray: #242424;
+    --button-hover-gray: #1e1d1d;
 
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1.5px 1px var(--accessible-green);
-    --input-focus-drop-shadow: 0 0 .5px 1.7px var(--lighter-green);
+    --input-focus-drop-shadow: 0 0 0 2px var(--green-highlight3);
 
     /* Subscription Radios */
     --inactive-gray: #4c4c4c;
@@ -50,9 +53,8 @@
     /* Text */
     --main-text-gray: #242424;
     --muted-text-gray: #848484;
-    --success-green: #cdf8cd;
     --white-text: #f8f8f8;
-    --green-text: #0aa751;
+    --green-text: #2fc271;
 }
 
 /* Override color values for Firefox */

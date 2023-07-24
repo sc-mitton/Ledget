@@ -44,9 +44,10 @@ function AnimatedRoutes() {
                             <Route exact path="/recovery" element={<RecoveryWindow />} />
                         </Route>
                         <Route path="/register" element={<SignUpWindow />} />
+                        <Route path="/verification" element={<VerificationWindow />} />
+                        <Route path="/checkout" element={<CheckoutWindow />} />
                         <Route path="/" element={<PrivateRoute />}>
-                            <Route path="/verification" element={<VerificationWindow />} />
-                            <Route path="/checkout" element={<CheckoutWindow />} />
+
                         </Route>
                     </Routes>
                 </motion.div >

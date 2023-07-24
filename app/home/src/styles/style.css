@@ -17,7 +17,7 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --green-highlight: #cafce0;
+    --green-highlight: #8fffc0;
     --lighter-green: #b3e2c8;
     --main-green: #48d487;
     --main-green-darker: #43c77e;
@@ -26,7 +26,7 @@
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1.5px 1px var(--accessible-green);
     --input-focus-drop-shadow: 0 0 .5px 1.5px var(--light-blue);
-    --mid-elevation-drop-shadow: 0px 1px 4px 2px rgba(0, 0, 0, 0.2);
+    --mid-elevation-drop-shadow: rgba(149, 157, 165, 0.5) 0px 8px 20px;
 
     /* Input Colors */
     --input-color: #ededed;
@@ -34,7 +34,6 @@
     /* Text */
     --main-text-gray: #292929;
     --input-placeholder: #848484;
-    --success-green: #cdf8cd;
     --input-focus: #6b9bf6;
     --white-text: #f8f8f8;
     --muted-text-gray: #848484;

@@ -47,7 +47,7 @@ const NewItemsProvider = ({ children }) => {
 }
 
 const useItemAnimations = (expanded, items, stackMax) => {
-    const translate = 15
+    const translate = 18
     const expandedTranslate = 85
     const expandedHeight = 320
     const collapsedHeight = 120
@@ -73,7 +73,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
     }, [expanded])
 
     const getScale = useCallback((index, loaded = true) => {
-        const scale = .08
+        const scale = .1
 
         if (!loaded) {
             return 1 - ((index + 1) * scale * 2)
@@ -120,17 +120,16 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 transform: `scale(${getScale(index)})`,
                 zIndex: `${(items.length - index)}`,
                 opacity: getOpacity(index),
-                background: "linear-gradient(0deg, rgba(252, 247, 247, 1) 0%,  \
-                rgba(252, 247, 247, 1)25%, rgba(252, 247, 247, 1)",
-                boxShadow: !expanded ? "0px 4px 8px rgba(0, 0, 0, 0.1)" : "none",
-                position: 'absolute',
+                // y: getY(index, true),
+                margin: '0 16px',
                 x: 0,
                 left: 0,
                 right: 0,
+                position: 'absolute',
                 borderRadius: "12px",
+                boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.1)",
+                background: "rgba(252, 247, 247, 1)",
                 padding: "16px 24px",
-                margin: '0 16px',
-                fontWeight: "400",
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -251,7 +250,7 @@ const NewItem = (props) => {
                 <div>
                     <AccountLogo account={item.account} />
                     <span>{`$${item.amount / 100}`}</span>&nbsp;&nbsp;&nbsp;
-                    <span> | &nbsp;{formatDateOrRelativeDate(item.timestamp)}</span>
+                    <span>{formatDateOrRelativeDate(item.timestamp)}</span>
                 </div>
             </div>
             <div className='new-item-icons' >

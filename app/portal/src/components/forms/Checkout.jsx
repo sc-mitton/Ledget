@@ -128,7 +128,7 @@ const Card = ({ cardNotEnteredError, setCardNotEnteredError, setCardEntered }) =
                 '::placeholder': {
                     color: cardFocus ? '#48d487' : '#767676',
                 },
-                iconColor: cardFocus ? '#00da00' : '#242424',
+                iconColor: cardFocus ? '#009b53' : '#242424',
                 ':disabled': {
                     color: '#767676',
                     iconColor: '#767676'

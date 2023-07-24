@@ -43,20 +43,20 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         placeholder: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "var(--main-green)" : "#767676",
+            color: state.isFocused ? "#80CFA3" : "#767676",
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,
             marginTop: "8px",
-            backgroundColor: "var(--input-color)",
+            backgroundColor: "var(--window)",
             boxShadow: "0px 0px 4px 2px rgba(0, 0, 0, 0.3)",
             webkitBoxShadow: "0px 0px 4px 2px rgba(0, 0, 0, 0.3)",
             mozBoxShadow: "0px 0px 4px 2px rgba(0, 0, 0, 0.3)",
-            borderRadius: "4px",
+            borderRadius: "6px",
         }),
         menuList: (baseStyles, state) => ({
             ...baseStyles,
-            borderRadius: "4px",
+            borderRadius: "6px",
             paddingLeft: "6px",
             paddingRight: "6px",
         }),
@@ -66,7 +66,7 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         option: (baseStyles, state) => ({
             ...baseStyles,
-            backgroundColor: (state.isFocused ? "rgba(0, 0, 0, .05)" : "var(--input)"),
+            backgroundColor: (state.isFocused ? "var(--social-button-hover)" : "var(--input)"),
             borderRadius: "4px",
             padding: "2px 0px 2px 12px",
             margin: "6px 0",

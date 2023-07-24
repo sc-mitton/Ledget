@@ -73,7 +73,7 @@ input[type="radio"] {
     position: absolute;
     top: -1px;
     right: -1px;
-    background-color: var(--success-green);
+    background-color: var(--green-highlight3);
     width: 40px;
     height: 40px;
     transform: translate(50%, -50%) rotate(45deg);
@@ -110,7 +110,7 @@ input[type="radio"] {
     }
 
     100% {
-        border: 1.5px solid var(--success-green);
+        border: 1.5px solid var(--green-highlight3);
     }
 }
 
@@ -315,28 +315,15 @@ input[type="radio"]:checked+label {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--main-green);
+    background-color: var(--main-green-darker);
 }
 
 #subscribe-button:hover {
-    background-color: var(--main-green-darker);
+    background-color: var(--main-green-darker2);
 }
 
 #subscribe-button span {
     color: var(--window);
-}
-
-#payment-success-message {
-    animation: show .1s ease;
-    color: var(--success-green);
-}
-
-.success-icon {
-    fill: var(--success-green);
-    height: 1em;
-    margin-right: 2px;
-    position: relative;
-    top: 2px;
 }
 
 /* ------------------------------- Stripe Logo ------------------------------ */

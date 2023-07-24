@@ -32,7 +32,7 @@
 }
 
 .window {
-    box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.8) 0px 0px 1px 0px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     font-size: 14px;
     border-radius: 10px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;

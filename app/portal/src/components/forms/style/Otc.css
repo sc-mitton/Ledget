@@ -23,7 +23,7 @@
     text-align: center;
     appearance: textfield;
     -webkit-appearance: textfield;
-    border: 2px solid var(--highlight-green);
+    border: 2px solid var(--green-highlight3);
     color: var(--main-green);
     border-radius: 8px;
 }
@@ -54,5 +54,5 @@
     height: 3px;
     margin: 0 .25em;
     order: 1;
-    background: var(--highlight-green);
+    background: var(--green-highlight3);
 }
