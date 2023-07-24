@@ -129,11 +129,9 @@ input[type="password"]:focus::placeholder {
     color: var(--window);
     background-color: var(--button-gray);
     transition: background-color 0.3s ease;
-    cursor: default;
 }
 
 .submit-button:hover {
-    cursor: pointer;
     background-color: var(--button-hover-gray);
 }
 

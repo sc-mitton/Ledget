@@ -157,7 +157,6 @@ header {
     transition: all 0.3s ease-out;
     cursor: pointer;
     border-radius: 12px;
-    /* padding: 2px 8px; */
 }
 
 .nav-item a,

@@ -63,7 +63,6 @@
 }
 
 .submit-button:hover {
-    cursor: pointer;
     background-color: var(--button-hover-gray);
 }
 
@@ -89,13 +88,13 @@
     color: var(--white-text);
     padding: 8px 12px;
     border-radius: 6px;
+    cursor: pointer;
     transition: background-color .3s ease;
 }
 
 .btn-primary-green:hover {
     background-color: var(--main-green-darker);
     transition: background-color .3s ease;
-    cursor: pointer;
 }
 
 .btn-secondary {
@@ -105,12 +104,12 @@
     border-radius: 6px;
     font-weight: 500;
     transform: scale(1);
+    cursor: pointer;
     transition: transform .3s ease;
 }
 
 .btn-secondary:hover {
     transform: scale(1.05);
-    cursor: pointer;
     transition: transform .3s ease;
 }
 

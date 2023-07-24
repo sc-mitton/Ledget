@@ -496,7 +496,7 @@ const NewItemsStack = ({ stackMax }) => {
 const NewItemsWindow = () => {
 
     return (
-        <NewItemsProvider>
+        <NewItemsProvider> {/* Will be replace with redux store calls */}
             <NewItemsStack stackMax={2} />
         </NewItemsProvider>
     )

@@ -1,5 +1,5 @@
 import React from 'react'
-import NewItemsStack from '../components/NewItems'
+import NewItemsWindow from '../components/NewItems'
 
 import Plus from '../assets/svg/Plus'
 import Funnel from '../assets/svg/Funnel'
@@ -11,7 +11,7 @@ function Items() {
         return (
             <div className="window-header">
                 <div>
-                    <h1>Items</h1>
+                    <h1>History</h1>
                 </div>
                 <div className="window-header-buttons">
                     <button
@@ -35,7 +35,7 @@ function Items() {
 
     return (
         <div id="items-window">
-            <NewItemsStack />
+            <NewItemsWindow />
             <div className='window' id="all-items-window">
                 <Header />
             </div>
