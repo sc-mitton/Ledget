@@ -47,10 +47,10 @@ const NewItemsProvider = ({ children }) => {
 }
 
 const useItemAnimations = (expanded, items, stackMax) => {
-    const translate = 13
+    const translate = 15
     const expandedTranslate = 85
     const expandedHeight = 320
-    const collapsedHeight = 100
+    const collapsedHeight = 120
 
     const [loaded, setLoaded] = useState(false)
     const itemsApi = useSpringRef()
@@ -66,20 +66,6 @@ const useItemAnimations = (expanded, items, stackMax) => {
         boxSize: 'border-box',
         height: collapsedHeight,
     }))
-
-    const getBackground = useCallback((index) => {
-        let r = 230 - (Math.min(index, stackMax) ** 2 * 20)
-        // Items lower on the stack are darker
-        // Don't calculate past the stack max because
-        // it's not shown in unexpanded mode
-        if (expanded || index === 0) {
-            return "linear-gradient(0deg, rgba(237, 237, 237, 1) 0%,  \
-                    rgba(237, 237, 237, 1)25%, rgba(237, 237, 237, 1)"
-        } else {
-            return `linear-gradient(0deg, rgba(${r}, ${r}, ${r}, .75) 0%,
-             rgba(${r}, ${r}, ${r}, 1)25%, rgba(${r}, ${r}, ${r}, 1)`
-        }
-    }, [expanded])
 
     const getOpacity = useCallback((index) => {
         const belowStackMax = index > stackMax
@@ -110,12 +96,12 @@ const useItemAnimations = (expanded, items, stackMax) => {
         }
 
         if (index === 0 || expanded) {
-            return index * expandedTranslate
+            return index * expandedTranslate + 8
         } else {
             if (index > stackMax) {
-                return stackMax * translate
+                return stackMax * translate + 8
             } else {
-                return index * translate
+                return index * translate + 8
             }
         }
     }, [expanded])
@@ -134,7 +120,9 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 transform: `scale(${getScale(index)})`,
                 zIndex: `${(items.length - index)}`,
                 opacity: getOpacity(index),
-                background: getBackground(index),
+                background: "linear-gradient(0deg, rgba(252, 247, 247, 1) 0%,  \
+                rgba(252, 247, 247, 1)25%, rgba(252, 247, 247, 1)",
+                boxShadow: !expanded ? "0px 4px 8px rgba(0, 0, 0, 0.1)" : "none",
                 position: 'absolute',
                 x: 0,
                 left: 0,
@@ -152,8 +140,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 y: getY(index, true),
                 transform: `scale(${getScale(index)})`,
                 zIndex: `${(items.length - index)}`,
-                opacity: getOpacity(index),
-                background: getBackground(index),
+                opacity: getOpacity(index)
             }),
             onRest: (item, index) => {
                 expanded &&
