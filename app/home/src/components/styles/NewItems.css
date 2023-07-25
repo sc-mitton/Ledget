@@ -1,6 +1,9 @@
 #new-items-container {
     position: relative;
-    background: radial-gradient(ellipse, rgba(14, 7, 7, .05) 1%, rgba(252, 247, 247, 1) 50%);
+    max-width: 430px;
+    position: relative;
+    transform: translateX(-50%);
+    left: 50%;
 }
 
 .new-item::after {
@@ -105,7 +108,7 @@
 /* ------------------------------ Expand Button ----------------------------- */
 
 #expand-button {
-    background-color: var(--button-gray);
+    background-color: var(--icon-light-gray);
     color: var(--white-text);
     transition: background-color .3s ease-out;
     font-weight: 400;
@@ -113,8 +116,8 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding-left: 10px;
-    padding-right: 6px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 #expand-button-icon {
@@ -124,5 +127,5 @@
 }
 
 #expand-button:hover {
-    background-color: var(--button-hover-gray);
+    background-color: var(--icon-hover-light-gray);
 }

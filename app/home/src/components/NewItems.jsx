@@ -14,6 +14,7 @@ import Wells from "../assets/logos/Wells"
 import Ally from "../assets/logos/Ally"
 import Discover from "../assets/logos/Discover"
 import Visa from "../assets/logos/Visa"
+import NeedsConfirmationHeader from './NeedsConfirmationHeader'
 
 // TODO: pull this data in from backend
 
@@ -115,12 +116,10 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 transform: `scale(${getScale(index, false)})`,
             }),
             enter: (item, index) => ({
-                // top: getTop(index, true),
                 y: getY(index, true),
                 transform: `scale(${getScale(index)})`,
                 zIndex: `${(items.length - index)}`,
                 opacity: getOpacity(index),
-                // y: getY(index, true),
                 margin: '0 16px',
                 x: 0,
                 left: 0,
@@ -282,7 +281,7 @@ const NewItem = (props) => {
     )
 }
 
-const ExpandButton = ({ onClick, children }) => {
+const ExpandButton = ({ onClick }) => {
     const [rotated, setRotated] = useState(false)
     const { items } = useContext(NewItemsContext)
 
@@ -295,8 +294,9 @@ const ExpandButton = ({ onClick, children }) => {
         marginBottom: items.length > 1 ? '12px' : '0px',
         opacity: items.length > 1 ? 1 : 0,
         height: items.length > 1 ? '1.6em' : '0em',
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
         scale: "1.05",
         zIndex: 100,
     })
@@ -316,13 +316,12 @@ const ExpandButton = ({ onClick, children }) => {
                 aria-label="Expand new item stack"
                 tabIndex={0}
             >
-                {children}
                 <animated.div
                     id="expand-button-icon"
                     style={rotationProps}
                     aria-label="Expand new item stack"
                 >
-                    <ExpandIcon />
+                    <ExpandIcon stroke={"rgb(0,0,0,.3)"} />
                 </animated.div >
             </button>
         </animated.div>
@@ -378,24 +377,6 @@ const Menu = ({ pos, show, setShow }) => {
         >
             <ItemOptionsMenu />
         </DropAnimation>
-    )
-}
-
-const ConfirmAllButton = () => {
-
-    return (
-        <button
-            className='btn-primary-green'
-            aria-label="Confirm all items"
-            style={{
-                position: 'absolute',
-                bottom: '16px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-            }}
-        >
-            Confirm All
-        </button>
     )
 }
 
@@ -461,8 +442,15 @@ const NewItemsStack = ({ stackMax }) => {
     }, [expanded])
 
     return (
-        <>
-            <div id="new-items-container" ref={newItemsContainerRef}>
+        <div id="new-items-container">
+            <NeedsConfirmationHeader />
+            <div
+                ref={newItemsContainerRef}
+                style={{
+                    position: "relative",
+                    background: "radial-gradient(ellipse, rgba(14, 7, 7, .05) 1%, rgba(252, 247, 247, 1) 50%)",
+                }}
+            >
                 <Shadow visible={expanded && showShadowBottom} location={'bottom'} />
                 <Shadow visible={expanded && showShadowTop} location={'top'} />
                 <animated.div
@@ -486,10 +474,8 @@ const NewItemsStack = ({ stackMax }) => {
                     pos={menuPos}
                 />
             </div>
-            <ExpandButton onClick={() => setExpanded(!expanded)}>
-                {`${items.length} `}
-            </ExpandButton>
-        </>
+            <ExpandButton onClick={() => setExpanded(!expanded)} />
+        </div>
     )
 }
 

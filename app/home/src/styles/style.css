@@ -41,9 +41,9 @@
     /* Icons & Buttons */
     --button-gray: #363636;
     --button-hover-gray: #292929;
-    --button-black: rgb(36, 36, 36);
-    --icon-light-gray: hsl(0, 0%, 92%);
-    --icon-hover-light-gray: hsl(0, 0%, 88%);
+    --button-black: #242424;
+    --icon-light-gray: #ebebeb;
+    --icon-hover-light-gray: #e0e0e0;
     --icon-hover-gray: #c4c4c4;
     --drop-down-hover-background: #dfdfdf;
 }

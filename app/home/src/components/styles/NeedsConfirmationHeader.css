@@ -1,0 +1,36 @@
+#needs-confirmation-header-container {
+    display: flex;
+    justify-content: center;
+}
+
+#needs-confirmation-header {
+    padding: 8px 36px 10px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 430px;
+    width: 100%;
+}
+
+#needs-confirmation-header h4 {
+    margin: 0;
+}
+
+#needs-confirmation-header div {
+    display: flex;
+    align-items: center;
+}
+
+#needs-confirmation-header button {
+    display: flex;
+    align-items: center;
+}
+
+#number-of-items {
+    font-weight: 500;
+    margin-right: 6px;
+    background-color: var(--icon-light-gray);
+    color: rgb(0, 0, 0, .3);
+    padding: 0 4px;
+    border-radius: 6px;
+}
