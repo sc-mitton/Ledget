@@ -25,10 +25,14 @@ const Login = () => {
 }
 
 const App = () => {
+    const user = useSelector(selectUser)
 
     const dispatch = useDispatch()
+
     useEffect(() => {
-        dispatch(fetchUser())
+        if (user.status === 'idle') {
+            dispatch(fetchUser())
+        }
     }, [])
 
     return (

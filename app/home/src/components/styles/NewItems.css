@@ -123,7 +123,7 @@
 #expand-button-icon {
     display: flex;
     align-items: center;
-    padding: 4px;
+    padding: 0 4px;
 }
 
 #expand-button:hover {

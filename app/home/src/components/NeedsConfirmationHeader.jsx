@@ -25,18 +25,19 @@ const RefreshButton = ({ onClick }) => {
 
     return (
         <Tooltip msg={"Refresh"} ariaLabel={"Refresh list"}>
-            <animated.div
-                style={props}
+
+            <button
+                className='btn-primary-scaling'
+                id="refresh-icon"
+                aria-label="Refresh"
+                onClick={handleClick}
             >
-                <button
-                    className='btn-primary-scaling'
-                    id="refresh-icon"
-                    aria-label="Refresh"
-                    onClick={handleClick}
+                <animated.div
+                    style={props}
                 >
                     <Replay />
-                </button>
-            </animated.div>
+                </animated.div>
+            </button>
         </Tooltip>
     )
 }

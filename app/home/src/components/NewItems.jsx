@@ -66,6 +66,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
         zIndex: 1,
         boxSize: 'border-box',
         height: collapsedHeight,
+        overflowX: "hidden",
     }))
 
     const getOpacity = useCallback((index) => {
@@ -138,17 +139,16 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 y: getY(index, true),
                 transform: `scale(${getScale(index)})`,
                 zIndex: `${(items.length - index)}`,
-                opacity: getOpacity(index)
+                opacity: getOpacity(index),
             }),
             onRest: (item, index) => {
                 expanded &&
                     containerApi.start({
-                        overflowX: 'hidden',
                         overflowY: 'scroll',
                     })
             },
             onStart: () => {
-                containerApi.start({ overflowX: 'hidden', overflowY: 'hidden' })
+                containerApi.start({ overflowY: 'hidden' })
             },
             config: {
                 tension: 180,
@@ -409,7 +409,9 @@ const NewItemsStack = ({ stackMax }) => {
                     opacity: 0,
                     config: { duration: 130 },
                     onStart: () => {
-                        containerApi.start({ overflowX: 'hidden', overflowY: 'hidden' })
+                        containerApi.start({
+                            overflowX: 'hidden',
+                        })
                     },
                     onRest: () => {
                         setItems(items.filter((item) => item.id !== i))

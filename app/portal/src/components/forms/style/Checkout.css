@@ -222,7 +222,7 @@ input[type="radio"]:checked+label {
 /* ------------------------------ Card Element ------------------------------ */
 .card-container {
     background-color: var(--input-color);
-    border-radius: 6px;
+    border-radius: 8px;
     z-index: 0;
     padding: 16px 16px;
     margin: 12px 0;

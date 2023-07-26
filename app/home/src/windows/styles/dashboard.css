@@ -24,31 +24,13 @@
 /* --------------------------------- buttons -------------------------------- */
 
 /* Header Buttons */
-.window-header-buttons,
-.window-header-button,
-.window-header-button-selected {
+.window-header-buttons {
     display: flex;
     align-items: center;
 }
 
-.window-header-button {
-    background-color: var(--icon-light-gray);
-}
-
-.window-header-button-selected {
-    background-color: var(--button-gray);
-}
-
-.window-header-button,
-.window-header-button-selected {
-    padding: 4px;
+.window-header-buttons button {
     margin: 0 4px;
-    border-radius: 4px;
-}
-
-.window-header-button:hover {
-    transition: background-color 0.2s ease-out;
-    background-color: var(--icon-hover-gray);
 }
 
 /****/
@@ -114,13 +96,14 @@
 }
 
 .btn-primary-scaling {
+    border-radius: 6px;
     transform: scale(1);
     cursor: pointer;
     transition: transform .3s ease;
 }
 
 .btn-primary-scaling:hover {
-    transform: scale(1.3);
+    transform: scale(1.2);
     transition: transform .3s ease;
 }
 

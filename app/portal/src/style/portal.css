@@ -64,7 +64,7 @@
 /* --------------------------------- Buttons -------------------------------- */
 
 button {
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 12px 16px;
     cursor: pointer;
 }
@@ -108,7 +108,7 @@ input[type="password"]:focus::placeholder {
 
 .input-container {
     background-color: var(--input-color);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 12px 16px;
     margin: 12px 0;
     box-sizing: border-box;
@@ -187,7 +187,7 @@ input[type="password"]:focus::placeholder {
 .social-auth-button {
     box-shadow: var(--button-drop-shadow);
     background-color: var(--social-button);
-    border-radius: 6px;
+    border-radius: 8px;
     flex: 1;
     padding: 10px;
     margin: 4px;

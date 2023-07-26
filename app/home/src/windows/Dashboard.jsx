@@ -10,10 +10,10 @@ import Accounts from './Accounts'
 import './styles/dashboard.css'
 
 
-const Dashboard = ({ isNarrow }) => {
+const Dashboard = () => {
     const dashboardRef = useRef(null)
     const navigate = useNavigate()
-    const [narrow, setIsNarrow] = useState(false)
+    const [isNarrow, setIsNarrow] = useState(false)
 
     useLayoutEffect(() => {
         const handleResize = () => {

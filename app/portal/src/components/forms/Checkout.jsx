@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useLayoutEffect } from 'react'
 import { useState, useRef } from 'react'
 
 import { useForm, Controller, set } from 'react-hook-form'
@@ -67,7 +67,7 @@ const PriceContextProvider = ({ children }) => {
 const Prices = ({ prices }) => {
     const { price, setPrice } = useContext(PriceContext)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setPrice(prices[0])
     }, [prices])
 
@@ -520,8 +520,8 @@ const AnimatedCheckout = () => {
                         <div className="app-logo" >
                             <img src={logo} alt="Ledget" />
                         </div>
-                        <div id="message">
-                            Well shoot, something went wrong.
+                        <div id="message" style={{ marginTop: "-12px" }}>
+                            Please try back again later.
                         </div>
                     </div>
                 </motion.div>

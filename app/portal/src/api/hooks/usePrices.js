@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import ledgetapi from '../axios'
 
 const usePrices = () => {
-    const [prices, setPrices] = useState([])
+    const [prices, setPrices] = useState(null)
     const [error, setError] = useState(null)
 
     useEffect(() => {
@@ -21,7 +21,6 @@ const usePrices = () => {
                 setError(error)
             }
         }
-
         fetchPrices()
     }, [])
 
