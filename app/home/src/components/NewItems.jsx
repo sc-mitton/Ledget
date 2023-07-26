@@ -4,16 +4,16 @@ import { useState, useEffect, useRef, useCallback, useContext, createContext } f
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 
 import "./styles/NewItems.css"
-import Ellipsis from "../assets/svg/Ellipsis"
-import CheckMark from "../assets/svg/CheckMark"
-import ExpandIcon from "../assets/svg/Expand"
-import DropAnimation from "./utils/DropAnimation"
+import Ellipsis from "@assets/svg/Ellipsis"
+import CheckMark from "@assets/svg/CheckMark"
+import ExpandIcon from "@assets/svg/Expand"
+import DropAnimation from "@utils/DropAnimation"
 import ItemOptionsMenu from "./dropdowns/ItemOptionsMenu"
-import formatDateOrRelativeDate from "./utils/convertTImestamp"
-import Wells from "../assets/logos/Wells"
-import Ally from "../assets/logos/Ally"
-import Discover from "../assets/logos/Discover"
-import Visa from "../assets/logos/Visa"
+import formatDateOrRelativeDate from "@utils/convertTImestamp"
+import Wells from "@assets/logos/Wells"
+import Ally from "@assets/logos/Ally"
+import Discover from "@assets/logos/Discover"
+import Visa from "@assets/logos/Visa"
 import NeedsConfirmationHeader from './NeedsConfirmationHeader'
 
 // TODO: pull this data in from backend
@@ -322,7 +322,7 @@ const ExpandButton = ({ onClick }) => {
                     style={rotationProps}
                     aria-label="Expand new item stack"
                 >
-                    <ExpandIcon stroke={"rgb(0,0,0,.3)"} />
+                    <ExpandIcon stroke={"var(--faded-text)"} />
                 </animated.div >
             </button>
         </animated.div>

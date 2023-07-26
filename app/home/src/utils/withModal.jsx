@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
-import './modal.css'
-import Close from '../../assets/svg/Close'
+import './styles/modal.css'
+import Close from '@assets/svg/Close'
 
 
 function withModal(WrappedComponent) {
@@ -37,7 +37,7 @@ function withModal(WrappedComponent) {
             const handleKeyDown = (event) => {
                 if (event.key === "Tab") {
                     event.preventDefault()
-                    exitRef.current.focus()
+                    exitRef?.current.focus()
                 }
             }
 

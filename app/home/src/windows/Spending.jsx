@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
-import CashFlow from '../assets/svg/CashFlow'
-import Graph from '../assets/svg/Graph'
-import Ellipsis2 from '../assets/svg/Ellipsis2'
+import CashFlow from '@assets/svg/CashFlow'
+import Graph from '@assets/svg/Graph'
+import Ellipsis2 from '@assets/svg/Ellipsis2'
 
-import MonthPicker from '../components/inputs/MonthPicker'
+import MonthPicker from '@components/inputs/MonthPicker'
 
 function Spending() {
     const [graphView, setGraphView] = useState(true)

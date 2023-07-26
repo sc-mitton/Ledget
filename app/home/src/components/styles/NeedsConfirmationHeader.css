@@ -4,7 +4,7 @@
 }
 
 #needs-confirmation-header {
-    padding: 8px 36px 10px 28px;
+    padding: 8px 36px 8px 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -30,7 +30,7 @@
     font-weight: 500;
     margin-right: 6px;
     background-color: var(--icon-light-gray);
-    color: rgb(0, 0, 0, .3);
+    color: var(--faded-text);
     padding: 0 4px;
     border-radius: 6px;
 }

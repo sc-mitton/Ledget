@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react'
 
-import withModal from '../utils/withModal'
+import { useDispatch } from 'react-redux'
+
+import withModal from '@utils/withModal'
+import logout from '@flow/logout'
 import "./styles/Logout.css"
+import { logoutUser } from '../../slices/user'
+import { LoadingRing } from '../widgets/Widgets'
 
 function Logout(props) {
-    const [seconds, setSeconds] = useState(30);
+    const [seconds, setSeconds] = useState(30)
+    const [loggingOut, setLoggingOut] = useState(false)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -16,14 +23,19 @@ function Logout(props) {
         }
     }, [])
 
-    useEffect(() => {
-        // TODO REDUX: dispatch get logout action
-    }, [])
-
-    const logout = () => {
-        props.setVisible(false)
-        // TODO REDUX: dispatch logout action
+    const handleLogout = async () => {
+        setLoggingOut(true)
+        const loggedOut = await logout()
+        if (loggedOut) {
+            loggedOut && dispatch(logoutUser)
+            window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL
+        }
+        setLoggingOut(false)
     }
+
+    useEffect(() => {
+        seconds === 0 && handleLogout()
+    }, [seconds])
 
     return (
         <div>
@@ -34,16 +46,20 @@ function Logout(props) {
             <div style={{ display: 'flex', 'justifyContent': 'end', marginTop: '8px' }}>
                 <button
                     className='btn-secondary'
-                    onClick={() => { props.setVisible(false) }}
+                    onClick={() => props.setVisible(false)}
                 >
                     Cancel
                 </button>
                 <button
                     className='btn-primary-green'
-                    onClick={() => { logout() }}
+                    onClick={() => handleLogout()}
                     aria-label="Logout"
                 >
-                    Logout
+                    <LoadingRing visible={loggingOut}>
+                        <div style={{ color: loggingOut ? 'transparent' : 'inherit' }}>
+                            Logout
+                        </div>
+                    </LoadingRing>
                 </button>
             </div>
         </div>

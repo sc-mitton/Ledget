@@ -1,8 +1,8 @@
 import React from 'react'
-import NewItemsWindow from '../components/NewItems'
+import NewItemsWindow from '@components/NewItems'
 
-import Plus from '../assets/svg/Plus'
-import Funnel from '../assets/svg/Funnel'
+import Plus from '@assets/svg/Plus'
+import Funnel from '@assets/svg/Funnel'
 import './styles/Items.css'
 
 

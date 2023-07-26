@@ -9,8 +9,9 @@ import { fetchUser, selectUser } from './slices/user'
 
 const PrivateRoute = () => {
     const user = useSelector(selectUser)
+
     return (
-        user.hasErrors ? <Navigate to="/login" /> : <Outlet />
+        user.status === 'failed' ? <Navigate to="/login" /> : <Outlet />
     )
 }
 

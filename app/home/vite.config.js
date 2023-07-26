@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react';
-
+import path from 'path';
 
 export default ({ mode }) => {
     const isProduction = mode === 'production';
@@ -25,6 +25,15 @@ export default ({ mode }) => {
                 ca: process.env.SSL_CA_FILE,
             }
         },
-        plugins: [react()]
+        resolve: {
+            alias: {
+                '@': path.resolve(__dirname, './src'),
+                '@assets': path.resolve(__dirname, './src/assets'),
+                '@components': path.resolve(__dirname, './src/components'),
+                '@utils': path.resolve(__dirname, './src/utils'),
+                '@flow': path.resolve(__dirname, './src/flow'),
+            }
+        },
+        plugins: [react()],
     }
 }

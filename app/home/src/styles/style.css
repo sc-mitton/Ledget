@@ -37,6 +37,7 @@
     --input-focus: #6b9bf6;
     --white-text: #f8f8f8;
     --muted-text-gray: #848484;
+    --faded-text: rgb(0, 0, 0, .3);
 
     /* Icons & Buttons */
     --button-gray: #363636;

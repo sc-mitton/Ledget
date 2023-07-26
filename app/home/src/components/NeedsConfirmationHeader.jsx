@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 import { useSpring, animated } from '@react-spring/web'
 
-import Replay from '../assets/svg/Replay'
-import CheckAll from '../assets/svg/CheckAll'
-import Tooltip from './widgets/Tooltip'
+import Replay from '@assets/svg/Replay'
+import CheckAll from '@assets/svg/CheckAll'
+import Tooltip from '@components/widgets/Tooltip'
 import './styles/NeedsConfirmationHeader.css'
 
 
@@ -27,7 +27,7 @@ const RefreshButton = ({ onClick }) => {
         <Tooltip msg={"Refresh"} ariaLabel={"Refresh list"}>
 
             <button
-                className='btn-primary-scaling'
+                className='icon'
                 id="refresh-icon"
                 aria-label="Refresh"
                 onClick={handleClick}
@@ -47,7 +47,7 @@ const CheckAllButton = () => {
     return (
         <Tooltip msg={"Confirm all"} ariaLabel={"Confirm all items"}>
             <button
-                className="btn-primary-scaling"
+                className="icon"
                 id="check-all-icon"
                 aria-label="Check all"
             >
