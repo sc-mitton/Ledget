@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { ledget } from '../api/ledget'
 
+
 export const initialState = {
     status: 'idle' as 'idle' | 'loading' | 'succeeded' | 'failed',
     error: null as string | null,
@@ -34,6 +35,7 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+        logoutUser: () => initialState
     },
     extraReducers: (builder) => {
         builder
@@ -54,7 +56,7 @@ const userSlice = createSlice({
     }
 })
 
-export const { } = userSlice.actions
+export const { logoutUser } = userSlice.actions
 export default userSlice.reducer
 
 // Selectors - This is how we pull information from the Global store slice
