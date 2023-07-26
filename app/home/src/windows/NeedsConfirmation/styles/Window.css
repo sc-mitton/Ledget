@@ -1,0 +1,106 @@
+#new-items-container {
+    position: relative;
+    max-width: 430px;
+    position: relative;
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+#new-items {
+    position: relative;
+    background: radial-gradient(ellipse, rgba(14, 7, 7, .05) 1%, var(--window) 50%)
+}
+
+.new-item::after {
+    content: '';
+    display: block;
+    opacity: 0;
+    position: absolute;
+    bottom: -10px;
+    width: 100%;
+    height: 10px;
+}
+
+.new-item-data {
+    font-weight: 400;
+}
+
+.new-item-data div:first-child span:first-child {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.new-item-data div:last-child {
+    font-weight: 400;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+}
+
+.new-item-data div:last-child span:last-child {
+    opacity: .4;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.new-item-data div:last-child svg {
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+.new-item-icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.new-item-icons button:nth-child(1) {
+    margin: 0 8px;
+}
+
+.new-item-icons button:last-child {
+    margin-left: 4px;
+}
+
+/* Category Icon */
+.category-icon {
+    transform: scale(1);
+    transition: all .2s ease-out;
+    background-color: var(--green-highlight);
+    padding: 2px 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.category-icon:hover {
+    transform: scale(1.1);
+    transition: all .2s ease-out;
+}
+
+
+/* ------------------------------ Expand Button ----------------------------- */
+
+#expand-button {
+    background-color: var(--icon-light-gray);
+    color: var(--white-text);
+    transition: background-color .3s ease-out;
+    font-weight: 400;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+#expand-button-icon {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+}
+
+#expand-button:hover {
+    background-color: var(--icon-hover-light-gray);
+}

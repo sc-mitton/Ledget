@@ -8,10 +8,10 @@ import "./style/style.css";
 
 
 const PrivateRoute = () => {
-    const { isError } = useGetMeQuery()
+    const { isSuccess, isLoading, isPending } = useGetMeQuery()
 
     return (
-        isError ? <Navigate to="/login" /> : <Outlet />
+        (isSuccess || isLoading || isPending) ? <Outlet /> : <Navigate to="/login" />
     )
 }
 

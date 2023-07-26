@@ -64,7 +64,7 @@ header {
     text-align: left;
     display: flex;
     flex-direction: column;
-    top: 10px;
+    top: 6px;
     left: -34px;
 }
 
@@ -75,7 +75,7 @@ header {
     left: 28px;
     display: inline-block;
     border-right: 6px solid transparent;
-    border-bottom: 6px solid #CCC;
+    border-bottom: 6px solid var(--subtle-border-color);
     border-left: 6px solid transparent;
     content: '';
 }
@@ -108,7 +108,7 @@ header {
     right: 36px;
     display: inline-block;
     border-right: 6px solid transparent;
-    border-bottom: 6px solid #CCC;
+    border-bottom: 6px solid var(--subtle-border-color);
     border-left: 6px solid transparent;
     content: '';
 }

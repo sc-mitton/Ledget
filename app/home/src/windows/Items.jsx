@@ -1,6 +1,6 @@
 import React from 'react'
-import NewItemsWindow from '@components/NewItems'
 
+import NeedsConfirmationWindow from './NeedsConfirmation/Window'
 import Plus from '@assets/svg/Plus'
 import Funnel from '@assets/svg/Funnel'
 import './styles/Items.css'
@@ -36,7 +36,7 @@ function Items() {
 
     return (
         <div id="items-window">
-            <NewItemsWindow />
+            <NeedsConfirmationWindow />
             <div className='window' id="all-items-window">
                 <HistoryHeader />
             </div>

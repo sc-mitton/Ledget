@@ -146,27 +146,25 @@ function Header({ isNarrow }) {
                             <Profile1 />
                         </Menu.Button>
                         <DropAnimation visible={open}>
-                            <Menu.Items
-                                as="div"
-                                className="dropdown profile-dropdown"
-                                static
-                            >
-                                <Wrapper onClick={() => navigate("/profile")}>
-                                    <Profile2 className="dropdown-icon" />
-                                    Profile
-                                </Wrapper>
-                                <Wrapper onClick={() => navigate('/profile')}>
-                                    <SettingsIcon className="dropdown-icon" />
-                                    Settings
-                                </Wrapper>
-                                <Wrapper onClick={() => setModal("help")}>
-                                    <HelpIcon className="dropdown-icon" />
-                                    Help
-                                </Wrapper>
-                                <Wrapper onClick={() => setModal("logout")}>
-                                    <LogoutIcon className="dropdown-icon" />
-                                    Logout
-                                </Wrapper>
+                            <Menu.Items static >
+                                <div className="dropdown profile-dropdown">
+                                    <Wrapper onClick={() => navigate("/profile")}>
+                                        <Profile2 className="dropdown-icon" />
+                                        Profile
+                                    </Wrapper>
+                                    <Wrapper onClick={() => navigate('/profile')}>
+                                        <SettingsIcon className="dropdown-icon" />
+                                        Settings
+                                    </Wrapper>
+                                    <Wrapper onClick={() => setModal("help")}>
+                                        <HelpIcon className="dropdown-icon" />
+                                        Help
+                                    </Wrapper>
+                                    <Wrapper onClick={() => setModal("logout")}>
+                                        <LogoutIcon className="dropdown-icon" />
+                                        Log out
+                                    </Wrapper>
+                                </div>
                             </Menu.Items>
                         </DropAnimation>
                     </>

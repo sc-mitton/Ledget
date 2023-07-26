@@ -26,7 +26,7 @@
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1.5px 1px var(--accessible-green);
     --input-focus-drop-shadow: 0 0 .5px 1.5px var(--light-blue);
-    --mid-elevation-drop-shadow: rgba(149, 157, 165, 0.5) 0px 8px 20px;
+    --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
 
     /* Input Colors */
     --input-color: #ededed;
@@ -47,6 +47,10 @@
     --icon-hover-light-gray: #e0e0e0;
     --icon-hover-gray: #c4c4c4;
     --drop-down-hover-background: #dfdfdf;
+
+    /* Borders */
+    --subtle-border-color: rgb(0, 0, 0, .1);
+    --subtle-border: .75px solid var(--subtle-border-color);
 }
 
 /* Override color values for Firefox */

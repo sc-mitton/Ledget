@@ -1,0 +1,28 @@
+/* -------------------------------- Dropdown -------------------------------- */
+
+.options-dropdown-container:focus-visible {
+    box-shadow: none;
+    outline: none;
+}
+
+.options-dropdown::before {
+    position: absolute;
+    top: -7px;
+    left: 46px;
+    display: inline-block;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid var(--subtle-border-color);
+    border-left: 7px solid transparent;
+    content: '';
+}
+
+.options-dropdown::after {
+    position: absolute;
+    top: -6px;
+    left: 47px;
+    display: inline-block;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid var(--window);
+    border-left: 6px solid transparent;
+    content: '';
+}

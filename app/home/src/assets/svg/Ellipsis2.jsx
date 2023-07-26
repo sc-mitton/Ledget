@@ -3,8 +3,8 @@ import React from 'react'
 const Ellipsis = ({
     className = null,
     fill = "#242424",
-    width = "1.2em",
-    height = "1.2em"
+    width = "1.3em",
+    height = "1.3em"
 }) => {
 
     return (
@@ -17,6 +17,7 @@ const Ellipsis = ({
             x="0px"
             y="0px"
             aria-label="Ellipsis"
+            className={className}
         >
             <circle fill={fill} cx="16.5" cy="72.2" r="14.3" />
             <circle fill={fill} cx="71.6" cy="72.2" r="14.3" />
