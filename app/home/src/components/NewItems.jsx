@@ -59,14 +59,13 @@ const useItemAnimations = (expanded, items, stackMax) => {
     useEffect(() => { setLoaded(true) }, [])
 
     const [containerProps, containerApi] = useSpring(() => ({
-        maxWidth: '430px',
         position: 'relative',
         left: '50%',
         transform: 'translateX(-50%)',
         zIndex: 1,
-        boxSize: 'border-box',
         height: collapsedHeight,
         overflowX: "hidden",
+        overflowY: "hidden",
     }))
 
     const getOpacity = useCallback((index) => {
@@ -135,7 +134,6 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 justifyContent: "space-between",
             }),
             update: (item, index) => ({
-                // top: getTop(index),
                 y: getY(index, true),
                 transform: `scale(${getScale(index)})`,
                 zIndex: `${(items.length - index)}`,
@@ -146,9 +144,6 @@ const useItemAnimations = (expanded, items, stackMax) => {
                     containerApi.start({
                         overflowY: 'scroll',
                     })
-            },
-            onStart: () => {
-                containerApi.start({ overflowY: 'hidden' })
             },
             config: {
                 tension: 180,
@@ -163,10 +158,16 @@ const useItemAnimations = (expanded, items, stackMax) => {
         itemsApi.start()
         containerApi.start({
             height: expanded
-                ? Math.min(items.length * expandedTranslate, expandedHeight)
+                ? Math.min(items.length * expandedTranslate + 15, expandedHeight)
                 : (items.length > 0 ? collapsedHeight : 0)
         })
     }, [expanded, items])
+
+    useEffect(() => {
+        containerApi.start({
+            overflowY: 'hidden',
+        })
+    }, [expanded])
 
     return {
         containerApi,
@@ -392,7 +393,6 @@ const NewItemsStack = ({ stackMax }) => {
 
     const {
         itemsApi,
-        containerApi,
         containerProps,
         itemTransitions
     } = useItemAnimations(expanded, items, stackMax)
@@ -408,11 +408,6 @@ const NewItemsStack = ({ stackMax }) => {
                     x: 100,
                     opacity: 0,
                     config: { duration: 130 },
-                    onStart: () => {
-                        containerApi.start({
-                            overflowX: 'hidden',
-                        })
-                    },
                     onRest: () => {
                         setItems(items.filter((item) => item.id !== i))
                     },
