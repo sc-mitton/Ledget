@@ -11,7 +11,6 @@
     padding: 24px 52px 0px 52px;
     display: flex;
     justify-content: start;
-    align-items: top;
 }
 
 #prices-container-header img {
@@ -127,7 +126,7 @@ input[type="radio"]:checked+label {
 
 /* -------------------------------------------------------------------------- */
 
-#checkout-container h3 {
+#checkout-container h4 {
     font-weight: 600;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     color: var(--logo-dark);

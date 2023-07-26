@@ -12,7 +12,7 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         valueContainer: (baseStyles, state) => ({
             ...baseStyles,
-            appearace: "none",
+            appearance: "none",
         }),
         control: (baseStyles, state) => ({
             ...baseStyles,

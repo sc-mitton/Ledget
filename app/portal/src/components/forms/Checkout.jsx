@@ -144,7 +144,7 @@ const Card = ({ cardNotEnteredError, setCardNotEnteredError, setCardEntered }) =
 
     return (
         <>
-            <h3>Card</h3>
+            <h4>Card</h4>
             <div className={`card-container${cardFocus ? '-focused' : ''}`}>
                 <CardElement
                     onBlur={() => setCardFocus(false)}
@@ -198,7 +198,7 @@ const Form = ({ onSubmit, id }) => {
 
     return (
         <>
-            <h3>Billing Info</h3>
+            <h4>Billing Info</h4>
             <form onSubmit={submitBillingForm} className="checkout-form" id={id}>
                 <div id="name-on-card-container" className='input-container'>
                     <input
@@ -497,7 +497,19 @@ const AnimatedCheckout = () => {
 
     return (
         <AnimatePresence>
-            {error &&
+            {prices && !error
+                ?
+                <motion.div
+                    className="window"
+                    id="checkout-window"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <Checkout prices={prices} />
+                </motion.div>
+                :
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -512,18 +524,6 @@ const AnimatedCheckout = () => {
                             Well shoot, something went wrong.
                         </div>
                     </div>
-                </motion.div>
-            }
-            {prices && !error &&
-                <motion.div
-                    className="window"
-                    id="checkout-window"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <Checkout prices={prices} />
                 </motion.div>
             }
         </AnimatePresence>

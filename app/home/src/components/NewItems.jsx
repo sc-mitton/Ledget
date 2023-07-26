@@ -127,7 +127,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 position: 'absolute',
                 borderRadius: "12px",
                 boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.1)",
-                background: "rgba(252, 247, 247, 1)",
+                background: "var(--window)",
                 padding: "16px 24px",
                 display: "flex",
                 flexDirection: "row",
@@ -448,7 +448,7 @@ const NewItemsStack = ({ stackMax }) => {
                 ref={newItemsContainerRef}
                 style={{
                     position: "relative",
-                    background: "radial-gradient(ellipse, rgba(14, 7, 7, .05) 1%, rgba(252, 247, 247, 1) 50%)",
+                    background: "radial-gradient(ellipse, rgba(14, 7, 7, .05) 1%, var(--window) 50%)",
                 }}
             >
                 <Shadow visible={expanded && showShadowBottom} location={'bottom'} />
