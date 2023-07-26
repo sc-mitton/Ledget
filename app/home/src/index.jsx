@@ -5,12 +5,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-import "./styles/style.css";
 import App from './App';
-import rootReducer from './slices/rootReducer';
+import rootReducer from '@features/rootReducer';
+import { ledgetSlice } from '@api/apiSlice'
 
 const store = configureStore({
     reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(ledgetSlice.middleware),
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'))

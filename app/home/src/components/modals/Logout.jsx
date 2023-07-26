@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 import withModal from '@utils/withModal'
 import logout from '@flow/logout'
 import "./styles/Logout.css"
-import { logoutUser } from '../../slices/user'
 import { LoadingRing } from '../widgets/Widgets'
 
 function Logout(props) {
@@ -27,7 +26,7 @@ function Logout(props) {
         setLoggingOut(true)
         const loggedOut = await logout()
         if (loggedOut) {
-            loggedOut && dispatch(logoutUser)
+            // loggedOut && dispatch(logoutUser)
             window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL
         }
         setLoggingOut(false)
