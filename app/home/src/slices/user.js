@@ -66,5 +66,4 @@ export const fetchUser = () => (dispatch) => {
 }
 
 // Selectors - This is how we pull information from the Global store slice
-// export const selectUser = (state) => state.user
-// user = useSelector(selectUser) this is how we use the selector in a component
+export const selectUser = (state) => state.user

@@ -24,15 +24,3 @@ root.render(
         </BrowserRouter>
     </Provider>
 )
-
-// Deprecated
-
-// import ReactDOM from 'react-dom';
-// ReactDOM.render(
-//     <Provider store={store}>
-//         <BrowserRouter>
-//             <App />
-//         </BrowserRouter>
-//     </Provider>,
-//     document.getElementById('root')
-// )

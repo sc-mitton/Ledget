@@ -1,73 +1,44 @@
-import React, { useRef, useLayoutEffect, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { Routes, Outlet, Navigate, Route } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
-import Header from './Header'
-import Spending from './windows/Spending'
-import Items from './windows/Items'
-import Profile from './windows/Profile'
-import Accounts from './windows/Accounts'
-import './styles/dashboard.css'
-import { fetchUser } from './slices/user'
+import Dashboard from './windows/Dashboard'
+import { fetchUser, selectUser } from './slices/user'
 
+
+const PrivateRoute = () => {
+    const user = useSelector(selectUser)
+    return (
+        user.hasErrors ? <Navigate to="/login" /> : <Outlet />
+    )
+}
+
+const Login = () => {
+    useEffect(() => {
+        window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL
+    }, [])
+
+    return (
+        <></>
+    )
+}
 
 const App = () => {
-    const dashboardRef = useRef(null)
-    const [isNarrow, setIsNarrow] = React.useState(false)
-    const navigate = useNavigate()
-    const location = useLocation()
 
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(fetchUser())
     }, [])
 
-    useLayoutEffect(() => {
-        const handleResize = () => {
-            setIsNarrow(dashboardRef.current.offsetWidth < 950)
-        }
-        handleResize()
-        window.addEventListener('resize', handleResize)
-        return () => window.removeEventListener('resize', handleResize)
-    }, [])
-
-    useEffect(() => {
-        switch (location.pathname) {
-            case '/spending':
-                navigate('/spending')
-                break
-            case '/items':
-                isNarrow ? navigate('/items') : navigate('/spending')
-                break
-            case '/accounts':
-                navigate('/accounts')
-                break
-            case '/profile':
-                navigate('/profile')
-                break
-            default:
-                navigate('/spending')
-        }
-    }, [isNarrow, navigate])
-
     return (
         <main tabIndex={0}>
-            <Header isNarrow={isNarrow} />
-            <div id="dashboard" ref={dashboardRef}>
-                <Routes>
-                    <Route path="spending" element={
-                        <>
-                            <Spending />
-                            {!isNarrow && <Items />}
-                        </>
-                    }>
-                    </Route>
-                    {isNarrow && <Route path="items" element={<Items />} />}
-                    <Route path="accounts" element={<Accounts />} />
-                    <Route path="profile" element={<Profile />} />
-                </Routes >
-            </div>
+            <Routes>
+                <Route path="/" element={<PrivateRoute />} >
+                    <Route path="/*" element={<Dashboard />} />
+                </Route>
+                <Route path="/login" element={<Login />} />
+            </Routes >
         </main>
     )
 }

@@ -1,8 +1,8 @@
-import React, { useRef, useLayoutEffect, useEffect } from 'react'
+import React, { useRef, useLayoutEffect, useEffect, useState } from 'react'
 
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 
-import Header from '../Header'
+import Header from './Header'
 import Spending from './Spending'
 import Items from './Items'
 import Profile from './Profile'
@@ -10,15 +10,14 @@ import Accounts from './Accounts'
 import './styles/dashboard.css'
 
 
-const Dashboard = () => {
+const Dashboard = ({ isNarrow }) => {
     const dashboardRef = useRef(null)
-    const [isNarrow, setIsNarrow] = React.useState(false)
     const navigate = useNavigate()
-    const location = useLocation()
+    const [narrow, setIsNarrow] = useState(false)
 
     useLayoutEffect(() => {
         const handleResize = () => {
-            setIsNarrow(dashboardRef.current.offsetWidth < 850)
+            setIsNarrow(dashboardRef.current.offsetWidth < 950)
         }
         handleResize()
         window.addEventListener('resize', handleResize)
