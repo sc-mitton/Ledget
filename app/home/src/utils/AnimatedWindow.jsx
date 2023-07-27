@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { useTransition, animated, config } from '@react-spring/web'
+import React from 'react';
+import { useTransition, animated } from '@react-spring/web';
 
 const AnimatedWindow = ({ children, ...rest }) => {
 
@@ -12,14 +11,10 @@ const AnimatedWindow = ({ children, ...rest }) => {
     }
 
     const transitions = useTransition(true, {
-        from: { opacity: 0, transform: 'scale(0.95)', },
-        enter: { opacity: 1, transform: 'scale(1)', ...style },
-        leave: { opacity: 0, transform: 'scale(0.95)', },
-        config: {
-            tension: 100,
-            friction: 20,
-            mass: 1,
-        },
+        from: { opacity: 0 },
+        enter: { opacity: 1, ...style },
+        leave: { opacity: 0 },
+        config: { duration: 300 },
     })
 
     return transitions((styles, item) =>
@@ -34,4 +29,4 @@ const AnimatedWindow = ({ children, ...rest }) => {
     )
 }
 
-export default AnimatedWindow
+export default AnimatedWindow;
