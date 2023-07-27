@@ -100,15 +100,12 @@ const BudgetHeader = () => {
 
 }
 
-function Budget({ isNarrow }) {
+function Budget() {
 
     return (
-        <>
-            <div className="window" id="budget-window">
-                <BudgetHeader />
-            </div>
-            {!isNarrow && <Spending />}
-        </>
+        <div className="window" id="budget-window">
+            <BudgetHeader />
+        </div>
     )
 }
 
