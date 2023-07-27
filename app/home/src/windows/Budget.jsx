@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Menu } from '@headlessui/react'
 
+import Spending from './Spending'
 import CashFlow from '@assets/svg/CashFlow'
 import Graph from '@assets/svg/Graph'
 import Plus from '@assets/svg/Plus'
@@ -9,7 +10,7 @@ import Edit from '@assets/svg/Edit'
 import Ellipsis2 from '@assets/svg/Ellipsis2'
 import MonthPicker from '@components/inputs/MonthPicker'
 import DropAnimation from '@utils/DropAnimation'
-
+import AnimatedWindow from '@utils/AnimatedWindow'
 
 const Wrapper = ({ onClick, children }) => {
 
@@ -100,12 +101,15 @@ const BudgetHeader = () => {
 
 }
 
-function Budget() {
+function Budget({ isNarrow }) {
 
     return (
-        <div className='window' id="spending-window">
-            <BudgetHeader />
-        </div>
+        <>
+            <AnimatedWindow id="budget-window">
+                <BudgetHeader />
+            </AnimatedWindow>
+            {!isNarrow && <Spending />}
+        </>
     )
 }
 

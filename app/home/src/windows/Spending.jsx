@@ -1,9 +1,9 @@
 import React from 'react'
 
+import AnimatedWindow from '@utils/AnimatedWindow'
 import NeedsConfirmationWindow from './NeedsConfirmation/Window'
 import Plus from '@assets/svg/Plus'
 import Funnel from '@assets/svg/Funnel'
-import './styles/Items.css'
 
 
 const HistoryHeader = () => {
@@ -35,11 +35,11 @@ const HistoryHeader = () => {
 function Spending() {
 
     return (
-        <div id="items-window">
+        <div id="spending-window">
             <NeedsConfirmationWindow />
-            <div className='window' id="all-items-window">
+            <AnimatedWindow id="all-items-window">
                 <HistoryHeader />
-            </div>
+            </AnimatedWindow>
         </div>
     )
 }

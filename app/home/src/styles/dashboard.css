@@ -6,13 +6,6 @@
     height: 100%;
 }
 
-.window {
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    border-radius: 12px;
-    padding: 12px 20px;
-    box-sizing: border-box;
-}
-
 .window-header {
     padding: 8px 12px;
     height: 40px;
@@ -51,7 +44,7 @@
 /*                            Budget Window Styling                           */
 /* -------------------------------------------------------------------------- */
 
-#spending-window {
+#budget-window {
     flex: 1.8;
     margin-right: 12px;
 }
@@ -60,7 +53,7 @@
 /*                            Items Window Styling                            */
 /* -------------------------------------------------------------------------- */
 
-#items-window {
+#spending-window {
     flex: 1;
     min-width: 430px;
     margin-left: 12px;

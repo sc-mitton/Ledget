@@ -17,7 +17,6 @@ const Dashboard = () => {
     const [isNarrow, setIsNarrow] = useState(false)
     const location = useLocation()
 
-
     useLayoutEffect(() => {
         const handleResize = () => {
             setIsNarrow(dashboardRef.current.offsetWidth < 950)
@@ -51,14 +50,8 @@ const Dashboard = () => {
             <Header isNarrow={isNarrow} />
             <div id="dashboard" ref={dashboardRef}>
                 <Routes>
-                    <Route path="budget" element={
-                        <>
-                            <Budget />
-                            {!isNarrow && <Spending />}
-                        </>
-                    }>
-                    </Route>
-                    {isNarrow && <Route path="spending" element={<Spending />} />}
+                    <Route path="budget" element={<Budget isNarrow={isNarrow} />} />
+                    <Route path="spending" element={<Spending />} />
                     <Route path="accounts" element={<Accounts />} />
                     <Route path="profile" element={<Profile />} />
                 </Routes >

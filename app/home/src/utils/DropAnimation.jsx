@@ -1,5 +1,5 @@
-import React, { forwardRef } from 'react';
-import { useTransition, animated, config } from '@react-spring/web';
+import React, { forwardRef } from 'react'
+import { useTransition, animated } from '@react-spring/web'
 
 const DropAnimation = forwardRef(({ visible, children, style = {}, ...rest }, ref) => {
     const transitions = useTransition(visible, {
@@ -11,7 +11,7 @@ const DropAnimation = forwardRef(({ visible, children, style = {}, ...rest }, re
             friction: 28,
             mass: 1,
         },
-    });
+    })
 
     return transitions((styles, item) =>
         item && (
@@ -19,7 +19,7 @@ const DropAnimation = forwardRef(({ visible, children, style = {}, ...rest }, re
                 {children}
             </animated.div>
         )
-    );
-});
+    )
+})
 
-export default DropAnimation;
+export default DropAnimation
