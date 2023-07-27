@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
 import Select from 'react-select'
-import './styles/CustomSelect.css'
 
 const CustomSelect = ({ field, ...props }) => {
     const [open, setOpen] = useState(false)
@@ -43,7 +42,7 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         placeholder: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "#80CFA3" : "#767676",
+            color: state.isFocused ? "#60d39c" : "#767676",
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,

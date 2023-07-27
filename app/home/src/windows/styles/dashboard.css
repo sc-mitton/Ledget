@@ -29,7 +29,7 @@
     align-items: center;
 }
 
-.window-header-buttons button {
+.window-header-buttons>button {
     margin: 0 4px;
 }
 
@@ -209,7 +209,7 @@
 .dropdown-right {
     display: flex;
     flex-direction: column;
-    text-align: left;
+    justify-content: center;
     position: absolute;
     top: 24px;
     right: -8px;

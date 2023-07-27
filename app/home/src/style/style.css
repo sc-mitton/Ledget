@@ -18,10 +18,13 @@
     --alert-red: #f35050;
 
     --green-highlight: #8fffc0;
+    --green-highlight2: #cafce0;
+    --green-highlight3: #a2e6c5;
     --lighter-green: #b3e2c8;
-    --main-green: #48d487;
+    --main-green: #51ed97;
     --main-green-darker: #43c77e;
-    --accessible-green: #63e963;
+    --main-green-darker2: rgb(71, 209, 133);
+    --accessible-green: #51ed97;
 
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1.5px 1px var(--accessible-green);

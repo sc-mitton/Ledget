@@ -37,7 +37,7 @@ const DropDown = () => {
                         <Ellipsis2 />
                     </Menu.Button>
                     <DropAnimation visible={open}>
-                        <Menu.Items static>
+                        <Menu.Items static as={React.static}>
                             <div className="dropdown dropdown-right">
                                 <Wrapper>
                                     <Edit className="dropdown-icon" />
@@ -48,12 +48,20 @@ const DropDown = () => {
                                     Yearly budget
                                 </Wrapper>
                                 <Wrapper>
-                                    <Plus className="dropdown-icon" />
-                                    Category
+                                    <Plus
+                                        width={'1em'}
+                                        height={'1em'}
+                                        className="dropdown-icon"
+                                    />
+                                    New Category
                                 </Wrapper>
                                 <Wrapper>
-                                    <Plus className="dropdown-icon" />
-                                    Bill
+                                    <Plus
+                                        width={'1em'}
+                                        height={'1em'}
+                                        className="dropdown-icon"
+                                    />
+                                    New Bill
                                 </Wrapper>
                             </div>
                         </Menu.Items>
@@ -63,7 +71,6 @@ const DropDown = () => {
         </Menu >
     )
 }
-
 
 const SpendingHeader = () => {
 

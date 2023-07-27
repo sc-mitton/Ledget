@@ -32,7 +32,7 @@
 }
 
 .window {
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
     font-size: 14px;
     border-radius: 10px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
@@ -103,7 +103,8 @@ input[type="password"]::placeholder {
 .input-container input:focus::placeholder,
 input[type="password"]:focus::placeholder {
     transition: color .2s ease;
-    color: var(--green-text);
+    color: var(--green-input-focus);
+    opacity: 1;
 }
 
 .input-container {

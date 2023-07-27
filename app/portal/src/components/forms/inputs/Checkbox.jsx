@@ -1,5 +1,6 @@
 import React, { useRef, forwardRef } from 'react'
 
+import './styles/Checkbox.css'
 
 const Checkbox = forwardRef((props, ref) => {
     const localRef = useRef(null)

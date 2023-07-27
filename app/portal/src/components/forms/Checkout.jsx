@@ -10,7 +10,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 
 import './style/Checkout.css'
 import logoLight from '../../assets/images/logoLight.svg'
-import logo from '../../assets/images/logo.svg'
 import stripelogo from '../../assets/images/stripelogo.svg'
 import alert2 from '../../assets/icons/alert2.svg'
 import Star from '../../assets/icons/Star'
@@ -96,7 +95,7 @@ const Prices = ({ prices }) => {
                             {p.nickname.toLowerCase() == 'year' &&
                                 <>
                                     <div className={`dog-ear ${price !== p ? 'dog-ear-deselected' : ''}`}></div>
-                                    <div className="dog-ear-star"><Star /></div>
+                                    <div className="dog-ear-star"><Star fill={'var(--green-highlight)'} /></div>
                                 </>
                             }
                             <span className="nickname">{p.nickname}</span>
@@ -126,7 +125,7 @@ const Card = ({ cardNotEnteredError, setCardNotEnteredError, setCardEntered }) =
                 fontSmoothing: 'antialiased',
                 fontSize: '16px',
                 '::placeholder': {
-                    color: cardFocus ? '#48d487' : '#767676',
+                    color: cardFocus ? '#60d39c' : '#767676',
                 },
                 iconColor: cardFocus ? '#009b53' : '#242424',
                 ':disabled': {
@@ -518,7 +517,7 @@ const AnimatedCheckout = () => {
                 >
                     <div className="window" id="checkout-window-loading-error">
                         <div className="app-logo" >
-                            <img src={logo} alt="Ledget" />
+                            <img src={logoLight} alt="Ledget" />
                         </div>
                         <div id="message" style={{ marginTop: "-12px" }}>
                             Please try back again later.

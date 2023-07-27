@@ -23,12 +23,14 @@
 
     --green-highlight: #8fffc0;
     --green-highlight2: #cafce0;
-    --green-highlight3: #a2e6c5;
-    --lighter-green: #83e2ae;
+    --green-highlight3: #88ecbc;
+    --lighter-green: #b3e2c8;
     --main-green: #51ed97;
-    --main-green-darker: #5ae297;
-    --main-green-darker2: hsl(147, 60%, 55%);
-    --accessible-green: #63e963;
+    --main-green-darker: #43c77e;
+    --main-green-darker2: rgb(71, 209, 133);
+    --main-green-darker3: rgb(61, 174, 112);
+    --accessible-green: #51ed97;
+    --green-input-focus: #60d39c;
 
     /* Inputs */
     --input-placeholder: #767676;
@@ -41,8 +43,8 @@
     --button-hover-gray: #1e1d1d;
 
     /* Drop Shadows */
-    --accessible-focus-drop-shadow: 0 0 1.5px 1px var(--accessible-green);
-    --input-focus-drop-shadow: 0 0 0 2px var(--green-highlight3);
+    --accessible-focus-drop-shadow: 0 0 1px 1px var(--accessible-green);
+    --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-highlight3);
 
     /* Subscription Radios */
     --inactive-gray: #4c4c4c;
@@ -65,7 +67,6 @@
         --main-text-gray: rgb(44, 44, 44);
     }
 }
-
 
 html,
 body {
@@ -140,7 +141,7 @@ a {
 
 a:focus-visible,
 a:hover {
-    border-bottom: 1.5px solid var(--main-green);
+    border-bottom: 1.5px solid var(--main-green-darker);
 }
 
 label:focus-visible {

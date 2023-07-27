@@ -1,7 +1,7 @@
 /* ---------------------------------- plans --------------------------------- */
 
 #prices-container {
-    background-color: var(--dark-background);
+    background-color: var(--green-highlight);
     border-radius: inherit;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -31,25 +31,21 @@
 }
 
 .nickname {
-    color: var(--white-text);
     margin-right: 8px;
     font-size: 1.1em;
 }
 
 .unit-amount {
     font-size: 1.4em;
-    color: var(--white-text);
 }
 
 .price-nickname {
     font-size: 1.3em;
-    color: var(--white-text);
     padding-right: 12px;
 }
 
 .unit-amount span {
     font-size: .6em;
-    color: var(--white-text);
 }
 
 input[type="radio"] {
@@ -59,7 +55,7 @@ input[type="radio"] {
 .subscription label {
     display: block;
     color: var(--white-text);
-    padding: 10px 8px;
+    padding: 6px 8px;
     cursor: pointer;
     text-align: center;
     box-shadow: inset 0 0 6px rgba(222, 222, 222, .1);
@@ -72,15 +68,14 @@ input[type="radio"] {
     position: absolute;
     top: -1px;
     right: -1px;
-    background-color: var(--green-highlight3);
+    background-color: var(--button-gray);
     width: 40px;
     height: 40px;
     transform: translate(50%, -50%) rotate(45deg);
 }
 
 .dog-ear-deselected {
-    opacity: .3;
-    background-color: var(--white-text);
+    background-color: rgb(0, 0, 0, .1);
 }
 
 .dog-ear-star {
@@ -89,7 +84,6 @@ input[type="radio"] {
     right: 14px;
     height: 0px;
     width: 0px;
-    opacity: .9;
 }
 
 .subscription label:focus-visible {
@@ -103,24 +97,32 @@ input[type="radio"] {
     color: var(--white-text);
 }
 
-@keyframes label-transition {
+@keyframes label-border-transition {
     0% {
-        border: 1.5px solid var(--inactive-gray);
+        border: 2.2px solid var(--main-green);
     }
 
     100% {
-        border: 1.5px solid var(--green-highlight3);
+        border: 2.2px solid var(--button-gray);
     }
 }
 
 input[type="radio"]:not(checked)+label {
-    border: 1.5px solid var(--inactive-gray);
-    border-radius: 10px;
-    box-shadow: inset 0 0 4px rgba(222, 222, 222, .1);
+    border: 2.2px solid rgb(0, 0, 0, .1);
+    border-radius: 14px;
+    box-shadow: inset 0 0 12px rgba(0, 0, 0, .03);
 }
 
 input[type="radio"]:checked+label {
-    animation: label-transition .3s ease forwards;
+    animation: label-border-transition .3s ease forwards;
+}
+
+input[type="radio"]:not(checked)+label * {
+    color: var(--button-gray);
+}
+
+input[type="radio"]:checked+label * {
+    color: var(--button-gray);
 }
 
 
@@ -314,11 +316,11 @@ input[type="radio"]:checked+label {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--main-green-darker);
+    background-color: var(--button-gray);
 }
 
 #subscribe-button:hover {
-    background-color: var(--main-green-darker2);
+    background-color: var(--button-hover-gray);
 }
 
 #subscribe-button span {
