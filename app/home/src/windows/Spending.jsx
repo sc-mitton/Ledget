@@ -1,6 +1,5 @@
 import React from 'react'
 
-import AnimatedWindow from '@utils/AnimatedWindow'
 import NeedsConfirmationWindow from './NeedsConfirmation/Window'
 import Plus from '@assets/svg/Plus'
 import Funnel from '@assets/svg/Funnel'
@@ -37,9 +36,9 @@ function Spending() {
     return (
         <div id="spending-window">
             <NeedsConfirmationWindow />
-            <AnimatedWindow id="all-items-window">
+            <div className="window" id="all-items-window">
                 <HistoryHeader />
-            </AnimatedWindow>
+            </div>
         </div>
     )
 }

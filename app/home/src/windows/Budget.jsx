@@ -10,7 +10,6 @@ import Edit from '@assets/svg/Edit'
 import Ellipsis2 from '@assets/svg/Ellipsis2'
 import MonthPicker from '@components/inputs/MonthPicker'
 import DropAnimation from '@utils/DropAnimation'
-import AnimatedWindow from '@utils/AnimatedWindow'
 
 const Wrapper = ({ onClick, children }) => {
 
@@ -105,9 +104,9 @@ function Budget({ isNarrow }) {
 
     return (
         <>
-            <AnimatedWindow id="budget-window">
+            <div className="window" id="budget-window">
                 <BudgetHeader />
-            </AnimatedWindow>
+            </div>
             {!isNarrow && <Spending />}
         </>
     )
