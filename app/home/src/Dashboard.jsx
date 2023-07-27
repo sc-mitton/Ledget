@@ -1,12 +1,12 @@
 import React, { useRef, useLayoutEffect, useEffect, useState } from 'react'
 
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { CSSTransition, SwitchTransition } from 'react-transition-group'
 
-import { useTransition, animated } from '@react-spring/web'
 
 import Header from './Header'
+import Budget from './windows/Budget'
 import Spending from './windows/Spending'
-import Items from './windows/Items'
 import Profile from './windows/Profile'
 import Accounts from './windows/Accounts'
 import './styles/dashboard.css'
@@ -17,12 +17,6 @@ const Dashboard = () => {
     const navigate = useNavigate()
     const [isNarrow, setIsNarrow] = useState(false)
     const location = useLocation()
-
-    const transitions = useTransition(location, {
-        from: { opacity: 0, transform: 'scale(.95)' },
-        enter: { opacity: 1, transform: 'scale(1)' },
-        leave: { opacity: 0, transform: 'scale(.95)' },
-    })
 
     useLayoutEffect(() => {
         const handleResize = () => {
@@ -35,11 +29,11 @@ const Dashboard = () => {
 
     useEffect(() => {
         switch (location.pathname) {
-            case '/spending':
-                navigate('/spending')
+            case '/budget':
+                navigate('/budget')
                 break
-            case '/items':
-                isNarrow ? navigate('/items') : navigate('/spending')
+            case '/spending':
+                isNarrow ? navigate('/spending') : navigate('/budget')
                 break
             case '/accounts':
                 navigate('/accounts')
@@ -55,20 +49,29 @@ const Dashboard = () => {
     return (
         <>
             <Header isNarrow={isNarrow} />
-            <div id="dashboard" ref={dashboardRef}>
-                <Routes>
-                    <Route path="spending" element={
-                        <>
-                            <Spending />
-                            {!isNarrow && <Items />}
-                        </>
-                    }>
-                    </Route>
-                    {isNarrow && <Route path="items" element={<Items />} />}
-                    <Route path="accounts" element={<Accounts />} />
-                    <Route path="profile" element={<Profile />} />
-                </Routes >
-            </div>
+            <SwitchTransition mode="out-in">
+                <CSSTransition
+                    key={location.pathname}
+                    timeout={300}
+                    classNames="fade"
+                    nodeRef={dashboardRef}
+                >
+                    <div id="dashboard" ref={dashboardRef}>
+                        <Routes>
+                            <Route path="budget" element={
+                                <>
+                                    <Budget />
+                                    {!isNarrow && <Spending />}
+                                </>
+                            }>
+                            </Route>
+                            {isNarrow && <Route path="spending" element={<Spending />} />}
+                            <Route path="accounts" element={<Accounts />} />
+                            <Route path="profile" element={<Profile />} />
+                        </Routes >
+                    </div>
+                </CSSTransition>
+            </SwitchTransition>
         </>
     )
 }

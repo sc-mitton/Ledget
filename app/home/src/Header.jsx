@@ -58,9 +58,9 @@ const useAnimation = (update, ref) => {
 
 const Navigation = ({ isNarrow }) => {
     let tabs = [
-        { name: "spending", path: "/spending" },
+        { name: "budget", path: "/budget" },
         { name: "accounts", path: "/accounts" },
-        { name: "items", path: "/items" },
+        { name: "spending", path: "/spending" },
     ]
 
     const location = useLocation()
@@ -78,7 +78,7 @@ const Navigation = ({ isNarrow }) => {
             <ul ref={navListRef} role="navigation">
                 {
                     tabs
-                        .filter((tab) => tab.path !== "/items")
+                        .filter((tab) => tab.path !== "/spending")
                         .map((tab) => (
                             <li
                                 key={tab.name}
@@ -99,13 +99,13 @@ const Navigation = ({ isNarrow }) => {
                 }
                 {isNarrow &&
                     <li
-                        className={`${location.pathname === "/items" ? "current-" : ""}nav-item`}
+                        className={`${location.pathname === "/spending" ? "current-" : ""}nav-item`}
                         role="link"
                         tabIndex={0}
                         onClick={handleTabClick}
                         onKeyDown={(e) => e.key === "Enter" && handleTabClick(e)}
                     >
-                        <a name='items'>Items</a>
+                        <a name='spending'>Spending</a>
                     </li>
                 }
                 {tabs.some(tab => tab.path === location.pathname) &&
