@@ -7,7 +7,7 @@ const DropAnimation = forwardRef(({ visible, children, style = {}, ...rest }, re
         enter: { opacity: 1, transform: 'scale(1)', transformOrigin: 'top', ...style },
         leave: { opacity: 0, transform: 'scale(0.85)', transformOrigin: 'top' },
         config: {
-            tension: 400,
+            tension: 500,
             friction: 28,
             mass: 1,
         },

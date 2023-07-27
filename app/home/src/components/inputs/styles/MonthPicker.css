@@ -16,6 +16,7 @@
 #picker-container {
     position: absolute;
     top: 130%;
+    padding: 10px;
 }
 
 .arrow-nav {
@@ -52,6 +53,7 @@
 
 .month-picker-item {
     transition: background-color 0.1s ease;
+    color: var(--faded-text);
 }
 
 .month-picker-item,
@@ -64,6 +66,7 @@
 
 .month-picker-item-selected {
     background-color: var(--green-highlight);
+    color: var(--main-text-gray);
 }
 
 .month-picker-item:hover,

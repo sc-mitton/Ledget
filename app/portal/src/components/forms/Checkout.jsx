@@ -77,7 +77,10 @@ const Prices = ({ prices }) => {
             </div>
             <div id="subscription-radios-container">
                 {prices.map((p, i) =>
-                    <div className="subscription" key={`subscription-${i}`}>
+                    <div
+                        className={`subscription${p === price ? '-selected' : ''}`}
+                        key={`subscription-${i}`}
+                    >
                         <input
                             type="radio"
                             id={`price-${i}`}
@@ -94,8 +97,10 @@ const Prices = ({ prices }) => {
                         >
                             {p.nickname.toLowerCase() == 'year' &&
                                 <>
-                                    <div className={`dog-ear ${price !== p ? 'dog-ear-deselected' : ''}`}></div>
-                                    <div className="dog-ear-star"><Star fill={'var(--green-highlight)'} /></div>
+                                    <div className="dog-ear"></div>
+                                    <div className="dog-ear-star">
+                                        <Star fill={'var(--green-highlight)'} />
+                                    </div>
                                 </>
                             }
                             <span className="nickname">{p.nickname}</span>
