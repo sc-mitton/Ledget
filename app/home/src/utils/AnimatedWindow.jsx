@@ -11,10 +11,13 @@ const AnimatedWindow = ({ children, ...rest }) => {
     }
 
     const transitions = useTransition(true, {
-        from: { opacity: 0 },
-        enter: { opacity: 1, ...style },
-        leave: { opacity: 0 },
-        config: { duration: 300 },
+        from: { opacity: 0, transform: 'scale(1)' },
+        enter: { opacity: 1, transform: 'scale(1)', ...style },
+        leave: { opacity: 0, transform: 'scale(1)' },
+        config: {
+            friction: 24,
+            tension: 100
+        },
     })
 
     return transitions((styles, item) =>
