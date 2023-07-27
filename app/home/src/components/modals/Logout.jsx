@@ -3,14 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import withModal from '@utils/withModal'
-import logout from '@flow/logout'
+import { ory } from '@flow/ory'
 import "./styles/Logout.css"
 import { LoadingRing } from '../widgets/Widgets'
 
 function Logout(props) {
     const [seconds, setSeconds] = useState(30)
     const [loggingOut, setLoggingOut] = useState(false)
-    const dispatch = useDispatch()
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -24,16 +23,12 @@ function Logout(props) {
 
     const handleLogout = async () => {
         setLoggingOut(true)
-        const loggedOut = await logout()
-        if (loggedOut) {
-            // loggedOut && dispatch(logoutUser)
-            window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL
-        }
+        await ory.logout(import.meta.env.VITE_LOGOUT_REDIRECT_URL)
         setLoggingOut(false)
     }
 
     useEffect(() => {
-        seconds === 0 && handleLogout()
+        seconds <= 0 && handleLogout()
     }, [seconds])
 
     return (

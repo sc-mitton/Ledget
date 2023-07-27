@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 
 import { Routes, Outlet, Navigate, Route } from 'react-router-dom'
 
-import Dashboard from './windows/Dashboard'
+import Dashboard from './Dashboard'
 import { useGetMeQuery } from '@api/apiSlice'
-import "./style/style.css";
+import "./styles/style.css";
 
 
 const PrivateRoute = () => {

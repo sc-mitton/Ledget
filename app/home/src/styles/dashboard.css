@@ -68,7 +68,8 @@
 .btn-primary-green {
     background-color: var(--main-green);
     color: var(--white-text);
-    padding: 8px 12px;
+    font-weight: 500;
+    padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
     transition: background-color .3s ease;

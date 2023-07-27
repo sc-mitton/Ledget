@@ -7,6 +7,16 @@ import Close from '@assets/svg/Close'
 
 function withModal(WrappedComponent) {
     return function WithModal(props) {
+        const {
+            cleanUp = () => { },
+            hasBackground = true,
+            hasExit = true,
+            width = '70%',
+            maxWidth = '450px',
+            zIndex = 1000,
+            blur = '4px'
+        } = props
+
         const [visible, setVisible] = useState(true)
         const modalRef = useRef(null)
         const exitRef = useRef(null)
@@ -47,15 +57,6 @@ function withModal(WrappedComponent) {
             }
         }, [])
 
-        const {
-            cleanUp = () => { },
-            hasBackground = true,
-            hasExit = true,
-            width = '70%',
-            maxWidth = '450px',
-            zIndex = 1000,
-        } = props
-
         const backgroundConfig = {
             width: '100vw',
             height: '100vh',
@@ -69,7 +70,7 @@ function withModal(WrappedComponent) {
             justifyContent: 'center',
             alignItems: 'center',
             background: hasBackground ? 'rgba(49, 49, 49, 0.7)' : 'transparent',
-            backdropFilter: hasBackground ? 'blur(5px)' : 'none'
+            backdropFilter: hasBackground ? `blur(${blur})` : 'none'
         }
 
         const backgroundTransitions = useTransition(visible, {
@@ -108,17 +109,15 @@ function withModal(WrappedComponent) {
 
         const Exit = () => {
             return (
-                <>
-                    <button
-                        className="exit-button icon"
-                        onClick={() => setVisible(false)}
-                        aria-label="Close modal"
-                        style={{ zIndex: zIndex + 2 }}
-                        ref={exitRef}
-                    >
-                        <Close />
-                    </button>
-                </>
+                <button
+                    className="exit-button icon"
+                    onClick={() => setVisible(false)}
+                    aria-label="Close modal"
+                    style={{ zIndex: zIndex + 2 }}
+                    ref={exitRef}
+                >
+                    <Close />
+                </button>
             )
         }
 

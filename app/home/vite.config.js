@@ -1,8 +1,8 @@
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import react from '@vitejs/plugin-react'
+import path from 'path'
 
 export default ({ mode }) => {
-    const isProduction = mode === 'production';
+    const isProduction = mode === 'production'
 
     return {
         build: {
@@ -10,7 +10,7 @@ export default ({ mode }) => {
             minify: isProduction,
             sourcemap: !isProduction,
         },
-        mode: 'development',
+        mode: 'production',
         server: {
             watch: {
                 usePolling: true,

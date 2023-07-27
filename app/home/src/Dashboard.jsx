@@ -1,12 +1,14 @@
 import React, { useRef, useLayoutEffect, useEffect, useState } from 'react'
 
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+
+import { useTransition, animated } from '@react-spring/web'
 
 import Header from './Header'
-import Spending from './Spending'
-import Items from './Items'
-import Profile from './Profile'
-import Accounts from './Accounts'
+import Spending from './windows/Spending'
+import Items from './windows/Items'
+import Profile from './windows/Profile'
+import Accounts from './windows/Accounts'
 import './styles/dashboard.css'
 
 
@@ -14,6 +16,13 @@ const Dashboard = () => {
     const dashboardRef = useRef(null)
     const navigate = useNavigate()
     const [isNarrow, setIsNarrow] = useState(false)
+    const location = useLocation()
+
+    const transitions = useTransition(location, {
+        from: { opacity: 0, transform: 'scale(.95)' },
+        enter: { opacity: 1, transform: 'scale(1)' },
+        leave: { opacity: 0, transform: 'scale(.95)' },
+    })
 
     useLayoutEffect(() => {
         const handleResize = () => {

@@ -23,9 +23,6 @@ const Shadow = ({ visible, location }) => {
             height: "24px",
             zIndex: 2,
             opacity: 1,
-            width: "100%",
-            height: "24px",
-            zIndex: 2,
             position: "absolute",
             left: 0,
             ...styles[location]
