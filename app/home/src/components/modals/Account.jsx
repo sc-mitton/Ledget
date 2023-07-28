@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 
-import withModal from '@utils/withModal'
+import withModal from './withModal'
 import Plus from '@assets/icons/Plus'
 import Edit from '@assets/icons/Edit'
 import Connect from './Connect'

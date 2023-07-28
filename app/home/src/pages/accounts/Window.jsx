@@ -2,7 +2,7 @@ import React from 'react'
 
 import './styles/Accounts.css'
 
-function Accounts() {
+function Window() {
     return (
         <div className="window" id="accounts-window">
             <div className='window-header'>
@@ -12,4 +12,4 @@ function Accounts() {
     )
 }
 
-export default Accounts
+export default Window

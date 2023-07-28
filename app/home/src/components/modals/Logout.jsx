@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import withModal from '@utils/withModal'
+import withSmallModal from './with/withSmallModal'
 import { ory } from '@flow/ory'
 import "./styles/Logout.css"
 import { LoadingRing } from '../widgets/Widgets'
@@ -58,6 +58,10 @@ function Logout(props) {
     )
 }
 
-const LogoutModal = withModal(Logout)
+
+
+const LogoutModal = withSmallModal(Logout)
+
+
 
 export default LogoutModal

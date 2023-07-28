@@ -82,7 +82,7 @@ const Navigation = ({ isNarrow }) => {
                         .map((tab) => (
                             <li
                                 key={tab.name}
-                                className={`${location.pathname === tab.path ? "current-" : ""}nav-item`}
+                                className={`${location.pathname.split('/')[1] === tab.name ? "current-" : ""}nav-item`}
                                 role="link"
                                 tabIndex={0}
                                 onClick={handleTabClick}
@@ -108,7 +108,7 @@ const Navigation = ({ isNarrow }) => {
                         <a name='spending'>Spending</a>
                     </li>
                 }
-                {tabs.some(tab => tab.path === location.pathname) &&
+                {tabs.some(tab => tab.name === location.pathname.split('/')[1]) &&
                     <animated.span style={tabsSpring} />
                 }
             </ul>

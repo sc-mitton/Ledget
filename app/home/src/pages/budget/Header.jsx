@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Menu } from '@headlessui/react'
+import { useNavigate } from 'react-router-dom'
 
 import CashFlow from '@assets/icons/CashFlow'
 import Graph from '@assets/icons/Graph'
@@ -16,7 +17,8 @@ const Wrapper = ({ onClick, children }) => {
         <Menu.Item as={React.Fragment}>
             {({ active }) => (
                 <button
-                    className={`dropdown-item ${active && "active-dropdown-item"}`}
+                    className={`dropdown-item
+                        ${active && "active-dropdown-item"}`}
                     onClick={() => onClick()}
                 >
                     {children}
@@ -27,6 +29,7 @@ const Wrapper = ({ onClick, children }) => {
 }
 
 const DropDown = () => {
+    const navigate = useNavigate()
 
     return (
         <Menu>
@@ -46,20 +49,14 @@ const DropDown = () => {
                                     <Edit className="dropdown-icon" />
                                     Yearly budget
                                 </Wrapper>
-                                <Wrapper>
-                                    <Plus
-                                        width={'1em'}
-                                        height={'1em'}
-                                        className="dropdown-icon"
-                                    />
+                                <Wrapper
+                                    onClick={() => navigate('/budget/new-category')}
+                                >
+                                    <Plus width={'1em'} height={'1em'} className="dropdown-icon" />
                                     New category
                                 </Wrapper>
                                 <Wrapper>
-                                    <Plus
-                                        width={'1em'}
-                                        height={'1em'}
-                                        className="dropdown-icon"
-                                    />
+                                    <Plus width={'1em'} height={'1em'} className="dropdown-icon" />
                                     New bill
                                 </Wrapper>
                             </div>

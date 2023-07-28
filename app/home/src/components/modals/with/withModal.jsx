@@ -1,12 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
-import './styles/modal.css'
+import '../styles/modal.css'
 import Close from '@assets/icons/Close'
 
 
 function withModal(WrappedComponent) {
-    return function WithModal(props) {
+    return (props) => {
         const {
             cleanUp = () => { },
             hasBackground = true,
@@ -42,29 +42,13 @@ function withModal(WrappedComponent) {
             }
         }, [])
 
-        useEffect(() => {
-            modalRef.current.focus()
-            const handleKeyDown = (event) => {
-                if (event.key === "Tab") {
-                    event.preventDefault()
-                    exitRef?.current.focus()
-                }
-            }
-
-            window.addEventListener("keydown", handleKeyDown)
-            return () => {
-                window.removeEventListener("keydown", handleKeyDown)
-            }
-        }, [])
-
         const backgroundConfig = {
             width: '100vw',
             height: '100vh',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            position: 'absolute',
             zIndex: zIndex,
             display: 'flex',
             justifyContent: 'center',
@@ -140,6 +124,7 @@ function withModal(WrappedComponent) {
                                         {hasExit && <Exit />}
                                         <WrappedComponent
                                             {...props}
+                                            visible={visible}
                                             setVisible={setVisible}
                                         />
                                     </animated.div>
