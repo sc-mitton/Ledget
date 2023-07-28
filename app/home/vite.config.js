@@ -34,6 +34,7 @@ export default ({ mode }) => {
                 '@flow': path.resolve(__dirname, './src/flow'),
                 '@features': path.resolve(__dirname, './src/features'),
                 '@api': path.resolve(__dirname, './src/api'),
+                '@pages': path.resolve(__dirname, './src/pages'),
             }
         },
         plugins: [react()],

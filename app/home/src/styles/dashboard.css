@@ -21,43 +21,8 @@
     align-items: center;
 }
 
-.fade {
-    position: absolute;
-    left: 15px;
-    right: 15px;
-}
-
-.fade-enter {
-    opacity: 0;
-}
-
-.fade-enter-active {
-    opacity: 1;
-    transition: opacity 3000ms;
-}
-
-.fade-exit {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.fade-exit-active {
-    opacity: 0;
-    transition: opacity 3000ms;
-}
-
-
 /* -------------------------------------------------------------------------- */
-/*                            Budget Window Styling                           */
-/* -------------------------------------------------------------------------- */
-
-#budget-window {
-    flex: 1.8;
-    margin-right: 12px;
-}
-
-/* -------------------------------------------------------------------------- */
-/*                            Items Window Styling                            */
+/*                            Spending Window Styling                         */
 /* -------------------------------------------------------------------------- */
 
 #spending-window {

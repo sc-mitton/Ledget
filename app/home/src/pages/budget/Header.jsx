@@ -2,7 +2,6 @@ import React from 'react'
 
 import { Menu } from '@headlessui/react'
 
-import Spending from './Spending'
 import CashFlow from '@assets/svg/CashFlow'
 import Graph from '@assets/svg/Graph'
 import Plus from '@assets/svg/Plus'
@@ -53,7 +52,7 @@ const DropDown = () => {
                                         height={'1em'}
                                         className="dropdown-icon"
                                     />
-                                    New Category
+                                    New category
                                 </Wrapper>
                                 <Wrapper>
                                     <Plus
@@ -61,7 +60,7 @@ const DropDown = () => {
                                         height={'1em'}
                                         className="dropdown-icon"
                                     />
-                                    New Bill
+                                    New bill
                                 </Wrapper>
                             </div>
                         </Menu.Items>
@@ -72,7 +71,7 @@ const DropDown = () => {
     )
 }
 
-const BudgetHeader = () => {
+const Header = () => {
 
     return (
         <div className="window-header">
@@ -97,17 +96,6 @@ const BudgetHeader = () => {
             </div>
         </div>
     )
-
 }
 
-function Budget() {
-
-    return (
-        <div className="window" id="budget-window">
-            <BudgetHeader />
-        </div>
-    )
-}
-
-export default Budget
-
+export default Header

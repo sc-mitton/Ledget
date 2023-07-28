@@ -1,6 +1,6 @@
 import React from 'react'
 
-import NeedsConfirmationWindow from './NeedsConfirmation/Window'
+import NeedsConfirmationWindow from './needsConfirmation/Window'
 import Plus from '@assets/svg/Plus'
 import Funnel from '@assets/svg/Funnel'
 
