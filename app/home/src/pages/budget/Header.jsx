@@ -2,11 +2,11 @@ import React from 'react'
 
 import { Menu } from '@headlessui/react'
 
-import CashFlow from '@assets/svg/CashFlow'
-import Graph from '@assets/svg/Graph'
-import Plus from '@assets/svg/Plus'
-import Edit from '@assets/svg/Edit'
-import Ellipsis2 from '@assets/svg/Ellipsis2'
+import CashFlow from '@assets/icons/CashFlow'
+import Graph from '@assets/icons/Graph'
+import Plus from '@assets/icons/Plus'
+import Edit from '@assets/icons/Edit'
+import Ellipsis2 from '@assets/icons/Ellipsis2'
 import MonthPicker from '@components/inputs/MonthPicker'
 import DropAnimation from '@utils/DropAnimation'
 

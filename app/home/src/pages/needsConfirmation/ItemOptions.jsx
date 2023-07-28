@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from 'react'
 
-import Edit from "@assets/svg/Edit"
-import Split from "@assets/svg/Split"
-import Details from "@assets/svg/Info"
-import Snooze from "@assets/svg/Snooze"
+import Edit from "@assets/icons/Edit"
+import Split from "@assets/icons/Split"
+import Details from "@assets/icons/Info"
+import Snooze from "@assets/icons/Snooze"
 
 
 const ItemOptionsMenu = () => {

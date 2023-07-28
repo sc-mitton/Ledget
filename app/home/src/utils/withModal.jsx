@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
 import './styles/modal.css'
-import Close from '@assets/svg/Close'
+import Close from '@assets/icons/Close'
 
 
 function withModal(WrappedComponent) {

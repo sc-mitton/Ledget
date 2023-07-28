@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 
 import withModal from '@utils/withModal'
-import Plus from '@assets/svg/Plus'
-import Edit from '@assets/svg/Edit'
+import Plus from '@assets/icons/Plus'
+import Edit from '@assets/icons/Edit'
 import Connect from './Connect'
 
 

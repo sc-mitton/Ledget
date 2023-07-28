@@ -1,8 +1,8 @@
 import React from 'react'
 
 import NeedsConfirmationWindow from './needsConfirmation/Window'
-import Plus from '@assets/svg/Plus'
-import Funnel from '@assets/svg/Funnel'
+import Plus from '@assets/icons/Plus'
+import Funnel from '@assets/icons/Funnel'
 
 
 const HistoryHeader = () => {

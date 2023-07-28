@@ -4,9 +4,9 @@ import { useState, useEffect, useRef, useCallback, useContext, createContext } f
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 
 import "./styles/Window.css"
-import Ellipsis from "@assets/svg/Ellipsis"
-import CheckMark from "@assets/svg/CheckMark"
-import ExpandIcon from "@assets/svg/Expand"
+import Ellipsis from "@assets/icons/Ellipsis"
+import CheckMark from "@assets/icons/CheckMark"
+import ExpandIcon from "@assets/icons/Expand"
 import Options from "@components/dropdowns/Options"
 import formatDateOrRelativeDate from "@utils/convertTImestamp"
 import Wells from "@assets/logos/Wells"

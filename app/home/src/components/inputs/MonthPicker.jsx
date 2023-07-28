@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import Arrow from '@assets/svg/Arrow'
+import Arrow from '@assets/icons/Arrow'
 import { monthMappings } from '@assets/data/monthMappings'
 import DropAnimation from '@utils/DropAnimation'
 import './styles/MonthPicker.css'

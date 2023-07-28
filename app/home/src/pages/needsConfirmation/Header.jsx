@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 
 import { useSpring, animated } from '@react-spring/web'
 
-import Replay from '@assets/svg/Replay'
-import CheckAll from '@assets/svg/CheckAll'
+import Replay from '@assets/icons/Replay'
+import CheckAll from '@assets/icons/CheckAll'
 import Tooltip from '@components/widgets/Tooltip'
 import './styles/Header.css'
 
