@@ -81,7 +81,6 @@ const useItemAnimations = (expanded, items, stackMax) => {
         position: 'relative',
         left: '50%',
         transform: 'translateX(-50%)',
-        zIndex: 1,
         height: collapsedHeight,
         overflowX: "hidden",
         overflowY: "hidden",
@@ -262,7 +261,6 @@ const ExpandButton = ({ onClick }) => {
         display: 'flex',
         justifyContent: 'center',
         scale: "1.05",
-        zIndex: 100,
     })
 
     return (

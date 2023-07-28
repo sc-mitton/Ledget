@@ -1,11 +1,3 @@
-.modal-footer {
-    margin-top: 32px;
-    display: flex;
-    justify-content: end;
-    margin-top: 32px;
-    font-weight: 500;
-}
-
 .exit-button {
     position: absolute;
     right: 12px;

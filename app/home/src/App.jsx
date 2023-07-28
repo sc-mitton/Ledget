@@ -11,7 +11,6 @@ import NotFound from '@pages/notFound/NotFound'
 import Header from './Header'
 import { useGetMeQuery } from '@api/apiSlice'
 import "./styles/style.css";
-import './styles/dashboard.css'
 
 
 const PrivateRoute = () => {
@@ -56,9 +55,7 @@ const App = () => {
                     animate={{ opacity: 1, transform: 'scale(1)' }}
                     exit={{ opacity: 0, transform: 'scale(0.98)' }}
                     key={location.pathname.split('/')[1]}
-                    transition={{
-                        opacity: { duration: .2, ease: "easeOut" }
-                    }}
+                    style={{ position: 'static', transform: 'none' }}
                 >
                     <Routes location={location} key={location.pathname.split('/')[1]} >
                         <Route path="/" element={<PrivateRoute />} >

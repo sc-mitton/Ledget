@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 
 import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
-import { useSpring, animated } from '@react-spring/web'
+import { animated } from '@react-spring/web'
 
 import './styles/header.css'
 import logoIcon from '@assets/icons/logoIcon.svg'
@@ -14,46 +14,7 @@ import LogoutIcon from '@assets/icons/LogoutIcon'
 import Help from '@components/modals/Help'
 import DropAnimation from '@utils/DropAnimation'
 import Logout from '@components/modals/Logout'
-
-
-const useAnimation = (update, ref) => {
-    const [tabElements, setTabElements] = useState([])
-    const [tabElement, setTabElement] = useState()
-
-    const tabsSpring = useSpring({
-        position: "absolute",
-        backgroundColor: "var(--button-hover-gray)",
-        borderRadius: '12px',
-        height: "100%",
-        width: tabElement?.offsetWidth || 0,
-        left: tabElement?.offsetLeft,
-        top: 0,
-        zIndex: -1,
-        config: { tension: 200, friction: 22 },
-    })
-
-    useEffect(() => {
-        if (tabElements.length > 0) {
-            const element = tabElements.find(
-                (element) => element.firstChild.name === location.pathname.split("/")[1]
-            )
-            setTabElement(element)
-        }
-    }, [tabElements, location.pathname])
-
-    useEffect(() => {
-        setTimeout(() => {
-            const elements = Array.from(
-                ref.current.querySelectorAll("[role=link]")
-            )
-            setTabElements(elements)
-        }, 0)
-    }, [update])
-
-    return {
-        tabsSpring
-    }
-}
+import { usePillAnimation } from '@utils/hooks'
 
 
 const Navigation = ({ isNarrow }) => {
@@ -66,7 +27,11 @@ const Navigation = ({ isNarrow }) => {
     const location = useLocation()
     const navigate = useNavigate()
     const navListRef = useRef()
-    const { tabsSpring } = useAnimation(isNarrow, navListRef)
+    const tabsSpring = usePillAnimation({
+        ref: navListRef,
+        update: [isNarrow],
+        role: 'link'
+    })
 
     const handleTabClick = (e) => {
         e.preventDefault()
@@ -119,6 +84,7 @@ const Navigation = ({ isNarrow }) => {
 function Header({ isNarrow }) {
     const [modal, setModal] = useState('')
     const navigate = useNavigate()
+    const location = useLocation()
 
     const DropDownMenu = () => {
 
@@ -199,7 +165,12 @@ function Header({ isNarrow }) {
     return (
         <>
             <header>
-                <div id="header-container">
+                <div
+                    id="header-container"
+                    style={{
+                        zIndex: location.pathname.split('/').length <= 2 ? 1 : 0
+                    }}
+                >
                     <div id="header-logo">
                         <img src={logoIcon} alt="Ledget Logo" />
                     </div>

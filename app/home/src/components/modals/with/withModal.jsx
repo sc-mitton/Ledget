@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
-import '../styles/modal.css'
+import './modal.css'
 import Close from '@assets/icons/Close'
 
 
@@ -14,7 +14,7 @@ function withModal(WrappedComponent) {
             width = '70%',
             maxWidth = '450px',
             zIndex = 1000,
-            blur = '4px'
+            blur = 4
         } = props
 
         const [visible, setVisible] = useState(true)
@@ -44,7 +44,7 @@ function withModal(WrappedComponent) {
 
         const backgroundConfig = {
             width: '100vw',
-            height: '100vh',
+            height: '140vh',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
@@ -54,7 +54,7 @@ function withModal(WrappedComponent) {
             justifyContent: 'center',
             alignItems: 'center',
             background: hasBackground ? 'rgba(49, 49, 49, 0.7)' : 'transparent',
-            backdropFilter: hasBackground ? `blur(${blur})` : 'none'
+            backdropFilter: hasBackground ? `blur(${blur}px)` : 'none'
         }
 
         const backgroundTransitions = useTransition(visible, {

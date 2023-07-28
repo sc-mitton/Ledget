@@ -50,8 +50,9 @@ function withFormModal(Component) {
         return (
             <BaseFormm
                 {...props}
-                hasExit={false}
                 cleanUp={() => navigate(-1)}
+                maxWidth={props.maxWidth || '375px'}
+                blur={3}
             />
         )
     }

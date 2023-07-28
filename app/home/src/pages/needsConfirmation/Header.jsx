@@ -25,7 +25,6 @@ const RefreshButton = ({ onClick }) => {
 
     return (
         <Tooltip msg={"Refresh"} ariaLabel={"Refresh list"}>
-
             <button
                 className='icon'
                 id="refresh-icon"
