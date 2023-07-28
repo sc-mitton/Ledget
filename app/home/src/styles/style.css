@@ -237,7 +237,7 @@ input {
     color: var(--window);
     background-color: var(--button-gray);
     box-shadow: var(--button-drop-shadow);
-    border-radius: 4px;
+    border-radius: 8px;
     transition: background-color 0.3s ease;
 }
 
@@ -264,7 +264,7 @@ input {
 
 .btn-primary-green {
     background-color: var(--main-green);
-    color: var(--white-text);
+    color: var(--main-text-gray);
     font-weight: 500;
     padding: 6px 12px;
     border-radius: 6px;

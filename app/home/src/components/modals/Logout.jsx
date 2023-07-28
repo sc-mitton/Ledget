@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-import { useDispatch } from 'react-redux'
-
 import withModal from '@utils/withModal'
 import { ory } from '@flow/ory'
 import "./styles/Logout.css"
