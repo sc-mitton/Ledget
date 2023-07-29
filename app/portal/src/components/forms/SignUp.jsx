@@ -8,9 +8,9 @@ import { motion, AnimatePresence } from "framer-motion"
 
 import './style/SignUp.css'
 import SocialAuth from "./SocialAuth"
-import { FormError, FormErrorTip } from "../widgets/Widgets"
+import { FormError, FormErrorTip } from "../pieces"
 import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/Flow"
-import { WindowLoadingBar } from "../widgets/Widgets"
+import { WindowLoadingBar } from "../pieces"
 import PasswordInput from "./inputs/PasswordInput"
 import PasswordlessForm from "./inputs/PasswordlessForm"
 import SignUpFlowHeader from "./SignUpFlowHeader"

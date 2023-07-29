@@ -34,6 +34,7 @@
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-green);
     --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-highlight3);
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
+    --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
 
     /* Input Colors */
     --input-color: #e6e4e4;
@@ -295,6 +296,7 @@ input[type="password"]:focus::placeholder {
     display: flex;
     transition: border .2s ease;
     position: relative;
+    box-shadow: var(--input-drop-shadow);
 }
 
 .input-container:focus-within {
@@ -319,7 +321,6 @@ input[type="password"]:focus::placeholder {
     padding: 8px 12px;
     color: var(--window);
     background-color: var(--button-gray);
-    box-shadow: var(--button-drop-shadow);
     border-radius: 8px;
     transition: background-color 0.3s ease;
 }

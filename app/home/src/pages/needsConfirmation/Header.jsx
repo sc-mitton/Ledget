@@ -4,7 +4,7 @@ import { useSpring, animated } from '@react-spring/web'
 
 import Replay from '@assets/icons/Replay'
 import CheckAll from '@assets/icons/CheckAll'
-import Tooltip from '@components/widgets/Tooltip'
+import { Tooltip } from '@components/pieces'
 import './styles/Header.css'
 
 
@@ -18,7 +18,7 @@ const RefreshButton = ({ onClick }) => {
 
     const handleClick = () => {
         set.start({
-            transform: `rotate(${-360 * cycle}deg)`,
+            transform: `rotate(${360 * cycle}deg)`,
             onRest: () => setCycle(cycle + 1),
         })
     }

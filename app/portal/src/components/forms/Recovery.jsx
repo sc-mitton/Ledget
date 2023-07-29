@@ -9,7 +9,7 @@ import CsrfToken from './inputs/CsrfToken'
 import ResendButton from "./inputs/ResendButton"
 import BackButton from './inputs/BackButton'
 import Otc from './Otc'
-import { WindowLoadingBar, FormError } from '../widgets/Widgets'
+import { WindowLoadingBar, FormError } from '../pieces'
 import forgotPassword from '../../assets/icons/forgotPassword.svg'
 import './style/Recovery.css'
 

@@ -2,25 +2,38 @@ import React, { useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
+import { object, string, number } from "yup"
+import { useNavigate } from 'react-router-dom'
 
 import { Radios } from '@components/inputs'
-import withFormModal from './with/withFormModal'
+import withModal from './with/withModal'
 import Checkbox from '@components/inputs/Checkbox'
 import Plus from '@assets/icons/Plus'
+import SubmitForm from './pieces/SubmitForm'
 import './styles/CreateCategory.css'
 
-const schema = yup.object().shape({
-    name: yup.string().required(),
-    upperLimit: yup.number().required(),
+const schema = object().shape({
+    name: string().required(),
+    emoji: string().required(),
+    upperLimit: number().required(),
 })
 
-const CreateCategory = (props) => {
+const Form = (props) => {
     const [upperLimit, setUpperLimit] = useState('')
+    const [confirming, setConfirming] = useState(false)
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+        mode: 'onBlur'
+    })
+
+    const submit = (data) => {
+        console.log(data)
+    }
 
     return (
         <div className="create-form" id='category-form'>
             <h2>New Category</h2>
-            <form>
+            <form onSubmit={handleSubmit((data) => submit(data))}>
                 <Radios options={[
                     { name: 'categoryType', value: 'month', label: 'Month', default: true },
                     { name: 'categoryType', value: 'year', label: 'Year' },
@@ -42,7 +55,7 @@ const CreateCategory = (props) => {
                                 name="name"
                                 id="name"
                                 placeholder="Category name"
-                                required
+                                {...register('name')}
                             />
                         </div>
                     </div>
@@ -62,7 +75,7 @@ const CreateCategory = (props) => {
                                 }}
                                 onBlur={(e) => e.target.value.length <= 1 && setUpperLimit('')}
                                 size="4"
-                                required
+                                {...register('upperLimit')}
                             />
                         </div>
                     </div>
@@ -77,7 +90,6 @@ const CreateCategory = (props) => {
                             id="description"
                             rows="1"
                             placeholder="Add a description..."
-                            required
                         />
                     </div>
                 </div>
@@ -107,10 +119,27 @@ const CreateCategory = (props) => {
                         checked={false}
                     />
                 </div>
+                <SubmitForm
+                    confirming={confirming}
+                    onCancel={() => props.setVisible(false)}
+                />
             </form>
-
         </div>
     )
 }
 
-export default withFormModal(CreateCategory)
+const Modal = withModal(Form)
+
+export default (props) => {
+    const navigate = useNavigate()
+
+    return (
+        <Modal
+            {...props}
+            cleanUp={() => navigate(-1)}
+            maxWidth={props.maxWidth || '375px'}
+            blur={3}
+        />
+
+    )
+}

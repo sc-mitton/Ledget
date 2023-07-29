@@ -13,7 +13,7 @@ import SocialAuth from "./SocialAuth"
 import PasswordInput from "./inputs/PasswordInput"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import Checkbox from "./inputs/Checkbox"
-import { FormError, WindowLoadingBar } from "../widgets/Widgets"
+import { FormError, WindowLoadingBar } from "../pieces"
 import { LoginFlowContext, LoginFlowContextProvider } from "../../context/Flow"
 import CsrfToken from "./inputs/CsrfToken"
 

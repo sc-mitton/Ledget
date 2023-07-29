@@ -13,7 +13,6 @@ function Main() {
 }
 
 function Window() {
-
     return (
         <div className="window" id="budget-window">
             <Header />

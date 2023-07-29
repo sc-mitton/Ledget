@@ -47,8 +47,8 @@ const App = () => {
 
     const config = {
         position: 'fixed',
-        top: 0,
-        left: 0,
+        top: '0px',
+        left: '0px',
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -59,8 +59,8 @@ const App = () => {
             <AnimatePresence mode="wait">
                 <Header isNarrow={isNarrow} />
                 <motion.div
-                    initial={{ opacity: 0, transform: 'scale(0.98)' }}
-                    animate={{ opacity: 1, transform: 'scale(1)', ...config }}
+                    initial={{ opacity: 0, transform: 'scale(0.98)', ...config }}
+                    animate={{ opacity: 1, transform: 'scale(1)' }}
                     exit={{ opacity: 0, transform: 'scale(0.98)' }}
                     key={location.pathname.split('/')[1]}
                     style={{ position: 'static', transform: 'none' }}

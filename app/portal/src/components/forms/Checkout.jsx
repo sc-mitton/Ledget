@@ -16,9 +16,9 @@ import Star from '../../assets/icons/Star'
 import ledgetapi from '../../api/axios'
 import CustomSelect from './inputs/CustomSelect'
 import { states } from '../../assets/data/states'
-import { FormError, FormErrorTip } from "../widgets/Widgets"
+import { FormError, FormErrorTip } from "../pieces"
 import usePrices from '../../api/hooks/usePrices'
-import { WindowLoadingBar } from '../widgets/Widgets'
+import { WindowLoadingBar } from '../pieces'
 import UserContext from '../../context/UserContext'
 import { components } from 'react-select'
 

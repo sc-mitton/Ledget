@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
-import withSmallModal from './with/withSmallModal'
-import { ory } from '@flow/ory'
 import "./styles/Logout.css"
-import { LoadingRing } from '../widgets/Widgets'
+import { ory } from '@flow/ory'
+import withSmallModal from './with/withSmallModal'
+import { LoadingRing } from '@components/pieces'
 
 function Logout(props) {
     const [seconds, setSeconds] = useState(30)

@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: start;
     width: 100%;
-    margin: 24px 0;
+    margin-top: 8px;
 }
 
 .responsive-inputs-row-container label,
@@ -65,14 +65,27 @@
 
 #add-alert-btn {
     margin-left: 4px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 2px 12px;
+    background-color: var(--button-gray);
+    transition: background-color 0.3s ease-in-out;
+    color: var(--white-text);
+}
+
+#add-alert-btn svg {
+    margin-left: 4px;
+}
+
+#add-alert-btn:hover {
+    background-color: var(--button-hover-gray);
+    transition: background-color 0.3s ease-in-out;
 }
 
 .create-form .checkbox-container {
-    margin-left: 12px;
-}
-
-#description-container {
-    margin-bottom: 8px;
+    margin-right: 4px;
 }
 
 #description {

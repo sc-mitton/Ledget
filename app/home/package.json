@@ -15,6 +15,7 @@
   "dependencies": {
     "@finicity/connect-web-sdk": "^1.0.0-rc.4",
     "@headlessui/react": "^1.7.14",
+    "@hookform/resolvers": "^3.1.1",
     "@react-spring/web": "^9.7.2",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",

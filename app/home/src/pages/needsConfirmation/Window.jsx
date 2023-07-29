@@ -13,7 +13,7 @@ import Wells from "@assets/logos/Wells"
 import Ally from "@assets/logos/Ally"
 import Discover from "@assets/logos/Discover"
 import Visa from "@assets/logos/Visa"
-import Shadow from '@components/widgets/ContainerShadow'
+import Shadow from '@components/pieces/ContainerShadow'
 import Header from './Header'
 import ItemOptions from "./ItemOptions"
 

@@ -1,8 +1,8 @@
 import React from 'react'
 
-import "./Widgets.css"
+import "./LoadingRing.css"
 
-export const LoadingRing = ({ height, visible, children }) => {
+const LoadingRing = ({ height, visible, children }) => {
     return (
         <div
             style={{
@@ -24,3 +24,5 @@ export const LoadingRing = ({ height, visible, children }) => {
         </div>
     )
 }
+
+export default LoadingRing

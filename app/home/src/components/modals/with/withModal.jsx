@@ -71,7 +71,8 @@ function withModal(WrappedComponent) {
             padding: '28px',
             zIndex: zIndex + 1,
             position: "relative",
-            backgroundColor: 'var(--window-background-color)'
+            backgroundColor: 'var(--window-background-color)',
+            boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
         }
 
         const modalContainerTransitions = useTransition(visible, {
