@@ -1,6 +1,6 @@
 import React from 'react'
 
-import "./LoadingRing.css"
+import "./styles/LoadingRing.css"
 
 const LoadingRing = ({ height, visible, children }) => {
     return (

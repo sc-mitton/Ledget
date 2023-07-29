@@ -3,30 +3,32 @@ import React from 'react'
 
 import { LoadingRing } from '@components/pieces'
 
-const SubmitForm = ({ confirming, onCancel }) => {
+const SubmitForm = ({ submitting, onCancel }) => {
     return (
-        <div style={{ display: 'flex', 'justifyContent': 'end', marginTop: '20px' }}>
-            <button
+        <div style={{ display: 'flex', 'justifyContent': 'end', margin: '20px 4px 0 4px' }}>
+            <div
                 className='btn-secondary'
                 onClick={onCancel}
                 tabIndex={0}
                 aria-label="Cancel"
+                aria-roledescription="button"
+                style={{ cursor: 'pointer' }}
             >
                 Cancel
-            </button>
+            </div>
             <button
                 className='btn-primary-green'
                 type="submit"
                 aria-label="Save"
                 tabIndex={0}
             >
-                <LoadingRing visible={confirming}>
-                    <div style={{ color: confirming ? 'transparent' : 'inherit' }}>
+                <LoadingRing visible={submitting}>
+                    <div style={{ color: submitting ? 'transparent' : 'inherit' }}>
                         Save
                     </div>
                 </LoadingRing>
             </button>
-        </div>
+        </div >
     )
 }
 

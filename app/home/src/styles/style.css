@@ -182,6 +182,16 @@ label:focus-visible {
     box-shadow: var(--accessible-focus-drop-shadow);
 }
 
+ul:focus-visible {
+    outline: none;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
 fieldset {
     border: none;
     padding: 0;
@@ -496,7 +506,7 @@ input[type="password"]:focus::placeholder {
     display: flex;
     align-items: center;
     font-weight: 500;
-    width: 100%;
+    width: auto;
     padding: 4px 12px;
     margin: 2px 0;
     transition: background-color 0.3s ease-out;

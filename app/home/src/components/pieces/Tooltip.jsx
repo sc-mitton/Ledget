@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import './Tooltip.css'
+import './styles/Tooltip.css'
 
 const Tooltip = ({ msg, ariaLabel, children }) => {
     const [show, setShow] = useState(false)

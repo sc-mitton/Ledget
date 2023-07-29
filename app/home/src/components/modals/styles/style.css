@@ -1,0 +1,48 @@
+.slct-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+    width: auto;
+    padding: 4px 12px;
+    margin: 2px 0;
+    transition: background-color 0.3s ease-out;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-out;
+}
+
+.slct-item svg {
+    margin-left: 4px;
+    display: inline;
+}
+
+.slct-item span:nth-child(2) {
+    margin-left: 15px;
+    opacity: .5;
+    font-size: 12px;
+}
+
+.a-slct-item {
+    background-color: var(--icon-light-gray);
+    transition: background-color 0.3s ease-out;
+}
+
+.s-slct-item {
+    background-color: var(--green-highlight2);
+    transition: background-color 0.3s ease-out;
+}
+
+.a-slct-item.s-slct-item {
+    background-color: var(--green-highlight3);
+    transition: background-color 0.3s ease-out;
+}
+
+.slct-item.custom-input input[type='text'] {
+    font-weight: 500;
+    margin: 2px 8px;
+}
+
+.slct-item.custom-input input[type='text']::placeholder {
+    color: inherit;
+}

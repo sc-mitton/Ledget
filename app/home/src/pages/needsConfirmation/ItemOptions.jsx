@@ -39,42 +39,40 @@ const ItemOptionsMenu = () => {
     }, [])
 
     return (
-        <div
-            className="options-dropdown-container"
-        >
-            <button
+        <ul role="menu">
+            <li
                 className={`dropdown-item`}
                 ref={refs.current[0]}
                 role="menuitem"
             >
                 <Split className="dropdown-icon" />
                 Split
-            </button>
-            <button
+            </li>
+            <li
                 className={`dropdown-item`}
                 ref={refs.current[1]}
                 role="menuitem"
             >
                 <Edit className="dropdown-icon" />
                 Note
-            </button>
-            <button
+            </li>
+            <li
                 className={`dropdown-item`}
                 ref={refs.current[2]}
                 role="menuitem"
             >
                 <Snooze className="dropdown-icon" />
                 Snooze
-            </button>
-            <button
+            </li>
+            <li
                 className={`dropdown-item`}
                 ref={refs.current[3]}
                 role="menuitem"
             >
                 <Details className="dropdown-icon" />
                 Details
-            </button>
-        </div>
+            </li>
+        </ul>
     )
 }
 
