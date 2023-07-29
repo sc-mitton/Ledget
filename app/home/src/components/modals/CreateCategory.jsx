@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 
-import { Radios } from '@components/inputs'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from "react-hook-form"
 
+import { Radios } from '@components/inputs'
 import withFormModal from './with/withFormModal'
 import Checkbox from '@components/inputs/Checkbox'
 import Plus from '@assets/icons/Plus'
 import './styles/CreateCategory.css'
 
-
+const schema = yup.object().shape({
+    name: yup.string().required(),
+    upperLimit: yup.number().required(),
+})
 
 const CreateCategory = (props) => {
     const [upperLimit, setUpperLimit] = useState('')
@@ -77,13 +82,26 @@ const CreateCategory = (props) => {
                     </div>
                 </div>
                 {/* row */}
-                <div className='inputs-row-container'>
-                    <button className="btn-primary-charcoal" id="add-alert-btn">
-                        Alert
-                        <Plus height={'.8em'} width={'.8em'} stroke={'var(--white-text)'} />
+                <div
+                    className='inputs-row-container'
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    <button
+                        id="add-alert-btn"
+                        style={{
+                            marginTop: '2px',
+                            marginRight: '10px'
+                        }}
+                    >
+                        Add Alert
+                        <Plus stroke="var(--white-text)" height={'.9em'} width={'.9em'} />
                     </button>
                     <Checkbox
-                        label="Make Private"
+                        label="Private"
                         name="private"
                         id="private"
                         checked={false}
