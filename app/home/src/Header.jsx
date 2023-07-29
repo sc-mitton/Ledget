@@ -27,10 +27,12 @@ const Navigation = ({ isNarrow }) => {
     const location = useLocation()
     const navigate = useNavigate()
     const navListRef = useRef()
-    const tabsSpring = usePillAnimation({
+    const { props: tabsSpring } = usePillAnimation({
         ref: navListRef,
-        update: [isNarrow],
-        role: 'link'
+        update: [location.pathname],
+        refresh: [isNarrow],
+        querySelectall: '[role=link]',
+        find: (element) => element.firstChild.name === location.pathname.split("/")[1]
     })
 
     const handleTabClick = (e) => {
@@ -73,9 +75,7 @@ const Navigation = ({ isNarrow }) => {
                         <a name='spending'>Spending</a>
                     </li>
                 }
-                {tabs.some(tab => tab.name === location.pathname.split('/')[1]) &&
-                    <animated.span style={tabsSpring} />
-                }
+                <animated.span style={tabsSpring} />
             </ul>
         </nav>
     )

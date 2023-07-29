@@ -44,7 +44,7 @@ function withModal(WrappedComponent) {
 
         const backgroundConfig = {
             width: '100vw',
-            height: '140vh',
+            height: '100vh',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',

@@ -2,8 +2,19 @@
 import { useEffect, useState } from 'react'
 import { useSpring } from '@react-spring/web'
 
+/**
+ * Custom hook for animating a pill element behind selected options.
+ *
+ * @param {Object} args - The configuration object containing the arguments.
+ * @param {React.RefObject} args.ref - The React ref pointing to the container holding the options.
+ * @param {Array} [args.update=[]] - An array of state variables that trigger element refresh for selection.
+ * @param {Object} [args.styles] - An object with CSS styles to customize the appearance of the pill animation.
+ * @param {Function} args.find - A callback function to filter and find the desired element from the list of selectors.
+ * @param {string} args.querySelectAll - A string representing the CSS selector to query for the DOM elements to animate behind.
+ * @returns {Object} An object containing the animated props from `useSpring`.
+ */
 const usePillAnimation = (args) => {
-    const { ref, update, role, styles } = args
+    const { ref, update, refresh, styles, find, querySelectall } = args
     const [selectors, setSelectors] = useState([])
     const [selector, setSelector] = useState()
 
@@ -17,39 +28,31 @@ const usePillAnimation = (args) => {
         config: { tension: 200, friction: 22 }
     }
 
-    // Add or update base styles
-    if (styles) {
-        baseStyles = {
-            ...baseStyles,
-            ...styles
-        }
-    }
+    baseStyles = { ...baseStyles, ...styles }
 
-    const api = useSpring({
-        width: selector?.offsetWidth || 0,
+    const props = useSpring({
+        width: selector?.offsetWidth,
         left: selector?.offsetLeft,
         ...baseStyles
     })
 
     useEffect(() => {
         if (selectors.length > 0) {
-            const element = selectors.find(
-                (element) => element.firstChild.name === location.pathname.split("/")[1]
-            )
+            const element = selectors.find(find)
             setSelector(element)
         }
-    }, [selectors, location.pathname])
+    }, [selectors, ...update])
 
     useEffect(() => {
         setTimeout(() => {
             const elements = Array.from(
-                ref.current.querySelectorAll(`[role=${role}]`)
+                ref.current.querySelectorAll(querySelectall)
             )
             setSelectors(elements)
         }, 0)
-    }, [...update])
+    }, [...refresh])
 
-    return api
+    return { props }
 }
 
 export default usePillAnimation

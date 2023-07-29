@@ -1,0 +1,27 @@
+.slider-radios-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    margin: 8px 0;
+}
+
+.slider-radios-container div:first-child {
+    background-color: var(--green-highlight);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: row;
+}
+
+.slider-radios-container label {
+    position: relative;
+    font-weight: 500;
+    cursor: pointer;
+    z-index: 2;
+    display: block;
+
+    padding: 4px 20px;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    border-radius: 8px;
+}

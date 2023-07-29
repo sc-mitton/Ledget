@@ -6,6 +6,13 @@
     margin: 24px 0;
 }
 
+.responsive-inputs-row-container label,
+.inputs-row-container label,
+#description-container label {
+    font-weight: 500;
+    margin-left: 4px;
+}
+
 .create-form h2 {
     margin-left: 6px;
 }
@@ -65,7 +72,7 @@
 }
 
 #description-container {
-    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 #description {
