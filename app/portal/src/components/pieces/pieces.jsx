@@ -2,7 +2,7 @@ import React from 'react'
 
 import { AnimatePresence, motion } from 'framer-motion'
 
-import alert2 from '../../assets/icons/alert2.svg'
+import alert2 from '@assets/icons/alert2.svg'
 import "./pieces.css"
 
 export const FormErrorTip = (props) => {

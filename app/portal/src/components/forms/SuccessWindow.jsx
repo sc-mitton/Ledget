@@ -1,6 +1,6 @@
 import React from 'react'
 
-import SuccessIcon from '../../assets/icons/SuccessIcon'
+import SuccessIcon from '@assets/icons/SuccessIcon'
 import './style/SuccessWindow.css'
 
 const SuccessWindow = () => {

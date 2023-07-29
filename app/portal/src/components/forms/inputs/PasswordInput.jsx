@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-import hidePassword from "../../../assets/icons/hidePassword.svg"
-import showPassword from "../../../assets/icons/showPassword.svg"
+import hidePassword from "@assets/icons/hidePassword.svg"
+import showPassword from "@assets/icons/showPassword.svg"
 import './styles/PasswordInput.css'
 
 const PasswordInput = React.forwardRef(({ inputType, ...props }, ref) => {

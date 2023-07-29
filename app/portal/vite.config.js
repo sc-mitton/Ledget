@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react';
-
+import path from 'path';
 
 export default ({ mode }) => {
     const isProduction = mode === 'production';

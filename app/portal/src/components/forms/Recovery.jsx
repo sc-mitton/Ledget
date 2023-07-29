@@ -10,7 +10,7 @@ import ResendButton from "./inputs/ResendButton"
 import BackButton from './inputs/BackButton'
 import Otc from './Otc'
 import { WindowLoadingBar, FormError } from '../pieces'
-import forgotPassword from '../../assets/icons/forgotPassword.svg'
+import forgotPassword from '@assets/icons/forgotPassword.svg'
 import './style/Recovery.css'
 
 const RecoveryForm = ({ setEmail }) => {

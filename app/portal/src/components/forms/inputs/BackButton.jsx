@@ -1,6 +1,6 @@
 import React from 'react'
 
-import BackArrow from '../../../assets/icons/BackArrow'
+import BackArrow from '@assets/icons/BackArrow'
 import './styles/BackButton.css'
 
 const BackButton = ({ onClick, props }) => {

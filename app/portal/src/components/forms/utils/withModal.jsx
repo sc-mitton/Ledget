@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import Close from '../../../assets/icons/Close'
+import Close from '@assets/icons/Close'
 import './modal.css'
 
 function withModal(WrappedComponent) {
