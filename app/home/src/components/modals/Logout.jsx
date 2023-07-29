@@ -31,7 +31,7 @@ function Logout(props) {
 
     return (
         <div>
-            <h2>Leave Ledget?</h2>
+            <h2>Sign out of your account?</h2>
             <div id="logout-countdown">
                 <span>Your session will end in {seconds} seconds.</span>
             </div>

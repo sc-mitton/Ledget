@@ -8,7 +8,7 @@ import './styles/Radios.css'
 import { useEffect } from 'react'
 
 
-export const Radios = ({ options }) => {
+const Radios = ({ options }) => {
     const containerRef = useRef(null)
     const [selection, setSelection] = useState(null)
 
@@ -16,7 +16,7 @@ export const Radios = ({ options }) => {
         options.find((option) => {
             option.default && setSelection(option.value)
         })
-    }, [options])
+    }, [])
 
     const { props } = usePillAnimation({
         ref: containerRef,
@@ -65,3 +65,5 @@ export const Radios = ({ options }) => {
         </fieldset>
     )
 }
+
+export default Radios

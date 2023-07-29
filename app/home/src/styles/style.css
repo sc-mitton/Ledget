@@ -195,14 +195,12 @@ fieldset {
     flex: 1;
 }
 
-
 #dashboard {
     width: 90%;
     max-width: 1250px;
     margin: 20px auto;
-    margin-top: 10px;
+    margin-top: 70px;
     display: flex;
-    height: 100%;
 }
 
 .window {
@@ -338,7 +336,7 @@ input[type="password"]:focus::placeholder {
 }
 
 .btn-primary-green {
-    background-color: var(--main-green);
+    background-color: var(--green-highlight);
     color: var(--main-text-gray);
     font-weight: 500;
     padding: 6px 12px;
@@ -400,7 +398,7 @@ input[type="password"]:focus::placeholder {
 }
 
 .btn-primary-green:hover {
-    background-color: var(--main-green-hover);
+    background-color: var(--green-highlight3);
     transition: background-color .3s ease;
 }
 
@@ -561,7 +559,7 @@ input[type="password"]:focus::placeholder {
 #spending-window {
     flex: 1;
     min-width: 430px;
-    margin-left: 12px;
+    margin: 0 10px;
     height: inherit;
     max-height: inherit;
     display: flex;

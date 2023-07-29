@@ -38,43 +38,53 @@ const App = () => {
 
     useLayoutEffect(() => {
         const handleResize = () => {
-            setIsNarrow(ref.current.offsetWidth < 1050)
+            setIsNarrow(ref.current.offsetWidth < 900)
         }
         handleResize()
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
+    const config = {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+    }
+
     return (
-        <main tabIndex={0} ref={ref}>
-            <Header isNarrow={isNarrow} />
+        <main tabIndex={0}>
             <AnimatePresence mode="wait">
+                <Header isNarrow={isNarrow} />
                 <motion.div
-                    id="dashboard"
                     initial={{ opacity: 0, transform: 'scale(0.98)' }}
-                    animate={{ opacity: 1, transform: 'scale(1)' }}
+                    animate={{ opacity: 1, transform: 'scale(1)', ...config }}
                     exit={{ opacity: 0, transform: 'scale(0.98)' }}
                     key={location.pathname.split('/')[1]}
                     style={{ position: 'static', transform: 'none' }}
                 >
-                    <Routes location={location} key={location.pathname.split('/')[1]} >
-                        <Route path="/" element={<PrivateRoute />} >
-                            <Route path="/" element={<Navigate to="/budget" />} />
-                            <Route path="budget/*" element={
-                                <>
-                                    <Budget />
-                                    {!isNarrow && <Spending />}
-                                </>
-                            } />
-                            <Route path="spending" element={
-                                isNarrow ? <Spending /> : <Navigate to="/budget" />
-                            } />
-                            <Route path="accounts" element={<Accounts />} />
-                            <Route path="profile" element={<Profile />} />
-                            <Route path="login" element={<Login />} />
-                            <Route path="/*" element={<NotFound />} />
-                        </Route>
-                    </Routes>
+                    <div id="dashboard" ref={ref}>
+                        <Routes location={location} key={location.pathname.split('/')[1]} >
+                            <Route path="/" element={<PrivateRoute />} >
+                                <Route path="/" element={<Navigate to="/budget" />} />
+                                <Route path="budget/*" element={
+                                    <>
+                                        <Budget />
+                                        {!isNarrow && <Spending />}
+                                    </>
+                                } />
+                                <Route path="spending" element={
+                                    isNarrow ? <Spending /> : <Navigate to="/budget" />
+                                } />
+                                <Route path="accounts" element={<Accounts />} />
+                                <Route path="profile" element={<Profile />} />
+                                <Route path="login" element={<Login />} />
+                                <Route path="/*" element={<NotFound />} />
+                            </Route>
+                        </Routes>
+                    </div>
                 </motion.div>
             </AnimatePresence>
         </main>

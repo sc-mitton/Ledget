@@ -1,1 +1,1 @@
-export { Radios } from './Radios';
+export { default as Radios } from './Radios';

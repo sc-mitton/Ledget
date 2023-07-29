@@ -10,20 +10,7 @@ import './styles/CreateCategory.css'
 
 
 const CreateCategory = (props) => {
-    const [isRange, setIsRange] = useState(false)
-    const [lowerLimit, setLowerLimit] = useState('')
     const [upperLimit, setUpperLimit] = useState('')
-
-    const handleChange = (event) => {
-        const { name, value } = event.target
-        const newValue = value.replace(/[^0-9.]/g, '')
-
-        if (name === 'lowerLimit') {
-            setLowerLimit(`$${newValue}`)
-        } else if (name === 'upperLimit') {
-            setUpperLimit(`$${newValue}`)
-        }
-    }
 
     return (
         <div className="create-form" id='category-form'>
@@ -57,27 +44,17 @@ const CreateCategory = (props) => {
                     <div>
                         <label htmlFor="limit" style={{ visibility: 'visible' }}>Limit</label>
                         <div className="input-container" id="limit-input-container">
-                            {
-                                isRange &&
-                                <input
-                                    type="text"
-                                    name="lowerLimit"
-                                    id="lowerLimit"
-                                    placeholder="$0"
-                                    value={lowerLimit}
-                                    onChange={handleChange}
-                                    onBlur={(e) => e.target.value.length <= 1 && setLowerLimit('')}
-                                    size="4"
-                                    required
-                                />
-                            }
                             <input
                                 type="text"
                                 name="upperLimit"
                                 id="upperLimit"
                                 placeholder="$0"
                                 value={upperLimit}
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                    const value = e.target.value.replace(/[^0-9.]/g, '')
+                                    const formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    setUpperLimit(`$${formattedValue}`)
+                                }}
                                 onBlur={(e) => e.target.value.length <= 1 && setUpperLimit('')}
                                 size="4"
                                 required
