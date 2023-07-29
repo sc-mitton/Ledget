@@ -25,6 +25,12 @@ export default ({ mode }) => {
                 ca: process.env.SSL_CA_FILE,
             }
         },
+        resolve: {
+            alias: {
+                '@': path.resolve(__dirname, './src'),
+                '@assets': path.resolve(__dirname, './src/assets')
+            }
+        },
         plugins: [react()]
     }
 }
