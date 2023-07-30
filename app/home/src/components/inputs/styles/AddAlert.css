@@ -1,3 +1,27 @@
+#add-alert-btn {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 4px 12px;
+    background-color: var(--button-gray);
+    transition: background-color 0.3s ease-in-out;
+    color: var(--white-text);
+}
+
+#add-alert-btn svg {
+    margin-left: 4px;
+}
+
+#add-alert-btn:hover {
+    background-color: var(--button-hover-gray);
+    transition: background-color 0.3s ease-in-out;
+}
+
+#alert-select ul {
+    height: 0;
+}
+
 .slct-item {
     display: flex;
     align-items: center;

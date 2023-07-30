@@ -7,14 +7,23 @@
 }
 
 .responsive-inputs-row-container label,
-.inputs-row-container label,
-#description-container label {
+.inputs-row-container label {
     font-weight: 500;
     margin-left: 4px;
 }
 
 .create-form h2 {
     margin-left: 6px;
+}
+
+.create-form .checkbox-container {
+    margin-left: 8px;
+}
+
+.inputs-row-container {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
 }
 
 .responsive-inputs-row-container {
@@ -54,46 +63,10 @@
     flex: 1 1 50%;
     box-sizing: content-box;
     width: auto;
-
 }
 
 .inputs-row-container {
     display: flex;
     flex-direction: row;
     margin: 8px 0;
-}
-
-#add-alert-btn {
-    margin-left: 4px;
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-    border-radius: 8px;
-    padding: 4px 12px;
-    background-color: var(--button-gray);
-    transition: background-color 0.3s ease-in-out;
-    color: var(--white-text);
-}
-
-#add-alert-btn svg {
-    margin-left: 4px;
-}
-
-#add-alert-btn:hover {
-    background-color: var(--button-hover-gray);
-    transition: background-color 0.3s ease-in-out;
-}
-
-.create-form .checkbox-container {
-    margin-left: 8px;
-}
-
-/* --------------------------- Add Alert dropdown --------------------------- */
-
-.active-option {
-    background-color: var(--button-hover-gray);
-}
-
-#alert-select ul {
-    height: 0;
 }

@@ -1,175 +1,27 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 import { object, string, number } from "yup"
 import { useNavigate } from 'react-router-dom'
-import { Listbox } from '@headlessui/react'
 
-import Plus from '@assets/icons/Plus'
-import Checkmark from '@assets/icons/Checkmark'
-import { Radios } from '@components/inputs'
+
+import { Radios, AddAlert } from '@components/inputs'
 import Checkbox from '@components/inputs/Checkbox'
 import withModal from './with/withModal'
 import SubmitForm from './pieces/SubmitForm'
 import { FormErrorTip } from '@components/pieces'
-import { DropAnimation } from '@utils'
 import './styles/CreateCategory.css'
-import './styles/style.css'
-import { useEffect } from 'react'
 
 const schema = object().shape({
     name: string().required(),
     upperLimit: number().required(),
 })
 
-const defaultAlertOptions = [
-    { id: 1, value: 25, unavailable: false },
-    { id: 2, value: 50, unavailable: false },
-    { id: 3, value: 75, unavailable: false },
-    { id: 4, value: 100, unavailable: false },
+const radioOptions = [
+    { name: 'categoryType', value: 'month', label: 'Month', default: true },
+    { name: 'categoryType', value: 'year', label: 'Year' },
 ]
-
-const AddAlert = ({ limit }) => {
-    const [selectedAlerts, setSelectedAlerts] = useState([defaultAlertOptions[0]])
-    const [alertOptions, setAlertOptions] = useState(defaultAlertOptions)
-
-    const formatDollar = (value, percentage) => {
-        let dollar = parseInt(value.replace(/[^0-9.]/g, '')) * percentage / 100
-        dollar = dollar.toFixed(0)
-        // convert to string and add commas
-        dollar = dollar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        return `$${dollar}`
-    }
-
-    const ListOption = ({ option }) => (
-        <Listbox.Option
-            key={option.id}
-            value={option.value}
-            disabled={option.unavailable}
-        >
-            {({ active, selected }) => (
-                <div className={
-                    `slct-item
-                        ${active && "a-slct-item"}
-                        ${selected && "s-slct-item"}`}
-                >
-                    <span>
-                        {option.value}%
-                        &nbsp;&nbsp;
-                        <span
-                            style={{
-                                opacity: `${active ? .5 : 0}`,
-                                fontSize: '.8em',
-                                display: 'inline'
-                            }}
-                        >
-                            {limit
-                                ? `(${formatDollar(limit, option.value)})`
-                                : ('of limit')
-                            }
-                        </span>
-                    </span>
-                    <span>
-                        <Checkmark stroke={`${selected
-                            ? 'var(--main-green-darker)'
-                            : 'transparent'}`}
-                        />
-                    </span>
-                </div>
-            )}
-        </Listbox.Option>
-    )
-
-    const CustomOption = () => {
-        const [focused, setFocused] = useState(false)
-        const [value, setValue] = useState('')
-        const inputRef = useRef(null)
-
-        const handleFocus = (e) => {
-            setFocused(true)
-            setValue('%')
-        }
-
-        const handleChange = (e) => {
-            // only allow numbers and make sure it's only a 2 digit number
-            const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 2)
-        }
-
-
-
-        return (
-            <li>
-                <div className='slct-item custom-input'>
-                    <div className="input-container"
-                        style={{
-                            padding: "2px 2px",
-                            margin: "0 -4px",
-                            width: "100%",
-                            backgroundColor: `${focused ? 'var(--input-color)' : 'transparent'}`,
-                            boxShadow: `${focused ? 'var(--input-drop-shadow)' : 'none'}`,
-                            color: `${focused ? 'var(--input-placeholder)' : 'var(--main-text-gray)'}`,
-                        }}
-                    >0
-                        <input
-                            type="text"
-                            name="custom"
-                            className='dropdown-input'
-                            placeholder='Custom...'
-                            onFocus={handleFocus}
-                            onBlur={() => !value && setPlaceholder('Custom...')}
-                            value={value}
-                            onChange={handleChange}
-                            size='10'
-                            ref={inputRef}
-                        />
-                    </div>
-                </div>
-            </li>
-        )
-    }
-
-
-    return (
-        <div id="alert-select">
-            <Listbox
-                value={selectedAlerts}
-                onChange={setSelectedAlerts}
-                multiple={true}
-            >
-                {({ open }) => (
-                    <>
-                        <Listbox.Button id='add-alert-btn' style={{ margin: '4px 0' }}>
-                            Spending Alert
-                            <Plus
-                                stroke={'var(--white-text)'}
-                                strokeWidth={'18'}
-                                width={'.9em'}
-                                height={'.9em'}
-                            />
-                        </Listbox.Button>
-                        <DropAnimation visible={open} >
-                            <Listbox.Options
-                                static
-                                style={{
-                                    position: 'absolute'
-                                }}
-                            >
-                                <div className="dropdown" >
-                                    <span></span>
-                                    {alertOptions.map((option) => (
-                                        <ListOption option={option} />
-                                    ))}
-                                    <CustomOption />
-                                </div>
-                            </Listbox.Options>
-                        </DropAnimation>
-                    </>
-                )}
-            </Listbox>
-        </div>
-    )
-}
 
 const Form = (props) => {
     const [upperLimit, setUpperLimit] = useState('')
@@ -189,17 +41,13 @@ const Form = (props) => {
         <div className="create-form" id='category-form'>
             <h2>New Category</h2>
             <form onSubmit={handleSubmit((data) => submit(data))}>
-                <div style={{ padding: '0 4px' }}>
-                    <Radios options={[
-                        { name: 'categoryType', value: 'month', label: 'Month', default: true },
-                        { name: 'categoryType', value: 'year', label: 'Year' },
-                    ]} />
+                <div style={{ paddingLeft: '4px' }}>
+                    <Radios options={radioOptions} />
                 </div>
-                {/* row */}
                 <div className="responsive-inputs-row-container">
                     <div>
                         <label htmlFor="name">Name</label>
-                        <div className="input-container" id="category-name-input-container">
+                        <div className="input-container" >
                             <input
                                 type="text"
                                 name="emoji"
@@ -218,7 +66,7 @@ const Form = (props) => {
                         </div>
                     </div>
                     <div>
-                        <label htmlFor="limit" style={{ visibility: 'visible' }}>Limit</label>
+                        <label htmlFor="limit">Limit</label>
                         <div className="input-container" id="limit-input-container">
                             <input
                                 type="text"
@@ -229,9 +77,10 @@ const Form = (props) => {
                                 size="4"
                                 {...register('upperLimit')}
                                 onChange={(e) => {
-                                    const value = e.target.value.replace(/[^0-9.]/g, '')
-                                    const formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                    setUpperLimit(`$${formattedValue}`)
+                                    const formatted = e.target.value
+                                        .replace(/[^0-9.]/g, '')
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    setUpperLimit(`$${formatted}`)
                                 }}
                                 onBlur={(e) => e.target.value.length <= 1 && setUpperLimit('')}
                             />
@@ -239,14 +88,7 @@ const Form = (props) => {
                         </div>
                     </div>
                 </div>
-                {/* row */}
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: '0 4px',
-                    }}
-                >
+                <div className='inputs-row-container'>
                     <AddAlert limit={upperLimit} />
                     <Checkbox
                         label="Make private"
@@ -255,7 +97,6 @@ const Form = (props) => {
                         checked={false}
                     />
                 </div>
-                {/* row */}
                 <SubmitForm
                     submitting={submitting}
                     onCancel={() => props.setVisible(false)}
