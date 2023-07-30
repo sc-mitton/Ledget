@@ -5,7 +5,7 @@ import { LoadingRing } from '@components/pieces'
 
 const SubmitForm = ({ submitting, onCancel }) => {
     return (
-        <div style={{ display: 'flex', 'justifyContent': 'end', margin: '20px 4px 0 4px' }}>
+        <div style={{ display: 'flex', 'justifyContent': 'end', margin: '16px 4px 0 4px' }}>
             <div
                 className='btn-secondary'
                 onClick={onCancel}

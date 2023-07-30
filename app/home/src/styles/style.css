@@ -139,27 +139,10 @@ a {
     cursor: pointer;
 }
 
-button {
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background: transparent;
-    box-shadow: none;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    white-space: nowrap;
-}
-
 /* Accessibility Focus Styling */
 main:focus-visible {
     outline: none;
     box-shadow: inset 0 0 6px 1px var(--neon-green);
-}
-
-button:focus-visible {
-    outline: none;
-    box-shadow: var(--accessible-focus-drop-shadow);
 }
 
 div:focus-visible {
@@ -285,6 +268,28 @@ input:focus {
     outline: none;
 }
 
+/* ---------------------------- New Button Styles --------------------------- */
+
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    white-space: nowrap;
+    border-radius: inherit;
+}
+
+button:focus-visible {
+    outline: none;
+    box-shadow: var(--accessible-focus-drop-shadow);
+}
+
+
+
 
 /* --------------------------------- buttons -------------------------------- */
 
@@ -338,7 +343,7 @@ input:focus {
 }
 
 .btn-primary-scaling {
-    border-radius: 6px;
+    border-radius: 8px;
     transform: scale(1);
     transition: transform .3s ease;
 }

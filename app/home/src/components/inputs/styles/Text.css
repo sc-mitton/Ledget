@@ -29,3 +29,32 @@
 .input-container input {
     width: 100%;
 }
+
+.menu-text-input-container {
+    flex-grow: 1;
+    cursor: text;
+}
+
+.menu-text-input-container>div {
+    padding: 2px 2px;
+    margin: 0 -4px;
+    background-color: transparent;
+    box-shadow: none;
+    color: var(--main-text-gray);
+    border-radius: 8px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    transition: border .2s ease;
+    position: relative;
+}
+
+.menu-text-input-container>div:focus-within {
+    background-color: var(--input-color);
+    box-shadow: var(--accessible-focus-drop-shadow);
+    color: var(--input-placeholder);
+}
+
+.menu-text-input-container input {
+    padding-left: 8px;
+}

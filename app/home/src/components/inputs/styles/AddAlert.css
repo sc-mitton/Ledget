@@ -33,7 +33,6 @@
     transition: background-color 0.3s ease-out;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s ease-out;
 }
 
 .slct-item svg {
@@ -62,11 +61,26 @@
     transition: background-color 0.3s ease-out;
 }
 
+.slct-item.custom-input {
+    padding: 2px 8px;
+}
+
 .slct-item.custom-input input[type='text'] {
     font-weight: 500;
-    margin: 2px 8px;
 }
 
 .slct-item.custom-input input[type='text']::placeholder {
     color: inherit;
+}
+
+.slct-item div:first-child span {
+    display: flex;
+    align-items: center;
+    font-size: .8em;
+    display: inline;
+    opacity: 0;
+}
+
+.slct-item div:first-child .active {
+    opacity: 1;
 }
