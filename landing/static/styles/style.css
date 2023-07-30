@@ -16,8 +16,8 @@
     --alert-red: rgb(243, 80, 80);
 
     /* Icons & Buttons */
-    --button-gray: rgb(70, 70, 70);
-    --button-hover-gray: rgb(36, 36, 36);
+    --btn-gray: rgb(70, 70, 70);
+    --btn-hover-gray: rgb(36, 36, 36);
 }
 
 img {
@@ -165,7 +165,7 @@ a {
     margin: 0 8px;
     padding: 6px 8px 6px 12px;
     border-radius: 16px;
-    background-color: var(--button-gray);
+    background-color: var(--btn-gray);
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -173,7 +173,7 @@ a {
 }
 
 .auth-button:hover {
-    background-color: var(--button-hover-gray);
+    background-color: var(--btn-hover-gray);
     transition: background-color 0.25s ease;
 }
 

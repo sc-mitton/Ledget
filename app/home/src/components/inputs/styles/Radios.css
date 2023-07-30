@@ -6,7 +6,7 @@
 }
 
 .slider-radios-container div:first-child {
-    background-color: var(--green-highlight);
+    background-color: var(--green-hlight);
     border-radius: 12px;
     display: flex;
     flex-direction: row;

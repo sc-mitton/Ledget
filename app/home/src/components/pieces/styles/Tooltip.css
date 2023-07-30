@@ -12,7 +12,7 @@
     bottom: 100%;
     left: -50%;
     margin-bottom: 8px;
-    background-color: var(--button-hover-gray);
+    background-color: var(--btn-hover-gray);
     color: var(--white-text);
     padding: 2px 6px;
     border-radius: 4px;
@@ -36,5 +36,5 @@
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: var(--button-hover-gray) transparent transparent transparent;
+    border-color: var(--btn-hover-gray) transparent transparent transparent;
 }

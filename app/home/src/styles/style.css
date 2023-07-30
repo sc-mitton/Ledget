@@ -17,22 +17,22 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --green-highlight: rgb(143, 255, 192);
-    --green-highlight2: rgb(202, 252, 224);
-    --green-highlight3: rgb(136, 236, 188);
+    --green-hlight: rgb(143, 255, 192);
+    --green-hlight2: rgb(202, 252, 224);
+    --green-hlight3: rgb(136, 236, 188);
     --lighter-green: rgb(179, 226, 200);
-    --main-green: rgb(81, 237, 151);
-    --main-green-values: 81, 237, 151;
-    --main-green-hover: rgb(59, 222, 132);
-    --main-green-darker: rgb(67, 199, 126);
-    --main-green-darker2: rgb(71, 209, 133);
-    --main-green-darker3: rgb(61, 174, 112);
+    --m-green: rgb(81, 237, 151);
+    --m-green-values: 81, 237, 151;
+    --m-green-hover: rgb(59, 222, 132);
+    --green-dark: rgb(67, 199, 126);
+    --green-dark2: rgb(71, 209, 133);
+    --green-dark3: rgb(61, 174, 112);
     --accessible-green: rgb(81, 237, 151);
     --green-input-focus: rgb(96, 211, 156);
 
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-green);
-    --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-highlight3);
+    --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
     --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
 
@@ -48,11 +48,11 @@
     --faded-text: rgb(0, 0, 0, .3);
 
     /* Icons & Buttons */
-    --button-light-gray: #e6e4e4;
-    --button-hover-light-gray: #dad9d9;
-    --button-gray: hsl(0, 0%, 23%);
-    --button-hover-gray: #292929;
-    --button-black: #242424;
+    --btn-light-gray: #e6e4e4;
+    --btn-hover-light-gray: #dad9d9;
+    --btn-gray: hsl(0, 0%, 23%);
+    --btn-hover-gray: #292929;
+    --btn-black: #242424;
     --icon-light-gray: #ebebeb;
     --icon-hover-light-gray: #e0e0e0;
     --icon-hover-gray: #c4c4c4;
@@ -148,6 +148,7 @@ button {
     font-family: inherit;
     font-size: inherit;
     color: inherit;
+    white-space: nowrap;
 }
 
 /* Accessibility Focus Styling */
@@ -280,39 +281,10 @@ input:-webkit-autofill::after {
     background-clip: content-box !important;
 }
 
-
 input:focus {
     outline: none;
 }
 
-.input-container input::placeholder,
-input[type="password"]::placeholder {
-    color: var(--input-placeholder);
-}
-
-.input-container input:focus::placeholder,
-input[type="password"]:focus::placeholder {
-    transition: color .2s ease;
-    color: var(--green-input-focus);
-    opacity: 1;
-}
-
-.input-container {
-    background-color: var(--input-color);
-    border-radius: 8px;
-    padding: 12px 8px 12px 16px;
-    margin: 4px 0;
-    box-sizing: border-box;
-    display: flex;
-    transition: border .2s ease;
-    position: relative;
-    box-shadow: var(--input-drop-shadow);
-}
-
-.input-container:focus-within {
-    outline: none;
-    box-shadow: var(--input-focus-drop-shadow);
-}
 
 /* --------------------------------- buttons -------------------------------- */
 
@@ -330,7 +302,7 @@ input[type="password"]:focus::placeholder {
 .submit-button {
     padding: 8px 12px;
     color: var(--window);
-    background-color: var(--button-gray);
+    background-color: var(--btn-gray);
     border-radius: 8px;
     transition: background-color 0.3s ease;
 }
@@ -347,7 +319,7 @@ input[type="password"]:focus::placeholder {
 }
 
 .btn-primary-green {
-    background-color: var(--green-highlight);
+    background-color: var(--green-hlight);
     color: var(--main-text-gray);
     font-weight: 500;
     padding: 6px 12px;
@@ -372,7 +344,7 @@ input[type="password"]:focus::placeholder {
 }
 
 .btn-primary-charcoal {
-    background-color: var(--button-gray);
+    background-color: var(--btn-gray);
     color: var(--window);
     font-weight: 500;
     padding: 4px 12px;
@@ -383,7 +355,7 @@ input[type="password"]:focus::placeholder {
 }
 
 .btn-primary-gray {
-    background-color: var(--button-light-gray);
+    background-color: var(--btn-light-gray);
     font-weight: 500;
     padding: 4px 12px;
     border-radius: 8px;
@@ -399,17 +371,17 @@ input[type="password"]:focus::placeholder {
 
 /* Hover effects */
 .btn-primary-charcoal:hover {
-    background-color: var(--button-hover-gray);
+    background-color: var(--btn-hover-gray);
     transition: background-color .3s ease;
 }
 
 .btn-primary-gray:hover {
-    background-color: var(--button-hover-light-gray);
+    background-color: var(--btn-hover-light-gray);
     transition: background-color .3s ease;
 }
 
 .btn-primary-green:hover {
-    background-color: var(--green-highlight3);
+    background-color: var(--green-hlight3);
     transition: background-color .3s ease;
 }
 
@@ -429,7 +401,7 @@ input[type="password"]:focus::placeholder {
 }
 
 .submit-button:hover {
-    background-color: var(--button-hover-gray);
+    background-color: var(--btn-hover-gray);
     transition: background-color .3s ease;
 }
 

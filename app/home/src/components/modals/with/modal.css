@@ -20,13 +20,13 @@
     padding: 4px 8px;
     font-weight: 500;
     margin: 0 4px;
-    background-color: var(--button-gray);
+    background-color: var(--btn-gray);
     color: var(--window);
     border-radius: 4px;
 }
 
 .cancel-button:hover {
-    background-color: var(--button-hover-gray);
+    background-color: var(--btn-hover-gray);
     transition: background-color 0.3s ease;
 }
 

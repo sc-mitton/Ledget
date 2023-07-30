@@ -8,7 +8,7 @@ function Content() {
     return (
         <div className='passkey-modal-content'>
             <div>
-                <PasskeyIcon fill={'var(--main-green)'} />
+                <PasskeyIcon fill={'var(--m-green)'} />
             </div>
             <h1>Say goodby to passwords</h1>
             <p>

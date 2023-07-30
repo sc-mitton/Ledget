@@ -25,7 +25,7 @@ const ResendButton = () => {
                     }}
                     id="resend-icon"
                 >
-                    <Replay fill={'var(--main-green)'} />
+                    <Replay fill={'var(--m-green)'} />
                 </motion.div>
             </motion.button>
         </div>

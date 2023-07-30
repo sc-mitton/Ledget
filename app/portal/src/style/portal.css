@@ -70,13 +70,13 @@ button {
 }
 
 .charcoal-button {
-    background-color: var(--button-gray);
+    background-color: var(--btn-gray);
     color: var(--window);
     margin: 8px 0;
 }
 
 .charcoal-button:hover {
-    background-color: var(--button-hover-gray);
+    background-color: var(--btn-hover-gray);
 }
 
 
@@ -128,12 +128,12 @@ input[type="password"]:focus::placeholder {
 /* ----------------------------- Submit Buttons ----------------------------- */
 .submit-button {
     color: var(--window);
-    background-color: var(--button-gray);
+    background-color: var(--btn-gray);
     transition: background-color 0.3s ease;
 }
 
 .submit-button:hover {
-    background-color: var(--button-hover-gray);
+    background-color: var(--btn-hover-gray);
 }
 
 .submit-button {
@@ -186,7 +186,7 @@ input[type="password"]:focus::placeholder {
 }
 
 .social-auth-button {
-    box-shadow: var(--button-drop-shadow);
+    box-shadow: var(--btn-drop-shadow);
     background-color: var(--social-button);
     border-radius: 8px;
     flex: 1;

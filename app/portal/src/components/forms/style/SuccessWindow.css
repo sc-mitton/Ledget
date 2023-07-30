@@ -8,7 +8,7 @@
     top: 0;
     z-index: 1000;
     overflow: hidden;
-    background: var(--main-green);
+    background: var(--m-green);
     animation: fillWindowAnimation 0.2s ease-out;
     animation-fill-mode: forwards;
     opacity: 0;

@@ -53,12 +53,21 @@ const AddAlert = ({ limit }) => {
                         </span>
                     </span>
                     <span>
-                        <Checkmark stroke={`${selected ? 'var(--main-green-darker)' : 'transparent'}`} />
+                        <Checkmark stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`} />
                     </span>
                 </div>
             )}
         </Listbox.Option>
     )
+
+    const CustomOption = () => {
+
+        return (
+            <Listbox.Button>
+                <div>Hello World</div>
+            </Listbox.Button>
+        )
+    }
 
     return (
         <div id="alert-select">
@@ -69,7 +78,7 @@ const AddAlert = ({ limit }) => {
             >
                 {({ open }) => (
                     <>
-                        <Listbox.Button id='add-alert-btn' style={{ margin: '4px 0' }}>
+                        <Listbox.Button id='add-alert-btn' style={{ marginBottom: '4px' }}>
                             Spending Alert
                             <Plus
                                 stroke={'var(--white-text)'}
@@ -81,11 +90,9 @@ const AddAlert = ({ limit }) => {
                         <DropAnimation visible={open} >
                             <Listbox.Options static style={{ position: 'absolute' }}>
                                 <div className="dropdown" >
-                                    <span></span>
-                                    {alertOptions.map((option) => (
-                                        <ListOption option={option} />
-                                    ))}
+                                    {alertOptions.map((option) => (<ListOption option={option} />))}
                                 </div>
+                                <CustomOption />
                             </Listbox.Options>
                         </DropAnimation>
                     </>

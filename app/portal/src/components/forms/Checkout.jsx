@@ -98,7 +98,7 @@ const Prices = ({ prices }) => {
                                 <>
                                     <div className="dog-ear"></div>
                                     <div className="dog-ear-star">
-                                        <Star fill={'var(--green-highlight)'} />
+                                        <Star fill={'var(--green-hlight)'} />
                                     </div>
                                 </>
                             }

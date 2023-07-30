@@ -2,23 +2,22 @@ import React from 'react';
 
 import './styles/Text.css';
 
-export const TextInput = React.forwardRef((props, ref) => {
+export const TextInput = ({ children }) => {
 
     return (
         <div className="input-container">
-            <input type="text" {...props} />
-            {props.children}
+            {children}
         </div>
     )
-})
+}
 
-export const MenuTextInput = React.forwardRef((props, ref) => {
+export const MenuTextInput = ({ children }) => {
 
     return (
         <div className="menu-text-input-container">
-            <TextInput props={props} >
-                {props.children}
-            </TextInput>
+            <div className="input-container">
+                {children}
+            </div>
         </div>
     )
-})
+}

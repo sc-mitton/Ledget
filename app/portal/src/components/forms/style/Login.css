@@ -43,7 +43,7 @@
 }
 
 #change-email-button:hover {
-    color: var(--main-green-darker);
+    color: var(--green-dark);
     opacity: 1;
 }
 
@@ -63,9 +63,9 @@
 #forgot-password-container a {
     font-size: 15px;
     font-weight: 400;
-    color: var(--main-green-darker);
+    color: var(--green-dark);
 }
 
 #forgot-password-container a:hover {
-    border-bottom: 1.5px solid var(--main-green-darker);
+    border-bottom: 1.5px solid var(--green-dark);
 }

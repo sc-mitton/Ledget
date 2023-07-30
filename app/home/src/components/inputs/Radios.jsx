@@ -24,7 +24,7 @@ const Radios = ({ options }) => {
         update: [selection],
         refresh: [],
         styles: {
-            backgroundColor: 'var(--green-highlight3)',
+            backgroundColor: 'var(--green-hlight3)',
             zIndex: 1
         },
         find: (element) => element.htmlFor === selection

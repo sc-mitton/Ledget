@@ -6,7 +6,7 @@ import { object, string, number } from "yup"
 import { useNavigate } from 'react-router-dom'
 
 
-import { Radios, AddAlert } from '@components/inputs'
+import { Radios, AddAlert, TextInput } from '@components/inputs'
 import Checkbox from '@components/inputs/Checkbox'
 import withModal from './with/withModal'
 import SubmitForm from './pieces/SubmitForm'
@@ -47,34 +47,32 @@ const Form = (props) => {
                 <div className="responsive-inputs-row-container">
                     <div>
                         <label htmlFor="name">Name</label>
-                        <div className="input-container" >
+                        <TextInput>
                             <input
                                 type="text"
                                 name="emoji"
-                                id="emoji-input"
+                                className="emoji"
                                 placeholder="☺"
-                                style={{ fontSize: '16px', padding: '0 4px 0 0' }}
                             />
                             <input
                                 type="text"
                                 name="name"
-                                id="name"
+                                className="category-name"
                                 placeholder="Category name"
                                 {...register('name')}
                             />
                             {errors.name && <FormErrorTip />}
-                        </div>
+                        </TextInput>
                     </div>
                     <div>
                         <label htmlFor="limit">Limit</label>
-                        <div className="input-container" id="limit-input-container">
+                        <TextInput>
                             <input
                                 type="text"
                                 name="upperLimit"
                                 id="upperLimit"
                                 placeholder="$0"
                                 value={upperLimit}
-                                size="4"
                                 {...register('upperLimit')}
                                 onChange={(e) => {
                                     const formatted = e.target.value
@@ -85,7 +83,7 @@ const Form = (props) => {
                                 onBlur={(e) => e.target.value.length <= 1 && setUpperLimit('')}
                             />
                             {errors.upperLimit && <FormErrorTip />}
-                        </div>
+                        </TextInput>
                     </div>
                 </div>
                 <div className='inputs-row-container'>

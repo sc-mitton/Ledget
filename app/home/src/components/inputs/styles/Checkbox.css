@@ -6,6 +6,7 @@
     display: flex;
     justify-content: start;
     align-items: center;
+    white-space: nowrap;
 }
 
 .checkbox-symbol {
@@ -49,7 +50,7 @@
     width: 14px;
     height: 14px;
     transform: scale(1);
-    border: 1.5px solid var(--button-gray);
+    border: 1.5px solid var(--btn-gray);
     border-radius: 3px;
     transition: all 0.3s ease;
     display: flex;
@@ -74,8 +75,8 @@
 }
 
 .checkbox-input:checked+.checkbox span:first-child {
-    background: var(--main-green);
-    border-color: var(--main-green);
+    background: var(--m-green);
+    border-color: var(--m-green);
     animation: zoom-in-out 0.2s ease;
 }
 

@@ -4,7 +4,7 @@
     font-weight: 500;
     border-radius: 8px;
     padding: 4px 12px;
-    background-color: var(--button-gray);
+    background-color: var(--btn-gray);
     transition: background-color 0.3s ease-in-out;
     color: var(--white-text);
 }
@@ -14,7 +14,7 @@
 }
 
 #add-alert-btn:hover {
-    background-color: var(--button-hover-gray);
+    background-color: var(--btn-hover-gray);
     transition: background-color 0.3s ease-in-out;
 }
 
@@ -53,12 +53,12 @@
 }
 
 .s-slct-item {
-    background-color: var(--green-highlight2);
+    background-color: var(--green-hlight2);
     transition: background-color 0.3s ease-out;
 }
 
 .a-slct-item.s-slct-item {
-    background-color: var(--green-highlight3);
+    background-color: var(--green-hlight3);
     transition: background-color 0.3s ease-out;
 }
 

@@ -67,7 +67,7 @@
 .category-icon {
     transform: scale(1);
     transition: all .2s ease-out;
-    background-color: var(--green-highlight);
+    background-color: var(--green-hlight);
     padding: 2px 12px;
     cursor: pointer;
     border-radius: 8px;

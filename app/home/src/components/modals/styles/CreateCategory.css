@@ -48,21 +48,10 @@
     flex-direction: column;
 }
 
-#emoji-input {
+input.emoji {
     width: 20px;
-}
-
-#limit-input-container {
-    display: inline-flex;
-    flex-direction: row;
-    margin-bottom: 0;
-    width: 100%;
-}
-
-#limit-input-container input {
-    flex: 1 1 50%;
-    box-sizing: content-box;
-    width: auto;
+    font-size: 16px;
+    padding: 0 4px 0 0;
 }
 
 .inputs-row-container {

@@ -21,14 +21,14 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --green-highlight: #8fffc0;
-    --green-highlight2: #cafce0;
-    --green-highlight3: #88ecbc;
+    --green-hlight: #8fffc0;
+    --green-hlight2: #cafce0;
+    --green-hlight3: #88ecbc;
     --lighter-green: #b3e2c8;
-    --main-green: #51ed97;
-    --main-green-darker: #43c77e;
-    --main-green-darker2: rgb(71, 209, 133);
-    --main-green-darker3: rgb(61, 174, 112);
+    --m-green: #51ed97;
+    --green-dark: #43c77e;
+    --green-dark2: rgb(71, 209, 133);
+    --green-dark3: rgb(61, 174, 112);
     --accessible-green: #51ed97;
     --green-input-focus: #60d39c;
 
@@ -36,15 +36,15 @@
     --input-placeholder: #767676;
 
     /* Buttons */
-    --button-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
+    --btn-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --social-button: #ededed;
     --social-button-hover: #e0e0e0;
-    --button-gray: #363636;
-    --button-hover-gray: #1e1d1d;
+    --btn-gray: #363636;
+    --btn-hover-gray: #1e1d1d;
 
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1px 1px var(--accessible-green);
-    --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-highlight3);
+    --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
 
     /* Subscription Radios */
     --inactive-gray: #4c4c4c;
@@ -132,7 +132,7 @@ a {
     outline: none;
     text-decoration: none;
     border-bottom: 1.5px solid rgb(0, 0, 0, 0);
-    color: var(--main-green-darker);
+    color: var(--green-dark);
     text-decoration-skip-ink: none;
     transition: border-bottom .2s ease;
     text-underline-offset: 2px;
@@ -141,7 +141,7 @@ a {
 
 a:focus-visible,
 a:hover {
-    border-bottom: 1.5px solid var(--main-green-darker);
+    border-bottom: 1.5px solid var(--green-dark);
 }
 
 label:focus-visible {

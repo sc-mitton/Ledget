@@ -20,7 +20,7 @@ const usePillAnimation = (args) => {
 
     let baseStyles = {
         position: "absolute",
-        backgroundColor: "var(--button-hover-gray)",
+        backgroundColor: "var(--btn-hover-gray)",
         borderRadius: '12px',
         height: "100%",
         top: 0,
