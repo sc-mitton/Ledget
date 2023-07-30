@@ -49,43 +49,41 @@ const AddAlert = ({ limit }) => {
         }
 
         return (
-            <Listbox.Option
-                value={value} key={alertOptions.length + 1}
-                as='div'
-                className='slct-item custom-input'
-            >
-                <MenuTextInput>
-                    <input
-                        type="text"
-                        name="custom"
-                        placeholder='Custom...'
-                        onFocus={() => setValue('%')}
-                        onBlur={() => !value && setPlaceholder('Custom...')}
-                        value={value}
-                        onChange={handleChange}
-                        size='10'
-                        ref={customInputRef}
-                        onKeyDown={(e) => {
-                            e.key === 'Enter' && handleClick(e)
-                            e.key === 'Escape' && setValue('') && customInputRef.current.blur()
-                            e.key === 'Tab' && addRef.current.focus()
-                        }}
-                    />
-                    {value &&
-                        <button
-                            className="btn-gr"
-                            onClick={handleClick}
-                            ref={addRef}
-                            onKeyDown={(e) =>
-                                e.shiftKey && e.key === 'Tab'
-                                && customInputRef.current.focus()
-                            }
-                        >
-                            <Plus width={'.8em'} height={'.8em'} />
-                        </button>
-                    }
-                </MenuTextInput>
-            </Listbox.Option>
+            <li key='custom'>
+                <div className='slct-item custom-input'>
+                    <MenuTextInput>
+                        <input
+                            type="text"
+                            name="custom"
+                            placeholder='Custom...'
+                            onFocus={() => setValue('%')}
+                            onBlur={() => !value && setPlaceholder('Custom...')}
+                            value={value}
+                            onChange={handleChange}
+                            size='10'
+                            ref={customInputRef}
+                            onKeyDown={(e) => {
+                                e.key === 'Enter' && handleClick(e)
+                                e.key === 'Escape' && setValue('') && customInputRef.current.blur()
+                                e.key === 'Tab' && addRef.current.focus()
+                            }}
+                        />
+                        {value &&
+                            <button
+                                className="btn-gr"
+                                onClick={handleClick}
+                                ref={addRef}
+                                onKeyDown={(e) =>
+                                    e.shiftKey && e.key === 'Tab'
+                                    && customInputRef.current.focus()
+                                }
+                            >
+                                <Plus width={'.8em'} height={'.8em'} />
+                            </button>
+                        }
+                    </MenuTextInput>
+                </div>
+            </li>
         )
     }
 
@@ -135,7 +133,11 @@ const AddAlert = ({ limit }) => {
                             />
                         </Listbox.Button>
                         <DropAnimation visible={open} >
-                            <Listbox.Options static style={{ position: 'absolute' }}>
+                            <Listbox.Options
+                                style={{ position: 'absolute' }}
+                                onKeyDown={(e) => console.log(e)}
+                                static
+                            >
                                 <div className="dropdown" >
                                     <Options />
                                     <CustomOption />
