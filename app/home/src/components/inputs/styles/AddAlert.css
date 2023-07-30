@@ -9,13 +9,13 @@
     color: var(--white-text);
 }
 
-#add-alert-btn svg {
-    margin-left: 4px;
-}
-
 #add-alert-btn:hover {
     background-color: var(--btn-hover-gray);
     transition: background-color 0.3s ease-in-out;
+}
+
+#add-alert-btn svg {
+    margin-left: 4px;
 }
 
 #alert-select ul {
@@ -33,11 +33,6 @@
     transition: background-color 0.3s ease-out;
     border-radius: 6px;
     cursor: pointer;
-}
-
-.slct-item svg {
-    margin-left: 4px;
-    display: inline;
 }
 
 .slct-item span:nth-child(2) {

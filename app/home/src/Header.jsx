@@ -164,13 +164,12 @@ function Header({ isNarrow }) {
 
     return (
         <>
-            <header>
-                <div
-                    id="header-container"
-                    style={{
-                        zIndex: location.pathname.split('/').length <= 2 ? 1 : 0
-                    }}
-                >
+            <header
+                style={{
+                    zIndex: location.pathname.split('/').length <= 2 ? 1000 : 0
+                }}
+            >
+                <div id="header-container">
                     <div id="header-logo">
                         <img src={logoIcon} alt="Ledget Logo" />
                     </div>

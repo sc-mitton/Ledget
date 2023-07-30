@@ -102,7 +102,9 @@ const AddAlert = ({ limit }) => {
                                 </span>
                             </div>
                             <div>
-                                <Checkmark stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`} />
+                                <Checkmark
+                                    stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
+                                />
                             </div>
                         </div>
                     )}

@@ -78,10 +78,6 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
-
-    display: flex;
-    flex-direction: column;
-    background-color: var(--window);
 }
 
 #root {
@@ -93,6 +89,7 @@ main {
     display: flex;
     flex-direction: column;
     margin: 0;
+    background-color: var(--window);
 }
 
 div,
@@ -281,6 +278,8 @@ button {
     color: inherit;
     white-space: nowrap;
     border-radius: inherit;
+    display: flex;
+    align-items: center;
 }
 
 button:focus-visible {
@@ -288,10 +287,9 @@ button:focus-visible {
     box-shadow: var(--accessible-focus-drop-shadow);
 }
 
-
-
-
-/* --------------------------------- buttons -------------------------------- */
+button svg {
+    margin: 2px 2px;
+}
 
 /* Header Buttons */
 .window-header-buttons {
@@ -304,6 +302,45 @@ button:focus-visible {
 }
 
 /****/
+
+/* Colors */
+.chcl-btn {
+    background-color: var(--btn-gray);
+    color: var(--white-text);
+    transition: background-color .3s ease;
+}
+
+.chcl-btn:hover {
+    background-color: var(--btn-hover-gray);
+    transition: background-color .3s ease;
+}
+
+.grn-btn {
+    color: var(--main-text-gray);
+    background-color: var(--green-hlight);
+    transition: background-color .3s ease;
+}
+
+.grn-btn:hover {
+    background-color: var(--green-hlight3);
+    transition: background-color .3s ease;
+}
+
+.btn-gr {
+    background-color: var(--btn-light-gray);
+    color: var(--white-text);
+    transition: background-color .3s ease;
+}
+
+.btn-gr:hover {
+    background-color: var(--btn-hover-light-gray);
+    transition: background-color .3s ease;
+}
+
+
+
+/* --------------------------------- buttons -------------------------------- */
+
 .submit-button {
     padding: 8px 12px;
     color: var(--window);
@@ -367,11 +404,6 @@ button:focus-visible {
     transition: background-color .3s ease;
     display: flex;
     align-items: center;
-}
-
-.btn-primary-gray svg,
-.btn-primary-charcoal svg {
-    margin: 0 4px;
 }
 
 /* Hover effects */

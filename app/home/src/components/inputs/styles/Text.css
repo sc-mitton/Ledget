@@ -58,3 +58,7 @@
 .menu-text-input-container input {
     padding-left: 8px;
 }
+
+.menu-text-input-container button {
+    margin: 0 4px;
+}

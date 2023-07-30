@@ -46,7 +46,8 @@ const App = () => {
     }, [])
 
     const config = {
-        position: 'fixed',
+        position: 'absolute',
+        backgroundColor: 'transparent',
         top: '0px',
         left: '0px',
         width: '100%',
@@ -56,14 +57,13 @@ const App = () => {
 
     return (
         <main tabIndex={0}>
+            <Header isNarrow={isNarrow} />
             <AnimatePresence mode="wait">
-                <Header isNarrow={isNarrow} />
                 <motion.div
                     initial={{ opacity: 0, transform: 'scale(0.98)', ...config }}
                     animate={{ opacity: 1, transform: 'scale(1)' }}
                     exit={{ opacity: 0, transform: 'scale(0.98)' }}
                     key={location.pathname.split('/')[1]}
-                    style={{ position: 'static', transform: 'none' }}
                 >
                     <div id="dashboard" ref={ref}>
                         <Routes location={location} key={location.pathname.split('/')[1]} >
