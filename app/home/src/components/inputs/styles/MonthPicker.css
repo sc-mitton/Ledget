@@ -27,11 +27,6 @@
     border-radius: 4px;
 }
 
-.arrow-nav:hover {
-    background-color: var(--icon-hover-gray);
-    transition: background-color 0.2s ease;
-}
-
 #year-navigation {
     display: flex;
     flex-direction: row;

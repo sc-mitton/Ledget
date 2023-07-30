@@ -78,29 +78,3 @@
     transform: scale(1.1);
     transition: all .2s ease-out;
 }
-
-
-/* ------------------------------ Expand Button ----------------------------- */
-
-#expand-button {
-    background-color: var(--icon-light-gray);
-    color: var(--white-text);
-    transition: background-color .3s ease-out;
-    font-weight: 400;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding-left: 8px;
-    padding-right: 8px;
-}
-
-#expand-button-icon {
-    display: flex;
-    align-items: center;
-    padding: 0 4px;
-}
-
-#expand-button:hover {
-    background-color: var(--icon-hover-light-gray);
-}

@@ -10,10 +10,10 @@ import { DropAnimation } from '@utils'
 
 
 const defaultAlertOptions = [
-    { id: 1, value: 25 },
-    { id: 2, value: 50 },
-    { id: 3, value: 75 },
-    { id: 4, value: 100 },
+    { id: 1, value: 25, disabled: false },
+    { id: 2, value: 50, disabled: false },
+    { id: 3, value: 75, disabled: false },
+    { id: 4, value: 100, disabled: false },
 ]
 
 const formatDollar = (value, percentage) => {
@@ -49,47 +49,50 @@ const AddAlert = ({ limit }) => {
         }
 
         return (
-            <li key='custom'>
-                <div className='slct-item custom-input'>
-                    <MenuTextInput>
-                        <input
-                            type="text"
-                            name="custom"
-                            placeholder='Custom...'
-                            onFocus={() => setValue('%')}
-                            onBlur={() => !value && setPlaceholder('Custom...')}
-                            value={value}
-                            onChange={handleChange}
-                            size='10'
-                            ref={customInputRef}
-                            onKeyDown={(e) => {
-                                e.key === 'Enter' && handleClick(e)
-                                e.key === 'Escape' && setValue('') && customInputRef.current.blur()
-                                e.key === 'Tab' && addRef.current.focus()
-                            }}
-                        />
-                        {value &&
-                            <button
-                                onClick={handleClick}
-                                ref={addRef}
-                                onKeyDown={(e) =>
-                                    e.shiftKey && e.key === 'Tab'
-                                    && customInputRef.current.focus()
-                                }
-                            >
-                                <Plus width={'.8em'} height={'.8em'} />
-                            </button>
-                        }
-                    </MenuTextInput>
-                </div>
-            </li>
+            <Listbox.Option
+                value={value} key={alertOptions.length + 1}
+                as='div'
+                className='slct-item custom-input'
+            >
+                <MenuTextInput>
+                    <input
+                        type="text"
+                        name="custom"
+                        placeholder='Custom...'
+                        onFocus={() => setValue('%')}
+                        onBlur={() => !value && setPlaceholder('Custom...')}
+                        value={value}
+                        onChange={handleChange}
+                        size='10'
+                        ref={customInputRef}
+                        onKeyDown={(e) => {
+                            e.key === 'Enter' && handleClick(e)
+                            e.key === 'Escape' && setValue('') && customInputRef.current.blur()
+                            e.key === 'Tab' && addRef.current.focus()
+                        }}
+                    />
+                    {value &&
+                        <button
+                            className="btn-gr"
+                            onClick={handleClick}
+                            ref={addRef}
+                            onKeyDown={(e) =>
+                                e.shiftKey && e.key === 'Tab'
+                                && customInputRef.current.focus()
+                            }
+                        >
+                            <Plus width={'.8em'} height={'.8em'} />
+                        </button>
+                    }
+                </MenuTextInput>
+            </Listbox.Option>
         )
     }
 
     const Options = () => {
         return (
             alertOptions.map((option) => (
-                <Listbox.Option key={option.id} value={option.value} >
+                <Listbox.Option key={option.id} value={option.value} disabled={option.disabled}>
                     {({ active, selected }) => (
                         <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
                             <div>

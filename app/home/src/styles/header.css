@@ -44,20 +44,11 @@ header {
 }
 
 #profile-button {
-    display: flex;
-    align-items: center;
     margin: 8px 4px;
     position: relative;
-    cursor: pointer;
     padding: 0;
     background-color: transparent;
     border-radius: 24px;
-}
-
-#profile-icon {
-    margin-right: 16px;
-    height: 50%;
-    cursor: pointer;
 }
 
 /* ------------------------------ Dropdown Menu ----------------------------- */
@@ -68,13 +59,12 @@ header {
     display: flex;
     flex-direction: column;
     top: 6px;
-    left: -34px;
+    left: -32px;
 }
 
 .profile-dropdown-wide .profile-dropdown::before {
     position: absolute;
     top: -7px;
-    /* left: 48px; */
     left: 28px;
     display: inline-block;
     border-right: 6px solid transparent;

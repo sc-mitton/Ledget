@@ -26,7 +26,7 @@ const RefreshButton = ({ onClick }) => {
     return (
         <Tooltip msg={"Refresh"} ariaLabel={"Refresh list"}>
             <button
-                className='icon'
+                className='btn-clr btn'
                 id="refresh-icon"
                 aria-label="Refresh"
                 onClick={handleClick}
@@ -46,7 +46,7 @@ const CheckAllButton = () => {
     return (
         <Tooltip msg={"Confirm all"} ariaLabel={"Confirm all items"}>
             <button
-                className="icon"
+                className="btn-clr btn"
                 id="check-all-icon"
                 aria-label="Check all"
             >

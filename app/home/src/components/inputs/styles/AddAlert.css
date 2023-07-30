@@ -35,12 +35,6 @@
     cursor: pointer;
 }
 
-.slct-item span:nth-child(2) {
-    margin-left: 15px;
-    opacity: .5;
-    font-size: 12px;
-}
-
 .a-slct-item {
     background-color: var(--icon-light-gray);
     transition: background-color 0.3s ease-out;
@@ -71,11 +65,12 @@
 .slct-item div:first-child span {
     display: flex;
     align-items: center;
-    font-size: .8em;
+    font-size: 1em;
     display: inline;
     opacity: 0;
+    margin-left: 4px;
 }
 
-.slct-item div:first-child .active {
-    opacity: 1;
+.slct-item div:first-child span.active {
+    opacity: .3;
 }

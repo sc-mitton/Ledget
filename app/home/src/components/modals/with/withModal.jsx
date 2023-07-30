@@ -94,11 +94,16 @@ function withModal(WrappedComponent) {
         const Exit = () => {
             return (
                 <button
-                    className="exit-button icon"
+                    className="btn-clr btn"
                     onClick={() => setVisible(false)}
                     aria-label="Close modal"
-                    style={{ zIndex: zIndex + 2 }}
                     ref={exitRef}
+                    style={{
+                        position: 'absolute',
+                        zIndex: zIndex + 2,
+                        top: '12px',
+                        right: '12px'
+                    }}
                 >
                     <Close />
                 </button>

@@ -37,13 +37,13 @@ function Logout(props) {
             </div>
             <div style={{ display: 'flex', 'justifyContent': 'end', marginTop: '8px' }}>
                 <button
-                    className='btn-secondary'
+                    className='btn-scale btn3'
                     onClick={() => props.setVisible(false)}
                 >
                     Cancel
                 </button>
                 <button
-                    className='btn-primary-green'
+                    className='btn-grn btn3'
                     onClick={() => handleLogout()}
                     aria-label="Logout"
                 >

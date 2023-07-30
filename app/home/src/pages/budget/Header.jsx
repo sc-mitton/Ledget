@@ -35,7 +35,7 @@ const DropDown = () => {
         <Menu>
             {({ open }) => (
                 <>
-                    <Menu.Button className={'icon'}>
+                    <Menu.Button className={'btn-clr btn'}>
                         <Ellipsis2 />
                     </Menu.Button>
                     <DropAnimation visible={open}>
@@ -75,13 +75,13 @@ const Header = () => {
             <MonthPicker />
             <div className="window-header-buttons">
                 <button
-                    className="icon"
+                    className="btn-clr btn"
                     aria-label="Toggle cash flow view"
                 >
                     <CashFlow />
                 </button>
                 <button
-                    className="icon"
+                    className="btn-clr btn"
                     aria-label="Toggle graph view"
                     style={{
                         margin: "0 0.5em"

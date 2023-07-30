@@ -121,7 +121,7 @@ const MonthPicker = () => {
             <h1>{monthMappings[month - 1][1]} {year}</h1>
             <div id="header-arrow-container">
                 <button
-                    className='icon'
+                    className='btn btn-clr'
                     id='header-arrow'
                     onClick={handleArrowClick}
                     aria-label="Open month picker"
@@ -137,7 +137,7 @@ const MonthPicker = () => {
                 <div >
                     <div id="year-navigation">
                         <button
-                            className="arrow-nav"
+                            className="arrow-nav btn-scale2"
                             onClick={decrementYear}
                             aria-label="Decrement year"
                         >
@@ -145,7 +145,7 @@ const MonthPicker = () => {
                         </button>
                         <div>{pickerYear}</div>
                         <button
-                            className="arrow-nav"
+                            className="arrow-nav btn-scale2"
                             onClick={incrementYear}
                             aria-label="Increment year"
                         >

@@ -216,14 +216,14 @@ const NewItem = (props) => {
             </div>
             <div className='new-item-icons' >
                 <button
-                    className='category-icon'
+                    className='btn-grn btn-2slim'
                     aria-label="Choose budget category"
                     tabIndex={tabIndex}
                 >
                     {item.category}
                 </button>
                 <button
-                    className='icon2'
+                    className='btn-scale2'
                     onClick={onConfirm}
                     aria-label="Confirm item"
                     tabIndex={tabIndex}
@@ -231,7 +231,7 @@ const NewItem = (props) => {
                     <CheckMark />
                 </button>
                 <button
-                    className='narrow-icon'
+                    className='btn-narrow btn-clr'
                     tabIndex={tabIndex}
                     onClick={onEllipsis}
                     aria-label="More options"
@@ -265,12 +265,11 @@ const ExpandButton = ({ onClick }) => {
 
     return (
         <animated.div
-            id="expand-button-container"
             className="bottom-buttons"
             style={buttonContainerProps}
         >
             <button
-                id="expand-button"
+                className="btn-sp btn-discreet"
                 onClick={() => {
                     setRotated(!rotated)
                     onClick()
@@ -278,13 +277,12 @@ const ExpandButton = ({ onClick }) => {
                 aria-label="Expand new item stack"
                 tabIndex={0}
             >
-                <animated.div
-                    id="expand-button-icon"
+                <animated.button
                     style={rotationProps}
                     aria-label="Expand new item stack"
                 >
                     <ExpandIcon stroke={"var(--faded-text)"} />
-                </animated.div >
+                </animated.button >
             </button>
         </animated.div>
     )

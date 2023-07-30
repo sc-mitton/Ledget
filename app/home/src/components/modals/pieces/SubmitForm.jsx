@@ -7,7 +7,7 @@ const SubmitForm = ({ submitting, onCancel }) => {
     return (
         <div style={{ display: 'flex', 'justifyContent': 'end', margin: '16px 4px 0 4px' }}>
             <div
-                className='btn-secondary'
+                className='btn-scale btn3'
                 onClick={onCancel}
                 tabIndex={0}
                 aria-label="Cancel"
@@ -17,7 +17,7 @@ const SubmitForm = ({ submitting, onCancel }) => {
                 Cancel
             </div>
             <button
-                className='btn-primary-green'
+                className='btn-grn btn3'
                 type="submit"
                 aria-label="Save"
                 tabIndex={0}

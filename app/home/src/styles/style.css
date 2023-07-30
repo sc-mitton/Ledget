@@ -298,30 +298,36 @@ button svg {
 }
 
 .window-header-buttons>button {
-    margin: 0 4px;
+    margin: 0 2px;
+}
+
+.sub-header-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 /****/
 
 /* Colors */
-.chcl-btn {
+.btn-chcl {
     background-color: var(--btn-gray);
     color: var(--white-text);
     transition: background-color .3s ease;
 }
 
-.chcl-btn:hover {
+.btn-chcl:hover {
     background-color: var(--btn-hover-gray);
     transition: background-color .3s ease;
 }
 
-.grn-btn {
+.btn-grn {
     color: var(--main-text-gray);
     background-color: var(--green-hlight);
     transition: background-color .3s ease;
 }
 
-.grn-btn:hover {
+.btn-grn:hover {
     background-color: var(--green-hlight3);
     transition: background-color .3s ease;
 }
@@ -337,151 +343,83 @@ button svg {
     transition: background-color .3s ease;
 }
 
-
-
-/* --------------------------------- buttons -------------------------------- */
-
-.submit-button {
-    padding: 8px 12px;
-    color: var(--window);
-    background-color: var(--btn-gray);
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-}
-
-.submit-button {
-    outline: none;
-    cursor: pointer;
-}
-
-.sub-header-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.btn-primary-green {
-    background-color: var(--green-hlight);
+.btn-clr {
+    background-color: transparent;
     color: var(--main-text-gray);
-    font-weight: 500;
-    padding: 6px 12px;
-    border-radius: 8px;
     transition: background-color .3s ease;
 }
 
-.btn-secondary {
-    color: var(--main-text-gray);
-    padding: 8px 12px;
-    margin: 0 4px;
+.btn-clr:hover {
+    background-color: var(--icon-hover-light-gray);
+    transition: background-color .3s ease;
+}
+
+.btn-discreet {
+    background-color: var(--icon-light-gray);
+    color: var(--faded-text);
+    transition: background-color .3s ease;
+}
+
+.btn-discreet:hover {
+    background-color: var(--icon-hover-light-gray);
+    transition: background-color .3s ease;
+}
+
+/* Other */
+
+.btn {
+    padding: 4px;
     border-radius: 6px;
     font-weight: 500;
-    transform: scale(1);
-    transition: transform .3s ease;
 }
 
-.btn-primary-scaling {
+.btn2 {
+    padding: 4px 8px;
     border-radius: 8px;
-    transform: scale(1);
-    transition: transform .3s ease;
-}
-
-.btn-primary-charcoal {
-    background-color: var(--btn-gray);
-    color: var(--window);
     font-weight: 500;
-    padding: 4px 12px;
-    border-radius: 8px;
-    transition: background-color .3s ease;
-    display: flex;
-    align-items: center;
 }
 
-.btn-primary-gray {
-    background-color: var(--btn-light-gray);
+.btn3 {
+    padding: 6px 12px;
+    border-radius: 8px;
     font-weight: 500;
-    padding: 4px 12px;
-    border-radius: 8px;
-    transition: background-color .3s ease;
-    display: flex;
-    align-items: center;
 }
 
-/* Hover effects */
-.btn-primary-charcoal:hover {
-    background-color: var(--btn-hover-gray);
-    transition: background-color .3s ease;
-}
-
-.btn-primary-gray:hover {
-    background-color: var(--btn-hover-light-gray);
-    transition: background-color .3s ease;
-}
-
-.btn-primary-green:hover {
-    background-color: var(--green-hlight3);
-    transition: background-color .3s ease;
-}
-
-.btn-secondary:hover {
-    transform: scale(1.05);
-    transition: transform .3s ease;
-}
-
-.btn-primary-scaling:hover {
-    transform: scale(1.2);
-    transition: transform .3s ease;
-}
-
-.submit-button:focus-within {
-    outline: none;
-    box-shadow: var(--focus-drop-shadow);
-}
-
-.submit-button:hover {
-    background-color: var(--btn-hover-gray);
-    transition: background-color .3s ease;
-}
-
-/* ---------------------------------- Icons --------------------------------- */
-.icon {
-    display: flex;
-    align-items: center;
-    padding: 4px;
-    background-color: transparent;
-    border-radius: 4px;
-    transition: background-color .3s ease;
-    cursor: pointer
-}
-
-.icon2 {
-    display: flex;
-    align-items: center;
-    padding: 4px;
-    background-color: transparent;
-    border-radius: 8px;
-    transition: background-color .3s ease;
-    cursor: pointer;
-    transition: transform .3s ease;
-}
-
-.icon2:hover {
-    transform: scale(1.2);
-    transition: transform .3s ease;
-}
-
-.narrow-icon {
-    display: flex;
-    align-items: center;
+.btn-narrow {
     padding: 4px 0px;
-    background-color: transparent;
-    border-radius: 4px;
-    transition: background-color .3s ease;
-    cursor: pointer
+    border-radius: 6px;
+    font-weight: 500;
 }
 
-.icon:hover,
-.narrow-icon:hover {
-    background-color: var(--icon-hover-light-gray);
+.btn-2slim {
+    padding: 2px 12px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.btn-sp {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.btn-scale {
+    transform: scale(1);
+    transition: transform .3s ease;
+}
+
+.btn-scale:hover {
+    transform: scale(1.1);
+    transition: transform .3s ease;
+}
+
+.btn-scale2 {
+    transform: scale(1);
+    transition: transform .3s ease;
+}
+
+.btn-scale2:hover {
+    transform: scale(1.2);
+    transition: transform .3s ease;
 }
 
 /* -------------------------------- Dropdowns ------------------------------- */

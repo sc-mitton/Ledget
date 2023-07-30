@@ -13,14 +13,14 @@ const HistoryHeader = () => {
             </div>
             <div className="window-header-buttons">
                 <button
-                    className="icon"
+                    className="btn-clr btn"
                     id="funnel-icon"
                     aria-label="Filter items"
                 >
                     <Funnel />
                 </button>
                 <button
-                    className="icon"
+                    className="btn-clr btn"
                     id="add-icon"
                     aria-label="Manually add item"
                 >
