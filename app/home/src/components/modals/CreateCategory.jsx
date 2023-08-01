@@ -41,7 +41,7 @@ const Form = (props) => {
         <div className="create-form" id='category-form'>
             <h2>New Category</h2>
             <form onSubmit={handleSubmit((data) => submit(data))}>
-                <div style={{ paddingLeft: '4px' }}>
+                <div style={{ paddingLeft: '4px', display: 'inline-block' }}>
                     <Radios options={radioOptions} />
                 </div>
                 <div className="responsive-inputs-row-container">
@@ -87,13 +87,24 @@ const Form = (props) => {
                     </div>
                 </div>
                 <div className='inputs-row-container'>
-                    <AddAlert limit={upperLimit} />
-                    <Checkbox
-                        label="Make private"
-                        name="private"
-                        id="private"
-                        checked={false}
+                    <AddAlert
+                        limit={upperLimit}
+                        defaultOptions={[
+                            { id: 1, value: 25, disabled: false },
+                            { id: 2, value: 50, disabled: false },
+                            { id: 3, value: 75, disabled: false },
+                            { id: 4, value: 100, disabled: false },
+                        ]}
                     />
+                    {false &&
+                        // TODO: this option is only available for shared accounts
+                        <Checkbox
+                            label="Make private"
+                            name="private"
+                            id="private"
+                            checked={false}
+                        />
+                    }
                 </div>
                 <SubmitForm
                     submitting={submitting}

@@ -1,0 +1,329 @@
+import React, { createContext, useState, useContext, useEffect, useRef } from 'react'
+
+const DataContext = createContext()
+
+const HiddenInputs = ({ value, name }) => {
+
+    return (
+        Array.isArray(value)
+            ?
+            value.map((item, index) => (
+                <input
+                    key={index}
+                    type="hidden"
+                    name={`${name}${index}`}
+                    value={item}
+                />
+            ))
+            :
+            <input
+                type="hidden"
+                name={name}
+                value={value}
+            />
+    )
+}
+
+const ComboSelect = (props) => {
+    const { value, onChange, addSelection, multiple } = props
+    const [open, setOpen] = useState(false)
+    const [active, setActive] = useState(null)
+    const [options, setOptions] = useState([])
+    const [custom, setCustom] = useState([])
+    const buttonRef = useRef(null)
+    const customRef = useRef(null)
+
+    const data = {
+        value,
+        onChange,
+        addSelection,
+        open,
+        setOpen,
+        active,
+        setActive,
+        options,
+        setOptions,
+        buttonRef,
+        customRef,
+        custom,
+        setCustom,
+        multiple
+    }
+
+    return (
+        <DataContext.Provider value={data}>
+            <HiddenInputs
+                value={value}
+                name={`${props.name}`}
+            />
+            {props.children({ open })}
+        </DataContext.Provider>
+    )
+}
+
+const Button = (props) => {
+    const { setOpen, open, buttonRef } = useContext(DataContext)
+    const { children, ...rest } = props
+
+    const handleClick = (event) => {
+        event.stopPropagation()
+        setOpen(!open)
+    }
+
+    return (
+        <button
+            ref={buttonRef}
+            onClick={handleClick}
+            type="button"
+            aria-haspopup="listbox"
+            aria-expanded={open}
+            {...rest}
+        >
+            {children}
+        </button>
+    )
+}
+
+const Options = ({ children, static: isStatic, ...rest }) => {
+    const {
+        multiple,
+        open,
+        setOpen,
+        buttonRef,
+        setActive,
+        options,
+        customRef
+    } = useContext(DataContext)
+    const ref = useRef(null)
+
+    // Events for closing the dropdown
+    useEffect(() => {
+        if (open) {
+            ref.current.focus()
+
+            const handleEscape = (event) => {
+                if (event.key === 'Escape') {
+                    event.stopPropagation()
+                    setOpen(false)
+                }
+            }
+
+            const handleDocumentClick = (event) => {
+                if (ref.current
+                    && !ref.current.contains(event.target)
+                    && !buttonRef.current.contains(event.target)
+                ) {
+                    setOpen(false)
+                }
+            }
+
+            document.addEventListener('keydown', handleEscape)
+            document.addEventListener('mousedown', handleDocumentClick)
+
+            return () => {
+                document.removeEventListener('keydown', handleEscape)
+                document.removeEventListener('mousedown', handleDocumentClick)
+            }
+        }
+    }, [open, setOpen])
+
+    // Events for keyboard navigation
+    useEffect(() => {
+        if (open) {
+            const handleKeyDown = (event) => {
+                if (event.key === 'ArrowDown' && document.activeElement !== customRef.current) {
+                    event.preventDefault()
+                    setActive((prev) => {
+                        if (prev === null) {
+                            return options[0]
+                        } else if (prev === options[options.length - 1]) {
+                            customRef.current?.focus()
+                            return null
+                        } else {
+                            return options[options.findIndex((item) => item === prev) + 1]
+                        }
+                    })
+                }
+                if (event.key === 'ArrowUp' && document.activeElement !== customRef.current) {
+                    event.preventDefault()
+                    setActive((prev) => {
+                        if (prev === null) {
+                            return options[options.length - 1]
+                        } else if (prev === options[0]) {
+                            return options[0]
+                        } else {
+                            return options[options.findIndex((item) => item === prev) - 1]
+                        }
+                    })
+                }
+                if (event.key === 'Enter') {
+                    event.preventDefault()
+                    ref.current.querySelector(`[headlessui-state="active"]`).click()
+                }
+            }
+            document.addEventListener('keydown', handleKeyDown)
+            return () => {
+                document.removeEventListener('keydown', handleKeyDown)
+            }
+        }
+    }, [open, options])
+
+    return (
+        <>
+            {(open || isStatic) &&
+                <div ref={ref}>
+                    <ul
+                        aria-multiselectable={multiple}
+                        aria-labelledby={buttonRef.current.id}
+                        aria-orientation='vertical'
+                        role="listbox"
+                        tabIndex={0}
+                        {...rest}
+                    >
+                        {children}
+                    </ul>
+                </div>
+            }
+        </>
+    )
+}
+
+const Option = ({ value, disabled, children }) => {
+
+    const {
+        value: contextValue,
+        onChange,
+        active: contextActive,
+        setActive,
+        multiple,
+        setOptions
+    } = useContext(DataContext)
+
+    const handleClick = (event) => {
+        if (multiple) {
+            if (contextValue.includes(value)) {
+                onChange(contextValue.filter((item) => item !== value))
+            }
+            else {
+                onChange([...contextValue, value])
+            }
+        } else {
+            onChange([value])
+        }
+    }
+
+    useEffect(() => {
+        setOptions((prev) => {
+            if (prev.some((item) => item === value)) {
+                return prev
+            }
+            return [...prev, value]
+        })
+    }, [])
+
+    return (
+        <li
+            role="option"
+            aria-selected={value}
+            headlessui-state={!disabled && contextActive === value ? 'active' : null}
+            tabIndex={-1}
+            value={value}
+            onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                    handleClick(event)
+                }
+            }}
+            onMouseEnter={() => setActive(value)}
+            onMouseLeave={() => setActive(null)}
+            onClick={handleClick}
+        >
+            {children({
+                active: !disabled && contextActive === value,
+                selected:
+                    (multiple && !disabled)
+                        ? contextValue.some((item) => item === value)
+                        : contextValue === value,
+                disabled
+            })}
+        </li>
+    )
+}
+
+const Custom = React.forwardRef((props, ref) => {
+    const { customRef, onChange, multiple, addSelection } = useContext(DataContext)
+    const { children, onKeyDown, onBlur, onFocus, getValue, value, ...rest } = props
+    const [focused, setFocused] = useState(false)
+
+    const localRef = useRef(null)
+    const inputRef = ref || localRef
+
+    useEffect(() => {
+        customRef.current = inputRef.current
+    }, [inputRef])
+
+    const handleEnter = (event) => {
+        event.preventDefault()
+
+        // Add new option to options list
+        const cleanedVal = getValue ? getValue(value) : value
+        addSelection((prev) => {
+            const updatedArray = prev.some((item) => item.value === cleanedVal.value)
+                ? prev
+                : [...prev, cleanedVal]
+
+            updatedArray.sort((a, b) => a.value - b.value)
+            return updatedArray
+        })
+
+        // Add new option to selected values
+        onChange((prev) =>
+            prev.some((item) => item === cleanedVal.value)
+                ? prev
+                : multiple ? [...prev, cleanedVal.value] : [cleanedVal.value]
+        )
+    }
+
+    const handleKeyDown = (event) => {
+        onKeyDown && onKeyDown(event)
+        if (event.key === 'ArrowUp') {
+            customRef.current.blur()
+        }
+        if (event.key === 'Enter') {
+            handleEnter(event)
+        }
+    }
+
+    const handleFocus = (event) => {
+        event.preventDefault()
+        onFocus && onFocus(event)
+        setFocused(true)
+    }
+
+    const handleBlur = (event) => {
+        event.preventDefault()
+        onBlur && onBlur(event)
+        setFocused(false)
+    }
+
+    return (
+        <>
+            <input
+                type="text"
+                onKeyDown={handleKeyDown}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                ref={inputRef}
+                value={value}
+                {...rest}
+            />
+            {children({ focused })}
+        </>
+    )
+})
+
+ComboSelect.Button = Button
+ComboSelect.Options = Options
+ComboSelect.Option = Option
+ComboSelect.Custom = Custom
+
+export default ComboSelect

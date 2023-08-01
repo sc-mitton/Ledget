@@ -30,13 +30,13 @@ const Radios = ({ options }) => {
         find: (element) => element.htmlFor === selection
     })
 
-    const containerStyle = {
-        position: 'relative'
-    }
-
     return (
-        <fieldset className="slider-radios-container"  >
-            <div style={containerStyle} ref={containerRef}>
+        <fieldset
+            style={{
+                display: 'inline-block',
+            }}
+        >
+            <div className="slider-radios-container" ref={containerRef}>
                 {
                     options.map((option, index) => (
                         <React.Fragment key={index}>
@@ -50,7 +50,10 @@ const Radios = ({ options }) => {
                             <label
                                 htmlFor={option.value}
                                 onClick={(event) => setSelection(option.value)}
-                                onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && setSelection(option.value)}
+                                onKeyDown={(event) =>
+                                    (event.key === 'Enter' || event.key === ' ')
+                                    && setSelection(option.value)
+                                }
                                 tabIndex={0}
                             >
                                 <span>

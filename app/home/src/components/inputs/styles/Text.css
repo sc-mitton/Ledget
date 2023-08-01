@@ -45,6 +45,7 @@
     box-sizing: border-box;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     transition: border .2s ease;
     position: relative;
 }

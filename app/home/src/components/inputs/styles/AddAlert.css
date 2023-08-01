@@ -1,17 +1,7 @@
 #add-alert-btn {
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-    border-radius: 8px;
-    padding: 4px 12px;
-    background-color: var(--btn-gray);
-    transition: background-color 0.3s ease-in-out;
-    color: var(--white-text);
-}
-
-#add-alert-btn:hover {
-    background-color: var(--btn-hover-gray);
-    transition: background-color 0.3s ease-in-out;
+    color: var(--input-placeholder);
+    margin: 2px 0;
+    margin-bottom: 8px;
 }
 
 #add-alert-btn svg {
@@ -62,15 +52,15 @@
     color: inherit;
 }
 
-.slct-item div:first-child span {
+.slct-item div:last-child span {
     display: flex;
     align-items: center;
     font-size: 1em;
     display: inline;
     opacity: 0;
-    margin-left: 4px;
+    margin-right: 8px;
 }
 
-.slct-item div:first-child span.active {
+.slct-item div:last-child span.active {
     opacity: .3;
 }

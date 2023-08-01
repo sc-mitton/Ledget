@@ -1,22 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react'
 
-import { Listbox } from '@headlessui/react'
 
 import './styles/AddAlert.css'
 import Plus from '@assets/icons/Plus'
+import Return from '@assets/icons/Return'
 import Checkmark from '@assets/icons/Checkmark'
 import { MenuTextInput } from '@components/inputs'
 import { DropAnimation } from '@utils'
-
-
-const defaultAlertOptions = [
-    { id: 1, value: 25, disabled: false },
-    { id: 2, value: 50, disabled: false },
-    { id: 3, value: 75, disabled: false },
-    { id: 4, value: 100, disabled: false },
-]
+import ComboSelect from './ComboSelect'
 
 const formatDollar = (value, percentage) => {
+    !percentage && (percentage = 0)
+
     let dollar = parseInt(value.replace(/[^0-9.]/g, '')) * percentage / 100
     dollar = dollar.toFixed(0)
     // convert to string and add commas
@@ -24,129 +19,161 @@ const formatDollar = (value, percentage) => {
     return `$${dollar}`
 }
 
-const AddAlert = ({ limit }) => {
-    const [selectedAlerts, setSelectedAlerts] = useState([defaultAlertOptions[0]])
-    const [alertOptions, setAlertOptions] = useState(defaultAlertOptions)
-    const customInputRef = useRef(null)
+const AddAlert = ({ defaultOptions, limit }) => {
+    const [selectedAlerts, setSelectedAlerts] = useState([])
+    const [alertOptions, setAlertOptions] = useState(defaultOptions)
+
+    const Option = ({ value, active, selected }) => {
+        return (
+            <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
+                <div>{value}%</div>
+                <div>
+                    <span className={`${active ? 'active' : ''}`}>
+                        {limit
+                            ? `(${formatDollar(limit, value)})`
+                            : ('of limit')
+                        }
+                    </span>
+                    <Checkmark
+                        stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
+                    />
+                </div>
+            </div>
+        )
+    }
 
     const CustomOption = () => {
-        const [value, setValue] = useState('')
-        const addRef = useRef(null)
+        const ref = useRef('')
+        const [pct, setPct] = useState('')
 
         const handleChange = (e) => {
-            // only allow numbers and make sure it's only a 2 digit number
             const newValue = e.target.value.replace(/[^0-9]/g, '').slice(0, 2)
-            setValue(`${newValue}%`)
+            setPct(`${newValue}%`)
         }
 
         useEffect(() => {
-            customInputRef.current.selectionEnd = value.indexOf('%')
-            customInputRef.current.selectionStart = value.indexOf('%')
-        }, [value, customInputRef.current?.selectionEnd, customInputRef.current?.selectionStart])
+            ref.current.selectionEnd = pct.indexOf('%')
+            ref.current.selectionStart = pct.indexOf('%')
+        }, [pct])
 
-        const handleClick = (e) => {
-            console.log(e)
+        const handleFocus = () => {
+            ref.current.selectionEnd = pct.indexOf('%')
+            ref.current.selectionStart = pct.indexOf('%')
+        }
+
+        const DollarFormat = ({ value, ...rest }) => {
+            return (
+                <span {...rest}>
+                    &#40;{formatDollar(limit, value)}&#41;
+                </span>
+            )
         }
 
         return (
-            <li key='custom'>
-                <div className='slct-item custom-input'>
-                    <MenuTextInput>
-                        <input
-                            type="text"
-                            name="custom"
-                            placeholder='Custom...'
-                            onFocus={() => setValue('%')}
-                            onBlur={() => !value && setPlaceholder('Custom...')}
-                            value={value}
-                            onChange={handleChange}
-                            size='10'
-                            ref={customInputRef}
-                            onKeyDown={(e) => {
-                                e.key === 'Enter' && handleClick(e)
-                                e.key === 'Escape' && setValue('') && customInputRef.current.blur()
-                                e.key === 'Tab' && addRef.current.focus()
-                            }}
-                        />
-                        {value &&
-                            <button
-                                className="btn-gr"
-                                onClick={handleClick}
-                                ref={addRef}
-                                onKeyDown={(e) =>
-                                    e.shiftKey && e.key === 'Tab'
-                                    && customInputRef.current.focus()
-                                }
-                            >
-                                <Plus width={'.8em'} height={'.8em'} />
-                            </button>
-                        }
-                    </MenuTextInput>
-                </div>
-            </li>
+            <div className='slct-item custom-input'>
+                <MenuTextInput>
+                    <ComboSelect.Custom
+                        ref={ref}
+                        placeholder="Custom..."
+                        onChange={handleChange}
+                        onKeyDown={(e) => {
+                            if (pct.length > 2 && e.key !== 'Backspace') {
+                                e.preventDefault()
+                            }
+                        }}
+                        getValue={() => {
+                            return ({
+                                id: alertOptions.length + 1,
+                                value: parseInt(pct.replace(/[^0-9]/g, ''), 10),
+                                disabled: false
+                            })
+                        }}
+                        onFocus={() => handleFocus()}
+                        onBlur={() => { setPct('') }}
+                        value={pct}
+                        size="7"
+                    >
+                        {({ focused }) => (
+                            <>
+                                {limit &&
+                                    <DollarFormat
+                                        value={parseInt(pct.replace(/[^0-9]/g, ''), 10)}
+                                        style={{
+                                            opacity: focused ? ".5" : "0",
+                                            marginRight: '8px'
+                                        }}
+                                    />}
+                                <div
+                                    className="btn btn-chcl"
+                                    role="button"
+                                    aria-label="Add custom alert"
+                                    style={{
+                                        opacity: focused ? ".5" : "0",
+                                        borderRadius: '6px',
+                                        padding: '2px',
+                                        margin: '2px'
+                                    }}
+                                >
+                                    <Return width={'.6em'} height={'.6em'} stroke={"var(--white-text)"} />
+                                </div>
+                            </>
+                        )}
+                    </ComboSelect.Custom>
+                </MenuTextInput>
+            </div>
         )
     }
 
     const Options = () => {
         return (
             alertOptions.map((option) => (
-                <Listbox.Option key={option.id} value={option.value} disabled={option.disabled}>
+                <ComboSelect.Option
+                    value={option.value}
+                    disabled={option.disabled}
+                    key={option.id}
+                >
                     {({ active, selected }) => (
-                        <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
-                            <div>
-                                {option.value}%&nbsp;&nbsp;
-                                <span className={`${active ? 'active' : ''}`}>
-                                    {limit
-                                        ? `(${formatDollar(limit, option.value)})`
-                                        : ('of limit')
-                                    }
-                                </span>
-                            </div>
-                            <div>
-                                <Checkmark
-                                    stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
-                                />
-                            </div>
-                        </div>
+                        <Option
+                            value={option.value}
+                            active={active}
+                            selected={selected}
+                        />
                     )}
-                </Listbox.Option>
+                </ComboSelect.Option>
             ))
         )
     }
 
     return (
         <div id="alert-select">
-            <Listbox
+            <ComboSelect
+                name="alerts"
                 value={selectedAlerts}
                 onChange={setSelectedAlerts}
-                multiple={true}
+                addSelection={setAlertOptions}
+                multiple
             >
                 {({ open }) => (
                     <>
-                        <Listbox.Button id='add-alert-btn' style={{ marginBottom: '4px' }}>
+                        <ComboSelect.Button className="btn-gr btn3" id="add-alert-btn">
                             Spending Alert
                             <Plus
-                                stroke={'var(--white-text)'}
-                                strokeWidth={'18'}
-                                width={'.9em'}
-                                height={'.9em'}
+                                strokeWidth={'20'}
+                                width={'.8em'}
+                                height={'.8em'}
                             />
-                        </Listbox.Button>
+                        </ComboSelect.Button>
                         <DropAnimation visible={open} >
-                            <Listbox.Options
-                                style={{ position: 'absolute' }}
-                                onKeyDown={(e) => console.log(e)}
-                                static
-                            >
+                            <ComboSelect.Options style={{ position: 'absolute' }} static>
                                 <div className="dropdown" >
                                     <Options />
                                     <CustomOption />
                                 </div>
-                            </Listbox.Options>
+                            </ComboSelect.Options>
                         </DropAnimation>
                     </>
                 )}
-            </Listbox>
+            </ComboSelect>
         </div>
     )
 }

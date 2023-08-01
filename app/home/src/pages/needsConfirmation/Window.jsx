@@ -249,7 +249,10 @@ const ExpandButton = ({ onClick }) => {
     const { items } = useContext(NewItemsContext)
 
     const rotationProps = useSpring({
-        transform: `rotate(${rotated ? 0 : 180}deg)`
+        transform: `rotate(${rotated ? 0 : 180}deg)`,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     })
 
     const buttonContainerProps = useSpring({
@@ -270,19 +273,19 @@ const ExpandButton = ({ onClick }) => {
         >
             <button
                 className="btn-sp btn-discreet"
-                onClick={() => {
-                    setRotated(!rotated)
-                    onClick()
-                }}
-                aria-label="Expand new item stack"
                 tabIndex={0}
+                style={{ padding: '0 8px' }}
             >
-                <animated.button
+                <animated.div
                     style={rotationProps}
                     aria-label="Expand new item stack"
+                    onClick={() => {
+                        setRotated(!rotated)
+                        onClick()
+                    }}
                 >
                     <ExpandIcon stroke={"var(--faded-text)"} />
-                </animated.button >
+                </animated.div >
             </button>
         </animated.div>
     )

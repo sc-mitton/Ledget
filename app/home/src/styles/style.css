@@ -287,8 +287,15 @@ button:focus-visible {
     box-shadow: var(--accessible-focus-drop-shadow);
 }
 
-button svg {
+button svg,
+.btn svg {
     margin: 2px 2px;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Header Buttons */
@@ -334,7 +341,7 @@ button svg {
 
 .btn-gr {
     background-color: var(--btn-light-gray);
-    color: var(--white-text);
+    color: var(--main-text-gray);
     transition: background-color .3s ease;
 }
 
@@ -420,6 +427,10 @@ button svg {
 .btn-scale2:hover {
     transform: scale(1.2);
     transition: transform .3s ease;
+}
+
+.btn-scnd {
+    margin-right: 4px;
 }
 
 /* -------------------------------- Dropdowns ------------------------------- */

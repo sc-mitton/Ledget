@@ -5,14 +5,15 @@ import { LoadingRing } from '@components/pieces'
 
 const SubmitForm = ({ submitting, onCancel }) => {
     return (
-        <div style={{ display: 'flex', 'justifyContent': 'end', margin: '16px 4px 0 4px' }}>
+        <div style={{ display: 'flex', 'justifyContent': 'end', margin: '0px 4px' }}>
             <div
-                className='btn-scale btn3'
+                className='btn-scale btn3 btn-scnd'
                 onClick={onCancel}
                 tabIndex={0}
+                role="button"
                 aria-label="Cancel"
                 aria-roledescription="button"
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', borderRadius: '8px' }}
             >
                 Cancel
             </div>
