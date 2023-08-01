@@ -12,7 +12,7 @@ const Emoji = (props) => {
     const { onClose } = props
 
     useEffect(() => {
-        !picker && onClose()
+        !picker && onClose && onClose()
     }, [picker])
 
     return (
