@@ -3,7 +3,7 @@ import { useTransition, animated } from '@react-spring/web'
 
 import './modal.css'
 import Close from '@assets/icons/Close'
-
+import { useAccessEsc } from '@utils'
 
 function withModal(WrappedComponent) {
     return (props) => {
@@ -21,26 +21,11 @@ function withModal(WrappedComponent) {
         const modalRef = useRef(null)
         const exitRef = useRef(null)
 
-        useEffect(() => {
-            // Add event listener for clickingoutside of modal
-            const handleClickOutside = (event) => {
-                if (modalRef.current && !modalRef.current.contains(event.target)) {
-                    setVisible(false)
-                }
-            }
-            const handleEscape = (event) => {
-                if (event.key === "Escape") {
-                    setVisible(false)
-                }
-            }
-            window.addEventListener("keydown", handleEscape)
-            window.addEventListener("mousedown", handleClickOutside)
-
-            return () => {
-                window.removeEventListener("keydown", handleEscape)
-                window.removeEventListener("mousedown", handleClickOutside)
-            }
-        }, [])
+        useAccessEsc({
+            refs: [modalRef],
+            visible: visible,
+            setVisible: setVisible,
+        })
 
         const backgroundConfig = {
             top: 0,

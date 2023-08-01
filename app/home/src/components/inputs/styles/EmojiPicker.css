@@ -1,1 +1,50 @@
+#emoji-picker-ledget {
+    position: relative;
+    z-index: 1100;
+}
 
+#emoji-picker-ledget--button-container {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    margin-left: -4px;
+}
+
+#emoji-picker-ledget--button {
+    cursor: pointer;
+    font-size: 16px;
+    color: rgb(0, 0, 0, 1);
+    border-radius: 6px;
+    padding-left: 6px;
+    padding-right: 6px;
+    height: 140%;
+    transform: scale(1.2);
+}
+
+#picker-container {
+    position: absolute;
+    top: 10px;
+    left: -28px;
+    right: 0;
+}
+
+em-emoji-picker {
+    height: 35vh;
+    box-shadow: var(--mid-elevation-drop-shadow);
+    --font-family: font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    --rgb-accent: 81, 237, 151;
+    /* --background-rgb: 202, 252, 224;
+    --border-radius: 12px;
+    --color-border-over: rgba(0, 0, 0, 0.1);
+    --color-border: rgba(0, 0, 0, 0.05);
+    --rgb-background: 255, 255, 255;
+    --rgb-color: 150, 150, 150;
+    --rgb-input: 255, 235, 235; */
+}
+
+/* Shrink em-emoji-picker even more when screen is shrunk */
+@media (max-height: 500px) {
+    em-emoji-picker {
+        height: 10vh;
+    }
+}

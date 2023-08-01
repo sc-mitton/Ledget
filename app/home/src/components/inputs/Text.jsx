@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef } from 'react'
 
-import './styles/Text.css';
+import './styles/Text.css'
 
 export const TextInput = ({ children }) => {
 

@@ -69,6 +69,20 @@ const AddAlert = ({ defaultOptions, limit }) => {
             )
         }
 
+        const handleKeyDown = (e) => {
+            if (pct.length > 2 && e.key !== 'Backspace') {
+                e.preventDefault()
+            }
+        }
+
+        const getValue = () => {
+            return {
+                id: alertOptions.length + 1,
+                value: parseInt(pct.replace(/[^0-9]/g, ''), 10),
+                disabled: false
+            }
+        }
+
         return (
             <div className='slct-item custom-input'>
                 <MenuTextInput>
@@ -76,18 +90,8 @@ const AddAlert = ({ defaultOptions, limit }) => {
                         ref={ref}
                         placeholder="Custom..."
                         onChange={handleChange}
-                        onKeyDown={(e) => {
-                            if (pct.length > 2 && e.key !== 'Backspace') {
-                                e.preventDefault()
-                            }
-                        }}
-                        getValue={() => {
-                            return ({
-                                id: alertOptions.length + 1,
-                                value: parseInt(pct.replace(/[^0-9]/g, ''), 10),
-                                disabled: false
-                            })
-                        }}
+                        onKeyDown={handleKeyDown}
+                        getValue={() => getValue()}
                         onFocus={() => handleFocus()}
                         onBlur={() => { setPct('') }}
                         value={pct}
@@ -105,16 +109,15 @@ const AddAlert = ({ defaultOptions, limit }) => {
                                     />}
                                 <div
                                     className="btn btn-chcl"
+                                    id={`return-btn${focused ? '-focused' : ''}`}
                                     role="button"
                                     aria-label="Add custom alert"
-                                    style={{
-                                        opacity: focused ? ".5" : "0",
-                                        borderRadius: '6px',
-                                        padding: '2px',
-                                        margin: '2px'
-                                    }}
                                 >
-                                    <Return width={'.6em'} height={'.6em'} stroke={"var(--white-text)"} />
+                                    <Return
+                                        width={'.6em'}
+                                        height={'.6em'}
+                                        stroke={"var(--white-text)"}
+                                    />
                                 </div>
                             </>
                         )}
@@ -150,17 +153,18 @@ const AddAlert = ({ defaultOptions, limit }) => {
                 name="alerts"
                 value={selectedAlerts}
                 onChange={setSelectedAlerts}
-                addSelection={setAlertOptions}
+                setSelections={setAlertOptions}
                 multiple
             >
                 {({ open }) => (
                     <>
-                        <ComboSelect.Button className="btn-gr btn3" id="add-alert-btn">
+                        <ComboSelect.Button className="btn-chcl btn3" id="add-alert-btn">
                             Spending Alert
                             <Plus
                                 strokeWidth={'20'}
                                 width={'.8em'}
                                 height={'.8em'}
+                                stroke={"var(--white-text)"}
                             />
                         </ComboSelect.Button>
                         <DropAnimation visible={open} >

@@ -26,7 +26,6 @@ const CheckMark = ({
                     strokeLinecap='round'
                     points="6.1,55.8 36.6,86.3 90.2,7.9 " />
             </g >
-
         </svg >
     )
 }

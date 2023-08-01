@@ -1,5 +1,5 @@
 #add-alert-btn {
-    color: var(--input-placeholder);
+
     margin: 2px 0;
     margin-bottom: 8px;
 }
@@ -63,4 +63,18 @@
 
 .slct-item div:last-child span.active {
     opacity: .3;
+}
+
+#return-btn {
+    opacity: 0;
+    border-radius: 6px;
+    padding: 2px;
+    margin: 2px;
+}
+
+#return-btn-focused {
+    opacity: .5;
+    border-radius: 6px;
+    padding: 2px;
+    margin: 2px;
 }

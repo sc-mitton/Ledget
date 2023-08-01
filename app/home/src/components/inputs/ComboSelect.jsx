@@ -25,7 +25,7 @@ const HiddenInputs = ({ value, name }) => {
 }
 
 const ComboSelect = (props) => {
-    const { value, onChange, addSelection, multiple } = props
+    const { value, onChange, setSelections, multiple } = props
     const [open, setOpen] = useState(false)
     const [active, setActive] = useState(null)
     const [options, setOptions] = useState([])
@@ -36,7 +36,7 @@ const ComboSelect = (props) => {
     const data = {
         value,
         onChange,
-        addSelection,
+        setSelections,
         open,
         setOpen,
         active,
@@ -95,6 +95,8 @@ const Options = ({ children, static: isStatic, ...rest }) => {
         customRef
     } = useContext(DataContext)
     const ref = useRef(null)
+
+    // Update the options
 
     // Events for closing the dropdown
     useEffect(() => {
@@ -191,15 +193,19 @@ const Options = ({ children, static: isStatic, ...rest }) => {
 const Option = ({ value, disabled, children }) => {
 
     const {
-        value: contextValue,
-        onChange,
-        active: contextActive,
-        setActive,
         multiple,
-        setOptions
+        value: contextValue,
+        active: contextActive,
+        custom,
+        onChange,
+        setCustom,
+        setActive,
+        setOptions,
+        setSelections
     } = useContext(DataContext)
 
-    const handleClick = (event) => {
+    // Updating the active list
+    const updateSelected = () => {
         if (multiple) {
             if (contextValue.includes(value)) {
                 onChange(contextValue.filter((item) => item !== value))
@@ -212,6 +218,24 @@ const Option = ({ value, disabled, children }) => {
         }
     }
 
+    // If value is in custom list, remove it entirely
+    const updateOptions = () => {
+        if (custom.includes(value)) {
+            setSelections((prev) =>
+                prev.filter((item) => item.value !== value)
+            )
+            setCustom((prev) =>
+                prev.filter((item) => item !== value)
+            )
+        }
+    }
+
+    const handleClick = () => {
+        updateSelected()
+        updateOptions()
+    }
+
+    // On mount add option to options list
     useEffect(() => {
         setOptions((prev) => {
             if (prev.some((item) => item === value)) {
@@ -250,8 +274,22 @@ const Option = ({ value, disabled, children }) => {
 }
 
 const Custom = React.forwardRef((props, ref) => {
-    const { customRef, onChange, multiple, addSelection } = useContext(DataContext)
-    const { children, onKeyDown, onBlur, onFocus, getValue, value, ...rest } = props
+    const {
+        customRef,
+        onChange,
+        multiple,
+        setSelections,
+        setCustom
+    } = useContext(DataContext)
+    const {
+        children,
+        onKeyDown,
+        onBlur,
+        onFocus,
+        getValue,
+        value,
+        ...rest
+    } = props
     const [focused, setFocused] = useState(false)
 
     const localRef = useRef(null)
@@ -266,7 +304,7 @@ const Custom = React.forwardRef((props, ref) => {
 
         // Add new option to options list
         const cleanedVal = getValue ? getValue(value) : value
-        addSelection((prev) => {
+        setSelections((prev) => {
             const updatedArray = prev.some((item) => item.value === cleanedVal.value)
                 ? prev
                 : [...prev, cleanedVal]
@@ -281,6 +319,15 @@ const Custom = React.forwardRef((props, ref) => {
                 ? prev
                 : multiple ? [...prev, cleanedVal.value] : [cleanedVal.value]
         )
+
+        // Add to list of custom options
+        setCustom((prev) => {
+            const updatedArray = prev.some((item) => item === cleanedVal.value)
+                ? prev
+                : [...prev, cleanedVal.value]
+
+            return updatedArray
+        })
     }
 
     const handleKeyDown = (event) => {

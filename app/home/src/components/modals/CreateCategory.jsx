@@ -6,7 +6,7 @@ import { object, string, number } from "yup"
 import { useNavigate } from 'react-router-dom'
 
 
-import { Radios, AddAlert, TextInput } from '@components/inputs'
+import { Radios, AddAlert, TextInput, EmojiPicker } from '@components/inputs'
 import Checkbox from '@components/inputs/Checkbox'
 import withModal from './with/withModal'
 import SubmitForm from './pieces/SubmitForm'
@@ -25,6 +25,7 @@ const radioOptions = [
 
 const Form = (props) => {
     const [upperLimit, setUpperLimit] = useState('')
+    const [emojipicker, setEmojipicker] = useState(false)
     const [submitting, setSubmitting] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
@@ -48,11 +49,9 @@ const Form = (props) => {
                     <div>
                         <label htmlFor="name">Name</label>
                         <TextInput>
-                            <input
-                                type="text"
-                                name="emoji"
-                                className="emoji"
-                                placeholder="☺"
+                            <EmojiPicker
+                                visible={emojipicker}
+                                setVisible={setEmojipicker}
                             />
                             <input
                                 type="text"
