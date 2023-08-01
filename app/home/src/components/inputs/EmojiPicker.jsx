@@ -1,19 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react'
-import data from '@emoji-mart/data'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import Picker from '@emoji-mart/react'
 
 import './styles/EmojiPicker.css'
 import { DropAnimation } from '@utils'
 
+const EmojiContext = createContext()
+
+const Emoji = (props) => {
+    const [emoji, setEmoji] = useState(null)
+    const [picker, setPicker] = useState(false)
+    const { onClose } = props
+
+    useEffect(() => {
+        !picker && onClose()
+    }, [picker])
+
+    return (
+        <EmojiContext.Provider value={{ setEmoji, picker, setPicker }}>
+            <div id="emoji-picker-ledget">
+                {props.children({ emoji, picker, setPicker })}
+            </div>
+        </EmojiContext.Provider>
+    )
+}
 
 const EmojiPicker = (props) => {
-    const [emoji, setEmoji] = useState(null)
-    const { theme, visible, setVisible, onEmojiSelect } = props
+    const { theme } = props
 
-    const handleClick = (event) => {
-        event.stopPropagation()
-        setVisible(!visible)
-    }
+    const { setEmoji, picker, setPicker } = useContext(EmojiContext)
 
     const categories = [
         'frequent',
@@ -57,54 +71,33 @@ const EmojiPicker = (props) => {
         },
     }
 
+    const handleEmojiSelect = (emoji) => {
+        setEmoji(emoji)
+        setPicker(false)
+    }
+
     return (
-        <div id="emoji-picker-ledget">
-            {emoji && <input type="hidden" name="emoji" value={emoji.native} />}
-            <div id="emoji-picker-ledget--button-container">
-                <div
-                    className="btn-gr2"
-                    id="emoji-picker-ledget--button"
-                    onClick={handleClick}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            setVisible(!visible)
-                        }
-                    }}
-                    role="button"
-                    aria-label="Emoji picker"
-                    aria-haspopup="true"
-                    aria-expanded={visible}
-                    aria-controls="emoji-picker-ledget--container"
-                    tabIndex={0}
-                >
-                    {emoji ? emoji.native : '☺'}
-                </div>
+        <DropAnimation visible={picker}>
+            <div id="picker-container" >
+                <Picker
+                    autoFocus
+                    previewPosition="none"
+                    set="apple"
+                    navPosition="bottom"
+                    onEmojiSelect={handleEmojiSelect}
+                    onClickOutside={() => setPicker(false)}
+                    theme={theme || 'dark'}
+                    showCategoryFilter={false}
+                    showSkinTones={false}
+                    maxFrequentRows={1}
+                    categories={categories}
+                    categoryIcons={categoryIcons}
+                />
             </div>
-            <DropAnimation
-                visible={visible}
-            >
-                <div id="picker-container" >
-                    <Picker
-                        onEmojiSelect={(emoji) => {
-                            setEmoji(emoji)
-                            setVisible(false)
-                            onEmojiSelect(emoji)
-                        }}
-                        previewPosition="none"
-                        set="apple"
-                        autoFocus
-                        onClickOutside={() => setVisible(false)}
-                        theme={'dark' || 'dark'}
-                        showCategoryFilter={false}
-                        showSkinTones={false}
-                        maxFrequentRows={1}
-                        categories={categories}
-                        categoryIcons={categoryIcons}
-                    />
-                </div>
-            </DropAnimation>
-        </div>
+        </DropAnimation>
     )
 }
 
-export default EmojiPicker
+Emoji.Picker = EmojiPicker
+
+export default Emoji
