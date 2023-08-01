@@ -25,140 +25,106 @@ const radioOptions = [
 
 const Form = (props) => {
     const [submitting, setSubmitting] = useState(false)
+    const [upperLimit, setUpperLimit] = useState('')
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
-    const { ref, ...rest } = register('name')
-    const nameRef = useRef(null)
 
     const submit = (data) => {
         setSubmitting(true)
         setSubmitting(false)
     }
+    const nameRef = useRef(null)
+    const { ref, ...rest } = register('name')
 
-    const Row1 = () => {
-
-        const Limit = () => {
-
-            return (
-                <div>
-                    <label htmlFor="limit">Limit</label>
-                    <TextInput>
-                        <input
-                            type="text"
-                            name="upperLimit"
-                            id="upperLimit"
-                            placeholder="$0"
-                            value={upperLimit}
-                            {...register('upperLimit')}
-                            onChange={(e) => {
-                                const formatted = e.target.value
-                                    .replace(/[^0-9.]/g, '')
-                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                setUpperLimit(`$${formatted}`)
-                            }}
-                            onBlur={(e) => e.target.value.length <= 1 && setUpperLimit('')}
-                        />
-                        {errors.upperLimit && <FormErrorTip />}
-                    </TextInput>
-                </div>
-            )
-        }
-
-        const EmojiInput = () => {
-            return (
-                <Emoji onClose={() => nameRef.current.focus()}>
-                    {({ emoji, picker, setPicker }) => (
-                        <>
-                            <div id="emoji-picker-ledget--button-container">
-                                <div
-                                    className="btn-gr2"
-                                    id="emoji-picker-ledget--button"
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        setPicker(!picker)
-                                    }}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter' || e.key === ' ') {
-                                            setPicker(!picker)
-                                        }
-                                    }}
-                                    role="button"
-                                    aria-label="Emoji picker"
-                                    aria-haspopup="true"
-                                    aria-expanded={picker}
-                                    aria-controls="emoji-picker-ledget--container"
-                                    tabIndex={0}
-                                >
-                                    {emoji ? emoji.native : '☺'}
-                                </div>
-                            </div>
-                            <Emoji.Picker />
-                            {emoji &&
-                                <input type="hidden" name="emoji"
-                                    value={emoji.native} />
-                            }
-                        </>
-                    )}
-                </Emoji>
-            )
-        }
-
-        const Name = () => {
-            return (
-                <div>
-                    <label htmlFor="name">Name</label>
-                    <TextInput>
-                        <EmojiInput />
-                        <input
-                            type="text"
-                            name="name"
-                            className="category-name"
-                            placeholder="Category name"
-                            {...rest}
-                            ref={(e) => {
-                                ref(e)
-                                nameRef.current = e
-                            }}
-                        />
-                        {errors.name && <FormErrorTip />}
-                    </TextInput>
-                </div>
-            )
-        }
+    const Limit = () => {
 
         return (
-            <div className="responsive-inputs-row-container">
-                <Name />
-                <Limit />
+            <div>
+                <label htmlFor="limit">Limit</label>
+                <TextInput>
+                    <input
+                        type="text"
+                        name="upperLimit"
+                        id="upperLimit"
+                        placeholder="$0"
+                        value={upperLimit}
+                        {...register('upperLimit')}
+                        onChange={(e) => {
+                            const formatted = e.target.value
+                                .replace(/[^0-9.]/g, '')
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            setUpperLimit(`$${formatted}`)
+                        }}
+                        onBlur={(e) => e.target.value.length <= 1 && setUpperLimit('')}
+                    />
+                    {errors.upperLimit && <FormErrorTip />}
+                </TextInput>
             </div>
         )
     }
 
-    const Row2 = () => {
+    const EmojiInput = () => {
         return (
-            <div className='inputs-row-container'>
-                <AddAlert
-                    limit={upperLimit}
-                    defaultOptions={[
-                        { id: 1, value: 25, disabled: false },
-                        { id: 2, value: 50, disabled: false },
-                        { id: 3, value: 75, disabled: false },
-                        { id: 4, value: 100, disabled: false },
-                    ]}
-                />
-                {false &&
-                    // TODO: this option is only available
-                    // for shared accounts
-                    <Checkbox
-                        label="Make private"
-                        name="private"
-                        id="private"
-                        checked={false}
+            <Emoji onClose={() => nameRef.current.focus()}>
+                {({ emoji, picker, setPicker }) => (
+                    <>
+                        <div id="emoji-picker-ledget--button-container">
+                            <div
+                                className="btn-gr2"
+                                id="emoji-picker-ledget--button"
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    setPicker(!picker)
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        setPicker(!picker)
+                                    }
+                                }}
+                                role="button"
+                                aria-label="Emoji picker"
+                                aria-haspopup="true"
+                                aria-expanded={picker}
+                                aria-controls="emoji-picker-ledget--container"
+                                tabIndex={0}
+                            >
+                                {emoji ? emoji.native : '☺'}
+                            </div>
+                        </div>
+                        <Emoji.Picker />
+                        {emoji &&
+                            <input type="hidden" name="emoji"
+                                value={emoji.native} />
+                        }
+                    </>
+                )}
+            </Emoji>
+        )
+    }
+
+    const Name = () => {
+
+        return (
+            <div>
+                <label htmlFor="name">Name</label>
+                <TextInput>
+                    <EmojiInput />
+                    <input
+                        type="text"
+                        name="name"
+                        className="category-name"
+                        placeholder="Category name"
+                        {...rest}
+                        ref={(e) => {
+                            ref(e)
+                            nameRef.current = e
+                        }}
                     />
-                }
+                    {errors.name && <FormErrorTip />}
+                </TextInput>
             </div>
         )
     }
@@ -170,8 +136,31 @@ const Form = (props) => {
                 <div style={{ paddingLeft: '4px', display: 'inline-block' }}>
                     <Radios options={radioOptions} />
                 </div>
-                <Row1 />
-                <Row2 />
+                <div className="responsive-inputs-row-container">
+                    <Name />
+                    <Limit />
+                </div>
+                <div className='inputs-row-container'>
+                    <AddAlert
+                        limit={upperLimit}
+                        defaultOptions={[
+                            { id: 1, value: 25, disabled: false },
+                            { id: 2, value: 50, disabled: false },
+                            { id: 3, value: 75, disabled: false },
+                            { id: 4, value: 100, disabled: false },
+                        ]}
+                    />
+                    {false &&
+                        // TODO: this option is only available
+                        // for shared accounts
+                        <Checkbox
+                            label="Make private"
+                            name="private"
+                            id="private"
+                            checked={false}
+                        />
+                    }
+                </div>
                 <SubmitForm
                     submitting={submitting}
                     onCancel={() => props.setVisible(false)}
