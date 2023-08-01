@@ -3,25 +3,29 @@ import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 
 import './styles/EmojiPicker.css'
-import { DropAnimation, useAccessEsc } from '@utils'
+import { DropAnimation } from '@utils'
 
 
 const EmojiPicker = (props) => {
     const [emoji, setEmoji] = useState(null)
-    const ref = useRef(null)
-    const buttonRef = useRef(null)
-    const { theme, visible, setVisible } = props
-
-    useAccessEsc({
-        refs: [ref, buttonRef],
-        visible: visible,
-        setVisible: setVisible,
-    })
+    const { theme, visible, setVisible, onEmojiSelect } = props
 
     const handleClick = (event) => {
         event.stopPropagation()
         setVisible(!visible)
     }
+
+    const categories = [
+        'frequent',
+        'nature',
+        'objects',
+        'activity',
+        'foods',
+        'people',
+        'places',
+        'flags',
+        'symbols',
+    ]
 
     const categoryIcons = {
         frequent: {
@@ -66,7 +70,6 @@ const EmojiPicker = (props) => {
                             setVisible(!visible)
                         }
                     }}
-                    ref={buttonRef}
                     role="button"
                     aria-label="Emoji picker"
                     aria-haspopup="true"
@@ -80,27 +83,22 @@ const EmojiPicker = (props) => {
             <DropAnimation
                 visible={visible}
             >
-                <div id="picker-container" ref={ref}>
+                <div id="picker-container" >
                     <Picker
-                        onEmojiSelect={(emoji) => setEmoji(emoji)}
+                        onEmojiSelect={(emoji) => {
+                            setEmoji(emoji)
+                            setVisible(false)
+                            onEmojiSelect(emoji)
+                        }}
                         previewPosition="none"
                         set="apple"
                         autoFocus
+                        onClickOutside={() => setVisible(false)}
                         theme={'dark' || 'dark'}
                         showCategoryFilter={false}
                         showSkinTones={false}
                         maxFrequentRows={1}
-                        categories={[
-                            'frequent',
-                            'nature',
-                            'objects',
-                            'activity',
-                            'foods',
-                            'people',
-                            'places',
-                            'flags',
-                            'symbols',
-                        ]}
+                        categories={categories}
                         categoryIcons={categoryIcons}
                     />
                 </div>

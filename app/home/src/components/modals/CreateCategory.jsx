@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
@@ -32,10 +32,16 @@ const Form = (props) => {
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
+    const { ref, ...rest } = register('name')
+    const nameRef = useRef(null)
 
     const submit = (data) => {
         setSubmitting(true)
         setSubmitting(false)
+    }
+
+    const handleEmojiSelect = () => {
+        nameRef.current.focus()
     }
 
     return (
@@ -52,13 +58,18 @@ const Form = (props) => {
                             <EmojiPicker
                                 visible={emojipicker}
                                 setVisible={setEmojipicker}
+                                onEmojiSelect={handleEmojiSelect}
                             />
                             <input
                                 type="text"
                                 name="name"
                                 className="category-name"
                                 placeholder="Category name"
-                                {...register('name')}
+                                {...rest}
+                                ref={(e) => {
+                                    ref(e)
+                                    nameRef.current = e
+                                }}
                             />
                             {errors.name && <FormErrorTip />}
                         </TextInput>

@@ -38,13 +38,13 @@ const schema = object().shape({
 })
 
 const EmailForm = () => {
-    const emailRef = useRef()
     const { register, handleSubmit, formState: { errors } } =
         useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const { ref, ...rest } = register('email')
     const { flow } = useContext(LoginFlowContext)
     const { setEmail } = useContext(emailContext)
     const rememberRef = useRef()
+    const emailRef = useRef()
 
     useEffect(() => {
         // Focus email once flow is set
