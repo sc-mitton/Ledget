@@ -32,10 +32,11 @@
     display: inline-flex;
     flex-wrap: wrap;
     margin: 4px 0;
+    margin-bottom: 24px;
 }
 
 .create-form .responsive-inputs-row-container>div:first-child {
-    flex: 2 0 60%;
+    flex: 2 0 50%;
     box-sizing: border-box;
     padding: 0 4px;
     display: inline-flex;
@@ -43,7 +44,7 @@
 }
 
 .create-form .responsive-inputs-row-container>div:last-child {
-    flex: 1 0 40%;
+    flex: 1 0 50%;
     box-sizing: border-box;
     padding: 0 4px;
     display: inline-flex;
@@ -60,4 +61,23 @@ input.emoji {
     display: flex;
     flex-direction: row;
     margin: 4px 0;
+}
+
+
+#emoji-picker-ledget--button-container {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    margin-left: -4px;
+}
+
+#emoji-picker-ledget--button {
+    cursor: pointer;
+    font-size: 16px;
+    color: rgb(0, 0, 0, 1);
+    border-radius: 6px;
+    padding-left: 6px;
+    padding-right: 6px;
+    height: 140%;
+    transform: scale(1.2);
 }

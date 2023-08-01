@@ -4,8 +4,17 @@ import React from 'react'
 import { LoadingRing } from '@components/pieces'
 
 const SubmitForm = ({ submitting, onCancel }) => {
+
+    const styles = {
+        display: 'flex',
+        justifyContent: 'end',
+        margin: '0px 4px 0 4px',
+        position: 'relative',
+        zIndex: '0'
+    }
+
     return (
-        <div style={{ display: 'flex', 'justifyContent': 'end', margin: '0px 4px' }}>
+        <div style={styles}>
             <div
                 className='btn-scale btn3 btn-scnd'
                 onClick={onCancel}

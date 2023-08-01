@@ -46,7 +46,7 @@ const Form = (props) => {
                     <>
                         <div id="emoji-picker-ledget--button-container">
                             <div
-                                className="btn-gr2"
+                                className="btn-gr"
                                 id="emoji-picker-ledget--button"
                                 onClick={(e) => {
                                     e.stopPropagation()
@@ -63,6 +63,7 @@ const Form = (props) => {
                                 aria-expanded={picker}
                                 aria-controls="emoji-picker-ledget--container"
                                 tabIndex={0}
+                                style={{ color: !emoji && "rgb(0, 0, 0, .3)" }}
                             >
                                 {emoji ? emoji.native : '☺'}
                             </div>
@@ -78,6 +79,29 @@ const Form = (props) => {
         )
     }
 
+    const NameInput = () => {
+        return (
+            <div>
+                <label htmlFor="name">Name</label>
+                <TextInput>
+                    <EmojiInput />
+                    <input
+                        type="text"
+                        name="name"
+                        className="category-name"
+                        placeholder="Category name"
+                        {...rest}
+                        ref={(e) => {
+                            ref(e)
+                            nameRef.current = e
+                        }}
+                    />
+                    {errors.name && <FormErrorTip />}
+                </TextInput>
+            </div>
+        )
+    }
+
     return (
         <div className="create-form" id='category-form'>
             <h2>New Category</h2>
@@ -86,24 +110,7 @@ const Form = (props) => {
                     <Radios options={radioOptions} />
                 </div>
                 <div className="responsive-inputs-row-container">
-                    <div>
-                        <label htmlFor="name">Name</label>
-                        <TextInput>
-                            <EmojiInput />
-                            <input
-                                type="text"
-                                name="name"
-                                className="category-name"
-                                placeholder="Category name"
-                                {...rest}
-                                ref={(e) => {
-                                    ref(e)
-                                    nameRef.current = e
-                                }}
-                            />
-                            {errors.name && <FormErrorTip />}
-                        </TextInput>
-                    </div>
+                    <NameInput />
                     <div>
                         <label htmlFor="limit">Limit</label>
                         <TextInput>
@@ -124,28 +131,18 @@ const Form = (props) => {
                             />
                             {errors.limit && <FormErrorTip />}
                         </TextInput>
+                        <div style={{ margin: '4px 0 0 2px' }}>
+                            <AddAlert
+                                limit={dollarLimit}
+                                defaultOptions={[
+                                    { id: 1, value: 25, disabled: false },
+                                    { id: 2, value: 50, disabled: false },
+                                    { id: 3, value: 75, disabled: false },
+                                    { id: 4, value: 100, disabled: false },
+                                ]}
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className='inputs-row-container'>
-                    <AddAlert
-                        limit={dollarLimit}
-                        defaultOptions={[
-                            { id: 1, value: 25, disabled: false },
-                            { id: 2, value: 50, disabled: false },
-                            { id: 3, value: 75, disabled: false },
-                            { id: 4, value: 100, disabled: false },
-                        ]}
-                    />
-                    {false &&
-                        // TODO: this option is only available
-                        // for shared accounts
-                        <Checkbox
-                            label="Make private"
-                            name="private"
-                            id="private"
-                            checked={false}
-                        />
-                    }
                 </div>
                 <SubmitForm
                     submitting={submitting}

@@ -9,6 +9,7 @@
     position: relative;
     box-shadow: var(--input-drop-shadow);
     width: auto;
+    align-items: center;
 }
 
 .input-container:focus-within {

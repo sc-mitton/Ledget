@@ -1,16 +1,20 @@
-#add-alert-btn {
+#alert-select {
+    position: relative;
+    z-index: 500;
+}
 
-    margin: 2px 0;
-    margin-bottom: 8px;
+#alert-select ul {
+    height: 0;
+}
+
+#add-alert-btn {
+    padding: 0 8px;
 }
 
 #add-alert-btn svg {
     margin-left: 4px;
 }
 
-#alert-select ul {
-    height: 0;
-}
 
 .slct-item {
     display: flex;

@@ -158,18 +158,23 @@ const AddAlert = ({ defaultOptions, limit }) => {
             >
                 {({ open }) => (
                     <>
-                        <ComboSelect.Button className="btn-chcl btn3" id="add-alert-btn">
-                            Spending Alert
-                            <Plus
-                                strokeWidth={'20'}
-                                width={'.8em'}
-                                height={'.8em'}
-                                stroke={"var(--white-text)"}
-                            />
+                        <ComboSelect.Button className="btn-gr2 btn2" id="add-alert-btn">
+                            Alert
+                            {selectedAlerts.length > 0
+                                ?
+                                <Checkmark
+                                    width={'.7em'}
+                                    height={'.7em'}
+                                /> :
+                                <Plus
+                                    strokeWidth={'20'}
+                                    width={'.8em'}
+                                    height={'.8em'}
+                                />}
                         </ComboSelect.Button>
                         <DropAnimation visible={open} >
                             <ComboSelect.Options style={{ position: 'absolute' }} static>
-                                <div className="dropdown" >
+                                <div className="dropdown" style={{ marginTop: '4px' }}>
                                     <Options />
                                     <CustomOption />
                                 </div>

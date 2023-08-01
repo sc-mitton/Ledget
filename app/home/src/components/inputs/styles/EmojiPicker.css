@@ -3,24 +3,6 @@
     z-index: 1100;
 }
 
-#emoji-picker-ledget--button-container {
-    display: flex;
-    align-items: center;
-    margin-right: 8px;
-    margin-left: -4px;
-}
-
-#emoji-picker-ledget--button {
-    cursor: pointer;
-    font-size: 16px;
-    color: rgb(0, 0, 0, 1);
-    border-radius: 6px;
-    padding-left: 6px;
-    padding-right: 6px;
-    height: 140%;
-    transform: scale(1.2);
-}
-
 #picker-container {
     position: absolute;
     top: 10px;
