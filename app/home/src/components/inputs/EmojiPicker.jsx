@@ -9,11 +9,6 @@ const EmojiContext = createContext()
 const Emoji = (props) => {
     const [emoji, setEmoji] = useState(null)
     const [picker, setPicker] = useState(false)
-    const { onClose } = props
-
-    useEffect(() => {
-        !picker && onClose && onClose()
-    }, [picker])
 
     return (
         <EmojiContext.Provider value={{ setEmoji, picker, setPicker }}>
@@ -25,7 +20,7 @@ const Emoji = (props) => {
 }
 
 const EmojiPicker = (props) => {
-    const { theme } = props
+    const { theme, onClose } = props
 
     const { setEmoji, picker, setPicker } = useContext(EmojiContext)
 
@@ -74,6 +69,7 @@ const EmojiPicker = (props) => {
     const handleEmojiSelect = (emoji) => {
         setEmoji(emoji)
         setPicker(false)
+        onClose()
     }
 
     return (

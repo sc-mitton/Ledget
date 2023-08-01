@@ -15,7 +15,7 @@ import './styles/CreateCategory.css'
 
 const schema = object().shape({
     name: string().required(),
-    upperLimit: number().required(),
+    limit: number().required(),
 })
 
 const radioOptions = [
@@ -25,7 +25,7 @@ const radioOptions = [
 
 const Form = (props) => {
     const [submitting, setSubmitting] = useState(false)
-    const [upperLimit, setUpperLimit] = useState('')
+    const [dollarLimit, setDollarLimit] = useState('')
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onSubmit',
@@ -39,36 +39,9 @@ const Form = (props) => {
     const nameRef = useRef(null)
     const { ref, ...rest } = register('name')
 
-    const Limit = () => {
-
-        return (
-            <div>
-                <label htmlFor="limit">Limit</label>
-                <TextInput>
-                    <input
-                        type="text"
-                        name="upperLimit"
-                        id="upperLimit"
-                        placeholder="$0"
-                        value={upperLimit}
-                        {...register('upperLimit')}
-                        onChange={(e) => {
-                            const formatted = e.target.value
-                                .replace(/[^0-9.]/g, '')
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            setUpperLimit(`$${formatted}`)
-                        }}
-                        onBlur={(e) => e.target.value.length <= 1 && setUpperLimit('')}
-                    />
-                    {errors.upperLimit && <FormErrorTip />}
-                </TextInput>
-            </div>
-        )
-    }
-
     const EmojiInput = () => {
         return (
-            <Emoji onClose={() => nameRef.current.focus()}>
+            <Emoji>
                 {({ emoji, picker, setPicker }) => (
                     <>
                         <div id="emoji-picker-ledget--button-container">
@@ -94,7 +67,7 @@ const Form = (props) => {
                                 {emoji ? emoji.native : '☺'}
                             </div>
                         </div>
-                        <Emoji.Picker />
+                        <Emoji.Picker onClose={() => nameRef.current.focus()} />
                         {emoji &&
                             <input type="hidden" name="emoji"
                                 value={emoji.native} />
@@ -102,30 +75,6 @@ const Form = (props) => {
                     </>
                 )}
             </Emoji>
-        )
-    }
-
-    const Name = () => {
-
-        return (
-            <div>
-                <label htmlFor="name">Name</label>
-                <TextInput>
-                    <EmojiInput />
-                    <input
-                        type="text"
-                        name="name"
-                        className="category-name"
-                        placeholder="Category name"
-                        {...rest}
-                        ref={(e) => {
-                            ref(e)
-                            nameRef.current = e
-                        }}
-                    />
-                    {errors.name && <FormErrorTip />}
-                </TextInput>
-            </div>
         )
     }
 
@@ -137,12 +86,49 @@ const Form = (props) => {
                     <Radios options={radioOptions} />
                 </div>
                 <div className="responsive-inputs-row-container">
-                    <Name />
-                    <Limit />
+                    <div>
+                        <label htmlFor="name">Name</label>
+                        <TextInput>
+                            <EmojiInput />
+                            <input
+                                type="text"
+                                name="name"
+                                className="category-name"
+                                placeholder="Category name"
+                                {...rest}
+                                ref={(e) => {
+                                    ref(e)
+                                    nameRef.current = e
+                                }}
+                            />
+                            {errors.name && <FormErrorTip />}
+                        </TextInput>
+                    </div>
+                    <div>
+                        <label htmlFor="limit">Limit</label>
+                        <TextInput>
+                            <input
+                                type="text"
+                                name="limit"
+                                id="limit"
+                                placeholder="$0"
+                                value={dollarLimit}
+                                {...register('limit')}
+                                onChange={(e) => {
+                                    const formatted = e.target.value
+                                        .replace(/[^0-9.]/g, '')
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    setDollarLimit(`$${formatted}`)
+                                }}
+                                onBlur={(e) => e.target.value.length <= 1 && setDollarLimit('')}
+                            />
+                            {errors.limit && <FormErrorTip />}
+                        </TextInput>
+                    </div>
                 </div>
                 <div className='inputs-row-container'>
                     <AddAlert
-                        limit={upperLimit}
+                        limit={dollarLimit}
                         defaultOptions={[
                             { id: 1, value: 25, disabled: false },
                             { id: 2, value: 50, disabled: false },
