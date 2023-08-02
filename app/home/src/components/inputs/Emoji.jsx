@@ -13,7 +13,7 @@ const Emoji = (props) => {
     return (
         <EmojiContext.Provider value={{ setEmoji, picker, setPicker }}>
             <div id="emoji-picker-ledget">
-                {children({ emoji, picker, setPicker })}
+                {children({ emoji })}
             </div>
         </EmojiContext.Provider>
     )
@@ -94,6 +94,36 @@ const EmojiPicker = (props) => {
     )
 }
 
+const EmojiButton = ({ emoji }) => {
+    const { picker, setPicker } = useContext(EmojiContext)
+
+    return (
+        <div
+            className="btn-gr"
+            id="emoji-picker-ledget--button"
+            onClick={(e) => {
+                e.stopPropagation()
+                setPicker(!picker)
+            }}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    setPicker(!picker)
+                }
+            }}
+            role="button"
+            aria-label="Emoji picker"
+            aria-haspopup="true"
+            aria-expanded={picker}
+            aria-controls="emoji-picker-ledget--container"
+            tabIndex={0}
+            style={{ color: !emoji && "rgb(0, 0, 0, .3)" }}
+        >
+            {emoji ? emoji.native : '☺'}
+        </div>
+    )
+}
+
 Emoji.Picker = EmojiPicker
+Emoji.Button = EmojiButton
 
 export default Emoji

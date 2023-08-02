@@ -1,4 +1,5 @@
 export { default as Radios } from './Radios';
+export { PeriodRadios } from './Radios';
 export { default as AddAlert } from './AddAlert';
 export { MenuTextInput, TextInput } from './Text';
 export { default as Emoji } from './Emoji';

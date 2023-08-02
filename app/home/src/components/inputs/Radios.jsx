@@ -69,4 +69,17 @@ const Radios = ({ options }) => {
     )
 }
 
+const radioOptions = [
+    { name: 'categoryType', value: 'month', label: 'Month', default: true },
+    { name: 'categoryType', value: 'year', label: 'Year' },
+]
+
+export const PeriodRadios = () => {
+    return (
+        <div style={{ paddingLeft: '4px', display: 'inline-block' }}>
+            <Radios options={radioOptions} />
+        </div>
+    )
+}
+
 export default Radios

@@ -5,23 +5,45 @@ import { useForm } from "react-hook-form"
 import { object, string, number } from "yup"
 import { useNavigate } from 'react-router-dom'
 
-
-import { Radios, AddAlert, TextInput, Emoji } from '@components/inputs'
+import './styles/Forms.css'
+import { AddAlert, TextInput, Emoji, PeriodRadios } from '@components/inputs'
 import Checkbox from '@components/inputs/Checkbox'
 import withModal from './with/withModal'
 import SubmitForm from './pieces/SubmitForm'
 import { FormErrorTip } from '@components/pieces'
-import './styles/CreateCategory.css'
 
 const schema = object().shape({
     name: string().required(),
-    limit: number().required(),
+    limit: string().required(),
 })
 
-const radioOptions = [
-    { name: 'categoryType', value: 'month', label: 'Month', default: true },
-    { name: 'categoryType', value: 'year', label: 'Year' },
-]
+const LimitInput = (props) => {
+    const { dollarLimit, setDollarLimit, children, ...rest } = props
+
+    return (
+        <div>
+            <label htmlFor="limit">Limit</label>
+            <TextInput>
+                <input
+                    {...rest}
+                    type="text"
+                    id="limit"
+                    placeholder="$0"
+                    value={dollarLimit}
+                    onChange={(e) => {
+                        const formatted = e.target.value
+                            .replace(/[^0-9.]/g, '')
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        setDollarLimit(`$${formatted}`)
+                    }}
+                    onBlur={(e) => e.target.value.length <= 1 && setDollarLimit('')}
+                    size="14"
+                />
+                {children}
+            </TextInput>
+        </div>
+    )
+}
 
 const Form = (props) => {
     const [submitting, setSubmitting] = useState(false)
@@ -35,56 +57,36 @@ const Form = (props) => {
 
     const submit = (data) => {
         setSubmitting(true)
-        setSubmitting(false)
+        console.log(data)
+        setTimeout(() => {
+            setSubmitting(false)
+            props.setVisible(false)
+        }, 1000)
     }
+
     const nameRef = useRef(null)
     const { ref, ...rest } = register('name')
-
-    const EmojiInput = () => (
-        <Emoji emoji={emoji} setEmoji={setEmoji}>
-            {({ emoji, picker, setPicker }) => (
-                <>
-                    <div id="emoji-picker-ledget--button-container">
-                        <div
-                            className="btn-gr"
-                            id="emoji-picker-ledget--button"
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                setPicker(!picker)
-                            }}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                    setPicker(!picker)
-                                }
-                            }}
-                            role="button"
-                            aria-label="Emoji picker"
-                            aria-haspopup="true"
-                            aria-expanded={picker}
-                            aria-controls="emoji-picker-ledget--container"
-                            tabIndex={0}
-                            style={{ color: !emoji && "rgb(0, 0, 0, .3)" }}
-                        >
-                            {emoji ? emoji.native : '☺'}
-                        </div>
-                    </div>
-                    <Emoji.Picker onClose={() => nameRef.current.focus()} />
-                    {emoji && <input type="hidden" name="emoji" value={emoji.native} />}
-                </>
-            )}
-        </Emoji>
-    )
 
     const NameInput = () => (
         <div>
             <label htmlFor="name">Name</label>
             <TextInput>
-                <EmojiInput />
+                <Emoji emoji={emoji} setEmoji={setEmoji}>
+                    {({ emoji }) => (
+                        <>
+                            <div id="emoji-picker-ledget--button-container">
+                                <Emoji.Button emoji={emoji} />
+                            </div>
+                            <Emoji.Picker onClose={() => nameRef.current.focus()} />
+                            {emoji && <input type="hidden" name="emoji" value={emoji.native} />}
+                        </>
+                    )}
+                </Emoji>
                 <input
                     type="text"
                     name="name"
                     className="category-name"
-                    placeholder="Category name"
+                    placeholder="Category name..."
                     {...rest}
                     ref={(e) => {
                         ref(e)
@@ -97,36 +99,20 @@ const Form = (props) => {
     )
 
     return (
-        <div className="create-form" id='category-form'>
+        <div className="create-form">
             <h2>New Category</h2>
             <form onSubmit={handleSubmit((data) => submit(data))}>
-                <div style={{ paddingLeft: '4px', display: 'inline-block' }}>
-                    <Radios options={radioOptions} />
-                </div>
+                <PeriodRadios />
                 <div className="responsive-inputs-row-container">
                     <NameInput />
-                    <div>
-                        <label htmlFor="limit">Limit</label>
-                        <TextInput>
-                            <input
-                                type="text"
-                                name="limit"
-                                id="limit"
-                                placeholder="$0"
-                                value={dollarLimit}
-                                {...register('limit')}
-                                onChange={(e) => {
-                                    const formatted = e.target.value
-                                        .replace(/[^0-9.]/g, '')
-                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                    setDollarLimit(`$${formatted}`)
-                                }}
-                                onBlur={(e) => e.target.value.length <= 1 && setDollarLimit('')}
-                                size="14"
-                            />
-                            {errors.limit && <FormErrorTip />}
-                        </TextInput>
-                    </div>
+                    <LimitInput
+                        name='limit'
+                        dollarLimit={dollarLimit}
+                        setDollarLimit={setDollarLimit}
+                        {...register('limit')}
+                    >
+                        {errors.limit && !dollarLimit && <FormErrorTip />}
+                    </LimitInput>
                     <div style={{ margin: '8px 0 0 2px' }}>
                         <AddAlert
                             limit={dollarLimit}
