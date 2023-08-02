@@ -6,8 +6,7 @@ import { object, string } from "yup"
 import { useNavigate } from 'react-router-dom'
 
 import './styles/Forms.css'
-import { AddAlert, NameInput, TextInput, Radios } from '@components/inputs'
-import Checkbox from '@components/inputs/Checkbox'
+import { AddAlert, NameInput, TextInput, GreenRadios } from '@components/inputs'
 import withModal from './with/withModal'
 import SubmitForm from './pieces/SubmitForm'
 import { FormErrorTip } from '@components/pieces'
@@ -81,7 +80,7 @@ const Form = (props) => {
             <h2>New Category</h2>
             <form onSubmit={handleSubmit((data) => submit(data))} id="new-cat-form">
                 <div style={{ paddingLeft: '4px', display: 'inline-block' }}>
-                    <Radios options={radioOptions} />
+                    <GreenRadios options={radioOptions} />
                 </div>
                 <div className="responsive-inputs-row-container">
                     <div>

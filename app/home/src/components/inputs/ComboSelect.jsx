@@ -56,7 +56,7 @@ const ComboSelect = (props) => {
                 value={value}
                 name={`${props.name}`}
             />
-            {typeof children === 'function' ? props.children({ open }) : children}
+            {typeof props.children === 'function' ? props.children({ open }) : children}
         </DataContext.Provider>
     )
 }

@@ -1,22 +1,20 @@
-import React, { useRef, useState, createContext, useContext } from 'react'
+import React, { useRef, useEffect, useState, createContext, useContext } from 'react'
 
 import { animated } from '@react-spring/web'
 
 import { usePillAnimation } from '@utils/hooks'
 import './styles/Radios.css'
-import { useEffect } from 'react'
 
 
 const RadioContext = createContext(null)
 
 const Radios = (props) => {
-    const { children, ...rest } = props
-    const [choice, setChoice] = useState(null)
+    const { value, onChange, children, ...rest } = props
     const ref = useRef(null)
 
     const data = {
-        choice,
-        setChoice,
+        value,
+        onChange,
         ref
     }
 
@@ -31,28 +29,23 @@ const Radios = (props) => {
     )
 }
 
-const Option = (props) => {
+const Input = (props) => {
     const [selected, setSelected] = useState(false)
     const { option, children, style, ...rest } = props
-    const { choice, setChoice } = useContext(RadioContext)
-
-    useEffect(() => {
-        option.default && setChoice(option.value)
-    }, [])
+    const { value, onChange } = useContext(RadioContext)
 
     const handleClick = (e) => {
         e.preventDefault()
-        setChoice(option.value)
+        onChange(option.value)
     }
 
     const handleKeyDown = (e) => {
-        (e.key === 'Enter' || e.key === ' ')
-            && setChoice(option.value)
+        (e.key === 'Enter' || e.key === ' ') && onChange(option.value)
     }
 
     useEffect(() => {
-        setSelected(choice === option.value)
-    }, [choice])
+        setSelected(value === option.value)
+    }, [value])
 
     return (
         <>
@@ -60,8 +53,8 @@ const Option = (props) => {
                 type="radio"
                 name={option.name}
                 value={option.value}
-                onChange={(event) => setChoice(event.target.value)}
-                checked={choice === option.value ? true : false}
+                onChange={(event) => onChange(event.target.value)}
+                checked={value === option.value ? true : false}
             />
             <label
                 style={{
@@ -81,33 +74,44 @@ const Option = (props) => {
 }
 
 const Pill = (props) => {
-    const { styles } = props
-    const { choice, ref } = useContext(RadioContext)
+    const { styles, ...rest } = props
+    const { value, ref } = useContext(RadioContext)
 
-    const { props: pillProps } = usePillAnimation({
+    const animationConfig = {
         ref: ref,
         querySelectall: 'label',
-        update: [choice],
+        update: [value],
         refresh: [],
         styles: {
             zIndex: 1,
             ...styles
         },
-        find: (element) => element.htmlFor === choice
-    })
+        ...rest,
+        find: (element) => element.htmlFor === value || element.name === value
+    }
+
+    const { props: pillProps } = usePillAnimation(animationConfig)
 
     return (
         <animated.span style={pillProps} />
     )
 }
 
-const GreenRadios = ({ options }) => {
+const GreenRadios = (props) => {
+    const { options } = props
+    const [choice, setChoice] = useState(
+        options.find((option) => option.default).value
+    )
 
     return (
-        <Radios className="green-radios-container">
+        <Radios
+            value={choice}
+            onChange={setChoice}
+            className="green-radios-container"
+        >
             <Pill styles={{ backgroundColor: 'var(--green-hlight3)' }} />
             {options.map((option, index) => (
-                <Option
+                <Input
                     key={index}
                     option={option}
                     className="green-radios-container-label"
@@ -115,13 +119,13 @@ const GreenRadios = ({ options }) => {
                     <span>
                         {option.label}
                     </span>
-                </Option>
+                </Input>
             ))}
         </Radios>
     )
 }
 
-Radios.Option = Option
+Radios.Input = Input
 Radios.Pill = Pill
 export default Radios
 export { GreenRadios }

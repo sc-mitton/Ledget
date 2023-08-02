@@ -16,8 +16,7 @@
 }
 
 .create-form .checkbox-container {
-    margin-top: -8px;
-    margin-left: 8px;
+    margin-left: 0px;
     margin-right: 4px;
 }
 
@@ -93,4 +92,16 @@ input.emoji {
     padding-right: 6px;
     height: 140%;
     transform: scale(1.2);
+}
+
+/* ---------------------------- Create Bill Form ---------------------------- */
+
+#limit-radios {
+    display: inline-flex;
+    flex-direction: row;
+}
+
+#limit-radios button {
+    padding: 0 4px;
+    font-weight: 400;
 }

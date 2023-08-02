@@ -8,12 +8,12 @@ import { object, string } from "yup"
 import './styles/Forms.css'
 import SubmitForm from './pieces/SubmitForm'
 import withModal from './with/withModal'
-import { TextInput, NameInput, GreenRadios } from '@components/inputs'
+import { TextInput, NameInput, GreenRadios, Checkbox } from '@components/inputs'
 import { FormErrorTip } from '@components/pieces'
 
 const schema = object().shape({
     name: string().required(),
-    bill: string().required(),
+    billAmount: string().required(),
 })
 
 const radioOptions = [
@@ -23,7 +23,7 @@ const radioOptions = [
 
 const Form = (props) => {
     const [submitting, setSubmitting] = useState(false)
-    const [bill, setBill] = useState('')
+    const [billAmount, setBillAmount] = useState('')
     const [emoji, setEmoji] = useState('')
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
@@ -66,30 +66,31 @@ const Form = (props) => {
                         </NameInput>
                     </div>
                     <div>
-                        <label htmlFor="bill" style={{ display: 'flex', flexDirection: 'row' }}>
-                            <button>Amount</button>
-                            <span> | </span>
-                            <button style={{ opacity: '.3' }}>Range</button>
+                        <label htmlFor="billAmount" style={{ display: 'flex', flexDirection: 'row' }}>
+                            Amount
                         </label>
                         <TextInput>
                             <input
                                 type="text"
-                                name="amount"
-                                id="amount"
+                                name="billAmount"
+                                id="billAmount"
                                 placeholder="$0"
-                                value={bill}
-                                {...register('name')}
+                                value={billAmount}
+                                {...register('billAmount')}
                                 onChange={(e) => {
                                     const formatted = e.target.value
                                         .replace(/[^0-9.]/g, '')
                                         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                    setBill(`$${formatted}`)
+                                    setBillAmount(`$${formatted}`)
                                 }}
-                                onBlur={(e) => e.target.value.length <= 1 && setBill('')}
+                                onBlur={(e) => e.target.value.length <= 1 && setBillAmount('')}
                                 size="14"
                             />
-                            {errors.bill && !bill && <FormErrorTip />}
+                            {errors.billAmount && !billAmount && <FormErrorTip />}
                         </TextInput>
+                        <div>
+                            <Checkbox name="range" label="Range" />
+                        </div>
                     </div>
                 </div>
                 <SubmitForm

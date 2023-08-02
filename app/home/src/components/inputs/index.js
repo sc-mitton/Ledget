@@ -3,3 +3,4 @@ export { GreenRadios } from './Radios';
 export { default as AddAlert } from './AddAlert';
 export { TextInput, NameInput, MenuTextInput } from './Text';
 export { default as Emoji } from './Emoji';
+export { default as Checkbox } from './Checkbox';
