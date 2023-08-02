@@ -49,9 +49,7 @@ const categoryIcons = {
     },
 }
 
-const EmojiPicker = (props) => {
-    const { theme, onClose } = props
-
+const EmojiPicker = () => {
     const { setEmoji, picker, setPicker } = useContext(EmojiContext)
 
     const categories = [
@@ -69,7 +67,6 @@ const EmojiPicker = (props) => {
     const handleEmojiSelect = (emoji) => {
         setEmoji(emoji)
         setPicker(false)
-        onClose()
     }
 
     return (
@@ -82,7 +79,7 @@ const EmojiPicker = (props) => {
                     navPosition="bottom"
                     onEmojiSelect={handleEmojiSelect}
                     onClickOutside={() => setPicker(false)}
-                    theme={theme || 'dark'}
+                    theme={'dark'}
                     showCategoryFilter={false}
                     showSkinTones={false}
                     maxFrequentRows={1}
