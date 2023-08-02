@@ -144,7 +144,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 right: 0,
                 position: 'absolute',
                 borderRadius: "12px",
-                boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.1)",
+                boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.13)",
                 background: "var(--window)",
                 padding: "16px 24px",
                 display: "flex",

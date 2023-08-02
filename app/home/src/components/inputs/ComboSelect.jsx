@@ -112,8 +112,8 @@ const Options = ({ children, static: isStatic, ...rest }) => {
 
             const handleDocumentClick = (event) => {
                 if (ref.current
-                    && !ref.current.contains(event.target)
-                    && !buttonRef.current.contains(event.target)
+                    && !ref.current?.contains(event.target)
+                    && !buttonRef.current?.contains(event.target)
                 ) {
                     setOpen(false)
                 }
@@ -176,7 +176,7 @@ const Options = ({ children, static: isStatic, ...rest }) => {
                 <div ref={ref}>
                     <ul
                         aria-multiselectable={multiple}
-                        aria-labelledby={buttonRef.current.id}
+                        aria-labelledby={buttonRef.current?.id}
                         aria-orientation='vertical'
                         role="listbox"
                         tabIndex={0}
@@ -293,11 +293,6 @@ const Custom = React.forwardRef((props, ref) => {
     const [focused, setFocused] = useState(false)
 
     const localRef = useRef(null)
-    const inputRef = ref || localRef
-
-    useEffect(() => {
-        customRef.current = inputRef.current
-    }, [inputRef])
 
     const handleEnter = (event) => {
         event.preventDefault()
@@ -359,7 +354,7 @@ const Custom = React.forwardRef((props, ref) => {
                 onKeyDown={handleKeyDown}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                ref={inputRef}
+                ref={ref}
                 value={value}
                 {...rest}
             />

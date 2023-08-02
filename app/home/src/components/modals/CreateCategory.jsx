@@ -26,6 +26,7 @@ const radioOptions = [
 const Form = (props) => {
     const [submitting, setSubmitting] = useState(false)
     const [dollarLimit, setDollarLimit] = useState('')
+    const [emoji, setEmoji] = useState('')
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onSubmit',
@@ -39,68 +40,61 @@ const Form = (props) => {
     const nameRef = useRef(null)
     const { ref, ...rest } = register('name')
 
-    const EmojiInput = () => {
-        return (
-            <Emoji>
-                {({ emoji, picker, setPicker }) => (
-                    <>
-                        <div id="emoji-picker-ledget--button-container">
-                            <div
-                                className="btn-gr"
-                                id="emoji-picker-ledget--button"
-                                onClick={(e) => {
-                                    e.stopPropagation()
+    const EmojiInput = () => (
+        <Emoji emoji={emoji} setEmoji={setEmoji}>
+            {({ emoji, picker, setPicker }) => (
+                <>
+                    <div id="emoji-picker-ledget--button-container">
+                        <div
+                            className="btn-gr"
+                            id="emoji-picker-ledget--button"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                setPicker(!picker)
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
                                     setPicker(!picker)
-                                }}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        setPicker(!picker)
-                                    }
-                                }}
-                                role="button"
-                                aria-label="Emoji picker"
-                                aria-haspopup="true"
-                                aria-expanded={picker}
-                                aria-controls="emoji-picker-ledget--container"
-                                tabIndex={0}
-                                style={{ color: !emoji && "rgb(0, 0, 0, .3)" }}
-                            >
-                                {emoji ? emoji.native : '☺'}
-                            </div>
+                                }
+                            }}
+                            role="button"
+                            aria-label="Emoji picker"
+                            aria-haspopup="true"
+                            aria-expanded={picker}
+                            aria-controls="emoji-picker-ledget--container"
+                            tabIndex={0}
+                            style={{ color: !emoji && "rgb(0, 0, 0, .3)" }}
+                        >
+                            {emoji ? emoji.native : '☺'}
                         </div>
-                        <Emoji.Picker onClose={() => nameRef.current.focus()} />
-                        {emoji &&
-                            <input type="hidden" name="emoji"
-                                value={emoji.native} />
-                        }
-                    </>
-                )}
-            </Emoji>
-        )
-    }
+                    </div>
+                    <Emoji.Picker onClose={() => nameRef.current.focus()} />
+                    {emoji && <input type="hidden" name="emoji" value={emoji.native} />}
+                </>
+            )}
+        </Emoji>
+    )
 
-    const NameInput = () => {
-        return (
-            <div>
-                <label htmlFor="name">Name</label>
-                <TextInput>
-                    <EmojiInput />
-                    <input
-                        type="text"
-                        name="name"
-                        className="category-name"
-                        placeholder="Category name"
-                        {...rest}
-                        ref={(e) => {
-                            ref(e)
-                            nameRef.current = e
-                        }}
-                    />
-                    {errors.name && <FormErrorTip />}
-                </TextInput>
-            </div>
-        )
-    }
+    const NameInput = () => (
+        <div>
+            <label htmlFor="name">Name</label>
+            <TextInput>
+                <EmojiInput />
+                <input
+                    type="text"
+                    name="name"
+                    className="category-name"
+                    placeholder="Category name"
+                    {...rest}
+                    ref={(e) => {
+                        ref(e)
+                        nameRef.current = e
+                    }}
+                />
+                {errors.name && <FormErrorTip />}
+            </TextInput>
+        </div>
+    )
 
     return (
         <div className="create-form" id='category-form'>
@@ -128,20 +122,21 @@ const Form = (props) => {
                                     setDollarLimit(`$${formatted}`)
                                 }}
                                 onBlur={(e) => e.target.value.length <= 1 && setDollarLimit('')}
+                                size="14"
                             />
                             {errors.limit && <FormErrorTip />}
                         </TextInput>
-                        <div style={{ margin: '4px 0 0 2px' }}>
-                            <AddAlert
-                                limit={dollarLimit}
-                                defaultOptions={[
-                                    { id: 1, value: 25, disabled: false },
-                                    { id: 2, value: 50, disabled: false },
-                                    { id: 3, value: 75, disabled: false },
-                                    { id: 4, value: 100, disabled: false },
-                                ]}
-                            />
-                        </div>
+                    </div>
+                    <div style={{ margin: '8px 0 0 2px' }}>
+                        <AddAlert
+                            limit={dollarLimit}
+                            defaultOptions={[
+                                { id: 1, value: 25, disabled: false },
+                                { id: 2, value: 50, disabled: false },
+                                { id: 3, value: 75, disabled: false },
+                                { id: 4, value: 100, disabled: false },
+                            ]}
+                        />
                     </div>
                 </div>
                 <SubmitForm

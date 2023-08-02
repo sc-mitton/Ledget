@@ -18,6 +18,11 @@ const SubmitForm = ({ submitting, onCancel }) => {
             <div
                 className='btn-scale btn3 btn-scnd'
                 onClick={onCancel}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        onCancel()
+                    }
+                }}
                 tabIndex={0}
                 role="button"
                 aria-label="Cancel"

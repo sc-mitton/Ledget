@@ -4,7 +4,7 @@ const Graph = ({
     className = null,
     width = "1.3em",
     height = "1.3em",
-    fill = "#464646",
+    fill = "#292929",
 }) => {
     return (
         <svg

@@ -52,11 +52,21 @@ const DropDown = () => {
                                 <Wrapper
                                     onClick={() => navigate('/budget/new-category')}
                                 >
-                                    <Plus width={'1em'} height={'1em'} className="dropdown-icon" />
+                                    <Plus
+                                        width={'1em'}
+                                        height={'1em'}
+                                        className="dropdown-icon"
+                                    />
                                     New category
                                 </Wrapper>
-                                <Wrapper>
-                                    <Plus width={'1em'} height={'1em'} className="dropdown-icon" />
+                                <Wrapper
+                                    onClick={() => navigate('/budget/new-bill')}
+                                >
+                                    <Plus
+                                        width={'1em'}
+                                        height={'1em'}
+                                        className="dropdown-icon"
+                                    />
                                     New bill
                                 </Wrapper>
                             </div>

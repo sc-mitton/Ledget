@@ -13,9 +13,11 @@ const formatDollar = (value, percentage) => {
     !percentage && (percentage = 0)
 
     let dollar = parseInt(value.replace(/[^0-9.]/g, '')) * percentage / 100
-    dollar = dollar.toFixed(0)
-    // convert to string and add commas
-    dollar = dollar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    dollar = dollar
+        .toFixed(0)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
     return `$${dollar}`
 }
 
@@ -23,24 +25,22 @@ const AddAlert = ({ defaultOptions, limit }) => {
     const [selectedAlerts, setSelectedAlerts] = useState([])
     const [alertOptions, setAlertOptions] = useState(defaultOptions)
 
-    const Option = ({ value, active, selected }) => {
-        return (
-            <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
-                <div>{value}%</div>
-                <div>
-                    <span className={`${active ? 'active' : ''}`}>
-                        {limit
-                            ? `(${formatDollar(limit, value)})`
-                            : ('of limit')
-                        }
-                    </span>
-                    <Checkmark
-                        stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
-                    />
-                </div>
+    const Option = ({ value, active, selected }) => (
+        <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
+            <div>{value}%</div>
+            <div>
+                <span className={`${active ? 'active' : ''}`}>
+                    {limit
+                        ? `(${formatDollar(limit, value)})`
+                        : ('of limit')
+                    }
+                </span>
+                <Checkmark
+                    stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
+                />
             </div>
-        )
-    }
+        </div>
+    )
 
     const CustomOption = () => {
         const ref = useRef('')
@@ -127,25 +127,23 @@ const AddAlert = ({ defaultOptions, limit }) => {
         )
     }
 
-    const Options = () => {
-        return (
-            alertOptions.map((option) => (
-                <ComboSelect.Option
-                    value={option.value}
-                    disabled={option.disabled}
-                    key={option.id}
-                >
-                    {({ active, selected }) => (
-                        <Option
-                            value={option.value}
-                            active={active}
-                            selected={selected}
-                        />
-                    )}
-                </ComboSelect.Option>
-            ))
-        )
-    }
+    const Options = () => (
+        alertOptions.map((option) => (
+            <ComboSelect.Option
+                value={option.value}
+                disabled={option.disabled}
+                key={option.id}
+            >
+                {({ active, selected }) => (
+                    <Option
+                        value={option.value}
+                        active={active}
+                        selected={selected}
+                    />
+                )}
+            </ComboSelect.Option>
+        ))
+    )
 
     return (
         <div id="alert-select">
@@ -158,28 +156,30 @@ const AddAlert = ({ defaultOptions, limit }) => {
             >
                 {({ open }) => (
                     <>
-                        <ComboSelect.Button className="btn-gr2 btn2" id="add-alert-btn">
-                            Alert
+                        <ComboSelect.Button className="btn-chcl btn2" id="add-alert-btn">
+                            Spending Alert
                             {selectedAlerts.length > 0
                                 ?
                                 <Checkmark
+                                    stroke={'var(--white-text)'}
                                     width={'.7em'}
                                     height={'.7em'}
                                 /> :
                                 <Plus
+                                    stroke={'var(--white-text)'}
                                     strokeWidth={'20'}
                                     width={'.8em'}
                                     height={'.8em'}
                                 />}
                         </ComboSelect.Button>
-                        <DropAnimation visible={open} >
-                            <ComboSelect.Options style={{ position: 'absolute' }} static>
-                                <div className="dropdown" style={{ marginTop: '4px' }}>
+                        <ComboSelect.Options style={{ position: 'absolute' }} static>
+                            <DropAnimation visible={open} >
+                                <div className="dropdown" style={{ marginTop: '8px' }}>
                                     <Options />
                                     <CustomOption />
                                 </div>
-                            </ComboSelect.Options>
-                        </DropAnimation>
+                            </DropAnimation>
+                        </ComboSelect.Options>
                     </>
                 )}
             </ComboSelect>

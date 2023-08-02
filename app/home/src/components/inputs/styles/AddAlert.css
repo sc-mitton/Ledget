@@ -7,14 +7,9 @@
     height: 0;
 }
 
-#add-alert-btn {
-    padding: 0 8px;
-}
-
 #add-alert-btn svg {
     margin-left: 4px;
 }
-
 
 .slct-item {
     display: flex;

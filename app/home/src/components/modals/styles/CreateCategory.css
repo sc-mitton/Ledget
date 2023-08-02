@@ -24,7 +24,7 @@
 .inputs-row-container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+
     padding: 0 4px;
 }
 
@@ -32,21 +32,21 @@
     display: inline-flex;
     flex-wrap: wrap;
     margin: 4px 0;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .create-form .responsive-inputs-row-container>div:first-child {
-    flex: 2 0 50%;
+    flex: 2 0 60%;
     box-sizing: border-box;
-    padding: 0 4px;
+    padding: 0 8px;
     display: inline-flex;
     flex-direction: column;
 }
 
 .create-form .responsive-inputs-row-container>div:last-child {
-    flex: 1 0 50%;
+    flex: 1 0 40%;
     box-sizing: border-box;
-    padding: 0 4px;
+    padding: 0 8px;
     display: inline-flex;
     flex-direction: column;
 }

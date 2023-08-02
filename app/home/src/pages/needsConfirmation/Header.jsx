@@ -24,7 +24,11 @@ const RefreshButton = ({ onClick }) => {
     }
 
     return (
-        <Tooltip msg={"Refresh"} ariaLabel={"Refresh list"}>
+        <Tooltip
+            msg={"Refresh"}
+            ariaLabel={"Refresh list"}
+            style={{ left: '-39%' }}
+        >
             <button
                 className='btn-clr btn'
                 id="refresh-icon"
@@ -44,7 +48,11 @@ const RefreshButton = ({ onClick }) => {
 const CheckAllButton = () => {
 
     return (
-        <Tooltip msg={"Confirm all"} ariaLabel={"Confirm all items"}>
+        <Tooltip
+            msg={"Confirm all"}
+            ariaLabel={"Confirm all items"}
+            style={{ left: '-60%' }}
+        >
             <button
                 className="btn-clr btn"
                 id="check-all-icon"

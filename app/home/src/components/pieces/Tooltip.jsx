@@ -1,14 +1,10 @@
 import React, { useState, useRef } from 'react'
 import './styles/Tooltip.css'
 
-const Tooltip = ({ msg, ariaLabel, children }) => {
+const Tooltip = (props) => {
     const [show, setShow] = useState(false)
     const timeoutRef = useRef(null)
-
-    const style = {
-        display: 'inline-block',
-        position: 'relative',
-    }
+    const { msg, ariaLabel, children, ...rest } = props
 
     const handleMouseEnter = () => {
         // Set a timeout to show the tooltip after 2 seconds
@@ -26,7 +22,10 @@ const Tooltip = ({ msg, ariaLabel, children }) => {
     return (
         <div
             className="tooltip"
-            style={style}
+            style={{
+                display: 'inline-block',
+                position: 'relative',
+            }}
             aria-label={ariaLabel}
             role="tooltip"
             aria-hidden={show ? 'false' : 'true'}
@@ -34,7 +33,9 @@ const Tooltip = ({ msg, ariaLabel, children }) => {
             onMouseLeave={handleMouseLeave}
         >
             {children}
-            <span className={`tooltiptext ${show ? 'show' : ''}`}>{msg}</span>
+            <span className={`tooltiptext ${show ? 'show' : ''}`} {...rest}>
+                {msg}
+            </span>
         </div>
     )
 }
