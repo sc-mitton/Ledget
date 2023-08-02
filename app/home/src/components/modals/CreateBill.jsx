@@ -1,20 +1,25 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
-import { object, string, number } from "yup"
+import { object, string } from "yup"
 
 import './styles/Forms.css'
 import SubmitForm from './pieces/SubmitForm'
 import withModal from './with/withModal'
-import { TextInput, Emoji, PeriodRadios } from '@components/inputs'
+import { TextInput, NameInput, GreenRadios } from '@components/inputs'
 import { FormErrorTip } from '@components/pieces'
 
 const schema = object().shape({
     name: string().required(),
     bill: string().required(),
 })
+
+const radioOptions = [
+    { name: 'categoryType', value: 'monthly', label: 'Monthly', default: true },
+    { name: 'categoryType', value: 'yearly', label: 'Yearly' },
+]
 
 const Form = (props) => {
     const [submitting, setSubmitting] = useState(false)
@@ -26,6 +31,11 @@ const Form = (props) => {
         reValidateMode: 'onBlur',
     })
 
+    const nameRef = useRef(null)
+    useEffect(() => {
+        emoji && nameRef.current.focus()
+    }, [emoji])
+
     const submit = (data) => {
         setSubmitting(true)
         console.log(data)
@@ -35,49 +45,32 @@ const Form = (props) => {
         }, 1000)
     }
 
-    const nameRef = useRef(null)
-    const { ref, ...rest } = register('name')
-
-    const NameInput = () => (
-        <div>
-            <label htmlFor="name">Name</label>
-            <TextInput>
-                <Emoji emoji={emoji} setEmoji={setEmoji}>
-                    {({ emoji }) => (
-                        <>
-                            <div id="emoji-picker-ledget--button-container">
-                                <Emoji.Button emoji={emoji} />
-                            </div>
-                            <Emoji.Picker onClose={() => nameRef.current.focus()} />
-                            {emoji && <input type="hidden" name="emoji" value={emoji.native} />}
-                        </>
-                    )}
-                </Emoji>
-                <input
-                    type="text"
-                    name="name"
-                    className="category-name"
-                    placeholder="Category name..."
-                    {...rest}
-                    ref={(e) => {
-                        ref(e)
-                        nameRef.current = e
-                    }}
-                />
-                {errors.name && <FormErrorTip />}
-            </TextInput>
-        </div>
-    )
-
     return (
         <div className="create-form">
             <h2>New Bill</h2>
-            <form onSubmit={handleSubmit((data) => submit(data))}>
-                <PeriodRadios />
+            <form onSubmit={handleSubmit((data) => submit(data))} id="new-bill-form">
+                <div style={{ paddingLeft: '4px', display: 'inline-block' }}>
+                    <GreenRadios options={radioOptions} />
+                </div>
                 <div className="responsive-inputs-row-container">
-                    <NameInput />
                     <div>
-                        <label htmlFor="bill">Amount</label>
+                        <NameInput
+                            name="name"
+                            placeholder="Bill name..."
+                            emoji={emoji}
+                            setEmoji={setEmoji}
+                            ref={nameRef}
+                            register={register}
+                        >
+                            {errors.name && <FormErrorTip />}
+                        </NameInput>
+                    </div>
+                    <div>
+                        <label htmlFor="bill" style={{ display: 'flex', flexDirection: 'row' }}>
+                            <button>Amount</button>
+                            <span> | </span>
+                            <button style={{ opacity: '.3' }}>Range</button>
+                        </label>
                         <TextInput>
                             <input
                                 type="text"
@@ -98,7 +91,6 @@ const Form = (props) => {
                             {errors.bill && !bill && <FormErrorTip />}
                         </TextInput>
                     </div>
-                    <div></div>
                 </div>
                 <SubmitForm
                     submitting={submitting}

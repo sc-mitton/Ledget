@@ -2,11 +2,11 @@ import React, { useState, useRef } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
-import { object, string, number } from "yup"
+import { object, string } from "yup"
 import { useNavigate } from 'react-router-dom'
 
 import './styles/Forms.css'
-import { AddAlert, TextInput, Emoji, PeriodRadios } from '@components/inputs'
+import { AddAlert, NameInput, TextInput, Radios } from '@components/inputs'
 import Checkbox from '@components/inputs/Checkbox'
 import withModal from './with/withModal'
 import SubmitForm from './pieces/SubmitForm'
@@ -18,18 +18,24 @@ const schema = object().shape({
     limit: string().required(),
 })
 
+const radioOptions = [
+    { name: 'categoryType', value: 'month', label: 'Month', default: true },
+    { name: 'categoryType', value: 'year', label: 'Year' },
+]
+
 const LimitInput = (props) => {
-    const { dollarLimit, setDollarLimit, children, ...rest } = props
+    const { dollarLimit, setDollarLimit, register } = props
 
     return (
-        <div>
+        <>
             <label htmlFor="limit">Limit</label>
             <TextInput>
                 <input
-                    {...rest}
+                    name={props.name}
                     type="text"
                     id="limit"
                     placeholder="$0"
+                    {...register('limit')}
                     value={dollarLimit}
                     onChange={(e) => {
                         const formatted = e.target.value
@@ -40,43 +46,11 @@ const LimitInput = (props) => {
                     onBlur={(e) => e.target.value.length <= 1 && setDollarLimit('')}
                     size="14"
                 />
-                {children}
+                {props.children}
             </TextInput>
-        </div>
+        </>
     )
 }
-
-const NameInput = React.forwardRef((props, inputRef) => {
-    const { emoji, setEmoji, children, ...rest } = props
-
-    return (
-        <div>
-            <label htmlFor="name">Name</label>
-            <TextInput>
-                <Emoji emoji={emoji} setEmoji={setEmoji}>
-                    {({ emoji }) => (
-                        <>
-                            <div id="emoji-picker-ledget--button-container">
-                                <Emoji.Button emoji={emoji} />
-                            </div>
-                            <Emoji.Picker />
-                            {emoji && <input type="hidden" name="emoji" value={emoji.native} />}
-                        </>
-                    )}
-                </Emoji>
-                <input
-                    type="text"
-                    className="category-name"
-                    placeholder="Category name..."
-                    {...rest}
-                    ref={inputRef}
-                />
-                {children}
-            </TextInput>
-        </div>
-    )
-})
-
 
 const Form = (props) => {
     const [submitting, setSubmitting] = useState(false)
@@ -87,9 +61,8 @@ const Form = (props) => {
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
-    const nameRef = useRef(null)
-    const { ref, ...name } = register('name')
 
+    const nameRef = useRef(null)
     useEffect(() => {
         emoji && nameRef.current.focus()
     }, [emoji])
@@ -106,37 +79,44 @@ const Form = (props) => {
     return (
         <div className="create-form">
             <h2>New Category</h2>
-            <form onSubmit={handleSubmit((data) => submit(data))}>
-                <PeriodRadios />
+            <form onSubmit={handleSubmit((data) => submit(data))} id="new-cat-form">
+                <div style={{ paddingLeft: '4px', display: 'inline-block' }}>
+                    <Radios options={radioOptions} />
+                </div>
                 <div className="responsive-inputs-row-container">
-                    <NameInput
-                        name="name"
-                        emoji={emoji}
-                        setEmoji={setEmoji}
-                        ref={nameRef}
-                        {...name}
-                    >
-                        {errors.name && <FormErrorTip />}
-                    </NameInput>
-                    <LimitInput
-                        name='limit'
-                        dollarLimit={dollarLimit}
-                        setDollarLimit={setDollarLimit}
-                        {...register('limit')}
-                    >
-                        {errors.limit && !dollarLimit && <FormErrorTip />}
-                    </LimitInput>
-                    <div style={{ margin: '8px 0 0 2px' }}>
-                        <AddAlert
-                            limit={dollarLimit}
-                            defaultOptions={[
-                                { id: 1, value: 25, disabled: false },
-                                { id: 2, value: 50, disabled: false },
-                                { id: 3, value: 75, disabled: false },
-                                { id: 4, value: 100, disabled: false },
-                            ]}
-                        />
+                    <div>
+                        <NameInput
+                            name="name"
+                            placeholder="Category name..."
+                            emoji={emoji}
+                            setEmoji={setEmoji}
+                            ref={nameRef}
+                            register={register}
+                        >
+                            {errors.name && <FormErrorTip />}
+                        </NameInput>
                     </div>
+                    <div>
+                        <LimitInput
+                            name="limit"
+                            dollarLimit={dollarLimit}
+                            setDollarLimit={setDollarLimit}
+                            register={register}
+                        >
+                            {errors.limit && !dollarLimit && <FormErrorTip />}
+                        </LimitInput>
+                    </div>
+                </div>
+                <div style={{ margin: '-8px 0 0 4px' }}>
+                    <AddAlert
+                        limit={dollarLimit}
+                        defaultOptions={[
+                            { id: 1, value: 25, disabled: false },
+                            { id: 2, value: 50, disabled: false },
+                            { id: 3, value: 75, disabled: false },
+                            { id: 4, value: 100, disabled: false },
+                        ]}
+                    />
                 </div>
                 <SubmitForm
                     submitting={submitting}

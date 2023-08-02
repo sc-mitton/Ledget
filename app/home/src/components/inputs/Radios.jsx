@@ -1,5 +1,4 @@
-import React, { useRef, useState } from 'react'
-
+import React, { useRef, useState, createContext, useContext } from 'react'
 
 import { animated } from '@react-spring/web'
 
@@ -8,78 +7,121 @@ import './styles/Radios.css'
 import { useEffect } from 'react'
 
 
-const Radios = ({ options }) => {
-    const containerRef = useRef(null)
-    const [selection, setSelection] = useState(null)
+const RadioContext = createContext(null)
+
+const Radios = (props) => {
+    const { children, ...rest } = props
+    const [choice, setChoice] = useState(null)
+    const ref = useRef(null)
+
+    const data = {
+        choice,
+        setChoice,
+        ref
+    }
+
+    return (
+        <RadioContext.Provider value={data}>
+            <fieldset>
+                <div ref={ref} style={{ position: 'relative' }} {...rest}>
+                    {children}
+                </div>
+            </fieldset>
+        </RadioContext.Provider>
+    )
+}
+
+const Option = (props) => {
+    const [selected, setSelected] = useState(false)
+    const { option, children, style, ...rest } = props
+    const { choice, setChoice } = useContext(RadioContext)
 
     useEffect(() => {
-        options.find((option) => {
-            option.default && setSelection(option.value)
-        })
+        option.default && setChoice(option.value)
     }, [])
 
-    const { props } = usePillAnimation({
-        ref: containerRef,
+    const handleClick = (e) => {
+        e.preventDefault()
+        setChoice(option.value)
+    }
+
+    const handleKeyDown = (e) => {
+        (e.key === 'Enter' || e.key === ' ')
+            && setChoice(option.value)
+    }
+
+    useEffect(() => {
+        setSelected(choice === option.value)
+    }, [choice])
+
+    return (
+        <>
+            <input
+                type="radio"
+                name={option.name}
+                value={option.value}
+                onChange={(event) => setChoice(event.target.value)}
+                checked={choice === option.value ? true : false}
+            />
+            <label
+                style={{
+                    zIndex: '2',
+                    ...style
+                }}
+                htmlFor={option.value}
+                onClick={handleClick}
+                onKeyDown={handleKeyDown}
+                tabIndex={0}
+                {...rest}
+            >
+                {typeof children === 'function' ? children({ selected }) : children}
+            </label>
+        </>
+    )
+}
+
+const Pill = (props) => {
+    const { styles } = props
+    const { choice, ref } = useContext(RadioContext)
+
+    const { props: pillProps } = usePillAnimation({
+        ref: ref,
         querySelectall: 'label',
-        update: [selection],
+        update: [choice],
         refresh: [],
         styles: {
-            backgroundColor: 'var(--green-hlight3)',
-            zIndex: 1
+            zIndex: 1,
+            ...styles
         },
-        find: (element) => element.htmlFor === selection
+        find: (element) => element.htmlFor === choice
     })
 
     return (
-        <fieldset
-            style={{
-                display: 'inline-block',
-            }}
-        >
-            <div className="slider-radios-container" ref={containerRef}>
-                {
-                    options.map((option, index) => (
-                        <React.Fragment key={index}>
-                            <input
-                                type="radio"
-                                name={option.name}
-                                value={option.value}
-                                onChange={(event) => setSelection(event.target.value)}
-                                checked={selection === option.value}
-                            />
-                            <label
-                                htmlFor={option.value}
-                                onClick={(event) => setSelection(option.value)}
-                                onKeyDown={(event) =>
-                                    (event.key === 'Enter' || event.key === ' ')
-                                    && setSelection(option.value)
-                                }
-                                tabIndex={0}
-                            >
-                                <span>
-                                    {option.label}
-                                </span>
-                            </label>
-                        </React.Fragment>
-                    ))
-                }
-                <animated.span style={props} />
-            </div>
-        </fieldset>
+        <animated.span style={pillProps} />
     )
 }
 
-const radioOptions = [
-    { name: 'categoryType', value: 'month', label: 'Month', default: true },
-    { name: 'categoryType', value: 'year', label: 'Year' },
-]
+const GreenRadios = ({ options }) => {
 
-export const PeriodRadios = () => {
     return (
-        <div style={{ paddingLeft: '4px', display: 'inline-block' }}>
-            <Radios options={radioOptions} />
-        </div>
+        <Radios className="green-radios-container">
+            <Pill styles={{ backgroundColor: 'var(--green-hlight3)' }} />
+            {options.map((option, index) => (
+                <Option
+                    key={index}
+                    option={option}
+                    className="green-radios-container-label"
+                >
+                    <span>
+                        {option.label}
+                    </span>
+                </Option>
+            ))}
+        </Radios>
     )
 }
 
+Radios.Option = Option
+Radios.Pill = Pill
 export default Radios
+export { GreenRadios }

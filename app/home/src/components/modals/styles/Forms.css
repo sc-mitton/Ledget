@@ -36,19 +36,33 @@
 }
 
 .create-form .responsive-inputs-row-container>div:first-child {
-    flex: 2 0 60%;
     box-sizing: border-box;
-    padding: 0 8px;
+    padding: 0 4px;
     display: inline-flex;
     flex-direction: column;
 }
 
 .create-form .responsive-inputs-row-container>div:last-child {
-    flex: 1 0 40%;
     box-sizing: border-box;
-    padding: 0 8px;
+    padding: 0 4px;
     display: inline-flex;
     flex-direction: column;
+}
+
+#new-bill-form .responsive-inputs-row-container>div:first-child {
+    flex: 1 0 50%;
+}
+
+#new-bill-form .responsive-inputs-row-container>div:last-child {
+    flex: 1 0 50%;
+}
+
+#new-cat-form .responsive-inputs-row-container>div:first-child {
+    flex: 1 0 60%;
+}
+
+#new-cat-form .responsive-inputs-row-container>div:last-child {
+    flex: 1 0 40%;
 }
 
 input.emoji {
