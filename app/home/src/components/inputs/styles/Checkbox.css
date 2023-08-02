@@ -1,6 +1,4 @@
 .checkbox-container {
-    margin-top: 0;
-    margin-bottom: 0;
     font-size: 12px;
     box-sizing: border-box;
     display: flex;
@@ -93,6 +91,6 @@
 
 @keyframes zoom-in-out {
     50% {
-        transform: scale(0.95);
+        transform: scale(0.9);
     }
 }

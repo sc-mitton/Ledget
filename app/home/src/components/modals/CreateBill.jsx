@@ -8,7 +8,7 @@ import { object, string } from "yup"
 import './styles/Forms.css'
 import SubmitForm from './pieces/SubmitForm'
 import withModal from './with/withModal'
-import { TextInput, NameInput, GreenRadios, Checkbox } from '@components/inputs'
+import { TextInput, NameInput, GreenRadios } from '@components/inputs'
 import { FormErrorTip } from '@components/pieces'
 
 const schema = object().shape({
@@ -88,9 +88,6 @@ const Form = (props) => {
                             />
                             {errors.billAmount && !billAmount && <FormErrorTip />}
                         </TextInput>
-                        <div>
-                            <Checkbox name="range" label="Range" />
-                        </div>
                     </div>
                 </div>
                 <SubmitForm

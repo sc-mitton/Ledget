@@ -15,6 +15,8 @@ const Checkbox = forwardRef((props, ref) => {
         }
     }
 
+    const { id, label, ...rest } = props
+
     return (
         <div className="checkbox-container">
             <svg className="checkbox-symbol">
@@ -29,13 +31,11 @@ const Checkbox = forwardRef((props, ref) => {
             </svg>
             <input
                 className="checkbox-input"
-                id={props.id}
                 type="checkbox"
-                name={props.name}
-                defaultChecked={props.defaultChecked}
-                onChange={props.onChange}
+                id={props.id}
                 ref={inputRef}
                 aria-label={props.label}
+                {...rest}
             />
             <label
                 className="checkbox"
@@ -52,7 +52,7 @@ const Checkbox = forwardRef((props, ref) => {
                 </span>
                 <span>{props.label}</span>
             </label>
-        </div >
+        </ div>
     )
 })
 

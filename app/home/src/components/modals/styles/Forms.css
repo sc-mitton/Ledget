@@ -15,11 +15,6 @@
     margin-left: 6px;
 }
 
-.create-form .checkbox-container {
-    margin-left: 0px;
-    margin-right: 4px;
-}
-
 .inputs-row-container {
     display: flex;
     justify-content: space-between;
