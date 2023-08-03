@@ -1,0 +1,9 @@
+#spending-window {
+    flex: 1;
+    min-width: 430px;
+    margin: 0 10px;
+    height: inherit;
+    max-height: inherit;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
@@ -20,8 +20,7 @@ import { usePillAnimation } from '@utils/hooks'
 const Navigation = ({ isNarrow }) => {
     let tabs = [
         { name: "budget", path: "/budget" },
-        { name: "accounts", path: "/accounts" },
-        { name: "spending", path: "/spending" },
+        { name: "accounts", path: "/accounts" }
     ]
 
     const location = useLocation()
@@ -34,18 +33,28 @@ const Navigation = ({ isNarrow }) => {
         querySelectall: '[role=link]',
         find: (element) => element.firstChild.name === location.pathname.split("/")[1]
     })
+    const [rootPath, setRootPath] = useState()
+    const [showPill, setShowPill] = useState()
 
     const handleTabClick = (e) => {
         e.preventDefault()
         navigate(`/${e.target.name || e.target.firstChild.name}`)
     }
 
+    useEffect(() => {
+        const rootPath = location.pathname.split("/")[1]
+        if (!['budget', 'accounts', 'spending'].includes(rootPath)) {
+            setShowPill(false)
+        } else {
+            setShowPill(true)
+        }
+    }, [location.pathname])
+
     return (
         <nav id="header-nav">
             <ul ref={navListRef} role="navigation">
                 {
                     tabs
-                        .filter((tab) => tab.path !== "/spending")
                         .map((tab) => (
                             <li
                                 key={tab.name}
@@ -75,7 +84,7 @@ const Navigation = ({ isNarrow }) => {
                         <a name='spending'>Spending</a>
                     </li>
                 }
-                <animated.span style={tabsSpring} />
+                {showPill && <animated.span style={tabsSpring} />}
             </ul>
         </nav>
     )

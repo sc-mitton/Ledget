@@ -386,7 +386,6 @@ button svg {
 
 .bordered-btn-chcl {
     border: 1.5px solid var(--btn-gray);
-    background-color: var(--green-hlight4);
     color: var(--btn-gray);
     transition: all .3s ease;
 }
@@ -550,21 +549,6 @@ button svg {
     content: '';
 }
 
-
-/* -------------------------------------------------------------------------- */
-/*                            Spending Window Styling                         */
-/* -------------------------------------------------------------------------- */
-
-#spending-window {
-    flex: 1;
-    min-width: 430px;
-    margin: 0 10px;
-    height: inherit;
-    max-height: inherit;
-    display: flex;
-    flex-direction: column;
-}
-
 #all-items-window {
     flex-grow: 1;
 }
@@ -575,4 +559,7 @@ button svg {
 
 #settings-window {
     flex: 1;
+    min-width: 430px;
+    max-width: 800px;
+    margin: 0 auto;
 }

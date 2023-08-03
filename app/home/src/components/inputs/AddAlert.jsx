@@ -160,17 +160,17 @@ const AddAlert = ({ limit }) => {
         >
             {({ open }) => (
                 <>
-                    <ComboSelect.Button className="bordered-btn-chcl btn-slim" id="add-alert-btn">
+                    <ComboSelect.Button className="btn-chcl btn-2slim" id="add-alert-btn">
                         Spending Alert
                         {selectedAlerts.length > 0
                             ?
                             <Checkmark
-                                stroke={'var(--btn-gray)'}
+                                stroke={'var(--white-text)'}
                                 width={'.7em'}
                                 height={'.7em'}
                             /> :
                             <Plus
-                                stroke={'var(--btn-gray)'}
+                                stroke={'var(--white-text)'}
                                 strokeWidth={'20'}
                                 width={'.8em'}
                                 height={'.8em'}
