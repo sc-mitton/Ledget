@@ -96,7 +96,7 @@ const EmojiButton = ({ emoji }) => {
 
     return (
         <div
-            className="btn-gr"
+            className="btn-gr2"
             id="emoji-picker-ledget--button"
             onClick={(e) => {
                 e.stopPropagation()
@@ -113,7 +113,10 @@ const EmojiButton = ({ emoji }) => {
             aria-expanded={picker}
             aria-controls="emoji-picker-ledget--container"
             tabIndex={0}
-            style={{ color: !emoji && "rgb(0, 0, 0, .3)" }}
+            style={{
+                color: !emoji && "rgb(0, 0, 0, .7)",
+                marginRight: '4px'
+            }}
         >
             {emoji ? emoji.native : '☺'}
         </div>

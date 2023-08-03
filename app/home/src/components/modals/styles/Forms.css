@@ -18,7 +18,6 @@
 .inputs-row-container {
     display: flex;
     justify-content: space-between;
-
     padding: 0 4px;
 }
 
@@ -26,7 +25,6 @@
     display: inline-flex;
     flex-wrap: wrap;
     margin: 4px 0;
-    margin-bottom: 16px;
 }
 
 .create-form .responsive-inputs-row-container>div:first-child {
@@ -91,9 +89,11 @@ input.emoji {
 
 /* ---------------------------- Create Bill Form ---------------------------- */
 
-#limit-radios {
-    display: inline-flex;
-    flex-direction: row;
+.limit-button {
+    opacity: 1;
+    padding: 0 4px;
+    cursor: pointer;
+    transition: opacity .2s ease;
 }
 
 #limit-radios button {

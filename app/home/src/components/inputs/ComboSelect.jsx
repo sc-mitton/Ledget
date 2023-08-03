@@ -1,5 +1,7 @@
 import React, { createContext, useState, useContext, useEffect, useRef } from 'react'
 
+import { useAccessEsc } from '@utils'
+
 const DataContext = createContext()
 
 const HiddenInputs = ({ value, name }) => {
@@ -84,7 +86,7 @@ const Button = (props) => {
     )
 }
 
-const Options = ({ children, static: isStatic, ...rest }) => {
+const Options = (props) => {
     const {
         multiple,
         open,
@@ -95,41 +97,15 @@ const Options = ({ children, static: isStatic, ...rest }) => {
         customRef
     } = useContext(DataContext)
     const ref = useRef(null)
+    const { children, static: isStatic, style, ...rest } = props
 
-    // Update the options
+    useAccessEsc({
+        refs: [ref, buttonRef],
+        visible: open,
+        setVisible: setOpen,
+    })
 
-    // Events for closing the dropdown
-    useEffect(() => {
-        if (open) {
-            ref.current.focus()
-
-            const handleEscape = (event) => {
-                if (event.key === 'Escape') {
-                    event.stopPropagation()
-                    setOpen(false)
-                }
-            }
-
-            const handleDocumentClick = (event) => {
-                if (ref.current
-                    && !ref.current?.contains(event.target)
-                    && !buttonRef.current?.contains(event.target)
-                ) {
-                    setOpen(false)
-                }
-            }
-
-            document.addEventListener('keydown', handleEscape)
-            document.addEventListener('mousedown', handleDocumentClick)
-
-            return () => {
-                document.removeEventListener('keydown', handleEscape)
-                document.removeEventListener('mousedown', handleDocumentClick)
-            }
-        }
-    }, [open, setOpen])
-
-    // Events for keyboard navigation
+    // Keyboard navigation
     useEffect(() => {
         if (open) {
             const handleKeyDown = (event) => {
@@ -173,13 +149,17 @@ const Options = ({ children, static: isStatic, ...rest }) => {
     return (
         <>
             {(open || isStatic) &&
-                <div ref={ref}>
+                <div ref={ref} >
                     <ul
                         aria-multiselectable={multiple}
                         aria-labelledby={buttonRef.current?.id}
                         aria-orientation='vertical'
                         role="listbox"
                         tabIndex={0}
+                        style={{
+                            position: 'absolute',
+                            ...style
+                        }}
                         {...rest}
                     >
                         {children}
@@ -214,7 +194,7 @@ const Option = ({ value, disabled, children }) => {
                 onChange([...contextValue, value])
             }
         } else {
-            onChange([value])
+            onChange(value)
         }
     }
 

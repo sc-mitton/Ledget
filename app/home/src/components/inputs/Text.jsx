@@ -3,25 +3,34 @@ import React, { useRef } from 'react'
 import './styles/Text.css'
 import Emoji from './Emoji'
 
-export const TextInput = ({ children }) => {
+export const TextInput = (props) => {
+
+    const { className, children, ...rest } = props
 
     return (
-        <div className="input-container">
+        <div className={`input-container ${className || ''}`} {...rest}>
             {children}
         </div>
     )
 }
 
-export const MenuTextInput = ({ children }) => {
+export const MenuTextInput = (props) => {
+    const { className, onClick, children, ...rest } = props
     const ref = useRef(null)
 
     const handleClick = (event) => {
         // focus input element inside the container
         ref.current.querySelector('input').focus()
+        onClick && onClick(event)
     }
 
     return (
-        <div className="menu-text-input-container" onClick={handleClick} ref={ref}>
+        <div
+            className={`menu-text-input-container ${className || ''}`}
+            onClick={handleClick}
+            ref={ref}
+            {...rest}
+        >
             <div>
                 {children}
             </div>
@@ -29,13 +38,13 @@ export const MenuTextInput = ({ children }) => {
     )
 }
 
-export const NameInput = React.forwardRef((props, ref) => {
+export const EmojiComboText = React.forwardRef((props, ref) => {
     const { emoji, setEmoji, children, register, ...rest } = props
     const { ref: formRef, ...registerRest } = register('name')
 
     return (
         <>
-            <label htmlFor="name">Name</label>
+            <label htmlFor={rest.name}>Name</label>
             <TextInput>
                 <Emoji emoji={emoji} setEmoji={setEmoji}>
                     {({ emoji }) => (
@@ -50,7 +59,6 @@ export const NameInput = React.forwardRef((props, ref) => {
                 </Emoji>
                 <input
                     type="text"
-                    className="category-name"
                     {...rest}
                     {...registerRest}
                     ref={(e) => {
@@ -63,3 +71,37 @@ export const NameInput = React.forwardRef((props, ref) => {
         </>
     )
 })
+
+export const DollarInput = (props) => {
+    const { dollar, setDollar, register, ...rest } = props
+
+    const { onChange, onBlur, onFocus, ...registerRest } = register(props.name)
+
+    return (
+        <input
+            type="text"
+            placeholder="$0"
+            value={dollar}
+            {...rest}
+            {...registerRest}
+            onChange={(e) => {
+                const formatted = e.target.value
+                    .replace(/[^0-9.]/g, '')
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                setDollar(`$${formatted}`)
+                onChange && onChange(e)
+            }}
+            onBlur={(e) => {
+                e.target.value.length <= 1 && setDollar('')
+                onBlur && onBlur(e)
+            }}
+            onFocus={(e) => {
+                setDollar('$')
+                onFocus && onFocus(e)
+            }}
+            size="14"
+        />
+
+    )
+}
+

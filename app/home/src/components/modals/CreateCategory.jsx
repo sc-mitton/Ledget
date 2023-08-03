@@ -6,7 +6,7 @@ import { object, string } from "yup"
 import { useNavigate } from 'react-router-dom'
 
 import './styles/Forms.css'
-import { AddAlert, NameInput, TextInput, GreenRadios } from '@components/inputs'
+import { AddAlert, EmojiComboText, TextInput, GreenRadios } from '@components/inputs'
 import withModal from './with/withModal'
 import SubmitForm from './pieces/SubmitForm'
 import { FormErrorTip } from '@components/pieces'
@@ -24,6 +24,7 @@ const radioOptions = [
 
 const LimitInput = (props) => {
     const { dollarLimit, setDollarLimit, register } = props
+    const { onBlur, onChange, ...rest } = register('limit')
 
     return (
         <>
@@ -34,16 +35,20 @@ const LimitInput = (props) => {
                     type="text"
                     id="limit"
                     placeholder="$0"
-                    {...register('limit')}
                     value={dollarLimit}
                     onChange={(e) => {
                         const formatted = e.target.value
                             .replace(/[^0-9.]/g, '')
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                         setDollarLimit(`$${formatted}`)
+                        onChange && onChange(e)
                     }}
-                    onBlur={(e) => e.target.value.length <= 1 && setDollarLimit('')}
+                    onBlur={(e) => {
+                        e.target.value.length <= 1 && setDollarLimit('')
+                        onBlur && onBlur(e)
+                    }}
                     size="14"
+                    {...rest}
                 />
                 {props.children}
             </TextInput>
@@ -84,16 +89,16 @@ const Form = (props) => {
                 </div>
                 <div className="responsive-inputs-row-container">
                     <div>
-                        <NameInput
+                        <EmojiComboText
                             name="name"
-                            placeholder="Category name..."
+                            placeholder="Name..."
                             emoji={emoji}
                             setEmoji={setEmoji}
                             ref={nameRef}
                             register={register}
                         >
                             {errors.name && <FormErrorTip />}
-                        </NameInput>
+                        </EmojiComboText>
                     </div>
                     <div>
                         <LimitInput
@@ -102,20 +107,12 @@ const Form = (props) => {
                             setDollarLimit={setDollarLimit}
                             register={register}
                         >
-                            {errors.limit && !dollarLimit && <FormErrorTip />}
+                            {errors.limit && < FormErrorTip />}
                         </LimitInput>
                     </div>
                 </div>
-                <div style={{ margin: '-8px 0 0 4px' }}>
-                    <AddAlert
-                        limit={dollarLimit}
-                        defaultOptions={[
-                            { id: 1, value: 25, disabled: false },
-                            { id: 2, value: 50, disabled: false },
-                            { id: 3, value: 75, disabled: false },
-                            { id: 4, value: 100, disabled: false },
-                        ]}
-                    />
+                <div style={{ marginBottom: '20px' }}>
+                    <AddAlert limit={dollarLimit} />
                 </div>
                 <SubmitForm
                     submitting={submitting}
@@ -135,7 +132,7 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '375px'}
+            maxWidth={props.maxWidth || '325px'}
             blur={3}
         />
 

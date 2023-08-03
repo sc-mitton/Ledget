@@ -8,13 +8,15 @@ import { object, string } from "yup"
 import './styles/Forms.css'
 import SubmitForm from './pieces/SubmitForm'
 import withModal from './with/withModal'
-import { TextInput, NameInput, GreenRadios } from '@components/inputs'
+import {
+    EmojiComboText,
+    TextInput,
+    DollarInput,
+    GreenRadios,
+    Checkbox,
+    AddReminder
+} from '@components/inputs'
 import { FormErrorTip } from '@components/pieces'
-
-const schema = object().shape({
-    name: string().required(),
-    billAmount: string().required(),
-})
 
 const radioOptions = [
     { name: 'categoryType', value: 'monthly', label: 'Monthly', default: true },
@@ -23,8 +25,19 @@ const radioOptions = [
 
 const Form = (props) => {
     const [submitting, setSubmitting] = useState(false)
-    const [billAmount, setBillAmount] = useState('')
     const [emoji, setEmoji] = useState('')
+    const [rangeMode, setRangeMode] = useState(false)
+    const [lowerRange, setLowerRange] = useState('')
+    const [upperRange, setUpperRange] = useState('')
+
+    const schema = object().shape({
+        name: string().required(),
+        lowerRange: rangeMode
+            ? string().required()
+            : string(),
+        upperRange: string().required(),
+    })
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onSubmit',
@@ -52,42 +65,60 @@ const Form = (props) => {
                 <div style={{ paddingLeft: '4px', display: 'inline-block' }}>
                     <GreenRadios options={radioOptions} />
                 </div>
-                <div className="responsive-inputs-row-container">
+                <div className="responsive-inputs-row-container" style={{ marginBottom: "20px" }}>
                     <div>
-                        <NameInput
+                        <EmojiComboText
                             name="name"
-                            placeholder="Bill name..."
+                            placeholder="Name..."
                             emoji={emoji}
                             setEmoji={setEmoji}
                             ref={nameRef}
                             register={register}
                         >
                             {errors.name && <FormErrorTip />}
-                        </NameInput>
+                        </EmojiComboText>
+                        <AddReminder />
                     </div>
                     <div>
-                        <label htmlFor="billAmount" style={{ display: 'flex', flexDirection: 'row' }}>
-                            Amount
+                        <label htmlFor="upperRange">
+                            <div
+                                className="limit-button"
+                                role="button"
+                                aria-label="toggle bill amount to range"
+                                onClick={(e) => { setRangeMode(true) }}
+                            >
+                                Amount
+                            </div>
                         </label>
-                        <TextInput>
-                            <input
-                                type="text"
-                                name="billAmount"
-                                id="billAmount"
-                                placeholder="$0"
-                                value={billAmount}
-                                {...register('billAmount')}
-                                onChange={(e) => {
-                                    const formatted = e.target.value
-                                        .replace(/[^0-9.]/g, '')
-                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                    setBillAmount(`$${formatted}`)
-                                }}
-                                onBlur={(e) => e.target.value.length <= 1 && setBillAmount('')}
-                                size="14"
-                            />
-                            {errors.billAmount && !billAmount && <FormErrorTip />}
-                        </TextInput>
+                        <div >
+                            <TextInput >
+                                {rangeMode &&
+                                    <DollarInput
+                                        dollar={lowerRange}
+                                        setDollar={setLowerRange}
+                                        name="lowerRange"
+                                        id="lowerRange"
+                                        register={register}
+                                    />
+                                }
+                                <DollarInput
+                                    dollar={upperRange}
+                                    setDollar={setUpperRange}
+                                    name="upperRange"
+                                    id="upperRange"
+                                    register={register}
+                                />
+                                {(errors.upperRange || errors.lowerRange)
+                                    && <FormErrorTip />}
+                            </TextInput>
+                        </div >
+                        <Checkbox
+                            label='Range'
+                            name='range'
+                            id='range'
+                            value={rangeMode}
+                            onChange={(e) => { setRangeMode(e.target.checked) }}
+                        />
                     </div>
                 </div>
                 <SubmitForm
@@ -108,7 +139,7 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '375px'}
+            maxWidth={props.maxWidth || '325px'}
             blur={3}
         />
 

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 
 
-import './styles/AddAlert.css'
+import './styles/Dropdowns.css'
 import Plus from '@assets/icons/Plus'
 import Return from '@assets/icons/Return'
 import Checkmark from '@assets/icons/Checkmark'
@@ -21,9 +21,14 @@ const formatDollar = (value, percentage) => {
     return `$${dollar}`
 }
 
-const AddAlert = ({ defaultOptions, limit }) => {
+const AddAlert = ({ limit }) => {
     const [selectedAlerts, setSelectedAlerts] = useState([])
-    const [alertOptions, setAlertOptions] = useState(defaultOptions)
+    const [alertOptions, setAlertOptions] = useState([
+        { id: 1, value: 25, disabled: false },
+        { id: 2, value: 50, disabled: false },
+        { id: 3, value: 75, disabled: false },
+        { id: 4, value: 100, disabled: false },
+    ])
 
     const Option = ({ value, active, selected }) => (
         <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
@@ -146,9 +151,9 @@ const AddAlert = ({ defaultOptions, limit }) => {
     )
 
     return (
-        <div id="alert-select">
+        <div className="select-container">
             <ComboSelect
-                name="alerts"
+                name="alert"
                 value={selectedAlerts}
                 onChange={setSelectedAlerts}
                 setSelections={setAlertOptions}
@@ -156,7 +161,7 @@ const AddAlert = ({ defaultOptions, limit }) => {
             >
                 {({ open }) => (
                     <>
-                        <ComboSelect.Button className="btn-chcl btn2" id="add-alert-btn">
+                        <ComboSelect.Button className="btn-chcl btn-2slim" id="add-alert-btn">
                             Spending Alert
                             {selectedAlerts.length > 0
                                 ?
@@ -172,12 +177,13 @@ const AddAlert = ({ defaultOptions, limit }) => {
                                     height={'.8em'}
                                 />}
                         </ComboSelect.Button>
-                        <ComboSelect.Options style={{ position: 'absolute' }} static>
-                            <DropAnimation visible={open} >
-                                <div className="dropdown" style={{ marginTop: '8px' }}>
-                                    <Options />
-                                    <CustomOption />
-                                </div>
+                        <ComboSelect.Options static>
+                            <DropAnimation
+                                className="dropdown select"
+                                visible={open}
+                            >
+                                <Options />
+                                <CustomOption />
                             </DropAnimation>
                         </ComboSelect.Options>
                     </>

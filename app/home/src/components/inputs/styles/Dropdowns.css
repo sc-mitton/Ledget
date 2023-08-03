@@ -1,10 +1,14 @@
-#alert-select {
+.select-container {
     position: relative;
     z-index: 500;
 }
 
-#alert-select ul {
+.select-container ul {
     height: 0;
+}
+
+.select {
+    margin-top: 8px;
 }
 
 #add-alert-btn svg {

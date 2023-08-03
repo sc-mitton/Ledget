@@ -3,6 +3,8 @@ import { useEffect } from 'react'
 function useAccessEsc({ refs, visible, setVisible }) {
     useEffect(() => {
         const handleClick = (event) => {
+            event.stopPropagation()
+
             let flag = false
             for (const ref of refs) {
                 if (ref.current && !ref.current.contains(event.target)) {
