@@ -1,10 +1,6 @@
 .select-container {
-    position: relative;
+    position: absolute;
     z-index: 500;
-}
-
-.select-container ul {
-    height: 0;
 }
 
 .select {

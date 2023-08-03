@@ -62,10 +62,11 @@ const Form = (props) => {
         <div className="create-form">
             <h2>New Bill</h2>
             <form onSubmit={handleSubmit((data) => submit(data))} id="new-bill-form">
-                <div style={{ paddingLeft: '4px', display: 'inline-block' }}>
-                    <GreenRadios options={radioOptions} />
-                </div>
-                <div className="responsive-inputs-row-container" style={{ marginBottom: "20px" }}>
+                <GreenRadios options={radioOptions} />
+                <div
+                    className="responsive-inputs-row-container"
+                    style={{ margin: "12px 0 32px 0" }}
+                >
                     <div>
                         <EmojiComboText
                             name="name"
@@ -77,7 +78,9 @@ const Form = (props) => {
                         >
                             {errors.name && <FormErrorTip />}
                         </EmojiComboText>
-                        <AddReminder />
+                        <div style={{ marginTop: '4px' }}>
+                            <AddReminder />
+                        </div>
                     </div>
                     <div>
                         <label htmlFor="upperRange">

@@ -151,45 +151,46 @@ const AddAlert = ({ limit }) => {
     )
 
     return (
-        <div className="select-container">
-            <ComboSelect
-                name="alert"
-                value={selectedAlerts}
-                onChange={setSelectedAlerts}
-                setSelections={setAlertOptions}
-                multiple
-            >
-                {({ open }) => (
-                    <>
-                        <ComboSelect.Button className="btn-chcl btn-2slim" id="add-alert-btn">
-                            Spending Alert
-                            {selectedAlerts.length > 0
-                                ?
-                                <Checkmark
-                                    stroke={'var(--white-text)'}
-                                    width={'.7em'}
-                                    height={'.7em'}
-                                /> :
-                                <Plus
-                                    stroke={'var(--white-text)'}
-                                    strokeWidth={'20'}
-                                    width={'.8em'}
-                                    height={'.8em'}
-                                />}
-                        </ComboSelect.Button>
-                        <ComboSelect.Options static>
-                            <DropAnimation
-                                className="dropdown select"
-                                visible={open}
-                            >
-                                <Options />
-                                <CustomOption />
-                            </DropAnimation>
-                        </ComboSelect.Options>
-                    </>
-                )}
-            </ComboSelect>
-        </div>
+        <ComboSelect
+            name="alert"
+            value={selectedAlerts}
+            onChange={setSelectedAlerts}
+            setSelections={setAlertOptions}
+            multiple
+        >
+            {({ open }) => (
+                <>
+                    <ComboSelect.Button className="btn-chcl btn-2slim" id="add-alert-btn">
+                        Spending Alert
+                        {selectedAlerts.length > 0
+                            ?
+                            <Checkmark
+                                stroke={'var(--white-text)'}
+                                width={'.7em'}
+                                height={'.7em'}
+                            /> :
+                            <Plus
+                                stroke={'var(--white-text)'}
+                                strokeWidth={'20'}
+                                width={'.8em'}
+                                height={'.8em'}
+                            />}
+                    </ComboSelect.Button>
+                    <ComboSelect.Options
+                        className="select-container"
+                        static
+                    >
+                        <DropAnimation
+                            className="dropdown select"
+                            visible={open}
+                        >
+                            <Options />
+                            <CustomOption />
+                        </DropAnimation>
+                    </ComboSelect.Options>
+                </>
+            )}
+        </ComboSelect>
     )
 }
 

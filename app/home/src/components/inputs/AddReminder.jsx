@@ -11,7 +11,7 @@ const defaultOptions = [
     { id: 2, value: { quantity: 3, period: 'day' }, disabled: false },
     { id: 3, value: { quantity: 5, period: 'day' }, disabled: false },
     { id: 4, value: { quantity: 1, period: 'week' }, disabled: false },
-    { id: 4, value: { quantity: 2, period: 'week' }, disabled: false }
+    { id: 5, value: { quantity: 2, period: 'week' }, disabled: false }
 ]
 
 const AddReminder = () => {
@@ -19,19 +19,30 @@ const AddReminder = () => {
     const [reminderOptions, setReminderOptions] = useState(defaultOptions)
 
 
-    const Option = ({ value, active, selected }) => (
-        <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
-            <div>
-                {value.quantity}
-                {value.quantity > 1 ? ` ${value.period}s` : ` ${value.period}}`}
-            </div>
-            <div>
-                <Checkmark
-                    stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
-                />
-            </div>
-        </div>
-    )
+    const Option = ({ value, active, selected }) => {
+        const currentIndex = reminderOptions.findIndex((option) => option.value === value)
+        const nextOption = reminderOptions[currentIndex + 1]
+
+        return (
+            <>
+                <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
+                    <div>
+                        {value.quantity}
+                        {value.quantity > 1 ? ` ${value.period}s` : ` ${value.period}`}
+                    </div>
+                    <div>
+                        <Checkmark
+                            stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
+                        />
+                    </div>
+                </div>
+                <div style={{ padding: '0 4px', opacity: '.1' }}>
+                    {nextOption && nextOption.value.period !== value.period &&
+                        <hr style={{ margin: '0' }} />}
+                </div>
+            </>
+        )
+    }
 
     const Options = () => {
         return (
@@ -78,8 +89,8 @@ const AddReminder = () => {
                                 height={'.8em'}
                             />}
                     </ComboSelect.Button>
-                    <ComboSelect.Options style={{ position: 'absolute', }} static>
-                        <DropAnimation open={open} className="dropdown select">
+                    <ComboSelect.Options className="select-container" static>
+                        <DropAnimation visible={open} className="dropdown select">
                             <Options />
                         </DropAnimation>
                     </ComboSelect.Options>

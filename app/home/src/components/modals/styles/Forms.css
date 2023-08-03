@@ -4,6 +4,7 @@
     justify-content: start;
     width: 100%;
     margin-top: 8px;
+    padding: 0 4px;
 }
 
 .responsive-inputs-row-container label {
@@ -18,7 +19,6 @@
 .inputs-row-container {
     display: flex;
     justify-content: space-between;
-    padding: 0 4px;
 }
 
 .responsive-inputs-row-container {
@@ -29,16 +29,16 @@
 
 .create-form .responsive-inputs-row-container>div:first-child {
     box-sizing: border-box;
-    padding: 0 4px;
     display: inline-flex;
     flex-direction: column;
+    padding-right: 4px;
 }
 
 .create-form .responsive-inputs-row-container>div:last-child {
     box-sizing: border-box;
-    padding: 0 4px;
     display: inline-flex;
     flex-direction: column;
+    padding-left: 4px;
 }
 
 #new-bill-form .responsive-inputs-row-container>div:first-child {
@@ -91,12 +91,10 @@ input.emoji {
 
 .limit-button {
     opacity: 1;
-    padding: 0 4px;
     cursor: pointer;
     transition: opacity .2s ease;
 }
 
 #limit-radios button {
-    padding: 0 4px;
     font-weight: 400;
 }
