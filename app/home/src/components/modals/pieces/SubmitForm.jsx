@@ -8,7 +8,6 @@ const SubmitForm = ({ submitting, onCancel }) => {
     const styles = {
         display: 'flex',
         justifyContent: 'end',
-        margin: '0px 4px 0 4px',
         position: 'relative',
         zIndex: '0'
     }

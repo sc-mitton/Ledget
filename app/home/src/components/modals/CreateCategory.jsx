@@ -82,16 +82,17 @@ const Form = (props) => {
 
     return (
         <div className="create-form">
-            <h2>New Category</h2>
             <form onSubmit={handleSubmit((data) => submit(data))} id="new-cat-form">
-                <div style={{ paddingLeft: '4px', display: 'inline-block' }}>
+                <div style={{ display: 'inline-block' }}>
+                    <h2>New Category</h2>
                     <GreenRadios options={radioOptions} />
+                    <hr style={{ opacity: ".1" }} />
                 </div>
                 <div className="responsive-inputs-row-container">
                     <div>
                         <EmojiComboText
                             name="name"
-                            placeholder="Name..."
+                            placeholder="Name"
                             emoji={emoji}
                             setEmoji={setEmoji}
                             ref={nameRef}

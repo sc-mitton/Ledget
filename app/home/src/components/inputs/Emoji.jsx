@@ -83,6 +83,7 @@ const EmojiPicker = () => {
                     showCategoryFilter={false}
                     showSkinTones={false}
                     maxFrequentRows={1}
+                    perLine={8}
                     categories={categories}
                     categoryIcons={categoryIcons}
                 />

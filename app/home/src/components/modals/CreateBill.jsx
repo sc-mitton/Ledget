@@ -62,15 +62,18 @@ const Form = (props) => {
         <div className="create-form">
             <h2>New Bill</h2>
             <form onSubmit={handleSubmit((data) => submit(data))} id="new-bill-form">
-                <GreenRadios options={radioOptions} />
+                <div style={{ display: 'inline-block' }}>
+                    <GreenRadios options={radioOptions} />
+                    <hr style={{ opacity: ".1" }} />
+                </div>
                 <div
                     className="responsive-inputs-row-container"
-                    style={{ margin: "12px 0" }}
+                    style={{ marginTop: '12px' }}
                 >
                     <div>
                         <EmojiComboText
                             name="name"
-                            placeholder="Name..."
+                            placeholder="Name"
                             emoji={emoji}
                             setEmoji={setEmoji}
                             ref={nameRef}
@@ -78,21 +81,9 @@ const Form = (props) => {
                         >
                             {errors.name && <FormErrorTip />}
                         </EmojiComboText>
-                        <div style={{ marginTop: '8px' }}>
-                            <AddReminder />
-                        </div>
                     </div>
                     <div>
-                        <label htmlFor="upperRange">
-                            <div
-                                className="limit-button"
-                                role="button"
-                                aria-label="toggle bill amount to range"
-                                onClick={(e) => { setRangeMode(true) }}
-                            >
-                                Amount
-                            </div>
-                        </label>
+                        <label htmlFor="upperRange">Amount</label>
                         <div >
                             <TextInput >
                                 {rangeMode &&
@@ -115,14 +106,19 @@ const Form = (props) => {
                                     && <FormErrorTip />}
                             </TextInput>
                         </div >
-                        {/* <Checkbox
-                            label='Range'
-                            name='range'
-                            id='range'
-                            value={rangeMode}
-                            onChange={(e) => { setRangeMode(e.target.checked) }}
-                        /> */}
                     </div>
+                </div>
+                <div id="below-inputs" style={{ marginBottom: '16px' }}>
+                    <div>
+                        <AddReminder />
+                    </div>
+                    <Checkbox
+                        label='Range'
+                        name='range'
+                        id='range'
+                        value={rangeMode}
+                        onChange={(e) => { setRangeMode(e.target.checked) }}
+                    />
                 </div>
                 <SubmitForm
                     submitting={submitting}

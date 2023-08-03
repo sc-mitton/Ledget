@@ -7,8 +7,9 @@
     margin-top: 8px;
 }
 
-#add-alert-btn svg {
-    margin-left: 4px;
+#add-alert-btn svg,
+#add-reminder-btn svg {
+    margin-left: 8px;
 }
 
 .slct-item {
@@ -22,6 +23,10 @@
     transition: background-color 0.3s ease-out;
     border-radius: 6px;
     cursor: pointer;
+}
+
+.slct-item svg {
+    margin-left: 12px;
 }
 
 .a-slct-item {
@@ -57,7 +62,7 @@
     font-size: 1em;
     display: inline;
     opacity: 0;
-    margin-right: 8px;
+    margin: 0 8px;
 }
 
 .slct-item div:last-child span.active {

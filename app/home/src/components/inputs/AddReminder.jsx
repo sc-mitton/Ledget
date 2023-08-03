@@ -11,7 +11,8 @@ const defaultOptions = [
     { id: 2, value: { quantity: 3, period: 'day' }, disabled: false },
     { id: 3, value: { quantity: 5, period: 'day' }, disabled: false },
     { id: 4, value: { quantity: 1, period: 'week' }, disabled: false },
-    { id: 5, value: { quantity: 2, period: 'week' }, disabled: false }
+    { id: 5, value: { quantity: 2, period: 'week' }, disabled: false },
+    { id: 5, value: { quantity: 3, period: 'week' }, disabled: false }
 ]
 
 const AddReminder = () => {
@@ -20,8 +21,8 @@ const AddReminder = () => {
 
 
     const Option = ({ value, active, selected }) => {
-        const currentIndex = reminderOptions.findIndex((option) => option.value === value)
-        const nextOption = reminderOptions[currentIndex + 1]
+        const opIndex = reminderOptions.findIndex((op) => op.value === value)
+        const nextOp = reminderOptions[opIndex + 1]
 
         return (
             <>
@@ -36,9 +37,8 @@ const AddReminder = () => {
                         />
                     </div>
                 </div>
-                <div style={{ padding: '0 4px', opacity: '.1' }}>
-                    {nextOption && nextOption.value.period !== value.period &&
-                        <hr style={{ margin: '0' }} />}
+                <div style={{ padding: '0 2px', opacity: '.1' }}>
+                    {nextOp && nextOp.value.period !== value.period && <hr />}
                 </div>
             </>
         )
@@ -68,12 +68,15 @@ const AddReminder = () => {
         <ComboSelect
             name="reminders"
             value={selectedReminders}
-            onChange={setReminderOptions}
+            onChange={setSelectedReminders}
             multiple
         >
             {({ open }) => (
                 <>
-                    <ComboSelect.Button className="btn-chcl btn-2slim btn">
+                    <ComboSelect.Button
+                        className="btn-chcl btn-2slim btn"
+                        id="add-reminder-btn"
+                    >
                         Reminder
                         {selectedReminders.length > 0
                             ?

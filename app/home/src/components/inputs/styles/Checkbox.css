@@ -1,5 +1,4 @@
 .checkbox-container {
-    font-size: 12px;
     box-sizing: border-box;
     display: flex;
     justify-content: start;
@@ -47,6 +46,7 @@
 .checkbox span:first-child {
     width: 14px;
     height: 14px;
+    font-size: 12px;
     transform: scale(1);
     border: 1.5px solid var(--btn-gray);
     border-radius: 3px;

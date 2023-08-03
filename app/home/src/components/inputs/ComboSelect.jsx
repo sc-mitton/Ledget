@@ -5,26 +5,40 @@ import { useAccessEsc } from '@utils'
 const DataContext = createContext()
 
 const HiddenInputs = ({ value, name }) => {
+    const inputs = []
 
-    return (
-        Array.isArray(value)
-            ?
-            value.map((item, index) => (
-                <input
-                    key={index}
-                    type="hidden"
-                    name={`${name}${index}`}
-                    value={item}
-                />
-            ))
-            :
-            <input
-                type="hidden"
-                name={name}
-                value={value}
-            />
-    )
-}
+    const processValue = (value, currentName) => {
+        switch (typeof value) {
+            case 'object':
+                if (Array.isArray(value)) {
+                    value.forEach((item, index) => {
+                        processValue(item, `${currentName}[${index}]`)
+                    })
+                } else {
+                    for (const key in value) {
+                        processValue(value[key], `${currentName}[${key}]`)
+                    }
+                }
+                break;
+            case 'string':
+            case 'number':
+                inputs.push(
+                    <input
+                        key={`${currentName}`}
+                        type="hidden"
+                        name={currentName}
+                        value={value}
+                    />
+                )
+                break
+            default:
+                break
+        }
+    }
+
+    processValue(value, name)
+    return inputs
+};
 
 const ComboSelect = (props) => {
     const { value, onChange, setSelections, multiple } = props
@@ -185,7 +199,7 @@ const Option = ({ value, disabled, children }) => {
     } = useContext(DataContext)
 
     // Updating the active list
-    const updateSelected = () => {
+    const updateValue = () => {
         if (multiple) {
             if (contextValue.includes(value)) {
                 onChange(contextValue.filter((item) => item !== value))
@@ -211,7 +225,7 @@ const Option = ({ value, disabled, children }) => {
     }
 
     const handleClick = () => {
-        updateSelected()
+        updateValue()
         updateOptions()
     }
 
@@ -231,7 +245,6 @@ const Option = ({ value, disabled, children }) => {
             aria-selected={value}
             headlessui-state={!disabled && contextActive === value ? 'active' : null}
             tabIndex={-1}
-            value={value}
             onKeyDown={(event) => {
                 if (event.key === 'Enter') {
                     handleClick(event)

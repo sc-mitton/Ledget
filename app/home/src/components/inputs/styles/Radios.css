@@ -1,7 +1,7 @@
 .green-radios-container {
     display: inline-flex;
     flex-direction: row;
-    margin: 8px 0;
+    margin: 4px 0;
     background-color: var(--green-hlight);
     border-radius: 12px;
 }
