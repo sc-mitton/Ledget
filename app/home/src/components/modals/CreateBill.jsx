@@ -65,7 +65,7 @@ const Form = (props) => {
                 <GreenRadios options={radioOptions} />
                 <div
                     className="responsive-inputs-row-container"
-                    style={{ margin: "12px 0 32px 0" }}
+                    style={{ margin: "12px 0" }}
                 >
                     <div>
                         <EmojiComboText
@@ -78,7 +78,7 @@ const Form = (props) => {
                         >
                             {errors.name && <FormErrorTip />}
                         </EmojiComboText>
-                        <div style={{ marginTop: '4px' }}>
+                        <div style={{ marginTop: '8px' }}>
                             <AddReminder />
                         </div>
                     </div>
@@ -115,13 +115,13 @@ const Form = (props) => {
                                     && <FormErrorTip />}
                             </TextInput>
                         </div >
-                        <Checkbox
+                        {/* <Checkbox
                             label='Range'
                             name='range'
                             id='range'
                             value={rangeMode}
                             onChange={(e) => { setRangeMode(e.target.checked) }}
-                        />
+                        /> */}
                     </div>
                 </div>
                 <SubmitForm

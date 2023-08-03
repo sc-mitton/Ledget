@@ -111,7 +111,7 @@ const Form = (props) => {
                         </LimitInput>
                     </div>
                 </div>
-                <div style={{ marginBottom: '20px' }}>
+                <div style={{ marginBottom: '20px', marginTop: '4px' }}>
                     <AddAlert limit={dollarLimit} />
                 </div>
                 <SubmitForm
