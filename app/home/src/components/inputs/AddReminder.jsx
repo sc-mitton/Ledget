@@ -74,19 +74,19 @@ const AddReminder = () => {
             {({ open }) => (
                 <>
                     <ComboSelect.Button
-                        className="btn-chcl btn-2slim btn"
+                        className="bordered-btn-chcl btn-slim btn"
                         id="add-reminder-btn"
                     >
                         Reminder
                         {selectedReminders.length > 0
                             ?
                             <Checkmark
-                                stroke={'var(--white-text)'}
+                                stroke={'var(--btn-gray)'}
                                 width={'.7em'}
                                 height={'.7em'}
                             /> :
                             <Plus
-                                stroke={'var(--white-text)'}
+                                stroke={'var(--btn-gray)'}
                                 strokeWidth={'20'}
                                 width={'.8em'}
                                 height={'.8em'}

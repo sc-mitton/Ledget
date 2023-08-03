@@ -275,15 +275,13 @@ const ExpandButton = ({ onClick }) => {
                 className="btn-sp btn-discreet"
                 tabIndex={0}
                 style={{ padding: '0 8px' }}
+                onClick={() => {
+                    setRotated(!rotated)
+                    onClick()
+                }}
+                aria-label="Expand new item stack"
             >
-                <animated.div
-                    style={rotationProps}
-                    aria-label="Expand new item stack"
-                    onClick={() => {
-                        setRotated(!rotated)
-                        onClick()
-                    }}
-                >
+                <animated.div style={rotationProps}>
                     <ExpandIcon stroke={"var(--faded-text)"} />
                 </animated.div >
             </button>
