@@ -108,7 +108,7 @@ const Form = (props) => {
                         </div >
                     </div>
                 </div>
-                <div id="below-inputs" style={{ marginBottom: '16px' }}>
+                <div id="below-inputs" style={{ marginBottom: '32px' }}>
                     <div>
                         <AddReminder />
                     </div>
@@ -138,7 +138,7 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '325px'}
+            maxWidth={props.maxWidth || '350px'}
             blur={3}
         />
 

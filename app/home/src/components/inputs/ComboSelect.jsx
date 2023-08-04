@@ -130,7 +130,7 @@ const Options = (props) => {
                             return options[0]
                         } else if (prev === options[options.length - 1]) {
                             customRef.current?.focus()
-                            return null
+                            return options[options.length - 1]
                         } else {
                             return options[options.findIndex((item) => item === prev) + 1]
                         }

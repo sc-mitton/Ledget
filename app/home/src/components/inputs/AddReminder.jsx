@@ -12,7 +12,7 @@ const defaultOptions = [
     { id: 3, value: { quantity: 5, period: 'day' }, disabled: false },
     { id: 4, value: { quantity: 1, period: 'week' }, disabled: false },
     { id: 5, value: { quantity: 2, period: 'week' }, disabled: false },
-    { id: 5, value: { quantity: 3, period: 'week' }, disabled: false }
+    { id: 6, value: { quantity: 3, period: 'week' }, disabled: false }
 ]
 
 const AddReminder = () => {

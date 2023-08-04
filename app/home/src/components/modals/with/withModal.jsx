@@ -3,7 +3,7 @@ import { useTransition, animated } from '@react-spring/web'
 
 import './modal.css'
 import Close from '@assets/icons/Close'
-import { useAccessEsc } from '@utils'
+import { useClickClose } from '@utils'
 
 function withModal(WrappedComponent) {
     return (props) => {
