@@ -60,9 +60,9 @@ const Form = (props) => {
 
     return (
         <div className="create-form">
-            <h2>New Bill</h2>
             <form onSubmit={handleSubmit((data) => submit(data))} id="new-bill-form">
-                <div style={{ display: 'inline-block' }}>
+                <div className="form-top">
+                    <h2>New Bill</h2>
                     <GreenRadios options={radioOptions} />
                     <hr style={{ opacity: ".1" }} />
                 </div>

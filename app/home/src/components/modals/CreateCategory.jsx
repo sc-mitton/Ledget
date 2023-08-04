@@ -83,9 +83,11 @@ const Form = (props) => {
     return (
         <div className="create-form">
             <form onSubmit={handleSubmit((data) => submit(data))} id="new-cat-form">
-                <div style={{ display: 'inline-block' }}>
+                <div className="form-top">
                     <h2>New Category</h2>
-                    <GreenRadios options={radioOptions} />
+                    <div style={{ margin: '4px 0' }}>
+                        <GreenRadios options={radioOptions} />
+                    </div>
                     <hr style={{ opacity: ".1" }} />
                 </div>
                 <div className="responsive-inputs-row-container">

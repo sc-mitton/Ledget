@@ -78,7 +78,7 @@ const ComboSelect = (props) => {
 }
 
 const Button = (props) => {
-    const { setOpen, open, buttonRef } = useContext(DataContext)
+    const { setOpen, open, buttonRef, setActive, options } = useContext(DataContext)
     const { children, ...rest } = props
 
     const handleClick = (event) => {
@@ -86,10 +86,19 @@ const Button = (props) => {
         setOpen(!open)
     }
 
+    const handleKeyDown = (event) => {
+        event.stopPropagation()
+        if (event.key === 'Enter') {
+            !open && setActive(options[0])
+            setOpen(!open)
+        }
+    }
+
     return (
         <button
             ref={buttonRef}
             onClick={handleClick}
+            onKeyDown={handleKeyDown}
             type="button"
             aria-haspopup="listbox"
             aria-expanded={open}
@@ -123,21 +132,22 @@ const Options = (props) => {
     useEffect(() => {
         if (open) {
             const handleKeyDown = (event) => {
+                event.preventDefault()
                 if (event.key === 'ArrowDown' && document.activeElement !== customRef.current) {
-                    event.preventDefault()
                     setActive((prev) => {
                         if (prev === null) {
                             return options[0]
                         } else if (prev === options[options.length - 1]) {
                             customRef.current?.focus()
-                            return options[options.length - 1]
+                            if (!customRef.current) {
+                                return options[options.length - 1]
+                            }
                         } else {
                             return options[options.findIndex((item) => item === prev) + 1]
                         }
                     })
                 }
                 if (event.key === 'ArrowUp' && document.activeElement !== customRef.current) {
-                    event.preventDefault()
                     setActive((prev) => {
                         if (prev === null) {
                             return options[options.length - 1]
@@ -149,22 +159,38 @@ const Options = (props) => {
                     })
                 }
                 if (event.key === 'Enter') {
-                    event.preventDefault()
                     ref.current.querySelector(`[headlessui-state="active"]`).click()
                 }
             }
-            document.addEventListener('keydown', handleKeyDown)
+            window.addEventListener('keydown', handleKeyDown)
             return () => {
-                document.removeEventListener('keydown', handleKeyDown)
+                window.removeEventListener('keydown', handleKeyDown)
             }
         }
     }, [open, options])
 
+    // ul focus on open
+    useEffect(() => {
+        if (open) {
+            ref.current.focus()
+        }
+        const handleTab = (event) => {
+            if (event.key === 'Tab') {
+                setOpen(false)
+            }
+        }
+        window.addEventListener('keydown', handleTab)
+        return () => {
+            window.removeEventListener('keydown', handleTab)
+        }
+    }, [open])
+
     return (
         <>
             {(open || isStatic) &&
-                <div ref={ref} >
+                <div >
                     <ul
+                        ref={ref}
                         aria-multiselectable={multiple}
                         aria-labelledby={buttonRef.current?.id}
                         aria-orientation='vertical'
@@ -272,7 +298,9 @@ const Custom = React.forwardRef((props, ref) => {
         onChange,
         multiple,
         setSelections,
-        setCustom
+        setCustom,
+        options,
+        setActive
     } = useContext(DataContext)
     const {
         children,
@@ -317,6 +345,8 @@ const Custom = React.forwardRef((props, ref) => {
     }
 
     const handleKeyDown = (event) => {
+        event.preventDefault()
+        event.stopPropagation()
         onKeyDown && onKeyDown(event)
         if (event.key === 'ArrowUp') {
             customRef.current.blur()
@@ -336,6 +366,7 @@ const Custom = React.forwardRef((props, ref) => {
         event.preventDefault()
         onBlur && onBlur(event)
         setFocused(false)
+        setActive(options[options.length - 1])
     }
 
     return (
@@ -345,7 +376,10 @@ const Custom = React.forwardRef((props, ref) => {
                 onKeyDown={handleKeyDown}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                ref={ref}
+                ref={(el) => {
+                    customRef.current = el
+                    ref.current = el
+                }}
                 value={value}
                 {...rest}
             />

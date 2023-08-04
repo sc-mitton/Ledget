@@ -23,11 +23,11 @@ const MonthPicker = () => {
     const handleArrowClick = () => setPicker(!picker)
 
     useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside)
-        document.addEventListener("keydown", handleKeyDown)
+        window.addEventListener("mousedown", handleClickOutside)
+        window.addEventListener("keydown", handleKeyDown)
         return () => {
-            document.removeEventListener("mousedown", handleClickOutside)
-            document.removeEventListener("keydown", handleKeyDown)
+            window.removeEventListener("mousedown", handleClickOutside)
+            window.removeEventListener("keydown", handleKeyDown)
         }
     }, [])
 
@@ -72,9 +72,9 @@ const MonthPicker = () => {
     }
 
     useEffect(() => {
-        document.addEventListener("keydown", handleArrowNavigation);
+        window.addEventListener("keydown", handleArrowNavigation);
         return () => {
-            document.removeEventListener("keydown", handleArrowNavigation);
+            window.removeEventListener("keydown", handleArrowNavigation);
         };
     }, [picker])
 
