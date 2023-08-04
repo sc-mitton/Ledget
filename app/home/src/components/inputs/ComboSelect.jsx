@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect, useRef } from 'react'
 
-import { useAccessEsc } from '@utils'
+import { useClickClose } from '@utils'
+import { set } from 'react-hook-form'
 
 const DataContext = createContext()
 
@@ -38,7 +39,7 @@ const HiddenInputs = ({ value, name }) => {
 
     processValue(value, name)
     return inputs
-};
+}
 
 const ComboSelect = (props) => {
     const { value, onChange, setSelections, multiple } = props
@@ -114,60 +115,19 @@ const Options = (props) => {
         multiple,
         open,
         setOpen,
-        buttonRef,
         setActive,
         options,
+        buttonRef,
         customRef
     } = useContext(DataContext)
     const ref = useRef(null)
     const { children, static: isStatic, style, ...rest } = props
 
-    useAccessEsc({
+    useClickClose({
         refs: [ref, buttonRef],
         visible: open,
         setVisible: setOpen,
     })
-
-    // Keyboard navigation
-    useEffect(() => {
-        if (open) {
-            const handleKeyDown = (event) => {
-                event.preventDefault()
-                if (event.key === 'ArrowDown' && document.activeElement !== customRef.current) {
-                    setActive((prev) => {
-                        if (prev === null) {
-                            return options[0]
-                        } else if (prev === options[options.length - 1]) {
-                            customRef.current?.focus()
-                            if (!customRef.current) {
-                                return options[options.length - 1]
-                            }
-                        } else {
-                            return options[options.findIndex((item) => item === prev) + 1]
-                        }
-                    })
-                }
-                if (event.key === 'ArrowUp' && document.activeElement !== customRef.current) {
-                    setActive((prev) => {
-                        if (prev === null) {
-                            return options[options.length - 1]
-                        } else if (prev === options[0]) {
-                            return options[0]
-                        } else {
-                            return options[options.findIndex((item) => item === prev) - 1]
-                        }
-                    })
-                }
-                if (event.key === 'Enter') {
-                    ref.current.querySelector(`[headlessui-state="active"]`).click()
-                }
-            }
-            window.addEventListener('keydown', handleKeyDown)
-            return () => {
-                window.removeEventListener('keydown', handleKeyDown)
-            }
-        }
-    }, [open, options])
 
     // ul focus on open
     useEffect(() => {
@@ -185,6 +145,68 @@ const Options = (props) => {
         }
     }, [open])
 
+    // Clear active on close
+    useEffect(() => {
+        if (!open) {
+            setActive(null)
+        }
+    }, [open])
+
+    // Keyboard nav
+    const handleKeyDown = (e) => {
+        e.stopPropagation()
+        switch (e.key) {
+            case 'ArrowDown':
+                setActive((prev) => {
+                    if (prev === null) {
+                        return options[0]
+                    } else if (prev === options[options.length - 1]) {
+                        customRef.current?.focus()
+                        if (!customRef.current) {
+                            return options[options.length - 1]
+                        }
+                    } else {
+                        return options[options.findIndex((item) => item === prev) + 1]
+                    }
+                })
+                break
+            case 'ArrowUp':
+                setActive((prev) => {
+                    if (prev === null) {
+                        return options[options.length - 1]
+                    } else if (prev === options[0]) {
+                        return options[0]
+                    } else {
+                        return options[options.findIndex((item) => item === prev) - 1]
+                    }
+                })
+                break
+            case 'Enter':
+                ref.current.querySelector(`[headlessui-state="active"]`).click()
+                break
+            case 'Tab':
+            case 'Escape':
+                setOpen(false)
+                break
+            default:
+                break
+        }
+    }
+
+    // Refocus ul when custom input is blurred
+    useEffect(() => {
+        const handleBlur = (event) => {
+            if (event.relatedTarget !== ref.current) {
+                ref.current.focus()
+                setActive(options[options.length - 1])
+            }
+        }
+        customRef.current?.addEventListener('blur', handleBlur)
+        return () => {
+            customRef.current?.removeEventListener('blur', handleBlur)
+        }
+    }, [])
+
     return (
         <>
             {(open || isStatic) &&
@@ -196,6 +218,7 @@ const Options = (props) => {
                         aria-orientation='vertical'
                         role="listbox"
                         tabIndex={0}
+                        onKeyDown={handleKeyDown}
                         style={{
                             position: 'absolute',
                             ...style
@@ -294,12 +317,12 @@ const Option = ({ value, disabled, children }) => {
 
 const Custom = React.forwardRef((props, ref) => {
     const {
+        multiple,
         customRef,
         onChange,
-        multiple,
         setSelections,
         setCustom,
-        options,
+        setOpen,
         setActive
     } = useContext(DataContext)
     const {
@@ -347,26 +370,33 @@ const Custom = React.forwardRef((props, ref) => {
     const handleKeyDown = (event) => {
         event.preventDefault()
         event.stopPropagation()
-        onKeyDown && onKeyDown(event)
-        if (event.key === 'ArrowUp') {
-            customRef.current.blur()
-        }
-        if (event.key === 'Enter') {
-            handleEnter(event)
+        onKeyDown && onKeyDown(event) // execute prop function
+        switch (event.key) {
+            case 'ArrowUp':
+                customRef.current.blur()
+                break
+            case 'Enter':
+                handleEnter(event)
+                break
+            case 'Tab':
+                setOpen(false)
+                break
+            default:
+                break
         }
     }
 
     const handleFocus = (event) => {
         event.preventDefault()
-        onFocus && onFocus(event)
+        onFocus && onFocus(event) // execute prop function
         setFocused(true)
+        setActive([])
     }
 
     const handleBlur = (event) => {
         event.preventDefault()
-        onBlur && onBlur(event)
+        onBlur && onBlur(event) // execute prop function
         setFocused(false)
-        setActive(options[options.length - 1])
     }
 
     return (

@@ -66,52 +66,42 @@ const Form = (props) => {
                     <GreenRadios options={radioOptions} />
                     <hr style={{ opacity: ".1" }} />
                 </div>
-                <div
-                    className="responsive-inputs-row-container"
-                    style={{ marginTop: '12px' }}
-                >
-                    <div>
-                        <EmojiComboText
-                            name="name"
-                            placeholder="Name"
-                            emoji={emoji}
-                            setEmoji={setEmoji}
-                            ref={nameRef}
-                            register={register}
-                        >
-                            {errors.name && <FormErrorTip />}
-                        </EmojiComboText>
-                    </div>
-                    <div>
-                        <label htmlFor="upperRange">Amount</label>
-                        <div >
-                            <TextInput >
-                                {rangeMode &&
-                                    <DollarInput
-                                        dollar={lowerRange}
-                                        setDollar={setLowerRange}
-                                        name="lowerRange"
-                                        id="lowerRange"
-                                        register={register}
-                                    />
-                                }
-                                <DollarInput
-                                    dollar={upperRange}
-                                    setDollar={setUpperRange}
-                                    name="upperRange"
-                                    id="upperRange"
-                                    register={register}
-                                />
-                                {(errors.upperRange || errors.lowerRange)
-                                    && <FormErrorTip />}
-                            </TextInput>
-                        </div >
-                    </div>
+                <div>
+                    <EmojiComboText
+                        name="name"
+                        placeholder="Name"
+                        emoji={emoji}
+                        setEmoji={setEmoji}
+                        ref={nameRef}
+                        register={register}
+                    >
+                        {errors.name && <FormErrorTip />}
+                    </EmojiComboText>
                 </div>
-                <div id="below-inputs" style={{ marginBottom: '32px' }}>
-                    <div>
-                        <AddReminder />
-                    </div>
+                <div id="limit-input-container">
+                    <label htmlFor="upperRange">Amount</label>
+                    <TextInput >
+                        {rangeMode &&
+                            <DollarInput
+                                dollar={lowerRange}
+                                setDollar={setLowerRange}
+                                name="lowerRange"
+                                id="lowerRange"
+                                register={register}
+                            />
+                        }
+                        <DollarInput
+                            dollar={upperRange}
+                            setDollar={setUpperRange}
+                            name="upperRange"
+                            id="upperRange"
+                            register={register}
+                        />
+                        {(errors.upperRange || errors.lowerRange)
+                            && <FormErrorTip />}
+                    </TextInput>
+                </div>
+                <div id="below-inputs">
                     <Checkbox
                         label='Range'
                         name='range'
@@ -119,6 +109,9 @@ const Form = (props) => {
                         value={rangeMode}
                         onChange={(e) => { setRangeMode(e.target.checked) }}
                     />
+                </div>
+                <div style={{ marginBottom: '20px' }}>
+                    <AddReminder />
                 </div>
                 <SubmitForm
                     submitting={submitting}
@@ -138,7 +131,7 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '350px'}
+            maxWidth={props.maxWidth || '250px'}
             blur={3}
         />
 

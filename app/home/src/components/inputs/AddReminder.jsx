@@ -30,11 +30,13 @@ const AddReminder = () => {
                     <div>
                         {value.quantity}
                         {value.quantity > 1 ? ` ${value.period}s` : ` ${value.period}`}
+                        <span style={{ opacity: active ? '.5' : '0', padding: '0 8px' }}>before</span>
                     </div>
                     <div>
-                        <Checkmark
-                            stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
-                        />
+                        {!selected
+                            ? <Plus stroke={'var(--muted-text-gray)'} width={'.9em'} height={'.9em'} />
+                            : <Checkmark stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`} />
+                        }
                     </div>
                 </div>
                 <div style={{ padding: '0 2px', opacity: '.1' }}>
@@ -74,19 +76,19 @@ const AddReminder = () => {
             {({ open }) => (
                 <>
                     <ComboSelect.Button
-                        className="bordered-btn-chcl btn-slim btn"
+                        className="btn-chcl btn-slim btn"
                         id="add-reminder-btn"
                     >
                         Reminder
                         {selectedReminders.length > 0
                             ?
                             <Checkmark
-                                stroke={'var(--btn-gray)'}
+                                stroke={'var(--white-text)'}
                                 width={'.7em'}
                                 height={'.7em'}
                             /> :
                             <Plus
-                                stroke={'var(--btn-gray)'}
+                                stroke={'var(--white-text)'}
                                 strokeWidth={'20'}
                                 width={'.8em'}
                                 height={'.8em'}

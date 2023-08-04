@@ -18,7 +18,7 @@
 }
 
 .create-form h2 {
-    margin-left: 8px;
+    margin: 4px 0 4px 4px;
 }
 
 .inputs-row-container {
@@ -99,6 +99,11 @@ input.emoji {
     transition: opacity .2s ease;
 }
 
+#limit-input-container {
+    margin-top: 4px;
+    margin-bottom: -4px;
+}
+
 #limit-radios button {
     font-weight: 400;
 }
@@ -106,12 +111,7 @@ input.emoji {
 #below-inputs {
     display: flex;
     align-items: center;
-}
-
-#below-inputs>div {
-    flex: 1;
-}
-
-#below-inputs .checkbox-container {
-    margin-left: 8px;
+    margin-bottom: 8px;
+    justify-content: space-between;
+    position: relative;
 }
