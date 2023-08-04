@@ -1,9 +1,52 @@
-#spending-window {
+#profile-window {
     flex: 1;
-    min-width: 430px;
-    margin: 0 10px;
-    height: inherit;
-    max-height: inherit;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    width: 90%;
+    max-width: 750px;
+    padding: 12px 0;
+    display: flex;
+    flex-direction: row;
+}
+
+#profile-window .content {
+    flex: 3;
+    padding: 20px 30px;
+}
+
+#profile-window h1 {
+    font-size: 2em;
+}
+
+/* --------------------------------- Gutter --------------------------------- */
+#profile-window #gutter {
+    flex: 1;
+    padding: 25px 35px 25px 35px;
+    border-right: 3px solid rgb(0, 0, 0, .05);
+    margin-top: 8px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+}
+
+#profile-window #gutter>div {
+    width: 100%;
+}
+
+#profile-window #gutter ul {
+    position: relative;
+    width: 100%;
+}
+
+#profile-window #gutter ul a {
+    display: inline-block;
+    padding: 2px 0 2px 16px;
+}
+
+#gutter li {
+    cursor: pointer;
+    margin: 8px 0;
+    border-radius: 12px;
+}
+
+#gutter li.active * {
+    color: var(--white-text);
 }

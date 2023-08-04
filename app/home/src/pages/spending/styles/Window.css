@@ -1,0 +1,13 @@
+#spending-window {
+    flex: 1;
+    min-width: 430px;
+    margin: 0 10px;
+    height: inherit;
+    max-height: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+#all-items-window {
+    flex-grow: 1;
+}

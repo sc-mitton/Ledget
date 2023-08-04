@@ -22,8 +22,6 @@ const usePillAnimation = (args) => {
         position: "absolute",
         backgroundColor: "var(--btn-hover-gray)",
         borderRadius: '12px',
-        height: "100%",
-        top: 0,
         zIndex: -1,
         config: { tension: 200, friction: 22 }
     }
@@ -33,6 +31,8 @@ const usePillAnimation = (args) => {
     const props = useSpring({
         width: selector?.offsetWidth,
         left: selector?.offsetLeft,
+        top: selector?.offsetTop,
+        height: selector?.offsetHeight,
         ...baseStyles
     })
 

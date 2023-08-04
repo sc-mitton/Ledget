@@ -1,5 +1,6 @@
 import React from 'react'
 
+import './styles/Window.css'
 import NeedsConfirmationWindow from '../needsConfirmation/Window'
 import Plus from '@assets/icons/Plus'
 import Funnel from '@assets/icons/Funnel'

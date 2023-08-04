@@ -7,12 +7,6 @@ import Header from './Header'
 import CreateCategory from '@components/modals/CreateCategory'
 import CreateBill from '@components/modals/CreateBill'
 
-function Main() {
-    return (
-        <></>
-    )
-}
-
 function Window() {
     return (
         <div className="window" id="budget-window">
@@ -21,7 +15,6 @@ function Window() {
                 <Route path="new-category" element={<CreateCategory />} />
                 <Route path="new-bill" element={<CreateBill />} />
                 <Route path="edit" element={<div>edit</div>} />
-                <Route path="/" element={<Main />} />
             </Routes>
         </div>
     )

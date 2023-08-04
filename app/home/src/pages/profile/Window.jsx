@@ -1,30 +1,24 @@
 import React from 'react'
 
-import './styles/window.css'
+import { Routes, Route } from 'react-router-dom'
 
-const Gutter = () => {
-    return (
-        <div id="gutter">
-            Hello There
-        </div>
-    )
-}
-
-const Settings = () => {
-    return (
-        <div className="content">
-            <div className='window-header'>
-                <h1>Settings</h1>
-            </div>
-        </div>
-    )
-}
+import './styles/Window.css'
+import Gutter from './Gutter'
+import Account from './Account'
+import Institutions from './Institutions'
+import Settings from './Settings'
+import Security from './Security'
 
 function Profile() {
     return (
-        <div className="window" id="settings-window">
+        <div className="window" id="profile-window">
             <Gutter />
-            <Settings />
+            <Routes>
+                <Route path="" element={<Account />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="institutions" element={<Institutions />} />
+                <Route path="security" element={<Security />} />
+            </Routes>
         </div>
     )
 }

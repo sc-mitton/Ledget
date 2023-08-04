@@ -4,7 +4,7 @@ import { Routes, Outlet, Navigate, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import Budget from '@pages/budget/Window'
-import Spending from '@pages/Window'
+import Spending from '@pages/spending/Window'
 import Profile from '@pages/profile/Window'
 import Accounts from '@pages/accounts/Window'
 import NotFound from '@pages/notFound/NotFound'
@@ -79,7 +79,7 @@ const App = () => {
                                     isNarrow ? <Spending /> : <Navigate to="/budget" />
                                 } />
                                 <Route path="accounts" element={<Accounts />} />
-                                <Route path="profile" element={<Profile />} />
+                                <Route path="profile/*" element={<Profile />} />
                                 <Route path="login" element={<Login />} />
                                 <Route path="/*" element={<NotFound />} />
                             </Route>

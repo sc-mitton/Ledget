@@ -33,6 +33,7 @@ const Navigation = ({ isNarrow }) => {
         querySelectall: '[role=link]',
         find: (element) => element.firstChild.name === location.pathname.split("/")[1]
     })
+
     const [rootPath, setRootPath] = useState()
     const [showPill, setShowPill] = useState()
 
@@ -53,26 +54,23 @@ const Navigation = ({ isNarrow }) => {
     return (
         <nav id="header-nav">
             <ul ref={navListRef} role="navigation">
-                {
-                    tabs
-                        .map((tab) => (
-                            <li
-                                key={tab.name}
-                                className={`${location.pathname.split('/')[1] === tab.name ? "current-" : ""}nav-item`}
-                                role="link"
-                                tabIndex={0}
-                                onClick={handleTabClick}
-                                onKeyDown={(e) => e.key === "Enter" && handleTabClick(e)}
-                            >
-                                <a
-                                    name={tab.name}
-                                    aria-current={location.pathname === tab.path ? "page" : undefined}
-                                >
-                                    {tab.name.charAt(0).toUpperCase() + tab.name.slice(1)}
-                                </a>
-                            </li>
-                        ))
-                }
+                {tabs.map((tab) => (
+                    <li
+                        key={tab.name}
+                        className={`${location.pathname.split('/')[1] === tab.name ? "current-" : ""}nav-item`}
+                        role="link"
+                        tabIndex={0}
+                        onClick={handleTabClick}
+                        onKeyDown={(e) => e.key === "Enter" && handleTabClick(e)}
+                    >
+                        <a
+                            name={tab.name}
+                            aria-current={location.pathname === tab.path ? "page" : undefined}
+                        >
+                            {tab.name.charAt(0).toUpperCase() + tab.name.slice(1)}
+                        </a>
+                    </li>
+                ))}
                 {isNarrow &&
                     <li
                         className={`${location.pathname === "/spending" ? "current-" : ""}nav-item`}
@@ -81,7 +79,12 @@ const Navigation = ({ isNarrow }) => {
                         onClick={handleTabClick}
                         onKeyDown={(e) => e.key === "Enter" && handleTabClick(e)}
                     >
-                        <a name='spending'>Spending</a>
+                        <a
+                            name='spending'
+                            aria-current={location.pathname === "spending" ? "page" : undefined}
+                        >
+                            Spending
+                        </a>
                     </li>
                 }
                 {showPill && <animated.span style={tabsSpring} />}
@@ -127,7 +130,7 @@ function Header({ isNarrow }) {
                                         <Profile2 className="dropdown-icon" />
                                         Profile
                                     </Wrapper>
-                                    <Wrapper onClick={() => navigate('/profile')}>
+                                    <Wrapper onClick={() => navigate('/profile/settings')}>
                                         <SettingsIcon className="dropdown-icon" />
                                         Settings
                                     </Wrapper>
@@ -175,7 +178,7 @@ function Header({ isNarrow }) {
         <>
             <header
                 style={{
-                    zIndex: location.pathname.split('/').length <= 2 ? 1000 : 0
+                    zIndex: !location.pathname.includes('new') ? 1000 : 0
                 }}
             >
                 <div id="header-container">
