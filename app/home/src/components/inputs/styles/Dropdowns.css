@@ -74,8 +74,17 @@
 }
 
 #return-btn-focused {
-    opacity: .3;
+    height: .8em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: .4;
     border-radius: 6px;
-    padding: 0px 6px;
-    margin: 4px;
+    padding: 2px;
+    margin: 0px 2px;
+    background-color: var(--btn-gray);
+}
+
+#return-btn-focused svg {
+    padding: 2px 4px;
 }

@@ -285,8 +285,6 @@ const Custom = React.forwardRef((props, ref) => {
     } = props
     const [focused, setFocused] = useState(false)
 
-    const localRef = useRef(null)
-
     const handleEnter = (event) => {
         event.preventDefault()
 

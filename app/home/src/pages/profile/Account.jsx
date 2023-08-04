@@ -1,5 +1,14 @@
 import React from 'react'
 
+const Info = () => {
+
+    return (
+        <div>
+
+        </div>
+    )
+}
+
 const Account = () => {
     return (
         <div>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import Close from '@assets/icons/Close'
-import { useClickClose } from '@utils'
+import { useAccessEsc } from '@utils'
 import './modal.css'
 
 function withModal(WrappedComponent) {

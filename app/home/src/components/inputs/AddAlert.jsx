@@ -113,7 +113,6 @@ const AddAlert = ({ limit }) => {
                                         }}
                                     />}
                                 <div
-                                    className="btn-chcl"
                                     id={`return-btn${focused ? '-focused' : ''}`}
                                     role="button"
                                     aria-label="Add custom alert"
