@@ -1,14 +1,92 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { animated } from '@react-spring/web'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import Profile1 from '@assets/icons/Profile1'
+import Shield from '@assets/icons/Shield'
+import Settings from '@assets/icons/Settings'
+import Link from '@assets/icons/Link'
 import { usePillAnimation } from '@utils/hooks'
+
+const NavList = () => {
+    const tabs = ['settings', 'connections', 'security']
+    const rootPath = useLocation().pathname.split("/")[2]
+    const navigate = useNavigate()
+
+    const Icon = (props) => {
+        switch (props.name) {
+            case "settings":
+                return <Settings {...props} />
+            case 'connections':
+                return <Link {...props} />
+            case "security":
+                return <Shield {...props} />
+            default:
+                return null
+        }
+    }
+
+    return (
+        tabs.map((route) => (
+            <li
+                key={route}
+                role="link"
+                name={route}
+                tabIndex={0}
+                onClick={() => navigate(route)}
+                onKeyDown={(e) => {
+                    e.key === "Enter" && navigate(route)
+                }}
+                className={`side-nav-item${rootPath === route ? "-current" : ''}`}
+            >
+                <a name={route} style={{ display: 'flex', alignItems: 'center' }}>
+                    <Icon name={route} />
+                    {route.charAt(0).toUpperCase() + route.slice(1)}
+                </a>
+            </li>
+        ))
+    )
+}
+
+const Profile = () => {
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    return (
+        <li
+            key="Account"
+            role="link"
+            name="profile"
+            tabIndex={0}
+            onClick={() => navigate("/profile")}
+            onKeyDown={(e) => e.key === "Enter" && navigate("/profile")}
+            className={`side-nav-item${location.pathname === "/profile" ? "-current" : ''}`}
+            id="profile-list-item"
+            style={{
+                padding: '12px 16px'
+            }}
+        >
+            <a name="profile">
+                <div>
+                    <Profile1 />
+                </div>
+                <div>
+                    <div>
+                        <span>Spencer's Ledget</span>
+                    </div>
+                    <div>
+                        <span style={{ opacity: '.5' }}>smitton.byu@gmail.com</span>
+                    </div>
+                </div>
+            </a>
+        </li>
+    )
+}
 
 const Gutter = () => {
     const ref = useRef(null)
     const location = useLocation()
-    const navigate = useNavigate()
 
     const { props } = usePillAnimation({
         ref: ref,
@@ -19,62 +97,18 @@ const Gutter = () => {
             const path = location.pathname.split("/")[2]
                 || location.pathname.split("/")[1]
             return el.firstChild.name === path
+        },
+        styles: {
+            backgroundColor: 'var(--green-hlight)',
         }
     })
-
-    const handleClick = (e) => {
-        const name = e.target.name || e.target.firstChild.name
-        navigate(`/profile/${name}`)
-    }
 
     return (
         <div id="gutter" >
             <div>
                 <ul role="navigation" ref={ref}>
-                    <li
-                        key="Account"
-                        role="link"
-                        name="profile"
-                        tabIndex={0}
-                        onClick={() => navigate("/profile")}
-                        onKeyDown={(e) => e.key === "Enter" && navigate("/profile")}
-                        className={`${location.pathname === "/profile" && "active"}`}
-                    >
-                        <a name="profile">Account</a>
-                    </li>
-                    <li
-                        key="settings"
-                        role="link"
-                        name="settings"
-                        tabIndex={0}
-                        onClick={handleClick}
-                        onKeyDown={(e) => e.key === "Enter" && handleClick(e)}
-                        className={`${location.pathname === "/profile/settings" && "active"}`}
-                    >
-                        <a name="settings">Settings</a>
-                    </li>
-                    <li
-                        key="institutions"
-                        role="link"
-                        name="institutions"
-                        tabIndex={0}
-                        onClick={handleClick}
-                        onKeyDown={(e) => e.key === "Enter" && handleClick(e)}
-                        className={`${location.pathname === "/profile/institutions" && "active"}`}
-                    >
-                        <a name="institutions">Institutions</a>
-                    </li>
-                    <li
-                        key="security"
-                        role="link"
-                        name="security"
-                        tabIndex={0}
-                        onClick={handleClick}
-                        onKeyDown={(e) => e.key === "Enter" && handleClick(e)}
-                        className={`${location.pathname === "/profile/security" && "active"}`}
-                    >
-                        <a name="security">Security</a>
-                    </li>
+                    <Profile />
+                    <NavList />
                     <animated.span style={props} />
                 </ul>
             </div>

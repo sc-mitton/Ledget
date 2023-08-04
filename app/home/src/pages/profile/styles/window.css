@@ -17,9 +17,10 @@
 }
 
 /* --------------------------------- Gutter --------------------------------- */
-#profile-window #gutter {
+
+#gutter {
     flex: 1;
-    padding: 25px 35px 25px 35px;
+    padding: 2px 20px 2px 20px;
     border-right: 3px solid rgb(0, 0, 0, .05);
     margin-top: 8px;
     font-weight: 500;
@@ -27,26 +28,51 @@
     justify-content: center;
 }
 
-#profile-window #gutter>div {
+#gutter>div {
     width: 100%;
 }
 
-#profile-window #gutter ul {
+#gutter ul {
     position: relative;
     width: 100%;
 }
 
-#profile-window #gutter ul a {
-    display: inline-block;
-    padding: 2px 0 2px 16px;
-}
-
 #gutter li {
     cursor: pointer;
-    margin: 8px 0;
+    margin: 8px;
+    padding: 4px 22px;
     border-radius: 12px;
+    transition: background-color .3s ease-in-out;
 }
 
-#gutter li.active * {
-    color: var(--white-text);
+#gutter li a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+#profile-list-item {
+    padding: 8px 0px;
+    display: flex;
+    align-items: center;
+}
+
+#profile-list-item svg {
+    margin: 0 12px 0 0;
+}
+
+.side-nav-item {
+    transition: all 0.3s ease-out;
+}
+
+.side-nav-item:hover {
+    background-color: var(--icon-light-gray);
+    opacity: .8;
+    transition: all 0.3s ease-out;
+}
+
+.side-nav-item-current svg,
+.side-nav-item svg {
+    margin-right: 8px;
+    margin-bottom: 2px;
 }

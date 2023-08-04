@@ -2,7 +2,7 @@ import React from 'react'
 
 const Security = () => {
     return (
-        <div className="content">
+        <div>
             <h1>Security</h1>
         </div>
     )

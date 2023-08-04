@@ -25,10 +25,6 @@
     cursor: pointer;
 }
 
-.slct-item svg {
-    margin-left: 12px;
-}
-
 .a-slct-item {
     background-color: var(--icon-light-gray);
     transition: background-color 0.3s ease-out;
@@ -72,13 +68,14 @@
 #return-btn {
     opacity: 0;
     border-radius: 6px;
-    padding: 2px;
-    margin: 2px;
+    padding: 0px 6px;
+    margin: 4px;
+    display: flex;
 }
 
 #return-btn-focused {
-    opacity: .5;
+    opacity: .3;
     border-radius: 6px;
-    padding: 2px;
-    margin: 2px;
+    padding: 0px 6px;
+    margin: 4px;
 }
