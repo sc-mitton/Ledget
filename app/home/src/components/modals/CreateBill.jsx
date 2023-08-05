@@ -70,27 +70,27 @@ const Form = (props) => {
         </div>
     )
 
-    const EmojiName = () => (
-        <div className="padded-row">
-            <EmojiComboText
-                name="name"
-                placeholder="Name"
-                emoji={emoji}
-                setEmoji={setEmoji}
-                ref={nameRef}
-                register={register}
-            >
-                <FormErrorTip errors={[errors.name]} />
-            </EmojiComboText>
-        </div>
-
-    )
-
     return (
         <div className="create-form">
             <form onSubmit={handleSubmit((data) => submit(data))} id="new-bill-form">
                 <FormTop />
-                <EmojiName />
+                <div className="split-inputs padded-row">
+                    <div>
+                        <EmojiComboText
+                            name="name"
+                            placeholder="Name"
+                            emoji={emoji}
+                            setEmoji={setEmoji}
+                            ref={nameRef}
+                            register={register}
+                        >
+                            <FormErrorTip errors={[errors.name]} />
+                        </EmojiComboText>
+                    </div>
+                    <div id="schedule-inputs-container">
+                        <Schedule />
+                    </div>
+                </div>
                 <div id="limit-inputs-container" className="padded-row">
                     <label htmlFor="upperRange">Amount</label>
                     <TextInput >
@@ -114,16 +114,16 @@ const Form = (props) => {
                     </TextInput>
                     {errors.lowerRange && errors.lowerRange.type !== 'required'
                         && <FormError msg={errors.lowerRange?.message} />}
-                    <div id="bottom-inputs">
-                        <AddReminder />
-                        <Checkbox
-                            label='Range'
-                            name='range'
-                            id='range'
-                            value={rangeMode}
-                            onChange={(e) => { setRangeMode(e.target.checked) }}
-                        />
-                    </div>
+                </div>
+                <div id="bottom-inputs">
+                    <AddReminder />
+                    <Checkbox
+                        label='Range'
+                        name='range'
+                        id='range'
+                        value={rangeMode}
+                        onChange={(e) => { setRangeMode(e.target.checked) }}
+                    />
                 </div>
                 <SubmitForm submitting={submitting} onCancel={() => props.setVisible(false)} />
             </form>
@@ -140,8 +140,8 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '250px'}
-            minWidth={props.minWidth || '225px'}
+            maxWidth={props.maxWidth || '300px'}
+            minWidth={props.minWidth || '250px'}
             blur={3}
         />
     )

@@ -5,6 +5,7 @@ import ComboSelect from './ComboSelect'
 import { DropAnimation } from '@utils'
 import { TextInput } from './Text'
 import Arrow from '@assets/icons/Arrow'
+import Calendar from '@assets/icons/Calendar'
 
 
 const PeriodOptions = ({ schedulePeriods }) => {
@@ -198,28 +199,21 @@ const WeekdaySelector = () => {
 }
 
 const Schedule = () => {
-    const [schedulePeriods, setSchedulePeriods] = useState([
-        { label: 'Day of the month', value: 'day', disabled: false },
-        { label: 'Day of the week', value: 'week', disabled: false },
-    ])
-    const [periodSelection, setPeriodSelection] = useState('')
 
     return (
         <div id="shedule-inputs">
             <div id="schedule-header">
-                <PeriodSelector
-                    periodSelection={periodSelection}
-                    setPeriodSelection={setPeriodSelection}
-                    schedulePeriods={schedulePeriods}
-                />
+                Schedule
             </div>
-            <div id="schedule-input-container">
-                <div style={{ flex: '1', marginRight: '8px' }}>
-                    <WeekSelector />
-                </div>
-                <div style={{ flex: '2' }}>
-                    <WeekdaySelector />
-                </div>
+            <div id="scheduler-dropdown">
+                <Calendar
+                    fill={'var(--input-placeholder2)'}
+                />
+                <Arrow
+                    width={'.9em'}
+                    height={'.9em'}
+                    stroke={'var(--input-placeholder2)'}
+                />
             </div>
         </div>
     )

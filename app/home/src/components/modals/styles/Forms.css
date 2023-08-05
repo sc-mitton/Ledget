@@ -50,11 +50,11 @@
 }
 
 .split-inputs>div:first-child {
-    flex: 1;
+    flex: 5;
 }
 
 .split-inputs>div:last-child {
-    flex: 1;
+    flex: 3;
     margin-left: 4px;
 }
 
@@ -92,20 +92,19 @@ input.emoji {
     transition: opacity .2s ease;
 }
 
-#limit-radios button {
-    font-weight: 400;
+#limit-inputs-container {
+    width: 63%;
 }
 
-#limit-inputs-container {
-    width: 70%;
-    margin-bottom: 4px;
+#limit-radios button {
+    font-weight: 400;
 }
 
 #bottom-inputs {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 6px 0 20px 0px;
+    margin: 2px 0 20px 0px;
 }
 
 #bottom-inputs .checkbox-container {
