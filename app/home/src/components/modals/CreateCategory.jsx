@@ -138,7 +138,7 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '325px'}
+            maxWidth={props.maxWidth || '300px'}
             blur={3}
         />
 

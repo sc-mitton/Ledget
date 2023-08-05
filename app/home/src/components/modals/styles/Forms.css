@@ -39,7 +39,7 @@
 }
 
 .padded-row {
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .split-inputs {
@@ -54,7 +54,7 @@
 }
 
 .split-inputs>div:last-child {
-    flex: 3;
+    flex: 1;
     margin-left: 4px;
 }
 
@@ -97,7 +97,7 @@ input.emoji {
 }
 
 #limit-inputs-container {
-    width: 60%;
+    width: 70%;
     margin-bottom: 4px;
 }
 

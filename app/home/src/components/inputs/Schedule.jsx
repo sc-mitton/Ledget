@@ -91,10 +91,10 @@ const WeekOptions = ({ weekOptions }) => {
 const WeekSelector = () => {
     const [weekSelection, setWeekSelection] = useState('')
     const [weekOptions, setWeekOptions] = useState([
-        { label: '1st', value: '1', disabled: false },
-        { label: '2nd', value: '2', disabled: false },
-        { label: '3rd', value: '3', disabled: false },
-        { label: '4th', value: '4', disabled: false },
+        { label: 'First', value: '1', disabled: false },
+        { label: 'Second', value: '2', disabled: false },
+        { label: 'Third', value: '3', disabled: false },
+        { label: 'Fourth', value: '4', disabled: false },
         { label: 'Last', value: '-1', disabled: false },
     ])
 
@@ -217,7 +217,7 @@ const Schedule = () => {
                 <div style={{ flex: '1', marginRight: '8px' }}>
                     <WeekSelector />
                 </div>
-                <div style={{ flex: '1' }}>
+                <div style={{ flex: '2' }}>
                     <WeekdaySelector />
                 </div>
             </div>

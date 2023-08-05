@@ -77,6 +77,14 @@ export const DollarInput = (props) => {
 
     const { onChange, onBlur, onFocus, ...registerRest } = register(props.name)
 
+    const handleChange = (e) => {
+        const formatted = e.target.value
+            .replace(/[^0-9.]/g, '')
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        setDollar(`$${formatted}`)
+        onChange && onChange(e)
+    }
+
     return (
         <input
             type="text"
@@ -84,13 +92,7 @@ export const DollarInput = (props) => {
             value={dollar}
             {...rest}
             {...registerRest}
-            onChange={(e) => {
-                const formatted = e.target.value
-                    .replace(/[^0-9.]/g, '')
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                setDollar(`$${formatted}`)
-                onChange && onChange(e)
-            }}
+            onChange={handleChange}
             onBlur={(e) => {
                 dollar.length <= 1 && setDollar('')
                 onBlur && onBlur(e)
