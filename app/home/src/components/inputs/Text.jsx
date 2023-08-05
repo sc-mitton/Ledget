@@ -78,10 +78,11 @@ export const DollarInput = (props) => {
     const { onChange, onBlur, onFocus, ...registerRest } = register(props.name)
 
     const handleChange = (e) => {
-        const formatted = e.target.value
-            .replace(/[^0-9.]/g, '')
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        setDollar(`$${formatted}`)
+        const cleaned = e.target.value.replace(/[^0-9]/g, '')
+        const dollar = cleaned.length > 2 ? cleaned.slice(0, cleaned.length - 2) : cleaned
+        const cents = cleaned.length > 2 ? cleaned.slice(cleaned.length - 2) : ''
+
+        setDollar(`$${dollar.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}${cents && '.' + cents}`)
         onChange && onChange(e)
     }
 

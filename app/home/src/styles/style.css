@@ -449,6 +449,11 @@ button svg {
     font-weight: 500;
 }
 
+.btn-pill {
+    border-radius: 12px;
+    padding: 2px 4px;
+}
+
 .btn-scale {
     transform: scale(1);
     transition: transform .3s ease;

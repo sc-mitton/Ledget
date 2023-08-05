@@ -2,7 +2,7 @@
     height: auto;
     width: auto;
     margin: 4px 0;
-    padding: 10px 16px;
+    padding: 10px 12px;
     background-color: var(--input-color);
     border-radius: 8px;
     display: flex;
@@ -18,7 +18,8 @@
 }
 
 #schedule-dropdown label {
-    margin: 2px 0px;
+    margin: 2px;
+    border-radius: 12px;
 }
 
 #schedule-dropdown fieldset {
@@ -26,7 +27,6 @@
 }
 
 .day-picker {
-    margin-top: 12px;
     padding: 4px;
 }
 
@@ -68,12 +68,4 @@
     justify-content: space-between;
     align-items: center;
     margin: 16px 12px 12px 12px;
-}
-
-#week-selectors>div:first-child {
-    margin-right: 4px;
-}
-
-#week-selectors>div:last-child {
-    margin-left: 4px;
 }

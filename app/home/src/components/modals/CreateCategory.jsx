@@ -38,7 +38,7 @@ const LimitInput = (props) => {
                     value={dollarLimit}
                     onChange={(e) => {
                         const formatted = e.target.value
-                            .replace(/[^0-9.]/g, '')
+                            .replace(/[^0-9]/g, '')
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                         setDollarLimit(`$${formatted}`)
                         onChange && onChange(e)
@@ -138,7 +138,7 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '300px'}
+            maxWidth={props.maxWidth || '275px'}
             blur={3}
         />
 

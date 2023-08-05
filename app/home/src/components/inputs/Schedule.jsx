@@ -59,7 +59,11 @@ const ModeSelector = ({ mode, setMode }) => {
     ]
 
     return (
-        <Radios value={mode} onChange={setMode}>
+        <Radios
+            value={mode}
+            onChange={setMode}
+            style={{ borderRadius: '12px', padding: '4px 2px' }}
+        >
             <Radios.Pill styles={{ backgroundColor: 'var(--btn-gray)' }} />
             {options.map((option) => (
                 <Radios.Input
@@ -87,9 +91,10 @@ const ModeSelector = ({ mode, setMode }) => {
     )
 }
 
-const DayPicker = ({ day, setDay, setVisible }) => {
+const DayPicker = ({ day, setDay, setOpen }) => {
     const ref = useRef(null)
     const [activeDay, setActiveDay] = useState(null)
+    const [focused, setFocused] = useState(false)
 
     const Day = ({ dayNumber }) => (
         <td key={dayNumber}>
@@ -114,7 +119,7 @@ const DayPicker = ({ day, setDay, setVisible }) => {
         <tr>
             {
                 Array.from({ length: 7 }, (_, i) =>
-                    <Day dayNumber={i + 1 + (7 * number)} />
+                    <Day key={i} dayNumber={i + 1 + (7 * number)} />
                 )
             }
         </tr>
@@ -130,12 +135,11 @@ const DayPicker = ({ day, setDay, setVisible }) => {
         </tr>
     )
 
-    useEffect(() => {
-        ref.current.focus()
-    }, [])
-
     const handleKeyDown = (event) => {
-        event.preventDefault()
+        if (!focused || event.shiftKey || event.altKey || event.ctrlKey) {
+            return
+        }
+
         switch (event.key) {
             case 'ArrowRight':
                 setActiveDay(activeDay < 31 ? activeDay + 1 : 1)
@@ -161,6 +165,9 @@ const DayPicker = ({ day, setDay, setVisible }) => {
                     setActiveDay(activeDay ? activeDay + 7 : 1)
                 }
                 break
+            case 'Tab':
+                setOpen(false)
+                break
             case 'Enter':
                 setDay(activeDay)
                 break
@@ -169,12 +176,21 @@ const DayPicker = ({ day, setDay, setVisible }) => {
         }
     }
 
+    useEffect(() => {
+        ref.current?.focus()
+    }, [])
+
     return (
         <div
             className="day-picker"
             ref={ref}
-            onKeyDown={handleKeyDown}
-            onBlur={() => setActiveDay(null)}
+            onBlur={() => {
+                setActiveDay(null)
+                setFocused(false)
+            }}
+            onMouseEnter={() => setActiveDay(null)}
+            onKeyDown={(event) => handleKeyDown(event)}
+            onFocus={() => setFocused(true)}
             tabIndex={0}
         >
             <table>
@@ -229,7 +245,7 @@ const WeekSelector = ({ value, onChange }) => {
             {({ open }) => (
                 <>
                     <ComboSelect.Button
-                        className="btn-icon-r btn-rnd"
+                        className="btn-icon-r btn-rnd btn-pill"
                         style={{ marginRight: '12px' }}
                     >
                         <span style={{ opacity: value ? '1' : '.5' }}>
@@ -298,7 +314,7 @@ const WeekdaySelector = ({ value, onChange }) => {
             {({ open }) => (
                 <>
                     <ComboSelect.Button
-                        className="btn-icon-r btn-rnd"
+                        className="btn-icon-r btn-rnd btn-pill"
                     >
                         <span style={{ opacity: value ? '1' : '.5' }}>
                             {value
@@ -347,6 +363,21 @@ const ScheduleSelector = (props) => {
         setVisible: setOpen
     })
 
+    // Clear other inputs different mode's inputs are entered
+    useEffect(() => {
+        if (day) {
+            setWeek('')
+            setWeekDay('')
+        }
+    }, [day])
+
+    // Clear other inputs different mode's inputs are entered
+    useEffect(() => {
+        if (week || weekDay) {
+            setDay('')
+        }
+    }, [week, weekDay])
+
     return (
         <>
             {mode === 'day' &&
@@ -371,25 +402,28 @@ const ScheduleSelector = (props) => {
                     ref={ref}
                     onKeyDown={(event) => {
                         event.stopPropagation()
-                        if (event.key === 'Tab'
-                            || event.key === 'Escape') {
+                        if (event.key === 'Escape') {
                             setOpen(false)
                         }
                     }}
                 >
                     <ModeSelector mode={mode} setMode={setMode} />
                     {mode === 'day' &&
-                        <DayPicker day={day} setDay={setDay} />
+                        <DayPicker
+                            day={day}
+                            setDay={setDay}
+                            setOpen={setOpen}
+                        />
                     }
                     {mode === 'week' && (
                         <div id="week-selectors">
-                            <div>
+                            <div className="btn-pill">
                                 <WeekSelector
                                     value={week}
                                     onChange={setWeek}
                                 />
                             </div>
-                            <div>
+                            <div className="btn-pill">
                                 <WeekdaySelector
                                     value={weekDay}
                                     onChange={setWeekDay}
