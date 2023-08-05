@@ -93,7 +93,7 @@ const Form = (props) => {
                 </div>
                 <hr style={{ opacity: ".1" }} />
             </div>
-            <div className="flex-responsive">
+            <div className="flex-responsive1">
                 <div>
                     <EmojiComboText
                         name="name"

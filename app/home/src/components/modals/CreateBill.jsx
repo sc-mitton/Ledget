@@ -62,6 +62,7 @@ const Form = (props) => {
         }, 1000)
     }
 
+
     return (
         <div className="create-form">
             <form onSubmit={handleSubmit((data) => submit(data))} id="new-bill-form">
@@ -70,7 +71,7 @@ const Form = (props) => {
                     <GreenRadios options={radioOptions} />
                     <hr style={{ opacity: ".1" }} />
                 </div>
-                <div className="inputs-row">
+                <div className="padded-row">
                     <EmojiComboText
                         name="name"
                         placeholder="Name"
@@ -82,10 +83,9 @@ const Form = (props) => {
                         <FormErrorTip errors={[errors.name]} />
                     </EmojiComboText>
                 </div>
-                <div className="input-row">
-                    <Schedule />
-                    <label htmlFor="upperRange">Amount</label>
+                <div className="padded-row split-inputs">
                     <div id="limit-inputs-container">
+                        <label htmlFor="upperRange">Amount</label>
                         <TextInput >
                             {rangeMode &&
                                 <DollarInput
@@ -105,19 +105,22 @@ const Form = (props) => {
                             />
                             <FormErrorTip errors={[errors.upperRange, errors.LowerRange]} />
                         </TextInput>
+                        {errors.lowerRange && errors.lowerRange.type !== 'required'
+                            && <FormError msg={errors.lowerRange?.message} />}
+                        <div id="bottom-inputs">
+                            <AddReminder />
+                            <Checkbox
+                                label='Range'
+                                name='range'
+                                id='range'
+                                value={rangeMode}
+                                onChange={(e) => { setRangeMode(e.target.checked) }}
+                            />
+                        </div>
                     </div>
-                    {errors.lowerRange && errors.lowerRange.type !== 'required'
-                        && <FormError msg={errors.lowerRange?.message} />}
-                </div>
-                <div id="bottom-inputs">
-                    <AddReminder />
-                    <Checkbox
-                        label='Range'
-                        name='range'
-                        id='range'
-                        value={rangeMode}
-                        onChange={(e) => { setRangeMode(e.target.checked) }}
-                    />
+                    <div style={{ marginLeft: '8px' }}>
+                        <Schedule />
+                    </div>
                 </div>
                 <SubmitForm
                     submitting={submitting}
@@ -137,9 +140,9 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '200px'}
+            maxWidth={props.maxWidth || '350px'}
+            minWidth={props.minWidth || '350px'}
             blur={3}
         />
-
     )
 }

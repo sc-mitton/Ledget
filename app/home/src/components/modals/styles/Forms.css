@@ -15,7 +15,7 @@
     margin: 4px 0 4px 4px;
 }
 
-.flex-responsive {
+.flex-responsive1 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -23,23 +23,42 @@
     box-sizing: border-box;
 }
 
-.flex-responsive label {
+.flex-responsive1 label,
+.flex-responsive2 label {
     margin-left: 4px;
 }
 
-.flex-responsive>div:first-child {
+.flex-responsive1>div:first-child {
     flex: 6;
     padding-right: 4px;
 }
 
-.flex-responsive>div:last-child {
+.flex-responsive1>div:last-child {
     flex: 4;
     padding-left: 4px;
 }
 
-.input-row {
+.padded-row {
     margin-top: 8px;
 }
+
+.split-inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: top;
+}
+
+.split-inputs>div:first-child {
+    flex: 1;
+}
+
+.split-inputs>div:last-child {
+    flex: 3;
+    margin-left: 4px;
+}
+
+/* ---------------------------------- Emoji --------------------------------- */
 
 input.emoji {
     width: 20px;
@@ -77,9 +96,8 @@ input.emoji {
     font-weight: 400;
 }
 
-
 #limit-inputs-container {
-    width: 50%;
+    width: 60%;
     margin-bottom: 4px;
 }
 
@@ -87,7 +105,7 @@ input.emoji {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 4px 0 20px 0px;
+    margin: 6px 0 20px 0px;
 }
 
 #bottom-inputs .checkbox-container {
