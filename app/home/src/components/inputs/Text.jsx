@@ -92,11 +92,11 @@ export const DollarInput = (props) => {
                 onChange && onChange(e)
             }}
             onBlur={(e) => {
-                e.target.value.length <= 1 && setDollar('')
+                dollar.length <= 1 && setDollar('')
                 onBlur && onBlur(e)
             }}
             onFocus={(e) => {
-                setDollar('$')
+                !dollar && setDollar('$')
                 onFocus && onFocus(e)
             }}
             size="14"

@@ -1,13 +1,12 @@
 .input-container {
     background-color: var(--input-color);
     border-radius: 8px;
-    padding: 10px 8px 10px 16px;
+    padding: 10px 16px 10px 16px;
     margin: 4px 0;
     box-sizing: border-box;
     display: flex;
     transition: border .2s ease;
     position: relative;
-    box-shadow: var(--input-drop-shadow);
     width: auto;
     align-items: center;
 }

@@ -1,7 +1,9 @@
 import React, { forwardRef } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
-const DropAnimation = forwardRef(({ visible, children, style = {}, ...rest }, ref) => {
+const DropAnimation = forwardRef((props, ref) => {
+    const { visible, children, style = {}, ...rest } = props
+
     const transitions = useTransition(visible, {
         from: { opacity: 0, transform: 'scale(0.85)', transformOrigin: 'top' },
         enter: { opacity: 1, transform: 'scale(1)', transformOrigin: 'top', ...style },

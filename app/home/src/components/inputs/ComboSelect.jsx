@@ -244,7 +244,8 @@ const Option = ({ value, disabled, children }) => {
         setCustom,
         setActive,
         setOptions,
-        setSelections
+        setSelections,
+        setOpen
     } = useContext(DataContext)
 
     // Updating the active list
@@ -258,6 +259,7 @@ const Option = ({ value, disabled, children }) => {
             }
         } else {
             onChange(value)
+            setOpen(false)
         }
     }
 
@@ -291,7 +293,7 @@ const Option = ({ value, disabled, children }) => {
     return (
         <li
             role="option"
-            aria-selected={value}
+            aria-selected={contextValue.includes(value) || contextValue === value}
             headlessui-state={!disabled && contextActive === value ? 'active' : null}
             tabIndex={-1}
             onKeyDown={(event) => {

@@ -88,3 +88,29 @@
 #return-btn-focused svg {
     padding: 2px 4px;
 }
+
+/* --------------------------- Schedule Dropdowns --------------------------- */
+
+#schedule-header {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+#schedule-input-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 4px;
+}
+
+#schedule-input-container button {
+    width: 100%;
+    overflow: hidden;
+}
+
+#schedule-input-container .input-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

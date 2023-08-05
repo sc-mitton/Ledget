@@ -115,7 +115,7 @@ const EmojiButton = ({ emoji }) => {
             aria-controls="emoji-picker-ledget--container"
             tabIndex={0}
             style={{
-                color: !emoji && "rgb(0, 0, 0, .7)",
+                color: !emoji && "rgb(0, 0, 0, .4)",
                 marginRight: '4px'
             }}
         >

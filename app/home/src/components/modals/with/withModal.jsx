@@ -12,9 +12,11 @@ function withModal(WrappedComponent) {
             hasBackground = true,
             hasExit = true,
             width = '70%',
+            minWidth = '300px',
             maxWidth = '450px',
             zIndex = 1000,
-            blur = 4
+            blur = 4,
+            ...rest
         } = props
 
         const [visible, setVisible] = useState(true)
@@ -52,12 +54,14 @@ function withModal(WrappedComponent) {
         const contentConfig = {
             width: width,
             maxWidth: maxWidth,
+            minWidth: minWidth,
             borderRadius: '12px',
             padding: '28px',
             zIndex: zIndex + 1,
             position: "relative",
             backgroundColor: 'var(--window-background-color)',
-            boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
+            boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+            ...rest
         }
 
         const modalContainerTransitions = useTransition(visible, {

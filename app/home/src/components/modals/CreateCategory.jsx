@@ -91,7 +91,7 @@ const Form = (props) => {
                     <hr style={{ opacity: ".1" }} />
                 </div>
                 <div className="responsive-inputs-row-container">
-                    <div>
+                    <div style={{ flex: '1 0 60%' }}>
                         <EmojiComboText
                             name="name"
                             placeholder="Name"
@@ -100,17 +100,17 @@ const Form = (props) => {
                             ref={nameRef}
                             register={register}
                         >
-                            {errors.name && <FormErrorTip />}
+                            <FormErrorTip errors={[errors.name]} />
                         </EmojiComboText>
                     </div>
-                    <div>
+                    <div style={{ flex: '1 0 40%' }}>
                         <LimitInput
                             name="limit"
                             dollarLimit={dollarLimit}
                             setDollarLimit={setDollarLimit}
                             register={register}
                         >
-                            {errors.limit && < FormErrorTip />}
+                            < FormErrorTip errors={[errors.limit]} />
                         </LimitInput>
                     </div>
                 </div>

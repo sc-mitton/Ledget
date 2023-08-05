@@ -67,41 +67,43 @@ const AddReminder = () => {
     }
 
     return (
-        <ComboSelect
-            name="reminders"
-            value={selectedReminders}
-            onChange={setSelectedReminders}
-            multiple
-        >
-            {({ open }) => (
-                <>
-                    <ComboSelect.Button
-                        className="btn-chcl btn-slim btn"
-                        id="add-reminder-btn"
-                    >
-                        Reminder
-                        {selectedReminders.length > 0
-                            ?
-                            <Checkmark
-                                stroke={'var(--white-text)'}
-                                width={'.7em'}
-                                height={'.7em'}
-                            /> :
-                            <Plus
-                                stroke={'var(--white-text)'}
-                                strokeWidth={'20'}
-                                width={'.8em'}
-                                height={'.8em'}
-                            />}
-                    </ComboSelect.Button>
-                    <ComboSelect.Options className="select-container" static>
-                        <DropAnimation visible={open} className="dropdown select">
-                            <Options />
-                        </DropAnimation>
-                    </ComboSelect.Options>
-                </>
-            )}
-        </ComboSelect>
+        <div>
+            <ComboSelect
+                name="reminders"
+                value={selectedReminders}
+                onChange={setSelectedReminders}
+                multiple
+            >
+                {({ open }) => (
+                    <>
+                        <ComboSelect.Button
+                            className="btn-chcl btn-2slim btn"
+                            id="add-reminder-btn"
+                        >
+                            Reminder
+                            {selectedReminders.length > 0
+                                ?
+                                <Checkmark
+                                    stroke={'var(--white-text)'}
+                                    width={'.7em'}
+                                    height={'.7em'}
+                                /> :
+                                <Plus
+                                    stroke={'var(--white-text)'}
+                                    strokeWidth={'20'}
+                                    width={'.8em'}
+                                    height={'.8em'}
+                                />}
+                        </ComboSelect.Button>
+                        <ComboSelect.Options className="select-container" static>
+                            <DropAnimation visible={open} className="dropdown select">
+                                <Options />
+                            </DropAnimation>
+                        </ComboSelect.Options>
+                    </>
+                )}
+            </ComboSelect>
+        </div>
     )
 }
 

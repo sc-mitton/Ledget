@@ -14,9 +14,10 @@ import {
     DollarInput,
     GreenRadios,
     Checkbox,
-    AddReminder
+    AddReminder,
+    Schedule
 } from '@components/inputs'
-import { FormErrorTip } from '@components/pieces'
+import { FormErrorTip, FormError } from '@components/pieces'
 
 const radioOptions = [
     { name: 'categoryType', value: 'monthly', label: 'Monthly', default: true },
@@ -33,8 +34,11 @@ const Form = (props) => {
     const schema = object().shape({
         name: string().required(),
         lowerRange: rangeMode
-            ? string().required()
-            : string(),
+            ? string().required().test('lowerRange', 'Lower value must be smaller.', (value) => {
+                return parseInt(value.replace(/[^0-9.]/g, ''), 10)
+                    < parseInt(upperRange.replace(/[^0-9.]/g, ''), 10)
+            })
+            : '',
         upperRange: string().required(),
     })
 
@@ -66,7 +70,7 @@ const Form = (props) => {
                     <GreenRadios options={radioOptions} />
                     <hr style={{ opacity: ".1" }} />
                 </div>
-                <div>
+                <div className="inputs-row">
                     <EmojiComboText
                         name="name"
                         placeholder="Name"
@@ -75,33 +79,40 @@ const Form = (props) => {
                         ref={nameRef}
                         register={register}
                     >
-                        {errors.name && <FormErrorTip />}
+                        <FormErrorTip errors={[errors.name]} />
                     </EmojiComboText>
                 </div>
-                <div id="limit-input-container">
+                <div className="input-row">
+                    <Schedule />
+                </div>
+                <div className="input-row">
                     <label htmlFor="upperRange">Amount</label>
-                    <TextInput >
-                        {rangeMode &&
+                    <div id="limit-inputs-container">
+                        <TextInput >
+                            {rangeMode &&
+                                <DollarInput
+                                    dollar={lowerRange}
+                                    setDollar={setLowerRange}
+                                    name="lowerRange"
+                                    id="lowerRange"
+                                    register={register}
+                                />
+                            }
                             <DollarInput
-                                dollar={lowerRange}
-                                setDollar={setLowerRange}
-                                name="lowerRange"
-                                id="lowerRange"
+                                dollar={upperRange}
+                                setDollar={setUpperRange}
+                                name="upperRange"
+                                id="upperRange"
                                 register={register}
                             />
-                        }
-                        <DollarInput
-                            dollar={upperRange}
-                            setDollar={setUpperRange}
-                            name="upperRange"
-                            id="upperRange"
-                            register={register}
-                        />
-                        {(errors.upperRange || errors.lowerRange)
-                            && <FormErrorTip />}
-                    </TextInput>
+                            <FormErrorTip errors={[errors.upperRange, errors.LowerRange]} />
+                        </TextInput>
+                    </div>
+                    {errors.lowerRange && errors.lowerRange.type !== 'required'
+                        && <FormError msg={errors.lowerRange?.message} />}
                 </div>
-                <div id="below-inputs">
+                <div id="bottom-inputs">
+                    <AddReminder />
                     <Checkbox
                         label='Range'
                         name='range'
@@ -109,9 +120,6 @@ const Form = (props) => {
                         value={rangeMode}
                         onChange={(e) => { setRangeMode(e.target.checked) }}
                     />
-                </div>
-                <div style={{ marginBottom: '20px' }}>
-                    <AddReminder />
                 </div>
                 <SubmitForm
                     submitting={submitting}
@@ -131,7 +139,7 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '250px'}
+            maxWidth={props.maxWidth || '200px'}
             blur={3}
         />
 
