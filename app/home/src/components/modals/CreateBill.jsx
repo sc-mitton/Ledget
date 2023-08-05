@@ -62,70 +62,70 @@ const Form = (props) => {
         }, 1000)
     }
 
+    const FormTop = () => (
+        <div className="form-top">
+            <h2>New Bill</h2>
+            <GreenRadios options={radioOptions} />
+            <hr style={{ opacity: ".1" }} />
+        </div>
+    )
+
+    const EmojiName = () => (
+        <div className="padded-row">
+            <EmojiComboText
+                name="name"
+                placeholder="Name"
+                emoji={emoji}
+                setEmoji={setEmoji}
+                ref={nameRef}
+                register={register}
+            >
+                <FormErrorTip errors={[errors.name]} />
+            </EmojiComboText>
+        </div>
+
+    )
 
     return (
         <div className="create-form">
             <form onSubmit={handleSubmit((data) => submit(data))} id="new-bill-form">
-                <div className="form-top">
-                    <h2>New Bill</h2>
-                    <GreenRadios options={radioOptions} />
-                    <hr style={{ opacity: ".1" }} />
-                </div>
-                <div className="padded-row">
-                    <EmojiComboText
-                        name="name"
-                        placeholder="Name"
-                        emoji={emoji}
-                        setEmoji={setEmoji}
-                        ref={nameRef}
-                        register={register}
-                    >
-                        <FormErrorTip errors={[errors.name]} />
-                    </EmojiComboText>
-                </div>
-                <div className="padded-row split-inputs">
-                    <div id="limit-inputs-container">
-                        <label htmlFor="upperRange">Amount</label>
-                        <TextInput >
-                            {rangeMode &&
-                                <DollarInput
-                                    dollar={lowerRange}
-                                    setDollar={setLowerRange}
-                                    name="lowerRange"
-                                    id="lowerRange"
-                                    register={register}
-                                />
-                            }
+                <FormTop />
+                <EmojiName />
+                <div id="limit-inputs-container" className="padded-row">
+                    <label htmlFor="upperRange">Amount</label>
+                    <TextInput >
+                        {rangeMode &&
                             <DollarInput
-                                dollar={upperRange}
-                                setDollar={setUpperRange}
-                                name="upperRange"
-                                id="upperRange"
+                                dollar={lowerRange}
+                                setDollar={setLowerRange}
+                                name="lowerRange"
+                                id="lowerRange"
                                 register={register}
                             />
-                            <FormErrorTip errors={[errors.upperRange, errors.LowerRange]} />
-                        </TextInput>
-                        {errors.lowerRange && errors.lowerRange.type !== 'required'
-                            && <FormError msg={errors.lowerRange?.message} />}
-                        <div id="bottom-inputs">
-                            <AddReminder />
-                            <Checkbox
-                                label='Range'
-                                name='range'
-                                id='range'
-                                value={rangeMode}
-                                onChange={(e) => { setRangeMode(e.target.checked) }}
-                            />
-                        </div>
-                    </div>
-                    <div style={{ marginLeft: '8px' }}>
-                        <Schedule />
+                        }
+                        <DollarInput
+                            dollar={upperRange}
+                            setDollar={setUpperRange}
+                            name="upperRange"
+                            id="upperRange"
+                            register={register}
+                        />
+                        <FormErrorTip errors={[errors.upperRange, errors.LowerRange]} />
+                    </TextInput>
+                    {errors.lowerRange && errors.lowerRange.type !== 'required'
+                        && <FormError msg={errors.lowerRange?.message} />}
+                    <div id="bottom-inputs">
+                        <AddReminder />
+                        <Checkbox
+                            label='Range'
+                            name='range'
+                            id='range'
+                            value={rangeMode}
+                            onChange={(e) => { setRangeMode(e.target.checked) }}
+                        />
                     </div>
                 </div>
-                <SubmitForm
-                    submitting={submitting}
-                    onCancel={() => props.setVisible(false)}
-                />
+                <SubmitForm submitting={submitting} onCancel={() => props.setVisible(false)} />
             </form>
         </div>
     )
@@ -140,8 +140,8 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '350px'}
-            minWidth={props.minWidth || '350px'}
+            maxWidth={props.maxWidth || '250px'}
+            minWidth={props.minWidth || '225px'}
             blur={3}
         />
     )
