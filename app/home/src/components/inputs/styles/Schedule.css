@@ -1,1 +1,79 @@
+#schedule-dropdown-button {
+    height: auto;
+    width: auto;
+    margin: 4px 0;
+    padding: 10px 16px;
+    background-color: var(--input-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
 
+#schedule-dropdown {
+    position: absolute;
+    z-index: 1000;
+    padding: 12px 8px 4px 8px;
+}
+
+#schedule-dropdown label {
+    margin: 2px 0px;
+}
+
+#schedule-dropdown fieldset {
+    margin: 4px;
+}
+
+.day-picker {
+    margin-top: 12px;
+    padding: 4px;
+}
+
+.day {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+}
+
+.day.selected {
+    background-color: var(--btn-gray);
+    color: var(--white-text);
+    transition: all 0.3s ease-out;
+}
+
+.day.active.selected {
+    background-color: var(--green-hlight3);
+    transition: all 0.3s ease-out;
+}
+
+.day.active {
+    background-color: var(--green-hlight2);
+    transition: all 0.3s ease-out;
+}
+
+.day:hover {
+    background-color: var(--drop-down-hover-background);
+    transition: all 0.3s ease-out;
+}
+
+#week-selectors {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 12px 12px 12px;
+}
+
+#week-selectors>div:first-child {
+    margin-right: 4px;
+}
+
+#week-selectors>div:last-child {
+    margin-left: 4px;
+}

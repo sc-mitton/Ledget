@@ -44,6 +44,13 @@ const Input = (props) => {
     }
 
     useEffect(() => {
+        if (option.default) {
+            onChange(option.value)
+            setSelected(true)
+        }
+    }, [])
+
+    useEffect(() => {
         setSelected(value === option.value)
     }, [value])
 
@@ -59,6 +66,7 @@ const Input = (props) => {
             <label
                 style={{
                     zIndex: '2',
+                    position: 'relative',
                     ...style
                 }}
                 htmlFor={option.value}

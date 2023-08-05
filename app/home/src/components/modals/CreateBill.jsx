@@ -87,7 +87,7 @@ const Form = (props) => {
                             <FormErrorTip errors={[errors.name]} />
                         </EmojiComboText>
                     </div>
-                    <div id="schedule-inputs-container">
+                    <div>
                         <Schedule />
                     </div>
                 </div>

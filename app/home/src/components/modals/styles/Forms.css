@@ -51,6 +51,7 @@
 
 .split-inputs>div:first-child {
     flex: 5;
+    margin-right: 4px;
 }
 
 .split-inputs>div:last-child {

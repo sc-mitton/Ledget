@@ -1,7 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useRef } from 'react'
 
 import { useClickClose } from '@utils'
-import { set } from 'react-hook-form'
 
 const DataContext = createContext()
 
@@ -325,6 +324,7 @@ const Custom = React.forwardRef((props, ref) => {
         setSelections,
         setCustom,
         setOpen,
+        options,
         setActive
     } = useContext(DataContext)
     const {
@@ -399,6 +399,7 @@ const Custom = React.forwardRef((props, ref) => {
         event.preventDefault()
         onBlur && onBlur(event) // execute prop function
         setFocused(false)
+        setActive(options[options.length - 1])
     }
 
     return (
