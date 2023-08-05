@@ -81,48 +81,51 @@ const Form = (props) => {
     }
 
     return (
-        <div className="create-form">
-            <form onSubmit={handleSubmit((data) => submit(data))} id="new-cat-form">
-                <div className="form-top">
-                    <h2>New Category</h2>
-                    <div style={{ margin: '4px 0' }}>
-                        <GreenRadios options={radioOptions} />
-                    </div>
-                    <hr style={{ opacity: ".1" }} />
+        <form
+            onSubmit={handleSubmit((data) => submit(data))}
+            id="new-cat-form"
+            className="create-form"
+        >
+            <div>
+                <h2>New Category</h2>
+                <div style={{ margin: '4px 0' }}>
+                    <GreenRadios options={radioOptions} />
                 </div>
-                <div className="responsive-inputs-row-container">
-                    <div style={{ flex: '1 0 60%' }}>
-                        <EmojiComboText
-                            name="name"
-                            placeholder="Name"
-                            emoji={emoji}
-                            setEmoji={setEmoji}
-                            ref={nameRef}
-                            register={register}
-                        >
-                            <FormErrorTip errors={[errors.name]} />
-                        </EmojiComboText>
-                    </div>
-                    <div style={{ flex: '1 0 40%' }}>
-                        <LimitInput
-                            name="limit"
-                            dollarLimit={dollarLimit}
-                            setDollarLimit={setDollarLimit}
-                            register={register}
-                        >
-                            < FormErrorTip errors={[errors.limit]} />
-                        </LimitInput>
-                    </div>
+                <hr style={{ opacity: ".1" }} />
+            </div>
+            <div className="flex-responsive">
+                <div>
+                    <EmojiComboText
+                        name="name"
+                        placeholder="Name"
+                        emoji={emoji}
+                        setEmoji={setEmoji}
+                        ref={nameRef}
+                        register={register}
+                    >
+                        <FormErrorTip errors={[errors.name]} />
+                    </EmojiComboText>
                 </div>
-                <div style={{ marginBottom: '20px', marginTop: '8px' }}>
-                    <AddAlert limit={dollarLimit} />
+                <div>
+                    <LimitInput
+                        name="limit"
+                        dollarLimit={dollarLimit}
+                        setDollarLimit={setDollarLimit}
+                        register={register}
+                    >
+                        < FormErrorTip errors={[errors.limit]} />
+                    </LimitInput>
                 </div>
-                <SubmitForm
-                    submitting={submitting}
-                    onCancel={() => props.setVisible(false)}
-                />
-            </form>
-        </div>
+            </div>
+            <div style={{ marginBottom: '20px', marginTop: '8px' }}>
+                <AddAlert limit={dollarLimit} />
+            </div>
+            <SubmitForm
+                submitting={submitting}
+                onCancel={() => props.setVisible(false)}
+            />
+        </form>
+
     )
 }
 

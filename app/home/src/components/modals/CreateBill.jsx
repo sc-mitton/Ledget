@@ -84,8 +84,6 @@ const Form = (props) => {
                 </div>
                 <div className="input-row">
                     <Schedule />
-                </div>
-                <div className="input-row">
                     <label htmlFor="upperRange">Amount</label>
                     <div id="limit-inputs-container">
                         <TextInput >

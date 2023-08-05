@@ -15,32 +15,25 @@
     margin: 4px 0 4px 4px;
 }
 
-.form-top {
-    display: inline-block;
+.flex-responsive {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    box-sizing: border-box;
 }
 
-.responsive-inputs-row-container label {
+.flex-responsive label {
     margin-left: 4px;
 }
 
-.responsive-inputs-row-container {
-    display: inline-flex;
-    flex-wrap: wrap;
-    margin-top: 8px;
-}
-
-
-.create-form .responsive-inputs-row-container>div:first-child {
-    box-sizing: border-box;
-    display: inline-flex;
-    flex-direction: column;
+.flex-responsive>div:first-child {
+    flex: 6;
     padding-right: 4px;
 }
 
-.create-form .responsive-inputs-row-container>div:last-child {
-    box-sizing: border-box;
-    display: inline-flex;
-    flex-direction: column;
+.flex-responsive>div:last-child {
+    flex: 4;
     padding-left: 4px;
 }
 
