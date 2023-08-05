@@ -15,7 +15,7 @@ import {
     GreenRadios,
     Checkbox,
     AddReminder,
-    Schedule
+    ScheduleSelector
 } from '@components/inputs'
 import { FormErrorTip, FormError } from '@components/pieces'
 
@@ -88,7 +88,7 @@ const Form = (props) => {
                         </EmojiComboText>
                     </div>
                     <div>
-                        <Schedule />
+                        <ScheduleSelector />
                     </div>
                 </div>
                 <div id="limit-inputs-container" className="padded-row">
