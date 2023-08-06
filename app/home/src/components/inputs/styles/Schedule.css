@@ -2,7 +2,7 @@
     height: auto;
     width: auto;
     margin: 4px 0;
-    padding: 10px 12px 13px 12px;
+    padding: 12px 12px 11px 12px;
     background-color: var(--input-color);
     border-radius: 8px;
     display: flex;
@@ -69,7 +69,8 @@
     transition: all 0.3s ease-out;
 }
 
-.week-picker-container {
+.week-picker-container,
+.month-picker-container {
     display: flex;
     flex-direction: column;
     margin: 8px;
@@ -83,7 +84,8 @@
     flex-wrap: nowrap;
 }
 
-.week-day-picker {
+.week-day-picker,
+.month-picker {
     margin-top: 4px;
     display: flex;
     flex-direction: row;
@@ -98,4 +100,11 @@
 .week-day-picker .picker-item {
     margin: 0 2px;
     padding: 0px 6px;
+}
+
+.month-picker>div:first-child,
+.month-picker>div:last-child {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }

@@ -21,7 +21,7 @@ const usePillAnimation = (args) => {
     let baseStyles = {
         position: "absolute",
         backgroundColor: "var(--btn-hover-gray)",
-        borderRadius: '12px',
+        borderRadius: '10px',
         zIndex: -1,
         config: { tension: 200, friction: 22 }
     }

@@ -15,7 +15,8 @@ import {
     GreenRadios,
     Checkbox,
     AddReminder,
-    ScheduleSelector
+    DayWeekPicker,
+    MonthYearPicker
 } from '@components/inputs'
 import { FormErrorTip, FormError } from '@components/pieces'
 
@@ -27,6 +28,7 @@ const radioOptions = [
 const Form = (props) => {
     const [submitting, setSubmitting] = useState(false)
     const [emoji, setEmoji] = useState('')
+    const [billPeriod, setBillPeriod] = useState('monthly')
     const [rangeMode, setRangeMode] = useState(false)
     const [lowerRange, setLowerRange] = useState('')
     const [upperRange, setUpperRange] = useState('')
@@ -74,7 +76,10 @@ const Form = (props) => {
         <div className="create-form">
             <form onSubmit={handleSubmit((data) => submit(data))} id="new-bill-form">
                 <FormTop />
-                <div className="split-inputs padded-row">
+                <div className='padded-row'>
+                    <label htmlFor="name">Name</label>
+                </div>
+                <div className='split-inputs'>
                     <div>
                         <EmojiComboText
                             name="name"
@@ -88,7 +93,10 @@ const Form = (props) => {
                         </EmojiComboText>
                     </div>
                     <div>
-                        <ScheduleSelector />
+                        {billPeriod === 'yearly'
+                            ? <MonthYearPicker />
+                            : <DayWeekPicker />
+                        }
                     </div>
                 </div>
                 <div id="limit-inputs-container" className="padded-row">
@@ -140,7 +148,7 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '250px'}
+            maxWidth={props.maxWidth || '300px'}
             minWidth={props.minWidth || '225px'}
             blur={3}
         />

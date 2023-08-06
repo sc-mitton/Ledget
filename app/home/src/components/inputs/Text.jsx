@@ -44,7 +44,6 @@ export const EmojiComboText = React.forwardRef((props, ref) => {
 
     return (
         <>
-            <label htmlFor={rest.name}>Name</label>
             <TextInput>
                 <Emoji emoji={emoji} setEmoji={setEmoji}>
                     {({ emoji }) => (

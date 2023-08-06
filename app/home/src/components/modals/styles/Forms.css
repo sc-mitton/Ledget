@@ -49,12 +49,12 @@
 }
 
 .split-inputs>div:first-child {
-    flex: 5;
+    flex: 1;
     margin-right: 4px;
 }
 
 .split-inputs>div:last-child {
-    flex: 2;
+    flex: 1;
     margin-left: 4px;
 }
 
@@ -93,7 +93,7 @@ input.emoji {
 }
 
 #limit-inputs-container {
-    width: 100%;
+    width: 75%;
 }
 
 #limit-radios button {

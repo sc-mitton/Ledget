@@ -26,6 +26,19 @@ const LimitInput = (props) => {
     const { dollarLimit, setDollarLimit, register } = props
     const { onBlur, onChange, ...rest } = register('limit')
 
+    const handleChange = (e) => {
+        const formatted = e.target.value
+            .replace(/[^0-9]/g, '')
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        setDollarLimit(`$${formatted}`)
+        onChange && onChange(e)
+    }
+
+    const hanldeBlur = (e) => {
+        e.target.value.length <= 1 && setDollarLimit('')
+        onBlur && onBlur(e)
+    }
+
     return (
         <>
             <label htmlFor="limit">Limit</label>
@@ -36,17 +49,8 @@ const LimitInput = (props) => {
                     id="limit"
                     placeholder="$0"
                     value={dollarLimit}
-                    onChange={(e) => {
-                        const formatted = e.target.value
-                            .replace(/[^0-9]/g, '')
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        setDollarLimit(`$${formatted}`)
-                        onChange && onChange(e)
-                    }}
-                    onBlur={(e) => {
-                        e.target.value.length <= 1 && setDollarLimit('')
-                        onBlur && onBlur(e)
-                    }}
+                    onChange={handleChange}
+                    onBlur={hanldeBlur}
                     size="14"
                     {...rest}
                 />

@@ -16,9 +16,6 @@ const Button = React.forwardRef((props, ref) => {
 
     return (
         <>
-            <label htmlFor="schedule-dropdown">
-                Schedule
-            </label>
             <div
                 onClick={() => onClick()}
                 onKeyDown={(event) => {
@@ -42,6 +39,9 @@ const Button = React.forwardRef((props, ref) => {
                     height={'1.5em'}
                     fill={'var(--input-placeholder2)'}
                 />
+                <span style={{ opacity: '.4' }}>
+                    Schedule
+                </span>
                 <Arrow
                     width={'.8em'}
                     height={'.8em'}
@@ -401,7 +401,7 @@ const WeekPicker = (props) => {
     )
 }
 
-const ScheduleSelector = (props) => {
+const DayWeekPicker = (props) => {
     const [open, setOpen] = useState(false)
     const [mode, setMode] = useState('')
     const ref = useRef(null)
@@ -465,7 +465,7 @@ const ScheduleSelector = (props) => {
                     className="dropdown"
                     id="schedule-dropdown"
                     style={{
-                        left: '-120%',
+                        left: '-50%',
                         top: '4px',
                     }}
                 >
@@ -502,7 +502,106 @@ const ScheduleSelector = (props) => {
     )
 }
 
-const DatePicker = (props) => {
+const MonthPicker = ({ month, setMonth, setOpen }) => {
+    const [activeMonth, setActiveMonth] = useState(null)
+    const ref = useRef(null)
+
+    const translateMonthNumber = (monthNumber) => {
+        // Lookup table
+        const months = {
+            1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
+            5: 'May', 6: 'June', 7: 'July', 8: 'Aug',
+            9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec',
+        }
+        return months[monthNumber]
+    }
+
+    const Month = ({ monthNumber }) => (
+        <li>
+            <div
+                className={`picker-item
+                    ${month === monthNumber ? 'selected' : 'unselected'}
+                    ${activeMonth === monthNumber ? 'active' : ''}
+                    `}
+                onClick={() => setMonth(monthNumber)}
+                role="button"
+                aria-label={`Select month ${monthNumber}`}
+                aria-pressed={`${month === monthNumber}`}
+                aria-selected={`${month === monthNumber}`}
+                tabIndex={-1}
+            >
+                {translateMonthNumber(monthNumber)}
+            </div>
+        </li>
+    )
+
+    const handleKeyDown = (event) => {
+        const key = event.key
+        const actions = {
+            ArrowRight: () => {
+                setActiveMonth(activeMonth < 12 ? activeMonth + 1 : 1)
+            },
+            ArrowLeft: () => {
+                setActiveMonth(activeMonth > 1 ? activeMonth - 1 : 12)
+            },
+            ArrowUp: () => {
+                setActiveMonth(activeMonth > 4 ? activeMonth - 4 : activeMonth + 8)
+            },
+            ArrowDown: () => {
+                setActiveMonth(activeMonth < 9 ? activeMonth + 4 : activeMonth - 8)
+            },
+            Tab: () => {
+                setOpen(false)
+            },
+            Enter: () => {
+                setMonth(activeMonth)
+            },
+            Escape: () => {
+                setOpen(false)
+            },
+            default: () => { }
+        }
+        return (actions[key] || actions['default'])()
+    }
+
+    return (
+        <div
+            className="week-picker-container"
+            ref={ref}
+            onBlur={() => {
+                setActiveMonth(null)
+            }}
+            onMouseEnter={() => {
+                setActiveMonth(null)
+            }}
+            onKeyDown={(event) => handleKeyDown(event)}
+            tabIndex={0}
+        >
+            <ul
+                className="month-picker"
+                role="listbox"
+                aria-label="Select month number"
+                aria-activedescendant={`month-${setActiveMonth}`}
+                aria-orientation="horizontal"
+                aria-multiselectable="false"
+                aria-disabled="false"
+            >
+                <div>
+                    {Array.from({ length: 6 }, (_, i) =>
+                        <Month key={i + 1} monthNumber={i + 1} />
+                    )}
+                </div>
+                <div>
+                    {Array.from({ length: 6 }, (_, i) =>
+                        <Month key={i + 7} monthNumber={i + 1} />
+                    )}
+                </div>
+            </ul>
+        </div>
+    )
+}
+
+const MonthYearPicker = (props) => {
     const [open, setOpen] = useState(false)
     const ref = useRef(null)
     const buttonRef = useRef(null)
@@ -523,6 +622,8 @@ const DatePicker = (props) => {
 
     return (
         <>
+            {month && <input type="hidden" name="month" value={month} />}
+            {year && <input type="hidden" name="year" value={year} />}
             <Button
                 onClick={() => setOpen(!open)}
                 ref={buttonRef}
@@ -541,6 +642,7 @@ const DatePicker = (props) => {
                         }
                     }}
                 >
+                    <MonthPicker month={month} setMonth={setMonth} setOpen={setOpen} />
 
                 </div>
             </DropAnimation>
@@ -548,4 +650,4 @@ const DatePicker = (props) => {
     )
 }
 
-export default ScheduleSelector
+export { DayWeekPicker, MonthYearPicker }
