@@ -3,7 +3,7 @@
     flex-direction: row;
     margin: 4px 0;
     background-color: var(--green-hlight);
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
 .green-radios-container-label {
@@ -16,5 +16,5 @@
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
-    border-radius: 12px;
+    border-radius: 8px;
 }

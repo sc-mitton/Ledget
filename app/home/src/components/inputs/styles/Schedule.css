@@ -30,7 +30,7 @@
     padding: 4px;
 }
 
-.day {
+.day.picker-item {
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -38,33 +38,59 @@
     padding: 2px;
     width: 24px;
     height: 24px;
-    border-radius: 100%;
+    border-radius: 8px;
 }
 
-.selected-day {
-    background-color: var(--btn-gray);
-    color: var(--white-text);
+.picker-item {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding: 2px;
+    border-radius: 6px;
+}
+
+.picker-item.selected {
+    background-color: var(--green-hlight);
     transition: all 0.3s ease-out;
 }
 
-.active-day {
+.picker-item.active {
     background-color: var(--green-hlight2);
     transition: all 0.3s ease-out;
 }
 
-.day:hover {
-    background-color: var(--drop-down-hover-background);
+.picker-item.unselected:hover {
+    background-color: var(--green-hlight2);
     transition: all 0.3s ease-out;
 }
 
-.selected-day:hover {
-    background-color: var(--btn-gray);
+.picker-item.selected.active {
+    background-color: var(--m-green);
+    transition: all 0.3s ease-out;
 }
 
-#week-selectors {
+.week-picker-container {
+    display: flex;
+    flex-direction: column;
+    margin: 8px;
+    margin-top: 16px;
+}
+
+.week-picker {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 12px 4px 4px 4px;
+    flex-wrap: nowrap;
+}
+
+.week-day-picker {
+    margin-top: 4px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.week-day-picker .picker-item,
+.week-picker .picker-item {
+    margin: 0 4px;
+    padding: 0px 6px;
 }

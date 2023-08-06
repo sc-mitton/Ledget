@@ -65,7 +65,10 @@ const ModeSelector = ({ mode, setMode }) => {
             onChange={setMode}
             style={{ borderRadius: '12px', padding: '4px 2px' }}
         >
-            <Radios.Pill styles={{ backgroundColor: 'var(--btn-gray)' }} />
+            <Radios.Pill styles={{
+                backgroundColor: 'var(--btn-gray)',
+                borderRadius: '8px'
+            }} />
             {options.map((option) => (
                 <Radios.Input
                     key={option.value}
@@ -96,14 +99,13 @@ const ModeSelector = ({ mode, setMode }) => {
 const DayPicker = ({ day, setDay, setOpen }) => {
     const ref = useRef(null)
     const [activeDay, setActiveDay] = useState(null)
-    const [focused, setFocused] = useState(false)
 
     const Day = ({ dayNumber }) => (
         <td key={dayNumber}>
             <div
-                className={`day
-                    ${day === dayNumber ? 'selected-day' : ''}
-                    ${activeDay === dayNumber ? 'active-day' : ''}
+                className={`day picker-item
+                    ${day === dayNumber ? 'selected' : 'unselected'}
+                    ${activeDay === dayNumber ? 'active' : ''}
                     `}
                 onClick={() => setDay(dayNumber)}
                 role="button"
@@ -138,7 +140,7 @@ const DayPicker = ({ day, setDay, setOpen }) => {
     )
 
     const handleKeyDown = (event) => {
-        if (!focused || event.shiftKey || event.altKey || event.ctrlKey) {
+        if (event.shiftKey || event.altKey || event.ctrlKey) {
             return
         }
 
@@ -188,11 +190,9 @@ const DayPicker = ({ day, setDay, setOpen }) => {
             ref={ref}
             onBlur={() => {
                 setActiveDay(null)
-                setFocused(false)
             }}
             onMouseEnter={() => setActiveDay(null)}
             onKeyDown={(event) => handleKeyDown(event)}
-            onFocus={() => setFocused(true)}
             tabIndex={0}
         >
             <table>
@@ -209,7 +209,7 @@ const DayPicker = ({ day, setDay, setOpen }) => {
 }
 
 const WeekPicker = (props) => {
-    const { week, setWeek, weekDay, setWeekDay, setOpen } = props
+    const { weekNumber, setWeekNumber, weekDay, setWeekDay, setOpen } = props
     const [activeWeekNumber, setActiveWeekNumber] = useState(null)
     const [activeWeekDay, setActiveWeekDay] = useState(null)
     const ref = useRef(null)
@@ -221,51 +221,62 @@ const WeekPicker = (props) => {
     const formatWeek = (weekNumber) => {
         switch (weekNumber) {
             case 1:
-                return `${weekNumber}st`
+                return 'st'
             case 2:
-                return `${weekNumber}nd`
+                return 'nd'
             case 3:
-                return `${weekNumber}rd`
+                return 'rd'
+            case 4:
+                return 'th'
             default:
-                return `${weekNumber}th`
+                return
         }
     }
 
     const formatWeekDay = (weekDayNumber) => {
         switch (weekDayNumber) {
-            case 0:
-                return 'Sunday'
             case 1:
-                return 'Monday'
+                return 'Sun'
             case 2:
-                return 'Tuesday'
+                return 'Mon'
             case 3:
-                return 'Wednesday'
+                return 'Tue'
             case 4:
-                return 'Thursday'
+                return 'Wed'
             case 5:
-                return 'Friday'
+                return 'Thu'
             case 6:
-                return 'Saturday'
+                return 'Fri'
+            case 7:
+                return 'Sat'
             default:
                 return ''
         }
     }
 
-    const WeekNumber = ({ weekNumber }) => (
+    const WeekNumber = ({ week }) => (
         <li>
             <div
-                className={`week-number
-                    ${week === weekNumber ? 'selected-week-number' : ''}
+                className={`picker-item
+                    ${week === weekNumber ? 'selected' : 'unselected'}
+                    ${week === activeWeekNumber ? 'active' : ''}
                     `}
-                onClick={() => setWeek(weekNumber)}
+                onClick={() => {
+                    setWeekNumber(week)
+                }}
                 role="button"
-                aria-label={`Select week ${weekNumber + 1}`}
+                aria-label={`Select week ${week}`}
                 aria-pressed={`${week === weekNumber}`}
                 aria-selected={`${week === weekNumber}`}
                 tabIndex={-1}
             >
-                {formatWeek(weekNumber)}
+                {week <= 4 && `${week}`}
+                {week > 4 && 'Last'}
+                <span style={{
+                    fontSize: '.8em',
+                }}>
+                    {formatWeek(week)}
+                </span>
             </div>
         </li>
     )
@@ -273,12 +284,15 @@ const WeekPicker = (props) => {
     const WeekDay = ({ dayNumber }) => (
         <li>
             <div
-                className={`week-day
-                    ${weekDay === dayNumber ? 'selected-week-day' : ''}
+                className={`picker-item
+                    ${weekDay === dayNumber ? 'selected' : 'unselected'}
+                    ${activeWeekDay === dayNumber ? 'active' : ''}
                     `}
-                onClick={() => setWeekDay(dayNumber)}
+                onClick={() =>
+                    setWeekDay(dayNumber)
+                }
                 role="button"
-                aria-label={`Select day ${dayNumber + 1}`}
+                aria-label={`Select day ${dayNumber}`}
                 aria-pressed={`${weekDay === dayNumber}`}
                 aria-selected={`${weekDay === dayNumber}`}
                 tabIndex={-1}
@@ -288,33 +302,82 @@ const WeekPicker = (props) => {
         </li>
     )
 
+    const handleKeyDown = (event) => {
+        switch (event.key) {
+            case 'ArrowRight':
+                if (activeWeekNumber) {
+                    setActiveWeekNumber(activeWeekNumber < 5 ? activeWeekNumber + 1 : 1)
+                } else if (activeWeekDay) {
+                    setActiveWeekDay(activeWeekDay < 7 ? activeWeekDay + 1 : 1)
+                } else {
+                    setActiveWeekNumber(1)
+                }
+                break
+            case 'ArrowLeft':
+                if (activeWeekNumber) {
+                    setActiveWeekNumber(activeWeekNumber > 1 ? activeWeekNumber - 1 : 5)
+                } else if (activeWeekDay) {
+                    setActiveWeekDay(activeWeekDay > 1 ? activeWeekDay - 1 : 7)
+                } else {
+
+                }
+                break
+            case 'ArrowUp':
+                if (activeWeekDay) {
+                    setActiveWeekNumber(Math.min(5, activeWeekDay))
+                    setActiveWeekDay(null)
+                }
+                break
+            case 'ArrowDown':
+                if (activeWeekNumber) {
+                    setActiveWeekDay(activeWeekNumber)
+                    setActiveWeekNumber(null)
+                }
+                break
+            case 'Tab':
+                setOpen(false)
+                break
+            case 'Enter':
+                setWeekNumber(activeWeekNumber)
+                setWeekDay(activeWeekDay)
+                break
+            default:
+                break
+        }
+    }
+
     return (
         <div
-            className="week-picker"
+            className="week-picker-container"
             ref={ref}
             onBlur={() => {
-                setActiveDay(null)
-                setFocused(false)
+                setActiveWeekDay(null)
+                setActiveWeekNumber(null)
             }}
             onMouseEnter={() => {
                 setActiveWeekDay(null)
                 setActiveWeekNumber(null)
             }}
             onKeyDown={(event) => handleKeyDown(event)}
-            onFocus={() => setFocused(true)}
             tabIndex={0}
         >
             <ul className="week-picker">
                 {
-                    Array.from({ length: 4 }, (_, i) =>
-                        <Week key={i} weekNumber={i + 1} />
+                    Array.from({ length: 5 }, (_, i) =>
+                        <WeekNumber key={i + 1} week={i + 1} />
                     )
                 }
             </ul>
+            <hr
+                style={{
+                    width: '100%',
+                    opacity: '.1',
+                }}
+            />
             <ul className="week-day-picker">
                 {
                     Array.from({ length: 7 }, (_, i) =>
-                        <WeekDay key={i} dayNumber={i} />
+                        <WeekDay key={i + 1} dayNumber={i + 1} />
                     )
                 }
             </ul>
@@ -329,7 +392,7 @@ const ScheduleSelector = (props) => {
     const buttonRef = useRef(null)
 
     const [day, setDay] = useState('')
-    const [week, setWeek] = useState('')
+    const [weekNumber, setWeekNumber] = useState('')
     const [weekDay, setWeekDay] = useState('')
 
     useEffect(() => {
@@ -348,7 +411,7 @@ const ScheduleSelector = (props) => {
     // mode's inputs are entered
     useEffect(() => {
         if (day) {
-            setWeek('')
+            setWeekNumber('')
             setWeekDay('')
         }
     }, [day])
@@ -356,10 +419,10 @@ const ScheduleSelector = (props) => {
     // Clear other inputs different mode's
     // inputs are entered
     useEffect(() => {
-        if (week || weekDay) {
+        if (weekNumber || weekDay) {
             setDay('')
         }
-    }, [week, weekDay])
+    }, [weekNumber, weekDay])
 
     return (
         <>
@@ -370,7 +433,7 @@ const ScheduleSelector = (props) => {
                 (weekDay && <input type="hidden" name="weekDay" value={weekDay} />)
             }
             {mode === 'week' &&
-                (week && <input type="hidden" name="day" value={day} />)
+                (weekNumber && <input type="hidden" name="weekNumber" value={weekNumber} />)
             }
             <Button
                 onClick={() => setOpen(!open)}
@@ -380,39 +443,45 @@ const ScheduleSelector = (props) => {
                 }}
                 ref={buttonRef}
             />
-            <DropAnimation
-                visible={open}
-                className="dropdown"
-                id="schedule-dropdown"
-            >
-                <div
-                    ref={ref}
-                    onKeyDown={(event) => {
-                        event.stopPropagation()
-                        if (event.key === 'Escape') {
-                            setOpen(false)
-                        }
+            <div style={{ position: 'relative' }}>
+                <DropAnimation
+                    visible={open}
+                    className="dropdown"
+                    id="schedule-dropdown"
+                    style={{
+                        left: '-120%',
+                        top: '4px',
                     }}
                 >
-                    <ModeSelector mode={mode} setMode={setMode} />
-                    {mode === 'day' &&
-                        <DayPicker
-                            day={day}
-                            setDay={setDay}
-                            setOpen={setOpen}
-                        />
-                    }
-                    {mode === 'week' && (
-                        <WeekPicker
-                            week={week}
-                            setWeek={setWeek}
-                            weekDay={weekDay}
-                            setWeekDay={setWeekDay}
-                            setOpen={setOpen}
-                        />
-                    )}
-                </div>
-            </DropAnimation>
+                    <div
+                        ref={ref}
+                        onKeyDown={(event) => {
+                            event.stopPropagation()
+                            if (event.key === 'Escape') {
+                                setOpen(false)
+                            }
+                        }}
+                    >
+                        <ModeSelector mode={mode} setMode={setMode} />
+                        {mode === 'day' &&
+                            <DayPicker
+                                day={day}
+                                setDay={setDay}
+                                setOpen={setOpen}
+                            />
+                        }
+                        {mode === 'week' && (
+                            <WeekPicker
+                                weekNumber={weekNumber}
+                                setWeekNumber={setWeekNumber}
+                                weekDay={weekDay}
+                                setWeekDay={setWeekDay}
+                                setOpen={setOpen}
+                            />
+                        )}
+                    </div>
+                </DropAnimation>
+            </div>
         </>
     )
 }
