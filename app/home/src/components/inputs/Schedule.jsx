@@ -361,7 +361,15 @@ const WeekPicker = (props) => {
             onKeyDown={(event) => handleKeyDown(event)}
             tabIndex={0}
         >
-            <ul className="week-picker">
+            <ul
+                className="week-picker"
+                role="listbox"
+                aria-label="Select week number"
+                aria-activedescendant={`week-${activeWeekNumber}`}
+                aria-orientation="horizontal"
+                aria-multiselectable="false"
+                aria-disabled="false"
+            >
                 {
                     Array.from({ length: 5 }, (_, i) =>
                         <WeekNumber key={i + 1} week={i + 1} />
@@ -374,7 +382,15 @@ const WeekPicker = (props) => {
                     opacity: '.1',
                 }}
             />
-            <ul className="week-day-picker">
+            <ul
+                className="week-day-picker"
+                role="listbox"
+                aria-label="Select week day"
+                aria-activedescendant={`week-day-${activeWeekDay}`}
+                aria-orientation="horizontal"
+                aria-multiselectable="false"
+                aria-disabled="false"
+            >
                 {
                     Array.from({ length: 7 }, (_, i) =>
                         <WeekDay key={i + 1} dayNumber={i + 1} />
@@ -490,12 +506,20 @@ const DatePicker = (props) => {
     const [open, setOpen] = useState(false)
     const ref = useRef(null)
     const buttonRef = useRef(null)
+    const [month, setMonth] = useState('')
+    const [year, setYear] = useState('')
 
     useClickClose({
         refs: [ref, buttonRef],
         visible: open,
         setVisible: setOpen
     })
+
+    useEffect(() => {
+        open
+            ? ref.current?.focus()
+            : ref.current?.blur()
+    }, [open])
 
     return (
         <>
@@ -508,7 +532,15 @@ const DatePicker = (props) => {
                 className="dropdown"
                 id="schedule-dropdown"
             >
-                <div ref={ref}>
+                <div
+                    ref={ref}
+                    onKeyDown={(event) => {
+                        event.stopPropagation()
+                        if (event.key === 'Escape') {
+                            setOpen(false)
+                        }
+                    }}
+                >
 
                 </div>
             </DropAnimation>

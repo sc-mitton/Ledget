@@ -90,8 +90,12 @@
     flex-wrap: nowrap;
 }
 
-.week-day-picker .picker-item,
 .week-picker .picker-item {
-    margin: 0 4px;
+    margin: 0 6px;
+    padding: 0px 6px;
+}
+
+.week-day-picker .picker-item {
+    margin: 0 2px;
     padding: 0px 6px;
 }
