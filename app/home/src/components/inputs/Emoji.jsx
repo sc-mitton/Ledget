@@ -97,7 +97,7 @@ const EmojiButton = ({ emoji }) => {
 
     return (
         <div
-            className="btn-gr2"
+            className="btn-gr"
             id="emoji-picker-ledget--button"
             onClick={(e) => {
                 e.stopPropagation()

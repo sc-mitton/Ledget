@@ -9,7 +9,6 @@ import Arrow from '@assets/icons/Arrow'
 import Calendar from '@assets/icons/Calendar'
 import { useEffect } from 'react'
 import { useClickClose } from '@utils'
-import { number } from 'yup'
 
 
 const Button = React.forwardRef((props, ref) => {
@@ -46,7 +45,7 @@ const Button = React.forwardRef((props, ref) => {
                         height={'1.5em'}
                         fill={'var(--input-placeholder2)'}
                     />
-                    <span style={{ opacity: '.4', marginLeft: '8px' }}>
+                    <span style={{ opacity: '.4', marginLeft: '12px', marginTop: "2px" }}>
                         Schedule
                     </span>
                 </div>
@@ -574,7 +573,7 @@ const MonthPicker = ({ month, setMonth, setOpen }) => {
 
     return (
         <div
-            id="month-picker-container"
+            id="month-picker2-container"
             ref={ref}
             onBlur={() => {
                 setActiveMonth(null)
@@ -586,7 +585,7 @@ const MonthPicker = ({ month, setMonth, setOpen }) => {
             tabIndex={0}
         >
             <ul
-                id="month-picker"
+                id="month-picker2"
                 role="listbox"
                 aria-label="Select month number"
                 aria-activedescendant={`month-${setActiveMonth}`}

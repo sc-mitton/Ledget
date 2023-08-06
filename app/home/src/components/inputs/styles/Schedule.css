@@ -2,7 +2,7 @@
     height: auto;
     width: auto;
     margin: 4px 0;
-    padding: 12px 12px 11px 12px;
+    padding: 10px 12px 11px 12px;
     background-color: var(--input-color);
     border-radius: 8px;
     display: flex;
@@ -105,32 +105,32 @@
     padding: 4px;
 }
 
-#month-picker-container {
+#month-picker2-container {
     display: flex;
     flex-direction: column;
     margin-bottom: 12px;
 }
 
-#month-picker {
+#month-picker2 {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
 }
 
-#month-picker>div:first-child,
-#month-picker>div:last-child {
+#month-picker2>div:first-child,
+#month-picker2>div:last-child {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     width: 100%;
 }
 
-#month-picker>div:first-child .picker-item {
+#month-picker2>div:first-child .picker-item {
     padding: 2px 4px;
     margin: 2px 4px;
 }
 
-#month-picker>div:last-child .picker-item {
+#month-picke2r>div:last-child .picker-item {
     padding: 2px 4px;
     margin: 2px 4.5px;
 }

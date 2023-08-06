@@ -99,6 +99,7 @@ const Form = (props) => {
             </div>
             <div className="flex-responsive1">
                 <div>
+                    <label htmlFor="name">Name</label>
                     <EmojiComboText
                         name="name"
                         placeholder="Name"
