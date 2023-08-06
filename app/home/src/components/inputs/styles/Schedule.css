@@ -2,7 +2,7 @@
     height: auto;
     width: auto;
     margin: 4px 0;
-    padding: 10px 12px;
+    padding: 10px 12px 13px 12px;
     background-color: var(--input-color);
     border-radius: 8px;
     display: flex;
@@ -14,7 +14,7 @@
 #schedule-dropdown {
     position: absolute;
     z-index: 1000;
-    padding: 12px 8px 4px 8px;
+    padding: 8px 8px 4px 8px;
 }
 
 #schedule-dropdown label {
@@ -41,18 +41,13 @@
     border-radius: 100%;
 }
 
-.day.selected {
+.selected-day {
     background-color: var(--btn-gray);
     color: var(--white-text);
     transition: all 0.3s ease-out;
 }
 
-.day.active.selected {
-    background-color: var(--green-hlight3);
-    transition: all 0.3s ease-out;
-}
-
-.day.active {
+.active-day {
     background-color: var(--green-hlight2);
     transition: all 0.3s ease-out;
 }
@@ -62,10 +57,14 @@
     transition: all 0.3s ease-out;
 }
 
+.selected-day:hover {
+    background-color: var(--btn-gray);
+}
+
 #week-selectors {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 16px 12px 12px 12px;
+    margin: 12px 4px 4px 4px;
 }
