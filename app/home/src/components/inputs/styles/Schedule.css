@@ -69,8 +69,7 @@
     transition: all 0.3s ease-out;
 }
 
-.week-picker-container,
-.month-picker-container {
+.week-picker-container {
     display: flex;
     flex-direction: column;
     margin: 8px;
@@ -84,8 +83,7 @@
     flex-wrap: nowrap;
 }
 
-.week-day-picker,
-.month-picker {
+.week-day-picker {
     margin-top: 4px;
     display: flex;
     flex-direction: row;
@@ -102,9 +100,37 @@
     padding: 0px 6px;
 }
 
-.month-picker>div:first-child,
-.month-picker>div:last-child {
+#month-year-picker-container {
+    margin: 8px;
+    padding: 4px;
+}
+
+#month-picker-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+#month-picker {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+#month-picker>div:first-child,
+#month-picker>div:last-child {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    width: 100%;
+}
+
+#month-picker>div:first-child .picker-item {
+    padding: 2px 4px;
+    margin: 2px 4px;
+}
+
+#month-picker>div:last-child .picker-item {
+    padding: 2px 4px;
+    margin: 2px 4.5px;
 }

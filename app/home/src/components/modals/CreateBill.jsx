@@ -64,18 +64,18 @@ const Form = (props) => {
         }, 1000)
     }
 
-    const FormTop = () => (
-        <div className="form-top">
-            <h2>New Bill</h2>
-            <GreenRadios options={radioOptions} />
-            <hr style={{ opacity: ".1" }} />
-        </div>
-    )
-
     return (
         <div className="create-form">
             <form onSubmit={handleSubmit((data) => submit(data))} id="new-bill-form">
-                <FormTop />
+                <div className="form-top">
+                    <h2>New Bill</h2>
+                    <GreenRadios
+                        options={radioOptions}
+                        value={billPeriod}
+                        onChange={setBillPeriod}
+                    />
+                    <hr style={{ opacity: ".1" }} />
+                </div>
                 <div className='padded-row'>
                     <label htmlFor="name">Name</label>
                 </div>
@@ -93,9 +93,9 @@ const Form = (props) => {
                         </EmojiComboText>
                     </div>
                     <div>
-                        {billPeriod === 'yearly'
-                            ? <MonthYearPicker />
-                            : <DayWeekPicker />
+                        {billPeriod === 'monthly'
+                            ? <DayWeekPicker />
+                            : <MonthYearPicker />
                         }
                     </div>
                 </div>

@@ -9,6 +9,7 @@ import Arrow from '@assets/icons/Arrow'
 import Calendar from '@assets/icons/Calendar'
 import { useEffect } from 'react'
 import { useClickClose } from '@utils'
+import { number } from 'yup'
 
 
 const Button = React.forwardRef((props, ref) => {
@@ -34,14 +35,21 @@ const Button = React.forwardRef((props, ref) => {
                 aria-controls="schedule-dropdown"
                 {...rest}
             >
-                <Calendar
-                    width={'1.5em'}
-                    height={'1.5em'}
-                    fill={'var(--input-placeholder2)'}
-                />
-                <span style={{ opacity: '.4' }}>
-                    Schedule
-                </span>
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Calendar
+                        width={'1.5em'}
+                        height={'1.5em'}
+                        fill={'var(--input-placeholder2)'}
+                    />
+                    <span style={{ opacity: '.4', marginLeft: '8px' }}>
+                        Schedule
+                    </span>
+                </div>
                 <Arrow
                     width={'.8em'}
                     height={'.8em'}
@@ -96,7 +104,7 @@ const ModeSelector = ({ mode, setMode }) => {
     )
 }
 
-const DayPicker = ({ day, setDay, setOpen }) => {
+const DayPicker = ({ day, setDay, setOpen, numberOfDays }) => {
     const ref = useRef(null)
     const [activeDay, setActiveDay] = useState(null)
 
@@ -132,7 +140,7 @@ const DayPicker = ({ day, setDay, setOpen }) => {
     const PartialRow = () => (
         <tr>
             {
-                Array.from({ length: 3 }, (_, i) =>
+                Array.from({ length: numberOfDays - 28 }, (_, i) =>
                     <Day key={i + 29} dayNumber={i + 29} />
                 )
             }
@@ -146,24 +154,24 @@ const DayPicker = ({ day, setDay, setOpen }) => {
 
         switch (event.key) {
             case 'ArrowRight':
-                setActiveDay(activeDay < 31 ? activeDay + 1 : 1)
+                setActiveDay(activeDay < numberOfDays ? activeDay + 1 : 1)
                 break
             case 'ArrowLeft':
-                setActiveDay(activeDay > 1 ? activeDay - 1 : 31)
+                setActiveDay(activeDay > 1 ? activeDay - 1 : numberOfDays)
                 break
             case 'ArrowUp':
-                if (activeDay < 4 && activeDay > 0) {
+                if (activeDay <= (numberOfDays - 28)) {
                     setActiveDay(activeDay + 28)
-                } else if (activeDay >= 4 && activeDay <= 7) {
+                } else if (activeDay >= (numberOfDays - 28) && activeDay <= 7) {
                     setActiveDay(activeDay + 21)
                 } else {
-                    setActiveDay(activeDay ? activeDay - 7 : 31)
+                    setActiveDay(activeDay ? activeDay - 7 : numberOfDays)
                 }
                 break
             case 'ArrowDown':
-                if (activeDay > 28 && activeDay < 32) {
+                if (activeDay > 28) {
                     setActiveDay(activeDay - 28)
-                } else if (activeDay >= 25 && activeDay <= 28) {
+                } else if (activeDay > (numberOfDays - 7)) {
                     setActiveDay(activeDay - 21)
                 } else {
                     setActiveDay(activeDay ? activeDay + 7 : 1)
@@ -459,45 +467,41 @@ const DayWeekPicker = (props) => {
                 }}
                 ref={buttonRef}
             />
-            <div style={{ position: 'relative' }}>
-                <DropAnimation
-                    visible={open}
-                    className="dropdown"
-                    id="schedule-dropdown"
-                    style={{
-                        left: '-50%',
-                        top: '4px',
+            <DropAnimation
+                visible={open}
+                className="dropdown"
+                id="schedule-dropdown"
+                style={{ marginTop: '4px' }}
+            >
+                <div
+                    ref={ref}
+                    onKeyDown={(event) => {
+                        event.stopPropagation()
+                        if (event.key === 'Escape') {
+                            setOpen(false)
+                        }
                     }}
                 >
-                    <div
-                        ref={ref}
-                        onKeyDown={(event) => {
-                            event.stopPropagation()
-                            if (event.key === 'Escape') {
-                                setOpen(false)
-                            }
-                        }}
-                    >
-                        <ModeSelector mode={mode} setMode={setMode} />
-                        {mode === 'day' &&
-                            <DayPicker
-                                day={day}
-                                setDay={setDay}
-                                setOpen={setOpen}
-                            />
-                        }
-                        {mode === 'week' && (
-                            <WeekPicker
-                                weekNumber={weekNumber}
-                                setWeekNumber={setWeekNumber}
-                                weekDay={weekDay}
-                                setWeekDay={setWeekDay}
-                                setOpen={setOpen}
-                            />
-                        )}
-                    </div>
-                </DropAnimation>
-            </div>
+                    <ModeSelector mode={mode} setMode={setMode} />
+                    {mode === 'day' &&
+                        <DayPicker
+                            day={day}
+                            setDay={setDay}
+                            setOpen={setOpen}
+                            numberOfDays={31}
+                        />
+                    }
+                    {mode === 'week' && (
+                        <WeekPicker
+                            weekNumber={weekNumber}
+                            setWeekNumber={setWeekNumber}
+                            weekDay={weekDay}
+                            setWeekDay={setWeekDay}
+                            setOpen={setOpen}
+                        />
+                    )}
+                </div>
+            </DropAnimation>
         </>
     )
 }
@@ -510,8 +514,8 @@ const MonthPicker = ({ month, setMonth, setOpen }) => {
         // Lookup table
         const months = {
             1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
-            5: 'May', 6: 'June', 7: 'July', 8: 'Aug',
-            9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec',
+            5: 'May', 6: 'June', 7: 'Jul', 8: 'Aug',
+            9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
         }
         return months[monthNumber]
     }
@@ -545,16 +549,16 @@ const MonthPicker = ({ month, setMonth, setOpen }) => {
                 setActiveMonth(activeMonth > 1 ? activeMonth - 1 : 12)
             },
             ArrowUp: () => {
-                setActiveMonth(activeMonth > 4 ? activeMonth - 4 : activeMonth + 8)
+                setActiveMonth(activeMonth > 6 ? activeMonth - 6 : activeMonth)
             },
             ArrowDown: () => {
-                setActiveMonth(activeMonth < 9 ? activeMonth + 4 : activeMonth - 8)
-            },
-            Tab: () => {
-                setOpen(false)
+                setActiveMonth(activeMonth < 6 ? activeMonth + 6 : activeMonth)
             },
             Enter: () => {
                 setMonth(activeMonth)
+            },
+            Tab: () => {
+                setActiveMonth(null)
             },
             Escape: () => {
                 setOpen(false)
@@ -564,9 +568,13 @@ const MonthPicker = ({ month, setMonth, setOpen }) => {
         return (actions[key] || actions['default'])()
     }
 
+    useEffect(() => {
+        ref.current?.focus()
+    }, [])
+
     return (
         <div
-            className="week-picker-container"
+            id="month-picker-container"
             ref={ref}
             onBlur={() => {
                 setActiveMonth(null)
@@ -578,7 +586,7 @@ const MonthPicker = ({ month, setMonth, setOpen }) => {
             tabIndex={0}
         >
             <ul
-                className="month-picker"
+                id="month-picker"
                 role="listbox"
                 aria-label="Select month number"
                 aria-activedescendant={`month-${setActiveMonth}`}
@@ -593,7 +601,7 @@ const MonthPicker = ({ month, setMonth, setOpen }) => {
                 </div>
                 <div>
                     {Array.from({ length: 6 }, (_, i) =>
-                        <Month key={i + 7} monthNumber={i + 1} />
+                        <Month key={i + 7} monthNumber={i + 7} />
                     )}
                 </div>
             </ul>
@@ -602,6 +610,11 @@ const MonthPicker = ({ month, setMonth, setOpen }) => {
 }
 
 const MonthYearPicker = (props) => {
+    const daysMap = {
+        1: 31, 2: 28, 3: 31, 4: 30,
+        5: 31, 6: 30, 7: 31, 8: 31,
+        9: 30, 10: 31, 11: 30, 12: 31,
+    }
     const [open, setOpen] = useState(false)
     const ref = useRef(null)
     const buttonRef = useRef(null)
@@ -632,8 +645,10 @@ const MonthYearPicker = (props) => {
                 visible={open}
                 className="dropdown"
                 id="schedule-dropdown"
+                style={{ marginTop: '4px' }}
             >
                 <div
+                    id="month-year-picker-container"
                     ref={ref}
                     onKeyDown={(event) => {
                         event.stopPropagation()
@@ -643,7 +658,13 @@ const MonthYearPicker = (props) => {
                     }}
                 >
                     <MonthPicker month={month} setMonth={setMonth} setOpen={setOpen} />
-
+                    <hr style={{ opacity: '.1', width: '100%' }} />
+                    <DayPicker
+                        day={year}
+                        setDay={setYear}
+                        setOpen={setOpen}
+                        numberOfDays={daysMap[month || 1]}
+                    />
                 </div>
             </DropAnimation>
         </>

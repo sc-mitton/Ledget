@@ -9,12 +9,19 @@ import './styles/Radios.css'
 const RadioContext = createContext(null)
 
 const Radios = (props) => {
-    const { value, onChange, children, ...rest } = props
+    const { value: propValue, onChange: propOnChange, children, ...rest } = props
+
     const ref = useRef(null)
+    const [value, setValue] = useState(propValue || '')
+
+    const handleChange = (newValue) => {
+        setValue(newValue)
+        propOnChange && propOnChange(newValue)
+    }
 
     const data = {
         value,
-        onChange,
+        onChange: handleChange,
         ref
     }
 
@@ -106,15 +113,11 @@ const Pill = (props) => {
 }
 
 const GreenRadios = (props) => {
-    const { options } = props
-    const [choice, setChoice] = useState(
-        options.find((option) => option.default).value
-    )
+    const { options, ...rest } = props
 
     return (
         <Radios
-            value={choice}
-            onChange={setChoice}
+            {...rest}
             className="green-radios-container"
         >
             <Pill styles={{ backgroundColor: 'var(--green-hlight3)' }} />
