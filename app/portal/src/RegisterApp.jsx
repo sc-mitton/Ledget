@@ -45,29 +45,33 @@ function AnimatedRoutes() {
     const location = useLocation()
 
     return (
-        <div className="split-page">
-            <AnimatePresence mode="wait">
-                <motion.div
-                    className="page-half right"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    key={location.pathname}
-                    transition={{
-                        opacity: { duration: .25, ease: "easeIn" }
-                    }}
-                >
-                    <Routes location={location} key={location.pathname} >
-                        <Route path="/" element={<SignUpWindow />} />
+        <AnimatePresence mode="wait">
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{
+                    opacity: 1,
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+                exit={{ opacity: 0 }}
+                key={location.pathname}
+                transition={{
+                    opacity: { duration: .25, ease: "easeIn" }
+                }}
+            >
+                <Routes location={location} key={location.pathname} >
+                    <Route path="/" element={<SignUpWindow />} />
+                    <Route path="/" element={<AuthenticatedRoute />}>
                         <Route path="checkout" element={<CheckoutWindow />} />
                         <Route path="verification" element={<VerificationWindow />} />
-                        <Route path="/" element={<AuthenticatedRoute />}>
-
-                        </Route>
-                    </Routes>
-                </motion.div >
-            </AnimatePresence>
-        </div>
+                    </Route>
+                </Routes>
+            </motion.div >
+        </AnimatePresence>
     )
 }
 

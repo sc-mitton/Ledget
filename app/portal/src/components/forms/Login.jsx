@@ -234,41 +234,32 @@ function LoginFlow() {
     }, [])
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh'
-        }}
-        >
-            <AnimatePresence mode="wait">
-                {email === null
-                    ?
-                    <motion.div
-                        className='window2'
-                        key="initial"
-                        initial={{ opacity: 0, x: !loaded ? 0 : -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -30 }}
-                        transition={{ ease: "easeInOut", duration: 0.2 }}
-                    >
-                        <InitialWindow />
-                    </motion.div>
-                    :
-                    <motion.div
-                        className='window2'
-                        key="authenticate"
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 30 }}
-                        transition={{ ease: "easeInOut", duration: 0.2 }}
-                    >
-                        <AuthenticationWindow />
-                    </motion.div>
-                }
-            </AnimatePresence>
-        </div>
+        <AnimatePresence mode="wait">
+            {email === null
+                ?
+                <motion.div
+                    className='window'
+                    key="initial"
+                    initial={{ opacity: 0, x: !loaded ? 0 : -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -30 }}
+                    transition={{ ease: "easeInOut", duration: 0.2 }}
+                >
+                    <InitialWindow />
+                </motion.div>
+                :
+                <motion.div
+                    className='window'
+                    key="authenticate"
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 30 }}
+                    transition={{ ease: "easeInOut", duration: 0.2 }}
+                >
+                    <AuthenticationWindow />
+                </motion.div>
+            }
+        </AnimatePresence>
     )
 }
 

@@ -141,9 +141,6 @@ const passwordSchema = yup.object().shape({
     password: yup.string()
         .required('Please enter a password')
         .min(10, 'Password must be at least 10 characters'),
-    confirmPassword: yup.string()
-        .required('Please confirm your password')
-        .oneOf([yup.ref('password'), null], 'Passwords must match')
 })
 
 const AuthenticationForm = () => {
@@ -173,17 +170,6 @@ const AuthenticationForm = () => {
                 />
                 {errors.password?.type !== 'required' &&
                     <FormError msg={errors.password?.message} />}
-                <PasswordInput
-                    name='confirmPassword'
-                    inputType="confirm-password"
-                    placeholder="Confirm"
-                    register={register}
-                    pwdVisible={pwdVisible}
-                    setPwdVisible={setPwdVisible}
-                    trigger={trigger}
-                />
-                {errors.confirmPassword?.type !== 'required' &&
-                    <FormError msg={errors.confirmPassword?.message} />}
                 <CsrfToken csrf={csrf} />
                 <input type='hidden' name='traits.email' value={userInfo.email} />
                 <input type='hidden' name='traits.name.first' value={userInfo.firstName} />
@@ -222,8 +208,6 @@ const AuthSelectionWindow = () => {
     )
 }
 
-
-
 function SignUpFlow() {
     const { flow, createFlow, getFlow, registering } = useContext(RegisterFlowContext)
     const { userInfo } = useContext(userInfoContext)
@@ -243,7 +227,8 @@ function SignUpFlow() {
     return (
         <>
             <AnimatePresence mode="wait">
-                {Object.keys(userInfo).length === 0 ?
+                {Object.keys(userInfo).length === 0
+                    ?
                     <motion.div
                         className='window'
                         key="sign-up"

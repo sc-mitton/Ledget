@@ -88,10 +88,6 @@ body {
     background-color: var(--window);
 }
 
-main {
-    min-height: 100vh;
-}
-
 div,
 p,
 span,
