@@ -42,7 +42,7 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         placeholder: (baseStyles, state) => ({
             ...baseStyles,
-            color: state.isFocused ? "#60d39c" : "#767676",
+            color: state.isFocused ? "#60d39c" : "var(--input-placeholder2)",
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,

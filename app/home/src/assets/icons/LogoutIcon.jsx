@@ -2,6 +2,7 @@ import React from 'react'
 
 const Logout = ({
     className = null,
+    id = "logout-icon",
     width = "1.1em",
     height = "1.1em",
     fill = "#292929",
@@ -9,6 +10,7 @@ const Logout = ({
     return (
         <svg
             className={className}
+            id={id}
             width={width}
             height={height}
             viewBox="0 0 144 144"

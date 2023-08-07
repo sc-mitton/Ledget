@@ -146,15 +146,14 @@ header {
     justify-content: center;
     align-items: center;
     text-align: center;
-    border-radius: 12px;
     transition: all 0.3s ease-out;
     cursor: pointer;
-    border-radius: 12px;
+    border-radius: 10px;
 }
 
 .nav-item a,
 .current-nav-item a {
-    border-radius: 12px;
+    border-radius: 10px;
     width: 100%;
     height: 100%;
     padding: 2px 12px;
@@ -169,4 +168,9 @@ header {
 
 .current-nav-item * {
     color: var(--white-text);
+}
+
+#logout-icon {
+    margin-left: 4px;
+    margin-right: 10px;
 }

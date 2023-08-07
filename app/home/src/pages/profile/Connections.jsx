@@ -1,9 +1,16 @@
 import React from 'react'
 
+import Plus from '@assets/icons/Plus'
+
 const Connections = () => {
     return (
         <div >
-            <h1>Connections</h1>
+            <div className="header">
+                <h1>Connections</h1>
+                <button className="btn-clr btn">
+                    <Plus />
+                </button>
+            </div>
         </div>
     )
 }

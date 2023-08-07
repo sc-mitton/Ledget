@@ -141,7 +141,7 @@
 
 .loading-bar-container {
     position: absolute;
-    width: 100%;
+    width: 95%;
     height: 100%;
     left: 0;
     right: 0;
@@ -181,7 +181,7 @@
     height: 100%;
     width: 100%;
     background: linear-gradient(to right, rgba(248, 248, 248, 100) 0%, rgba(248, 248, 248, 0) 1%, rgba(248, 248, 248, 0) 99%, rgba(248, 248, 248, 100) 100%);
-    z-index: 3;
+    z-index: 1003;
 }
 
 @keyframes load {

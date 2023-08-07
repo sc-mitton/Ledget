@@ -41,24 +41,36 @@
     cursor: pointer;
     margin: 8px;
     padding: 4px 22px;
-    border-radius: 12px;
+    border-radius: 10px;
     transition: background-color .3s ease-in-out;
-}
-
-#gutter li a {
     display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-#profile-list-item {
-    padding: 8px 0px;
-    display: flex;
+    flex-direction: row;
     align-items: center;
 }
 
-#profile-list-item svg {
-    margin: 0 12px 0 0;
+#gutter li.slim div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#gutter li.slim div:first-child {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+#gutter li.slim div:last-child {
+    flex: 4;
+}
+
+#gutter li#profile {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#gutter li#profile svg {
+    margin-right: 12px;
 }
 
 .side-nav-item {

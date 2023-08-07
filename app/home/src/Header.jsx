@@ -139,7 +139,7 @@ function Header({ isNarrow }) {
                                         Help
                                     </Wrapper>
                                     <Wrapper onClick={() => setModal("logout")}>
-                                        <LogoutIcon className="dropdown-icon" />
+                                        <LogoutIcon className="dropdown-icon" id="logout-icon" />
                                         Log out
                                     </Wrapper>
                                 </div>

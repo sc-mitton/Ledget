@@ -181,6 +181,12 @@ fieldset {
     margin: 0;
 }
 
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .sub-header {
     display: flex;
     align-items: center;
@@ -409,7 +415,7 @@ button svg {
 /* Other */
 
 .btn {
-    padding: 4px;
+    padding: 2px;
     border-radius: 6px;
     font-weight: 500;
 }
@@ -450,7 +456,7 @@ button svg {
 }
 
 .btn-pill {
-    border-radius: 12px;
+    border-radius: 50%;
     padding: 2px 4px;
 }
 

@@ -32,18 +32,20 @@ const NavList = () => {
             <li
                 key={route}
                 role="link"
-                name={route}
+                id={route}
                 tabIndex={0}
                 onClick={() => navigate(route)}
                 onKeyDown={(e) => {
                     e.key === "Enter" && navigate(route)
                 }}
-                className={`side-nav-item${rootPath === route ? "-current" : ''}`}
+                className={`slim side-nav-item${rootPath === route ? "-current" : ''}`}
             >
-                <a name={route} style={{ display: 'flex', alignItems: 'center' }}>
+                <div>
                     <Icon name={route} />
+                </div>
+                <div>
                     {route.charAt(0).toUpperCase() + route.slice(1)}
-                </a>
+                </div>
             </li>
         ))
     )
@@ -62,24 +64,19 @@ const Profile = () => {
             onClick={() => navigate("/profile")}
             onKeyDown={(e) => e.key === "Enter" && navigate("/profile")}
             className={`side-nav-item${location.pathname === "/profile" ? "-current" : ''}`}
-            id="profile-list-item"
-            style={{
-                padding: '12px 16px'
-            }}
+            id="profile"
         >
-            <a name="profile">
+            <div>
+                <Profile1 />
+            </div>
+            <div>
                 <div>
-                    <Profile1 />
+                    <span>Spencer's Ledget</span>
                 </div>
                 <div>
-                    <div>
-                        <span>Spencer's Ledget</span>
-                    </div>
-                    <div>
-                        <span style={{ opacity: '.5' }}>smitton.byu@gmail.com</span>
-                    </div>
+                    <span style={{ opacity: '.5' }}>smitton.byu@gmail.com</span>
                 </div>
-            </a>
+            </div>
         </li>
     )
 }
@@ -96,7 +93,7 @@ const Gutter = () => {
         find: (el) => {
             const path = location.pathname.split("/")[2]
                 || location.pathname.split("/")[1]
-            return el.firstChild.name === path
+            return el.id === path
         },
         styles: {
             backgroundColor: 'var(--green-hlight)',

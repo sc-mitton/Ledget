@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
 
-import './styles/Window.css'
+import './styles/window.css'
 import Gutter from './Gutter'
 import Account from './Account'
 import Connections from './Connections'
