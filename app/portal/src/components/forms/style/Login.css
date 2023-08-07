@@ -30,7 +30,7 @@
 }
 
 #email-container span {
-    opacity: .6;
+    opacity: 1;
     margin-right: 6px;
 }
 
@@ -38,12 +38,11 @@
     color: var(--main-text-gray);
     transition: color .2s ease, opacity .2s ease;
     font-weight: 500;
-    opacity: .6;
     padding: 0 4px;
 }
 
 #change-email-button:hover {
-    color: var(--green-dark);
+    color: var(--m-green);
     opacity: 1;
 }
 
@@ -63,9 +62,9 @@
 #forgot-password-container a {
     font-size: 15px;
     font-weight: 400;
-    color: var(--green-dark);
+    color: var(--main-text-gray);
 }
 
 #forgot-password-container a:hover {
-    border-bottom: 1.5px solid var(--green-dark);
+    border-bottom: 1.5px solid var(--main-text-gray);
 }

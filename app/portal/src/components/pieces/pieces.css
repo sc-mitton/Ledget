@@ -169,7 +169,7 @@
     margin: 0 auto;
     height: 100%;
     width: 100%;
-    background-color: var(--lighter-green);
+    background-color: var(--m-green);
     animation: load .7s linear infinite;
     z-index: 1002;
 }

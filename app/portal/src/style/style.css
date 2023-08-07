@@ -132,7 +132,6 @@ a {
     outline: none;
     text-decoration: none;
     border-bottom: 1.5px solid rgb(0, 0, 0, 0);
-    color: var(--green-dark);
     text-decoration-skip-ink: none;
     transition: border-bottom .2s ease;
     text-underline-offset: 2px;
@@ -141,7 +140,7 @@ a {
 
 a:focus-visible,
 a:hover {
-    border-bottom: 1.5px solid var(--green-dark);
+    border-bottom: 1.5px solid var(--green-hlight3);
 }
 
 label:focus-visible {

@@ -48,7 +48,6 @@
 
 .month-picker-item {
     transition: background-color 0.1s ease;
-    color: var(--faded-text);
 }
 
 .month-picker-item,
@@ -67,7 +66,7 @@
 .month-picker-item:hover,
 .month-picker-item:focus,
 .arrow-nav:focus-visible {
-    background-color: var(--drop-down-hover-background);
+    background-color: var(--green-hlight2);
     box-shadow: none;
     outline: none;
 }
