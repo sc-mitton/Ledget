@@ -204,6 +204,26 @@ const AuthenticationForm = () => {
     )
 }
 
+const AuthSelectionWindow = () => {
+    const { registering } = useContext(RegisterFlowContext)
+
+    return (
+        <>
+            <WindowLoadingBar visible={registering} />
+            <SignUpFlowHeader step={2} steps={4} />
+            {typeof (PublicKeyCredential) != "undefined"
+                ?
+                <h2>Sign In Method</h2>
+                :
+                <h2>Create a Password</h2>
+            }
+            <AuthenticationForm />
+        </>
+    )
+}
+
+
+
 function SignUpFlow() {
     const { flow, createFlow, getFlow, registering } = useContext(RegisterFlowContext)
     const { userInfo } = useContext(userInfoContext)
@@ -243,7 +263,7 @@ function SignUpFlow() {
                         exit={{ opacity: 0, x: 30 }}
                         transition={{ ease: "easeInOut", duration: 0.2 }}
                     >
-                        <AuthenticationForm />
+                        <AuthSelectionWindow />
                     </motion.div>
                 }
             </AnimatePresence>
