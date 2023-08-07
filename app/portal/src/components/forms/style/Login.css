@@ -1,12 +1,12 @@
 .app-logo {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     margin-bottom: 36px;
 }
 
 .app-logo img {
-    height: 44px;
+    height: 32px;
 }
 
 .login-form input {
@@ -19,7 +19,7 @@
 
 #email-container {
     width: 100%;
-    text-align: center;
+    text-align: left;
     margin-top: -20px;
     margin-bottom: 40px;
 }
@@ -29,20 +29,20 @@
     margin-bottom: 2px;
 }
 
-#email-container span {
-    opacity: 1;
-    margin-right: 6px;
+#email-container div,
+#email-container button {
+    display: flex;
+    align-items: center
 }
 
-#change-email-button {
-    color: var(--main-text-gray);
-    transition: color .2s ease, opacity .2s ease;
-    font-weight: 500;
-    padding: 0 4px;
+#email-container span,
+#email-container button {
+    opacity: .7;
 }
 
-#change-email-button:hover {
+#email-container button:hover {
     color: var(--m-green);
+    transition: all 0.3s ease-out;
     opacity: 1;
 }
 

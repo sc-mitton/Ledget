@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form"
 import './style/Login.css'
 import logo from "@assets/images/logo.svg"
 import logoIcon from "@assets/images/logoIcon.svg"
+import BackArrow from "@assets/icons/BackArrow"
 import SocialAuth from "./SocialAuth"
 import PasswordInput from "./inputs/PasswordInput"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
@@ -92,7 +93,7 @@ const EmailForm = () => {
                     />
                 </div>
                 <button
-                    className='charcoal-button'
+                    className="btn-main btn-chcl"
                     id="next"
                     name="enter-password"
                     aria-label="Continue"
@@ -113,7 +114,7 @@ const InitialWindow = () => {
             <div className="app-logo" >
                 <img src={logo} alt="Ledget" />
             </div>
-            <h2>Sign In</h2>
+            <h2>Sign in to Ledget</h2>
             <EmailForm />
             <SocialAuth flow={flow} submit={submit} csrf={csrf} />
             <div className="below-window-container">
@@ -157,9 +158,9 @@ const AuthenticationForm = () => {
             >
                 {responseError && <FormError msg={responseError} />}
                 <PasswordInput ref={pwdRef} />
-                <div id="forgot-password-container">
+                {/* <div id="forgot-password-container">
                     <Link to="/recovery" tabIndex={0} >Forgot Password?</Link>
-                </div>
+                </div> */}
                 <input
                     type="hidden"
                     name="identifier"
@@ -167,7 +168,7 @@ const AuthenticationForm = () => {
                 />
                 <CsrfToken csrf={csrf} />
                 <button
-                    className='charcoal-button main-submit'
+                    className='btn-chcl btn-main'
                     name="method"
                     value="password"
                     type="submit"
@@ -193,13 +194,22 @@ const AuthenticationWindow = () => {
             </div>
             <div id="email-container">
                 <h3>Welcome Back</h3>
-                <span>{`${initialEmailValue.current}`}</span>
-                <button
-                    id="change-email-button"
-                    onClick={() => setEmail(null)}
-                >
-                    change
-                </button>
+                <div>
+                    <button
+                        className="btn-icon"
+                        aria-label="Back"
+                        onClick={() => {
+                            setEmail(null)
+                        }}
+                        style={{
+                            marginTop: '1px',
+                            marginRight: '6px',
+                        }}
+                    >
+                        <BackArrow />
+                    </button>
+                    <span>{`${initialEmailValue.current}`}</span>
+                </div>
             </div>
             <AuthenticationForm />
         </>
@@ -224,33 +234,41 @@ function LoginFlow() {
     }, [])
 
     return (
-        <AnimatePresence mode="wait">
-            {email === null
-                ?
-                <motion.div
-                    className='window'
-                    key="initial"
-                    initial={{ opacity: 0, x: !loaded ? 0 : -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -30 }}
-                    transition={{ ease: "easeInOut", duration: 0.2 }}
-                >
-                    <InitialWindow />
-                </motion.div>
-                :
-                <motion.div
-                    className='window'
-                    key="authenticate"
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 30 }}
-                    transition={{ ease: "easeInOut", duration: 0.2 }}
-                >
-                    <AuthenticationWindow />
-                </motion.div>
-            }
-        </AnimatePresence>
-
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh'
+        }}
+        >
+            <AnimatePresence mode="wait">
+                {email === null
+                    ?
+                    <motion.div
+                        className='window2'
+                        key="initial"
+                        initial={{ opacity: 0, x: !loaded ? 0 : -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -30 }}
+                        transition={{ ease: "easeInOut", duration: 0.2 }}
+                    >
+                        <InitialWindow />
+                    </motion.div>
+                    :
+                    <motion.div
+                        className='window2'
+                        key="authenticate"
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 30 }}
+                        transition={{ ease: "easeInOut", duration: 0.2 }}
+                    >
+                        <AuthenticationWindow />
+                    </motion.div>
+                }
+            </AnimatePresence>
+        </div>
     )
 }
 

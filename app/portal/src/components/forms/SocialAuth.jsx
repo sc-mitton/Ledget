@@ -15,7 +15,7 @@ function SocialAuth({ flow, submit, csrf }) {
                 if (node.group === 'oidc') {
                     return (
                         <button
-                            className="social-auth-button"
+                            className="btn-gr btn-main"
                             key={index}
                             id={node.id}
                             type={node.attributes.type}
@@ -37,13 +37,13 @@ function SocialAuth({ flow, submit, csrf }) {
         return (
             <>
                 <button
-                    className="social-auth-button"
+                    className="btn-gr btn-main"
                     id="facebook"
                 >
                     <FacebookLogo />
                 </button>
                 <button
-                    className="social-auth-button"
+                    className="btn-gr btn-main"
                     id="google"
                 >
                     <GoogleLogo />

@@ -107,7 +107,7 @@ const PasswordlessForm = ({ flow = { flow }, helpIcon = true, children }) => {
                                 return (
                                     <div className='passwordless-button-container' key={attrs.name}>
                                         <button
-                                            className='passwordless-button'
+                                            className='btn-main btn-gr btn-icon-left'
                                             disabled={attrs.disabled}
                                             {...submit}
                                         >
@@ -156,16 +156,14 @@ export const PasskeySignIn = () => {
         <div className='passwordless-form-section-container'>
             <PasswordlessOptionsHeader />
             <div className='passwordless-inputs-container'>
-                <div className='passwordless-button-container'>
-                    <button
-                        className='passwordless-button'
-                        name="method"
-                        value="webauthn"
-                    >
-                        <PasskeyIcon />
-                        Passkey
-                    </button>
-                </div>
+                <button
+                    className='btn-main btn-gr btn-icon-left'
+                    name="method"
+                    value="webauthn"
+                >
+                    <PasskeyIcon />
+                    Passkey
+                </button>
             </div>
         </div>
     )

@@ -31,18 +31,104 @@
     height: 100vh;
 }
 
+.split-page {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100%;
+}
+
+
+.page-half.left img {
+    height: 30px;
+}
+
+.page-half h1,
+h3 {
+    margin: 0;
+}
+
+.page-half.left {
+    flex: 1;
+    padding: 80px 0 80px 80px;
+    background-color: var(--green-hlight);
+    width: 100%;
+    height: 100%;
+}
+
+.page-half.right {
+    position: relative;
+    flex: 2;
+    background-color: var(--window);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 968px) {
+    .split-page {
+        flex-direction: column;
+    }
+
+    .page {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-half.left {
+        width: 100%;
+        padding: 20px 0;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .page-half.left>div {
+        flex: 1;
+        width: 85%;
+        max-width: 325px;
+        margin: 24px;
+    }
+
+    .page-half.right {
+        flex: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20%;
+    }
+}
+
 .window {
-    box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
     font-size: 14px;
     border-radius: 10px;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    width: 40%;
+    width: 85%;
     max-width: 325px;
-    padding: 32px 40px;
+    margin: 24px;
     position: relative;
+    padding: 32px 40px;
+    box-shadow: rgba(149, 157, 165, 0.7) 0px 0px 2px;
 }
 
-.window h2 {
+.window2 {
+    font-size: 14px;
+    border-radius: 10px;
+    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    width: 85%;
+    max-width: 325px;
+    margin: 24px;
+    position: relative;
+    box-shadow: rgba(149, 157, 165, 0.7) 0px 0px 2px;
+    width: 40%;
+    padding: 32px 40px;
+}
+
+.window2 h2 {
     margin-top: 0;
     margin-bottom: 16px;
 }
@@ -53,32 +139,72 @@
 }
 
 .subheader {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 16px;
     width: 90%;
 }
 
 .subheader span {
-    opacity: .7;
+    opacity: .8;
 }
 
 /* --------------------------------- Buttons -------------------------------- */
 
 button {
-    border-radius: 8px;
-    padding: 12px 16px;
     cursor: pointer;
+    border: none;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    white-space: nowrap;
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    padding: 0;
 }
 
-.charcoal-button {
+.btn-icon-left svg {
+    margin-right: 8px;
+}
+
+.btn-main {
+    border-radius: 8px;
+    padding: 12px 16px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-icon {
+    border-radius: 4px;
+    padding: 2px;
+}
+
+/***/
+
+.btn-chcl {
     background-color: var(--btn-gray);
     color: var(--window);
     margin: 8px 0;
 }
 
-.charcoal-button:hover {
+.btn-chcl:hover {
     background-color: var(--btn-hover-gray);
 }
 
+.btn-gr {
+    box-shadow: var(--btn-drop-shadow);
+    background-color: var(--btn-light-gray);
+    transition: background-color .3s ease;
+}
+
+.btn-gr:hover {
+    background-color: var(--btn-light-gray-hover);
+    transition: background-color .3s ease;
+}
 
 /* --------------------------------- Inputs --------------------------------- */
 input {
@@ -119,43 +245,28 @@ input[type="password"]:focus::placeholder {
     position: relative;
 }
 
+.split-inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.split-inputs .input-container {
+    width: 48%;
+    margin: 0;
+}
+
 .input-container:focus-within {
     outline: none;
     box-shadow: var(--input-focus-drop-shadow);
 }
 
 
-/* ----------------------------- Submit Buttons ----------------------------- */
-.submit-button {
-    color: var(--window);
-    background-color: var(--btn-gray);
-    transition: background-color 0.3s ease;
-}
-
-.submit-button:hover {
-    background-color: var(--btn-hover-gray);
-}
-
-.submit-button {
-    outline: none;
-    cursor: pointer;
-    /* border: 1.5px solid var(--window); */
-}
-
-.submit-button:focus-within {
-    outline: none;
-    box-shadow: var(--accessible-focus-drop-shadow);
-}
-
-.main-submit {
-    width: 100%;
-}
-
-/* ----------------------------- Social Buttons ----------------------------- */
+/* ----------------------------- Social Login ----------------------------- */
 
 #social-login-header {
     text-align: center;
-    margin-top: 44px;
+    margin-top: 40px;
     margin-bottom: 12px;
     display: flex;
     flex-direction: row;
@@ -185,32 +296,12 @@ input[type="password"]:focus::placeholder {
     align-items: center;
 }
 
-.social-auth-button {
-    box-shadow: var(--btn-drop-shadow);
-    background-color: var(--social-button);
-    border-radius: 8px;
-    flex: 1;
-    padding: 10px;
-    margin: 4px;
-    box-sizing: border-box;
-    transition: background-color 0.15s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+#social-login-form button:first-child {
+    margin-right: 8px;
 }
 
-.social-auth-button svg {
-    opacity: .7;
-}
-
-.social-auth-button:hover {
-    background-color: var(--social-button-hover);
-}
-
-.social-auth-button:focus-visible {
-    outline: none;
-    box-shadow: var(--accessible-focus-drop-shadow);
+#social-login-form button:last-child {
+    margin-left: 8px;
 }
 
 /* ---------------------------- Misc ---------------------------- */
@@ -221,4 +312,10 @@ input[type="password"]:focus::placeholder {
     height: 0;
     position: relative;
     bottom: -48px;
+}
+
+.window p {
+    font-weight: 500;
+    margin-left: 8px;
+    margin-bottom: 32px;
 }

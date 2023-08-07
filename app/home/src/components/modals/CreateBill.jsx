@@ -120,7 +120,7 @@ const Form = (props) => {
                         />
                         <FormErrorTip errors={[errors.upperRange, errors.LowerRange]} />
                     </TextInput>
-                    {errors.lowerRange && errors.lowerRange.type !== 'required'
+                    {errors.lowerRange?.type !== 'required'
                         && <FormError msg={errors.lowerRange?.message} />}
                 </div>
                 <div id="bottom-inputs">

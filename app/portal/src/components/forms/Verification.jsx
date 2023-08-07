@@ -46,7 +46,7 @@ const VerificationForm = () => {
                     value={user?.traits?.email}
                 />
                 <button
-                    className="charcoal-button"
+                    className="btn-chcl btn-main"
                     id="verify-otc"
                     type="submit"
                     value="code"
@@ -119,7 +119,7 @@ const AnimatedVerification = () => {
                     <>
                         <h2>Verify your email address</h2>
                         <div className="subheader">
-                            <span>Enter the code we sent to your email address </span>
+                            <span>Enter the code we sent to your email address</span>
                             <span>to verify your account:</span>
                         </div>
                         <VerificationForm />

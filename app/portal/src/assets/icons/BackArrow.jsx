@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Back = ({
+const BackArrow = ({
     className = null,
     width = ".9em",
     height = ".9em",
-    stroke = "#242424",
+    stroke = "#292929",
     strokeWidth = "24"
 }) => {
 
@@ -40,4 +40,4 @@ const Back = ({
     )
 }
 
-export default Back
+export default BackArrow

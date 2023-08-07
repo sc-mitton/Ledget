@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useLayoutEffect } from 'react'
+import React, { useContext, useLayoutEffect } from 'react'
 import { useState, useRef } from 'react'
 
 import { useForm, Controller, set } from 'react-hook-form'
@@ -460,7 +460,7 @@ function Checkout({ prices }) {
                 {price &&
                     <div className="subscribe-button-container">
                         <button
-                            className="submit-button"
+                            className="btn-chcl btn-main"
                             id="subscribe-button"
                             type='submit'
                             form={form}

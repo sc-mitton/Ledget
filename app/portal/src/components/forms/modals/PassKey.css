@@ -1,14 +1,19 @@
-.passkey-modal-content {
+#passkey-modal-content {
     text-align: left;
     font-size: 18px;
     font-weight: 400;
 }
 
-.passkey-modal-content h1 {
+#passkey-modal-text {
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+#passkey-modal-content h1 {
     color: var(--m-green);
 }
 
-.passkey-modal-content div:first-child {
+#passkey-modal-content div:first-child {
     margin-bottom: 20px;
     margin-top: 20px;
     height: 50px;
@@ -17,11 +22,11 @@
     justify-content: center;
 }
 
-.passkey-modal-content div:first-child img {
+#passkey-modal-content div:first-child img {
     height: 1em;
     transform: scale(1.2);
 }
 
-.passkey-modal-content svg {
+#passkey-modal-content svg {
     transform: scale(3);
 }

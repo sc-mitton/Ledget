@@ -21,16 +21,18 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --green-hlight: #8fffc0;
-    --green-hlight2: #cafce0;
-    --green-hlight3: #88ecbc;
-    --lighter-green: #b3e2c8;
-    --m-green: #51ed97;
-    --green-dark: #43c77e;
+    --green-hlight: rgb(143, 255, 192);
+    --green-hlight2: rgb(202, 252, 224);
+    --green-hlight3: rgb(136, 236, 188);
+    --lighter-green: rgb(179, 226, 200);
+    --m-green: rgb(81, 237, 151);
+    --m-green-values: 81, 237, 151;
+    --m-green-hover: rgb(59, 222, 132);
+    --green-dark: rgb(67, 199, 126);
     --green-dark2: rgb(71, 209, 133);
     --green-dark3: rgb(61, 174, 112);
-    --accessible-green: #51ed97;
-    --green-input-focus: #60d39c;
+    --accessible-green: rgb(81, 237, 151);
+    --green-input-focus: rgb(96, 211, 156);
 
     /* Inputs */
     --input-placeholder: #848484;
@@ -38,13 +40,13 @@
 
     /* Buttons */
     --btn-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    --social-button: #ededed;
-    --social-button-hover: #e0e0e0;
+    --btn-light-gray: #ededed;
+    --btn-light-gray-hover: #e0e0e0;
     --btn-gray: #363636;
     --btn-hover-gray: #1e1d1d;
 
     /* Drop Shadows */
-    --accessible-focus-drop-shadow: 0 0 1px 1px var(--accessible-green);
+    --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-green);
     --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
 
     /* Subscription Radios */
@@ -54,10 +56,13 @@
     --input-color: #ededed;
 
     /* Text */
-    --main-text-gray: #242424;
-    --muted-text-gray: #848484;
+    --main-text-gray: #292929;
+    --input-placeholder: #848484;
+    --input-placeholder2: #a6a6a6;
+    --input-focus: #6b9bf6;
     --white-text: #f8f8f8;
-    --green-text: #2fc271;
+    --muted-text-gray: #848484;
+    --faded-text: rgb(0, 0, 0, .3);
 }
 
 /* Override color values for Firefox */
