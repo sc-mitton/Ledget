@@ -1,23 +1,5 @@
 /* ---------------------------------- plans --------------------------------- */
 
-#prices-container {
-    background-color: var(--green-hlight);
-    box-shadow: 0 1px 1px 0 var(--green-hlight);
-    border-radius: inherit;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-#prices-container-header {
-    padding: 24px 52px 0px 52px;
-    display: flex;
-    justify-content: start;
-}
-
-#prices-container-header img {
-    height: 1.6em;
-}
-
 #subscription-radios-container {
     display: flex;
     justify-content: center;
@@ -63,7 +45,7 @@ input[type="radio"] {
     position: relative;
     overflow: hidden;
     white-space: nowrap;
-    border-radius: 14px;
+    border-radius: 12px;
     border: 2.5px solid var(--btn-gray);
 }
 
@@ -124,16 +106,6 @@ input[type="radio"] {
     color: var(--logo-dark);
     margin: 0 0 0 4px;
     margin-bottom: 12px;
-}
-
-#checkout-window {
-    width: 90%;
-    max-width: 500px;
-    padding: 0;
-}
-
-#checkout-container {
-    margin: 44px 52px;
 }
 
 .inputs-container h3 {

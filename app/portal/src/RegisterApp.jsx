@@ -68,7 +68,6 @@ function AnimatedRoutes() {
                     <Route path="checkout" element={<CheckoutWindow />} />
                     <Route path="verification" element={<VerificationWindow />} />
                     <Route path="/" element={<AuthenticatedRoute />}>
-
                     </Route>
                 </Routes>
             </motion.div >

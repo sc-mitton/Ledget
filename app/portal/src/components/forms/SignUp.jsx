@@ -13,7 +13,6 @@ import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/
 import { WindowLoadingBar } from "../pieces"
 import PasswordInput from "./inputs/PasswordInput"
 import PasswordlessForm from "./inputs/PasswordlessForm"
-import SignUpFlowHeader from "../pieces/SignUpFlowHeader"
 import CsrfToken from "./inputs/CsrfToken"
 
 // Context for user info
@@ -109,7 +108,7 @@ function UserInfoForm() {
                 style={{ marginTop: '12px' }}
             >
                 <button
-                    className='btn-chcl btn-main'
+                    className='btn-grn btn-main'
                     type='submit'
                     aria-label="Submit form"
                 >
@@ -129,19 +128,11 @@ const UserInfoWindow = () => {
         <>
             <WindowLoadingBar visible={!flow} />
             <div className="window-header">
-                <SignUpFlowHeader />
                 <h2>Create Account</h2>
                 <h4>Step 1 of 4</h4>
             </div>
             <UserInfoForm />
             <SocialAuth flow={flow} submit={submit} csrf={csrf} />
-            <div className="below-window-container">
-                <span>Already have an account?  </span>
-                <Link to={{
-                    pathname: "/login",
-                    state: { direction: 1 }
-                }}>Sign In</Link>
-            </div>
         </>
     )
 }
@@ -170,8 +161,10 @@ const AuthenticationForm = () => {
                 id="authentication-form"
             >
                 <FormError msg={responseError} />
+                <label htmlFor="password">Password</label>
                 <PasswordInput
                     name='password'
+                    placeholder="Enter a password..."
                     register={register}
                     pwdVisible={pwdVisible}
                     setPwdVisible={setPwdVisible}
@@ -183,7 +176,7 @@ const AuthenticationForm = () => {
                 <input type='hidden' name='traits.email' value={userInfo.email} />
                 <input type='hidden' name='traits.name.first' value={userInfo.firstName} />
                 <input type='hidden' name='traits.name.last' value={userInfo.lastName} />
-                <button className='btn-chcl btn-main' name="method" value="password" type="submit">
+                <button className='btn-grn btn-main' name="method" value="password" type="submit">
                     Create
                 </button>
             </form >
@@ -206,7 +199,6 @@ const AuthSelectionWindow = () => {
         <>
             <WindowLoadingBar visible={registering} />
             <div className="window-header">
-                <SignUpFlowHeader step={2} steps={4} />
                 {typeof (PublicKeyCredential) != "undefined"
                     ?
                     <h2>Sign In Method</h2>

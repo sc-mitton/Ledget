@@ -1,9 +1,3 @@
-#verification-window {
-    max-width: 375px;
-    width: 60%;
-    padding: 40px 60px;
-}
-
 #verification-container-header {
     padding: 12px 0 36px 0px;
     display: flex;
@@ -31,7 +25,7 @@
     font-weight: 500;
 }
 
-#verify-otc {
+w #verify-otc {
     width: 100%;
     margin-top: 16px;
 }

@@ -8,7 +8,6 @@ import { VerificationFlowContextProvider, VerificationFlowContext } from "../../
 import { WindowLoadingBar } from "../pieces"
 import "./style/Verification.css"
 import verifyEmail from "@assets/icons/verifyEmail.svg"
-import SignUpFlowHeader from "../pieces/SignUpFlowHeader"
 import UserContext from "../../context/UserContext"
 import CsrfToken from "./inputs/CsrfToken"
 import { FormError } from "../pieces"
@@ -106,7 +105,6 @@ const AnimatedVerification = () => {
         >
             <WindowLoadingBar visible={verifying} />
             <div className="window-header">
-                <SignUpFlowHeader step={2} steps={4} />
                 <h2>Email Verification</h2>
                 <h4>Step 3 of 4</h4>
             </div>

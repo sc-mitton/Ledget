@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 import RegisterApp from './RegisterApp'
 import LoginWindow from './components/forms/Login'
+import Header from './Header'
 import RecoveryWindow from './components/forms/Recovery'
 import { UnauthenticatedRoute } from './utils/PrivateRoutes'
 
@@ -13,6 +14,7 @@ function App() {
     return (
         <main>
             <BrowserRouter>
+                <Header />
                 <Routes>
                     <Route path="/" element={<UnauthenticatedRoute />}>
                         <Route exact path="/" element={<Navigate to="/login" />} />

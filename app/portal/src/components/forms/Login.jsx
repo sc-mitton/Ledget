@@ -93,7 +93,7 @@ const EmailForm = () => {
                     />
                 </div>
                 <button
-                    className="btn-main btn-chcl"
+                    className="btn-main btn-grn"
                     id="next"
                     name="enter-password"
                     aria-label="Continue"
@@ -116,12 +116,6 @@ const InitialWindow = () => {
             </div>
             <EmailForm />
             <SocialAuth flow={flow} submit={submit} csrf={csrf} />
-            <div className="below-window-container">
-                <span>Don't have an account? </span>
-                <Link to={{ pathname: "/register", state: { direction: 1 } }}>
-                    Sign Up
-                </Link>
-            </div>
             <WindowLoadingBar visible={!flow} />
         </>
     )
@@ -157,9 +151,9 @@ const AuthenticationForm = () => {
             >
                 {responseError && <FormError msg={responseError} />}
                 <PasswordInput ref={pwdRef} />
-                {/* <div id="forgot-password-container">
+                <div id="forgot-password-container">
                     <Link to="/recovery" tabIndex={0} >Forgot Password?</Link>
-                </div> */}
+                </div>
                 <input
                     type="hidden"
                     name="identifier"
@@ -167,7 +161,7 @@ const AuthenticationForm = () => {
                 />
                 <CsrfToken csrf={csrf} />
                 <button
-                    className='btn-chcl btn-main'
+                    className='btn-grn btn-main'
                     name="method"
                     value="password"
                     type="submit"
@@ -188,9 +182,6 @@ const AuthenticationWindow = () => {
     return (
         <>
             <WindowLoadingBar visible={authenticating || flow == null} />
-            <div className="app-logo" >
-                <img src={logoIcon} alt="Ledget" />
-            </div>
             <div id="email-container">
                 <h3>Welcome Back</h3>
                 <div>
