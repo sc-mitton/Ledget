@@ -13,7 +13,7 @@ import { RegisterFlowContext, RegisterFlowContextProvider } from "../../context/
 import { WindowLoadingBar } from "../pieces"
 import PasswordInput from "./inputs/PasswordInput"
 import PasswordlessForm from "./inputs/PasswordlessForm"
-import SignUpFlowHeader from "./SignUpFlowHeader"
+import SignUpFlowHeader from "../pieces/SignUpFlowHeader"
 import CsrfToken from "./inputs/CsrfToken"
 
 // Context for user info
@@ -52,34 +52,38 @@ function UserInfoForm() {
     return (
         <form onSubmit={handleSubmit((e) => submit(e))} className="sign-up-form" noValidate>
             {responseError && <FormError msg={responseError} />}
-            <div className="input-container">
-                <input
-                    id="name"
-                    name="firstName"
-                    placeholder="First name"
-                    {...register('firstName')}
-                    onBlur={(e) => {
-                        if (e.target.value) {
-                            trigger("firstName")
-                        }
-                    }}
-                />
-                <FormErrorTip error={errors.firstName} />
+            <label htmlFor="name">Name</label>
+            <div className="split-inputs">
+                <div className="input-container">
+                    <input
+                        id="name"
+                        name="firstName"
+                        placeholder="First"
+                        {...register('firstName')}
+                        onBlur={(e) => {
+                            if (e.target.value) {
+                                trigger("firstName")
+                            }
+                        }}
+                    />
+                    <FormErrorTip error={errors.firstName} />
+                </div>
+                <div className="input-container">
+                    <input
+                        id="name"
+                        name="lastName"
+                        placeholder="Last"
+                        {...register('lastName')}
+                        onBlur={(e) => {
+                            if (e.target.value) {
+                                trigger("lastName")
+                            }
+                        }}
+                    />
+                    <FormErrorTip error={errors.lastName} />
+                </div>
             </div>
-            <div className="input-container">
-                <input
-                    id="name"
-                    name="lastName"
-                    placeholder="Last name"
-                    {...register('lastName')}
-                    onBlur={(e) => {
-                        if (e.target.value) {
-                            trigger("lastName")
-                        }
-                    }}
-                />
-                <FormErrorTip error={errors.lastName} />
-            </div>
+            <label htmlFor="email">Email</label>
             <div className="input-container">
                 <input
                     id="email"
@@ -101,7 +105,9 @@ function UserInfoForm() {
                     <FormError msg={errors.email?.message} />
                 </div>
             }
-            <div>
+            <div
+                style={{ marginTop: '12px' }}
+            >
                 <button
                     className='btn-chcl btn-main'
                     type='submit'
@@ -122,8 +128,11 @@ const UserInfoWindow = () => {
     return (
         <>
             <WindowLoadingBar visible={!flow} />
-            <SignUpFlowHeader step={1} steps={4} />
-            <h2>Create Account</h2>
+            <div className="window-header">
+                <SignUpFlowHeader />
+                <h2>Create Account</h2>
+                <h4>Step 1 of 4</h4>
+            </div>
             <UserInfoForm />
             <SocialAuth flow={flow} submit={submit} csrf={csrf} />
             <div className="below-window-container">
@@ -196,13 +205,16 @@ const AuthSelectionWindow = () => {
     return (
         <>
             <WindowLoadingBar visible={registering} />
-            <SignUpFlowHeader step={2} steps={4} />
-            {typeof (PublicKeyCredential) != "undefined"
-                ?
-                <h2>Sign In Method</h2>
-                :
-                <h2>Create a Password</h2>
-            }
+            <div className="window-header">
+                <SignUpFlowHeader step={2} steps={4} />
+                {typeof (PublicKeyCredential) != "undefined"
+                    ?
+                    <h2>Sign In Method</h2>
+                    :
+                    <h2>Create a Password</h2>
+                }
+                <h4>Step 2 of 4</h4>
+            </div>
             <AuthenticationForm />
         </>
     )
@@ -251,7 +263,7 @@ function SignUpFlow() {
                         <AuthSelectionWindow />
                     </motion.div>
                 }
-            </AnimatePresence>
+            </AnimatePresence >
             <WindowLoadingBar visible={!flow || registering} />
         </>
     )

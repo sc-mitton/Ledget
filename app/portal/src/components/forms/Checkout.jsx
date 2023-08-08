@@ -221,8 +221,8 @@ const Form = ({ onSubmit, id }) => {
                 <div id="name-on-card-error">
                     {hasErrorMsg('name') && <FormError msg={errors.name.message} />}
                 </div>
-                <div id='location-inputs-container'>
-                    <div className='input-container' id='city-container'>
+                <div id='location-inputs-container' >
+                    <div className='input-container spaced-input' id='city-container'>
                         <input
                             type='text'
                             id='city'
@@ -253,7 +253,7 @@ const Form = ({ onSubmit, id }) => {
                         />
                         {hasRequiredError('state') && <FormErrorTip />}
                     </div>
-                    <div className='input-container' id='zip-container'>
+                    <div className='input-container spaced-input' id='zip-container'>
                         <input
                             type='text'
                             id='zip'

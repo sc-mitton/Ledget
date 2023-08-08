@@ -111,10 +111,9 @@ const InitialWindow = () => {
 
     return (
         <>
-            <div className="app-logo" >
-                <img src={logo} alt="Ledget" />
+            <div className="window-header">
+                <h2>Sign in to Ledget</h2>
             </div>
-            <h2>Sign in to Ledget</h2>
             <EmailForm />
             <SocialAuth flow={flow} submit={submit} csrf={csrf} />
             <div className="below-window-container">

@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from "framer-motion"
 
 import { RecoveryFlowContext, RecoveryFlowContextProvider } from '../../context/Flow'
-import SignUpFlowHeader from "./SignUpFlowHeader"
+import SignUpFlowHeader from "../pieces/SignUpFlowHeader"
 import CsrfToken from './inputs/CsrfToken'
 import ResendButton from "./inputs/ResendButton"
 import BackButton from './inputs/BackButton'

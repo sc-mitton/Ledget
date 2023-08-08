@@ -21,7 +21,7 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --green-hlight: rgb(143, 255, 192);
+    --green-hlight: #8fffc0;
     --green-hlight2: rgb(202, 252, 224);
     --green-hlight3: rgb(136, 236, 188);
     --lighter-green: rgb(179, 226, 200);
@@ -85,7 +85,6 @@ body {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-size: 14px;
     height: 100%;
-    background-color: var(--window);
 }
 
 div,
@@ -105,8 +104,10 @@ option {
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
     color: var(--logo-dark);
+    margin: 0;
 }
 
 svg {

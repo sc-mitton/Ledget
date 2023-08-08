@@ -23,16 +23,14 @@ const BackArrow = ({
                 stroke={stroke}
                 strokeWidth={strokeWidth}
                 strokeLinejoin='round'
-                strokeLinecap='round'
                 fill='none'
-                x1="126.3" y1="72" x2="16.1" y2="72"
+                x1="140.3" y1="72" x2="16.1" y2="72"
             />
             <polyline
                 className='arrow-head'
                 stroke={stroke}
                 strokeWidth={strokeWidth}
                 strokeLinejoin='round'
-                strokeLinecap='round'
                 fill='none'
                 points="60.7,116.7 16.1,72 61.1,27 "
             />

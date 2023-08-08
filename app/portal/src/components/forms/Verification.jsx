@@ -8,7 +8,7 @@ import { VerificationFlowContextProvider, VerificationFlowContext } from "../../
 import { WindowLoadingBar } from "../pieces"
 import "./style/Verification.css"
 import verifyEmail from "@assets/icons/verifyEmail.svg"
-import SignUpFlowHeader from "./SignUpFlowHeader"
+import SignUpFlowHeader from "../pieces/SignUpFlowHeader"
 import UserContext from "../../context/UserContext"
 import CsrfToken from "./inputs/CsrfToken"
 import { FormError } from "../pieces"
@@ -105,7 +105,11 @@ const AnimatedVerification = () => {
             onAnimationComplete={() => setJiggle(false)}
         >
             <WindowLoadingBar visible={verifying} />
-            <SignUpFlowHeader step={3} steps={4} />
+            <div className="window-header">
+                <SignUpFlowHeader step={2} steps={4} />
+                <h2>Email Verification</h2>
+                <h4>Step 3 of 4</h4>
+            </div>
             <div id="verification-form-container">
                 <div>
                     <img id="verify-your-email" src={verifyEmail} alt="Verify Email" />
@@ -144,39 +148,39 @@ const VerifiactionFlow = () => {
     } = useContext(VerificationFlowContext)
     const { user } = useContext(UserContext)
 
-    useEffect(() => {
-        if (loaded) { return }
+    // useEffect(() => {
+    //     if (loaded) { return }
 
-        // we might redirect to this page after the flow is initialized,
-        // so we check for the flowId in the URL
-        const flowId = searchParams.get("flow")
-        if (flowId) {
-            getFlow(flowId).catch(createFlow)
-        } else {
-            // Otherwise, create a new flow
-            createFlow()
-            setNewFlowCreated(true)
-        }
+    //     // we might redirect to this page after the flow is initialized,
+    //     // so we check for the flowId in the URL
+    //     const flowId = searchParams.get("flow")
+    //     if (flowId) {
+    //         getFlow(flowId).catch(createFlow)
+    //     } else {
+    //         // Otherwise, create a new flow
+    //         createFlow()
+    //         setNewFlowCreated(true)
+    //     }
 
-        return setLoaded(true)
-    }, [])
+    //     return setLoaded(true)
+    // }, [])
 
-    useEffect(() => {
-        if (newFlowCreated) {
-            setResendEmail(true)
-        }
-    }, [csrf])
+    // useEffect(() => {
+    //     if (newFlowCreated) {
+    //         setResendEmail(true)
+    //     }
+    // }, [csrf])
 
-    useEffect(() => {
-        if (resendEmail) {
-            callVerificationApi({
-                method: 'code',
-                csrf_token: csrf,
-                email: user?.traits?.email,
-            })
-        }
-        return setResendEmail(false)
-    }, [resendEmail])
+    // useEffect(() => {
+    //     if (resendEmail) {
+    //         callVerificationApi({
+    //             method: 'code',
+    //             csrf_token: csrf,
+    //             email: user?.traits?.email,
+    //         })
+    //     }
+    //     return setResendEmail(false)
+    // }, [resendEmail])
 
     return <AnimatedVerification />
 }

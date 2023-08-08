@@ -10,6 +10,7 @@ const ResendButton = () => {
     return (
         <div id="resend-btn-container">
             <motion.button
+                className="btn-secondary"
                 id="resend-btn"
                 type="submit"
                 value="code"
