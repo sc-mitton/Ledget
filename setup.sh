@@ -28,11 +28,12 @@ find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')' -exec mv 
 
 # Create secrets
 cd ..
-./get_random_secret_key > ./secrets/django_secret_key
+./get_random_secret_key > ./secrets/django_dev_secret_key
 echo dev_user > ./secrets/postgres_user && echo ./secrets/dev_user_password > postgres_password
 brew install stripe
 
 # Create jwks for oathkeeper
+brew install oathkeeper
 oathkeeper credentials generate --alg RS256 > ./secrets/jwks.json
 
 # Make the log files

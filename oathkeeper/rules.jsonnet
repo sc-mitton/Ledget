@@ -76,4 +76,15 @@ local Base = {
     mutators: [noop_mutator],
     authorizer: allow_authorizer,
   },
+  Base
+  {
+    id: 'link',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/link',
+    },
+    authenticators: [cookie_session_authenticator],
+    mutators: [id_token],
+    authorizer: allow_authorizer,
+  },
 ]

@@ -84,11 +84,13 @@ services:
       - ./back/ledgetback:/ledgetback
     secrets:
       - stripe_webhook_secret
-      - ory_api_key
       - stripe_api_key
+      - ory_api_key
       - django_secret_key
       - postgres_user
       - postgres_password
+      - plaid_api_key
+      - plaid_client_id
     depends_on:
       - db
   app:
@@ -149,11 +151,15 @@ secrets:
   postgres_password:
     file: ./secrets/postgres_password
   stripe_webhook_secret:
-    file: ./secrets/stripe_webhook_secret
+    file: ./secrets/stripe_dev_webhook_secret
   stripe_api_key:
-    file: ./secrets/stripe_api_key
+    file: ./secrets/stripe_dev_api_key
+  plaid_api_key:
+    file: ./secrets/plaid_sand_api_key
+  plaid_client_id:
+    file: ./secrets/plaid_dev_client_id
   django_secret_key:
-    file: ./secrets/django_secret_key
+    file: ./secrets/django_dev_secret_key
   localhost_crt:
     file: ./certs/localhost.crt
   localhost_key:
@@ -161,8 +167,6 @@ secrets:
   ca_pem:
     file: ./certs/ledgetCA.pem
   ory_api_key:
-    file: ./secrets/ory_api_key
-  ory_key:
-    file: ./secrets/.env.ory
+    file: ./secrets/ory_dev_api_key
   jwks.json:
-    file: ./secrets/jwks.json
+    file: ./secrets/dev_jwks.json

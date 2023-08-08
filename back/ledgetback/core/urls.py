@@ -1,10 +1,11 @@
 from django.urls import path
-from .views import (
+from .views.user_view import UserView
+from .views.service_views import (
     PriceView,
     SubscriptionView,
-    CustomerView,
-    UserView
+    CustomerView
 )
+from .views.link_view import LinkView
 
 urlpatterns = [
     path('prices', PriceView.as_view(), name='prices'),
@@ -13,4 +14,5 @@ urlpatterns = [
          CustomerView.as_view(), name='customer'),
     path('user/<str:user_id>/subscription',
          SubscriptionView.as_view(), name='subscription'),
+    path('link', LinkView.as_view(), name='link'),
 ]

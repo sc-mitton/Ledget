@@ -196,7 +196,7 @@ function RegisterFlowContextProvider({ children }) {
                 sessionStorage.setItem('user', JSON.stringify(response.data.identity))
                 const flow_id = response.data.continue_with?.[0].flow?.id
                 navigate({
-                    pathname: '/register/verification',
+                    pathname: '/verification',
                     search: createSearchParams({
                         flow: flow_id
                     }).toString(),
@@ -278,11 +278,11 @@ function VerificationFlowContextProvider({ children }) {
                 // Expired verification flow
                 // Send new email & navigate to verification page
                 // which will create a new verification flow
-                navigate('/register/verification')
+                navigate('/verification')
                 break
             case (1080002):
                 // Successful verification
-                navigate('/register/checkout')
+                navigate('/checkout')
                 break
             case (1080003 || 1080002):
                 // Email w/ code/link sent

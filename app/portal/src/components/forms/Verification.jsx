@@ -121,7 +121,7 @@ const AnimatedVerification = () => {
                     <>
                         <h2>Verify your email address</h2>
                         <div className="subheader">
-                            <span>Enter the code we sent to your email address</span>
+                            <span>Enter the code we sent to your email address </span>
                             <span>to verify your account:</span>
                         </div>
                         <VerificationForm />
@@ -146,39 +146,39 @@ const VerifiactionFlow = () => {
     } = useContext(VerificationFlowContext)
     const { user } = useContext(UserContext)
 
-    useEffect(() => {
-        if (loaded) { return }
+    // useEffect(() => {
+    //     if (loaded) { return }
 
-        // we might redirect to this page after the flow is initialized,
-        // so we check for the flowId in the URL
-        const flowId = searchParams.get("flow")
-        if (flowId) {
-            getFlow(flowId).catch(createFlow)
-        } else {
-            // Otherwise, create a new flow
-            createFlow()
-            setNewFlowCreated(true)
-        }
+    //     // we might redirect to this page after the flow is initialized,
+    //     // so we check for the flowId in the URL
+    //     const flowId = searchParams.get("flow")
+    //     if (flowId) {
+    //         getFlow(flowId).catch(createFlow)
+    //     } else {
+    //         // Otherwise, create a new flow
+    //         createFlow()
+    //         setNewFlowCreated(true)
+    //     }
 
-        return setLoaded(true)
-    }, [])
+    //     return setLoaded(true)
+    // }, [])
 
-    useEffect(() => {
-        if (newFlowCreated) {
-            setResendEmail(true)
-        }
-    }, [csrf])
+    // useEffect(() => {
+    //     if (newFlowCreated) {
+    //         setResendEmail(true)
+    //     }
+    // }, [csrf])
 
-    useEffect(() => {
-        if (resendEmail) {
-            callVerificationApi({
-                method: 'code',
-                csrf_token: csrf,
-                email: user?.traits?.email,
-            })
-        }
-        return setResendEmail(false)
-    }, [resendEmail])
+    // useEffect(() => {
+    //     if (resendEmail) {
+    //         callVerificationApi({
+    //             method: 'code',
+    //             csrf_token: csrf,
+    //             email: user?.traits?.email,
+    //         })
+    //     }
+    //     return setResendEmail(false)
+    // }, [resendEmail])
 
     return <AnimatedVerification />
 }

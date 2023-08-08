@@ -1,21 +1,20 @@
 import logging
 
-from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
-    HTTP_200_OK,
     HTTP_422_UNPROCESSABLE_ENTITY,
+    HTTP_200_OK
 )
+from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
+from core.serializers import SubscriptionSerializer
+from rest_framework.response import Response
+from core.models import Customer
+from core.permissions import IsUserOwner
 from django.conf import settings
 import stripe
 
-from core.serializers import SubscriptionSerializer
-from core.models import Customer
-from core.permissions import IsUserOwner
-from core.utils.stripe import stripe_error_handler, StripeError
+from rest_framework.permissions import IsAuthenticated
 
 
 stripe.api_key = settings.STRIPE_API_KEY
@@ -31,36 +30,6 @@ class PriceView(APIView):
             query="product:'prod_NStMoPQOCocj2H' AND active:'true'",
         )
         return Response(data=result.data, status=HTTP_200_OK)
-
-
-class CustomerView(APIView):
-    permission_classes = [IsAuthenticated, IsUserOwner]
-
-    def post(self, request, *args, **kwargs):
-        if request.user.is_customer:
-            return Response(
-                {'error': 'user is already customer'},
-                status=HTTP_422_UNPROCESSABLE_ENTITY
-            )
-
-        email = request.user.traits.get('email', '')
-        first_name = request.user.traits.get('name', {}).get('first', '')
-        last_name = request.user.traits.get('name', {}).get('last', '')
-
-        try:
-            stripe_customer = stripe.Customer.create(
-                email=email,
-                name=f'{first_name} {last_name}'
-            )
-            Customer.objects.create(
-                user=request.user,
-                id=stripe_customer.id
-            ).save()
-        except Exception as e:
-            stripe_logger.error(f'Error creating customer: {e}')
-            return Response(status=HTTP_400_BAD_REQUEST)
-
-        return Response(status=HTTP_200_OK)
 
 
 class SubscriptionView(GenericAPIView):
@@ -125,41 +94,31 @@ class SubscriptionView(GenericAPIView):
         return stripe_subscription
 
 
-class UserView(APIView):
-    permission_classes = [IsAuthenticated]
+class CustomerView(APIView):
+    permission_classes = [IsAuthenticated, IsUserOwner]
 
-    def get(self, request, *args, **kwargs):
-
-        try:
-            sub = self.get_stripe_subscription(request.user.customer.id)
-            subscription_data = {
-                'plan': {
-                    'nickname': sub.data[0].plan.nickname,
-                    'status': request.user
-                                     .customer
-                                     .get_subscription_status_display(),
-                    'current_period_end': sub.data[0].current_period_end,
-                    'amount': sub.data[0].plan.amount,
-                },
-            }
-        except StripeError:
-            stripe_logger.error(StripeError.message)
+    def post(self, request, *args, **kwargs):
+        if request.user.is_customer:
             return Response(
-                {'error': StripeError.message},
-                status=StripeError.response_code
+                {'error': 'user is already customer'},
+                status=HTTP_422_UNPROCESSABLE_ENTITY
             )
 
-        return Response(
-            data={
-                'email': request.user.traits.get('email', ''),
-                'name': request.user.traits.get('name', {}),
-                'is_customer': request.user.is_customer,
-                'verified': request.user.verified,
-                'subscription': subscription_data
-            },
-            status=HTTP_200_OK
-        )
+        email = request.user.traits.get('email', '')
+        first_name = request.user.traits.get('name', {}).get('first', '')
+        last_name = request.user.traits.get('name', {}).get('last', '')
 
-    @stripe_error_handler
-    def get_stripe_subscription(self, customer_id):
-        return stripe.Subscription.list(customer=customer_id)
+        try:
+            stripe_customer = stripe.Customer.create(
+                email=email,
+                name=f'{first_name} {last_name}'
+            )
+            Customer.objects.create(
+                user=request.user,
+                id=stripe_customer.id
+            ).save()
+        except Exception as e:
+            stripe_logger.error(f'Error creating customer: {e}')
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        return Response(status=HTTP_200_OK)
