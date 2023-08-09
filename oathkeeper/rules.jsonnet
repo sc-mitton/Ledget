@@ -78,10 +78,20 @@ local Base = {
   },
   Base
   {
-    id: 'link',
+    id: 'plaid_link_token',
     match: {
       methods: ['GET'],
-      url: base_url + '/link',
+      url: base_url + '/plaid_link_token',
+    },
+    authenticators: [cookie_session_authenticator],
+    mutators: [id_token],
+    authorizer: allow_authorizer,
+  },
+  {
+    id: 'plaid_token_exchange',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/plaid_token_exchange',
     },
     authenticators: [cookie_session_authenticator],
     mutators: [id_token],

@@ -10,7 +10,11 @@ export const ledgetSlice = createApi({
         getMe: builder.query({
             query: () => 'user/me',
         }),
+        getPlaidToken: builder.query({
+            query: () => 'plaid_link_token',
+
+        }),
     })
 })
 
-export const { useGetMeQuery } = ledgetSlice
+export const { useGetMeQuery, useGetPlaidTokenQuery } = ledgetSlice

@@ -6,8 +6,11 @@ import json
 
 from corsheaders.defaults import default_headers
 
-
+# IMPORTANT FLAGS
+DEVELOPMENT = True
 DEBUG = True
+PLAID_SANDBOX = True
+
 
 ALLOWED_HOSTS = ['localhost']
 DOMAIN_URL = "https://localhost:8000/"
@@ -50,6 +53,7 @@ def get_secret(secret):
         return ' '
 
 
+#Django
 SECRET_KEY = get_secret('django_secret_key')
 
 # Stripe

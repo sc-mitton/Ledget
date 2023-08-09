@@ -98,5 +98,58 @@
          }
       ],
       "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "plaid_link_token",
+      "match": {
+         "methods": [
+            "GET"
+         ],
+         "url": "https://localhost/api/v1/plaid_link_token"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "plaid_token_exchange",
+      "match": {
+         "methods": [
+            "POST"
+         ],
+         "url": "https://localhost/api/v1/plaid_token_exchange"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ]
    }
 ]
