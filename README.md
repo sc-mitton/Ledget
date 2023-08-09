@@ -97,3 +97,7 @@ They can come back later. If they are completely canceling their account, then t
 Unused:
 UNPAID is unused because it is just a status that can be triggered after unpaid
 PAUSED is not used because we don't support it, we use canceling instead
+
+## Plaid
+
+The username and password for the sandbox environment are user_good and pass_good respectively.

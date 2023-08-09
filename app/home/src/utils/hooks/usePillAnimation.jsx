@@ -16,7 +16,11 @@ import { useSpring } from '@react-spring/web'
 const usePillAnimation = (args) => {
     const { ref, update, refresh, styles, find, querySelectall } = args
     const [selectors, setSelectors] = useState([])
-    const [selector, setSelector] = useState()
+
+    const [selectorWidth, setSelectorWidth] = useState(null)
+    const [selectorHeight, setSelectorHeight] = useState(null)
+    const [selectorLeft, setSelectorLeft] = useState(null)
+    const [selectorTop, setSelectorTop] = useState(null)
 
     let baseStyles = {
         position: "absolute",
@@ -29,17 +33,22 @@ const usePillAnimation = (args) => {
     baseStyles = { ...baseStyles, ...styles }
 
     const props = useSpring({
-        width: selector?.offsetWidth,
-        left: selector?.offsetLeft,
-        top: selector?.offsetTop,
-        height: selector?.offsetHeight,
+        width: selectorWidth,
+        left: selectorLeft,
+        top: selectorTop,
+        height: selectorHeight,
         ...baseStyles
     })
 
     useEffect(() => {
         if (selectors.length > 0) {
             const element = selectors.find(find)
-            setSelector(element)
+            if (element) {
+                setSelectorHeight(element.offsetHeight)
+                setSelectorWidth(element.offsetWidth)
+                setSelectorLeft(element.offsetLeft)
+                setSelectorTop(element.offsetTop)
+            }
         }
     }, [selectors, ...update])
 

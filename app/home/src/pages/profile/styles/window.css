@@ -1,3 +1,12 @@
+.page-header {
+    margin: 8px 0;
+}
+
+.page-label {
+    font-weight: 500;
+    margin-right: 16px;
+}
+
 #profile-window {
     flex: 1;
     width: 90%;
@@ -8,24 +17,27 @@
 }
 
 #profile-window .content {
-    flex: 3;
+    width: 66%;
     padding: 20px 30px;
+    overflow-y: scroll;
 }
 
 #profile-window h1 {
     font-size: 2em;
 }
 
+
 /* --------------------------------- Gutter --------------------------------- */
 
 #gutter {
-    flex: 1;
-    padding: 2px 20px 2px 20px;
+    width: 33%;
+    padding: 2px 8px;
     border-right: 3px solid rgb(0, 0, 0, .05);
     margin-top: 8px;
     font-weight: 500;
     display: flex;
     justify-content: center;
+    animation: fade-in .3s ease-in-out;
 }
 
 #gutter>div {
@@ -40,7 +52,7 @@
 #gutter li {
     cursor: pointer;
     margin: 8px;
-    padding: 4px 22px;
+    padding: 4px;
     border-radius: var(--border-radius2);
     transition: background-color .3s ease-in-out;
     display: flex;
@@ -65,12 +77,28 @@
 }
 
 #gutter li#profile {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
-#gutter li#profile svg {
-    margin-right: 12px;
+#gutter li#profile div:first-child {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#gutter li#profile div:last-child {
+    padding: 2px 8px;
+    flex: 4;
+}
+
+#gutter #profile svg {
+    margin: 6px;
 }
 
 .side-nav-item {
@@ -85,6 +113,39 @@
 
 .side-nav-item-current svg,
 .side-nav-item svg {
-    margin-right: 8px;
-    margin-bottom: 2px;
+    margin-bottom: 2px
+}
+
+
+/* Responsive */
+
+@media only screen and (max-width: 768px) {
+
+    #gutter {
+        width: 52px;
+        border-right: 2px solid rgb(0, 0, 0, .05);
+    }
+
+    #profile-window .content {
+        width: 100%;
+    }
+
+    #gutter li {
+        width: 24px;
+        height: 24px;
+        padding: 8px;
+    }
+
+    #gutter li svg {
+        margin: 0;
+    }
+
+    #gutter li#profile div:last-child,
+    #gutter li.slim div:last-child {
+        visibility: collapse;
+    }
+
+    #gutter li {
+        border-radius: var(--border-radius2);
+    }
 }

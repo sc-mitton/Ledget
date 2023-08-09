@@ -35,7 +35,7 @@ const Connections = () => {
 
     useEffect(() => {
         if (publicToken) {
-            ledget.post('/plaid_token_exchange', { publicToken })
+            ledget.post('/plaid_token_exchange', { public_token: publicToken })
         }
         // Update redux store with new institution
     }, [publicToken])

@@ -8,6 +8,8 @@ import Shield from '@assets/icons/Shield'
 import Settings from '@assets/icons/Settings'
 import Link from '@assets/icons/Link'
 import { usePillAnimation } from '@utils/hooks'
+import { useGetMeQuery } from '@api/apiSlice'
+import { useEffect } from 'react'
 
 const NavList = () => {
     const tabs = ['settings', 'connections', 'security']
@@ -54,6 +56,7 @@ const NavList = () => {
 const Profile = () => {
     const location = useLocation()
     const navigate = useNavigate()
+    const { data: user } = useGetMeQuery()
 
     return (
         <li
@@ -70,12 +73,9 @@ const Profile = () => {
                 <Profile1 />
             </div>
             <div>
-                <div>
-                    <span>Spencer's Ledget</span>
-                </div>
-                <div>
-                    <span style={{ opacity: '.5' }}>smitton.byu@gmail.com</span>
-                </div>
+                <span>{`${user?.name.first}'s`} Ledget</span>
+                <br />
+                <span style={{ opacity: '.5' }}>{user?.email}</span>
             </div>
         </li>
     )
@@ -84,10 +84,11 @@ const Profile = () => {
 const Gutter = () => {
     const ref = useRef(null)
     const location = useLocation()
+    const [gutterWidth, setGutterWidth] = useState(0)
 
     const { props } = usePillAnimation({
         ref: ref,
-        update: [location.pathname],
+        update: [location.pathname, gutterWidth],
         refresh: [],
         querySelectall: '[role=link]',
         find: (el) => {
@@ -100,13 +101,31 @@ const Gutter = () => {
         }
     })
 
+    // Resize observer to update gutter width
+    useEffect(() => {
+        const observer = new ResizeObserver(entries => {
+            for (const entry of entries) {
+                const newWidth = entry.contentRect.width
+                setGutterWidth(newWidth)
+            }
+        })
+
+        if (ref.current) {
+            observer.observe(ref.current)
+        }
+
+        return () => {
+            observer.disconnect()
+        }
+    }, [])
+
     return (
         <div id="gutter" >
             <div>
                 <ul role="navigation" ref={ref}>
                     <Profile />
                     <NavList />
-                    <animated.span style={props} />
+                    <animated.span id="gutter-pill" style={props} />
                 </ul>
             </div>
         </div>

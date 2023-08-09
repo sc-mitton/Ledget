@@ -3,13 +3,15 @@ import os
 
 from plaid.model.country_code import CountryCode
 from plaid.model.link_token_create_request import LinkTokenCreateRequest
+from plaid.model.item_public_token_exchange_request import \
+    ItemPublicTokenExchangeRequest
 from plaid.model.link_token_create_request_user import (
     LinkTokenCreateRequestUser
 )
 from plaid.model.products import Products
 from plaid.api import plaid_api
 import plaid
-from django.http import JsonResponse
+from rest_framework.response import Response
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -60,15 +62,15 @@ class PlaidLinkTokenView(APIView):
                 country_codes=list(map(lambda x: CountryCode(x), ['US'])),
                 language='en',
                 user=LinkTokenCreateRequestUser(
-                    client_user_id=request.user.id
+                    client_user_id=str(request.user.id)
                 )
             )
             # create link token
             response = client.link_token_create(request)
-            return JsonResponse(data=response.to_dict(), status=200)
+            return Response(data=response.to_dict(), status=200)
         except plaid.ApiException as e:
-            return JsonResponse(
-                data={'error': json.loads(e.body)},
+            return Response(
+                {'error': json.loads(e.body)},
                 status=e.status
             )
 
@@ -78,25 +80,31 @@ class PlaidTokenExchangeView(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        token = request.data.get('public_token', None)
+        public_token = request.data.get('public_token', None)
+        if not public_token:
+            return Response(
+                {'error': 'Missing public_token in request body'},
+                status=HTTP_400_BAD_REQUEST
+            )
 
         try:
-            response = client.item_public_token_exchange(
-                public_token=token
+            exchange_request = ItemPublicTokenExchangeRequest(
+                public_token=public_token
             )
+            response = client.item_public_token_exchange(exchange_request)
             PlaidItem.objects.create(
                 user=request.user,
-                item_id=response.item_id,
-                access_token=response.access_token
+                id=response['item_id'],
+                access_token=response['access_token']
             )
-            return JsonResponse(data=response.to_dict(), status=200)
+            return Response(data=response.to_dict(), status=200)
         except plaid.ApiException as e:
-            return JsonResponse(
-                data={'error': json.loads(e.body)},
+            return Response(
+                {'error': json.loads(e.body)},
                 status=HTTP_400_BAD_REQUEST
             )
         except Exception as e:
-            return JsonResponse(
-                data={'error': str(e)},
+            return Response(
+                {'error': str(e)},
                 status=HTTP_500_INTERNAL_SERVER_ERROR
             )

@@ -10,29 +10,40 @@ import Account from './Account'
 import Connections from './Connections'
 import Settings from './Settings'
 import Security from './Security'
+import { useGetMeQuery } from '@api/apiSlice'
+import { LoadingShimmer } from '@components/pieces'
 
 function Profile() {
+    // Fetch necessary data
+    const { isLoading } = useGetMeQuery()
     const location = useLocation()
 
     return (
         <div className="window" id="profile-window">
-            <Gutter />
-            <AnimatePresence mode="wait">
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    key={location.pathname}
-                    className="content"
-                >
-                    <Routes location={location} key={location.pathname}>
-                        <Route path="" element={<Account />} />
-                        <Route path="settings" element={<Settings />} />
-                        <Route path="connections" element={<Connections />} />
-                        <Route path="security" element={<Security />} />
-                    </Routes>
-                </motion.div>
-            </AnimatePresence>
+            {isLoading
+                ?
+                <LoadingShimmer visible={true} />
+                :
+                <>
+                    <Gutter />
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            key={location.pathname}
+                            className="content"
+                        >
+                            <Routes location={location} key={location.pathname}>
+                                <Route path="" element={<Account />} />
+                                <Route path="settings" element={<Settings />} />
+                                <Route path="connections" element={<Connections />} />
+                                <Route path="security" element={<Security />} />
+                            </Routes>
+                        </motion.div>
+                    </AnimatePresence>
+                </>
+            }
         </div>
     )
 }
