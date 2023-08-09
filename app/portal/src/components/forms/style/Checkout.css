@@ -185,7 +185,7 @@ input[type="radio"] {
 /* ------------------------------ Card Element ------------------------------ */
 .card-container {
     background-color: var(--input-color);
-    border-radius: 8px;
+    border-radius: var(--border-radius2);
     z-index: 0;
     padding: 16px 16px;
     margin: 12px 0;
@@ -196,7 +196,7 @@ input[type="radio"] {
 .card-container-focused {
     box-shadow: var(--input-focus-drop-shadow);
     background-color: var(--input-color);
-    border-radius: 6px;
+    border-radius: var(--border-radius2);
     z-index: 0;
     padding: 16px 16px;
     margin: 12px 0;

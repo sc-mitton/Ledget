@@ -21,7 +21,7 @@
     padding: 4px 12px;
     margin: 2px 0;
     transition: background-color 0.3s ease-out;
-    border-radius: 6px;
+    border-radius: var(--border-radius);
     cursor: pointer;
 }
 
@@ -67,7 +67,7 @@
 
 #return-btn {
     opacity: 0;
-    border-radius: 6px;
+    border-radius: var(--border-radius);
     padding: 0px 6px;
     margin: 4px;
     display: flex;
@@ -79,7 +79,7 @@
     align-items: center;
     justify-content: center;
     opacity: .4;
-    border-radius: 6px;
+    border-radius: var(--border-radius);
     padding: 2px;
     margin: 0px 2px;
     background-color: var(--btn-gray);

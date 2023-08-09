@@ -13,19 +13,20 @@
 .otc input[type="text"] {
     flex: 1;
     line-height: 1;
-    margin: .1em;
-    padding: 8px 4px;
-    font-size: 2em;
+    margin: .2em;
+    padding: 6px 0px;
+    font-size: 1.5em;
     text-align: center;
     appearance: textfield;
     -webkit-appearance: textfield;
     border: 2px solid var(--green-hlight3);
     color: var(--m-green);
-    border-radius: 8px;
+    border-radius: var(--border-radius2);
 }
 
 .otc input[type="text"]:focus {
-    box-shadow: 0 4px 6px rgb(0, 0, 0, 0.08);
+    border: 2px solid var(--green-hlight3);
+    box-shadow: 0 4px 6px rgb(0, 0, 0, 0.12);
 }
 
 .otc input::-webkit-outer-spin-button,
@@ -34,9 +35,12 @@
     margin: 0;
 }
 
-.otc input[type="text"]:first-child,
-.otc input[type="text"]:last-child {
+.otc input[type="text"]:first-child {
     margin-left: 0;
+}
+
+.otc input[type="text"]:last-child {
+    margin-right: 0;
 }
 
 /* 2 group of 3 items */
@@ -45,7 +49,7 @@
 }
 
 .otc div::before {
-    width: 20px;
+    width: 12px;
     content: '';
     height: 3px;
     margin: 0 .25em;

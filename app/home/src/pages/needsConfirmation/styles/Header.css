@@ -32,5 +32,5 @@
     background-color: var(--icon-light-gray);
     color: var(--faded-text);
     padding: 0 4px;
-    border-radius: 6px;
+    border-radius: var(--border-radius);
 }

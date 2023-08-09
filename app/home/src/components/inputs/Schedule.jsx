@@ -3,7 +3,6 @@ import React, { useState, useRef } from 'react'
 import './styles/Dropdowns.css'
 import './styles/Schedule.css'
 import { DropAnimation } from '@utils'
-import ComboSelect from './ComboSelect'
 import Radios from './Radios'
 import Arrow from '@assets/icons/Arrow'
 import Calendar from '@assets/icons/Calendar'
@@ -12,7 +11,7 @@ import { useClickClose } from '@utils'
 
 
 const Button = React.forwardRef((props, ref) => {
-    const { onClick, ...rest } = props
+    const { onClick, placeHolder, ...rest } = props
 
     return (
         <>
@@ -43,16 +42,28 @@ const Button = React.forwardRef((props, ref) => {
                     <Calendar
                         width={'1.5em'}
                         height={'1.5em'}
-                        fill={'var(--input-placeholder2)'}
+                        fill={
+                            placeHolder
+                                ? 'var(--main-text-gray)'
+                                : 'var(--input-placeholder2)'
+                        }
                     />
-                    <span style={{ opacity: '.4', marginLeft: '12px', marginTop: "2px" }}>
-                        Schedule
+                    <span style={{
+                        opacity: placeHolder ? '1' : '.4',
+                        marginLeft: '12px',
+                        marginTop: "2px"
+                    }}>
+                        {placeHolder || 'Schedule'}
                     </span>
                 </div>
                 <Arrow
                     width={'.8em'}
                     height={'.8em'}
-                    stroke={'var(--input-placeholder2)'}
+                    stroke={
+                        placeHolder
+                            ? 'var(--main-text-gray)'
+                            : 'var(--input-placeholder2)'
+                    }
                 />
             </div>
         </>
@@ -409,8 +420,25 @@ const WeekPicker = (props) => {
 }
 
 const DayWeekPicker = (props) => {
+    const getSuffix = (day) => {
+        switch (day % 10) {
+            case 1:
+                return 'st'
+            case 2:
+                return 'nd'
+            case 3:
+                return 'rd'
+            default:
+                return 'th'
+        }
+    }
+    const dayMap = {
+        1: 'Sun', 2: 'Mon', 3: 'Tue', 4: 'Wed',
+        5: 'Thu', 6: 'Fri', 7: 'Sat',
+    }
     const [open, setOpen] = useState(false)
     const [mode, setMode] = useState('')
+    const [buttonPlaceholder, setButtonPlaceholder] = useState('')
     const ref = useRef(null)
     const buttonRef = useRef(null)
 
@@ -447,6 +475,19 @@ const DayWeekPicker = (props) => {
         }
     }, [weekNumber, weekDay])
 
+    // Set the placeholder text
+    useEffect(() => {
+        if (day) {
+            setButtonPlaceholder(`${day}${getSuffix(day)}`)
+        } else if (weekNumber < 5 && weekDay) {
+            setButtonPlaceholder(`${weekNumber}${getSuffix(weekNumber)} ${dayMap[weekDay]}.`)
+        } else if (weekNumber === 5 && weekDay) {
+            setButtonPlaceholder(`Last ${dayMap[weekDay]}.`)
+        } else {
+            setButtonPlaceholder('')
+        }
+    }, [day, weekNumber, weekDay])
+
     return (
         <>
             {mode === 'day' &&
@@ -465,6 +506,7 @@ const DayWeekPicker = (props) => {
                     open && setOpen(false)
                 }}
                 ref={buttonRef}
+                placeHolder={buttonPlaceholder}
             />
             <DropAnimation
                 visible={open}
@@ -613,7 +655,12 @@ const MonthYearPicker = (props) => {
         1: 31, 2: 28, 3: 31, 4: 30,
         5: 31, 6: 30, 7: 31, 8: 31,
         9: 30, 10: 31, 11: 30, 12: 31,
-    }
+    } // How many days are in each month
+    const monthMap = {
+        1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
+        5: 'May', 6: 'June', 7: 'Jul', 8: 'Aug',
+        9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
+    } // Translate month number to month name
     const [open, setOpen] = useState(false)
     const ref = useRef(null)
     const buttonRef = useRef(null)
@@ -639,6 +686,7 @@ const MonthYearPicker = (props) => {
             <Button
                 onClick={() => setOpen(!open)}
                 ref={buttonRef}
+                placeHolder={month && year ? `${monthMap[month]} ${year}` : ''}
             />
             <DropAnimation
                 visible={open}

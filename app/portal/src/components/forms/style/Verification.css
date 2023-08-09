@@ -6,7 +6,7 @@
 
 /* Email Graphic */
 #verification-form-container div:first-child {
-    width: 100%;
+    width: auto;
     display: flex;
     justify-content: center;
 }
@@ -23,11 +23,6 @@
 
 #verification-form-container span {
     font-weight: 500;
-}
-
-w #verify-otc {
-    width: 100%;
-    margin-top: 16px;
 }
 
 #verification-form-error-container * {

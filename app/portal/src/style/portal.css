@@ -52,7 +52,7 @@ body {
     width: 85%;
     max-width: 325px;
     font-size: 14px;
-    border-radius: 16px;
+    border-radius: var(--border-radius3);
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     box-shadow: rgba(149, 157, 165, 0.7) 0px 0px 2px;
     padding: 32px 40px;
@@ -190,20 +190,20 @@ button {
 }
 
 .btn-main {
-    border-radius: 8px;
+    border-radius: var(--border-radius2);
     padding: 12px 16px;
     width: 100%;
     justify-content: center;
 }
 
 .btn-icon {
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     padding: 2px;
 }
 
 .btn-secondary {
     padding: 8px 12px;
-    border-radius: 8px;
+    border-radius: var(--border-radius2);
 }
 
 /***/
@@ -278,7 +278,7 @@ input[type="password"]:focus::placeholder {
 
 .input-container {
     background-color: var(--input-color);
-    border-radius: 8px;
+    border-radius: var(--border-radius2);
     padding: 12px 16px;
     margin-bottom: 8px;
     box-sizing: border-box;

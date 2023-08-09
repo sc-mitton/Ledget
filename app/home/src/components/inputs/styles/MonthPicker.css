@@ -24,7 +24,7 @@
     flex-direction: row;
     align-items: center;
     margin: 0 4px;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
 }
 
 #year-navigation {
@@ -53,7 +53,7 @@
 .month-picker-item,
 .month-picker-item-selected {
     padding: 2px 8px;
-    border-radius: 8px;
+    border-radius: var(--border-radius2);
     cursor: pointer;
     font-weight: 600;
 }

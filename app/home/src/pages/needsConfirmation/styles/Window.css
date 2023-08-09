@@ -44,7 +44,7 @@
 }
 
 .new-item-data div:last-child svg {
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     margin-right: 8px;
 }
 
@@ -70,7 +70,7 @@
     background-color: var(--green-hlight);
     padding: 2px 12px;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: var(--border-radius2);
     font-weight: 500;
 }
 

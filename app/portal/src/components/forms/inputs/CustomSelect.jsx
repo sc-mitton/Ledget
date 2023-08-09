@@ -15,7 +15,7 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         control: (baseStyles, state) => ({
             ...baseStyles,
-            borderRadius: "8px",
+            borderRadius: "var(--border-radius2)",
             paddingLeft: "16px",
             paddingRight: "12px",
             paddingTop: "14px",
@@ -46,12 +46,12 @@ const CustomSelect = ({ field, ...props }) => {
         }),
         menu: (baseStyles, state) => ({
             ...baseStyles,
-            marginTop: "8px",
+            marginTop: "var(--border-radius2)",
             backgroundColor: "var(--window)",
             boxShadow: "0px 0px 4px 2px rgba(0, 0, 0, 0.3)",
             webkitBoxShadow: "0px 0px 4px 2px rgba(0, 0, 0, 0.3)",
             mozBoxShadow: "0px 0px 4px 2px rgba(0, 0, 0, 0.3)",
-            borderRadius: "6px",
+            borderRadius: "8px",
         }),
         menuList: (baseStyles, state) => ({
             ...baseStyles,

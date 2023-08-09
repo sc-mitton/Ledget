@@ -4,7 +4,7 @@
     margin: 4px 0;
     padding: 10px 12px 11px 12px;
     background-color: var(--input-color);
-    border-radius: 8px;
+    border-radius: var(--border-radius2);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -19,7 +19,7 @@
 
 #schedule-dropdown label {
     margin: 2px;
-    border-radius: 8px;
+    border-radius: var(--border-radius2);
 }
 
 #schedule-dropdown fieldset {
@@ -38,7 +38,7 @@
     padding: 2px;
     width: 24px;
     height: 24px;
-    border-radius: 8px;
+    border-radius: var(--border-radius2);
 }
 
 .picker-item {
@@ -46,7 +46,7 @@
     display: flex;
     justify-content: center;
     padding: 2px;
-    border-radius: 6px;
+    border-radius: var(--border-radius);
 }
 
 .picker-item.selected {

@@ -15,6 +15,10 @@
     margin: 4px 0 4px 4px;
 }
 
+.form-top {
+    margin-bottom: 12px;
+}
+
 .flex-responsive1 {
     display: flex;
     flex-direction: row;
@@ -43,7 +47,8 @@
 }
 
 .split-inputs {
-    display: flex;
+    display: inline-flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
 }
@@ -56,6 +61,20 @@
 .split-inputs>div:last-child {
     flex: 1;
     margin-left: 4px;
+}
+
+@media only screen and (max-width: 768px) {
+    .split-inputs {
+        flex-direction: column;
+    }
+
+    .split-inputs>div:first-child {
+        margin-right: 0px;
+    }
+
+    .split-inputs>div:last-child {
+        margin-left: 0px;
+    }
 }
 
 /* ---------------------------------- Emoji --------------------------------- */

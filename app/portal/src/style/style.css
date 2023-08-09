@@ -63,6 +63,11 @@
     --white-text: #f8f8f8;
     --muted-text-gray: #848484;
     --faded-text: rgb(0, 0, 0, .3);
+
+    /* Border Radius */
+    --border-radius: 4px;
+    --border-radius2: 8px;
+    --border-radius3: 16px;
 }
 
 /* Override color values for Firefox */

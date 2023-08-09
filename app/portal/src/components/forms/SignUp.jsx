@@ -256,7 +256,6 @@ function SignUpFlow() {
                     </motion.div>
                 }
             </AnimatePresence >
-            <WindowLoadingBar visible={!flow || registering} />
         </>
     )
 }

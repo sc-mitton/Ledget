@@ -13,6 +13,10 @@ from django.http import JsonResponse
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.status import (
+    HTTP_400_BAD_REQUEST,
+    HTTP_500_INTERNAL_SERVER_ERROR
+)
 
 from core.models import PlaidItem
 
@@ -89,5 +93,10 @@ class PlaidTokenExchangeView(APIView):
         except plaid.ApiException as e:
             return JsonResponse(
                 data={'error': json.loads(e.body)},
-                status=e.status
+                status=HTTP_400_BAD_REQUEST
+            )
+        except Exception as e:
+            return JsonResponse(
+                data={'error': str(e)},
+                status=HTTP_500_INTERNAL_SERVER_ERROR
             )

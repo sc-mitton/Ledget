@@ -76,11 +76,9 @@ const Form = (props) => {
                     />
                     <hr style={{ opacity: ".1" }} />
                 </div>
-                <div className='padded-row'>
-                    <label htmlFor="name">Name</label>
-                </div>
                 <div className='split-inputs'>
                     <div>
+                        <label htmlFor="name">Name</label>
                         <EmojiComboText
                             name="name"
                             placeholder="Name"
@@ -93,6 +91,7 @@ const Form = (props) => {
                         </EmojiComboText>
                     </div>
                     <div>
+                        <label htmlFor="name">Schedule</label>
                         {billPeriod === 'monthly'
                             ? <DayWeekPicker />
                             : <MonthYearPicker />
@@ -148,8 +147,8 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '300px'}
-            minWidth={props.minWidth || '225px'}
+            maxWidth={props.maxWidth || '325px'}
+            minWidth={props.minWidth || '0px'}
             blur={3}
         />
     )

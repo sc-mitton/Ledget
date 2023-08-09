@@ -37,6 +37,7 @@ const Connections = () => {
         if (publicToken) {
             ledget.post('/plaid_token_exchange', { publicToken })
         }
+        // Update redux store with new institution
     }, [publicToken])
 
     const handleClick = () => { open() }

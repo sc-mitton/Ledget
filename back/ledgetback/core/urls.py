@@ -20,5 +20,5 @@ urlpatterns = [
     path('plaid_link_token', PlaidLinkTokenView.as_view(),
          name='plaid_link_token'),
     path('plaid_token_exchange', PlaidTokenExchangeView.as_view(),
-           name='plaid_token_exchange'),
+         name='plaid_token_exchange'),
 ]

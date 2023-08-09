@@ -21,8 +21,7 @@ DEFAULT_APPS = [
 THIRD_PARTY_APPS = [
     'sslserver',
     'rest_framework',
-    'corsheaders',
-    'encrypted_model_fields',
+    'corsheaders'
 ]
 LOCAL_APPS = [
     'core.apps.CoreConfig',
