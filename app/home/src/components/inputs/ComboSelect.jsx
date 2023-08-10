@@ -329,9 +329,9 @@ const Custom = React.forwardRef((props, ref) => {
     } = useContext(DataContext)
     const {
         children,
-        onKeyDown,
         onBlur,
         onFocus,
+        onKeyDown,
         getValue,
         value,
         ...rest
@@ -369,12 +369,25 @@ const Custom = React.forwardRef((props, ref) => {
         })
     }
 
+    const handleFocus = (event) => {
+        // execute prop function
+        onFocus && onFocus(event)
+        setFocused(true)
+        setActive([])
+    }
+
+    const handleBlur = (event) => {
+        // execute prop function
+        onBlur && onBlur(event)
+        setFocused(false)
+    }
+
     const handleKeyDown = (event) => {
-        event.preventDefault()
         event.stopPropagation()
-        onKeyDown && onKeyDown(event) // execute prop function
         switch (event.key) {
             case 'ArrowUp':
+                setActive(options[options.length - 1])
+                setFocused(false)
                 customRef.current.blur()
                 break
             case 'Enter':
@@ -384,31 +397,18 @@ const Custom = React.forwardRef((props, ref) => {
                 setOpen(false)
                 break
             default:
+                onKeyDown && onKeyDown(event)
                 break
         }
-    }
-
-    const handleFocus = (event) => {
-        event.preventDefault()
-        onFocus && onFocus(event) // execute prop function
-        setFocused(true)
-        setActive([])
-    }
-
-    const handleBlur = (event) => {
-        event.preventDefault()
-        onBlur && onBlur(event) // execute prop function
-        setFocused(false)
-        setActive(options[options.length - 1])
     }
 
     return (
         <>
             <input
                 type="text"
-                onKeyDown={handleKeyDown}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
+                onKeyDown={handleKeyDown}
                 ref={(el) => {
                     customRef.current = el
                     ref.current = el

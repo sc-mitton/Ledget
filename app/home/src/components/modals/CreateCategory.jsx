@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 import './styles/Forms.css'
 import { AddAlert, EmojiComboText, TextInput, GreenRadios } from '@components/inputs'
+import { useAddNewCategoryMutation, useGetMeQuery } from '@api/apiSlice'
 import withModal from './with/withModal'
 import SubmitForm from './pieces/SubmitForm'
 import { FormErrorTip } from '@components/pieces'
@@ -61,9 +62,11 @@ const LimitInput = (props) => {
 }
 
 const Form = (props) => {
-    const [submitting, setSubmitting] = useState(false)
     const [dollarLimit, setDollarLimit] = useState('')
     const [emoji, setEmoji] = useState('')
+    const { data: user } = useGetMeQuery()
+    const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation()
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onSubmit',
@@ -77,31 +80,28 @@ const Form = (props) => {
 
     const submit = (e) => {
         e.preventDefault()
-        setSubmitting(true)
         const formData = new FormData(e.target)
+        let body = Object.fromEntries(formData)
 
-        // extract alert inputs
+        body.limit_amount = Number(body.limit.replace(/[^0-9]/g, '')) * 100
+        delete body.limit
+        body.name = body.name.toLowerCase()
+
         let alerts = []
-        for (const entry of Array.from(formData.entries())) {
-            const [fieldName, fieldValue] = entry
-            if (fieldName.includes('alert')) {
-                alerts.push({ percent_amount: Number(fieldValue) })
-                formData.delete(fieldName)
+        for (const [key, value] of Object.entries(body)) {
+            if (key.includes('alert')) {
+                alerts.push({ percent_amount: Number(value.replace(/[^0-9]/g, '')) })
+                delete body[key]
             }
         }
-        formData.append('alerts', JSON.stringify(alerts))
+        body.alerts = alerts
 
-        formData.append('limit_amount', Number(dollarLimit.replace(/[^0-9]/g, '')))
-        formData.delete('limit')
-
-        // Make 2 seperate api calls, one to create a category
-        // and one to create the associated alerts
-
-        setTimeout(() => {
-            setSubmitting(false)
-            // props.setVisible(false)
-        }, 1000)
+        addNewCategory({ userId: user.id, data: body })
     }
+
+    useEffect(() => {
+        isSuccess && props.setVisible(false)
+    }, [isSuccess])
 
     return (
         <form
@@ -143,7 +143,7 @@ const Form = (props) => {
                 <AddAlert limit={dollarLimit} />
             </div>
             <SubmitForm
-                submitting={submitting}
+                submitting={isLoading}
                 onCancel={() => props.setVisible(false)}
             />
         </form>

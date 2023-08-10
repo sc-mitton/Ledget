@@ -16,6 +16,13 @@ export const ledgetSlice = createApi({
         getPaymentMethod: builder.query({
             query: (userId) => `user/${userId}/payment_method`,
         }),
+        addNewCategory: builder.mutation({
+            query: ({ data, userId }) => ({
+                url: `user/${userId}/category`,
+                method: 'POST',
+                body: data,
+            }),
+        }),
     })
 })
 
@@ -23,4 +30,5 @@ export const {
     useGetMeQuery,
     useGetPlaidTokenQuery,
     useGetPaymentMethodQuery,
+    useAddNewCategoryMutation,
 } = ledgetSlice

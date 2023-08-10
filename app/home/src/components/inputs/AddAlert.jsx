@@ -34,15 +34,22 @@ const AddAlert = ({ limit }) => {
         const ref = useRef('')
         const [pct, setPct] = useState('')
 
-        const handleChange = (e) => {
-            const newValue = e.target.value.replace(/[^0-9]/g, '').slice(0, 2)
-            setPct(`${newValue}%`)
-        }
-
         useEffect(() => {
             ref.current.selectionEnd = pct.indexOf('%')
             ref.current.selectionStart = pct.indexOf('%')
         }, [pct])
+
+        const handleChange = (e) => {
+
+            const newValue = e.target.value.replace(/[^0-9]/g, '').slice(0, 2)
+            setPct(`${newValue}%`)
+        }
+
+        const handleKeyDown = (e) => {
+            if (pct.length > 2 && e.key !== 'Backspace') {
+                e.preventDefault()
+            }
+        }
 
         const handleFocus = () => {
             ref.current.selectionEnd = pct.indexOf('%')
@@ -55,12 +62,6 @@ const AddAlert = ({ limit }) => {
                     &#40;{formatDollar(limit, value)}&#41;
                 </span>
             )
-        }
-
-        const handleKeyDown = (e) => {
-            if (pct.length > 2 && e.key !== 'Backspace') {
-                e.preventDefault()
-            }
         }
 
         const getValue = () => {

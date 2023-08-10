@@ -17,7 +17,8 @@ const ChangeProfilePhoto = () => {
     )
 }
 
-const Info = ({ user }) => {
+const Info = () => {
+    const { data: user } = useGetMeQuery()
 
     return (
         <div id="info-container">
@@ -31,7 +32,8 @@ const Info = ({ user }) => {
     )
 }
 
-const Plan = ({ user }) => {
+const Plan = () => {
+    const { data: user } = useGetMeQuery()
     const nextPayment = new Date(user.subscription.plan.current_period_end * 1000)
     const nextPaymentString = nextPayment.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -77,8 +79,14 @@ const Plan = ({ user }) => {
     )
 }
 
-const PaymentMethod = ({ paymentMethod: data }) => {
-    let expDate = new Date(data.exp_year, data.exp_month)
+const PaymentMethod = () => {
+    const { data: user } = useGetMeQuery()
+    const { data } = useGetPaymentMethodQuery(user.id)
+
+    let expDate = new Date(
+        data.payment_method.exp_year,
+        data.payment_method.exp_month
+    )
     expDate = expDate.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
@@ -108,10 +116,10 @@ const PaymentMethod = ({ paymentMethod: data }) => {
                 <div id="card-info-container">
                     <Card />
                     <span>
-                        {data.brand.charAt(0).toUpperCase()
-                            + data.brand.slice(1)}
+                        {data.payment_method.brand.charAt(0).toUpperCase()
+                            + data.payment_method.brand.slice(1)}
                         &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
-                        {data.last4}
+                        {data.payment_method.last4}
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         {`Expires ${expDate}`}
                     </span>
@@ -122,21 +130,15 @@ const PaymentMethod = ({ paymentMethod: data }) => {
 }
 
 const Account = () => {
-    const { data: user } = useGetMeQuery()
-    const { data: paymentMethodData } = useGetPaymentMethodQuery(user.id)
 
     return (
         <div id="account-page">
             <h1>Account</h1>
             <ChangeProfilePhoto />
-            <Info user={user} />
+            <Info />
             <div>
-                <Plan user={user} />
-                <PaymentMethod
-                    paymentMethod={
-                        paymentMethodData.payment_method
-                    }
-                />
+                <Plan />
+                <PaymentMethod />
             </div>
         </div>
     )

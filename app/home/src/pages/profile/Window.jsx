@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -13,10 +13,11 @@ import Security from './Security'
 import { useGetMeQuery, useGetPaymentMethodQuery } from '@api/apiSlice'
 import { LoadingShimmer } from '@components/pieces'
 
+
 function Profile() {
     // Fetch necessary data
     const { data: user, isLoading: userLoading } = useGetMeQuery()
-    const { isLoading: paymentLoading } = useGetPaymentMethodQuery(user?.id)
+    const { isLoading: paymentLoading } = useGetPaymentMethodQuery(user?.id, { skip: !user })
     const location = useLocation()
 
     return (
