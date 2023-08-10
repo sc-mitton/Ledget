@@ -34,6 +34,7 @@ class PriceView(APIView):
 
 class SubscriptionView(GenericAPIView):
     """Class for handling the subscription creation and updating"""
+
     permission_classes = [IsAuthenticated, IsUserOwner]
     serializer_class = SubscriptionSerializer
 
@@ -95,6 +96,8 @@ class SubscriptionView(GenericAPIView):
 
 
 class CustomerView(APIView):
+    """Class for creating a Stripe customer"""
+
     permission_classes = [IsAuthenticated, IsUserOwner]
 
     def post(self, request, *args, **kwargs):

@@ -10,17 +10,18 @@ import Account from './Account'
 import Connections from './Connections'
 import Settings from './Settings'
 import Security from './Security'
-import { useGetMeQuery } from '@api/apiSlice'
+import { useGetMeQuery, useGetPaymentMethodQuery } from '@api/apiSlice'
 import { LoadingShimmer } from '@components/pieces'
 
 function Profile() {
     // Fetch necessary data
-    const { isLoading } = useGetMeQuery()
+    const { data: user, isLoading: userLoading } = useGetMeQuery()
+    const { isLoading: paymentLoading } = useGetPaymentMethodQuery(user?.id)
     const location = useLocation()
 
     return (
         <div className="window" id="profile-window">
-            {isLoading
+            {userLoading || paymentLoading
                 ?
                 <LoadingShimmer visible={true} />
                 :

@@ -217,7 +217,6 @@ fieldset {
     border-radius: var(--border-radius3);
     padding: 12px 20px;
     box-sizing: border-box;
-    position: relative;
 }
 
 .window-header {

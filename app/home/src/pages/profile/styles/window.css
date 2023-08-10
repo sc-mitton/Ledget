@@ -14,11 +14,12 @@
     padding: 12px 0;
     display: flex;
     flex-direction: row;
+    position: relative;
 }
 
 #profile-window .content {
     width: 66%;
-    padding: 20px 30px;
+    padding: 16px 40px;
     overflow-y: scroll;
 }
 
@@ -26,6 +27,9 @@
     font-size: 2em;
 }
 
+hr {
+    opacity: .05;
+}
 
 /* --------------------------------- Gutter --------------------------------- */
 
@@ -79,6 +83,7 @@
 #gutter li#profile {
     padding-top: 6px;
     padding-bottom: 6px;
+    margin-bottom: 12px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -98,7 +103,7 @@
 }
 
 #gutter #profile svg {
-    margin: 6px;
+    margin: 8px;
 }
 
 .side-nav-item {
@@ -119,7 +124,7 @@
 
 /* Responsive */
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 700px) {
 
     #gutter {
         width: 52px;

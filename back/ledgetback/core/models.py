@@ -41,7 +41,7 @@ class User(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._traits = None
-        self._verified = False
+        self._is_verified = False
 
     @property
     def is_customer(self):
@@ -62,12 +62,12 @@ class User(models.Model):
         self._traits = value
 
     @property
-    def verified(self):
-        return self._verified
+    def is_verified(self):
+        return self._is_verified
 
-    @verified.setter
-    def verified(self, value: bool):
-        self._verified = value
+    @is_verified.setter
+    def is_verified(self, value: bool):
+        self._is_verified = value
 
     @property
     def is_authenticated(self):

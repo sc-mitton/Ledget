@@ -12,9 +12,15 @@ export const ledgetSlice = createApi({
         }),
         getPlaidToken: builder.query({
             query: () => 'plaid_link_token',
-
+        }),
+        getPaymentMethod: builder.query({
+            query: (userId) => `user/${userId}/payment_method`,
         }),
     })
 })
 
-export const { useGetMeQuery, useGetPlaidTokenQuery } = ledgetSlice
+export const {
+    useGetMeQuery,
+    useGetPlaidTokenQuery,
+    useGetPaymentMethodQuery,
+} = ledgetSlice

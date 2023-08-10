@@ -65,8 +65,8 @@ class OryBackend(BaseAuthentication):
         user.traits = identity.get('traits', {})
 
         try:
-            user.verified = identity['verifiable_addresses'][0]['verified']
+            user.is_verified = identity['verifiable_addresses'][0]['verified']
         except KeyError:
-            user.verified = False
+            user.is_verified = False
 
         return user

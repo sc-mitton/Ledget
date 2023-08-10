@@ -6,8 +6,8 @@
     cursor: pointer;
     margin: 0 auto;
     margin-top: 30px;
-    width: 6em;
-    height: 6em;
+    width: 5em;
+    height: 5em;
 }
 
 #change-photo svg {
@@ -21,8 +21,47 @@
     align-items: center;
     justify-content: center;
     padding-top: 12px;
+    margin-bottom: 30px;
 }
 
 #info-container span {
     opacity: .5;
+}
+
+#account-page .header {
+    margin-top: 28px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#account-page .header button {
+    font-size: 12px;
+}
+
+#account-page .header div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#account-page .indicator {
+    margin-left: 12px;
+    color: var(--green-dark2);
+}
+
+#account-page .body {
+    opacity: .7;
+}
+
+#account-page .body svg {
+    margin-right: 8px;
+}
+
+#card-info-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }

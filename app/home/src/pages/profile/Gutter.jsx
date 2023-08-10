@@ -70,7 +70,7 @@ const Profile = () => {
             id="profile"
         >
             <div>
-                <Profile1 />
+                <Profile1 width="1.6em" height="1.6em" />
             </div>
             <div>
                 <span>{`${user?.name.first}'s`} Ledget</span>
@@ -98,6 +98,7 @@ const Gutter = () => {
         },
         styles: {
             backgroundColor: 'var(--green-hlight)',
+            borderRadius: 'var(--border-radius2)',
         }
     })
 

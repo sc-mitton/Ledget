@@ -86,7 +86,10 @@ const Form = (props) => {
 
     return (
         <form
-            onSubmit={handleSubmit((data) => submit(data))}
+            onSubmit={(e) => {
+                e.preventDefault()
+                console.log(e.target)
+            }}
             id="new-cat-form"
             className="create-form"
         >
