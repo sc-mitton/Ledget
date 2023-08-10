@@ -18,8 +18,8 @@ const schema = object().shape({
 })
 
 const radioOptions = [
-    { name: 'categoryType', value: 'month', label: 'Month', default: true },
-    { name: 'categoryType', value: 'year', label: 'Year' },
+    { name: 'type', value: 'month', label: 'Month', default: true },
+    { name: 'type', value: 'year', label: 'Year' },
 ]
 
 const LimitInput = (props) => {
@@ -75,31 +75,45 @@ const Form = (props) => {
         emoji && nameRef.current.focus()
     }, [emoji])
 
-    const submit = (data) => {
+    const submit = (e) => {
+        e.preventDefault()
         setSubmitting(true)
-        console.log(data)
+        const formData = new FormData(e.target)
+
+        // extract alert inputs
+        let alerts = []
+        for (const entry of Array.from(formData.entries())) {
+            const [fieldName, fieldValue] = entry
+            if (fieldName.includes('alert')) {
+                alerts.push({ percent_amount: Number(fieldValue) })
+                formData.delete(fieldName)
+            }
+        }
+        formData.append('alerts', JSON.stringify(alerts))
+
+        formData.append('limit_amount', Number(dollarLimit.replace(/[^0-9]/g, '')))
+        formData.delete('limit')
+
+        // Make 2 seperate api calls, one to create a category
+        // and one to create the associated alerts
+
         setTimeout(() => {
             setSubmitting(false)
-            props.setVisible(false)
+            // props.setVisible(false)
         }, 1000)
     }
 
     return (
         <form
-            onSubmit={(e) => {
-                e.preventDefault()
-                console.log(e.target)
-            }}
+            onSubmit={handleSubmit((data, e) => submit(e))}
             id="new-cat-form"
             className="create-form"
         >
-            <div>
-                <h2>New Category</h2>
-                <div style={{ margin: '4px 0' }}>
-                    <GreenRadios options={radioOptions} />
-                </div>
-                <hr style={{ opacity: ".1" }} />
+            <h2>New Category</h2>
+            <div style={{ margin: '4px 0' }}>
+                <GreenRadios options={radioOptions} />
             </div>
+            <hr style={{ opacity: ".1", marginBottom: '16px' }} />
             <div className="flex-responsive1">
                 <div>
                     <label htmlFor="name">Name</label>

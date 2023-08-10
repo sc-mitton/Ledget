@@ -52,20 +52,23 @@ const EmailForm = () => {
         flow && emailRef.current.focus()
     }, [flow])
 
+    const submit = (e) => {
+        e.preventDefault()
+        if (emailRef.current.value === '') {
+            emailRef.current.focus()
+        } else {
+            if (rememberRef.current.checked) {
+                localStorage.setItem('loginEmail', JSON.stringify(emailRef.current.value))
+            } else {
+                localStorage.removeItem('loginEmail')
+            }
+            setEmail(emailRef.current.value)
+        }
+    }
+
     return (
         <form
-            onSubmit={handleSubmit((e) => {
-                if (emailRef.current.value === '') {
-                    emailRef.current.focus()
-                } else {
-                    if (rememberRef.current.checked) {
-                        localStorage.setItem('loginEmail', JSON.stringify(emailRef.current.value))
-                    } else {
-                        localStorage.removeItem('loginEmail')
-                    }
-                    setEmail(emailRef.current.value)
-                }
-            })}
+            onSubmit={submit}
             className="login-form"
             noValidate
         >

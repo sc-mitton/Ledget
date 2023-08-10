@@ -30,23 +30,6 @@ const AddAlert = ({ limit }) => {
         { id: 4, value: 100, disabled: false },
     ])
 
-    const Option = ({ value, active, selected }) => (
-        <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
-            <div>{value}%</div>
-            <div>
-                <span className={`${active ? 'active' : ''}`}>
-                    {limit
-                        ? `(${formatDollar(limit, value)})`
-                        : ('of limit')
-                    }
-                </span>
-                <Checkmark
-                    stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
-                />
-            </div>
-        </div>
-    )
-
     const CustomOption = () => {
         const ref = useRef('')
         const [pct, setPct] = useState('')
@@ -130,6 +113,23 @@ const AddAlert = ({ limit }) => {
             </div>
         )
     }
+
+    const Option = ({ value, active, selected }) => (
+        <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
+            <div>{value}%</div>
+            <div>
+                <span className={`${active ? 'active' : ''}`}>
+                    {limit
+                        ? `(${formatDollar(limit, value)})`
+                        : ('of limit')
+                    }
+                </span>
+                <Checkmark
+                    stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
+                />
+            </div>
+        </div>
+    )
 
     const Options = () => (
         alertOptions.map((option) => (
