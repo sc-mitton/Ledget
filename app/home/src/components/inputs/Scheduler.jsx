@@ -11,17 +11,17 @@ import { useClickClose } from '@utils'
 
 const pickerContext = React.createContext()
 
-const Scheduler = ({ children, ...props }) => {
-    const [open, setOpen] = useState(false)
-    const { day, setDay, week, setWeek, weekDay, setWeekDay, month, setMonth, } = props
+const Scheduler = ({ children }) => {
+    const [open, setOpen] = useState('')
+    const [day, setDay] = useState('')
+    const [month, setMonth] = useState('')
+    const [week, setWeek] = useState('')
+    const [weekDay, setWeekDay] = useState('')
     const buttonRef = useRef(null)
-    const [mode, setMode] = useState('day')
 
     const data = {
         open,
         setOpen,
-        mode,
-        setMode,
         day,
         setDay,
         week,
@@ -64,7 +64,6 @@ const Button = ({ children, ...props }) => {
         9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
     }
 
-
     const [placeholder, setPlaceholder] = useState('')
     const {
         open,
@@ -90,14 +89,6 @@ const Button = ({ children, ...props }) => {
         <>
             <div
                 onClick={() => setOpen(!open)}
-                onKeyDown={(event) => {
-                    if (event.key === 'Enter'
-                        || event.key === ' '
-                        || event.key === 'Tab'
-                    ) {
-                        setOpen(!open)
-                    }
-                }}
                 ref={buttonRef}
                 tabIndex={0}
                 role="button"
@@ -141,19 +132,18 @@ const Button = ({ children, ...props }) => {
                             : 'var(--input-placeholder2)'
                     }
                 />
-                {children}
             </div>
+            {children}
         </>
 
     )
 }
 
-const ModeSelector = () => {
+const ModeSelector = ({ mode, setMode }) => {
     const options = [
         { label: 'Day', value: 'day', default: true },
         { label: 'Week', value: 'week', default: false },
     ]
-    const { mode, setMode } = useContext(pickerContext)
 
     return (
         <Radios
@@ -514,7 +504,6 @@ const WeekPicker = () => {
 const DayWeekPicker = () => {
 
     const {
-        mode,
         open,
         setOpen,
         buttonRef,
@@ -527,6 +516,7 @@ const DayWeekPicker = () => {
     } = useContext(pickerContext)
 
     const ref = useRef(null)
+    const [mode, setMode] = useState('day')
 
     useEffect(() => {
         open
@@ -557,7 +547,7 @@ const DayWeekPicker = () => {
             setDay('')
         }
         if (week && weekDay) {
-            // setOpen(false)
+            setOpen(false)
         }
     }, [weekDay, week])
 
@@ -587,7 +577,7 @@ const DayWeekPicker = () => {
                         }
                     }}
                 >
-                    <ModeSelector />
+                    <ModeSelector mode={mode} setMode={setMode} />
                     {mode === 'day' && <DayPicker />}
                     {mode === 'week' && <WeekPicker />}
                 </div>

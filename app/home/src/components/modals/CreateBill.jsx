@@ -33,11 +33,6 @@ const Form = (props) => {
     const [upperRange, setUpperRange] = useState('')
     const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
 
-    const [day, setDay] = useState('')
-    const [month, setMonth] = useState('')
-    const [week, setWeek] = useState('')
-    const [weekDay, setWeekDay] = useState('')
-
     const schema = object().shape({
         name: string().required(),
         lowerRange: rangeMode
@@ -72,24 +67,11 @@ const Form = (props) => {
     }, [isSuccess])
 
     const SchedulerComponent = () => (
-        <Scheduler
-            day={day}
-            setDay={setDay}
-            month={month}
-            setMonth={setMonth}
-            week={week}
-            setWeek={setWeek}
-            weekDay={weekDay}
-            setWeekDay={setWeekDay}
-        >
-            <Scheduler.Button>
-                {/* Some content */}
-            </Scheduler.Button>
+        <Scheduler>
+            <Scheduler.Button />
             {billPeriod === 'monthly'
-                ?
-                <Scheduler.DayWeekPicker />
-                :
-                <Scheduler.MonthDayPicker />
+                ? <Scheduler.DayWeekPicker />
+                : <Scheduler.MonthDayPicker />
             }
         </Scheduler>
     )
