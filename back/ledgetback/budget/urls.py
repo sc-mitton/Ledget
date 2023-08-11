@@ -7,5 +7,5 @@ from budget.views import (
 
 urlpatterns = [
     path('category', CreateCategoryView.as_view(), name='create_category'),
-    path('bill', CreateBillView.as_view(), name='create_bill'),
+    path('bill', CreateBillView.as_view(), name='create_bill')
 ]

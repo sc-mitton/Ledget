@@ -9,7 +9,6 @@ from budget.serializers import (
 )
 
 
-# Create your views here.
 class CreateCategoryView(CreateAPIView):
     permission_classes = [IsAuthenticated, IsUserOwner]
     serializer_class = BudgetCategorySerializer
