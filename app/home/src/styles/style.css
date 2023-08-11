@@ -186,7 +186,7 @@ hr {
     height: 1px;
     border: 0;
     border-top: 2px solid var(--subtle-border-color);
-    margin: 12px 0;
+    margin: 12px 0 16px 0;
     padding: 0;
 }
 

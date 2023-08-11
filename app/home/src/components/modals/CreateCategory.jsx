@@ -114,7 +114,7 @@ const Form = (props) => {
                 <GreenRadios options={radioOptions} />
             </div>
             <hr />
-            <div className="flex-responsive1">
+            <div className="split-inputs">
                 <div>
                     <label htmlFor="name">Name</label>
                     <EmojiComboText
@@ -160,7 +160,8 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '275px'}
+            maxWidth={props.maxWidth || '325px'}
+            minWidth={props.minWidth || '0px'}
             blur={3}
         />
 

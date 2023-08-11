@@ -13,21 +13,20 @@ import { useGetMeQuery } from '@api/apiSlice'
 import "./styles/style.css";
 
 
+
 const PrivateRoute = () => {
     const { isSuccess, isLoading, isPending } = useGetMeQuery()
 
-    return (
-        (isSuccess || isLoading || isPending) ? <Outlet /> : <Navigate to="/login" />
-    )
-}
-
-const Login = () => {
     useEffect(() => {
-        window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL
-    }, [])
+        // Check the condition for redirection here
+        if (!isSuccess && !isLoading && !isPending) {
+            // Redirect to the specified URL
+            window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL;
+        }
+    }, [isSuccess, isLoading, isPending]);
 
     return (
-        <></>
+        (isSuccess || isLoading || isPending) && <Outlet />
     )
 }
 
@@ -80,8 +79,7 @@ const App = () => {
                                 } />
                                 <Route path="accounts" element={<Accounts />} />
                                 <Route path="profile/*" element={<Profile />} />
-                                <Route path="login" element={<Login />} />
-                                <Route path="/*" element={<NotFound />} />
+                                <Route path="*" element={<NotFound />} />
                             </Route>
                         </Routes>
                     </div>

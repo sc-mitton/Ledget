@@ -8,7 +8,8 @@
 }
 
 #not-found-window h1 {
-    color: var(--m-green);
+    color: var(--main-text-gray);
+    font-weight: 800;
     margin-bottom: 12px;
     font-size: 40px;
 }

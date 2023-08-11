@@ -65,7 +65,7 @@ class PlaidLinkTokenView(APIView):
                     client_user_id=str(request.user.id)
                 )
             )
-            # create link token
+            request['redirect_uri'] = PLAID_REDIRECT_URI
             response = client.link_token_create(request)
             return Response(data=response.to_dict(), status=200)
         except plaid.ApiException as e:

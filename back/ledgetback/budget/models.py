@@ -1,34 +1,14 @@
 from django.db import models
-import uuid
+
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 
-from core.models import User
+from budget.base_models import Notification, BudgetItem
 
 
 def validate_week_number(value):
     return value in [1, 2, 3, 4, -1] or ValidationError('Invalid week number')
-
-
-class BudgetItem(models.Model):
-
-    class Meta:
-        abstract = True
-
-    class CategoryType(models.TextChoices):
-        YEAR = 'year', _('Year')
-        MONTH = 'month', _('Month')
-
-    type = models.CharField(
-        max_length=255,
-        choices=CategoryType.choices,
-        default=CategoryType.MONTH
-    )
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, null=False, blank=False)
-    emoji = models.CharField(max_length=10, null=False, blank=False)
 
 
 class BudgetCategory(BudgetItem):
@@ -86,16 +66,6 @@ class Bill(BudgetItem):
             )
 
 
-class Notification(models.Model):
-
-    class Meta:
-        abstract = True
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True, editable=False)
-
-
 class Alert (Notification):
 
     class Meta:
@@ -128,3 +98,48 @@ class Reminder(Notification):
         null=False
     )
     offset = models.IntegerField(null=False, blank=False)
+
+
+class Transactions(models.Model):
+
+    # ID info
+    transaction_id = models.CharField(max_length=100, primary_key=True)
+    transaction_code = models.CharField(max_length=100, null=True, blank=True)
+    transaction_type = models.CharField(max_length=100, null=True, blank=True)
+
+    # Transaction info
+    name = models.CharField(max_length=100, null=True, blank=True)
+    merchant_name = models.CharField(max_length=100, null=True, blank=True)
+    payment_channel = models.CharField(max_length=100, null=True, blank=True)
+    pending = models.BooleanField(null=False, blank=False)
+    pending_transaction_id = models.CharField(max_length=100, null=True,
+                                              blank=True)
+
+    amount = models.IntegerField(null=False, blank=False)
+    iso_currency_code = models.CharField(max_length=3, null=False, blank=False)
+    unnoficial_currency_code = models.CharField(max_length=10, null=True,
+                                                blank=True)
+    check_number = models.CharField(max_length=10, null=True, blank=True)
+
+    # date info
+    date = models.DateField(null=False, blank=False)
+    datetime = models.DateTimeField(null=False, blank=False)
+    authorized_date = models.DateField(null=True, blank=True)
+    authorized_datetime = models.DateTimeField(null=True, blank=True)
+
+    # location info
+    address = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=50, null=True, blank=True)
+    region = models.CharField(max_length=2, null=True, blank=True)
+    postal_code = models.CharField(max_length=10, null=True, blank=True)
+    country = models.CharField(max_length=50, null=True, blank=True)
+    lat = models.FloatField(null=True, blank=True)
+    lon = models.FloatField(null=True, blank=True)
+    store_number = models.CharField(max_length=10, null=True, blank=True)
+
+    # UNUSED
+    # category
+    # category_id
+    # check_number
+    # payment_meta
+    # account owner

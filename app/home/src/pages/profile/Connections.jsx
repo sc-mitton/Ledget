@@ -23,6 +23,9 @@ const Connections = () => {
         token: results?.link_token,
         ...(isOauth ? { receivedRedirectUri: window.location.href } : {}),
     }
+    if (import.meta.env.VITE_PLAID_REDIRECT_URI) {
+        config.redirect_uri = import.meta.env.VITE_PLAID_REDIRECT_URI
+    }
     const { open, exit, ready } = usePlaidLink(config);
 
     useEffect(() => {

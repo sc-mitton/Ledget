@@ -53,7 +53,7 @@ def get_secret(secret):
         return ' '
 
 
-#Django
+# Django
 SECRET_KEY = get_secret('django_secret_key')
 
 # Stripe
