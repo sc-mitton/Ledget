@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 
 import './styles/Dropdowns.css'
 import './styles/Schedule.css'
@@ -9,20 +9,96 @@ import Calendar from '@assets/icons/Calendar'
 import { useEffect } from 'react'
 import { useClickClose } from '@utils'
 
+const pickerContext = React.createContext()
 
-const Button = React.forwardRef((props, ref) => {
-    const { onClick, placeHolder, ...rest } = props
+const Scheduler = ({ children, ...props }) => {
+    const [open, setOpen] = useState(false)
+    const { day, setDay, week, setWeek, weekDay, setWeekDay, month, setMonth, } = props
+    const buttonRef = useRef(null)
+    const [mode, setMode] = useState('day')
+
+    const data = {
+        open,
+        setOpen,
+        mode,
+        setMode,
+        day,
+        setDay,
+        week,
+        setWeek,
+        weekDay,
+        setWeekDay,
+        month,
+        setMonth,
+        buttonRef
+    }
+
+    return (
+        <pickerContext.Provider value={data}>
+            {children}
+        </pickerContext.Provider>
+    )
+}
+
+const Button = ({ children, ...props }) => {
+    const getSuffix = (day) => {
+        if (day > 10 && day < 20) return 'th'
+        switch (day % 10) {
+            case 1:
+                return 'st'
+            case 2:
+                return 'nd'
+            case 3:
+                return 'rd'
+            default:
+                return 'th'
+        }
+    }
+    const dayMap = {
+        1: 'Sunday', 2: 'Monday', 3: 'Tuesday', 4: 'Wednesday',
+        5: 'Thursday', 6: 'Friday', 7: 'Saturday',
+    }
+    const monthMap = {
+        1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
+        5: 'May', 6: 'June', 7: 'Jul', 8: 'Aug',
+        9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
+    }
+
+
+    const [placeholder, setPlaceholder] = useState('')
+    const {
+        open,
+        setOpen,
+        buttonRef,
+        day,
+        week,
+        weekDay,
+        month,
+    } = useContext(pickerContext)
+
+    useEffect(() => {
+        if (day) {
+            setPlaceholder(`${day}${getSuffix(day)}`)
+        } else if (month && day) {
+            setPlaceholder(`${monthMap[month]} ${day}${getSuffix(day)}`)
+        } else if (week && weekDay) {
+            setPlaceholder(`${week}${getSuffix(week)} ${dayMap[weekDay]}`)
+        }
+    }, [day, month, week, weekDay])
 
     return (
         <>
             <div
-                onClick={() => onClick()}
+                onClick={() => setOpen(!open)}
                 onKeyDown={(event) => {
-                    if (event.key === 'Enter') {
-                        onClick()
+                    if (event.key === 'Enter'
+                        || event.key === ' '
+                        || event.key === 'Tab'
+                    ) {
+                        setOpen(!open)
                     }
                 }}
-                ref={ref}
+                ref={buttonRef}
                 tabIndex={0}
                 role="button"
                 name="schedule-dropdown"
@@ -31,7 +107,7 @@ const Button = React.forwardRef((props, ref) => {
                 aria-haspopup="true"
                 aria-expanded={`${open}`}
                 aria-controls="schedule-dropdown"
-                {...rest}
+                {...props}
             >
                 <div
                     style={{
@@ -43,39 +119,41 @@ const Button = React.forwardRef((props, ref) => {
                         width={'1.5em'}
                         height={'1.5em'}
                         fill={
-                            placeHolder
+                            placeholder
                                 ? 'var(--main-text-gray)'
                                 : 'var(--input-placeholder2)'
                         }
                     />
                     <span style={{
-                        opacity: placeHolder ? '1' : '.4',
+                        opacity: placeholder ? '1' : '.4',
                         marginLeft: '12px',
                         marginTop: "2px"
                     }}>
-                        {placeHolder || 'Schedule'}
+                        {placeholder || 'Schedule'}
                     </span>
                 </div>
                 <Arrow
                     width={'.8em'}
                     height={'.8em'}
                     stroke={
-                        placeHolder
+                        placeholder
                             ? 'var(--main-text-gray)'
                             : 'var(--input-placeholder2)'
                     }
                 />
+                {children}
             </div>
         </>
 
     )
-})
+}
 
-const ModeSelector = ({ mode, setMode }) => {
+const ModeSelector = () => {
     const options = [
         { label: 'Day', value: 'day', default: true },
         { label: 'Week', value: 'week', default: false },
     ]
+    const { mode, setMode } = useContext(pickerContext)
 
     return (
         <Radios
@@ -114,9 +192,17 @@ const ModeSelector = ({ mode, setMode }) => {
     )
 }
 
-const DayPicker = ({ day, setDay, setOpen, numberOfDays }) => {
-    const ref = useRef(null)
+const DayPicker = () => {
+    const daysMap = {
+        1: 31, 2: 28, 3: 31, 4: 30,
+        5: 31, 6: 30, 7: 31, 8: 31,
+        9: 30, 10: 31, 11: 30, 12: 31,
+    } // How many days are in each month
+
+    const { setOpen, day, setDay, month } = useContext(pickerContext)
+    const [numberOfDays, setNumberOfDays] = useState(daysMap[month || 1])
     const [activeDay, setActiveDay] = useState(null)
+    const ref = useRef(null)
 
     const Day = ({ dayNumber }) => (
         <td key={dayNumber}>
@@ -161,7 +247,6 @@ const DayPicker = ({ day, setDay, setOpen, numberOfDays }) => {
         if (event.shiftKey || event.altKey || event.ctrlKey) {
             return
         }
-
         switch (event.key) {
             case 'ArrowRight':
                 setActiveDay(activeDay < numberOfDays ? activeDay + 1 : 1)
@@ -226,8 +311,15 @@ const DayPicker = ({ day, setDay, setOpen, numberOfDays }) => {
     )
 }
 
-const WeekPicker = (props) => {
-    const { weekNumber, setWeekNumber, weekDay, setWeekDay, setOpen } = props
+const WeekPicker = () => {
+    const {
+        week: weekNumber,
+        setWeek: setWeekNumber,
+        weekDay,
+        setWeekDay,
+        setOpen
+    } = useContext(pickerContext)
+
     const [activeWeekNumber, setActiveWeekNumber] = useState(null)
     const [activeWeekDay, setActiveWeekDay] = useState(null)
     const ref = useRef(null)
@@ -419,32 +511,22 @@ const WeekPicker = (props) => {
     )
 }
 
-const DayWeekPicker = (props) => {
-    const getSuffix = (day) => {
-        switch (day % 10) {
-            case 1:
-                return 'st'
-            case 2:
-                return 'nd'
-            case 3:
-                return 'rd'
-            default:
-                return 'th'
-        }
-    }
-    const dayMap = {
-        1: 'Sun', 2: 'Mon', 3: 'Tue', 4: 'Wed',
-        5: 'Thu', 6: 'Fri', 7: 'Sat',
-    }
-    const [open, setOpen] = useState(false)
-    const [mode, setMode] = useState('')
-    const [buttonPlaceholder, setButtonPlaceholder] = useState('')
-    const ref = useRef(null)
-    const buttonRef = useRef(null)
+const DayWeekPicker = () => {
 
-    const [day, setDay] = useState('')
-    const [weekNumber, setWeekNumber] = useState('')
-    const [weekDay, setWeekDay] = useState('')
+    const {
+        mode,
+        open,
+        setOpen,
+        buttonRef,
+        day,
+        week,
+        setWeek,
+        weekDay,
+        setWeekDay,
+        setDay
+    } = useContext(pickerContext)
+
+    const ref = useRef(null)
 
     useEffect(() => {
         open
@@ -462,31 +544,22 @@ const DayWeekPicker = (props) => {
     // mode's inputs are entered
     useEffect(() => {
         if (day) {
-            setWeekNumber('')
+            setWeek('')
             setWeekDay('')
+            setOpen(false)
         }
     }, [day])
 
     // Clear other inputs different mode's
     // inputs are entered
     useEffect(() => {
-        if (weekNumber || weekDay) {
+        if (week || weekDay) {
             setDay('')
         }
-    }, [weekNumber, weekDay])
-
-    // Set the placeholder text
-    useEffect(() => {
-        if (day) {
-            setButtonPlaceholder(`${day}${getSuffix(day)}`)
-        } else if (weekNumber < 5 && weekDay) {
-            setButtonPlaceholder(`${weekNumber}${getSuffix(weekNumber)} ${dayMap[weekDay]}.`)
-        } else if (weekNumber === 5 && weekDay) {
-            setButtonPlaceholder(`Last ${dayMap[weekDay]}.`)
-        } else {
-            setButtonPlaceholder('')
+        if (week && weekDay) {
+            // setOpen(false)
         }
-    }, [day, weekNumber, weekDay])
+    }, [weekDay, week])
 
     return (
         <>
@@ -497,17 +570,8 @@ const DayWeekPicker = (props) => {
                 (weekDay && <input type="hidden" name="weekDay" value={weekDay} />)
             }
             {mode === 'week' &&
-                (weekNumber && <input type="hidden" name="weekNumber" value={weekNumber} />)
+                (week && <input type="hidden" name="weekNumber" value={week} />)
             }
-            <Button
-                onClick={() => setOpen(!open)}
-                onFocus={(e) => {
-                    e.stopPropagation()
-                    open && setOpen(false)
-                }}
-                ref={buttonRef}
-                placeHolder={buttonPlaceholder}
-            />
             <DropAnimation
                 visible={open}
                 className="dropdown"
@@ -523,31 +587,18 @@ const DayWeekPicker = (props) => {
                         }
                     }}
                 >
-                    <ModeSelector mode={mode} setMode={setMode} />
-                    {mode === 'day' &&
-                        <DayPicker
-                            day={day}
-                            setDay={setDay}
-                            setOpen={setOpen}
-                            numberOfDays={31}
-                        />
-                    }
-                    {mode === 'week' && (
-                        <WeekPicker
-                            weekNumber={weekNumber}
-                            setWeekNumber={setWeekNumber}
-                            weekDay={weekDay}
-                            setWeekDay={setWeekDay}
-                            setOpen={setOpen}
-                        />
-                    )}
+                    <ModeSelector />
+                    {mode === 'day' && <DayPicker />}
+                    {mode === 'week' && <WeekPicker />}
                 </div>
             </DropAnimation>
         </>
     )
 }
 
-const MonthPicker = ({ month, setMonth, setOpen }) => {
+const MonthPicker = () => {
+    const { month, setMonth, setOpen } = useContext(pickerContext)
+
     const [activeMonth, setActiveMonth] = useState(null)
     const ref = useRef(null)
 
@@ -650,22 +701,10 @@ const MonthPicker = ({ month, setMonth, setOpen }) => {
     )
 }
 
-const MonthYearPicker = (props) => {
-    const daysMap = {
-        1: 31, 2: 28, 3: 31, 4: 30,
-        5: 31, 6: 30, 7: 31, 8: 31,
-        9: 30, 10: 31, 11: 30, 12: 31,
-    } // How many days are in each month
-    const monthMap = {
-        1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
-        5: 'May', 6: 'June', 7: 'Jul', 8: 'Aug',
-        9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
-    } // Translate month number to month name
-    const [open, setOpen] = useState(false)
+const MonthDayPicker = () => {
+    const { open, setOpen, buttonRef, month, day } = useContext(pickerContext)
+
     const ref = useRef(null)
-    const buttonRef = useRef(null)
-    const [month, setMonth] = useState('')
-    const [year, setYear] = useState('')
 
     useClickClose({
         refs: [ref, buttonRef],
@@ -679,15 +718,16 @@ const MonthYearPicker = (props) => {
             : ref.current?.blur()
     }, [open])
 
+    useEffect(() => {
+        if (month && day) {
+            setOpen(false)
+        }
+    }, [month, day])
+
     return (
         <>
             {month && <input type="hidden" name="month" value={month} />}
-            {year && <input type="hidden" name="year" value={year} />}
-            <Button
-                onClick={() => setOpen(!open)}
-                ref={buttonRef}
-                placeHolder={month && year ? `${monthMap[month]} ${year}` : ''}
-            />
+            {day && <input type="hidden" name="day" value={day} />}
             <DropAnimation
                 visible={open}
                 className="dropdown"
@@ -695,7 +735,7 @@ const MonthYearPicker = (props) => {
                 style={{ marginTop: '4px' }}
             >
                 <div
-                    id="month-year-picker-container"
+                    id="month-day-picker-container"
                     ref={ref}
                     onKeyDown={(event) => {
                         event.stopPropagation()
@@ -704,18 +744,17 @@ const MonthYearPicker = (props) => {
                         }
                     }}
                 >
-                    <MonthPicker month={month} setMonth={setMonth} setOpen={setOpen} />
+                    <MonthPicker />
                     <hr style={{ opacity: '.1', width: '100%' }} />
-                    <DayPicker
-                        day={year}
-                        setDay={setYear}
-                        setOpen={setOpen}
-                        numberOfDays={daysMap[month || 1]}
-                    />
+                    <DayPicker />
                 </div>
             </DropAnimation>
         </>
     )
 }
 
-export { DayWeekPicker, MonthYearPicker }
+Scheduler.Button = Button
+Scheduler.DayWeekPicker = DayWeekPicker
+Scheduler.MonthDayPicker = MonthDayPicker
+
+export default Scheduler

@@ -15,10 +15,10 @@ import {
     GreenRadios,
     Checkbox,
     AddReminder,
-    DayWeekPicker,
-    MonthYearPicker
+    Scheduler
 } from '@components/inputs'
 import { FormErrorTip, FormError } from '@components/pieces'
+import { useAddnewBillMutation } from '@api/apiSlice'
 
 const radioOptions = [
     { name: 'categoryType', value: 'monthly', label: 'Monthly', default: true },
@@ -26,12 +26,17 @@ const radioOptions = [
 ]
 
 const Form = (props) => {
-    const [submitting, setSubmitting] = useState(false)
     const [emoji, setEmoji] = useState('')
     const [billPeriod, setBillPeriod] = useState('monthly')
     const [rangeMode, setRangeMode] = useState(false)
     const [lowerRange, setLowerRange] = useState('')
     const [upperRange, setUpperRange] = useState('')
+    const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
+
+    const [day, setDay] = useState('')
+    const [month, setMonth] = useState('')
+    const [week, setWeek] = useState('')
+    const [weekDay, setWeekDay] = useState('')
 
     const schema = object().shape({
         name: string().required(),
@@ -55,18 +60,43 @@ const Form = (props) => {
         emoji && nameRef.current.focus()
     }, [emoji])
 
-    const submit = (data) => {
-        setSubmitting(true)
-        console.log(data)
-        setTimeout(() => {
-            setSubmitting(false)
-            props.setVisible(false)
-        }, 1000)
+    const submit = (e) => {
+        e.preventDefault()
+        const formData = new FormData(e.target)
+        let body = Object.fromEntries(formData)
+        console.log(body)
     }
+
+    useEffect(() => {
+        isSuccess && props.setVisible(false)
+    }, [isSuccess])
+
+    const SchedulerComponent = () => (
+        <Scheduler
+            day={day}
+            setDay={setDay}
+            month={month}
+            setMonth={setMonth}
+            week={week}
+            setWeek={setWeek}
+            weekDay={weekDay}
+            setWeekDay={setWeekDay}
+        >
+            <Scheduler.Button>
+                {/* Some content */}
+            </Scheduler.Button>
+            {billPeriod === 'monthly'
+                ?
+                <Scheduler.DayWeekPicker />
+                :
+                <Scheduler.MonthDayPicker />
+            }
+        </Scheduler>
+    )
 
     return (
         <div className="create-form">
-            <form onSubmit={handleSubmit((data) => submit(data))} id="new-bill-form">
+            <form onSubmit={handleSubmit((data, e) => submit(e))} id="new-bill-form">
                 <div className="form-top">
                     <h2>New Bill</h2>
                     <GreenRadios
@@ -92,10 +122,7 @@ const Form = (props) => {
                     </div>
                     <div>
                         <label htmlFor="name">Schedule</label>
-                        {billPeriod === 'monthly'
-                            ? <DayWeekPicker />
-                            : <MonthYearPicker />
-                        }
+                        <SchedulerComponent />
                     </div>
                 </div>
                 <div id="limit-inputs-container" className="padded-row">
@@ -132,7 +159,10 @@ const Form = (props) => {
                         onChange={(e) => { setRangeMode(e.target.checked) }}
                     />
                 </div>
-                <SubmitForm submitting={submitting} onCancel={() => props.setVisible(false)} />
+                <SubmitForm
+                    submitting={isLoading}
+                    onCancel={() => props.setVisible(false)}
+                />
             </form>
         </div>
     )

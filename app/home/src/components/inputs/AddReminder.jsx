@@ -19,7 +19,6 @@ const AddReminder = () => {
     const [selectedReminders, setSelectedReminders] = useState([])
     const [reminderOptions, setReminderOptions] = useState(defaultOptions)
 
-
     const Option = ({ value, active, selected }) => {
         const opIndex = reminderOptions.findIndex((op) => op.value === value)
         const nextOp = reminderOptions[opIndex + 1]

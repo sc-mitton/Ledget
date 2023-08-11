@@ -23,6 +23,13 @@ export const ledgetSlice = createApi({
                 body: data,
             }),
         }),
+        addnewBill: builder.mutation({
+            query: ({ data, userId }) => ({
+                url: `user/${userId}/bill`,
+                method: 'POST',
+                body: data,
+            }),
+        }),
     })
 })
 
@@ -31,4 +38,5 @@ export const {
     useGetPlaidTokenQuery,
     useGetPaymentMethodQuery,
     useAddNewCategoryMutation,
+    useAddnewBillMutation,
 } = ledgetSlice
