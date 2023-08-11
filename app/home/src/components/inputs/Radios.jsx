@@ -120,16 +120,25 @@ const GreenRadios = (props) => {
             {...rest}
             className="green-radios-container"
         >
-            <Pill styles={{ backgroundColor: 'var(--green-hlight3)' }} />
+            <Pill styles={{ backgroundColor: 'var(--btn-gray)' }} />
             {options.map((option, index) => (
                 <Input
                     key={index}
                     option={option}
                     className="green-radios-container-label"
                 >
-                    <span>
-                        {option.label}
-                    </span>
+                    {({ selected }) => (
+                        <span
+                            style={{
+                                color: selected
+                                    ? 'var(--white-text)'
+                                    : 'var(--input-placeholder2)',
+                                fontWeight: '400'
+                            }}
+                        >
+                            {option.label}
+                        </span>
+                    )}
                 </Input>
             ))}
         </Radios>

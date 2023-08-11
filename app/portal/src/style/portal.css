@@ -27,7 +27,7 @@ body {
 }
 
 #top-header a {
-    border-bottom: 1.5px solid var(--main-text-gray);
+    border-bottom: 1.5px solid var(--m-text-gray);
     transition: all 0.3s ease-out;
 }
 
@@ -230,7 +230,7 @@ button {
 }
 
 .btn-grn {
-    color: var(--main-text-gray);
+    color: var(--m-text-gray);
     background-color: var(--green-hlight);
     transition: background-color .3s ease;
     font-weight: 500;

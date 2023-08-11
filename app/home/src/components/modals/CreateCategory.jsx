@@ -113,7 +113,7 @@ const Form = (props) => {
             <div style={{ margin: '4px 0' }}>
                 <GreenRadios options={radioOptions} />
             </div>
-            <hr style={{ opacity: ".1", marginBottom: '16px' }} />
+            <hr />
             <div className="flex-responsive1">
                 <div>
                     <label htmlFor="name">Name</label>

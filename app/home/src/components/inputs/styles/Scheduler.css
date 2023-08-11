@@ -18,7 +18,7 @@
 }
 
 #schedule-dropdown label {
-    margin: 2px;
+    margin: 0;
     border-radius: var(--border-radius2);
 }
 

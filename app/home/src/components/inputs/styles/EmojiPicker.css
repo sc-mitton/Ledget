@@ -15,6 +15,9 @@ em-emoji-picker {
     box-shadow: var(--mid-elevation-drop-shadow);
     --font-family: font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     --rgb-accent: 81, 237, 151;
+    --rgb-background: var(--window-rgb);
+    --rgb-input: var(--window-rgb);
+    --rgb-color: var(--charcoal-rgb);
     /* --background-rgb: 202, 252, 224;
     --border-radius: 12px;
     --color-border-over: rgba(0, 0, 0, 0.1);

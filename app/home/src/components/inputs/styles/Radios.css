@@ -2,7 +2,7 @@
     display: inline-flex;
     flex-direction: row;
     margin: 4px 0;
-    background-color: var(--green-hlight);
+    background-color: var(--input-color);
     border-radius: var(--border-radius2);
 }
 
@@ -13,7 +13,7 @@
     display: block;
     height: 100%;
 
-    padding: 4px 16px;
+    padding: 2px 16px;
     text-align: center;
     overflow: hidden;
     white-space: nowrap;

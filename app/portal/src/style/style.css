@@ -12,11 +12,6 @@
     --window-box-gray: #fffcfc;
 
     /* Palet */
-    --light-blue: #97c1fc;
-    --mute-blue: #7aa8fe;
-    --hover-blue: #6197fc;
-    --main-blue: #6b9bf6;
-
     --mute-red: #fd8292;
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
@@ -56,7 +51,7 @@
     --input-color: #ededed;
 
     /* Text */
-    --main-text-gray: #292929;
+    --m-text-gray: #292929;
     --input-placeholder: #848484;
     --input-placeholder2: #a6a6a6;
     --input-focus: #6b9bf6;
@@ -75,7 +70,7 @@
     :root {
         --input-focus: rgb(31, 108, 252);
         --input-placeholder: #2a2a2a;
-        --main-text-gray: rgb(44, 44, 44);
+        --m-text-gray: rgb(44, 44, 44);
     }
 }
 
@@ -104,7 +99,7 @@ select,
 option {
     font-family: "Source Sans 3";
     font-size: 16px;
-    color: var(--main-text-gray);
+    color: var(--m-text-gray);
 }
 
 h1,
@@ -148,7 +143,7 @@ a {
 
 a:focus-visible,
 a:hover {
-    border-bottom: 1.5px solid var(--main-text-gray);
+    border-bottom: 1.5px solid var(--m-text-gray);
 }
 
 label:focus-visible {

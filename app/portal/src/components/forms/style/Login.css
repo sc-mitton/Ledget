@@ -50,9 +50,9 @@
 #forgot-password-container a {
     font-size: 15px;
     font-weight: 400;
-    color: var(--main-text-gray);
+    color: var(--m-text-gray);
 }
 
 #forgot-password-container a:hover {
-    border-bottom: 1.5px solid var(--main-text-gray);
+    border-bottom: 1.5px solid var(--m-text-gray);
 }

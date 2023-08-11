@@ -141,7 +141,7 @@ const MonthPicker = () => {
                             onClick={decrementYear}
                             aria-label="Decrement year"
                         >
-                            <Arrow stroke='var(--main-text-gray)' scale={.8} rotation={90} />
+                            <Arrow stroke='var(--m-text-gray)' scale={.8} rotation={90} />
                         </button>
                         <div>{pickerYear}</div>
                         <button
@@ -149,7 +149,7 @@ const MonthPicker = () => {
                             onClick={incrementYear}
                             aria-label="Increment year"
                         >
-                            <Arrow stroke='var(--main-text-gray)' scale={.8} rotation={-90} />
+                            <Arrow stroke='var(--m-text-gray)' scale={.8} rotation={-90} />
                         </button>
                     </div>
                     <div className="month-picker-grid">

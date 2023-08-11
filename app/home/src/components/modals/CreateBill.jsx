@@ -26,22 +26,25 @@ const radioOptions = [
 ]
 
 const Form = (props) => {
-    const [emoji, setEmoji] = useState('')
     const [billPeriod, setBillPeriod] = useState('monthly')
     const [rangeMode, setRangeMode] = useState(false)
-    const [lowerRange, setLowerRange] = useState('')
-    const [upperRange, setUpperRange] = useState('')
+
+    const [emoji, setEmoji] = useState('')
+    const [lowerLimit, setlowerLimit] = useState('')
+    const [upperLimit, setupperLimit] = useState('')
+
     const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
+    const [scheduleMissing, setScheduleMissing] = useState(false)
 
     const schema = object().shape({
         name: string().required(),
-        lowerRange: rangeMode
-            ? string().required().test('lowerRange', 'Lower value must be smaller.', (value) => {
+        lowerLimit: rangeMode
+            ? string().required().test('lowerLimit', 'Lower value must be smaller.', (value) => {
                 return parseInt(value.replace(/[^0-9.]/g, ''), 10)
-                    < parseInt(upperRange.replace(/[^0-9.]/g, ''), 10)
+                    < parseInt(upperLimit.replace(/[^0-9.]/g, ''), 10)
             })
             : '',
-        upperRange: string().required(),
+        upperLimit: string().required(),
     })
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -66,87 +69,86 @@ const Form = (props) => {
         isSuccess && props.setVisible(false)
     }, [isSuccess])
 
-    const SchedulerComponent = () => (
-        <Scheduler>
-            <Scheduler.Button />
-            {billPeriod === 'monthly'
-                ? <Scheduler.DayWeekPicker />
-                : <Scheduler.MonthDayPicker />
-            }
-        </Scheduler>
-    )
 
     return (
-        <div className="create-form">
-            <form onSubmit={handleSubmit((data, e) => submit(e))} id="new-bill-form">
-                <div className="form-top">
-                    <h2>New Bill</h2>
-                    <GreenRadios
-                        options={radioOptions}
-                        value={billPeriod}
-                        onChange={setBillPeriod}
-                    />
-                    <hr style={{ opacity: ".1" }} />
+        <form
+            className="create-form"
+            id="new-bill-form"
+            onSubmit={handleSubmit((data, e) => submit(e))}
+        >
+            <h2>New Bill</h2>
+            <GreenRadios
+                options={radioOptions}
+                value={billPeriod}
+                onChange={setBillPeriod}
+            />
+            <hr />
+            <div className='split-inputs'>
+                <div>
+                    <label htmlFor="name">Name</label>
+                    <EmojiComboText
+                        name="name"
+                        placeholder="Name"
+                        emoji={emoji}
+                        setEmoji={setEmoji}
+                        ref={nameRef}
+                        register={register}
+                    >
+                        <FormErrorTip errors={[errors.name]} />
+                    </EmojiComboText>
                 </div>
-                <div className='split-inputs'>
-                    <div>
-                        <label htmlFor="name">Name</label>
-                        <EmojiComboText
-                            name="name"
-                            placeholder="Name"
-                            emoji={emoji}
-                            setEmoji={setEmoji}
-                            ref={nameRef}
-                            register={register}
-                        >
-                            <FormErrorTip errors={[errors.name]} />
-                        </EmojiComboText>
-                    </div>
-                    <div>
-                        <label htmlFor="name">Schedule</label>
-                        <SchedulerComponent />
-                    </div>
-                </div>
-                <div id="limit-inputs-container" className="padded-row">
-                    <label htmlFor="upperRange">Amount</label>
-                    <TextInput >
-                        {rangeMode &&
-                            <DollarInput
-                                dollar={lowerRange}
-                                setDollar={setLowerRange}
-                                name="lowerRange"
-                                id="lowerRange"
-                                register={register}
-                            />
+                <div>
+                    <label htmlFor="name">Schedule</label>
+                    <Scheduler>
+                        <Scheduler.Button />
+                        {billPeriod === 'monthly'
+                            ? <Scheduler.DayWeekPicker />
+                            : <Scheduler.MonthDayPicker />
                         }
+                    </Scheduler>
+                </div>
+            </div>
+            <div id="limit-inputs-container" className="padded-row">
+                <label htmlFor="upperLimit">Amount</label>
+                <TextInput >
+                    {rangeMode &&
                         <DollarInput
-                            dollar={upperRange}
-                            setDollar={setUpperRange}
-                            name="upperRange"
-                            id="upperRange"
+                            dollar={lowerLimit}
+                            setDollar={setlowerLimit}
+                            name="lowerLimit"
+                            id="lowerLimit"
                             register={register}
                         />
-                        <FormErrorTip errors={[errors.upperRange, errors.LowerRange]} />
-                    </TextInput>
-                    {errors.lowerRange?.type !== 'required'
-                        && <FormError msg={errors.lowerRange?.message} />}
-                </div>
-                <div id="bottom-inputs">
-                    <AddReminder />
-                    <Checkbox
-                        label='Range'
-                        name='range'
-                        id='range'
-                        value={rangeMode}
-                        onChange={(e) => { setRangeMode(e.target.checked) }}
+                    }
+                    <DollarInput
+                        dollar={upperLimit}
+                        setDollar={setupperLimit}
+                        name="upperLimit"
+                        id="upperLimit"
+                        register={register}
                     />
-                </div>
-                <SubmitForm
-                    submitting={isLoading}
-                    onCancel={() => props.setVisible(false)}
+                    <FormErrorTip errors={[errors.upperLimit, errors.lowerLimit]} />
+                </TextInput>
+                {errors.lowerLimit?.type !== 'required'
+                    && <FormError msg={errors.lowerLimit?.message} />}
+            </div>
+            <div id="bottom-inputs">
+                <AddReminder />
+                <Checkbox
+                    label='Range'
+                    name='range'
+                    id="range"
+                    aria-label='Change bill amount to a range.'
+                    value={rangeMode}
+                    onChange={(e) => { setRangeMode(e.target.checked) }
+                    }
                 />
-            </form>
-        </div>
+            </div>
+            <SubmitForm
+                submitting={isLoading}
+                onCancel={() => props.setVisible(false)}
+            />
+        </form>
     )
 }
 

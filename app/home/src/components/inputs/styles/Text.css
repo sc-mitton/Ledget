@@ -40,7 +40,7 @@
     margin: 0 -4px;
     background-color: transparent;
     box-shadow: none;
-    color: var(--main-text-gray);
+    color: var(--m-text-gray);
     border-radius: var(--border-radius2);
     box-sizing: border-box;
     display: flex;

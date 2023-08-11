@@ -8,11 +8,6 @@
     --logo-dark: #242424;
 
     /* Palet */
-    --light-blue: #97c1fc;
-    --mute-blue: #7aa8fe;
-    --hover-blue: #6197fc;
-    --main-blue: #6b9bf6;
-
     --mute-red: #fd8292;
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
@@ -30,6 +25,9 @@
     --accessible-green: rgb(81, 237, 151);
     --green-input-focus: rgb(96, 211, 156);
 
+    --charcoal-rgb: 41, 41, 41;
+    --window-rgb: 252, 248, 247;
+
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-green);
     --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
@@ -40,7 +38,7 @@
     --input-color: #e6e4e4;
 
     /* Text */
-    --main-text-gray: #292929;
+    --m-text-gray: #292929;
     --input-placeholder: #848484;
     --input-placeholder2: #a6a6a6;
     --input-focus: #6b9bf6;
@@ -78,7 +76,7 @@
     :root {
         --input-focus: rgb(31, 108, 252);
         --input-placeholder: #343434;
-        --main-text-gray: rgb(44, 44, 44);
+        --m-text-gray: rgb(44, 44, 44);
     }
 }
 
@@ -112,7 +110,7 @@ option,
 span {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-size: 14px;
-    color: var(--main-text-gray);
+    color: var(--m-text-gray);
 }
 
 p,
@@ -120,7 +118,7 @@ textarea {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-weight: 400;
     font-size: 14px;
-    color: var(--main-text-gray);
+    color: var(--m-text-gray);
     opacity: .8
 }
 
@@ -181,6 +179,15 @@ ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 2px solid var(--subtle-border-color);
+    margin: 12px 0;
+    padding: 0;
 }
 
 fieldset {
@@ -354,7 +361,7 @@ button svg {
 }
 
 .btn-grn {
-    color: var(--main-text-gray);
+    color: var(--m-text-gray);
     background-color: var(--green-hlight);
     transition: background-color .3s ease;
 }
@@ -366,7 +373,7 @@ button svg {
 
 .btn-gr {
     background-color: var(--btn-light-gray);
-    color: var(--main-text-gray);
+    color: var(--m-text-gray);
     transition: background-color .3s ease;
 }
 
@@ -377,7 +384,7 @@ button svg {
 
 .btn-gr2 {
     background-color: rgb(0, 0, 0, .05);
-    color: var(--main-text-gray);
+    color: var(--m-text-gray);
     transition: background-color .3s ease;
 }
 
@@ -388,7 +395,7 @@ button svg {
 
 .btn-clr {
     background-color: transparent;
-    color: var(--main-text-gray);
+    color: var(--m-text-gray);
     transition: background-color .3s ease;
 }
 
@@ -502,7 +509,7 @@ button svg {
     border-radius: var(--border-radius2);
     transform-origin: top;
     padding: 6px 6px;
-    color: var(--main-text-gray);
+    color: var(--m-text-gray);
     font-weight: 500;
     border: var(--subtle-border);
     white-space: nowrap;

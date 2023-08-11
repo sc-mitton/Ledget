@@ -1,7 +1,7 @@
 import React, { useState, useRef, useContext } from 'react'
 
 import './styles/Dropdowns.css'
-import './styles/Schedule.css'
+import './styles/Scheduler.css'
 import { DropAnimation } from '@utils'
 import Radios from './Radios'
 import Arrow from '@assets/icons/Arrow'
@@ -104,6 +104,7 @@ const Button = ({ children, ...props }) => {
                     style={{
                         display: 'flex',
                         alignItems: 'center',
+                        whiteSpace: 'nowrap',
                     }}
                 >
                     <Calendar
@@ -111,14 +112,13 @@ const Button = ({ children, ...props }) => {
                         height={'1.5em'}
                         fill={
                             placeholder
-                                ? 'var(--main-text-gray)'
+                                ? 'var(--m-text-gray)'
                                 : 'var(--input-placeholder2)'
                         }
                     />
                     <span style={{
                         opacity: placeholder ? '1' : '.4',
-                        marginLeft: '12px',
-                        marginTop: "2px"
+                        margin: '0 8px',
                     }}>
                         {placeholder || 'Schedule'}
                     </span>
@@ -128,7 +128,7 @@ const Button = ({ children, ...props }) => {
                     height={'.8em'}
                     stroke={
                         placeholder
-                            ? 'var(--main-text-gray)'
+                            ? 'var(--m-text-gray)'
                             : 'var(--input-placeholder2)'
                     }
                 />
@@ -149,18 +149,22 @@ const ModeSelector = ({ mode, setMode }) => {
         <Radios
             value={mode}
             onChange={setMode}
-            style={{ borderRadius: '12px', padding: '4px 2px' }}
+            style={{
+                borderRadius: 'var(--border-radius2)',
+                backgroundColor: 'var(--input-color)',
+                display: 'inline-block',
+            }}
         >
             <Radios.Pill styles={{
                 backgroundColor: 'var(--btn-gray)',
-                borderRadius: '8px'
+                borderRadius: 'var(--border-radius2)'
             }} />
             {options.map((option) => (
                 <Radios.Input
                     key={option.value}
                     option={option}
                     style={{
-                        padding: '0px 8px',
+                        padding: '0px 12px',
                         cursor: 'pointer'
                     }}
                 >

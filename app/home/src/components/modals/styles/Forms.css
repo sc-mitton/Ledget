@@ -1,4 +1,4 @@
-.create-form form {
+.create-form {
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -16,7 +16,7 @@
 }
 
 .form-top {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .flex-responsive1 {
@@ -123,7 +123,7 @@ input.emoji {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 2px 0 20px 0px;
+    margin: 2px 0 16px 0px;
 }
 
 #bottom-inputs .checkbox-container {
