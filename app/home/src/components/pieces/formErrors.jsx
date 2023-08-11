@@ -5,6 +5,7 @@ import alert2 from '@assets/icons/alert2.svg'
 
 export const FormErrorTip = ({ errors }) => {
 
+
     return (
         <>
             {

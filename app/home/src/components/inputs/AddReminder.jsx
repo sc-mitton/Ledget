@@ -7,12 +7,12 @@ import Plus from '@assets/icons/Plus'
 import Checkmark from '@assets/icons/Checkmark'
 
 const defaultOptions = [
-    { id: 1, value: { quantity: 1, period: 'day' }, disabled: false },
-    { id: 2, value: { quantity: 3, period: 'day' }, disabled: false },
-    { id: 3, value: { quantity: 5, period: 'day' }, disabled: false },
-    { id: 4, value: { quantity: 1, period: 'week' }, disabled: false },
-    { id: 5, value: { quantity: 2, period: 'week' }, disabled: false },
-    { id: 6, value: { quantity: 3, period: 'week' }, disabled: false }
+    { id: 1, value: { offset: 1, period: 'day' }, disabled: false },
+    { id: 2, value: { offset: 3, period: 'day' }, disabled: false },
+    { id: 3, value: { offset: 5, period: 'day' }, disabled: false },
+    { id: 4, value: { offset: 1, period: 'week' }, disabled: false },
+    { id: 5, value: { offset: 2, period: 'week' }, disabled: false },
+    { id: 6, value: { offset: 3, period: 'week' }, disabled: false }
 ]
 
 const AddReminder = () => {
@@ -27,8 +27,8 @@ const AddReminder = () => {
             <>
                 <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
                     <div>
-                        {value.quantity}
-                        {value.quantity > 1 ? ` ${value.period}s` : ` ${value.period}`}
+                        {value.offset}
+                        {value.offset > 1 ? ` ${value.period}s` : ` ${value.period}`}
                         <span style={{ opacity: active ? '.5' : '0', padding: '0 8px' }}>before</span>
                     </div>
                     <div>

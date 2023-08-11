@@ -12,14 +12,14 @@ class AlertSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Alert
-        fields = ['percent_amount']
+        exclude = ['category']
 
 
 class ReminderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reminder
-        fields = ['period', 'offset']
+        exclude = ['bill']
 
 
 class BudgetCategorySerializer(serializers.ModelSerializer):
@@ -27,7 +27,8 @@ class BudgetCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BudgetCategory
-        fields = ['name', 'emoji', 'type', 'limit_amount', 'alerts']
+        fields = [field.name for field in model._meta.fields
+                  if field.name != 'user'] + ['alerts']
         required_fields = ['name', 'type', 'limit_amount']
 
     def create(self, validated_data):
@@ -47,8 +48,8 @@ class BillSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bill
-        fields = ['name', 'emoji', 'type', 'lower_amount', 'upper_amount',
-                  'day_of_month', 'day_of_week', 'week', 'month', 'reminders']
+        fields = [field.name for field in model._meta.fields
+                  if field.name != 'user'] + ['reminders']
         required_fields = ['name', 'type', 'upper_amount']
 
     def create(self, validated_data):
@@ -66,11 +67,12 @@ class BillSerializer(serializers.ModelSerializer):
         """Check to make sure at least day_of_month
         or day_of_week and week are present."""
 
-        missing_day_of_month = data.get('day_of_month') is None
+        missing_day_of_month = data.get('day') is None
         missing_week = data.get('week') is None
-        missing_day_of_week = data.get('day_of_week') is None
+        missing_day_of_week = data.get('week_day') is None
 
         if missing_day_of_month and (missing_week or missing_day_of_week):
             raise serializers.ValidationError(
-                "Must provide day_of_month or day_of_week and week"
+                "Must provide day or week_day and week"
             )
+        return data

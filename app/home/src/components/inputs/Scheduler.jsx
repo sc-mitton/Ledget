@@ -89,6 +89,11 @@ const Button = ({ children, ...props }) => {
         <>
             <div
                 onClick={() => setOpen(!open)}
+                onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                        setOpen(!open)
+                    }
+                }}
                 ref={buttonRef}
                 tabIndex={0}
                 role="button"
@@ -132,8 +137,8 @@ const Button = ({ children, ...props }) => {
                             : 'var(--input-placeholder2)'
                     }
                 />
+                {children}
             </div>
-            {children}
         </>
 
     )
@@ -442,8 +447,12 @@ const WeekPicker = () => {
                 setOpen(false)
                 break
             case 'Enter':
-                setWeekNumber(activeWeekNumber)
-                setWeekDay(activeWeekDay)
+                if (activeWeekNumber) {
+                    setWeekNumber(activeWeekNumber)
+                }
+                if (activeWeekDay) {
+                    setWeekDay(activeWeekDay)
+                }
                 break
             default:
                 break
@@ -564,7 +573,7 @@ const DayWeekPicker = () => {
                 (weekDay && <input type="hidden" name="weekDay" value={weekDay} />)
             }
             {mode === 'week' &&
-                (week && <input type="hidden" name="weekNumber" value={week} />)
+                (week && <input type="hidden" name="week" value={week} />)
             }
             <DropAnimation
                 visible={open}

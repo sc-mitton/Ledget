@@ -18,7 +18,7 @@ import {
     Scheduler
 } from '@components/inputs'
 import { FormErrorTip, FormError } from '@components/pieces'
-import { useAddnewBillMutation } from '@api/apiSlice'
+import { useAddnewBillMutation, useGetMeQuery } from '@api/apiSlice'
 
 const radioOptions = [
     { name: 'categoryType', value: 'monthly', label: 'Monthly', default: true },
@@ -26,25 +26,25 @@ const radioOptions = [
 ]
 
 const Form = (props) => {
+    const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
+    const { data: user } = useGetMeQuery()
+
     const [billPeriod, setBillPeriod] = useState('monthly')
     const [rangeMode, setRangeMode] = useState(false)
-
     const [emoji, setEmoji] = useState('')
-    const [lowerLimit, setlowerLimit] = useState('')
-    const [upperLimit, setupperLimit] = useState('')
-
-    const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
+    const [lowerAmount, setlowerAmount] = useState('')
+    const [upperAmount, setupperAmount] = useState('')
     const [scheduleMissing, setScheduleMissing] = useState(false)
 
     const schema = object().shape({
         name: string().required(),
-        lowerLimit: rangeMode
-            ? string().required().test('lowerLimit', 'Lower value must be smaller.', (value) => {
+        lowerAmount: rangeMode
+            ? string().required().test('lowerAmount', 'Lower value must be smaller.', (value) => {
                 return parseInt(value.replace(/[^0-9.]/g, ''), 10)
-                    < parseInt(upperLimit.replace(/[^0-9.]/g, ''), 10)
+                    < parseInt(upperAmount.replace(/[^0-9.]/g, ''), 10)
             })
             : '',
-        upperLimit: string().required(),
+        upperAmount: string().required(),
     })
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -58,23 +58,69 @@ const Form = (props) => {
         emoji && nameRef.current.focus()
     }, [emoji])
 
-    const submit = (e) => {
+    const finalSubmit = (body) => {
+
+        Object.keys(body).forEach((key) => {
+            const snakeCase = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)
+            if (snakeCase !== key) {
+                body[snakeCase] = body[key]
+                delete body[key]
+            }
+        })
+
+        if (rangeMode) {
+            body.lower_amount = body.lower_amount.replace(/[^0-9]/g, '')
+            body.lower_amount < 100 && (body.lower_amount *= 100)
+        }
+        body.upper_amount = body.upper_amount.replace(/[^0-9]/g, '')
+        body.upper_amount < 100 && (body.upper_amount *= 100)
+        body.name = body.name.toLowerCase()
+
+        // Extract reminder objects
+        let reminders = []
+        for (const [key, value] of Object.entries(body)) {
+            if (key.includes('reminder')) {
+                const values = key.match(/\[(\w+)\]/g).map((match) => /[\w]+/.exec(match)[0])
+                if (reminders.length < values[0] - 1) {
+                    reminders.push({})
+                }
+                reminders[values[0]] = { ...reminders[values[0]], [values[1]]: value }
+                delete body[key]
+            }
+        }
+        body.reminders = reminders
+
+        addNewBill({ userId: user.id, data: body })
+    }
+
+    const submitForm = (e) => {
         e.preventDefault()
         const formData = new FormData(e.target)
         let body = Object.fromEntries(formData)
-        console.log(body)
+        delete body.range
+
+        // Check if schedule is missing
+        if (!body.day && !(body.week && body.weekDay) && !(body.month && body.day)) {
+            setScheduleMissing(true)
+        } else {
+            setScheduleMissing(false)
+        }
+
+        handleSubmit(() => {
+            if (scheduleMissing) return
+            finalSubmit(body)
+        })(e)
     }
 
     useEffect(() => {
         isSuccess && props.setVisible(false)
     }, [isSuccess])
 
-
     return (
         <form
             className="create-form"
             id="new-bill-form"
-            onSubmit={handleSubmit((data, e) => submit(e))}
+            onSubmit={submitForm}
         >
             <h2>New Bill</h2>
             <GreenRadios
@@ -100,7 +146,10 @@ const Form = (props) => {
                 <div>
                     <label htmlFor="name">Schedule</label>
                     <Scheduler>
-                        <Scheduler.Button />
+                        <Scheduler.Button>
+                            {scheduleMissing &&
+                                <FormErrorTip errors={[{ type: 'required' }]} />}
+                        </Scheduler.Button>
                         {billPeriod === 'monthly'
                             ? <Scheduler.DayWeekPicker />
                             : <Scheduler.MonthDayPicker />
@@ -109,28 +158,28 @@ const Form = (props) => {
                 </div>
             </div>
             <div id="limit-inputs-container" className="padded-row">
-                <label htmlFor="upperLimit">Amount</label>
+                <label htmlFor="upperAmount">Amount</label>
                 <TextInput >
                     {rangeMode &&
                         <DollarInput
-                            dollar={lowerLimit}
-                            setDollar={setlowerLimit}
-                            name="lowerLimit"
-                            id="lowerLimit"
+                            dollar={lowerAmount}
+                            setDollar={setlowerAmount}
+                            name="lowerAmount"
+                            id="lowerAmount"
                             register={register}
                         />
                     }
                     <DollarInput
-                        dollar={upperLimit}
-                        setDollar={setupperLimit}
-                        name="upperLimit"
-                        id="upperLimit"
+                        dollar={upperAmount}
+                        setDollar={setupperAmount}
+                        name="upperAmount"
+                        id="upperAmount"
                         register={register}
                     />
-                    <FormErrorTip errors={[errors.upperLimit, errors.lowerLimit]} />
+                    <FormErrorTip errors={[errors.upperAmount, errors.lowerAmount]} />
                 </TextInput>
-                {errors.lowerLimit?.type !== 'required'
-                    && <FormError msg={errors.lowerLimit?.message} />}
+                {errors.lowerAmount?.type !== 'required'
+                    && <FormError msg={errors.lowerAmount?.message} />}
             </div>
             <div id="bottom-inputs">
                 <AddReminder />

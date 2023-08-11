@@ -44,7 +44,7 @@ class Bill(BudgetItem):
 
     lower_amount = models.IntegerField(null=True, blank=True)
     upper_amount = models.IntegerField(null=False, blank=False)
-    day_of_month = models.IntegerField(
+    day = models.IntegerField(
         null=True,
         blank=True,
         validators=[
@@ -52,18 +52,18 @@ class Bill(BudgetItem):
             MaxValueValidator(31, message="Day must be between 1 and 31."),
         ]
     )
-    day_of_week = models.IntegerField(
+    week = models.IntegerField(
+        null=True,
+        blank=True,
+        validators=[validate_week_number]
+    )
+    week_day = models.IntegerField(
         null=True,
         blank=True,
         validators=[
             MinValueValidator(0, message="Day must be between 0 and 6."),
             MaxValueValidator(6, message="Day must be between 0 and 6."),
         ]
-    )
-    week = models.IntegerField(
-        null=True,
-        blank=True,
-        validators=[validate_week_number]
     )
     month = models.IntegerField(
         null=True,
@@ -86,7 +86,17 @@ class Bill(BudgetItem):
             )
 
 
-class Alert (models.Model):
+class Notification(models.Model):
+
+    class Meta:
+        abstract = True
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+
+
+class Alert (Notification):
 
     class Meta:
         db_table = 'budget_alert'
@@ -94,14 +104,10 @@ class Alert (models.Model):
     category = models.ForeignKey(BudgetCategory,
                                  on_delete=models.CASCADE,
                                  related_name='alerts')
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
     percent_amount = models.IntegerField(null=False, blank=False)
 
 
-class Reminder(models.Model):
+class Reminder(Notification):
 
     class Meta:
         db_table = 'budget_reminder'
@@ -113,9 +119,6 @@ class Reminder(models.Model):
     bill = models.ForeignKey(Bill,
                              on_delete=models.CASCADE,
                              related_name='reminders')
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
     period = models.CharField(
         max_length=40,
