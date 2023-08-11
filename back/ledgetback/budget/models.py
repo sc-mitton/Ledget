@@ -60,12 +60,12 @@ class Bill(BudgetItem):
             MaxValueValidator(6, message="Day must be between 0 and 6."),
         ]
     )
-    week_number = models.IntegerField(
+    week = models.IntegerField(
         null=True,
         blank=True,
         validators=[validate_week_number]
     )
-    month_number = models.IntegerField(
+    month = models.IntegerField(
         null=True,
         blank=True,
         validators=[
@@ -73,6 +73,17 @@ class Bill(BudgetItem):
             MaxValueValidator(12, message="Day must be between 1 and 12."),
         ]
     )
+
+    def clean(self):
+
+        super().clean()
+        # Either day_of_month or both day_of_week and week_number must be set
+        if not self.day_of_month and \
+           not (self.day_of_week and self.week_number):
+            raise ValidationError(
+                'Either day_of_month or'
+                ' both day_of_week and week_number must be set'
+            )
 
 
 class Alert (models.Model):
@@ -88,3 +99,29 @@ class Alert (models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     percent_amount = models.IntegerField(null=False, blank=False)
+
+
+class Reminder(models.Model):
+
+    class Meta:
+        db_table = 'budget_reminder'
+
+    class Perdiod(models.TextChoices):
+        DAY = 'day', _('Day')
+        WEEK = 'week', _('Week')
+
+    bill = models.ForeignKey(Bill,
+                             on_delete=models.CASCADE,
+                             related_name='reminders')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    period = models.CharField(
+        max_length=40,
+        choices=Perdiod.choices,
+        default=Perdiod.WEEK,
+        blank=False,
+        null=False
+    )
+    offset = models.IntegerField(null=False, blank=False)
