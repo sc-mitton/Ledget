@@ -11,10 +11,12 @@ from plaid.model.products import Products
 import plaid
 from rest_framework.response import Response
 from django.conf import settings
-from rest_framework.views import APIView, CreateAPIView
+from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import (HTTP_200_OK)
 
+from core.permissions import IsUserOwner
 from core.clients import plaid_client
 from core.serializers import ExchangePlaidTokenSerializer
 
@@ -52,5 +54,5 @@ class PlaidLinkTokenView(APIView):
 
 
 class PlaidTokenExchangeView(CreateAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = [ExchangePlaidTokenSerializer]
+    permission_classes = [IsAuthenticated, IsUserOwner]
+    serializer_class = ExchangePlaidTokenSerializer

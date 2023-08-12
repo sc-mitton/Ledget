@@ -26,27 +26,19 @@ class SubscriptionSerializer(serializers.Serializer):
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = '__all__'
+        exclude = ('item',)
 
 
-class ExchangePlaidTokenSerializer(serializers.ModelSerializer):
+class ExchangePlaidTokenSerializer(serializers.Serializer):
     accounts = AccountSerializer(many=True, write_only=True)
     public_token = serializers.CharField(write_only=True)
-
-    class Meta:
-        model = 'core.PlaidItem'
-        fields = '__all__'
 
     def create(self, validated_data):
 
         accounts = validated_data.pop('accounts', [])
+        exchange_request = ItemPublicTokenExchangeRequest(**validated_data)
+        response = plaid_client.item_public_token_exchange(exchange_request)
 
-        exchange_request = ItemPublicTokenExchangeRequest(
-            **validated_data
-        )
-        response = plaid_client.item_public_token_exchange(
-            exchange_request
-        )
         item = PlaidItem.objects.create(
             user=self.context['request'].user,
             id=response['item_id'],
@@ -54,9 +46,6 @@ class ExchangePlaidTokenSerializer(serializers.ModelSerializer):
         )
 
         for account in accounts:
-            Account.objects.create(
-                item=item,
-                **account
-            )
+            Account.objects.create(item=item, **account)
 
         return item

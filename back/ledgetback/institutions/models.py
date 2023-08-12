@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 from core.models import PlaidItem
 
 
@@ -24,7 +23,8 @@ class Account(models.Model):
 class Transactions(models.Model):
 
     class Meta:
-        db_table = 'transactions'
+        get_latest_by = ['date', 'datetime']
+        ordering = ['-date', '-datetime']
 
     # ID info
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
@@ -54,12 +54,12 @@ class Transactions(models.Model):
     # location info
     address = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=50, null=True, blank=True)
-    region = models.CharField(max_length=2, null=True, blank=True)
+    region = models.CharField(max_length=5, null=True, blank=True)
     postal_code = models.CharField(max_length=10, null=True, blank=True)
     country = models.CharField(max_length=50, null=True, blank=True)
     lat = models.FloatField(null=True, blank=True)
     lon = models.FloatField(null=True, blank=True)
-    store_number = models.CharField(max_length=10, null=True, blank=True)
+    store_number = models.CharField(max_length=50, null=True, blank=True)
 
     # UNUSED
     # category

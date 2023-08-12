@@ -4,19 +4,27 @@ import Plus from '@assets/icons/Plus'
 import {
     usePlaidLink,
 } from 'react-plaid-link'
-import { useGetPlaidTokenQuery } from '@api/apiSlice'
-import { ledget } from '@api/ledget'
-
+import {
+    useGetPlaidTokenQuery,
+    useAddNewPlaidItemMutation,
+    useGetMeQuery,
+} from '@api/apiSlice'
 
 const Connections = () => {
+    const { data: user } = useGetMeQuery()
     const { data: results, refetch: getPlaidToken } = useGetPlaidTokenQuery()
-    const [publicToken, setPublicToken] = useState(null)
+    const [addNewPlaidItem] = useAddNewPlaidItemMutation()
 
     const isOauth = false
     const config = {
         onSuccess: (public_token, metadata) => {
-            setPublicToken(public_token)
-            console.log(metadata)
+            addNewPlaidItem({
+                userId: user?.id,
+                data: {
+                    public_token: public_token,
+                    accounts: metadata.accounts,
+                }
+            })
         },
         onExit: (err, metadata) => { },
         onEvent: (eventName, metadata) => { },
@@ -28,20 +36,13 @@ const Connections = () => {
     }
     const { open, exit, ready } = usePlaidLink(config);
 
+    // 30 min timeout to refresh token
     useEffect(() => {
-        // 30 min timeout to refresh token
         const timeout = setTimeout(() => {
             getPlaidToken()
         }, 30 * 60 * 1000)
         return () => clearTimeout(timeout)
     }, [])
-
-    useEffect(() => {
-        if (publicToken) {
-            ledget.post('/plaid_token_exchange', { public_token: publicToken })
-        }
-        // Update redux store with new institution
-    }, [publicToken])
 
     const handleClick = () => { open() }
 
