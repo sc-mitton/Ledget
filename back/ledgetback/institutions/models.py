@@ -3,7 +3,10 @@ from django.db import models
 # Create your models here.
 
 
-class Transactions(models.Model):
+class Transaction(models.Model):
+
+    class Meta:
+        db_table = 'transactions'
 
     # ID info
     transaction_id = models.CharField(max_length=100, primary_key=True)
@@ -17,7 +20,6 @@ class Transactions(models.Model):
     pending = models.BooleanField(null=False, blank=False)
     pending_transaction_id = models.CharField(max_length=100, null=True,
                                               blank=True)
-
     amount = models.IntegerField(null=False, blank=False)
     iso_currency_code = models.CharField(max_length=3, null=False, blank=False)
     unnoficial_currency_code = models.CharField(max_length=10, null=True,

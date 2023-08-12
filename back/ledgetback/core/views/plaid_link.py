@@ -9,7 +9,7 @@ from plaid.model.link_token_create_request_user import (
     LinkTokenCreateRequestUser
 )
 from plaid.model.products import Products
-from plaid.api import plaid_api
+
 import plaid
 from rest_framework.response import Response
 from django.conf import settings
@@ -21,34 +21,14 @@ from rest_framework.status import (
 )
 
 from core.models import PlaidItem
+from core.clients import plaid_client
 
-
-PLAID_CLIENT_ID = settings.PLAID_CLIENT_ID
-PLAID_SECRET = settings.PLAID_API_KEY
 PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions').split(',')
 PLAID_REDIRECT_URI = settings.PLAID_REDIRECT_URI
-
-if settings.PLAID_SANDBOX:
-    plaid_host = plaid.Environment.Sandbox
-elif settings.PLAID_DEVELOPMENT:
-    plaid_host = plaid.Environment.Development
-elif settings.PLAID_PRODUCTION:
-    plaid_host = plaid.Environment.Production
-
-configuration = plaid.Configuration(
-    host=plaid_host,
-    api_key={
-        'clientId': PLAID_CLIENT_ID,
-        'secret': PLAID_SECRET,
-    }
-)
 
 plaid_products = []
 for product in PLAID_PRODUCTS:
     plaid_products.append(Products(product))
-
-api_client = plaid.ApiClient(configuration)
-client = plaid_api.PlaidApi(api_client)
 
 
 class PlaidLinkTokenView(APIView):
@@ -66,7 +46,7 @@ class PlaidLinkTokenView(APIView):
                 )
             )
             request['redirect_uri'] = PLAID_REDIRECT_URI
-            response = client.link_token_create(request)
+            response = plaid_client.link_token_create(request)
             return Response(data=response.to_dict(), status=200)
         except plaid.ApiException as e:
             return Response(
@@ -91,7 +71,9 @@ class PlaidTokenExchangeView(APIView):
             exchange_request = ItemPublicTokenExchangeRequest(
                 public_token=public_token
             )
-            response = client.item_public_token_exchange(exchange_request)
+            response = plaid_client.item_public_token_exchange(
+                exchange_request
+            )
             PlaidItem.objects.create(
                 user=request.user,
                 id=response['item_id'],

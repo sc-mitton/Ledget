@@ -76,12 +76,12 @@ const Button = ({ children, ...props }) => {
     } = useContext(pickerContext)
 
     useEffect(() => {
-        if (day) {
-            setPlaceholder(`${day}${getSuffix(day)}`)
-        } else if (month && day) {
+        if (month && day) {
             setPlaceholder(`${monthMap[month]} ${day}${getSuffix(day)}`)
         } else if (week && weekDay) {
             setPlaceholder(`${week}${getSuffix(week)} ${dayMap[weekDay]}`)
+        } else if (day) {
+            setPlaceholder(`${day}${getSuffix(day)}`)
         }
     }, [day, month, week, weekDay])
 
