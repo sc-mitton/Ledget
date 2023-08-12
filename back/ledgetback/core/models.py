@@ -85,6 +85,14 @@ class User(models.Model):
         """
         return False
 
+    @property
+    def plaid_items(self):
+        return self.plaiditem_set.all()
+
+    @property
+    def accounts(self):
+        pass
+
 
 class Customer(models.Model):
     """ See README for more information on the subscription statuses."""

@@ -6,9 +6,19 @@ from core.models import PlaidItem
 
 class Account(models.Model):
 
-    account_id = models.CharField(max_length=100, primary_key=True)
-    item = models.ForeignKey(PlaidItem, on_delete=models.CASCADE)
-    # TODO finish this model
+    item = models.ForeignKey(PlaidItem,
+                             on_delete=models.CASCADE,
+                             related_name='accounts')
+    id = models.CharField(max_length=100,
+                          null=False,
+                          blank=False,
+                          primary_key=True)
+    name = models.CharField(max_length=100, null=False, blank=False)
+    mask = models.CharField(max_length=10, null=False, blank=False)
+    subtype = models.CharField(max_length=50, null=True, blank=True)
+    type = models.CharField(max_length=50, null=False, blank=False)
+    verification_status = models.CharField(max_length=50, null=True,
+                                           blank=True)
 
 
 class Transactions(models.Model):
