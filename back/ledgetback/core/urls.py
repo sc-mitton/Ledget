@@ -24,7 +24,7 @@ urlpatterns = [
     path('user/<str:user_id>/payment_method', PaymentMethodView.as_view(),
          name='payment_method'),
     path('user/<str:user_id>/', include('budget.urls')),
-    path('user/<str:user_id>/', include('instutitions.urls')),
+    path('user/<str:user_id>/', include('institutions.urls')),
 
     path('plaid_link_token', PlaidLinkTokenView.as_view(),
          name='plaid_link_token'),

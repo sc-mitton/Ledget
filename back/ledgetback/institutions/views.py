@@ -16,7 +16,7 @@ from plaid.model.transactions_sync_request_options import (
 from core.permissions import IsUserOwner
 from core.clients import plaid_client
 from core.models import PlaidItem
-from institutions.models import Transaction
+from institutions.models import Transactions
 
 
 class TransactionsSyncView(CreateAPIView):
@@ -24,7 +24,7 @@ class TransactionsSyncView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         item_id = request.data.get('item_id', '')
-        cursor = ''
+        cursor = Transactions.get_latest_cursor(item_id)
 
         try:
             access_token = PlaidItem.objects.get(id=item_id).access_token

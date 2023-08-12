@@ -89,7 +89,6 @@ class Reminder(Notification):
     bill = models.ForeignKey(Bill,
                              on_delete=models.CASCADE,
                              related_name='reminders')
-
     period = models.CharField(
         max_length=40,
         choices=Perdiod.choices,

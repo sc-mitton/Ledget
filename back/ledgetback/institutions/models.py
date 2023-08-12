@@ -1,27 +1,36 @@
 from django.db import models
 
 # Create your models here.
+from core.models import PlaidItem
 
 
-class Transaction(models.Model):
+class Account(models.Model):
+
+    account_id = models.CharField(max_length=100, primary_key=True)
+    item = models.ForeignKey(PlaidItem, on_delete=models.CASCADE)
+    # TODO finish this model
+
+
+class Transactions(models.Model):
 
     class Meta:
         db_table = 'transactions'
 
     # ID info
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100, primary_key=True)
     transaction_code = models.CharField(max_length=100, null=True, blank=True)
     transaction_type = models.CharField(max_length=100, null=True, blank=True)
 
     # Transaction info
-    name = models.CharField(max_length=100, null=True, blank=True)
+    name = models.CharField(max_length=100, null=False, blank=False)
     merchant_name = models.CharField(max_length=100, null=True, blank=True)
     payment_channel = models.CharField(max_length=100, null=True, blank=True)
-    pending = models.BooleanField(null=False, blank=False)
+    pending = models.BooleanField(null=True, blank=True)
     pending_transaction_id = models.CharField(max_length=100, null=True,
                                               blank=True)
     amount = models.IntegerField(null=False, blank=False)
-    iso_currency_code = models.CharField(max_length=3, null=False, blank=False)
+    iso_currency_code = models.CharField(max_length=3, null=True, blank=True)
     unnoficial_currency_code = models.CharField(max_length=10, null=True,
                                                 blank=True)
     check_number = models.CharField(max_length=10, null=True, blank=True)
