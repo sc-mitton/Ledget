@@ -27,7 +27,7 @@ LOCAL_APPS = [
     'core.apps.CoreConfig',
     'hooks.apps.HooksConfig',
     'budget.apps.BudgetConfig',
-    'institutions.apps.InstitutionsConfig',
+    'financials.apps.FinancialsConfig',
 ]
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 

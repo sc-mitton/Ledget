@@ -63,7 +63,7 @@ docker-compose up -d
 
 
 ```
-ngrok http 127.0.0.1:443 --host-header='ledget.app'
+ngrok http 127.0.0.1:443 --host-header='localhost'
 
 ory get identity-config reverent-lewin-bqqp1o2zws --format yaml > project-configuration.yaml
 ory update identity-config "$(ory list projects | grep "ledget" | cut -f1)" -f project-configuration.yaml

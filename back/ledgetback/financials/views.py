@@ -1,4 +1,5 @@
-from rest_framework.generics import CreateAPIView
+from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -15,11 +16,15 @@ from plaid.model.transactions_sync_request_options import (
 
 from core.permissions import IsUserOwner
 from core.clients import plaid_client
-from core.models import PlaidItem
-from institutions.models import Transactions
+from financials.models import PlaidItem
+from financials.models import Transactions
+from financials.serializers import (
+    ExchangePlaidTokenSerializer,
+    PlaidItemsSerializer
+)
 
 
-class TransactionsSyncView(CreateAPIView):
+class TransactionsSyncView(APIView):
     permission_classes = [IsAuthenticated, IsUserOwner]
 
     def post(self, request, *args, **kwargs):
@@ -73,3 +78,16 @@ class TransactionsSyncView(CreateAPIView):
 
     def store_data(self, added, modified, removed):
         pass
+
+
+class PlaidTokenExchangeView(CreateAPIView):
+    permission_classes = [IsAuthenticated, IsUserOwner]
+    serializer_class = ExchangePlaidTokenSerializer
+
+
+class PlaidItemsListView(ListAPIView):
+    permission_classes = [IsAuthenticated, IsUserOwner]
+    serializer_class = PlaidItemsSerializer
+
+    def get_queryset(self):
+        return PlaidItem.objects.filter(user=self.request.user).all()

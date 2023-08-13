@@ -8,10 +8,8 @@ from .views.service import (
     SubscriptionView,
     CustomerView
 )
-from .views.plaid_link import (
-     PlaidLinkTokenView,
-     PlaidTokenExchangeView
-)
+from .views.plaid_link import PlaidLinkTokenView
+
 
 urlpatterns = [
      path('prices', PriceView.as_view(), name='prices'),
@@ -24,10 +22,7 @@ urlpatterns = [
      path('user/<str:user_id>/payment_method', PaymentMethodView.as_view(),
           name='payment_method'),
      path('user/<str:user_id>/', include('budget.urls')),
-     path('user/<str:user_id>/', include('institutions.urls')),
-     path('user/<str:user_id>/plaid_token_exchange',
-          PlaidTokenExchangeView.as_view(),
-          name='plaid_token_exchange'),
+     path('user/<str:user_id>/', include('financials.urls')),
 
      path('plaid_link_token', PlaidLinkTokenView.as_view(),
           name='plaid_link_token'),

@@ -1,13 +1,44 @@
 from django.db import models
 
-from core.models import PlaidItem
+from core.models import User
+
+
+class Institution(models.Model):
+
+    id = models.CharField(max_length=100,
+                          null=False,
+                          blank=False,
+                          primary_key=True)
+    name = models.CharField(max_length=100, null=False, blank=False)
+    logo = models.CharField(max_length=100, null=True, blank=True)
+    primary_color = models.CharField(max_length=100, null=True, blank=True)
+    url = models.CharField(max_length=100, null=True, blank=True)
+
+
+class PlaidItem(models.Model):
+    class Meta:
+        db_table = 'financials_plaid_item'
+
+    institution = models.ForeignKey(
+            Institution,
+            on_delete=models.SET_NULL,
+            null=True
+    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    id = models.CharField(max_length=40, primary_key=True, editable=False)
+    access_token = models.CharField(max_length=100, null=True)
 
 
 class Account(models.Model):
 
-    item = models.ForeignKey(PlaidItem,
-                             on_delete=models.CASCADE,
-                             related_name='accounts')
+    plaid_item = models.ForeignKey(PlaidItem,
+                                   on_delete=models.CASCADE,
+                                   related_name='accounts')
+    institution = models.ForeignKey(Institution,
+                                    on_delete=models.SET_NULL,
+                                    null=True,
+                                    blank=True,
+                                    related_name='accounts')
     id = models.CharField(max_length=100,
                           null=False,
                           blank=False,

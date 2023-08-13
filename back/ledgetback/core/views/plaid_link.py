@@ -1,24 +1,20 @@
-import json
 import os
+import json
 
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from django.conf import settings
+from plaid.model.products import Products
 from plaid.model.country_code import CountryCode
 from plaid.model.link_token_create_request import LinkTokenCreateRequest
 from plaid.model.link_token_create_request_user import (
     LinkTokenCreateRequestUser
 )
-from plaid.model.products import Products
-
 import plaid
-from rest_framework.response import Response
-from django.conf import settings
-from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.status import (HTTP_200_OK)
 
-from core.permissions import IsUserOwner
 from core.clients import plaid_client
-from core.serializers import ExchangePlaidTokenSerializer
 
 PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions').split(',')
 PLAID_REDIRECT_URI = settings.PLAID_REDIRECT_URI
@@ -51,8 +47,3 @@ class PlaidLinkTokenView(APIView):
                 {'error': json.loads(e.body)},
                 status=e.status
             )
-
-
-class PlaidTokenExchangeView(CreateAPIView):
-    permission_classes = [IsAuthenticated, IsUserOwner]
-    serializer_class = ExchangePlaidTokenSerializer

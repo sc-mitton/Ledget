@@ -34,7 +34,7 @@ const NewItemsProvider = ({ children }) => {
         { 'id': 7, 'account': 'discover-card', 'timestamp': 1689192355, 'name': '7 Eleven', 'amount': 4321, 'category': '⛽️ Gas' },
         { 'id': 8, 'account': 'wells-fargo', 'timestamp': 1689185155, 'name': 'Venmo', 'amount': 1234, 'category': '🏠 Rent' },
         { 'id': 9, 'account': 'visa', 'timestamp': 1689185155, 'name': 'Ann Taylor', 'amount': 12340, 'category': "💅🏽 Allie" },
-    ]// TODO pull this in from backend
+    ] // TODO pull this in from backend
 
     const [items, setItems] = useState(data)
 
@@ -42,6 +42,7 @@ const NewItemsProvider = ({ children }) => {
         items,
         setItems,
     }
+
     return (
         <NewItemsContext.Provider value={values}>
             {children}
@@ -58,9 +59,9 @@ const AccountLogo = ({ account }) => {
     }
 
     return (
-        <>
-            {logos[account]}
-        </>
+        <>{
+            logos[account]
+        }</>
     )
 }
 
@@ -223,7 +224,7 @@ const NewItem = (props) => {
                     {item.category}
                 </button>
                 <button
-                    className='btn-scale2'
+                    className='btn btn-scale2'
                     onClick={onConfirm}
                     aria-label="Confirm item"
                     tabIndex={tabIndex}
@@ -320,6 +321,7 @@ const NeedsConfirmationWindow = () => {
     }
 
     const handleEllipsis = (e) => {
+        console.log(e)
         setMenuPos({
             x: e.target.getBoundingClientRect().left
                 - newItemsRef.current.getBoundingClientRect().left,

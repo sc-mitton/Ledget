@@ -14,9 +14,10 @@ const LoadingShimmer = ({ visible }) => {
         transitions(
             (styles, item) => item &&
                 <animated.div
-                    className="loading-shimmer"
+                    className="loading-shimmer-container"
                     style={styles}
                 >
+                    <div className="loading-shimmer"></div>
                 </animated.div>
         )
     )

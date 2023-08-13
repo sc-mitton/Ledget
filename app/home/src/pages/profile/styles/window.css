@@ -11,7 +11,7 @@
     flex: 1;
     width: 90%;
     max-width: 750px;
-    padding: 12px 0;
+    padding: 0;
     display: flex;
     flex-direction: row;
     position: relative;
@@ -19,21 +19,28 @@
 
 #profile-window .content {
     width: 66%;
-    padding: 24px 40px;
+    padding: 32px 40px;
+    border-radius: 0;
     overflow-y: scroll;
+    position: relative;
 }
 
 #profile-window h1 {
     font-size: 2em;
 }
 
+#profile-window .loading-shimmer-container {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
 /* --------------------------------- Gutter --------------------------------- */
 
 #gutter {
     width: 33%;
-    padding: 2px 8px;
+    padding: 12px 8px;
     border-right: 3px solid rgb(0, 0, 0, .05);
-    margin-top: 8px;
+    margin: 8px 0;
     font-weight: 500;
     display: flex;
     justify-content: center;

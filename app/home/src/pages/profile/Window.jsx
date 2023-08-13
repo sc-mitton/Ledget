@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
 
@@ -10,21 +10,17 @@ import Account from './Account'
 import Connections from './Connections'
 import Settings from './Settings'
 import Security from './Security'
-import { useGetMeQuery, useGetPaymentMethodQuery } from '@api/apiSlice'
+import { useGetMeQuery } from '@api/apiSlice'
 import { LoadingShimmer } from '@components/pieces'
 
 function Profile() {
-    // Fetch necessary data
-    const { data: user, isLoading: userLoading } = useGetMeQuery()
-    const { isLoading: paymentLoading } = useGetPaymentMethodQuery(user?.id, { skip: !user })
+    const { isLoading: userLoading } = useGetMeQuery()
     const location = useLocation()
 
     return (
         <div className="window" id="profile-window">
-            {userLoading || paymentLoading
-                ?
-                <LoadingShimmer visible={true} />
-                :
+            <LoadingShimmer visible={userLoading} />
+            {!userLoading &&
                 <>
                     <Gutter />
                     <AnimatePresence mode="wait">
@@ -33,6 +29,7 @@ function Profile() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             key={location.pathname}
+                            config={{ duration: 0.2 }}
                             className="content"
                         >
                             <Routes location={location} key={location.pathname}>

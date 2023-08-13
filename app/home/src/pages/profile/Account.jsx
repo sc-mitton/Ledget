@@ -2,8 +2,9 @@ import React from 'react'
 
 import './styles/Account.css'
 import Card from '@assets/icons/Card'
-import { useGetMeQuery, useGetPaymentMethodQuery } from '@api/apiSlice'
 import Camera from '@assets/icons/Camera'
+import { useGetMeQuery, useGetPaymentMethodQuery } from '@api/apiSlice'
+import { LoadingShimmer } from '@components/pieces'
 
 const ChangeProfilePhoto = () => {
     return (
@@ -130,17 +131,24 @@ const PaymentMethod = () => {
 }
 
 const Account = () => {
+    const { data: user } = useGetMeQuery()
+    const { isLoading } = useGetPaymentMethodQuery(user.id)
 
     return (
-        <div id="account-page">
-            <h1>Account</h1>
-            <ChangeProfilePhoto />
-            <Info />
-            <div>
-                <Plan />
-                <PaymentMethod />
-            </div>
-        </div>
+        <>
+            <LoadingShimmer visible={isLoading} />
+            {!isLoading &&
+                <div id="account-page">
+                    <h1>Account</h1>
+                    <ChangeProfilePhoto />
+                    <Info />
+                    <div>
+                        <Plan />
+                        <PaymentMethod />
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 

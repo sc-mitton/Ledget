@@ -15,6 +15,11 @@ export const ledgetSlice = createApi({
         }),
         getPaymentMethod: builder.query({
             query: (userId) => `user/${userId}/payment_method`,
+            keepUnusedDataFor: 180,
+        }),
+        getPlaidItems: builder.query({
+            query: (userId) => `user/${userId}/plaid_items`,
+            providesTags: ['PlaidItem'],
         }),
         addNewPlaidItem: builder.mutation({
             query: ({ data, userId }) => ({
@@ -22,6 +27,7 @@ export const ledgetSlice = createApi({
                 method: 'POST',
                 body: data,
             }),
+            invalidatesTags: ['PlaidItem'],
         }),
         addNewCategory: builder.mutation({
             query: ({ data, userId }) => ({
@@ -36,7 +42,7 @@ export const ledgetSlice = createApi({
                 method: 'POST',
                 body: data,
             }),
-        }),
+        })
     })
 })
 
@@ -44,6 +50,7 @@ export const {
     useGetMeQuery,
     useGetPlaidTokenQuery,
     useGetPaymentMethodQuery,
+    useGetPlaidItemsQuery,
     useAddNewCategoryMutation,
     useAddnewBillMutation,
     useAddNewPlaidItemMutation,

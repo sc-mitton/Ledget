@@ -14,6 +14,8 @@ import "./styles/style.css";
 
 
 
+
+
 const PrivateRoute = () => {
     const { isSuccess, isLoading, isPending } = useGetMeQuery()
 
@@ -63,6 +65,7 @@ const App = () => {
                     animate={{ opacity: 1, transform: 'scale(1)' }}
                     exit={{ opacity: 0, transform: 'scale(0.98)' }}
                     key={location.pathname.split('/')[1]}
+                    transition={{ duration: 0.2 }}
                 >
                     <div id="dashboard" ref={ref}>
                         <Routes location={location} key={location.pathname.split('/')[1]} >

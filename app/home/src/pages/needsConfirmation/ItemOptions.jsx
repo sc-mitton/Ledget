@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 
 import Edit from "@assets/icons/Edit"
 import Split from "@assets/icons/Split"
@@ -7,72 +7,111 @@ import Snooze from "@assets/icons/Snooze"
 
 
 const ItemOptionsMenu = () => {
+    const ref = useRef()
+    const refs = useRef([])
+    const [activeIndex, setActiveIndex] = useState(null)
 
-    const refs = useRef([]);
     for (let i = 0; i < 4; i++) {
-        refs.current[i] = useRef();
+        refs.current[i] = useRef()
     }
 
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === 'ArrowUp') {
-                event.preventDefault()
-                const currentIndex = refs.current.findIndex((ref) => ref.current === document.activeElement)
-                const previousIndex = Math.max(currentIndex - 1, 0)
-                refs.current[previousIndex].current.focus()
-            } else if (event.key === 'ArrowDown') {
-                event.preventDefault()
-                const currentIndex = refs.current.findIndex((ref) => ref.current === document.activeElement)
-                const nextIndex = Math.min((currentIndex + 1), refs.current.length - 1)
-                refs.current[nextIndex].current.focus()
-            }
-        }
-
-        window.addEventListener('keydown', handleKeyDown)
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown)
-        }
-    }, [])
 
     useEffect(() => {
-        refs.current[0].current.focus()
+        ref.current.focus()
     }, [])
+
+    const handleKeyDown = (e) => {
+        e.stopPropagation()
+        switch (e.key) {
+            case 'ArrowUp':
+                activeIndex > 0 && setActiveIndex(activeIndex - 1)
+                break
+            case 'ArrowDown':
+                if (activeIndex === null) {
+                    setActiveIndex(0)
+                } else if (activeIndex < 3) {
+                    setActiveIndex(activeIndex + 1)
+                }
+                break
+            case 'Enter':
+                refs.current[activeIndex].click()
+                break
+            default:
+                break
+        }
+    }
 
     return (
-        <ul role="menu">
-            <li
-                className={`dropdown-item`}
-                ref={refs.current[0]}
-                role="menuitem"
+        <div>
+            <ul
+                ref={ref}
+                role="menu"
+                aria-orientation='vertical'
+                onKeyDown={handleKeyDown}
+                tabIndex={0}
             >
-                <Split className="dropdown-icon" />
-                Split
-            </li>
-            <li
-                className={`dropdown-item`}
-                ref={refs.current[1]}
-                role="menuitem"
-            >
-                <Edit className="dropdown-icon" />
-                Note
-            </li>
-            <li
-                className={`dropdown-item`}
-                ref={refs.current[2]}
-                role="menuitem"
-            >
-                <Snooze className="dropdown-icon" />
-                Snooze
-            </li>
-            <li
-                className={`dropdown-item`}
-                ref={refs.current[3]}
-                role="menuitem"
-            >
-                <Details className="dropdown-icon" />
-                Details
-            </li>
-        </ul>
+                <li
+                    className={`dropdown-item${activeIndex === 0 ? ' active' : ''}`}
+                    role="menuitem"
+                >
+                    <div
+                        ref={refs.current[0]}
+                        tabIndex={-1}
+                        onClick={() => console.log('split')}
+                        aria-label="Split"
+                        role="button"
+                    >
+                        <Split className="dropdown-icon" />
+                        Split
+                    </div>
+                </li>
+                <li
+                    className={`dropdown-item${activeIndex === 1 ? ' active' : ''}`}
+                    role="menuitem"
+                >
+                    <div
+                        ref={refs.current[1]}
+                        tabIndex={-1}
+                        onClick={() => console.log('Add Note')}
+                        aria-label="Add note"
+                        role="button"
+                    >
+                        <Edit className="dropdown-icon" />
+                        Note
+                    </div>
+                </li>
+                <li
+                    className={`dropdown-item${activeIndex === 2 ? ' active' : ''}`}
+                    role="menuitem"
+                >
+                    <div
+                        ref={refs.current[2]}
+                        tabIndex={-1}
+                        onClick={() => console.log('Snooze')}
+                        aria-label="Snooze"
+                        role="button"
+                    >
+                        <Snooze className="dropdown-icon" />
+                        Snooze
+                    </div>
+                </li>
+                <li
+                    className={`dropdown-item${activeIndex === 3 ? ' active' : ''}`}
+                    role="menuitem"
+                >
+                    <div
+                        ref={refs.current[3]}
+                        tabIndex={-1}
+                        onClick={() => console.log('Checkout details')}
+                        aria-label="Details"
+                        role="button"
+                    >
+                        <Details className="dropdown-icon" />
+                        Details
+                    </div>
+                </li>
+            </ul>
+        </div>
     )
 }
 

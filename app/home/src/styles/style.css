@@ -68,7 +68,7 @@
     --border-radius3: 16px;
 
     /* Loading Shimmer */
-    --shimmer-background: linear-gradient(to right, var(--window) 4%, #ffffff 34%, var(--window) 64%);
+    --shimmer-background: linear-gradient(115deg, var(--window) 30%, #f1f1f1 50%, var(--window) 70%);
 }
 
 /* Override color values for Firefox */
@@ -534,6 +534,12 @@ button svg {
     margin: 2px 0;
     transition: background-color 0.3s ease-out;
     border-radius: 6px;
+}
+
+.dropdown-item.active {
+    outline: none;
+    background-color: var(--icon-light-gray);
+    box-shadow: none;
 }
 
 .dropdown-item:focus-visible {

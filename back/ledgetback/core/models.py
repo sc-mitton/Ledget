@@ -109,12 +109,3 @@ class Customer(models.Model):
         default=SubscriptionStatus.INCOMPLETE
     )
     provisioned_until = models.IntegerField(default=0)
-
-
-class PlaidItem(models.Model):
-    class Meta:
-        db_table = 'core_plaid_item'
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    id = models.CharField(max_length=40, primary_key=True, editable=False)
-    access_token = models.CharField(max_length=100, null=True)
