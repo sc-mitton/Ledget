@@ -1,3 +1,6 @@
+import base64
+import logging
+from PIL import Image
 
 from rest_framework import serializers
 from plaid.model.item_public_token_exchange_request import \
@@ -6,6 +9,7 @@ from plaid.model.institutions_get_by_id_request import \
     InstitutionsGetByIdRequest
 from plaid.model.country_code import CountryCode
 from django.conf import settings
+from drf_extra_fields.fields import Base64ImageField
 
 from core.clients import plaid_client
 from financials.models import PlaidItem
@@ -13,8 +17,11 @@ from financials.models import Account, Institution
 
 PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
 
+logger = logging.getLogger('ledget')
+
 
 class InstitutionSerializer(serializers.ModelSerializer):
+    logo = Base64ImageField(required=False, read_only=True)
 
     class Meta:
         model = Institution
@@ -68,14 +75,19 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
             country_codes=list(
                 map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)
             ),
+            options={'include_optional_metadata': True}
         )
         response = plaid_client.institutions_get_by_id(institution_request)
-        institution_data = response.to_dict()['institution']
-        institution.name = institution_data.get('name', None)
-        institution.logo = institution_data.get('logo', None)
-        institution.primary_color = institution_data.get('primary_color', None)
-        institution.url = institution_data.get('url', None)
-        institution.oath = institution_data.get('oath', None)
+        data = response.to_dict()['institution']
+
+        if data.get('logo'):
+            logo_binary = base64.b64decode(data['logo'])
+            image = Image.open(logo_binary)
+            institution.logo = image
+
+        institution.primary_color = data.get('primary_color', None)
+        institution.url = data.get('url', None)
+        institution.oath_url = data.get('oath', None)
         institution.save()
 
 

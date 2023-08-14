@@ -21,6 +21,7 @@ urlpatterns = [
           SubscriptionView.as_view(), name='subscription'),
      path('user/<str:user_id>/payment_method', PaymentMethodView.as_view(),
           name='payment_method'),
+
      path('user/<str:user_id>/', include('budget.urls')),
      path('user/<str:user_id>/', include('financials.urls')),
 

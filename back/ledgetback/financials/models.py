@@ -10,7 +10,9 @@ class Institution(models.Model):
                           blank=False,
                           primary_key=True)
     name = models.CharField(max_length=100, null=False, blank=False)
-    logo = models.CharField(max_length=100, null=True, blank=True)
+    logo = models.ImageField(upload_to='logos',
+                             null=True,
+                             blank=True)
     primary_color = models.CharField(max_length=100, null=True, blank=True)
     url = models.CharField(max_length=100, null=True, blank=True)
     oath = models.CharField(max_length=100, null=True, default=False)
@@ -25,7 +27,7 @@ class PlaidItem(models.Model):
             on_delete=models.SET_NULL,
             null=True
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     id = models.CharField(max_length=40, primary_key=True, editable=False)
     access_token = models.CharField(max_length=100, null=True)
 

@@ -10,19 +10,22 @@ import {
     useGetPlaidItemsQuery,
 } from '@api/apiSlice'
 import { LoadingShimmer } from '@components/pieces'
+import './styles/Connections.css'
 
 const PlaidItem = ({ item }) => {
 
     return (
-        <>
-        </>
+        <div>
+            <h3>{item.institution.name}</h3>
+
+        </div>
     )
 }
 
 const Connections = () => {
     const { data: user } = useGetMeQuery()
-    const { isLoading: fetchingPlaidItems } = useGetPlaidItemsQuery(user.id)
-    const { data: results, refetch: refetchPlaidToken } = useGetPlaidTokenQuery()
+    const { data: plaidItems, isLoading: fetchingPlaidItems } = useGetPlaidItemsQuery(user.id)
+    const { data: plaidToken, refetch: refetchPlaidToken } = useGetPlaidTokenQuery()
     const [addNewPlaidItem] = useAddNewPlaidItemMutation()
 
     const isOauth = false
@@ -44,7 +47,7 @@ const Connections = () => {
         onExit: (err, metadata) => {
         },
         onEvent: (eventName, metadata) => { },
-        token: results?.link_token,
+        token: plaidToken?.link_token,
         ...(isOauth ? { receivedRedirectUri: window.location.href } : {}),
     }
     if (import.meta.env.VITE_PLAID_REDIRECT_URI) {
@@ -66,7 +69,7 @@ const Connections = () => {
         <>
             <LoadingShimmer visible={fetchingPlaidItems} />
             {!fetchingPlaidItems &&
-                <div >
+                <div id="connections-page">
                     <div className="header">
                         <h1>Connections</h1>
                         <button
@@ -77,6 +80,9 @@ const Connections = () => {
                             <Plus />
                         </button>
                     </div>
+                    {plaidItems?.map((item) => (
+                        <PlaidItem key={item.id} item={item} />
+                    ))}
                 </div>
             }
         </>

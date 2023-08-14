@@ -49,7 +49,7 @@ const Plan = () => {
     return (
         <div className="section">
             <div>
-                <div className="header">
+                <div className="header2">
                     <div>
                         <h3>Plan</h3>
                         <span className="indicator">
@@ -99,7 +99,7 @@ const PaymentMethod = () => {
 
     return (
         <div className="section">
-            <div className="header">
+            <div className="header2">
                 <div>
                     <h3>Payment Method</h3>
                 </div>
@@ -139,7 +139,9 @@ const Account = () => {
             <LoadingShimmer visible={isLoading} />
             {!isLoading &&
                 <div id="account-page">
-                    <h1>Account</h1>
+                    <div className="header">
+                        <h1>Account</h1>
+                    </div>
                     <ChangeProfilePhoto />
                     <Info />
                     <div>
