@@ -3,4 +3,9 @@ exclude =
     migrations,
     __pycache__,
     manage.py,
-    settings
+    settings,
+    env,
+    .env
+
+# add "flake8.path" = "./back" to .vscode settings.json
+```

@@ -92,7 +92,7 @@ class StripeHookView(APIView):
 
         lines = event.data.object.lines
         customer = Customer.objects.get(id=event.data.object.customer)
-        customer.provisioned_until = lines.data[0].period.end
+        customer.period_end = lines.data[0].period.end
         customer.save()
 
     def handle_customer_subscription_updated(self, event):

@@ -109,7 +109,7 @@ class Customer(models.Model):
         null=True,
         default=SubscriptionStatus.INCOMPLETE
     )
-    provisioned_until = models.IntegerField(default=0)
+    period_end = models.IntegerField(default=0)
 
     @property
     def has_current_subscription(self):

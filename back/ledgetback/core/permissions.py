@@ -32,4 +32,4 @@ class UserPermissionBundle(IsUserOwner):
             request.user.is_verified,
         ]
 
-        return all(checks)
+        return bool(request.user) and all(checks)

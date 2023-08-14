@@ -1,4 +1,5 @@
-from .base import * # noqa
+from .base import *
+from .debugging import *
 import os
 import requests
 import jwt
@@ -8,9 +9,8 @@ from corsheaders.defaults import default_headers
 
 # IMPORTANT FLAGS
 DEVELOPMENT = True
-DEBUG = True
 PLAID_SANDBOX = True
-
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost']
 DOMAIN_URL = "https://localhost:8000/"
