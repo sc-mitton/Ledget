@@ -14,7 +14,8 @@ from plaid.model.link_token_create_request_user import (
 import plaid
 
 from core.clients import plaid_client
-from core.permissions import UserPermissionBundle
+from core.permissions import IsVerifiedAuthenticated
+
 
 PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions').split(',')
 PLAID_REDIRECT_URI = settings.PLAID_REDIRECT_URI
@@ -26,7 +27,7 @@ for product in PLAID_PRODUCTS:
 
 
 class PlaidLinkTokenView(APIView):
-    permission_classes = [UserPermissionBundle]
+    permission_classes = [IsVerifiedAuthenticated]
 
     def get(self, request, *args, **kwargs):
         try:

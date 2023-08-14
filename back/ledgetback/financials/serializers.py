@@ -70,10 +70,12 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
             ),
         )
         response = plaid_client.institutions_get_by_id(institution_request)
-        institution.logo = response['institution']['logo']
-        institution.primary_color = response['institution']['primary_color']
-        institution.url = response['institution']['url']
-        institution.oath = response['institution']['oath']
+        institution_data = response.to_dict()['institution']
+        institution.name = institution_data.get('name', None)
+        institution.logo = institution_data.get('logo', None)
+        institution.primary_color = institution_data.get('primary_color', None)
+        institution.url = institution_data.get('url', None)
+        institution.oath = institution_data.get('oath', None)
         institution.save()
 
 
