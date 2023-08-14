@@ -13,6 +13,7 @@ class Institution(models.Model):
     logo = models.CharField(max_length=100, null=True, blank=True)
     primary_color = models.CharField(max_length=100, null=True, blank=True)
     url = models.CharField(max_length=100, null=True, blank=True)
+    oath = models.CharField(max_length=100, null=True, default=False)
 
 
 class PlaidItem(models.Model):

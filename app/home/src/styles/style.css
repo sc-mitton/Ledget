@@ -521,6 +521,10 @@ button svg {
     border: none;
 }
 
+ul hr {
+    margin: 8px 0;
+}
+
 .dropdown-icon {
     margin-right: 14px;
 }

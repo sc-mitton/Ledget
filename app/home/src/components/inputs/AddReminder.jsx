@@ -38,7 +38,7 @@ const AddReminder = () => {
                         }
                     </div>
                 </div>
-                <div style={{ padding: '0 2px', opacity: '.1' }}>
+                <div style={{ padding: '0 8px' }}>
                     {nextOp && nextOp.value.period !== value.period && <hr />}
                 </div>
             </>

@@ -84,19 +84,19 @@ trialing: When customer is first created and setup intent succeeds. Status will 
 
 active: Good standing
 
-incomplete: Successfull payment needs to be made within 23 hours
+incomplete: Successfull payment needs to be made within 23 hours to activate subscription
 
 incomplete_expired: Initial payment failed and no payment was made within 23 hours
 
 past_due: Payment of last finalized invoice failed or wasn't attempted. Service is revoked until payment is made.
 
-canceled: A customer's subscription has been canceled. This is used for when a customer wants to take a break.
-They can come back later. If they are completely canceling their account, then the whole customer is deleted.
+paused: Subscription is paused
 
+canceled: terminal state
 
 Unused:
-UNPAID is unused because it is just a status that can be triggered after unpaid
-PAUSED is not used because we don't support it, we use canceling instead
+UNPAID is unused because it is just a status that can be triggered after past_due
+
 
 ## Plaid
 

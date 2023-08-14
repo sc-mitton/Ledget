@@ -15,13 +15,15 @@ const ItemOptionsMenu = () => {
         refs.current[i] = useRef()
     }
 
-
     useEffect(() => {
         ref.current.focus()
+
+        ref.current.addEventListener('focus', () => {
+            setActiveIndex(0)
+        })
     }, [])
 
     const handleKeyDown = (e) => {
-        e.stopPropagation()
         switch (e.key) {
             case 'ArrowUp':
                 activeIndex > 0 && setActiveIndex(activeIndex - 1)

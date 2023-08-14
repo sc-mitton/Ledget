@@ -73,6 +73,7 @@ PLAID_CLIENT_ID = get_secret('plaid_client_id')
 PLAID_API_KEY = get_secret('plaid_api_key')
 PLAID_REDIRECT_URI = 'https://localhost:3000/profile/connections'
 PLAID_PRODUCTS = ['transactions', 'balance']
+PLAID_COUNTRY_CODES = ['US']
 
 # Postgres
 DATABASES = {

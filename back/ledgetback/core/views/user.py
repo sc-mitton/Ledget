@@ -9,7 +9,7 @@ from rest_framework.status import (
 import stripe
 
 from core.utils.stripe import stripe_error_handler, StripeError
-from core.permissions import IsUserOwner
+from core.permissions import UserPermissionBundle
 
 stripe_logger = logging.getLogger('stripe')
 
@@ -57,7 +57,7 @@ class UserView(APIView):
 
 
 class PaymentMethodView(APIView):
-    permission_classes = [IsAuthenticated, IsUserOwner]
+    permission_classes = [UserPermissionBundle]
 
     def get(self, request, *args, **kwargs):
         try:

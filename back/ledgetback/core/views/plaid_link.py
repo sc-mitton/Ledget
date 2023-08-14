@@ -4,7 +4,6 @@ import json
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from plaid.model.products import Products
 from plaid.model.country_code import CountryCode
@@ -15,9 +14,11 @@ from plaid.model.link_token_create_request_user import (
 import plaid
 
 from core.clients import plaid_client
+from core.permissions import UserPermissionBundle
 
 PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions').split(',')
 PLAID_REDIRECT_URI = settings.PLAID_REDIRECT_URI
+PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
 
 plaid_products = []
 for product in PLAID_PRODUCTS:
@@ -25,14 +26,16 @@ for product in PLAID_PRODUCTS:
 
 
 class PlaidLinkTokenView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [UserPermissionBundle]
 
     def get(self, request, *args, **kwargs):
         try:
             request = LinkTokenCreateRequest(
                 products=plaid_products,
                 client_name='Ledget',
-                country_codes=list(map(lambda x: CountryCode(x), ['US'])),
+                country_codes=list(
+                    map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)
+                ),
                 language='en',
                 user=LinkTokenCreateRequestUser(
                     client_user_id=str(request.user.id)

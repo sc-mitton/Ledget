@@ -7,14 +7,14 @@ import "./styles/Window.css"
 import Ellipsis from "@assets/icons/Ellipsis"
 import CheckMark from "@assets/icons/CheckMark"
 import ExpandIcon from "@assets/icons/Expand"
-import Options from "@components/dropdowns/Options"
-import formatDateOrRelativeDate from "@utils/convertTImestamp"
 import Wells from "@assets/logos/Wells"
 import Ally from "@assets/logos/Ally"
 import Discover from "@assets/logos/Discover"
 import Visa from "@assets/logos/Visa"
+import formatDateOrRelativeDate from "@utils/convertTImestamp"
 import Shadow from '@components/pieces/ContainerShadow'
 import Header from './Header'
+import Options from "@components/dropdowns/Options"
 import ItemOptions from "./ItemOptions"
 
 // TODO: eventually these will go away, data will be pulled from backend
@@ -321,12 +321,10 @@ const NeedsConfirmationWindow = () => {
     }
 
     const handleEllipsis = (e) => {
-        console.log(e)
+        const buttonRect = e.target.closest('button').getBoundingClientRect()
         setMenuPos({
-            x: e.target.getBoundingClientRect().left
-                - newItemsRef.current.getBoundingClientRect().left,
-            y: e.target.getBoundingClientRect().top
-                - newItemsRef.current.getBoundingClientRect().top,
+            x: buttonRect.left - newItemsRef.current.getBoundingClientRect().left,
+            y: buttonRect.top - newItemsRef.current.getBoundingClientRect().top,
         })
     }
 

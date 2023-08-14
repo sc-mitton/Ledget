@@ -1,5 +1,4 @@
 import logging
-import threading
 import time
 
 from rest_framework.views import APIView
@@ -47,14 +46,7 @@ class StripeHookView(APIView):
         else:
             response = Response(status=HTTP_200_OK)
 
-        # Handle the event
-        if event:
-            t = threading.Thread(
-                target=self.dispatch_event,
-                args=(event,)
-            )
-            # Stripe needs to get a response quick, so we use threads
-            t.start()
+        self.dispatch_event(event)
 
         return response
 
@@ -78,7 +70,7 @@ class StripeHookView(APIView):
                 stripe_logger.error(
                     f"⚠️ Attempt {i} for {event_type} handler: {e}"
                 )
-                time.sleep(1)
+                time.sleep(1 * i)
 
     # Delete Handlers
     def handle_customer_deleted(self, event):
@@ -95,7 +87,7 @@ class StripeHookView(APIView):
 
         customer.delete()
 
-    # Events that change subscription status
+    # Events related to the subscription
     def handle_invoice_paid(self, event):
 
         lines = event.data.object.lines

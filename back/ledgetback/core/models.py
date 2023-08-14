@@ -99,6 +99,7 @@ class Customer(models.Model):
         ACTIVE = 'active', _('Active')
         PAST_DUE = 'past_due', _('Past Due')
         CANCELED = 'canceled', _('Canceled')
+        PAUSED = 'paused', _('Paused')
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     id = models.CharField(max_length=40, primary_key=True, editable=False)
@@ -109,3 +110,10 @@ class Customer(models.Model):
         default=SubscriptionStatus.INCOMPLETE
     )
     provisioned_until = models.IntegerField(default=0)
+
+    @property
+    def has_current_subscription(self):
+        return self.subscription_status in [
+            self.SubscriptionStatus.ACTIVE,
+            self.SubscriptionStatus.TRIALING,
+        ]

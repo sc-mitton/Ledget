@@ -1,6 +1,5 @@
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, ListAPIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
@@ -14,7 +13,7 @@ from plaid.model.transactions_sync_request_options import (
     TransactionsSyncRequestOptions
 )
 
-from core.permissions import IsUserOwner
+from core.permissions import UserPermissionBundle
 from core.clients import plaid_client
 from financials.models import PlaidItem
 from financials.models import Transactions
@@ -25,7 +24,7 @@ from financials.serializers import (
 
 
 class TransactionsSyncView(APIView):
-    permission_classes = [IsAuthenticated, IsUserOwner]
+    permission_classes = [UserPermissionBundle]
 
     def post(self, request, *args, **kwargs):
         item_id = request.data.get('item_id', '')
@@ -81,12 +80,12 @@ class TransactionsSyncView(APIView):
 
 
 class PlaidTokenExchangeView(CreateAPIView):
-    permission_classes = [IsAuthenticated, IsUserOwner]
+    permission_classes = [UserPermissionBundle]
     serializer_class = ExchangePlaidTokenSerializer
 
 
 class PlaidItemsListView(ListAPIView):
-    permission_classes = [IsAuthenticated, IsUserOwner]
+    permission_classes = [UserPermissionBundle]
     serializer_class = PlaidItemsSerializer
 
     def get_queryset(self):

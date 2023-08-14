@@ -47,6 +47,7 @@ const ComboSelect = (props) => {
     const [options, setOptions] = useState([])
     const [custom, setCustom] = useState([])
     const buttonRef = useRef(null)
+    const ulRef = useRef(null)
     const customRef = useRef(null)
 
     const data = {
@@ -60,6 +61,7 @@ const ComboSelect = (props) => {
         options,
         setOptions,
         buttonRef,
+        ulRef,
         customRef,
         custom,
         setCustom,
@@ -114,30 +116,32 @@ const Options = (props) => {
         multiple,
         open,
         setOpen,
+        active,
         setActive,
         options,
         buttonRef,
+        ulRef,
         customRef
     } = useContext(DataContext)
-    const ref = useRef(null)
+
     const { children, static: isStatic, style, ...rest } = props
 
     useClickClose({
-        refs: [ref, buttonRef],
+        refs: [ulRef, buttonRef],
         visible: open,
         setVisible: setOpen,
     })
 
     // ul focus on open
     useEffect(() => {
-        if (open) {
-            ref.current.focus()
-        }
+        ulRef.current.focus()
+
         const handleTab = (event) => {
             if (event.key === 'Tab') {
                 setOpen(false)
             }
         }
+
         window.addEventListener('keydown', handleTab)
         return () => {
             window.removeEventListener('keydown', handleTab)
@@ -192,26 +196,12 @@ const Options = (props) => {
         }
     }
 
-    // Refocus ul when custom input is blurred
-    useEffect(() => {
-        const handleBlur = (event) => {
-            if (event.relatedTarget !== ref.current) {
-                ref.current.focus()
-                setActive(options[options.length - 1])
-            }
-        }
-        customRef.current?.addEventListener('blur', handleBlur)
-        return () => {
-            customRef.current?.removeEventListener('blur', handleBlur)
-        }
-    }, [])
-
     return (
         <>
             {(open || isStatic) &&
                 <div >
                     <ul
-                        ref={ref}
+                        ref={ulRef}
                         aria-multiselectable={multiple}
                         aria-labelledby={buttonRef.current?.id}
                         aria-orientation='vertical'
@@ -320,6 +310,7 @@ const Custom = React.forwardRef((props, ref) => {
     const {
         multiple,
         customRef,
+        ulRef,
         onChange,
         setSelections,
         setCustom,
@@ -373,20 +364,20 @@ const Custom = React.forwardRef((props, ref) => {
         // execute prop function
         onFocus && onFocus(event)
         setFocused(true)
-        setActive([])
     }
 
     const handleBlur = (event) => {
         // execute prop function
-        onBlur && onBlur(event)
         setFocused(false)
+        ulRef.current.focus()
+        setActive(options[options.length - 1])
+        onBlur && onBlur(event)
     }
 
     const handleKeyDown = (event) => {
         event.stopPropagation()
         switch (event.key) {
             case 'ArrowUp':
-                setActive(options[options.length - 1])
                 setFocused(false)
                 customRef.current.blur()
                 break
