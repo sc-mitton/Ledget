@@ -29,7 +29,7 @@ QUERY_INSPECT_LOG_TRACEBACKS = False
 # Project root (a list of directories, see below - default empty)
 QUERY_INSPECT_TRACEBACK_ROOTS = []
 # Minimum number of duplicates needed to log the query (default: 2)
-QUERY_INSPECT_DUPLICATE_MIN = 2  # to force logging of all queries
+QUERY_INSPECT_DUPLICATE_MIN = 1  # to force logging of all queries
 # Whether to truncate SQL queries in logs to specified size, for
 # readability purposes (default: None - full SQL query is included)
 QUERY_INSPECT_SQL_LOG_LIMIT = 120  # limit to 120 chars

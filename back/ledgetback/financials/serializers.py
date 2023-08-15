@@ -68,7 +68,7 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
         exchange_request = ItemPublicTokenExchangeRequest(**validated_data)
         response = plaid_client.item_public_token_exchange(exchange_request)
 
-        institution, created = Institution.objects.get_or_create(
+        institution, created = Institution.objects.update_or_create(
             id=institution_data['id'],
             defaults=institution_data
         )
@@ -79,8 +79,8 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
         # Create plaid item
         plaid_item = PlaidItem.objects.create(
-            user=self.context['request'].user,
-            institution=institution,
+            user_id=self.context['request'].user.id,
+            institution_id=institution.id,
             id=response['item_id'],
             access_token=response['access_token']
         )
@@ -115,6 +115,7 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
             country_codes=list(
                 map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)
             ),
+
             options={'include_optional_metadata': True}
         )
 
