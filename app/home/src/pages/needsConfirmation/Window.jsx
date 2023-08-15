@@ -12,7 +12,7 @@ import Ally from "@assets/logos/Ally"
 import Discover from "@assets/logos/Discover"
 import Visa from "@assets/logos/Visa"
 import formatDateOrRelativeDate from "@utils/convertTImestamp"
-import Shadow from '@components/pieces/ContainerShadow'
+import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import Header from './Header'
 import Options from "@components/dropdowns/Options"
 import ItemOptions from "./ItemOptions"
@@ -295,8 +295,6 @@ const NeedsConfirmationWindow = () => {
     const newItemsRef = useRef(null)
     const [expanded, setExpanded] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
-    const [showShadowTop, setShowShadowTop] = useState(false)
-    const [showShadowBottom, setShowShadowBottom] = useState(true)
     const [menuPos, setMenuPos] = useState(null)
 
     const { itemsApi, containerProps, itemTransitions } = useItemAnimations(expanded, items, 2)
@@ -328,42 +326,26 @@ const NeedsConfirmationWindow = () => {
         })
     }
 
-    const handleScroll = (e) => {
-        setShowMenu(false)
-        setShowShadowBottom((e.target.scrollTopMax - e.target.scrollTop) !== 0)
-        setShowShadowTop(e.target.scrollTop !== 0)
-    }
-
-    useEffect(() => {
-        if (!expanded) {
-            setShowShadowBottom(true)
-            setShowShadowTop(false)
-        }
-    }, [expanded])
-
     return (
         <div id="new-items-container">
             <Header />
             <div ref={newItemsRef} id="new-items">
-                <Shadow visible={expanded && showShadowBottom} location={'bottom'} />
-                <Shadow visible={expanded && showShadowTop} location={'top'} />
-                <animated.div
-                    style={containerProps}
-                    onScroll={handleScroll}
-                >
-                    {itemTransitions((style, item) =>
-                        <NewItem
-                            item={item}
-                            style={style}
-                            onEllipsis={(e) => handleEllipsis(e)}
-                            onConfirm={() => handleConfirm(item.id)}
-                            tabIndex={expanded || item.id === 0 ? 0 : -1}
-                        />
-                    )}
-                </animated.div >
-                <Options show={showMenu} setShow={setShowMenu} pos={menuPos}>
-                    <ItemOptions />
-                </Options>
+                <ShadowedContainer showShadow={expanded}>
+                    <animated.div style={containerProps}>
+                        {itemTransitions((style, item) =>
+                            <NewItem
+                                item={item}
+                                style={style}
+                                onEllipsis={(e) => handleEllipsis(e)}
+                                onConfirm={() => handleConfirm(item.id)}
+                                tabIndex={expanded || item.id === 0 ? 0 : -1}
+                            />
+                        )}
+                    </animated.div >
+                    <Options show={showMenu} setShow={setShowMenu} pos={menuPos}>
+                        <ItemOptions />
+                    </Options>
+                </ShadowedContainer>
             </div>
             <ExpandButton onClick={() => setExpanded(!expanded)} />
         </div>

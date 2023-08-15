@@ -21,7 +21,7 @@
     border-bottom-left-radius: inherit;
     border-bottom-right-radius: inherit;
     background: var(--shimmer-background);
-    animation: shimmer 1s linear infinite;
+    animation: shimmer .8s linear infinite;
     z-index: 1001;
 }
 

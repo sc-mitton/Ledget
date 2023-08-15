@@ -10,11 +10,11 @@ import {
     useGetMeQuery,
     useGetPlaidItemsQuery,
 } from '@api/apiSlice'
-import { LoadingShimmer, Base64Logo, ContainerShadow } from '@components/pieces'
+import { LoadingShimmer, Base64Logo, ShadowedContainer } from '@components/pieces'
 import './styles/Connections.css'
 
 
-const PlaidItem = ({ item }) => {
+const PlaidItem = ({ item, edit }) => {
 
     return (
         <div className="institution">
@@ -42,7 +42,30 @@ const PlaidItem = ({ item }) => {
     )
 }
 
+const Header = ({ onEdit, onPlus }) => (
+    <div className="header">
+        <h1>Connections</h1>
+        <div className='header-btns'>
+            <button
+                className="btn-clr btn"
+                onClick={onEdit}
+                aria-label="Edit institution connections"
+            >
+                <Edit />
+            </button>
+            <button
+                className="btn-clr btn"
+                onClick={onPlus}
+                aria-label="Add institution connection"
+            >
+                <Plus />
+            </button>
+        </div>
+    </div>
+)
+
 const Connections = () => {
+    const [edit, setEdit] = React.useState(false)
     const { data: user } = useGetMeQuery()
     const { data: plaidItems, isLoading: fetchingPlaidItems } = useGetPlaidItemsQuery(user.id)
     const { data: plaidToken, refetch: refetchPlaidToken } = useGetPlaidTokenQuery()
@@ -83,7 +106,6 @@ const Connections = () => {
         return () => clearTimeout(timeout)
     }, [])
 
-    const handleClick = () => { open() }
 
     return (
         <>
@@ -91,33 +113,25 @@ const Connections = () => {
             {!fetchingPlaidItems &&
                 <div id="connections-page">
                     <div>
-                        <div className="header">
-                            <h1>Connections</h1>
-                            <div className='header-btns'>
-                                <button
-                                    className="btn-clr btn"
-                                    onClick={handleClick}
-                                    aria-label="Edit institution connections"
-                                >
-                                    <Edit />
-                                </button>
-                                <button
-                                    className="btn-clr btn"
-                                    onClick={handleClick}
-                                    aria-label="Add institution connection"
-                                >
-                                    <Plus />
-                                </button>
-                            </div>
-                        </div>
+                        <Header
+                            onEdit={() => setEdit(!edit)}
+                            onPlus={() => open()}
+                        />
                     </div>
-                    <div id="accounts-list">
-                        <ContainerShadow visible={true} location={'top'} />
-                        <ContainerShadow visible={true} location={'bottom'} />
+                    <ShadowedContainer
+                        style={{ overflow: 'scroll' }}
+                        id="accounts-list"
+                    >
                         <div>
-                            {plaidItems?.map((item) => (<PlaidItem key={item.id} item={item} />))}
+                            {plaidItems?.map((item) => (
+                                <PlaidItem
+                                    edit={edit}
+                                    key={item.id}
+                                    item={item}
+                                />
+                            ))}
                         </div>
-                    </div>
+                    </ShadowedContainer>
                 </div>
             }
         </>
