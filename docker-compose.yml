@@ -60,6 +60,10 @@ services:
         python manage.py runserver 0.0.0.0:8000"
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.silk.rule=(Host(`localhost`))"
+      - "traefik.http.routers.silk.entrypoints=web"
+      - "traefik.http.routers.hooks.tls=false"
+
       - "traefik.http.routers.api.rule=(Host(`localhost`) && PathPrefix(`/api/v1/`))"
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls=true"
@@ -93,6 +97,8 @@ services:
       - plaid_client_id
     depends_on:
       - db
+    ports:
+      - 8000:8000
   app:
     build:
       args:
