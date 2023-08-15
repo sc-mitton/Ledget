@@ -10,7 +10,6 @@ from corsheaders.defaults import default_headers
 # IMPORTANT FLAGS
 DEVELOPMENT = True
 PLAID_SANDBOX = True
-DEBUG = True
 
 ALLOWED_HOSTS = ['localhost']
 DOMAIN_URL = "https://localhost:8000/"
