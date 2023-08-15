@@ -9,7 +9,6 @@ from plaid.model.institutions_get_by_id_request import \
 from plaid.model.country_code import CountryCode
 from django.conf import settings
 from django.core.files.base import ContentFile
-from drf_extra_fields.fields import Base64ImageField
 import plaid
 
 from core.clients import plaid_client
@@ -21,8 +20,14 @@ PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
 logger = logging.getLogger('ledget')
 
 
+class CustomBase64ImageField(serializers.Field):
+    def to_representation(self, value):
+        with open(value.path, "rb") as f:
+            return base64.b64encode(f.read()).decode("utf-8")
+
+
 class InstitutionSerializer(serializers.ModelSerializer):
-    logo = Base64ImageField(required=False, read_only=True)
+    logo = CustomBase64ImageField(required=False, read_only=True)
     id = serializers.CharField()
 
     class Meta:
@@ -48,9 +53,9 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
         institution_data = validated_data.pop('institution', {})
 
         try:
-            plaid_item = self.create_objects(
-                validated_data, institution_data, accounts_data
-            )
+            institution = self.update_or_create_institution(institution_data)
+            plaid_item = self.create_plaid_item(institution, validated_data)
+            self.create_accounts(institution, plaid_item, accounts_data)
             return plaid_item
         except plaid.ApiException as e:
             logger.error(f"Plaid error: {e}")
@@ -63,64 +68,63 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
                 detail={"error": f"Error: {e}"}
             )
 
-    def create_objects(self, validated_data, institution_data, accounts_data):
+    def update_or_create_institution(self, institution_data):
+        resonse = self.get_plaid_institution(institution_data['id'])
+        data = resonse.to_dict()['institution']
+
+        logo = data.pop('logo', None)
+        decoded_logo = base64.b64decode(logo)
+        filename = f"logo_{institution_data['id']}.png"
+        image_file = ContentFile(decoded_logo, name=filename)
+
+        institution = Institution.objects.update_or_create(
+            defaults={
+                'id': institution_data['id'],
+                'name': institution_data['name']
+            },
+            logo=image_file,
+            url=data.get('url'),
+            oath=data.get('oath'),
+            primary_color=data.get('primary_color'),
+        )[0]
+
+        return institution
+
+    def create_plaid_item(self, institution, validated_data):
 
         exchange_request = ItemPublicTokenExchangeRequest(**validated_data)
         response = plaid_client.item_public_token_exchange(exchange_request)
 
-        institution, created = Institution.objects.update_or_create(
-            id=institution_data['id'],
-            defaults=institution_data
-        )
-
-        # Add optional metadata to institution
-        if created:
-            self.add_institution_optional_metadata(institution)
-
         # Create plaid item
         plaid_item = PlaidItem.objects.create(
-            user_id=self.context['request'].user.id,
             institution_id=institution.id,
+            user_id=self.context['request'].user.id,
             id=response['item_id'],
             access_token=response['access_token']
         )
 
-        # Create accounts
+        return plaid_item
+
+    def create_accounts(self, institution, plaid_item, accounts_data):
+
         new_accounts = [
             Account(plaid_item=plaid_item, institution=institution, **account)
             for account in accounts_data
         ]
         Account.objects.bulk_create(new_accounts)
 
-        return plaid_item
-
-    def add_institution_optional_metadata(self, institution):
-
-        response = self.get_plaid_institution_data(institution.id)
-        data = response['institution']
-
-        institution.primary_color = data.get('primary_color')
-        institution.url = data.get('url')
-        institution.oath_url = data.get('oath')
-
-        if data.get('logo'):
-            file_name = f"logo_{institution.id}.png"
-            image_file = ContentFile(base64.b64decode(data['logo']), file_name)
-            institution.logo.save(file_name, image_file, save=True)
-
-    def get_plaid_institution_data(self, institution_id):
+    def get_plaid_institution(self, institution_id):
 
         institution_request = InstitutionsGetByIdRequest(
             institution_id=institution_id,
             country_codes=list(
                 map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)
             ),
-
             options={'include_optional_metadata': True}
         )
 
         response = plaid_client.institutions_get_by_id(institution_request)
-        return response.to_dict()
+        return response
 
 
 class PlaidItemsSerializer(serializers.ModelSerializer):

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 
 import Plus from '@assets/icons/Plus'
+import Edit from '@assets/icons/Edit'
 import { usePlaidLink } from 'react-plaid-link'
 
 import {
@@ -9,15 +10,34 @@ import {
     useGetMeQuery,
     useGetPlaidItemsQuery,
 } from '@api/apiSlice'
-import { LoadingShimmer } from '@components/pieces'
+import { LoadingShimmer, Base64Logo, ContainerShadow } from '@components/pieces'
 import './styles/Connections.css'
+
 
 const PlaidItem = ({ item }) => {
 
     return (
-        <div>
-            <h3>{item.institution.name}</h3>
-
+        <div className="institution">
+            <div className="header3">
+                <Base64Logo
+                    data={item.institution.logo}
+                    alt={item.institution.name}
+                    color={item.institution.primary_color}
+                    style={{ marginRight: '12px' }}
+                />
+                <h4>{item.institution.name}</h4>
+            </div>
+            {item.accounts.map((account) => (
+                <div key={account.id} className="account body">
+                    <div className="account-name">
+                        <span>{account.name}</span>
+                        <span>
+                            &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
+                            {account.mask}
+                        </span>
+                    </div>
+                </div>
+            ))}
         </div>
     )
 }
@@ -70,19 +90,34 @@ const Connections = () => {
             <LoadingShimmer visible={fetchingPlaidItems} />
             {!fetchingPlaidItems &&
                 <div id="connections-page">
-                    <div className="header">
-                        <h1>Connections</h1>
-                        <button
-                            className="btn-clr btn"
-                            onClick={handleClick}
-                            aria-label="Add institution connection"
-                        >
-                            <Plus />
-                        </button>
+                    <div>
+                        <div className="header">
+                            <h1>Connections</h1>
+                            <div className='header-btns'>
+                                <button
+                                    className="btn-clr btn"
+                                    onClick={handleClick}
+                                    aria-label="Edit institution connections"
+                                >
+                                    <Edit />
+                                </button>
+                                <button
+                                    className="btn-clr btn"
+                                    onClick={handleClick}
+                                    aria-label="Add institution connection"
+                                >
+                                    <Plus />
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    {plaidItems?.map((item) => (
-                        <PlaidItem key={item.id} item={item} />
-                    ))}
+                    <div id="accounts-list">
+                        <ContainerShadow visible={true} location={'top'} />
+                        <ContainerShadow visible={true} location={'bottom'} />
+                        <div>
+                            {plaidItems?.map((item) => (<PlaidItem key={item.id} item={item} />))}
+                        </div>
+                    </div>
                 </div>
             }
         </>

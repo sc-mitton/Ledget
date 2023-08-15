@@ -135,7 +135,9 @@ h1 {
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5 {
     margin: 0
 }
 
@@ -203,12 +205,10 @@ fieldset {
     justify-content: space-between;
 }
 
-.sub-header {
+.header3 {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin: 4px 0;
-    flex: 1;
+    justify-content: flex-start;
 }
 
 #dashboard {
@@ -332,19 +332,13 @@ button svg {
 }
 
 /* Header Buttons */
-.window-header-buttons {
+.header-btns {
     display: flex;
     align-items: center;
 }
 
-.window-header-buttons>button {
+.header-btns>button {
     margin: 0 2px;
-}
-
-.sub-header-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 /****/

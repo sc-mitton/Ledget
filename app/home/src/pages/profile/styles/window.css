@@ -25,8 +25,6 @@
     width: 66%;
     padding: 32px 40px;
     border-radius: 0;
-    overflow-y: scroll;
-    position: relative;
 }
 
 #profile-window h1 {
@@ -36,6 +34,14 @@
 #profile-window .loading-shimmer-container {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+}
+
+#profile-window .body {
+    opacity: .7;
+}
+
+#profile-window .body svg {
+    margin-right: 8px;
 }
 
 /* --------------------------------- Gutter --------------------------------- */

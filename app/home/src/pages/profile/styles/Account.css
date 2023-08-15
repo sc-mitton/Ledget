@@ -52,14 +52,6 @@
     color: var(--green-dark2);
 }
 
-#account-page .body {
-    opacity: .7;
-}
-
-#account-page .body svg {
-    margin-right: 8px;
-}
-
 #card-info-container {
     display: flex;
     flex-direction: row;

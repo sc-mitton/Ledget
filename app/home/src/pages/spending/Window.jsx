@@ -12,7 +12,7 @@ const HistoryHeader = () => {
             <div>
                 <h2>History</h2>
             </div>
-            <div className="window-header-buttons">
+            <div className="header-btns">
                 <button
                     className="btn-clr btn"
                     id="funnel-icon"

@@ -20,7 +20,7 @@ const Shadow = ({ visible, location }) => {
         from: { opacity: 0 },
         enter: {
             width: "100%",
-            height: "24px",
+            height: "2em",
             zIndex: 2,
             opacity: 1,
             position: "absolute",

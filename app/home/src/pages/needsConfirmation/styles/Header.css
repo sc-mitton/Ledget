@@ -12,10 +12,6 @@
     width: 100%;
 }
 
-#needs-confirmation-header h4 {
-    margin: 0;
-}
-
 #needs-confirmation-header div {
     display: flex;
     align-items: center;

@@ -1,1 +1,37 @@
+#connections-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
+#connections-page .institution {
+    width: 100%;
+    max-width: 325px;
+    margin: 16px 0;
+}
+
+#connections-page .header3 {
+    margin-bottom: 12px;
+}
+
+#connections-page .account-name {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+#connections-page #accounts-list {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+#connections-page #accounts-list>div {
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    position: relative;
+}

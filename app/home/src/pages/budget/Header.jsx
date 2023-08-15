@@ -83,7 +83,7 @@ const Header = () => {
     return (
         <div className="window-header">
             <MonthPicker />
-            <div className="window-header-buttons">
+            <div className="header-btns">
                 <button
                     className="btn-clr btn"
                     aria-label="Toggle cash flow view"
