@@ -50,12 +50,13 @@ class OryBackend(BaseAuthentication):
 
         return decoded_token
 
-    def get_user(self, decoded_token: dict) -> get_user_model() | None:
+    def get_user(self, decoded_token: dict):
         """Return the user from the decoded token."""
 
         try:
             identity = decoded_token['session']['identity']
-            user = get_user_model().objects.get(pk=identity['id'])
+            user = get_user_model().objects.select_related('customer') \
+                                           .get(pk=identity['id'])
         except get_user_model().DoesNotExist:
             logger.error(f"User does not exist: {identity['id']}")
             return None

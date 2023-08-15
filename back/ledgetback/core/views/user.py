@@ -25,9 +25,7 @@ class UserView(APIView):
             subscription_data = {
                 'plan': {
                     'nickname': sub.data[0].plan.nickname,
-                    'status': request.user
-                                     .customer
-                                     .get_subscription_status_display(),
+                    'status': request.user.customer.subscription_status,
                     'current_period_end': sub.data[0].current_period_end,
                     'amount': sub.data[0].plan.amount,
                 },
