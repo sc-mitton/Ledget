@@ -36,22 +36,14 @@ INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # Middleware
 DEFAULT_MIDDLE_WARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-THIRD_PARTY_MIDDLE_WARE = [
-    'corsheaders.middleware.CorsMiddleware',
-]
-LOCAL_MIDDLE_WARE = [
-]
+THIRD_PARTY_MIDDLE_WARE = ['corsheaders.middleware.CorsMiddleware',]
+LOCAL_MIDDLE_WARE = []
 
 MIDDLEWARE = DEFAULT_MIDDLE_WARE + THIRD_PARTY_MIDDLE_WARE + LOCAL_MIDDLE_WARE
 
 ROOT_URLCONF = 'ledgetback.urls'
-
 WSGI_APPLICATION = 'ledgetback.wsgi.application'
 
 # ---------------------------------------------------------------- #
@@ -65,7 +57,6 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'core.User'
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend')
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
