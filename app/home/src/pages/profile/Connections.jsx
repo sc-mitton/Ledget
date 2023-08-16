@@ -71,36 +71,35 @@ const DeleteAllButton = ({ show, onClick }) => {
 }
 
 const DeleteButton = (props) => {
-    const [hover, setHover] = useState(false)
     const { visible, account, ...rest } = props
+    const [hover, setHover] = useState(false)
     const [loaded, setLoaded] = useState(false)
+    const [deleteClass, setDeleteClass] = useState('')
     const { deleteQue, setDeleteQue } = useContext(DeleteContext)
 
-    const [springProps, api] = useSpring(() => ({
-        from: {
-            transformOrigin: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'relative',
-            transform: 'scale(.7)',
-            opacity: '0'
-        },
-        config: { duration: loaded ? 200 : 20 }
-    }))
+    const springProps = useSpring({
+        transformOrigin: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        transform: hover ? 'rotate(45deg)' : 'rotate(0deg)',
+    })
 
     useEffect(() => {
-        api.start({
-            opacity: visible ? '1' : '0',
-            transform: `scale(${visible ? 1 : .7}) rotate(${hover ? -45 : 0}deg)`
-        })
-    }, [visible, hover])
+        setLoaded(true)
+        if (loaded && visible) {
+            setDeleteClass('show')
+        } else if (loaded) {
+            setDeleteClass('remove')
+        }
+    }, [visible])
 
     return (
         <>
             <animated.button
                 style={springProps}
-                className={`btn delete-button`}
+                className={`btn delete-button ${deleteClass}`}
                 aria-label="Remove account"
                 disabled={!visible}
                 onMouseEnter={() => setHover(true)}

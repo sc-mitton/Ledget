@@ -90,19 +90,41 @@
     transition: opacity .22s ease;
 }
 
+.delete-all-button.show {
+    opacity: 1;
+    cursor: pointer;
+    animation: fade-in .22s ease;
+}
+
+.delete-button.show {
+    opacity: 1;
+    animation: pop .22s ease;
+}
+
+.delete-all-button.remove,
+.delete-button.remove {
+    animation: pop-out .22s ease;
+}
+
 .delete-button span {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.delete-button .animated-stroke {
+.delete-button.show .animated-stroke {
     stroke-dasharray: 1000;
     stroke-dashoffset: 1000;
 }
 
-.delete-button:hover .animated-stroke {
+.delete-button.show:hover .animated-stroke {
     animation: draw 1s ease-in-out forwards;
+}
+
+@keyframes rotate45 {
+    to {
+        transform: rotate(-45deg);
+    }
 }
 
 @keyframes draw {
