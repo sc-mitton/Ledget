@@ -20,7 +20,7 @@ const useShadowTransition = ({ location, visible }) => {
         from: { opacity: 0 },
         enter: {
             width: "100%",
-            height: "2em",
+            height: "40px",
             zIndex: 2,
             opacity: 1,
             position: "absolute",
@@ -57,6 +57,10 @@ const ShadowedContainer = (props) => {
     }
 
     useEffect(() => {
+        setBottomShadow((ref.current?.firstChild.scrollTopMax
+            - ref.current?.firstChild.scrollTop) !== 0)
+        setTopShadow(ref.current?.firstChild.scrollTop !== 0)
+
         ref.current?.firstChild.addEventListener('scroll', handleScroll)
         return () => {
             ref.current?.firstChild.removeEventListener('scroll', handleScroll)

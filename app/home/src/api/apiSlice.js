@@ -21,6 +21,13 @@ export const ledgetSlice = createApi({
             query: (userId) => `user/${userId}/plaid_items`,
             providesTags: ['PlaidItem'],
         }),
+        deletePlaidItem: builder.mutation({
+            query: ({ userId, plaidItemId }) => ({
+                url: `user/${userId}/plaid_item/${plaidItemId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['PlaidItem'],
+        }),
         addNewPlaidItem: builder.mutation({
             query: ({ data, userId }) => ({
                 url: `user/${userId}/plaid_token_exchange`,
@@ -54,4 +61,5 @@ export const {
     useAddNewCategoryMutation,
     useAddnewBillMutation,
     useAddNewPlaidItemMutation,
+    useDeletePlaidItemMutation,
 } = ledgetSlice

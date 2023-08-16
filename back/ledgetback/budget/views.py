@@ -1,7 +1,7 @@
 
 from rest_framework.generics import CreateAPIView
 
-from core.permissions import UserPermissionBundle
+from core.permissions import IsAuthenticatedUserOwner
 from budget.serializers import (
     BudgetCategorySerializer,
     BillSerializer
@@ -9,10 +9,10 @@ from budget.serializers import (
 
 
 class CreateCategoryView(CreateAPIView):
-    permission_classes = [UserPermissionBundle]
+    permission_classes = [IsAuthenticatedUserOwner]
     serializer_class = BudgetCategorySerializer
 
 
 class CreateBillView(CreateAPIView):
-    permission_classes = [UserPermissionBundle]
+    permission_classes = [IsAuthenticatedUserOwner]
     serializer_class = BillSerializer

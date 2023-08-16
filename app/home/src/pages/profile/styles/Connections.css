@@ -1,5 +1,5 @@
 #connections-page {
-    width: 100%;
+    width: 105%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -7,12 +7,18 @@
 
 #connections-page .institution {
     width: 100%;
-    max-width: 325px;
-    margin: 16px 0;
+    margin: 24px 0 16px 0;
 }
 
-#connections-page .header3 {
+#connections-page .header {
     margin-bottom: 12px;
+    width: 95%;
+}
+
+#connections-page .header2>div:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #connections-page .account-name {
@@ -26,12 +32,26 @@
 #connections-page #accounts-list {
     display: flex;
     overflow: hidden;
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-bottom: 24px;
 }
 
 #connections-page #accounts-list>div {
     width: 100%;
     height: 100%;
-    overflow: scroll;
+    padding-right: 24px;
+    overflow-y: scroll;
+    overflow-x: hidden;
     position: relative;
+}
+
+.delete-button {
+    opacity: 1;
+    margin: 0 2px;
+}
+
+#connections-page .footer-container {
+    padding-right: 16px;
 }

@@ -8,6 +8,7 @@ class IsUserOwner(BasePermission):
 
     def has_object_permission(self, request):
         path = request.path.split('/')
+        print(path)
         user_id = path[path.index('user') + 1]
         return str(request.user.id) == user_id
 
@@ -20,7 +21,7 @@ class IsVerifiedAuthenticated(BasePermission):
                     and request.user.is_verified)
 
 
-class UserPermissionBundle(IsUserOwner):
+class IsAuthenticatedUserOwner(IsUserOwner):
     """Class for bundling permissions for User views"""
 
     def has_permission(self, request, view):
@@ -33,3 +34,9 @@ class UserPermissionBundle(IsUserOwner):
         ]
 
         return bool(request.user) and all(checks)
+
+
+class IsObjectOwner(BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        return request.user.id == obj.user_id
