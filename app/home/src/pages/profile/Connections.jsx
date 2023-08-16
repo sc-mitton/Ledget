@@ -29,11 +29,37 @@ const PlaidItem = ({ item, edit }) => {
                 className="btn delete-button"
                 aria-label="Change plan"
                 onClick={() => { console.log('change plan') }}
+                style={{
+                    opacity: edit ? '1' : '0',
+                    cursor: edit ? 'pointer' : 'default'
+                }}
+                disabled={edit}
             >
                 <Delete />
             </button>
         </div >
     )
+
+    const AccountsColumn = ({ colNum }) => {
+        const start = colNum === 1 ? 0 : item.accounts.length / 2 + 1
+        const end = colNum === 1 ? item.accounts.length / 2 + 1 : item.accounts.length
+
+        return (
+            <div> {
+                item.accounts.slice(start, end).map((account) => (
+                    <div key={account.id} className="account body">
+                        <div className="account-name">
+                            <span>{account.name}</span>
+                            <span>
+                                &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
+                                {account.mask}
+                            </span>
+                        </div>
+                    </div>
+                ))
+            } </div>
+        )
+    }
 
     return (
         <div className="institution">
@@ -47,21 +73,12 @@ const PlaidItem = ({ item, edit }) => {
                     />
                     <h4>{item.institution.name}</h4>
                 </div>
-                {edit ? <DeleteButton /> : <div />}
+                <DeleteButton />
             </div >
-            <div> {
-                item.accounts.map((account) => (
-                    <div key={account.id} className="account body">
-                        <div className="account-name">
-                            <span>{account.name}</span>
-                            <span>
-                                &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
-                                {account.mask}
-                            </span>
-                        </div>
-                    </div>
-                ))
-            } </div>
+            <div id="accounts">
+                <AccountsColumn colNum={1} />
+                <AccountsColumn colNum={2} />
+            </div>
         </div >
     )
 }

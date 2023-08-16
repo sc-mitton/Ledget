@@ -47,6 +47,23 @@
     position: relative;
 }
 
+#connections-page #accounts {
+    display: flex;
+    flex-direction: row;
+}
+
+#connections-page #accounts>div {
+    flex: 1;
+}
+
+#connections-page #accounts>div:first-child {
+    margin-right: 12px;
+}
+
+#connections-page #accounts>div:last-child {
+    margin-left: 12px;
+}
+
 .delete-button {
     opacity: 1;
     margin: 0 2px;
@@ -54,4 +71,18 @@
 
 #connections-page .footer-container {
     padding-right: 16px;
+}
+
+@media only screen and (max-width: 768px) {
+    #connections-page #accounts {
+        flex-direction: column;
+    }
+
+    #connections-page #accounts>div:first-child {
+        margin-right: 0px;
+    }
+
+    #connections-page #accounts>div:last-child {
+        margin-left: 0px;
+    }
 }
