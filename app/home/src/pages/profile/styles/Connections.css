@@ -5,15 +5,20 @@
     flex-direction: column;
 }
 
+#connections-page .header {
+    margin-bottom: 12px;
+    width: 95%;
+}
+
 #connections-page .institution {
     width: 100%;
     margin: 24px 0 16px 0;
 }
 
-#connections-page .header {
+#connections-page .institution .header2 {
     margin-bottom: 12px;
-    width: 95%;
 }
+
 
 #connections-page .header2>div:first-child {
     display: flex;
@@ -23,10 +28,21 @@
 
 #connections-page .account-name {
     width: 100%;
+    margin: 8px 0;
+}
+
+#connections-page .account-name>div:first-child {
+    font-weight: 500;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+#connections-page .account-name>div:last-child {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin: 8px 0;
+    opacity: .5;
 }
 
 #connections-page #accounts-list {
@@ -64,16 +80,44 @@
     margin-left: 12px;
 }
 
+/* ------------------------------ Delete Button ----------------------------- */
+
+.delete-all-button,
 .delete-button {
-    opacity: 1;
+    opacity: 0;
     margin: 0 2px;
+    cursor: auto;
+    transition: opacity .22s ease;
 }
+
+.delete-button span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-button .animated-stroke {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+}
+
+.delete-button:hover .animated-stroke {
+    animation: draw 1s ease-in-out forwards;
+}
+
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* ------------------------------ Misc ----------------------------- */
 
 #connections-page .footer-container {
     padding-right: 16px;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 700px) {
     #connections-page #accounts {
         flex-direction: column;
     }

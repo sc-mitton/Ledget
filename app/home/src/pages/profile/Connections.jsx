@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 
 import Plus from '@assets/icons/Plus'
 import Edit from '@assets/icons/Edit'
 import { usePlaidLink } from 'react-plaid-link'
+import { useSpring, animated } from '@react-spring/web'
 
 import './styles/Connections.css'
 import Delete from '@assets/icons/Delete'
@@ -20,46 +21,146 @@ import {
 } from '@components/pieces'
 import SubmitForm from '@components/modals/pieces/SubmitForm'
 
+const DeleteContext = React.createContext()
 
-const PlaidItem = ({ item, edit }) => {
+const ConnectionsContext = ({ children }) => {
+    const [deleteQue, setDeleteQue] = useState([])
+    const { data: user } = useGetMeQuery()
+    const { data: plaidItems, isLoading: fetchingPlaidItems } = useGetPlaidItemsQuery(user.id)
 
-    const DeleteButton = () => (
+    const value = {
+        deleteQue,
+        setDeleteQue,
+        plaidItems,
+        fetchingPlaidItems,
+        user
+    }
+    return (
+        <DeleteContext.Provider value={value}>
+            {children}
+        </DeleteContext.Provider>
+    )
+}
+
+const DeleteAllButton = ({ show, onClick }) => {
+    const [loaded, setLoaded] = useState(false)
+    const [lass, setlass] = useState('')
+    const { setDeleteQue } = useContext(DeleteContext)
+
+    useEffect(() => {
+        setLoaded(true)
+        if (loaded && show) {
+            setlass('show')
+        } else if (loaded) {
+            setlass('remove')
+        }
+    }, [show])
+
+    return (
         <div>
             <button
-                className="btn delete-button"
-                aria-label="Change plan"
-                onClick={() => { console.log('change plan') }}
-                style={{
-                    opacity: edit ? '1' : '0',
-                    cursor: edit ? 'pointer' : 'default'
-                }}
-                disabled={edit}
+                className={`btn-red btn-slim delete-all-button ${lass}`}
+                aria-label="Remove all accounts from institution"
+                onClick={() => onClick()}
+                disabled={!show}
             >
-                <Delete />
+                Remove All
             </button>
         </div >
     )
+}
 
-    const AccountsColumn = ({ colNum }) => {
-        const start = colNum === 1 ? 0 : item.accounts.length / 2 + 1
-        const end = colNum === 1 ? item.accounts.length / 2 + 1 : item.accounts.length
+const DeleteButton = (props) => {
+    const [hover, setHover] = useState(false)
+    const { visible, account, ...rest } = props
+    const [loaded, setLoaded] = useState(false)
+    const { deleteQue, setDeleteQue } = useContext(DeleteContext)
 
-        return (
-            <div> {
-                item.accounts.slice(start, end).map((account) => (
-                    <div key={account.id} className="account body">
-                        <div className="account-name">
-                            <span>{account.name}</span>
+    const [springProps, api] = useSpring(() => ({
+        from: {
+            transformOrigin: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'relative',
+            transform: 'scale(.7)',
+            opacity: '0'
+        },
+        config: { duration: loaded ? 200 : 20 }
+    }))
+
+    useEffect(() => {
+        api.start({
+            opacity: visible ? '1' : '0',
+            transform: `scale(${visible ? 1 : .7}) rotate(${hover ? -45 : 0}deg)`
+        })
+    }, [visible, hover])
+
+    return (
+        <>
+            <animated.button
+                style={springProps}
+                className={`btn delete-button`}
+                aria-label="Remove account"
+                disabled={!visible}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+                {...rest}
+                onClick={(e) => {
+                    e.preventDefault()
+                    if (deleteQue.filter((item) => item.account === account.id).length === 0) {
+                        setDeleteQue((prev) => [...prev, { account: account.id }])
+                    }
+                }}
+            >
+                <span><Delete /></span>
+            </animated.button>
+        </>
+    )
+}
+
+const AccountsColumn = ({ item, showDelete, start, end }) => {
+
+    const typeMap = {
+        'checking': 'Checking',
+        'savings': 'Savings',
+        'credit card': 'Credit Card',
+        'cd': 'CD',
+        'money market': 'Money Market',
+        'ira': 'IRA',
+        '401k': '401k',
+        'student': 'Student Loan',
+        'mortgage': 'Mortgage',
+    }
+
+    return (
+        <div>
+            {item.accounts.slice(start, end).map((account) => (
+                <div className={'account'}>
+                    <div className="account-name">
+                        <div>
                             <span>
+                                {account.name}
+                            </span>
+                            <DeleteButton visible={showDelete} account={account} />
+                        </div >
+                        <div>
+                            <span>
+                                {typeMap[account.subtype]}
+                                &nbsp;&nbsp;
                                 &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
                                 {account.mask}
                             </span>
                         </div>
                     </div>
-                ))
-            } </div>
-        )
-    }
+                </div>
+            ))}
+        </div>
+    )
+}
+
+const PlaidItem = ({ item, edit }) => {
+    const { setDeleteQue } = useContext(DeleteContext)
 
     return (
         <div className="institution">
@@ -73,11 +174,28 @@ const PlaidItem = ({ item, edit }) => {
                     />
                     <h4>{item.institution.name}</h4>
                 </div>
-                <DeleteButton />
+                <div>
+                    <DeleteAllButton
+                        show={edit}
+                        onClick={() => setDeleteQue(
+                            (prev) => [...prev, { item: item.id }]
+                        )}
+                    />
+                </div>
             </div >
             <div id="accounts">
-                <AccountsColumn colNum={1} />
-                <AccountsColumn colNum={2} />
+                <AccountsColumn
+                    item={item}
+                    start={0}
+                    end={item.accounts.length / 2 + 1}
+                    showDelete={edit}
+                />
+                <AccountsColumn
+                    item={item}
+                    start={item.accounts.length / 2 + 1}
+                    end={item.accounts.length}
+                    showDelete={edit}
+                />
             </div>
         </div >
     )
@@ -106,11 +224,34 @@ const Header = ({ edit, setEdit, onPlus }) => (
     </div>
 )
 
+const Inputs = () => {
+    const { deleteQue } = useContext(DeleteContext)
+
+    return (
+        deleteQue.map((item, index) => (
+            <input
+                key={index}
+                type="hidden"
+                name={item.account
+                    ? `accounts[${index}][id]`
+                    : `items[${index}][id]`}
+                value={
+                    item.account ? item.account : item.item
+                }
+            />
+        ))
+    )
+}
+
 const Connections = () => {
     const [edit, setEdit] = useState(false)
     const [saving, setSaving] = useState(false)
-    const { data: user } = useGetMeQuery()
-    const { data: plaidItems, isLoading: fetchingPlaidItems } = useGetPlaidItemsQuery(user.id)
+    const {
+        plaidItems,
+        fetchingPlaidItems,
+        user
+    } = useContext(DeleteContext)
+
     const { data: plaidToken, refetch: refetchPlaidToken } = useGetPlaidTokenQuery()
     const [addNewPlaidItem] = useAddNewPlaidItemMutation()
 
@@ -137,7 +278,7 @@ const Connections = () => {
         ...(isOauth ? { receivedRedirectUri: window.location.href } : {}),
     }
     if (import.meta.env.VITE_PLAID_REDIRECT_URI) {
-        config.redirect_uri = import.meta.env.VITE_PLAID_REDIRECT_URI
+        config.receivedRedirectUri = import.meta.env.VITE_PLAID_REDIRECT_URI
     }
     const { open, exit, ready } = usePlaidLink(config)
 
@@ -171,11 +312,13 @@ const Connections = () => {
                         </div>
                     </ShadowedContainer>
                     <div className="footer-container">
-                        {edit &&
+                        {edit && <form>
+                            <Inputs />
                             <SubmitForm
                                 submitting={saving}
                                 onCancel={() => setEdit(false)}
-                            />}
+                            />
+                        </form>}
                     </div>
                 </div>
             }
@@ -183,4 +326,10 @@ const Connections = () => {
     )
 }
 
-export default Connections
+const ConnectionsComponent = () => (
+    <ConnectionsContext>
+        <Connections />
+    </ConnectionsContext>
+)
+
+export default ConnectionsComponent
