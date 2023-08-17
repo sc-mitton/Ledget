@@ -34,14 +34,12 @@ LOCAL_APPS = [
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # Middleware
-DEFAULT_MIDDLE_WARE = [
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
-THIRD_PARTY_MIDDLE_WARE = ['corsheaders.middleware.CorsMiddleware',]
-LOCAL_MIDDLE_WARE = []
 
-MIDDLEWARE = DEFAULT_MIDDLE_WARE + THIRD_PARTY_MIDDLE_WARE + LOCAL_MIDDLE_WARE
 
 ROOT_URLCONF = 'ledgetback.urls'
 WSGI_APPLICATION = 'ledgetback.wsgi.application'
