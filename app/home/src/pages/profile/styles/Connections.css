@@ -26,11 +26,6 @@
     justify-content: space-between;
 }
 
-#connections-page .account-name {
-    width: 100%;
-    margin: 8px 0;
-}
-
 #connections-page .account-name>div:first-child {
     font-weight: 500;
     display: flex;
@@ -43,6 +38,10 @@
     display: flex;
     align-items: center;
     opacity: .5;
+}
+
+#connections-page .account-name>div:last-child span {
+    font-size: 12px;
 }
 
 #connections-page #accounts-list {
@@ -96,6 +95,19 @@
     animation: fade-in .22s ease;
 }
 
+.delete-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(0deg);
+    transition: all .22s ease;
+}
+
+.delete-button:hover {
+    transform: rotate(-45deg);
+    transition: all .22s ease;
+}
+
 .delete-button.show {
     opacity: 1;
     animation: pop .22s ease;
@@ -112,7 +124,8 @@
     justify-content: center;
 }
 
-.delete-button.show .animated-stroke {
+.delete-button.show .animated-stroke,
+.delete-button.remove .animated-stroke {
     stroke-dasharray: 1000;
     stroke-dashoffset: 1000;
 }
@@ -121,7 +134,11 @@
     animation: draw 1s ease-in-out forwards;
 }
 
-@keyframes rotate45 {
+@keyframes rotate45minus {
+    from {
+        transform: rotate(0deg);
+    }
+
     to {
         transform: rotate(-45deg);
     }
@@ -139,7 +156,7 @@
     padding-right: 16px;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 768px) {
     #connections-page #accounts {
         flex-direction: column;
     }
