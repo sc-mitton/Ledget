@@ -49,14 +49,10 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
     def create(self, validated_data):
 
-        accounts_data = validated_data.pop('accounts', [])
-        institution_data = validated_data.pop('institution', {})
-
         try:
-            institution = self.update_or_create_institution(institution_data)
-            plaid_item = self.create_plaid_item(institution, validated_data)
-            self.create_accounts(institution, plaid_item, accounts_data)
-            return plaid_item
+            self.update_or_create_institution(validated_data['institution'])
+            plaid_item = self.create_plaid_item(validated_data)
+            self.create_accounts(plaid_item, validated_data)
         except plaid.ApiException as e:
             logger.error(f"Plaid error: {e}")
             raise serializers.ValidationError(
@@ -64,40 +60,42 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
             )
         except Exception as e:
             logger.error(f"Error: {e}")
-            raise serializers.ValidationError(
-                detail={"error": f"Error: {e}"}
-            )
+            raise serializers.ValidationError()
+
+        return plaid_item
 
     def update_or_create_institution(self, institution_data):
-        resonse = self.get_plaid_institution(institution_data['id'])
+        institution, created = Institution.objects.get_or_create(
+            id=institution_data['id']
+        )
+        if created:
+            self.update_institution_metadata(institution)
+
+    def update_institution_metadata(self, institution):
+        resonse = self.get_plaid_institution(institution.id)
         data = resonse.to_dict()['institution']
 
-        logo = data.pop('logo', None)
-        decoded_logo = base64.b64decode(logo)
-        filename = f"logo_{institution_data['id']}.png"
+        decoded_logo = base64.b64decode(data['logo'])
+        filename = f"logo_{institution.id}.png"
         image_file = ContentFile(decoded_logo, name=filename)
 
-        institution = Institution.objects.update_or_create(
-            defaults={
-                'logo': image_file,
-                'url': data.get('url'),
-                'oath': data.get('oath'),
-                'primary_color': data.get('primary_color'),
-                'name': institution_data['name']
-            },
-            id=institution_data['id']
-        )[0]
+        institution.logo = image_file
+        institution.url = data.get('url')
+        institution.oath = data.get('oath')
+        institution.primary_color = data.get('primary_color')
+        institution.name = data.get('name')
+        institution.save()
 
-        return institution
+    def create_plaid_item(self, validated_data):
 
-    def create_plaid_item(self, institution, validated_data):
-
-        exchange_request = ItemPublicTokenExchangeRequest(**validated_data)
+        exchange_request = ItemPublicTokenExchangeRequest(
+            validated_data['public_token']
+        )
         response = plaid_client.item_public_token_exchange(exchange_request)
 
         # Create plaid item
         plaid_item = PlaidItem.objects.create(
-            institution_id=institution.id,
+            institution_id=validated_data['institution']['id'],
             user_id=self.context['request'].user.id,
             id=response['item_id'],
             access_token=response['access_token']
@@ -105,10 +103,16 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
         return plaid_item
 
-    def create_accounts(self, institution, plaid_item, accounts_data):
-
+    def create_accounts(self, plaid_item, validated_data):
+        accounts_data = validated_data['accounts']
+        institution_id = validated_data['institution']['id']
+        print(accounts_data)
         new_accounts = [
-            Account(plaid_item=plaid_item, institution=institution, **account)
+            Account(
+                plaid_item=plaid_item,
+                institution_id=institution_id,
+                **account
+            )
             for account in accounts_data
         ]
         Account.objects.bulk_create(new_accounts)
