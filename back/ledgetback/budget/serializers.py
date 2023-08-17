@@ -37,8 +37,10 @@ class BudgetCategorySerializer(serializers.ModelSerializer):
         validated_data['user'] = self.context['request'].user
         category = BudgetCategory.objects.create(**validated_data)
 
+        alerts = []
         for alert in alerts_data:
-            Alert.objects.create(category=category, **alert)
+            alerts.append(Alert(category=category, **alert))
+        Alert.objects.bulk_create(alerts)
 
         return category
 
@@ -58,8 +60,10 @@ class BillSerializer(serializers.ModelSerializer):
         validated_data['user'] = self.context['request'].user
         bill = Bill.objects.create(**validated_data)
 
+        reminders = []
         for reminder in reminders_data:
-            Reminder.objects.create(bill=bill, **reminder)
+            reminders.append(Reminder(bill=bill, **reminder))
+        Reminder.objects.bulk_create(reminders)
 
         return bill
 

@@ -35,6 +35,7 @@ export default ({ mode }) => {
                 '@features': path.resolve(__dirname, './src/features'),
                 '@api': path.resolve(__dirname, './src/api'),
                 '@pages': path.resolve(__dirname, './src/pages'),
+                '@modals': path.resolve(__dirname, './src/modals'),
             }
         },
         plugins: [react()],

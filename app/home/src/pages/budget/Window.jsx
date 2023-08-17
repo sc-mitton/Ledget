@@ -4,8 +4,8 @@ import { Route, Routes } from 'react-router-dom'
 
 import './styles/Window.css'
 import Header from './Header'
-import CreateCategory from '@components/modals/CreateCategory'
-import CreateBill from '@components/modals/CreateBill'
+import CreateCategory from '@modals/CreateCategory'
+import CreateBill from '@modals/CreateBill'
 
 function Window() {
     return (

@@ -2,7 +2,7 @@ import React from 'react'
 
 const Delete = ({
     className = null,
-    fill = "#fe8797",
+    fill = "#292929",
     width = "1em",
     height = "1em",
     stroke = "#FFFFFF",

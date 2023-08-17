@@ -8,7 +8,6 @@ MIDDLEWARE += [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'silk.middleware.SilkyMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-
 ]
 
 INSTALLED_APPS += ['silk']

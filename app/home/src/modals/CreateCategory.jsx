@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router-dom'
 
 import './styles/Forms.css'
 import { AddAlert, EmojiComboText, TextInput, GreenRadios } from '@components/inputs'
-import { useAddNewCategoryMutation, useGetMeQuery } from '@api/apiSlice'
+import { useAddNewCategoryMutation } from '@api/apiSlice'
 import withModal from './with/withModal'
-import SubmitForm from './pieces/SubmitForm'
+import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@components/pieces'
 import { useEffect } from 'react'
 
@@ -64,7 +64,6 @@ const LimitInput = (props) => {
 const Form = (props) => {
     const [dollarLimit, setDollarLimit] = useState('')
     const [emoji, setEmoji] = useState('')
-    const { data: user } = useGetMeQuery()
     const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation()
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -96,7 +95,7 @@ const Form = (props) => {
         }
         body.alerts = alerts
 
-        addNewCategory({ userId: user.id, data: body })
+        addNewCategory({ data: body })
     }
 
     useEffect(() => {

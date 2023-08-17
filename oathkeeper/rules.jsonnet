@@ -31,6 +31,13 @@ local Base = {
   version: version,
 };
 
+local GenericAuthedBase = {
+  version: version,
+  authenticators: [cookie_session_authenticator],
+  mutators: [id_token],
+  authorizer: allow_authorizer,
+};
+
 [
   Base
   {
@@ -45,28 +52,6 @@ local Base = {
   },
   Base
   {
-    id: 'user',
-    match: {
-      methods: ['POST'],
-      url: base_url + '/user/<[0-9a-zA-Z-]{20,40}>/<.*>',
-    },
-    authenticators: [cookie_session_authenticator],
-    mutators: [id_token],
-    authorizer: allow_authorizer,
-  },
-  Base
-  {
-    id: 'user',
-    match: {
-      methods: ['GET'],
-      url: base_url + '/user/<.*>',
-    },
-    authenticators: [cookie_session_authenticator],
-    mutators: [id_token],
-    authorizer: allow_authorizer,
-  },
-  Base
-  {
     id: 'preflight',
     match: {
       methods: ['OPTIONS'],
@@ -76,25 +61,84 @@ local Base = {
     mutators: [noop_mutator],
     authorizer: allow_authorizer,
   },
-  Base
+  GenericAuthedBase
+  {
+    id: 'user',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/user/me',
+    },
+  },
+  GenericAuthedBase
   {
     id: 'plaid_link_token',
     match: {
       methods: ['GET'],
       url: base_url + '/plaid_link_token',
     },
-    authenticators: [cookie_session_authenticator],
-    mutators: [id_token],
-    authorizer: allow_authorizer,
   },
+  GenericAuthedBase
   {
     id: 'plaid_token_exchange',
     match: {
       methods: ['POST'],
       url: base_url + '/plaid_token_exchange',
     },
-    authenticators: [cookie_session_authenticator],
-    mutators: [id_token],
-    authorizer: allow_authorizer,
+  },
+  GenericAuthedBase
+  {
+    id: 'plaid_items',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/plaid_items',
+    },
+  },
+  GenericAuthedBase
+  {
+    id: 'plaid_item',
+    match: {
+      methods: ['DELETE'],
+      url: base_url + '/plaid_item/<.*>',
+    },
+  },
+  GenericAuthedBase
+  {
+    id: 'payment_methods',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/payment_methods',
+    },
+  },
+  GenericAuthedBase
+  {
+    id: 'customer',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/customer',
+    },
+  },
+  GenericAuthedBase
+  {
+    id: 'subscription',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/subscription',
+    },
+  },
+  GenericAuthedBase
+  {
+    id: 'category',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/category',
+    },
+  },
+  GenericAuthedBase
+  {
+    id: 'bill',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/bill',
+    },
   },
 ]

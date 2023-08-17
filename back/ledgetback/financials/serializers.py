@@ -79,13 +79,13 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
         institution = Institution.objects.update_or_create(
             defaults={
-                'id': institution_data['id'],
+                'logo': image_file,
+                'url': data.get('url'),
+                'oath': data.get('oath'),
+                'primary_color': data.get('primary_color'),
                 'name': institution_data['name']
             },
-            logo=image_file,
-            url=data.get('url'),
-            oath=data.get('oath'),
-            primary_color=data.get('primary_color'),
+            id=institution_data['id']
         )[0]
 
         return institution

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { object, string } from "yup"
 
 import './styles/Forms.css'
-import SubmitForm from './pieces/SubmitForm'
+import SubmitForm from '@components/pieces/SubmitForm'
 import withModal from './with/withModal'
 import {
     EmojiComboText,
@@ -18,7 +18,7 @@ import {
     Scheduler
 } from '@components/inputs'
 import { FormErrorTip, FormError } from '@components/pieces'
-import { useAddnewBillMutation, useGetMeQuery } from '@api/apiSlice'
+import { useAddnewBillMutation } from '@api/apiSlice'
 
 const radioOptions = [
     { name: 'categoryType', value: 'monthly', label: 'Monthly', default: true },
@@ -27,7 +27,6 @@ const radioOptions = [
 
 const Form = (props) => {
     const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
-    const { data: user } = useGetMeQuery()
 
     const [billPeriod, setBillPeriod] = useState('monthly')
     const [rangeMode, setRangeMode] = useState(false)
@@ -90,7 +89,7 @@ const Form = (props) => {
         }
         body.reminders = reminders
 
-        addNewBill({ userId: user.id, data: body })
+        addNewBill({ data: body })
     }
 
     const submitForm = (e) => {

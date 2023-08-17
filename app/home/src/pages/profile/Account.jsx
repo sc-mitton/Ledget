@@ -46,6 +46,13 @@ const Plan = () => {
         console.log('change plan')
     }
 
+    const getStatus = () => {
+        if (user.subscription.plan.status === 'trialing') {
+            return 'trial'
+        }
+        return user.subscription.plan.status.charAt(0).tolowerCase()
+    }
+
     return (
         <div className="section">
             <div>
@@ -53,8 +60,7 @@ const Plan = () => {
                     <div>
                         <h3>Plan</h3>
                         <span className="indicator">
-                            {user.subscription.plan.status.charAt(0).toLowerCase()
-                                + user.subscription.plan.status.slice(1)}
+                            {getStatus()}
                         </span>
                     </div>
                     <div>
@@ -81,12 +87,11 @@ const Plan = () => {
 }
 
 const PaymentMethod = () => {
-    const { data: user } = useGetMeQuery()
-    const { data } = useGetPaymentMethodQuery(user.id)
+    const { data } = useGetPaymentMethodQuery()
 
     let expDate = new Date(
-        data.payment_method.exp_year,
-        data.payment_method.exp_month
+        data?.payment_method.exp_year,
+        data?.payment_method.exp_month
     )
     expDate = expDate.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -117,10 +122,10 @@ const PaymentMethod = () => {
                 <div id="card-info-container">
                     <Card />
                     <span>
-                        {data.payment_method.brand.charAt(0).toUpperCase()
-                            + data.payment_method.brand.slice(1)}
+                        {data?.payment_method.brand.charAt(0).toUpperCase()
+                            + data?.payment_method.brand.slice(1)}
                         &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
-                        {data.payment_method.last4}
+                        {data?.payment_method.last4}
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         {`Expires ${expDate}`}
                     </span>
@@ -131,8 +136,7 @@ const PaymentMethod = () => {
 }
 
 const Account = () => {
-    const { data: user } = useGetMeQuery()
-    const { isLoading } = useGetPaymentMethodQuery(user.id)
+    const { isLoading } = useGetPaymentMethodQuery()
 
     return (
         <>

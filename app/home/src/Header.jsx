@@ -11,9 +11,9 @@ import Profile2 from '@assets/icons/Profile2'
 import SettingsIcon from '@assets/icons/Settings'
 import HelpIcon from '@assets/icons/Help'
 import LogoutIcon from '@assets/icons/LogoutIcon'
-import Help from '@components/modals/Help'
 import DropAnimation from '@utils/DropAnimation'
-import Logout from '@components/modals/Logout'
+import Logout from '@modals/Logout'
+import Help from '@modals/Help'
 import { usePillAnimation } from '@utils/hooks'
 
 

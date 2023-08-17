@@ -1,16 +1,5 @@
 from rest_framework.permissions import BasePermission
-
-
-class IsUserOwner(BasePermission):
-
-    def has_permission(self, request, view):
-        return self.has_object_permission(request)
-
-    def has_object_permission(self, request):
-        path = request.path.split('/')
-        print(path)
-        user_id = path[path.index('user') + 1]
-        return str(request.user.id) == user_id
+from django.contrib.auth.models import AnonymousUser
 
 
 class IsVerifiedAuthenticated(BasePermission):
@@ -21,22 +10,23 @@ class IsVerifiedAuthenticated(BasePermission):
                     and request.user.is_verified)
 
 
-class IsAuthenticatedUserOwner(IsUserOwner):
+class IsAuthedVerifiedSubscriber(BasePermission):
     """Class for bundling permissions for User views"""
 
     def has_permission(self, request, view):
+        if isinstance(request.user, AnonymousUser):
+            return False
 
         checks = [
-            self.has_object_permission(request),
-            request.user.customer.has_current_subscription,
             request.user.is_authenticated,
             request.user.is_verified,
+            request.user.subscription_status is not None,
         ]
 
-        return bool(request.user) and all(checks)
+        return all(checks)
 
 
 class IsObjectOwner(BasePermission):
 
     def has_object_permission(self, request, view, obj):
-        return request.user.id == obj.user_id
+        return request.user.id == obj.id or obj.user_id

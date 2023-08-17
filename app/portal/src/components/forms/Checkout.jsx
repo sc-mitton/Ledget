@@ -380,7 +380,7 @@ function Checkout({ prices }) {
     const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem('clientSecret')))
 
     const createCustomer = async () => {
-        await ledgetapi.post(`user/${user.id}/customer`)
+        await ledgetapi.post(`customer`)
             .catch((error) => {
                 if (error.response?.status !== 422) {
                     setErrMsg('Something went wrong. Please try again later.')
@@ -389,7 +389,7 @@ function Checkout({ prices }) {
     }
 
     const createSubscription = async () => {
-        await ledgetapi.post(`user/${user.id}/subscription`, {
+        await ledgetapi.post(`subscription`, {
             price_id: price.id,
             trial_period_days: price.metadata?.trial_period_days
         })

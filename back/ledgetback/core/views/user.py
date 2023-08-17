@@ -9,7 +9,7 @@ from rest_framework.status import (
 import stripe
 
 from core.utils.stripe import stripe_error_handler, StripeError
-from core.permissions import IsAuthenticatedUserOwner
+from core.permissions import IsAuthedVerifiedSubscriber
 
 stripe_logger = logging.getLogger('stripe')
 
@@ -54,8 +54,8 @@ class UserView(APIView):
         return stripe.Subscription.list(customer=customer_id)
 
 
-class PaymentMethodView(APIView):
-    permission_classes = [IsAuthenticatedUserOwner]
+class GetPaymentMethodsView(APIView):
+    permission_classes = [IsAuthedVerifiedSubscriber]
 
     def get(self, request, *args, **kwargs):
         try:

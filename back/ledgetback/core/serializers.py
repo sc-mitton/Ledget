@@ -16,4 +16,3 @@ class SubscriptionSerializer(serializers.Serializer):
                 'Trial period cannot be longer than 30 days.'
             )
         return value
-

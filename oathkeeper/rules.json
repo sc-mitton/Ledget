@@ -25,26 +25,22 @@
    {
       "authenticators": [
          {
-            "forward_http_headers": [
-               "X-Forwarded-For",
-               "Authorization"
-            ],
-            "handler": "cookie_session"
+            "handler": "anonymous"
          }
       ],
       "authorizer": {
          "handler": "allow"
       },
-      "id": "user",
+      "id": "preflight",
       "match": {
          "methods": [
-            "POST"
+            "OPTIONS"
          ],
-         "url": "https://localhost/api/v1/user/<[0-9a-zA-Z-]{20,40}>/<.*>"
+         "url": "https://localhost/api/v1/<.*>"
       },
       "mutators": [
          {
-            "handler": "id_token"
+            "handler": "noop"
          }
       ],
       "version": "v0.36.0-beta.4"
@@ -67,34 +63,11 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/user/<.*>"
+         "url": "https://localhost/api/v1/user/me"
       },
       "mutators": [
          {
             "handler": "id_token"
-         }
-      ],
-      "version": "v0.36.0-beta.4"
-   },
-   {
-      "authenticators": [
-         {
-            "handler": "anonymous"
-         }
-      ],
-      "authorizer": {
-         "handler": "allow"
-      },
-      "id": "preflight",
-      "match": {
-         "methods": [
-            "OPTIONS"
-         ],
-         "url": "https://localhost/api/v1/<.*>"
-      },
-      "mutators": [
-         {
-            "handler": "noop"
          }
       ],
       "version": "v0.36.0-beta.4"
@@ -150,6 +123,196 @@
          {
             "handler": "id_token"
          }
-      ]
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "plaid_items",
+      "match": {
+         "methods": [
+            "GET"
+         ],
+         "url": "https://localhost/api/v1/plaid_items"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "plaid_item",
+      "match": {
+         "methods": [
+            "DELETE"
+         ],
+         "url": "https://localhost/api/v1/plaid_item/<.*>"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "payment_methods",
+      "match": {
+         "methods": [
+            "GET"
+         ],
+         "url": "https://localhost/api/v1/payment_methods"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "customer",
+      "match": {
+         "methods": [
+            "POST"
+         ],
+         "url": "https://localhost/api/v1/customer"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "subscription",
+      "match": {
+         "methods": [
+            "POST"
+         ],
+         "url": "https://localhost/api/v1/subscription"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "category",
+      "match": {
+         "methods": [
+            "POST"
+         ],
+         "url": "https://localhost/api/v1/category"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "bill",
+      "match": {
+         "methods": [
+            "POST"
+         ],
+         "url": "https://localhost/api/v1/bill"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
    }
 ]

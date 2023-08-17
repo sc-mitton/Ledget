@@ -107,7 +107,7 @@ class Customer(models.Model):
         choices=SubscriptionStatus.choices,
         max_length=20,
         null=True,
-        default=SubscriptionStatus.INCOMPLETE
+        default=None
     )
     period_end = models.IntegerField(default=0)
 

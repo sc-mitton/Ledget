@@ -14,7 +14,6 @@ import stripe
 
 from core.serializers import SubscriptionSerializer
 from core.models import Customer
-from core.permissions import IsUserOwner
 
 
 stripe.api_key = settings.STRIPE_API_KEY
@@ -32,18 +31,15 @@ class PriceView(APIView):
         return Response(data=result.data, status=HTTP_200_OK)
 
 
-class SubscriptionView(GenericAPIView):
-    """Class for handling the subscription creation and updating"""
-
-    permission_classes = [IsAuthenticated, IsUserOwner]
+class CreateSubscriptionView(GenericAPIView):
+    """Class for handling the subscription"""
+    permission_classes = [IsAuthenticated]
     serializer_class = SubscriptionSerializer
 
     def post(self, request, *args, **kwargs):
-        if not request.user.is_customer:
-            return Response(
-                {'error': 'Customer does not exist.'},
-                status=HTTP_422_UNPROCESSABLE_ENTITY
-            )
+        if not request.user.is_customer \
+           or request.user.subscription_status is not None:
+            return Response(status=HTTP_422_UNPROCESSABLE_ENTITY)
 
         try:
             serializer = self.get_serializer(data=request.data)
@@ -95,10 +91,9 @@ class SubscriptionView(GenericAPIView):
         return stripe_subscription
 
 
-class CustomerView(APIView):
+class CreateCustomerView(APIView):
     """Class for creating a Stripe customer"""
-
-    permission_classes = [IsAuthenticated, IsUserOwner]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         if request.user.is_customer:

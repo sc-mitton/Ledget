@@ -389,13 +389,12 @@ button svg {
 }
 
 .btn-red {
-    background-color: var(--mute-red);
-    color: var(--white-text);
+    color: var(--mute-red);
     transition: background-color .3s ease;
 }
 
 .btn-red:hover {
-    background-color: var(--hover-red);
+    color: var(--hover-red);
     transition: background-color .3s ease;
 }
 

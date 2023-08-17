@@ -5,8 +5,6 @@ import requests
 import jwt
 import json
 
-from corsheaders.defaults import default_headers
-
 # IMPORTANT FLAGS
 DEVELOPMENT = True
 PLAID_SANDBOX = True
@@ -28,20 +26,6 @@ if DEBUG:
     SECURE_SSL_REDIRECT = False
 else:
     SECURE_SSL_REDIRECT = True
-
-
-CORS_ORIGIN_WHITELIST = [
-    'https://localhost:3001',
-    'https://localhost:3000',
-    'http://localhost',
-]
-CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'Set-Cookie',
-    'Access-Control-Allow-Origin',
-    'Access-Control-Allow-Credentials'
-]
-CORS_ALLOW_CREDENTIALS = True
 
 MEDIA_ROOT = '/ledgetback/media'
 

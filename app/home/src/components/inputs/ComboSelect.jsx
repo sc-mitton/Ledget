@@ -185,7 +185,7 @@ const Options = (props) => {
                 })
                 break
             case 'Enter':
-                ref.current.querySelector(`[headlessui-state="active"]`).click()
+                ulRef.current.querySelector(`[headlessui-state='active']`).click()
                 break
             case 'Tab':
             case 'Escape':

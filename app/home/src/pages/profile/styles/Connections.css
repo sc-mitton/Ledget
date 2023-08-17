@@ -12,13 +12,32 @@
 
 #connections-page .institution {
     width: 100%;
-    margin: 24px 0 16px 0;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    transition: all .4s ease;
+    max-height: 100%;
 }
 
 #connections-page .institution .header2 {
     margin-bottom: 12px;
+    height: 100%;
+    opacity: 1;
+    transition: all .22s ease;
 }
 
+#connections-page .institution.removed {
+    opacity: 0;
+    margin-top: 0;
+    max-height: 0%;
+    margin-bottom: 0;
+    transition: all .4s ease;
+}
+
+#connections-page .institution .header2.removed {
+    opacity: 0;
+    margin-bottom: 0;
+    transition: all .22s ease;
+}
 
 #connections-page .header2>div:first-child {
     display: flex;
@@ -56,7 +75,7 @@
 #connections-page #accounts-list>div {
     width: 100%;
     height: 100%;
-    padding-right: 24px;
+    padding-right: 22px;
     overflow-y: scroll;
     overflow-x: hidden;
     position: relative;
@@ -134,6 +153,9 @@
     animation: draw 1s ease-in-out forwards;
 }
 
+
+/* ------------------------------ Misc ----------------------------- */
+
 @keyframes rotate45minus {
     from {
         transform: rotate(0deg);
@@ -149,8 +171,6 @@
         stroke-dashoffset: 0;
     }
 }
-
-/* ------------------------------ Misc ----------------------------- */
 
 #connections-page .footer-container {
     padding-right: 16px;

@@ -10,42 +10,42 @@ export const ledgetSlice = createApi({
         getMe: builder.query({
             query: () => 'user/me',
         }),
+        getPaymentMethod: builder.query({
+            query: () => 'payment_methods',
+            keepUnusedDataFor: 180,
+        }),
         getPlaidToken: builder.query({
             query: () => 'plaid_link_token',
         }),
-        getPaymentMethod: builder.query({
-            query: (userId) => `user/${userId}/payment_method`,
-            keepUnusedDataFor: 180,
-        }),
         getPlaidItems: builder.query({
-            query: (userId) => `user/${userId}/plaid_items`,
+            query: () => 'plaid_items',
             providesTags: ['PlaidItem'],
         }),
         deletePlaidItem: builder.mutation({
-            query: ({ userId, plaidItemId }) => ({
-                url: `user/${userId}/plaid_item/${plaidItemId}`,
-                method: 'DELETE',
+            query: ({ plaidItemId }) => ({
+                url: `/plaid_item/${plaidItemId}`,
+                method: 'DELETE'
             }),
             invalidatesTags: ['PlaidItem'],
         }),
         addNewPlaidItem: builder.mutation({
-            query: ({ data, userId }) => ({
-                url: `user/${userId}/plaid_token_exchange`,
+            query: ({ data }) => ({
+                url: 'plaid_token_exchange',
                 method: 'POST',
                 body: data,
             }),
             invalidatesTags: ['PlaidItem'],
         }),
         addNewCategory: builder.mutation({
-            query: ({ data, userId }) => ({
-                url: `user/${userId}/category`,
+            query: ({ data }) => ({
+                url: 'category',
                 method: 'POST',
                 body: data,
             }),
         }),
         addnewBill: builder.mutation({
-            query: ({ data, userId }) => ({
-                url: `user/${userId}/bill`,
+            query: ({ data }) => ({
+                url: 'bill',
                 method: 'POST',
                 body: data,
             }),

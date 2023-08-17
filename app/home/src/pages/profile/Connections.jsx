@@ -10,7 +10,6 @@ import Delete from '@assets/icons/Delete'
 import {
     useGetPlaidTokenQuery,
     useAddNewPlaidItemMutation,
-    useGetMeQuery,
     useGetPlaidItemsQuery,
     useDeletePlaidItemMutation,
 } from '@api/apiSlice'
@@ -19,22 +18,26 @@ import {
     Base64Logo,
     ShadowedContainer
 } from '@components/pieces'
-import SubmitForm from '@components/modals/pieces/SubmitForm'
+import SubmitForm from '@components/pieces/SubmitForm'
+import { Tooltip } from '@components/pieces'
 
 const DeleteContext = React.createContext()
 
 const ConnectionsContext = ({ children }) => {
     const [deleteQue, setDeleteQue] = useState([])
-    const { data: user } = useGetMeQuery()
-    const { data: plaidItems, isLoading: fetchingPlaidItems } = useGetPlaidItemsQuery(user.id)
+    const { data: plaidItems, isLoading: fetchingPlaidItems } = useGetPlaidItemsQuery()
     const [editing, setEditing] = useState(false)
+
+    useEffect(() => {
+        setEditing(false)
+        setDeleteQue([])
+    }, [plaidItems])
 
     const value = {
         deleteQue,
         setDeleteQue,
         plaidItems,
         fetchingPlaidItems,
-        user,
         editing,
         setEditing,
     }
@@ -45,86 +48,49 @@ const ConnectionsContext = ({ children }) => {
     )
 }
 
-const DeleteAllButton = ({ show, onClick }) => {
+const DeleteAllButton = ({ onClick }) => {
     const [loaded, setLoaded] = useState(false)
-    const [lass, setlass] = useState('')
-    const { setDeleteQue } = useContext(DeleteContext)
+    const [deleteClass, setDeleteClass] = useState('')
+    const { editing } = useContext(DeleteContext)
 
     useEffect(() => {
-        setLoaded(true)
-        if (loaded && show) {
-            setlass('show')
-        } else if (loaded) {
-            setlass('remove')
+        if (!loaded) {
+            setLoaded(true)
+        } else if (loaded && editing) {
+            setDeleteClass('show')
+        } else if (!editing) {
+            setDeleteClass('remove')
         }
-    }, [show])
+    }, [editing])
 
     return (
         <div>
-            <button
-                className={`btn-red btn-slim delete-all-button ${lass}`}
-                aria-label="Remove all accounts from institution"
-                onClick={() => onClick()}
-                disabled={!show}
+            <Tooltip
+                id='delete-all-tooltip'
+                msg={'Remove account'}
+                ariaLabel={'Remove Account'}
+                style={{
+                    left: '-320%',
+                    bottom: '-20%',
+                }}
+                type={'left'}
             >
-                Remove All
-            </button>
+                <button
+                    className={`btn delete-button ${deleteClass}`}
+                    aria-label="Remove account"
+                    onClick={() => onClick()}
+                    disabled={!editing}
+                >
+                    <Delete width={'1.3em'} height={'1.3em'} />
+                </button>
+            </Tooltip>
         </div >
     )
 }
 
-const DeleteButton = (props) => {
-    const { visible, account, onClick, ...rest } = props
-    const [loaded, setLoaded] = useState(false)
-    const [deleteClass, setDeleteClass] = useState('')
-    const { deleteQue, setDeleteQue } = useContext(DeleteContext)
-
-    useEffect(() => {
-        setLoaded(true)
-        if (loaded && visible) {
-            setDeleteClass('show')
-        } else if (loaded) {
-            setDeleteClass('remove')
-        }
-    }, [visible])
-
-    return (
-        <>
-            <button
-                className={`btn delete-button ${deleteClass}`}
-                aria-label="Remove account"
-                disabled={!visible}
-                {...rest}
-                onClick={(e) => {
-                    e.preventDefault()
-                    onClick()
-                    if (deleteQue.filter((item) => item.account === account.id).length === 0) {
-                        setDeleteQue((prev) => [...prev, { account: account.id }])
-                    }
-                }}
-            >
-                <span><Delete /></span>
-            </button>
-        </>
-    )
-}
-
-const typeMap = {
-    'checking': 'Checking',
-    'savings': 'Savings',
-    'credit card': 'Credit Card',
-    'cd': 'CD',
-    'money market': 'Money Market',
-    'ira': 'IRA',
-    '401k': '401k',
-    'student': 'Student Loan',
-    'mortgage': 'Mortgage',
-}
-
-const Account = (props) => {
-    const { account, showDelete } = props
+const Account = ({ account }) => {
     const [removed, setRemoved] = useState(false)
-    const { editing } = useContext(DeleteContext)
+    const { editing, deleteQue } = useContext(DeleteContext)
 
     useEffect(() => {
         !editing && setRemoved(false)
@@ -138,8 +104,18 @@ const Account = (props) => {
             marginTop: editing && removed ? '0px' : '8px',
             marginBottom: editing && removed ? '0px' : '8px',
             width: '100%',
-        }
+        },
     })
+
+    // If the plaid item of the account is in the delete que,
+    // hide this account
+    useEffect(() => {
+        if (deleteQue.some((que) =>
+            que.itemId === account.itemId && !que.accountId
+        )) {
+            setRemoved(true)
+        }
+    }, [deleteQue])
 
     return (
         <animated.div className={'account-name'} style={springs}>
@@ -147,15 +123,10 @@ const Account = (props) => {
                 <span>
                     {account.name}
                 </span>
-                <DeleteButton
-                    visible={showDelete}
-                    account={account}
-                    onClick={() => setRemoved(true)}
-                />
             </div >
             <div>
                 <span>
-                    {typeMap[account.subtype]}
+                    {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
                     &nbsp;&nbsp;
                     &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
                     {account.mask}
@@ -165,24 +136,43 @@ const Account = (props) => {
     )
 }
 
-const AccountsColumn = ({ item, showDelete, start, end }) => {
-
-    return (
-        <div>
-            {item.accounts.slice(start, end).map((account) => (
-                <Account key={account.id} account={account} showDelete={showDelete} />
-            ))}
-        </div>
-    )
-}
-
 const PlaidItem = ({ item }) => {
-    const { setDeleteQue } = useContext(DeleteContext)
-    const { editing } = useContext(DeleteContext)
+    const { deleteQue, setDeleteQue } = useContext(DeleteContext)
+    const [removedClass, setRemovedClass] = useState('')
+    const mid = item.accounts.length / 2 + 1
+
+    const handleRemoveAll = () => {
+        // Filter out accounts from delete que
+        const filtered = deleteQue.filter((que) => que.itemId !== item.id)
+        setDeleteQue([...filtered, { itemId: item.id }])
+    }
+
+    const handleRemove = (account) => {
+        setDeleteQue((prev) => [...prev, { accountId: account.id, itemId: item.id }])
+    }
+
+    useEffect(() => {
+        // If the plaid item is in the delete que, set the removed class so
+        // the header can be hidden
+        if (deleteQue.some((que) => que.itemId === item.id && !que.accountId)) {
+            setRemovedClass('removed')
+        } else {
+            setRemovedClass('')
+        }
+
+        // If all accounts for the item are in the delete que, swap it out
+        // for the plaid item
+        if (item.accounts.every((account) =>
+            deleteQue.some((que) => que.accountId === account.id)
+        )) {
+            const filtered = deleteQue.filter((que) => que.itemId !== item.id)
+            setDeleteQue([...filtered, { itemId: item.id }])
+        }
+    }, [deleteQue])
 
     return (
-        <div className="institution">
-            <div className="header2">
+        <div className={`institution  ${removedClass}`}>
+            <div className={`header2  ${removedClass}`}>
                 <div>
                     <Base64Logo
                         data={item.institution.logo}
@@ -193,40 +183,41 @@ const PlaidItem = ({ item }) => {
                     <h4>{item.institution.name}</h4>
                 </div>
                 <div>
-                    <DeleteAllButton
-                        show={editing}
-                        onClick={() => setDeleteQue(
-                            (prev) => [...prev, { item: item.id }]
-                        )}
-                    />
+                    <DeleteAllButton onClick={handleRemoveAll} />
                 </div>
             </div >
             <div id="accounts">
-                <AccountsColumn
-                    item={item}
-                    start={0}
-                    end={item.accounts.length / 2 + 1}
-                    showDelete={editing}
-                />
-                <AccountsColumn
-                    item={item}
-                    start={item.accounts.length / 2 + 1}
-                    end={item.accounts.length}
-                    showDelete={editing}
-                />
+                <div>
+                    {item.accounts.slice(0, mid).map((account) => (
+                        <Account
+                            key={account.id}
+                            account={{ ...account, itemId: item.id }}
+                            handleRemove={handleRemove}
+                        />
+                    ))}
+                </div>
+                <div>
+                    {item.accounts.slice(mid, item.accounts.length).map((account) => (
+                        <Account
+                            key={account.id}
+                            account={{ ...account, itemId: item.id }}
+                            handleRemove={handleRemove}
+                        />
+                    ))}
+                </div>
             </div>
         </div >
     )
 }
 
 const Header = ({ onPlus }) => {
-    const { editing, setEditing } = useContext(DeleteContext)
+    const { editing, setEditing, plaidItems } = useContext(DeleteContext)
 
     return (
         <div className="header">
             <h1>Connections</h1>
             <div className='header-btns'>
-                {!editing &&
+                {!editing && plaidItems.length > 0 &&
                     <button
                         className="btn-clr btn"
                         onClick={() => setEditing(!editing)}
@@ -246,19 +237,20 @@ const Header = ({ onPlus }) => {
     )
 }
 
+
 const Inputs = () => {
     const { deleteQue } = useContext(DeleteContext)
 
     return (
-        deleteQue.map((item, index) => (
+        deleteQue.map((val, index) => (
             <input
                 key={index}
                 type="hidden"
-                name={item.account
+                name={val.accountId
                     ? `accounts[${index}][id]`
                     : `items[${index}][id]`}
                 value={
-                    item.account ? item.account : item.item
+                    val.accountId ? val.accountId : val.itemId
                 }
             />
         ))
@@ -266,17 +258,17 @@ const Inputs = () => {
 }
 
 const Connections = () => {
-    const [saving, setSaving] = useState(false)
     const {
         plaidItems,
         fetchingPlaidItems,
-        user,
         editing,
         setEditing,
+        deleteQue,
+        setDeleteQue,
     } = useContext(DeleteContext)
-
     const { data: plaidToken, refetch: refetchPlaidToken } = useGetPlaidTokenQuery()
     const [addNewPlaidItem] = useAddNewPlaidItemMutation()
+    const [deletePlaidItem, { isLoading: deleting }] = useDeletePlaidItemMutation()
 
     const isOauth = false
     const config = {
@@ -286,7 +278,6 @@ const Connections = () => {
                 name: metadata.institution.name
             }
             addNewPlaidItem({
-                userId: user?.id,
                 data: {
                     public_token: public_token,
                     accounts: metadata.accounts,
@@ -313,6 +304,13 @@ const Connections = () => {
         return () => clearTimeout(timeout)
     }, [])
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        for (const que of deleteQue) {
+            deletePlaidItem({ plaidItemId: que.itemId })
+        }
+    }
+
     return (
         <>
             <LoadingShimmer visible={fetchingPlaidItems} />
@@ -322,18 +320,25 @@ const Connections = () => {
                     <ShadowedContainer id="accounts-list">
                         <div>
                             {plaidItems?.map((item) => (
-                                <PlaidItem key={item.id} item={item} />
+                                <PlaidItem
+                                    key={item.id}
+                                    item={item}
+                                />
                             ))}
                         </div>
                     </ShadowedContainer>
                     <div className="footer-container">
-                        {editing && <form>
-                            <Inputs />
-                            <SubmitForm
-                                submitting={saving}
-                                onCancel={() => setEditing(false)}
-                            />
-                        </form>}
+                        {editing &&
+                            <form onSubmit={handleSubmit}>
+                                <Inputs />
+                                <SubmitForm
+                                    submitting={deleting}
+                                    onCancel={() => {
+                                        setDeleteQue([])
+                                        setEditing(false)
+                                    }}
+                                />
+                            </form>}
                     </div>
                 </div>
             }
