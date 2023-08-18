@@ -14,10 +14,11 @@ import {
     useDeletePlaidItemMutation,
 } from '@api/apiSlice'
 import {
-    LoadingShimmer,
+    ShimmerDiv,
     Base64Logo,
     ShadowedContainer
 } from '@components/pieces'
+import { withSmallModal } from '@components/hoc'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { Tooltip } from '@components/pieces'
 
@@ -237,7 +238,6 @@ const Header = ({ onPlus }) => {
     )
 }
 
-
 const Inputs = () => {
     const { deleteQue } = useContext(DeleteContext)
 
@@ -257,6 +257,33 @@ const Inputs = () => {
     )
 }
 
+const ConfirmModal = withSmallModal(({ onConfirm, ...props }) => {
+    return (
+        <div>
+            <h2>Are you sure?</h2>
+            <p>
+                This will remove the connection to your bank account
+                and all of the data associated with this bank. This action
+                cannot be undone.
+            </p>
+            <div>
+                <button
+                    className='btn-scale btn3'
+                    onClick={() => props.setVisible(false)}
+                >
+                    Cancel
+                </button>
+                <button
+                    className='btn-grn btn3'
+                    onClick={onConfirm}
+                >
+                    Confirm
+                </button>
+            </div>
+        </div>
+    )
+})
+
 const Connections = () => {
     const {
         plaidItems,
@@ -266,6 +293,7 @@ const Connections = () => {
         deleteQue,
         setDeleteQue,
     } = useContext(DeleteContext)
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
     const { data: plaidToken, refetch: refetchPlaidToken } = useGetPlaidTokenQuery()
     const [addNewPlaidItem] = useAddNewPlaidItemMutation()
     const [deletePlaidItem, { isLoading: deleting }] = useDeletePlaidItemMutation()
@@ -304,18 +332,20 @@ const Connections = () => {
         return () => clearTimeout(timeout)
     }, [])
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    const handleSubmit = () => {
         for (const que of deleteQue) {
             deletePlaidItem({ plaidItemId: que.itemId })
         }
     }
 
     return (
-        <>
-            <LoadingShimmer visible={fetchingPlaidItems} />
+        <ShimmerDiv
+            id="connections-page"
+            shimmering={fetchingPlaidItems}
+        >
+            {showConfirmModal && <ConfirmModal onConfirm={handleSubmit} />}
             {!fetchingPlaidItems &&
-                <div id="connections-page">
+                <div className="padded-content">
                     <Header onPlus={() => open()} />
                     <ShadowedContainer id="accounts-list">
                         <div>
@@ -329,7 +359,7 @@ const Connections = () => {
                     </ShadowedContainer>
                     <div className="footer-container">
                         {editing &&
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={() => setShowConfirmModal(true)}>
                                 <Inputs />
                                 <SubmitForm
                                     submitting={deleting}
@@ -342,7 +372,7 @@ const Connections = () => {
                     </div>
                 </div>
             }
-        </>
+        </ShimmerDiv>
     )
 }
 

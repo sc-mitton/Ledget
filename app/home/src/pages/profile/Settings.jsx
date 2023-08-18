@@ -2,7 +2,7 @@ import React from 'react'
 
 const Settings = () => {
     return (
-        <div>
+        <div className="padded-content">
             <h1>Settings</h1>
         </div>
     )

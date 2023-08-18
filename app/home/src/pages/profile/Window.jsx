@@ -11,15 +11,18 @@ import Connections from './Connections'
 import Settings from './Settings'
 import Security from './Security'
 import { useGetMeQuery } from '@api/apiSlice'
-import { LoadingShimmer } from '@components/pieces'
+import { ShimmerDiv } from '@components/pieces'
 
 function Profile() {
     const { isLoading: userLoading } = useGetMeQuery()
     const location = useLocation()
 
     return (
-        <div className="window" id="profile-window">
-            <LoadingShimmer visible={userLoading} />
+        <ShimmerDiv
+            className="window"
+            id="profile-window"
+            shimmering={userLoading}
+        >
             {!userLoading &&
                 <>
                     <Gutter />
@@ -42,7 +45,7 @@ function Profile() {
                     </AnimatePresence>
                 </>
             }
-        </div>
+        </ShimmerDiv>
     )
 }
 

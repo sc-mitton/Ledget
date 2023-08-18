@@ -6,9 +6,9 @@ import { object, string } from "yup"
 import { useNavigate } from 'react-router-dom'
 
 import './styles/Forms.css'
-import { AddAlert, EmojiComboText, TextInput, GreenRadios } from '@components/inputs'
 import { useAddNewCategoryMutation } from '@api/apiSlice'
-import withModal from './with/withModal'
+import { AddAlert, EmojiComboText, TextInput, GreenRadios } from '@components/inputs'
+import { withModal } from '@components/hocs'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@components/pieces'
 import { useEffect } from 'react'

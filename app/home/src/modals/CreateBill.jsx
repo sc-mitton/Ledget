@@ -7,7 +7,7 @@ import { object, string } from "yup"
 
 import './styles/Forms.css'
 import SubmitForm from '@components/pieces/SubmitForm'
-import withModal from './with/withModal'
+import { withModal } from '@components/hocs'
 import {
     EmojiComboText,
     TextInput,

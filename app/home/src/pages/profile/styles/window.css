@@ -14,7 +14,6 @@
     padding: 0;
     display: flex;
     flex-direction: row;
-    position: relative;
 }
 
 #profile-window .header {
@@ -23,18 +22,15 @@
 
 #profile-window .content {
     width: 66%;
-    padding: 32px 40px;
     border-radius: 0;
-    position: relative;
+}
+
+#profile-window .padded-content {
+    padding: 32px 40px;
 }
 
 #profile-window h1 {
     font-size: 2em;
-}
-
-#profile-window .loading-shimmer-container {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
 }
 
 #profile-window .body span {
@@ -56,7 +52,6 @@
     font-weight: 500;
     display: flex;
     justify-content: center;
-    animation: fade-in .3s ease-in-out;
 }
 
 #gutter>div {

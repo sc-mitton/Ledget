@@ -68,7 +68,7 @@
     --border-radius3: 16px;
 
     /* Loading Shimmer */
-    --shimmer-background: linear-gradient(115deg, var(--window) 30%, #f1f1f1 50%, var(--window) 70%);
+    --shimmer-background: linear-gradient(115deg, var(--window) 30%, #f0f0f0 50%, var(--window) 70%);
 }
 
 /* Override color values for Firefox */

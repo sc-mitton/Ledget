@@ -1,5 +1,5 @@
 import React from 'react'
-import withModal from './with/withModal'
+import { withModal } from '@components/hocs'
 
 function HelpContent(props) {
 

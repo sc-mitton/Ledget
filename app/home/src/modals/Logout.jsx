@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import "./styles/Logout.css"
 import { ory } from '@flow/ory'
-import withSmallModal from './with/withSmallModal'
+import { withSmallModal } from '@components/hocs'
 import { LoadingRing } from '@components/pieces'
 
 function Logout(props) {

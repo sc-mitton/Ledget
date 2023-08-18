@@ -106,7 +106,6 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
     def create_accounts(self, plaid_item, validated_data):
         accounts_data = validated_data['accounts']
         institution_id = validated_data['institution']['id']
-        print(accounts_data)
         new_accounts = [
             Account(
                 plaid_item=plaid_item,

@@ -4,7 +4,7 @@ import './styles/Account.css'
 import Card from '@assets/icons/Card'
 import Camera from '@assets/icons/Camera'
 import { useGetMeQuery, useGetPaymentMethodQuery } from '@api/apiSlice'
-import { LoadingShimmer } from '@components/pieces'
+import { ShimmerDiv } from '@components/pieces'
 
 const ChangeProfilePhoto = () => {
     return (
@@ -139,10 +139,9 @@ const Account = () => {
     const { isLoading } = useGetPaymentMethodQuery()
 
     return (
-        <>
-            <LoadingShimmer visible={isLoading} />
+        <ShimmerDiv shimmering={isLoading} >
             {!isLoading &&
-                <div id="account-page">
+                <div id="account-page" className="padded-content">
                     <div className="header">
                         <h1>Account</h1>
                     </div>
@@ -154,7 +153,7 @@ const Account = () => {
                     </div>
                 </div>
             }
-        </>
+        </ShimmerDiv>
     )
 }
 
