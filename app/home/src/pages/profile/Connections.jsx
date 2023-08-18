@@ -4,6 +4,7 @@ import Plus from '@assets/icons/Plus'
 import Edit from '@assets/icons/Edit'
 import { usePlaidLink } from 'react-plaid-link'
 import { useSpring, animated } from '@react-spring/web'
+import { useSearchParams } from 'react-router-dom'
 
 import './styles/Connections.css'
 import Delete from '@assets/icons/Delete'
@@ -111,7 +112,7 @@ const Account = ({ account }) => {
 
 const PlaidItem = ({ item }) => {
     const { deleteQue, setDeleteQue } = useContext(DeleteContext)
-    const [removedClass, setRemovedClass] = useState('')
+    const [removed, setRemoved] = useState(false)
     const mid = item.accounts.length / 2 + 1
 
     const handleRemoveAll = () => {
@@ -120,17 +121,13 @@ const PlaidItem = ({ item }) => {
         setDeleteQue([...filtered, { itemId: item.id }])
     }
 
-    const handleRemove = (account) => {
-        setDeleteQue((prev) => [...prev, { accountId: account.id, itemId: item.id }])
-    }
-
     useEffect(() => {
         // If the plaid item is in the delete que, set the removed class so
         // the header can be hidden
         if (deleteQue.some((que) => que.itemId === item.id && !que.accountId)) {
-            setRemovedClass('removed')
+            setRemoved(true)
         } else {
-            setRemovedClass('')
+            setRemoved(false)
         }
 
         // If all accounts for the item are in the delete que, swap it out
@@ -143,9 +140,19 @@ const PlaidItem = ({ item }) => {
         }
     }, [deleteQue])
 
+
+    const springProps = useSpring({
+        opacity: removed ? 0 : 1,
+        maxHeight: removed ? 0 : 1000,
+        config: {
+            tension: removed ? 200 : 200,
+            friction: removed ? 30 : 100,
+        },
+    })
+
     return (
-        <div className={`institution  ${removedClass}`}>
-            <div className={`header2  ${removedClass}`}>
+        <animated.div className="institution" style={springProps}>
+            <div className="header2">
                 <div>
                     <Base64Logo
                         data={item.institution.logo}
@@ -165,7 +172,6 @@ const PlaidItem = ({ item }) => {
                         <Account
                             key={account.id}
                             account={{ ...account, itemId: item.id }}
-                            handleRemove={handleRemove}
                         />
                     ))}
                 </div>
@@ -174,12 +180,11 @@ const PlaidItem = ({ item }) => {
                         <Account
                             key={account.id}
                             account={{ ...account, itemId: item.id }}
-                            handleRemove={handleRemove}
                         />
                     ))}
                 </div>
             </div>
-        </div >
+        </animated.div >
     )
 }
 
@@ -232,6 +237,12 @@ const Inputs = () => {
 const ConfirmModal = withSmallModal((props) => {
     const { deleteQue } = useContext(DeleteContext)
     const [deletePlaidItem] = useDeletePlaidItemMutation()
+    const [, setSearchParams] = useSearchParams()
+
+    useEffect(() => {
+        setSearchParams({ confirm: 'delete' })
+        return () => setSearchParams({})
+    }, [deleteQue])
 
     const finalSubmit = () => {
         for (const que of deleteQue) {
