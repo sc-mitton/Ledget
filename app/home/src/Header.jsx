@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
 import { animated } from '@react-spring/web'
+import { useSearchParams } from 'react-router-dom'
 
 import './styles/header.css'
 import logoIcon from '@assets/icons/logoIcon.svg'
@@ -34,7 +35,6 @@ const Navigation = ({ isNarrow }) => {
         find: (element) => element.firstChild.name === location.pathname.split("/")[1]
     })
 
-    const [rootPath, setRootPath] = useState()
     const [showPill, setShowPill] = useState()
 
     const handleTabClick = (e) => {
@@ -97,6 +97,8 @@ function Header({ isNarrow }) {
     const [modal, setModal] = useState('')
     const navigate = useNavigate()
     const location = useLocation()
+    const [searchParams] = useSearchParams()
+    const [zIndex, setZindex] = useState(1000)
 
     const DropDownMenu = () => {
 
@@ -174,12 +176,18 @@ function Header({ isNarrow }) {
         }
     }
 
+    useEffect(() => {
+        if (searchParams.get('confirm') || location.pathname.includes('new')) {
+            setZindex(0)
+        } else {
+            setZindex(1000)
+        }
+    }, [location.pathname, searchParams])
+
     return (
         <>
             <header
-                style={{
-                    zIndex: !location.pathname.includes('new') ? 1000 : 0
-                }}
+                style={{ zIndex: zIndex }}
             >
                 <div id="header-container">
                     <div id="header-logo">

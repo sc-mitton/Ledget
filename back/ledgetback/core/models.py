@@ -33,6 +33,7 @@ class User(models.Model):
             ),
         ],
     )
+    is_onboarded = models.BooleanField(default=False)
 
     objects = UserManager()
     USERNAME_FIELD = 'id'

@@ -44,6 +44,7 @@ class UserView(APIView):
                 'name': request.user.traits.get('name', {}),
                 'is_customer': request.user.is_customer,
                 'is_verified': request.user.is_verified,
+                'is_onboarded': request.user.is_onboarded,
                 'subscription': subscription_data
             },
             status=HTTP_200_OK

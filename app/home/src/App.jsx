@@ -12,10 +12,6 @@ import Header from './Header'
 import { useGetMeQuery } from '@api/apiSlice'
 import "./styles/style.css";
 
-
-
-
-
 const PrivateRoute = () => {
     const { isSuccess, isLoading, isPending } = useGetMeQuery()
 
@@ -23,9 +19,9 @@ const PrivateRoute = () => {
         // Check the condition for redirection here
         if (!isSuccess && !isLoading && !isPending) {
             // Redirect to the specified URL
-            window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL;
+            window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL
         }
-    }, [isSuccess, isLoading, isPending]);
+    }, [isSuccess, isLoading, isPending])
 
     return (
         (isSuccess || isLoading || isPending) && <Outlet />
@@ -48,8 +44,6 @@ const App = () => {
 
     const config = {
         backgroundColor: 'transparent',
-        top: '0px',
-        left: '0px',
         width: '100%',
         height: '100%',
         display: 'flex',

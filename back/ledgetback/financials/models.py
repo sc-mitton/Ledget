@@ -84,6 +84,8 @@ class Transactions(models.Model):
     datetime = models.DateTimeField(null=False, blank=False)
     authorized_date = models.DateField(null=True, blank=True)
     authorized_datetime = models.DateTimeField(null=True, blank=True)
+    confirmed_date = models.DateField(null=True, blank=True)
+    confirmed_datetime = models.DateTimeField(null=True, blank=True)
 
     # location info
     address = models.CharField(max_length=100, null=True, blank=True)

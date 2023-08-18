@@ -1,20 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import './styles/ShimmerDiv.css'
 import { useTransition, animated } from '@react-spring/web'
 
 const ShimmerDiv = (props) => {
     const { shimmering, children, ...rest } = props
-    const [position, setPosition] = useState('static')
+    const [position, setPosition] = useState('relative')
     const transitions = useTransition(shimmering, {
         from: { opacity: 0 },
         enter: { opacity: 1 },
         leave: { opacity: 0 },
         onStart: () => {
-            setPosition('relative')
+            if (shimmering) {
+                setPosition('relative')
+            }
         },
         onDestroyed: () => {
-            setPosition('static')
+            if (!shimmering) {
+                setPosition('relative')
+            }
         }
     })
 

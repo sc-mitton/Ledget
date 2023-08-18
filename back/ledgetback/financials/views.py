@@ -97,7 +97,9 @@ class TransactionsSyncView(APIView):
                 cursor = response['next_cursor']
                 latest_transactions = sorted(added, key=lambda t: t['date'])[-8:] # noqa
 
-            self.store_data(added, modified, removed)
+            self.add_data(added)
+            self.modify_data(modified)
+            self.remove_data(removed)
 
             return Response(latest_transactions, status=HTTP_200_OK)
 
@@ -108,7 +110,13 @@ class TransactionsSyncView(APIView):
                 status=HTTP_400_BAD_REQUEST
             )
 
-    def store_data(self, added, modified, removed):
+    def add_data(self, data):
+        pass
+
+    def modify_data(self, data):
+        pass
+
+    def remove_data(self, data):
         pass
 
 

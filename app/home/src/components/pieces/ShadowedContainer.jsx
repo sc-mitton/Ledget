@@ -51,28 +51,21 @@ const ShadowedContainer = (props) => {
         visible: showShadow && topShadow
     })
 
+    const handleScroll = (e) => {
+        setBottomShadow((e.target.scrollTopMax - e.target.scrollTop) !== 0)
+        setTopShadow(e.target.scrollTop !== 0)
+    }
+
     useEffect(() => {
-        const handleScroll = (e) => {
-            setBottomShadow((e.target.scrollTopMax - e.target.scrollTop) !== 0)
-            setTopShadow(e.target.scrollTop !== 0)
-        }
         ref.current?.firstChild.addEventListener('scroll', handleScroll)
         return () => {
             ref.current?.firstChild.removeEventListener('scroll', handleScroll)
         }
-    }, [])
+    }, [showShadow])
 
-    // Add resize listener to ref first child
-    useEffect(() => {
-        const handleResize = (e) => {
-            setBottomShadow((e.target.scrollTopMax - e.target.scrollTop) !== 0)
-            setTopShadow(e.target.scrollTop !== 0)
-        }
-        ref.current?.firstChild.addEventListener('resize', handleResize)
-        return () => {
-            ref.current?.firstChild.removeEventListener('resize', handleResize)
-        }
-    }, [])
+    // useEffect(() => {
+    //     setBottomShadow(ref.current?.clientHeight < ref.current?.firstChild.scrollHeight)
+    // }, [])
 
     return (
         <div

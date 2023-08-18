@@ -492,7 +492,6 @@ const WeekPicker = () => {
             <hr
                 style={{
                     width: '100%',
-                    opacity: '.1',
                 }}
             />
             <ul
