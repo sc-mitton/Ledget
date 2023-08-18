@@ -47,7 +47,6 @@ const App = () => {
     }, [])
 
     const config = {
-        position: 'absolute',
         backgroundColor: 'transparent',
         top: '0px',
         left: '0px',

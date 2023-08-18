@@ -1,8 +1,8 @@
 #connections-page {
-    width: 105%;
-    height: 100%;
     display: flex;
     flex-direction: column;
+    width: 105%;
+    height: 100%;
 }
 
 #connections-page .header {

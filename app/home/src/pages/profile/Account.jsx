@@ -140,19 +140,17 @@ const Account = () => {
 
     return (
         <ShimmerDiv shimmering={isLoading} >
-            {!isLoading &&
-                <div id="account-page" className="padded-content">
-                    <div className="header">
-                        <h1>Account</h1>
-                    </div>
-                    <ChangeProfilePhoto />
-                    <Info />
-                    <div>
-                        <Plan />
-                        <PaymentMethod />
-                    </div>
+            <div id="account-page" className="padded-content">
+                <div className="header">
+                    <h1>Account</h1>
                 </div>
-            }
+                <ChangeProfilePhoto />
+                <Info />
+                <div>
+                    <Plan />
+                    <PaymentMethod />
+                </div>
+            </div>
         </ShimmerDiv>
     )
 }

@@ -27,6 +27,7 @@
 
 #profile-window .padded-content {
     padding: 32px 40px;
+    box-sizing: border-box;
 }
 
 #profile-window h1 {

@@ -18,7 +18,7 @@ import {
     Base64Logo,
     ShadowedContainer
 } from '@components/pieces'
-import { withSmallModal } from '@components/hoc'
+import { withSmallModal } from '@components/hocs'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { Tooltip } from '@components/pieces'
 
@@ -257,16 +257,33 @@ const Inputs = () => {
     )
 }
 
-const ConfirmModal = withSmallModal(({ onConfirm, ...props }) => {
+const ConfirmModal = withSmallModal((props) => {
+    const { deleteQue } = useContext(DeleteContext)
+    const [deletePlaidItem] = useDeletePlaidItemMutation()
+
+    const finalSubmit = () => {
+        for (const que of deleteQue) {
+            deletePlaidItem({ plaidItemId: que.itemId })
+        }
+        props.setVisible(false)
+    }
+
     return (
         <div>
             <h2>Are you sure?</h2>
             <p>
                 This will remove the connection to your bank account
-                and all of the data associated with this bank. This action
-                cannot be undone.
+                and all of the data associated with this bank. <strong>This action
+                    cannot be undone.</strong>
             </p>
-            <div>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    marginTop: '24px',
+                }}
+            >
                 <button
                     className='btn-scale btn3'
                     onClick={() => props.setVisible(false)}
@@ -275,7 +292,7 @@ const ConfirmModal = withSmallModal(({ onConfirm, ...props }) => {
                 </button>
                 <button
                     className='btn-grn btn3'
-                    onClick={onConfirm}
+                    onClick={finalSubmit}
                 >
                     Confirm
                 </button>
@@ -296,7 +313,6 @@ const Connections = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const { data: plaidToken, refetch: refetchPlaidToken } = useGetPlaidTokenQuery()
     const [addNewPlaidItem] = useAddNewPlaidItemMutation()
-    const [deletePlaidItem, { isLoading: deleting }] = useDeletePlaidItemMutation()
 
     const isOauth = false
     const config = {
@@ -332,20 +348,29 @@ const Connections = () => {
         return () => clearTimeout(timeout)
     }, [])
 
-    const handleSubmit = () => {
-        for (const que of deleteQue) {
-            deletePlaidItem({ plaidItemId: que.itemId })
+    const handleFormSubmit = (e) => {
+        e.preventDefault()
+        if (deleteQue.length > 0) {
+            setShowConfirmModal(true)
+        } else {
+            setEditing(false)
         }
     }
 
     return (
-        <ShimmerDiv
-            id="connections-page"
-            shimmering={fetchingPlaidItems}
-        >
-            {showConfirmModal && <ConfirmModal onConfirm={handleSubmit} />}
-            {!fetchingPlaidItems &&
-                <div className="padded-content">
+        <>
+            {showConfirmModal &&
+                <ConfirmModal
+                    blur={2}
+                    cleanUp={() => {
+                        setShowConfirmModal(false)
+                        setEditing(false)
+                        setDeleteQue([])
+                    }}
+                />
+            }
+            <ShimmerDiv shimmering={fetchingPlaidItems}>
+                <div id="connections-page" className="padded-content">
                     <Header onPlus={() => open()} />
                     <ShadowedContainer id="accounts-list">
                         <div>
@@ -359,10 +384,9 @@ const Connections = () => {
                     </ShadowedContainer>
                     <div className="footer-container">
                         {editing &&
-                            <form onSubmit={() => setShowConfirmModal(true)}>
+                            <form onSubmit={handleFormSubmit}>
                                 <Inputs />
                                 <SubmitForm
-                                    submitting={deleting}
                                     onCancel={() => {
                                         setDeleteQue([])
                                         setEditing(false)
@@ -371,8 +395,8 @@ const Connections = () => {
                             </form>}
                     </div>
                 </div>
-            }
-        </ShimmerDiv>
+            </ShimmerDiv>
+        </>
     )
 }
 

@@ -59,7 +59,7 @@
     --drop-down-hover-background: #dfdfdf;
 
     /* Borders */
-    --subtle-border-color: rgb(0, 0, 0, .1);
+    --subtle-border-color: rgb(0, 0, 0, .07);
     --subtle-border: .75px solid var(--subtle-border-color);
 
     /* Border Radius */
@@ -98,6 +98,7 @@ main {
     flex-direction: column;
     margin: 0;
     background-color: var(--window);
+    position: relative;
 }
 
 div,
