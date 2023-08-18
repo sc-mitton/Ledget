@@ -1,0 +1,30 @@
+import React from 'react'
+
+import Desert from '@assets/images/desert.svg'
+
+const DesertImage = ({ children }) => {
+    return (
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '70%',
+                textAlign: 'center',
+            }}
+        >
+            <img
+                style={{
+                    marginBottom: '-70px',
+                    height: '20em',
+                    width: '20em',
+                }}
+                src={Desert} alt="desert"
+            />
+            {children}
+        </div>
+    )
+}
+
+export default DesertImage

@@ -7,6 +7,7 @@ import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
 import './styles/Connections.css'
+import { Desert } from '@components/pieces'
 import Delete from '@assets/icons/Delete'
 import {
     useGetPlaidTokenQuery,
@@ -290,6 +291,15 @@ const ConfirmModal = withSmallModal((props) => {
     )
 })
 
+const EmptyState = ({ visible }) => {
+    return (
+        <Desert>
+            <h3>No Connections</h3>
+            <span>Click the plus icon to get started connecting your accounts</span>
+        </Desert>
+    )
+}
+
 const Connections = () => {
     const {
         plaidItems,
@@ -322,7 +332,7 @@ const Connections = () => {
         },
         onEvent: (eventName, metadata) => { },
         token: plaidToken?.link_token,
-        // ...(isOauth ? { receivedRedirectUri: window.location.href } : {}),
+        // ...(isOauth ? {receivedRedirectUri: window.location.href } : { }),
     }
     // if (import.meta.env.VITE_PLAID_REDIRECT_URI) {
     //     config.receivedRedirectUri = import.meta.env.VITE_PLAID_REDIRECT_URI
@@ -357,28 +367,35 @@ const Connections = () => {
             <ShimmerDiv shimmering={fetchingPlaidItems}>
                 <div id="connections-page" className="padded-content">
                     <Header onPlus={() => open()} />
-                    <ShadowedContainer id="accounts-list">
-                        <div>
-                            {plaidItems?.map((item) => (
-                                <PlaidItem
-                                    key={item.id}
-                                    item={item}
-                                />
-                            ))}
-                        </div>
-                    </ShadowedContainer>
-                    <div className="footer-container">
-                        {editing &&
-                            <form onSubmit={handleFormSubmit}>
-                                <Inputs />
-                                <SubmitForm
-                                    onCancel={() => {
-                                        setDeleteQue([])
-                                        setEditing(false)
-                                    }}
-                                />
-                            </form>}
-                    </div>
+                    {plaidItems?.length === 0
+                        ?
+                        <EmptyState />
+                        :
+                        <>
+                            <ShadowedContainer id="accounts-list">
+                                <div>
+                                    {plaidItems?.map((item) => (
+                                        <PlaidItem
+                                            key={item.id}
+                                            item={item}
+                                        />
+                                    ))}
+                                </div>
+                            </ShadowedContainer>
+                            <div className="footer-container">
+                                {editing &&
+                                    <form onSubmit={handleFormSubmit}>
+                                        <Inputs />
+                                        <SubmitForm
+                                            onCancel={() => {
+                                                setDeleteQue([])
+                                                setEditing(false)
+                                            }}
+                                        />
+                                    </form>}
+                            </div>
+                        </>
+                    }
                 </div>
             </ShimmerDiv>
         </>

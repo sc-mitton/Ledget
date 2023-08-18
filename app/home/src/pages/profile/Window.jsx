@@ -34,7 +34,7 @@ function Profile() {
                     className="content"
                 >
                     <Routes location={location} key={location.pathname}>
-                        <Route path="" element={<Account />} />
+                        <Route index element={<Account />} />
                         <Route path="settings" element={<Settings />} />
                         <Route path="connections" element={<Connections />} />
                         <Route path="security" element={<Security />} />

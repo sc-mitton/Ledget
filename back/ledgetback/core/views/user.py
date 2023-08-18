@@ -2,14 +2,16 @@ import logging
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.generics import UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import (
     HTTP_200_OK,
 )
 import stripe
 
+from core.serializers import OnboardUpdateSerializer
 from core.utils.stripe import stripe_error_handler, StripeError
-from core.permissions import IsAuthedVerifiedSubscriber
+from core.permissions import IsAuthedVerifiedSubscriber, IsObjectOwner
 
 stripe_logger = logging.getLogger('stripe')
 
@@ -84,3 +86,14 @@ class GetPaymentMethodsView(APIView):
     @stripe_error_handler
     def get_stripe_payment_methods(self, customer_id):
         return stripe.PaymentMethod.list(customer=customer_id)
+
+
+class OnboardedUpdateView(UpdateAPIView):
+    permission_classes = [IsAuthenticated, IsObjectOwner]
+    serializer_class = OnboardUpdateSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def perform_update(self, serializer):
+        serializer.save()

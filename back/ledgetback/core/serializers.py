@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.conf import settings
 import stripe
 
+from core.models import User
 
 stripe.api_key = settings.STRIPE_API_KEY
 
@@ -16,3 +17,11 @@ class SubscriptionSerializer(serializers.Serializer):
                 'Trial period cannot be longer than 30 days.'
             )
         return value
+
+
+class OnboardUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('onboarded',)
+
