@@ -14,7 +14,7 @@
     width: 100%;
     margin-top: 24px;
     margin-bottom: 16px;
-    transition: all .4s ease;
+    transition: all .4s ease-out;
     max-height: 100%;
 }
 
@@ -22,7 +22,6 @@
     margin-bottom: 12px;
     height: 100%;
     opacity: 1;
-    transition: all .22s ease;
 }
 
 #connections-page .institution.removed {
@@ -30,13 +29,7 @@
     margin-top: 0;
     max-height: 0%;
     margin-bottom: 0;
-    transition: all .4s ease;
-}
-
-#connections-page .institution .header2.removed {
-    opacity: 0;
-    margin-bottom: 0;
-    transition: all .22s ease;
+    transition: all .4s ease-out;
 }
 
 #connections-page .header2>div:first-child {

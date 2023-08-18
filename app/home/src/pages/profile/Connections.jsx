@@ -90,36 +90,8 @@ const DeleteAllButton = ({ onClick }) => {
 }
 
 const Account = ({ account }) => {
-    const [removed, setRemoved] = useState(false)
-    const { editing, deleteQue } = useContext(DeleteContext)
-
-    useEffect(() => {
-        !editing && setRemoved(false)
-    }, [editing])
-
-    const springs = useSpring({
-        to: {
-            opacity: editing && removed ? 0 : 1,
-            maxHeight: editing && removed ? '0px' : '100px',
-            visibility: editing && removed ? 'hidden' : 'visible',
-            marginTop: editing && removed ? '0px' : '8px',
-            marginBottom: editing && removed ? '0px' : '8px',
-            width: '100%',
-        },
-    })
-
-    // If the plaid item of the account is in the delete que,
-    // hide this account
-    useEffect(() => {
-        if (deleteQue.some((que) =>
-            que.itemId === account.itemId && !que.accountId
-        )) {
-            setRemoved(true)
-        }
-    }, [deleteQue])
-
     return (
-        <animated.div className={'account-name'} style={springs}>
+        <div className={'account-name'} >
             <div>
                 <span>
                     {account.name}
@@ -133,7 +105,7 @@ const Account = ({ account }) => {
                     {account.mask}
                 </span>
             </div>
-        </animated.div>
+        </div>
     )
 }
 
@@ -333,7 +305,7 @@ const Connections = () => {
         },
         onEvent: (eventName, metadata) => { },
         token: plaidToken?.link_token,
-        ...(isOauth ? { receivedRedirectUri: window.location.href } : {}),
+        // ...(isOauth ? { receivedRedirectUri: window.location.href } : {}),
     }
     // if (import.meta.env.VITE_PLAID_REDIRECT_URI) {
     //     config.receivedRedirectUri = import.meta.env.VITE_PLAID_REDIRECT_URI
