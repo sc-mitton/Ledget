@@ -318,6 +318,18 @@ button svg {
     margin: 2px;
 }
 
+button.pulse {
+    animation: pulse 1.5s infinite;
+    border-radius: 30%;
+    box-shadow: 0 0 4px 4px var(--green-hlight2);
+    transition: background-color .3s ease;
+}
+
+
+button.pulse:hover {
+    background-color: var(--green-hlight2);
+}
+
 .btn {
     display: flex;
     align-items: center;
@@ -653,4 +665,19 @@ ul hr {
     100% {
         transform: scale(1);
     }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 2px 0px var(--green-hlight2);
+    }
+
+    50% {
+        box-shadow: 0 0 2px 5px var(--green-hlight2);
+    }
+
+    100% {
+        box-shadow: 0 0 2px 0px var(--green-hlight2);
+    }
+
 }

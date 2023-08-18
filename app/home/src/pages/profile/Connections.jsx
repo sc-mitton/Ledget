@@ -43,6 +43,7 @@ const ConnectionsContext = ({ children }) => {
         editing,
         setEditing,
     }
+
     return (
         <DeleteContext.Provider value={value}>
             {children}
@@ -204,7 +205,7 @@ const Header = ({ onPlus }) => {
                         <Edit />
                     </button>}
                 <button
-                    className="btn-clr btn"
+                    className={`btn ${plaidItems.length === 0 ? 'pulse' : 'btn-clr'}`}
                     onClick={onPlus}
                     aria-label="Add institution connection"
                 >
@@ -235,7 +236,7 @@ const Inputs = () => {
 }
 
 const ConfirmModal = withSmallModal((props) => {
-    const { deleteQue } = useContext(DeleteContext)
+    const { deleteQue, setEditing } = useContext(DeleteContext)
     const [deletePlaidItem] = useDeletePlaidItemMutation()
     const [, setSearchParams] = useSearchParams()
 
@@ -248,6 +249,7 @@ const ConfirmModal = withSmallModal((props) => {
         for (const que of deleteQue) {
             deletePlaidItem({ plaidItemId: que.itemId })
         }
+        setEditing(false)
         props.setVisible(false)
     }
 
@@ -269,7 +271,11 @@ const ConfirmModal = withSmallModal((props) => {
             >
                 <button
                     className='btn-scale btn3'
-                    onClick={() => props.setVisible(false)}
+                    onClick={() => {
+                        props.setVisible(false)
+                        setEditing(false)
+                        setDeleteQue([])
+                    }}
                 >
                     Cancel
                 </button>
@@ -345,11 +351,7 @@ const Connections = () => {
             {showConfirmModal &&
                 <ConfirmModal
                     blur={2}
-                    cleanUp={() => {
-                        setShowConfirmModal(false)
-                        setEditing(false)
-                        setDeleteQue([])
-                    }}
+                    cleanUp={() => { setShowConfirmModal(false) }}
                 />
             }
             <ShimmerDiv shimmering={fetchingPlaidItems}>

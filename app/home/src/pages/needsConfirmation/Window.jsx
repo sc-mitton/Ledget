@@ -330,7 +330,10 @@ const NeedsConfirmationWindow = () => {
         <div id="new-items-container">
             <Header />
             <div ref={newItemsRef} id="new-items">
-                <ShadowedContainer showShadow={expanded}>
+                <ShadowedContainer
+                    onScroll={() => setShowMenu(false)}
+                    showShadow={expanded}
+                >
                     <animated.div style={containerProps}>
                         {itemTransitions((style, item) =>
                             <NewItem

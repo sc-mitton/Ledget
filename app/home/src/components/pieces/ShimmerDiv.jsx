@@ -5,7 +5,7 @@ import { useTransition, animated } from '@react-spring/web'
 
 const ShimmerDiv = (props) => {
     const { shimmering, children, ...rest } = props
-    const [position, setPosition] = useState('relative')
+    const [position, setPosition] = useState('static')
     const transitions = useTransition(shimmering, {
         from: { opacity: 0 },
         enter: { opacity: 1 },
@@ -17,7 +17,7 @@ const ShimmerDiv = (props) => {
         },
         onDestroyed: () => {
             if (!shimmering) {
-                setPosition('relative')
+                setPosition('static')
             }
         }
     })

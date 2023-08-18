@@ -35,7 +35,7 @@ const useShadowTransition = ({ location, visible }) => {
 }
 
 const ShadowedContainer = (props) => {
-    const { showShadow = true, children, style, ...rest } = props
+    const { showShadow = true, children, style, onScroll, ...rest } = props
 
     const ref = useRef(null)
     const [bottomShadow, setBottomShadow] = useState(false)
@@ -52,20 +52,28 @@ const ShadowedContainer = (props) => {
     })
 
     const handleScroll = (e) => {
+        onScroll && onScroll(e)
         setBottomShadow((e.target.scrollTopMax - e.target.scrollTop) !== 0)
         setTopShadow(e.target.scrollTop !== 0)
     }
 
+    const handleResize = () => {
+        setBottomShadow(ref.current?.clientHeight < ref.current?.firstChild.scrollHeight)
+    }
+
     useEffect(() => {
+        setBottomShadow(ref.current?.clientHeight < ref.current?.firstChild.scrollHeight)
+
         ref.current?.firstChild.addEventListener('scroll', handleScroll)
+        ref.current?.addEventListener('resize', handleResize)
         return () => {
             ref.current?.firstChild.removeEventListener('scroll', handleScroll)
+            ref.current?.removeEventListener('resize', handleResize)
         }
     }, [showShadow])
 
-    // useEffect(() => {
-    //     setBottomShadow(ref.current?.clientHeight < ref.current?.firstChild.scrollHeight)
-    // }, [])
+    useEffect(() => {
+    }, [])
 
     return (
         <div
