@@ -371,7 +371,7 @@ const Connections = () => {
             <ShimmerDiv shimmering={fetchingPlaidItems}>
                 <div id="connections-page" className="padded-content">
                     <Header onPlus={() => open()} />
-                    {plaidItems?.length === 1
+                    {plaidItems?.length === 0
                         ?
                         <EmptyState />
                         :

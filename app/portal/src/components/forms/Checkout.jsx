@@ -480,15 +480,19 @@ function Checkout({ prices }) {
             <WindowLoadingBar visible={processing} />
             <Prices prices={prices} />
             <div id="checkout-container">
-                {errMsg &&
-                    <div className="general-error" >
-                        <FormError msg={errMsg} />
-                    </div>
-                }
-                <Form id="billing-form" onSubmit={onSubmit} />
-                {cardErrMsg && <FormError msg={cardErrMsg} />}
-                <OrderSummary />
-                <SubmitButton form={'billing-form'} />
+                <div>
+                    {errMsg &&
+                        <div className="general-error" >
+                            <FormError msg={errMsg} />
+                        </div>
+                    }
+                    <Form id="billing-form" onSubmit={onSubmit} />
+                    {cardErrMsg && <FormError msg={cardErrMsg} />}
+                </div>
+                <div>
+                    <OrderSummary />
+                    <SubmitButton form={'billing-form'} />
+                </div>
             </div>
             <StripeFooter />
         </>
