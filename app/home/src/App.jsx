@@ -3,14 +3,24 @@ import React, { useEffect, useLayoutEffect, useState, useRef } from 'react'
 import { Routes, Outlet, Navigate, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 
+import Header from './Header'
 import Budget from '@pages/budget/Window'
 import Spending from '@pages/spending/Window'
 import Profile from '@pages/profile/Window'
 import Accounts from '@pages/accounts/Window'
 import NotFound from '@pages/notFound/NotFound'
-import Header from './Header'
+import { Welcome } from '@pages/onboarding'
+import CreateCategory from '@modals/CreateCategory'
+import CreateBill from '@modals/CreateBill'
 import { useGetMeQuery } from '@api/apiSlice'
 import "./styles/style.css";
+
+const config = {
+    backgroundColor: 'transparent',
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+}
 
 const PrivateRoute = () => {
     const { isSuccess, isLoading, isPending } = useGetMeQuery()
@@ -28,10 +38,39 @@ const PrivateRoute = () => {
     )
 }
 
-const App = () => {
-    const [isNarrow, setIsNarrow] = useState(false)
-    const ref = useRef(null)
+const OnboardedRoute = () => {
+    const { data: user } = useGetMeQuery()
+
+    return !user?.is_onboarded ? <Outlet /> : <Navigate to="/welcome" />
+}
+
+const OnboardingApp = () => {
     const location = useLocation()
+
+    return (
+        <AnimatePresence mode="wait">
+            <motion.div
+                initial={{ opacity: 0, transform: 'scale(0.98)', ...config }}
+                animate={{ opacity: 1, transform: 'scale(1)' }}
+                exit={{ opacity: 0, transform: 'scale(0.98)' }}
+                key={location.pathname.split('/')[1]}
+                transition={{ duration: 0.2 }}
+            >
+                <div className="dashboard" >
+                    <Routes location={location} key={location.pathname.split('/')[1]} >
+                        <Route index element={<Welcome />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </div>
+            </motion.div>
+        </AnimatePresence>
+    )
+}
+
+const MainApp = () => {
+    const [isNarrow, setIsNarrow] = useState(false)
+    const location = useLocation()
+    const ref = useRef(null)
 
     useLayoutEffect(() => {
         const handleResize = () => {
@@ -42,15 +81,8 @@ const App = () => {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
-    const config = {
-        backgroundColor: 'transparent',
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-    }
-
     return (
-        <main tabIndex={0}>
+        <>
             <Header isNarrow={isNarrow} />
             <AnimatePresence mode="wait">
                 <motion.div
@@ -60,16 +92,17 @@ const App = () => {
                     key={location.pathname.split('/')[1]}
                     transition={{ duration: 0.2 }}
                 >
-                    <div id="dashboard" ref={ref}>
+                    <div className="dashboard" ref={ref}>
                         <Routes location={location} key={location.pathname.split('/')[1]} >
-                            <Route path="/" element={<PrivateRoute />} >
-                                <Route path="/" element={<Navigate to="/budget" />} />
-                                <Route path="budget/*" element={
-                                    <>
-                                        <Budget />
-                                        {!isNarrow && <Spending />}
-                                    </>
-                                } />
+                            <Route path="/" element={<OnboardedRoute />} >
+                                <Route
+                                    path="budget"
+                                    element={<><Budget />{!isNarrow && <Spending />}</>}
+                                >
+                                    <Route path="new-category" element={<CreateCategory />} />
+                                    <Route path="new-bill" element={<CreateBill />} />
+                                    <Route path="edit" element={<div>edit</div>} />
+                                </Route>
                                 <Route path="spending" element={
                                     isNarrow ? <Spending /> : <Navigate to="/budget" />
                                 } />
@@ -81,7 +114,21 @@ const App = () => {
                     </div>
                 </motion.div>
             </AnimatePresence>
-        </main>
+        </>
+    )
+}
+
+const App = () => {
+    return (
+        <main>
+            <Routes>
+                <Route path="/" element={<PrivateRoute />} >
+                    <Route path="/*" element={<MainApp />} />
+                    <Route path="welcome" element={<OnboardingApp />} />
+                    <Route path="*" element={<NotFound />} />
+                </Route>
+            </Routes>
+        </main >
     )
 }
 

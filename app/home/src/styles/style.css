@@ -213,7 +213,7 @@ fieldset {
     justify-content: flex-start;
 }
 
-#dashboard {
+.dashboard {
     width: 90%;
     max-width: 1250px;
     margin: 20px auto;

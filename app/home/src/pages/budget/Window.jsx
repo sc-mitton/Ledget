@@ -1,21 +1,15 @@
 import React from 'react'
 
-import { Route, Routes } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 
 import './styles/Window.css'
 import Header from './Header'
-import CreateCategory from '@modals/CreateCategory'
-import CreateBill from '@modals/CreateBill'
 
 function Window() {
     return (
         <div className="window" id="budget-window">
             <Header />
-            <Routes>
-                <Route path="new-category" element={<CreateCategory />} />
-                <Route path="new-bill" element={<CreateBill />} />
-                <Route path="edit" element={<div>edit</div>} />
-            </Routes>
+            <Outlet />
         </div>
     )
 }
