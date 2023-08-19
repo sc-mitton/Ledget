@@ -52,7 +52,7 @@ const Navigation = ({ isNarrow }) => {
     }, [location.pathname])
 
     return (
-        <nav id="header-nav">
+        <nav className="header-nav">
             <ul ref={navListRef} role="navigation">
                 {tabs.map((tab) => (
                     <li
@@ -93,65 +93,71 @@ const Navigation = ({ isNarrow }) => {
     )
 }
 
+const DropDownMenu = ({ isNarrow, setModal }) => {
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const Wrapper = ({ onClick, children }) => {
+
+        return (
+            <Menu.Item as={React.Fragment}>
+                {({ active }) => (
+                    <button
+                        className={`dropdown-item ${active && "active-dropdown-item"}`}
+                        onClick={() => onClick()}
+                    >
+                        {children}
+                    </button>
+                )}
+            </Menu.Item>
+        )
+    }
+
+    return (
+        <Menu>
+            {({ open }) => (
+                <div style={{ position: 'relative' }}>
+                    <Menu.Button className="profile-button">
+                        <Profile1 />
+                    </Menu.Button>
+                    <DropAnimation
+                        className={
+                            `dropdown profile-dropdown
+                            ${isNarrow || location.pathname === '/profile'
+                                ? "narrow" : "wide"}`
+                        }
+                        visible={open}
+                    >
+                        <Menu.Items static>
+                            <Wrapper onClick={() => navigate("/profile")}>
+                                <Profile2 className="dropdown-icon" />
+                                Profile
+                            </Wrapper>
+                            <Wrapper onClick={() => navigate('/profile/settings')}>
+                                <SettingsIcon className="dropdown-icon" />
+                                Settings
+                            </Wrapper>
+                            <Wrapper onClick={() => setModal("help")}>
+                                <HelpIcon className="dropdown-icon" />
+                                Help
+                            </Wrapper>
+                            <Wrapper onClick={() => setModal("logout")}>
+                                <LogoutIcon className="dropdown-icon" id="logout-icon" />
+                                Log out
+                            </Wrapper>
+                        </Menu.Items>
+                    </DropAnimation>
+                </div>
+            )}
+        </Menu >
+    )
+}
+
 function Header({ isNarrow }) {
     const [modal, setModal] = useState('')
-    const navigate = useNavigate()
     const location = useLocation()
     const [searchParams] = useSearchParams()
     const [zIndex, setZindex] = useState(1000)
-
-    const DropDownMenu = () => {
-
-        const Wrapper = ({ onClick, children }) => {
-
-            return (
-                <Menu.Item as={React.Fragment}>
-                    {({ active }) => (
-                        <button
-                            className={`dropdown-item ${active && "active-dropdown-item"}`}
-                            onClick={() => onClick()}
-                        >
-                            {children}
-                        </button>
-                    )}
-                </Menu.Item>
-            )
-        }
-
-        return (
-            <Menu>
-                {({ open }) => (
-                    <>
-                        <Menu.Button id="profile-button">
-                            <Profile1 />
-                        </Menu.Button>
-                        <DropAnimation visible={open}>
-                            <Menu.Items static >
-                                <div className="dropdown profile-dropdown">
-                                    <Wrapper onClick={() => navigate("/profile")}>
-                                        <Profile2 className="dropdown-icon" />
-                                        Profile
-                                    </Wrapper>
-                                    <Wrapper onClick={() => navigate('/profile/settings')}>
-                                        <SettingsIcon className="dropdown-icon" />
-                                        Settings
-                                    </Wrapper>
-                                    <Wrapper onClick={() => setModal("help")}>
-                                        <HelpIcon className="dropdown-icon" />
-                                        Help
-                                    </Wrapper>
-                                    <Wrapper onClick={() => setModal("logout")}>
-                                        <LogoutIcon className="dropdown-icon" id="logout-icon" />
-                                        Log out
-                                    </Wrapper>
-                                </div>
-                            </Menu.Items>
-                        </DropAnimation>
-                    </>
-                )}
-            </Menu >
-        )
-    }
 
     const Modal = ({ selection }) => {
         switch (selection) {
@@ -189,21 +195,15 @@ function Header({ isNarrow }) {
             <header
                 style={{ zIndex: zIndex }}
             >
-                <div id="header-container">
-                    <div id="header-logo">
+                <div className="header-container">
+                    <div className="header-logo">
                         <img src={logoIcon} alt="Ledget Logo" />
                     </div>
-                    <div id="header-right">
+                    <div className="header-right">
                         <div>
                             <Navigation isNarrow={isNarrow} />
                         </div>
-                        <div className={
-                            `${isNarrow || location.pathname === '/profile'
-                                ? "profile-dropdown-narrow"
-                                : "profile-dropdown-wide"}`}
-                        >
-                            <DropDownMenu />
-                        </div>
+                        <DropDownMenu setModal={setModal} isNarrow={isNarrow} />
                     </div>
                 </div>
             </header>
@@ -211,5 +211,6 @@ function Header({ isNarrow }) {
         </>
     )
 }
+
 
 export default Header

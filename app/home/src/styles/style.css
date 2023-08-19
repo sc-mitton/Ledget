@@ -33,6 +33,9 @@
     --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
     --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
+    --new-item-drop-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px;
+    --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    --window-drop-shadow2: rgba(0, 0, 0, 0.1) 0px 2px 12px;
 
     /* Input Colors */
     --input-color: #e6e4e4;
@@ -66,6 +69,7 @@
     --border-radius: 4px;
     --border-radius1: 6px;
     --border-radius2: 8px;
+    --border-radius25: 12px;
     --border-radius3: 16px;
 
     /* Loading Shimmer */
@@ -216,14 +220,14 @@ fieldset {
 .dashboard {
     width: 90%;
     max-width: 1250px;
-    margin: 20px auto;
+    margin: 28px auto;
     margin-top: 70px;
     display: flex;
     justify-content: center;
 }
 
 .window {
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    box-shadow: var(--window-drop-shadow);
     border-radius: var(--border-radius3);
     padding: 12px 20px;
     box-sizing: border-box;
@@ -235,6 +239,25 @@ fieldset {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+#new-items-container.skeleton {
+    height: 125px;
+}
+
+.skeleton-new-category {
+    height: 75px;
+    border-radius: var(--border-radius25);
+    box-shadow: var(--new-item-drop-shadow);
+    background-color: var(--window);
+}
+
+/* ------------------------------- Responsive ------------------------------- */
+
+@media screen and (max-width: 450px) {
+    .window {
+        box-shadow: var(--window-drop-shadow2);
+    }
 }
 
 /* --------------------------------- Inputs --------------------------------- */
