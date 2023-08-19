@@ -294,9 +294,13 @@ const ConfirmModal = withSmallModal((props) => {
 const EmptyState = ({ visible }) => {
     return (
         <Desert>
-            <h3>No Connections</h3>
-            <span>Click the plus icon to get started connecting your accounts</span>
-        </Desert>
+            <div id="no-connections-message">
+                <h2>No Connections</h2>
+                <span>Click the plus icon to get started </span>
+                <br />
+                <span>connecting your accounts</span>
+            </div>
+        </Desert >
     )
 }
 
@@ -367,7 +371,7 @@ const Connections = () => {
             <ShimmerDiv shimmering={fetchingPlaidItems}>
                 <div id="connections-page" className="padded-content">
                     <Header onPlus={() => open()} />
-                    {plaidItems?.length === 0
+                    {plaidItems?.length === 1
                         ?
                         <EmptyState />
                         :

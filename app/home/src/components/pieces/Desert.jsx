@@ -17,8 +17,8 @@ const DesertImage = ({ children }) => {
             <img
                 style={{
                     marginBottom: '-70px',
-                    height: '20em',
-                    width: '20em',
+                    height: '23em',
+                    width: '23em',
                 }}
                 src={Desert} alt="desert"
             />

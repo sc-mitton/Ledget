@@ -140,6 +140,14 @@
 
 /* ------------------------------ Misc ----------------------------- */
 
+#no-connections-message {
+    font-weight: 500;
+}
+
+#no-connections-message h2 {
+    margin-bottom: 6px;
+}
+
 @keyframes rotate45minus {
     from {
         transform: rotate(0deg);
