@@ -1,11 +1,12 @@
 :root {
     /* Windows */
-    --window: rgb(252, 248, 248);
+    --window: #fcf8f8;
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-background-color: #f0f0f0;
 
     --background-color: #fcfcfc;
     --logo-dark: #242424;
+    --skeleton: rgb(235, 235, 235);
 
     /* Palet */
     --mute-red: #fe8797;
@@ -36,6 +37,8 @@
     --new-item-drop-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px;
     --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     --window-drop-shadow2: rgba(0, 0, 0, 0.1) 0px 2px 12px;
+    --scroll-shadow-bottom: 0deg, rgba(248, 248, 248), transparent;
+    --scroll-shadow-top: 180deg, rgba(248, 248, 248), transparent;
 
     /* Input Colors */
     --input-color: #e6e4e4;
@@ -241,16 +244,6 @@ fieldset {
     align-items: center;
 }
 
-#new-items-container.skeleton {
-    height: 125px;
-}
-
-.skeleton-new-category {
-    height: 75px;
-    border-radius: var(--border-radius25);
-    box-shadow: var(--new-item-drop-shadow);
-    background-color: var(--window);
-}
 
 /* ------------------------------- Responsive ------------------------------- */
 

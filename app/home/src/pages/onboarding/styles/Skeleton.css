@@ -1,0 +1,104 @@
+.skeleton-inner {
+    background-color: var(--skeleton);
+    border-radius: var(--border-radius);
+    margin: 4px 0;
+}
+
+/* -------------------------------- New Items ------------------------------- */
+
+#new-items-container.skeleton {
+    height: 150px;
+}
+
+.new-category.skeleton {
+    height: 75px;
+    border-radius: var(--border-radius25);
+    box-shadow: var(--new-item-drop-shadow);
+    background-color: var(--window);
+    display: flex;
+}
+
+#new-item-contents.skeleton {
+    display: flex;
+    justify-content: center;
+    padding: 16px 24px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+#new-item-contents.skeleton>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#new-item-contents.skeleton>div:first-child div:first-child {
+    width: 100px;
+    height: 50%;
+}
+
+#new-item-contents.skeleton>div:first-child div:last-child {
+    width: 150px;
+    height: 50%;
+}
+
+#new-item-contents.skeleton>div:last-child div {
+    width: 75px;
+    height: 40%;
+    margin: 4px 0;
+}
+
+/* ---------------------------- Historical Items ---------------------------- */
+
+#all-items-window.skeleton {
+    overflow: hidden;
+    position: relative;
+    padding: 24px;
+}
+
+#all-items-window.skeleton .shadow {
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+    background: -webkit-linear-gradient(var(--scroll-shadow-bottom));
+    background: linear-gradient(var(--scroll-shadow-bottom))
+}
+
+.item-container.skeleton {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+.item-container.skeleton .skeleton-inner {
+    height: 50%;
+
+}
+
+.item-container.skeleton>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+}
+
+.item-container.skeleton>div:last-child {
+    align-items: flex-end;
+}
+
+.item-container.skeleton>div:first-child .skeleton-inner:first-child {
+    width: 100px;
+}
+
+.item-container.skeleton>div:first-child .skeleton-inner:last-child {
+    width: 150px;
+}
+
+.item-container.skeleton>div:last-child .skeleton-inner:first-child {
+    width: 70px;
+}
+
+.item-container.skeleton>div:last-child .skeleton-inner:last-child {
+    width: 100px;
+}

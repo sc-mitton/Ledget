@@ -6,13 +6,13 @@ const useShadowTransition = ({ location, visible }) => {
     const styles = {
         top: {
             top: '0',
-            background: `-webkit-linear-gradient(180deg, rgba(248, 248, 248), transparent)`,
-            background: `linear-gradient(180deg, rgba(248, 248, 248), transparent)`
+            background: `-webkit-linear-gradient(var(--scroll-shadow-top))`,
+            background: `linear-gradient(var(--scroll-shadow-top))`
         },
         bottom: {
             bottom: '0',
-            background: `-webkit-linear-gradient(0deg, rgba(248, 248, 248), transparent)`,
-            background: `linear-gradient(0deg, rgba(248, 248, 248), transparent)`
+            background: `-webkit-linear-gradient(var(--scroll-shadow-bottom))`,
+            background: `linear-gradient(var(--scroll-shadow-bottom))`
         }
     }
 
@@ -62,18 +62,15 @@ const ShadowedContainer = (props) => {
     }
 
     useEffect(() => {
-        setBottomShadow(ref.current?.clientHeight < ref.current?.firstChild.scrollHeight)
+        setBottomShadow(true)
 
         ref.current?.firstChild.addEventListener('scroll', handleScroll)
-        ref.current?.addEventListener('resize', handleResize)
+        window.addEventListener('resize', handleResize)
         return () => {
             ref.current?.firstChild.removeEventListener('scroll', handleScroll)
-            ref.current?.removeEventListener('resize', handleResize)
+            window.removeEventListener('resize', handleResize)
         }
     }, [showShadow])
-
-    useEffect(() => {
-    }, [])
 
     return (
         <div
@@ -87,10 +84,10 @@ const ShadowedContainer = (props) => {
             {...rest}
         >
             {bottomTransitions((style, item) =>
-                item && <animated.div style={style} className="shadow" />
+                item && <animated.div style={style} />
             )}
             {topTransitions((style, item) =>
-                item && <animated.div style={style} className="shadow" />
+                item && <animated.div style={style} />
             )}
             {children}
         </div>
