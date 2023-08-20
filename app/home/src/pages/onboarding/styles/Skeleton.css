@@ -4,10 +4,58 @@
     margin: 4px 0;
 }
 
+/* ------------------------------ Budget Window ----------------------------- */
+
+#budget-window.skeleton {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    overflow: hidden;
+}
+
+.skeleton-header {
+    min-height: 30px;
+    width: 30%;
+}
+
+#budget-window.skeleton>div:last-child {
+    display: flex;
+    flex-grow: 1;
+}
+
+.budget-column {
+    flex: 1;
+    margin: 40px 0;
+}
+
+.budget-column>div:first-child {
+    height: 60px;
+    width: 80%;
+    border-radius: var(--border-radius2);
+    margin-bottom: 36px;
+}
+
+.budget-row.skeleton-inner {
+    height: 16px;
+    margin: 28px 0;
+}
+
+@media (max-width: 768px) {
+    .budget-column.first-column>div:first-child {
+        width: 100%;
+    }
+
+    .budget-column.second-column>div:first-child {
+        visibility: collapse;
+    }
+}
+
 /* -------------------------------- New Items ------------------------------- */
 
 #new-items-container.skeleton {
-    height: 150px;
+    height: 112px;
+    margin-bottom: 16px;
 }
 
 .new-category.skeleton {
@@ -49,6 +97,10 @@
 }
 
 /* ---------------------------- Historical Items ---------------------------- */
+
+#spending-window.skeleton {
+    flex: 1.2;
+}
 
 #all-items-window.skeleton {
     overflow: hidden;

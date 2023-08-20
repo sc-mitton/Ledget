@@ -237,7 +237,7 @@ const Inputs = () => {
 }
 
 const ConfirmModal = withSmallModal((props) => {
-    const { deleteQue, setEditing } = useContext(DeleteContext)
+    const { deleteQue, setDeleteQue, setEditing } = useContext(DeleteContext)
     const [deletePlaidItem] = useDeletePlaidItemMutation()
     const [, setSearchParams] = useSearchParams()
 
@@ -274,8 +274,8 @@ const ConfirmModal = withSmallModal((props) => {
                     className='btn-scale btn3'
                     onClick={() => {
                         props.setVisible(false)
-                        setEditing(false)
                         setDeleteQue([])
+                        setEditing(false)
                     }}
                 >
                     Cancel

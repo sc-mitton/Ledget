@@ -2,7 +2,6 @@ import React, { useState, useRef, useLayoutEffect } from 'react'
 
 import './styles/Skeleton.css'
 import logoIcon from '@assets/icons/logoIcon.svg'
-import { ShadowedContainer } from '@components/pieces'
 
 const Header = () => (
     <header>
@@ -93,11 +92,50 @@ const AllItems = () => {
 }
 
 const SpendingWindow = () => (
-    <div id="spending-window">
+    <div id="spending-window" className="skeleton">
         <NewItems />
         <AllItems />
     </div>
 )
+
+const BudgetWindow = () => {
+
+    const getWidth = () => {
+        const width = Math.floor(Math.random() * (15 - 0 + 1)) + 15
+
+        return `${width + 30}%`
+    }
+
+    return (
+        <div className="window skeleton" id="budget-window" >
+            <div className="skeleton-header skeleton-inner" />
+            <div>
+                <div className="budget-column first-column">
+                    <div className="skeleton-inner" />
+                    {[...Array(10)].map((_, i) => (
+                        <div
+                            style={{
+                                width: `${getWidth()}`
+                            }}
+                            className="budget-row skeleton-inner"
+                        />
+                    ))}
+                </div>
+                <div className="budget-column second-column">
+                    <div className="skeleton-inner" />
+                    {[...Array(10)].map((_, i) => (
+                        <div
+                            style={{
+                                width: `${getWidth()}`
+                            }}
+                            className="budget-row skeleton-inner"
+                        />
+                    ))}
+                </div>
+            </div>
+        </div>
+    )
+}
 
 const Dashboard = () => {
     const [isNarrow, setIsNarrow] = useState(false)
@@ -125,7 +163,7 @@ const Dashboard = () => {
                 ref={ref}
             >
                 <div className="dashboard" >
-                    <div className="window" id="budget-window" />
+                    <BudgetWindow />
                     {!isNarrow && <SpendingWindow />}
                 </div>
             </div>
