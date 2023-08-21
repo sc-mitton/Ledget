@@ -43,11 +43,13 @@ const OnboardingApp = () => {
     const location = useLocation()
 
     const config = {
+        backgroundColor: 'var(--overlay2)',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
         position: 'absolute',
-        top: '0',
-        left: '0',
-        right: '0',
-        bottom: '0',
+        zIndex: 0,
     }
 
     return (
@@ -57,16 +59,17 @@ const OnboardingApp = () => {
                 <motion.div
                     initial={{
                         opacity: 0,
-                        transform: 'scale(0.98)',
                         ...config,
                     }}
-                    animate={{ opacity: 1, transform: 'scale(1)' }}
-                    exit={{ opacity: 0, transform: 'scale(0.98)' }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     key={location.pathname.split('/')[1]}
                     transition={{ duration: 0.2 }}
                 >
-                    <Routes location={location} key={location.pathname.split('/')[1]} >
-                        <Route index element={<></>} />
+                    <Routes location={location} key={location.pathname} >
+                        <Route index element={<Welcome />} />
+                        <Route path="/connect" element={<div>connect</div>} />
+                        <Route path="/setup" element={<div>budget</div>} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </motion.div>
