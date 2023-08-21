@@ -139,7 +139,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 transform: `scale(${getScale(index)})`,
                 zIndex: `${(items.length - index)}`,
                 opacity: getOpacity(index),
-                margin: '0 16px',
+                margin: '0 4px',
                 x: 0,
                 left: 0,
                 right: 0,
