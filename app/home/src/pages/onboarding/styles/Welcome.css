@@ -1,0 +1,21 @@
+.onboarding.window2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    width: 85%;
+    max-width: 400px;
+    box-shadow: var(--mid-elevation-drop-shadow);
+}
+
+.onboarding .btn-container {
+    display: flex;
+    margin-top: 1rem;
+}
+
+
+#connect-account-btn svg {
+    max-width: 0%;
+    margin: 0;
+}
