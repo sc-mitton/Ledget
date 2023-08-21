@@ -34,15 +34,6 @@
     font-size: 2em;
 }
 
-#profile-window .body span {
-    opacity: .7;
-}
-
-#profile-window .body svg {
-    margin-right: 8px;
-    opacity: .7;
-}
-
 /* --------------------------------- Gutter --------------------------------- */
 
 #gutter {
