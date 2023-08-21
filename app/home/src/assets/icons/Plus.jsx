@@ -10,7 +10,6 @@ const Plus = ({
 
     return (
         <svg
-            className={className}
             width={width}
             height={height}
             viewBox="0 0 144 144"
@@ -21,6 +20,7 @@ const Plus = ({
         >
             <line
                 fill="none"
+                className={className}
                 stroke={stroke}
                 strokeWidth={strokeWidth}
                 strokeLinecap='round'
@@ -28,6 +28,7 @@ const Plus = ({
             />
             <line
                 fill="none"
+                className={className}
                 stroke={stroke}
                 strokeWidth={strokeWidth}
                 strokeLinecap='round'
