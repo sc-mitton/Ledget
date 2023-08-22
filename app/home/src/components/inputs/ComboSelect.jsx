@@ -41,7 +41,7 @@ const HiddenInputs = ({ value, name }) => {
 }
 
 const ComboSelect = (props) => {
-    const { value, onChange, setSelections, multiple = false } = props
+    const { value, onChange, setSelections, limit, multiple = false } = props
     const [open, setOpen] = useState(false)
     const [active, setActive] = useState(null)
     const [options, setOptions] = useState([])
@@ -65,6 +65,7 @@ const ComboSelect = (props) => {
         customRef,
         custom,
         setCustom,
+        limit,
         multiple
     }
 
@@ -240,7 +241,9 @@ const Option = ({ value, disabled, children }) => {
     // Updating the active list
     const updateValue = () => {
         if (multiple) {
-            if (contextValue.includes(value)) {
+            if (contextValue.length === limit) {
+                return
+            } else if (contextValue.includes(value)) {
                 onChange(contextValue.filter((item) => item !== value))
             }
             else {

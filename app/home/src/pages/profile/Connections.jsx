@@ -344,7 +344,7 @@ const Connections = () => {
                         :
                         <>
                             <ShadowedContainer id="accounts-list">
-                                <div>
+                                <div onResize={(e) => console.log(e)}>
                                     {plaidItems?.map((item) => (
                                         <PlaidItem
                                             key={item.id}

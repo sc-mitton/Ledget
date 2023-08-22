@@ -49,6 +49,7 @@ const OnboardingApp = () => {
         height: '100%',
         position: 'absolute',
         zIndex: 0,
+        overflow: 'hidden',
     }
 
     return (

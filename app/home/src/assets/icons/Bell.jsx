@@ -20,8 +20,7 @@ const Bell = ({
                 style={{
                     color: color,
                     position: 'absolute',
-                    top: '1px',
-                    right: '7.5px',
+                    margin: '0 auto',
                     fontSize: '12px',
                 }}
             >

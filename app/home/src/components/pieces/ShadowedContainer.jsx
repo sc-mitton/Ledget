@@ -1,6 +1,7 @@
 import React, { forwardRef, useRef, useState, useEffect } from 'react'
 
 import { useTransition, animated } from '@react-spring/web'
+import { set } from 'react-hook-form'
 
 const useShadowTransition = ({ location, visible }) => {
     const styles = {
@@ -57,18 +58,33 @@ const ShadowedContainer = (props) => {
         setTopShadow(e.target.scrollTop !== 0)
     }
 
-    const handleResize = () => {
-        setBottomShadow(ref.current?.clientHeight < ref.current?.firstChild.scrollHeight)
-    }
-
     useEffect(() => {
-        setBottomShadow(true)
-
         ref.current?.firstChild.addEventListener('scroll', handleScroll)
-        window.addEventListener('resize', handleResize)
+
+        const observer = new ResizeObserver((entries) => {
+            entries.forEach((entry) => {
+                setBottomShadow((entry.target.scrollTopMax - entry.target.scrollTop) !== 0)
+            })
+        })
+        ref.current?.firstChild && observer.observe(ref.current?.firstChild)
+
         return () => {
             ref.current?.firstChild.removeEventListener('scroll', handleScroll)
-            window.removeEventListener('resize', handleResize)
+            observer.disconnect()
+        }
+    }, [showShadow])
+
+    useEffect(() => {
+        let timeoutId
+        const setBottomShadowDelayed = () => {
+            if (showShadow) {
+                setBottomShadow(ref.current?.firstChild.scrollHeight
+                    !== ref.current?.firstChild.clientHeight)
+            }
+        }
+        timeoutId = setTimeout(setBottomShadowDelayed, 200)
+        return () => {
+            clearTimeout(timeoutId)
         }
     }, [showShadow])
 

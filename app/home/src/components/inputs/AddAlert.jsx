@@ -206,6 +206,7 @@ const AddAlert = ({ limit, placeholder, style = {}, ...rest }) => {
                 value={selectedAlerts}
                 onChange={setSelectedAlerts}
                 setSelections={setAlertOptions}
+                limit={7}
                 multiple
             >
                 {({ open }) => (

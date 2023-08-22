@@ -12,11 +12,11 @@
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
-    max-height: 100px;
+    max-height: 0;
     transition: max-height 0.3s ease-in-out;
 }
 
-#onboarding-app .btn-container.disabled {
-    max-height: 0;
+#onboarding-app .btn-container.enabled {
+    max-height: 100px;
     transition: max-height 0.3s ease-in-out;
 }
