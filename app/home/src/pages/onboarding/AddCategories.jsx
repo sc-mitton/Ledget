@@ -42,21 +42,26 @@ const ContextProvider = ({ children }) => {
 const BottomButtons = ({ formIsValid }) => {
     const navigate = useNavigate()
     const [expandContainer, setExpandContainer] = useState(false)
-    const [continueDisabled, setContinueDisabled] = useState(false)
+    const [showSave, setShowSave] = useState(formIsValid)
+    const [showContinue, setShowContinue] = useState(false)
     const { monthCategories, yearCategories } = useContext(CategoryContext)
 
     useEffect(() => {
         if (monthCategories.length > 0 || yearCategories.length > 0) {
-            setContinueDisabled(false)
+            setShowContinue(true)
             setExpandContainer(true)
         } else {
-            setContinueDisabled(true)
+            setShowContinue(false)
             setExpandContainer(false)
+            setShowSave(false)
         }
     }, [monthCategories, yearCategories])
 
     useEffect(() => {
-        formIsValid && setExpandContainer(true)
+        if (formIsValid) {
+            setExpandContainer(true)
+            setShowSave(true)
+        }
     }, [formIsValid])
 
     return (
@@ -67,8 +72,8 @@ const BottomButtons = ({ formIsValid }) => {
                 className="btn-grn btn3"
                 id="connect-account-btn"
                 aria-label="Add Category"
-                style={{ visibility: !formIsValid ? 'hidden' : 'visible' }}
-                disabled={!formIsValid}
+                style={{ visibility: showSave ? 'visible' : 'hidden' }}
+                disabled={!showSave}
                 type="submit"
             >
                 <span>Save Category</span>
@@ -76,11 +81,11 @@ const BottomButtons = ({ formIsValid }) => {
             </button>
             <button
                 className="btn-chcl btn3"
-                style={{ visibility: continueDisabled ? 'hidden' : 'visible' }}
+                style={{ visibility: showContinue ? 'visible' : 'hidden' }}
                 id="connect-account-btn"
                 aria-label="Next"
                 onClick={() => navigate('/welcome/add-bills')}
-                disabled={continueDisabled}
+                disabled={!showContinue}
             >
                 Continue
                 <Arrow
@@ -171,11 +176,22 @@ const Form = ({ children }) => {
 }
 
 const CategoriesColumn = ({ categories }) => {
+    const { setMonthCategories, setYearCategories, monthCategories, yearCategories } = useContext(CategoryContext)
+
     const transitions = useTransition(categories, {
-        from: { opacity: 0, maxHeight: '0px' },
-        enter: { opacity: 1, maxHeight: '100px' },
-        leave: { opacity: 0, maxHeight: '0px' },
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+        config: { duration: 200 },
     })
+
+    const handleDelete = (item) => {
+        if (item.period === 'month') {
+            setMonthCategories(monthCategories.filter((category) => category.name !== item.name))
+        } else {
+            setYearCategories(yearCategories.filter((category) => category.name !== item.name))
+        }
+    }
 
     return (
         <div className="budget-items-column--container">
@@ -184,7 +200,7 @@ const CategoriesColumn = ({ categories }) => {
                 : <h4 className="spaced-header2">Year</h4>
             }
             <ShadowedContainer>
-                <table className="budget-items-table">
+                <table id="budget-items-table">
                     <tbody>
                         {transitions((style, item) =>
                             <animated.tr key={item.name} style={style}>
@@ -208,6 +224,7 @@ const CategoriesColumn = ({ categories }) => {
                                     <button
                                         className={`btn delete-button show`}
                                         aria-label="Remove"
+                                        onClick={() => handleDelete(item)}
                                     >
                                         <Delete width={'1.1em'} height={'1.1em'} />
                                     </button>
@@ -226,7 +243,7 @@ const Categories = () => {
 
     return (
         <div
-            id="budget-items-columns"
+            id="budget-items"
             className={`${(monthCategories.length !== 0 || yearCategories.length !== 0) ? 'expand' : ''}`}
         >
             {
