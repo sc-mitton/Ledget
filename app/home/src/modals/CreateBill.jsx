@@ -27,7 +27,6 @@ const radioOptions = [
 
 const Form = (props) => {
     const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
-
     const [billPeriod, setBillPeriod] = useState('monthly')
     const [rangeMode, setRangeMode] = useState(false)
     const [emoji, setEmoji] = useState('')
@@ -51,11 +50,6 @@ const Form = (props) => {
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
-
-    const nameRef = useRef(null)
-    useEffect(() => {
-        emoji && nameRef.current.focus()
-    }, [emoji])
 
     const finalSubmit = (body) => {
 
@@ -130,13 +124,11 @@ const Form = (props) => {
             <hr />
             <div className='split-inputs'>
                 <div>
-                    <label htmlFor="name">Name</label>
                     <EmojiComboText
                         name="name"
                         placeholder="Name"
                         emoji={emoji}
                         setEmoji={setEmoji}
-                        ref={nameRef}
                         register={register}
                     >
                         <FormErrorTip errors={[errors.name]} />
@@ -211,7 +203,7 @@ export default (props) => {
             cleanUp={() => navigate(-1)}
             maxWidth={props.maxWidth || '325px'}
             minWidth={props.minWidth || '0px'}
-            blur={3}
+            blur={2}
         />
     )
 }

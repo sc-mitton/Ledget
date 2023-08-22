@@ -1,0 +1,62 @@
+#onboarding-app form>div {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+#onboarding-app form>div>div {
+    margin-right: 8px;
+}
+
+#onboarding-app form>div>div:last-child {
+    margin-right: 0;
+}
+
+#onboarding-app #budget-items-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 24px 0 36px 0;
+}
+
+#onboarding-app .budget-items-column {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) max-content;
+    gap: 10px;
+    font-weight: 500;
+}
+
+#onboarding-app .budget-items-column>div {
+    display: flex;
+    align-items: center;
+}
+
+#onboarding-app .budget-item--container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#onboarding-app .category-limit,
+#onboarding-app .category-alerts,
+#onboardin-app .delete-button--container {
+    justify-content: center;
+}
+
+/* ----------------------------- Responsiveness ----------------------------- */
+
+@media (max-width: 768px) {
+    #onboarding-app #budget-items-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    #onboarding-app form>div {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    #onboarding-app form>div {
+        grid-template-columns: 1fr;
+    }
+}

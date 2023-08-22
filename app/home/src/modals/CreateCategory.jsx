@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 import './styles/Forms.css'
 import { useAddNewCategoryMutation } from '@api/apiSlice'
-import { AddAlert, EmojiComboText, TextInput, GreenRadios } from '@components/inputs'
+import { AddAlert, EmojiComboText, EvenDollarInput, GreenRadios } from '@components/inputs'
 import { withModal } from '@components/hocs'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@components/pieces'
@@ -23,44 +23,6 @@ const radioOptions = [
     { name: 'type', value: 'year', label: 'Year' },
 ]
 
-const LimitInput = (props) => {
-    const { dollarLimit, setDollarLimit, register } = props
-    const { onBlur, onChange, ...rest } = register('limit')
-
-    const handleChange = (e) => {
-        const formatted = e.target.value
-            .replace(/[^0-9]/g, '')
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        setDollarLimit(`$${formatted}`)
-        onChange && onChange(e)
-    }
-
-    const hanldeBlur = (e) => {
-        e.target.value.length <= 1 && setDollarLimit('')
-        onBlur && onBlur(e)
-    }
-
-    return (
-        <>
-            <label htmlFor="limit">Limit</label>
-            <TextInput>
-                <input
-                    name={props.name}
-                    type="text"
-                    id="limit"
-                    placeholder="$0"
-                    value={dollarLimit}
-                    onChange={handleChange}
-                    onBlur={hanldeBlur}
-                    size="14"
-                    {...rest}
-                />
-                {props.children}
-            </TextInput>
-        </>
-    )
-}
-
 const Form = (props) => {
     const [dollarLimit, setDollarLimit] = useState('')
     const [emoji, setEmoji] = useState('')
@@ -71,11 +33,6 @@ const Form = (props) => {
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
-
-    const nameRef = useRef(null)
-    useEffect(() => {
-        emoji && nameRef.current.focus()
-    }, [emoji])
 
     const submit = (e) => {
         e.preventDefault()
@@ -113,33 +70,34 @@ const Form = (props) => {
                 <GreenRadios options={radioOptions} />
             </div>
             <hr />
-            <div className="split-inputs">
+            <div>
+                <EmojiComboText
+                    name="name"
+                    placeholder="Name"
+                    emoji={emoji}
+                    setEmoji={setEmoji}
+                    register={register}
+                >
+                    <FormErrorTip errors={[errors.name]} />
+                </EmojiComboText>
+            </div>
+            <div
+                className="split-inputs"
+                style={{ marginBottom: '20px' }}
+            >
                 <div>
-                    <label htmlFor="name">Name</label>
-                    <EmojiComboText
-                        name="name"
-                        placeholder="Name"
-                        emoji={emoji}
-                        setEmoji={setEmoji}
-                        ref={nameRef}
-                        register={register}
-                    >
-                        <FormErrorTip errors={[errors.name]} />
-                    </EmojiComboText>
-                </div>
-                <div>
-                    <LimitInput
+                    <EvenDollarInput
                         name="limit"
                         dollarLimit={dollarLimit}
                         setDollarLimit={setDollarLimit}
                         register={register}
                     >
                         < FormErrorTip errors={[errors.limit]} />
-                    </LimitInput>
+                    </EvenDollarInput>
                 </div>
-            </div>
-            <div style={{ marginBottom: '20px', marginTop: '8px' }}>
-                <AddAlert limit={dollarLimit} />
+                <div>
+                    <AddAlert limit={dollarLimit} />
+                </div>
             </div>
             <SubmitForm
                 submitting={isLoading}
@@ -159,9 +117,9 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '325px'}
+            maxWidth={props.maxWidth || '300px'}
             minWidth={props.minWidth || '0px'}
-            blur={3}
+            blur={2}
         />
 
     )

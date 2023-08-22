@@ -6,6 +6,8 @@
 
     --background-color: #fcfcfc;
     --logo-dark: #242424;
+    --overlay: rgba(49, 49, 49, 0.7);
+    --overlay2: rgba(49, 49, 49, 0.5);
     --skeleton: rgb(235, 235, 235);
 
     /* Palet */
@@ -17,7 +19,7 @@
     --green-hlight2: rgb(194, 255, 220);
     --green-hlight3: rgb(136, 236, 188);
     --lighter-green: rgb(179, 226, 200);
-    --m-green: rgb(81, 237, 151);
+    --m-green: #51ed97;
     --m-green-values: 81, 237, 151;
     --m-green-hover: rgb(59, 222, 132);
     --green-dark: rgb(67, 199, 126);
@@ -33,6 +35,7 @@
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-green);
     --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
+    --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
     --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
     --new-item-drop-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px;
     --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -138,6 +141,14 @@ h3 {
     white-space: nowrap;
 }
 
+.spaced-header {
+    margin-bottom: 16px;
+}
+
+.spaced-header2 {
+    margin-bottom: 8px;
+}
+
 h1 {
     margin-top: 0
 }
@@ -229,11 +240,36 @@ fieldset {
     justify-content: center;
 }
 
+.body span {
+    opacity: .7;
+}
+
+.body svg {
+    margin-right: 8px;
+    opacity: .7;
+}
+
 .window {
     box-shadow: var(--window-drop-shadow);
     border-radius: var(--border-radius3);
     padding: 12px 20px;
     box-sizing: border-box;
+}
+
+.window2 {
+    padding: 28px;
+    border-radius: var(--border-radius3);
+    background-color: var(--window-background-color);
+    width: 65%;
+    max-width: 600px;
+}
+
+.window3 {
+    padding: 28px;
+    border-radius: var(--border-radius3);
+    background-color: var(--window-background-color);
+    width: 65%;
+    max-width: 350px;
 }
 
 .window-header {
@@ -244,6 +280,15 @@ fieldset {
     align-items: center;
 }
 
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(2px);
+    background-color: var(--overlay2);
+}
 
 /* ------------------------------- Responsive ------------------------------- */
 
@@ -537,6 +582,95 @@ button.pulse:hover {
     margin-right: 4px;
 }
 
+.btn-input {
+    color: var(--input-placeholder2);
+    padding: 11px 11px;
+    margin: 4px 0;
+    border-radius: var(--border-radius2);
+    background-color: var(--input-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.budget-item {
+    padding: 2px 12px;
+    border-radius: var(--border-radius2);
+    background-color: var(--green-hlight);
+    display: flex;
+    align-items: center;
+}
+
+.budget-item span:first-child {
+    margin-right: 4px;
+}
+
+/* ------- Delete Button ------ */
+
+.delete-button {
+    opacity: 0;
+    margin: 0 2px;
+    cursor: auto;
+    transition: opacity .22s ease;
+}
+
+.delete-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(0deg);
+    transition: all .22s ease;
+}
+
+.delete-button:hover {
+    transform: rotate(-45deg);
+    transition: all .22s ease;
+}
+
+.delete-button.show {
+    opacity: 1;
+    animation: pop .22s ease;
+    cursor: pointer;
+}
+
+.delete-button.remove {
+    animation: pop-out .22s ease;
+}
+
+.delete-button span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ------- END Delete Button ------ */
+
+button .animated-stroke,
+button .animated-stroke {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+}
+
+button:hover .animated-stroke {
+    animation: draw 1s ease-in-out forwards;
+}
+
+button .animated-stroke2 line:last-child,
+button .animated-stroke2 line:first-child {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+}
+
+button:hover .animated-stroke2 line:first-child {
+    animation: draw .5s ease-in-out forwards;
+    animation-delay: .1s;
+}
+
+button:hover .animated-stroke2 line:last-child {
+    animation: draw .5s ease-in-out forwards;
+    animation-delay: .2s;
+}
+
 /* -------------------------------- Dropdowns ------------------------------- */
 
 .dropdown {
@@ -561,7 +695,13 @@ button.pulse:hover {
 }
 
 ul hr {
-    margin: 8px 0;
+    margin: 6px 0;
+}
+
+.line {
+    margin: 2px 0;
+    border: none;
+    border-top: 1px solid var(--subtle-border-color);
 }
 
 .dropdown-icon {
@@ -639,6 +779,23 @@ ul hr {
 }
 
 /* ------------------------------- Animations ------------------------------- */
+
+
+@keyframes rotate45minus {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-45deg);
+    }
+}
+
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
 
 @keyframes fade-in {
     from {

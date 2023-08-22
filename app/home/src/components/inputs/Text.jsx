@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 
 import './styles/Text.css'
 import Emoji from './Emoji'
@@ -38,12 +38,19 @@ export const MenuTextInput = (props) => {
     )
 }
 
-export const EmojiComboText = React.forwardRef((props, ref) => {
+export const EmojiComboText = (props) => {
     const { emoji, setEmoji, children, register, ...rest } = props
     const { ref: formRef, ...registerRest } = register('name')
 
+    const ref = useRef(null)
+
+    useEffect(() => {
+        emoji && ref.current.focus()
+    }, [emoji])
+
     return (
         <>
+            <label htmlFor="name">Name</label>
             <TextInput>
                 <Emoji emoji={emoji} setEmoji={setEmoji}>
                     {({ emoji }) => (
@@ -69,7 +76,45 @@ export const EmojiComboText = React.forwardRef((props, ref) => {
             </TextInput>
         </>
     )
-})
+}
+
+export const EvenDollarInput = (props) => {
+    const { dollarLimit, setDollarLimit, register } = props
+    const { onBlur, onChange, ...rest } = register('limit')
+
+    const handleChange = (e) => {
+        const formatted = e.target.value
+            .replace(/[^0-9]/g, '')
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        setDollarLimit(`$${formatted}`)
+        onChange && onChange(e)
+    }
+
+    const hanldeBlur = (e) => {
+        e.target.value.length <= 1 && setDollarLimit('')
+        onBlur && onBlur(e)
+    }
+
+    return (
+        <>
+            <label htmlFor="limit">Limit</label>
+            <TextInput>
+                <input
+                    name={props.name}
+                    type="text"
+                    id="limit"
+                    placeholder="$0"
+                    value={dollarLimit}
+                    onChange={handleChange}
+                    onBlur={hanldeBlur}
+                    size="14"
+                    {...rest}
+                />
+                {props.children}
+            </TextInput>
+        </>
+    )
+}
 
 export const DollarInput = (props) => {
     const { dollar, setDollar, register, ...rest } = props
@@ -106,4 +151,3 @@ export const DollarInput = (props) => {
 
     )
 }
-

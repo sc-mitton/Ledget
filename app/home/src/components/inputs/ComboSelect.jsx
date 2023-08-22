@@ -41,7 +41,7 @@ const HiddenInputs = ({ value, name }) => {
 }
 
 const ComboSelect = (props) => {
-    const { value, onChange, setSelections, multiple } = props
+    const { value, onChange, setSelections, multiple = false } = props
     const [open, setOpen] = useState(false)
     const [active, setActive] = useState(null)
     const [options, setOptions] = useState([])
@@ -282,7 +282,7 @@ const Option = ({ value, disabled, children }) => {
     return (
         <li
             role="option"
-            aria-selected={contextValue.includes(value) || contextValue === value}
+            aria-selected={multiple ? contextValue.includes(value) : contextValue === value}
             headlessui-state={!disabled && contextActive === value ? 'active' : null}
             tabIndex={-1}
             onKeyDown={(event) => {

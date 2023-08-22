@@ -66,14 +66,13 @@ const AllItems = () => {
     }, [ref])
 
     return (
-        <div ref={ref} id="all-items-window" class="window skeleton" >
+        <div ref={ref} id="all-items-window" className="window skeleton" >
             <div className="shadow" />
             {[...Array(numberOfItems)].map((_, i) => (
-                <>
+                <div key={`item-${i}`} >
                     <div
                         className="item-container skeleton"
                         style={{ height: '50px' }}
-                        key={i}
                     >
                         <div>
                             <div className="skeleton-inner" />
@@ -85,7 +84,7 @@ const AllItems = () => {
                         </div>
                     </div>
                     {(i !== 9) && <hr />}
-                </>
+                </div>
             ))}
         </div>
     )
@@ -114,6 +113,7 @@ const BudgetWindow = () => {
                     <div className="skeleton-inner" />
                     {[...Array(10)].map((_, i) => (
                         <div
+                            key={i}
                             style={{
                                 width: `${getWidth()}`
                             }}
@@ -125,6 +125,7 @@ const BudgetWindow = () => {
                     <div className="skeleton-inner" />
                     {[...Array(10)].map((_, i) => (
                         <div
+                            key={i}
                             style={{
                                 width: `${getWidth()}`
                             }}

@@ -1,21 +1,56 @@
-.onboarding.window2 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
-    width: 85%;
-    max-width: 400px;
-    box-shadow: var(--mid-elevation-drop-shadow);
+#connect-account-btn.enabled {
+    max-width: 100px;
+    opacity: 1;
+    transition: all 0.2s ease-in-out;
 }
 
-.onboarding .btn-container {
-    display: flex;
-    margin-top: 1rem;
+#connect-account-btn.disabled {
+    max-width: 10px;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
 }
-
 
 #connect-account-btn svg {
-    max-width: 0%;
+    max-width: 0;
     margin: 0;
+    transform: scale(0);
+    transition: all 0.2s ease-in-out;
+}
+
+#connect-account-btn:hover svg {
+    max-width: 1.5rem;
+    margin-left: 0.3rem;
+    transform: scale(1);
+    transition: all 0.2s ease-in-out;
+}
+
+.checklist {
+    margin: 28px 0 20px 0;
+}
+
+.checklist>div {
+    margin: 8px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.checklist>div div:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+    margin-right: 8px;
+}
+
+#onboarding-app #institution-logos {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 4px;
+}
+
+.checklist>div div:last-child {
+    opacity: .7
 }

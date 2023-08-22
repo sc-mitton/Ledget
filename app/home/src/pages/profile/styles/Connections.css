@@ -82,50 +82,6 @@
     margin-left: 12px;
 }
 
-/* ------------------------------ Delete Button ----------------------------- */
-
-.delete-all-button,
-.delete-button {
-    opacity: 0;
-    margin: 0 2px;
-    cursor: auto;
-    transition: opacity .22s ease;
-}
-
-.delete-all-button.show {
-    opacity: 1;
-    cursor: pointer;
-    animation: fade-in .22s ease;
-}
-
-.delete-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: rotate(0deg);
-    transition: all .22s ease;
-}
-
-.delete-button:hover {
-    transform: rotate(-45deg);
-    transition: all .22s ease;
-}
-
-.delete-button.show {
-    opacity: 1;
-    animation: pop .22s ease;
-}
-
-.delete-all-button.remove,
-.delete-button.remove {
-    animation: pop-out .22s ease;
-}
-
-.delete-button span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 /* ------------------------------ Misc ----------------------------- */
 
@@ -135,16 +91,6 @@
 
 #no-connections-message h2 {
     margin-bottom: 6px;
-}
-
-@keyframes rotate45minus {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(-45deg);
-    }
 }
 
 #connections-page .footer-container {

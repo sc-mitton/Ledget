@@ -9,7 +9,7 @@ import Spending from '@pages/spending/Window'
 import Profile from '@pages/profile/Window'
 import Accounts from '@pages/accounts/Window'
 import NotFound from '@pages/notFound/NotFound'
-import { Welcome } from '@pages/onboarding'
+import { WelcomeConnect, AddCategories } from '@pages/onboarding'
 import { SkeletonDashboard } from '@pages/onboarding'
 import CreateCategory from '@modals/CreateCategory'
 import CreateBill from '@modals/CreateBill'
@@ -36,14 +36,13 @@ const PrivateRoute = () => {
 const OnboardedRoute = () => {
     const { data: user } = useGetMeQuery()
 
-    return !user?.is_onboarded ? <Outlet /> : <Navigate to="/welcome" />
+    return !user?.is_onboarded ? <Outlet /> : <Navigate to="/welcome/connect" />
 }
 
 const OnboardingApp = () => {
     const location = useLocation()
 
     const config = {
-        backgroundColor: 'var(--overlay2)',
         top: 0,
         left: 0,
         width: '100%',
@@ -55,25 +54,35 @@ const OnboardingApp = () => {
     return (
         <>
             <SkeletonDashboard />
-            <AnimatePresence mode="wait">
-                <motion.div
-                    initial={{
-                        opacity: 0,
-                        ...config,
-                    }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    key={location.pathname.split('/')[1]}
-                    transition={{ duration: 0.2 }}
-                >
-                    <Routes location={location} key={location.pathname} >
-                        <Route index element={<Welcome />} />
-                        <Route path="/connect" element={<div>connect</div>} />
-                        <Route path="/setup" element={<div>budget</div>} />
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </motion.div>
-            </AnimatePresence>
+            <div style={{ ...config, backgroundColor: 'var(--overlay2)' }}>
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        initial={{
+                            opacity: 0,
+                            transform:
+                                location.pathname === '/welcome/connect'
+                                    ? 'translateX(0%)'
+                                    : 'translateX(20%)',
+                            ...config
+                        }}
+                        animate={{
+                            opacity: 1,
+                            transform: 'translateX(0)',
+                        }}
+                        exit={{ opacity: 0, transform: 'translateX(-20%)' }}
+                        key={location.pathname}
+                        transition={{ ease: "easeInOut", duration: 0.2 }}
+                        id="onboarding-app"
+                    >
+                        <Routes location={location} key={location.pathname} >
+                            <Route path="/connect" element={<WelcomeConnect />} />
+                            <Route path="/add-categories" element={<AddCategories />} />
+                            <Route path="/add-bills" element={<div>budget</div>} />
+                            <Route path="*" element={<NotFound />} />
+                        </Routes>
+                    </motion.div>
+                </AnimatePresence>
+            </div>
         </>
     )
 }
@@ -142,7 +151,7 @@ const App = () => {
                     <Route path="/" element={<OnboardedRoute />} >
                         <Route path="/*" element={<MainApp />} />
                     </Route>
-                    <Route path="welcome" element={<OnboardingApp />} />
+                    <Route path="welcome/*" element={<OnboardingApp />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>

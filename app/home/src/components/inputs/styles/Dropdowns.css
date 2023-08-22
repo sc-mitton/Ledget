@@ -1,10 +1,18 @@
 .select-container {
     position: absolute;
-    z-index: 500;
+    z-index: 2000;
 }
 
 .select {
     margin-top: 8px;
+}
+
+#add-alert-btn {
+    width: 100%;
+}
+
+#period-select-btn {
+    width: 100%;
 }
 
 #add-alert-btn svg,

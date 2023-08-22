@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from 'react'
 
 import Plus from '@assets/icons/Plus'
 import Edit from '@assets/icons/Edit'
-import { usePlaidLink } from 'react-plaid-link'
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
@@ -10,8 +9,6 @@ import './styles/Connections.css'
 import { Desert } from '@components/pieces'
 import Delete from '@assets/icons/Delete'
 import {
-    useGetPlaidTokenQuery,
-    useAddNewPlaidItemMutation,
     useGetPlaidItemsQuery,
     useDeletePlaidItemMutation,
 } from '@api/apiSlice'
@@ -20,6 +17,7 @@ import {
     Base64Logo,
     ShadowedContainer
 } from '@components/pieces'
+import { usePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@components/hocs'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { Tooltip } from '@components/pieces'
@@ -314,42 +312,11 @@ const Connections = () => {
         setDeleteQue,
     } = useContext(DeleteContext)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
-    const { data: plaidToken, refetch: refetchPlaidToken } = useGetPlaidTokenQuery()
-    const [addNewPlaidItem] = useAddNewPlaidItemMutation()
+    const { open, exit, ready } = usePlaidLink()
 
-    const isOauth = false
-    const config = {
-        onSuccess: (public_token, metadata) => {
-            const institution = {
-                id: metadata.institution.institution_id,
-                name: metadata.institution.name
-            }
-            addNewPlaidItem({
-                data: {
-                    public_token: public_token,
-                    accounts: metadata.accounts,
-                    institution: institution,
-                },
-            })
-        },
-        onExit: (err, metadata) => {
-        },
-        onEvent: (eventName, metadata) => { },
-        token: plaidToken?.link_token,
-        // ...(isOauth ? {receivedRedirectUri: window.location.href } : { }),
-    }
     // if (import.meta.env.VITE_PLAID_REDIRECT_URI) {
     //     config.receivedRedirectUri = import.meta.env.VITE_PLAID_REDIRECT_URI
     // }
-    const { open, exit, ready } = usePlaidLink(config)
-
-    // 30 min timeout to refresh token
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            refetchPlaidToken()
-        }, 30 * 60 * 1000)
-        return () => clearTimeout(timeout)
-    }, [])
 
     const handleFormSubmit = (e) => {
         e.preventDefault()

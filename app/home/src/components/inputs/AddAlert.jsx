@@ -21,7 +21,9 @@ const formatDollar = (value, percentage) => {
     return `$${dollar}`
 }
 
-const AddAlert = ({ limit }) => {
+
+
+const AddAlert = ({ limit, placeholder, style = {}, ...rest }) => {
     const [selectedAlerts, setSelectedAlerts] = useState([])
     const [alertOptions, setAlertOptions] = useState([
         { id: 1, value: 25, disabled: false },
@@ -150,47 +152,86 @@ const AddAlert = ({ limit }) => {
         ))
     )
 
-    return (
-        <ComboSelect
-            name="alert"
-            value={selectedAlerts}
-            onChange={setSelectedAlerts}
-            setSelections={setAlertOptions}
-            multiple
-        >
-            {({ open }) => (
-                <>
-                    <ComboSelect.Button className="btn-chcl btn-2slim" id="add-alert-btn">
-                        Spending Alert
-                        {selectedAlerts.length > 0
-                            ?
-                            <Checkmark
-                                stroke={'var(--white-text)'}
-                                width={'.7em'}
-                                height={'.7em'}
-                            /> :
-                            <Plus
-                                stroke={'var(--white-text)'}
-                                strokeWidth={'20'}
-                                width={'.8em'}
-                                height={'.8em'}
-                            />}
-                    </ComboSelect.Button>
-                    <ComboSelect.Options
-                        className="select-container"
-                        static
+    const ButtonText = () => (
+        <>
+            {selectedAlerts.length > 0
+                &&
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                }}>
+                    <span
+                        style={{
+                            backgroundColor: 'var(--m-text-gray)',
+                            color: 'var(--white-text)',
+                            borderRadius: '50%',
+                            padding: '6px',
+                            width: '.25em',
+                            height: '.25em',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            fontWeight: '500',
+                            marginRight: '6px',
+                            fontSize: '12px'
+                        }}
                     >
-                        <DropAnimation
-                            className="dropdown select"
-                            visible={open}
+                        {`${selectedAlerts.length}`}
+                    </span>
+                    <span style={{ color: 'var(--m-text-gray)' }}>
+                        {`${selectedAlerts.length == 1 ? 'Alert' : 'Alerts'}`}
+                    </span>
+                </div>
+            }
+            {selectedAlerts.length === 0 &&
+                <span style={{ color: 'var(--input-placeholder2)' }}>
+                    Add Alert
+                </span>}
+            <Plus
+                stroke={selectedAlerts.length <= 0
+                    ? 'var(--input-placeholder2)'
+                    : 'var(--m-text-gray)'}
+                strokeWidth={'20'}
+                width={'.8em'}
+                height={'.8em'}
+            />
+        </>
+    )
+
+    return (
+        <>
+            <label htmlFor="alert" >Alerts</label>
+            <ComboSelect
+                name="alert"
+                value={selectedAlerts}
+                onChange={setSelectedAlerts}
+                setSelections={setAlertOptions}
+                multiple
+            >
+                {({ open }) => (
+                    <>
+                        <ComboSelect.Button
+                            className="btn-input"
+                            id="add-alert-btn"
                         >
-                            <Options />
-                            <CustomOption />
-                        </DropAnimation>
-                    </ComboSelect.Options>
-                </>
-            )}
-        </ComboSelect>
+                            <ButtonText />
+                        </ComboSelect.Button>
+                        <ComboSelect.Options
+                            className="select-container"
+                            static
+                        >
+                            <DropAnimation
+                                className="dropdown select"
+                                visible={open}
+                            >
+                                <Options />
+                                <CustomOption />
+                            </DropAnimation>
+                        </ComboSelect.Options>
+                    </>
+                )}
+            </ComboSelect>
+        </>
     )
 }
 
