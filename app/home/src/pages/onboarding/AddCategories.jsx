@@ -2,7 +2,8 @@ import React, { useEffect, useState, useContext, useRef } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { set, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
+import { useDrag } from 'react-use-gesture'
 import { useTransition, animated } from '@react-spring/web'
 import { Tab } from '@headlessui/react'
 import { object, string } from "yup"
@@ -13,6 +14,7 @@ import Bell from '@assets/icons/Bell'
 import BellOff from '@assets/icons/BellOff'
 import Delete from '@assets/icons/Delete'
 import Arrow from '@assets/icons/Arrow'
+import Grip from '@assets/icons/Grip'
 import { FormErrorTip, ShadowedContainer } from '@components/pieces'
 import { EmojiComboText, AddAlert, EvenDollarInput, PeriodSelect } from '@components/inputs'
 import { usePillAnimation } from '@utils/hooks'
@@ -130,154 +132,6 @@ const ContextProvider = ({ children }) => {
     )
 }
 
-const BottomButtons = ({ formIsValid }) => {
-    const navigate = useNavigate()
-    const [expandContainer, setExpandContainer] = useState(false)
-    const [showSave, setShowSave] = useState(formIsValid)
-    const [showContinue, setShowContinue] = useState(false)
-    const { monthCategories, yearCategories } = useContext(CategoryContext)
-
-    useEffect(() => {
-        if (monthCategories.length > 0 || yearCategories.length > 0) {
-            setShowContinue(true)
-            setExpandContainer(true)
-        } else {
-            setShowContinue(false)
-            setExpandContainer(false)
-            setShowSave(false)
-        }
-    }, [monthCategories, yearCategories])
-
-    useEffect(() => {
-        if (formIsValid) {
-            setExpandContainer(true)
-            setShowSave(true)
-        }
-    }, [formIsValid])
-
-    return (
-        <div
-            className={`btn-container ${expandContainer ? 'enabled' : ''}`}
-        >
-            <button
-                className="btn-grn btn3"
-                id="connect-account-btn"
-                aria-label="Add Category"
-                style={{ visibility: showSave ? 'visible' : 'hidden' }}
-                disabled={!showSave}
-                type="submit"
-            >
-                <span>Save Category</span>
-                <Checkmark width={'.8em'} height={'.8em'} />
-            </button>
-            <button
-                className="btn-chcl btn3"
-                style={{ visibility: showContinue ? 'visible' : 'hidden' }}
-                id="connect-account-btn"
-                aria-label="Next"
-                onClick={() => navigate('/welcome/add-bills')}
-                disabled={!showContinue}
-            >
-                Continue
-                <Arrow
-                    width={'.8em'}
-                    height={'.8em'}
-                    rotation={-90}
-                    stroke={'var(--window)'}
-                    onClick={() => navigate('/welcome/add-bills')}
-                />
-            </button>
-        </div>
-    )
-}
-
-const Form = ({ children }) => {
-    const [emoji, setEmoji] = useState('')
-    const [dollarLimit, setDollarLimit] = useState('')
-    const [alerts, setAlerts] = useState([])
-    const { monthCategories, setMonthCategories, yearCategories, setYearCategories } = useContext(CategoryContext)
-
-    const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm({
-        resolver: yupResolver(schema),
-        mode: 'onSubmit',
-        reValidateMode: 'onSubmit',
-    })
-
-    const resetForm = () => {
-        setEmoji('')
-        setAlerts([])
-        setDollarLimit('')
-        reset()
-    }
-
-    const submit = (e) => {
-        e.preventDefault()
-
-        const formData = new FormData(e.target)
-        let body = Object.fromEntries(formData)
-
-        body.limit_amount = Number(body.limit.replace(/[^0-9]/g, '')) * 100
-        delete body.limit
-        body.name = body.name.toLowerCase()
-
-        let alerts = []
-        for (const [key, value] of Object.entries(body)) {
-            if (key.includes('alert')) {
-                alerts.push({ percent_amount: Number(value.replace(/[^0-9]/g, '')) })
-                delete body[key]
-            }
-        }
-        body.alerts = alerts
-
-        if (body.period === 'month') {
-            setMonthCategories([...monthCategories, body])
-        } else {
-            setYearCategories([...yearCategories, body])
-        }
-
-        resetForm()
-    }
-
-    return (
-        <form onSubmit={handleSubmit((data, e) => submit(e))}>
-            <div>
-                <div>
-                    <PeriodSelect />
-                </div>
-                <div>
-                    <EmojiComboText
-                        name="name"
-                        placeholder="Name"
-                        emoji={emoji}
-                        setEmoji={setEmoji}
-                        register={register}
-                    >
-                        <FormErrorTip errors={[errors.name]} />
-                    </EmojiComboText>
-                </div>
-                <div>
-                    <EvenDollarInput
-                        name="limit"
-                        dollarLimit={dollarLimit}
-                        setDollarLimit={setDollarLimit}
-                        register={register}
-                    >
-                        < FormErrorTip errors={[errors.limit]} />
-                    </EvenDollarInput>
-                </div>
-                <div>
-                    <AddAlert
-                        limit={dollarLimit}
-                        alerts={alerts}
-                        setAlerts={setAlerts}
-                    />
-                </div>
-            </div>
-            {children({ isValid })}
-        </form>
-    )
-}
-
 const CategoriesColumn = ({ period }) => {
     const {
         setMonthCategories,
@@ -316,12 +170,16 @@ const CategoriesColumn = ({ period }) => {
                         style={style}
                     >
                         <div
+                            className="budget-item-name--container"
                             style={{
                                 flexBasis: item.period === 'month'
                                     ? monthFlexBasis
                                     : yearFlexBasis
                             }}
                         >
+                            <button className="btn grip-btn" aria-label="Move">
+                                <Grip />
+                            </button>
                             <div className="budget-item-name">
                                 <span>{item.emoji}</span>
                                 <span>{formatName(item.name)}</span>
@@ -455,6 +313,154 @@ const Categories = () => {
             >
                 {tabView ? <TabView /> : <ColumnView />}
             </div>
+        </div>
+    )
+}
+
+const Form = ({ children }) => {
+    const [emoji, setEmoji] = useState('')
+    const [dollarLimit, setDollarLimit] = useState('')
+    const [alerts, setAlerts] = useState([])
+    const { monthCategories, setMonthCategories, yearCategories, setYearCategories } = useContext(CategoryContext)
+
+    const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm({
+        resolver: yupResolver(schema),
+        mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
+    })
+
+    const resetForm = () => {
+        setEmoji('')
+        setAlerts([])
+        setDollarLimit('')
+        reset()
+    }
+
+    const submit = (e) => {
+        e.preventDefault()
+
+        const formData = new FormData(e.target)
+        let body = Object.fromEntries(formData)
+
+        body.limit_amount = Number(body.limit.replace(/[^0-9]/g, '')) * 100
+        delete body.limit
+        body.name = body.name.toLowerCase()
+
+        let alerts = []
+        for (const [key, value] of Object.entries(body)) {
+            if (key.includes('alert')) {
+                alerts.push({ percent_amount: Number(value.replace(/[^0-9]/g, '')) })
+                delete body[key]
+            }
+        }
+        body.alerts = alerts
+
+        if (body.period === 'month') {
+            setMonthCategories([...monthCategories, body])
+        } else {
+            setYearCategories([...yearCategories, body])
+        }
+
+        resetForm()
+    }
+
+    return (
+        <form onSubmit={handleSubmit((data, e) => submit(e))}>
+            <div>
+                <div>
+                    <PeriodSelect />
+                </div>
+                <div>
+                    <EmojiComboText
+                        name="name"
+                        placeholder="Name"
+                        emoji={emoji}
+                        setEmoji={setEmoji}
+                        register={register}
+                    >
+                        <FormErrorTip errors={[errors.name]} />
+                    </EmojiComboText>
+                </div>
+                <div>
+                    <EvenDollarInput
+                        name="limit"
+                        dollarLimit={dollarLimit}
+                        setDollarLimit={setDollarLimit}
+                        register={register}
+                    >
+                        < FormErrorTip errors={[errors.limit]} />
+                    </EvenDollarInput>
+                </div>
+                <div>
+                    <AddAlert
+                        limit={dollarLimit}
+                        alerts={alerts}
+                        setAlerts={setAlerts}
+                    />
+                </div>
+            </div>
+            {children({ isValid })}
+        </form>
+    )
+}
+
+const BottomButtons = ({ formIsValid }) => {
+    const navigate = useNavigate()
+    const [expandContainer, setExpandContainer] = useState(false)
+    const [showSave, setShowSave] = useState(formIsValid)
+    const [showContinue, setShowContinue] = useState(false)
+    const { monthCategories, yearCategories } = useContext(CategoryContext)
+
+    useEffect(() => {
+        if (monthCategories.length > 0 || yearCategories.length > 0) {
+            setShowContinue(true)
+            setExpandContainer(true)
+        } else {
+            setShowContinue(false)
+            setExpandContainer(false)
+            setShowSave(false)
+        }
+    }, [monthCategories, yearCategories])
+
+    useEffect(() => {
+        if (formIsValid) {
+            setExpandContainer(true)
+            setShowSave(true)
+        }
+    }, [formIsValid])
+
+    return (
+        <div
+            className={`btn-container ${expandContainer ? 'enabled' : ''}`}
+        >
+            <button
+                className="btn-grn btn3"
+                id="connect-account-btn"
+                aria-label="Add Category"
+                style={{ visibility: showSave ? 'visible' : 'hidden' }}
+                disabled={!showSave}
+                type="submit"
+            >
+                <span>Save Category</span>
+                <Checkmark width={'.8em'} height={'.8em'} />
+            </button>
+            <button
+                className="btn-chcl btn3"
+                style={{ visibility: showContinue ? 'visible' : 'hidden' }}
+                id="connect-account-btn"
+                aria-label="Next"
+                onClick={() => navigate('/welcome/add-bills')}
+                disabled={!showContinue}
+            >
+                Continue
+                <Arrow
+                    width={'.8em'}
+                    height={'.8em'}
+                    rotation={-90}
+                    stroke={'var(--window)'}
+                    onClick={() => navigate('/welcome/add-bills')}
+                />
+            </button>
         </div>
     )
 }
