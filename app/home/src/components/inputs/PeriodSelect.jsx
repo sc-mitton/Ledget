@@ -34,10 +34,6 @@ const PeriodSelect = () => {
         ))
     )
 
-    useEffect(() => {
-        console.log(buttonRef?.current)
-    }, [])
-
     return (
         <>
             <label htmlFor="period">Type</label>

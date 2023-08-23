@@ -780,6 +780,23 @@ ul hr {
     flex-grow: 1;
 }
 
+/* ---------------------------------- Tabs ---------------------------------- */
+
+.tab-list--container {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab-list {
+    position: relative;
+    border-radius: var(--border-radius2);
+    background-color: var(--input-color);
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+}
+
 /* ------------------------------- Animations ------------------------------- */
 
 @keyframes rotate45minus {

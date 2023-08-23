@@ -23,8 +23,12 @@ const formatDollar = (value, percentage) => {
 
 
 
-const AddAlert = ({ limit, placeholder, style = {}, ...rest }) => {
-    const [selectedAlerts, setSelectedAlerts] = useState([])
+const AddAlert = (props) => {
+    const { limit, placeholder, style = {}, alerts: propAlerts, setAlerts: propSetAlerts, ...rest } = props
+    const [alerts, setAlerts] = useState([])
+    const setSelectedAlerts = propSetAlerts || setAlerts
+    const selectedAlerts = propAlerts || alerts
+
     const [alertOptions, setAlertOptions] = useState([
         { id: 1, value: 25, disabled: false },
         { id: 2, value: 50, disabled: false },

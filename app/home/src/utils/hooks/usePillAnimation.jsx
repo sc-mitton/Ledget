@@ -55,7 +55,7 @@ const usePillAnimation = (args) => {
     useEffect(() => {
         setTimeout(() => {
             const elements = Array.from(
-                ref.current.querySelectorAll(querySelectall)
+                ref.current ? ref.current.querySelectorAll(querySelectall) : []
             )
             setSelectors(elements)
         }, 0)
