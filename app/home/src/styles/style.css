@@ -616,6 +616,12 @@ button.pulse:hover {
     transition: opacity .22s ease;
 }
 
+.delete-button-show {
+    margin: 0 2px;
+    opacity: 1;
+    cursor: pointer;
+}
+
 .delete-button {
     display: flex;
     justify-content: center;
@@ -624,7 +630,8 @@ button.pulse:hover {
     transition: all .22s ease;
 }
 
-.delete-button:hover {
+.delete-button:hover,
+.delete-button-show:hover {
     transform: rotate(-45deg);
     transition: all .22s ease;
 }

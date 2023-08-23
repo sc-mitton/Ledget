@@ -78,8 +78,11 @@ const ShadowedContainer = (props) => {
         let timeoutId
         const setBottomShadowDelayed = () => {
             if (showShadow) {
-                setBottomShadow(ref.current?.firstChild.scrollHeight
-                    !== ref.current?.firstChild.clientHeight)
+                if (ref.current?.firstChild.scrollHeight !== ref.current?.firstChild.clientHeight) {
+                    setBottomShadow(true)
+                } else if ((ref.current?.firstChild.scrollTopMax - ref.current?.firstChild.scrollTop) !== 0) {
+                    setBottomShadow(true)
+                }
             }
         }
         timeoutId = setTimeout(setBottomShadowDelayed, 200)

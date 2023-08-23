@@ -26,12 +26,101 @@ const CategoryContext = React.createContext()
 const ContextProvider = ({ children }) => {
     const [monthCategories, setMonthCategories] = useState([])
     const [yearCategories, setYearCategories] = useState([])
+    const [yearFlexBasis, setYearFlexBasis] = useState(0)
+    const [monthFlexBasis, setMonthFlexBasis] = useState(0)
+    const [categoriesNotEmpty, setCategoriesNotEmpty] = useState(true)
+
+    const updateMonthFlexBasis = () => {
+        const longestMonthCategory = monthCategories.reduce((acc, curr) => {
+            if (curr.name.length > acc) {
+                return curr.name.length
+            } else {
+                return acc
+            }
+        }, 0)
+        setMonthFlexBasis(`${longestMonthCategory}ch`)
+    }
+
+    const updateYearFlexBasis = () => {
+        const longestYearCategory = yearCategories.reduce((acc, curr) => {
+            if (curr.name.length > acc) {
+                return curr.name.length
+            } else {
+                return acc
+            }
+        }, 0)
+        setYearFlexBasis(`${longestYearCategory}ch`)
+    }
+
+    useEffect(() => {
+        updateMonthFlexBasis()
+        updateYearFlexBasis()
+    }, [monthCategories, yearCategories])
+
+    const monthTransitions = useTransition(monthCategories, {
+        from: {
+            opacity: 0,
+            maxHeight: '0',
+            marginTop: '0px',
+            marginBottom: '0px'
+        },
+        enter: {
+            opacity: 1,
+            maxHeight: '100px',
+            marginTop: '8px',
+            marginBottom: '8px'
+        },
+        leave: {
+            opacity: 0,
+            maxHeight: '0',
+            marginTop: '0px',
+            marginBottom: '0px',
+            padding: '0'
+        },
+        config: { duration: 200 },
+    })
+
+    const yearTransitions = useTransition(yearCategories, {
+        from: {
+            opacity: 0,
+            maxHeight: '0',
+            marginTop: '0px',
+            marginBottom: '0px'
+        },
+        enter: {
+            opacity: 1,
+            maxHeight: '100px',
+            marginTop: '8px',
+            marginBottom: '8px'
+        },
+        leave: {
+            opacity: 0,
+            maxHeight: '0',
+            marginTop: '0px',
+            marginBottom: '0px',
+            padding: '0'
+        },
+        config: { duration: 200 },
+    })
+
+    useEffect(() => {
+        if (monthCategories.length > 0 || yearCategories.length > 0) {
+            setCategoriesNotEmpty(true)
+        } else {
+            setCategoriesNotEmpty(false)
+        }
+    }, [monthCategories, yearCategories])
 
     const vals = {
         monthCategories,
         setMonthCategories,
         yearCategories,
         setYearCategories,
+        yearFlexBasis,
+        monthFlexBasis,
+        yearTransitions,
+        monthTransitions,
+        categoriesNotEmpty
     }
 
     return (
@@ -189,55 +278,36 @@ const Form = ({ children }) => {
     )
 }
 
-const CategoriesColumn = ({ categories }) => {
-    const { setMonthCategories, setYearCategories, monthCategories, yearCategories } = useContext(CategoryContext)
+const CategoriesColumn = ({ period }) => {
+    const {
+        setMonthCategories,
+        setYearCategories,
+        monthFlexBasis,
+        yearFlexBasis,
+        monthTransitions,
+        yearTransitions
+    } = useContext(CategoryContext)
 
-    const transitions = useTransition(categories, {
-        from: { opacity: 0, maxHeight: '0' },
-        enter: { opacity: 1, maxHeight: '100px' },
-        leave: { opacity: 0, maxHeight: '0' },
-        config: { duration: 250 },
-    })
+    const transitions = period === 'month' ? monthTransitions : yearTransitions
+
 
     const handleDelete = (item) => {
         if (item.period === 'month') {
-            setMonthCategories(monthCategories.filter((category) => category.name !== item.name))
+            setMonthCategories((prev) => prev.filter((category) => category != item))
         } else {
-            setYearCategories(yearCategories.filter((category) => category.name !== item.name))
+            setYearCategories((prev) => prev.filter((category) => category != item))
         }
     }
 
-    const formatName = (name) => {
-
-        return (
-            name.split(' ').map((word) => {
-                name.charAt(0).toUpperCase() + name.slice(1)
-                return word.charAt(0).toUpperCase() + word.slice(1)
-            }).join(' ')
-        )
-    }
-
-    const getFlexBasis = (type) => {
-        const longestMonthCategory = monthCategories.reduce((acc, curr) => {
-            if (curr.name.length > acc) {
-                return curr.name.length
-            } else {
-                return acc
-            }
-        }, 0)
-        const longestYearCategory = yearCategories.reduce((acc, curr) => {
-            if (curr.name.length > acc) {
-                return curr.name.length
-            } else {
-                return acc
-            }
-        }, 0)
-
-        return type === 'month' ? longestMonthCategory : longestYearCategory
-    }
+    const formatName = (name) => (
+        name.split(' ').map((word) => {
+            name.charAt(0).toUpperCase() + name.slice(1)
+            return word.charAt(0).toUpperCase() + word.slice(1)
+        }).join(' ')
+    )
 
     return (
-        <ShadowedContainer>
+        <ShadowedContainer style={{ height: 'auto' }}>
             <div className="budget-items--container">
                 {transitions((style, item) =>
                     <animated.div
@@ -247,7 +317,9 @@ const CategoriesColumn = ({ categories }) => {
                     >
                         <div
                             style={{
-                                flexBasis: `${getFlexBasis(item.period)}ch`,
+                                flexBasis: item.period === 'month'
+                                    ? monthFlexBasis
+                                    : yearFlexBasis
                             }}
                         >
                             <div className="budget-item-name">
@@ -267,7 +339,7 @@ const CategoriesColumn = ({ categories }) => {
                         </div>
                         <div>
                             <button
-                                className={`btn delete-button show`}
+                                className={`btn delete-button-show`}
                                 aria-label="Remove"
                                 onClick={() => handleDelete(item)}
                             >
@@ -282,7 +354,7 @@ const CategoriesColumn = ({ categories }) => {
 }
 
 const Categories = () => {
-    const { monthCategories, yearCategories } = useContext(CategoryContext)
+    const { categoriesNotEmpty } = useContext(CategoryContext)
     const [tabView, setTabView] = useState(true)
 
     const handleResize = () => {
@@ -302,15 +374,15 @@ const Categories = () => {
 
     const ColumnView = () => (
         <>
-            {(monthCategories.length !== 0 || yearCategories.length !== 0) &&
+            {categoriesNotEmpty &&
                 <>
                     <div>
                         <h4 className="spaced-header2">Month</h4>
-                        <CategoriesColumn categories={monthCategories} />
+                        <CategoriesColumn period={'month'} />
                     </div>
                     <div>
                         <h4 className="spaced-header2">Year</h4>
-                        <CategoriesColumn categories={yearCategories} />
+                        <CategoriesColumn period={'year'} />
                     </div>
                 </>
             }
@@ -338,12 +410,12 @@ const Categories = () => {
 
         return (
             <>
-                {(monthCategories.length !== 0 || yearCategories.length !== 0) &&
+                {categoriesNotEmpty &&
                     <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
                         <Tab.List className="tab-list--container" ref={tabListRef}>
                             <div className="tab-list">
-                                {['Month', 'Year'].map((tab,) => (
-                                    <Tab as={React.Fragment}>
+                                {['Month', 'Year'].map((tab, i) => (
+                                    <Tab key={i} as={React.Fragment}>
                                         {({ selected }) => (
                                             <button
                                                 className="btn-2slim"
@@ -363,10 +435,10 @@ const Categories = () => {
                         </Tab.List>
                         <Tab.Panels>
                             <Tab.Panel>
-                                <CategoriesColumn categories={monthCategories} />
+                                <CategoriesColumn period={'month'} />
                             </Tab.Panel>
                             <Tab.Panel>
-                                <CategoriesColumn categories={yearCategories} />
+                                <CategoriesColumn period={'year'} />
                             </Tab.Panel>
                         </Tab.Panels>
                     </Tab.Group>
@@ -379,7 +451,7 @@ const Categories = () => {
         <div className="budget-items-column--container">
             <div
                 id="budget-items"
-                className={`${(monthCategories.length !== 0 || yearCategories.length !== 0) ? 'expand' : ''}`}
+                className={`${categoriesNotEmpty ? 'expand' : ''}`}
             >
                 {tabView ? <TabView /> : <ColumnView />}
             </div>
