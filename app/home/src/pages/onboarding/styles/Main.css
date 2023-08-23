@@ -8,6 +8,12 @@
     box-shadow: var(--mid-elevation-drop-shadow);
 }
 
+#onboarding-app .btn-container-enabled {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
 #onboarding-app .btn-container {
     display: flex;
     justify-content: space-between;

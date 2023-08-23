@@ -57,7 +57,7 @@ const BottomButtons = ({ continueDisabled }) => {
     const navigate = useNavigate()
 
     return (
-        <div className="btn-container action">
+        <div className="btn-container-enabled">
             <button
                 className="btn-grn btn3"
                 id="connect-account-btn"
