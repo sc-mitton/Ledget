@@ -1,5 +1,5 @@
 export { default as Radios } from './Radios';
-export { GreenRadios } from './Radios';
+export { BlackRadios } from './Radios';
 export { default as AddAlert } from './AddAlert';
 export { default as AddReminder } from './AddReminder';
 export { default as Scheduler } from './Scheduler';

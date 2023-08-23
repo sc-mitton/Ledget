@@ -112,7 +112,7 @@ const Pill = (props) => {
     )
 }
 
-const GreenRadios = (props) => {
+const BlackRadios = (props) => {
     const { options, ...rest } = props
 
     return (
@@ -148,4 +148,4 @@ const GreenRadios = (props) => {
 Radios.Input = Input
 Radios.Pill = Pill
 export default Radios
-export { GreenRadios }
+export { BlackRadios }

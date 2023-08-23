@@ -594,15 +594,16 @@ button.pulse:hover {
     justify-content: space-between;
 }
 
-.budget-item {
+.budget-item-name {
     padding: 2px 12px;
     border-radius: var(--border-radius2);
     background-color: var(--green-hlight);
-    display: flex;
-    align-items: center;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-.budget-item span:first-child {
+.budget-item-name span:first-child {
     margin-right: 4px;
 }
 

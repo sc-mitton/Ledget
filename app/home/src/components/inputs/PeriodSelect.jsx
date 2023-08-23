@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 import Arrow from '@assets/icons/Arrow'
 import ComboSelect from './ComboSelect'
@@ -11,6 +11,7 @@ const options = [
 
 const PeriodSelect = () => {
     const [value, setValue] = useState(options.find((option) => option.default).value)
+    const buttonRef = useRef(null)
 
     const Options = () => (
         options.map((option) => (
@@ -33,6 +34,10 @@ const PeriodSelect = () => {
         ))
     )
 
+    useEffect(() => {
+        console.log(buttonRef?.current)
+    }, [])
+
     return (
         <>
             <label htmlFor="period">Type</label>
@@ -43,6 +48,7 @@ const PeriodSelect = () => {
                             className="btn-input"
                             id="period-select-btn"
                             style={{ color: 'var(--m-text-gray)' }}
+                            ref={buttonRef}
                         >
                             {options.find((option) => option.value === value).label}
                             {
@@ -60,6 +66,9 @@ const PeriodSelect = () => {
                             <DropAnimation
                                 className="dropdown select"
                                 visible={open}
+                                style={{
+                                    minWidth: `${buttonRef?.current?.offsetWidth}px`,
+                                }}
                             >
                                 <Options />
                             </DropAnimation>

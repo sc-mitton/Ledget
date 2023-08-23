@@ -12,7 +12,7 @@ import {
     EmojiComboText,
     TextInput,
     DollarInput,
-    GreenRadios,
+    BlackRadios,
     Checkbox,
     AddReminder,
     Scheduler
@@ -116,7 +116,7 @@ const Form = (props) => {
             onSubmit={submitForm}
         >
             <h2>New Bill</h2>
-            <GreenRadios
+            <BlackRadios
                 options={radioOptions}
                 value={billPeriod}
                 onChange={setBillPeriod}

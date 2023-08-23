@@ -80,9 +80,12 @@ const ComboSelect = (props) => {
     )
 }
 
-const Button = (props) => {
+const Button = React.forwardRef((props, ref) => {
     const { setOpen, open, buttonRef, setActive, options } = useContext(DataContext)
     const { children, ...rest } = props
+
+    const localRef = useRef(null)
+    const propRef = ref || localRef
 
     const handleClick = (event) => {
         event.stopPropagation()
@@ -99,7 +102,10 @@ const Button = (props) => {
 
     return (
         <button
-            ref={buttonRef}
+            ref={(e) => {
+                buttonRef.current = e
+                propRef.current = e
+            }}
             onClick={handleClick}
             onKeyDown={handleKeyDown}
             type="button"
@@ -110,7 +116,7 @@ const Button = (props) => {
             {children}
         </button>
     )
-}
+})
 
 const Options = (props) => {
     const {

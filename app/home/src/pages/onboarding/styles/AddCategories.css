@@ -36,37 +36,55 @@
     flex-direction: column;
 }
 
-#onboarding-app #budget-items>div:first-child {
-    padding-right: 12px;
+#onboarding-app #budget-items>div {
+    margin-top: 8px;
 }
 
-#onboarding-app #budget-items>div:last-child {
-    padding-left: 12px;
+#onboarding-app .budget-items-column--container {
+    margin-right: 8px;
 }
 
-#onboarding-app #budget-items-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-#onboarding-app #budget-items-table tr td:not(:first-child) {
-    text-align: center;
-    padding: 0 10px;
-}
-
-#onboarding-app #budget-items-table tr td:first-child {
+#onboarding-app .budget-items--container {
     padding-right: 8px;
 }
 
-#onboarding-app #budget-items-table td {
-    width: .1%;
-    padding: 3px 0;
-    white-space: nowrap;
-    font-weight: 500;
+.budget-items--container {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: 175px;
 }
 
-#onboarding-app #budget-items-table .budget-item {
-    display: inline-block;
+.budget-item--container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin: 8px 0;
+}
+
+.budget-item--container>div:first-child {
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    align-items: center;
+}
+
+.budget-item--container>div:not(:first-child) {
+    flex: 1 0 0%;
+}
+
+.budget-item--container>div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+}
+
+.budget-item--container>div:nth-child(3),
+.budget-item--container>div:nth-child(4) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
 }
 
 /* ----------------------------- Responsiveness ----------------------------- */
@@ -76,9 +94,21 @@
         grid-template-columns: 1fr;
     }
 
+    #onboarding-app #budget-items {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    #onboarding-app #budget-items>div:first-child {
+        padding-right: 0px;
+    }
+
     #onboarding-app #budget-items>div:last-child {
-        padding-right: 12px;
         padding-left: 0px;
+    }
+
+    .budget-item--container>div:first-child {
+        flex: 1.5 1 25%;
     }
 }
 

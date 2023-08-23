@@ -179,10 +179,10 @@ const CategoriesColumn = ({ categories }) => {
     const { setMonthCategories, setYearCategories, monthCategories, yearCategories } = useContext(CategoryContext)
 
     const transitions = useTransition(categories, {
-        from: { opacity: 0 },
-        enter: { opacity: 1 },
-        leave: { opacity: 0 },
-        config: { duration: 200 },
+        from: { opacity: 0, maxHeight: '0' },
+        enter: { opacity: 1, maxHeight: '100px' },
+        leave: { opacity: 0, maxHeight: '0' },
+        config: { duration: 250 },
     })
 
     const handleDelete = (item) => {
@@ -193,6 +193,35 @@ const CategoriesColumn = ({ categories }) => {
         }
     }
 
+    const formatName = (name) => {
+
+        return (
+            name.split(' ').map((word) => {
+                name.charAt(0).toUpperCase() + name.slice(1)
+                return word.charAt(0).toUpperCase() + word.slice(1)
+            }).join(' ')
+        )
+    }
+
+    const getFlexBasis = (type) => {
+        const longestMonthCategory = monthCategories.reduce((acc, curr) => {
+            if (curr.name.length > acc) {
+                return curr.name.length
+            } else {
+                return acc
+            }
+        }, 0)
+        const longestYearCategory = yearCategories.reduce((acc, curr) => {
+            if (curr.name.length > acc) {
+                return curr.name.length
+            } else {
+                return acc
+            }
+        }, 0)
+
+        return type === 'month' ? longestMonthCategory : longestYearCategory
+    }
+
     return (
         <div className="budget-items-column--container">
             {categories[0]?.period === 'month'
@@ -200,39 +229,45 @@ const CategoriesColumn = ({ categories }) => {
                 : <h4 className="spaced-header2">Year</h4>
             }
             <ShadowedContainer>
-                <table id="budget-items-table">
-                    <tbody>
-                        {transitions((style, item) =>
-                            <animated.tr key={item.name} style={style}>
-                                <td >
-                                    <div className="budget-item">
-                                        <span>{item.emoji}</span>
-                                        <span>{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</span>
-                                    </div>
-                                </td>
-                                <td >
-                                    {`$${item.limit_amount / 100}`}
-                                </td >
-                                <td >
-                                    <div style={{ opacity: item.alerts.length > 0 ? '1' : '.5' }}>
-                                        {item.alerts.length > 0
-                                            ? <Bell numberOfAlerts={item.alerts.length} />
-                                            : <BellOff />}
-                                    </div>
-                                </td>
-                                <td>
-                                    <button
-                                        className={`btn delete-button show`}
-                                        aria-label="Remove"
-                                        onClick={() => handleDelete(item)}
-                                    >
-                                        <Delete width={'1.1em'} height={'1.1em'} />
-                                    </button>
-                                </td>
-                            </animated.tr>
-                        )}
-                    </tbody>
-                </table>
+                <div className="budget-items--container">
+                    {transitions((style, item) =>
+                        <animated.div
+                            className="budget-item--container"
+                            key={item.name}
+                            style={style}
+                        >
+                            <div
+                                style={{
+                                    flexBasis: `${getFlexBasis(item.period)}ch`,
+                                }}
+                            >
+                                <div className="budget-item-name">
+                                    <span>{item.emoji}</span>
+                                    <span>{formatName(item.name)}</span>
+                                </div>
+                            </div>
+                            <div >
+                                {`$${item.limit_amount / 100}`}
+                            </div >
+                            <div >
+                                <div style={{ opacity: item.alerts.length > 0 ? '1' : '.5' }}>
+                                    {item.alerts.length > 0
+                                        ? <Bell numberOfAlerts={item.alerts.length} />
+                                        : <BellOff />}
+                                </div>
+                            </div>
+                            <div>
+                                <button
+                                    className={`btn delete-button show`}
+                                    aria-label="Remove"
+                                    onClick={() => handleDelete(item)}
+                                >
+                                    <Delete width={'1.1em'} height={'1.1em'} />
+                                </button>
+                            </div>
+                        </animated.div>
+                    )}
+                </div>
             </ShadowedContainer>
         </div>
     )
