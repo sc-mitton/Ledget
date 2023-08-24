@@ -3,6 +3,7 @@ export { BlackRadios } from './Radios';
 export { default as AddAlert } from './AddAlert';
 export { default as AddReminder } from './AddReminder';
 export { default as Scheduler } from './Scheduler';
+export { useBillScheduler } from './Scheduler';
 export { default as PeriodSelect } from './PeriodSelect';
 
 export {
@@ -10,6 +11,7 @@ export {
     EmojiComboText,
     EvenDollarInput,
     DollarInput,
+    DollarRangeInput,
     MenuTextInput,
 } from './Text';
 

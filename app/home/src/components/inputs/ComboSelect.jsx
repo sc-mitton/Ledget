@@ -41,7 +41,7 @@ const HiddenInputs = ({ value, name }) => {
 }
 
 const ComboSelect = (props) => {
-    const { value, onChange, setSelections, limit, multiple = false } = props
+    const { value, defaultValue, onChange, setSelections, limit, multiple = false } = props
     const [open, setOpen] = useState(false)
     const [active, setActive] = useState(null)
     const [options, setOptions] = useState([])
@@ -68,6 +68,16 @@ const ComboSelect = (props) => {
         limit,
         multiple
     }
+
+    useEffect(() => {
+        if (defaultValue) {
+            if (!multiple) {
+                onChange(defaultValue)
+            } else {
+                onChange([defaultValue])
+            }
+        }
+    }, [])
 
     return (
         <DataContext.Provider value={data}>
@@ -123,7 +133,6 @@ const Options = (props) => {
         multiple,
         open,
         setOpen,
-        active,
         setActive,
         options,
         buttonRef,
@@ -229,10 +238,11 @@ const Options = (props) => {
     )
 }
 
-const Option = ({ value, disabled, children }) => {
+const Option = ({ value, disabled, isDefault, children }) => {
 
     const {
         multiple,
+        limit,
         value: contextValue,
         active: contextActive,
         custom,
@@ -247,7 +257,7 @@ const Option = ({ value, disabled, children }) => {
     // Updating the active list
     const updateValue = () => {
         if (multiple) {
-            if (contextValue.length === limit) {
+            if (limit && contextValue.length === limit) {
                 return
             } else if (contextValue.includes(value)) {
                 onChange(contextValue.filter((item) => item !== value))
@@ -279,6 +289,7 @@ const Option = ({ value, disabled, children }) => {
     }
 
     // On mount add option to options list
+    // and if default, add to selected values
     useEffect(() => {
         setOptions((prev) => {
             if (prev.some((item) => item === value)) {

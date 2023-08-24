@@ -31,6 +31,15 @@
     transform: scale(1);
 }
 
+#onboarding-app .checkbox-container label {
+    margin: 4px 0;
+}
+
+#onboarding-app #bill-scheduler--container>div:last-child {
+    margin: 8px 0;
+}
+
+
 /* ------------------------- Individual Rows Styling ------------------------ */
 
 .budget-item {
@@ -70,8 +79,8 @@
         grid-template-columns: 1fr;
     }
 
-    #onboarding-app #budget-items--container {
-        width: 80%;
+    #onboarding-app #budget-items--container>div {
+        width: 90%;
         margin: 0 auto;
     }
 
@@ -89,6 +98,10 @@
 }
 
 @media (max-width: 480px) {
+    #onboarding-app #budget-items--container>div {
+        width: 100%;
+    }
+
     #onboarding-app form>div {
         grid-template-columns: 1fr;
     }

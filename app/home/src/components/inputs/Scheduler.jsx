@@ -8,15 +8,15 @@ import Arrow from '@assets/icons/Arrow'
 import Calendar from '@assets/icons/Calendar'
 import { useEffect } from 'react'
 import { useClickClose } from '@utils'
+import { FormErrorTip } from '@components/pieces'
 
 const pickerContext = React.createContext()
 
-const Scheduler = ({ children }) => {
+const Scheduler = (props) => {
+    const {
+        day, setDay, month, setMonth, week, setWeek, weekDay, setWeekDay, children
+    } = props
     const [open, setOpen] = useState('')
-    const [day, setDay] = useState('')
-    const [month, setMonth] = useState('')
-    const [week, setWeek] = useState('')
-    const [weekDay, setWeekDay] = useState('')
     const buttonRef = useRef(null)
 
     const data = {
@@ -747,12 +747,56 @@ const MonthDayPicker = () => {
                     }}
                 >
                     <MonthPicker />
-                    <hr style={{ opacity: '.1', width: '100%' }} />
+                    <hr style={{ opacity: '.7', margin: '8px 0', width: '100%' }} />
                     <DayPicker />
                 </div>
             </DropAnimation>
         </>
     )
+}
+
+export const useBillScheduler = () => {
+    const [day, setDay] = useState('')
+    const [month, setMonth] = useState('')
+    const [week, setWeek] = useState('')
+    const [weekDay, setWeekDay] = useState('')
+
+    const reset = () => {
+        setDay('')
+        setMonth('')
+        setWeek('')
+        setWeekDay('')
+    }
+
+    const BillScheduler = ({ billPeriod, error }) => (
+        <>
+            <label htmlFor="name">Schedule</label>
+            <Scheduler
+                day={day}
+                setDay={setDay}
+                month={month}
+                setMonth={setMonth}
+                week={week}
+                setWeek={setWeek}
+                weekDay={weekDay}
+                setWeekDay={setWeekDay}
+            >
+                <Scheduler.Button>
+                    {error &&
+                        <FormErrorTip errors={[{ type: 'required' }]} />}
+                </Scheduler.Button>
+                {billPeriod === 'monthly'
+                    ? <Scheduler.DayWeekPicker />
+                    : <Scheduler.MonthDayPicker />
+                }
+            </Scheduler>
+        </>
+    )
+
+    return {
+        reset: reset,
+        BillScheduler: BillScheduler
+    }
 }
 
 Scheduler.Button = Button

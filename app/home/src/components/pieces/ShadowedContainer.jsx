@@ -42,7 +42,6 @@ const ShadowedContainer = (props) => {
     const [bottomShadow, setBottomShadow] = useState(false)
     const [topShadow, setTopShadow] = useState(false)
 
-
     const bottomTransitions = useShadowTransition({
         location: 'bottom',
         visible: showShadow && bottomShadow
@@ -58,12 +57,19 @@ const ShadowedContainer = (props) => {
         setTopShadow(e.target.scrollTop !== 0)
     }
 
+    // Effects for listening to resize and scroll events to set
+    // the shadows correctly
     useEffect(() => {
         ref.current?.firstChild.addEventListener('scroll', handleScroll)
 
         const observer = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                setBottomShadow((entry.target.scrollTopMax - entry.target.scrollTop) !== 0)
+                if (entry.target.style.overflowY === 'hidden') {
+                    setBottomShadow(false)
+                    setTopShadow(false)
+                } else {
+                    setBottomShadow(entry.target.clientHeight < entry.target.scrollHeight)
+                }
             })
         })
         ref.current?.firstChild && observer.observe(ref.current?.firstChild)
@@ -75,17 +81,18 @@ const ShadowedContainer = (props) => {
     }, [showShadow])
 
     useEffect(() => {
-        let timeoutId
         const setBottomShadowDelayed = () => {
             if (showShadow) {
                 if (ref.current?.firstChild.scrollHeight !== ref.current?.firstChild.clientHeight) {
                     setBottomShadow(true)
                 } else if ((ref.current?.firstChild.scrollTopMax - ref.current?.firstChild.scrollTop) !== 0) {
                     setBottomShadow(true)
+                } else {
+                    setBottomShadow(false)
                 }
             }
         }
-        timeoutId = setTimeout(setBottomShadowDelayed, 200)
+        let timeoutId = setTimeout(setBottomShadowDelayed, 200)
         return () => {
             clearTimeout(timeoutId)
         }
@@ -102,13 +109,13 @@ const ShadowedContainer = (props) => {
             ref={ref}
             {...rest}
         >
+            {children}
             {bottomTransitions((style, item) =>
                 item && <animated.div style={style} />
             )}
             {topTransitions((style, item) =>
                 item && <animated.div style={style} />
             )}
-            {children}
         </div>
     )
 }

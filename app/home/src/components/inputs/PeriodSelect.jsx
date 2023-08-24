@@ -9,9 +9,12 @@ const options = [
     { id: 2, value: 'year', label: 'Year' }
 ]
 
-const PeriodSelect = () => {
-    const [value, setValue] = useState(options.find((option) => option.default).value)
+const PeriodSelect = (props) => {
+    const [value, setValue] = useState()
     const buttonRef = useRef(null)
+
+    const localSetValue = props.onChange || setValue
+    const localValue = props.value || value
 
     const Options = () => (
         options.map((option) => (
@@ -19,6 +22,7 @@ const PeriodSelect = () => {
                 key={option.id}
                 value={option.value}
                 disabled={option.disabled}
+                isDefault={option.default}
             >
                 {({ active, selected }) => (
                     <div
@@ -37,7 +41,12 @@ const PeriodSelect = () => {
     return (
         <>
             <label htmlFor="period">Type</label>
-            <ComboSelect name="period" value={value} onChange={setValue}>
+            <ComboSelect
+                name="period"
+                value={localValue}
+                onChange={localSetValue}
+                defaultValue={options.find((option) => option.default).value}
+            >
                 {({ open }) => (
                     <>
                         <ComboSelect.Button
@@ -46,7 +55,7 @@ const PeriodSelect = () => {
                             style={{ color: 'var(--m-text-gray)' }}
                             ref={buttonRef}
                         >
-                            {options.find((option) => option.value === value).label}
+                            {options.find((option) => option.value === localValue)?.label}
                             {
                                 <Arrow
                                     width={'.8em'}

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
 
 import './styles/Skeleton.css'
 import logoIcon from '@assets/icons/logoIcon.svg'
@@ -140,11 +140,13 @@ const BudgetWindow = () => {
 
 const Dashboard = () => {
     const [isNarrow, setIsNarrow] = useState(false)
+    const [showSkeleton, setShowSkeleton] = useState(true)
     const ref = useRef(null)
 
     useLayoutEffect(() => {
         const handleResize = () => {
             setIsNarrow(ref.current.offsetWidth < 900)
+            setShowSkeleton(ref.current.offsetWidth > 600)
         }
         handleResize()
         window.addEventListener('resize', handleResize)
@@ -163,10 +165,13 @@ const Dashboard = () => {
                 }}
                 ref={ref}
             >
-                <div className="dashboard" >
-                    <BudgetWindow />
-                    {!isNarrow && <SpendingWindow />}
-                </div>
+                {showSkeleton && (
+
+                    <div className="dashboard" >
+                        <BudgetWindow />
+                        {!isNarrow && <SpendingWindow />}
+                    </div>
+                )}
             </div>
         </>
     )

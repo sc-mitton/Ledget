@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 
 import './styles/Text.css'
 import Emoji from './Emoji'
+import { FormErrorTip, FormError } from '@components/pieces'
 
 export const TextInput = (props) => {
 
@@ -39,7 +40,7 @@ export const MenuTextInput = (props) => {
 }
 
 export const EmojiComboText = (props) => {
-    const { emoji, setEmoji, children, register, ...rest } = props
+    const { emoji, setEmoji, children, register, error, ...rest } = props
     const { ref: formRef, ...registerRest } = register('name')
 
     const ref = useRef(null)
@@ -72,7 +73,7 @@ export const EmojiComboText = (props) => {
                         ref.current = e
                     }}
                 />
-                {children}
+                <FormErrorTip errors={error} />
             </TextInput>
         </>
     )
@@ -149,5 +150,38 @@ export const DollarInput = (props) => {
             size="14"
         />
 
+    )
+}
+
+export const DollarRangeInput = (props) => {
+    const { mode: rangeMode, register, errors } = props
+    const [lowerAmount, setlowerAmount] = useState('')
+    const [upperAmount, setupperAmount] = useState('')
+
+    return (
+        <>
+            <label htmlFor="upperAmount">Amount</label>
+            <TextInput >
+                {rangeMode &&
+                    <DollarInput
+                        dollar={lowerAmount}
+                        setDollar={setlowerAmount}
+                        name="lowerAmount"
+                        id="lowerAmount"
+                        register={register}
+                    />
+                }
+                <DollarInput
+                    dollar={upperAmount}
+                    setDollar={setupperAmount}
+                    name="upperAmount"
+                    id="upperAmount"
+                    register={register}
+                />
+                <FormErrorTip errors={[errors.upperAmount, errors.lowerAmount]} />
+            </TextInput>
+            {errors.lowerAmount?.type !== 'required'
+                && <FormError msg={errors.lowerAmount?.message} />}
+        </>
     )
 }

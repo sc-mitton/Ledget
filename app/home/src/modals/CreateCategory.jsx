@@ -77,9 +77,8 @@ const Form = (props) => {
                     emoji={emoji}
                     setEmoji={setEmoji}
                     register={register}
-                >
-                    <FormErrorTip errors={[errors.name]} />
-                </EmojiComboText>
+                    error={[errors.name]}
+                />
             </div>
             <div
                 className="split-inputs"

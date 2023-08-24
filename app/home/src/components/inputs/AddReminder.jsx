@@ -15,9 +15,12 @@ const defaultOptions = [
     { id: 6, value: { offset: 3, period: 'week' }, disabled: false }
 ]
 
-const AddReminder = () => {
-    const [selectedReminders, setSelectedReminders] = useState([])
+const AddReminder = ({ value, onChange }) => {
+    const [localSelectedReminders, localSetReminders] = useState([])
     const [reminderOptions, setReminderOptions] = useState(defaultOptions)
+
+    const selectedReminders = value || localSelectedReminders
+    const setSelectedReminders = onChange || localSetReminders
 
     const Option = ({ value, active, selected }) => {
         const opIndex = reminderOptions.findIndex((op) => op.value === value)
@@ -25,7 +28,9 @@ const AddReminder = () => {
 
         return (
             <>
-                <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
+                <div
+                    className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}
+                >
                     <div>
                         {value.offset}
                         {value.offset > 1 ? ` ${value.period}s` : ` ${value.period}`}
@@ -76,7 +81,7 @@ const AddReminder = () => {
                 {({ open }) => (
                     <>
                         <ComboSelect.Button
-                            className="btn-chcl btn-2slim btn"
+                            className="btn-chcl btn-slim btn"
                             id="add-reminder-btn"
                         >
                             Reminder
