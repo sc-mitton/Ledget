@@ -600,11 +600,15 @@ button.pulse:hover {
     background-color: var(--green-hlight);
     display: inline-block;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .budget-item-name span:first-child {
     margin-right: 4px;
+}
+
+.grip-btn {
+    cursor: grab;
+    margin-right: 6px;
 }
 
 /* ------- Delete Button ------ */
@@ -653,6 +657,7 @@ button.pulse:hover {
 }
 
 /* ------- END Delete Button ------ */
+
 
 button .animated-stroke,
 button .animated-stroke {

@@ -3,10 +3,12 @@ import React, { useEffect, useState, useContext, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
-import { useDrag } from 'react-use-gesture'
-import { useTransition, animated } from '@react-spring/web'
 import { Tab } from '@headlessui/react'
 import { object, string } from "yup"
+import { useDrag } from 'react-use-gesture'
+import { useTransition, useSpring, animated, useSpringRef, useChain } from '@react-spring/web'
+import clamp from 'lodash.clamp'
+import swap from 'lodash-move'
 
 import './styles/AddCategories.css'
 import Checkmark from '@assets/icons/Checkmark'
@@ -24,6 +26,32 @@ const schema = object().shape({
     limit: string().required(),
 })
 
+const transitionConfig = {
+    from: () => ({ opacity: 0 }),
+    enter: (item, index) => ({ opacity: 1, y: index * (itemHeight + itemPadding) }),
+    update: (item, index) => ({ y: index * (itemHeight + itemPadding) }),
+    leave: () => ({ opacity: 0 }),
+    config: { duration: 200 },
+}
+
+const itemHeight = 25
+const itemPadding = 8
+const fn = (categories, active = false, originalIndex, curIndex = 0, y = 0) => (index, item) =>
+    active && item.item === originalIndex
+        ? {
+            y: curIndex * (itemHeight + itemPadding) + y,
+            zIndex: 1,
+            opacity: 1,
+            immediate: (key) => key === 'y' || key === 'zIndex',
+        }
+        : {
+            y: categories.indexOf(item.item) * (itemHeight + itemPadding),
+            scale: 1,
+            zIndex: 0,
+            opacity: 1,
+            immediate: false,
+        }
+
 const CategoryContext = React.createContext()
 const ContextProvider = ({ children }) => {
     const [monthCategories, setMonthCategories] = useState([])
@@ -31,79 +59,83 @@ const ContextProvider = ({ children }) => {
     const [yearFlexBasis, setYearFlexBasis] = useState(0)
     const [monthFlexBasis, setMonthFlexBasis] = useState(0)
     const [categoriesNotEmpty, setCategoriesNotEmpty] = useState(true)
+    const monthApi = useSpringRef()
+    const yearApi = useSpringRef()
+    const monthContainerApi = useSpringRef()
+    const yearContainerApi = useSpringRef()
 
-    const updateMonthFlexBasis = () => {
-        const longestMonthCategory = monthCategories.reduce((acc, curr) => {
+    const getFlexBasis = (categories) => {
+        const val = categories.reduce((acc, curr) => {
             if (curr.name.length > acc) {
                 return curr.name.length
             } else {
                 return acc
             }
         }, 0)
-        setMonthFlexBasis(`${longestMonthCategory}ch`)
+        return val
     }
 
-    const updateYearFlexBasis = () => {
-        const longestYearCategory = yearCategories.reduce((acc, curr) => {
-            if (curr.name.length > acc) {
-                return curr.name.length
-            } else {
-                return acc
-            }
-        }, 0)
-        setYearFlexBasis(`${longestYearCategory}ch`)
+    const updateFlexiBasis = (period) => {
+        if (period === 'month') {
+            const monthFlexBasis = getFlexBasis(monthCategories)
+            setMonthFlexBasis(`${monthFlexBasis}ch`)
+        } else {
+            const yearFlexBasis = getFlexBasis(yearCategories)
+            setYearFlexBasis(`${yearFlexBasis}ch`)
+        }
     }
+
+    const monthTransitions = useTransition(
+        monthCategories,
+        {
+            ...transitionConfig,
+            config: { duration: 100 },
+            ref: monthApi
+        }
+    )
+    const yearTransitions = useTransition(
+        yearCategories,
+        {
+            ...transitionConfig,
+            config: { duration: 100 },
+            ref: yearApi
+        }
+    )
+    const monthContainerProps = useSpring({
+        height: monthCategories.length * (itemHeight + itemPadding),
+        maxHeight: 6 * (itemHeight + itemPadding),
+        ref: monthContainerApi,
+        config: { duration: 100 },
+        position: 'relative',
+        overflowX: 'hidden',
+        marginTop: '12px',
+        overflowY: monthCategories.length >= 6 ? 'scroll' : 'hidden',
+    })
+    const yearContainerProps = useSpring({
+        height: yearCategories.length * (itemHeight + itemPadding),
+        maxHeight: 6 * (itemHeight + itemPadding),
+        ref: yearContainerApi,
+        position: 'relative',
+        overflowX: 'hidden',
+        marginTop: '12px',
+        overflowY: yearCategories.length >= 6 ? 'scroll' : 'hidden',
+        config: { duration: 100 },
+    })
+
+    useChain([monthApi, monthContainerApi], [0, 0])
+    useChain([yearApi, yearContainerApi,], [0, 0])
 
     useEffect(() => {
-        updateMonthFlexBasis()
-        updateYearFlexBasis()
-    }, [monthCategories, yearCategories])
+        monthApi.start()
+        updateFlexiBasis('month')
+        monthContainerApi.start()
+    }, [monthCategories])
 
-    const monthTransitions = useTransition(monthCategories, {
-        from: {
-            opacity: 0,
-            maxHeight: '0',
-            marginTop: '0px',
-            marginBottom: '0px'
-        },
-        enter: {
-            opacity: 1,
-            maxHeight: '100px',
-            marginTop: '8px',
-            marginBottom: '8px'
-        },
-        leave: {
-            opacity: 0,
-            maxHeight: '0',
-            marginTop: '0px',
-            marginBottom: '0px',
-            padding: '0'
-        },
-        config: { duration: 200 },
-    })
-
-    const yearTransitions = useTransition(yearCategories, {
-        from: {
-            opacity: 0,
-            maxHeight: '0',
-            marginTop: '0px',
-            marginBottom: '0px'
-        },
-        enter: {
-            opacity: 1,
-            maxHeight: '100px',
-            marginTop: '8px',
-            marginBottom: '8px'
-        },
-        leave: {
-            opacity: 0,
-            maxHeight: '0',
-            marginTop: '0px',
-            marginBottom: '0px',
-            padding: '0'
-        },
-        config: { duration: 200 },
-    })
+    useEffect(() => {
+        yearApi.start()
+        updateFlexiBasis('year')
+        yearContainerApi.start()
+    }, [yearCategories])
 
     useEffect(() => {
         if (monthCategories.length > 0 || yearCategories.length > 0) {
@@ -121,8 +153,14 @@ const ContextProvider = ({ children }) => {
         yearFlexBasis,
         monthFlexBasis,
         yearTransitions,
+        yearApi,
         monthTransitions,
-        categoriesNotEmpty
+        monthApi,
+        categoriesNotEmpty,
+        yearContainerApi,
+        yearContainerProps,
+        monthContainerApi,
+        monthContainerProps
     }
 
     return (
@@ -133,24 +171,39 @@ const ContextProvider = ({ children }) => {
 }
 
 const CategoriesColumn = ({ period }) => {
-    const {
-        setMonthCategories,
-        setYearCategories,
-        monthFlexBasis,
-        yearFlexBasis,
-        monthTransitions,
-        yearTransitions
-    } = useContext(CategoryContext)
+    let categories, setCategories, flexBasis, transitions, api, containerProps
+    const context = useContext(CategoryContext)
 
-    const transitions = period === 'month' ? monthTransitions : yearTransitions
+    if (period === 'month') {
+        categories = context.monthCategories
+        setCategories = context.setMonthCategories
+        flexBasis = context.monthFlexBasis
+        transitions = context.monthTransitions
+        api = context.monthApi
+        containerProps = context.monthContainerProps
+    } else {
+        categories = context.yearCategories
+        setCategories = context.setYearCategories
+        flexBasis = context.yearFlexBasis
+        transitions = context.yearTransitions
+        api = context.yearApi
+        containerProps = context.yearContainerProps
+    }
 
-
-    const handleDelete = (item) => {
-        if (item.period === 'month') {
-            setMonthCategories((prev) => prev.filter((category) => category != item))
-        } else {
-            setYearCategories((prev) => prev.filter((category) => category != item))
+    const bind = useDrag(({ args: [originalIndex], active, movement: [, y] }) => {
+        if (!document.activeElement.getAttribute('draggable-item')) {
+            return
         }
+
+        const curIndex = categories.indexOf(originalIndex)
+        const curRow = clamp(Math.round((curIndex * itemHeight + y) / itemHeight), 0, categories.length - 1)
+        const newCategories = swap(categories, curIndex, curRow)
+        api.start(fn(newCategories, active, originalIndex, curIndex, y))
+        if (!active) setCategories(newCategories)
+    })
+
+    const handleDelete = (toDelete) => {
+        setCategories(categories.filter((category) => category !== toDelete))
     }
 
     const formatName = (name) => (
@@ -162,22 +215,22 @@ const CategoriesColumn = ({ period }) => {
 
     return (
         <ShadowedContainer style={{ height: 'auto' }}>
-            <div className="budget-items--container">
-                {transitions((style, item) =>
+            <animated.div style={containerProps} >
+                {transitions((style, item, index) =>
                     <animated.div
-                        className="budget-item--container"
-                        key={item.name}
+                        className="budget-item"
                         style={style}
+                        {...bind(item)}
                     >
                         <div
                             className="budget-item-name--container"
-                            style={{
-                                flexBasis: item.period === 'month'
-                                    ? monthFlexBasis
-                                    : yearFlexBasis
-                            }}
+                            style={{ flexBasis: flexBasis }}
                         >
-                            <button className="btn grip-btn" aria-label="Move">
+                            <button
+                                className="btn grip-btn"
+                                aria-label="Move"
+                                draggable-item="true"
+                            >
                                 <Grip />
                             </button>
                             <div className="budget-item-name">
@@ -186,7 +239,7 @@ const CategoriesColumn = ({ period }) => {
                             </div>
                         </div>
                         <div >
-                            {`$${item.limit_amount / 100}`}
+                            {`$${item.limit_amount / 100}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         </div >
                         <div >
                             <div style={{ opacity: item.alerts.length > 0 ? '1' : '.5' }}>
@@ -206,14 +259,84 @@ const CategoriesColumn = ({ period }) => {
                         </div>
                     </animated.div>
                 )}
-            </div>
+            </animated.div>
         </ShadowedContainer>
     )
 }
 
+const TabView = () => {
+    const [selectedIndex, setSelectedIndex] = useState(0)
+    const [updatePill, setUpdatePill] = useState(false)
+    const tabListRef = useRef(null)
+
+    const { props } = usePillAnimation({
+        ref: tabListRef,
+        update: [updatePill],
+        refresh: [],
+        querySelectall: '[role=tab]',
+        find: (element) => {
+            return element.getAttribute('data-headlessui-state') === 'selected'
+        }
+    })
+
+    useEffect(() => {
+        setUpdatePill(!updatePill)
+    }, [selectedIndex])
+
+    return (
+        <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+            <Tab.List className="tab-list--container" ref={tabListRef}>
+                <div className="tab-list">
+                    {['Month', 'Year'].map((tab, i) => (
+                        <Tab key={i} as={React.Fragment}>
+                            {({ selected }) => (
+                                <button
+                                    className="btn-2slim"
+                                    style={{
+                                        color: selected
+                                            ? 'var(--white-text)'
+                                            : 'var(--input-placeholder2)'
+                                    }}
+                                >
+                                    {tab}
+                                </button>
+                            )}
+                        </Tab>
+                    ))}
+                    <animated.span style={props} className="tab-list--pill" />
+                </div>
+            </Tab.List>
+            <Tab.Panels>
+                <Tab.Panel>
+                    <CategoriesColumn period={'month'} />
+                </Tab.Panel>
+                <Tab.Panel>
+                    <CategoriesColumn period={'year'} />
+                </Tab.Panel>
+            </Tab.Panels>
+        </Tab.Group>
+    )
+}
+
+const ColumnView = () => {
+
+    return (
+        <>
+            <div>
+                <h4 className="spaced-header2">Month</h4>
+                <CategoriesColumn period={'month'} />
+            </div>
+            <div>
+                <h4 className="spaced-header2">Year</h4>
+                <CategoriesColumn period={'year'} />
+            </div>
+        </>
+    )
+}
+
 const Categories = () => {
-    const { categoriesNotEmpty } = useContext(CategoryContext)
     const [tabView, setTabView] = useState(true)
+    const { categoriesNotEmpty } = useContext(CategoryContext)
 
     const handleResize = () => {
         if (window.innerWidth < 768) {
@@ -230,89 +353,16 @@ const Categories = () => {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
-    const ColumnView = () => (
-        <>
+    return (
+        <div
+            id="budget-items--container"
+            className={`${categoriesNotEmpty ? 'expand' : ''}`}
+        >
             {categoriesNotEmpty &&
                 <>
-                    <div>
-                        <h4 className="spaced-header2">Month</h4>
-                        <CategoriesColumn period={'month'} />
-                    </div>
-                    <div>
-                        <h4 className="spaced-header2">Year</h4>
-                        <CategoriesColumn period={'year'} />
-                    </div>
+                    {tabView ? <TabView /> : <ColumnView />}
                 </>
             }
-        </>
-    )
-
-    const TabView = () => {
-        const [selectedIndex, setSelectedIndex] = useState(0)
-        const [updatePill, setUpdatePill] = useState(false)
-        const tabListRef = useRef(null)
-
-        const { props } = usePillAnimation({
-            ref: tabListRef,
-            update: [updatePill],
-            refresh: [],
-            querySelectall: '[role=tab]',
-            find: (element) => {
-                return element.getAttribute('data-headlessui-state') === 'selected'
-            }
-        })
-
-        useEffect(() => {
-            setUpdatePill(!updatePill)
-        }, [selectedIndex])
-
-        return (
-            <>
-                {categoriesNotEmpty &&
-                    <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-                        <Tab.List className="tab-list--container" ref={tabListRef}>
-                            <div className="tab-list">
-                                {['Month', 'Year'].map((tab, i) => (
-                                    <Tab key={i} as={React.Fragment}>
-                                        {({ selected }) => (
-                                            <button
-                                                className="btn-2slim"
-                                                style={{
-                                                    color: selected
-                                                        ? 'var(--white-text)'
-                                                        : 'var(--input-placeholder2)'
-                                                }}
-                                            >
-                                                {tab}
-                                            </button>
-                                        )}
-                                    </Tab>
-                                ))}
-                                <animated.span style={props} className="tab-list--pill" />
-                            </div>
-                        </Tab.List>
-                        <Tab.Panels>
-                            <Tab.Panel>
-                                <CategoriesColumn period={'month'} />
-                            </Tab.Panel>
-                            <Tab.Panel>
-                                <CategoriesColumn period={'year'} />
-                            </Tab.Panel>
-                        </Tab.Panels>
-                    </Tab.Group>
-                }
-            </>
-        )
-    }
-
-    return (
-        <div className="budget-items-column--container">
-            <div
-                id="budget-items"
-                className={`${categoriesNotEmpty ? 'expand' : ''}`}
-            >
-                {tabView ? <TabView /> : <ColumnView />}
-            </div>
         </div>
     )
 }
@@ -406,39 +456,16 @@ const Form = ({ children }) => {
 
 const BottomButtons = ({ formIsValid }) => {
     const navigate = useNavigate()
-    const [expandContainer, setExpandContainer] = useState(false)
-    const [showSave, setShowSave] = useState(formIsValid)
-    const [showContinue, setShowContinue] = useState(false)
-    const { monthCategories, yearCategories } = useContext(CategoryContext)
-
-    useEffect(() => {
-        if (monthCategories.length > 0 || yearCategories.length > 0) {
-            setShowContinue(true)
-            setExpandContainer(true)
-        } else {
-            setShowContinue(false)
-            setExpandContainer(false)
-            setShowSave(false)
-        }
-    }, [monthCategories, yearCategories])
-
-    useEffect(() => {
-        if (formIsValid) {
-            setExpandContainer(true)
-            setShowSave(true)
-        }
-    }, [formIsValid])
+    const { categoriesNotEmpty } = useContext(CategoryContext)
 
     return (
         <div
-            className={`btn-container ${expandContainer ? 'enabled' : ''}`}
+            className='btn-container-enabled'
         >
             <button
                 className="btn-grn btn3"
                 id="connect-account-btn"
                 aria-label="Add Category"
-                style={{ visibility: showSave ? 'visible' : 'hidden' }}
-                disabled={!showSave}
                 type="submit"
             >
                 <span>Save Category</span>
@@ -446,11 +473,11 @@ const BottomButtons = ({ formIsValid }) => {
             </button>
             <button
                 className="btn-chcl btn3"
-                style={{ visibility: showContinue ? 'visible' : 'hidden' }}
+                style={{ visibility: categoriesNotEmpty ? 'visible' : 'hidden' }}
                 id="connect-account-btn"
                 aria-label="Next"
                 onClick={() => navigate('/welcome/add-bills')}
-                disabled={!showContinue}
+                disabled={!categoriesNotEmpty}
             >
                 Continue
                 <Arrow
