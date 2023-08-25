@@ -11,17 +11,17 @@ import {
     EmojiComboText,
     DollarRangeInput,
     PeriodSelect,
-    useBillScheduler,
+    BillScheduler,
     AddReminder,
     Checkbox
 } from '@components/inputs'
-import { ShadowedContainer } from '@components/pieces'
+import { ShadowedContainer, DollarCentsRange } from '@components/pieces'
 import Bell from '@assets/icons/Bell'
 import BellOff from '@assets/icons/BellOff'
 import { BottomButtons, TabView } from './Reusables'
 import { billSchema, extractBill } from '@modals/CreateBill'
 import { DeleteButton } from '@components/buttons'
-import { formatDollar, formatName } from '@utils'
+import { formatName } from '@utils'
 
 const BillsColumn = ({ period }) => {
     const context = useContext(ItemsContext)[period]
@@ -56,8 +56,7 @@ const BillsColumn = ({ period }) => {
                             </div>
                         </div>
                         <div className="amount--container">
-                            {item.lower_amount && `${formatDollar(item.lower_amount)} -`}
-                            {`${formatDollar(item.upper_amount)}`}
+                            <DollarCentsRange lower={item.lower_amount} upper={item.upper_amount} />
                         </div >
                         <div >
                             <div style={{ opacity: item.reminders.length > 0 ? '1' : '.5' }}>
@@ -95,28 +94,19 @@ const BillsList = () => {
 }
 
 const Form = ({ children }) => {
-    const { BillScheduler, reset: resetScheduler, hasSchedule } = useBillScheduler()
-    const [reminders, setReminders] = useState([])
-    const [period, setPeriod] = useState(null)
-    const [scheduleMissing, setScheduleMissing] = useState(false)
-    const [readyToSubmit, setReadyToSubmit] = useState(false)
     const { items: monthItems, setItems: setMonthItems } = useContext(ItemsContext).month
     const { items: yearItems, setItems: setYearItems } = useContext(ItemsContext).year
 
-    const [emoji, setEmoji] = useState('')
-    const { register, watch, handleSubmit, reset, formState: { errors, isValid } } = useForm({
+    const [period, setPeriod] = useState(null)
+    const [scheduleMissing, setScheduleMissing] = useState(false)
+    const [readyToSubmit, setReadyToSubmit] = useState(false)
+    const [hasSchedule, setHasSchedule] = useState(false)
+
+    const { register, watch, handleSubmit, reset, formState: { errors, isValid }, control } = useForm({
         resolver: yupResolver(billSchema),
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
     })
-    const watchRange = watch('range', false)
-
-    const resetForm = () => {
-        setEmoji('')
-        resetScheduler()
-        setReminders([])
-        reset()
-    }
 
     const submitForm = (e) => {
         const body = extractBill(e)
@@ -133,8 +123,9 @@ const Form = ({ children }) => {
             } else {
                 setYearItems([...yearItems, item])
             }
-            resetForm()
         })(e)
+
+        reset()
     }
 
     useEffect(() => {
@@ -146,7 +137,10 @@ const Form = ({ children }) => {
     }, [hasSchedule, isValid])
 
     return (
-        <form onSubmit={submitForm}>
+        <form
+            onSubmit={submitForm}
+            key={`create-bill-form-${monthItems.length}-${yearItems.length}}`}
+        >
             <div>
                 <div>
                     <PeriodSelect
@@ -158,8 +152,6 @@ const Form = ({ children }) => {
                     <EmojiComboText
                         name="name"
                         placeholder="Name"
-                        emoji={emoji}
-                        setEmoji={setEmoji}
                         register={register}
                         error={[errors.name]}
                     />
@@ -168,16 +160,14 @@ const Form = ({ children }) => {
                     <BillScheduler
                         billPeriod={`${period}ly`}
                         error={scheduleMissing}
+                        setHasSchedule={setHasSchedule}
                     />
-                    <AddReminder
-                        value={reminders}
-                        onChange={setReminders}
-                    />
+                    <AddReminder />
                 </div>
                 <div>
                     <DollarRangeInput
-                        mode={watchRange}
-                        register={register}
+                        rangeMode={watch('range', '')}
+                        control={control}
                         errors={errors}
                     />
                     <Checkbox

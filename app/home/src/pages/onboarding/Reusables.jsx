@@ -43,7 +43,7 @@ export const TabView = ({ children }) => {
                                     style={{
                                         color: selected
                                             ? 'var(--m-text-gray)'
-                                            : 'var(--input-placeholder2)'
+                                            : 'var(--input-placeholder)'
                                     }}
                                 >
                                     {tab}

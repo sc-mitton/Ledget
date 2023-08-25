@@ -15,12 +15,12 @@ import BellOff from '@assets/icons/BellOff'
 import Grip from '@assets/icons/Grip'
 import { ShadowedContainer, FormErrorTip } from '@components/pieces'
 import { DeleteButton } from '@components/buttons'
-import { EmojiComboText, AddAlert, EvenDollarInput, PeriodSelect } from '@components/inputs'
-import { formatName, formatDollar } from '@utils'
+import { EmojiComboText, AddAlert, LimitAmountInput, PeriodSelect } from '@components/inputs'
+import { formatName, formatRoundedCurrency } from '@utils'
 
 const schema = object().shape({
     name: string().required(),
-    limit: string().required(),
+    limit_amount: string().required(),
 })
 
 const ItemsColumn = ({ period }) => {
@@ -67,7 +67,7 @@ const ItemsColumn = ({ period }) => {
                             </div>
                         </div>
                         <div >
-                            {`${formatDollar(item.limit_amount)}`}
+                            {`${formatRoundedCurrency(item.limit_amount)}`}
                         </div >
                         <div >
                             <div style={{ opacity: item.alerts.length > 0 ? '1' : '.5' }}>
@@ -105,25 +105,15 @@ const CategoriesList = () => {
 }
 
 const Form = ({ children }) => {
-    const [emoji, setEmoji] = useState('')
-    const [dollarLimit, setDollarLimit] = useState('')
-    const [alerts, setAlerts] = useState([])
     const [readyToSubmit, setReadyToSubmit] = useState(false)
     const { items: monthItems, setItems: setMonthItems } = useContext(ItemsContext).month
     const { items: yearItems, setItems: setYearItems } = useContext(ItemsContext).year
 
-    const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm({
+    const { register, watch, handleSubmit, reset, formState: { errors, isValid }, control } = useForm({
         resolver: yupResolver(schema),
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
     })
-
-    const resetForm = () => {
-        setEmoji('')
-        setAlerts([])
-        setDollarLimit('')
-        reset()
-    }
 
     useEffect(() => {
         isValid && setReadyToSubmit(true)
@@ -135,8 +125,7 @@ const Form = ({ children }) => {
         const formData = new FormData(e.target)
         let body = Object.fromEntries(formData)
 
-        body.limit_amount = Number(body.limit.replace(/[^0-9]/g, '')) * 100
-        delete body.limit
+        body.limit_amount = Number(body.limit_amount.replace(/[^0-9]/g, '')) * 100
         body.name = body.name.toLowerCase()
 
         let alerts = []
@@ -154,11 +143,14 @@ const Form = ({ children }) => {
             setYearItems([...yearItems, body])
         }
 
-        resetForm()
+        reset()
     }
 
     return (
-        <form onSubmit={handleSubmit((data, e) => submit(e))}>
+        <form
+            onSubmit={handleSubmit((data, e) => submit(e))}
+            key={`create-category-form-${monthItems.length}-${yearItems.length}}`}
+        >
             <div>
                 <div>
                     <PeriodSelect />
@@ -167,28 +159,17 @@ const Form = ({ children }) => {
                     <EmojiComboText
                         name="name"
                         placeholder="Name"
-                        emoji={emoji}
-                        setEmoji={setEmoji}
                         register={register}
                         error={[errors.name]}
                     />
                 </div>
                 <div>
-                    <EvenDollarInput
-                        name="limit"
-                        dollarLimit={dollarLimit}
-                        setDollarLimit={setDollarLimit}
-                        register={register}
-                    >
-                        < FormErrorTip errors={[errors.limit]} />
-                    </EvenDollarInput>
+                    <LimitAmountInput control={control}>
+                        < FormErrorTip errors={[errors.limit_amount]} />
+                    </LimitAmountInput>
                 </div>
                 <div>
-                    <AddAlert
-                        limit={dollarLimit}
-                        alerts={alerts}
-                        setAlerts={setAlerts}
-                    />
+                    <AddAlert limitAmount={watch('limit_amount', '')} />
                 </div>
             </div>
             {children(readyToSubmit)}

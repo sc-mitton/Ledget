@@ -163,6 +163,10 @@ h5 {
     margin: 0
 }
 
+.grn-header {
+    color: var(--green-dark2);
+}
+
 a {
     text-decoration: none;
     cursor: pointer;

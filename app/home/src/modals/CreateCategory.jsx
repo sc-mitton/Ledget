@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 import './styles/Forms.css'
 import { useAddNewCategoryMutation } from '@api/apiSlice'
-import { AddAlert, EmojiComboText, EvenDollarInput, BlackRadios } from '@components/inputs'
+import { AddAlert, EmojiComboText, LimitAmountInput, BlackRadios } from '@components/inputs'
 import { withModal } from '@components/hocs'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@components/pieces'
@@ -24,15 +24,14 @@ const radioOptions = [
 ]
 
 const Form = (props) => {
-    const [dollarLimit, setDollarLimit] = useState('')
-    const [emoji, setEmoji] = useState('')
     const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation()
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, watch, control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
+    const watchLimitAmount = watch('limit_amount', '')
 
     const submit = (e) => {
         e.preventDefault()
@@ -73,8 +72,6 @@ const Form = (props) => {
                 <EmojiComboText
                     name="name"
                     placeholder="Name"
-                    emoji={emoji}
-                    setEmoji={setEmoji}
                     register={register}
                     error={[errors.name]}
                 />
@@ -84,17 +81,12 @@ const Form = (props) => {
                 style={{ marginBottom: '20px' }}
             >
                 <div>
-                    <EvenDollarInput
-                        name="limit"
-                        dollarLimit={dollarLimit}
-                        setDollarLimit={setDollarLimit}
-                        register={register}
-                    >
-                        < FormErrorTip errors={[errors.limit]} />
-                    </EvenDollarInput>
+                    <LimitAmountInput control={control}>
+                        < FormErrorTip errors={[errors.limit_amount]} />
+                    </LimitAmountInput>
                 </div>
                 <div>
-                    <AddAlert limit={dollarLimit} />
+                    <AddAlert limitAmount={watchLimitAmount} />
                 </div>
             </div>
             <SubmitForm

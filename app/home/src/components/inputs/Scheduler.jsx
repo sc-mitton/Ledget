@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react'
+import React, { useState, useEffect, useRef, useContext, forwardRef } from 'react'
 
 import './styles/Dropdowns.css'
 import './styles/Scheduler.css'
@@ -6,7 +6,6 @@ import { DropAnimation } from '@utils'
 import Radios from './Radios'
 import Arrow from '@assets/icons/Arrow'
 import Calendar from '@assets/icons/Calendar'
-import { useEffect } from 'react'
 import { useClickClose } from '@utils'
 import { FormErrorTip } from '@components/pieces'
 
@@ -755,20 +754,22 @@ const MonthDayPicker = () => {
     )
 }
 
-export const useBillScheduler = () => {
+export const BillScheduler = (props) => {
     const [day, setDay] = useState('')
     const [month, setMonth] = useState('')
     const [week, setWeek] = useState('')
     const [weekDay, setWeekDay] = useState('')
 
-    const reset = () => {
-        setDay('')
-        setMonth('')
-        setWeek('')
-        setWeekDay('')
-    }
+    const { billPeriod, error } = props
 
-    const BillScheduler = ({ billPeriod, error }) => (
+    useEffect(() => {
+        if (day || month || (week && weekDay))
+            props.setHasSchedule && props.setHasSchedule(true)
+        else
+            props.setHasSchedule && props.setHasSchedule(false)
+    }, [day, month, week, weekDay])
+
+    return (
         <>
             <label htmlFor="name">Schedule</label>
             <Scheduler
@@ -792,12 +793,6 @@ export const useBillScheduler = () => {
             </Scheduler>
         </>
     )
-
-    return {
-        reset: reset,
-        hasSchedule: day || month || week || weekDay,
-        BillScheduler: BillScheduler
-    }
 }
 
 Scheduler.Button = Button

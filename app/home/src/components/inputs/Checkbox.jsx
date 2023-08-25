@@ -1,10 +1,8 @@
-import React, { useRef, forwardRef } from 'react'
+import React from 'react'
 
 import './styles/Checkbox.css'
 
-const Checkbox = forwardRef((props, ref) => {
-    const localRef = useRef(null)
-    const inputRef = ref || localRef
+const Checkbox = React.forwardRef((props, ref) => {
 
     const handleLabelKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -14,8 +12,6 @@ const Checkbox = forwardRef((props, ref) => {
             }
         }
     }
-
-    const { id, label, ...rest } = props
 
     return (
         <div className="checkbox-container">
@@ -32,10 +28,8 @@ const Checkbox = forwardRef((props, ref) => {
             <input
                 className="checkbox-input"
                 type="checkbox"
-                id={props.id}
-                ref={inputRef}
-                aria-label={props.label}
-                {...rest}
+                ref={ref}
+                {...props}
             />
             <label
                 className="checkbox"
@@ -43,7 +37,6 @@ const Checkbox = forwardRef((props, ref) => {
                 onKeyDown={handleLabelKeyDown}
                 tabIndex="0"
                 role="checkbox"
-                aria-checked={inputRef.current?.checked}
             >
                 <span>
                     <svg>

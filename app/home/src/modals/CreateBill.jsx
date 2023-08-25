@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
-import { object, string, boolean } from "yup"
+import { object, string, boolean, number } from "yup"
 
 import './styles/Forms.css'
 import SubmitForm from '@components/pieces/SubmitForm'
@@ -14,7 +14,7 @@ import {
     BlackRadios,
     Checkbox,
     AddReminder,
-    useBillScheduler,
+    BillScheduler,
 } from '@components/inputs'
 import { useAddnewBillMutation } from '@api/apiSlice'
 
@@ -26,25 +26,14 @@ const radioOptions = [
 export const billSchema = object().shape({
     name: string().required().lowercase(),
     range: boolean(),
-    lower_amount: string().when('range', {
+    lower_amount: number().when('range', {
         is: true,
-        then: () => string().required('required')
-            .transform((value) => {
-                if (!value) { return }
-                let val = value.replace(/[^0-9]/g, '')
-                val < 100 && (val *= 100)
-                return val.toString()
-            })
+        then: () => number().required('required')
             .test('lower_amount', 'First value must be smaller', (value, { parent }) => {
                 return value < parent.upper_amount
             })
     }),
-    upper_amount: string().required('required').transform((value) => {
-        if (!value) { return }
-        let val = value.replace(/[^0-9]/g, '')
-        val < 100 && (val *= 100)
-        return val.toString()
-    }),
+    upper_amount: number().required('required')
 })
 
 export const extractBill = (e) => {
@@ -77,12 +66,10 @@ export const extractBill = (e) => {
 
 const Form = (props) => {
     const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
-    const { BillScheduler } = useBillScheduler()
     const [billPeriod, setBillPeriod] = useState('monthly')
-    const [emoji, setEmoji] = useState('')
     const [scheduleMissing, setScheduleMissing] = useState(false)
 
-    const { register, watch, handleSubmit, formState: { errors } } = useForm({
+    const { register, watch, handleSubmit, formState: { errors }, control } = useForm({
         resolver: yupResolver(billSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
@@ -122,8 +109,6 @@ const Form = (props) => {
                 <EmojiComboText
                     name="name"
                     placeholder="Name"
-                    emoji={emoji}
-                    setEmoji={setEmoji}
                     register={register}
                     error={[errors.name]}
                 />
@@ -140,8 +125,8 @@ const Form = (props) => {
                 </div>
                 <div className="padded-row">
                     <DollarRangeInput
-                        mode={watchRange}
-                        register={register}
+                        rangeMode={watchRange}
+                        control={control}
                         errors={errors}
                     />
                     <div id="range-checkbox--container">

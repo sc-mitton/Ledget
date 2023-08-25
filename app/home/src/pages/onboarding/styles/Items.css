@@ -29,6 +29,7 @@
     transform: scale(.8);
     width: 80%;
     margin: 0 auto;
+    opacity: 0;
 }
 
 #onboarding-app #budget-items--container.expand {
@@ -37,6 +38,7 @@
     max-height: 1000px;
     padding: 16px;
     transform: scale(1);
+    opacity: 1;
 }
 
 #onboarding-app .checkbox-container label {
@@ -130,5 +132,9 @@
 
     #onboarding-app form>div>div:nth-child(4) {
         order: 1;
+    }
+
+    #onboarding-app #budget-items--container.expand {
+        padding: 12px;
     }
 }

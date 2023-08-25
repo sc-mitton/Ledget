@@ -10,9 +10,10 @@ import { DropAnimation } from '@utils'
 import ComboSelect from './ComboSelect'
 
 const formatDollar = (value, percentage) => {
+    if (!value) return ''
     !percentage && (percentage = 0)
 
-    let dollar = parseInt(value.replace(/[^0-9.]/g, '')) * percentage / 100
+    let dollar = value * percentage / 100
     dollar = dollar
         .toFixed(0)
         .toString()
@@ -21,10 +22,8 @@ const formatDollar = (value, percentage) => {
     return `$${dollar}`
 }
 
-
-
 const AddAlert = (props) => {
-    const { limit, placeholder, style = {}, alerts: propAlerts, setAlerts: propSetAlerts, ...rest } = props
+    const { limitAmount, placeholder, style = {}, alerts: propAlerts, setAlerts: propSetAlerts, ...rest } = props
     const [alerts, setAlerts] = useState([])
     const setSelectedAlerts = propSetAlerts || setAlerts
     const selectedAlerts = propAlerts || alerts
@@ -65,7 +64,7 @@ const AddAlert = (props) => {
         const DollarFormat = ({ value, ...rest }) => {
             return (
                 <span {...rest}>
-                    &#40;{formatDollar(limit, value)}&#41;
+                    &#40;{formatDollar(limitAmount, value)}&#41;
                 </span>
             )
         }
@@ -94,7 +93,7 @@ const AddAlert = (props) => {
                     >
                         {({ focused }) => (
                             <>
-                                {limit &&
+                                {limitAmount &&
                                     <DollarFormat
                                         value={parseInt(pct.replace(/[^0-9]/g, ''), 10)}
                                         style={{
@@ -126,8 +125,8 @@ const AddAlert = (props) => {
             <div>{value}%</div>
             <div>
                 <span className={`${active ? 'active' : ''}`}>
-                    {limit
-                        ? `(${formatDollar(limit, value)})`
+                    {limitAmount
+                        ? `(${formatDollar(limitAmount, value)})`
                         : ('of limit')
                     }
                 </span>
