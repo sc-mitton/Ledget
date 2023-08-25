@@ -29,23 +29,20 @@ export const billSchema = object().shape({
     lower_amount: string().when('range', {
         is: true,
         then: () => string().required('required')
-            .test('lowerAmount', 'Lower amount must be smaller.', (value, { parent }) => {
-                if (!value || !parent.upper_amount) { return true }
-
-                return value.replace(/[^0-9.]/g, '')
-                    < parent.upper_amount.replace(/[^0-9.]/g, '')
-            })
             .transform((value) => {
                 if (!value) { return }
-                let val = value.replace(/[^0-9.]/g, '')
-                val > 100 && (val *= 100)
+                let val = value.replace(/[^0-9]/g, '')
+                val < 100 && (val *= 100)
                 return val.toString()
+            })
+            .test('lower_amount', 'First value must be smaller', (value, { parent }) => {
+                return value < parent.upper_amount
             })
     }),
     upper_amount: string().required('required').transform((value) => {
         if (!value) { return }
-        let val = value.replace(/[^0-9.]/g, '')
-        val > 100 && (val *= 100)
+        let val = value.replace(/[^0-9]/g, '')
+        val < 100 && (val *= 100)
         return val.toString()
     }),
 })
@@ -85,7 +82,7 @@ const Form = (props) => {
     const [emoji, setEmoji] = useState('')
     const [scheduleMissing, setScheduleMissing] = useState(false)
 
-    const { register, watch, handleSubmit, formState: { errors }, setError } = useForm({
+    const { register, watch, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(billSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',

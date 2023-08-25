@@ -20,8 +20,9 @@
     top: 2px;
 }
 
-.error-container {
+.form-error--container {
     margin-left: -6px;
+    display: flex;
 }
 
 /* .error-container {
@@ -31,19 +32,20 @@
     height: 10px;
 } */
 
-.form-error {
-    display: inline-block;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--mute-red);
-}
-
-.form-error img {
+.form-error--container img {
     height: 1em;
-    margin-left: 6px;
+    margin-left: 10px;
     margin-right: 5px;
     position: relative;
     top: 2px;
     text-align: left;
     animation: pop .22s ease;
+}
+
+
+.form-error {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--mute-red);
 }

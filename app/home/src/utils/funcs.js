@@ -5,3 +5,6 @@ export const formatName = (name) => (
         return word.charAt(0).toUpperCase() + word.slice(1)
     }).join(' ')
 )
+
+export const formatDollar = (i) =>
+    `$${i / 100}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")

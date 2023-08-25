@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
+import { Tab } from '@headlessui/react'
+import { animated } from '@react-spring/web'
 
 import './styles/Items.css'
 import { ItemsProvider, ItemsContext } from './context'
@@ -14,9 +16,12 @@ import {
     Checkbox
 } from '@components/inputs'
 import { ShadowedContainer } from '@components/pieces'
+import Bell from '@assets/icons/Bell'
+import BellOff from '@assets/icons/BellOff'
 import { BottomButtons, TabView } from './Reusables'
 import { billSchema, extractBill } from '@modals/CreateBill'
 import { DeleteButton } from '@components/buttons'
+import { formatDollar, formatName } from '@utils'
 
 const BillsColumn = ({ period }) => {
     const context = useContext(ItemsContext)[period]
@@ -42,14 +47,17 @@ const BillsColumn = ({ period }) => {
                         style={style}
                     >
                         <div
-                            className="budget-item-name"
+                            className="budget-item-name--container"
                             style={{ flexBasis: flexBasis }}
                         >
-                            <span>{item.emoji}</span>
-                            <span>{formatName(item.name)}</span>
+                            <div className="budget-item-name">
+                                <span>{item.emoji}</span>
+                                <span>{formatName(item.name)}</span>
+                            </div>
                         </div>
-                        <div >
-                            {`$${item.limit_amount / 100}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        <div className="amount--container">
+                            {item.lower_amount && `${formatDollar(item.lower_amount)} -`}
+                            {`${formatDollar(item.upper_amount)}`}
                         </div >
                         <div >
                             <div style={{ opacity: item.reminders.length > 0 ? '1' : '.5' }}>
@@ -66,45 +74,47 @@ const BillsColumn = ({ period }) => {
     )
 }
 
-const BillsList = () => (
-    <div id="budget-items--container">
-        <TabView>
-            <TabView.Panel>
-                <BillsColumn period="month" />
-            </TabView.Panel>
-            <TabView.Panel>
-                <BillsColumn period="year" />
-            </TabView.Panel>
-        </TabView>
-    </div>
-)
+const BillsList = () => {
+    const { itemsEmpty } = useContext(ItemsContext)
+
+    return (
+        <div
+            id="budget-items--container"
+            className={`${itemsEmpty ? '' : 'expand'}`}
+        >
+            <TabView>
+                <Tab.Panel>
+                    <BillsColumn period="month" />
+                </Tab.Panel>
+                <Tab.Panel>
+                    <BillsColumn period="year" />
+                </Tab.Panel>
+            </TabView>
+        </div>
+    )
+}
 
 const Form = ({ children }) => {
     const { BillScheduler, reset: resetScheduler, hasSchedule } = useBillScheduler()
-    const [rangeMode, setRangeMode] = useState(false)
     const [reminders, setReminders] = useState([])
     const [period, setPeriod] = useState(null)
     const [scheduleMissing, setScheduleMissing] = useState(false)
-    const [lowerAmount, setLowerAmount] = useState('')
-    const [upperAmount, setUpperAmount] = useState('')
     const [readyToSubmit, setReadyToSubmit] = useState(false)
     const { items: monthItems, setItems: setMonthItems } = useContext(ItemsContext).month
     const { items: yearItems, setItems: setYearItems } = useContext(ItemsContext).year
 
     const [emoji, setEmoji] = useState('')
-    const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm({
+    const { register, watch, handleSubmit, reset, formState: { errors, isValid } } = useForm({
         resolver: yupResolver(billSchema),
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
     })
+    const watchRange = watch('range', false)
 
     const resetForm = () => {
         setEmoji('')
         resetScheduler()
         setReminders([])
-        setRangeMode(false)
-        setUpperAmount('')
-        setLowerAmount('')
         reset()
     }
 
@@ -119,21 +129,21 @@ const Form = ({ children }) => {
 
             const item = { ...body, ...data }
             if (body.period === 'month') {
-                // setMonthItems([...monthItems, item])
+                setMonthItems([...monthItems, item])
             } else {
-                // setYearItems([...yearItems, item])
+                setYearItems([...yearItems, item])
             }
             resetForm()
         })(e)
     }
 
     useEffect(() => {
-        if (hasSchedule && isValid && (rangeMode === false || lowerAmount) && upperAmount) {
+        if (hasSchedule && isValid) {
             setReadyToSubmit(true)
         } else {
             setReadyToSubmit(false)
         }
-    }, [hasSchedule, isValid, emoji, lowerAmount, upperAmount])
+    }, [hasSchedule, isValid])
 
     return (
         <form onSubmit={submitForm}>
@@ -166,11 +176,7 @@ const Form = ({ children }) => {
                 </div>
                 <div>
                     <DollarRangeInput
-                        mode={rangeMode}
-                        lowerRange={lowerAmount}
-                        setLowerRange={setLowerAmount}
-                        upperRange={upperAmount}
-                        setUpperRange={setUpperAmount}
+                        mode={watchRange}
                         register={register}
                         errors={errors}
                     />
@@ -179,9 +185,7 @@ const Form = ({ children }) => {
                         name='range'
                         id="range"
                         aria-label='Change bill amount to a range.'
-                        value={rangeMode}
-                        onChange={(e) => { setRangeMode(e.target.checked) }
-                        }
+                        {...register('range')}
                     />
                 </div>
             </div>
@@ -194,7 +198,7 @@ const Window = () => {
     const { itemsEmpty } = useContext(ItemsContext)
 
     return (
-        <div className="window2">
+        <div className="window2" id="add-bills--window">
             <h2 className="spaced-header2">Bills</h2>
             {itemsEmpty
                 ? <>

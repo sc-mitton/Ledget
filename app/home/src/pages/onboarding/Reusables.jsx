@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 import { Tab } from '@headlessui/react'
+import { useLocation } from 'react-router-dom'
 
 import { ItemsContext } from './context'
 import Arrow from '@assets/icons/Arrow'
@@ -63,6 +64,7 @@ export const TabView = ({ children }) => {
 export const BottomButtons = ({ expanded }) => {
     const navigate = useNavigate()
     const { itemsEmpty } = useContext(ItemsContext)
+    const location = useLocation()
 
     return (
         <div
@@ -87,7 +89,7 @@ export const BottomButtons = ({ expanded }) => {
                 onClick={() => navigate('/welcome/add-bills')}
                 disabled={itemsEmpty}
             >
-                Continue
+                {location.pathname === '/welcome/add-bills' ? 'Finish' : 'Next'}
                 <Arrow
                     width={'.8em'}
                     height={'.8em'}

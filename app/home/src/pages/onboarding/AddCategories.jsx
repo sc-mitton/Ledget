@@ -16,7 +16,7 @@ import Grip from '@assets/icons/Grip'
 import { ShadowedContainer, FormErrorTip } from '@components/pieces'
 import { DeleteButton } from '@components/buttons'
 import { EmojiComboText, AddAlert, EvenDollarInput, PeriodSelect } from '@components/inputs'
-import { formatName } from '@utils'
+import { formatName, formatDollar } from '@utils'
 
 const schema = object().shape({
     name: string().required(),
@@ -67,7 +67,7 @@ const ItemsColumn = ({ period }) => {
                             </div>
                         </div>
                         <div >
-                            {`$${item.limit_amount / 100}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            {`${formatDollar(item.limit_amount)}`}
                         </div >
                         <div >
                             <div style={{ opacity: item.alerts.length > 0 ? '1' : '.5' }}>
@@ -85,53 +85,21 @@ const ItemsColumn = ({ period }) => {
 }
 
 const CategoriesList = () => {
-    const [tabView, setTabView] = useState(true)
     const { itemsEmpty } = useContext(ItemsContext)
-
-    const handleResize = () => {
-        if (window.innerWidth < 768) {
-            setTabView(true)
-        } else {
-            setTabView(false)
-        }
-    }
-
-    // When window gets smaller than 768px, switch to tab view
-    useEffect(() => {
-        handleResize()
-        window.addEventListener('resize', handleResize)
-        return () => window.removeEventListener('resize', handleResize)
-    }, [])
 
     return (
         <div
             id="budget-items--container"
             className={`${itemsEmpty ? '' : 'expand'}`}
         >
-            {!itemsEmpty &&
-                <>
-                    {tabView
-                        ? <TabView>
-                            <Tab.Panel>
-                                <ItemsColumn period={'month'} />
-                            </Tab.Panel>
-                            <Tab.Panel>
-                                <ItemsColumn period={'year'} />
-                            </Tab.Panel>
-                        </TabView>
-                        : <>
-                            <div>
-                                <h4 className="spaced-header2">Month</h4>
-                                <ItemsColumn period={'month'} />
-                            </div>
-                            <div>
-                                <h4 className="spaced-header2">Year</h4>
-                                <ItemsColumn period={'year'} />
-                            </div>
-                        </>
-                    }
-                </>
-            }
+            <TabView>
+                <Tab.Panel>
+                    <ItemsColumn period={'month'} />
+                </Tab.Panel>
+                <Tab.Panel>
+                    <ItemsColumn period={'year'} />
+                </Tab.Panel>
+            </TabView>
         </div>
     )
 }

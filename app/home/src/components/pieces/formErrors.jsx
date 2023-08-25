@@ -30,9 +30,11 @@ export const FormError = (props) => {
     return (
         <>
             {props.msg &&
-                <div className="error-container">
-                    <div className="form-error">
+                <div className="form-error--container">
+                    <div>
                         <img src={alert2} className="error-icon" />
+                    </div>
+                    <div className="form-error">
                         {renderLines(props.msg)}
                     </div>
                 </div>

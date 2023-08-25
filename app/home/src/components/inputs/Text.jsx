@@ -121,28 +121,19 @@ export const DollarRangeInput = (props) => {
     const {
         mode: rangeMode,
         register,
-        errors,
-        lowerRange,
-        setLowerRange,
-        upperRange,
-        setUpperRange,
+        errors
     } = props
 
-    const [l, setL] = useState('')
-    const [u, setU] = useState('')
-
-    const lowerAmount = l || lowerRange
-    const upperAmount = u || upperRange
-    const setLowerAmount = setLowerRange || setL
-    const setUpperAmount = setUpperRange || setU
+    const [lowerAmount, setLowerAmount] = useState('')
+    const [upperAmount, setUpperAmount] = useState('')
 
     const { onChange: lowerChange, onBlur: lowerBlur, ...lowerRest } = register('lower_amount')
     const { onChange: upperChange, onBlur: upperBlur, ...upperRest } = register('upper_amount')
 
     const handleChange = (e) => {
         const cleaned = e.target.value.replace(/[^0-9]/g, '')
-        const dollar = cleaned.length > 2 ? cleaned.slice(0, cleaned.length - 2) : cleaned
-        const cents = cleaned.length > 2 ? cleaned.slice(cleaned.length - 2) : ''
+        const dollar = cleaned.slice(0, cleaned.length - 2)
+        const cents = cleaned.slice(cleaned.length - 2)
 
         const newVal = `$${dollar.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}${cents && '.' + cents}`
         if (e.target.name === 'lower_amount') {
@@ -156,7 +147,7 @@ export const DollarRangeInput = (props) => {
 
     return (
         <>
-            <label htmlFor="upperAmount">Amount</label>
+            <label htmlFor="upper_amount">Amount</label>
             <TextInput >
                 {rangeMode &&
                     <input
