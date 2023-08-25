@@ -29,7 +29,7 @@ class BudgetCategorySerializer(serializers.ModelSerializer):
         model = BudgetCategory
         fields = [field.name for field in model._meta.fields
                   if field.name != 'user'] + ['alerts']
-        required_fields = ['name', 'type', 'limit_amount']
+        required_fields = ['name', 'period', 'limit_amount']
 
     def create(self, validated_data):
         alerts_data = validated_data.pop('alerts')
@@ -52,7 +52,7 @@ class BillSerializer(serializers.ModelSerializer):
         model = Bill
         fields = [field.name for field in model._meta.fields
                   if field.name != 'user'] + ['reminders']
-        required_fields = ['name', 'type', 'upper_amount']
+        required_fields = ['name', 'period', 'upper_amount']
 
     def create(self, validated_data):
         reminders_data = validated_data.pop('reminders')

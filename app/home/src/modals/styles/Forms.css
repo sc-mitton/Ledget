@@ -39,7 +39,7 @@
 }
 
 .padded-row {
-    margin-top: 6px;
+    margin-top: 4px;
 }
 
 .split-inputs {
@@ -57,20 +57,6 @@
 .split-inputs>div:last-child {
     flex: 1;
     margin-left: 4px;
-}
-
-@media only screen and (max-width: 768px) {
-    .split-inputs {
-        flex-direction: column;
-    }
-
-    .split-inputs>div:first-child {
-        margin-right: 0px;
-    }
-
-    .split-inputs>div:last-child {
-        margin-left: 0px;
-    }
 }
 
 /* ---------------------------------- Emoji --------------------------------- */
@@ -107,21 +93,48 @@ input.emoji {
     transition: opacity .2s ease;
 }
 
-#limit-inputs-container {
-    width: 75%;
-}
-
 #limit-radios button {
     font-weight: 400;
 }
 
-#bottom-inputs {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 2px 0 16px 0px;
+#bottom-inputs .checkbox-container {
+    margin-left: 12px;
 }
 
-#bottom-inputs .checkbox-container {
-    margin-left: 8px;
+#new-bill-form #add-reminder--container {
+    margin-top: 8px;
+}
+
+#new-bill-form #range-checkbox--container label {
+    margin-top: 4px;
+}
+
+#new-bill-form .bottom-row {
+    margin-bottom: 24px;
+}
+
+@media only screen and (max-width: 768px) {
+    .split-inputs {
+        flex-direction: column;
+    }
+
+    .split-inputs>div:first-child {
+        margin-right: 0px;
+    }
+
+    .split-inputs>div:last-child {
+        margin-left: 0px;
+    }
+
+    #new-bill-form #range-checkbox--container label {
+        margin-bottom: 8px;
+    }
+
+    #new-bill-form .bottom-row>div:first-child {
+        order: 2;
+    }
+
+    #new-bill-form .bottom-row>div:last-child {
+        order: 1;
+    }
 }

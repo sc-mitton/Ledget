@@ -14,13 +14,13 @@ import { FormErrorTip } from '@components/pieces'
 import { useEffect } from 'react'
 
 const schema = object().shape({
-    name: string().required(),
+    name: string().required().lowercase(),
     limit: string().required(),
 })
 
 const radioOptions = [
-    { name: 'type', value: 'month', label: 'Month', default: true },
-    { name: 'type', value: 'year', label: 'Year' },
+    { name: 'period', value: 'month', label: 'Month', default: true },
+    { name: 'period', value: 'year', label: 'Year' },
 ]
 
 const Form = (props) => {
@@ -41,7 +41,6 @@ const Form = (props) => {
 
         body.limit_amount = Number(body.limit.replace(/[^0-9]/g, '')) * 100
         delete body.limit
-        body.name = body.name.toLowerCase()
 
         let alerts = []
         for (const [key, value] of Object.entries(body)) {
@@ -116,7 +115,7 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '300px'}
+            maxWidth={props.maxWidth || '375px'}
             minWidth={props.minWidth || '0px'}
             blur={2}
         />

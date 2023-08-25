@@ -795,6 +795,7 @@ export const useBillScheduler = () => {
 
     return {
         reset: reset,
+        hasSchedule: day || month || week || weekDay,
         BillScheduler: BillScheduler
     }
 }

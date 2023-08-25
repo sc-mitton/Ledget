@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
-import { object, string } from "yup"
 
 import './styles/Items.css'
 import { ItemsProvider, ItemsContext } from './context'
@@ -14,31 +13,87 @@ import {
     AddReminder,
     Checkbox
 } from '@components/inputs'
-import { BottomButtons, ItemsList } from './Reusables'
+import { ShadowedContainer } from '@components/pieces'
+import { BottomButtons, TabView } from './Reusables'
+import { billSchema, extractBill } from '@modals/CreateBill'
+import { DeleteButton } from '@components/buttons'
 
+const BillsColumn = ({ period }) => {
+    const context = useContext(ItemsContext)[period]
+
+    const {
+        items,
+        setItems,
+        flexBasis,
+        transitions,
+        containerProps,
+    } = context
+
+    const handleDelete = (toDelete) => {
+        setItems(items.filter((category) => category !== toDelete))
+    }
+
+    return (
+        <ShadowedContainer style={{ height: 'auto' }}>
+            <animated.div style={containerProps} >
+                {transitions((style, item, index) =>
+                    <animated.div
+                        className="budget-item"
+                        style={style}
+                    >
+                        <div
+                            className="budget-item-name"
+                            style={{ flexBasis: flexBasis }}
+                        >
+                            <span>{item.emoji}</span>
+                            <span>{formatName(item.name)}</span>
+                        </div>
+                        <div >
+                            {`$${item.limit_amount / 100}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </div >
+                        <div >
+                            <div style={{ opacity: item.reminders.length > 0 ? '1' : '.5' }}>
+                                {item.reminders.length > 0
+                                    ? <Bell numberOfAlerts={item.reminders.length} />
+                                    : <BellOff />}
+                            </div>
+                        </div>
+                        <DeleteButton onClick={() => handleDelete(item)} />
+                    </animated.div>
+                )}
+            </animated.div>
+        </ShadowedContainer>
+    )
+}
+
+const BillsList = () => (
+    <div id="budget-items--container">
+        <TabView>
+            <TabView.Panel>
+                <BillsColumn period="month" />
+            </TabView.Panel>
+            <TabView.Panel>
+                <BillsColumn period="year" />
+            </TabView.Panel>
+        </TabView>
+    </div>
+)
 
 const Form = ({ children }) => {
-    const { BillScheduler, reset: resetScheduler } = useBillScheduler()
+    const { BillScheduler, reset: resetScheduler, hasSchedule } = useBillScheduler()
     const [rangeMode, setRangeMode] = useState(false)
     const [reminders, setReminders] = useState([])
     const [period, setPeriod] = useState(null)
     const [scheduleMissing, setScheduleMissing] = useState(false)
-
-    const schema = object().shape({
-        name: string().required(),
-        lowerAmount: rangeMode
-            ? string().required().test('lowerAmount', 'Lower value must be smaller.', (value) => {
-                const upperAmount = this.upperAmount
-                return parseInt(value.replace(/[^0-9.]/g, ''), 10)
-                    < parseInt(upperAmount.replace(/[^0-9.]/g, ''), 10)
-            })
-            : '',
-        upperAmount: string().required(),
-    })
+    const [lowerAmount, setLowerAmount] = useState('')
+    const [upperAmount, setUpperAmount] = useState('')
+    const [readyToSubmit, setReadyToSubmit] = useState(false)
+    const { items: monthItems, setItems: setMonthItems } = useContext(ItemsContext).month
+    const { items: yearItems, setItems: setYearItems } = useContext(ItemsContext).year
 
     const [emoji, setEmoji] = useState('')
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({
-        resolver: yupResolver(schema),
+    const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm({
+        resolver: yupResolver(billSchema),
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
     })
@@ -47,68 +102,47 @@ const Form = ({ children }) => {
         setEmoji('')
         resetScheduler()
         setReminders([])
+        setRangeMode(false)
+        setUpperAmount('')
+        setLowerAmount('')
         reset()
     }
 
-    const finalSubmit = (body) => {
-
-        Object.keys(body).forEach((key) => {
-            const snakeCase = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)
-            if (snakeCase !== key) {
-                body[snakeCase] = body[key]
-                delete body[key]
-            }
-        })
-
-        if (rangeMode) {
-            body.lower_amount = body.lower_amount.replace(/[^0-9]/g, '')
-            body.lower_amount < 100 && (body.lower_amount *= 100)
-        }
-        body.upper_amount = body.upper_amount.replace(/[^0-9]/g, '')
-        body.upper_amount < 100 && (body.upper_amount *= 100)
-        body.name = body.name.toLowerCase()
-
-        // Extract reminder objects
-        let reminders = []
-        for (const [key, value] of Object.entries(body)) {
-            if (key.includes('reminder')) {
-                const values = key.match(/\[(\w+)\]/g).map((match) => /[\w]+/.exec(match)[0])
-                if (reminders.length < values[0] - 1) {
-                    reminders.push({})
-                }
-                reminders[values[0]] = { ...reminders[values[0]], [values[1]]: value }
-                delete body[key]
-            }
-        }
-        body.reminders = reminders
-
-        addNewBill({ data: body })
-    }
-
     const submitForm = (e) => {
-        e.preventDefault()
-        const formData = new FormData(e.target)
-        let body = Object.fromEntries(formData)
-        delete body.range
-
-        // Check if schedule is missing
-        if (!body.day && !(body.week && body.weekDay) && !(body.month && body.day)) {
-            setScheduleMissing(true)
-        } else {
-            setScheduleMissing(false)
+        const body = extractBill(e)
+        if (body.errors) {
+            body.errors.schedule && setScheduleMissing(true)
         }
 
-        handleSubmit(() => {
-            if (scheduleMissing) return
-            finalSubmit(body)
+        handleSubmit((data) => {
+            if (body.errors) { return }
+
+            const item = { ...body, ...data }
+            if (body.period === 'month') {
+                // setMonthItems([...monthItems, item])
+            } else {
+                // setYearItems([...yearItems, item])
+            }
+            resetForm()
         })(e)
     }
 
+    useEffect(() => {
+        if (hasSchedule && isValid && (rangeMode === false || lowerAmount) && upperAmount) {
+            setReadyToSubmit(true)
+        } else {
+            setReadyToSubmit(false)
+        }
+    }, [hasSchedule, isValid, emoji, lowerAmount, upperAmount])
+
     return (
-        <form onSubmit={handleSubmit((data, e) => submitForm(e))}>
+        <form onSubmit={submitForm}>
             <div>
                 <div>
-                    <PeriodSelect value={period} onChange={setPeriod} />
+                    <PeriodSelect
+                        value={period}
+                        onChange={setPeriod}
+                    />
                 </div>
                 <div>
                     <EmojiComboText
@@ -131,7 +165,15 @@ const Form = ({ children }) => {
                     />
                 </div>
                 <div>
-                    <DollarRangeInput mode={rangeMode} register={register} errors={errors} />
+                    <DollarRangeInput
+                        mode={rangeMode}
+                        lowerRange={lowerAmount}
+                        setLowerRange={setLowerAmount}
+                        upperRange={upperAmount}
+                        setUpperRange={setUpperAmount}
+                        register={register}
+                        errors={errors}
+                    />
                     <Checkbox
                         label='Range'
                         name='range'
@@ -143,36 +185,37 @@ const Form = ({ children }) => {
                     />
                 </div>
             </div>
-            {children}
+            {children(readyToSubmit)}
         </form>
     )
 }
 
-const AddBills = () => {
+const Window = () => {
     const { itemsEmpty } = useContext(ItemsContext)
 
     return (
         <div className="window2">
             <h2 className="spaced-header2">Bills</h2>
-            {itemsEmpty &&
-                <>
+            {itemsEmpty
+                ? <>
                     <h4 >Add your monthly and yearly bills</h4>
                     <hr className="spaced-header" />
                 </>
+                : <BillsList />
             }
-            <ItemsList />
             <Form >
-                <BottomButtons />
+                {(readyToSubmit) => (
+                    <BottomButtons expanded={readyToSubmit || !itemsEmpty} />
+                )}
             </Form>
         </div>
     )
 }
 
-const Enriched = () => (
+const AddBills = () => (
     <ItemsProvider>
-        <AddBills />
+        <Window />
     </ItemsProvider>
 )
 
-
-export default Enriched
+export default AddBills

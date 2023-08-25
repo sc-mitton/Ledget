@@ -15,7 +15,7 @@ class BudgetItem(models.Model):
         YEAR = 'year', _('Year')
         MONTH = 'month', _('Month')
 
-    type = models.CharField(
+    period = models.CharField(
         max_length=255,
         choices=CategoryType.choices,
         default=CategoryType.MONTH

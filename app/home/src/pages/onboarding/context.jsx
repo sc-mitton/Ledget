@@ -97,22 +97,30 @@ export const ItemsProvider = ({ children }) => {
         }
     }, [monthItems, yearItems])
 
+    const monthContext = {
+        items: monthItems,
+        setItems: setMonthItems,
+        flexBasis: monthFlexBasis,
+        transitions: monthTransitions,
+        api: monthApi,
+        containerProps: monthContainerProps,
+        containerApi: monthContainerApi,
+    }
+
+    const yearContext = {
+        items: yearItems,
+        setItems: setYearItems,
+        flexBasis: yearFlexBasis,
+        transitions: yearTransitions,
+        api: yearApi,
+        containerProps: yearContainerProps,
+        containerApi: yearContainerApi,
+    }
+
     const vals = {
-        monthItems,
-        setMonthItems,
-        yearItems,
-        setYearItems,
         itemsEmpty,
-        yearFlexBasis,
-        monthFlexBasis,
-        yearTransitions,
-        yearApi,
-        monthTransitions,
-        monthApi,
-        yearContainerApi,
-        yearContainerProps,
-        monthContainerApi,
-        monthContainerProps
+        month: monthContext,
+        year: yearContext,
     }
 
     return (

@@ -5,11 +5,10 @@ import alert2 from '@assets/icons/alert2.svg'
 
 export const FormErrorTip = ({ errors }) => {
 
-
     return (
         <>
             {
-                errors.some((error) => error?.type === 'required') &&
+                errors.some((error) => error?.type === 'required' || error?.message === 'required') &&
                 <div className='error-tip'>
                     <img
                         src={alert2}

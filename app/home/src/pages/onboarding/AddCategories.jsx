@@ -1,28 +1,150 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 import { object, string } from "yup"
+import { Tab } from '@headlessui/react'
+import { animated } from '@react-spring/web'
 
 import './styles/Items.css'
-
-import { FormErrorTip } from '@components/pieces'
-import { EmojiComboText, AddAlert, EvenDollarInput, PeriodSelect } from '@components/inputs'
+import { BottomButtons, TabView } from './Reusables'
 import { ItemsProvider, ItemsContext } from './context'
-import { BottomButtons, ItemsList } from './Reusables'
+import { useItemsDrag } from './hooks'
+import Bell from '@assets/icons/Bell'
+import BellOff from '@assets/icons/BellOff'
+import Grip from '@assets/icons/Grip'
+import { ShadowedContainer, FormErrorTip } from '@components/pieces'
+import { DeleteButton } from '@components/buttons'
+import { EmojiComboText, AddAlert, EvenDollarInput, PeriodSelect } from '@components/inputs'
+import { formatName } from '@utils'
 
 const schema = object().shape({
     name: string().required(),
     limit: string().required(),
 })
 
+const ItemsColumn = ({ period }) => {
+    const context = useContext(ItemsContext)[period]
+
+    const {
+        items,
+        setItems,
+        flexBasis,
+        transitions,
+        api,
+        containerProps,
+    } = context
+
+    const bind = useItemsDrag(items, setItems, api)
+
+    const handleDelete = (toDelete) => {
+        setItems(items.filter((category) => category !== toDelete))
+    }
+
+    return (
+        <ShadowedContainer style={{ height: 'auto' }}>
+            <animated.div style={containerProps} >
+                {transitions((style, item, index) =>
+                    <animated.div
+                        className="budget-item"
+                        style={style}
+                        {...bind(item)}
+                    >
+                        <div
+                            className="budget-item-name--container"
+                            style={{ flexBasis: flexBasis }}
+                        >
+                            <button
+                                className="btn grip-btn"
+                                aria-label="Move"
+                                draggable-item="true"
+                            >
+                                <Grip />
+                            </button>
+                            <div className="budget-item-name">
+                                <span>{item.emoji}</span>
+                                <span>{formatName(item.name)}</span>
+                            </div>
+                        </div>
+                        <div >
+                            {`$${item.limit_amount / 100}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </div >
+                        <div >
+                            <div style={{ opacity: item.alerts.length > 0 ? '1' : '.5' }}>
+                                {item.alerts.length > 0
+                                    ? <Bell numberOfAlerts={item.alerts.length} />
+                                    : <BellOff />}
+                            </div>
+                        </div>
+                        <DeleteButton onClick={() => handleDelete(item)} />
+                    </animated.div>
+                )}
+            </animated.div>
+        </ShadowedContainer>
+    )
+}
+
+const CategoriesList = () => {
+    const [tabView, setTabView] = useState(true)
+    const { itemsEmpty } = useContext(ItemsContext)
+
+    const handleResize = () => {
+        if (window.innerWidth < 768) {
+            setTabView(true)
+        } else {
+            setTabView(false)
+        }
+    }
+
+    // When window gets smaller than 768px, switch to tab view
+    useEffect(() => {
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
+    return (
+        <div
+            id="budget-items--container"
+            className={`${itemsEmpty ? '' : 'expand'}`}
+        >
+            {!itemsEmpty &&
+                <>
+                    {tabView
+                        ? <TabView>
+                            <Tab.Panel>
+                                <ItemsColumn period={'month'} />
+                            </Tab.Panel>
+                            <Tab.Panel>
+                                <ItemsColumn period={'year'} />
+                            </Tab.Panel>
+                        </TabView>
+                        : <>
+                            <div>
+                                <h4 className="spaced-header2">Month</h4>
+                                <ItemsColumn period={'month'} />
+                            </div>
+                            <div>
+                                <h4 className="spaced-header2">Year</h4>
+                                <ItemsColumn period={'year'} />
+                            </div>
+                        </>
+                    }
+                </>
+            }
+        </div>
+    )
+}
+
 const Form = ({ children }) => {
     const [emoji, setEmoji] = useState('')
     const [dollarLimit, setDollarLimit] = useState('')
     const [alerts, setAlerts] = useState([])
-    const { monthItems, setMonthItems, yearItems, setYearItems } = useContext(ItemsContext)
+    const [readyToSubmit, setReadyToSubmit] = useState(false)
+    const { items: monthItems, setItems: setMonthItems } = useContext(ItemsContext).month
+    const { items: yearItems, setItems: setYearItems } = useContext(ItemsContext).year
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
@@ -34,6 +156,10 @@ const Form = ({ children }) => {
         setDollarLimit('')
         reset()
     }
+
+    useEffect(() => {
+        isValid && setReadyToSubmit(true)
+    }, [isValid])
 
     const submit = (e) => {
         e.preventDefault()
@@ -97,12 +223,12 @@ const Form = ({ children }) => {
                     />
                 </div>
             </div>
-            {children}
+            {children(readyToSubmit)}
         </form>
     )
 }
 
-const AddCategories = () => {
+const Window = () => {
     const { itemsEmpty } = useContext(ItemsContext)
 
     return (
@@ -114,21 +240,23 @@ const AddCategories = () => {
                     <hr className="spaced-header" />
                 </>
             }
-            <ItemsList />
+            <CategoriesList />
             <Form >
-                <BottomButtons />
+                {(readyToSubmit) => (
+                    <BottomButtons expanded={readyToSubmit || !itemsEmpty} />
+                )}
             </Form>
         </div>
     )
 }
 
-const Enriched = () => {
+const AddCategories = () => {
 
     return (
         <ItemsProvider>
-            <AddCategories />
+            <Window />
         </ItemsProvider>
     )
 }
 
-export default Enriched
+export default AddCategories

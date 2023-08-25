@@ -10,7 +10,6 @@ export {
     TextInput,
     EmojiComboText,
     EvenDollarInput,
-    DollarInput,
     DollarRangeInput,
     MenuTextInput,
 } from './Text';

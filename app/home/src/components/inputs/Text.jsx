@@ -117,71 +117,79 @@ export const EvenDollarInput = (props) => {
     )
 }
 
-export const DollarInput = (props) => {
-    const { dollar, setDollar, register, ...rest } = props
+export const DollarRangeInput = (props) => {
+    const {
+        mode: rangeMode,
+        register,
+        errors,
+        lowerRange,
+        setLowerRange,
+        upperRange,
+        setUpperRange,
+    } = props
 
-    const { onChange, onBlur, onFocus, ...registerRest } = register(props.name)
+    const [l, setL] = useState('')
+    const [u, setU] = useState('')
+
+    const lowerAmount = l || lowerRange
+    const upperAmount = u || upperRange
+    const setLowerAmount = setLowerRange || setL
+    const setUpperAmount = setUpperRange || setU
+
+    const { onChange: lowerChange, onBlur: lowerBlur, ...lowerRest } = register('lower_amount')
+    const { onChange: upperChange, onBlur: upperBlur, ...upperRest } = register('upper_amount')
 
     const handleChange = (e) => {
         const cleaned = e.target.value.replace(/[^0-9]/g, '')
         const dollar = cleaned.length > 2 ? cleaned.slice(0, cleaned.length - 2) : cleaned
         const cents = cleaned.length > 2 ? cleaned.slice(cleaned.length - 2) : ''
 
-        setDollar(`$${dollar.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}${cents && '.' + cents}`)
-        onChange && onChange(e)
+        const newVal = `$${dollar.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}${cents && '.' + cents}`
+        if (e.target.name === 'lower_amount') {
+            setLowerAmount(newVal)
+            lowerChange && lowerChange(e)
+        } else {
+            setUpperAmount(newVal)
+            upperChange && upperChange(e)
+        }
     }
-
-    return (
-        <input
-            type="text"
-            placeholder="$0"
-            value={dollar}
-            {...rest}
-            {...registerRest}
-            onChange={handleChange}
-            onBlur={(e) => {
-                dollar.length <= 1 && setDollar('')
-                onBlur && onBlur(e)
-            }}
-            onFocus={(e) => {
-                !dollar && setDollar('$')
-                onFocus && onFocus(e)
-            }}
-            size="14"
-        />
-
-    )
-}
-
-export const DollarRangeInput = (props) => {
-    const { mode: rangeMode, register, errors } = props
-    const [lowerAmount, setlowerAmount] = useState('')
-    const [upperAmount, setupperAmount] = useState('')
 
     return (
         <>
             <label htmlFor="upperAmount">Amount</label>
             <TextInput >
                 {rangeMode &&
-                    <DollarInput
-                        dollar={lowerAmount}
-                        setDollar={setlowerAmount}
-                        name="lowerAmount"
-                        id="lowerAmount"
-                        register={register}
+                    <input
+                        name="lower_amount"
+                        type="text"
+                        placeholder="$0"
+                        value={lowerAmount}
+                        onChange={handleChange}
+                        onBlur={(e) => {
+                            lowerAmount.length <= 1 && setLowerAmount('')
+                            lowerBlur && lowerBlur(e)
+                        }}
+                        size="14"
+                        {...lowerRest}
                     />
                 }
-                <DollarInput
-                    dollar={upperAmount}
-                    setDollar={setupperAmount}
-                    name="upperAmount"
-                    id="upperAmount"
-                    register={register}
+                <input
+                    name="upper_amount"
+                    type="text"
+                    placeholder="$0"
+                    value={upperAmount}
+                    onChange={handleChange}
+                    onBlur={(e) => {
+                        upperAmount.length <= 1 && setUpperAmount('')
+                        upperBlur && upperBlur(e)
+                    }}
+                    size="14"
+                    {...upperRest}
                 />
-                <FormErrorTip errors={[errors.upperAmount, errors.lowerAmount]} />
+                <FormErrorTip errors={[errors.upper_amount, errors.lower_amount]} />
             </TextInput>
-            {errors.lowerAmount?.type !== 'required'
-                && <FormError msg={errors.lowerAmount?.message} />}
+            {(errors.lower_amount?.type !== 'required' && errors.lower_amount?.message !== 'required')
+                && <FormError msg={errors.lower_amount?.message} />}
         </>
     )
 }

@@ -11,7 +11,7 @@
 #onboarding-app .btn-container-enabled {
     display: flex;
     justify-content: space-between;
-    margin-top: 1rem;
+    margin-top: .75rem;
 }
 
 #onboarding-app .btn-container {
@@ -22,7 +22,7 @@
     transition: max-height 0.3s ease-in-out;
 }
 
-#onboarding-app .btn-container.enabled {
+#onboarding-app .btn-container.expanded {
     max-height: 100px;
     transition: max-height 0.3s ease-in-out;
 }
