@@ -27,7 +27,7 @@
     margin: 0;
     padding: 0;
     transform: scale(.8);
-    width: 80%;
+    width: 70%;
     margin: 0 auto;
     opacity: 0;
 }
@@ -63,7 +63,7 @@
 }
 
 .budget-item>div:first-child {
-    flex-grow: 2;
+    flex-grow: 1;
     flex-shrink: 1;
     display: flex;
     align-items: center;
@@ -85,6 +85,11 @@
     white-space: nowrap;
 }
 
+/* -------------------------- Bill Window Specific -------------------------- */
+
+#onboarding-app #add-bills--window form>div {
+    grid-template-columns: 1fr 1fr;
+}
 
 /* ----------------------------- Responsiveness ----------------------------- */
 
@@ -95,7 +100,7 @@
     }
 
     #onboarding-app #budget-items--container>div {
-        width: 90%;
+        width: 100%;
         margin: 0 auto;
     }
 
@@ -117,7 +122,8 @@
         width: 100%;
     }
 
-    #onboarding-app form>div {
+    #onboarding-app form>div,
+    #onboarding-app #add-bills--window form>div {
         grid-template-columns: 1fr;
     }
 

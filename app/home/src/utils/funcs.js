@@ -37,3 +37,13 @@ export const formatCurrency = (val) => {
 export const makeIntCurrencyFromStr = (s) =>
     parseInt(s.replace(/[^0-9]/g, '').replace(/^0+/, ''))
 
+export const getLongest = (items, key) => {
+    const longestLength = items.reduce((acc, curr) => {
+        if (curr[key].toString().length > acc) {
+            return curr[key].toString().length
+        } else {
+            return acc
+        }
+    }, 0)
+    return longestLength
+}

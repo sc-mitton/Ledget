@@ -21,18 +21,30 @@ import BellOff from '@assets/icons/BellOff'
 import { BottomButtons, TabView } from './Reusables'
 import { billSchema, extractBill } from '@modals/CreateBill'
 import { DeleteButton } from '@components/buttons'
-import { formatName } from '@utils'
+import { formatName, getLongest } from '@utils'
 
 const BillsColumn = ({ period }) => {
     const context = useContext(ItemsContext)[period]
+    const [nameFlexBasis, setNameFlexBasis] = useState('auto')
+    const [amountFlexBasis, setAmountFlexBasis] = useState('auto')
 
     const {
         items,
         setItems,
-        flexBasis,
         transitions,
         containerProps,
     } = context
+
+    useEffect(() => {
+        const longestNameLength = getLongest(context.items, 'name')
+        setNameFlexBasis(`${longestNameLength + 1}ch`)
+
+        const longestAmountLengths = {
+            upper: getLongest(context.items, 'upper_amount'),
+            lower: getLongest(context.items, 'lower_amount')
+        }
+        setAmountFlexBasis(`${longestAmountLengths.upper + longestAmountLengths.lower + 1}ch`)
+    }, [items])
 
     const handleDelete = (toDelete) => {
         setItems(items.filter((category) => category !== toDelete))
@@ -48,14 +60,17 @@ const BillsColumn = ({ period }) => {
                     >
                         <div
                             className="budget-item-name--container"
-                            style={{ flexBasis: flexBasis }}
+                            style={{ flexBasis: nameFlexBasis }}
                         >
                             <div className="budget-item-name">
                                 <span>{item.emoji}</span>
                                 <span>{formatName(item.name)}</span>
                             </div>
                         </div>
-                        <div className="amount--container">
+                        <div
+                            className="amount--container"
+                            style={{ flexBasis: amountFlexBasis }}
+                        >
                             <DollarCentsRange lower={item.lower_amount} upper={item.upper_amount} />
                         </div >
                         <div >

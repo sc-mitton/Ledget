@@ -16,7 +16,7 @@ import Grip from '@assets/icons/Grip'
 import { ShadowedContainer, FormErrorTip } from '@components/pieces'
 import { DeleteButton } from '@components/buttons'
 import { EmojiComboText, AddAlert, LimitAmountInput, PeriodSelect } from '@components/inputs'
-import { formatName, formatRoundedCurrency } from '@utils'
+import { formatName, formatRoundedCurrency, getLongest } from '@utils'
 
 const schema = object().shape({
     name: string().required(),
@@ -25,11 +25,11 @@ const schema = object().shape({
 
 const ItemsColumn = ({ period }) => {
     const context = useContext(ItemsContext)[period]
+    const [nameFlexBasis, setNameFlexBasis] = useState('auto')
 
     const {
         items,
         setItems,
-        flexBasis,
         transitions,
         api,
         containerProps,
@@ -40,6 +40,11 @@ const ItemsColumn = ({ period }) => {
     const handleDelete = (toDelete) => {
         setItems(items.filter((category) => category !== toDelete))
     }
+
+    useEffect(() => {
+        const longestLength = getLongest(context.items, 'name')
+        setNameFlexBasis(`${longestLength + 1}ch`)
+    }, [items])
 
     return (
         <ShadowedContainer style={{ height: 'auto' }}>
@@ -52,7 +57,7 @@ const ItemsColumn = ({ period }) => {
                     >
                         <div
                             className="budget-item-name--container"
-                            style={{ flexBasis: flexBasis }}
+                            style={{ flexBasis: nameFlexBasis }}
                         >
                             <button
                                 className="btn grip-btn"

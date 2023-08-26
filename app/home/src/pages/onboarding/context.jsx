@@ -16,34 +16,11 @@ export const ItemsContext = React.createContext()
 export const ItemsProvider = ({ children }) => {
     const [monthItems, setMonthItems] = useState([])
     const [yearItems, setYearItems] = useState([])
-    const [yearFlexBasis, setYearFlexBasis] = useState(0)
-    const [monthFlexBasis, setMonthFlexBasis] = useState(0)
     const [itemsEmpty, setItemsEmpty] = useState(true)
     const monthApi = useSpringRef()
     const yearApi = useSpringRef()
     const monthContainerApi = useSpringRef()
     const yearContainerApi = useSpringRef()
-
-    const getFlexBasis = (categories) => {
-        const val = categories.reduce((acc, curr) => {
-            if (curr.name.length > acc) {
-                return curr.name.length
-            } else {
-                return acc
-            }
-        }, 0)
-        return val
-    }
-
-    const updateFlexiBasis = (period) => {
-        if (period === 'month') {
-            const monthFlexBasis = getFlexBasis(monthItems)
-            setMonthFlexBasis(`${monthFlexBasis}ch`)
-        } else {
-            const yearFlexBasis = getFlexBasis(yearItems)
-            setYearFlexBasis(`${yearFlexBasis}ch`)
-        }
-    }
 
     const monthTransitions = useTransition(
         monthItems,
@@ -79,13 +56,11 @@ export const ItemsProvider = ({ children }) => {
 
     useEffect(() => {
         monthApi.start()
-        updateFlexiBasis('month')
         monthContainerApi.start()
     }, [monthItems])
 
     useEffect(() => {
         yearApi.start()
-        updateFlexiBasis('year')
         yearContainerApi.start()
     }, [yearItems])
 
@@ -100,7 +75,6 @@ export const ItemsProvider = ({ children }) => {
     const monthContext = {
         items: monthItems,
         setItems: setMonthItems,
-        flexBasis: monthFlexBasis,
         transitions: monthTransitions,
         api: monthApi,
         containerProps: monthContainerProps,
@@ -110,7 +84,6 @@ export const ItemsProvider = ({ children }) => {
     const yearContext = {
         items: yearItems,
         setItems: setYearItems,
-        flexBasis: yearFlexBasis,
         transitions: yearTransitions,
         api: yearApi,
         containerProps: yearContainerProps,
