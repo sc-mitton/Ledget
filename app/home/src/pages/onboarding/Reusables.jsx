@@ -5,7 +5,7 @@ import { animated } from '@react-spring/web'
 import { Tab } from '@headlessui/react'
 import { useLocation } from 'react-router-dom'
 
-import { ItemsContext } from './context'
+import { ItemsContext } from './ItemsContext'
 import Arrow from '@assets/icons/Arrow'
 import Checkmark from '@assets/icons/Checkmark'
 import { usePillAnimation } from '@utils/hooks'
@@ -15,6 +15,17 @@ export const TabView = ({ children }) => {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [updatePill, setUpdatePill] = useState(false)
     const tabListRef = useRef(null)
+    const { month: { items: monthItems }, year: { items: yearItems } } = useContext(ItemsContext)
+
+    useEffect(() => {
+        if (monthItems.length === 0) return
+        setSelectedIndex(0)
+    }, [monthItems])
+
+    useEffect(() => {
+        if (yearItems.length === 0) return
+        setSelectedIndex(1)
+    }, [yearItems])
 
     const { props } = usePillAnimation({
         ref: tabListRef,
@@ -30,6 +41,8 @@ export const TabView = ({ children }) => {
     useEffect(() => {
         setUpdatePill(!updatePill)
     }, [selectedIndex])
+
+
 
     return (
         <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>

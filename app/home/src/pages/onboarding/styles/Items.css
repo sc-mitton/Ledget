@@ -24,12 +24,11 @@
     box-shadow: var(--low-elevation-drop-shadow);
     border-radius: var(--border-radius3);
     max-height: 0;
-    margin: 0;
     padding: 0;
-    transform: scale(.8);
     width: 70%;
     margin: 0 auto;
     opacity: 0;
+    transform: scale(.95);
 }
 
 #onboarding-app #budget-items--container.expand {

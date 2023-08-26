@@ -7,6 +7,7 @@ from jwt import decode
 import logging
 
 logger = logging.getLogger('ledget')
+OATHKEEPER_PUBLIC_KEY = settings.OATHKEEPER_PUBLIC_KEY
 
 
 class OryBackend(BaseAuthentication):
@@ -40,10 +41,9 @@ class OryBackend(BaseAuthentication):
         """Validate the token against the JWK from Oathkeeper and
         return it if valid. Otherwise, return None."""
 
-        public_key = settings.OATHKEEPER_PUBLIC_KEY
         decoded_token = decode(
             token,
-            key=public_key,
+            key=OATHKEEPER_PUBLIC_KEY,
             algorithms=['RS256'],
             options={'verify_exp': True}
         )

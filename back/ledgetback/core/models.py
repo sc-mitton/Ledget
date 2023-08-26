@@ -1,4 +1,5 @@
 from django.db import models
+
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 
@@ -13,12 +14,29 @@ class UserManager(models.Manager):
 
         return user
 
+    def create_superuser(self, id, password=None, **extra_fields):
+        """Create and save a new superuser."""
+
+        user = self.create_user(id, **extra_fields)
+        user.is_superuser = True
+        user.save(using=self._db)
+
+        return user
+
 
 class User(models.Model):
 
     id = models.UUIDField(
         primary_key=True,
         editable=False
+    )
+    is_superuser = models.BooleanField(
+        _("superuser status"),
+        default=False,
+        help_text=_(
+            "Designates that this user has all permissions without "
+            "explicitly assigning them."
+        ),
     )
     is_active = models.BooleanField(default=True)
     account_flag = models.CharField(

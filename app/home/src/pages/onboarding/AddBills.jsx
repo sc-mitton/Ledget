@@ -6,7 +6,7 @@ import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
 
 import './styles/Items.css'
-import { ItemsProvider, ItemsContext } from './context'
+import { ItemsProvider, ItemsContext } from './ItemsContext'
 import {
     EmojiComboText,
     DollarRangeInput,
@@ -21,7 +21,7 @@ import BellOff from '@assets/icons/BellOff'
 import { BottomButtons, TabView } from './Reusables'
 import { billSchema, extractBill } from '@modals/CreateBill'
 import { DeleteButton } from '@components/buttons'
-import { formatName, getLongest } from '@utils'
+import { formatName, getLongestLength } from '@utils'
 
 const BillsColumn = ({ period }) => {
     const context = useContext(ItemsContext)[period]
@@ -36,12 +36,12 @@ const BillsColumn = ({ period }) => {
     } = context
 
     useEffect(() => {
-        const longestNameLength = getLongest(context.items, 'name')
+        const longestNameLength = getLongestLength(context.items, 'name')
         setNameFlexBasis(`${longestNameLength + 1}ch`)
 
         const longestAmountLengths = {
-            upper: getLongest(context.items, 'upper_amount'),
-            lower: getLongest(context.items, 'lower_amount')
+            upper: getLongestLength(context.items, 'upper_amount'),
+            lower: getLongestLength(context.items, 'lower_amount')
         }
         setAmountFlexBasis(`${longestAmountLengths.upper + longestAmountLengths.lower + 1}ch`)
     }, [items])

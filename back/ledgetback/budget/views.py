@@ -8,11 +8,19 @@ from budget.serializers import (
 )
 
 
-class CreateCategoryView(CreateAPIView):
+class BulkCreateMixin:
+
+    def get_serializer(self, *args, **kwargs):
+        if isinstance(kwargs.get('data', {}), list):
+            kwargs['many'] = True
+        return super(BulkCreateMixin, self).get_serializer(*args, **kwargs)
+
+
+class CreateCategoryView(CreateAPIView, BulkCreateMixin):
     permission_classes = [IsAuthedVerifiedSubscriber]
     serializer_class = BudgetCategorySerializer
 
 
-class CreateBillView(CreateAPIView):
+class CreateBillView(CreateAPIView, BulkCreateMixin):
     permission_classes = [IsAuthedVerifiedSubscriber]
     serializer_class = BillSerializer

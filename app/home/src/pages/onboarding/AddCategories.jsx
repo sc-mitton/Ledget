@@ -8,7 +8,7 @@ import { animated } from '@react-spring/web'
 
 import './styles/Items.css'
 import { BottomButtons, TabView } from './Reusables'
-import { ItemsProvider, ItemsContext } from './context'
+import { ItemsProvider, ItemsContext } from './ItemsContext'
 import { useItemsDrag } from './hooks'
 import Bell from '@assets/icons/Bell'
 import BellOff from '@assets/icons/BellOff'
@@ -16,10 +16,10 @@ import Grip from '@assets/icons/Grip'
 import { ShadowedContainer, FormErrorTip } from '@components/pieces'
 import { DeleteButton } from '@components/buttons'
 import { EmojiComboText, AddAlert, LimitAmountInput, PeriodSelect } from '@components/inputs'
-import { formatName, formatRoundedCurrency, getLongest } from '@utils'
+import { formatName, formatRoundedCurrency, getLongestLength } from '@utils'
 
 const schema = object().shape({
-    name: string().required(),
+    name: string().required().lowercase(),
     limit_amount: string().required(),
 })
 
@@ -42,7 +42,7 @@ const ItemsColumn = ({ period }) => {
     }
 
     useEffect(() => {
-        const longestLength = getLongest(context.items, 'name')
+        const longestLength = getLongestLength(context.items, 'name')
         setNameFlexBasis(`${longestLength + 1}ch`)
     }, [items])
 
@@ -124,15 +124,14 @@ const Form = ({ children }) => {
         isValid && setReadyToSubmit(true)
     }, [isValid])
 
-    const submit = (e) => {
+    const submit = (data, e) => {
         e.preventDefault()
 
         const formData = new FormData(e.target)
         let body = Object.fromEntries(formData)
+        body = { ...body, ...data }
 
-        body.limit_amount = Number(body.limit_amount.replace(/[^0-9]/g, '')) * 100
-        body.name = body.name.toLowerCase()
-
+        // Extract alerts
         let alerts = []
         for (const [key, value] of Object.entries(body)) {
             if (key.includes('alert')) {
@@ -153,7 +152,7 @@ const Form = ({ children }) => {
 
     return (
         <form
-            onSubmit={handleSubmit((data, e) => submit(e))}
+            onSubmit={handleSubmit((data, e) => submit(data, e))}
             key={`create-category-form-${monthItems.length}-${yearItems.length}}`}
         >
             <div>
