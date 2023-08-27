@@ -81,6 +81,7 @@ const AddReminder = ({ value, onChange }) => {
                         <ComboSelect.Button
                             className="btn-clr btn-slim btn"
                             id="add-reminder-btn"
+                            style={{ fontWeight: '400' }}
                         >
                             Reminder
                             {selectedReminders.length > 0

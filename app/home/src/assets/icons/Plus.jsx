@@ -4,8 +4,8 @@ const Plus = ({
     className = null,
     width = "1.2em",
     height = "1.2em",
-    stroke = "#242424",
-    strokeWidth = "18"
+    stroke = "#292929",
+    strokeWidth = "20"
 }) => {
 
     return (

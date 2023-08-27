@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import sys
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -122,18 +121,3 @@ LOGGING = {
         }
     }
 }
-
-# When running tests, we don't want tons of logs being printed out
-TEST = {
-    'LOGGING_OVERRIDE': {
-        'console': {
-            'level': 'CRITICAL',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-        },
-    }
-}
-
-if 'test' in sys.argv or 'test_coverage' in sys.argv:
-    # Covers regular testing and coverage testing
-    LOGGING['handlers'].update(TEST['LOGGING_OVERRIDE'])

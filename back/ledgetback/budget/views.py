@@ -16,7 +16,7 @@ class BulkCreateMixin:
         return super(BulkCreateMixin, self).get_serializer(*args, **kwargs)
 
 
-class CreateCategoryView(CreateAPIView, BulkCreateMixin):
+class CreateBudgetCategoryView(CreateAPIView, BulkCreateMixin):
     permission_classes = [IsAuthedVerifiedSubscriber]
     serializer_class = BudgetCategorySerializer
 

@@ -16,7 +16,6 @@ class IsAuthedVerifiedSubscriber(BasePermission):
     def has_permission(self, request, view):
         if isinstance(request.user, AnonymousUser):
             return False
-
         checks = [
             request.user.is_authenticated,
             request.user.is_verified,

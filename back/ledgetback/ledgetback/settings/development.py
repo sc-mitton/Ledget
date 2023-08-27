@@ -4,6 +4,7 @@ import os
 import requests
 import jwt
 import json
+import sys
 
 # IMPORTANT FLAGS
 DEVELOPMENT = True
@@ -75,3 +76,33 @@ DATABASES = {
         'PASSWORD': get_secret('postgres_password'),
     }
 }
+
+# ---------------------------------- Testing --------------------------------- #
+
+# When running tests, we don't want tons of logs being printed out
+TEST = {
+    'LOGGING_OVERRIDE': {
+        'console': {
+            'level': 'CRITICAL',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    }
+}
+
+if 'test' in sys.argv or 'test_coverage' in sys.argv:
+    # Covers regular testing and coverage testing
+    LOGGING['handlers'].update(TEST['LOGGING_OVERRIDE'])
+
+if 'test' in sys.argv or 'test_coverage' in sys.argv:
+    from cryptography.hazmat.backends import default_backend
+    from cryptography.hazmat.primitives.asymmetric import rsa
+
+    # Generate a private key
+    OATHKEEPER_PRIVATE_KEY = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=2048,
+        backend=default_backend()
+    )
+    # Extract the public key from the private key
+    OATHKEEPER_PUBLIC_KEY = OATHKEEPER_PRIVATE_KEY.public_key()

@@ -30,14 +30,6 @@ class User(models.Model):
         primary_key=True,
         editable=False
     )
-    is_superuser = models.BooleanField(
-        _("superuser status"),
-        default=False,
-        help_text=_(
-            "Designates that this user has all permissions without "
-            "explicitly assigning them."
-        ),
-    )
     is_active = models.BooleanField(default=True)
     account_flag = models.CharField(
         max_length=20,

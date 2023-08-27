@@ -629,6 +629,7 @@ button.pulse:hover {
     margin: 0 2px;
     opacity: 1;
     cursor: pointer;
+    transition: all .22s ease;
 }
 
 .delete-button {

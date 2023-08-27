@@ -1,14 +1,13 @@
 from django.urls import path
 
 from budget.views import (
-    CreateCategoryView,
+    CreateBudgetCategoryView,
     CreateBillView
 )
 
 urlpatterns = [
-    path('category', CreateCategoryView.as_view(), name='create_category'),
-    path('bill', CreateBillView.as_view(), name='create_bill'),
-    path('category/batch',
-         CreateCategoryView.as_view(),
-         name='create_category_batch'),
+    path('category',
+         CreateBudgetCategoryView.as_view(),
+         name='create_category'),
+    path('bill', CreateBillView.as_view(), name='create_bill')
 ]
