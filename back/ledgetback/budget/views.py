@@ -3,7 +3,7 @@ from rest_framework.generics import CreateAPIView
 
 from core.permissions import IsAuthedVerifiedSubscriber
 from budget.serializers import (
-    BudgetCategorySerializer,
+    CategorySerializer,
     BillSerializer
 )
 
@@ -16,9 +16,9 @@ class BulkCreateMixin:
         return super(BulkCreateMixin, self).get_serializer(*args, **kwargs)
 
 
-class CreateBudgetCategoryView(CreateAPIView, BulkCreateMixin):
+class CreateCategoryView(CreateAPIView, BulkCreateMixin):
     permission_classes = [IsAuthedVerifiedSubscriber]
-    serializer_class = BudgetCategorySerializer
+    serializer_class = CategorySerializer
 
 
 class CreateBillView(CreateAPIView, BulkCreateMixin):

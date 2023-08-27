@@ -1,4 +1,5 @@
 from rest_framework.serializers import Serializer as S
+from rest_framework.serializers import ListSerializer as LS
 
 import logging
 logger = logging.getLogger('ledget')
@@ -17,12 +18,12 @@ class NestedCreateMixin:
 
         return self.recursive_create(data, self.__class__)
 
-    def recursive_create(self, validated_data, serializer_class: S):
+    def recursive_create(self, validated_data, serializer_class):
 
         nested_obj_fields = self.get_serializer_nested_fields(serializer_class)
 
         new_objs, nested_objs = self.bulk_create_objects(
-            model=serializer_class.Meta.model,
+            model=self.get_model(serializer_class),
             validated_data=validated_data,
             nested_obj_keys=list(nested_obj_fields.keys())
         )
@@ -30,19 +31,32 @@ class NestedCreateMixin:
         # Recursively create the nested objects
         # if there aren't any nested keys, this will just skip,
         # and we'll have hit our base case
-        for key in nested_objs.keys():
-            self.recursive_created(
+        for key in nested_obj_fields.keys():
+            self.recursive_create(
                 validated_data=nested_objs[key],
                 serializer_class=nested_obj_fields[key]
             )
 
-        return new_objs
+        return new_objs[0] if len(new_objs) == 1 else new_objs
 
-    def get_serializer_nested_fields(self, serializer_class: S) -> dict:
+    def get_model(self, serializer_class):
+        '''
+        Get the model from the serializer class
+        '''
+        if hasattr(serializer_class, 'Meta'):
+            return serializer_class.Meta.model
+        elif hasattr(serializer_class.child, 'Meta'):
+            return serializer_class.child.Meta.model
+        else:
+            raise Exception(f"Serializer {serializer_class} has no model")
 
-        fields = serializer_class.__dict__['_declared_fields']
+    def get_serializer_nested_fields(self, serializer_class) -> dict:
 
-        return {key: val for key, val in fields.items() if isinstance(val, S)}
+        fields = serializer_class.__dict__.get('_declared_fields', {})
+
+        return {key: val for key, val
+                in fields.items()
+                if isinstance(val, (S, LS))}
 
     def bulk_create_objects(self, model, validated_data: list,
                             nested_obj_keys: list) -> (list, dict):
@@ -64,17 +78,21 @@ class NestedCreateMixin:
         has_user_field = hasattr(model, 'user')
 
         for obj in validated_data:
-            for key in obj.keys():
-                if key in nested_objs:
-                    nested_objs[key].append({
-                        **obj[key],
-                        model.__name__.lower(): obj
-                    })
-
+            obj_without_nested = {
+                key: val
+                for key, val in obj.items()
+                if key not in nested_obj_keys
+            }
             if has_user_field:
-                obj['user'] = self.context['request'].user
+                obj_without_nested['user'] = self.context['request'].user
+            objs.append(model(**obj_without_nested))
 
-            objs.append(model(**obj))
+            for key in nested_obj_keys:
+                for nested_obj in obj[key]:
+                    nested_objs[key].append({
+                        **nested_obj,
+                        model.__name__.lower(): objs[-1]
+                    })
 
         try:
             new_objs = model.objects.bulk_create(objs)

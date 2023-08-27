@@ -11,11 +11,7 @@ def validate_week_number(value):
     return value in [1, 2, 3, 4, -1] or ValidationError('Invalid week number')
 
 
-class BudgetCategory(BudgetItem):
-
-    class Meta:
-        db_table = 'budget_category'
-        verbose_name_plural = 'Budget Categories'
+class Category(BudgetItem):
 
     limit_amount = models.IntegerField(null=False, blank=False)
 
@@ -71,7 +67,7 @@ class Alert (Notification):
     class Meta:
         db_table = 'budget_alert'
 
-    category = models.ForeignKey(BudgetCategory,
+    category = models.ForeignKey(Category,
                                  on_delete=models.CASCADE,
                                  related_name='alerts')
     percent_amount = models.IntegerField(null=False, blank=False)

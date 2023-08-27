@@ -55,5 +55,5 @@ class ViewTestsMixin(TestCase):
             user=self.user,
             id=uuid.uuid4(),
             subscription_status='active',
-            period_end=9999999999
+            period_end=1794475549
         )

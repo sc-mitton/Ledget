@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from ledgetback.serializers.mixins import NestedCreateMixin
 from .models import (
-    BudgetCategory,
+    Category,
     Alert,
     Bill,
     Reminder
@@ -20,20 +20,20 @@ class ReminderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reminder
-        exclude = ['bill']
+        exclude = ['budget_bill']
 
 
-class BudgetCategorySerializer(serializers.ModelSerializer, NestedCreateMixin):
+class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
     alerts = AlertSerializer(many=True)
 
     class Meta:
-        model = BudgetCategory
+        model = Category
         fields = [field.name for field in model._meta.fields
                   if field.name != 'user'] + ['alerts']
         required_fields = ['name', 'period', 'limit_amount']
 
 
-class BillSerializer(serializers.ModelSerializer, NestedCreateMixin):
+class BillSerializer(NestedCreateMixin, serializers.ModelSerializer):
     reminders = ReminderSerializer(many=True)
 
     class Meta:
