@@ -8,7 +8,7 @@ import Plus from '@assets/icons/Plus'
 import Arrow from '@assets/icons/Arrow'
 import Checkmark3 from '@assets/icons/Checkmark3'
 import { usePlaidLink } from '@utils/hooks'
-import { useGetPlaidItemsQuery } from '@api/apiSlice'
+import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { Base64Logo } from '@components/pieces'
 
 const InstitutionLogos = ({ plaidItems }) => {
@@ -59,8 +59,7 @@ const BottomButtons = ({ continueDisabled }) => {
     return (
         <div className="btn-container-enabled">
             <button
-                className="btn-grn btn3"
-                id="connect-account-btn"
+                className="btn-grn btn3 scale-icon-btn"
                 onClick={open}
                 aria-label="Link Account"
             >
@@ -70,9 +69,8 @@ const BottomButtons = ({ continueDisabled }) => {
                 <Plus width={'1em'} height={'1em'} />
             </button>
             <button
-                className={`btn-chcl btn3
+                className={`btn-chcl btn3 scale-icon-btn
                 ${continueDisabled ? 'disabled' : 'enabled'}`}
-                id="connect-account-btn"
                 aria-label="Next"
                 onClick={() => navigate('/welcome/add-categories')}
                 disabled={continueDisabled}

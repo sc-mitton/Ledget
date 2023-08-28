@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 
-import { ledgetSlice } from '@api/apiSlice'
+import { apiSlice } from '@api/apiSlice'
 
 const rootReducer = combineReducers({
-    [ledgetSlice.reducerPath]: ledgetSlice.reducer
+    [apiSlice.reducerPath]: apiSlice.reducer
 })
 
 export default rootReducer

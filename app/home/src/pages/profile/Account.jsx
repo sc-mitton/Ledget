@@ -3,7 +3,7 @@ import React from 'react'
 import './styles/Account.css'
 import Card from '@assets/icons/Card'
 import Camera from '@assets/icons/Camera'
-import { useGetMeQuery, useGetPaymentMethodQuery } from '@api/apiSlice'
+import { useGetMeQuery, useGetPaymentMethodQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@components/pieces'
 
 const ChangeProfilePhoto = () => {

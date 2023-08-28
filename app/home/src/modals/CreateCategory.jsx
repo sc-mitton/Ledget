@@ -6,7 +6,7 @@ import { object, string } from "yup"
 import { useNavigate } from 'react-router-dom'
 
 import './styles/Forms.css'
-import { useAddNewCategoryMutation } from '@api/apiSlice'
+import { useAddNewCategoryMutation } from '@features/budgetSlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, BlackRadios } from '@components/inputs'
 import { withModal } from '@components/hocs'
 import SubmitForm from '@components/pieces/SubmitForm'

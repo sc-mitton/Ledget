@@ -3,7 +3,7 @@ import { usePlaidLink as useLink, } from 'react-plaid-link'
 import {
     useGetPlaidTokenQuery,
     useAddNewPlaidItemMutation,
-} from '@api/apiSlice'
+} from '@features/plaidSlice'
 
 
 function usePlaidLink() {

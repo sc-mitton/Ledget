@@ -664,6 +664,42 @@ button.pulse:hover {
 
 /* ------- END Delete Button ------ */
 
+/* ------- Scale Icon Button ------ */
+
+.scale-icon-btn.enabled {
+    max-width: 100px;
+    opacity: 1;
+    transition: all 0.2s ease-in-out;
+}
+
+.scale-icon-btn.disabled {
+    max-width: 10px;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+
+.scale-icon-btn svg {
+    max-width: 0;
+    margin: 0;
+    transform: scale(0);
+    transition: all 0.2s ease-in-out;
+}
+
+.scale-icon-btn:hover svg {
+    max-width: 1.5rem;
+    margin-left: 0.3rem;
+    transform: scale(1);
+    transition: all 0.2s ease-in-out;
+}
+
+.scale-icon-btn.preoccupied:hover svg {
+    max-width: 0;
+    margin: 0;
+    transform: scale(0);
+    transition: all 0.2s ease-in-out;
+}
+
+/* ------- END Scale Icon Button ------ */
 
 button .animated-stroke,
 button .animated-stroke {

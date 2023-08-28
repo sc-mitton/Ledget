@@ -16,7 +16,7 @@ import {
     AddReminder,
     BillScheduler,
 } from '@components/inputs'
-import { useAddnewBillMutation } from '@api/apiSlice'
+import { useAddnewBillMutation } from '@features/budgetSlice'
 
 const radioOptions = [
     { name: 'period', value: 'monthly', label: 'Monthly', default: true },

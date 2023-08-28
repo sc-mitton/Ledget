@@ -8,7 +8,7 @@ import Shield from '@assets/icons/Shield'
 import Settings from '@assets/icons/Settings'
 import Link from '@assets/icons/Link'
 import { usePillAnimation } from '@utils/hooks'
-import { useGetMeQuery } from '@api/apiSlice'
+import { useGetMeQuery } from '@features/userSlice'
 import { useEffect } from 'react'
 
 const NavList = () => {

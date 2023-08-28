@@ -50,7 +50,7 @@ class ViewTests(ViewTestsMixin):
             data=json.dumps(payload),
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, 207)
+        self.assertEqual(response.status_code, 201)
 
         categories = Category.objects.filter(user=self.user)
         self.assertEqual(categories.count(), len(payload))
@@ -96,7 +96,7 @@ class ViewTests(ViewTestsMixin):
             data=json.dumps(payload),
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, 207)
+        self.assertEqual(response.status_code, 201)
 
         bills = Bill.objects.filter(user=self.user)
         self.assertEqual(bills.count(), len(payload))

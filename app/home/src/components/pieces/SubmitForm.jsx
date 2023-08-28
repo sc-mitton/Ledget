@@ -2,6 +2,7 @@
 import React from 'react'
 
 import { LoadingRing } from '@components/pieces'
+import { SubmitButton } from '@components/buttons'
 
 const SubmitForm = ({ submitting, onCancel }) => {
 
@@ -30,18 +31,9 @@ const SubmitForm = ({ submitting, onCancel }) => {
             >
                 Cancel
             </div>
-            <button
-                className='btn-grn btn3'
-                type="submit"
-                aria-label="Save"
-                tabIndex={0}
-            >
-                <LoadingRing visible={submitting}>
-                    <div style={{ color: submitting ? 'transparent' : 'inherit' }}>
-                        Save
-                    </div>
-                </LoadingRing>
-            </button>
+            <SubmitButton submitting={submitting}>
+                {Save}
+            </SubmitButton>
         </div >
     )
 }

@@ -7,12 +7,12 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
 import rootReducer from '@features/rootReducer';
-import { ledgetSlice } from '@api/apiSlice'
+import { apiSlice } from '@api/apiSlice'
 
 const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(ledgetSlice.middleware),
+        getDefaultMiddleware().concat(apiSlice.middleware),
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'))

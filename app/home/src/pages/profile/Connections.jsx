@@ -11,7 +11,7 @@ import Delete from '@assets/icons/Delete'
 import {
     useGetPlaidItemsQuery,
     useDeletePlaidItemMutation,
-} from '@api/apiSlice'
+} from '@features/plaidSlice'
 import {
     ShimmerDiv,
     Base64Logo,

@@ -7,6 +7,7 @@ const LoadingRing = ({ height, visible, children }) => {
         <div
             style={{
                 position: 'relative',
+                color: 'inherit',
             }}
         >
             <div
@@ -15,7 +16,8 @@ const LoadingRing = ({ height, visible, children }) => {
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    display: visible ? 'block' : 'none'
+                    display: visible ? 'block' : 'none',
+                    color: 'inherit',
                 }}
             >
                 <div className="lds-ring"><div></div><div></div><div></div><div></div></div>

@@ -120,7 +120,7 @@ const Form = ({ children }) => {
     const { register, watch, handleSubmit, reset, formState: { errors, isValid }, control } = useForm({
         resolver: yupResolver(billSchema),
         mode: 'onSubmit',
-        reValidateMode: 'onSubmit',
+        reValidateMode: 'onBlur',
     })
 
     const submitForm = (e) => {

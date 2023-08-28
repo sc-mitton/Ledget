@@ -13,7 +13,7 @@ import { WelcomeConnect, AddCategories, AddBills } from '@pages/onboarding'
 import { SkeletonDashboard } from '@pages/onboarding'
 import CreateCategory from '@modals/CreateCategory'
 import CreateBill from '@modals/CreateBill'
-import { useGetMeQuery } from '@api/apiSlice'
+import { useGetMeQuery } from '@features/userSlice'
 import "./styles/style.css";
 
 

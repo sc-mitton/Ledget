@@ -10,7 +10,7 @@ import Account from './Account'
 import Connections from './Connections'
 import Settings from './Settings'
 import Security from './Security'
-import { useGetMeQuery } from '@api/apiSlice'
+import { useGetMeQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@components/pieces'
 
 function Profile() {

@@ -20,7 +20,7 @@ import { formatName, formatRoundedCurrency, getLongestLength } from '@utils'
 
 const schema = object().shape({
     name: string().required().lowercase(),
-    limit_amount: string().required(),
+    limit_amount: string().required('required'),
 })
 
 const ItemsColumn = ({ period }) => {
@@ -117,7 +117,7 @@ const Form = ({ children }) => {
     const { register, watch, handleSubmit, reset, formState: { errors, isValid }, control } = useForm({
         resolver: yupResolver(schema),
         mode: 'onSubmit',
-        reValidateMode: 'onSubmit',
+        reValidateMode: 'onBlur',
     })
 
     useEffect(() => {

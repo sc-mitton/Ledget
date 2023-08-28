@@ -7,8 +7,10 @@ import { useLocation } from 'react-router-dom'
 
 import { ItemsContext } from './ItemsContext'
 import Arrow from '@assets/icons/Arrow'
+import { SubmitButton } from '@components/buttons'
 import Checkmark from '@assets/icons/Checkmark'
 import { usePillAnimation } from '@utils/hooks'
+import { useAddNewCategoryMutation, useAddnewBillMutation } from '@features/budgetSlice'
 
 
 export const TabView = ({ children }) => {
@@ -41,8 +43,6 @@ export const TabView = ({ children }) => {
     useEffect(() => {
         setUpdatePill(!updatePill)
     }, [selectedIndex])
-
-
 
     return (
         <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
@@ -78,29 +78,59 @@ export const BottomButtons = ({ expanded }) => {
     const navigate = useNavigate()
     const { itemsEmpty } = useContext(ItemsContext)
     const location = useLocation()
+    const [addNewBill, { isLoading: isBillLoading, isSuccess: isBillSuccess }] = useAddnewBillMutation()
+    const [addNewCategory, { isLoading: isCategoryLoading, isSuccess: isCategorySuccess }] = useAddNewCategoryMutation()
+
+    const { month: { items: monthItems }, year: { items: yearItems } } = useContext(ItemsContext)
+
+    const handleClick = () => {
+        switch (location.pathname) {
+            case '/welcome/add-bills':
+                addNewBill([...monthItems, ...yearItems])
+                break
+            case '/welcome/add-categories':
+                addNewCategory([...monthItems, ...yearItems])
+                break
+            case '/welcome/connect':
+                navigate('/welcome/add-bills')
+                break
+            default:
+                break
+        }
+    }
+
+    useEffect(() => {
+        isBillSuccess && navigate('/budget')
+    }, [isBillSuccess])
+
+    useEffect(() => {
+        isCategorySuccess && navigate('/welcome/add-bills')
+    }, [isCategorySuccess])
 
     return (
         <div
             className={`btn-container ${expanded ? 'expanded' : ''}`}
         >
             <button
-                className="btn-grn btn3"
+                className="btn-grn btn3 scale-icon-btn"
                 style={{ visibility: expanded ? 'visible' : 'hidden' }}
                 disabled={!expanded}
-                id="connect-account-btn"
                 aria-label="Add Category"
                 type="submit"
             >
                 <span>Save</span>
                 <Checkmark width={'.8em'} height={'.8em'} />
             </button>
-            <button
-                className="btn-chcl btn3"
-                style={{ visibility: itemsEmpty ? 'hidden' : 'visible' }}
-                id="connect-account-btn"
+            <SubmitButton
+                className={`btn-chcl btn3 scale-icon-btn
+                ${isBillLoading || isCategoryLoading ? 'preoccupied' : ''}`}
+                style={{
+                    visibility: itemsEmpty ? 'hidden' : 'visible'
+                }}
                 aria-label="Next"
-                onClick={() => navigate('/welcome/add-bills')}
+                onClick={handleClick}
                 disabled={itemsEmpty}
+                submitting={isBillLoading || isCategoryLoading}
             >
                 {location.pathname === '/welcome/add-bills' ? 'Finish' : 'Next'}
                 <Arrow
@@ -110,7 +140,7 @@ export const BottomButtons = ({ expanded }) => {
                     stroke={'var(--window)'}
                     onClick={() => navigate('/welcome/add-bills')}
                 />
-            </button>
+            </SubmitButton>
         </div>
     )
 }
