@@ -1,7 +1,6 @@
 from rest_framework.serializers import Serializer as S
 from rest_framework.serializers import ListSerializer as LS
 
-
 import logging
 logger = logging.getLogger('ledget')
 

@@ -15,6 +15,7 @@ from .data import (
 
 class ViewTests(ViewTestsMixin):
 
+    @timeit
     def test_category_creation(self):
         payload = single_category_creation_payload
 
@@ -45,6 +46,7 @@ class ViewTests(ViewTestsMixin):
 
         category.delete()
 
+    @timeit
     def test_bulk_category_creation(self):
         response = self.client.post(
             reverse('create_category'),
