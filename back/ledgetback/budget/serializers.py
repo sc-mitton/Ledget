@@ -23,7 +23,7 @@ class ReminderSerializer(ModelSerializer):
 
     class Meta:
         model = Reminder
-        exclude = ['budget_bill']
+        exclude = ['bill']
 
 
 class CategorySerializer(NestedCreateMixin, ModelSerializer):
