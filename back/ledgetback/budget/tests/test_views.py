@@ -1,27 +1,22 @@
 import json
+from unittest import skip # noqa
 
 from ledgetback.tests.mixins import ViewTestsMixin
+from ledgetback.tests.utils import timeit # noqa
 from django.urls import reverse
-
 from ..models import (
     Category
 )
-from .data import multiple_category_creation_payload
+from .data import (
+    multiple_category_creation_payload,
+    single_category_creation_payload
+)
 
 
 class ViewTests(ViewTestsMixin):
 
     def test_category_creation(self):
-        payload = {
-            'name': 'Test Category',
-            'emoji': '🤑',
-            'period': 'month',
-            'limit_amount': 10000,
-            'alerts': [
-                {'percent_amount': 50},
-                {'percent_amount': 75}
-            ]
-        }
+        payload = single_category_creation_payload
 
         response = self.client.post(
             reverse('create_category'),
@@ -65,7 +60,7 @@ class ViewTests(ViewTestsMixin):
         )
 
         for category in categories:
-            self.assertEqual(category.user, self.user)
+            self.assertEqual(str(category.user.id), self.user.id)
             self.assertEqual(
                 category.alerts.count(),
                 len(multiple_category_creation_payload[0]['alerts'])

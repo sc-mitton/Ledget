@@ -1,6 +1,7 @@
 from rest_framework.serializers import Serializer as S
 from rest_framework.serializers import ListSerializer as LS
 
+
 import logging
 logger = logging.getLogger('ledget')
 
@@ -11,12 +12,17 @@ class NestedCreateMixin:
     Will work for any serializer that has nested objects.
     '''
 
-    def create(self, validated_data):
+    def create(self, validated_data, *args, **kwargs):
         data = [validated_data] \
                if not isinstance(validated_data, list) \
                else validated_data
 
-        return self.recursive_create(data, self.__class__)
+        if hasattr(self, 'child'):
+            serializer_class = self.child.__class__
+        else:
+            serializer_class = self.__class__
+
+        return self.recursive_create(data, serializer_class=serializer_class)
 
     def recursive_create(self, validated_data, serializer_class):
 
@@ -52,11 +58,12 @@ class NestedCreateMixin:
 
     def get_serializer_nested_fields(self, serializer_class) -> dict:
 
-        fields = serializer_class.__dict__.get('_declared_fields', {})
+        declared_fields = serializer_class.__dict__.get('_declared_fields', {})
+        fields = {key: val
+                  for key, val in declared_fields.items()
+                  if isinstance(val, (S, LS))}
 
-        return {key: val for key, val
-                in fields.items()
-                if isinstance(val, (S, LS))}
+        return fields
 
     def bulk_create_objects(self, model, validated_data: list,
                             nested_obj_keys: list) -> (list, dict):
@@ -100,3 +107,9 @@ class NestedCreateMixin:
             logger.error(f"Error creating {model.__name__} objects: {e}")
 
         return new_objs, nested_objs
+
+
+class ListCreateSerializer(NestedCreateMixin, LS):
+
+    def create(self, validated_data):
+        return super().create(validated_data)
