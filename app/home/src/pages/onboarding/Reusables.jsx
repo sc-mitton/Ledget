@@ -13,7 +13,7 @@ import RecommendationsIcon from '@assets/icons/Recommendations'
 import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
-import { useUpdateUserMutation } from '@features/userSlice'
+import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
 
 
 export const TabView = ({ children }) => {
@@ -83,21 +83,25 @@ export const BottomButtons = ({ expanded }) => {
     const location = useLocation()
     const [addNewBill, { isLoading: isBillLoading, isSuccess: isBillSuccess }] = useAddnewBillMutation()
     const [addNewCategory, { isLoading: isCategoryLoading, isSuccess: isCategorySuccess }] = useAddNewCategoryMutation()
-    const [updateUser] = useUpdateUserMutation()
+    const { data: user, refetch: refetchUser } = useGetMeQuery()
+    const [updateUser, { isSuccess: patchedUserSuccess }] = useUpdateUserMutation()
 
     const { month: { items: monthItems }, year: { items: yearItems } } = useContext(ItemsContext)
 
     const handleClick = (e) => {
         e.preventDefault()
+        const newMonthItems = monthItems.filter(item => !item.fetchedFromServer)
+        const newYearItems = yearItems.filter(item => !item.fetchedFromServer)
+
         switch (location.pathname) {
             case '/welcome/add-bills':
                 addNewBill({
-                    data: [...monthItems, ...yearItems]
+                    data: [...newMonthItems, ...newYearItems]
                 })
                 break
             case '/welcome/add-categories':
                 addNewCategory({
-                    data: [...monthItems, ...yearItems]
+                    data: [...newMonthItems, ...newYearItems]
                 })
                 break
             default:
@@ -107,16 +111,34 @@ export const BottomButtons = ({ expanded }) => {
 
     useEffect(() => {
         if (isBillSuccess) {
-            navigate('/budget')
+            navigate('/welcome/add-categories')
         }
     }, [isBillSuccess])
 
+    // String of effects
+    // 1) after categories added, patch user ->
+    // 2) refetch user ->
+    // 3) if user is onboarded, navigate to dashboard
     useEffect(() => {
         if (isCategorySuccess) {
-            updateUser({ data: { is_onboarded: true } })
-            navigate('/welcome/add-bills')
+            updateUser({
+                userId: user.id,
+                data: { is_onboarded: true }
+            })
         }
     }, [isCategorySuccess])
+
+    useEffect(() => {
+        if (patchedUserSuccess) {
+            refetchUser()
+        }
+    }, [patchedUserSuccess])
+
+    useEffect(() => {
+        if (user?.is_onboarded) {
+            navigate('/budget')
+        }
+    }, [user])
 
     return (
         <div

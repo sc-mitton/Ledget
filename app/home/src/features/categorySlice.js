@@ -19,5 +19,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-    useAddNewCategoryMutation
+    useAddNewCategoryMutation,
+    useGetCategoriesQuery,
+    useLazyGetCategoriesQuery,
 } = extendedApiSlice

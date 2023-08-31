@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
+import { useLocation } from 'react-router-dom'
+
 import { useTransition, useSpring, useSpringRef, useChain } from '@react-spring/web'
 import { itemHeight, itemPadding } from './constants'
+import { useLazyGetBillsQuery } from '@features/billSlice'
+import { useLazyGetCategoriesQuery } from '@features/categorySlice'
 
 const transitionConfig = {
     from: () => ({ opacity: 0, zIndex: 0, fontWeight: 500 }),
@@ -14,6 +18,8 @@ const transitionConfig = {
 export const ItemsContext = React.createContext()
 
 export const ItemsProvider = ({ children }) => {
+    const [fetchBills, { data: fetchedBills, isSuccess: fetchedBillsSuccess }] = useLazyGetBillsQuery()
+    const [fetchCategories, { data: fetchedCategories, isSuccess: fetchedCategoriesSuccess }] = useLazyGetCategoriesQuery()
     const [monthItems, setMonthItems] = useState([])
     const [yearItems, setYearItems] = useState([])
     const [itemsEmpty, setItemsEmpty] = useState(true)
@@ -24,6 +30,7 @@ export const ItemsProvider = ({ children }) => {
     const monthContainerApi = useSpringRef()
     const yearContainerApi = useSpringRef()
     const [bufferItem, setBufferItem] = useState(undefined)
+    const location = useLocation()
 
     const monthTransitions = useTransition(
         monthItems,
@@ -33,6 +40,7 @@ export const ItemsProvider = ({ children }) => {
         yearItems,
         { ...transitionConfig, ref: yearApi }
     )
+
     const monthContainerProps = useSpring({
         height: monthItems.length * (itemHeight + itemPadding),
         maxHeight: 6 * (itemHeight + itemPadding),
@@ -56,6 +64,40 @@ export const ItemsProvider = ({ children }) => {
 
     useChain([monthApi, monthContainerApi], [0, 0])
     useChain([yearApi, yearContainerApi,], [0, 0])
+
+    useEffect(() => {
+        if (location.pathname === '/welcome/add-bills') {
+            fetchBills()
+        } else if (location.pathname === '/welcome/add-categories') {
+            fetchCategories()
+        }
+    }, [location])
+
+    useEffect(() => {
+        if (fetchedBillsSuccess) {
+            for (const bill of fetchedBills) {
+                const { period, ...rest } = bill
+                if (period === 'month' && monthItems.length === 0) {
+                    setMonthItems((prev) => [...prev, { ...rest, fetchedFromServer: true }])
+                } else if (period === 'year' && yearItems.length === 0) {
+                    setYearItems((prev) => [...prev, { ...rest, fetchedFromServer: true }])
+                }
+            }
+        }
+    }, [fetchedBills])
+
+    useEffect(() => {
+        if (fetchedCategoriesSuccess) {
+            for (const category of fetchedCategories) {
+                const { period, ...rest } = category
+                if (period === 'month' && monthItems.length === 0) {
+                    setMonthItems((prev) => [...prev, { ...rest, fetchedFromServer: true }])
+                } else if (period === 'year' && yearItems.length === 0) {
+                    setYearItems((prev) => [...prev, { ...rest, fetchedFromServer: true }])
+                }
+            }
+        }
+    }, [fetchedCategories])
 
     useEffect(() => {
         monthApi.start()

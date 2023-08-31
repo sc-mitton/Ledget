@@ -17,6 +17,10 @@
     margin-right: 0;
 }
 
+#onboarding-app #add-bills--window form>div>div:nth-child(2) {
+    margin-right: 0;
+}
+
 #onboarding-app #budget-items--container {
     display: flex;
     flex-direction: column;

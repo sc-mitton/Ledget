@@ -27,5 +27,6 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 export const {
     useAddnewBillMutation,
     useGetBillsQuery,
+    useLazyGetBillsQuery,
     useGetBillRecommendationsQuery,
 } = extendedApiSlice
