@@ -17,7 +17,7 @@ export const formatRoundedCurrency = (val) => {
     let str = ''
     typeof val === 'string'
         ? str = val.replace(/[^0-9]/g, '')
-        : str = val.toString() / 100
+        : str = (val / 100).toString()
 
     return formatDollar(str)
 }
@@ -44,6 +44,7 @@ export const formatCurrency = (val) => {
 // by removing all non-numeric characters and leading zeros
 // ex: $1,000.00 -> 100000, $250 -> 25000
 export const makeIntCurrencyFromStr = (s) => {
+    if (s === '$0') { return 0 }
     let newVal
     newVal = parseInt(s.replace(/[^0-9]/g, '').replace(/^0+/, ''))
     return s.includes('.') ? newVal : newVal * 100
@@ -60,4 +61,22 @@ export const getLongestLength = (items, key) => {
         }
     }, 0)
     return longestLength
+}
+
+export function shuffleArray(array) {
+    let currentIndex = array.length, randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex > 0) {
+
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
 }

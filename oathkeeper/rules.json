@@ -63,7 +63,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/user/me"
+         "url": "https://localhost/api/v1/user<.*>"
       },
       "mutators": [
          {
@@ -274,12 +274,40 @@
       "authorizer": {
          "handler": "allow"
       },
+      "id": "categories",
+      "match": {
+         "methods": [
+            "GET"
+         ],
+         "url": "https://localhost/api/v1/categories"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
       "id": "category",
       "match": {
          "methods": [
-            "POST"
+            "POST",
+            "GET"
          ],
-         "url": "https://localhost/api/v1/category"
+         "url": "https://localhost/api/v1/category<.*>"
       },
       "mutators": [
          {
@@ -304,9 +332,37 @@
       "id": "bill",
       "match": {
          "methods": [
+            "GET",
             "POST"
          ],
-         "url": "https://localhost/api/v1/bill"
+         "url": "https://localhost/api/v1/bill<.*>"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "transactions",
+      "match": {
+         "methods": [
+            "POST"
+         ],
+         "url": "https://localhost/api/v1/transactions/<.*>"
       },
       "mutators": [
          {

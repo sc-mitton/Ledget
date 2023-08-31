@@ -520,7 +520,7 @@ button.pulse:hover {
 
 .btn {
     padding: 2px;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius1);
     font-weight: 500;
 }
 
@@ -605,15 +605,51 @@ button.pulse:hover {
     background-color: var(--green-hlight);
     display: inline-block;
     white-space: nowrap;
+    transition: background-color .3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.budget-item-name[role="button"] {
+    cursor: pointer;
+}
+
+.budget-item-name[role="button"]:hover {
+    background-color: var(--m-green);
+    transition: background-color .3s ease;
 }
 
 .budget-item-name span:first-child {
     margin-right: 4px;
 }
 
+.budget-item-name.unselected svg {
+    transform: scale(0);
+    opacity: 0;
+    transition: all .3 ease;
+    margin-left: -8px;
+}
+
+.budget-item-name.selected svg {
+    transform: scale(1);
+    opacity: 1;
+    transition: all .3 ease;
+    margin-left: 8px;
+}
+
+.budget-item-name.selected {
+    background-color: var(--m-green-hover);
+    transition: background-color .3s ease;
+}
+
 .grip-btn {
     cursor: grab;
     margin-right: 6px;
+}
+
+.btn-light-fnt {
+    font-weight: 400;
 }
 
 /* ------- Delete Button ------ */
@@ -726,6 +762,21 @@ button:hover .animated-stroke2 line:last-child {
     animation: draw .5s ease-in-out forwards;
     animation-delay: .2s;
 }
+
+/* -------------------- Expand Collapse Button Animations ------------------- */
+
+button.collapse {
+    transform: scale(0);
+    opacity: 0;
+    transition: all .3s ease;
+}
+
+button.expand {
+    transform: scale(1);
+    opacity: 1;
+    transition: all .3s ease;
+}
+
 
 /* -------------------------------- Dropdowns ------------------------------- */
 
@@ -877,6 +928,23 @@ ul hr {
 
     to {
         opacity: 1;
+    }
+}
+
+@keyframes pop-fade-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
     }
 }
 

@@ -2,12 +2,13 @@ import logging
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.generics import UpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import (
     HTTP_200_OK,
 )
 import stripe
+from django.contrib.auth.models import AnonymousUser
 
 from core.serializers import OnboardUpdateSerializer
 from core.utils.stripe import stripe_error_handler, StripeError
@@ -16,9 +17,10 @@ from core.permissions import IsAuthedVerifiedSubscriber, IsObjectOwner
 stripe_logger = logging.getLogger('stripe')
 
 
-class UserView(APIView):
+class UserView(RetrieveUpdateAPIView):
     """Get me endpoint, returns user data and subscription data"""
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsObjectOwner]
+    serializer_class = OnboardUpdateSerializer
 
     def get(self, request, *args, **kwargs):
 
@@ -56,6 +58,12 @@ class UserView(APIView):
     def get_stripe_subscription(self, customer_id):
         return stripe.Subscription.list(customer=customer_id)
 
+    def get_object(self):
+        u = AnonymousUser()
+        u.id = self.kwargs['id']
+        self.check_object_permissions(self.request, u)
+        return self.request.user
+
 
 class GetPaymentMethodsView(APIView):
     permission_classes = [IsAuthedVerifiedSubscriber]
@@ -86,14 +94,3 @@ class GetPaymentMethodsView(APIView):
     @stripe_error_handler
     def get_stripe_payment_methods(self, customer_id):
         return stripe.PaymentMethod.list(customer=customer_id)
-
-
-class OnboardedUpdateView(UpdateAPIView):
-    permission_classes = [IsAuthenticated, IsObjectOwner]
-    serializer_class = OnboardUpdateSerializer
-
-    def get_object(self):
-        return self.request.user
-
-    def perform_update(self, serializer):
-        serializer.save()

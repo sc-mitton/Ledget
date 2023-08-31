@@ -66,7 +66,7 @@ local GenericAuthedBase = {
     id: 'user',
     match: {
       methods: ['GET'],
-      url: base_url + '/user/me',
+      url: base_url + '/user<.*>',
     },
   },
   GenericAuthedBase
@@ -127,18 +127,34 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
+    id: 'categories',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/categories',
+    }
+  },
+  GenericAuthedBase
+  {
     id: 'category',
     match: {
-      methods: ['POST'],
-      url: base_url + '/category',
+      methods: ['POST', 'GET'],
+      url: base_url + '/category<.*>',
     },
   },
   GenericAuthedBase
   {
     id: 'bill',
     match: {
-      methods: ['POST'],
-      url: base_url + '/bill',
+      methods: ['GET', 'POST'],
+      url: base_url + '/bill<.*>',
     },
   },
+  GenericAuthedBase
+  {
+    id: 'transactions',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/transactions/<.*>',
+    },
+  }
 ]

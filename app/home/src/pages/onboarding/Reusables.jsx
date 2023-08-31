@@ -9,8 +9,11 @@ import { ItemsContext } from './ItemsContext'
 import Arrow from '@assets/icons/Arrow'
 import { SubmitButton } from '@components/buttons'
 import Checkmark from '@assets/icons/Checkmark'
+import RecommendationsIcon from '@assets/icons/Recommendations'
 import { usePillAnimation } from '@utils/hooks'
-import { useAddNewCategoryMutation, useAddnewBillMutation } from '@features/budgetSlice'
+import { useAddnewBillMutation } from '@features/billSlice'
+import { useAddNewCategoryMutation } from '@features/categorySlice'
+import { useUpdateUserMutation } from '@features/userSlice'
 
 
 export const TabView = ({ children }) => {
@@ -80,19 +83,22 @@ export const BottomButtons = ({ expanded }) => {
     const location = useLocation()
     const [addNewBill, { isLoading: isBillLoading, isSuccess: isBillSuccess }] = useAddnewBillMutation()
     const [addNewCategory, { isLoading: isCategoryLoading, isSuccess: isCategorySuccess }] = useAddNewCategoryMutation()
+    const [updateUser] = useUpdateUserMutation()
 
     const { month: { items: monthItems }, year: { items: yearItems } } = useContext(ItemsContext)
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.preventDefault()
         switch (location.pathname) {
             case '/welcome/add-bills':
-                addNewBill([...monthItems, ...yearItems])
+                addNewBill({
+                    data: [...monthItems, ...yearItems]
+                })
                 break
             case '/welcome/add-categories':
-                addNewCategory([...monthItems, ...yearItems])
-                break
-            case '/welcome/connect':
-                navigate('/welcome/add-bills')
+                addNewCategory({
+                    data: [...monthItems, ...yearItems]
+                })
                 break
             default:
                 break
@@ -100,11 +106,16 @@ export const BottomButtons = ({ expanded }) => {
     }
 
     useEffect(() => {
-        isBillSuccess && navigate('/budget')
+        if (isBillSuccess) {
+            navigate('/budget')
+        }
     }, [isBillSuccess])
 
     useEffect(() => {
-        isCategorySuccess && navigate('/welcome/add-bills')
+        if (isCategorySuccess) {
+            updateUser({ data: { is_onboarded: true } })
+            navigate('/welcome/add-bills')
+        }
     }, [isCategorySuccess])
 
     return (
@@ -131,17 +142,32 @@ export const BottomButtons = ({ expanded }) => {
                 onClick={handleClick}
                 disabled={itemsEmpty}
                 submitting={isBillLoading || isCategoryLoading}
+                type="button"
             >
-                {location.pathname === '/welcome/add-bills' ? 'Finish' : 'Next'}
+                {location.pathname === '/welcome/add-bills' ? 'Next' : 'Finish'}
                 <Arrow
                     width={'.8em'}
                     height={'.8em'}
                     rotation={-90}
                     stroke={'var(--window)'}
-                    onClick={() => navigate('/welcome/add-bills')}
                 />
             </SubmitButton>
         </div>
     )
 }
 
+export const RecommendationsButton = () => {
+    const { setRecommendationsMode } = useContext(ItemsContext)
+
+    return (
+        <div>
+            <button
+                className="btn-clr btn-2slim btn-icon-r"
+                onClick={() => setRecommendationsMode(true)}
+                aria-label="Recommendations"
+            >
+                Recommendations <RecommendationsIcon fill={'m-text-gray'} />
+            </button>
+        </div>
+    )
+}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './styles/LoadingShimmer.css'
+import './styles/ShimmerDiv.css'
 import { useTransition, animated } from '@react-spring/web'
 
 const LoadingShimmer = ({ visible }) => {

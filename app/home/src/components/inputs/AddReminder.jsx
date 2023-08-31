@@ -34,7 +34,7 @@ const AddReminder = ({ value, onChange }) => {
                     <div>
                         {value.offset}
                         {value.offset > 1 ? ` ${value.period}s` : ` ${value.period}`}
-                        <span style={{ opacity: active ? '.5' : '0', padding: '0 8px' }}>before</span>
+                        <span style={{ opacity: active ? '.5' : '0', padding: '0 8px', fontWeight: '400' }}>before</span>
                     </div>
                     {!selected
                         ? <Plus stroke={'var(--muted-text-gray)'} width={'.9em'} height={'.9em'} />

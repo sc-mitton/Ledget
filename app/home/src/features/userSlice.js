@@ -10,10 +10,18 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query: () => 'payment_methods',
             keepUnusedDataFor: 180,
         }),
+        updateUser: builder.mutation({
+            query: ({ data }) => ({
+                url: 'user',
+                method: 'PUT',
+                body: data,
+            }),
+        }),
     })
 })
 
 export const {
     useGetMeQuery,
     useGetPaymentMethodQuery,
+    useUpdateUserMutation,
 } = extendedApiSlice

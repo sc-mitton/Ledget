@@ -23,5 +23,4 @@ class OnboardUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('onboarded',)
-
+        fields = ('is_onboarded',)

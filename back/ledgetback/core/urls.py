@@ -1,8 +1,7 @@
 from django.urls import path, include
 from .views.user import (
      UserView,
-     GetPaymentMethodsView,
-     OnboardedUpdateView
+     GetPaymentMethodsView
 )
 from .views.service import (
     PriceView,
@@ -14,8 +13,8 @@ from .views.service import (
 
 urlpatterns = [
      path('prices', PriceView.as_view(), name='prices'),
-     path('user/me', UserView.as_view(), name='user'),
-     path('user/<int:pk>', OnboardedUpdateView.as_view(), name='onboarded'),
+     path('user/me', UserView.as_view(), name='get_me'),
+     path('user/<uuid:id>', UserView.as_view(), name='update_user'),
 
      path('payment_methods', GetPaymentMethodsView.as_view(), name='payment_methods'), # noqa
      path('customer', CreateCustomerView.as_view(), name='customer'),

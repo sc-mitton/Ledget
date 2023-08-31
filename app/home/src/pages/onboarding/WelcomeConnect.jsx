@@ -10,8 +10,11 @@ import Checkmark3 from '@assets/icons/Checkmark3'
 import { usePlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { Base64Logo } from '@components/pieces'
+import { useTransactionsSyncMutation } from '@features/transactionsSlice'
+import { LoadingRing } from '@components/pieces'
 
 const InstitutionLogos = ({ plaidItems }) => {
+    const { isLoading } = useGetPlaidItemsQuery()
 
     return (
         <>
@@ -30,8 +33,8 @@ const InstitutionLogos = ({ plaidItems }) => {
                                 <Base64Logo
                                     data={item.institution.logo}
                                     item={item}
-                                    alt={item.institution.name}
-                                    color={item.institution.primary_color}
+                                    alt={item.institution.name.charAt(0).toUpperCase()}
+                                    backgroundColor={item.institution.primary_color}
                                     style={{
                                         width: '2rem',
                                         height: '2rem',
@@ -45,6 +48,9 @@ const InstitutionLogos = ({ plaidItems }) => {
                                 />
                             </div>
                         ))}
+                        <div style={{ marginLeft: '16px' }}>
+                            <LoadingRing visible={isLoading} color="dark" />
+                        </div>
                     </div>
                 </>
             }
@@ -53,7 +59,7 @@ const InstitutionLogos = ({ plaidItems }) => {
 }
 
 const BottomButtons = ({ continueDisabled }) => {
-    const { open, exit, error } = usePlaidLink()
+    const { open } = usePlaidLink()
     const navigate = useNavigate()
 
     return (
@@ -72,7 +78,7 @@ const BottomButtons = ({ continueDisabled }) => {
                 className={`btn-chcl btn3 scale-icon-btn
                 ${continueDisabled ? 'disabled' : 'enabled'}`}
                 aria-label="Next"
-                onClick={() => navigate('/welcome/add-categories')}
+                onClick={() => navigate('/welcome/add-bills')}
                 disabled={continueDisabled}
             >
                 Continue
@@ -88,14 +94,35 @@ const BottomButtons = ({ continueDisabled }) => {
 }
 
 const WelcomeConnect = () => {
-    const { data: plaidItems, isLoading } = useGetPlaidItemsQuery()
+    const [transactionsSync] = useTransactionsSyncMutation()
+    const {
+        data: plaidItems,
+        isSuccess: fetchedPlaidItemsSuccess
+    } = useGetPlaidItemsQuery()
     const [continueDisabled, setContinueDisabled] = useState(true)
+    const [loaded, setLoaded] = useState(false)
+
+    // We should only sync when there's been a new plaid item added
+    // after the initial load
+    useEffect(() => {
+        if (plaidItems?.length > 0 && loaded) {
+            setTimeout(() => {
+                transactionsSync(plaidItems[plaidItems.length - 1].id)
+            }, 4000)
+        }
+    }, [plaidItems])
 
     useEffect(() => {
         if (plaidItems?.length > 0) {
             setContinueDisabled(false)
         }
     }, [plaidItems])
+
+    useEffect(() => {
+        if (fetchedPlaidItemsSuccess) {
+            setLoaded(true)
+        }
+    }, [fetchedPlaidItemsSuccess])
 
     return (
         <div className="window3">
@@ -122,7 +149,7 @@ const WelcomeConnect = () => {
                         </div>
                     </div>
                 </div>
-                {!isLoading && <InstitutionLogos plaidItems={plaidItems} />}
+                {fetchedPlaidItemsSuccess && <InstitutionLogos plaidItems={plaidItems} />}
             </div>
             <BottomButtons continueDisabled={continueDisabled} />
         </div>

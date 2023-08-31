@@ -226,6 +226,7 @@ const Options = (props) => {
                         onKeyDown={handleKeyDown}
                         style={{
                             position: 'absolute',
+                            minWidth: `${buttonRef.current?.offsetWidth}px`,
                             ...style
                         }}
                         {...rest}

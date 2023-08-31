@@ -42,7 +42,7 @@ class NestedCreateMixin:
                 serializer_class=nested_obj_fields[key]
             )
 
-        return new_objs[0] if len(new_objs) == 1 else new_objs
+        return new_objs
 
     def get_model(self, serializer_class):
         '''
@@ -65,7 +65,7 @@ class NestedCreateMixin:
         return fields
 
     def bulk_create_objects(self, model, validated_data: list,
-                            nested_obj_keys: list) -> (list, dict):
+                            nested_obj_keys: list):
         '''
         Bulk create the objects, and return the nested_objects
         Example:

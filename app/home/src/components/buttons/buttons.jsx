@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import Delete from '@assets/icons/Delete'
+import Close from '@assets/icons/Close'
 import { LoadingRing } from '@components/pieces'
 
 export const DeleteButton = ({ onClick }) => (
@@ -46,3 +47,25 @@ export const SubmitButton = (props) => {
         </button>
     )
 }
+
+export const CloseButton = React.forwardRef((props, ref) => {
+    const localRef = useRef(null)
+    const r = ref || localRef
+    const { style, ...rest } = props
+
+    return (
+        <button
+            className="btn-clr btn"
+            ref={r}
+            style={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                ...style,
+            }}
+            {...rest}
+        >
+            <Close />
+        </button>
+    )
+})

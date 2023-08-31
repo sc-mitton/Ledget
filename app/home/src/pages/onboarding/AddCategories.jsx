@@ -2,30 +2,32 @@ import React, { useState, useContext, useEffect } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
-import { object, string } from "yup"
 import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
 
 import './styles/Items.css'
-import { BottomButtons, TabView } from './Reusables'
+import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { ItemsProvider, ItemsContext } from './ItemsContext'
 import { useItemsDrag } from './hooks'
 import Bell from '@assets/icons/Bell'
 import BellOff from '@assets/icons/BellOff'
 import Grip from '@assets/icons/Grip'
+import Checkmark from '@assets/icons/Checkmark'
 import { ShadowedContainer, FormErrorTip } from '@components/pieces'
-import { DeleteButton } from '@components/buttons'
+import { DeleteButton, CloseButton } from '@components/buttons'
 import { EmojiComboText, AddAlert, LimitAmountInput, PeriodSelect } from '@components/inputs'
 import { formatName, formatRoundedCurrency, getLongestLength } from '@utils'
+import { schema as categorySchema } from '@modals/CreateCategory'
+import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
+import { shuffleArray } from '@utils'
 
-const schema = object().shape({
-    name: string().required().lowercase(),
-    limit_amount: string().required('required'),
-})
+const yearRecommendationsIndexes = Array.from({ length: yearRecommendations.length - 1 }, (_, i) => i + 1)
+const monthRecommendationsIndexes = Array.from({ length: monthRecommendations.length - 1 }, (_, i) => i + 1)
+const yearAnimationOrder = shuffleArray(yearRecommendationsIndexes)
+const monthAnimationOrder = shuffleArray(monthRecommendationsIndexes)
 
-const ItemsColumn = ({ period }) => {
+const CategoriesColumn = ({ period }) => {
     const context = useContext(ItemsContext)[period]
-    const [nameFlexBasis, setNameFlexBasis] = useState('auto')
 
     const {
         items,
@@ -41,11 +43,6 @@ const ItemsColumn = ({ period }) => {
         setItems(items.filter((category) => category !== toDelete))
     }
 
-    useEffect(() => {
-        const longestLength = getLongestLength(context.items, 'name')
-        setNameFlexBasis(`${longestLength + 1}ch`)
-    }, [items])
-
     return (
         <ShadowedContainer style={{ height: 'auto' }}>
             <animated.div style={containerProps} >
@@ -57,7 +54,7 @@ const ItemsColumn = ({ period }) => {
                     >
                         <div
                             className="budget-item-name--container"
-                            style={{ flexBasis: nameFlexBasis }}
+                            style={{ flexBasis: getLongestLength(context.items, 'name') }}
                         >
                             <button
                                 className="btn grip-btn"
@@ -72,7 +69,12 @@ const ItemsColumn = ({ period }) => {
                             </div>
                         </div>
                         <div >
-                            {`${formatRoundedCurrency(item.limit_amount)}`}
+                            <div
+                                className="budget-dollar--container"
+                                style={{ width: `${getLongestLength(context.items, 'limit_amount')}ch` }}
+                            >
+                                {`${formatRoundedCurrency(item.limit_amount)}`}
+                            </div>
                         </div >
                         <div >
                             <div style={{ opacity: item.alerts.length > 0 ? '1' : '.5' }}>
@@ -89,21 +91,126 @@ const ItemsColumn = ({ period }) => {
     )
 }
 
+const RecommendationsView = () => {
+    const { setRecommendationsMode } = useContext(ItemsContext)
+    const {
+        month: { items: monthItems },
+        year: { items: yearItems },
+        setBufferItem,
+    } = useContext(ItemsContext)
+
+    const handleClick = (e, type) => {
+        e.preventDefault()
+        let target = e.target;
+        // If the target is the checkmark, use the parent element instead
+        if (target.tagName === 'svg' || target.tagName === 'path') {
+            target = target.parentElement;
+        }
+
+        if (monthItems.some((item) => item.name === target.innerText.toLowerCase()) ||
+            yearItems.some((item) => item.name === target.innerText.toLowerCase())) {
+            return
+        }
+
+        setBufferItem({
+            period: type,
+            name: type === 'month'
+                ? monthRecommendations[target.getAttribute('item-number')].name
+                : yearRecommendations[target.getAttribute('item-number')].name,
+            emoji: type === 'month'
+                ? monthRecommendations[target.getAttribute('item-number')].emoji
+                : yearRecommendations[target.getAttribute('item-number')].emoji
+        })
+    }
+
+    return (
+        <>
+            <CloseButton
+                onClick={() => setRecommendationsMode(false)}
+                aria-label="Close recommendations"
+            />
+            <Tab.Panel>
+                <div className="recommendations-container">
+                    {monthRecommendations.map((suggestion, index) => (
+                        <div
+                            key={`month-suggestion-${index}`}
+                            className={`budget-item-name
+                                ${monthItems.some((item) => item.name === suggestion.name.toLowerCase())
+                                    ? 'selected' : 'unselected'}`}
+                            style={{ '--animation-order': monthAnimationOrder[index] }}
+                            onClick={(e) => handleClick(e, 'month')}
+                            role='button'
+                            item-number={index}
+                        >
+                            {`${suggestion.emoji} ${suggestion.name}`}
+                            <Checkmark width={'.7em'} height={'.7em'} />
+                        </div>
+                    ))}
+                </div>
+            </Tab.Panel>
+            <Tab.Panel>
+                <div className="recommendations-container">
+                    {yearRecommendations.map((suggestion, index) => (
+                        <div
+                            key={`year-suggestion-${index}`}
+                            className={`budget-item-name
+                                ${yearItems.some((item) => item.name === suggestion.name.toLowerCase())
+                                    ? 'selected' : 'unselected'} `}
+                            style={{ '--animation-order': yearAnimationOrder[index] }}
+                            onClick={(e) => handleClick(e, 'year')}
+                            role='button'
+                            item-number={index}
+                        >
+                            {`${suggestion.emoji} ${suggestion.name}`}
+                            <Checkmark width={'.7em'} height={'.7em'} />
+                        </div>
+                    ))}
+                </div>
+            </Tab.Panel>
+        </>
+    )
+}
+
+const ListView = () => {
+    const { year: { isEmpty: emptyYearItems } } = useContext(ItemsContext)
+
+    return (
+        <>
+            <Tab.Panel>
+                <CategoriesColumn period={'month'} />
+            </Tab.Panel>
+            <Tab.Panel>
+                {
+                    emptyYearItems
+                        ?
+                        <div
+                            style={{
+                                margin: '24px 0 16px 0',
+                                textAlign: 'center',
+                                fontWeight: '500',
+                                opacity: '.4'
+                            }}
+                        >
+                            <span>Looks you haven't added any</span><br />
+                            <span> yearly categories yet...</span>
+                        </div>
+                        : <CategoriesColumn period={'year'} />
+                }
+            </Tab.Panel>
+        </>
+    )
+}
+
 const CategoriesList = () => {
-    const { itemsEmpty } = useContext(ItemsContext)
+    const { itemsEmpty, recommendationsMode } = useContext(ItemsContext)
 
     return (
         <div
             id="budget-items--container"
-            className={`${itemsEmpty ? '' : 'expand'}`}
+            className={`${(itemsEmpty && !recommendationsMode) ? '' : 'expand'}`}
         >
             <TabView>
-                <Tab.Panel>
-                    <ItemsColumn period={'month'} />
-                </Tab.Panel>
-                <Tab.Panel>
-                    <ItemsColumn period={'year'} />
-                </Tab.Panel>
+                {recommendationsMode ? <RecommendationsView /> : <ListView />}
             </TabView>
         </div>
     )
@@ -111,13 +218,20 @@ const CategoriesList = () => {
 
 const Form = ({ children }) => {
     const [readyToSubmit, setReadyToSubmit] = useState(false)
-    const { items: monthItems, setItems: setMonthItems } = useContext(ItemsContext).month
-    const { items: yearItems, setItems: setYearItems } = useContext(ItemsContext).year
+    const {
+        month: { setItems: setMonthItems },
+        year: { setItems: setYearItems },
+        bufferItem,
+        setBufferItem
+    } = useContext(ItemsContext)
+    const [formKey, setFormKey] = useState(Date.now())
+    const [emoji, setEmoji] = useState('')
+    const [period, setPeriod] = useState('month')
 
-    const { register, watch, handleSubmit, reset, formState: { errors, isValid }, control } = useForm({
-        resolver: yupResolver(schema),
+    const { register, watch, handleSubmit, reset, setValue, formState: { errors, isValid }, control } = useForm({
+        resolver: yupResolver(categorySchema),
         mode: 'onSubmit',
-        reValidateMode: 'onBlur',
+        reValidateMode: 'onSubmit',
     })
 
     useEffect(() => {
@@ -140,24 +254,34 @@ const Form = ({ children }) => {
             }
         }
         body.alerts = alerts
-
         if (body.period === 'month') {
-            setMonthItems([...monthItems, body])
+            setMonthItems((prev) => [...prev, body])
         } else {
-            setYearItems([...yearItems, body])
+            setYearItems((prev) => [...prev, body])
         }
 
         reset()
+        setFormKey(Date.now())
+        setEmoji('')
     }
+
+    useEffect(() => {
+        if (bufferItem) {
+            setValue('name', bufferItem.name)
+            setEmoji({ 'native': bufferItem.emoji })
+            setPeriod(bufferItem.period)
+        }
+        setBufferItem(undefined)
+    }, [bufferItem])
 
     return (
         <form
             onSubmit={handleSubmit((data, e) => submit(data, e))}
-            key={`create-category-form-${monthItems.length}-${yearItems.length}}`}
+            key={`create-category-form-${formKey}`}
         >
             <div>
                 <div>
-                    <PeriodSelect />
+                    <PeriodSelect value={period} onChange={setPeriod} />
                 </div>
                 <div>
                     <EmojiComboText
@@ -165,6 +289,8 @@ const Form = ({ children }) => {
                         placeholder="Name"
                         register={register}
                         error={[errors.name]}
+                        emoji={emoji}
+                        setEmoji={setEmoji}
                     />
                 </div>
                 <div>
@@ -182,17 +308,26 @@ const Form = ({ children }) => {
 }
 
 const Window = () => {
-    const { itemsEmpty } = useContext(ItemsContext)
+    const { itemsEmpty, recommendationsMode, setRecommendationsMode } = useContext(ItemsContext)
 
     return (
         <div className="window2">
-            <h2 className="spaced-header2">Budget Categories</h2>
-            {itemsEmpty &&
-                <>
-                    <h4 >Add your personalized categories</h4>
-                    <hr className="spaced-header" />
-                </>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h2>Budget Categories</h2>
+                {!recommendationsMode && < RecommendationsButton />}
+            </div>
+            {(itemsEmpty && !recommendationsMode) &&
+                <div
+                    className=" body"
+                    style={{
+                        marginTop: '12px',
+                        maxWidth: '350px'
+                    }}
+                >
+                    Add your personalized categories or click on the upper right icon for recommendations.
+                </div>
             }
+            {(itemsEmpty && !recommendationsMode) && <hr className="spaced-header" />}
             <CategoriesList />
             <Form >
                 {(readyToSubmit) => (

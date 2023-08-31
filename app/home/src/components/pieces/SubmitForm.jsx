@@ -32,7 +32,7 @@ const SubmitForm = ({ submitting, onCancel }) => {
                 Cancel
             </div>
             <SubmitButton submitting={submitting}>
-                {Save}
+                {'Save'}
             </SubmitButton>
         </div >
     )

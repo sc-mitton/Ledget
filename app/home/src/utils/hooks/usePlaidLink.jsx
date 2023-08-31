@@ -2,9 +2,8 @@ import React, { useEffect } from 'react'
 import { usePlaidLink as useLink, } from 'react-plaid-link'
 import {
     useGetPlaidTokenQuery,
-    useAddNewPlaidItemMutation,
+    useAddNewPlaidItemMutation
 } from '@features/plaidSlice'
-
 
 function usePlaidLink() {
     const [addNewPlaidItem] = useAddNewPlaidItemMutation()

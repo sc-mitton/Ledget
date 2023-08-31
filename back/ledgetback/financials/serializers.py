@@ -22,8 +22,11 @@ logger = logging.getLogger('ledget')
 
 class CustomBase64ImageField(serializers.Field):
     def to_representation(self, value):
-        with open(value.path, "rb") as f:
-            return base64.b64encode(f.read()).decode("utf-8")
+        if value and value.path:
+            with open(value.path, "rb") as f:
+                return base64.b64encode(f.read()).decode("utf-8")
+        else:
+            return None
 
 
 class InstitutionSerializer(serializers.ModelSerializer):
@@ -75,11 +78,12 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
         resonse = self.get_plaid_institution(institution.id)
         data = resonse.to_dict()['institution']
 
-        decoded_logo = base64.b64decode(data['logo'])
-        filename = f"logo_{institution.id}.png"
-        image_file = ContentFile(decoded_logo, name=filename)
+        if data.get('logo'):
+            decoded_logo = base64.b64decode(data['logo'])
+            filename = f"logo_{institution.id}.png"
+            image_file = ContentFile(decoded_logo, name=filename)
+            institution.logo = image_file
 
-        institution.logo = image_file
         institution.url = data.get('url')
         institution.oath = data.get('oath')
         institution.primary_color = data.get('primary_color')
@@ -137,3 +141,14 @@ class PlaidItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlaidItem
         exclude = ('access_token', 'user')
+
+
+class TransactionsSyncSerializer(serializers.Serializer):
+    item_id = serializers.CharField(required=True)
+
+    def validate_item_id(self, value):
+        try:
+            item = PlaidItem.objects.get(id=value)
+            return item
+        except PlaidItem.DoesNotExist:
+            raise serializers.ValidationError()

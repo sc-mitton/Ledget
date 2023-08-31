@@ -30,8 +30,35 @@ payload = {
     }
 }
 
+
+payload2 = {
+    'session': {
+        'identity': {
+            'id': str(uuid.uuid4()),
+            'traits': {
+                'email': 'testemail2@test.com',
+                'name': {
+                    'first': 'Test2',
+                    'last': 'User'
+                }
+            },
+            'verifiable_addresses': [
+                {
+                    'verified': True,
+                }
+            ]
+        }
+    }
+}
+
 token = jwt.encode(
     {**payload, 'exp': 9999999999},
+    key=private_key,
+    algorithm='RS256',
+)
+
+token2 = jwt.encode(
+    {**payload2, 'exp': 9999999999},
     key=private_key,
     algorithm='RS256',
 )
@@ -47,12 +74,26 @@ class ViewTestsMixin(TestCase):
         '''Create user and client'''
 
         self.client = APIClient()
-        self.client.defaults['HTTP_AUTHORIZATION'] = 'bearer {}'.format(token)
+        self.client2 = APIClient()
+        self.client.defaults['HTTP_AUTHORIZATION'] = \
+            'bearer {}'.format(token)
+        self.client2.defaults['HTTP_AUTHORIZATION'] = \
+            'bearer {}'.format(token2)
+
         self.user = get_user_model().objects.create_user(
             id=payload['session']['identity']['id']
         )
         Customer.objects.create(
             user=self.user,
+            id=uuid.uuid4(),
+            subscription_status='active',
+            period_end=1794475549
+        )
+        self.user2 = get_user_model().objects.create_user(
+            id=payload2['session']['identity']['id']
+        )
+        Customer.objects.create(
+            user=self.user2,
             id=uuid.uuid4(),
             subscription_status='active',
             period_end=1794475549

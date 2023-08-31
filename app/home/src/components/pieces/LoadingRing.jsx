@@ -2,7 +2,7 @@ import React from 'react'
 
 import "./styles/LoadingRing.css"
 
-const LoadingRing = ({ height, visible, children }) => {
+const LoadingRing = ({ height, color = 'light', visible, children }) => {
     return (
         <div
             style={{
@@ -20,7 +20,12 @@ const LoadingRing = ({ height, visible, children }) => {
                     color: 'inherit',
                 }}
             >
-                <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                <div className={`lds-ring ${color}`}>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
             {children}
         </div>

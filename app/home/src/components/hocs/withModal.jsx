@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
 import './modal.css'
-import Close from '@assets/icons/Close'
 import { useAccessEsc } from '@utils'
+import { CloseButton } from '@components/buttons'
 
 function withModal(WrappedComponent) {
     return (props) => {
@@ -82,20 +82,12 @@ function withModal(WrappedComponent) {
 
         const Exit = () => {
             return (
-                <button
-                    className="btn-clr btn"
+                <CloseButton
+                    ref={exitRef}
                     onClick={() => setVisible(false)}
                     aria-label="Close modal"
-                    ref={exitRef}
-                    style={{
-                        position: 'absolute',
-                        zIndex: zIndex + 2,
-                        top: '12px',
-                        right: '12px'
-                    }}
-                >
-                    <Close />
-                </button>
+                    style={{ zIndex: zIndex + 2 }}
+                />
             )
         }
 

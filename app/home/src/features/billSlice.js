@@ -2,11 +2,16 @@ import { apiSlice } from '@api/apiSlice'
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        addNewCategory: builder.mutation({
-            query: ({ data }) => ({
-                url: 'category',
-                method: 'POST',
-                body: data,
+        getBills: builder.query({
+            query: () => ({
+                url: 'bills',
+                method: 'GET',
+            }),
+        }),
+        getBillRecommendations: builder.query({
+            query: () => ({
+                url: 'bills/recommendations',
+                method: 'GET',
             }),
         }),
         addnewBill: builder.mutation({
@@ -20,6 +25,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-    useAddNewCategoryMutation,
     useAddnewBillMutation,
+    useGetBillsQuery,
+    useGetBillRecommendationsQuery,
 } = extendedApiSlice

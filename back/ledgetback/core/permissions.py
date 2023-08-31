@@ -28,4 +28,7 @@ class IsAuthedVerifiedSubscriber(BasePermission):
 class IsObjectOwner(BasePermission):
 
     def has_object_permission(self, request, view, obj):
-        return request.user.id == obj.id or obj.user_id
+        try:
+            return request.user.id == obj.id or request.user.id == obj.user_id
+        except AttributeError:
+            return False

@@ -16,7 +16,7 @@ from .data import (
 )
 
 
-class ViewTests(ViewTestsMixin):
+class BudgetViewTests(ViewTestsMixin):
 
     @timeit
     def test_category_creation(self):
@@ -109,3 +109,21 @@ class ViewTests(ViewTestsMixin):
                 len(payload[i]['reminders'])
             )
             i += 1
+
+    @timeit
+    def test_get_bills(self):
+        self.test_bulk_bill_creation()
+        response = self.client.get(reverse('get_bills'))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response.data.__len__(), 0)
+
+    @timeit
+    def test_get_categories(self):
+        self.test_bulk_category_creation()
+        response = self.client.get(reverse('get_categories'))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response.data.__len__(), 0)
+
+    @timeit
+    def test_get_suggested_bills(self):
+        pass

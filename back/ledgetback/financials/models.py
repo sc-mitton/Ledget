@@ -1,6 +1,10 @@
 from django.db import models
 
 from core.models import User
+from budget.models import (
+    Category,
+    Bill
+)
 
 
 class Institution(models.Model):
@@ -10,9 +14,7 @@ class Institution(models.Model):
                           blank=False,
                           primary_key=True)
     name = models.CharField(max_length=100, null=False, blank=False)
-    logo = models.ImageField(upload_to='logos',
-                             null=True,
-                             blank=True)
+    logo = models.ImageField(upload_to='logos', null=True, blank=True)
     primary_color = models.CharField(max_length=100, null=True, blank=True)
     url = models.CharField(max_length=100, null=True, blank=True)
     oath = models.CharField(max_length=100, null=True, default=False)
@@ -30,6 +32,7 @@ class PlaidItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     id = models.CharField(max_length=40, primary_key=True, editable=False)
     access_token = models.CharField(max_length=100, null=True)
+    cursor = models.CharField(max_length=256, null=True, blank=True)
 
 
 class Account(models.Model):
@@ -54,7 +57,24 @@ class Account(models.Model):
                                            blank=True)
 
 
-class Transactions(models.Model):
+class Transaction(models.Model):
+    '''
+    Having a blank category or bill field is considered misc. category
+    '''
+
+    unused_plaid_fields = [
+            'account_owner',
+            'category',
+            'category_id',
+            'check_number',
+            'payment_meta',
+            'personal_finance_category',
+            'unofficial_currency_code',
+        ]
+
+    nested_plaid_fields = [
+        'location'
+    ]
 
     class Meta:
         get_latest_by = ['date', 'datetime']
@@ -66,6 +86,12 @@ class Transactions(models.Model):
     transaction_code = models.CharField(max_length=100, null=True, blank=True)
     transaction_type = models.CharField(max_length=100, null=True, blank=True)
 
+    # Budget Info
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
+    bill = models.ForeignKey(Bill, on_delete=models.SET_NULL,
+                             null=True, blank=True)
+
     # Transaction info
     name = models.CharField(max_length=100, null=False, blank=False)
     merchant_name = models.CharField(max_length=100, null=True, blank=True)
@@ -73,7 +99,7 @@ class Transactions(models.Model):
     pending = models.BooleanField(null=True, blank=True)
     pending_transaction_id = models.CharField(max_length=100, null=True,
                                               blank=True)
-    amount = models.IntegerField(null=False, blank=False)
+    amount = models.FloatField(null=False, blank=False)
     iso_currency_code = models.CharField(max_length=3, null=True, blank=True)
     unnoficial_currency_code = models.CharField(max_length=10, null=True,
                                                 blank=True)
@@ -81,7 +107,7 @@ class Transactions(models.Model):
 
     # date info
     date = models.DateField(null=False, blank=False)
-    datetime = models.DateTimeField(null=False, blank=False)
+    datetime = models.DateTimeField(null=True, blank=True)
     authorized_date = models.DateField(null=True, blank=True)
     authorized_datetime = models.DateTimeField(null=True, blank=True)
     confirmed_date = models.DateField(null=True, blank=True)
@@ -96,10 +122,3 @@ class Transactions(models.Model):
     lat = models.FloatField(null=True, blank=True)
     lon = models.FloatField(null=True, blank=True)
     store_number = models.CharField(max_length=50, null=True, blank=True)
-
-    # UNUSED
-    # category
-    # category_id
-    # check_number
-    # payment_meta
-    # account owner

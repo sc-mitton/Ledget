@@ -6,11 +6,11 @@ export const DollarCents = ({ value, ...props }) => {
     const str = formatCurrency(value)
 
     return (
-        <div style={{ textAlign: 'bottom' }}>
+        <div style={{ textAlign: 'end' }}>
             <span>
                 {`${str.split('.')[0]}`}
             </span>
-            <span style={{ fontSize: '.75em' }}>
+            <span style={{ fontSize: '.7em' }}>
                 {`.${str.split('.')[1]}`}
             </span>
         </div>

@@ -2,20 +2,20 @@ import React, { useState, useRef } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
-import { object, string } from "yup"
+import { object, string, number } from "yup"
 import { useNavigate } from 'react-router-dom'
 
 import './styles/Forms.css'
-import { useAddNewCategoryMutation } from '@features/budgetSlice'
+import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, BlackRadios } from '@components/inputs'
 import { withModal } from '@components/hocs'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@components/pieces'
 import { useEffect } from 'react'
 
-const schema = object().shape({
+export const schema = object().shape({
     name: string().required().lowercase(),
-    limit: string().required(),
+    limit_amount: number().required('required'),
 })
 
 const radioOptions = [

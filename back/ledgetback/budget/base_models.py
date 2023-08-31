@@ -24,6 +24,7 @@ class BudgetItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=False, blank=False)
     emoji = models.CharField(max_length=10, null=False, blank=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
 
 
 class Notification(models.Model):
@@ -34,4 +35,3 @@ class Notification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
-

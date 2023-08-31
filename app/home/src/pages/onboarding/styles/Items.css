@@ -25,10 +25,11 @@
     border-radius: var(--border-radius3);
     max-height: 0;
     padding: 0;
-    width: 70%;
+    width: auto;
     margin: 0 auto;
     opacity: 0;
     transform: scale(.95);
+    visibility: hidden;
 }
 
 #onboarding-app #budget-items--container.expand {
@@ -38,6 +39,7 @@
     padding: 16px;
     transform: scale(1);
     opacity: 1;
+    visibility: visible;
 }
 
 #onboarding-app .checkbox-container label {
@@ -48,6 +50,29 @@
     margin: 6px 0;
 }
 
+/* ----------------------------- Suggested Items ---------------------------- */
+
+
+.recommendations-container {
+    display: block;
+    margin: 0 auto;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.recommendations-container>div {
+    display: inline-flex;
+    margin: 4px 6px;
+    animation-name: pop-fade-in;
+    animation-duration: 350ms;
+    animation-delay: calc(var(--animation-order) * 30ms);
+    animation-fill-mode: both;
+    animation-timing-function: ease-out;
+}
+
+.recommendations-container .budget-item-name {
+    cursor: pointer;
+}
 
 /* ------------------------- Individual Rows Styling ------------------------ */
 
@@ -82,6 +107,12 @@
 
 #onboarding-app .amount--container {
     white-space: nowrap;
+}
+
+#onboarding-app .budget-dollar--container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 /* -------------------------- Bill Window Specific -------------------------- */
@@ -142,4 +173,5 @@
     #onboarding-app #budget-items--container.expand {
         padding: 12px;
     }
+
 }

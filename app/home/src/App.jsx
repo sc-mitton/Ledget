@@ -36,7 +36,7 @@ const PrivateRoute = () => {
 const OnboardedRoute = () => {
     const { data: user } = useGetMeQuery()
 
-    return !user?.is_onboarded ? <Outlet /> : <Navigate to="/welcome/connect" />
+    return user?.is_onboarded ? <Outlet /> : <Navigate to="/welcome/connect" />
 }
 
 const OnboardingApp = () => {
@@ -145,18 +145,25 @@ const MainApp = () => {
 }
 
 const App = () => {
+    const { isLoading } = useGetMeQuery()
+
+
     return (
-        <main>
-            <Routes>
-                <Route path="/" element={<PrivateRoute />} >
-                    <Route path="/" element={<OnboardedRoute />} >
-                        <Route path="/*" element={<MainApp />} />
-                    </Route>
-                    <Route path="welcome/*" element={<OnboardingApp />} />
-                    <Route path="*" element={<NotFound />} />
-                </Route>
-            </Routes>
-        </main >
+        <>
+            {!isLoading &&
+                <main>
+                    <Routes>
+                        <Route path="/" element={<PrivateRoute />} >
+                            <Route path="/" element={<OnboardedRoute />} >
+                                <Route path="/*" element={<MainApp />} />
+                            </Route>
+                            <Route path="welcome/*" element={<OnboardingApp />} />
+                            <Route path="*" element={<NotFound />} />
+                        </Route>
+                    </Routes>
+                </main >
+            }
+        </>
     )
 }
 

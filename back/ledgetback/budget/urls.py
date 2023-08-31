@@ -1,13 +1,19 @@
 from django.urls import path
 
 from budget.views import (
-    CreateCategoryView,
-    CreateBillView
+    CategoryView,
+    BillView,
+    RecomendedBillsView
 )
 
 urlpatterns = [
     path('category',
-         CreateCategoryView.as_view(),
+         CategoryView.as_view(),
          name='create_category'),
-    path('bill', CreateBillView.as_view(), name='create_bill')
+    path('bill', BillView.as_view(), name='create_bill'),
+    path('categories', CategoryView.as_view(), name='get_categories'),
+    path('bills', BillView.as_view(), name='get_bills'),
+    path('bills/recommendations',
+         RecomendedBillsView.as_view(),
+         name='get_recomended_bills'),
 ]

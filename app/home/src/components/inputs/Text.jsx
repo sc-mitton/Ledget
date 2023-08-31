@@ -4,6 +4,7 @@ import { useController } from 'react-hook-form'
 
 import './styles/Text.css'
 import Emoji from './Emoji'
+import Arrow from '@assets/icons/Arrow'
 import { FormErrorTip, FormError } from '@components/pieces'
 import { formatCurrency, formatRoundedCurrency, makeIntCurrencyFromStr } from '@utils'
 
@@ -47,11 +48,15 @@ export const EmojiComboText = (props) => {
         children,
         register,
         error,
+        emoji: propsEmoji,
+        setEmoji: propsSetEmoji,
         ...rest
     } = props
     const { ref: formRef, ...registerRest } = register('name')
     const ref = useRef(null)
-    const [emoji, setEmoji] = useState(undefined)
+    const [em, setEm] = useState(undefined)
+    const emoji = propsEmoji || em
+    const setEmoji = propsSetEmoji || setEm
 
     useEffect(() => {
         emoji && ref.current.focus()
@@ -87,6 +92,55 @@ export const EmojiComboText = (props) => {
     )
 }
 
+const increment = (val, setVal, field) => {
+    let newVal
+    if (!val || val === '') {
+        newVal = 1000
+    } else {
+        newVal = makeIntCurrencyFromStr(val)
+        newVal += 1000
+    }
+
+    field.onChange(newVal)
+    setVal(formatRoundedCurrency(newVal))
+}
+
+const decrement = (val, setVal, field) => {
+    let newVal
+    if (!val) {
+        newVal = 0
+    } else {
+        newVal = makeIntCurrencyFromStr(val)
+    }
+
+    newVal = newVal > 1000 ? newVal - 1000 : 0
+    field.onChange(newVal)
+    setVal(formatRoundedCurrency(newVal))
+}
+
+const IncrementDecrementButton = ({ val, setVal, field }) => (
+    <div className="increment-arrows--container">
+        <button
+            className="btn-gr"
+            type="button"
+            onClick={() => increment(val, setVal, field)}
+            aria-label="increment"
+            tabIndex={'-1'}
+        >
+            <Arrow width={'.65em'} height={'.65em'} rotation={-180} />
+        </button>
+        <button
+            className="btn-gr"
+            type="button"
+            onClick={() => decrement(val, setVal, field)}
+            aria-label="decrement"
+            tabIndex={'-1'}
+        >
+            <Arrow width={'.65em'} height={'.65em'} />
+        </button>
+    </div>
+)
+
 export const LimitAmountInput = ({ control, children }) => {
     const [val, setVal] = useState(undefined)
     const {
@@ -107,16 +161,26 @@ export const LimitAmountInput = ({ control, children }) => {
                     placeholder="$0"
                     value={val}
                     ref={field.ref}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Right' || e.key === 'ArrowRight') {
+                            e.preventDefault()
+                            increment(val, setVal, field)
+                        } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+                            e.preventDefault()
+                            decrement(val, setVal, field)
+                        }
+                    }}
                     onChange={(e) => {
                         field.onChange(makeIntCurrencyFromStr(e.target.value))
                         setVal(formatRoundedCurrency(e.target.value))
                     }}
                     onBlur={(e) => {
-                        e.target.value.length <= 1 && setVal('')
+                        (e.target.value.length <= 1 || val === '$0') && setVal('')
                         field.onBlur(e)
                     }}
                     size="14"
                 />
+                <IncrementDecrementButton val={val} setVal={setVal} field={field} />
                 {children}
             </TextInput>
         </>
@@ -127,22 +191,34 @@ const DollarInput = ({ field, name }) => {
     const [val, setVal] = useState(undefined)
 
     return (
-        <input
-            name={name}
-            type="text"
-            placeholder="$0"
-            ref={field.ref}
-            value={val}
-            onChange={(e) => {
-                field.onChange(makeIntCurrencyFromStr(e.target.value))
-                setVal(formatCurrency(e.target.value))
-            }}
-            onBlur={(e) => {
-                field.onBlur(e)
-                e.target.value === '$0.00' && setVal('')
-            }}
-            size="14"
-        />
+        <>
+            <input
+                name={name}
+                type="text"
+                placeholder="$0"
+                ref={field.ref}
+                value={val}
+                onKeyDown={(e) => {
+                    if (e.key === 'Right' || e.key === 'ArrowRight') {
+                        e.preventDefault()
+                        increment(val, setVal, field)
+                    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+                        e.preventDefault()
+                        decrement(val, setVal, field)
+                    }
+                }}
+                onChange={(e) => {
+                    field.onChange(makeIntCurrencyFromStr(e.target.value))
+                    setVal(formatCurrency(e.target.value))
+                }}
+                onBlur={(e) => {
+                    field.onBlur(e)
+                    e.target.value === '$0.00' && setVal('')
+                }}
+                size="14"
+            />
+            <IncrementDecrementButton val={val} setVal={setVal} field={field} />
+        </>
     )
 }
 
@@ -163,15 +239,22 @@ export const DollarRangeInput = ({ rangeMode, control, errors = {} }) => {
     return (
         <>
             <label htmlFor="upper_amount">Amount</label>
-            <TextInput >
+            <div className="dollar-range-input--container">
                 {rangeMode &&
-                    <DollarInput field={lowerField} name={'lower_amount'} />
+                    <>
+                        <TextInput style={{ marginRight: '8px' }}>
+                            <DollarInput field={lowerField} name={'lower_amount'} />
+                            <FormErrorTip errors={[errors.lower_amount]} />
+                        </TextInput>
+                    </>
                 }
-                <DollarInput field={upperField} name={'upper_amount'} />
-                <FormErrorTip errors={[errors.upper_amount, errors.lower_amount]} />
-            </TextInput>
-            {(errors.lower_amount?.type !== 'required' && errors.lower_amount?.message !== 'required')
-                && <FormError msg={errors.lower_amount?.message} />}
+                <TextInput>
+                    <DollarInput field={upperField} name={'upper_amount'} />
+                    <FormErrorTip errors={[errors.upper_amount]} />
+                </TextInput>
+                {(errors.lower_amount?.type !== 'required' && errors.lower_amount?.message !== 'required')
+                    && <FormError msg={errors.lower_amount?.message} />}
+            </div>
         </>
     )
 }

@@ -17,10 +17,13 @@ export const ItemsProvider = ({ children }) => {
     const [monthItems, setMonthItems] = useState([])
     const [yearItems, setYearItems] = useState([])
     const [itemsEmpty, setItemsEmpty] = useState(true)
+    const [recommendationsMode, setRecommendationsMode] = useState(false)
+    const [emptyYearItems, setEmptyYearItems] = useState(true)
     const monthApi = useSpringRef()
     const yearApi = useSpringRef()
     const monthContainerApi = useSpringRef()
     const yearContainerApi = useSpringRef()
+    const [bufferItem, setBufferItem] = useState(undefined)
 
     const monthTransitions = useTransition(
         monthItems,
@@ -62,6 +65,9 @@ export const ItemsProvider = ({ children }) => {
     useEffect(() => {
         yearApi.start()
         yearContainerApi.start()
+        if (yearItems.length > 0) {
+            setEmptyYearItems(false)
+        }
     }, [yearItems])
 
     useEffect(() => {
@@ -88,10 +94,15 @@ export const ItemsProvider = ({ children }) => {
         api: yearApi,
         containerProps: yearContainerProps,
         containerApi: yearContainerApi,
+        isEmpty: emptyYearItems
     }
 
     const vals = {
         itemsEmpty,
+        recommendationsMode: recommendationsMode,
+        setRecommendationsMode: setRecommendationsMode,
+        bufferItem,
+        setBufferItem,
         month: monthContext,
         year: yearContext,
     }

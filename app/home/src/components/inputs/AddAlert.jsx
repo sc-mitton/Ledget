@@ -8,25 +8,18 @@ import Checkmark from '@assets/icons/Checkmark'
 import { MenuTextInput } from '@components/inputs'
 import { DropAnimation } from '@utils'
 import ComboSelect from './ComboSelect'
+import { formatRoundedCurrency } from '@utils'
 
 const formatDollar = (value, percentage) => {
     if (!value) return ''
     !percentage && (percentage = 0)
 
-    let dollar = value * percentage / 100
-    dollar = dollar
-        .toFixed(0)
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-
-    return `$${dollar}`
+    return formatRoundedCurrency(value * percentage / 100)
 }
 
 const AddAlert = (props) => {
-    const { limitAmount, placeholder, style = {}, alerts: propAlerts, setAlerts: propSetAlerts, ...rest } = props
-    const [alerts, setAlerts] = useState([])
-    const setSelectedAlerts = propSetAlerts || setAlerts
-    const selectedAlerts = propAlerts || alerts
+    const { limitAmount, placeholder, style = {}, ...rest } = props
+    const [selectedAlerts, setSelectedAlerts] = useState([])
 
     const [alertOptions, setAlertOptions] = useState([
         { id: 1, value: 25, disabled: false },
@@ -61,11 +54,15 @@ const AddAlert = (props) => {
             ref.current.selectionStart = pct.indexOf('%')
         }
 
-        const DollarFormat = ({ value, ...rest }) => {
+        const DollarFormat = ({ visible, value, ...rest }) => {
             return (
-                <span {...rest}>
-                    &#40;{formatDollar(limitAmount, value)}&#41;
-                </span>
+                <>
+                    {visible &&
+                        <span {...rest}>
+                            &#40;{formatDollar(limitAmount, value)}&#41;
+                        </span>}
+                </>
+
             )
         }
 
@@ -93,14 +90,14 @@ const AddAlert = (props) => {
                     >
                         {({ focused }) => (
                             <>
-                                {limitAmount &&
-                                    <DollarFormat
-                                        value={parseInt(pct.replace(/[^0-9]/g, ''), 10)}
-                                        style={{
-                                            opacity: focused ? ".5" : "0",
-                                            marginRight: '8px'
-                                        }}
-                                    />}
+                                <DollarFormat
+                                    visible={Boolean(limitAmount)}
+                                    value={parseInt(pct.replace(/[^0-9]/g, ''), 10)}
+                                    style={{
+                                        opacity: focused ? ".5" : "0",
+                                        marginRight: '8px'
+                                    }}
+                                />
                                 <div
                                     id={`return-btn${focused ? '-focused' : ''}`}
                                     role="button"
@@ -124,7 +121,7 @@ const AddAlert = (props) => {
         <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
             <div>{value}%</div>
             <div>
-                <span className={`${active ? 'active' : ''}`}>
+                <span className={`${active ? 'active' : ''}`} style={{ fontWeight: '400' }}>
                     {limitAmount
                         ? `(${formatDollar(limitAmount, value)})`
                         : ('of limit')
