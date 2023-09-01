@@ -16,11 +16,11 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --green-hlight: rgb(143, 255, 192);
+    --green-hlight: #8fffc0;
     --green-hlight2: rgb(194, 255, 220);
     --green-hlight3: rgb(136, 236, 188);
     --lighter-green: rgb(179, 226, 200);
-    --m-green: #51ed97;
+    --m-green: rgb(81, 237, 151);
     --m-green-values: 81, 237, 151;
     --m-green-hover: rgb(59, 222, 132);
     --green-dark: rgb(67, 199, 126);
@@ -79,6 +79,10 @@
     --border-radius2: 8px;
     --border-radius25: 12px;
     --border-radius3: 16px;
+    --border-radius4: 24px;
+
+    /* Padding */
+    --padding1: 8px 12px;
 
     /* Loading Shimmer */
     --shimmer-background: linear-gradient(115deg, var(--window) 30%, #f0f0f0 50%, var(--window) 70%);
@@ -160,7 +164,8 @@ h2,
 h3,
 h4,
 h5 {
-    margin: 0
+    margin: 0;
+    font-weight: 600;
 }
 
 .grn-header {
@@ -279,7 +284,7 @@ fieldset {
 }
 
 .window-header {
-    padding: 8px 12px;
+    padding: var(--padding1);
     height: 40px;
     display: flex;
     justify-content: space-between;
@@ -422,7 +427,8 @@ button.pulse:hover {
     align-items: center;
 }
 
-.header-btns>button {
+.header-btns>button,
+.header-btns>div {
     margin: 0 2px;
 }
 
@@ -824,6 +830,11 @@ ul hr {
     margin: 2px 0;
     transition: background-color 0.3s ease-out;
     border-radius: 6px;
+}
+
+.dropdown-item>div {
+    display: flex;
+    align-items: center;
 }
 
 .dropdown-item.active {
