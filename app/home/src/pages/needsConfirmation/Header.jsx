@@ -27,7 +27,7 @@ const RefreshButton = ({ onClick }) => {
         <Tooltip
             msg={"Refresh"}
             ariaLabel={"Refresh list"}
-            style={{ left: '-39%' }}
+            style={{ left: '-.8rem' }}
         >
             <button
                 className='btn-clr btn'
@@ -51,7 +51,7 @@ const CheckAllButton = () => {
         <Tooltip
             msg={"Confirm all"}
             ariaLabel={"Confirm all items"}
-            style={{ left: '-60%' }}
+            style={{ left: '-1.3rem' }}
         >
             <button
                 className="btn-clr btn"

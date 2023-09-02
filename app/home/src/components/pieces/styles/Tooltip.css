@@ -3,6 +3,7 @@
     position: relative;
     cursor: pointer;
     white-space: nowrap;
+    z-index: 0;
 }
 
 .tooltiptext {

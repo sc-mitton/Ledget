@@ -1,0 +1,13 @@
+.summary-header--container span {
+    font-weight: 400;
+}
+
+.summary-header--container h3 {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.summary-header--container h3,
+.summary-header--container h3 span {
+    font-size: 1.1rem;
+}

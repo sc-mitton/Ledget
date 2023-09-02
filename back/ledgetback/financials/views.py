@@ -53,6 +53,7 @@ from financials.serializers import (
 logger = logging.getLogger('ledget')
 
 PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions').split(',')
+PLAID_REDIRECT_URI_ONBOARDING = settings.PLAID_REDIRECT_URI_ONBOARDING
 PLAID_REDIRECT_URI = settings.PLAID_REDIRECT_URI
 PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
 
@@ -95,7 +96,7 @@ class TransactionsSyncView(GenericAPIView):
                 has_more = response['has_more']
                 cursor = response['next_cursor']
                 self.extend_lists(response)
-                self.flush_to_db(plaid_item, cursor)
+            self.flush_to_db(plaid_item, cursor)
 
         except plaid.ApiException as e:
             return Response(
@@ -162,6 +163,11 @@ class PlaidLinkTokenView(APIView):
     permission_classes = [IsVerifiedAuthenticated]
 
     def get(self, request, *args, **kwargs):
+        if kwargs.get('is_onboarding', False):
+            redirect_uri = PLAID_REDIRECT_URI_ONBOARDING
+        else:
+            redirect_uri = PLAID_REDIRECT_URI
+
         try:
             request = LinkTokenCreateRequest(
                 products=plaid_products,
@@ -170,11 +176,11 @@ class PlaidLinkTokenView(APIView):
                     map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)
                 ),
                 language='en',
+                redirect_uri=redirect_uri,
                 user=LinkTokenCreateRequestUser(
                     client_user_id=str(request.user.id)
                 )
             )
-            request['redirect_uri'] = PLAID_REDIRECT_URI
             response = plaid_client.link_token_create(request)
             return Response(data=response.to_dict(),
                             status=HTTP_200_OK)

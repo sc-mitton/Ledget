@@ -4,7 +4,7 @@ import './styles/Window.css'
 import NeedsConfirmationWindow from '../needsConfirmation/Window'
 import Plus from '@assets/icons/Plus'
 import Funnel from '@assets/icons/Funnel'
-
+import { Tooltip } from '@components/pieces'
 
 const HistoryHeader = () => {
     return (
@@ -13,20 +13,34 @@ const HistoryHeader = () => {
                 <h2>History</h2>
             </div>
             <div className="header-btns">
-                <button
-                    className="btn-clr btn"
-                    id="funnel-icon"
-                    aria-label="Filter items"
+                <Tooltip
+                    msg="Filter"
+                    ariaLabel="Filter"
+                    type="top"
+                    style={{ left: '-.4rem' }}
                 >
-                    <Funnel />
-                </button>
-                <button
-                    className="btn-clr btn"
-                    id="add-icon"
-                    aria-label="Manually add item"
+                    <button
+                        className="btn-clr btn"
+                        id="funnel-icon"
+                        aria-label="Filter"
+                    >
+                        <Funnel />
+                    </button>
+                </Tooltip>
+                <Tooltip
+                    msg="Manually add item"
+                    ariaLabel="Manually add item"
+                    type="top"
+                    style={{ left: '-2.5rem' }}
                 >
-                    <Plus />
-                </button>
+                    <button
+                        className="btn-clr btn"
+                        id="add-icon"
+                        aria-label="Manually add item"
+                    >
+                        <Plus />
+                    </button>
+                </Tooltip>
             </div>
         </div>
     )

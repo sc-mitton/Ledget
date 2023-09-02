@@ -428,7 +428,7 @@ button.pulse:hover {
 }
 
 .header-btns>button,
-.header-btns>div {
+.header-btns>.tooltip {
     margin: 0 2px;
 }
 

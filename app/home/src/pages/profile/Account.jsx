@@ -50,7 +50,7 @@ const Plan = () => {
         if (user.subscription.plan.status === 'trialing') {
             return 'trial'
         }
-        return user.subscription.plan.status.charAt(0).tolowerCase()
+        return user.subscription.plan.status.tolowerCase().replace('_', ' ')
     }
 
     return (

@@ -1,20 +1,45 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+
 import { usePlaidLink as useLink, } from 'react-plaid-link'
+
 import {
-    useGetPlaidTokenQuery,
+    useLazyGetPlaidTokenQuery,
     useAddNewPlaidItemMutation
 } from '@features/plaidSlice'
 
 function usePlaidLink() {
     const [addNewPlaidItem] = useAddNewPlaidItemMutation()
-    const { data: plaidToken, refetch: refetchPlaidToken } = useGetPlaidTokenQuery()
+    const [plaidToken, setPlaidToken] = useState(null)
+    const [isOauthRedirect, setIsOauthRedirect] = useState(false)
+    const [fetchToken, { data: fetchedToken, isSuccess }] = useLazyGetPlaidTokenQuery()
 
-    const isOauth = false
+    useEffect(() => {
+        if (window.location.href.includes('oauth_state_id')) {
+            setIsOauthRedirect(true)
+        }
+    }, [])
+
+    useEffect(() => {
+        const token = sessionStorage.getItem('plaidToken')
+        if (token) {
+            setPlaidToken(JSON.parse(token))
+        } else {
+            console.log('fetching token')
+            fetchToken({ isOnboarding: true })
+        }
+    }, [])
+
+    useEffect(() => {
+        if (isSuccess) {
+            setPlaidToken(fetchedToken)
+            sessionStorage.setItem('plaidToken', JSON.stringify(fetchedToken))
+        }
+    }, [isSuccess, plaidToken])
 
     // 30 min timeout to refresh token
     useEffect(() => {
         const timeout = setTimeout(() => {
-            refetchPlaidToken()
+            fetchToken({ isOnboarding: true })
         }, 30 * 60 * 1000)
         return () => clearTimeout(timeout)
     }, [])
@@ -33,11 +58,10 @@ function usePlaidLink() {
                 },
             })
         },
-        onExit: (err, metadata) => {
-        },
+        onExit: (err, metadata) => { },
         onEvent: (eventName, metadata) => { },
         token: plaidToken?.link_token,
-        // ...(isOauth ? {receivedRedirectUri: window.location.href } : { }),
+        ...(isOauthRedirect ? { receivedRedirectUri: window.location.href } : {})
     }
 
     const { open, exit, ready } = useLink(config)

@@ -98,6 +98,7 @@ const SpendingWindow = () => (
 )
 
 const BudgetWindow = () => {
+    const [numRows, setNumRows] = useState(10)
 
     const getWidth = () => {
         const width = Math.floor(Math.random() * (15 - 0 + 1)) + 15
@@ -105,13 +106,24 @@ const BudgetWindow = () => {
         return `${width + 30}%`
     }
 
+    const ref = useRef(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            setNumRows(Math.min(Math.round((ref.current.offsetHeight - 200) / 50), 10))
+        }
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
     return (
-        <div className="window skeleton" id="budget-window" >
+        <div className="window skeleton" id="budget-window" ref={ref}>
             <div className="skeleton-header skeleton-inner" />
             <div>
                 <div className="budget-column first-column">
                     <div className="skeleton-inner" />
-                    {[...Array(10)].map((_, i) => (
+                    {[...Array(numRows)].map((_, i) => (
                         <div
                             key={i}
                             style={{
@@ -123,7 +135,7 @@ const BudgetWindow = () => {
                 </div>
                 <div className="budget-column second-column">
                     <div className="skeleton-inner" />
-                    {[...Array(10)].map((_, i) => (
+                    {[...Array(numRows)].map((_, i) => (
                         <div
                             key={i}
                             style={{
@@ -167,7 +179,7 @@ const Dashboard = () => {
             >
                 {showSkeleton && (
 
-                    <div className="dashboard" >
+                    <div className="dashboard skeleton" >
                         <BudgetWindow />
                         {!isNarrow && <SpendingWindow />}
                     </div>

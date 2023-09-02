@@ -58,7 +58,7 @@ const usePillAnimation = (args) => {
                 ref.current ? ref.current.querySelectorAll(querySelectall) : []
             )
             setSelectors(elements)
-        }, 0)
+        }, 50)
     }, [...refresh])
 
     return { props }

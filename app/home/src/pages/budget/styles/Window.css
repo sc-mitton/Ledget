@@ -2,4 +2,14 @@
     flex-grow: 2;
     flex-shrink: 1;
     margin: 0 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+#budget-window .window-header {
+    z-index: 100;
+}
+
+#budget-window .window {
+    padding: 16px 24px;
 }

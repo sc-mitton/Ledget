@@ -91,7 +91,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/plaid_link_token"
+         "url": "https://localhost/api/v1/plaid_link_token<.*>"
       },
       "mutators": [
          {

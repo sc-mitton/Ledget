@@ -1,9 +1,11 @@
 #new-items-container {
+    width: 102%;
     position: relative;
     max-width: 430px;
     position: relative;
     transform: translateX(-50%);
     left: 50%;
+    z-index: 100;
 }
 
 #new-items {
@@ -55,7 +57,7 @@
     align-items: center;
 }
 
-.new-item-icons button:nth-child(1) {
+.new-item-icons>button:nth-child(1) {
     margin: 0 8px;
 }
 

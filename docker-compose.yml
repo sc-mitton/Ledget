@@ -93,7 +93,8 @@ services:
       - django_secret_key
       - postgres_user
       - postgres_password
-      - plaid_api_key
+      - plaid_dev_api_key
+      - plaid_sand_api_key
       - plaid_client_id
     depends_on:
       - db
@@ -160,7 +161,9 @@ secrets:
     file: ./secrets/stripe_dev_webhook_secret
   stripe_api_key:
     file: ./secrets/stripe_dev_api_key
-  plaid_api_key:
+  plaid_dev_api_key:
+    file: ./secrets/plaid_dev_api_key
+  plaid_sand_api_key:
     file: ./secrets/plaid_sand_api_key
   plaid_client_id:
     file: ./secrets/plaid_dev_client_id

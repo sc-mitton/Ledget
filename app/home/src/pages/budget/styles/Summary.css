@@ -1,0 +1,46 @@
+.summary-stats--container {
+    width: auto;
+    background-color: var(--green-hlight);
+    border-radius: var(--border-radius4);
+    padding: 16px 24px;
+    font-weight: 500;
+    display: inline-block;
+    margin-left: -8px;
+    margin-top: 8px;
+}
+
+.summary-stats--container span {
+    white-space: nowrap;
+}
+
+.summary-stats--container>div {
+    display: inline-flex;
+    flex-direction: row;
+}
+
+.summary-stats--container>div>div span:first-child {
+    font-size: 1.4rem;
+    font-weight: 600;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.summary-stats--container>div>div span:nth-child(2) {
+    font-size: .7rem;
+    margin-top: 4px;
+    line-height: 1;
+}
+
+.summary-stats--container>div>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.summary-stats--container>div>div:first-child {
+    margin-right: 24px;
+}
+
+.summary-stats--container>div>div:last-child {
+    margin-left: 12px;
+}

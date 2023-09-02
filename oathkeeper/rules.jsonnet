@@ -74,7 +74,7 @@ local GenericAuthedBase = {
     id: 'plaid_link_token',
     match: {
       methods: ['GET'],
-      url: base_url + '/plaid_link_token',
+      url: base_url + '/plaid_link_token<.*>',
     },
   },
   GenericAuthedBase

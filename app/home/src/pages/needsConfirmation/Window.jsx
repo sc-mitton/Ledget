@@ -16,6 +16,7 @@ import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import Header from './Header'
 import Options from "@components/dropdowns/Options"
 import ItemOptions from "./ItemOptions"
+import { Tooltip } from "@components/pieces"
 
 // TODO: eventually these will go away, data will be pulled from backend
 // and logos will be brought in another way
@@ -139,7 +140,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 transform: `scale(${getScale(index)})`,
                 zIndex: `${(items.length - index)}`,
                 opacity: getOpacity(index),
-                margin: '0 4px',
+                margin: '0 12px',
                 x: 0,
                 left: 0,
                 right: 0,
@@ -223,14 +224,21 @@ const NewItem = (props) => {
                 >
                     {item.category}
                 </button>
-                <button
-                    className='btn btn-scale2'
-                    onClick={onConfirm}
-                    aria-label="Confirm item"
-                    tabIndex={tabIndex}
+                <Tooltip
+                    msg="Confirm"
+                    ariaLabel="Confirm"
+                    type="top"
+                    style={{ left: '-1.1rem' }}
                 >
-                    <CheckMark />
-                </button>
+                    <button
+                        className='btn btn-scale2'
+                        onClick={onConfirm}
+                        aria-label="Confirm"
+                        tabIndex={tabIndex}
+                    >
+                        <CheckMark />
+                    </button>
+                </Tooltip>
                 <button
                     className='btn-narrow btn-clr'
                     tabIndex={tabIndex}

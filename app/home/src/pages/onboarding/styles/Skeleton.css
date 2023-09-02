@@ -1,3 +1,7 @@
+.dashboard.skeleton {
+    filter: blur(2px);
+}
+
 .skeleton-inner {
     background-color: var(--skeleton);
     border-radius: var(--border-radius);

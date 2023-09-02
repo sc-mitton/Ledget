@@ -8,7 +8,6 @@ import sys
 
 # IMPORTANT FLAGS
 DEVELOPMENT = True
-PLAID_SANDBOX = True
 
 ALLOWED_HOSTS = ['localhost']
 DOMAIN_URL = "https://localhost:8000/"
@@ -59,8 +58,14 @@ OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
 )
 
 # Plaid
+PLAID_SANDBOX = True
+if PLAID_SANDBOX:
+    PLAID_API_KEY = get_secret('plaid_sand_api_key')
+else:
+    PLAID_API_KEY = get_secret('plaid_dev_api_key')
+
 PLAID_CLIENT_ID = get_secret('plaid_client_id')
-PLAID_API_KEY = get_secret('plaid_api_key')
+PLAID_REDIRECT_URI_ONBOARDING = 'https://localhost:3000/welcome/connect'
 PLAID_REDIRECT_URI = 'https://localhost:3000/profile/connections'
 PLAID_PRODUCTS = ['transactions', 'balance']
 PLAID_COUNTRY_CODES = ['US']
