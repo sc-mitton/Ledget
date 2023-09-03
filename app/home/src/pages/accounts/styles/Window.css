@@ -2,3 +2,28 @@
     width: 100%;
     max-width: 900px;
 }
+
+#accounts-window ul {
+    display: flex;
+    flex-wrap: row;
+    justify-content: flex-start;
+    margin: 8px 0 28px 0;
+    position: relative;
+}
+
+#accounts-window ul li {
+    margin-right: 16px;
+    padding: 2px 16px;
+    font-weight: 500;
+    background-color: var(--input-color);
+    border-radius: var(--border-radius3);
+    transition: background-color 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+#accounts-window ul li[aria-current="page"] {
+    background-color: transparent;
+    transition: background-color 0.5s ease-in-out;
+}

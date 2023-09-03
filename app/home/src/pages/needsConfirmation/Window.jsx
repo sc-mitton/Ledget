@@ -145,7 +145,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 left: 0,
                 right: 0,
                 position: 'absolute',
-                borderRadius: "var(--border-radius25)",
+                borderRadius: "var(--border-radius3)",
                 boxShadow: "var(--new-item-drop-shadow)",
                 background: "var(--window)",
                 padding: "16px 24px",

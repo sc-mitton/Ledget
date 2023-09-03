@@ -2,7 +2,7 @@ import React from 'react'
 
 const Ellipsis = ({
     className = null,
-    fill = "#242424",
+    fill = "#292929",
     width = "1.3em",
     height = "1.3em"
 }) => {

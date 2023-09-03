@@ -133,7 +133,7 @@ const MainApp = () => {
                             <Route path="spending" element={
                                 isNarrow ? <Spending /> : <Navigate to="/budget" />
                             } />
-                            <Route path="accounts" element={<Accounts />} />
+                            <Route path="accounts/*" element={<Accounts />} />
                             <Route path="profile/*" element={<Profile />} />
                             <Route path="*" element={<NotFound />} />
                         </Routes>

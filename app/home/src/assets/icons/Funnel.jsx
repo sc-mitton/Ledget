@@ -4,7 +4,7 @@ const CashFlow = ({
     className = null,
     width = "1.2em",
     height = "1.2em",
-    fill = "#242424",
+    fill = "#292929",
 }) => {
     return (
         <svg

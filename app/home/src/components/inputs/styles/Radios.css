@@ -1,4 +1,4 @@
-.green-radios-container {
+.black-radios-container {
     display: inline-flex;
     flex-direction: row;
     margin: 4px 0;
@@ -6,7 +6,7 @@
     border-radius: var(--border-radius2);
 }
 
-.green-radios-container-label {
+.black-radios-container-label {
     position: relative;
     font-weight: 500;
     cursor: pointer;

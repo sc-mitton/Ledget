@@ -4,7 +4,7 @@ const Refresh = ({
     className = null,
     width = "1.3em",
     height = "1.3em",
-    fill = "#242424",
+    fill = "#292929",
 }) => {
     return (
         <svg

@@ -4,7 +4,7 @@ const Edit = ({
     width = "1.1em",
     height = "1.1em",
     className = null,
-    fill = "#242424",
+    fill = "#292929",
 }) => {
     return (
         <svg

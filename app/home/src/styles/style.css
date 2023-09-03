@@ -421,6 +421,10 @@ button.pulse:hover {
     margin-left: 4px;
 }
 
+.btn-icon-l svg {
+    margin-right: 8px;
+}
+
 /* Header Buttons */
 .header-btns {
     display: flex;

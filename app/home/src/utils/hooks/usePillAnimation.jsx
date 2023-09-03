@@ -14,7 +14,7 @@ import { useSpring } from '@react-spring/web'
  * @returns {Object} An object containing the animated props from `useSpring`.
  */
 const usePillAnimation = (args) => {
-    const { ref, update, refresh, styles, find, querySelectall } = args
+    const { ref, find, querySelectall, update = [], refresh = [], styles = {} } = args
     const [selectors, setSelectors] = useState([])
 
     const [selectorWidth, setSelectorWidth] = useState(null)

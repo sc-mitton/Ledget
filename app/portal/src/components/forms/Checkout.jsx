@@ -125,13 +125,13 @@ const Card = ({ cardNotEnteredError, setCardNotEnteredError, setCardEntered }) =
         style: {
             base: {
                 fontFamily: "Source Sans Pro, sans-serif",
-                color: '#242424',
+                color: '#292929',
                 fontSmoothing: 'antialiased',
                 fontSize: '16px',
                 '::placeholder': {
                     color: cardFocus ? '#60d39c' : '#767676',
                 },
-                iconColor: cardFocus ? '#009b53' : '#242424',
+                iconColor: cardFocus ? '#009b53' : '#292929',
                 ':disabled': {
                     color: '#767676',
                     iconColor: '#767676'

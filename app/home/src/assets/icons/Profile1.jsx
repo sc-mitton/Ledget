@@ -4,7 +4,7 @@ const Profile = ({
     className = null,
     width = "1.8em",
     height = "1.8em",
-    fill = "#242424",
+    fill = "#292929",
 }) => {
     return (
         <svg
