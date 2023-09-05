@@ -2,3 +2,5 @@
 .dockerignore
 *DS_STORE
 **/src
+*.md
+dist
