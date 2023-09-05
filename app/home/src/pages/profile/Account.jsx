@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { Outlet, useNavigate } from 'react-router-dom'
+
 import './styles/Account.css'
 import { CardIcon } from '@assets/icons'
 import { useGetMeQuery, useGetPaymentMethodQuery } from '@features/userSlice'
@@ -75,6 +77,7 @@ const Plan = () => {
 
 const PaymentMethod = () => {
     const { data } = useGetPaymentMethodQuery()
+    const navigate = useNavigate()
 
     let expDate = new Date(
         data?.payment_method.exp_year,
@@ -84,10 +87,6 @@ const PaymentMethod = () => {
         year: 'numeric',
         month: 'short',
     })
-
-    const handleClick = () => {
-        console.log('change payment method')
-    }
 
     return (
         <div className="section">
@@ -99,7 +98,7 @@ const PaymentMethod = () => {
                     <button
                         className="btn-grn btn-slim"
                         aria-label="Change plan"
-                        onClick={handleClick}
+                        onClick={() => navigate("/profile/details/update-payment")}
                     >
                         update
                     </button>
@@ -127,21 +126,24 @@ const Account = () => {
     const { data: user } = useGetMeQuery()
 
     return (
-        <ShimmerDiv shimmering={isLoading} >
-            <div id="account-page" className="padded-content">
-                <div className="header">
-                    <h1>Account</h1>
+        <>
+            <ShimmerDiv shimmering={isLoading} >
+                <div id="account-page" className="padded-content">
+                    <div className="header">
+                        <h1>Account</h1>
+                    </div>
+                    <div id="avatar">
+                        {user.name.first.charAt(0).toUpperCase() + user.name.last.charAt(0).toUpperCase()}
+                    </div>
+                    <Info />
+                    <div>
+                        <Plan />
+                        <PaymentMethod />
+                    </div>
                 </div>
-                <div id="avatar">
-                    {user.name.first.charAt(0).toUpperCase() + user.name.last.charAt(0).toUpperCase()}
-                </div>
-                <Info />
-                <div>
-                    <Plan />
-                    <PaymentMethod />
-                </div>
-            </div>
-        </ShimmerDiv>
+            </ShimmerDiv>
+            <Outlet />
+        </>
     )
 }
 

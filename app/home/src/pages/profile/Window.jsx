@@ -10,6 +10,7 @@ import Account from './Account'
 import Connections from './Connections'
 import Settings from './Settings'
 import Security from './Security'
+import UpdatePayment from '@modals/UpdatePayment'
 import { useGetMeQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@components/pieces'
 
@@ -29,12 +30,14 @@ function Profile() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    key={location.pathname}
+                    key={location.pathname.split('/')[2]}
                     config={{ duration: 0.2 }}
                     className="content"
                 >
-                    <Routes location={location} key={location.pathname}>
-                        <Route index element={<Account />} />
+                    <Routes path="profile" location={location} key={location.pathname.split('/')[2]}>
+                        <Route path="details" element={<Account />} >
+                            <Route path="update-payment" element={<UpdatePayment />} />
+                        </Route>
                         <Route path="settings" element={<Settings />} />
                         <Route path="connections" element={<Connections />} />
                         <Route path="security" element={<Security />} />

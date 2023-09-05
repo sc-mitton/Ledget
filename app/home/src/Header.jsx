@@ -132,7 +132,7 @@ const DropDownMenu = ({ isNarrow, setModal }) => {
                         visible={open}
                     >
                         <Menu.Items static>
-                            <Wrapper onClick={() => navigate("/profile")}>
+                            <Wrapper onClick={() => navigate("/profile/details")}>
                                 <Profile2 className="dropdown-icon" />
                                 Profile
                             </Wrapper>
@@ -186,7 +186,7 @@ function Header({ isNarrow }) {
     }
 
     useEffect(() => {
-        if (searchParams.get('confirm') || location.pathname.includes('new')) {
+        if (searchParams.get('confirm') || location.pathname.includes('new') || location.pathname.includes('update')) {
             setZindex(0)
         } else {
             setZindex(1000)

@@ -38,6 +38,7 @@ const NavList = () => {
                     e.key === "Enter" && navigate(route)
                 }}
                 className={`slim side-nav-item${rootPath === route ? "-current" : ''}`}
+                aria-current={rootPath === route ? "page" : null}
             >
                 <div>
                     <Icon name={route} />
@@ -61,10 +62,11 @@ const Profile = () => {
             role="link"
             name="profile"
             tabIndex={0}
-            onClick={() => navigate("/profile")}
-            onKeyDown={(e) => e.key === "Enter" && navigate("/profile")}
-            className={`side-nav-item${location.pathname === "/profile" ? "-current" : ''}`}
+            onClick={() => navigate("/profile/details")}
+            onKeyDown={(e) => e.key === "Enter" && navigate("/profile/details")}
+            className={`side-nav-item${location.pathname === "/profile/details" ? "-current" : ''}`}
             id="profile"
+            aria-current={location.pathname === "/profile/details" ? "page" : null}
         >
             <div>
                 <Profile1 width="1.6em" height="1.6em" />
@@ -88,14 +90,12 @@ const Gutter = () => {
         update: [location.pathname, gutterWidth],
         refresh: [],
         querySelectall: '[role=link]',
-        find: (el) => {
-            const path = location.pathname.split("/")[2]
-                || location.pathname.split("/")[1]
-            return el.id === path
-        },
+        find: (el) => el.getAttribute('aria-current') === 'page',
         styles: {
             backgroundColor: 'var(--green-hlight)',
-            borderRadius: 'var(--border-radius2)',
+            borderRadius: location.pathname === '/profile/details'
+                ? 'var(--border-radius25)'
+                : 'var(--border-radius2)',
         }
     })
 
