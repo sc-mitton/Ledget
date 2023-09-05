@@ -1,20 +1,11 @@
 # Build Stage
 FROM node:lts-bullseye-slim AS build
 
-ARG APP
+RUN npm install -g pnpm
+COPY . /front
+RUN pnpm i
 
-COPY ./apps/"$APP"/package*.json .
-RUN npm ci --only=production
-RUN npm install --only=development
+EXPOSE 3000
+EXPOSE 3001
 
-# Runtime
-FROM node:lts-bullseye-slim AS production
-
-ARG APP
-WORKDIR /"$APP"
-COPY --from=build /node_modules ./node_modules
-COPY ./apps/"$APP"/ .
-
-ARG PORT
-EXPOSE "$PORT"
-CMD ["npm", "start"]
+CMD ["pnpm", "run", "start:prod"]

@@ -1,7 +1,6 @@
 env
 *__pycache__
 **/certs*
-.vscode
 inspiration
 .DS_STORE
 **/node_modules
@@ -11,3 +10,38 @@ secrets
 scratch.py
 **/jwks.json
 project-configuration.yaml
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# compiled output
+dist
+tmp
+/out-tsc
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings

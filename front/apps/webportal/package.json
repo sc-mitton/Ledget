@@ -1,6 +1,7 @@
 {
   "name": "webportal",
   "private": true,
+  "license": "Proprietary - Ledget",
   "version": "1.0.0",
   "description": "front end for portal",
   "main": "index.js",
@@ -27,18 +28,5 @@
     "react-select": "^5.7.2",
     "shared-ui": "workspace:^",
     "yup": "^1.0.2"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.59.6",
-    "@typescript-eslint/parser": "^5.59.6",
-    "@vitejs/plugin-react": "^4.0.3",
-    "babel-loader": "^9.1.2",
-    "css-loader": "^6.7.3",
-    "eslint": "^8.40.0",
-    "file-loader": "^6.2.0",
-    "style-loader": "^3.3.2",
-    "svg-inline-loader": "^0.8.2",
-    "vite": "^4.4.6",
-    "vite-plugin-html": "^3.2.0"
   }
 }

@@ -100,11 +100,8 @@ services:
       - db
     ports:
       - 8000:8000
-  app:
+  ledgetfront:
     build:
-      args:
-        - APP=webhome
-        - PORT=3000
       context: ./front
       dockerfile: Dockerfile.dev
     environment:
@@ -113,32 +110,14 @@ services:
       - SSL_CA_FILE=/run/secrets/ca_pem
     ports:
       - 3000:3000
+      - 3001:3001
     volumes:
-      - ./front/apps/webhome/src:/webhome/src
+      - ./front:/front
     secrets:
       - localhost_crt
       - localhost_key
       - ca_pem
     tty: true
-  portal:
-    build:
-      args:
-        - APP=webportal
-        - PORT=3001
-      context: ./front
-      dockerfile: Dockerfile.dev
-    ports:
-      - 3001:3001
-    volumes:
-      - ./front/apps/webportal/src:/webportal/src
-    environment:
-      - SSL_KEY_FILE=/run/secrets/localhost_key
-      - SSL_CERT_FILE=/run/secrets/localhost_crt
-      - SSL_CA_FILE=/run/secrets/ca_pem
-    secrets:
-      - localhost_crt
-      - localhost_key
-      - ca_pem
   ory:
     image: oryd/ory
     ports:
