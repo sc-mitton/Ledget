@@ -1,5 +1,6 @@
 {
   "name": "webportal",
+  "private": true,
   "version": "1.0.0",
   "description": "front end for portal",
   "main": "index.js",
