@@ -6,12 +6,14 @@ import { animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
 import './styles/header.css'
-import logoIcon from '@assets/icons/logoIcon.svg'
-import Profile1 from '@assets/icons/Profile1'
-import Profile2 from '@assets/icons/Profile2'
-import SettingsIcon from '@assets/icons/Settings'
-import HelpIcon from '@assets/icons/Help'
-import LogoutIcon from '@assets/icons/LogoutIcon'
+import {
+    Profile1,
+    Profile2,
+    Settings as SettingsIcon,
+    Help as HelpIcon,
+    LogoutIcon
+} from '@assets/icons'
+import logoIcon from '@assets/icons/src/logoIcon.svg'
 import DropAnimation from '@utils/DropAnimation'
 import Logout from '@modals/Logout'
 import Help from '@modals/Help'

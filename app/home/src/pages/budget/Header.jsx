@@ -3,11 +3,7 @@ import React from 'react'
 import { Menu } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom'
 
-import CashFlow from '@assets/icons/CashFlow'
-import Graph from '@assets/icons/Graph'
-import Plus from '@assets/icons/Plus'
-import Edit from '@assets/icons/Edit'
-import Ellipsis2 from '@assets/icons/Ellipsis2'
+import { CashFlow, Graph, Plus, Edit, Ellipsis2 } from '@assets/icons'
 import MonthPicker from '@components/inputs/MonthPicker'
 import DropAnimation from '@utils/DropAnimation'
 

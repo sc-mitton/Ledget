@@ -4,9 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import './styles/Welcome.css'
 import './styles/Main.css'
-import Plus from '@assets/icons/Plus'
-import Arrow from '@assets/icons/Arrow'
-import Checkmark3 from '@assets/icons/Checkmark3'
+import { Plus, Arrow, CheckMark3 } from '@assets/icons'
 import { usePlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { Base64Logo } from '@components/pieces'
@@ -131,19 +129,19 @@ const WelcomeConnect = () => {
                 <h4 className="spaced-header2">Let's get started by connecting your financial accounts.</h4>
                 <div className="checklist">
                     <div>
-                        <div><Checkmark3 /></div>
+                        <div><CheckMark3 /></div>
                         <div>
                             Ledget doesn't store your credentials
                         </div>
                     </div>
                     <div>
-                        <div><Checkmark3 /></div>
+                        <div><CheckMark3 /></div>
                         <div>
                             We use Plaid to connect to your financial institutions
                         </div>
                     </div>
                     <div>
-                        <div><Checkmark3 /></div>
+                        <div><CheckMark3 /></div>
                         <div>
                             Disconnect your account and your financial data at any time
                         </div>

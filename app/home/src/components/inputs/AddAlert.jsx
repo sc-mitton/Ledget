@@ -2,9 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 
 
 import './styles/Dropdowns.css'
-import Plus from '@assets/icons/Plus'
-import Return from '@assets/icons/Return'
-import Checkmark from '@assets/icons/Checkmark'
+import { Plus, Return, CheckMark } from '@assets/icons'
 import { MenuTextInput } from '@components/inputs'
 import { DropAnimation } from '@utils'
 import ComboSelect from './ComboSelect'
@@ -127,7 +125,7 @@ const AddAlert = (props) => {
                         : ('of limit')
                     }
                 </span>
-                <Checkmark
+                <CheckMark
                     stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
                 />
             </div>

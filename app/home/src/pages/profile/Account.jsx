@@ -1,8 +1,7 @@
 import React from 'react'
 
 import './styles/Account.css'
-import Card from '@assets/icons/Card'
-import Camera from '@assets/icons/Camera'
+import { Card, Camera } from '@assets/icons'
 import { useGetMeQuery, useGetPaymentMethodQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@components/pieces'
 

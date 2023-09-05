@@ -1,7 +1,7 @@
 import React from 'react'
 
 import './styles/Errors.css'
-import alert2 from '@assets/icons/alert2.svg'
+import alert2 from '@assets/icons/src/alert2.svg'
 
 export const FormErrorTip = ({ errors }) => {
 

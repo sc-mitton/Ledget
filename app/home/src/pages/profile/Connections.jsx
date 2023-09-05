@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react'
 
-import Plus from '@assets/icons/Plus'
-import Edit from '@assets/icons/Edit'
+import { Plus, Edit } from '@assets/icons'
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
 import './styles/Connections.css'
 import { Desert } from '@components/pieces'
-import Delete from '@assets/icons/Delete'
+import { Delete } from '@assets/icons'
 import {
     useGetPlaidItemsQuery,
     useDeletePlaidItemMutation,

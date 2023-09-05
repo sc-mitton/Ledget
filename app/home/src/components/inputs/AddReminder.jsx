@@ -3,8 +3,7 @@ import React, { useState } from 'react'
 import './styles/Dropdowns.css'
 import ComboSelect from './ComboSelect'
 import { DropAnimation } from '@utils'
-import Plus from '@assets/icons/Plus'
-import Checkmark from '@assets/icons/Checkmark'
+import { Plus, CheckMark } from '@assets/icons'
 
 const defaultOptions = [
     { id: 1, value: { offset: 1, period: 'day' }, disabled: false },
@@ -38,7 +37,7 @@ const AddReminder = ({ value, onChange }) => {
                     </div>
                     {!selected
                         ? <Plus stroke={'var(--muted-text-gray)'} width={'.9em'} height={'.9em'} />
-                        : <Checkmark stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`} />
+                        : <CheckMark stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`} />
                     }
                 </div>
                 <div style={{ padding: '0 8px' }}>
@@ -86,7 +85,7 @@ const AddReminder = ({ value, onChange }) => {
                             Reminder
                             {selectedReminders.length > 0
                                 ?
-                                <Checkmark
+                                <CheckMark
                                     stroke={'var(--m-text-gray)'}
                                     width={'.7em'}
                                     height={'.7em'}

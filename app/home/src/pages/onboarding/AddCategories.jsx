@@ -9,10 +9,7 @@ import './styles/Items.css'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { ItemsProvider, ItemsContext } from './ItemsContext'
 import { useItemsDrag } from './hooks'
-import Bell from '@assets/icons/Bell'
-import BellOff from '@assets/icons/BellOff'
-import Grip from '@assets/icons/Grip'
-import Checkmark from '@assets/icons/Checkmark'
+import { Bell, BellOff, Grip, CheckMark } from '@assets/icons'
 import { ShadowedContainer, FormErrorTip } from '@components/pieces'
 import { DeleteButton, CloseButton } from '@components/buttons'
 import { EmojiComboText, AddAlert, LimitAmountInput, PeriodSelect } from '@components/inputs'
@@ -143,7 +140,7 @@ const RecommendationsView = () => {
                             item-number={index}
                         >
                             {`${suggestion.emoji} ${suggestion.name}`}
-                            <Checkmark width={'.7em'} height={'.7em'} />
+                            <CheckMark width={'.7em'} height={'.7em'} />
                         </div>
                     ))}
                 </div>
@@ -162,7 +159,7 @@ const RecommendationsView = () => {
                             item-number={index}
                         >
                             {`${suggestion.emoji} ${suggestion.name}`}
-                            <Checkmark width={'.7em'} height={'.7em'} />
+                            <CheckMark width={'.7em'} height={'.7em'} />
                         </div>
                     ))}
                 </div>

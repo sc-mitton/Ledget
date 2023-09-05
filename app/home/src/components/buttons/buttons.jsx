@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 
-import Delete from '@assets/icons/Delete'
-import Close from '@assets/icons/Close'
+import { Delete, Close } from '@assets/icons'
 import { LoadingRing } from '@components/pieces'
 
 export const DeleteButton = ({ onClick }) => (

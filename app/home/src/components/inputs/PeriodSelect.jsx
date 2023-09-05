@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 
-import Arrow from '@assets/icons/Arrow'
+import { Arrow } from '@assets/icons'
 import ComboSelect from './ComboSelect'
 import { DropAnimation } from '@utils'
 

@@ -6,10 +6,8 @@ import { Tab } from '@headlessui/react'
 import { useLocation } from 'react-router-dom'
 
 import { ItemsContext } from './ItemsContext'
-import Arrow from '@assets/icons/Arrow'
+import { Arrow, CheckMark, Recommendations as RecommendationsIcon } from '@assets/icons'
 import { SubmitButton } from '@components/buttons'
-import Checkmark from '@assets/icons/Checkmark'
-import RecommendationsIcon from '@assets/icons/Recommendations'
 import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
@@ -152,7 +150,7 @@ export const BottomButtons = ({ expanded }) => {
                 type="submit"
             >
                 <span>Save</span>
-                <Checkmark width={'.8em'} height={'.8em'} />
+                <CheckMark width={'.8em'} height={'.8em'} />
             </button>
             <SubmitButton
                 className={`btn-chcl btn3 scale-icon-btn

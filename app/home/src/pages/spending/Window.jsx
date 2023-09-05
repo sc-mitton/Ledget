@@ -2,8 +2,7 @@ import React from 'react'
 
 import './styles/Window.css'
 import NeedsConfirmationWindow from '../needsConfirmation/Window'
-import Plus from '@assets/icons/Plus'
-import Funnel from '@assets/icons/Funnel'
+import { Plus, Funnel } from '@assets/icons'
 import { Tooltip } from '@components/pieces'
 
 const HistoryHeader = () => {

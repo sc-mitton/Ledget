@@ -1,15 +1,12 @@
 import React, { useEffect, useRef } from 'react'
 
-import { Outlet, Routes, Route, useNavigate, useLocation, Link } from 'react-router-dom'
+import { Outlet, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 
 import './styles/Window.css'
 import NotFound from '@pages/notFound/NotFound'
 import { usePillAnimation } from '@utils/hooks'
-import DepositsIcon from '@assets/icons/Deposits'
-import ClockIcon from '@assets/icons/Clock'
-import CardIcon from '@assets/icons/Card'
-import StocksIcon from '@assets/icons/Stocks'
+import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@assets/icons'
 
 const Header = () => {
     const ref = useRef(null)

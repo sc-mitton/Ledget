@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 
 import { useSpring, animated } from '@react-spring/web'
 
-import Replay from '@assets/icons/Replay'
-import CheckAll from '@assets/icons/CheckAll'
+import { Replay, CheckAll } from '@assets/icons'
 import { Tooltip } from '@components/pieces'
 import './styles/Header.css'
 

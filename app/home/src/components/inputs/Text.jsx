@@ -4,7 +4,7 @@ import { useController } from 'react-hook-form'
 
 import './styles/Text.css'
 import Emoji from './Emoji'
-import Arrow from '@assets/icons/Arrow'
+import { Arrow } from '@assets/icons'
 import { FormErrorTip, FormError } from '@components/pieces'
 import { formatCurrency, formatRoundedCurrency, makeIntCurrencyFromStr } from '@utils'
 

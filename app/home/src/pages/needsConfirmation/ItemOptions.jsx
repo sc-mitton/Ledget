@@ -1,9 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 
-import Edit from "@assets/icons/Edit"
-import Split from "@assets/icons/Split"
-import Details from "@assets/icons/Info"
-import Snooze from "@assets/icons/Snooze"
+import { Edit, Split, Info as DetailsIcon, Snooze } from "@assets/icons"
 
 
 const ItemOptionsMenu = () => {
@@ -108,7 +105,7 @@ const ItemOptionsMenu = () => {
                         aria-label="Details"
                         role="button"
                     >
-                        <Details className="dropdown-icon" />
+                        <DetailsIcon className="dropdown-icon" />
                         Details
                     </div>
                 </li>

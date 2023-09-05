@@ -1,6 +1,6 @@
 import React from 'react'
 
-import StarsIcon from '@assets/icons/Recommendations'
+import { Recommendations as StarsIcon } from '@assets/icons'
 import { YearSummaryHeader } from './SummaryHeaders'
 
 const YearlySummary = () => {

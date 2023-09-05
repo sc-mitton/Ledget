@@ -4,9 +4,7 @@ import { useState, useEffect, useRef, useCallback, useContext, createContext } f
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 
 import "./styles/Window.css"
-import Ellipsis from "@assets/icons/Ellipsis"
-import CheckMark from "@assets/icons/CheckMark"
-import ExpandIcon from "@assets/icons/Expand"
+import { Ellipsis, CheckMark, Expand as ExpandIcon } from "@assets/icons"
 import Wells from "@assets/logos/Wells"
 import Ally from "@assets/logos/Ally"
 import Discover from "@assets/logos/Discover"

@@ -1,8 +1,8 @@
 import React from 'react'
 
 import './styles/Summary.css'
-import StarsIcon from '@assets/icons/Recommendations'
-import { MonthSummaryHeader } from './SummaryHeaders'
+import { Recommendations as StarsIcon } from '@assets/icons'
+
 
 const MonthlySummary = () => {
     return (
