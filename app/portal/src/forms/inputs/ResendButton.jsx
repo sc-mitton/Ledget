@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { motion } from 'framer-motion'
-import Replay from "@assets/icons/Replay"
+import { Replay } from "@assets/icons"
 import './styles/ResendButton.css'
 
 const ResendButton = () => {

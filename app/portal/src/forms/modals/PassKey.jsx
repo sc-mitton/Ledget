@@ -2,7 +2,7 @@ import React from 'react'
 
 import withModal from '../utils/withModal'
 import './PassKey.css'
-import PasskeyIcon from "@assets/icons/PasskeyIcon"
+import { PasskeyIcon } from "@assets/icons"
 
 function Content() {
     return (

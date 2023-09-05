@@ -1,11 +1,12 @@
 import React from 'react'
 
-import { useLocation, Link } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 
 import logo from "@assets/images/logo.svg"
 
 const Header = () => {
     const location = useLocation()
+    const navigate = useNavigate()
 
     const splitPath = location.pathname.split("/")
 
@@ -29,10 +30,17 @@ const Header = () => {
                 }
                 {splitPath[splitPath.length - 1] === 'login'
                     &&
-                    <>
-                        {`${text.login}`}&nbsp;
-                        <Link to="/register" tabIndex={0} >Sign Up</Link>
-                    </>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        {`${text.login}`}
+                        <button
+                            className="btn-chcl btn-pill"
+                            onClick={() => navigate('/register')}
+                            aria-label="Sign Up"
+                            style={{ marginLeft: '.5rem' }}
+                        >
+                            Sign Up
+                        </button>
+                    </div>
                 }
             </div>
         </header>

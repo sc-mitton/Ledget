@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 
 import './style/Login.css'
-import BackArrow from "@assets/icons/BackArrow"
+import { BackArrow } from "@assets/icons"
 import SocialAuth from "./SocialAuth"
 import PasswordInput from "./inputs/PasswordInput"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"

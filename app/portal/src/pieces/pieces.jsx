@@ -2,7 +2,7 @@ import React from 'react'
 
 import { AnimatePresence, motion } from 'framer-motion'
 
-import alert2 from '@assets/icons/alert2.svg'
+import { Alert2 } from '@assets/icons'
 import "./pieces.css"
 
 export const FormErrorTip = ({ error }) => {
@@ -12,11 +12,7 @@ export const FormErrorTip = ({ error }) => {
             {
                 error?.type === 'required' &&
                 <div className='error-tip'>
-                    <img
-                        src={alert2}
-                        className="error-tip-icon"
-                        alt="Error"
-                    />
+                    <Alert2 />
                 </div>
             }
         </>
@@ -42,7 +38,7 @@ export const FormError = (props) => {
             {props.msg &&
                 <div className="error-container">
                     <div className="form-error">
-                        <img src={alert2} className="error-icon" />
+                        <Alert2 />
                         {renderLines(props.msg)}
                     </div>
                 </div>

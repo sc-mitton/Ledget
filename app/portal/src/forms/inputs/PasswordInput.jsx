@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
-import hidePassword from "@assets/icons/hidePassword.svg"
-import showPassword from "@assets/icons/showPassword.svg"
+import { VisibilityIcon } from "@assets/icons"
 import './styles/PasswordInput.css'
 
 const PasswordInput = React.forwardRef(({ inputType, ...props }, ref) => {
@@ -18,26 +17,6 @@ const PasswordInput = React.forwardRef(({ inputType, ...props }, ref) => {
     if (props.pwdVisible != null) {
         visible = props.pwdVisible
         setVisible = props.setPwdVisible
-    }
-
-    const VisibilityIcon = (props) => {
-        // Needs to be set outside the PasswordInput component
-        // to prevent rerendering of the icon
-        const [showIcon, setShowIcon] = useState(visible)
-
-        return (
-            <>
-                <img
-                    src={showIcon ? hidePassword : showPassword}
-                    alt="toggle visibility"
-                    className="password-visibility-icon"
-                    onClick={() =>
-                        setVisible(!visible) &&
-                        setShowIcon(!showIcon) && props.onClick()
-                    }
-                />
-            </>
-        )
     }
 
     return (
@@ -59,7 +38,11 @@ const PasswordInput = React.forwardRef(({ inputType, ...props }, ref) => {
                         onChange(e)
                     }}
                 />
-                {pwdInput && inputType != 'confirm-password' && < VisibilityIcon />}
+                {pwdInput && inputType != 'confirm-password' &&
+                    < VisibilityIcon
+                        mode={visible}
+                        onClick={() => setVisible(!visible)}
+                    />}
             </div>
         </div>
     )

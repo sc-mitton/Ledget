@@ -208,6 +208,11 @@ button {
     padding: 2px;
 }
 
+.btn-pill {
+    border-radius: var(--border-radius3);
+    padding: 2px 12px;
+}
+
 .btn-secondary {
     padding: 8px 12px;
     border-radius: var(--border-radius2);

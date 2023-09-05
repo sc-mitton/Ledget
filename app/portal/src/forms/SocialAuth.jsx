@@ -1,9 +1,8 @@
-import React, { useEffect } from "react"
+import React from "react"
 
 import { useLocation } from "react-router-dom"
 
-import FacebookLogo from "@assets/icons/FacebookLogo"
-import GoogleLogo from "@assets/icons/GoogleLogo"
+import { FacebookLogo, GoogleLogo } from "@assets/icons"
 import CsrfToken from "./inputs/CsrfToken"
 
 function SocialAuth({ flow, submit, csrf }) {
