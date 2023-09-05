@@ -4,11 +4,11 @@ import { useLocation } from 'react-router-dom'
 
 import { AnimatePresence, motion } from 'framer-motion'
 
-import LoginWindow from './components/forms/Login'
-import SignUpWindow from './components/forms/SignUp'
-import CheckoutWindow from './components/forms/Checkout'
-import VerificationWindow from './components/forms/Verification'
-import RecoveryWindow from './components/forms/Recovery'
+import LoginWindow from '@forms/Login'
+import SignUpWindow from '@forms/SignUp'
+import CheckoutWindow from '@forms/Checkout'
+import VerificationWindow from '@forms/Verification'
+import RecoveryWindow from '@forms/Recovery'
 import Header from './Header'
 import { AuthenticatedRoute, UnauthenticatedRoute } from './utils/PrivateRoutes'
 

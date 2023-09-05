@@ -3,7 +3,7 @@ import React, { useEffect, useContext, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from "framer-motion"
 
-import { RecoveryFlowContext, RecoveryFlowContextProvider } from '../../context/Flow'
+import { RecoveryFlowContext, RecoveryFlowContextProvider } from '@context/Flow'
 import SignUpFlowHeader from "../pieces/SignUpFlowHeader"
 import CsrfToken from './inputs/CsrfToken'
 import ResendButton from "./inputs/ResendButton"

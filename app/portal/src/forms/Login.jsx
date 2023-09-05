@@ -7,16 +7,14 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 
 import './style/Login.css'
-import logo from "@assets/images/logo.svg"
-import logoIcon from "@assets/images/logoIcon.svg"
 import BackArrow from "@assets/icons/BackArrow"
 import SocialAuth from "./SocialAuth"
 import PasswordInput from "./inputs/PasswordInput"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import Checkbox from "./inputs/Checkbox"
-import { FormError, WindowLoadingBar } from "../pieces"
-import { LoginFlowContext, LoginFlowContextProvider } from "../../context/Flow"
 import CsrfToken from "./inputs/CsrfToken"
+import { FormError, WindowLoadingBar } from "@pieces"
+import { LoginFlowContext, LoginFlowContextProvider } from "@context/Flow"
 
 const emailContext = createContext({})
 

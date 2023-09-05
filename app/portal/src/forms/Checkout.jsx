@@ -12,13 +12,13 @@ import './style/Checkout.css'
 import logoLight from '@assets/images/logoLight.svg'
 import stripelogo from '@assets/images/stripelogo.svg'
 import Star from '@assets/icons/Star'
-import ledgetapi from '../../api/axios'
-import CustomSelect from './inputs/CustomSelect'
 import { states } from '@assets/data/states'
+import ledgetapi from '@api/axios'
+import usePrices from '@api/hooks/usePrices'
+import CustomSelect from './inputs/CustomSelect'
 import { FormError, FormErrorTip } from "../pieces"
-import usePrices from '../../api/hooks/usePrices'
 import { WindowLoadingBar } from '../pieces'
-import UserContext from '../../context/UserContext'
+import UserContext from '@context/UserContext'
 import { components } from 'react-select'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)

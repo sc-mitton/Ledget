@@ -3,16 +3,14 @@ import React, { useContext, useEffect, useState, useRef, useCallback } from "rea
 import { useSearchParams } from "react-router-dom"
 import { motion } from "framer-motion"
 
-import Otc from "./Otc"
-import { VerificationFlowContextProvider, VerificationFlowContext } from "../../context/Flow"
-import { WindowLoadingBar } from "../pieces"
 import "./style/Verification.css"
+import Otc from "./Otc"
+import { VerificationFlowContextProvider, VerificationFlowContext } from "@context/Flow"
+import { WindowLoadingBar, FormError } from "@pieces"
 import verifyEmail from "@assets/icons/verifyEmail.svg"
-import UserContext from "../../context/UserContext"
+import UserContext from "@context/UserContext"
 import CsrfToken from "./inputs/CsrfToken"
-import { FormError } from "../pieces"
 import ResendButton from "./inputs/ResendButton"
-import { set } from "react-hook-form"
 
 const VerificationForm = () => {
     const { flow, submit, csrf, codeError } = useContext(VerificationFlowContext)
