@@ -1,21 +1,9 @@
 import React from 'react'
 
 import './styles/Account.css'
-import { CardIcon, Camera } from '@assets/icons'
+import { CardIcon } from '@assets/icons'
 import { useGetMeQuery, useGetPaymentMethodQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@components/pieces'
-
-const ChangeProfilePhoto = () => {
-    return (
-        <button
-            className="btn"
-            id="change-photo"
-            aria-label="Change profile photo"
-        >
-            <Camera />
-        </button>
-    )
-}
 
 const Info = () => {
     const { data: user } = useGetMeQuery()
@@ -136,6 +124,7 @@ const PaymentMethod = () => {
 
 const Account = () => {
     const { isLoading } = useGetPaymentMethodQuery()
+    const { data: user } = useGetMeQuery()
 
     return (
         <ShimmerDiv shimmering={isLoading} >
@@ -143,7 +132,9 @@ const Account = () => {
                 <div className="header">
                     <h1>Account</h1>
                 </div>
-                <ChangeProfilePhoto />
+                <div id="avatar">
+                    {user.name.first.charAt(0).toUpperCase() + user.name.last.charAt(0).toUpperCase()}
+                </div>
                 <Info />
                 <div>
                     <Plan />
