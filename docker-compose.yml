@@ -103,9 +103,9 @@ services:
   app:
     build:
       args:
-        - APP=home
+        - APP=webhome
         - PORT=3000
-      context: ./app
+      context: ./front
       dockerfile: Dockerfile.dev
     environment:
       - SSL_KEY_FILE=/run/secrets/localhost_key
@@ -114,7 +114,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./app/home/src:/home/src
+      - ./front/apps/webhome/src:/webhome/src
     secrets:
       - localhost_crt
       - localhost_key
@@ -123,14 +123,14 @@ services:
   portal:
     build:
       args:
-        - APP=portal
+        - APP=webportal
         - PORT=3001
-      context: ./app
+      context: ./front
       dockerfile: Dockerfile.dev
     ports:
       - 3001:3001
     volumes:
-      - ./app/portal/src:/portal/src
+      - ./front/apps/webportal/src:/webportal/src
     environment:
       - SSL_KEY_FILE=/run/secrets/localhost_key
       - SSL_CERT_FILE=/run/secrets/localhost_crt

@@ -3,7 +3,7 @@ FROM node:lts-bullseye-slim AS build
 
 ARG APP
 
-COPY ./"$APP"/package*.json .
+COPY ./apps/"$APP"/package*.json .
 RUN npm ci --only=production
 RUN npm install --only=development
 
@@ -13,7 +13,7 @@ FROM node:lts-bullseye-slim AS production
 ARG APP
 WORKDIR /"$APP"
 COPY --from=build /node_modules ./node_modules
-COPY ./"$APP"/ .
+COPY ./apps/"$APP"/ .
 
 ARG PORT
 EXPOSE "$PORT"

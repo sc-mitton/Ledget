@@ -1,5 +1,5 @@
 {
-  "name": "portalfront",
+  "name": "webportal",
   "version": "1.0.0",
   "description": "front end for portal",
   "main": "index.js",
@@ -7,7 +7,8 @@
   "scripts": {
     "build": "vite build",
     "start": "vite serve",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preinstall": "npx only-allow pnpm"
   },
   "author": "Spencer Mitton",
   "dependencies": {
@@ -23,6 +24,7 @@
     "react-hook-form": "^7.43.8",
     "react-router-dom": "^6.9.0",
     "react-select": "^5.7.2",
+    "shared-ui": "workspace:^",
     "yup": "^1.0.2"
   },
   "devDependencies": {
