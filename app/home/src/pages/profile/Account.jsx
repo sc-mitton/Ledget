@@ -1,7 +1,7 @@
 import React from 'react'
 
 import './styles/Account.css'
-import { Card, Camera } from '@assets/icons'
+import { CardIcon, Camera } from '@assets/icons'
 import { useGetMeQuery, useGetPaymentMethodQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@components/pieces'
 
@@ -119,7 +119,7 @@ const PaymentMethod = () => {
             </div>
             <div className="body">
                 <div id="card-info-container">
-                    <Card />
+                    <CardIcon />
                     <span>
                         {data?.payment_method.brand.charAt(0).toUpperCase()
                             + data?.payment_method.brand.slice(1)}

@@ -34,7 +34,8 @@ const Navigation = ({ isNarrow }) => {
         update: [location.pathname],
         refresh: [isNarrow],
         querySelectall: '[role=link]',
-        find: (element) => element.firstChild.name === location.pathname.split("/")[1]
+        find: (element) => element.firstChild.name === location.pathname.split("/")[1],
+        styles: { borderRadius: 'var(--border-radius3)' },
     })
 
     const [showPill, setShowPill] = useState()

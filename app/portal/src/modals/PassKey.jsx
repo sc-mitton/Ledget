@@ -1,6 +1,6 @@
 import React from 'react'
 
-import withModal from '../utils/withModal'
+import withModal from '@utils/withModal'
 import './PassKey.css'
 import { PasskeyIcon } from "@assets/icons"
 

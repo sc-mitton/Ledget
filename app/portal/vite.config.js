@@ -33,6 +33,8 @@ export default ({ mode }) => {
                 '@pieces': path.resolve(__dirname, './src/pieces'),
                 '@api': path.resolve(__dirname, './src/api'),
                 '@context': path.resolve(__dirname, './src/context'),
+                '@modals': path.resolve(__dirname, './src/modals'),
+                '@utils': path.resolve(__dirname, './src/utils'),
             }
         },
         plugins: [react()]

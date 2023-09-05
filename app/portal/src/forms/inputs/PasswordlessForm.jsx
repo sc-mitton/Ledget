@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { filterNodesByGroups, isUiNodeInputAttributes } from '@ory/integrations/ui'
 
 import { PasskeyIcon, HelpIcon } from "@assets/icons"
-import PasskeyModal from "../modals/PassKey"
+import PasskeyModal from "@modals/PassKey"
 import './styles/PasswordlessFormSection.css'
 
 
