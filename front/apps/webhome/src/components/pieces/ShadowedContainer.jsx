@@ -7,12 +7,10 @@ const useShadowTransition = ({ location, visible }) => {
     const styles = {
         top: {
             top: '0',
-            background: `-webkit-linear-gradient(var(--scroll-shadow-top))`,
             background: `linear-gradient(var(--scroll-shadow-top))`
         },
         bottom: {
             bottom: '0',
-            background: `-webkit-linear-gradient(var(--scroll-shadow-bottom))`,
             background: `linear-gradient(var(--scroll-shadow-bottom))`
         }
     }

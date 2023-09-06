@@ -1,4 +1,4 @@
-import { useDrag } from 'react-use-gesture'
+import { useDrag } from '@use-gesture/react'
 import clamp from 'lodash.clamp'
 import swap from 'lodash-move'
 import { itemHeight, itemPadding } from './constants'

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
 
 import './styles/Skeleton.css'
-import logoIcon from '@assets/icons/logoIcon.svg'
+import logoIcon from '@assets/icons/src/logoIcon.svg'
 
 const Header = () => (
     <header>

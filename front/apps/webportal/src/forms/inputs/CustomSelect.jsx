@@ -23,7 +23,6 @@ const CustomSelect = ({ field, ...props }) => {
             backgroundColor: "#ededed",
             font: "inherit",
             height: "0",
-            border: "none",
             border: state.isFocused ? 0 : 0,
             // This line disable the blue border
             boxShadow: state.isFocused ? "var(--input-focus-drop-shadow)" : 0,

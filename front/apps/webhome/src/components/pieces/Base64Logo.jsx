@@ -12,18 +12,20 @@ function getContrastColor(bgColor) {
 const Base64Image = (props) => {
     const { data, backgroundColor, alt, style, ...rest } = props
 
+    const config = {
+        padding: '2px 12px',
+        backgroundColor: backgroundColor,
+        borderRadius: 'var(--border-radius2)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: getContrastColor(backgroundColor),
+        ...style
+    }
+
     return (
         <div
-            style={{
-                padding: '2px 12px',
-                backgroundColor: backgroundColor,
-                borderRadius: 'var(--border-radius2)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: getContrastColor(backgroundColor),
-                ...style
-            }}
+            style={config}
             {...rest}
         >
             <img
