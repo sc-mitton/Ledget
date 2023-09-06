@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { useLocation, useNavigate, Link } from 'react-router-dom'
+import { BlackPillButtonWithArrow } from '@ledget/shared-ui'
 
 import logo from "@assets/images/logo.svg"
 
@@ -32,14 +33,13 @@ const Header = () => {
                     &&
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         {`${text.login}`}
-                        <button
-                            className="btn-chcl btn-pill"
+                        <BlackPillButtonWithArrow
                             onClick={() => navigate('/register')}
                             aria-label="Sign Up"
                             style={{ marginLeft: '.5rem' }}
                         >
                             Sign Up
-                        </button>
+                        </BlackPillButtonWithArrow>
                     </div>
                 }
             </div>

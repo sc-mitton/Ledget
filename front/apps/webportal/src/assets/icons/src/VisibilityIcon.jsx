@@ -12,13 +12,14 @@ const VisibilityIcon = (props) => {
         <button
             className="password-visibility-icon"
             type="button"
-            onClick={() =>
-                setVisible(!props.mode) &&
-                setShowIcon(!showIcon) && props.onClick()
-            }
+            onClick={() => {
+                setShowIcon(!showIcon)
+                props.onClick()
+            }}
             aria-label={showIcon ? 'hide' : 'show'}
         >
             <img
+                style={{ width: '1.5rem', height: '1.5rem' }}
                 src={showIcon ? hidePassword : showPassword}
                 alt={showIcon ? 'hide' : 'show'}
             />

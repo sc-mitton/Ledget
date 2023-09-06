@@ -390,13 +390,33 @@ button svg {
     margin: 2px;
 }
 
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    white-space: nowrap;
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+button:focus-visible {
+    outline: none;
+    box-shadow: var(--accessible-focus-drop-shadow);
+}
+
 button.pulse {
     animation: pulse 1.5s infinite;
     border-radius: 30%;
     box-shadow: 0 0 4px 4px var(--green-hlight2);
     transition: all .3s ease;
 }
-
 
 button.pulse:hover {
     background-color: var(--green-hlight2);
@@ -567,11 +587,6 @@ button.pulse:hover {
 .btn-sp {
     border-radius: var(--border-radius2);
     font-weight: 500;
-}
-
-.btn-pill {
-    border-radius: 50%;
-    padding: 2px 4px;
 }
 
 .btn-scale {

@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 
 import { Delete, Close } from '@assets/icons'
 import { LoadingRing } from '@components/pieces'
+import { GrnPrimaryButton } from '@ledget/shared-ui'
 
 export const DeleteButton = ({ onClick }) => (
     <div>
@@ -23,8 +24,7 @@ export const SubmitButton = (props) => {
     } = props
 
     return (
-        <button
-            className='btn-grn btn3'
+        <GrnPrimaryButton
             type="submit"
             aria-label="Save"
             tabIndex={0}
@@ -43,7 +43,7 @@ export const SubmitButton = (props) => {
                     {children}
                 </div>
             </LoadingRing>
-        </button>
+        </GrnPrimaryButton>
     )
 }
 

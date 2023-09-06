@@ -44,7 +44,7 @@ services:
       - 443:443
       - 8080:8080
     volumes:
-      - ./certs:/etc/ssl/certs
+      - ./front/certs:/etc/ssl/certs
       - ./traefik:/traefik
       - /var/run/docker.sock:/var/run/docker.sock
   ledgetback:
@@ -100,24 +100,6 @@ services:
       - db
     ports:
       - 8000:8000
-  ledgetfront:
-    build:
-      context: ./front
-      dockerfile: Dockerfile.dev
-    environment:
-      - SSL_KEY_FILE=/run/secrets/localhost_key
-      - SSL_CERT_FILE=/run/secrets/localhost_crt
-      - SSL_CA_FILE=/run/secrets/ca_pem
-    ports:
-      - 3000:3000
-      - 3001:3001
-    volumes:
-      - ./front:/front
-    secrets:
-      - localhost_crt
-      - localhost_key
-      - ca_pem
-    tty: true
   ory:
     image: oryd/ory
     ports:
@@ -148,12 +130,6 @@ secrets:
     file: ./secrets/plaid_dev_client_id
   django_secret_key:
     file: ./secrets/django_dev_secret_key
-  localhost_crt:
-    file: ./certs/localhost.crt
-  localhost_key:
-    file: ./certs/localhost.key
-  ca_pem:
-    file: ./certs/ledgetCA.pem
   ory_api_key:
     file: ./secrets/ory_dev_api_key
   jwks.json:

@@ -12,12 +12,18 @@ Ledget simplifies financial lives.
 Ledget was started from frustration with the choice of personal budgeting apps. Almost all had cluttered and confusing user interfaces, only a portion would automatically import data from financial institutions, and many wouldn't offer the simplicity that should come with a great user experience. So, ledget was born to do the job right.
 
 ## Tech Stack
-- Django
+
+Front
 - React
 - React Native
+- Vite
+- Nx
+
+Back
+- Django
 - Postgres
 - Stripe (payments processing)
-- Finicity (financial data agregator)
+- Plaid (financial data agregator)
 - Ory (authentication)
 
 ## Dev Environment
@@ -54,11 +60,26 @@ stripe listen --forward-to https://ledget.app:8000/api/v1/stripe --skip-verify
 echo ORY_API_KEY=<api key> > ./secrets/.env.ory
 ```
 
-
+6. Run the Environment
+It's worth saving these commands somewhere, aliasing them, or saving as a workflow in warp terminal
 
 ```
-docker-compose up -d
+docker-compose up -d --build
+cd front &&
+pm2 start nx --name webhome -- run webhome:serve &&
+pm2 start nx --name webportal -- run webportal:serve
 ```
+
+7. Stop the Environment
+
+```
+docker-compose down
+
+pm2 stop webhome &&
+pm2 stop webportal &&
+pm2 delete all
+```
+
 ## Webhook Testing
 
 

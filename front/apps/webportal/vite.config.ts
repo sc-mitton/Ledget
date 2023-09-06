@@ -3,9 +3,12 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import path from 'path';
+import fs from 'fs';
+
+const certsDir = __dirname + '/../../certs/';
 
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/foo',
+  cacheDir: '../../node_modules/.vite/webportal',
 
   server: {
     watch: {
@@ -13,24 +16,23 @@ export default defineConfig({
       interval: 100,
     },
     port: 3001,
-    host: '0.0.0.0',
+    host: 'localhost',
     strictPort: true,
     https: {
-      key: process.env.SSL_KEY_FILE,
-      cert: process.env.SSL_CERT_FILE,
-      ca: process.env.SSL_CA_FILE,
+      key: fs.readFileSync(certsDir + 'localhost.key'),
+      cert: fs.readFileSync(certsDir + 'localhost.crt'),
+      ca: fs.readFileSync(certsDir + 'ledgetCA.pem'),
     }
   },
 
-
   preview: {
     port: 3301,
-    host: '0.0.0.0',
+    host: 'localhost',
     strictPort: true,
     https: {
-      key: process.env.SSL_KEY_FILE,
-      cert: process.env.SSL_CERT_FILE,
-      ca: process.env.SSL_CA_FILE,
+      key: fs.readFileSync(certsDir + 'localhost.key'),
+      cert: fs.readFileSync(certsDir + 'localhost.crt'),
+      ca: fs.readFileSync(certsDir + 'ledgetCA.pem'),
     }
   },
 

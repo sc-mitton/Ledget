@@ -1,7 +1,7 @@
 {
   "name": "webhome",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/webfront/src",
+  "sourceRoot": "apps/webhome/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -11,7 +11,7 @@
       ],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/webfront"
+        "outputPath": "dist/apps/webhome"
       },
       "configurations": {
         "development": {
@@ -26,15 +26,15 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "webfront:build"
+        "buildTarget": "webhome:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "webfront:build:development",
+          "buildTarget": "webhome:build:development",
           "hmr": true
         },
         "production": {
-          "buildTarget": "webfront:build:production",
+          "buildTarget": "webhome:build:production",
           "hmr": false
         }
       }
@@ -43,14 +43,14 @@
       "executor": "@nx/vite:preview-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "webfront:build"
+        "buildTarget": "webhome:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "webfront:build:development"
+          "buildTarget": "webhome:build:development"
         },
         "production": {
-          "buildTarget": "webfront:build:production"
+          "buildTarget": "webhome:build:production"
         }
       }
     },
@@ -61,7 +61,7 @@
       ],
       "options": {
         "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/apps/webfront"
+        "reportsDirectory": "../../coverage/apps/webhome"
       }
     },
     "lint": {
@@ -71,14 +71,14 @@
       ],
       "options": {
         "lintFilePatterns": [
-          "apps/webfront/**/*.{ts,tsx,js,jsx}"
+          "apps/webhome/**/*.{ts,tsx,js,jsx}"
         ]
       }
     },
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "webfront:build"
+        "buildTarget": "webhome:build"
       }
     }
   },

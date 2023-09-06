@@ -10,24 +10,13 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@front/shared-ui": [
-        "libs/shared-ui/src/index.js"
-      ],
-      "@front/utils": [
-        "libs/utils/src/index.js"
-      ]
+      "@ledget/shared-ui": ["libs/shared-ui/src/index.js"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

@@ -24,7 +24,7 @@ get_random_secret_key() {
 cd ./scripts && ./becomeCA.sh ledgetCA
 ./genCRT.sh -d localhost -k ledgetCA.key -p ledgetCA.pem
 mkdir ../certs
-find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')' -exec mv {} ../certs/ ';'
+find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')' -exec mv {} ../front/certs/ ';'
 
 # Create secrets
 cd ..
