@@ -6,6 +6,8 @@ import { animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
 import './styles/header.css'
+import Logout from '@modals/Logout'
+import Help from '@modals/Help'
 import {
     Profile1,
     Profile2,
@@ -14,9 +16,7 @@ import {
     LogoutIcon,
     LedgetLogoIcon
 } from '@ledget/shared-assets'
-import DropAnimation from '@utils/DropAnimation'
-import Logout from '@modals/Logout'
-import Help from '@modals/Help'
+import { DropAnimation } from '@ledget/shared-ui'
 import { usePillAnimation } from '@utils/hooks'
 
 

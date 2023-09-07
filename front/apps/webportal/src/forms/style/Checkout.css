@@ -104,8 +104,8 @@ input[type="radio"] {
     font-weight: 600;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     color: var(--logo-dark);
-    margin: 0 0 0 4px;
-    margin-bottom: 12px;
+    margin: 6px 0;
+    margin-left: 4px;
 }
 
 .inputs-container h3 {
@@ -136,82 +136,6 @@ input[type="radio"] {
     margin-top: 8px;
 }
 
-#location-inputs-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-#location-inputs-container input {
-    width: 100%;
-}
-
-#city-container,
-#city-error {
-    flex: 1;
-}
-
-#state-error {
-    margin: 0 8px;
-    width: 25%;
-    min-width: 75px;
-}
-
-#state-container {
-    margin: 0 8px;
-    width: 30%;
-    min-width: 75px;
-    position: relative;
-}
-
-#zip-container,
-#zip-error {
-    width: 25%;
-}
-
-#zip-error,
-#city-error {
-    height: 0px;
-}
-
-#location-input-errors {
-    position: relative;
-    top: -4px;
-    display: flex;
-    height: 20px;
-}
-
-/* ------------------------------ Card Element ------------------------------ */
-.card-container {
-    background-color: var(--input-color);
-    border-radius: var(--border-radius2);
-    z-index: 0;
-    padding: 16px 16px;
-    margin: 12px 0;
-    box-sizing: border-box;
-    position: relative;
-}
-
-.card-container-focused {
-    box-shadow: var(--input-focus-drop-shadow);
-    background-color: var(--input-color);
-    border-radius: var(--border-radius2);
-    z-index: 0;
-    padding: 16px 16px;
-    margin: 12px 0;
-    box-sizing: border-box;
-    position: relative;
-}
-
-#payment-error {
-    margin-left: 14px;
-}
-
-.focus {
-    box-shadow: var(--focus-drop-shadow);
-    transition: border .2s ease;
-}
 
 /* ------------------------------ Order Summary ----------------------------- */
 #order-summary-line {

@@ -10,7 +10,7 @@ const Alert2 = ({
         <svg
             width={width}
             height={height}
-            viewBox={`0 0 144 144`}
+            viewBox={`0 0 33 33`}
             className={className}
             aria-label="Alert"
         >

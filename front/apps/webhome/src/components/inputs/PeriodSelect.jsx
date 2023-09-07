@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 
 import ComboSelect from './ComboSelect'
-import { DropAnimation } from '@utils'
-import { InputButton } from '@ledget/shared-ui'
+import { InputButton, DropAnimation } from '@ledget/shared-ui'
 import { ArrowIcon } from '@ledget/shared-assets'
 
 const options = [

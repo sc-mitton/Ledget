@@ -156,5 +156,13 @@ local GenericAuthedBase = {
       methods: ['POST'],
       url: base_url + '/transactions/<.*>',
     },
+  },
+  GenericAuthedBase
+  {
+    id: 'checkout_session',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/checkout_session',
+    },
   }
 ]

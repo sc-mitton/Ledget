@@ -6,12 +6,12 @@ import { motion } from "framer-motion"
 import "./style/Verification.css"
 import Otc from "./Otc"
 import { VerificationFlowContextProvider, VerificationFlowContext } from "@context/Flow"
-import { WindowLoadingBar, FormError } from "@pieces"
+import { WindowLoadingBar } from "@pieces"
 import verifyEmail from "@assets/images/verifyEmail.svg"
 import UserContext from "@context/UserContext"
 import CsrfToken from "./inputs/CsrfToken"
 import ResendButton from "./inputs/ResendButton"
-import { BlackWideButton } from "@ledget/shared-ui"
+import { BlackWideButton, FormError } from "@ledget/shared-ui"
 
 const VerificationForm = () => {
     const { flow, submit, csrf, codeError } = useContext(VerificationFlowContext)

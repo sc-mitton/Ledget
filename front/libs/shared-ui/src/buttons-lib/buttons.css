@@ -56,6 +56,10 @@
     border-radius: var(--border-radius1);
 }
 
+.btn-icon2 {
+    padding: 6px;
+    border-radius: var(--border-radius2);
+}
 
 /* --------------------------------- Colors --------------------------------- */
 
@@ -208,13 +212,13 @@
 }
 
 .expand-button--icon {
-    transform: rotate(0deg);
+    transform: rotate(180deg);
     transition: transform .5s ease-out;
 }
 
 .expand-button--icon.flipped {
     transition: transform .5s ease-out;
-    transform: rotate(180deg);
+    transform: rotate(0deg);
 }
 
 .btn-fb svg,

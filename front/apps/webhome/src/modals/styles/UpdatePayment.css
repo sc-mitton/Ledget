@@ -1,0 +1,12 @@
+#update-payment-form {
+    margin: 16px 0 24px 0;
+}
+
+#update-payment-form h4 {
+    margin: 4px 0;
+    margin-left: 2px;
+}
+
+#update-payment-form * {
+    font-size: 16px;
+}

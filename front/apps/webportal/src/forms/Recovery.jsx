@@ -3,15 +3,16 @@ import React, { useEffect, useContext, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from "framer-motion"
 
-import { RecoveryFlowContext, RecoveryFlowContextProvider } from '@context/Flow'
-import SignUpFlowHeader from "../pieces/SignUpFlowHeader"
+import './style/Recovery.css'
+import Otc from './Otc'
 import CsrfToken from './inputs/CsrfToken'
 import ResendButton from "./inputs/ResendButton"
 import BackButton from './inputs/BackButton'
-import Otc from './Otc'
-import { WindowLoadingBar, FormError } from '../pieces'
+import { WindowLoadingBar } from '@pieces'
+import SignUpFlowHeader from "@pieces/SignUpFlowHeader"
+import { RecoveryFlowContext, RecoveryFlowContextProvider } from '@context/Flow'
+import { FormError } from '@ledget/shared-ui'
 import forgotPassword from '@assets/images/forgotPassword.svg'
-import './style/Recovery.css'
 
 const RecoveryForm = ({ setEmail }) => {
     const { flow, csrf, submit } = useContext(RecoveryFlowContext)

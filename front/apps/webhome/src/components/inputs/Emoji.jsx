@@ -2,8 +2,7 @@ import React, { createContext, useContext, useState } from 'react'
 import Picker from '@emoji-mart/react'
 
 import './styles/EmojiPicker.css'
-import { DropAnimation } from '@utils'
-import { IconButton2 } from '@ledget/shared-ui'
+import { IconButton2, DropAnimation } from '@ledget/shared-ui'
 
 const EmojiContext = createContext()
 

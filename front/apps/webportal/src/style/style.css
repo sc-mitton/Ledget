@@ -1,23 +1,25 @@
 /* Root css file for style variables and global styles */
 
 :root {
-    --logo-dark: #242424;
-
-    /* Background fills */
-    --background-color: #fcf7f7;
-    --window: #fcf7f7;
-    --dark-background: #242424;
-
+    /* Windows */
+    --window: hsl(0, 0%, 98%);
+    --window-transparent: rgba(252, 248, 247, 0.8);
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    --window-box-gray: #fffcfc;
+    --window-background-color: #f0f0f0;
+
+    --background-color: #fcfcfc;
+    --logo-dark: #242424;
+    --overlay: rgba(49, 49, 49, 0.7);
+    --overlay2: rgba(49, 49, 49, 0.5);
+    --skeleton: rgb(235, 235, 235);
 
     /* Palet */
-    --mute-red: #fd8292;
+    --mute-red: #fe8797;
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
     --green-hlight: #8fffc0;
-    --green-hlight2: rgb(202, 252, 224);
+    --green-hlight2: rgb(194, 255, 220);
     --green-hlight3: rgb(136, 236, 188);
     --lighter-green: rgb(179, 226, 200);
     --m-green: rgb(81, 237, 151);
@@ -29,23 +31,21 @@
     --accessible-green: rgb(81, 237, 151);
     --green-input-focus: rgb(96, 211, 156);
 
-    /* Inputs */
-    --input-placeholder: #848484;
-    --input-placeholder2: #8a8a8a;
-
-    /* Buttons */
-    --btn-drop-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
-    --btn-light-gray: #ededed;
-    --btn-light-gray-hover: #e0e0e0;
-    --btn-gray: #363636;
-    --btn-hover-gray: #1e1d1d;
+    --charcoal-rgb: 41, 41, 41;
+    --window-rgb: 252, 248, 247;
 
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-green);
     --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
-
-    /* Subscription Radios */
-    --inactive-gray: #4c4c4c;
+    --low-elevation-drop-shadow: rgba(0, 0, 0, 0.02) 0px 1px 6px 0px;
+    --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
+    --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
+    --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
+    --new-item-drop-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px;
+    --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    --window-drop-shadow2: rgba(0, 0, 0, 0.1) 0px 2px 12px;
+    --scroll-shadow-bottom: 0deg, rgba(248, 248, 248), transparent;
+    --scroll-shadow-top: 180deg, rgba(248, 248, 248), transparent;
 
     /* Input Colors */
     --input-color: #ededed;
@@ -59,10 +59,35 @@
     --muted-text-gray: #848484;
     --faded-text: rgb(0, 0, 0, .3);
 
+    /* Icons & Buttons */
+    --btn-light-gray: #e6e4e4;
+    --btn-hover-light-gray: #dad9d9;
+    --btn-gray: #3b3b3b;
+    --btn-hover-gray: #292929;
+    --btn-mid-gray: #848484;
+    --btn-black: #242424;
+    --icon-light-gray: #ebebeb;
+    --icon-hover-light-gray: #e0e0e0;
+    --icon-hover-gray: #c4c4c4;
+    --drop-down-hover-background: #dfdfdf;
+
+    /* Borders */
+    --subtle-border-color: rgb(0, 0, 0, .07);
+    --subtle-border: .75px solid var(--subtle-border-color);
+
     /* Border Radius */
     --border-radius: 4px;
+    --border-radius1: 6px;
     --border-radius2: 8px;
+    --border-radius25: 12px;
     --border-radius3: 16px;
+    --border-radius4: 24px;
+
+    /* Padding */
+    --padding1: 8px 12px;
+
+    /* Loading Shimmer */
+    --shimmer-background: linear-gradient(115deg, var(--window) 30%, #f0f0f0 50%, var(--window) 70%);
 }
 
 /* Override color values for Firefox */

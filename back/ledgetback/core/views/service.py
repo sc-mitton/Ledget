@@ -120,3 +120,25 @@ class CreateCustomerView(APIView):
             return Response(status=HTTP_400_BAD_REQUEST)
 
         return Response(status=HTTP_200_OK)
+
+
+class CreateCheckoutSession(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            mode=['setup'],
+            customer=request.user.customer.id,
+            setup_intent_data={
+                'metadata': {
+                    'subscription_id':
+                    self.getSubscriptionId(request.user.customer.id)
+                }
+            }
+        )
+        return Response(data={'session': session}, status=HTTP_200_OK)
+
+    def getSubscriptionId(self, customer_id):
+        customer = stripe.Customer.retrieve(customer_id)
+        return customer.subscriptions.data[0].id

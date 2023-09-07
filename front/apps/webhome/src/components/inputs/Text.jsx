@@ -4,9 +4,8 @@ import { useController } from 'react-hook-form'
 
 import './styles/Text.css'
 import Emoji from './Emoji'
-import { FormErrorTip, FormError } from '@components/pieces'
 import { formatCurrency, formatRoundedCurrency, makeIntCurrencyFromStr } from '@utils'
-import { IconButton2, TextInput } from '@ledget/shared-ui'
+import { IconButton2, TextInput, FormErrorTip, FormError } from '@ledget/shared-ui'
 import { ArrowIcon } from '@ledget/shared-assets'
 
 export const EmojiComboText = (props) => {

@@ -63,3 +63,70 @@
 .menu-text-input-container button {
     margin: 0 4px;
 }
+
+/* ------------------------------ Card Element ------------------------------ */
+.card-container {
+    background-color: var(--input-color);
+    border-radius: var(--border-radius2);
+    z-index: 0;
+    padding: 16px 16px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.card-container.focused {
+    box-shadow: var(--input-focus-drop-shadow);
+}
+
+#payment-error {
+    margin-left: 14px;
+}
+
+/* --------------------------- Location Inputs Row -------------------------- */
+
+#location-inputs-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#location-inputs-container input {
+    width: 100%;
+}
+
+#city-container,
+#city-error {
+    flex: 1;
+}
+
+#state-error {
+    margin: 0 8px;
+    width: 25%;
+    min-width: 75px;
+}
+
+#state-container {
+    margin: 0 8px;
+    width: 30%;
+    min-width: 75px;
+    position: relative;
+}
+
+#zip-container,
+#zip-error {
+    width: 25%;
+}
+
+#zip-error,
+#city-error {
+    height: 0px;
+}
+
+#location-input-errors {
+    position: relative;
+    top: -4px;
+    display: flex;
+    height: 20px;
+}

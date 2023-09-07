@@ -6,8 +6,4 @@ export { default as ShadowedContainer } from './ShadowedContainer';
 export { default as ShimmerDiv } from './ShimmerDiv';
 export { default as Desert } from './Desert';
 
-export {
-    FormErrorTip,
-    FormError
-} from './formErrors';
 export * from './misc.jsx'

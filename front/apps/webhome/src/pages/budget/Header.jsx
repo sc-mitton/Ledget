@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { CashFlow, Graph, Plus, Edit, Ellipsis2 } from '@ledget/shared-assets'
 import MonthPicker from '@components/inputs/MonthPicker'
-import DropAnimation from '@utils/DropAnimation'
-import { IconButton } from '@ledget/shared-ui'
+import { IconButton, DropAnimation } from '@ledget/shared-ui'
 
 const Wrapper = ({ onClick, children }) => {
 

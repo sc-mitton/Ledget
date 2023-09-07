@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useEffect } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
@@ -10,8 +10,7 @@ import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, BlackRadios } from '@components/inputs'
 import { withModal } from '@ledget/shared-utils'
 import SubmitForm from '@components/pieces/SubmitForm'
-import { FormErrorTip } from '@components/pieces'
-import { useEffect } from 'react'
+import { FormErrorTip } from '@ledget/shared-ui'
 
 export const schema = object().shape({
     name: string().required().lowercase(),

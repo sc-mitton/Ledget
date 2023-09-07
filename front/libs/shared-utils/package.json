@@ -12,6 +12,8 @@
   "dependencies": {
     "@ledget/shared-ui": "workspace:^",
     "@react-spring/web": "^9.7.2",
+    "@stripe/react-stripe-js": "^2.0.0",
+    "@stripe/stripe-js": "^1.50.0",
     "react-spring": "^9.7.2"
   }
 }

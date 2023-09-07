@@ -10,7 +10,10 @@
   "main": "./index.js",
   "license": "ISC",
   "dependencies": {
+    "@headlessui/react": "^1.7.14",
     "@ledget/shared-assets": "workspace:^",
-    "react": "^18.2.0"
+    "@stripe/react-stripe-js": "^2.0.0",
+    "react": "^18.2.0",
+    "yup": "^1.2.0"
   }
 }

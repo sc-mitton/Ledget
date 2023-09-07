@@ -1,36 +1,30 @@
-import React, { useContext, useLayoutEffect } from 'react'
+import React, { useContext, useLayoutEffect, useEffect } from 'react'
 import { useState, useRef } from 'react'
 
-import { useForm, Controller, set } from 'react-hook-form'
+import { useForm, useController } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { object, string } from 'yup'
-import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { AnimatePresence, motion } from 'framer-motion'
+import { string } from 'yup'
 
 import './style/Checkout.css'
 import logoLight from '@assets/images/logoLight.svg'
 import stripelogo from '@assets/images/stripelogo.svg'
-import { Star } from '@ledget/shared-assets'
-import { states } from '@assets/data/states'
 import ledgetapi from '@api/axios'
 import usePrices from '@api/hooks/usePrices'
-import CustomSelect from './inputs/CustomSelect'
-import { FormError, FormErrorTip } from "../pieces"
 import { WindowLoadingBar } from '../pieces'
-import UserContext from '@context/UserContext'
-import { components } from 'react-select'
-import { BlackWideButton, TextInput } from '@ledget/shared-ui'
+import { Star } from '@ledget/shared-assets'
+import {
+    BlackWideButton,
+    CardInput,
+    FormError,
+    NameOnCardInput,
+    CityStateZipInputs,
+    baseBillingSchema
+} from '@ledget/shared-ui'
+import { StripeElements } from '@ledget/shared-utils'
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
-
-let options = {
-    fonts: [{
-        cssSrc: "https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap"
-    }]
-}
-
-const schema = object({
+const schema = baseBillingSchema.shape({
     name: string()
         .required()
         .test('two-words', 'Missing last name', (value) => {
@@ -40,14 +34,6 @@ const schema = object({
             }
             return true
         }),
-    city: string()
-        .required()
-        .matches(/^[a-zA-Z ]+$/, 'Invalid city'),
-    state: object().required(),
-    zip: string()
-        .required()
-        .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
-
 })
 
 const PriceContext = React.createContext({})
@@ -119,62 +105,13 @@ const Prices = ({ prices }) => {
     )
 }
 
-const Card = ({ cardNotEnteredError, setCardNotEnteredError, setCardEntered }) => {
-    let [cardFocus, setCardFocus] = useState(false)
-
-    const cardElementOptions = {
-        style: {
-            base: {
-                fontFamily: "Source Sans Pro, sans-serif",
-                color: '#292929',
-                fontSmoothing: 'antialiased',
-                fontSize: '16px',
-                '::placeholder': {
-                    color: cardFocus ? '#60d39c' : '#767676',
-                },
-                iconColor: cardFocus ? '#009b53' : '#292929',
-                ':disabled': {
-                    color: '#767676',
-                    iconColor: '#767676'
-                }
-            },
-            invalid: {
-                fontFamily: 'Source Sans Pro, sans-serif',
-                color: '#f47788',
-                iconColor: '#f47788'
-            }
-        }
-    }
-
-    return (
-        <>
-            <h4>Card</h4>
-            <div className={`card-container${cardFocus ? '-focused' : ''}`}>
-                <CardElement
-                    onBlur={() => setCardFocus(false)}
-                    onFocus={() => setCardFocus(true)}
-                    onChange={(e) => {
-                        if (e.complete) {
-                            setCardEntered(true)
-                            setCardNotEnteredError(false)
-                        } else {
-                            setCardEntered(false)
-                        }
-                    }}
-                    options={cardElementOptions}
-                />
-                {cardNotEnteredError && <FormErrorTip />}
-            </div>
-        </>
-    )
-}
-
 const Form = ({ onSubmit, id }) => {
     const [cardEntered, setCardEntered] = useState(false)
     const [cardNotEnteredError, setCardNotEnteredError] = useState(false)
 
-    const { register, handleSubmit, formState: { errors }, trigger, control } =
+    const { register, handleSubmit, formState: { errors }, control, clearErrors } =
         useForm({ resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
+    const { field: stateField } = useController({ name: 'state', control })
 
     const submitBillingForm = (e) => {
         e.preventDefault()
@@ -184,110 +121,22 @@ const Form = ({ onSubmit, id }) => {
         )(e)
     }
 
-    const hasRequiredError = (field) => {
-        return errors[field] && errors[field]?.message.includes('required')
-    }
-
-    const hasErrorMsg = (field) => {
-        return errors[field]?.message && !errors[field]?.message.includes('required')
-    }
-
-    const CustomSingleValue = ({ children, data, ...props }) => {
-        return (
-            <components.SingleValue {...props}>
-                {data.abbreviation}
-            </components.SingleValue>
-        )
-    }
+    useEffect(() => {
+        stateField.value && clearErrors('state')
+    }, [stateField.value])
 
     return (
         <>
-            <h4>Billing Info</h4>
             <form onSubmit={submitBillingForm} className="checkout-form" id={id}>
-                <TextInput>
-                    <input
-                        type='text'
-                        id='name-on-card'
-                        name='name'
-                        placeholder='Name on card'
-                        {...register('name')}
-                        onBlur={(e) => {
-                            if (e.target.value) {
-                                trigger("name")
-                            }
-                        }}
-                    />
-                    {hasRequiredError('name') && <FormErrorTip />}
-                </TextInput>
-                <div id="name-on-card-error">
-                    {hasErrorMsg('name') && <FormError msg={errors.name.message} />}
-                </div>
-                <div id='location-inputs-container' >
-                    <TextInput className='spaced-input' id='city-container'>
-                        <input
-                            type='text'
-                            id='city'
-                            name='city'
-                            placeholder='City'
-                            {...register('city')}
-                            onBlur={(e) => {
-                                if (e.target.value) {
-                                    trigger("city")
-                                }
-                            }}
-                        />
-                        {hasRequiredError('city') && <FormErrorTip />}
-                    </TextInput>
-                    <div id="state-container">
-                        <Controller
-                            control={control}
-                            name='state'
-                            render={({ field }) => (
-                                <CustomSelect
-                                    options={states}
-                                    placeholder="State"
-                                    maxMenuHeight={175}
-                                    field={field}
-                                    components={{ SingleValue: CustomSingleValue }}
-                                />
-                            )}
-                        />
-                        {hasRequiredError('state') && <FormErrorTip />}
-                    </div>
-                    <TextInput className='spaced-input' id='zip-container'>
-                        <input
-                            type='text'
-                            id='zip'
-                            name='zip'
-                            placeholder='Zip'
-                            {...register('zip')}
-                            onBlur={(e) => {
-                                if (e.target.value) {
-                                    trigger("zip")
-                                }
-                            }}
-                        />
-                        {hasRequiredError('zip') && <FormErrorTip />}
-                    </TextInput>
-                </div>
-                {(hasErrorMsg('city') || hasErrorMsg('state') || hasErrorMsg('zip')) &&
-                    <div id="location-input-errors">
-                        <div id="city-error">
-                            {hasErrorMsg('city') && <FormError msg={errors.city?.message} />}
-                        </div>
-                        <div id="state-error">
-                            {hasErrorMsg('state') && <FormError msg={errors.state?.message} />}
-                        </div>
-                        <div id="zip-error">
-                            {hasErrorMsg('zip') && <FormError msg={errors.zip?.message} />}
-                        </div>
-                    </div>
-                }
+                <h4>Billing Info</h4>
+                <NameOnCardInput {...register('name')} errors={errors} />
+                <CityStateZipInputs errors={errors} register={register} field={stateField} />
             </form >
-            <Card
-                cardNotEnteredError={cardNotEnteredError}
-                setCardNotEnteredError={setCardNotEnteredError}
-                setCardEntered={setCardEntered}
+            <h4>Card</h4>
+            <CardInput
+                requiredError={cardNotEnteredError}
+                onComplete={() => setCardEntered(true)}
+                clearError={() => setCardNotEnteredError(false)}
             />
         </>
     )
@@ -375,7 +224,6 @@ function Checkout({ prices }) {
     const [success, setSuccess] = useState(false)
     const stripe = useStripe()
     const elements = useElements()
-    const { user } = useContext(UserContext)
     const { price } = useContext(PriceContext)
 
     const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem('clientSecret')))
@@ -539,11 +387,11 @@ const AnimatedCheckout = () => {
 
 const CheckoutWindow = () => {
     return (
-        <Elements stripe={stripePromise} options={options}>
+        <StripeElements pk={import.meta.env.VITE_STRIPE_PK_TEST}>
             <PriceContextProvider>
                 <AnimatedCheckout />
             </PriceContextProvider>
-        </Elements>
+        </StripeElements>
     )
 }
 

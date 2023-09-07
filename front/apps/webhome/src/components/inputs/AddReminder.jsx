@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 
 import './styles/Dropdowns.css'
 import ComboSelect from './ComboSelect'
-import { DropAnimation } from '@utils'
 import { Plus, CheckMark } from '@ledget/shared-assets'
-import { SlimButton } from '@ledget/shared-ui'
+import { SlimButton, DropAnimation } from '@ledget/shared-ui'
 
 const defaultOptions = [
     { id: 1, value: { offset: 1, period: 'day' }, disabled: false },

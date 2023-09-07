@@ -2,12 +2,10 @@ import React, { useState, useEffect, useRef, useContext, forwardRef } from 'reac
 
 import './styles/Dropdowns.css'
 import './styles/Scheduler.css'
-import { DropAnimation } from '@utils'
 import Radios from './Radios'
-import { Calendar } from '@ledget/shared-assets'
 import { useClickClose } from '@utils'
-import { FormErrorTip } from '@components/pieces'
-import { ArrowIcon } from '@ledget/shared-assets'
+import { Calendar, ArrowIcon } from '@ledget/shared-assets'
+import { FormErrorTip, DropAnimation } from '@ledget/shared-ui'
 
 const pickerContext = React.createContext()
 

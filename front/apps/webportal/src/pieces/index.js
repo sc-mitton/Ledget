@@ -1,1 +1,1 @@
-export { FormErrorTip, LoadingRing, FormError, WindowLoadingBar } from './pieces'
+export { WindowLoadingBar } from './pieces'

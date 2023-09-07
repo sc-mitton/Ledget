@@ -12,9 +12,9 @@ import SocialAuth from "./SocialAuth"
 import PasswordInput from "./inputs/PasswordInput"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
-import { FormError, WindowLoadingBar } from "@pieces"
+import { WindowLoadingBar } from "@pieces"
 import { LoginFlowContext, LoginFlowContextProvider } from "@context/Flow"
-import { GrnWideButton, IconButton, TextInput, Checkbox } from "@ledget/shared-ui"
+import { GrnWideButton, IconButton, TextInput, Checkbox, FormError } from "@ledget/shared-ui"
 
 const emailContext = createContext({})
 
