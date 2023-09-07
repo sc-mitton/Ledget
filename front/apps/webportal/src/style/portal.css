@@ -217,28 +217,14 @@ input:focus {
     outline: none;
 }
 
-.input-container input::placeholder,
 input[type="password"]::placeholder {
     color: var(--input-placeholder);
 }
 
-.input-container input:focus::placeholder,
 input[type="password"]:focus::placeholder {
     transition: color .2s ease;
     color: var(--green-input-focus);
     opacity: 1;
-}
-
-.input-container {
-    background-color: var(--input-color);
-    border-radius: var(--border-radius2);
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    box-sizing: border-box;
-    height: 100%;
-    display: flex;
-    transition: border .2s ease;
-    position: relative;
 }
 
 .spaced-input {
@@ -256,12 +242,6 @@ input[type="password"]:focus::placeholder {
     width: 48.5%;
     margin: 0;
 }
-
-.input-container:focus-within {
-    outline: none;
-    box-shadow: var(--input-focus-drop-shadow);
-}
-
 
 /* ----------------------------- Social Login ----------------------------- */
 

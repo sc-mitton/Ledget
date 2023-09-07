@@ -12,10 +12,10 @@ import {
     EmojiComboText,
     DollarRangeInput,
     BlackRadios,
-    Checkbox,
     AddReminder,
     BillScheduler,
 } from '@components/inputs'
+import { Checkbox } from '@ledget/shared-ui'
 import { useAddnewBillMutation } from '@features/billSlice'
 
 const radioOptions = [

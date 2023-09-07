@@ -13,4 +13,3 @@ export {
 } from './Text';
 
 export { default as Emoji } from './Emoji';
-export { default as Checkbox } from './Checkbox';

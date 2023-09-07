@@ -12,8 +12,7 @@ import {
     DollarRangeInput,
     PeriodSelect,
     BillScheduler,
-    AddReminder,
-    Checkbox
+    AddReminder
 } from '@components/inputs'
 import { ShadowedContainer, DollarCentsRange } from '@components/pieces'
 import { Bell, BellOff } from '@ledget/shared-assets'
@@ -22,7 +21,7 @@ import { billSchema, extractBill } from '@modals/CreateBill'
 import { DeleteButton } from '@components/buttons'
 import { formatName, getLongestLength } from '@utils'
 import { useGetBillRecommendationsQuery } from '@features/billSlice'
-import { CloseButton } from '@ledget/shared-ui'
+import { CloseButton, Checkbox } from '@ledget/shared-ui'
 
 const BillsColumn = ({ period }) => {
     const context = useContext(ItemsContext)[period]

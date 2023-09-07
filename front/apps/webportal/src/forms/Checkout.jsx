@@ -20,7 +20,7 @@ import { FormError, FormErrorTip } from "../pieces"
 import { WindowLoadingBar } from '../pieces'
 import UserContext from '@context/UserContext'
 import { components } from 'react-select'
-import { BlackWideButton } from '@ledget/shared-ui'
+import { BlackWideButton, TextInput } from '@ledget/shared-ui'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
@@ -204,7 +204,7 @@ const Form = ({ onSubmit, id }) => {
         <>
             <h4>Billing Info</h4>
             <form onSubmit={submitBillingForm} className="checkout-form" id={id}>
-                <div id="name-on-card-container" className='input-container'>
+                <TextInput>
                     <input
                         type='text'
                         id='name-on-card'
@@ -218,12 +218,12 @@ const Form = ({ onSubmit, id }) => {
                         }}
                     />
                     {hasRequiredError('name') && <FormErrorTip />}
-                </div>
+                </TextInput>
                 <div id="name-on-card-error">
                     {hasErrorMsg('name') && <FormError msg={errors.name.message} />}
                 </div>
                 <div id='location-inputs-container' >
-                    <div className='input-container spaced-input' id='city-container'>
+                    <TextInput className='spaced-input' id='city-container'>
                         <input
                             type='text'
                             id='city'
@@ -237,7 +237,7 @@ const Form = ({ onSubmit, id }) => {
                             }}
                         />
                         {hasRequiredError('city') && <FormErrorTip />}
-                    </div>
+                    </TextInput>
                     <div id="state-container">
                         <Controller
                             control={control}
@@ -254,7 +254,7 @@ const Form = ({ onSubmit, id }) => {
                         />
                         {hasRequiredError('state') && <FormErrorTip />}
                     </div>
-                    <div className='input-container spaced-input' id='zip-container'>
+                    <TextInput className='spaced-input' id='zip-container'>
                         <input
                             type='text'
                             id='zip'
@@ -268,7 +268,7 @@ const Form = ({ onSubmit, id }) => {
                             }}
                         />
                         {hasRequiredError('zip') && <FormErrorTip />}
-                    </div>
+                    </TextInput>
                 </div>
                 {(hasErrorMsg('city') || hasErrorMsg('state') || hasErrorMsg('zip')) &&
                     <div id="location-input-errors">

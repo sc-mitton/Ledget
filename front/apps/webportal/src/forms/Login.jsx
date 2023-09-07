@@ -11,11 +11,10 @@ import { BackArrow } from "@ledget/shared-assets"
 import SocialAuth from "./SocialAuth"
 import PasswordInput from "./inputs/PasswordInput"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
-import Checkbox from "./inputs/Checkbox"
 import CsrfToken from "./inputs/CsrfToken"
 import { FormError, WindowLoadingBar } from "@pieces"
 import { LoginFlowContext, LoginFlowContextProvider } from "@context/Flow"
-import { GrnWideButton, IconButton, TextInput } from "@ledget/shared-ui"
+import { GrnWideButton, IconButton, TextInput, Checkbox } from "@ledget/shared-ui"
 
 const emailContext = createContext({})
 

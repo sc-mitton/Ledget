@@ -38,7 +38,7 @@ const RecoveryForm = ({ setEmail }) => {
             method={flow?.ui.method}
             onSubmit={submit}
         >
-            <div className="input-container">
+            <TextInput>
                 <input
                     type="email"
                     placeholder="Email"
@@ -47,7 +47,7 @@ const RecoveryForm = ({ setEmail }) => {
                     name="email"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-            </div>
+            </TextInput>
             <CsrfToken csrf={csrf} />
             <button
                 className={`charcoal-button verification-button${animationActive ? ' animate' : ''}`}

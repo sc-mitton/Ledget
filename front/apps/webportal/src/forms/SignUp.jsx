@@ -14,7 +14,7 @@ import { WindowLoadingBar } from "../pieces"
 import PasswordInput from "./inputs/PasswordInput"
 import PasswordlessForm from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
-import { GrnWideButton } from "@ledget/shared-ui"
+import { GrnWideButton, TextInput } from "@ledget/shared-ui"
 
 // Context for user info
 const userInfoContext = createContext({})
@@ -54,7 +54,7 @@ function UserInfoForm() {
             {responseError && <FormError msg={responseError} />}
             <label htmlFor="name">Name</label>
             <div className="split-inputs">
-                <div className="input-container">
+                <TextInput>
                     <input
                         id="name"
                         name="firstName"
@@ -67,8 +67,8 @@ function UserInfoForm() {
                         }}
                     />
                     <FormErrorTip error={errors.firstName} />
-                </div>
-                <div className="input-container">
+                </TextInput>
+                <TextInput>
                     <input
                         id="name"
                         name="lastName"
@@ -81,10 +81,10 @@ function UserInfoForm() {
                         }}
                     />
                     <FormErrorTip error={errors.lastName} />
-                </div>
+                </TextInput>
             </div>
             <label htmlFor="email">Email</label>
-            <div className="input-container">
+            <TextInput>
                 <input
                     id="email"
                     name="email"
@@ -98,7 +98,7 @@ function UserInfoForm() {
                     }}
                 />
                 <FormErrorTip error={errors.email} />
-            </div>
+            </TextInput>
             <CsrfToken csrf={csrf} />
             {errors.email?.type !== 'required' &&
                 <div id="signup-error-container">
