@@ -5,3 +5,4 @@ export * from './src/inputs-lib/textInputs';
 export * from './src/animations-lib/animations';
 
 export { default as Checkbox } from './src/inputs-lib/Checkbox'
+export * from './src/pieces-lib/shimmer'

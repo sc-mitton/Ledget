@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 
-import './styles/ShimmerDiv.css'
+import './styles/shimmer.css'
 import { useTransition, animated } from '@react-spring/web'
+import { TextInput } from '../inputs-lib/textInputs'
 
-const ShimmerDiv = (props) => {
+export const ShimmerDiv = (props) => {
     const { shimmering, children, style, ...rest } = props
     const [position, setPosition] = useState('static')
     const transitions = useTransition(shimmering, {
@@ -24,9 +25,8 @@ const ShimmerDiv = (props) => {
 
     return (
         <div
+            className="loading-shimmer--container"
             style={{
-                width: '100%',
-                height: '100%',
                 position: position,
                 ...style
             }}
@@ -34,11 +34,8 @@ const ShimmerDiv = (props) => {
         >
             {transitions(
                 (styles, item) => item &&
-                    <animated.div
-                        className="loading-shimmer-container"
-                        style={styles}
-                    >
-                        <div className="loading-shimmer"></div>
+                    <animated.div style={styles} className="loading-shimmer">
+                        <div className="shimmer"></div>
                     </animated.div>
             )}
             {!shimmering && children}
@@ -46,4 +43,26 @@ const ShimmerDiv = (props) => {
     )
 }
 
-export default ShimmerDiv
+export const InputShimmerDiv = ({ ...rest }) => {
+
+    return (
+        <TextInput
+            id={rest.id}
+            className={rest.className}
+            style={{ position: 'relative' }}
+        >
+            <span style={{ color: 'transparent' }}>Shimmering</span>
+            <ShimmerDiv
+                {...rest}
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%'
+                }}
+                shimmering={true}
+            />
+        </TextInput>
+    )
+}

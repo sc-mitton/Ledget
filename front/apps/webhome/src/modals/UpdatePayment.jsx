@@ -11,15 +11,21 @@ import { withModal } from '@ledget/shared-utils'
 import {
     CardInput,
     CityStateZipInputs,
-    baseBillingSchema as schema
+    baseBillingSchema as schema,
+    FormError
 } from '@ledget/shared-ui'
+import { useGetSetupIntentQuery, useGetMeQuery } from '@features/userSlice'
 import { StripeElements } from '@ledget/shared-utils'
 
 
 const Modal = withModal((props) => {
-    const [isLoading, setIsLoading] = React.useState(false) // update to RTK query
     const [cardEntered, setCardEntered] = useState(false)
     const [cardNotEnteredError, setCardNotEnteredError] = useState(false)
+    const [cardErrMsg, setCardErrMsg] = useState(null)
+    const { data: setupIntent, isLoading } = useGetSetupIntentQuery()
+    const { data: user } = useGetMeQuery()
+    const stripe = useStripe()
+    const elements = useElements()
 
     const { register, handleSubmit, formState: { errors }, control, clearErrors } =
         useForm({ resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
@@ -29,34 +35,68 @@ const Modal = withModal((props) => {
         stateField.value && clearErrors('state')
     }, [stateField.value])
 
+    const confirmSetup = async (data) => {
+        const result = await stripe.confirmCardSetup(
+            setupIntent.client_secret,
+            {
+                payment_method: {
+                    card: elements.getElement(CardElement),
+                    billing_details: {
+                        name: data.name,
+                        email: user?.email,
+                        address: {
+                            city: data.city.split(',')[0],
+                            state: data.city.split(',')[1],
+                            postal_code: data.zip,
+                            country: data.country
+                        }
+                    }
+                }
+            }
+        )
+        if (result.setupIntent?.status === 'succeeded') {
+            setSuccess(true)
+            props.setVisible(false)
+        } else if (result.error) {
+            setCardErrMsg(result.error?.message)
+        }
+    }
+
     const submitForm = (e) => {
         e.preventDefault()
         !cardEntered && setCardNotEnteredError(true)
         handleSubmit(
-            (data) => cardEntered && onSubmit(data)
+            (data) => cardEntered && confirmSetup(data)
         )(e)
     }
 
     return (
-        <div>
+        <>
             <h2>Update Payment Method</h2>
             <form onSubmit={submitForm}>
                 <div id="update-payment-form">
                     <h4>Info</h4>
-                    <CityStateZipInputs register={register} errors={errors} field={stateField} />
+                    <CityStateZipInputs
+                        register={register}
+                        errors={errors}
+                        field={stateField}
+                        loading={isLoading}
+                    />
                     <h4>Card</h4>
                     <CardInput
                         requiredError={cardNotEnteredError}
                         onComplete={() => setCardEntered(true)}
                         clearError={() => setCardNotEnteredError(false)}
+                        loading={isLoading}
                     />
+                    {cardErrMsg && <FormError msg={cardErrMsg} />}
                 </div>
                 <SubmitForm
-                    submitting={isLoading}
+                    submitting={false}
                     onCancel={() => props.setVisible(false)}
                 />
             </form>
-        </div>
+        </>
     )
 })
 

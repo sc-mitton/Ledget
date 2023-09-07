@@ -11,7 +11,6 @@ import {
     useDeletePlaidItemMutation,
 } from '@features/plaidSlice'
 import {
-    ShimmerDiv,
     Base64Logo,
     ShadowedContainer
 } from '@components/pieces'
@@ -19,7 +18,7 @@ import { usePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@ledget/shared-utils'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { Tooltip } from '@components/pieces'
-import { SecondaryButton, GrnPrimaryButton, IconButton } from '@ledget/shared-ui'
+import { SecondaryButton, GrnPrimaryButton, IconButton, ShimmerDiv } from '@ledget/shared-ui'
 
 const DeleteContext = React.createContext()
 

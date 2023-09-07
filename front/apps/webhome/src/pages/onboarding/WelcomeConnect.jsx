@@ -9,8 +9,7 @@ import { usePlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { Base64Logo } from '@components/pieces'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
-import { LoadingRing } from '@components/pieces'
-import { SecondaryButton, ExpandableContainer } from '@ledget/shared-ui'
+import { GrnPrimaryButton, ExpandableContainer, LoadingRing, BlackPrimaryButtonWithArrow } from '@ledget/shared-ui'
 
 const InstitutionLogos = ({ plaidItems }) => {
     const { isLoading } = useGetPlaidItemsQuery()
@@ -58,25 +57,26 @@ const InstitutionLogos = ({ plaidItems }) => {
 }
 
 const BottomButtons = ({ continueDisabled }) => {
-    const { open } = usePlaidLink(onBoarding = true)
+    const { open } = usePlaidLink({ onBoarding: true })
     const navigate = useNavigate()
 
     return (
         <div className="btn-container-enabled">
-            <SecondaryButton
+            <GrnPrimaryButton
                 onClick={open}
                 aria-label="Link Account"
+                className="btn-icon-r"
             >
                 <span>
                     Add Account
                 </span>
-                <Plus width={'1em'} height={'1em'} />
-            </SecondaryButton>
-            <ExpandableContainer expanded={continueDisabled}>
+                <Plus width={'.9em'} height={'.9em'} />
+            </GrnPrimaryButton>
+            <ExpandableContainer expanded={!continueDisabled}>
                 <BlackPrimaryButtonWithArrow
                     aria-label="Next"
                     onClick={() => navigate('/welcome/add-bills')}
-                    disabled={continueDisabled}
+                    disabled={!continueDisabled}
                 >
                     Continue
                 </BlackPrimaryButtonWithArrow>
@@ -86,29 +86,25 @@ const BottomButtons = ({ continueDisabled }) => {
 }
 
 const SecurityMessage = () => (
-    <div>
-        <h4 className="spaced-header2">Let's get started by connecting your financial accounts.</h4>
-        <div className="checklist">
+    <div className="checklist">
+        <div>
+            <div><CheckMark3 /></div>
             <div>
-                <div><CheckMark3 /></div>
-                <div>
-                    Ledget doesn't store your credentials
-                </div>
-            </div>
-            <div>
-                <div><CheckMark3 /></div>
-                <div>
-                    We use Plaid to connect to your financial institutions
-                </div>
-            </div>
-            <div>
-                <div><CheckMark3 /></div>
-                <div>
-                    Disconnect your account and your financial data at any time
-                </div>
+                Ledget doesn't store your credentials
             </div>
         </div>
-        {fetchedPlaidItemsSuccess && <InstitutionLogos plaidItems={plaidItems} />}
+        <div>
+            <div><CheckMark3 /></div>
+            <div>
+                We use Plaid to connect to your financial institutions
+            </div>
+        </div>
+        <div>
+            <div><CheckMark3 /></div>
+            <div>
+                Disconnect your account and your financial data at any time
+            </div>
+        </div>
     </div>
 )
 
@@ -146,7 +142,11 @@ const WelcomeConnect = () => {
     return (
         <div className="window3">
             <h1 className="spaced-header">Welcome to Ledget!</h1>
-            <SecurityMessage />
+            <div>
+                <h4 className="spaced-header2">Let's get started by connecting your financial accounts.</h4>
+                <SecurityMessage />
+                {fetchedPlaidItemsSuccess && <InstitutionLogos plaidItems={plaidItems} />}
+            </div>
             <BottomButtons continueDisabled={continueDisabled} />
         </div>
     )

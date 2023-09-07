@@ -12,7 +12,7 @@ import Settings from './Settings'
 import Security from './Security'
 import UpdatePayment from '@modals/UpdatePayment'
 import { useGetMeQuery } from '@features/userSlice'
-import { ShimmerDiv } from '@components/pieces'
+import { ShimmerDiv } from '@ledget/shared-ui'
 
 function Profile() {
     const { isLoading: userLoading } = useGetMeQuery()

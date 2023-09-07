@@ -1,4 +1,10 @@
-.loading-shimmer-container {
+.loading-shimmer--container {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.loading-shimmer {
     position: absolute;
     left: 0;
     right: 0;
@@ -6,13 +12,13 @@
     margin: 0 auto;
     width: 100%;
     height: 100%;
-    border-radius: inherit;
     background-color: var(--window);
+    border-radius: inherit;
     z-index: 1000;
     overflow: hidden;
 }
 
-.loading-shimmer {
+.shimmer {
     width: 250%;
     height: 100%;
     border-radius: inherit;

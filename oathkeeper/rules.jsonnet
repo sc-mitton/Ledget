@@ -65,8 +65,16 @@ local GenericAuthedBase = {
   {
     id: 'user',
     match: {
-      methods: ['GET', 'PATCH'],
-      url: base_url + '/user<.*>',
+      methods: ['GET'],
+      url: base_url + '/user/me',
+    },
+  },
+  GenericAuthedBase
+  {
+    id: 'user_update',
+    match: {
+      methods: ['PATCH'],
+      url: base_url + '/user/<[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}>',
     },
   },
   GenericAuthedBase
@@ -74,7 +82,7 @@ local GenericAuthedBase = {
     id: 'plaid_link_token',
     match: {
       methods: ['GET'],
-      url: base_url + '/plaid_link_token<.*>',
+      url: base_url + '/plaid_link_token',
     },
   },
   GenericAuthedBase
@@ -95,10 +103,10 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
-    id: 'plaid_item',
+    id: 'destroy_plaid_item',
     match: {
       methods: ['DELETE'],
-      url: base_url + '/plaid_item/<.*>',
+      url: base_url + '/plaid_item/<[a-zA-Z0-9]+>',
     },
   },
   GenericAuthedBase
@@ -129,24 +137,16 @@ local GenericAuthedBase = {
   {
     id: 'categories',
     match: {
-      methods: ['GET'],
-      url: base_url + '/categories',
-    }
-  },
-  GenericAuthedBase
-  {
-    id: 'category',
-    match: {
       methods: ['POST', 'GET'],
-      url: base_url + '/category<.*>',
-    },
+      url: base_url + '/<(categories|category)>',
+    }
   },
   GenericAuthedBase
   {
     id: 'bill',
     match: {
       methods: ['GET', 'POST'],
-      url: base_url + '/bill<.*>',
+      url: base_url + '/<(bills|bill)>',
     },
   },
   GenericAuthedBase
@@ -154,15 +154,15 @@ local GenericAuthedBase = {
     id: 'transactions',
     match: {
       methods: ['POST'],
-      url: base_url + '/transactions/<.*>',
+      url: base_url + '/transactions/sync',
     },
   },
   GenericAuthedBase
   {
-    id: 'checkout_session',
+    id: 'setup_intent',
     match: {
       methods: ['GET'],
-      url: base_url + '/checkout_session',
+      url: base_url + '/setup_intent',
     },
   }
 ]

@@ -9,12 +9,12 @@ import Wells from "@assets/logos/Wells"
 import Ally from "@assets/logos/Ally"
 import Discover from "@assets/logos/Discover"
 import Visa from "@assets/logos/Visa"
-import formatDateOrRelativeDate from "@utils/convertTImestamp"
 import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import Header from './Header'
 import Options from "@components/dropdowns/Options"
 import ItemOptions from "./ItemOptions"
 import { Tooltip } from "@components/pieces"
+import { formatDateOrRelativeDate } from "@ledget/shared-utils"
 import { NarrowButton, ExpandableContainer, ExpandButton, GrnSlimButton } from "@ledget/shared-ui"
 
 // TODO: eventually these will go away, data will be pulled from backend

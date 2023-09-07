@@ -32,7 +32,6 @@ export const ProvenceSelect = ({ field, errors }) => {
                 <>
                     <TextInput ref={inputRef}>
                         <Combobox.Input
-                            ref={field?.ref}
                             onChange={(event) => setQuery(event.target.value)}
                             displayValue={(provence) => provence?.abbreviation}
                             onFocus={() => setFocused(true)}

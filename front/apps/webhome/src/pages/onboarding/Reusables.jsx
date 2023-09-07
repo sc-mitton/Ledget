@@ -11,7 +11,7 @@ import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { GrnPrimaryButton, BlackSubmitWithArrow, SlimButton } from '@ledget/shared-ui'
+import { GreenCheckSubmitButton, BlackSubmitWithArrow, SlimButton } from '@ledget/shared-ui'
 
 
 export const TabView = ({ children }) => {
@@ -142,15 +142,15 @@ export const BottomButtons = ({ expanded }) => {
         <div
             className={`btn-container ${expanded ? 'expanded' : ''}`}
         >
-            <GrnPrimaryButton
+            <GreenCheckSubmitButton
                 style={{ visibility: expanded ? 'visible' : 'hidden' }}
                 disabled={!expanded}
                 aria-label="Add Category"
                 type="submit"
+                className="btn-icon-r"
             >
                 <span>Save</span>
-                <CheckMark width={'.8em'} height={'.8em'} />
-            </GrnPrimaryButton>
+            </GreenCheckSubmitButton>
             <BlackSubmitWithArrow
                 style={{
                     visibility: itemsEmpty ? 'hidden' : 'visible'

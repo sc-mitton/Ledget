@@ -1,5 +1,5 @@
 .limit-amount--container svg {
-    opacity: .5;
+    opacity: .4;
     transition: opacity .2s ease;
 }
 
@@ -18,10 +18,6 @@
     right: 8px;
     border-radius: var(--border-radius1);
     padding: 2px;
-}
-
-.increment-arrows--container svg {
-    margin: 2px;
 }
 
 .increment-arrows--container button {

@@ -6,6 +6,7 @@ import { object, string } from 'yup'
 import './text.css'
 import { FormErrorTip, FormError } from '../pieces-lib/pieces'
 import { ProvenceSelect } from './dropdownInputs'
+import { InputShimmerDiv } from '../pieces-lib/shimmer'
 
 
 export const TextInput = forwardRef((props, ref) => {
@@ -47,7 +48,7 @@ export const MenuTextInput = (props) => {
     )
 }
 
-export const CardInput = ({ requiredError, onComplete, clearError }) => {
+export const CardInput = ({ requiredError, onComplete, clearError, loading }) => {
     let [cardFocus, setCardFocus] = useState(false)
 
     const cardElementOptions = {
@@ -75,22 +76,24 @@ export const CardInput = ({ requiredError, onComplete, clearError }) => {
     }
 
     return (
-        <div className={`card-container${cardFocus ? ' focused' : ''}`}>
-            <CardElement
-                onBlur={() => setCardFocus(false)}
-                onFocus={() => setCardFocus(true)}
-                onChange={(e) => {
-                    if (e.complete) {
-                        clearError()
-                        onComplete()
-                    } else {
-                        return
-                    }
-                }}
-                options={cardElementOptions}
-            />
-            {requiredError && <FormErrorTip errors={[{ type: 'required' }]} />}
-        </div>
+        <>
+            {loading
+                ? <InputShimmerDiv />
+                : <div className={`card-container${cardFocus ? ' focused' : ''}`}>
+                    <CardElement
+                        onBlur={() => setCardFocus(false)}
+                        onFocus={() => setCardFocus(true)}
+                        onChange={(e) => {
+                            if (!e.complete) { return }
+                            clearError()
+                            onComplete()
+                        }}
+                        options={cardElementOptions}
+                    />
+                    {requiredError && <FormErrorTip errors={[{ type: 'required' }]} />}
+                </div>
+            }
+        </>
     )
 }
 
@@ -107,7 +110,7 @@ export const CityInput = forwardRef((props, ref) => {
                 ref={ref}
                 {...rest}
             />
-            <FormErrorTip errors={[errors.name]} />
+            <FormErrorTip errors={[errors.city]} />
         </TextInput>
     )
 })
@@ -153,7 +156,7 @@ export const ZipInput = forwardRef((props, ref) => {
     )
 })
 
-export const CityStateZipInputs = ({ errors, register, field }) => {
+export const CityStateZipInputs = ({ errors, register, field, loading }) => {
 
     const hasErrorMsg = (field) => {
         return errors[field]?.message && !errors[field]?.message.includes('required')
@@ -163,16 +166,20 @@ export const CityStateZipInputs = ({ errors, register, field }) => {
         <>
             <div id='location-inputs-container' >
                 <div id="city-container">
-                    <CityInput {...register('city')} errors={errors} />
+                    {loading
+                        ? <InputShimmerDiv />
+                        : <CityInput {...register('city')} errors={errors} />
+                    }
                 </div>
                 <div id="state-container">
-                    <ProvenceSelect
-                        field={field}
-                        errors={[errors.state]}
-                    />
+                    {loading
+                        ? <InputShimmerDiv />
+                        : <ProvenceSelect field={field} errors={[errors.state]} />}
                 </div>
                 <div id="zip-container">
-                    <ZipInput {...register('zip')} errors={errors} />
+                    {loading
+                        ? <InputShimmerDiv />
+                        : <ZipInput {...register('zip')} errors={errors} />}
                 </div>
             </div>
             {(hasErrorMsg('city') || hasErrorMsg('state') || hasErrorMsg('zip')) &&
@@ -200,5 +207,4 @@ export const baseBillingSchema = object({
     zip: string()
         .required()
         .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
-
 })

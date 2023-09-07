@@ -5,8 +5,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import './styles/Account.css'
 import { CardIcon } from '@ledget/shared-assets'
 import { useGetMeQuery, useGetPaymentMethodQuery } from '@features/userSlice'
-import { ShimmerDiv } from '@components/pieces'
-import { GrnSlimButton } from '@ledget/shared-ui'
+import { GrnSlimButton, ShimmerDiv } from '@ledget/shared-ui'
 
 const Info = () => {
     const { data: user } = useGetMeQuery()

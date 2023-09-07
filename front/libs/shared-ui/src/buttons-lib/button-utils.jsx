@@ -1,15 +1,19 @@
 import React, { forwardRef, useRef } from 'react'
 
 import { LoadingRing } from '../pieces-lib/pieces'
-import { ArrowIcon } from '@ledget/shared-assets'
+import { ArrowIcon, CheckMark } from '@ledget/shared-assets'
 
 export const BaseButton = forwardRef((props, ref) => {
-    const { className, children, ...rest } = props
+    const { className, children, onClick, ...rest } = props
     const localRef = useRef(null)
     const r = ref || localRef
 
     return (
-        <button ref={r} className={`btn ${className}`} {...rest}>
+        <button
+            ref={r}
+            className={`btn ${className}`}
+            {...rest}
+        >
             {children}
         </button>
     )
@@ -50,13 +54,28 @@ export const withArrow = (Component) => {
     }
 }
 
+export const withCheckMark = (Component) => {
+    return (props) => {
+        const { children, className, disabledHover, stroke, ...rest } = props
+        return (
+            <Component
+                className={`scale-icon-btn ${className} ${disabledHover ? 'disabled-hover' : ''}`}
+                {...rest}
+            >
+                {children}
+                <CheckMark width={'.8em'} height={'.8em'} />
+            </Component>
+        )
+    }
+}
+
 export const withLoadingRing = (Component) => {
     return (props) => {
         const { children, submitting, ...rest } = props
 
         return (
             <LoadingRing loading={submitting}>
-                <Component disableHover={submitting} {...rest}>
+                <Component {...rest}>
                     {children}
                 </Component>
             </LoadingRing>

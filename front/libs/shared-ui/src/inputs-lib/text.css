@@ -96,19 +96,21 @@
     width: 100%;
 }
 
+#location-inputs-container>div:not(:last-child) {
+    margin-right: 12px;
+}
+
 #city-container,
 #city-error {
     flex: 1;
 }
 
 #state-error {
-    margin: 0 8px;
     width: 25%;
     min-width: 75px;
 }
 
 #state-container {
-    margin: 0 8px;
     width: 30%;
     min-width: 75px;
     position: relative;

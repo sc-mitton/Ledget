@@ -61,10 +61,36 @@
       "id": "user",
       "match": {
          "methods": [
-            "GET",
+            "GET"
+         ],
+         "url": "https://localhost/api/v1/user/me"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "user_update",
+      "match": {
+         "methods": [
             "PATCH"
          ],
-         "url": "https://localhost/api/v1/user<.*>"
+         "url": "https://localhost/api/v1/user/<[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}>"
       },
       "mutators": [
          {
@@ -91,7 +117,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/plaid_link_token<.*>"
+         "url": "https://localhost/api/v1/plaid_link_token"
       },
       "mutators": [
          {
@@ -167,12 +193,12 @@
       "authorizer": {
          "handler": "allow"
       },
-      "id": "plaid_item",
+      "id": "destroy_plaid_item",
       "match": {
          "methods": [
             "DELETE"
          ],
-         "url": "https://localhost/api/v1/plaid_item/<.*>"
+         "url": "https://localhost/api/v1/plaid_item/<[a-zA-Z0-9]+>"
       },
       "mutators": [
          {
@@ -278,37 +304,10 @@
       "id": "categories",
       "match": {
          "methods": [
-            "GET"
-         ],
-         "url": "https://localhost/api/v1/categories"
-      },
-      "mutators": [
-         {
-            "handler": "id_token"
-         }
-      ],
-      "version": "v0.36.0-beta.4"
-   },
-   {
-      "authenticators": [
-         {
-            "forward_http_headers": [
-               "X-Forwarded-For",
-               "Authorization"
-            ],
-            "handler": "cookie_session"
-         }
-      ],
-      "authorizer": {
-         "handler": "allow"
-      },
-      "id": "category",
-      "match": {
-         "methods": [
             "POST",
             "GET"
          ],
-         "url": "https://localhost/api/v1/category<.*>"
+         "url": "https://localhost/api/v1/<(categories|category)>"
       },
       "mutators": [
          {
@@ -336,7 +335,7 @@
             "GET",
             "POST"
          ],
-         "url": "https://localhost/api/v1/bill<.*>"
+         "url": "https://localhost/api/v1/<(bills|bill)>"
       },
       "mutators": [
          {
@@ -363,7 +362,34 @@
          "methods": [
             "POST"
          ],
-         "url": "https://localhost/api/v1/transactions/<.*>"
+         "url": "https://localhost/api/v1/transactions/sync"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "setup_intent",
+      "match": {
+         "methods": [
+            "GET"
+         ],
+         "url": "https://localhost/api/v1/setup_intent"
       },
       "mutators": [
          {

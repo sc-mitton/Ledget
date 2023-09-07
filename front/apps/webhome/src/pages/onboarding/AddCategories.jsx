@@ -13,10 +13,9 @@ import { Bell, BellOff, CheckMark } from '@ledget/shared-assets'
 import { ShadowedContainer } from '@components/pieces'
 import { DeleteButton, GripButton } from '@components/buttons'
 import { EmojiComboText, AddAlert, LimitAmountInput, PeriodSelect } from '@components/inputs'
-import { formatName, formatRoundedCurrency, getLongestLength } from '@utils'
 import { schema as categorySchema } from '@modals/CreateCategory'
 import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
-import { shuffleArray } from '@utils'
+import { formatName, formatRoundedCurrency, getLongestLength, shuffleArray } from '@ledget/shared-utils'
 import { CloseButton, FormErrorTip } from '@ledget/shared-ui'
 
 const yearRecommendationsIndexes = Array.from({ length: yearRecommendations.length - 1 }, (_, i) => i + 1)

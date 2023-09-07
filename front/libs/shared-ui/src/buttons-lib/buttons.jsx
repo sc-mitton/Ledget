@@ -2,7 +2,7 @@ import React, { forwardRef, useRef } from 'react';
 
 import './buttons.css'
 import { ExpandIcon, ArrowIcon, FacebookLogo, CloseIcon, GoogleLogo } from '@ledget/shared-assets'
-import { BaseButton, ButtonWithClassName, withArrow, withLoadingRing } from './button-utils'
+import { ButtonWithClassName, withArrow, withCheckMark, withLoadingRing } from './button-utils'
 
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')
 export const BlackPrimaryButton = ButtonWithClassName('btn-chcl btn3')
@@ -26,6 +26,7 @@ export const BlackPillButtonWithArrow = withArrow(BlackPillButton)
 export const BlackPrimaryButtonWithArrow = withArrow(BlackPrimaryButton)
 export const BlackSubmitWithArrow = withLoadingRing(withArrow(BlackPrimaryButton))
 export const GreenSubmitButton = withLoadingRing(GrnPrimaryButton)
+export const GreenCheckSubmitButton = withCheckMark(GreenSubmitButton)
 
 export const SmallArrowButton = ({ type, ...rest }) => (
   <button className="arrow-nav btn-scale2" {...rest}>

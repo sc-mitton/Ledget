@@ -4,7 +4,7 @@ import { useController } from 'react-hook-form'
 
 import './styles/Text.css'
 import Emoji from './Emoji'
-import { formatCurrency, formatRoundedCurrency, makeIntCurrencyFromStr } from '@utils'
+import { formatCurrency, formatRoundedCurrency, makeIntCurrencyFromStr } from '@ledget/shared-utils'
 import { IconButton2, TextInput, FormErrorTip, FormError } from '@ledget/shared-ui'
 import { ArrowIcon } from '@ledget/shared-assets'
 
@@ -150,11 +150,11 @@ export const LimitAmountInput = ({ control, children }) => {
     )
 }
 
-const DollarInput = ({ field, name }) => {
+const DollarInput = ({ field, name, ...rest }) => {
     const [val, setVal] = useState(undefined)
 
     return (
-        <>
+        <TextInput className="limit-amount--container" {...rest}>
             <input
                 name={name}
                 type="text"
@@ -181,7 +181,7 @@ const DollarInput = ({ field, name }) => {
                 size="14"
             />
             <IncrementDecrementButton val={val} setVal={setVal} field={field} />
-        </>
+        </TextInput>
     )
 }
 
@@ -205,16 +205,19 @@ export const DollarRangeInput = ({ rangeMode, control, errors = {} }) => {
             <div className="dollar-range-input--container">
                 {rangeMode &&
                     <>
-                        <TextInput style={{ marginRight: '8px' }}>
-                            <DollarInput field={lowerField} name={'lower_amount'} />
-                            <FormErrorTip errors={[errors.lower_amount]} />
-                        </TextInput>
+                        <DollarInput
+                            style={{ marginRight: '8px' }}
+                            field={lowerField}
+                            name={'lower_amount'}
+                        />
+                        <FormErrorTip errors={[errors.lower_amount]} />
                     </>
                 }
-                <TextInput>
-                    <DollarInput field={upperField} name={'upper_amount'} />
-                    <FormErrorTip errors={[errors.upper_amount]} />
-                </TextInput>
+                <DollarInput
+                    field={upperField}
+                    name={'upper_amount'}
+                />
+                <FormErrorTip errors={[errors.upper_amount]} />
                 {(errors.lower_amount?.type !== 'required' && errors.lower_amount?.message !== 'required')
                     && <FormError msg={errors.lower_amount?.message} />}
             </div>

@@ -19,7 +19,7 @@ import { Bell, BellOff } from '@ledget/shared-assets'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { billSchema, extractBill } from '@modals/CreateBill'
 import { DeleteButton } from '@components/buttons'
-import { formatName, getLongestLength } from '@utils'
+import { formatName, getLongestLength } from '@ledget/shared-utils'
 import { useGetBillRecommendationsQuery } from '@features/billSlice'
 import { CloseButton, Checkbox } from '@ledget/shared-ui'
 

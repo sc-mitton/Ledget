@@ -7,7 +7,7 @@ from .views.service import (
     PriceView,
     CreateSubscriptionView,
     CreateCustomerView,
-    CreateCheckoutSession
+    GetSetupIntent
 )
 
 
@@ -19,7 +19,7 @@ urlpatterns = [
      path('payment_methods', GetPaymentMethodsView.as_view(), name='payment_methods'), # noqa
      path('customer', CreateCustomerView.as_view(), name='customer'),
      path('subscription', CreateSubscriptionView.as_view(), name='subscription'), # noqa
-     path('checkout_session', CreateCheckoutSession.as_view(), name='checkout_session'), # noqa
+     path('setup_intent', GetSetupIntent.as_view(), name='setup_intent'), # noqa
 
      path('', include('budget.urls')),
      path('', include('financials.urls')),

@@ -11,6 +11,15 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query: () => 'payment_methods',
             keepUnusedDataFor: 180,
         }),
+        getSetupIntent: builder.query({
+            query: () => ({
+                url: 'setup_intent',
+                method: 'GET',
+            }),
+            onSuccess: (data) => {
+                sessionStorage.setItem('setupIntent', JSON.stringify(data))
+            },
+        }),
         updateUser: builder.mutation({
             query: ({ data, userId }) => ({
                 url: `user/${userId}`,
@@ -19,6 +28,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['user'],
         }),
+
     })
 })
 
@@ -26,4 +36,5 @@ export const {
     useGetMeQuery,
     useGetPaymentMethodQuery,
     useUpdateUserMutation,
+    useGetSetupIntentQuery,
 } = extendedApiSlice

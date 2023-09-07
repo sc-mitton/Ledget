@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './pieces.css'
+import './styles/pieces.css'
 import { Alert2 } from '@ledget/shared-assets'
 
 export const ExpandableContainer = ({ expanded, children }) => (
