@@ -6,7 +6,7 @@ import { animated } from '@react-spring/web'
 import './styles/Window.css'
 import NotFound from '@pages/notFound/NotFound'
 import { usePillAnimation } from '@utils/hooks'
-import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@assets/icons'
+import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/shared-assets'
 
 const Header = () => {
     const ref = useRef(null)

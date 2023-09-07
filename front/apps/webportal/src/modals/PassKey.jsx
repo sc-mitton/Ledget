@@ -1,8 +1,8 @@
 import React from 'react'
 
-import withModal from '@utils/withModal'
+import { withModal } from '@ledget/shared-utils'
 import './PassKey.css'
-import { PasskeyIcon } from "@assets/icons"
+import { PasskeyIcon } from "@ledget/shared-assets"
 
 function Content() {
     return (

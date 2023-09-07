@@ -1,22 +1,20 @@
 import React, { forwardRef, useRef } from 'react';
 
 import './buttons.css'
-import Expand from '../assets/Expand'
-import Arrow from '../assets/Arrow'
-import FacebookLogo from '../assets/FacebookLogo'
-import Close from '../assets/Close'
-import GoogleLogo from '../assets/GoogleLogo'
+import { ExpandIcon, ArrowIcon, FacebookLogo, CloseIcon, GoogleLogo } from '@ledget/shared-assets'
 import { LoadingRing } from '../pieces-lib/pieces'
 
-const BaseButton = (props) => {
+const BaseButton = forwardRef((props, ref) => {
   const { className, children, ...rest } = props
+  const localRef = useRef(null)
+  const r = ref || localRef
 
   return (
-    <button className={`btn ${className}`} {...rest}>
+    <button ref={r} className={`btn ${className}`} {...rest}>
       {children}
     </button>
   )
-}
+})
 
 const ButtonWithClassName = (className) => forwardRef((props, ref) => {
   const { children, className: classNameInner, ...rest } = props
@@ -41,7 +39,7 @@ export const withArrow = (Component) => {
         {...rest}
       >
         {children}
-        <Arrow
+        <ArrowIcon
           width={'.8em'}
           height={'.8em'}
           rotation={-90}
@@ -92,20 +90,21 @@ export const GreenSubmitButton = withLoadingRing(GrnPrimaryButton)
 
 export const SmallArrowButton = ({ type, ...rest }) => (
   <button className="arrow-nav btn-scale2" {...rest}>
-    <Arrow stroke='var(--m-text-gray)' scale={.8} rotation={type === "back" ? 90 : -90} />
+    <ArrowIcon stroke='var(--m-text-gray)' scale={.8} rotation={type === "back" ? 90 : -90} />
   </button>
 )
 
 export const ExpandButton = ({ onClick, flipped, ...rest }) => (
   <button
     className={`btn-sp btn-discreet expand-button `}
+    id="expand-button"
     tabIndex={0}
     onClick={() => onClick()}
     aria-label="Expand"
     {...rest}
   >
     <div className={`expand-button--icon ${flipped ? 'flipped' : ''} `}>
-      <Expand stroke={"var(--faded-text)"} />
+      <ExpandIcon stroke={"var(--faded-text)"} />
     </div >
   </button>
 )
@@ -145,7 +144,7 @@ export const CloseButton = forwardRef((props, ref) => {
       }}
       {...rest}
     >
-      <Close />
+      <CloseIcon />
     </button>
   )
 })

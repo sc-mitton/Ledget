@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import './styles/Welcome.css'
 import './styles/Main.css'
-import { Plus, Arrow, CheckMark3 } from '@assets/icons'
+import { Plus, CheckMark3 } from '@ledget/shared-assets'
 import { usePlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { Base64Logo } from '@components/pieces'

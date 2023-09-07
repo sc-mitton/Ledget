@@ -2,7 +2,7 @@ import React from 'react'
 
 import { AnimatePresence, motion } from 'framer-motion'
 
-import { Alert2 } from '@assets/icons'
+import { Alert2 } from '@ledget/shared-assets'
 import "./pieces.css"
 
 export const FormErrorTip = ({ error }) => {

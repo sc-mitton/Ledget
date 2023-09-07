@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 
-import { Arrow } from '@assets/icons'
 import ComboSelect from './ComboSelect'
 import { DropAnimation } from '@utils'
 import { InputButton } from '@ledget/shared-ui'
+import { ArrowIcon } from '@ledget/shared-assets'
 
 const options = [
     { id: 1, value: 'month', label: 'Month', default: true },
@@ -58,7 +58,7 @@ const PeriodSelect = (props) => {
                         >
                             {options.find((option) => option.value === localValue)?.label}
                             {
-                                <Arrow
+                                <ArrowIcon
                                     width={'.8em'}
                                     height={'.8em'}
                                     stroke={`var(--m-text-gray)`}

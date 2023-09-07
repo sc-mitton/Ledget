@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
-export default FadeAnimation = ({ children }) => {
+const FadeAnimation = ({ children }) => {
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -15,3 +15,5 @@ export default FadeAnimation = ({ children }) => {
         </motion.div >
     )
 }
+
+export default FadeAnimation

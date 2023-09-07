@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 
-import { Edit, Split, Info as DetailsIcon, Snooze } from "@assets/icons"
+import { Edit, Split, Info as DetailsIcon, Snooze } from "@ledget/shared-assets"
 
 
 const ItemOptionsMenu = () => {

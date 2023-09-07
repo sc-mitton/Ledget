@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 
 import './style/Login.css'
-import { BackArrow } from "@assets/icons"
+import { BackArrow } from "@ledget/shared-assets"
 import SocialAuth from "./SocialAuth"
 import PasswordInput from "./inputs/PasswordInput"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
@@ -15,7 +15,7 @@ import Checkbox from "./inputs/Checkbox"
 import CsrfToken from "./inputs/CsrfToken"
 import { FormError, WindowLoadingBar } from "@pieces"
 import { LoginFlowContext, LoginFlowContextProvider } from "@context/Flow"
-import { GrnWideButton, IconButton } from "@ledget/shared-ui"
+import { GrnWideButton, IconButton, TextInput } from "@ledget/shared-ui"
 
 const emailContext = createContext({})
 
@@ -72,7 +72,7 @@ const EmailForm = () => {
             noValidate
         >
             <div>
-                <div className="input-container">
+                <TextInput>
                     <input
                         type="email"
                         id="email"
@@ -84,7 +84,7 @@ const EmailForm = () => {
                             emailRef.current = e
                         }}
                     />
-                </div>
+                </TextInput>
                 {errors['email'] && <FormError msg={errors['email'].message} />}
                 <div id="remember-me-checkbox-container">
                     <Checkbox

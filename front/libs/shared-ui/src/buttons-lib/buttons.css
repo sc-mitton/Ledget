@@ -51,12 +51,6 @@
     justify-content: center;
 }
 
-.btn-sp {
-    border-radius: var(--border-radius2);
-    font-weight: 500;
-    padding: 4px 8px;
-}
-
 .btn-icon {
     padding: 2px;
     border-radius: var(--border-radius1);
@@ -202,6 +196,9 @@
     margin: 0 auto;
     margin-top: 8px;
     margin-bottom: 8px;
+    border-radius: var(--border-radius2);
+    font-weight: 500;
+    padding: 6px 10px;
 }
 
 .expand-button>div {

@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { animated } from '@react-spring/web'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Profile1, Shield, Settings, Link } from '@assets/icons'
+import { Profile1, Shield, Settings, Link } from '@ledget/shared-assets'
 import { usePillAnimation } from '@utils/hooks'
 import { useGetMeQuery } from '@features/userSlice'
 import { useEffect } from 'react'

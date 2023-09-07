@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import "./styles/Logout.css"
 import { ory } from '@flow/ory'
-import { withSmallModal } from '@components/hocs'
+import { withSmallModal } from '@ledget/shared-utils'
 import { SecondaryButton, GreenSubmitButton } from '@ledget/shared-ui'
 
 function Logout(props) {

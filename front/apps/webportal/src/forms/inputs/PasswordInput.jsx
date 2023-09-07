@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-import { VisibilityIcon } from "@assets/icons"
+import { VisibilityIcon } from "@ledget/shared-assets"
 import './styles/PasswordInput.css'
 
 const PasswordInput = React.forwardRef(({ inputType, ...props }, ref) => {

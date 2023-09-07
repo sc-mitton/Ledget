@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 import './styles/MonthPicker.css'
-import { Arrow } from '@assets/icons'
 import { monthMappings } from '@assets/data/monthMappings'
 import DropAnimation from '@utils/DropAnimation'
 import { SmallArrowButton, IconButton } from '@ledget/shared-ui'
+import { ArrowIcon } from '@ledget/shared-assets'
 
 const MonthPicker = () => {
     const dates = {
@@ -126,7 +126,7 @@ const MonthPicker = () => {
                     onClick={handleArrowClick}
                     aria-label="Open month picker"
                 >
-                    <Arrow width={'1.3em'} height={'1.3em'} />
+                    <ArrowIcon width={'1.3em'} height={'1.3em'} />
                 </IconButton>
             </div>
             <DropAnimation

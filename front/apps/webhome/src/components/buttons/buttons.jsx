@@ -1,8 +1,7 @@
 import React from 'react'
 
 import './buttons.css'
-import { Delete } from '@assets/icons'
-import { Grip } from '@assets/icons'
+import { Delete, Grip } from '@ledget/shared-assets'
 
 export const DeleteButton = ({ onClick }) => (
     <div>

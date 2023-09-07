@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { withModal } from '@components/hocs'
+import { withModal } from '@ledget/shared-utils'
 
 const Modal = withModal(() => {
     return (

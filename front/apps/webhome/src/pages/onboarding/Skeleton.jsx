@@ -1,13 +1,13 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
 
 import './styles/Skeleton.css'
-import logoIcon from '@assets/icons/src/logoIcon.svg'
+import { LedgetLogoIcon } from '@ledget/shared-assets'
 
 const Header = () => (
     <header>
         <div className="header-container">
             <div className="header-logo">
-                <img src={logoIcon} alt="Ledget Logo" />
+                <LedgetLogoIcon />
             </div>
             <div className="header-right">
             </div>

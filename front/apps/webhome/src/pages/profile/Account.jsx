@@ -3,9 +3,10 @@ import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 import './styles/Account.css'
-import { CardIcon } from '@assets/icons'
+import { CardIcon } from '@ledget/shared-assets'
 import { useGetMeQuery, useGetPaymentMethodQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@components/pieces'
+import { GrnSlimButton } from '@ledget/shared-ui'
 
 const Info = () => {
     const { data: user } = useGetMeQuery()
@@ -122,7 +123,10 @@ const Account = () => {
 
     return (
         <>
-            <ShimmerDiv shimmering={isLoading} >
+            <ShimmerDiv
+                shimmering={isLoading}
+                style={{ borderRadius: 'var(--border-radius3)' }}
+            >
                 <div id="account-page" className="padded-content">
                     <div className="header">
                         <h1>Account</h1>

@@ -7,7 +7,9 @@
   "scripts": {},
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",
+    "@ledget/shared-assets": "workspace:^",
     "@ledget/shared-ui": "workspace:^",
+    "@ledget/shared-utils": "workspace:^",
     "@ory/client": "^1.1.28",
     "@ory/integrations": "^1.1.4",
     "@stripe/react-stripe-js": "^2.0.0",

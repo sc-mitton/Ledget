@@ -7,7 +7,7 @@ import { object, string, boolean, number } from "yup"
 
 import './styles/Forms.css'
 import SubmitForm from '@components/pieces/SubmitForm'
-import { withModal } from '@components/hocs'
+import { withModal } from '@ledget/shared-utils'
 import {
     EmojiComboText,
     DollarRangeInput,

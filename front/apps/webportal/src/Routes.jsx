@@ -10,7 +10,7 @@ import CheckoutWindow from '@forms/Checkout'
 import VerificationWindow from '@forms/Verification'
 import RecoveryWindow from '@forms/Recovery'
 import Header from './Header'
-import { AuthenticatedRoute, UnauthenticatedRoute } from './utils/PrivateRoutes'
+import { AuthenticatedRoute, UnauthenticatedRoute } from '@utils'
 
 function AnimatedRoutes() {
     const location = useLocation()

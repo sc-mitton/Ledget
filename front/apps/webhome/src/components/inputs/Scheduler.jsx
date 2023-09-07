@@ -4,9 +4,10 @@ import './styles/Dropdowns.css'
 import './styles/Scheduler.css'
 import { DropAnimation } from '@utils'
 import Radios from './Radios'
-import { Arrow, Calendar } from '@assets/icons'
+import { Calendar } from '@ledget/shared-assets'
 import { useClickClose } from '@utils'
 import { FormErrorTip } from '@components/pieces'
+import { ArrowIcon } from '@ledget/shared-assets'
 
 const pickerContext = React.createContext()
 
@@ -126,7 +127,7 @@ const Button = ({ children, ...props }) => {
                         {placeholder || 'Schedule'}
                     </span>
                 </div>
-                <Arrow
+                <ArrowIcon
                     width={'.8em'}
                     height={'.8em'}
                     stroke={

@@ -33,8 +33,8 @@ function SocialAuth({ flow, submit, csrf }) {
                         "aria-label": `${node.attributes.value} login`
                     }
                     return (
-                        node.attributes.value === 'facebook' && <FacebookButton {...props} />
-                        || node.attributes.value === 'google' && <GoogleButton {...props} />
+                        node.attributes.value === 'facebook' && <FacebookButton {...props} key={'facebook-login'} />
+                        || node.attributes.value === 'google' && <GoogleButton {...props} key={'google-login'} />
                     )
                 })}
             </>

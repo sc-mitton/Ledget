@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { filterNodesByGroups, isUiNodeInputAttributes } from '@ory/integrations/ui'
 
-import { PasskeyIcon, HelpIcon } from "@assets/icons"
+import { PasskeyIcon, HelpIcon } from "@ledget/shared-assets"
 import PasskeyModal from "@modals/PassKey"
 import './styles/PasswordlessFormSection.css'
 import { GrayWideButton } from '@ledget/shared-ui'

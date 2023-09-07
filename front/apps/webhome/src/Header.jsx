@@ -11,9 +11,9 @@ import {
     Profile2,
     Settings as SettingsIcon,
     Help as HelpIcon,
-    LogoutIcon
-} from '@assets/icons'
-import logoIcon from '@assets/icons/src/logoIcon.svg'
+    LogoutIcon,
+    LedgetLogoIcon
+} from '@ledget/shared-assets'
 import DropAnimation from '@utils/DropAnimation'
 import Logout from '@modals/Logout'
 import Help from '@modals/Help'
@@ -199,9 +199,7 @@ function Header({ isNarrow }) {
                 style={{ zIndex: zIndex }}
             >
                 <div className="header-container">
-                    <div className="header-logo">
-                        <img src={logoIcon} alt="Ledget Logo" />
-                    </div>
+                    <div className="header-logo"><LedgetLogoIcon /></div>
                     <div className="header-right">
                         <div>
                             <Navigation isNarrow={isNarrow} />

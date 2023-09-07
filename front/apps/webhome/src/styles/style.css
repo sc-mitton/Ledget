@@ -441,16 +441,6 @@ button.pulse:hover {
     margin: 0 2px;
 }
 
-/****/
-
-/* Other */
-
-.btn-slim {
-    padding: 0px 8px;
-    border-radius: var(--border-radius2);
-    font-weight: 500;
-}
-
 .budget-item-name {
     padding: 2px 12px;
     border-radius: var(--border-radius2);

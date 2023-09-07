@@ -7,11 +7,9 @@ export { BillScheduler } from './Scheduler';
 export { default as PeriodSelect } from './PeriodSelect';
 
 export {
-    TextInput,
     EmojiComboText,
     LimitAmountInput,
-    DollarRangeInput,
-    MenuTextInput,
+    DollarRangeInput
 } from './Text';
 
 export { default as Emoji } from './Emoji';

@@ -1,5 +1,5 @@
 import React from 'react'
-import { withModal } from '@components/hocs'
+import { withModal } from '@ledget/shared-utils'
 
 function HelpContent(props) {
 

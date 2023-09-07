@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react'
 
-import { Plus, Edit } from '@assets/icons'
+import { Plus, Edit, Delete } from '@ledget/shared-assets'
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
 import './styles/Connections.css'
 import { Desert } from '@components/pieces'
-import { Delete } from '@assets/icons'
 import {
     useGetPlaidItemsQuery,
     useDeletePlaidItemMutation,
@@ -17,7 +16,7 @@ import {
     ShadowedContainer
 } from '@components/pieces'
 import { usePlaidLink } from '@utils/hooks'
-import { withSmallModal } from '@components/hocs'
+import { withSmallModal } from '@ledget/shared-utils'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { Tooltip } from '@components/pieces'
 import { SecondaryButton, GrnPrimaryButton, IconButton } from '@ledget/shared-ui'

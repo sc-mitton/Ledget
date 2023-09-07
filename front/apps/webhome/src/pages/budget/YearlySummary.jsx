@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Recommendations as StarsIcon } from '@assets/icons'
+import { Recommendations as StarsIcon } from '@ledget/shared-assets'
 import { YearSummaryHeader } from './SummaryHeaders'
 
 const YearlySummary = () => {

@@ -10,6 +10,7 @@
   "main": "./index.js",
   "license": "ISC",
   "dependencies": {
+    "@ledget/shared-assets": "workspace:^",
     "react": "^18.2.0"
   }
 }

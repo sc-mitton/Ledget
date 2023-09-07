@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { BackArrow } from '@assets/icons'
+import { BackArrow } from '@ledget/shared-assets'
 import './styles/BackButton.css'
 
 const BackButton = ({ onClick, props }) => {

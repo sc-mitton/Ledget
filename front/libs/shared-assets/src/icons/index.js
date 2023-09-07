@@ -1,4 +1,3 @@
-export { default as Arrow } from './src/Arrow.jsx';
 export { default as BackArrow } from './src/BackArrow.jsx';
 export { default as Bell } from './src/Bell.jsx';
 export { default as BellOff } from './src/BellOff.jsx';

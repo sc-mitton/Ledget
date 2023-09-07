@@ -1,9 +1,0 @@
-export { default as BackArrow } from './src/BackArrow.jsx';
-export { default as Close } from './src/Close.jsx';
-export { default as HelpIcon } from './src/HelpIcon.jsx';
-export { default as PasskeyIcon } from './src/PasskeyIcon.jsx';
-export { default as Replay } from './src/Replay.jsx';
-export { default as Star } from './src/Star.jsx';
-export { default as SuccessIcon } from './src/SuccessIcon.jsx';
-export { default as VisibilityIcon } from './src/VisibilityIcon.jsx';
-export { default as Alert2 } from './src/Alert2.jsx';

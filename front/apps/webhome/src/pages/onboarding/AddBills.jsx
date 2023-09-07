@@ -16,7 +16,7 @@ import {
     Checkbox
 } from '@components/inputs'
 import { ShadowedContainer, DollarCentsRange } from '@components/pieces'
-import { Bell, BellOff } from '@assets/icons'
+import { Bell, BellOff } from '@ledget/shared-assets'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { billSchema, extractBill } from '@modals/CreateBill'
 import { DeleteButton } from '@components/buttons'
