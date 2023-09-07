@@ -58,7 +58,7 @@ const InstitutionLogos = ({ plaidItems }) => {
 }
 
 const BottomButtons = ({ continueDisabled }) => {
-    const { open } = usePlaidLink()
+    const { open } = usePlaidLink(onBoarding = true)
     const navigate = useNavigate()
 
     return (

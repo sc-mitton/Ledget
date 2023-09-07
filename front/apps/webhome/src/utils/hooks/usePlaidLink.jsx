@@ -7,7 +7,7 @@ import {
     useAddNewPlaidItemMutation
 } from '@features/plaidSlice'
 
-function usePlaidLink() {
+function usePlaidLink(onBoarding = false) {
     const [addNewPlaidItem] = useAddNewPlaidItemMutation()
     const [plaidToken, setPlaidToken] = useState(null)
     const [isOauthRedirect, setIsOauthRedirect] = useState(false)
@@ -25,7 +25,7 @@ function usePlaidLink() {
             setPlaidToken(JSON.parse(token))
         } else {
             console.log('fetching token')
-            fetchToken({ isOnboarding: true })
+            fetchToken({ isOnboarding: onBoarding })
         }
     }, [])
 
@@ -39,7 +39,7 @@ function usePlaidLink() {
     // 30 min timeout to refresh token
     useEffect(() => {
         const timeout = setTimeout(() => {
-            fetchToken({ isOnboarding: true })
+            fetchToken({ isOnboarding: onBoarding })
         }, 30 * 60 * 1000)
         return () => clearTimeout(timeout)
     }, [])
