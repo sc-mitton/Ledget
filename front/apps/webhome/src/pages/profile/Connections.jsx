@@ -203,13 +203,12 @@ const Header = ({ onPlus }) => {
                     >
                         <Edit />
                     </IconButton>}
-                <button
-                    className={`btn ${plaidItems.length === 0 ? 'pulse' : 'btn-clr'}`}
-                    onClick={onPlus}
-                    aria-label="Add institution connection"
-                >
-                    <Plus />
-                </button>
+                {plaidItems.length === 0
+                    ? <button className="pulse" onClick={onPlus}><Plus /></button>
+                    : <IconButton onClick={onPlus} aria-label="Add institution connection">
+                        <Plus />
+                    </IconButton>
+                }
             </div>
         </div>
     )
