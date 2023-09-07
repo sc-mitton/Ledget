@@ -15,6 +15,7 @@ import Checkbox from "./inputs/Checkbox"
 import CsrfToken from "./inputs/CsrfToken"
 import { FormError, WindowLoadingBar } from "@pieces"
 import { LoginFlowContext, LoginFlowContextProvider } from "@context/Flow"
+import { GrnWideButton, IconButton } from "@ledget/shared-ui"
 
 const emailContext = createContext({})
 
@@ -93,15 +94,14 @@ const EmailForm = () => {
                         ref={rememberRef}
                     />
                 </div>
-                <button
-                    className="btn-main btn-grn"
+                <GrnWideButton
                     id="next"
                     name="enter-password"
                     aria-label="Continue"
                     type="submit"
                 >
                     Continue
-                </button>
+                </GrnWideButton>
             </div>
         </form >
     )
@@ -161,14 +161,13 @@ const AuthenticationForm = () => {
                     value={email || ''}
                 />
                 <CsrfToken csrf={csrf} />
-                <button
-                    className='btn-grn btn-main'
+                <GrnWideButton
                     name="method"
                     value="password"
                     type="submit"
                 >
                     Sign In
-                </button>
+                </GrnWideButton>
                 {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
             </form >
         </>
@@ -186,8 +185,7 @@ const AuthenticationWindow = () => {
             <div id="email-container">
                 <h3>Welcome Back</h3>
                 <div>
-                    <button
-                        className="btn-icon"
+                    <IconButton
                         aria-label="Back"
                         onClick={() => {
                             setEmail(null)
@@ -198,7 +196,7 @@ const AuthenticationWindow = () => {
                         }}
                     >
                         <BackArrow />
-                    </button>
+                    </IconButton>
                     <span>{`${initialEmailValue.current}`}</span>
                 </div>
             </div>

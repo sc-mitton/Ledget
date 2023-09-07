@@ -20,6 +20,7 @@ import { usePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@components/hocs'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { Tooltip } from '@components/pieces'
+import { SecondaryButton, GrnPrimaryButton, IconButton } from '@ledget/shared-ui'
 
 const DeleteContext = React.createContext()
 
@@ -197,13 +198,12 @@ const Header = ({ onPlus }) => {
             <h1>Connections</h1>
             <div className='header-btns'>
                 {!editing && plaidItems.length > 0 &&
-                    <button
-                        className="btn-clr btn"
+                    <IconButton
                         onClick={() => setEditing(!editing)}
                         aria-label="Edit institution connections"
                     >
                         <Edit />
-                    </button>}
+                    </IconButton>}
                 <button
                     className={`btn ${plaidItems.length === 0 ? 'pulse' : 'btn-clr'}`}
                     onClick={onPlus}
@@ -269,22 +269,22 @@ const ConfirmModal = withSmallModal((props) => {
                     marginTop: '24px',
                 }}
             >
-                <button
-                    className='btn-scale btn3'
+                <SecondaryButton
                     onClick={() => {
                         props.setVisible(false)
                         setDeleteQue([])
                         setEditing(false)
                     }}
+                    aria-label="Cancel"
                 >
                     Cancel
-                </button>
-                <button
-                    className='btn-grn btn3'
+                </SecondaryButton>
+                <GrnPrimaryButton
                     onClick={finalSubmit}
+                    aria-label="Confirm"
                 >
                     Confirm
-                </button>
+                </GrnPrimaryButton>
             </div>
         </div>
     )

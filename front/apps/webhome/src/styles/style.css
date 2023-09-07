@@ -386,10 +386,6 @@ button:focus-visible {
     box-shadow: var(--accessible-focus-drop-shadow);
 }
 
-button svg {
-    margin: 2px;
-}
-
 button {
     cursor: pointer;
     border: none;
@@ -426,17 +422,6 @@ button.pulse:hover {
     transition: all .3s ease;
 }
 
-.btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.btn-rnd {
-    border-radius: var(--border-radius2);
-}
-
 .btn-icon-r svg {
     margin-left: 4px;
 }
@@ -458,170 +443,12 @@ button.pulse:hover {
 
 /****/
 
-/* Colors */
-.btn-chcl {
-    background-color: var(--btn-gray);
-    color: var(--white-text);
-    transition: background-color .3s ease;
-}
-
-.btn-chcl:hover {
-    background-color: var(--btn-hover-gray);
-    transition: background-color .3s ease;
-}
-
-.btn-grn {
-    color: var(--m-text-gray);
-    background-color: var(--green-hlight);
-    transition: background-color .3s ease;
-}
-
-.btn-grn:hover {
-    background-color: var(--green-hlight3);
-    transition: background-color .3s ease;
-}
-
-.btn-gr {
-    background-color: var(--btn-light-gray);
-    color: var(--m-text-gray);
-    transition: background-color .3s ease;
-}
-
-.btn-gr:hover {
-    background-color: var(--btn-hover-light-gray);
-    transition: background-color .3s ease;
-}
-
-.btn-gr2 {
-    background-color: rgb(0, 0, 0, .05);
-    color: var(--m-text-gray);
-    transition: background-color .3s ease;
-}
-
-.btn-gr2:hover {
-    background-color: rgb(0, 0, 0, .15);
-    transition: background-color .3s ease;
-}
-
-.btn-red {
-    color: var(--mute-red);
-    transition: background-color .3s ease;
-}
-
-.btn-red:hover {
-    color: var(--hover-red);
-    transition: background-color .3s ease;
-}
-
-.btn-clr {
-    background-color: transparent;
-    color: var(--m-text-gray);
-    transition: background-color .3s ease;
-}
-
-.btn-clr:hover {
-    background-color: var(--icon-hover-light-gray);
-    transition: background-color .3s ease;
-}
-
-.btn-discreet {
-    background-color: var(--icon-light-gray);
-    color: var(--faded-text);
-    transition: background-color .3s ease;
-}
-
-.btn-discreet:hover {
-    background-color: var(--icon-hover-light-gray);
-    transition: background-color .3s ease;
-}
-
-.bordered-btn-chcl {
-    border: 1.5px solid var(--btn-gray);
-    color: var(--btn-gray);
-    transition: all .3s ease;
-}
-
-.bordered-btn-chcl:hover {
-    border: 1.5px solid var(--btn-hover-gray);
-    transition: all .3s ease;
-}
-
 /* Other */
-
-.btn {
-    padding: 2px;
-    border-radius: var(--border-radius1);
-    font-weight: 500;
-}
-
-.btn2 {
-    padding: 4px 8px;
-    border-radius: var(--border-radius2);
-    font-weight: 500;
-}
-
-.btn3 {
-    padding: 6px 12px;
-    border-radius: var(--border-radius2);
-    font-weight: 500;
-}
-
-.btn-narrow {
-    padding: 4px 0px;
-    border-radius: 6px;
-    font-weight: 500;
-}
 
 .btn-slim {
     padding: 0px 8px;
     border-radius: var(--border-radius2);
     font-weight: 500;
-}
-
-.btn-2slim {
-    padding: 2px 12px;
-    border-radius: var(--border-radius2);
-    font-weight: 500;
-}
-
-.btn-sp {
-    border-radius: var(--border-radius2);
-    font-weight: 500;
-}
-
-.btn-scale {
-    transform: scale(1);
-    transition: transform .3s ease;
-}
-
-.btn-scale:hover {
-    transform: scale(1.1);
-    transition: transform .3s ease;
-}
-
-.btn-scale2 {
-    transform: scale(1);
-    transition: transform .3s ease;
-}
-
-.btn-scale2:hover {
-    transform: scale(1.2);
-    transition: transform .3s ease;
-}
-
-.btn-scnd {
-    margin-right: 4px;
-}
-
-.btn-input {
-    color: var(--input-placeholder2);
-    padding: 11px 11px;
-    margin: 4px 0;
-    border-radius: var(--border-radius2);
-    background-color: var(--input-color);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 .budget-item-name {
@@ -668,100 +495,6 @@ button.pulse:hover {
     transition: background-color .3s ease;
 }
 
-.grip-btn {
-    cursor: grab;
-    margin-right: 6px;
-}
-
-.btn-light-fnt {
-    font-weight: 400;
-}
-
-/* ------- Delete Button ------ */
-
-.delete-button {
-    opacity: 0;
-    margin: 0 2px;
-    cursor: auto;
-    transition: opacity .22s ease;
-}
-
-.delete-button-show {
-    margin: 0 2px;
-    opacity: 1;
-    cursor: pointer;
-    transition: all .22s ease;
-}
-
-.delete-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: rotate(0deg);
-    transition: all .22s ease;
-}
-
-.delete-button:hover,
-.delete-button-show:hover {
-    transform: rotate(-45deg);
-    transition: all .22s ease;
-}
-
-.delete-button.show {
-    opacity: 1;
-    animation: pop .22s ease;
-    cursor: pointer;
-}
-
-.delete-button.remove {
-    animation: pop-out .22s ease;
-}
-
-.delete-button span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* ------- END Delete Button ------ */
-
-/* ------- Scale Icon Button ------ */
-
-.scale-icon-btn.enabled {
-    max-width: 100px;
-    opacity: 1;
-    transition: all 0.2s ease-in-out;
-}
-
-.scale-icon-btn.disabled {
-    max-width: 10px;
-    opacity: 0;
-    transition: all 0.2s ease-in-out;
-}
-
-.scale-icon-btn svg {
-    max-width: 0;
-    margin: 0;
-    transform: scale(0);
-    transition: all 0.2s ease-in-out;
-}
-
-.scale-icon-btn:hover svg {
-    max-width: 1.5rem;
-    margin-left: 0.3rem;
-    transform: scale(1);
-    transition: all 0.2s ease-in-out;
-}
-
-.scale-icon-btn.preoccupied:hover svg {
-    max-width: 0;
-    margin: 0;
-    transform: scale(0);
-    transition: all 0.2s ease-in-out;
-}
-
-/* ------- END Scale Icon Button ------ */
-
 button .animated-stroke,
 button .animated-stroke {
     stroke-dasharray: 1000;
@@ -786,20 +519,6 @@ button:hover .animated-stroke2 line:first-child {
 button:hover .animated-stroke2 line:last-child {
     animation: draw .5s ease-in-out forwards;
     animation-delay: .2s;
-}
-
-/* -------------------- Expand Collapse Button Animations ------------------- */
-
-button.collapse {
-    transform: scale(0);
-    opacity: 0;
-    transition: all .3s ease;
-}
-
-button.expand {
-    transform: scale(1);
-    opacity: 1;
-    transition: all .3s ease;
 }
 
 

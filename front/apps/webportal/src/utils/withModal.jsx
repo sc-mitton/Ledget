@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import { Close } from '@assets/icons'
+import { CloseButton } from '@ledget/shared-ui'
+
 import './modal.css'
 
 function withModal(WrappedComponent) {
@@ -49,28 +50,6 @@ function withModal(WrappedComponent) {
             }
         }
 
-        const Exit = () => {
-            return (
-                <>
-                    <div
-                        className="exit-button"
-                        onClick={() => setVisible(false)}
-                        onFocus={() => {
-                            document.addEventListener('keydown', handleExit)
-                        }}
-                        onBlur={() => {
-                            document.removeEventListener('keydown', handleExit)
-                        }}
-                        aria-label="Close modal"
-                        ref={exitRef}
-                        tabIndex="0"
-                    >
-                        <Close />
-                    </div>
-                </>
-            )
-        }
-
         const contentConfig = {
             maxWidth: '400px',
             width: '80%'
@@ -94,7 +73,18 @@ function withModal(WrappedComponent) {
                                 exit={{ opacity: 0, scale: 0.92, ...contentConfig }}
                                 ref={modalRef}
                             >
-                                <Exit />
+                                <CloseButton
+                                    onClick={() => setVisible(false)}
+                                    onFocus={() => {
+                                        document.addEventListener('keydown', handleExit)
+                                    }}
+                                    onBlur={() => {
+                                        document.removeEventListener('keydown', handleExit)
+                                    }}
+                                    aria-label="Close modal"
+                                    ref={exitRef}
+                                    tabIndex="0"
+                                />
                                 <WrappedComponent
                                     {...props}
                                     setVisible={setVisible}

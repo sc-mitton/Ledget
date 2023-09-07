@@ -2,6 +2,7 @@ import React from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { Desert } from '@components/pieces'
+import { BlackPrimaryButton } from '@ledget/shared-ui'
 
 import './NotFound.css'
 
@@ -13,13 +14,12 @@ const NotFound = () => {
             <div>
                 <Desert />
                 <h1>404 Not Found</h1>
-                <button
-                    className="btn-chcl btn3"
+                <BlackPrimaryButton
                     aria-label="Return home"
                     onClick={() => navigate('/budget')}
                 >
                     Return home
-                </button>
+                </BlackPrimaryButton>
             </div>
         </div>
     )

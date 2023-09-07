@@ -14,6 +14,7 @@ import { WindowLoadingBar } from "../pieces"
 import PasswordInput from "./inputs/PasswordInput"
 import PasswordlessForm from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
+import { GrnWideButton } from "@ledget/shared-ui"
 
 // Context for user info
 const userInfoContext = createContext({})
@@ -107,13 +108,12 @@ function UserInfoForm() {
             <div
                 style={{ marginTop: '12px' }}
             >
-                <button
-                    className='btn-grn btn-main'
+                <GrnWideButton
                     type='submit'
                     aria-label="Submit form"
                 >
                     Continue
-                </button>
+                </GrnWideButton>
             </div>
         </form>
     )
@@ -176,9 +176,9 @@ const AuthenticationForm = () => {
                 <input type='hidden' name='traits.email' value={userInfo.email} />
                 <input type='hidden' name='traits.name.first' value={userInfo.firstName} />
                 <input type='hidden' name='traits.name.last' value={userInfo.lastName} />
-                <button className='btn-grn btn-main' name="method" value="password" type="submit">
+                <GrnWideButton name="method" value="password" type="submit">
                     Create
-                </button>
+                </GrnWideButton>
             </form >
             {typeof (PublicKeyCredential) != "undefined" &&
                 <PasswordlessForm flow={flow}>

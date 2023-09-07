@@ -1,8 +1,8 @@
-import React, { useRef } from 'react'
+import React from 'react'
 
-import { Delete, Close } from '@assets/icons'
-import { LoadingRing } from '@components/pieces'
-import { GrnPrimaryButton } from '@ledget/shared-ui'
+import './buttons.css'
+import { Delete } from '@assets/icons'
+import { Grip } from '@assets/icons'
 
 export const DeleteButton = ({ onClick }) => (
     <div>
@@ -16,55 +16,13 @@ export const DeleteButton = ({ onClick }) => (
     </div>
 )
 
-export const SubmitButton = (props) => {
-    const {
-        children,
-        submitting,
-        ...rest
-    } = props
-
-    return (
-        <GrnPrimaryButton
-            type="submit"
-            aria-label="Save"
-            tabIndex={0}
-            disabled={submitting}
-            {...rest}
-        >
-            <LoadingRing visible={submitting}>
-                <div
-                    style={{
-                        color: submitting ? 'transparent' : 'inherit',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    {children}
-                </div>
-            </LoadingRing>
-        </GrnPrimaryButton>
-    )
-}
-
-export const CloseButton = React.forwardRef((props, ref) => {
-    const localRef = useRef(null)
-    const r = ref || localRef
-    const { style, ...rest } = props
-
-    return (
-        <button
-            className="btn-clr btn"
-            ref={r}
-            style={{
-                position: 'absolute',
-                top: '12px',
-                right: '12px',
-                ...style,
-            }}
-            {...rest}
-        >
-            <Close />
-        </button>
-    )
-})
+export const GripButton = (props) => (
+    <button
+        className="btn grip-btn"
+        aria-label="Move"
+        draggable-item="true"
+        {...props}
+    >
+        <Grip />
+    </button>
+)

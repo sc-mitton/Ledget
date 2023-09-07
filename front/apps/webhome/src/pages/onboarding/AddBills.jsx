@@ -19,9 +19,10 @@ import { ShadowedContainer, DollarCentsRange } from '@components/pieces'
 import { Bell, BellOff } from '@assets/icons'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { billSchema, extractBill } from '@modals/CreateBill'
-import { DeleteButton, CloseButton } from '@components/buttons'
+import { DeleteButton } from '@components/buttons'
 import { formatName, getLongestLength } from '@utils'
 import { useGetBillRecommendationsQuery } from '@features/billSlice'
+import { CloseButton } from '@ledget/shared-ui'
 
 const BillsColumn = ({ period }) => {
     const context = useContext(ItemsContext)[period]

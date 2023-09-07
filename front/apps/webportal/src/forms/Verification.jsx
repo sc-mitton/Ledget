@@ -11,6 +11,7 @@ import verifyEmail from "@assets/images/verifyEmail.svg"
 import UserContext from "@context/UserContext"
 import CsrfToken from "./inputs/CsrfToken"
 import ResendButton from "./inputs/ResendButton"
+import { BlackWideButton } from "@ledget/shared-ui"
 
 const VerificationForm = () => {
     const { flow, submit, csrf, codeError } = useContext(VerificationFlowContext)
@@ -40,14 +41,13 @@ const VerificationForm = () => {
                     name="email"
                     value={user?.traits?.email}
                 />
-                <button
-                    className="btn-chcl btn-main"
+                <BlackWideButton
                     type="submit"
                     value="code"
                     disabled={otcDisabled}
                 >
                     Submit
-                </button>
+                </BlackWideButton>
             </form>
             <form
                 action={flow?.ui.action}

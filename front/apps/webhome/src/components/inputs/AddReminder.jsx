@@ -4,6 +4,7 @@ import './styles/Dropdowns.css'
 import ComboSelect from './ComboSelect'
 import { DropAnimation } from '@utils'
 import { Plus, CheckMark } from '@assets/icons'
+import { SlimButton } from '@ledget/shared-ui'
 
 const defaultOptions = [
     { id: 1, value: { offset: 1, period: 'day' }, disabled: false },
@@ -78,7 +79,7 @@ const AddReminder = ({ value, onChange }) => {
                 {({ open }) => (
                     <>
                         <ComboSelect.Button
-                            className="btn-clr btn-slim btn"
+                            as={SlimButton}
                             id="add-reminder-btn"
                             style={{ fontWeight: '400' }}
                         >

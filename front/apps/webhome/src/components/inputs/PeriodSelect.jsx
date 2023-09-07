@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Arrow } from '@assets/icons'
 import ComboSelect from './ComboSelect'
 import { DropAnimation } from '@utils'
+import { InputButton } from '@ledget/shared-ui'
 
 const options = [
     { id: 1, value: 'month', label: 'Month', default: true },
@@ -50,7 +51,7 @@ const PeriodSelect = (props) => {
                 {({ open }) => (
                     <>
                         <ComboSelect.Button
-                            className="btn-input"
+                            as={InputButton}
                             id="period-select-btn"
                             style={{ color: 'var(--m-text-gray)' }}
                             ref={buttonRef}

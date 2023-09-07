@@ -6,12 +6,12 @@ import { Tab } from '@headlessui/react'
 import { useLocation } from 'react-router-dom'
 
 import { ItemsContext } from './ItemsContext'
-import { Arrow, CheckMark, Recommendations as RecommendationsIcon } from '@assets/icons'
-import { SubmitButton } from '@components/buttons'
+import { CheckMark, Recommendations as RecommendationsIcon } from '@assets/icons'
 import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
+import { GrnPrimaryButton, BlackSubmitWithArrow, SlimButton } from '@ledget/shared-ui'
 
 
 export const TabView = ({ children }) => {
@@ -142,8 +142,7 @@ export const BottomButtons = ({ expanded }) => {
         <div
             className={`btn-container ${expanded ? 'expanded' : ''}`}
         >
-            <button
-                className="btn-grn btn3 scale-icon-btn"
+            <GrnPrimaryButton
                 style={{ visibility: expanded ? 'visible' : 'hidden' }}
                 disabled={!expanded}
                 aria-label="Add Category"
@@ -151,10 +150,8 @@ export const BottomButtons = ({ expanded }) => {
             >
                 <span>Save</span>
                 <CheckMark width={'.8em'} height={'.8em'} />
-            </button>
-            <SubmitButton
-                className={`btn-chcl btn3 scale-icon-btn
-                ${isBillLoading || isCategoryLoading ? 'preoccupied' : ''}`}
+            </GrnPrimaryButton>
+            <BlackSubmitWithArrow
                 style={{
                     visibility: itemsEmpty ? 'hidden' : 'visible'
                 }}
@@ -165,13 +162,7 @@ export const BottomButtons = ({ expanded }) => {
                 type="button"
             >
                 {location.pathname === '/welcome/add-bills' ? 'Next' : 'Finish'}
-                <Arrow
-                    width={'.8em'}
-                    height={'.8em'}
-                    rotation={-90}
-                    stroke={'var(--window)'}
-                />
-            </SubmitButton>
+            </BlackSubmitWithArrow>
         </div>
     )
 }
@@ -181,13 +172,13 @@ export const RecommendationsButton = () => {
 
     return (
         <div>
-            <button
-                className="btn-clr btn-2slim btn-icon-r"
+            <SlimButton
+                className="btn-icon-r"
                 onClick={() => setRecommendationsMode(true)}
                 aria-label="Recommendations"
             >
                 Recommendations <RecommendationsIcon fill={'m-text-gray'} />
-            </button>
+            </SlimButton>
         </div>
     )
 }

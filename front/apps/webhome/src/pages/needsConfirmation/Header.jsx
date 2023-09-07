@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 
 import { useSpring, animated } from '@react-spring/web'
 
+import './styles/Header.css'
 import { Replay, CheckAll } from '@assets/icons'
 import { Tooltip } from '@components/pieces'
-import './styles/Header.css'
+import { IconButton } from '@ledget/shared-ui'
 
 
 const RefreshButton = ({ onClick }) => {
@@ -28,8 +29,7 @@ const RefreshButton = ({ onClick }) => {
             ariaLabel={"Refresh list"}
             style={{ left: '-.8rem' }}
         >
-            <button
-                className='btn-clr btn'
+            <IconButton
                 id="refresh-icon"
                 aria-label="Refresh"
                 onClick={handleClick}
@@ -39,7 +39,7 @@ const RefreshButton = ({ onClick }) => {
                 >
                     <Replay />
                 </animated.div>
-            </button>
+            </IconButton>
         </Tooltip>
     )
 }
@@ -52,13 +52,12 @@ const CheckAllButton = () => {
             ariaLabel={"Confirm all items"}
             style={{ left: '-1.3rem' }}
         >
-            <button
-                className="btn-clr btn"
+            <IconButton
                 id="check-all-icon"
                 aria-label="Check all"
             >
                 <CheckAll />
-            </button>
+            </IconButton>
         </Tooltip>
     )
 }

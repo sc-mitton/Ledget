@@ -53,13 +53,9 @@ const Plan = () => {
                         </span>
                     </div>
                     <div>
-                        <button
-                            className="btn-grn btn-slim"
-                            aria-label="Change plan"
-                            onClick={handleClick}
-                        >
+                        <GrnSlimButton aria-label="Change plan" onClick={handleClick}>
                             change
-                        </button>
+                        </GrnSlimButton>
                     </div>
                 </div>
                 <div className="body">
@@ -95,13 +91,12 @@ const PaymentMethod = () => {
                     <h3>Payment Method</h3>
                 </div>
                 <div>
-                    <button
-                        className="btn-grn btn-slim"
+                    <GrnSlimButton
                         aria-label="Change plan"
                         onClick={() => navigate("/profile/details/update-payment")}
                     >
                         update
-                    </button>
+                    </GrnSlimButton>
                 </div>
             </div>
             <div className="body">

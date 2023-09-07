@@ -10,6 +10,7 @@ import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { Base64Logo } from '@components/pieces'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
 import { LoadingRing } from '@components/pieces'
+import { SecondaryButton, ExpandableContainer } from '@ledget/shared-ui'
 
 const InstitutionLogos = ({ plaidItems }) => {
     const { isLoading } = useGetPlaidItemsQuery()
@@ -62,8 +63,7 @@ const BottomButtons = ({ continueDisabled }) => {
 
     return (
         <div className="btn-container-enabled">
-            <button
-                className="btn-grn btn3 scale-icon-btn"
+            <SecondaryButton
                 onClick={open}
                 aria-label="Link Account"
             >
@@ -71,25 +71,46 @@ const BottomButtons = ({ continueDisabled }) => {
                     Add Account
                 </span>
                 <Plus width={'1em'} height={'1em'} />
-            </button>
-            <button
-                className={`btn-chcl btn3 scale-icon-btn
-                ${continueDisabled ? 'disabled' : 'enabled'}`}
-                aria-label="Next"
-                onClick={() => navigate('/welcome/add-bills')}
-                disabled={continueDisabled}
-            >
-                Continue
-                <Arrow
-                    width={'.8em'}
-                    height={'.8em'}
-                    rotation={-90}
-                    stroke={'var(--window)'}
-                />
-            </button>
+            </SecondaryButton>
+            <ExpandableContainer expanded={continueDisabled}>
+                <BlackPrimaryButtonWithArrow
+                    aria-label="Next"
+                    onClick={() => navigate('/welcome/add-bills')}
+                    disabled={continueDisabled}
+                >
+                    Continue
+                </BlackPrimaryButtonWithArrow>
+            </ExpandableContainer>
         </div>
     )
 }
+
+const SecurityMessage = () => (
+    <div>
+        <h4 className="spaced-header2">Let's get started by connecting your financial accounts.</h4>
+        <div className="checklist">
+            <div>
+                <div><CheckMark3 /></div>
+                <div>
+                    Ledget doesn't store your credentials
+                </div>
+            </div>
+            <div>
+                <div><CheckMark3 /></div>
+                <div>
+                    We use Plaid to connect to your financial institutions
+                </div>
+            </div>
+            <div>
+                <div><CheckMark3 /></div>
+                <div>
+                    Disconnect your account and your financial data at any time
+                </div>
+            </div>
+        </div>
+        {fetchedPlaidItemsSuccess && <InstitutionLogos plaidItems={plaidItems} />}
+    </div>
+)
 
 const WelcomeConnect = () => {
     const [transactionsSync] = useTransactionsSyncMutation()
@@ -125,30 +146,7 @@ const WelcomeConnect = () => {
     return (
         <div className="window3">
             <h1 className="spaced-header">Welcome to Ledget!</h1>
-            <div>
-                <h4 className="spaced-header2">Let's get started by connecting your financial accounts.</h4>
-                <div className="checklist">
-                    <div>
-                        <div><CheckMark3 /></div>
-                        <div>
-                            Ledget doesn't store your credentials
-                        </div>
-                    </div>
-                    <div>
-                        <div><CheckMark3 /></div>
-                        <div>
-                            We use Plaid to connect to your financial institutions
-                        </div>
-                    </div>
-                    <div>
-                        <div><CheckMark3 /></div>
-                        <div>
-                            Disconnect your account and your financial data at any time
-                        </div>
-                    </div>
-                </div>
-                {fetchedPlaidItemsSuccess && <InstitutionLogos plaidItems={plaidItems} />}
-            </div>
+            <SecurityMessage />
             <BottomButtons continueDisabled={continueDisabled} />
         </div>
     )

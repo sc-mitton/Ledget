@@ -1,8 +1,7 @@
 
 import React from 'react'
 
-import { LoadingRing } from '@components/pieces'
-import { SubmitButton } from '@components/buttons'
+import { SecondaryButton, GreenSubmitButton } from '@ledget/shared-ui'
 
 const SubmitForm = ({ submitting, onCancel }) => {
 
@@ -15,8 +14,8 @@ const SubmitForm = ({ submitting, onCancel }) => {
 
     return (
         <div style={styles}>
-            <div
-                className='btn-scale btn3 btn-scnd'
+            <SecondaryButton
+                type="button"
                 onClick={onCancel}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -30,10 +29,10 @@ const SubmitForm = ({ submitting, onCancel }) => {
                 style={{ cursor: 'pointer', borderRadius: '8px' }}
             >
                 Cancel
-            </div>
-            <SubmitButton submitting={submitting}>
+            </SecondaryButton>
+            <GreenSubmitButton submitting={submitting}>
                 {'Save'}
-            </SubmitButton>
+            </GreenSubmitButton>
         </div >
     )
 }

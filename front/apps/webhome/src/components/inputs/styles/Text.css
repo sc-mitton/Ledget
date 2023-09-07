@@ -64,15 +64,30 @@
     margin: 0 4px;
 }
 
+.limit-amount--container svg {
+    opacity: .5;
+    transition: opacity .2s ease;
+}
+
+.limit-amount--container:focus-within svg {
+    opacity: 1;
+    transition: opacity .2s ease;
+}
+
 .increment-arrows--container {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: absolute;
+    top: 0px;
+    bottom: 0;
     right: 8px;
-    top: 6px;
     border-radius: var(--border-radius1);
     padding: 2px;
+}
+
+.increment-arrows--container svg {
+    margin: 2px;
 }
 
 .increment-arrows--container button {

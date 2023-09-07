@@ -9,8 +9,9 @@
     overflow-y: auto;
 }
 
-#passkey-modal-content h1 {
+#passkey-modal-content h2 {
     color: var(--m-green);
+    text-align: center;
 }
 
 #passkey-modal-content div:first-child {

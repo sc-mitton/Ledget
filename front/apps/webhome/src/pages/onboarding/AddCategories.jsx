@@ -9,14 +9,15 @@ import './styles/Items.css'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { ItemsProvider, ItemsContext } from './ItemsContext'
 import { useItemsDrag } from './hooks'
-import { Bell, BellOff, Grip, CheckMark } from '@assets/icons'
+import { Bell, BellOff, CheckMark } from '@assets/icons'
 import { ShadowedContainer, FormErrorTip } from '@components/pieces'
-import { DeleteButton, CloseButton } from '@components/buttons'
+import { DeleteButton, GripButton } from '@components/buttons'
 import { EmojiComboText, AddAlert, LimitAmountInput, PeriodSelect } from '@components/inputs'
 import { formatName, formatRoundedCurrency, getLongestLength } from '@utils'
 import { schema as categorySchema } from '@modals/CreateCategory'
 import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
 import { shuffleArray } from '@utils'
+import { CloseButton } from '@ledget/shared-ui'
 
 const yearRecommendationsIndexes = Array.from({ length: yearRecommendations.length - 1 }, (_, i) => i + 1)
 const monthRecommendationsIndexes = Array.from({ length: monthRecommendations.length - 1 }, (_, i) => i + 1)
@@ -53,13 +54,7 @@ const CategoriesColumn = ({ period }) => {
                             className="budget-item-name--container"
                             style={{ flexBasis: getLongestLength(context.items, 'name') }}
                         >
-                            <button
-                                className="btn grip-btn"
-                                aria-label="Move"
-                                draggable-item="true"
-                            >
-                                <Grip />
-                            </button>
+                            <GripButton />
                             <div className="budget-item-name">
                                 <span>{item.emoji}</span>
                                 <span>{formatName(item.name)}</span>

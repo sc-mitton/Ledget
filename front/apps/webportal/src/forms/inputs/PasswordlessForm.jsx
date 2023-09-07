@@ -5,6 +5,7 @@ import { filterNodesByGroups, isUiNodeInputAttributes } from '@ory/integrations/
 import { PasskeyIcon, HelpIcon } from "@assets/icons"
 import PasskeyModal from "@modals/PassKey"
 import './styles/PasswordlessFormSection.css'
+import { GrayWideButton } from '@ledget/shared-ui'
 
 
 const PasswordlessOptionsHeader = () => {
@@ -105,14 +106,13 @@ const PasswordlessForm = ({ flow = { flow }, helpIcon = true, children }) => {
                                 }
                                 return (
                                     <div className='passwordless-button-container' key={attrs.name}>
-                                        <button
-                                            className='btn-main btn-gr btn-icon-left'
+                                        <GrayWideButton
                                             disabled={attrs.disabled}
                                             {...submit}
                                         >
                                             <PasskeyIcon />
                                             Passkey
-                                        </button>
+                                        </GrayWideButton>
                                         {helpIcon && <WrappedHelpIcon />}
                                     </div>
                                 )
@@ -155,14 +155,13 @@ export const PasskeySignIn = () => {
         <div className='passwordless-form-section-container'>
             <PasswordlessOptionsHeader />
             <div className='passwordless-inputs-container'>
-                <button
-                    className='btn-main btn-gr btn-icon-left'
+                <GrayWideButton
                     name="method"
                     value="webauthn"
                 >
                     <PasskeyIcon />
                     Passkey
-                </button>
+                </GrayWideButton>
             </div>
         </div>
     )

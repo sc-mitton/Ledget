@@ -2,19 +2,15 @@
 /*                                   Buttons                                  */
 /* -------------------------------------------------------------------------- */
 
+
+
 /* --------------------------------- General -------------------------------- */
-
-
 
 .btn {
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-}
-
-button svg {
-    margin: 2px;
 }
 
 /* --------------------------------- Shapes --------------------------------- */
@@ -30,8 +26,55 @@ button svg {
     font-weight: 500;
 }
 
+.btn-slim {
+    padding: 0px 8px;
+    border-radius: var(--border-radius2);
+    font-weight: 500;
+}
+
+.btn-2slim {
+    padding: 2px 12px;
+    border-radius: var(--border-radius2);
+    font-weight: 500;
+}
+
+.btn-narrow {
+    padding: 4px 0px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.btn-wide {
+    border-radius: var(--border-radius2);
+    padding: 12px 16px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-sp {
+    border-radius: var(--border-radius2);
+    font-weight: 500;
+    padding: 4px 8px;
+}
+
+.btn-icon {
+    padding: 2px;
+    border-radius: var(--border-radius1);
+}
+
 
 /* --------------------------------- Colors --------------------------------- */
+
+.btn-clr {
+    background-color: transparent;
+    color: var(--m-text-gray);
+    transition: background-color .3s ease;
+}
+
+.btn-clr:hover {
+    background-color: var(--icon-hover-light-gray);
+    transition: background-color .3s ease;
+}
 
 .btn-chcl {
     background-color: var(--btn-gray);
@@ -44,8 +87,95 @@ button svg {
     transition: background-color .3s ease;
 }
 
+.btn-grn {
+    color: var(--m-text-gray);
+    background-color: var(--green-hlight);
+    transition: background-color .3s ease;
+    font-weight: 500;
+}
 
-/* -------------------------------- Features -------------------------------- */
+.btn-grn:hover {
+    background-color: var(--green-hlight3);
+    transition: background-color .3s ease;
+}
+
+.btn-gr {
+    box-shadow: var(--btn-drop-shadow);
+    background-color: var(--btn-light-gray);
+    transition: background-color .3s ease;
+}
+
+.btn-gr:hover {
+    background-color: var(--btn-light-gray-hover);
+    transition: background-color .3s ease;
+}
+
+.btn-gr2 {
+    box-shadow: var(--btn-drop-shadow);
+    background-color: var(--btn-light-gray);
+    transition: background-color .3s ease;
+}
+
+.btn-gr2:hover {
+    background-color: var(--btn-light-gray-hover);
+    transition: background-color .3s ease;
+}
+
+.btn-clr {
+    background-color: transparent;
+    color: var(--m-text-gray);
+    transition: background-color .3s ease;
+}
+
+.btn-clr:hover {
+    background-color: var(--icon-hover-light-gray);
+    transition: background-color .3s ease;
+}
+
+.btn-discreet {
+    background-color: var(--icon-light-gray);
+    color: var(--faded-text);
+    transition: background-color .3s ease;
+}
+
+.btn-discreet:hover {
+    background-color: var(--icon-hover-light-gray);
+    transition: background-color .3s ease;
+}
+
+/* -------------------------------- Specialty -------------------------------- */
+
+.btn-input {
+    color: var(--input-placeholder2);
+    padding: 11px 11px;
+    margin: 4px 0;
+    border-radius: var(--border-radius2);
+    background-color: var(--input-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.btn-scale {
+    transform: scale(1);
+    transition: transform .3s ease;
+}
+
+.btn-scale:hover {
+    transform: scale(1.1);
+    transition: transform .3s ease;
+}
+
+.btn-scale2 {
+    transform: scale(1);
+    transition: transform .3s ease;
+}
+
+.btn-scale2:hover {
+    transform: scale(1.2);
+    transition: transform .3s ease;
+}
 
 .scale-icon-btn svg {
     max-width: 0;
@@ -66,4 +196,40 @@ button svg {
     margin: 0;
     transform: scale(0);
     transition: all 0.2s ease-in-out;
+}
+
+.expand-button {
+    margin: 0 auto;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.expand-button>div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.expand-button--icon {
+    transform: rotate(0deg);
+    transition: transform .5s ease-out;
+}
+
+.expand-button--icon.flipped {
+    transition: transform .5s ease-out;
+    transform: rotate(180deg);
+}
+
+.btn-fb svg,
+.btn-google svg {
+    padding: 0;
+    margin: 0;
+}
+
+.arrow-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 4px;
+    border-radius: var(--border-radius);
 }

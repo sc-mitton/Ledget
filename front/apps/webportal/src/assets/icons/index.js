@@ -1,7 +1,5 @@
 export { default as BackArrow } from './src/BackArrow.jsx';
 export { default as Close } from './src/Close.jsx';
-export { default as FacebookLogo } from './src/FacebookLogo.jsx';
-export { default as GoogleLogo } from './src/GoogleLogo.jsx';
 export { default as HelpIcon } from './src/HelpIcon.jsx';
 export { default as PasskeyIcon } from './src/PasskeyIcon.jsx';
 export { default as Replay } from './src/Replay.jsx';

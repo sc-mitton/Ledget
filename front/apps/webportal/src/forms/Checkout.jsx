@@ -20,6 +20,7 @@ import { FormError, FormErrorTip } from "../pieces"
 import { WindowLoadingBar } from '../pieces'
 import UserContext from '@context/UserContext'
 import { components } from 'react-select'
+import { BlackWideButton } from '@ledget/shared-ui'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
@@ -459,8 +460,7 @@ function Checkout({ prices }) {
             <>
                 {price &&
                     <div className="subscribe-button-container">
-                        <button
-                            className="btn-chcl btn-main"
+                        <BlackWideButton
                             id="subscribe-button"
                             type='submit'
                             form={form}
@@ -468,7 +468,7 @@ function Checkout({ prices }) {
                             aria-label="Submit payment information"
                         >
                             <span>{`Start ${price.metadata?.trial_period_days}-day Free Trial`}</span>
-                        </button>
+                        </BlackWideButton>
                     </div>
                 }
             </>

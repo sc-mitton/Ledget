@@ -10,7 +10,7 @@ function Content() {
             <div>
                 <PasskeyIcon fill={'var(--m-green)'} />
             </div>
-            <h1>Say goodby to passwords</h1>
+            <h2>Say goodby to passwords</h2>
             <div id="passkey-modal-text">
                 <p>
                     Passkeys are a new way to sign in to applications without having to remember a password.

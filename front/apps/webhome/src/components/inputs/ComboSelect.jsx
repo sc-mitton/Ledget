@@ -90,9 +90,8 @@ const ComboSelect = (props) => {
     )
 }
 
-const Button = React.forwardRef((props, ref) => {
+const Button = React.forwardRef(({ as: Component = 'button', ...props }, ref) => {
     const { setOpen, open, buttonRef, setActive, options } = useContext(DataContext)
-    const { children, ...rest } = props
 
     const localRef = useRef(null)
     const propRef = ref || localRef
@@ -111,7 +110,7 @@ const Button = React.forwardRef((props, ref) => {
     }
 
     return (
-        <button
+        <Component
             ref={(e) => {
                 buttonRef.current = e
                 propRef.current = e
@@ -121,10 +120,8 @@ const Button = React.forwardRef((props, ref) => {
             type="button"
             aria-haspopup="listbox"
             aria-expanded={open}
-            {...rest}
-        >
-            {children}
-        </button>
+            {...props}
+        />
     )
 })
 

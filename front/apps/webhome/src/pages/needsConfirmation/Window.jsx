@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback, useContext, createContext } f
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 
 import "./styles/Window.css"
-import { Ellipsis, CheckMark, Expand as ExpandIcon } from "@assets/icons"
+import { Ellipsis, CheckMark } from "@assets/icons"
 import Wells from "@assets/logos/Wells"
 import Ally from "@assets/logos/Ally"
 import Discover from "@assets/logos/Discover"
@@ -15,6 +15,7 @@ import Header from './Header'
 import Options from "@components/dropdowns/Options"
 import ItemOptions from "./ItemOptions"
 import { Tooltip } from "@components/pieces"
+import { NarrowButton, ExpandableContainer, ExpandButton, GrnSlimButton } from "@ledget/shared-ui"
 
 // TODO: eventually these will go away, data will be pulled from backend
 // and logos will be brought in another way
@@ -65,12 +66,68 @@ const AccountLogo = ({ account }) => {
 }
 
 // End TODO
+const translate = 18
+const expandedTranslate = 85
+const expandedHeight = 320
+const collapsedHeight = 120
+const scale = .1
+const stackMax = 2
 
-const useItemAnimations = (expanded, items, stackMax) => {
-    const translate = 18
-    const expandedTranslate = 85
-    const expandedHeight = 320
-    const collapsedHeight = 120
+const getContainerHeight = (length, expanded) => {
+    expanded
+        ? Math.min(length * expandedTranslate + 15, expandedHeight)
+        : (length > 0 ? collapsedHeight : 0)
+
+    if (expanded) {
+        return Math.min(length * expandedTranslate + 15, expandedHeight)
+    } else if (length > stackMax) {
+        return collapsedHeight
+    } else if (length > 0) {
+        return collapsedHeight - ((stackMax - length) * translate)
+    } else {
+        return 0
+    }
+}
+
+const getOpacity = (index, expanded) => {
+    const belowStackMax = index > stackMax
+    return (!expanded && belowStackMax && index !== 0) ? 0 : 1
+}
+
+const getScale = (index, expanded, loaded = true,) => {
+
+    if (!loaded) {
+        return 1 - ((index + 1) * scale * 2)
+    }
+
+    if (expanded) {
+        return 1
+    } else {
+        if (index > stackMax) {
+            return 1 - (stackMax * scale)
+        } else {
+            return 1 - (index * scale)
+        }
+    }
+}
+
+const getY = (index, expanded, loaded = true) => {
+    if (!loaded) {
+        return (index ** 2) * 5 + 30
+    }
+
+    if (index === 0 || expanded) {
+        return index * expandedTranslate + 8
+    } else {
+        if (index > stackMax) {
+            return stackMax * translate + 8
+        } else {
+            return index * translate + 8
+        }
+    }
+}
+
+const useItemAnimations = (expanded, items) => {
 
     const [loaded, setLoaded] = useState(false)
     const itemsApi = useSpringRef()
@@ -86,58 +143,20 @@ const useItemAnimations = (expanded, items, stackMax) => {
         overflowY: "hidden",
     }))
 
-    const getOpacity = useCallback((index) => {
-        const belowStackMax = index > stackMax
-        return (!expanded && belowStackMax && index !== 0) ? 0 : 1
-    }, [expanded])
-
-    const getScale = useCallback((index, loaded = true) => {
-        const scale = .1
-
-        if (!loaded) {
-            return 1 - ((index + 1) * scale * 2)
-        }
-
-        if (expanded) {
-            return 1
-        } else {
-            if (index > stackMax) {
-                return 1 - (stackMax * scale)
-            } else {
-                return 1 - (index * scale)
-            }
-        }
-    }, [expanded])
-
-    const getY = useCallback((index, loaded = true) => {
-        if (!loaded) {
-            return (index ** 2) * 5 + 30
-        }
-
-        if (index === 0 || expanded) {
-            return index * expandedTranslate + 8
-        } else {
-            if (index > stackMax) {
-                return stackMax * translate + 8
-            } else {
-                return index * translate + 8
-            }
-        }
-    }, [expanded])
 
     const itemTransitions = useTransition(
         items,
         {
             from: (item, index) => ({
                 // top: getTop(index, false),
-                y: getY(index, false),
-                transform: `scale(${getScale(index, false)})`,
+                y: getY(index, expanded, false),
+                transform: `scale(${getScale(index, expanded, false)})`,
             }),
             enter: (item, index) => ({
-                y: getY(index, true),
-                transform: `scale(${getScale(index)})`,
+                y: getY(index, expanded, true),
+                transform: `scale(${getScale(index, expanded)})`,
                 zIndex: `${(items.length - index)}`,
-                opacity: getOpacity(index),
+                opacity: getOpacity(index, expanded),
                 margin: '0 12px',
                 x: 0,
                 left: 0,
@@ -152,10 +171,10 @@ const useItemAnimations = (expanded, items, stackMax) => {
                 justifyContent: "space-between",
             }),
             update: (item, index) => ({
-                y: getY(index, true),
-                transform: `scale(${getScale(index)})`,
+                y: getY(index, expanded),
+                transform: `scale(${getScale(index, expanded)})`,
                 zIndex: `${(items.length - index)}`,
-                opacity: getOpacity(index),
+                opacity: getOpacity(index, expanded),
             }),
             onRest: (item, index) => {
                 expanded &&
@@ -175,9 +194,7 @@ const useItemAnimations = (expanded, items, stackMax) => {
     useEffect(() => {
         itemsApi.start()
         containerApi.start({
-            height: expanded
-                ? Math.min(items.length * expandedTranslate + 15, expandedHeight)
-                : (items.length > 0 ? collapsedHeight : 0)
+            height: getContainerHeight(items.length, expanded),
         })
     }, [expanded, items])
 
@@ -215,13 +232,12 @@ const NewItem = (props) => {
                 </div>
             </div>
             <div className='new-item-icons' >
-                <button
-                    className='btn-grn btn-2slim'
+                <GrnSlimButton
                     aria-label="Choose budget category"
                     tabIndex={tabIndex}
                 >
                     {item.category}
-                </button>
+                </GrnSlimButton>
                 <Tooltip
                     msg="Confirm"
                     ariaLabel="Confirm"
@@ -237,61 +253,15 @@ const NewItem = (props) => {
                         <CheckMark />
                     </button>
                 </Tooltip>
-                <button
-                    className='btn-narrow btn-clr'
+                <NarrowButton
                     tabIndex={tabIndex}
                     onClick={onEllipsis}
                     aria-label="More options"
                     aria-haspopup="menu"
                 >
                     <Ellipsis />
-                </button>
+                </NarrowButton>
             </div>
-        </animated.div>
-    )
-}
-
-const ExpandButton = ({ onClick }) => {
-    const [rotated, setRotated] = useState(false)
-    const { items } = useContext(NewItemsContext)
-
-    const rotationProps = useSpring({
-        transform: `rotate(${rotated ? 0 : 180}deg)`,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    })
-
-    const buttonContainerProps = useSpring({
-        marginTop: items.length === 0 ? '0px' : '8px',
-        marginBottom: items.length > 1 ? '12px' : '0px',
-        opacity: items.length > 1 ? 1 : 0,
-        height: items.length > 1 ? '1.6em' : '0em',
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        scale: "1.05",
-    })
-
-    return (
-        <animated.div
-            className="bottom-buttons"
-            style={buttonContainerProps}
-        >
-            <button
-                className="btn-sp btn-discreet"
-                tabIndex={0}
-                style={{ padding: '0 8px' }}
-                onClick={() => {
-                    setRotated(!rotated)
-                    onClick()
-                }}
-                aria-label="Expand new item stack"
-            >
-                <animated.div style={rotationProps}>
-                    <ExpandIcon stroke={"var(--faded-text)"} />
-                </animated.div >
-            </button>
         </animated.div>
     )
 }
@@ -303,7 +273,7 @@ const NeedsConfirmationWindow = () => {
     const [showMenu, setShowMenu] = useState(false)
     const [menuPos, setMenuPos] = useState(null)
 
-    const { itemsApi, containerProps, itemTransitions } = useItemAnimations(expanded, items, 2)
+    const { itemsApi, containerProps, itemTransitions } = useItemAnimations(expanded, items)
 
     useEffect(() => {
         !showMenu && setMenuPos(null)
@@ -356,7 +326,9 @@ const NeedsConfirmationWindow = () => {
                     </Options>
                 </ShadowedContainer>
             </div>
-            <ExpandButton onClick={() => setExpanded(!expanded)} />
+            <ExpandableContainer expanded={items.length > 1}>
+                <ExpandButton onClick={() => setExpanded(!expanded)} flipped={expanded} />
+            </ExpandableContainer>
         </div>
     )
 }

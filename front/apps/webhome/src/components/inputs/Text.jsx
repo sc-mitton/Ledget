@@ -7,6 +7,7 @@ import Emoji from './Emoji'
 import { Arrow } from '@assets/icons'
 import { FormErrorTip, FormError } from '@components/pieces'
 import { formatCurrency, formatRoundedCurrency, makeIntCurrencyFromStr } from '@utils'
+import { IconButton2 } from '@ledget/shared-ui'
 
 export const TextInput = (props) => {
 
@@ -120,24 +121,22 @@ const decrement = (val, setVal, field) => {
 
 const IncrementDecrementButton = ({ val, setVal, field }) => (
     <div className="increment-arrows--container">
-        <button
-            className="btn-gr"
+        <IconButton2
             type="button"
             onClick={() => increment(val, setVal, field)}
             aria-label="increment"
             tabIndex={'-1'}
         >
-            <Arrow width={'.65em'} height={'.65em'} rotation={-180} />
-        </button>
-        <button
-            className="btn-gr"
+            <Arrow width={'.75em'} height={'.75em'} rotation={-180} />
+        </IconButton2>
+        <IconButton2
             type="button"
             onClick={() => decrement(val, setVal, field)}
             aria-label="decrement"
             tabIndex={'-1'}
         >
-            <Arrow width={'.65em'} height={'.65em'} />
-        </button>
+            <Arrow width={'.75em'} height={'.75em'} />
+        </IconButton2>
     </div>
 )
 
@@ -153,7 +152,7 @@ export const LimitAmountInput = ({ control, children }) => {
     return (
         <>
             <label htmlFor="limit">Limit</label>
-            <TextInput>
+            <TextInput className="limit-amount--container">
                 <input
                     name='limit_amount'
                     type="text"

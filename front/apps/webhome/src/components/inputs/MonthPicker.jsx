@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 
+import './styles/MonthPicker.css'
 import { Arrow } from '@assets/icons'
 import { monthMappings } from '@assets/data/monthMappings'
 import DropAnimation from '@utils/DropAnimation'
-import './styles/MonthPicker.css'
+import { SmallArrowButton, IconButton } from '@ledget/shared-ui'
 
 const MonthPicker = () => {
     const dates = {
@@ -120,14 +121,13 @@ const MonthPicker = () => {
         <div id="month-picker" ref={monthPickerRef}>
             <h1>{monthMappings[month - 1][1]} {year}</h1>
             <div id="header-arrow-container">
-                <button
-                    className='btn btn-clr'
+                <IconButton
                     id='header-arrow'
                     onClick={handleArrowClick}
                     aria-label="Open month picker"
                 >
                     <Arrow width={'1.3em'} height={'1.3em'} />
-                </button>
+                </IconButton>
             </div>
             <DropAnimation
                 visible={picker}
@@ -136,21 +136,17 @@ const MonthPicker = () => {
             >
                 <div >
                     <div id="year-navigation">
-                        <button
-                            className="arrow-nav btn-scale2"
+                        <SmallArrowButton
+                            type="back"
                             onClick={decrementYear}
                             aria-label="Decrement year"
-                        >
-                            <Arrow stroke='var(--m-text-gray)' scale={.8} rotation={90} />
-                        </button>
+                        />
                         <div>{pickerYear}</div>
-                        <button
-                            className="arrow-nav btn-scale2"
+                        <SmallArrowButton
+                            type="forward"
                             onClick={incrementYear}
                             aria-label="Increment year"
-                        >
-                            <Arrow stroke='var(--m-text-gray)' scale={.8} rotation={-90} />
-                        </button>
+                        />
                     </div>
                     <div className="month-picker-grid">
                         {renderMonths()}

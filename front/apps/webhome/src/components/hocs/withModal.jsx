@@ -3,7 +3,7 @@ import { useTransition, animated } from '@react-spring/web'
 
 import './modal.css'
 import { useAccessEsc } from '@utils'
-import { CloseButton } from '@components/buttons'
+import { CloseButton } from '@ledget/shared-ui'
 
 function withModal(WrappedComponent) {
     return (props) => {

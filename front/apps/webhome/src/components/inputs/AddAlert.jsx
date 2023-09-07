@@ -7,6 +7,7 @@ import { MenuTextInput } from '@components/inputs'
 import { DropAnimation } from '@utils'
 import ComboSelect from './ComboSelect'
 import { formatRoundedCurrency } from '@utils'
+import { InputButton } from '@ledget/shared-ui'
 
 const formatDollar = (value, percentage) => {
     if (!value) return ''
@@ -210,7 +211,7 @@ const AddAlert = (props) => {
                 {({ open }) => (
                     <>
                         <ComboSelect.Button
-                            className="btn-input"
+                            as={InputButton}
                             id="add-alert-btn"
                         >
                             <ButtonText />

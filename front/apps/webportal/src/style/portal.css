@@ -174,8 +174,6 @@ body {
 
 }
 
-/* --------------------------------- Buttons -------------------------------- */
-
 button {
     cursor: pointer;
     border: none;
@@ -194,58 +192,6 @@ button {
 
 .btn-icon-left svg {
     margin-right: 8px;
-}
-
-.btn-main {
-    border-radius: var(--border-radius2);
-    padding: 12px 16px;
-    width: 100%;
-    justify-content: center;
-}
-
-.btn-icon {
-    border-radius: var(--border-radius);
-    padding: 2px;
-}
-
-.btn-secondary {
-    padding: 8px 12px;
-    border-radius: var(--border-radius2);
-}
-
-/***/
-
-.btn-chcl {
-    background-color: var(--btn-gray);
-    color: var(--window);
-    margin: 8px 0;
-}
-
-.btn-chcl:hover {
-    background-color: var(--btn-hover-gray);
-}
-
-.btn-gr {
-    box-shadow: var(--btn-drop-shadow);
-    background-color: var(--btn-light-gray);
-    transition: background-color .3s ease;
-}
-
-.btn-gr:hover {
-    background-color: var(--btn-light-gray-hover);
-    transition: background-color .3s ease;
-}
-
-.btn-grn {
-    color: var(--m-text-gray);
-    background-color: var(--green-hlight);
-    transition: background-color .3s ease;
-    font-weight: 500;
-}
-
-.btn-grn:hover {
-    background-color: var(--green-hlight3);
-    transition: background-color .3s ease;
 }
 
 

@@ -19,14 +19,6 @@
     padding: 10px;
 }
 
-.arrow-nav {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 0 4px;
-    border-radius: var(--border-radius);
-}
-
 #year-navigation {
     display: flex;
     flex-direction: row;

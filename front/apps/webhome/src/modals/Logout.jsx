@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import "./styles/Logout.css"
 import { ory } from '@flow/ory'
 import { withSmallModal } from '@components/hocs'
-import { LoadingRing } from '@components/pieces'
+import { SecondaryButton, GreenSubmitButton } from '@ledget/shared-ui'
 
 function Logout(props) {
     const [seconds, setSeconds] = useState(30)
@@ -36,32 +36,23 @@ function Logout(props) {
                 <span>Your session will end in {seconds} seconds.</span>
             </div>
             <div style={{ display: 'flex', 'justifyContent': 'end', marginTop: '8px' }}>
-                <button
-                    className='btn-scale btn3'
+                <SecondaryButton
                     onClick={() => props.setVisible(false)}
+                    aria-label="Cancel"
                 >
                     Cancel
-                </button>
-                <button
-                    className='btn-grn btn3'
-                    onClick={() => handleLogout()}
-                    aria-label="Logout"
+                </SecondaryButton>
+                <GreenSubmitButton
+                    submitting={loggingOut}
+                    aria-label="Sign out"
                 >
-                    <LoadingRing visible={loggingOut}>
-                        <div style={{ color: loggingOut ? 'transparent' : 'inherit' }}>
-                            Logout
-                        </div>
-                    </LoadingRing>
-                </button>
+                    {Logout}
+                </GreenSubmitButton>
             </div>
         </div>
     )
 }
 
-
-
 const LogoutModal = withSmallModal(Logout)
-
-
 
 export default LogoutModal

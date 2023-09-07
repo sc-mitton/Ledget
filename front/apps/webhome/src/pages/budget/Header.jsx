@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { CashFlow, Graph, Plus, Edit, Ellipsis2 } from '@assets/icons'
 import MonthPicker from '@components/inputs/MonthPicker'
 import DropAnimation from '@utils/DropAnimation'
+import { IconButton } from '@ledget/shared-ui'
 
 const Wrapper = ({ onClick, children }) => {
 
@@ -31,8 +32,8 @@ const DropDown = () => {
         <Menu>
             {({ open }) => (
                 <>
-                    <Menu.Button className={'btn-clr btn'}>
-                        <Ellipsis2 />
+                    <Menu.Button as={React.Fragment}>
+                        <IconButton><Ellipsis2 /></IconButton>
                     </Menu.Button>
                     <DropAnimation visible={open}>
                         <Menu.Items static as={React.static}>
@@ -80,21 +81,17 @@ const Header = () => {
         <div className="window-header">
             <MonthPicker />
             <div className="header-btns">
-                <button
-                    className="btn-clr btn"
-                    aria-label="Toggle cash flow view"
-                >
+                <IconButton aria-label="Toggle cash flow view">
                     <CashFlow />
-                </button>
-                <button
-                    className="btn-clr btn"
+                </IconButton>
+                <IconButton
                     aria-label="Toggle graph view"
                     style={{
                         margin: "0 0.5em"
                     }}
                 >
                     <Graph />
-                </button>
+                </IconButton>
                 <DropDown />
             </div>
         </div>

@@ -1,0 +1,52 @@
+/* ------- Delete Button ------ */
+
+.delete-button {
+    opacity: 0;
+    margin: 0 2px;
+    cursor: auto;
+    transition: opacity .22s ease;
+}
+
+.delete-button-show {
+    margin: 0 2px;
+    opacity: 1;
+    cursor: pointer;
+    transition: all .22s ease;
+}
+
+.delete-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(0deg);
+    transition: all .22s ease;
+}
+
+.delete-button:hover,
+.delete-button-show:hover {
+    transform: rotate(-45deg);
+    transition: all .22s ease;
+}
+
+.delete-button.show {
+    opacity: 1;
+    animation: pop .22s ease;
+    cursor: pointer;
+}
+
+.delete-button.remove {
+    animation: pop-out .22s ease;
+}
+
+.delete-button span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ------------------------------- Grip Button ------------------------------ */
+
+.grip-btn {
+    cursor: grab;
+    margin-right: 6px;
+}

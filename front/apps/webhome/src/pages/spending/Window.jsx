@@ -4,6 +4,7 @@ import './styles/Window.css'
 import NeedsConfirmationWindow from '../needsConfirmation/Window'
 import { Plus, Funnel } from '@assets/icons'
 import { Tooltip } from '@components/pieces'
+import { IconButton } from '@ledget/shared-ui'
 
 const HistoryHeader = () => {
     return (
@@ -18,13 +19,12 @@ const HistoryHeader = () => {
                     type="top"
                     style={{ left: '-.4rem' }}
                 >
-                    <button
-                        className="btn-clr btn"
+                    <IconButton
                         id="funnel-icon"
                         aria-label="Filter"
                     >
                         <Funnel />
-                    </button>
+                    </IconButton>
                 </Tooltip>
                 <Tooltip
                     msg="Manually add item"
@@ -32,13 +32,12 @@ const HistoryHeader = () => {
                     type="top"
                     style={{ left: '-2.5rem' }}
                 >
-                    <button
-                        className="btn-clr btn"
+                    <IconButton
                         id="add-icon"
                         aria-label="Manually add item"
                     >
                         <Plus />
-                    </button>
+                    </IconButton>
                 </Tooltip>
             </div>
         </div>
