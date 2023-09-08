@@ -13,11 +13,15 @@
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 0px;
+    top: 4px;
     bottom: 0;
     right: 8px;
     border-radius: var(--border-radius1);
     padding: 2px;
+}
+
+.increment-arrows--container svg {
+    margin: 2px;
 }
 
 .increment-arrows--container button {

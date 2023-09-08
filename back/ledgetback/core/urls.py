@@ -1,13 +1,11 @@
 from django.urls import path, include
-from .views.user import (
-     UserView,
-     GetPaymentMethodsView
-)
+from .views.user import UserView
 from .views.service import (
     PriceView,
-    CreateSubscriptionView,
+    SubscriptionView,
     CreateCustomerView,
-    GetSetupIntent
+    GetSetupIntent,
+    PaymentMethodView
 )
 
 
@@ -16,10 +14,13 @@ urlpatterns = [
      path('user/me', UserView.as_view(), name='get_me'),
      path('user/<uuid:id>', UserView.as_view(), name='update_user'),
 
-     path('payment_methods', GetPaymentMethodsView.as_view(), name='payment_methods'), # noqa
+     path('default_payment_method', PaymentMethodView.as_view(),
+          name='default_payment_method'),
      path('customer', CreateCustomerView.as_view(), name='customer'),
-     path('subscription', CreateSubscriptionView.as_view(), name='subscription'), # noqa
-     path('setup_intent', GetSetupIntent.as_view(), name='setup_intent'), # noqa
+     path('subscription', SubscriptionView.as_view(),
+          name='subscription'),
+     path('setup_intent', GetSetupIntent.as_view(),
+          name='setup_intent'),
 
      path('', include('budget.urls')),
      path('', include('financials.urls')),

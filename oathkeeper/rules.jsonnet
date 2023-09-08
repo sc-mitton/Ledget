@@ -111,10 +111,10 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
-    id: 'payment_methods',
+    id: 'default_payment_method',
     match: {
-      methods: ['GET'],
-      url: base_url + '/payment_methods',
+      methods: ['GET', 'POST'],
+      url: base_url + '/default_payment_method',
     },
   },
   GenericAuthedBase
@@ -129,7 +129,7 @@ local GenericAuthedBase = {
   {
     id: 'subscription',
     match: {
-      methods: ['POST'],
+      methods: ['POST', 'DELETE'],
       url: base_url + '/subscription',
     },
   },

@@ -14,16 +14,25 @@ import {
     baseBillingSchema as schema,
     FormError
 } from '@ledget/shared-ui'
-import { useGetSetupIntentQuery, useGetMeQuery } from '@features/userSlice'
+import {
+    useLazyGetSetupIntentQuery,
+    useGetMeQuery,
+    useGetPaymentMethodQuery,
+    useUpdateDefaultPaymentMethodMutation
+} from '@features/userSlice'
 import { StripeElements } from '@ledget/shared-utils'
 
-
 const Modal = withModal((props) => {
+    const [getSetupIntent, { data: setupIntent, isLoading: fetchingSetupIntent }] = useLazyGetSetupIntentQuery()
+    const { data: paymentMethodData } = useGetPaymentMethodQuery()
+    const [updateDefaultPaymentMethod, { isSuccess: updateSuccess, isLoading: isUpdatingPayment }] = useUpdateDefaultPaymentMethodMutation()
+    const { data: user } = useGetMeQuery()
+
     const [cardEntered, setCardEntered] = useState(false)
     const [cardNotEnteredError, setCardNotEnteredError] = useState(false)
     const [cardErrMsg, setCardErrMsg] = useState(null)
-    const { data: setupIntent, isLoading } = useGetSetupIntentQuery()
-    const { data: user } = useGetMeQuery()
+    const [submitting, setSubmitting] = useState(false)
+
     const stripe = useStripe()
     const elements = useElements()
 
@@ -31,11 +40,25 @@ const Modal = withModal((props) => {
         useForm({ resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
     const { field: stateField } = useController({ name: 'state', control })
 
+    // Force fetch setup intent on mount
+    useEffect(() => { getSetupIntent() }, [])
+
+    // Clear state field error on change
     useEffect(() => {
         stateField.value && clearErrors('state')
     }, [stateField.value])
 
+    // Invalidate cache
+    useEffect(() => {
+        updateSuccess && props.setVisible(false)
+    }, [updateSuccess])
+
+    useEffect(() => {
+        !isUpdatingPayment && setSubmitting(false)
+    }, [isUpdatingPayment])
+
     const confirmSetup = async (data) => {
+        setSubmitting(true)
         const result = await stripe.confirmCardSetup(
             setupIntent.client_secret,
             {
@@ -45,8 +68,8 @@ const Modal = withModal((props) => {
                         name: data.name,
                         email: user?.email,
                         address: {
-                            city: data.city.split(',')[0],
-                            state: data.city.split(',')[1],
+                            city: data.city,
+                            state: data.state.value,
                             postal_code: data.zip,
                             country: data.country
                         }
@@ -55,10 +78,16 @@ const Modal = withModal((props) => {
             }
         )
         if (result.setupIntent?.status === 'succeeded') {
-            setSuccess(true)
-            props.setVisible(false)
+            // Invalidate payment_methods cache
+            // update default payment method
+            // close modal
+            updateDefaultPaymentMethod({
+                paymentMethodId: result.setupIntent.payment_method,
+                oldPaymentMethodId: paymentMethodData.payment_method.id
+            })
         } else if (result.error) {
             setCardErrMsg(result.error?.message)
+            setSubmitting(false)
         }
     }
 
@@ -80,19 +109,19 @@ const Modal = withModal((props) => {
                         register={register}
                         errors={errors}
                         field={stateField}
-                        loading={isLoading}
+                        loading={fetchingSetupIntent}
                     />
                     <h4>Card</h4>
                     <CardInput
                         requiredError={cardNotEnteredError}
                         onComplete={() => setCardEntered(true)}
                         clearError={() => setCardNotEnteredError(false)}
-                        loading={isLoading}
+                        loading={fetchingSetupIntent}
                     />
                     {cardErrMsg && <FormError msg={cardErrMsg} />}
                 </div>
                 <SubmitForm
-                    submitting={false}
+                    submitting={submitting}
                     onCancel={() => props.setVisible(false)}
                 />
             </form>

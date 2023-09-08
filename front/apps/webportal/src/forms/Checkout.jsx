@@ -1,10 +1,9 @@
-import React, { useContext, useLayoutEffect, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useState, useRef } from 'react'
 
-import { useForm, useController } from 'react-hook-form'
+import { useForm, useController, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
-import { AnimatePresence, motion } from 'framer-motion'
 import { string } from 'yup'
 
 import './style/Checkout.css'
@@ -36,115 +35,73 @@ const schema = baseBillingSchema.shape({
         }),
 })
 
-const PriceContext = React.createContext({})
-const PriceContextProvider = ({ children }) => {
+const Prices = ({ control }) => {
+    const { prices, error } = usePrices()
     const [price, setPrice] = useState(null)
 
-    return (
-        <>
-            <PriceContext.Provider value={{ price, setPrice }}>
-                {children}
-            </PriceContext.Provider>
-        </>
-    )
-}
-
-const Prices = ({ prices }) => {
-    const { price, setPrice } = useContext(PriceContext)
-
-    useLayoutEffect(() => {
-        setPrice(prices[0])
+    useEffect(() => {
+        prices && setPrice(prices[0])
     }, [prices])
 
     return (
-        <div id="prices-container">
-            <div id="prices-container-header">
-                <img src={logoLight} alt="Ledget" />
-            </div>
-            <div id="subscription-radios-container">
-                {prices.map((p, i) =>
-                    <div
-                        className={`subscription${p === price ? '-selected' : ''}`}
-                        key={`subscription-${i}`}
-                    >
-                        <input
-                            type="radio"
-                            id={`price-${i}`}
-                            name="price"
-                            value={p.id}
-                            checked={p === price}
-                            onChange={() => setPrice(p)}
-                            aria-checked={p === price}
-                        />
-                        <label
-                            htmlFor={`price-${i}`}
-                            tabIndex={i + 1}
-                            onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && setPrice(p)}
-                        >
-                            {p.nickname.toLowerCase() == 'year' &&
-                                <>
-                                    <div className="dog-ear"></div>
-                                    <div className="dog-ear-star">
-                                        <Star fill={'var(--green-hlight)'} />
-                                    </div>
-                                </>
-                            }
-                            <span className="nickname">{p.nickname}</span>
-                            <span className="unit-amount">
-                                ${
-                                    p.nickname.toLowerCase() == 'year'
-                                        ? p.unit_amount / 1200
-                                        : p.unit_amount / 100
-                                }<span> /mo</span>
-                            </span>
-                        </label>
-                    </div>
-                )}
-            </div>
-        </div>
-    )
-}
-
-const Form = ({ onSubmit, id }) => {
-    const [cardEntered, setCardEntered] = useState(false)
-    const [cardNotEnteredError, setCardNotEnteredError] = useState(false)
-
-    const { register, handleSubmit, formState: { errors }, control, clearErrors } =
-        useForm({ resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
-    const { field: stateField } = useController({ name: 'state', control })
-
-    const submitBillingForm = (e) => {
-        e.preventDefault()
-        !cardEntered && setCardNotEnteredError(true)
-        handleSubmit(
-            (data) => cardEntered && onSubmit(data)
-        )(e)
-    }
-
-    useEffect(() => {
-        stateField.value && clearErrors('state')
-    }, [stateField.value])
-
-    return (
         <>
-            <form onSubmit={submitBillingForm} className="checkout-form" id={id}>
-                <h4>Billing Info</h4>
-                <NameOnCardInput {...register('name')} errors={errors} />
-                <CityStateZipInputs errors={errors} register={register} field={stateField} />
-            </form >
-            <h4>Card</h4>
-            <CardInput
-                requiredError={cardNotEnteredError}
-                onComplete={() => setCardEntered(true)}
-                clearError={() => setCardNotEnteredError(false)}
-            />
+            {prices &&
+                <div id="prices-container">
+                    <div id="prices-container-header">
+                        <img src={logoLight} alt="Ledget" />
+                    </div>
+                    <div id="subscription-radios-container">
+                        {prices.map((p, i) =>
+                            <div
+                                className={`subscription${p === price ? '-selected' : ''}`}
+                                key={`subscription-${i}`}
+                            >
+                                <Controller
+                                    name="price"
+                                    control={control}
+                                    render={({ field: { onChange, value } }) => (
+                                        <input
+                                            name="price"
+                                            type="radio"
+                                            id={`price-${i}`}
+                                            value={value}
+                                            checked={p === price}
+                                            aria-label={p.nickname}
+                                            aria-checked={p === price}
+                                            onChange={(e) => { onChange(e.target.value) }}
+                                        />
+                                    )}
+                                />
+                                <label
+                                    htmlFor={`price-${i}`}
+                                    tabIndex={i + 1}
+                                    onClick={() => setPrice(p)}
+                                    onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && setPrice(p)}
+                                >
+                                    {p.nickname.toLowerCase() == 'year' &&
+                                        <div className="dog-ear">
+                                            <Star fill={'var(--green-hlight)'} />
+                                        </div>
+                                    }
+                                    <span className="nickname">{p.nickname}</span>
+                                    <span className="unit-amount">
+                                        ${
+                                            p.nickname.toLowerCase() == 'year'
+                                                ? p.unit_amount / 1200
+                                                : p.unit_amount / 100
+                                        }<span> /mo</span>
+                                    </span>
+                                </label>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            }
         </>
     )
-
 }
 
-const OrderSummary = () => {
-    const { price } = useContext(PriceContext)
+const OrderSummary = ({ unit_amount, trial_period_days }) => {
 
     const getDaySuffix = (day) => {
         if (day >= 11 && day <= 13) {
@@ -165,7 +122,7 @@ const OrderSummary = () => {
     const getTrialEndString = () => {
         const currentDate = new Date()
         const futureDate = new Date(
-            currentDate.getTime() + (price.metadata?.trial_period_days * 24 * 60 * 60 * 1000)
+            currentDate.getTime() + (trial_period_days * 24 * 60 * 60 * 1000)
         )
 
         const months = [
@@ -181,52 +138,46 @@ const OrderSummary = () => {
     }
 
     return (
-        <>
-            {price &&
-                <div className="order-summary-container">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>First Charge:</td>
-                                <td>{getTrialEndString()}</td>
-                            </tr>
-                            <tr>
-                                <td>Amount:</td>
-                                <td>{`\$${price.unit_amount / 100}.`}<span>00</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div >
-            }
-        </>
+        <div className="order-summary-container">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>First Charge:</td>
+                        <td>{getTrialEndString()}</td>
+                    </tr>
+                    <tr>
+                        <td>Amount:</td>
+                        <td>{`\$${unit_amount / 100}.`}<span>00</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div >
     )
 }
 
-const StripeFooter = () => {
-    return (
-        <div className="stripe-logo-container">
-            <div>
-                powered by
-            </div>
-            <div>
-                <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
-                    <img className="stripe-logo" src={stripelogo} alt="Stripe" />
-                </a>
-            </div>
-        </div>
-    )
-}
-
-function Checkout({ prices }) {
+const Form = (props) => {
+    const [cardEntered, setCardEntered] = useState(false)
+    const [cardNotEnteredError, setCardNotEnteredError] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
     const [processing, setProcessing] = useState(false)
     const [cardErrMsg, setCardErrMsg] = useState(null)
-    const [success, setSuccess] = useState(false)
     const stripe = useStripe()
     const elements = useElements()
-    const { price } = useContext(PriceContext)
 
     const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem('clientSecret')))
+
+    const { register, watch, handleSubmit, formState: { errors }, control, clearErrors } =
+        useForm({ resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
+    const { field: stateField } = useController({ name: 'state', control })
+    const price = watch('price', '')
+
+    useEffect(() => {
+        console.log(watch())
+    }, [watch()])
+
+    useEffect(() => {
+        stateField.value && clearErrors('state')
+    }, [stateField.value])
 
     const createCustomer = async () => {
         await ledgetapi.post(`customer`)
@@ -237,10 +188,10 @@ function Checkout({ prices }) {
             })
     }
 
-    const createSubscription = async () => {
+    const createSubscription = async (data) => {
         await ledgetapi.post(`subscription`, {
-            price_id: price.id,
-            trial_period_days: price.metadata?.trial_period_days
+            price_id: data.pice.id,
+            trial_period_days: data.price.metadata?.trial_period_days
         })
             .then((response) => {
                 if (response.status === 200) {
@@ -266,8 +217,8 @@ function Checkout({ prices }) {
                         name: data.name,
                         email: JSON.parse(sessionStorage.getItem("user")).email,
                         address: {
-                            city: data.city.split(',')[0],
-                            state: data.city.split(',')[1],
+                            city: data.city,
+                            state: data.city.value,
                             postal_code: data.zip,
                             country: data.country
                         }
@@ -275,12 +226,7 @@ function Checkout({ prices }) {
                 }
             }
         )
-        if (result.setupIntent?.status === 'succeeded') {
-            setSuccess(true)
-            window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
-        } else if (result.error) {
-            setCardErrMsg(result.error?.message)
-        }
+        result.error && setCardErrMsg(result.error?.message)
     }
 
     const onSubmit = async (data) => {
@@ -300,97 +246,73 @@ function Checkout({ prices }) {
         }
     }
 
-    const SubmitButton = ({ form }) => {
-        const { price } = useContext(PriceContext)
-        const submitButtonRef = useRef()
-
-        return (
-            <>
-                {price &&
-                    <div className="subscribe-button-container">
-                        <BlackWideButton
-                            id="subscribe-button"
-                            type='submit'
-                            form={form}
-                            ref={submitButtonRef}
-                            aria-label="Submit payment information"
-                        >
-                            <span>{`Start ${price.metadata?.trial_period_days}-day Free Trial`}</span>
-                        </BlackWideButton>
-                    </div>
-                }
-            </>
-        )
+    const submitBillingForm = (e) => {
+        e.preventDefault()
+        !cardEntered && setCardNotEnteredError(true)
+        handleSubmit(
+            (data) => console.log(data)
+        )(e)
     }
 
     return (
         <>
             <WindowLoadingBar visible={processing} />
-            <Prices prices={prices} />
-            <div id="checkout-container">
+            <form onSubmit={submitBillingForm} {...props}>
+                <Prices control={control} />
                 <div>
-                    {errMsg &&
-                        <div className="general-error" >
-                            <FormError msg={errMsg} />
-                        </div>
-                    }
-                    <Form id="billing-form" onSubmit={onSubmit} />
-                    {cardErrMsg && <FormError msg={cardErrMsg} />}
+                    <div id="text-inputs--container">
+                        <h4>Billing Info</h4>
+                        <NameOnCardInput {...register('name')} errors={errors} />
+                        <CityStateZipInputs errors={errors} register={register} field={stateField} />
+
+                        <h4>Card</h4>
+                        <CardInput
+                            requiredError={cardNotEnteredError}
+                            onComplete={() => setCardEntered(true)}
+                            clearError={() => setCardNotEnteredError(false)}
+                        />
+
+                        {cardErrMsg && <FormError msg={cardErrMsg} />}
+                        {errMsg &&
+                            <div className="general-error" >
+                                <FormError msg={errMsg} />
+                            </div>}
+                    </div>
+                    <OrderSummary
+                        unit_amount={price?.unit_amount}
+                        trial_period_days={price?.trial_period_days}
+                    />
+                    <BlackWideButton form={'billing-form'}>
+                        {`Start ${price?.trial_period_days}-day Free Trial`}
+                    </BlackWideButton>
                 </div>
-                <div>
-                    <OrderSummary />
-                    <SubmitButton form={'billing-form'} />
-                </div>
-            </div>
-            <StripeFooter />
+            </form >
         </>
     )
 }
 
-const AnimatedCheckout = () => {
-    const { prices, error } = usePrices()
-
+const StripeFooter = () => {
     return (
-        <AnimatePresence>
-            {prices && !error
-                ?
-                <motion.div
-                    className="window"
-                    id="checkout-window"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <Checkout prices={prices} />
-                </motion.div>
-                :
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <div className="window" id="checkout-window-loading-error">
-                        <div className="app-logo" >
-                            <img src={logoLight} alt="Ledget" />
-                        </div>
-                        <div id="message" style={{ marginTop: "-12px" }}>
-                            Please try back again later.
-                        </div>
-                    </div>
-                </motion.div>
-            }
-        </AnimatePresence>
+        <div className="stripe-logo-container">
+            <div>
+                powered by
+            </div>
+            <div>
+                <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
+                    <img className="stripe-logo" src={stripelogo} alt="Stripe" />
+                </a>
+            </div>
+        </div>
     )
 }
 
 const CheckoutWindow = () => {
     return (
         <StripeElements pk={import.meta.env.VITE_STRIPE_PK_TEST}>
-            <PriceContextProvider>
-                <AnimatedCheckout />
-            </PriceContextProvider>
+            <div id="checkout-window" className="window">
+                <Form id="billing-form" />
+                <StripeFooter />
+            </div>
         </StripeElements>
     )
 }

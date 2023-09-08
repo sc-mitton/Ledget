@@ -6,7 +6,7 @@ import { Tab } from '@headlessui/react'
 import { useLocation } from 'react-router-dom'
 
 import { ItemsContext } from './ItemsContext'
-import { CheckMark, Recommendations as RecommendationsIcon } from '@ledget/shared-assets'
+import { Recommendations as RecommendationsIcon } from '@ledget/shared-assets'
 import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
@@ -147,7 +147,6 @@ export const BottomButtons = ({ expanded }) => {
                 disabled={!expanded}
                 aria-label="Add Category"
                 type="submit"
-                className="btn-icon-r"
             >
                 <span>Save</span>
             </GreenCheckSubmitButton>

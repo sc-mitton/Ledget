@@ -113,8 +113,14 @@ const Form = (props) => {
                     error={[errors.name]}
                 />
             </div>
-            <div className="split-inputs padded-row bottom-row">
-                <div className="padded-row">
+            <div
+                className="split-inputs padded-row bottom-row"
+                style={{ flexDirection: watchRange ? 'column' : 'row', }}
+            >
+                <div
+                    className="padded-row"
+                    style={{ order: watchRange ? 2 : 1 }}
+                >
                     <BillScheduler
                         billPeriod={billPeriod}
                         error={scheduleMissing}
@@ -123,7 +129,13 @@ const Form = (props) => {
                         <AddReminder />
                     </div>
                 </div>
-                <div className="padded-row">
+                <div
+                    className="padded-row"
+                    style={{
+                        order: watchRange ? 1 : 2,
+                        ...(watchRange ? { marginLeft: '0' } : {})
+                    }}
+                >
                     <DollarRangeInput
                         rangeMode={watchRange}
                         control={control}
@@ -157,7 +169,7 @@ export default (props) => {
         <Modal
             {...props}
             cleanUp={() => navigate(-1)}
-            maxWidth={props.maxWidth || '375px'}
+            maxWidth={props.maxWidth || '425px'}
             minWidth={props.minWidth || '0px'}
             blur={2}
         />

@@ -6,7 +6,7 @@ import { ButtonWithClassName, withArrow, withCheckMark, withLoadingRing } from '
 
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')
 export const BlackPrimaryButton = ButtonWithClassName('btn-chcl btn3')
-export const SecondaryButton = ButtonWithClassName('btn3 btn-scale btn-scale')
+export const SecondaryButton = ButtonWithClassName('btn3 btn-scale btn-scale btn-second')
 export const GrnPrimaryButton = ButtonWithClassName('btn-grn btn3')
 
 export const BlackWideButton = ButtonWithClassName('btn-chcl btn-wide')
@@ -16,10 +16,12 @@ export const GrayWideButton = ButtonWithClassName('btn-gr btn-wide')
 export const BlackSlimButton = ButtonWithClassName('btn-chcl btn-slim')
 export const GrnSlimButton = ButtonWithClassName('btn-grn btn-slim')
 export const SlimButton = ButtonWithClassName('btn-clr btn-2slim')
+export const RedButton = ButtonWithClassName('btn-red')
 export const NarrowButton = ButtonWithClassName('btn-clr btn-narrow')
 export const IconButton = ButtonWithClassName('btn-clr btn-icon')
-export const IconButton2 = ButtonWithClassName('btn-gr2 btn-icon')
-export const InputButton = ButtonWithClassName('btn-input')
+export const IconButton2 = ButtonWithClassName('btn-gr2 btn-icon2')
+export const InputButton = ButtonWithClassName('btn-input btn-input-full')
+export const SlimInputButton = ButtonWithClassName('btn-input2 btn-2slim')
 
 // Specialised Buttons
 export const BlackPillButtonWithArrow = withArrow(BlackPillButton)
@@ -74,7 +76,7 @@ export const CloseButton = forwardRef((props, ref) => {
 
   return (
     <button
-      className="btn-clr btn btn-icon2"
+      className="btn-clr btn btn-icon"
       ref={r}
       style={{
         position: 'absolute',

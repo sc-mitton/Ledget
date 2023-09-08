@@ -154,7 +154,7 @@ a {
     left: 0;
     background-color: #000;
     transform: scaleX(0);
-    transition: transform 0.15s ease;
+    transition: all 0.15s ease;
 }
 
 .nav-container a:hover::before {
@@ -192,7 +192,7 @@ a {
 }
 
 .auth-button .arrow-head {
-    transition: transform 0.2s ease-in;
+    transition: all 0.2s ease-in;
 }
 
 .auth-button:hover .arrow-head {

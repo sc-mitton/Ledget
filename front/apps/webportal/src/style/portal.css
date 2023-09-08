@@ -103,6 +103,11 @@ body {
 #checkout-window {
     width: 90%;
     max-width: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: var(--border-radius3);
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -126,9 +131,8 @@ body {
 #prices-container {
     background-color: var(--green-hlight);
     box-shadow: 0 1px 1px 0 var(--green-hlight);
-    border-radius: inherit;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    border-top-left-radius: var(--border-radius3);
+    border-top-right-radius: var(--border-radius3);
     position: relative;
     z-index: 100
 }

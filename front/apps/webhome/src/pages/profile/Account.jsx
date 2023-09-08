@@ -24,6 +24,7 @@ const Info = () => {
 
 const Plan = () => {
     const { data: user } = useGetMeQuery()
+    const navigate = useNavigate()
     const nextPayment = new Date(user.subscription.plan.current_period_end * 1000)
     const nextPaymentString = nextPayment.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -31,8 +32,14 @@ const Plan = () => {
         day: 'numeric'
     })
 
-    const handleClick = () => {
-        console.log('change plan')
+    const getStatusColor = (status) => {
+        const statusColorMap = {
+            active: 'var(--green-dark2)',
+            trialing: 'var(--green-dark2)',
+            paused: 'var(--yellow)',
+            default: 'var(--red)'
+        }
+        return statusColorMap[status] || statusColorMap.default
     }
 
     const getStatus = () => {
@@ -48,12 +55,18 @@ const Plan = () => {
                 <div className="header2">
                     <div>
                         <h3>Plan</h3>
-                        <span className="indicator">
+                        <span
+                            className="indicator"
+                            style={{ color: getStatusColor(user.subscription.plan.status) }}
+                        >
                             {getStatus()}
                         </span>
                     </div>
                     <div>
-                        <GrnSlimButton aria-label="Change plan" onClick={handleClick}>
+                        <GrnSlimButton
+                            aria-label="Change plan"
+                            onClick={() => navigate('/profile/details/change-plan')}
+                        >
                             change
                         </GrnSlimButton>
                     </div>

@@ -19,11 +19,12 @@
 
 #resend-btn svg {
     transform: scale(1);
-    transition: transform 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 #resend-btn:hover svg {
     transform: scale(1.2);
+    transition: all 0.2s ease;
 }
 
 #resend-icon {

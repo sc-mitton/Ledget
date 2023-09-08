@@ -220,12 +220,13 @@
       "authorizer": {
          "handler": "allow"
       },
-      "id": "payment_methods",
+      "id": "default_payment_method",
       "match": {
          "methods": [
-            "GET"
+            "GET",
+            "POST"
          ],
-         "url": "https://localhost/api/v1/payment_methods"
+         "url": "https://localhost/api/v1/default_payment_method"
       },
       "mutators": [
          {
@@ -277,7 +278,8 @@
       "id": "subscription",
       "match": {
          "methods": [
-            "POST"
+            "POST",
+            "DELETE"
          ],
          "url": "https://localhost/api/v1/subscription"
       },

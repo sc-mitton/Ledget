@@ -3,6 +3,7 @@
 #subscription-radios-container {
     display: flex;
     justify-content: center;
+
     flex-direction: row;
     padding: 28px 64px;
 }
@@ -79,12 +80,11 @@ input[type="radio"] {
     transform: translate(50%, -50%) rotate(45deg);
 }
 
-.dog-ear-star {
+.dog-ear svg {
     position: absolute;
-    top: -2px;
-    right: 14px;
-    height: 0px;
-    width: 0px;
+    top: 26px;
+    left: 14px;
+    transform: rotate(-45deg);
 }
 
 .subscription label:focus-visible {
@@ -106,6 +106,10 @@ input[type="radio"] {
     color: var(--logo-dark);
     margin: 6px 0;
     margin-left: 4px;
+}
+
+#billing-form>div:nth-child(2) {
+    padding: 32px;
 }
 
 .inputs-container h3 {
@@ -134,6 +138,10 @@ input[type="radio"] {
 
 #name-on-card-error {
     margin-top: 8px;
+}
+
+#text-inputs--container {
+    margin: 8px 0 40px 0;
 }
 
 
@@ -194,22 +202,6 @@ input[type="radio"] {
     top: 2px;
     text-align: left;
     animation: pop .22s ease;
-}
-
-#subscribe-button {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--btn-gray);
-}
-
-#subscribe-button:hover {
-    background-color: var(--btn-hover-gray);
-}
-
-#subscribe-button span {
-    color: var(--window);
 }
 
 /* ------------------------------- Stripe Logo ------------------------------ */

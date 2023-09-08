@@ -5,20 +5,28 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getMe: builder.query({
             query: () => 'user/me',
-            tags: ['user'],
+            providesTags: ['user'],
         }),
         getPaymentMethod: builder.query({
-            query: () => 'payment_methods',
-            keepUnusedDataFor: 180,
+            query: () => 'default_payment_method',
+            providesTags: ['payment_method'],
         }),
         getSetupIntent: builder.query({
             query: () => ({
                 url: 'setup_intent',
                 method: 'GET',
+            })
+        }),
+        updateDefaultPaymentMethod: builder.mutation({
+            query: ({ paymentMethodId, oldPaymentMethodId }) => ({
+                url: 'default_payment_method',
+                method: 'POST',
+                body: {
+                    payment_method_id: paymentMethodId,
+                    old_payment_method_id: oldPaymentMethodId,
+                },
             }),
-            onSuccess: (data) => {
-                sessionStorage.setItem('setupIntent', JSON.stringify(data))
-            },
+            invalidatesTags: ['payment_method'],
         }),
         updateUser: builder.mutation({
             query: ({ data, userId }) => ({
@@ -28,7 +36,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['user'],
         }),
-
+        cancelSubscription: builder.mutation({
+            query: () => ({
+                url: `subscription`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['user'],
+        }),
     })
 })
 
@@ -36,5 +50,7 @@ export const {
     useGetMeQuery,
     useGetPaymentMethodQuery,
     useUpdateUserMutation,
-    useGetSetupIntentQuery,
+    useLazyGetSetupIntentQuery,
+    useUpdateDefaultPaymentMethodMutation,
+    useCancelSubscriptionMutation,
 } = extendedApiSlice

@@ -13,9 +13,13 @@ export const StripeElements = ({ pk, children }) => {
     const stripePromise = loadStripe(pk)
 
     return (
-        <Elements stripe={stripePromise} options={cardOptions}>
-            {children}
-        </Elements>
+        <>
+            {pk &&
+                <Elements stripe={stripePromise} options={cardOptions}>
+                    {children}
+                </Elements>
+            }
+        </>
     )
 }
 

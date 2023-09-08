@@ -4,7 +4,7 @@ import { LoadingRing } from '../pieces-lib/pieces'
 import { ArrowIcon, CheckMark } from '@ledget/shared-assets'
 
 export const BaseButton = forwardRef((props, ref) => {
-    const { className, children, onClick, ...rest } = props
+    const { className, children, ...rest } = props
     const localRef = useRef(null)
     const r = ref || localRef
 
@@ -25,7 +25,11 @@ export const ButtonWithClassName = (className) => forwardRef((props, ref) => {
     const r = ref || localRef
 
     return (
-        <BaseButton ref={r} className={`${className} ${classNameInner ? classNameInner : ''}`} {...rest}>
+        <BaseButton
+            ref={r}
+            className={`${className} ${classNameInner ? classNameInner : ''}`}
+            {...rest}
+        >
             {children}
         </BaseButton>
     )
@@ -63,7 +67,11 @@ export const withCheckMark = (Component) => {
                 {...rest}
             >
                 {children}
-                <CheckMark width={'.8em'} height={'.8em'} />
+                <CheckMark
+                    width={'.8em'}
+                    height={'.8em'}
+                    style={{ marginLeft: '.5rem' }}
+                />
             </Component>
         )
     }
@@ -74,11 +82,21 @@ export const withLoadingRing = (Component) => {
         const { children, submitting, ...rest } = props
 
         return (
-            <LoadingRing loading={submitting}>
-                <Component {...rest}>
+            <Component {...rest}>
+                <LoadingRing
+                    visible={submitting}
+                    style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                    color="dark"
+                />
+                <div style={{ color: submitting ? 'transparent' : 'inherit' }}>
                     {children}
-                </Component>
-            </LoadingRing>
+                </div>
+            </Component>
         )
     }
 }

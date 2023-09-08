@@ -12,7 +12,11 @@ from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 import stripe
 
-from core.serializers import SubscriptionSerializer
+from core.serializers import (
+    SubscriptionSerializer,
+    PaymentMethodSerializer
+)
+from core.utils.stripe import stripe_error_handler, StripeError
 from core.models import Customer
 
 
@@ -25,16 +29,36 @@ class PriceView(APIView):
     """Class for getting the list of prices from Stripe"""
 
     def get(self, *args, **kwargs):
-        result = stripe.Price.search(
+        keys = ['id', 'nickname', 'unit_amount',
+                'unit_amount', 'currency', 'metadata']
+        prices = stripe.Price.search(
             query="product:'prod_NStMoPQOCocj2H' AND active:'true'",
-        )
-        return Response(data=result.data, status=HTTP_200_OK)
+        ).data
+
+        filtered_data = [
+            {key: price[key] for key in keys} for price in prices
+        ]
+
+        return Response(data=filtered_data, status=HTTP_200_OK)
 
 
-class CreateSubscriptionView(GenericAPIView):
+class SubscriptionView(GenericAPIView):
     """Class for handling the subscription"""
     permission_classes = [IsAuthenticated]
     serializer_class = SubscriptionSerializer
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            sub_id = stripe.Subscription.list(
+                customer=request.user.customer.id
+            ).data[0].id
+            stripe.Subscription.modify(sub_id, cancel_at_period_end=True)
+            response = Response(status=HTTP_200_OK)
+        except Exception as e:
+            stripe_logger.error(f'Error canceling subscription: {e}')
+            response = Response(status=HTTP_400_BAD_REQUEST)
+
+        return response
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_customer \
@@ -76,6 +100,7 @@ class CreateSubscriptionView(GenericAPIView):
                 'pending_setup_intent'
             ],
             'proration_behavior': 'none',
+            'payment_behavior': 'default_incomplete'
             # 'automatic_tax': {"enabled": True},
             # deactivated for now, reactivate in production
         }
@@ -134,7 +159,63 @@ class GetSetupIntent(APIView):
             status=HTTP_200_OK
         )
 
-    def getSubscriptionId(self, customer_id):
-        customer = stripe.Customer.retrieve(customer_id)
-        print(customer)
-        # return customer.subscriptions.data[0].id
+
+class PaymentMethodView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = [PaymentMethodSerializer]
+
+    def post(self, request, *args, **kwargs):
+        '''
+        Set the default payment method for the customer
+        '''
+        serializer = self.get_serializer(data=request.data)
+        data = serializer.is_valid(raise_exception=True)
+
+        try:
+            stripe.Customer.modify(
+                self.request.user.customer.id,
+                invoice_settings={
+                    'default_payment_method':
+                    data['payment_method_id']
+                }
+            )
+            stripe.PaymentMethod.detach(data['old_payment_method_id'])
+        except Exception as e:
+            stripe_logger.error(f'Error setting default payment method: {e}')
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        return Response(status=HTTP_200_OK)
+
+    def get(self, request, *args, **kwargs):
+        '''
+        Get the default payment method for the customer
+        '''
+
+        try:
+            payment_methods = self.get_default_stripe_payment_methods(
+                request.user.customer.id
+            )
+            payment_method = {
+                'id': payment_methods.data[0].id,
+                'brand': payment_methods.data[0].card.brand,
+                'exp_month': payment_methods.data[0].card.exp_month,
+                'exp_year': payment_methods.data[0].card.exp_year,
+                'last4': payment_methods.data[0].card.last4,
+            }
+        except StripeError:
+            stripe_logger.error(StripeError.message)
+            return Response(
+                {'error': StripeError.message},
+                status=StripeError.response_code
+            )
+
+        return Response(
+            data={'payment_method': payment_method},
+            status=HTTP_200_OK
+        )
+
+    @stripe_error_handler
+    def get_default_stripe_payment_methods(self, customer_id):
+        return stripe.PaymentMethod.list(customer=customer_id)
+
+

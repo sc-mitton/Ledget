@@ -186,7 +186,11 @@ function Header({ isNarrow }) {
     }
 
     useEffect(() => {
-        if (searchParams.get('confirm') || location.pathname.includes('new') || location.pathname.includes('update')) {
+        if (searchParams.get('confirm')
+            || location.pathname.includes('new')
+            || location.pathname.includes('update')
+            || location.pathname.includes('change')
+        ) {
             setZindex(0)
         } else {
             setZindex(1000)

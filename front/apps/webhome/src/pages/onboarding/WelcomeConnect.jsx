@@ -76,7 +76,7 @@ const BottomButtons = ({ continueDisabled }) => {
                 <BlackPrimaryButtonWithArrow
                     aria-label="Next"
                     onClick={() => navigate('/welcome/add-bills')}
-                    disabled={!continueDisabled}
+                    disabled={continueDisabled}
                 >
                     Continue
                 </BlackPrimaryButtonWithArrow>

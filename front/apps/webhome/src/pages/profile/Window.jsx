@@ -6,11 +6,12 @@ import { useLocation } from 'react-router-dom'
 
 import './styles/window.css'
 import Gutter from './Gutter'
-import Account from './Account'
-import Connections from './Connections'
-import Settings from './Settings'
-import Security from './Security'
+import AccountPage from './Account'
+import ConnectionsPage from './Connections'
+import SettingsPage from './Settings'
+import SecurityPage from './Security'
 import UpdatePayment from '@modals/UpdatePayment'
+import ChangePlan from '@modals/ChangePlan'
 import { useGetMeQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@ledget/shared-ui'
 
@@ -35,12 +36,13 @@ function Profile() {
                     className="content"
                 >
                     <Routes path="profile" location={location} key={location.pathname.split('/')[2]}>
-                        <Route path="details" element={<Account />} >
+                        <Route path="details" element={<AccountPage />} >
                             <Route path="update-payment" element={<UpdatePayment />} />
+                            <Route path="change-plan" element={<ChangePlan />} />
                         </Route>
-                        <Route path="settings" element={<Settings />} />
-                        <Route path="connections" element={<Connections />} />
-                        <Route path="security" element={<Security />} />
+                        <Route path="settings" element={<SettingsPage />} />
+                        <Route path="connections" element={<ConnectionsPage />} />
+                        <Route path="security" element={<SecurityPage />} />
                     </Routes>
                 </motion.div>
             </AnimatePresence>

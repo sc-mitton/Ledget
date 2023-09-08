@@ -5,7 +5,6 @@
 
 #accounts-window ul {
     display: flex;
-    flex-wrap: row;
     justify-content: flex-start;
     margin: 8px 0 28px 0;
     position: relative;

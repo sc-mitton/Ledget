@@ -1,6 +1,5 @@
 import logging
 
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -12,7 +11,7 @@ from django.contrib.auth.models import AnonymousUser
 
 from core.serializers import OnboardUpdateSerializer
 from core.utils.stripe import stripe_error_handler, StripeError
-from core.permissions import IsAuthedVerifiedSubscriber, IsObjectOwner
+from core.permissions import IsObjectOwner
 
 stripe_logger = logging.getLogger('stripe')
 
@@ -63,34 +62,3 @@ class UserView(RetrieveUpdateAPIView):
         u.id = self.kwargs['id']
         self.check_object_permissions(self.request, u)
         return self.request.user
-
-
-class GetPaymentMethodsView(APIView):
-    permission_classes = [IsAuthedVerifiedSubscriber]
-
-    def get(self, request, *args, **kwargs):
-        try:
-            payment_methods = self.get_stripe_payment_methods(
-                request.user.customer.id
-            )
-            payment_method = {
-                'brand': payment_methods.data[0].card.brand,
-                'exp_month': payment_methods.data[0].card.exp_month,
-                'exp_year': payment_methods.data[0].card.exp_year,
-                'last4': payment_methods.data[0].card.last4,
-            }
-        except StripeError:
-            stripe_logger.error(StripeError.message)
-            return Response(
-                {'error': StripeError.message},
-                status=StripeError.response_code
-            )
-
-        return Response(
-            data={'payment_method': payment_method},
-            status=HTTP_200_OK
-        )
-
-    @stripe_error_handler
-    def get_stripe_payment_methods(self, customer_id):
-        return stripe.PaymentMethod.list(customer=customer_id)

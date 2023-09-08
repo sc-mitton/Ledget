@@ -50,6 +50,7 @@ export const EmojiComboText = (props) => {
                         formRef(e)
                         ref.current = e
                     }}
+                    style={{ marginLeft: '4px' }}
                 />
                 <FormErrorTip errors={error} />
             </TextInput>

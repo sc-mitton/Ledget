@@ -24,3 +24,8 @@ class OnboardUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('is_onboarded',)
+
+
+class PaymentMethodSerializer(serializers.Serializer):
+    payment_method_id = serializers.CharField(required=False)
+    old_payment_method_id = serializers.CharField(required=False)
