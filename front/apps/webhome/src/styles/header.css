@@ -54,10 +54,6 @@ header {
 /* ------------------------------ Dropdown Menu ----------------------------- */
 
 .profile-dropdown.wide {
-    position: absolute;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
     top: 48px;
     left: -16px;
 }
@@ -87,9 +83,9 @@ header {
 
 .profile-dropdown.narrow {
     position: absolute;
-    text-align: left;
-    display: flex;
     flex-direction: column;
+    display: flex;
+    text-align: left;
     top: 48px;
     right: -24px;
 }
@@ -117,11 +113,6 @@ header {
     border-left: 6px solid transparent;
     content: '';
 }
-
-.profile-dropdown button {
-    width: 100%;
-}
-
 
 /* ------------------------------- Nav ------------------------------- */
 

@@ -7,6 +7,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query: () => 'user/me',
             providesTags: ['user'],
         }),
+        getPrices: builder.query({
+            query: () => 'prices'
+        }),
         getPaymentMethod: builder.query({
             query: () => 'default_payment_method',
             providesTags: ['payment_method'],
@@ -36,10 +39,32 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['user'],
         }),
+        updateSubscription: builder.mutation({
+            query: ({ subId }) => ({
+                url: `subscription/${subId}`,
+                method: 'POST',
+            }),
+            invalidatesTags: ['user'],
+        }),
         cancelSubscription: builder.mutation({
-            query: () => ({
-                url: `subscription`,
+            query: ({ subId, cancelationReason, feedback }) => ({
+                url: `subscription/${subId}`,
                 method: 'DELETE',
+                body: {
+                    cancelation_reason: cancelationReason,
+                    feedback: feedback,
+                },
+            }),
+            invalidatesTags: ['user'],
+        }),
+        createSubscription: builder.mutation({
+            query: ({ priceId, billingCycleAnchor }) => ({
+                url: 'subscription',
+                method: 'POST',
+                body: {
+                    price_id: priceId,
+                    billing_cycle_anchor: billingCycleAnchor,
+                },
             }),
             invalidatesTags: ['user'],
         }),
@@ -53,4 +78,7 @@ export const {
     useLazyGetSetupIntentQuery,
     useUpdateDefaultPaymentMethodMutation,
     useCancelSubscriptionMutation,
+    useUpdateSubscriptionMutation,
+    useCreateSubscriptionMutation,
+    useGetPricesQuery,
 } = extendedApiSlice

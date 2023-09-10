@@ -26,11 +26,14 @@ class UserView(RetrieveUpdateAPIView):
         try:
             sub = self.get_stripe_subscription(request.user.customer.id)
             subscription_data = {
+                'id': sub.id,
                 'plan': {
-                    'nickname': sub.data[0].plan.nickname,
+                    'id': sub.plan.id,
+                    'nickname': sub.plan.nickname,
                     'status': request.user.customer.subscription_status,
-                    'current_period_end': sub.data[0].current_period_end,
-                    'amount': sub.data[0].plan.amount,
+                    'current_period_end': sub.current_period_end,
+                    'amount': sub.plan.amount,
+                    'cancel_at_period_end': sub.cancel_at_period_end,
                 },
             }
         except StripeError:
@@ -48,6 +51,8 @@ class UserView(RetrieveUpdateAPIView):
                 'is_customer': request.user.is_customer,
                 'is_verified': request.user.is_verified,
                 'is_onboarded': request.user.is_onboarded,
+                'service_provisioned_until':
+                    request.user.service_provisioned_until,
                 'subscription': subscription_data
             },
             status=HTTP_200_OK
@@ -55,7 +60,13 @@ class UserView(RetrieveUpdateAPIView):
 
     @stripe_error_handler
     def get_stripe_subscription(self, customer_id):
-        return stripe.Subscription.list(customer=customer_id)
+        subs = stripe.Subscription.list(customer=customer_id)
+        if len(subs) > 0:
+            sub = subs.data[0]
+        else:
+            sub = subs.data[0]
+
+        return sub
 
     def get_object(self):
         u = AnonymousUser()

@@ -1,11 +1,12 @@
 import React from 'react'
 
 import { Outlet, useNavigate } from 'react-router-dom'
+import { Menu } from '@headlessui/react'
 
 import './styles/Account.css'
 import { CardIcon } from '@ledget/shared-assets'
-import { useGetMeQuery, useGetPaymentMethodQuery } from '@features/userSlice'
-import { GrnSlimButton, ShimmerDiv } from '@ledget/shared-ui'
+import { useGetMeQuery, useGetPaymentMethodQuery, useUpdateSubscriptionMutation } from '@features/userSlice'
+import { GrnSlimButton, GreenSlimArrowSubmit, ShimmerDiv, DropAnimation } from '@ledget/shared-ui'
 
 const Info = () => {
     const { data: user } = useGetMeQuery()
@@ -22,9 +23,84 @@ const Info = () => {
     )
 }
 
-const Plan = () => {
+const ChangePlanMenu = () => {
+    const [updateSubscription, { isLoading }] = useUpdateSubscriptionMutation()
     const { data: user } = useGetMeQuery()
     const navigate = useNavigate()
+
+    const nickNameMap = {
+        Year: 'Change to monthly billing',
+        Month: 'Change to yearly billing'
+    }
+
+    const changeBillCycleDisabled = user.subscription.plan.current_period_end
+        > Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 30)
+
+    const options = [
+        {
+            label: 'Cancel Subscription',
+            onClick: () => navigate('/profile/details/cancel-subscription'),
+            cancel_at_period_end: false
+        },
+        {
+            label: nickNameMap[user.subscription.plan.nickname],
+            onClick: () => navigate(
+                '/profile/details/change-bill-cycle',
+                { state: { disabled: changeBillCycleDisabled } }),
+            cancel_at_period_end: false,
+            disabled: changeBillCycleDisabled
+        },
+        {
+            label: "Don't Cancel",
+            onClick: () => updateSubscription({
+                subId: user.subscription.id,
+            }),
+            cancel_at_period_end: true
+        }
+    ]
+
+    const Items = () => (
+        <Menu.Items static>
+            {options.filter((op) => op.cancel_at_period_end === user.subscription.plan.cancel_at_period_end)
+                .map((op, i) => (
+                    <Menu.Item key={op.label} as={React.Fragment}>
+                        {({ active }) => (
+                            <button
+                                className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                onClick={op.onClick}
+                                style={{ opacity: op.disabled ? '.4' : '1' }}
+                            >
+                                <div>{op.label}</div>
+                            </button>)}
+                    </Menu.Item>
+                ))}
+        </Menu.Items>
+    )
+
+    return (
+        <Menu>
+            {({ open }) => (
+                <div style={{ position: 'relative' }}>
+                    <Menu.Button as={React.Fragment}>
+                        <GreenSlimArrowSubmit
+                            submitting={isLoading}
+                            rotate={0}
+                            stroke={'var(--m-text-gray'}
+                        >
+                            change
+                        </GreenSlimArrowSubmit>
+                    </Menu.Button>
+                    <DropAnimation visible={open} className="dropdown" id="change-plan--menu">
+                        <Items />
+                    </DropAnimation>
+                </div>
+            )}
+        </Menu>
+    )
+}
+
+const Plan = () => {
+    const { data: user } = useGetMeQuery()
     const nextPayment = new Date(user.subscription.plan.current_period_end * 1000)
     const nextPaymentString = nextPayment.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -32,21 +108,29 @@ const Plan = () => {
         day: 'numeric'
     })
 
-    const getStatusColor = (status) => {
+    const getStatusColor = () => {
         const statusColorMap = {
             active: 'var(--green-dark2)',
             trialing: 'var(--green-dark2)',
             paused: 'var(--yellow)',
             default: 'var(--red)'
         }
-        return statusColorMap[status] || statusColorMap.default
+        if (user.subscription.plan.cancel_at_period_end) {
+            return statusColorMap.paused
+        } else {
+            return statusColorMap[user.subscription.plan.status]
+                || statusColorMap.default
+        }
     }
 
     const getStatus = () => {
+        if (user.subscription.plan.cancel_at_period_end) {
+            return 'canceled'
+        }
         if (user.subscription.plan.status === 'trialing') {
             return 'trial'
         }
-        return user.subscription.plan.status.tolowerCase().replace('_', ' ')
+        return user.subscription.plan.status?.toLowerCase()
     }
 
     return (
@@ -57,18 +141,13 @@ const Plan = () => {
                         <h3>Plan</h3>
                         <span
                             className="indicator"
-                            style={{ color: getStatusColor(user.subscription.plan.status) }}
+                            style={{ color: getStatusColor() }}
                         >
                             {getStatus()}
                         </span>
                     </div>
                     <div>
-                        <GrnSlimButton
-                            aria-label="Change plan"
-                            onClick={() => navigate('/profile/details/change-plan')}
-                        >
-                            change
-                        </GrnSlimButton>
+                        <ChangePlanMenu />
                     </div>
                 </div>
                 <div className="body">
@@ -77,7 +156,10 @@ const Plan = () => {
                         {` $${user.subscription.plan.amount / 100}`}
                     </span>
                     <br />
-                    <span>{`Next charge ${nextPaymentString}`}</span>
+                    {user.subscription.plan.cancel_at_period_end
+                        ? <span>{`Ending on ${nextPaymentString}`}</span>
+                        : <span>{`Next charge ${nextPaymentString}`}</span>
+                    }
                 </div>
             </div>
         </div>

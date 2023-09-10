@@ -129,9 +129,17 @@ local GenericAuthedBase = {
   {
     id: 'subscription',
     match: {
-      methods: ['POST', 'DELETE'],
+      methods: ['POST'],
       url: base_url + '/subscription',
     },
+  },
+  GenericAuthedBase
+  {
+    id: 'update_subscription',
+    match: {
+      methods: ['POST', 'DELETE'],
+      url: base_url + '/subscription/<[a-zA-Z0-9_]+>',
+    }
   },
   GenericAuthedBase
   {

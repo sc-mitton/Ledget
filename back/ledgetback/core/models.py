@@ -100,6 +100,10 @@ class User(models.Model):
     def plaid_items(self):
         return self.plaiditem_set.all()
 
+    @property
+    def service_provisioned_until(self):
+        return int(self.customer.period_end) + (3 * 24 * 60 * 60)
+
 
 class Customer(models.Model):
     """ See README for more information on the subscription statuses."""
@@ -121,6 +125,9 @@ class Customer(models.Model):
         default=None
     )
     period_end = models.IntegerField(default=0)
+    feedback = models.CharField(max_length=1000, null=True, default=None)
+    cancelation_reason = models.CharField(max_length=1000,
+                                          null=True, default=None)
 
     @property
     def has_current_subscription(self):

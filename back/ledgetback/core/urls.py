@@ -3,6 +3,7 @@ from .views.user import UserView
 from .views.service import (
     PriceView,
     SubscriptionView,
+    UpateSubscriptionView,
     CreateCustomerView,
     GetSetupIntent,
     PaymentMethodView
@@ -19,6 +20,7 @@ urlpatterns = [
      path('customer', CreateCustomerView.as_view(), name='customer'),
      path('subscription', SubscriptionView.as_view(),
           name='subscription'),
+     path('subscription/<str:sub_id>', UpateSubscriptionView.as_view()),
      path('setup_intent', GetSetupIntent.as_view(),
           name='setup_intent'),
 

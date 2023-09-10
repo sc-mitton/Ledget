@@ -16,7 +16,6 @@ export const GrayWideButton = ButtonWithClassName('btn-gr btn-wide')
 export const BlackSlimButton = ButtonWithClassName('btn-chcl btn-slim')
 export const GrnSlimButton = ButtonWithClassName('btn-grn btn-slim')
 export const SlimButton = ButtonWithClassName('btn-clr btn-2slim')
-export const RedButton = ButtonWithClassName('btn-red')
 export const NarrowButton = ButtonWithClassName('btn-clr btn-narrow')
 export const IconButton = ButtonWithClassName('btn-clr btn-icon')
 export const IconButton2 = ButtonWithClassName('btn-gr2 btn-icon2')
@@ -29,6 +28,9 @@ export const BlackPrimaryButtonWithArrow = withArrow(BlackPrimaryButton)
 export const BlackSubmitWithArrow = withLoadingRing(withArrow(BlackPrimaryButton))
 export const GreenSubmitButton = withLoadingRing(GrnPrimaryButton)
 export const GreenCheckSubmitButton = withCheckMark(GreenSubmitButton)
+export const GrnSlimArrowButton = withArrow(ButtonWithClassName('btn-grn btn-slim'))
+export const GreenSlimArrowSubmit = withLoadingRing(GrnSlimArrowButton)
+export const RedButton = withLoadingRing(ButtonWithClassName('btn-red btn-2slim'))
 
 export const SmallArrowButton = ({ type, ...rest }) => (
   <button className="arrow-nav btn-scale2" {...rest}>

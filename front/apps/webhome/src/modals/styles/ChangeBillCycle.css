@@ -1,0 +1,14 @@
+#new-plan--container {
+    display: inline-block;
+    margin-top: 2px;
+    margin-bottom: 12px;
+    border-radius: var(--border-radius2);
+}
+
+#new-plan--container span:first-child {
+    font-weight: 600;
+}
+
+#new-plan--container span:last-child {
+    color: var(--green-dark2);
+}

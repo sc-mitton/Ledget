@@ -49,7 +49,7 @@ chmod 755 setup.sh && ./setup.sh
 
 
 ```
-stripe listen --forward-to https://ledget.app:8000/api/v1/stripe --skip-verify
+stripe listen --forward-to https://localhost/hooks/stripe --skip-verify --headers "X-Forwarded-For:3.18.12.63"
 ```
 
 

@@ -4,11 +4,13 @@ const CheckMark = ({
     className = 'checkmark',
     stroke = "#292929",
     width = ".9em",
-    height = ".9em"
+    height = ".9em",
+    ...rest
 }) => {
 
     return (
         <svg
+            className={className}
             width={width}
             height={height}
             viewBox="0 0 100 100"
@@ -16,6 +18,7 @@ const CheckMark = ({
             x="0px"
             y="0px"
             aria-label="Checkmark"
+            {...rest}
         >
             <g>
                 <polyline

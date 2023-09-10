@@ -16,6 +16,7 @@ function withModal(WrappedComponent) {
             maxWidth = '450px',
             zIndex = 1000,
             blur = 4,
+            style,
             ...rest
         } = props
 
@@ -61,7 +62,7 @@ function withModal(WrappedComponent) {
             position: "relative",
             backgroundColor: 'var(--window-background-color)',
             boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-            ...rest
+            ...style
         }
 
         const modalContainerTransitions = useTransition(visible, {
@@ -99,6 +100,7 @@ function withModal(WrappedComponent) {
                             className="modal"
                             style={opacityStyles}
                             aria-modal="true"
+                            {...rest}
                         >
                             {modalContainerTransitions((scaleStyles, item2) =>
                                 item2 && (

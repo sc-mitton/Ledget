@@ -150,15 +150,15 @@
 }
 
 .btn-red {
-    color: var(--mute-red);
+    background-color: var(--mute-red);
+    color: var(--white-text);
     font-weight: 500;
     margin: 4px 0;
-    transform: scale(1);
     transition: all .3s ease;
 }
 
 .btn-red:hover {
-    transform: scale(1.05);
+    background-color: var(--hover-red);
     transition: all .3s ease;
 }
 
@@ -265,4 +265,26 @@
     align-items: center;
     margin: 0 4px;
     border-radius: var(--border-radius);
+}
+
+.checkmark--pop {
+    position: absolute;
+    animation: pop-fade-in 0.3s ease-in-out;
+}
+
+@keyframes pop-fade-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

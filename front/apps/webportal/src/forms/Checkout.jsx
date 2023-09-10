@@ -35,71 +35,49 @@ const schema = baseBillingSchema.shape({
         }),
 })
 
-const Prices = ({ control }) => {
-    const { prices, error } = usePrices()
-    const [price, setPrice] = useState(null)
-
-    useEffect(() => {
-        prices && setPrice(prices[0])
-    }, [prices])
-
-    return (
-        <>
-            {prices &&
-                <div id="prices-container">
-                    <div id="prices-container-header">
-                        <img src={logoLight} alt="Ledget" />
-                    </div>
-                    <div id="subscription-radios-container">
-                        {prices.map((p, i) =>
-                            <div
-                                className={`subscription${p === price ? '-selected' : ''}`}
-                                key={`subscription-${i}`}
-                            >
-                                <Controller
-                                    name="price"
-                                    control={control}
-                                    render={({ field: { onChange, value } }) => (
-                                        <input
-                                            name="price"
-                                            type="radio"
-                                            id={`price-${i}`}
-                                            value={value}
-                                            checked={p === price}
-                                            aria-label={p.nickname}
-                                            aria-checked={p === price}
-                                            onChange={(e) => { onChange(e.target.value) }}
-                                        />
-                                    )}
-                                />
-                                <label
-                                    htmlFor={`price-${i}`}
-                                    tabIndex={i + 1}
-                                    onClick={() => setPrice(p)}
-                                    onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && setPrice(p)}
-                                >
-                                    {p.nickname.toLowerCase() == 'year' &&
-                                        <div className="dog-ear">
-                                            <Star fill={'var(--green-hlight)'} />
-                                        </div>
-                                    }
-                                    <span className="nickname">{p.nickname}</span>
-                                    <span className="unit-amount">
-                                        ${
-                                            p.nickname.toLowerCase() == 'year'
-                                                ? p.unit_amount / 1200
-                                                : p.unit_amount / 100
-                                        }<span> /mo</span>
-                                    </span>
-                                </label>
-                            </div>
-                        )}
-                    </div>
+const Prices = ({ prices, register }) => (
+    <>
+        {prices &&
+            <div id="prices-container">
+                <div id="prices-container-header">
+                    <img src={logoLight} alt="Ledget" />
                 </div>
-            }
-        </>
-    )
-}
+                <div id="subscription-radios--container">
+                    {prices.map((p, i) =>
+                        <label
+                            key={i}
+                            htmlFor={`price-${i}`}
+                        >
+                            <input
+                                name='price'
+                                type="radio"
+                                value={p.id}
+                                id={`price-${i}`}
+                                {...register('price')}
+                                defaultChecked={i === 0}
+                            />
+                            <div className="subscription-radio--container">
+                                {p.nickname.toLowerCase() == 'year' &&
+                                    <div className="dog-ear">
+                                        <Star fill={'var(--green-hlight)'} />
+                                    </div>
+                                }
+                                <span className="nickname">{p.nickname}</span>
+                                <span className="unit-amount">
+                                    ${
+                                        p.nickname.toLowerCase() == 'year'
+                                            ? p.unit_amount / 1200
+                                            : p.unit_amount / 100
+                                    }<span> /mo</span>
+                                </span>
+                            </div>
+                        </label>
+                    )}
+                </div>
+            </div>
+        }
+    </>
+)
 
 const OrderSummary = ({ unit_amount, trial_period_days }) => {
 
@@ -156,42 +134,49 @@ const OrderSummary = ({ unit_amount, trial_period_days }) => {
 }
 
 const Form = (props) => {
-    const [cardEntered, setCardEntered] = useState(false)
-    const [cardNotEnteredError, setCardNotEnteredError] = useState(false)
-    const [errMsg, setErrMsg] = useState(null)
-    const [processing, setProcessing] = useState(false)
-    const [cardErrMsg, setCardErrMsg] = useState(null)
+    const { prices, error } = usePrices()
     const stripe = useStripe()
     const elements = useElements()
-
     const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem('clientSecret')))
+
+    const [trial_period_days, setTrialPeriodDays] = useState(0)
+    const [unit_amount, setUnitAmount] = useState(0)
+    const [processing, setProcessing] = useState(false)
+    const [cardEntered, setCardEntered] = useState(false)
+    const [cardNotEnteredError, setCardNotEnteredError] = useState(false)
+    const [cardErrMsg, setCardErrMsg] = useState(null)
+    const [errMsg, setErrMsg] = useState(null)
 
     const { register, watch, handleSubmit, formState: { errors }, control, clearErrors } =
         useForm({ resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
     const { field: stateField } = useController({ name: 'state', control })
     const price = watch('price', '')
 
-    useEffect(() => {
-        console.log(watch())
-    }, [watch()])
+    useEffect(() => { stateField.value && clearErrors('state') }, [stateField.value])
 
     useEffect(() => {
-        stateField.value && clearErrors('state')
-    }, [stateField.value])
+        if (prices) {
+            const price = watch('price', prices[0].id)
+            price && setTrialPeriodDays(prices.find(p => p.id === price).metadata.trial_period_days)
+            price && setUnitAmount(prices.find(p => p.id === price).unit_amount)
+        }
+    }, [watch('price')])
 
-    const createCustomer = async () => {
+    // Create customer if not already created
+    // if there is already a customer created,
+    // this will return a 422 error, which can be ignored
+    const createCustomer = async () =>
         await ledgetapi.post(`customer`)
             .catch((error) => {
                 if (error.response?.status !== 422) {
                     setErrMsg('Something went wrong. Please try again later.')
                 }
             })
-    }
 
-    const createSubscription = async (data) => {
+    const createSubscription = async (data) =>
         await ledgetapi.post(`subscription`, {
-            price_id: data.pice.id,
-            trial_period_days: data.price.metadata?.trial_period_days
+            price_id: data.price,
+            trial_period_days: data.trial_period_days
         })
             .then((response) => {
                 if (response.status === 200) {
@@ -205,7 +190,6 @@ const Form = (props) => {
                     setErrMsg('Something went wrong. Please try again later.')
                 }
             })
-    }
 
     const confirmSetup = async (data) => {
         const result = await stripe.confirmCardSetup(
@@ -218,7 +202,7 @@ const Form = (props) => {
                         email: JSON.parse(sessionStorage.getItem("user")).email,
                         address: {
                             city: data.city,
-                            state: data.city.value,
+                            state: data.state,
                             postal_code: data.zip,
                             country: data.country
                         }
@@ -249,16 +233,14 @@ const Form = (props) => {
     const submitBillingForm = (e) => {
         e.preventDefault()
         !cardEntered && setCardNotEnteredError(true)
-        handleSubmit(
-            (data) => console.log(data)
-        )(e)
+        handleSubmit((data) => onSubmit(data))(e)
     }
 
     return (
         <>
             <WindowLoadingBar visible={processing} />
             <form onSubmit={submitBillingForm} {...props}>
-                <Prices control={control} />
+                {prices && <Prices register={register} prices={prices} />}
                 <div>
                     <div id="text-inputs--container">
                         <h4>Billing Info</h4>
@@ -278,13 +260,15 @@ const Form = (props) => {
                                 <FormError msg={errMsg} />
                             </div>}
                     </div>
-                    <OrderSummary
-                        unit_amount={price?.unit_amount}
-                        trial_period_days={price?.trial_period_days}
-                    />
-                    <BlackWideButton form={'billing-form'}>
-                        {`Start ${price?.trial_period_days}-day Free Trial`}
-                    </BlackWideButton>
+                    <div>
+                        <OrderSummary
+                            unit_amount={unit_amount}
+                            trial_period_days={trial_period_days}
+                        />
+                        <BlackWideButton form={'billing-form'}>
+                            {`Start ${trial_period_days}-day Free Trial`}
+                        </BlackWideButton>
+                    </div>
                 </div>
             </form >
         </>

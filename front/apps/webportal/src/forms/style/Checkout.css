@@ -1,11 +1,141 @@
+#checkout-window {
+    width: 90%;
+    max-width: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: var(--border-radius3);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#checkout-container {
+    flex-grow: 1;
+    margin: 44px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: auto;
+}
+
+#verification-window {
+    max-width: 375px;
+    width: 60%;
+    padding: 40px 60px;
+}
+
+#prices-container {
+    background-color: var(--green-hlight);
+    box-shadow: 0 1px 1px 0 var(--green-hlight);
+    border-top-left-radius: var(--border-radius3);
+    border-top-right-radius: var(--border-radius3);
+    position: relative;
+    z-index: 100
+}
+
+#prices-container-header {
+    padding: 24px 52px 0px 52px;
+    display: flex;
+    justify-content: start;
+}
+
+#prices-container-header img {
+    height: 0em;
+}
+
+#checkout-container h4 {
+    font-weight: 600;
+    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    color: var(--logo-dark);
+    margin: 6px 0;
+    margin-left: 4px;
+}
+
+#billing-form {
+    padding-bottom: 0px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+}
+
+#billing-form>div:nth-child(2) {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+#text-inputs--container {
+    margin: 8px 0 40px 0;
+}
+
+
+
 /* ---------------------------------- plans --------------------------------- */
 
-#subscription-radios-container {
+#subscription-radios--container {
     display: flex;
     justify-content: center;
-
     flex-direction: row;
     padding: 28px 64px;
+}
+
+
+#subscription-radios--container input[type="radio"] {
+    display: none;
+}
+
+.subscription-radio--container {
+    margin: 0 12px;
+    text-align: center;
+    flex: .5;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--border-radius25);
+    padding: 6px 16px;
+    min-width: 120px;
+    cursor: pointer;
+}
+
+.subscription-radio--container span {
+    color: var(--green-dark1);
+}
+
+input[type="radio"]:checked+.subscription-radio--container {
+    box-shadow: inset 0 0 1px 2px var(--green-dark1);
+}
+
+input[type="radio"]:not(:checked)+.subscription-radio--container {
+    box-shadow: inset 0 0 3px 1px var(--m-green);
+}
+
+.dog-ear {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    background-color: var(--green-dark1);
+    width: 45px;
+    height: 45px;
+    transform: translate(50%, -50%) rotate(45deg);
+}
+
+input[type="radio"]:checked+.subscription-radio--container .dog-ear {
+    opacity: 1;
+}
+
+input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
+    opacity: .3;
+}
+
+.dog-ear svg {
+    position: absolute;
+    top: 32px;
+    left: 16px;
+    transform: rotate(-45deg);
 }
 
 .nickname {
@@ -26,124 +156,6 @@
     font-size: .6em;
 }
 
-input[type="radio"] {
-    display: none;
-}
-
-.subscription,
-.subscription-selected {
-    margin: 0 12px;
-    text-align: center;
-    flex: .5;
-}
-
-
-.subscription-selected label {
-    display: block;
-    padding: 4px 0px;
-    cursor: pointer;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    white-space: nowrap;
-    border-radius: 12px;
-    border: 2.5px solid var(--btn-gray);
-}
-
-.subscription label {
-    display: block;
-    padding: 4px 0px;
-    cursor: pointer;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    white-space: nowrap;
-    border-radius: 14px;
-    border: 2.5px solid rgb(0, 0, 0, .2);
-}
-
-.subscription label * {
-    color: rgb(0, 0, 0, .4)
-}
-
-.subscription .dog-ear {
-    opacity: .2;
-}
-
-.dog-ear {
-    position: absolute;
-    top: -1px;
-    right: -1px;
-    background-color: var(--btn-gray);
-    width: 40px;
-    height: 40px;
-    transform: translate(50%, -50%) rotate(45deg);
-}
-
-.dog-ear svg {
-    position: absolute;
-    top: 26px;
-    left: 14px;
-    transform: rotate(-45deg);
-}
-
-.subscription label:focus-visible {
-    outline: none;
-    box-shadow: inset 0 0 10px 1px var(--green-hlight3);
-}
-
-.subscription .fine-print {
-    padding-top: 4px;
-    font-size: .9em;
-    color: var(--white-text);
-}
-
-/* -------------------------------------------------------------------------- */
-
-#checkout-container h4 {
-    font-weight: 600;
-    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    color: var(--logo-dark);
-    margin: 6px 0;
-    margin-left: 4px;
-}
-
-#billing-form>div:nth-child(2) {
-    padding: 32px;
-}
-
-.inputs-container h3 {
-    margin: 4px 0 8px 2px;
-}
-
-/* ------------------------------ Billing Info ------------------------------ */
-
-#billing-info-header {
-    margin-bottom: 10px;
-}
-
-#billing-form {
-    padding-bottom: 0px;
-}
-
-#name-on-card {
-    width: 100%;
-    font-weight: 400;
-}
-
-#name-on-card-container {
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-#name-on-card-error {
-    margin-top: 8px;
-}
-
-#text-inputs--container {
-    margin: 8px 0 40px 0;
-}
-
 
 /* ------------------------------ Order Summary ----------------------------- */
 #order-summary-line {
@@ -155,7 +167,6 @@ input[type="radio"] {
     display: flex;
     justify-content: end;
     padding: 12px 8px;
-    margin-top: 20px;
     margin-bottom: 8px;
     border-top: 2px solid rgba(0, 0, 0, 0.07);
 }
@@ -247,4 +258,42 @@ input[type="radio"] {
 #checkout-window-loading-error #message {
     padding: 4px 40px;
     font-weight: 500;
+}
+
+/* ------------------------------- Responsive ------------------------------- */
+
+
+@media only screen and (max-width: 700px) {
+    #checkout-window {
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        margin: 0;
+        border-radius: 0px;
+        padding: 0;
+    }
+
+    #checkout-container {
+        width: 80%;
+        max-width: 500px;
+        margin: 0 auto;
+        margin-top: 10%;
+        margin-bottom: 10%;
+    }
+
+    #verification-window {
+        width: 100%;
+        max-width: 70%;
+        margin: 0;
+        border-radius: 0px;
+    }
+
+    #prices-container {
+        border-radius: 0px;
+    }
+
+    #prices-container-header img {
+        height: 2em;
+    }
+
 }

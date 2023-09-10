@@ -115,7 +115,7 @@ const Form = (props) => {
             </div>
             <div
                 className="split-inputs padded-row bottom-row"
-                style={{ flexDirection: watchRange ? 'column' : 'row', }}
+                style={{ ...(watchRange ? { flexDirection: 'column' } : {}) }}
             >
                 <div
                     className="padded-row"

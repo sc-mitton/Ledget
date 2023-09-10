@@ -278,10 +278,37 @@
       "id": "subscription",
       "match": {
          "methods": [
+            "POST"
+         ],
+         "url": "https://localhost/api/v1/subscription"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "update_subscription",
+      "match": {
+         "methods": [
             "POST",
             "DELETE"
          ],
-         "url": "https://localhost/api/v1/subscription"
+         "url": "https://localhost/api/v1/subscription/<[a-zA-Z0-9_]+>"
       },
       "mutators": [
          {

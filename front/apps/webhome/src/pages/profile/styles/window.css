@@ -132,6 +132,7 @@
 
     #gutter {
         width: 52px;
+        flex: 0;
         border-right: 2px solid rgb(0, 0, 0, .05);
     }
 

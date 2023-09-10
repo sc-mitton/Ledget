@@ -36,11 +36,7 @@
     justify-content: space-between;
 }
 
-#account-page .header2 button {
-    font-size: 12px;
-}
-
-#account-page .header2 div {
+#account-page .header2>div {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -55,4 +51,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+#change-plan--menu {
+    top: 26px;
+    right: 0;
 }

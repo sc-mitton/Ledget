@@ -37,11 +37,14 @@ export const ButtonWithClassName = (className) => forwardRef((props, ref) => {
 
 export const withArrow = (Component) => {
 
-    return (props) => {
-        const { children, className, disabledHover, stroke, ...rest } = props
+    return forwardRef((props, ref) => {
+        const localRef = useRef(null)
+        const r = ref || localRef
+        const { children, className, disabledHover, stroke, rotate = -90, ...rest } = props
 
         return (
             <Component
+                ref={r}
                 className={`scale-icon-btn ${className} ${disabledHover ? 'disabled-hover' : ''}`}
                 {...rest}
             >
@@ -49,21 +52,26 @@ export const withArrow = (Component) => {
                 <ArrowIcon
                     width={'.8em'}
                     height={'.8em'}
-                    rotation={-90}
+                    rotation={rotate}
                     stroke={stroke || '#FFFFFF'}
                     style={{ marginLeft: '.5rem' }}
                 />
             </Component>
         )
-    }
+    })
 }
 
 export const withCheckMark = (Component) => {
-    return (props) => {
+
+    return forwardRef((props, ref) => {
+        const localRef = useRef(null)
+        const r = ref || localRef
         const { children, className, disabledHover, stroke, ...rest } = props
+
         return (
             <Component
                 className={`scale-icon-btn ${className} ${disabledHover ? 'disabled-hover' : ''}`}
+                ref={r}
                 {...rest}
             >
                 {children}
@@ -74,15 +82,18 @@ export const withCheckMark = (Component) => {
                 />
             </Component>
         )
-    }
+    })
 }
 
 export const withLoadingRing = (Component) => {
-    return (props) => {
-        const { children, submitting, ...rest } = props
+
+    return forwardRef((props, ref) => {
+        const localRef = useRef(null)
+        const r = ref || localRef
+        const { children, submitting, success, ...rest } = props
 
         return (
-            <Component {...rest}>
+            <Component {...rest} ref={r}>
                 <LoadingRing
                     visible={submitting}
                     style={{
@@ -91,12 +102,15 @@ export const withLoadingRing = (Component) => {
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
                     }}
-                    color="dark"
+                    color={props.color || "dark"}
                 />
-                <div style={{ color: submitting ? 'transparent' : 'inherit' }}>
+                {!submitting && success &&
+                    <CheckMark className="checkmark--pop" />
+                }
+                <div style={{ color: submitting || success ? 'transparent' : 'inherit' }}>
                     {children}
                 </div>
             </Component>
         )
-    }
+    })
 }

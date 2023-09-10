@@ -252,6 +252,10 @@ fieldset {
     justify-content: center;
 }
 
+div.body {
+    opacity: .9;
+}
+
 .body span {
     opacity: .7;
 }
@@ -528,6 +532,15 @@ button:hover .animated-stroke2 line:last-child {
     font-weight: 500;
     border: var(--subtle-border);
     white-space: nowrap;
+    position: absolute;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+
+.dropdown button {
+    width: 100%;
 }
 
 .dropdown:focus-visible {
@@ -570,6 +583,14 @@ ul hr {
     outline: none;
     background-color: var(--icon-light-gray);
     box-shadow: none;
+}
+
+.dropdown-item.selected {
+    background-color: var(--green-hlight2);
+}
+
+.dropdown-item.selected.active {
+    background-color: var(--green-hlight2);
 }
 
 .dropdown-item:focus-visible {

@@ -11,7 +11,8 @@ import ConnectionsPage from './Connections'
 import SettingsPage from './Settings'
 import SecurityPage from './Security'
 import UpdatePayment from '@modals/UpdatePayment'
-import ChangePlan from '@modals/ChangePlan'
+import CancelSubscription from '@modals/CancelSubscription'
+import ChangeBillCycle from '@modals/ChangeBillCycle'
 import { useGetMeQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@ledget/shared-ui'
 
@@ -38,7 +39,8 @@ function Profile() {
                     <Routes path="profile" location={location} key={location.pathname.split('/')[2]}>
                         <Route path="details" element={<AccountPage />} >
                             <Route path="update-payment" element={<UpdatePayment />} />
-                            <Route path="change-plan" element={<ChangePlan />} />
+                            <Route path="cancel-subscription" element={<CancelSubscription />} />
+                            <Route path="change-bill-cycle" element={<ChangeBillCycle />} />
                         </Route>
                         <Route path="settings" element={<SettingsPage />} />
                         <Route path="connections" element={<ConnectionsPage />} />
