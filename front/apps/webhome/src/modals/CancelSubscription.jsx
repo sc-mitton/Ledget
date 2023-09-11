@@ -6,13 +6,13 @@ import { useNavigate } from 'react-router-dom'
 import './styles/CancelSubscription.css'
 import { withModal } from '@ledget/shared-utils'
 import { RedButton, GrnPrimaryButton } from '@ledget/shared-ui'
-import { useCancelSubscriptionMutation, useGetMeQuery } from '@features/userSlice'
+import { useUpdateSubscriptionMutation, useGetMeQuery } from '@features/userSlice'
 import { BakedSelect } from '@components/dropdowns'
 
 
 export const CancelationWindow = (props) => {
     const [feedback, setFeedback] = useState('')
-    const [cancelSubscription, { isSuccess, isLoading }] = useCancelSubscriptionMutation()
+    const [updateSubscription, { isSuccess, isLoading }] = useUpdateSubscriptionMutation()
     const { data: user } = useGetMeQuery()
     const [cancelationReason, setCancelationReason] = React.useState('')
 
@@ -38,8 +38,9 @@ export const CancelationWindow = (props) => {
 
     const handleClick = () => {
         if (cancelationReason && feedback) {
-            cancelSubscription({
+            updateSubscription({
                 subId: user.subscription.id,
+                cancelAtPeriodEnd: true,
                 cancelationReason: cancelationReason,
                 feedback: feedback
             })
@@ -150,7 +151,7 @@ const SuccessWindow = (props) => {
 }
 
 const Modal = withModal((props) => {
-    const [{ isSuccess }] = useCancelSubscriptionMutation()
+    const [{ isSuccess }] = useUpdateSubscriptionMutation()
 
     return (
         isSuccess

@@ -330,6 +330,33 @@
       "authorizer": {
          "handler": "allow"
       },
+      "id": "subscription_items",
+      "match": {
+         "methods": [
+            "PUT"
+         ],
+         "url": "https://localhost/api/v1/subscription_item"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
       "id": "categories",
       "match": {
          "methods": [
@@ -419,6 +446,33 @@
             "GET"
          ],
          "url": "https://localhost/api/v1/setup_intent"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "next_invoice",
+      "match": {
+         "methods": [
+            "GET"
+         ],
+         "url": "https://localhost/api/v1/next_invoice"
       },
       "mutators": [
          {

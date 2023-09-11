@@ -5,7 +5,12 @@ import { Menu } from '@headlessui/react'
 
 import './styles/Account.css'
 import { CardIcon } from '@ledget/shared-assets'
-import { useGetMeQuery, useGetPaymentMethodQuery, useUpdateSubscriptionMutation } from '@features/userSlice'
+import {
+    useGetMeQuery,
+    useGetPaymentMethodQuery,
+    useUpdateSubscriptionMutation,
+    useGetNextInvoiceQuery
+} from '@features/userSlice'
 import { GrnSlimButton, GreenSlimArrowSubmit, ShimmerDiv, DropAnimation } from '@ledget/shared-ui'
 
 const Info = () => {
@@ -33,29 +38,24 @@ const ChangePlanMenu = () => {
         Month: 'Change to yearly billing'
     }
 
-    const changeBillCycleDisabled = user.subscription.plan.current_period_end
-        > Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 30)
-
     const options = [
         {
-            label: 'Cancel Subscription',
-            onClick: () => navigate('/profile/details/cancel-subscription'),
-            cancel_at_period_end: false
-        },
-        {
             label: nickNameMap[user.subscription.plan.nickname],
-            onClick: () => navigate(
-                '/profile/details/change-bill-cycle',
-                { state: { disabled: changeBillCycleDisabled } }),
+            onClick: () => navigate('/profile/details/change-bill-cycle'),
             cancel_at_period_end: false,
-            disabled: changeBillCycleDisabled
         },
         {
             label: "Don't Cancel",
             onClick: () => updateSubscription({
                 subId: user.subscription.id,
+                cancelAtPeriodEnd: false
             }),
             cancel_at_period_end: true
+        },
+        {
+            label: 'Cancel Subscription',
+            onClick: () => navigate('/profile/details/cancel-subscription'),
+            cancel_at_period_end: false
         }
     ]
 
@@ -68,7 +68,6 @@ const ChangePlanMenu = () => {
                             <button
                                 className={`dropdown-item ${active && "active-dropdown-item"}`}
                                 onClick={op.onClick}
-                                style={{ opacity: op.disabled ? '.4' : '1' }}
                             >
                                 <div>{op.label}</div>
                             </button>)}
@@ -87,7 +86,7 @@ const ChangePlanMenu = () => {
                             rotate={0}
                             stroke={'var(--m-text-gray'}
                         >
-                            change
+                            <span>change</span>
                         </GreenSlimArrowSubmit>
                     </Menu.Button>
                     <DropAnimation visible={open} className="dropdown" id="change-plan--menu">
@@ -101,8 +100,11 @@ const ChangePlanMenu = () => {
 
 const Plan = () => {
     const { data: user } = useGetMeQuery()
-    const nextPayment = new Date(user.subscription.plan.current_period_end * 1000)
-    const nextPaymentString = nextPayment.toLocaleDateString('en-US', {
+    const { data: nextInvoice } = useGetNextInvoiceQuery()
+    const nextTimeStamp = nextInvoice.next_payment_date
+        ? new Date(nextInvoice.next_payment_date * 1000)
+        : new Date(user.subscription.plan.current_period_end * 1000)
+    const nextDate = nextTimeStamp.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
         day: 'numeric'
@@ -151,15 +153,20 @@ const Plan = () => {
                     </div>
                 </div>
                 <div className="body">
-                    <span>
-                        {`1 ${user.subscription.plan.nickname}`}
-                        {` $${user.subscription.plan.amount / 100}`}
-                    </span>
-                    <br />
-                    {user.subscription.plan.cancel_at_period_end
-                        ? <span>{`Ending on ${nextPaymentString}`}</span>
-                        : <span>{`Next charge ${nextPaymentString}`}</span>
-                    }
+                    <div id="invoice-details--container">
+                        <div>Renews</div>
+                        <div>{`${user.subscription.plan.interval}ly`}</div>
+                        <div>
+                            {user.subscription.plan.cancel_at_period_end ? 'Ending on' : 'Next charge'}
+                        </div>
+                        <div>
+                            {user.subscription.plan.cancel_at_period_end
+                                ? nextDate
+                                : `$${user.subscription.plan.amount / 100} on ${nextDate}`}
+                        </div>
+                        <div>{nextInvoice.balance > 0 && 'Account Credit'}</div>
+                        <div>{nextInvoice.balance > 0 && `$${nextInvoice.balance / -100}`}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -194,17 +201,18 @@ const PaymentMethod = () => {
                     </GrnSlimButton>
                 </div>
             </div>
-            <div className="body">
-                <div id="card-info-container">
-                    <CardIcon />
-                    <span>
-                        {data?.payment_method.brand.charAt(0).toUpperCase()
-                            + data?.payment_method.brand.slice(1)}
-                        &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
-                        {data?.payment_method.last4}
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        {`Expires ${expDate}`}
-                    </span>
+            <div id="card-info-container" className="body">
+                <div className="card-info--container">
+                    <div>
+                        <CardIcon />
+                        <span >
+                            {data?.payment_method.brand.charAt(0).toUpperCase()
+                                + data?.payment_method.brand.slice(1)}
+                            &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
+                            {data?.payment_method.last4}
+                        </span>
+                    </div>
+                    <div><span >{`Exp. ${expDate}`}</span></div>
                 </div>
             </div>
         </div>
@@ -212,13 +220,14 @@ const PaymentMethod = () => {
 }
 
 const Account = () => {
-    const { isLoading } = useGetPaymentMethodQuery()
+    const { isLoading: loadingPaymentMethod } = useGetPaymentMethodQuery()
+    const { isLoading: loadingInvoice } = useGetNextInvoiceQuery()
     const { data: user } = useGetMeQuery()
 
     return (
         <>
             <ShimmerDiv
-                shimmering={isLoading}
+                shimmering={loadingInvoice || loadingPaymentMethod}
                 style={{ borderRadius: 'var(--border-radius3)' }}
             >
                 <div id="account-page" className="padded-content">

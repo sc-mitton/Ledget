@@ -7,7 +7,7 @@ from core.models import User
 stripe.api_key = settings.STRIPE_API_KEY
 
 
-class SubscriptionSerializer(serializers.Serializer):
+class NewSubscriptionSerializer(serializers.Serializer):
     price_id = serializers.CharField()
     trial_period_days = serializers.IntegerField(required=False)
     billing_cycle_anchor = serializers.IntegerField(required=False)
@@ -32,6 +32,11 @@ class PaymentMethodSerializer(serializers.Serializer):
     old_payment_method_id = serializers.CharField(required=False)
 
 
+class SubscriptionItemsSerializer(serializers.Serializer):
+    price = serializers.CharField()
+
+
 class SubscriptionUpdateSerializer(serializers.Serializer):
     feedback = serializers.CharField(required=False)
     cancelation_reason = serializers.CharField(required=False)
+    cancel_at_period_end = serializers.BooleanField(required=False)

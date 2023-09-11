@@ -143,6 +143,14 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
+    id: 'subscription_items',
+    match: {
+      methods: ['PUT'],
+      url: base_url + '/subscription_item',
+    }
+  },
+  GenericAuthedBase
+  {
     id: 'categories',
     match: {
       methods: ['POST', 'GET'],
@@ -172,5 +180,13 @@ local GenericAuthedBase = {
       methods: ['GET'],
       url: base_url + '/setup_intent',
     },
-  }
+  },
+  GenericAuthedBase
+  {
+    id: 'next_invoice',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/next_invoice',
+    },
+  },
 ]

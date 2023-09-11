@@ -20,6 +20,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             })
         }),
+        getNextInvoice: builder.query({
+            query: () => ({
+                url: 'next_invoice',
+                method: 'GET',
+            }),
+            providesTags: ['invoice'],
+        }),
         updateDefaultPaymentMethod: builder.mutation({
             query: ({ paymentMethodId, oldPaymentMethodId }) => ({
                 url: 'default_payment_method',
@@ -40,33 +47,24 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['user'],
         }),
         updateSubscription: builder.mutation({
-            query: ({ subId }) => ({
+            query: ({ subId, cancelAtPeriodEnd, cancelationReason, feedback }) => ({
                 url: `subscription/${subId}`,
-                method: 'POST',
-            }),
-            invalidatesTags: ['user'],
-        }),
-        cancelSubscription: builder.mutation({
-            query: ({ subId, cancelationReason, feedback }) => ({
-                url: `subscription/${subId}`,
-                method: 'DELETE',
+                method: cancelAtPeriodEnd ? 'DELETE' : 'POST',
                 body: {
+                    cancel_at_period_end: cancelAtPeriodEnd,
                     cancelation_reason: cancelationReason,
                     feedback: feedback,
                 },
             }),
             invalidatesTags: ['user'],
         }),
-        createSubscription: builder.mutation({
-            query: ({ priceId, billingCycleAnchor }) => ({
-                url: 'subscription',
-                method: 'POST',
-                body: {
-                    price_id: priceId,
-                    billing_cycle_anchor: billingCycleAnchor,
-                },
+        updateSubscriptionItems: builder.mutation({
+            query: ({ priceId }) => ({
+                url: 'subscription_item',
+                method: 'PUT',
+                body: { price: priceId },
             }),
-            invalidatesTags: ['user'],
+            invalidatesTags: ['invoice'],
         }),
     })
 })
@@ -74,11 +72,11 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 export const {
     useGetMeQuery,
     useGetPaymentMethodQuery,
+    useGetNextInvoiceQuery,
     useUpdateUserMutation,
     useLazyGetSetupIntentQuery,
     useUpdateDefaultPaymentMethodMutation,
-    useCancelSubscriptionMutation,
     useUpdateSubscriptionMutation,
-    useCreateSubscriptionMutation,
     useGetPricesQuery,
+    useUpdateSubscriptionItemsMutation,
 } = extendedApiSlice

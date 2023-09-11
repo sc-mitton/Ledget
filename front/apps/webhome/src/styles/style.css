@@ -257,12 +257,12 @@ div.body {
 }
 
 .body span {
-    opacity: .7;
+    opacity: .9;
 }
 
 .body svg {
     margin-right: 8px;
-    opacity: .7;
+    opacity: .85;
 }
 
 .window {

@@ -6,7 +6,9 @@ from .views.service import (
     UpateSubscriptionView,
     CreateCustomerView,
     GetSetupIntent,
-    PaymentMethodView
+    PaymentMethodView,
+    SubscriptionItemsView,
+    NextInvoice
 )
 
 
@@ -21,8 +23,12 @@ urlpatterns = [
      path('subscription', SubscriptionView.as_view(),
           name='subscription'),
      path('subscription/<str:sub_id>', UpateSubscriptionView.as_view()),
+     path('subscription_item', SubscriptionItemsView.as_view(),
+          name='subscription_item'),
      path('setup_intent', GetSetupIntent.as_view(),
           name='setup_intent'),
+
+     path('next_invoice', NextInvoice.as_view(), name='next_invoice'),
 
      path('', include('budget.urls')),
      path('', include('financials.urls')),

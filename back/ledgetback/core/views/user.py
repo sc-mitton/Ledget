@@ -34,6 +34,7 @@ class UserView(RetrieveUpdateAPIView):
                     'current_period_end': sub.current_period_end,
                     'amount': sub.plan.amount,
                     'cancel_at_period_end': sub.cancel_at_period_end,
+                    'interval': sub.plan.interval,
                 },
             }
         except StripeError:
