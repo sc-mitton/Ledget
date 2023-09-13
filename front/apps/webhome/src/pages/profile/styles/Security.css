@@ -9,6 +9,7 @@
 #authenticator-settings--container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
 }
 
@@ -24,10 +25,5 @@
 #authenticator-settings--container button {
     float: right;
     margin: 0;
-    margin-right: 4px;
     border-radius: var(--border-radius1);
-}
-
-#authenticator-settings--container button svg {
-    margin-right: 0;
 }

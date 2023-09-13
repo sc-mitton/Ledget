@@ -132,6 +132,18 @@
     transition: background-color .3s ease;
 }
 
+.btn-gr3 {
+    background-color: var(--btn-light-gray);
+    color: rgb(0, 0, 0, .7);
+    transition: all .3s ease;
+    font-weight: 400;
+}
+
+.btn-gr3:hover {
+    background-color: var(--green-hlight);
+    transition: all .3s ease;
+}
+
 .btn-clr {
     background-color: transparent;
     color: var(--m-text-gray);

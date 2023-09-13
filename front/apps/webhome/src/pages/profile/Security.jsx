@@ -1,41 +1,65 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Outlet, useSearchParams } from 'react-router-dom'
 
 import './styles/Security.css'
 import { QrIcon } from '@ledget/shared-assets'
-import { Switch, ExpandableContainer, LoadingRingDiv } from '@ledget/shared-ui'
+import { Switch, GrayButton, LoadingRingDiv } from '@ledget/shared-ui'
 import { useGetMeQuery, useUpdateUserMutation } from '@features/userSlice'
-import { ory } from '@flow/ory'
+import { useLazyGetSettingsFlowQuery } from '@features/orySlice'
 
 
 const QrCodeSetup = ({ flow }) => {
     return (
-        <div>Qr Code Setup</div>
+        <div>
+            Qr Code Setup
+        </div>
+    )
+}
+
+const AuthenticatorInfo = () => {
+    const { data: user } = useGetMeQuery()
+
+    return (
+        <>
+            {user.authenticator_enabled
+                ?
+                <>
+                    <div>
+                        <QrIcon width={'1.25em'} height={'1.25em'} />
+                        <span>Added on {user.authenticator_added_on}</span>
+                    </div>
+                    <GrayButton>
+                        change authenticator
+                    </GrayButton>
+                </>
+                :
+                <span className="faded-text">Not set up</span>
+            }
+        </>
     )
 }
 
 const Authenticator = () => {
     const { data: user } = useGetMeQuery()
-    const [updateUser] = useUpdateUserMutation()
+    const [updateUser, { isLoading: updatingUser }] = useUpdateUserMutation()
+    const [getSettingsFlow, { data: flow, isLoading: loadingFlow, isSuccess: fetchedFlow }] = useLazyGetSettingsFlowQuery()
+
     const [authenticator, setAuthenticator] = useState(user.authenticator_enabled)
     const [searchParams, setSearchParams] = useSearchParams()
-    const [flow, setFlow] = useState(null)
 
     useEffect(() => {
-        setAuthenticator(user.authenticator_enabled)
-    }, [user])
+        fetchedFlow && setSearchParams({ flow: flow.id })
+    }, [fetchedFlow, loadingFlow])
 
-    const handleClick = () => {
-        const flow = searchParams.get('flow')
-        if (flow) {
-            setFlow(ory.getSettingsFlow())
-        } else if (!authenticator) {
-            setFlow(ory.createSettingsFlow())
-            setSearchParams({ flow: flow.id })
+    const handleClick = async () => {
+        if (!authenticator) {
+            const flowId = searchParams.get('flow')
+            getSettingsFlow({ flowId: flowId })
         } else {
-            updateUser({ data: { authenticator_enabled: false } })
+            updateUser({ authenticator_enabled: false })
         }
+        setAuthenticator(!authenticator)
     }
 
     return (
@@ -49,13 +73,13 @@ const Authenticator = () => {
             </Switch>
             <div className="inner-window body">
                 <LoadingRingDiv
-                    loading={true}
+                    loading={updatingUser}
                     color="dark"
                     id="authenticator-settings--container"
                 >
                     {flow
                         ? <QrCodeSetup flow={flow} />
-                        : <span className="faded-text">Not set up</span>
+                        : <AuthenticatorInfo />
                     }
                 </LoadingRingDiv>
             </div>

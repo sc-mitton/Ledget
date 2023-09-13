@@ -25,11 +25,14 @@ class ApiClient {
 
     async getSettingsFlow(id) {
         try {
-            const response = await this.instance.get(
-                '/self-service/settings/flows',
-                { params: { id: id }, withCredentials: true }
-            )
-            return response.data
+            if (id === null) {
+                return this.createSettingsFlow()
+            } else {
+                return this.instance.get(
+                    '/self-service/settings/flows',
+                    { params: { id: id }, withCredentials: true }
+                )
+            }
         } catch {
             console.log(error)
             return null;
