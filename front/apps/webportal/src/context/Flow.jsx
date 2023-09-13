@@ -18,7 +18,6 @@ function LoginFlowContextProvider({ children }) {
     const [responseError, setResponseError] = useState('')
     const [searchParams, setSearchParams] = useSearchParams()
     const [authenticating, setAuthenticating] = useState(false)
-    const { setUser } = useContext(UserContext)
 
     const getFlow = useCallback(
         (flowId) =>

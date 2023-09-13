@@ -111,7 +111,7 @@ const PasswordlessForm = ({ flow = { flow }, helpIcon = true, children }) => {
                                             {...submit}
                                         >
                                             <PasskeyIcon />
-                                            Passkey
+                                            <div style={{ marginLeft: '4px' }}>Passkey</div>
                                         </GrayWideButton>
                                         {helpIcon && <WrappedHelpIcon />}
                                     </div>
@@ -160,7 +160,7 @@ export const PasskeySignIn = () => {
                     value="webauthn"
                 >
                     <PasskeyIcon />
-                    Passkey
+                    <div style={{ marginLeft: '4px' }}>Passkey</div>
                 </GrayWideButton>
             </div>
         </div>

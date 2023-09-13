@@ -6,8 +6,7 @@ import { animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
 import './styles/header.css'
-import Logout from '@modals/Logout'
-import Help from '@modals/Help'
+import { Logout, Help } from '@modals'
 import {
     Profile1,
     Profile2,
@@ -191,6 +190,7 @@ function Header({ isNarrow }) {
             || location.pathname.includes('update')
             || location.pathname.includes('change')
             || location.pathname.includes('cancel')
+            || location.pathname.includes('add')
         ) {
             setZindex(0)
         } else {

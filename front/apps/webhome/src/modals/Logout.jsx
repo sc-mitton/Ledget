@@ -43,10 +43,11 @@ function Logout(props) {
                     Cancel
                 </SecondaryButton>
                 <GreenSubmitButton
+                    onClick={handleLogout}
                     submitting={loggingOut}
                     aria-label="Sign out"
                 >
-                    {Logout}
+                    Logout
                 </GreenSubmitButton>
             </div>
         </div>

@@ -1,0 +1,33 @@
+#security-page>div {
+    margin: 8px 0;
+}
+
+#security-page>div:first-child {
+    margin-top: 240px;
+}
+
+#authenticator-settings--container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+#authenticator-settings--container .faded-text {
+    margin: 0 auto;
+}
+
+#authenticator-settings--container>div {
+    display: flex;
+    align-items: center;
+}
+
+#authenticator-settings--container button {
+    float: right;
+    margin: 0;
+    margin-right: 4px;
+    border-radius: var(--border-radius1);
+}
+
+#authenticator-settings--container button svg {
+    margin-right: 0;
+}

@@ -48,10 +48,8 @@ const Modal = withSmallModal((props) => {
                 <div id="new-plan--container">
                     <span>New Plan:</span>&nbsp;&nbsp;
                     {newPlan
-                        ? <span>
-                            {`$${newPlan.unit_amount / 100}/${newPlan.interval}`}
-                        </span>
-                        : <LoadingRing visible={true} />
+                        ? <span>{`$${newPlan.unit_amount / 100}/${newPlan.interval}`}</span>
+                        : <div><LoadingRing color='dark' visible={true} /></div>
                     }
                 </div>
                 <div />

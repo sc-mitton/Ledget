@@ -1,10 +1,17 @@
+import logging
+
 from rest_framework.authentication import BaseAuthentication
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from jwt.exceptions import InvalidSignatureError, ExpiredSignatureError
+from jwt.exceptions import (
+    InvalidSignatureError,
+    ExpiredSignatureError,
+    InvalidAlgorithmError
+)
 from jwt import decode
 
-import logging
+from .errors import InvalidAuthHeaderError
+
 
 logger = logging.getLogger('ledget')
 OATHKEEPER_PUBLIC_KEY = settings.OATHKEEPER_PUBLIC_KEY
@@ -19,23 +26,29 @@ class OryBackend(BaseAuthentication):
         or expired, return None.
         """
 
-        auth_header = request.META.get('HTTP_AUTHORIZATION', '').split(' ')
-        if auth_header[0].lower() != 'bearer':
-            return None
-        else:
-            token = auth_header[-1]
-
         try:
+            token = self.get_encoded_token(request)
             decoded_jwt = self.get_decoded_jwt(token)
-        except InvalidSignatureError:
-            logger.error(f"Invalid signature for token: {token}")
-            return None
-        except ExpiredSignatureError:
-            logger.error(f"Expired signature for token: {token}")
-            return None
-        else:
             user = self.get_user(decoded_jwt)
-            return (user, None) if user else None
+        except (InvalidSignatureError, ExpiredSignatureError,
+                InvalidAlgorithmError, Exception) as e:
+            logger.error(f"{e.__class__.__name__} {e}")
+            return None
+
+        return (user, None)
+
+    def get_encoded_token(self, request) -> str:
+
+        header = request.META.get('HTTP_AUTHORIZATION', '').split(' ')
+        auth_header_keys = [header[i].lower()
+                            for i in range(0, len(header), 2)]
+
+        if 'bearer' not in auth_header_keys:
+            raise InvalidAuthHeaderError(
+                "Authorization header is missing or invalid."
+            )
+
+        return header[auth_header_keys.index('bearer')*2 + 1]
 
     def get_decoded_jwt(self, token: str) -> dict | None:
         """Validate the token against the JWK from Oathkeeper and
@@ -47,27 +60,24 @@ class OryBackend(BaseAuthentication):
             algorithms=['RS256'],
             options={'verify_exp': True}
         )
-
         return decoded_token
 
     def get_user(self, decoded_token: dict):
         """Return the user from the decoded token."""
 
-        try:
-            identity = decoded_token['session']['identity']
-            user = get_user_model().objects.select_related('customer') \
-                                           .get(pk=identity['id'])
-        except get_user_model().DoesNotExist:
-            logger.error(f"User does not exist: {identity['id']}")
-            return None
-        except KeyError:
-            return None
+        identity = decoded_token['session']['identity']
+        auth_methods = decoded_token['session']['authentication_methods']
 
+        user = get_user_model().objects.select_related('customer') \
+                                       .prefetch_related('device_set') \
+                                       .get(pk=identity['id'])
         user.traits = identity.get('traits', {})
-
-        try:
-            user.is_verified = identity['verifiable_addresses'][0]['verified']
-        except KeyError:
-            user.is_verified = False
+        user.devices = identity.get('devices', [])
+        user.is_verified = identity.get('verifiable_addresses', [{}])[0] \
+                                   .get('verified', False)
+        for auth_method in auth_methods:
+            user.authentication_level = auth_method['aal']
+            if auth_method['aal'] == 'aal2':
+                break
 
         return user

@@ -1,76 +1,65 @@
-import logging
-
-from rest_framework.response import Response
-from rest_framework.generics import RetrieveUpdateAPIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.status import (
-    HTTP_200_OK,
+from rest_framework import (
+    generics,
+    viewsets,
+    permissions,
 )
-import stripe
-from django.contrib.auth.models import AnonymousUser
+from rest_framework.response import Response
+from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
-from core.serializers import OnboardUpdateSerializer
-from core.utils.stripe import stripe_error_handler, StripeError
+from core.serializers import UserSerializer, DeviceSerializer
 from core.permissions import IsObjectOwner
 
-stripe_logger = logging.getLogger('stripe')
 
-
-class UserView(RetrieveUpdateAPIView):
+class UserView(generics.RetrieveUpdateAPIView):
     """Get me endpoint, returns user data and subscription data"""
-    permission_classes = [IsAuthenticated, IsObjectOwner]
-    serializer_class = OnboardUpdateSerializer
-
-    def get(self, request, *args, **kwargs):
-
-        try:
-            sub = self.get_stripe_subscription(request.user.customer.id)
-            subscription_data = {
-                'id': sub.id,
-                'plan': {
-                    'id': sub.plan.id,
-                    'nickname': sub.plan.nickname,
-                    'status': request.user.customer.subscription_status,
-                    'current_period_end': sub.current_period_end,
-                    'amount': sub.plan.amount,
-                    'cancel_at_period_end': sub.cancel_at_period_end,
-                    'interval': sub.plan.interval,
-                },
-            }
-        except StripeError:
-            stripe_logger.error(StripeError.message)
-            return Response(
-                {'error': StripeError.message},
-                status=StripeError.response_code
-            )
-
-        return Response(
-            data={
-                'id': request.user.id,
-                'email': request.user.traits.get('email', ''),
-                'name': request.user.traits.get('name', {}),
-                'is_customer': request.user.is_customer,
-                'is_verified': request.user.is_verified,
-                'is_onboarded': request.user.is_onboarded,
-                'service_provisioned_until':
-                    request.user.service_provisioned_until,
-                'subscription': subscription_data
-            },
-            status=HTTP_200_OK
-        )
-
-    @stripe_error_handler
-    def get_stripe_subscription(self, customer_id):
-        subs = stripe.Subscription.list(customer=customer_id)
-        if len(subs) > 0:
-            sub = subs.data[0]
-        else:
-            sub = subs.data[0]
-
-        return sub
+    permission_classes = [permissions.IsAuthenticated, IsObjectOwner]
+    serializer_class = UserSerializer
 
     def get_object(self):
-        u = AnonymousUser()
-        u.id = self.kwargs['id']
-        self.check_object_permissions(self.request, u)
         return self.request.user
+
+
+class DeviceViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = DeviceSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = self.perform_create(serializer)
+
+        headers = self.get_success_headers(serializer.data)
+        response = Response(serializer.data, HTTP_201_CREATED, headers=headers)
+        response.set_cookie(
+            key=f"device_token_{instance.id}",
+            value=f"{instance.token}",
+            secure=True,
+            samesite='None',
+        )
+
+        return response
+
+    def perform_create(self, serializer):
+        return serializer.save()
+
+    def get_queryset(self):
+        return self.request.user.devices.all()
+
+    def get_object(self):
+        return self.request.user.devices.get(pk=self.kwargs['pk'])
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        # Raise a MethodNotAllowed exception for the PUT and PATCH methods
+        raise MethodNotAllowed(
+            "PUT", detail="PUT method is not allowed for security reasons")
+
+    def partial_update(self, request, *args, **kwargs):
+        # Raise a MethodNotAllowed exception for the PUT method
+        raise MethodNotAllowed(
+            "PATCH", detail="PATCH method is not allowed for security reasons")

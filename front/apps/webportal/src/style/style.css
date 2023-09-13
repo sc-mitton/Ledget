@@ -61,8 +61,8 @@
     --faded-text: rgb(0, 0, 0, .3);
 
     /* Icons & Buttons */
-    --btn-light-gray: #e6e4e4;
-    --btn-hover-light-gray: #dad9d9;
+    --btn-light-gray: var(--input-color);
+    --btn-light-gray-hover: rgb(228, 228, 228);
     --btn-gray: #3b3b3b;
     --btn-hover-gray: #292929;
     --btn-mid-gray: #848484;

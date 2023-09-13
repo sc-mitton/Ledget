@@ -1,3 +1,6 @@
+import uuid
+from datetime import datetime
+
 from django.db import models
 
 from django.core.validators import RegexValidator
@@ -26,10 +29,7 @@ class UserManager(models.Manager):
 
 class User(models.Model):
 
-    id = models.UUIDField(
-        primary_key=True,
-        editable=False
-    )
+    id = models.UUIDField(primary_key=True, editable=False)
     is_active = models.BooleanField(default=True)
     account_flag = models.CharField(
         max_length=20,
@@ -44,6 +44,8 @@ class User(models.Model):
         ],
     )
     is_onboarded = models.BooleanField(default=False)
+    authenticator_enabled = models.BooleanField(default=False)
+    authenticator_enabled_on = models.DateTimeField(null=True, default=None)
 
     objects = UserManager()
     USERNAME_FIELD = 'id'
@@ -53,6 +55,17 @@ class User(models.Model):
         super().__init__(*args, **kwargs)
         self._traits = None
         self._is_verified = False
+        self._devices = []
+        self._authentication_level = None
+
+    def save(self, *args, **kwargs):
+        authenticator_enabled = kwargs.get('authenticator_enabled')
+        if authenticator_enabled:
+            self.authenticator_enabled_on = datetime.now()
+        elif authenticator_enabled is not None:
+            self.authenticator_enabled_on = None
+
+        super().save(*args, **kwargs)
 
     @property
     def is_customer(self):
@@ -89,6 +102,22 @@ class User(models.Model):
         return True
 
     @property
+    def devices(self):
+        return self._devices
+
+    @devices.setter
+    def devices(self, value: list):
+        self._devices = value
+
+    @property
+    def authentication_level(self):
+        return self._authentication_level
+
+    @authentication_level.setter
+    def authentication_level(self, value):
+        return self.authentication_level == value
+
+    @property
     def is_anonymous(self):
         """
         Always return False. This is a way of comparing User objects to
@@ -102,6 +131,8 @@ class User(models.Model):
 
     @property
     def service_provisioned_until(self):
+        '''Return the timestamp of when the service is provisioned until, i.e.
+        the end of the current billing period plus 3 days for leniency.'''
         return int(self.customer.period_end) + (3 * 24 * 60 * 60)
 
 
@@ -135,3 +166,17 @@ class Customer(models.Model):
             self.SubscriptionStatus.ACTIVE,
             self.SubscriptionStatus.TRIALING,
         ]
+
+    @property
+    def subscription_not_canceled(self):
+        return self.subscription_status != self.SubscriptionStatus.CANCELED
+
+
+class Device(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=100)
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user_agent = models.CharField(max_length=200)
+    location = models.CharField(max_length=100)

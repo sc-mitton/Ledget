@@ -184,18 +184,13 @@ const AuthenticationWindow = () => {
             <div id="email-container">
                 <h3>Welcome Back</h3>
                 <div>
-                    <IconButton
+                    <button
                         aria-label="Back"
-                        onClick={() => {
-                            setEmail(null)
-                        }}
-                        style={{
-                            marginTop: '1px',
-                            marginRight: '6px',
-                        }}
+                        onClick={() => { setEmail(null) }}
+                        style={{ marginTop: '1px', marginRight: '6px' }}
                     >
                         <BackArrow />
-                    </IconButton>
+                    </button>
                     <span>{`${initialEmailValue.current}`}</span>
                 </div>
             </div>

@@ -1,0 +1,40 @@
+.switch--container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.switch-crib {
+    margin-top: 1px;
+    width: 30px;
+    padding: 2px;
+    border-radius: 20px;
+}
+
+.switch-crib.enabled {
+    background-color: var(--green-hlight);
+    transition: background-color 0.2s ease-in-out;
+}
+
+.switch-crib.disabled {
+    background-color: var(--input-color);
+    transition: background-color 0.2s ease-in-out;
+}
+
+.switch-pill {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.switch-pill.disabled {
+    transform: translateX(0);
+    background-color: var(--btn-mid-gray);
+    transition: all 0.2s ease-in-out;
+}
+
+.switch-pill.enabled {
+    transform: translateX(14px);
+    background-color: var(--green-dark);
+    transition: all 0.2s ease-in-out;
+}

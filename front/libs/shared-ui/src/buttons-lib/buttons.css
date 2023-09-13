@@ -71,6 +71,11 @@
 
 /* --------------------------------- Colors --------------------------------- */
 
+.btn-transparent {
+    background-color: transparent;
+    padding: 2px;
+}
+
 .btn-clr {
     background-color: transparent;
     color: var(--m-text-gray);
@@ -176,7 +181,6 @@
 
 .btn-input2:hover {
     background-color: var(--icon-hover-light-gray);
-
 }
 
 .btn-input-full {
@@ -230,7 +234,7 @@
 
 .expand-button {
     margin: 0 auto;
-    margin-top: 8px;
+    margin-top: 4px;
     margin-bottom: 8px;
     border-radius: var(--border-radius2);
     font-weight: 500;

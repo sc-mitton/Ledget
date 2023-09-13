@@ -34,6 +34,11 @@
     font-size: 2em;
 }
 
+#account-page h1,
+#security-page h1 {
+    margin-left: -8px;
+}
+
 /* --------------------------------- Gutter --------------------------------- */
 
 #gutter {
@@ -65,6 +70,10 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+#gutter li#profile {
+    border-radius: var(--border-radius25);
 }
 
 #gutter li.slim div {

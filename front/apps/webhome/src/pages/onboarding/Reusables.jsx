@@ -120,7 +120,6 @@ export const BottomButtons = ({ expanded }) => {
     useEffect(() => {
         if (isCategorySuccess) {
             updateUser({
-                userId: user.id,
                 data: { is_onboarded: true }
             })
         }

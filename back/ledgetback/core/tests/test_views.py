@@ -14,7 +14,7 @@ class CoreViewTests(ViewTestsMixin):
         pass
 
     @patch('core.views.user.stripe.Subscription.list')
-    def test_get_me(self, mock_subscription_list):
+    def test_user_me(self, mock_subscription_list):
         mock_subscription = MagicMock()
         mock_subscription.current_period_end = 123456789
 
@@ -25,7 +25,7 @@ class CoreViewTests(ViewTestsMixin):
         mock_subscription.plan = mock_plan
         mock_subscription_list.return_value.data = [mock_subscription]
 
-        response = self.client.get(reverse('get_me'))
+        response = self.client.get(reverse('user_me'))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(str(response.data['id']), str(self.user.id))

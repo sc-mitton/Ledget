@@ -80,3 +80,8 @@
     transform: scale(1.1);
     transition: all .2s ease-out;
 }
+
+
+.confirm-button {
+    margin: 0 2px;
+}

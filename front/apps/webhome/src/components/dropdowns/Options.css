@@ -16,7 +16,7 @@
 .options-dropdown::before {
     position: absolute;
     top: -7px;
-    left: 46px;
+    left: 44px;
     display: inline-block;
     border-right: 7px solid transparent;
     border-bottom: 7px solid var(--subtle-border-color);
@@ -27,7 +27,7 @@
 .options-dropdown::after {
     position: absolute;
     top: -6px;
-    left: 47px;
+    left: 45px;
     display: inline-block;
     border-right: 6px solid transparent;
     border-bottom: 6px solid var(--window);

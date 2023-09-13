@@ -96,12 +96,6 @@ export const withLoadingRing = (Component) => {
             <Component {...rest} ref={r}>
                 <LoadingRing
                     visible={submitting}
-                    style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                    }}
                     color={props.color || "dark"}
                 />
                 {!submitting && success &&

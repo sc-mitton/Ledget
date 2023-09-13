@@ -1,15 +1,15 @@
 /* --------------------------- Animated Container --------------------------- */
 .animated-container.collapsed {
-    transform: scale(0);
+    transform: scale(.95);
     opacity: 0;
-    transition: all .5s ease;
+    transition: all .3s ease;
     max-height: 0;
 }
 
 .animated-container.expanded {
     transform: scale(1);
     opacity: 1;
-    transition: all .5s ease;
+    transition: all .3s ease;
     max-height: 1000px;
 }
 

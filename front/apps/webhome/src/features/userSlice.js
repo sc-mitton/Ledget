@@ -39,8 +39,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['payment_method'],
         }),
         updateUser: builder.mutation({
-            query: ({ data, userId }) => ({
-                url: `user/${userId}`,
+            query: ({ data }) => ({
+                url: 'user/me',
                 method: 'PATCH',
                 body: data,
             }),

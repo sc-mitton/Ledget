@@ -48,14 +48,13 @@ const Modal = withModal((props) => {
         stateField.value && clearErrors('state')
     }, [stateField.value])
 
-    // Invalidate cache
-    useEffect(() => {
-        updateSuccess && props.setVisible(false)
-    }, [updateSuccess])
-
     useEffect(() => {
         !isUpdatingPayment && setSubmitting(false)
     }, [isUpdatingPayment])
+
+    useEffect(() => {
+        updateSuccess && props.setVisible(false)
+    }, [updateSuccess])
 
     const confirmSetup = async (data) => {
         setSubmitting(true)

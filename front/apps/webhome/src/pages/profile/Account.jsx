@@ -61,7 +61,7 @@ const ChangePlanMenu = () => {
 
     const Items = () => (
         <Menu.Items static>
-            {options.filter((op) => op.cancel_at_period_end === user.subscription.plan.cancel_at_period_end)
+            {options.filter((op) => op.cancel_at_period_end === user.subscription.cancel_at_period_end)
                 .map((op, i) => (
                     <Menu.Item key={op.label} as={React.Fragment}>
                         {({ active }) => (
@@ -117,22 +117,22 @@ const Plan = () => {
             paused: 'var(--yellow)',
             default: 'var(--red)'
         }
-        if (user.subscription.plan.cancel_at_period_end) {
+        if (user.subscription.cancel_at_period_end) {
             return statusColorMap.paused
         } else {
-            return statusColorMap[user.subscription.plan.status]
+            return statusColorMap[user.subscription.status]
                 || statusColorMap.default
         }
     }
 
     const getStatus = () => {
-        if (user.subscription.plan.cancel_at_period_end) {
+        if (user.subscription.cancel_at_period_end) {
             return 'canceled'
         }
-        if (user.subscription.plan.status === 'trialing') {
+        if (user.subscription.status === 'trialing') {
             return 'trial'
         }
-        return user.subscription.plan.status?.toLowerCase()
+        return user.subscription.status?.toLowerCase()
     }
 
     return (
@@ -152,15 +152,15 @@ const Plan = () => {
                         <ChangePlanMenu />
                     </div>
                 </div>
-                <div className="body">
+                <div className="body inner-window">
                     <div id="invoice-details--container">
                         <div>Renews</div>
                         <div>{`${user.subscription.plan.interval}ly`}</div>
                         <div>
-                            {user.subscription.plan.cancel_at_period_end ? 'Ending on' : 'Next charge'}
+                            {user.subscription.cancel_at_period_end ? 'Ending on' : 'Next charge'}
                         </div>
                         <div>
-                            {user.subscription.plan.cancel_at_period_end
+                            {user.subscription.cancel_at_period_end
                                 ? nextDate
                                 : `$${user.subscription.plan.amount / 100} on ${nextDate}`}
                         </div>
@@ -201,7 +201,7 @@ const PaymentMethod = () => {
                     </GrnSlimButton>
                 </div>
             </div>
-            <div id="card-info-container" className="body">
+            <div id="card-info-container" className="body inner-window">
                 <div className="card-info--container">
                     <div>
                         <CardIcon />

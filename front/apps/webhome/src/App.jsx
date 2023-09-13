@@ -11,8 +11,7 @@ import Accounts from '@pages/accounts/Window'
 import NotFound from '@pages/notFound/NotFound'
 import { WelcomeConnect, AddCategories, AddBills } from '@pages/onboarding'
 import { SkeletonDashboard } from '@pages/onboarding'
-import CreateCategory from '@modals/CreateCategory'
-import CreateBill from '@modals/CreateBill'
+import { CreateCategory, CreateBill } from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
 import "./styles/style.css";
 

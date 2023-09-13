@@ -65,7 +65,7 @@ function UserInfoForm() {
                             }
                         }}
                     />
-                    <FormErrorTip error={errors.firstName} />
+                    <FormErrorTip errors={[errors.firstName]} />
                 </TextInput>
                 <TextInput>
                     <input
@@ -79,7 +79,7 @@ function UserInfoForm() {
                             }
                         }}
                     />
-                    <FormErrorTip error={errors.lastName} />
+                    <FormErrorTip errors={[errors.lastName]} />
                 </TextInput>
             </div>
             <label htmlFor="email">Email</label>
@@ -96,7 +96,7 @@ function UserInfoForm() {
                         }
                     }}
                 />
-                <FormErrorTip error={errors.email} />
+                <FormErrorTip errors={[errors.email]} />
             </TextInput>
             <CsrfToken csrf={csrf} />
             {errors.email?.type !== 'required' &&

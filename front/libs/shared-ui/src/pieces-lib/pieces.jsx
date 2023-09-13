@@ -1,15 +1,17 @@
 import React from 'react';
 
+import { animated, useSpring } from '@react-spring/web'
+
 import './styles/pieces.css'
 import { Alert2 } from '@ledget/shared-assets'
 
-export const ExpandableContainer = ({ expanded, children }) => (
-    <div className={`animated-container ${expanded ? 'expanded' : 'collapsed'}`}>
+export const ExpandableContainer = ({ expanded, className, children, ...rest }) => (
+    <div className={`animated-container ${expanded ? 'expanded' : 'collapsed'} ${className}`} {...rest}>
         {children}
     </div>
 )
 
-export const LoadingRing = ({ height, color = 'light', visible, children }) => {
+export const LoadingRing = ({ color = 'light', visible }) => {
     return (
         <div
             style={{
@@ -18,7 +20,7 @@ export const LoadingRing = ({ height, color = 'light', visible, children }) => {
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
                 display: visible ? 'block' : 'none',
-                color: 'inherit',
+                color: 'inherit'
             }}
         >
             <div className={`lds-ring ${color}`}>
@@ -27,6 +29,21 @@ export const LoadingRing = ({ height, color = 'light', visible, children }) => {
                 <div></div>
                 <div></div>
             </div>
+        </div>
+    )
+}
+
+export const LoadingRingDiv = ({ color = 'light', loading, children, ...rest }) => {
+    const springProps = useSpring({
+        opacity: loading ? 0 : 1,
+    })
+
+    return (
+        <div style={{ position: 'relative' }} {...rest}>
+            <LoadingRing color={color} visible={loading} />
+            <animated.div style={springProps} {...rest}>
+                {children}
+            </animated.div>
         </div>
     )
 }

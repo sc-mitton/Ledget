@@ -65,16 +65,8 @@ local GenericAuthedBase = {
   {
     id: 'user',
     match: {
-      methods: ['GET'],
+      methods: ['GET', 'PATCH'],
       url: base_url + '/user/me',
-    },
-  },
-  GenericAuthedBase
-  {
-    id: 'user_update',
-    match: {
-      methods: ['PATCH'],
-      url: base_url + '/user/<[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}>',
     },
   },
   GenericAuthedBase

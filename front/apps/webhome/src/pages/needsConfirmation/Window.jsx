@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect, useRef, useCallback, useContext, createContext } from 'react'
+import { useState, useEffect, useRef, useContext, createContext } from 'react'
 
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 
@@ -15,7 +15,7 @@ import Options from "@components/dropdowns/Options"
 import ItemOptions from "./ItemOptions"
 import { Tooltip } from "@components/pieces"
 import { formatDateOrRelativeDate } from "@ledget/shared-utils"
-import { NarrowButton, ExpandableContainer, ExpandButton, GrnSlimButton } from "@ledget/shared-ui"
+import { NarrowButton, ExpandableContainer, ExpandButton, GrnSlimButton, IconScaleButton } from "@ledget/shared-ui"
 
 // TODO: eventually these will go away, data will be pulled from backend
 // and logos will be brought in another way
@@ -244,14 +244,14 @@ const NewItem = (props) => {
                     type="top"
                     style={{ left: '-1.1rem' }}
                 >
-                    <button
-                        className='btn btn-scale2'
+                    <IconScaleButton
                         onClick={onConfirm}
                         aria-label="Confirm"
                         tabIndex={tabIndex}
+                        className="confirm-button"
                     >
                         <CheckMark />
-                    </button>
+                    </IconScaleButton>
                 </Tooltip>
                 <NarrowButton
                     tabIndex={tabIndex}
@@ -298,7 +298,7 @@ const NeedsConfirmationWindow = () => {
         const buttonRect = e.target.closest('button').getBoundingClientRect()
         setMenuPos({
             x: buttonRect.left - newItemsRef.current.getBoundingClientRect().left,
-            y: buttonRect.top - newItemsRef.current.getBoundingClientRect().top,
+            y: buttonRect.top - newItemsRef.current.getBoundingClientRect().top - 4,
         })
     }
 

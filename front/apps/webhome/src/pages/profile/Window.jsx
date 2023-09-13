@@ -10,9 +10,11 @@ import AccountPage from './Account'
 import ConnectionsPage from './Connections'
 import SettingsPage from './Settings'
 import SecurityPage from './Security'
-import UpdatePayment from '@modals/UpdatePayment'
-import CancelSubscription from '@modals/CancelSubscription'
-import ChangeBillCycle from '@modals/ChangeBillCycle'
+import {
+    UpdatePayment,
+    CancelSubscription,
+    ChangeBillCycle
+} from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@ledget/shared-ui'
 

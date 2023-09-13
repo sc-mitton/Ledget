@@ -1,10 +1,11 @@
+import time
 import logging
 
 from rest_framework.permissions import BasePermission
 from django.contrib.auth.models import AnonymousUser
 from django.conf import settings
-
 import stripe
+
 
 stripe.api_key = settings.STRIPE_API_KEY
 stripe_logger = logging.getLogger('stripe')
@@ -27,7 +28,8 @@ class IsAuthedVerifiedSubscriber(BasePermission):
         checks = [
             request.user.is_authenticated,
             request.user.is_verified,
-            request.user.subscription_status is not None,
+            request.user.service_provisioned_until > int(time.time()),
+            request.user.customer.subscription_not_canceled
         ]
 
         return all(checks)

@@ -10,6 +10,32 @@ class ApiClient {
         })
     }
 
+    async createSettingsFlow() {
+        try {
+            const response = await this.instance.get(
+                '/self-service/settings/browser',
+                { withCredentials: true },
+            )
+            return response.data
+        } catch (error) {
+            console.log(error)
+            return null;
+        }
+    }
+
+    async getSettingsFlow(id) {
+        try {
+            const response = await this.instance.get(
+                '/self-service/settings/flows',
+                { params: { id: id }, withCredentials: true }
+            )
+            return response.data
+        } catch {
+            console.log(error)
+            return null;
+        }
+    }
+
     async createBrowserLogoutFlow() {
         try {
             const response = await this.instance.get(
