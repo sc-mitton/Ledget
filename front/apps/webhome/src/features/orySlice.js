@@ -16,19 +16,24 @@ export const axiosBaseQuery = async ({ url, method, data, params }) => {
     }
 }
 
-
 export const orySlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getSettingsFlow: builder.query({
             async queryFn(arg) {
                 const oryBaseUrl = import.meta.env.VITE_ORY_API_URI
                 let result
+                let refetch = false
                 if (arg.flowId) {
                     result = await axiosBaseQuery({
                         url: `${oryBaseUrl}/self-service/settings/flows/?id=${arg.flowId}`,
                         method: 'GET',
                     })
-                } else {
+                    if (result.error?.code === 410) {
+                        refetch = true
+                    }
+                }
+
+                if (refetch || !arg.flowId) {
                     result = await axiosBaseQuery({
                         url: `${oryBaseUrl}/self-service/settings/browser`,
                         method: 'GET',
@@ -42,4 +47,11 @@ export const orySlice = apiSlice.injectEndpoints({
 
 export const {
     useLazyGetSettingsFlowQuery,
+    useGetSettingsFlowQuery,
+    useQueryGetSettingsFlowState
 } = orySlice
+
+export const {
+    useQueryState: useSettingsFlowState,
+} = orySlice.endpoints.getSettingsFlow
+

@@ -81,3 +81,13 @@ export const FormError = (props) => {
         </>
     )
 }
+
+export const NodeImage = ({ node, attributes }) => {
+    return (
+        <img
+            data-testid={`node/image/${attributes.id}`}
+            src={attributes.src}
+            alt={node.meta.label?.text}
+        />
+    )
+}
