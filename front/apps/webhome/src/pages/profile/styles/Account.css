@@ -75,10 +75,10 @@
     font-weight: 500;
 }
 
-#invoice-details--container {
-    display: grid;
-    grid-template-columns: repeat(2, min-content);
-    column-gap: 16px;
+
+#invoice-details--container>div>span:first-child {
+    font-weight: 500;
+    margin-right: 8px;
 }
 
 #invoice-details--container>div {

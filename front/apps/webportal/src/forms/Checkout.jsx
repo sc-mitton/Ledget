@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState, useRef } from 'react'
 
-import { useForm, useController, Controller } from 'react-hook-form'
+import { useForm, useController } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { string } from 'yup'
@@ -246,7 +246,6 @@ const Form = (props) => {
                         <h4>Billing Info</h4>
                         <NameOnCardInput {...register('name')} errors={errors} />
                         <CityStateZipInputs errors={errors} register={register} field={stateField} />
-
                         <h4>Card</h4>
                         <CardInput
                             requiredError={cardNotEnteredError}

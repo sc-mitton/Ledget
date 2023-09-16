@@ -29,7 +29,7 @@ function AnimatedRoutes() {
                         opacity: { duration: .25, ease: "easeIn" }
                     }}
                 >
-                    <Routes location={location} key={location.pathname} >
+                    <Routes location={location} key={location.pathname.split('/')[1]} >
                         <Route path="/" element={<UnauthenticatedRoute />}>
                             <Route exact path="/" element={<Navigate to="/login" />} />
                             <Route exact path="/login" element={<LoginWindow />} />
@@ -37,7 +37,6 @@ function AnimatedRoutes() {
                         </Route>
                         <Route path="/register" element={<SignUpWindow />} />
                         <Route path="/checkout" element={<CheckoutWindow />} />
-
                         <Route path="/" element={<AuthenticatedRoute />}>
                             <Route path="/verification" element={<VerificationWindow />} />
                         </Route>

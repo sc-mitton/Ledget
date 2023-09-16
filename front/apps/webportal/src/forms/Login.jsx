@@ -9,12 +9,11 @@ import { useForm } from "react-hook-form"
 import './style/Login.css'
 import { BackArrow } from "@ledget/shared-assets"
 import SocialAuth from "./SocialAuth"
-import PasswordInput from "./inputs/PasswordInput"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces"
 import { LoginFlowContext, LoginFlowContextProvider } from "@context/Flow"
-import { GrnWideButton, IconButton, TextInput, Checkbox, FormError } from "@ledget/shared-ui"
+import { GrnWideButton, TextInput, Checkbox, FormError, PasswordInput } from "@ledget/shared-ui"
 
 const emailContext = createContext({})
 
@@ -124,6 +123,7 @@ const InitialWindow = () => {
 const AuthenticationForm = () => {
     const { flow, submit, responseError, csrf } = useContext(LoginFlowContext)
     const { email } = useContext(emailContext)
+    const pwdRef = useRef()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -134,8 +134,6 @@ const AuthenticationForm = () => {
             submit(e)
         }
     }
-
-    const pwdRef = useRef()
 
     useEffect(() => {
         pwdRef.current.focus()

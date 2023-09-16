@@ -45,5 +45,6 @@ export { default as SuccessIcon } from './src/icons/SuccessIcon.jsx';
 export { default as Alert2 } from './src/icons/Alert2.jsx';
 export { default as HelpIcon } from './src/icons/Help.jsx';
 export { default as QrIcon } from './src/icons/QrIcon.jsx';
-
+export { default as CopyIcon } from './src/icons/CopyIcon.jsx';
+export { default as DownloadIcon } from './src/icons/DownloadIcon.jsx';
 export { default as LedgetLogoIcon } from './src/brand/LogoIcon'

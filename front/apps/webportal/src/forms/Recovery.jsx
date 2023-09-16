@@ -7,11 +7,10 @@ import './style/Recovery.css'
 import Otc from './Otc'
 import CsrfToken from './inputs/CsrfToken'
 import ResendButton from "./inputs/ResendButton"
-import BackButton from './inputs/BackButton'
 import { WindowLoadingBar } from '@pieces'
 import SignUpFlowHeader from "@pieces/SignUpFlowHeader"
 import { RecoveryFlowContext, RecoveryFlowContextProvider } from '@context/Flow'
-import { FormError } from '@ledget/shared-ui'
+import { FormError, BackButton } from '@ledget/shared-ui'
 import forgotPassword from '@assets/images/forgotPassword.svg'
 
 const RecoveryForm = ({ setEmail }) => {

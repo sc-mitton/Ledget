@@ -1,10 +1,12 @@
 import React from 'react'
 
+import { useSearchParams } from 'react-router-dom'
+
 import { withModal } from '@ledget/shared-utils'
 import './PassKey.css'
 import { PasskeyIcon } from "@ledget/shared-assets"
 
-function Content() {
+const Modal = withModal((props) => {
     return (
         <div id='passkey-modal-content'>
             <div>
@@ -35,8 +37,24 @@ function Content() {
             </div>
         </div>
     )
+})
+
+const InfoModal = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const handleCleanup = () => {
+        let updatedSearchParams = new URLSearchParams(searchParams.toString())
+        updatedSearchParams.delete('help')
+        setSearchParams(updatedSearchParams.toString())
+    }
+
+    return (
+        <Modal
+            // remove help from seaerch params
+            cleanUp={handleCleanup}
+            blur={1}
+        />
+    )
 }
 
-const WebAuthnModal = withModal(Content)
-
-export default WebAuthnModal
+export default InfoModal

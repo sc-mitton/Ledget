@@ -48,7 +48,7 @@
     --scroll-shadow-top: 180deg, rgba(248, 248, 248), transparent;
 
     /* Input Colors */
-    --input-color: #e6e4e4;
+    --input-color: #e9e9e9;
 
     /* Text */
     --m-text-gray: #292929;
@@ -85,9 +85,6 @@
 
     /* Padding */
     --padding1: 8px 12px;
-
-    /* Loading Shimmer */
-    --shimmer-background: linear-gradient(115deg, var(--window) 30%, #f0f0f0 50%, var(--window) 70%);
 }
 
 /* Override color values for Firefox */
@@ -306,7 +303,7 @@ div.body {
     background-color: var(--inner-window);
     border-radius: var(--border-radius2);
     padding: 12px;
-    margin: 0 -12px;
+    margin: 0 -8px;
 }
 
 .overlay {

@@ -115,7 +115,7 @@ class User(models.Model):
 
     @authentication_level.setter
     def authentication_level(self, value):
-        return self.authentication_level == value
+        self._authentication_level = value
 
     @property
     def is_anonymous(self):

@@ -190,6 +190,7 @@ function Header({ isNarrow }) {
             || location.pathname.includes('update')
             || location.pathname.includes('change')
             || location.pathname.includes('cancel')
+            || location.pathname.includes('delete')
             || location.pathname.includes('add')
         ) {
             setZindex(0)

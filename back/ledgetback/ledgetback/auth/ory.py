@@ -66,18 +66,16 @@ class OryBackend(BaseAuthentication):
         """Return the user from the decoded token."""
 
         identity = decoded_token['session']['identity']
-        auth_methods = decoded_token['session']['authentication_methods']
 
         user = get_user_model().objects.select_related('customer') \
                                        .prefetch_related('device_set') \
                                        .get(pk=identity['id'])
+
+        user.authentication_level = \
+            decoded_token['session']['authenticator_assurance_level']
         user.traits = identity.get('traits', {})
         user.devices = identity.get('devices', [])
         user.is_verified = identity.get('verifiable_addresses', [{}])[0] \
                                    .get('verified', False)
-        for auth_method in auth_methods:
-            user.authentication_level = auth_method['aal']
-            if auth_method['aal'] == 'aal2':
-                break
 
         return user

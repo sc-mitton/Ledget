@@ -36,7 +36,7 @@
 
 #account-page h1,
 #security-page h1 {
-    margin-left: -8px;
+    margin-left: -4px;
 }
 
 /* --------------------------------- Gutter --------------------------------- */
@@ -152,7 +152,12 @@
     #gutter li {
         width: 24px;
         height: 24px;
-        padding: 8px;
+        padding: 4px;
+    }
+
+    #gutter li#profile {
+        padding: 6px;
+        margin-left: 6px;
     }
 
     #gutter li svg {

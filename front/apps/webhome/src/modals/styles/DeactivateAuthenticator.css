@@ -1,0 +1,11 @@
+#deactivate-authenticator--content>div {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+#deactivate-authenticator--content>div>div {
+    display: flex;
+    justify-content: flex-end;
+}

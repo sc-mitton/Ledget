@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { animated, useSpring } from '@react-spring/web'
+import { useTransition, animated } from '@react-spring/web'
 
 import './styles/pieces.css'
 import { Alert2 } from '@ledget/shared-assets'
@@ -33,17 +33,22 @@ export const LoadingRing = ({ color = 'light', visible }) => {
     )
 }
 
-export const LoadingRingDiv = ({ color = 'light', loading, children, ...rest }) => {
-    const springProps = useSpring({
-        opacity: loading ? 0 : 1,
+export const LoadingRingDiv = ({ color = 'light', loading, children, style, ...rest }) => {
+    const transition = useTransition(!loading, {
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 }
     })
 
     return (
-        <div style={{ position: 'relative' }} {...rest}>
+        <div style={{ position: 'relative', ...style }} {...rest}>
             <LoadingRing color={color} visible={loading} />
-            <animated.div style={springProps} {...rest}>
-                {children}
-            </animated.div>
+            {transition((style, item) =>
+                item &&
+                <animated.div style={style}>
+                    {children}
+                </animated.div>
+            )}
         </div>
     )
 }

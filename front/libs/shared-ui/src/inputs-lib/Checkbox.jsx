@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './Checkbox.css'
+import './styles/Checkbox.css'
 
 const Checkbox = React.forwardRef((props, ref) => {
 

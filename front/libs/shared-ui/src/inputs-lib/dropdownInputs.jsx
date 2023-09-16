@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import './dropdownInputs.css'
+import './styles/dropdownInputs.css'
 import { DropAnimation } from '../animations-lib/animations'
 import { Combobox } from '@headlessui/react'
 import { states as provences } from '../data/states'

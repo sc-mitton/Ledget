@@ -2,6 +2,11 @@
     width: 100%;
 }
 
+.sign-up-window #authentication-form>div:last-of-type {
+    margin-top: -4px;
+    margin-bottom: 8px;
+}
+
 #signup-error-container {
     margin: 8px 0;
 }

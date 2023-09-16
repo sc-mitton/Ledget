@@ -140,16 +140,6 @@ input:focus {
     outline: none;
 }
 
-input[type="password"]::placeholder {
-    color: var(--input-placeholder);
-}
-
-input[type="password"]:focus::placeholder {
-    transition: color .2s ease;
-    color: var(--green-input-focus);
-    opacity: 1;
-}
-
 .spaced-input {
     margin: 8px 0;
 }

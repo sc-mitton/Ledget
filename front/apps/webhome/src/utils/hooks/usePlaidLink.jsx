@@ -24,7 +24,6 @@ function usePlaidLink(onBoarding = false) {
         if (token) {
             setPlaidToken(JSON.parse(token))
         } else {
-            console.log('fetching token')
             fetchToken({ isOnboarding: onBoarding })
         }
     }, [])

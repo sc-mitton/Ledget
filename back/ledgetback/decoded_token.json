@@ -1,0 +1,74 @@
+{
+    "exp": 1694723940,
+    "iat": 1694723880,
+    "iss": "http://localhost:4455/",
+    "jti": "ecdad017-ab45-4859-96c1-72b468ff1d9e",
+    "nbf": 1694723880,
+    "session": {
+        "active": true,
+        "authenticated_at": "2023-09-14T20:26:43.378652Z",
+        "authentication_methods": [
+            {
+                "aal": "aal1",
+                "completed_at": "2023-09-14T20:26:43.378635844Z",
+                "method": "password"
+            },
+            {
+                "aal": "aal2",
+                "completed_at": "2023-09-14T20:27:29.934680748Z",
+                "method": "totp"
+            }
+        ],
+        "authenticator_assurance_level": "aal2",
+        "devices": [
+            {
+                "id": "6dca756d-a302-48b4-a915-bb51c77a7ba3",
+                "ip_address": "76.27.80.128",
+                "location": "American Fork, US",
+                "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/117.0"
+            }
+        ],
+        "expires_at": "2023-09-17T20:26:43.378652Z",
+        "id": "3055306f-27c2-439d-99aa-8f4e1b3cb49d",
+        "identity": {
+            "created_at": "2023-08-12T23:38:10.944777Z",
+            "id": "d3679985-2557-4b1c-8c40-3eb30f92f5b5",
+            "metadata_public": null,
+            "recovery_addresses": [
+                {
+                    "created_at": "2023-08-12T23:38:11.207083Z",
+                    "id": "0152f829-4a0b-440f-82dd-70957f1380bb",
+                    "updated_at": "2023-08-12T23:38:11.207083Z",
+                    "value": "smitton.byu@gmail.com",
+                    "via": "email"
+                }
+            ],
+            "schema_id": "0a6ec3dda66dbf64a8274fd8da74139243ad7e3004949f535b72d62754858d98ddbe057d886ab602e0d2555e2e8ac78d8f3cb7a9c6294e40fb5983762a855651",
+            "schema_url": "https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/schemas/MGE2ZWMzZGRhNjZkYmY2NGE4Mjc0ZmQ4ZGE3NDEzOTI0M2FkN2UzMDA0OTQ5ZjUzNWI3MmQ2Mjc1NDg1OGQ5OGRkYmUwNTdkODg2YWI2MDJlMGQyNTU1ZTJlOGFjNzhkOGYzY2I3YTljNjI5NGU0MGZiNTk4Mzc2MmE4NTU2NTE",
+            "state": "active",
+            "state_changed_at": "2023-08-12T23:38:10.940831Z",
+            "traits": {
+                "email": "smitton.byu@gmail.com",
+                "name": {
+                    "first": "Spencer",
+                    "last": "Mitton"
+                }
+            },
+            "updated_at": "2023-08-12T23:38:10.944777Z",
+            "verifiable_addresses": [
+                {
+                    "created_at": "2023-08-12T23:38:10.949685Z",
+                    "id": "407ae3d7-a8d3-4d8a-9633-443c49e0f6cc",
+                    "status": "completed",
+                    "updated_at": "2023-08-12T23:38:10.949685Z",
+                    "value": "smitton.byu@gmail.com",
+                    "verified": true,
+                    "verified_at": "2023-08-12T23:38:38.002394Z",
+                    "via": "email"
+                }
+            ]
+        },
+        "issued_at": "2023-09-14T20:26:43.378652Z"
+    },
+    "sub": "d3679985-2557-4b1c-8c40-3eb30f92f5b5"
+}

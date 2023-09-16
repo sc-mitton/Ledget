@@ -110,6 +110,17 @@
     transition: background-color .3s ease;
 }
 
+.btn-grn-text {
+    color: var(--green-dark);
+    transition: all .3s ease;
+}
+
+.btn-grn-text:hover {
+    background-color: var(--green-hlight2);
+    color: var(--green-dark2);
+    transition: all .3s ease;
+}
+
 .btn-gr {
     box-shadow: var(--btn-drop-shadow);
     background-color: var(--btn-light-gray);
@@ -287,6 +298,37 @@
     position: absolute;
     animation: pop-fade-in 0.3s ease-in-out;
 }
+
+.back-btn {
+    width: auto;
+    float: left;
+    margin-left: -16px;
+    margin-bottom: 4px;
+}
+
+.back-btn svg {
+    height: 1.3em;
+    width: 1.3em;
+}
+
+.back-btn .arrow-tail {
+    stroke-dasharray: 50;
+    stroke-dashoffset: 50;
+    transition: stroke-dashoffset 0.2s ease-in;
+}
+
+.back-btn:hover .arrow-tail {
+    stroke-dashoffset: 0;
+}
+
+.back-btn .arrow-head {
+    transition: all 0.2s ease-in;
+}
+
+.back-btn:hover .arrow-head {
+    transform: translateX(3px);
+}
+
 
 @keyframes pop-fade-in {
     0% {

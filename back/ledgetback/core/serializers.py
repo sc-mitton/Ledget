@@ -33,6 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
     subscription = serializers.SerializerMethodField(read_only=True)
     service_provisioned_until = serializers.SerializerMethodField(
         read_only=True)
+    authentication_level = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -53,6 +54,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_service_provisioned_until(self, obj):
         return obj.service_provisioned_until
+
+    def get_authentication_level(self, obj):
+        return obj.authentication_level
 
     def get_subscription(self, obj):
         try:

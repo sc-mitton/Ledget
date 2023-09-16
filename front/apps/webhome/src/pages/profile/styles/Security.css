@@ -6,6 +6,12 @@
     margin-top: 240px;
 }
 
+#authenticator-settings--header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 #authenticator-settings--container {
     display: flex;
     align-items: center;

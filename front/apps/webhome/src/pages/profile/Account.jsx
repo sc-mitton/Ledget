@@ -154,15 +154,19 @@ const Plan = () => {
                 </div>
                 <div className="body inner-window">
                     <div id="invoice-details--container">
-                        <div>Renews</div>
-                        <div>{`${user.subscription.plan.interval}ly`}</div>
                         <div>
-                            {user.subscription.cancel_at_period_end ? 'Ending on' : 'Next charge'}
+                            <span>Renews:</span>
+                            <span>{`${user.subscription.plan.interval}ly`}</span>
                         </div>
                         <div>
-                            {user.subscription.cancel_at_period_end
-                                ? nextDate
-                                : `$${user.subscription.plan.amount / 100} on ${nextDate}`}
+                            <span>
+                                {user.subscription.cancel_at_period_end ? 'Ending on:' : 'Next charge:'}
+                            </span>
+                            <span>
+                                {user.subscription.cancel_at_period_end
+                                    ? nextDate
+                                    : `$${user.subscription.plan.amount / 100} on ${nextDate}`}
+                            </span>
                         </div>
                         <div>{nextInvoice.balance > 0 && 'Account Credit'}</div>
                         <div>{nextInvoice.balance > 0 && `$${nextInvoice.balance / -100}`}</div>

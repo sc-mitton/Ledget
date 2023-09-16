@@ -4,8 +4,9 @@ import './styles/shimmer.css'
 import { useTransition, animated } from '@react-spring/web'
 import { TextInput } from '../inputs-lib/textInputs'
 
+
 export const ShimmerDiv = (props) => {
-    const { shimmering, children, style, ...rest } = props
+    const { shimmering, children, ...rest } = props
     const [position, setPosition] = useState('static')
     const transitions = useTransition(shimmering, {
         from: { opacity: 0 },
@@ -26,10 +27,7 @@ export const ShimmerDiv = (props) => {
     return (
         <div
             className="loading-shimmer--container"
-            style={{
-                position: position,
-                ...style
-            }}
+            style={{ position: position }}
             {...rest}
         >
             {transitions(
@@ -43,26 +41,21 @@ export const ShimmerDiv = (props) => {
     )
 }
 
-export const InputShimmerDiv = ({ ...rest }) => {
+export const BlockShimmerDiv = (props) => {
+    const { id, className } = props
 
     return (
-        <TextInput
-            id={rest.id}
-            className={rest.className}
-            style={{ position: 'relative' }}
-        >
+        <TextInput id={id} className={className}>
             <span style={{ color: 'transparent' }}>Shimmering</span>
-            <ShimmerDiv
-                {...rest}
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%'
-                }}
-                shimmering={true}
-            />
+            <div className='block-shimmer--container'>
+                <ShimmerDiv shimmering={true} />
+            </div>
         </TextInput>
     )
 }
+
+export const TranslucentShimmerDiv = (props) => (
+    <div className="translucent-shimmer--container">
+        <ShimmerDiv shimmering={true} />
+    </div>
+)

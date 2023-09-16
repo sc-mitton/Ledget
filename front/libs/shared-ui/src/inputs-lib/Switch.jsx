@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './Switch.css'
+import './styles/Switch.css'
 import { Switch } from '@headlessui/react'
 
 const DefaultSwitch = ({ checked, onChange, children, ...rest }) => {

@@ -1,12 +1,14 @@
 import React, { forwardRef, useRef, useState } from 'react'
 
+import { VisibilityIcon } from "@ledget/shared-assets"
 import { CardElement } from '@stripe/react-stripe-js'
 import { object, string } from 'yup'
 
-import './text.css'
+import './styles/textInputs.css'
+import './styles/PasswordInput.css'
 import { FormErrorTip, FormError } from '../pieces-lib/pieces'
 import { ProvenceSelect } from './dropdownInputs'
-import { InputShimmerDiv } from '../pieces-lib/shimmer'
+import { BlockShimmerDiv } from '../pieces-lib/shimmer'
 
 
 export const TextInput = forwardRef((props, ref) => {
@@ -21,6 +23,28 @@ export const TextInput = forwardRef((props, ref) => {
         >
             {children}
         </div>
+    )
+})
+
+export const PlainTextInput = forwardRef((props, ref) => {
+    const { errors, ...rest } = props
+
+    return (
+        <TextInput>
+            <input
+                type='text'
+                ref={ref}
+                {...rest}
+            />
+            {errors &&
+                <FormErrorTip
+                    errors={[
+                        Object.hasOwn(errors, rest.name)
+                        && errors[rest.name]
+                    ]}
+                />
+            }
+        </TextInput>
     )
 })
 
@@ -78,7 +102,7 @@ export const CardInput = ({ requiredError, onComplete, clearError, loading }) =>
     return (
         <>
             {loading
-                ? <InputShimmerDiv />
+                ? <BlockShimmerDiv />
                 : <div className={`card-container${cardFocus ? ' focused' : ''}`}>
                     <CardElement
                         onBlur={() => setCardFocus(false)}
@@ -167,18 +191,18 @@ export const CityStateZipInputs = ({ errors, register, field, loading }) => {
             <div id='location-inputs-container' >
                 <div id="city-container">
                     {loading
-                        ? <InputShimmerDiv />
+                        ? <BlockShimmerDiv />
                         : <CityInput {...register('city')} errors={errors} />
                     }
                 </div>
                 <div id="state-container">
                     {loading
-                        ? <InputShimmerDiv />
+                        ? <BlockShimmerDiv />
                         : <ProvenceSelect field={field} errors={[errors.state]} />}
                 </div>
                 <div id="zip-container">
                     {loading
-                        ? <InputShimmerDiv />
+                        ? <BlockShimmerDiv />
                         : <ZipInput {...register('zip')} errors={errors} />}
                 </div>
             </div>
@@ -208,3 +232,59 @@ export const baseBillingSchema = object({
         .required()
         .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
 })
+
+
+export const PasswordInput = React.forwardRef((props, ref) => {
+    const [pwdInput, setPwdInput] = useState(false)
+    let [visible, setVisible] = useState(false)
+    const localRef = useRef(null)
+    const r = ref || localRef
+
+    const {
+        name,
+        inputType,
+        loading,
+        visible: propsVisible,
+        setVisible: propsSetVisible,
+        onChange,
+        ...rest
+    } = props
+
+    if (propsVisible) {
+        visible = propsVisible
+        setVisible = propsSetVisible
+    }
+
+    return (
+        <>
+            {props.loading
+                ?
+                <BlockShimmerDiv />
+                :
+                <div className="password-input" onClick={() => { r.current.focus() }}>
+                    <input
+                        name={name}
+                        type={visible ? 'text' : 'password'}
+                        ref={r}
+                        onChange={(e) => {
+                            e.target.value.length > 0 ? setPwdInput(true) : setPwdInput(false)
+                            onChange && onChange(e)
+                        }}
+                        {...rest}
+                    />
+                    {pwdInput && inputType != 'confirm-password' &&
+                        < VisibilityIcon mode={visible} onClick={() => setVisible(!visible)} />}
+                </div>
+            }
+        </>
+    )
+})
+
+PasswordInput.defaultProps = {
+    inputType: 'password',
+    name: 'password',
+    placeholder: 'Password',
+    setVisible: () => { },
+    visible: null,
+}
+

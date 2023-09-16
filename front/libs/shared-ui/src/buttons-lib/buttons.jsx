@@ -1,8 +1,9 @@
 import React, { forwardRef, useRef } from 'react';
 
 import './buttons.css'
-import { ExpandIcon, ArrowIcon, FacebookLogo, CloseIcon, GoogleLogo } from '@ledget/shared-assets'
+import { ExpandIcon, ArrowIcon, FacebookLogo, CloseIcon, GoogleLogo, CopyIcon } from '@ledget/shared-assets'
 import { ButtonWithClassName, withArrow, withCheckMark, withLoadingRing } from './button-utils'
+import { animated, useSpring } from '@react-spring/web'
 
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')
 export const BlackPrimaryButton = ButtonWithClassName('btn-chcl btn3')
@@ -28,11 +29,13 @@ export const SlimInputButton = ButtonWithClassName('btn-input2 btn-2slim')
 export const BlackPillButtonWithArrow = withArrow(BlackPillButton)
 export const BlackPrimaryButtonWithArrow = withArrow(BlackPrimaryButton)
 export const BlackSubmitWithArrow = withLoadingRing(withArrow(BlackPrimaryButton))
+export const GreenSubmitWithArrow = withLoadingRing(withArrow(GrnPrimaryButton))
 export const GreenSubmitButton = withLoadingRing(GrnPrimaryButton)
 export const GreenCheckSubmitButton = withCheckMark(GreenSubmitButton)
 export const GrnSlimArrowButton = withArrow(ButtonWithClassName('btn-grn btn-slim'))
 export const GreenSlimArrowSubmit = withLoadingRing(GrnSlimArrowButton)
 export const RedButton = withLoadingRing(ButtonWithClassName('btn-red btn-2slim'))
+export const GrnTextButton = ButtonWithClassName('btn-grn-text btn-2slim')
 
 export const SmallArrowButton = ({ type, ...rest }) => (
   <button className="arrow-nav btn-scale2" {...rest}>
@@ -94,3 +97,53 @@ export const CloseButton = forwardRef((props, ref) => {
     </button>
   )
 })
+
+export const BackButton = (props) => {
+  return (
+    <div>
+      <button className="btn btn-2slim back-btn" {...props}>
+        <svg width="20" height="20" viewBox="0 0 20 20">
+          <g transform={'translate(19, 20) rotate(-180)'}>
+            <path className="arrow-tail" d="M5 10L12.5 10" stroke="#292929" strokeWidth="2"
+              strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <path className="arrow-head" d="M8 14L12 10" stroke="#292929" strokeWidth="2"
+              strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <path className="arrow-head" d="M12 10L8 6" stroke="#292929" strokeWidth="2"
+              strokeLinecap="round" strokeLinejoin="round" fill="none" />
+          </g>
+        </svg>
+        <span>back</span>
+      </button>
+    </div>
+  )
+}
+
+export const CopyButton = ({ withText = true, ...rest }) => {
+  const [springProps, copyBtnApi] = useSpring(() => ({
+    from: { transform: 'scale(1)' }
+  }))
+
+  const handleClick = () => {
+    copyBtnApi.start({
+      to: async (next, cancel) => {
+        await next({ transform: 'scale(1)' })
+        await next({ transform: 'scale(0.9)' })
+        await next({ transform: 'scale(1)' })
+      },
+      config: { duration: 150 }
+    })
+    onClick()
+  }
+
+  return (
+    <animated.div style={springProps}>
+      <SlimInputButton
+        onClick={handleClick}
+        {...rest}
+      >
+        <CopyIcon />
+        {withText && 'Copy'}
+      </SlimInputButton>
+    </animated.div>
+  )
+}

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
+import { useSearchParams } from 'react-router-dom'
 import { filterNodesByGroups, isUiNodeInputAttributes } from '@ory/integrations/ui'
 
 import { PasskeyIcon, HelpIcon } from "@ledget/shared-assets"
-import PasskeyModal from "@modals/PassKey"
 import './styles/PasswordlessFormSection.css'
 import { GrayWideButton } from '@ledget/shared-ui'
 
@@ -19,21 +19,7 @@ const PasswordlessOptionsHeader = () => {
 }
 
 const PasswordlessForm = ({ flow = { flow }, helpIcon = true, children }) => {
-    const [passKeyModalVisible, setPassKeyModalVisible] = useState(false)
-
-    const handleFocus = (e) => {
-        document.addEventListener('keydown', handleEnter)
-    }
-
-    const handleBlur = () => {
-        document.removeEventListener('keydown', handleEnter)
-    }
-
-    const handleEnter = (e) => {
-        if (e.key === 'Enter') {
-            setPassKeyModalVisible(true)
-        }
-    }
+    const [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
         const scriptNodes = filterNodesByGroups({
@@ -63,18 +49,24 @@ const PasswordlessForm = ({ flow = { flow }, helpIcon = true, children }) => {
         }
     }, [flow.ui.nodes])
 
+
     const WrappedHelpIcon = () => {
+        const handleClick = () => {
+            let updatedSearchParams = new URLSearchParams(searchParams.toString())
+            updatedSearchParams.set('help', 'true')
+            setSearchParams(updatedSearchParams.toString())
+        }
+
         return (
-            <div
+            <button
                 className="help-icon-tip"
                 aria-label="Learn more about authentication with passkeys"
-                onClick={() => { setPassKeyModalVisible(true) }}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
+                onClick={handleClick}
                 tabIndex={0}
+                type="button"
             >
                 <HelpIcon />
-            </div >
+            </button >
         )
     }
 
@@ -136,7 +128,6 @@ const PasswordlessForm = ({ flow = { flow }, helpIcon = true, children }) => {
 
     return (
         <>
-            <PasskeyModal visible={passKeyModalVisible} setVisible={setPassKeyModalVisible} />
             <form action={flow.ui.action} method={flow.ui.method}>
                 <div className="passwordless-form-section-container">
                     <PasswordlessOptionsHeader />

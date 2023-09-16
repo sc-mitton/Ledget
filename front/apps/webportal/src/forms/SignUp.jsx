@@ -8,12 +8,13 @@ import { motion, AnimatePresence } from "framer-motion"
 
 import './style/SignUp.css'
 import SocialAuth from "./SocialAuth"
-import { RegisterFlowContext, RegisterFlowContextProvider } from "@context/Flow"
 import { WindowLoadingBar } from "@pieces"
-import PasswordInput from "./inputs/PasswordInput"
 import PasswordlessForm from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
-import { GrnWideButton, TextInput, FormError, FormErrorTip } from "@ledget/shared-ui"
+import PasskeyInfoModal from '@modals/PassKey'
+import { GrnWideButton, TextInput, FormError, FormErrorTip, PasswordInput } from "@ledget/shared-ui"
+import { RegisterFlowContext, RegisterFlowContextProvider } from "@context/Flow"
+
 
 // Context for user info
 const userInfoContext = createContext({})
@@ -105,7 +106,7 @@ function UserInfoForm() {
                 </div>
             }
             <div
-                style={{ marginTop: '12px' }}
+                style={{ marginTop: '16px' }}
             >
                 <GrnWideButton
                     type='submit'
@@ -212,7 +213,7 @@ const AuthSelectionWindow = () => {
 }
 
 function SignUpFlow() {
-    const { flow, createFlow, getFlow, registering } = useContext(RegisterFlowContext)
+    const { createFlow, getFlow } = useContext(RegisterFlowContext)
     const { userInfo } = useContext(userInfoContext)
     const [searchParams] = useSearchParams()
     const [loaded, setLoaded] = useState(false)
@@ -260,12 +261,17 @@ function SignUpFlow() {
 }
 
 const SignUp = () => {
+    const [searchParams] = useSearchParams()
+
     return (
-        <RegisterFlowContextProvider>
-            <UserInfoContextProvider>
-                <SignUpFlow />
-            </UserInfoContextProvider>
-        </RegisterFlowContextProvider>
+        <>
+            <RegisterFlowContextProvider>
+                <UserInfoContextProvider>
+                    <SignUpFlow />
+                </UserInfoContextProvider>
+            </RegisterFlowContextProvider>
+            {searchParams.get('help') === 'true' && <PasskeyInfoModal />}
+        </>
     )
 }
 
