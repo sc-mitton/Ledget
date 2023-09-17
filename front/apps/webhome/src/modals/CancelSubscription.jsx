@@ -33,7 +33,7 @@ export const CancelationWindow = (props) => {
     }
 
     useEffect(() => {
-        isSuccess && props.cleanUp()
+        isSuccess && props.onClose()
     }, [isSuccess])
 
     const handleClick = () => {
@@ -166,7 +166,7 @@ const ChangePlan = (props) => {
     return (
         <Modal
             {...props}
-            cleanUp={() => navigate(-1)}
+            onClose={() => navigate(-1)}
             maxWidth={'350px'}
             blur={2}
         />

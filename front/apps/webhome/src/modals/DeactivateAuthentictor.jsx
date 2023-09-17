@@ -6,23 +6,22 @@ import './styles/DeactivateAuthenticator.css'
 import { useUpdateUserMutation } from '@features/userSlice'
 import { useCompleteSettingsFlowMutation } from '@features/orySlice'
 import { withSmallModal } from '@ledget/shared-utils'
-import { GreenSubmitButton, SecondaryButton, TranslucentShimmerDiv } from '@ledget/shared-ui'
+import { GreenSubmitButton, SecondaryButton } from '@ledget/shared-ui'
 import { useSettingsFlow, withReAuth } from '@utils'
 
 const DeactivateAuthenticator = (props) => {
     const [updateUser] = useUpdateUserMutation()
     const [completeFlow, { isLoading: submittingFlow, isSuccess: completedFlow }] = useCompleteSettingsFlowMutation()
-    const { flow, isLoading: loadingSettingsFlow } = useSettingsFlow()
+    const { flow } = useSettingsFlow()
 
     // Handle completing flow
     const handleClick = () => {
-        const csrf_token_node = flow.ui.nodes.find(node => node.attributes.name === 'csrf_token')
         completeFlow({
             flowId: flow.id,
             data: {
                 method: 'totp',
                 totp_unlink: true,
-                csrf_token: csrf_token_node.attributes.value
+                csrf_token: flow.csrf_token
             }
         })
         updateUser({ data: { authenticator_enabled: false } })
@@ -34,14 +33,13 @@ const DeactivateAuthenticator = (props) => {
         if (completedFlow) {
             timeout = setTimeout(() => {
                 completedFlow && props.setVisible(false)
-            }, 1500)
+            }, 1000)
         }
         return () => clearTimeout(timeout)
     }, [completedFlow])
 
     return (
         <div id="deactivate-authenticator--content">
-            {loadingSettingsFlow && <TranslucentShimmerDiv />}
             <div>
                 <h3>Remove Your Authenticator?</h3>
                 You will no longer be able to use your authenticator app to log in.
@@ -69,7 +67,7 @@ export default function () {
 
     return (
         <Modal
-            cleanUp={() => navigate('/profile/security')}
+            onClose={() => navigate('/profile/security')}
             blur={1}
         />
     )

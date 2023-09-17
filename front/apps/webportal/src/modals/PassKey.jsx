@@ -51,7 +51,7 @@ const InfoModal = () => {
     return (
         <Modal
             // remove help from seaerch params
-            cleanUp={handleCleanup}
+            onClose={handleCleanup}
             blur={1}
         />
     )

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { withSmallModal } from '@ledget/shared-utils'
-import { useGetMeQuery, selectReauthIsFresh } from '@features/userSlice'
+import { useGetMeQuery, selectSessionIsFresh } from '@features/userSlice'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 import {
     GreenSubmitWithArrow,
@@ -39,9 +39,16 @@ const HiddenInputs = ({ flow }) => {
 const useFlow = (aal) => {
     const [getFlow, { data: flow, isLoading, isSuccess, isError }] = useLazyGetLoginFlowQuery()
     const [searchParams, setSearchParams] = useSearchParams()
+    const sessionIsFresh = useSelector(selectSessionIsFresh)
 
     useEffect(() => {
         let flowId = searchParams.get('flow')
+        // No need to fetch flow if session is fresh,
+        // user will be passed through to component
+        if (sessionIsFresh) { return }
+
+        // If the all param is differnt, this means a new flow is needed
+        // and the search param flow id can't be used
         if (searchParams.get('aal') !== aal) {
             flowId = null
         }
@@ -152,8 +159,8 @@ const ReAuthModal = withSmallModal((props) => {
         const needsAal2 = completedFlow && user.authenticator_enabled && aal === 'aal1'
 
         if (finishedCase1 || finishedCase2) {
-            setSearchParams({ reauthed: true })
             dispatch({ type: 'user/resetAuthedAt' })
+            setSearchParams({}) // Clear search params
         } else if (needsAal2) {
             setNeedsAal2(true)
         }
@@ -229,17 +236,11 @@ export default function withReAuth(Component) {
 
     return (props) => {
         const [continueToComponent, setContinueToComponent] = useState(false)
-        const [searchParams] = useSearchParams()
-        const reAuthIsFresh = useSelector(selectReauthIsFresh)
+        const sessionIsFresh = useSelector(selectSessionIsFresh)
 
         useEffect(() => {
-            const completedLoginFlow = searchParams.get('reauthed') === true
-
-            if (reAuthIsFresh || completedLoginFlow) {
-                setContinueToComponent(true)
-            }
-
-        }, [searchParams.get('reauthed'), reAuthIsFresh])
+            sessionIsFresh && setContinueToComponent(true)
+        }, [sessionIsFresh])
 
         return (
             <>
@@ -248,7 +249,7 @@ export default function withReAuth(Component) {
                     <Component {...props} />
                     :
                     <ReAuthModal
-                        cleanUp={() => props.cleanUp && props.cleanUp()}
+                        onClose={() => { props.onClose && props.onClose() }}
                         blur={1}
                     />
                 }

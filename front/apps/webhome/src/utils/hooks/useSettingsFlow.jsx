@@ -5,8 +5,8 @@ import { useSearchParams } from 'react-router-dom';
 import { useLazyGetSettingsFlowQuery } from '@features/orySlice'
 
 const useSettingsFlow = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [getFlow, { data: flow, isLoading, isSuccess }] = useLazyGetSettingsFlowQuery();
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [getFlow, { data: flow, isLoading, isSuccess, isError }] = useLazyGetSettingsFlowQuery()
 
     // Fetch flow on mount
     useEffect(() => {
@@ -20,7 +20,7 @@ const useSettingsFlow = () => {
         }
     }, [isSuccess, isLoading])
 
-    return { flow, isLoading }
+    return { flow, isLoading, isSuccess, isError }
 }
 
 export default useSettingsFlow

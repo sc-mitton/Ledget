@@ -165,16 +165,16 @@ function Header({ isNarrow }) {
         switch (selection) {
             case "help":
                 return (
-                    <Help cleanUp={() => setModal('')} />
+                    <Help onClose={() => setModal('')} />
                 )
             case "account":
                 return (
-                    <Account cleanUp={() => setModal('')} />
+                    <Account onClose={() => setModal('')} />
                 )
             case "logout":
                 return (
                     <Logout
-                        cleanUp={() => setModal('')}
+                        onClose={() => setModal('')}
                         maxWidth={"300px"}
                         hasExit={false}
                     />
@@ -192,6 +192,7 @@ function Header({ isNarrow }) {
             || location.pathname.includes('cancel')
             || location.pathname.includes('delete')
             || location.pathname.includes('add')
+            || location.pathname.includes('authenticator-setup')
         ) {
             setZindex(0)
         } else {

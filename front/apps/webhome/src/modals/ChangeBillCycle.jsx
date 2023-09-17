@@ -79,7 +79,7 @@ const ChangeBillCycle = (props) => {
     return (
         <Modal
             {...props}
-            cleanUp={() => navigate(-1)}
+            onClose={() => navigate(-1)}
             blur={2}
         />
     )

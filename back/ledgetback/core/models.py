@@ -59,10 +59,10 @@ class User(models.Model):
         self._authentication_level = None
 
     def save(self, *args, **kwargs):
-        authenticator_enabled = kwargs.get('authenticator_enabled')
-        if authenticator_enabled:
+        print(kwargs)
+        if self.authenticator_enabled:
             self.authenticator_enabled_on = datetime.now()
-        elif authenticator_enabled is not None:
+        elif self.authenticator_enabled is False:
             self.authenticator_enabled_on = None
 
         super().save(*args, **kwargs)

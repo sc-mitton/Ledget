@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -10,7 +10,7 @@ import AccountPage from './Account'
 import ConnectionsPage from './Connections'
 import SettingsPage from './Settings'
 import SecurityPage from './Security'
-import AuthenticatorSetup from './AuthenticatorSetup'
+import { AuthenticatorSetup } from '@modals'
 import { UpdatePayment, CancelSubscription, ChangeBillCycle, DeactivateAuthentictor } from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@ledget/shared-ui'
@@ -31,18 +31,14 @@ function Profile() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    key={
-                        location.pathname.split('/')[2]
-                        + location.pathname.includes('authenticator-setup')
-                    }
+                    key={location.pathname.split('/')[2]}
                     config={{ duration: 0.15 }}
                     className="content"
                 >
                     <Routes
                         path="profile"
                         location={location}
-                        key={location.pathname.split('/')[2]
-                            + location.pathname.includes('authenticator-setup')}
+                        key={location.pathname.split('/')[2]}
                     >
                         <Route path="details" element={<AccountPage />} >
                             <Route path="update-payment" element={<UpdatePayment />} />
@@ -53,8 +49,8 @@ function Profile() {
                         <Route path="connections" element={<ConnectionsPage />} />
                         <Route path="security" element={<SecurityPage />} >
                             <Route path="delete-authenticator" element={<DeactivateAuthentictor />} />
+                            <Route path="authenticator-setup" element={<AuthenticatorSetup />} />
                         </Route>
-                        <Route path="security/authenticator-setup" element={<AuthenticatorSetup />} />
                     </Routes>
                 </motion.div>
             </AnimatePresence>

@@ -8,7 +8,7 @@ import { CloseButton } from '@ledget/shared-ui'
 function withModal(WrappedComponent) {
     return (props) => {
         const {
-            cleanUp = () => { },
+            onClose = () => { },
             hasBackground = true,
             hasExit = true,
             focusOnMount = true,
@@ -49,7 +49,7 @@ function withModal(WrappedComponent) {
             enter: { opacity: 1, ...backgroundConfig },
             leave: { opacity: 0 },
             config: { duration: 200 },
-            onDestroyed: () => cleanUp(),
+            onDestroyed: () => onClose(),
         })
 
         const contentConfig = {

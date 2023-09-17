@@ -121,7 +121,7 @@ const Modal = withModal((props) => {
                 </div>
                 <SubmitForm
                     submitting={submitting}
-                    onCancel={() => props.setVisible(false)}
+                    onClose={() => props.setVisible(false)}
                 />
             </form>
         </>
@@ -135,7 +135,7 @@ const UpdatePayment = (props) => {
         <StripeElements pk={import.meta.env.VITE_STRIPE_PK_TEST}>
             <Modal
                 {...props}
-                cleanUp={() => navigate(-1)}
+                onClose={() => navigate(-1)}
                 maxWidth={props.maxWidth || '375px'}
                 minWidth={props.minWidth || '0px'}
                 blur={2}

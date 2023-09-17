@@ -154,7 +154,7 @@ const Form = (props) => {
             </div>
             <SubmitForm
                 submitting={isLoading}
-                onCancel={() => props.setVisible(false)}
+                onClose={() => props.setVisible(false)}
             />
         </form>
     )
@@ -168,7 +168,7 @@ export default (props) => {
     return (
         <Modal
             {...props}
-            cleanUp={() => navigate(-1)}
+            onClose={() => navigate(-1)}
             maxWidth={props.maxWidth || '425px'}
             minWidth={props.minWidth || '0px'}
             blur={2}

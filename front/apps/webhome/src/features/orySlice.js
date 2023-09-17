@@ -24,11 +24,12 @@ export const axiosBaseQuery = async ({ url, method, data, params, transformRespo
     }
 }
 
-const createFlow = async ({ url, params }) => {
+const createFlow = async ({ url, params, transformResponse }) => {
     const result = await axiosBaseQuery({
         url: `${url}/browser`,
         method: 'GET',
         params: params,
+        transformResponse: transformResponse
     })
     return result.data ? { data: result.data } : { error: result.error }
 }
@@ -45,7 +46,11 @@ const getFlow = async ({ url, params, transformResponse }) => {
         })
     }
     if (!id || result.error?.status === 410) {
-        result = await createFlow({ url, params: { ...rest } })
+        result = await createFlow({
+            url,
+            transformResponse,
+            params: { ...rest }
+        })
     }
     return result.data ? { data: result.data } : { error: result.error }
 }
@@ -64,13 +69,22 @@ const completeFlow = async ({ url, data, params }) => {
     return result.data ? { data: result.data } : { error: result.error }
 }
 
-
 export const orySlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getSettingsFlow: builder.query({
             queryFn: (arg) => getFlow({
                 url: '/self-service/settings',
                 params: { ...arg.params, id: arg.flowId },
+                transformResponse: (data) => {
+                    const json = JSON.parse(data)
+                    return {
+                        id: json.id,
+                        csrf_token: json.ui?.nodes.find((node) =>
+                            node.attributes.name === 'csrf_token')?.attributes.value,
+                        nodes: json.ui?.nodes,
+                        expires_at: json.expires_at,
+                    }
+                }
             }),
             cacheKey: 'getSettingsFlow',
         }),
@@ -80,7 +94,7 @@ export const orySlice = apiSlice.injectEndpoints({
                 params: { ...arg.params, flow: arg.flowId },
                 data: arg.data,
             }),
-            cacheKey: 'completeSettingsFlow',
+            cacheKey: 'completeSettingsFlow'
         }),
         getLoginFlow: builder.query({
             queryFn: (arg) => getFlow({

@@ -330,7 +330,7 @@ const Connections = () => {
             {showConfirmModal &&
                 <ConfirmModal
                     blur={2}
-                    cleanUp={() => { setShowConfirmModal(false) }}
+                    onClose={() => { setShowConfirmModal(false) }}
                 />
             }
             <ShimmerDiv shimmering={fetchingPlaidItems}>
@@ -356,7 +356,7 @@ const Connections = () => {
                                     <form onSubmit={handleFormSubmit}>
                                         <Inputs />
                                         <SubmitForm
-                                            onCancel={() => {
+                                            onClose={() => {
                                                 setDeleteQue([])
                                                 setEditing(false)
                                             }}
