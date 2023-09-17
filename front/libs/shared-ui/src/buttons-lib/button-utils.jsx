@@ -92,8 +92,16 @@ export const withLoadingRing = (Component) => {
         const r = ref || localRef
         const { children, submitting, success, ...rest } = props
 
+        const newProps = {
+            disabledHover: submitting || success,
+            ...rest
+        }
+
         return (
-            <Component {...rest} ref={r}>
+            <Component
+                {...newProps}
+                ref={r}
+            >
                 <LoadingRing
                     visible={submitting}
                     color={props.color || "dark"}

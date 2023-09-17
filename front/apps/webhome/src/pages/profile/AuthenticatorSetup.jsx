@@ -1,18 +1,49 @@
 import React, { useEffect, useState } from 'react'
 
+import { AnimatePresence, motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
+
 import './styles/Authenticator.css'
+import { useCompleteSettingsFlowMutation } from '@features/orySlice'
 import {
+    BackButton,
+    GreenSubmitWithArrow,
+    TextInput,
     LoadingRingDiv,
     NodeImage,
     GrnTextButton,
     CopyButton
 } from '@ledget/shared-ui'
+import { useSettingsFlow } from '@utils'
 
 
-const CodeScane = ({ flow, loading }) => {
+const ZoomMotionDiv = ({ children, id }) => {
+    const variants = {
+        initial: { opacity: 0, transform: 'scale(0.9)' },
+        animate: { opacity: 1, transform: 'scale(1)' },
+        exit: { opacity: 0, transform: 'scale(0.9)' }
+    }
+
+    return (
+        <motion.div
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={variants}
+            transition={{ duration: 0.3 }}
+            id={id}
+            key={id}
+        >
+            {children}
+        </motion.div>
+    )
+}
+
+const SetupApp = ({ codeMode, setCodeMode }) => {
+    const { flow, isLoading } = useSettingsFlow()
     const [qrNode, setQrNode] = useState(null)
     const [totpSecret, setTotpSecret] = useState('')
-    const [codeMode, setCodeMode] = useState(false)
+
     useEffect(() => {
         if (flow) {
             const node = flow.ui.nodes.find(node => node.group === 'totp' && node.type === 'img')
@@ -20,10 +51,10 @@ const CodeScane = ({ flow, loading }) => {
             const totpSecret = flow.ui.nodes.find(node => node.group === 'totp' && node.type === 'text')
             setTotpSecret(totpSecret?.attributes.text.context.secret)
         }
-    }, [loading])
+    }, [isLoading])
 
     return (
-        <>
+        <div id="code-scan--container">
             <div
                 className="spaced-header2"
                 style={{ opacity: .8 }}
@@ -39,49 +70,131 @@ const CodeScane = ({ flow, loading }) => {
                     </>
                 }
             </div>
-            <LoadingRingDiv loading={loading} color='dark'>
-                {codeMode
-                    ?
-                    <>
-                        <span>Enter this code in your app</span>
-                        <div id="totp-code--container">
-                            <span>{totpSecret}</span>
-                            <CopyButton onClick={() => navigator.clipboard.writeText(totpSecret)} />
-                        </div>
-                    </>
-                    :
-                    <>
-                        <div id="qr-code--container">
-                            {qrNode && <NodeImage node={qrNode} attributes={qrNode.attributes} />}
-                        </div>
-                        <GrnTextButton
-                            style={{ marginTop: '12px' }}
-                            onClick={() => setCodeMode(true)}
-                        >
-                            Can't scan it?
-                        </GrnTextButton>
-                    </>
-                }
+            <LoadingRingDiv loading={isLoading} color='dark' id="auth-setup--content">
+                <AnimatePresence mode="wait">
+                    {codeMode
+                        ?
+                        <ZoomMotionDiv id="code-setup--container">
+                            <span>Enter this code in your app</span>
+                            <div>
+                                <span>{totpSecret}</span>
+                                <CopyButton
+                                    type="button"
+                                    onClick={() => navigator.clipboard.writeText(totpSecret)}
+                                />
+                            </div>
+                        </ZoomMotionDiv>
+                        :
+                        <ZoomMotionDiv id='qr-setup--container'>
+                            <div id="qr-code--container">
+                                {qrNode && <NodeImage node={qrNode} attributes={qrNode.attributes} />}
+                            </div>
+                            <GrnTextButton
+                                type='button'
+                                onClick={() => setCodeMode(true)}
+                            >
+                                Can't scan it?
+                            </GrnTextButton>
+                        </ZoomMotionDiv>
+                    }
+                </AnimatePresence>
             </LoadingRingDiv>
-        </>
-    )
-}
-
-const AuthenticatorSetup = (props) => {
-    const { flow, loadingFlow } = props
-
-    return (
-        <div id="code-scane--container">
-            <CodeScane
-                flow={flow}
-                loading={loadingFlow}
-            />
         </div>
     )
 }
 
-export default AuthenticatorSetup
+const ConfirmCode = () => (
+    <div>
+        <di id="confirm-code--container">
+            <div>
+                <label htmlFor="code">
+                    Enter the code from your
+                    authenticator app
+                </label>
+                <TextInput>
+                    <input id="code" type="text" placeholder="Code" />
+                </TextInput>
+            </div>
+        </di>
+    </div>
+)
 
+const Authenticator = () => {
+    const { flow } = useSettingsFlow()
+    const navigate = useNavigate()
+    const [onConfirmStep, setConfirmStep] = useState(false)
+    const [codeMode, setCodeMode] = useState(false)
+
+    const [completeFlow, { isSuccess: completedFlow }] = useCompleteSettingsFlowMutation()
+
+    useEffect(() => {
+        if (completedFlow) {
+            useUpdateUserMutation({ authenticator_enabled: true })
+        }
+    }, [completedFlow])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const csrf_token_node = flow.ui.nodes.find(node => node.attributes.name === 'csrf_token')
+
+        if (onConfirmStep) {
+            completeFlow({
+                params: { flowId: searchParams.get('flow') },
+                data: {
+                    csrf_token: csrf_token_node.attributes.value,
+                    method: 'totp',
+                    totp_code: totpValue
+                }
+            })
+        } else {
+            setConfirmStep(true)
+        }
+    }
+
+    const handleBack = () => {
+        if (onConfirmStep) {
+            setConfirmStep(false)
+        } else if (codeMode) {
+            setCodeMode(false)
+        } else {
+            navigate('/profile/security')
+        }
+    }
+
+    return (
+        <div className="padded-content" id="authenticator-page">
+            <h1>Authenticator</h1>
+            <form onSubmit={handleSubmit} id='authenticator-setup-form'>
+                <AnimatePresence mode="wait">
+                    {onConfirmStep
+                        ?
+                        <AnimatePresence>
+                            <ConfirmCode />
+                        </AnimatePresence>
+                        :
+                        <AnimatePresence>
+                            <SetupApp
+                                codeMode={codeMode}
+                                setCodeMode={setCodeMode}
+                            />
+                        </AnimatePresence>
+                    }
+                </AnimatePresence>
+                <div>
+                    <BackButton
+                        onClick={handleBack}
+                        type="button"
+                    />
+                    <GreenSubmitWithArrow stroke={'var(--m-text-gray)'}>
+                        {onConfirmStep ? 'Confirm' : 'Next'}
+                    </GreenSubmitWithArrow>
+                </div>
+            </form>
+        </div>
+    )
+}
+
+export default Authenticator
 
 // <div id="recovery-codes-button--container">
 // <span>Recovery Codes:</span>

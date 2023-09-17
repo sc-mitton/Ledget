@@ -76,15 +76,13 @@ export const GoogleLoginButton = ({ props }) => (
   </GrayWideButton>
 )
 
-export const CloseButton = forwardRef((props, ref) => {
+export const CloseButton = (props, ref) => {
   const localRef = useRef(null)
-  const r = ref || localRef
   const { style, ...rest } = props
 
   return (
     <button
       className="btn-clr btn btn-icon"
-      ref={r}
       style={{
         position: 'absolute',
         top: '12px',
@@ -96,7 +94,7 @@ export const CloseButton = forwardRef((props, ref) => {
       <CloseIcon />
     </button>
   )
-})
+}
 
 export const BackButton = (props) => {
   return (
@@ -118,7 +116,8 @@ export const BackButton = (props) => {
   )
 }
 
-export const CopyButton = ({ withText = true, ...rest }) => {
+export const CopyButton = (props) => {
+  const { withText = true, onClick, ...rest } = props
   const [springProps, copyBtnApi] = useSpring(() => ({
     from: { transform: 'scale(1)' }
   }))
@@ -138,7 +137,10 @@ export const CopyButton = ({ withText = true, ...rest }) => {
   return (
     <animated.div style={springProps}>
       <SlimInputButton
-        onClick={handleClick}
+        onClick={() => {
+          handleClick()
+          onClick()
+        }}
         {...rest}
       >
         <CopyIcon />

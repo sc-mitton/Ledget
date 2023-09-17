@@ -20,10 +20,7 @@ const useSettingsFlow = () => {
         }
     }, [isSuccess, isLoading])
 
-    return {
-        flow,
-        loadingSettingsFlow: isLoading
-    }
+    return { flow, isLoading }
 }
 
 export default useSettingsFlow

@@ -11,6 +11,7 @@ function withModal(WrappedComponent) {
             cleanUp = () => { },
             hasBackground = true,
             hasExit = true,
+            focusOnMount = true,
             width = '70%',
             minWidth = '300px',
             maxWidth = '450px',
@@ -22,7 +23,6 @@ function withModal(WrappedComponent) {
 
         const [visible, setVisible] = useState(true)
         const modalRef = useRef(null)
-        const exitRef = useRef(null)
 
         useAccessEsc({
             refs: [modalRef],
@@ -81,17 +81,6 @@ function withModal(WrappedComponent) {
             config: { duration: 200 },
         })
 
-        const Exit = () => {
-            return (
-                <CloseButton
-                    ref={exitRef}
-                    onClick={() => setVisible(false)}
-                    aria-label="Close modal"
-                    style={{ zIndex: zIndex + 2 }}
-                />
-            )
-        }
-
         return (
             <>
                 {backgroundTransitions((opacityStyles, item1) =>
@@ -109,9 +98,15 @@ function withModal(WrappedComponent) {
                                         style={scaleStyles}
                                         ref={modalRef}
                                     >
-                                        {hasExit && <Exit />}
+                                        {hasExit &&
+                                            <CloseButton
+                                                onClick={() => setVisible(false)}
+                                                aria-label="Close modal"
+                                                style={{ zIndex: zIndex + 2 }}
+                                            />
+                                        }
                                         <WrappedComponent
-                                            {...props}
+                                            {...rest}
                                             visible={visible}
                                             setVisible={setVisible}
                                         />

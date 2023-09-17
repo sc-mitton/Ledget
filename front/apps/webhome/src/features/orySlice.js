@@ -1,7 +1,7 @@
 import { apiSlice } from '@api/apiSlice'
 import axios from 'axios'
 
-export const axiosBaseQuery = async ({ url, method, data, params }) => {
+export const axiosBaseQuery = async ({ url, method, data, params, transformResponse }) => {
     const oryBaseUrl = import.meta.env.VITE_ORY_API_URI
     try {
         const result = await axios({
@@ -9,7 +9,8 @@ export const axiosBaseQuery = async ({ url, method, data, params }) => {
             method: method,
             data: data,
             params: params,
-            withCredentials: true
+            withCredentials: true,
+            transformResponse: transformResponse
         })
         return { data: result.data }
     } catch (axiosError) {
@@ -32,7 +33,7 @@ const createFlow = async ({ url, params }) => {
     return result.data ? { data: result.data } : { error: result.error }
 }
 
-const getFlow = async ({ url, params }) => {
+const getFlow = async ({ url, params, transformResponse }) => {
     let result
     const { id, ...rest } = params
     if (id) {
@@ -40,6 +41,7 @@ const getFlow = async ({ url, params }) => {
             url: `${url}/flows`,
             method: 'GET',
             params: params,
+            transformResponse: transformResponse
         })
     }
     if (!id || result.error?.status === 410) {
@@ -70,21 +72,22 @@ export const orySlice = apiSlice.injectEndpoints({
                 url: '/self-service/settings',
                 params: { ...arg.params, id: arg.flowId },
             }),
-            keepUnusedDataFor: 60 * 10, // 10 minutes
+            cacheKey: 'getSettingsFlow',
         }),
         completeSettingsFlow: builder.mutation({
             queryFn: (arg) => completeFlow({
                 url: '/self-service/settings',
                 params: { ...arg.params, flow: arg.flowId },
-                data: arg.data
+                data: arg.data,
             }),
+            cacheKey: 'completeSettingsFlow',
         }),
         getLoginFlow: builder.query({
             queryFn: (arg) => getFlow({
                 url: '/self-service/login',
                 params: { ...arg.params, id: arg.flowId },
             }),
-            keepUnusedDataFor: 60 * 10, // 10 minutes
+            cacheKey: 'getLoginFlow'
         }),
         completeLoginFlow: builder.mutation({
             queryFn: (arg) => completeFlow({
@@ -93,6 +96,7 @@ export const orySlice = apiSlice.injectEndpoints({
                 data: arg.data
             }),
             invalidatesTags: ['user'],
+            cacheKey: 'completeLoginFlow'
         }),
     }),
 })

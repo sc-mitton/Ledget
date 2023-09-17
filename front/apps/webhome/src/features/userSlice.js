@@ -1,11 +1,29 @@
 import { apiSlice } from '@api/apiSlice'
+import { createSlice } from '@reduxjs/toolkit'
+
+const userSlice = createSlice({
+    name: 'user',
+    initialState: {
+        reAuthedAt: null
+    },
+    reducers: {
+        resetAuthedAt: (state) => {
+            state.reAuthedAt = Date.now()
+        }
+    }
+})
+export const { resetAuthedAt } = userSlice.actions
+export const userReducer = userSlice.reducer
+export const selectReauthIsFresh = (state) => {
+    return state.user.reAuthedAt && Date.now() - state.user.reAuthedAt < 10 * 60 * 1000
+}
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
 
     endpoints: (builder) => ({
         getMe: builder.query({
             query: () => 'user/me',
-            providesTags: ['user'],
+            providesTags: ['user']
         }),
         getPrices: builder.query({
             query: () => 'prices'

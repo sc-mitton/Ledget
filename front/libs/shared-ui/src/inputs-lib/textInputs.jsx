@@ -261,7 +261,7 @@ export const PasswordInput = React.forwardRef((props, ref) => {
                 ?
                 <BlockShimmerDiv />
                 :
-                <div className="password-input" onClick={() => { r.current.focus() }}>
+                <TextInput>
                     <input
                         name={name}
                         type={visible ? 'text' : 'password'}
@@ -274,7 +274,7 @@ export const PasswordInput = React.forwardRef((props, ref) => {
                     />
                     {pwdInput && inputType != 'confirm-password' &&
                         < VisibilityIcon mode={visible} onClick={() => setVisible(!visible)} />}
-                </div>
+                </TextInput>
             }
         </>
     )

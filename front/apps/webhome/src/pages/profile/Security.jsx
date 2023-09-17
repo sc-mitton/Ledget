@@ -49,7 +49,7 @@ const AuthenticatorApp = () => {
                 {!user.authenticator_enabled
                     &&
                     <GrnSlimArrowButton
-                        onClick={() => navigate('/profile/authenticator-setup')}
+                        onClick={() => navigate('/profile/security/authenticator-setup')}
                         stroke={'var(--m-text-gray)'}
                     >
                         Set Up

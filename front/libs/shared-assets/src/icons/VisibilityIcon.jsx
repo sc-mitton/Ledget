@@ -16,6 +16,7 @@ const VisibilityIcon = (props) => {
                 setShowIcon(!showIcon)
                 props.onClick()
             }}
+            style={{ borderRadius: '8px', padding: '14px 4px' }}
             aria-label={showIcon ? 'hide' : 'show'}
         >
             <img

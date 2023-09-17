@@ -95,6 +95,7 @@
 .form-error--container {
     margin-left: -6px;
     display: flex;
+    align-items: center;
 }
 
 .form-error--container svg {
@@ -102,7 +103,6 @@
     margin-left: 10px;
     margin-right: 5px;
     position: relative;
-    top: 2px;
     text-align: left;
     animation: pop .22s ease;
 }

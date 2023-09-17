@@ -10,16 +10,43 @@
     gap: 4px;
 }
 
-#authenticator-page>div:nth-child(2) {
-    flex-grow: 1;
+#authenticator-setup-form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
-#authenticator-page>div:last-child {
+#authenticator-setup-form>div:nth-child(1) {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#authenticator-setup-form>div:last-child {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+#authenticator-setup-form>div>div {
+    display: flex;
+    flex-direction: column;
+}
+
+#authenticator-setup-form>div>div>div:last-child {
+    margin-bottom: 60px;
 }
 
 /* --------------------------- Authenticator Setup -------------------------- */
+
+#auth-setup--content {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
 #qr-code--container {
     background-color: var(--green-hlight2);
@@ -32,30 +59,9 @@
     align-items: center;
 }
 
-#totp-code--container {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
-    box-shadow: 0px 0px 1px 6px var(--green-hlight2);
-    background-color: var(--window);
-    border-radius: var(--border-radius3);
-    padding: 10px 14px;
-    font-weight: 500;
-}
-
-#totp-code--container span {
-    font-size: calc(12px + 6 * ((50vw - 50px) / 800));
-}
-
-#totop-code--container button {
-    opacity: .7;
-
-}
-
-#totp-code--container button svg {
-    margin-right: 4px;
+#qr-code--container+button {
+    margin: 0 auto;
+    margin-top: 12px;
 }
 
 #qr-code--container img {
@@ -64,52 +70,59 @@
     border: 12px solid white;
 }
 
-#code-scane--container {
-    height: 100%;
+
+#code-setup--container {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
-#code-scane--container>div:last-child {
-    flex-grow: 1;
-    margin-bottom: 3em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-#code-scane--container>div:last-child span {
-    margin: 20px 0;
+#code-setup--container>span:first-child {
     font-weight: 500;
     font-size: 1.1em;
+    margin-bottom: 12px;
+}
+
+#code-setup--container>div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0px 0px 1px 6px var(--green-hlight2);
+    background-color: var(--window);
+    border-radius: var(--border-radius4);
+    padding: 8px 14px;
+    font-weight: 500;
+}
+
+#code-setup--container button svg {
+    margin-right: 4px;
 }
 
 /* ----------------------- Authenticator Confirm Page ----------------------- */
 
-#code-confirmation--container {
+#confirm-code--container {
+    height: 100%;
     flex-grow: 1;
     display: flex;
-    justify-content: center;
+    margin: 0 auto;
     align-items: center;
-    flex-direction: column;
-}
-
-#code-confirmation--container>div:first-child {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    text-align: center;
     width: 100%;
-    max-width: 275px;
-    margin-bottom: 60px;
 }
 
-#code-confirmation--container label {
+#confirm-code--container>div {
+    width: 100%;
+    max-width: 375px;
+}
+
+#confirm-code--container label {
     font-weight: 500;
     margin-bottom: 8px;
 }
 
+/*
 #recovery-codes-button--container {
     margin-top: 8px;
     display: inline-flex;
@@ -132,4 +145,4 @@
     display: flex;
     align-items: center;
     gap: 4px;
-}
+} */

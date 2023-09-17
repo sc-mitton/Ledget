@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef, useCallback } from "react"
+import React, { useContext, useEffect, useState } from "react"
 
 import { useSearchParams } from "react-router-dom"
 import { motion } from "framer-motion"
@@ -11,7 +11,7 @@ import verifyEmail from "@assets/images/verifyEmail.svg"
 import UserContext from "@context/UserContext"
 import CsrfToken from "./inputs/CsrfToken"
 import ResendButton from "./inputs/ResendButton"
-import { BlackWideButton, FormError } from "@ledget/shared-ui"
+import { BlackWideButton, FormError, jiggleVariants } from "@ledget/shared-ui"
 
 const VerificationForm = () => {
     const { flow, submit, csrf, codeError } = useContext(VerificationFlowContext)
@@ -81,20 +81,12 @@ const AnimatedVerification = () => {
         }
     }, [codeError])
 
-    const jiggleVariants = {
-        initial: { x: 0 },
-        jiggle: {
-            x: [-20, 20, 0],
-            transition: { duration: .2, type: 'spring', stiffness: 1000, damping: 10 },
-        },
-    }
-
     return (
         < motion.div
             className="window"
             id="verification-window"
-            initial="initial"
-            animate={jiggle ? 'jiggle' : 'initial'}
+            initial="static"
+            animate={jiggle ? 'jiggle' : 'static'}
             variants={jiggleVariants}
             onAnimationComplete={() => setJiggle(false)}
         >

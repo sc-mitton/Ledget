@@ -1,0 +1,258 @@
+import React, { useEffect, useState, useRef } from 'react'
+
+import { useSearchParams } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useSelector, useDispatch } from 'react-redux'
+
+import { withSmallModal } from '@ledget/shared-utils'
+import { useGetMeQuery, selectReauthIsFresh } from '@features/userSlice'
+import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
+import {
+    GreenSubmitWithArrow,
+    SecondaryButton,
+    PasswordInput,
+    PlainTextInput,
+    FormError,
+    jiggleVariants
+} from '@ledget/shared-ui'
+
+const row1Style = { marginTop: '20px', fontWeight: '500', marginLeft: '2px' }
+const row2Style = { margin: '16px 0 28px 0' }
+
+const HiddenInputs = ({ flow }) => {
+    const nodes = ['csrf_token', 'method', 'identifier']
+    return (
+        <>
+            {flow.ui.nodes.filter(node => nodes.includes(node.attributes.name))
+                .map(node => (
+                    <input
+                        key={node.attributes.name}
+                        type="hidden"
+                        name={node.attributes.name}
+                        value={node.attributes.value}
+                    />
+                ))}
+        </>
+    )
+}
+
+const useFlow = (aal) => {
+    const [getFlow, { data: flow, isLoading, isSuccess, isError }] = useLazyGetLoginFlowQuery()
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    useEffect(() => {
+        let flowId = searchParams.get('flow')
+        if (searchParams.get('aal') !== aal) {
+            flowId = null
+        }
+        getFlow({
+            flowId: flowId,
+            params: { aal: aal, refresh: true }
+        })
+    }, [])
+
+    // Update search params
+    useEffect(() => {
+        if (isSuccess) {
+            setSearchParams({ flow: flow?.id, aal: aal })
+        }
+    }, [isSuccess, flow?.id])
+
+    return { flow, isLoading, isError }
+}
+
+const ErrorFetchingFlow = () => (
+    <FormError msg={"Something went wrong, please try again later."} />
+)
+
+const PassWord = () => {
+    const pwdRef = useRef(null)
+    const [searchParams] = useSearchParams()
+    const [, { isError }] = useCompleteLoginFlowMutation(
+        { fixedCacheKey: searchParams.get('flow') })
+    const { flow, isLoading, isError: errorFetchingFlow } = useFlow('aal1')
+
+    // Focus on password input on mount
+    useEffect(() => { pwdRef.current?.focus() }, [])
+
+    // Focus on password input on error
+    useEffect(() => {
+        isError && pwdRef.current?.focus()
+    }, [isError])
+
+    return (
+        <>
+            <div className="body" style={row1Style}>
+                To make this change, first confirm your login.
+            </div>
+            <div style={row2Style}>
+                <PasswordInput ref={pwdRef} loading={isLoading} required />
+                {flow && <HiddenInputs flow={flow} />}
+                {errorFetchingFlow && <ErrorFetchingFlow />}
+            </div>
+        </>
+    )
+}
+
+const Totp = () => {
+    const [searchParams] = useSearchParams()
+    const [, isError] = useCompleteLoginFlowMutation(
+        { fixedCacheKey: searchParams.get('flow') })
+    const { flow, isError: errorFetchingFlow } = useFlow('aal2')
+    const ref = useRef(null)
+
+    useEffect(() => {
+        if (isError) {
+            ref.current.value = ''
+            ref.current.focus()
+        }
+    }, [isError])
+
+    return (
+        <>
+            <div className="body" style={row1Style}>
+                Enter your authenticator code
+            </div>
+            <div style={row2Style}>
+                <PlainTextInput ref={ref} name="totp_code" placeholder='Code...' required />
+                {flow && <HiddenInputs flow={flow} />}
+                {errorFetchingFlow && <ErrorFetchingFlow />}
+            </div>
+        </>
+    )
+}
+
+const ReAuthModal = withSmallModal((props) => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    const { data: user } = useGetMeQuery()
+    const [needsAal2, setNeedsAal2] = useState(false)
+    const [completeFlow, {
+        isLoading: submittingFlow,
+        isSuccess: completedFlow,
+        isError: authError
+    }] = useCompleteLoginFlowMutation(
+        { fixedCacheKey: searchParams.get('flow') }
+    )
+    const dispatch = useDispatch()
+
+    // Close modal after 7 minute timeout
+    // to avoid submitting expired flows
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            props.setVisible(false)
+        }, 60 * 7 * 1000)
+        return () => clearTimeout(timeout)
+    }, [])
+
+    // Handle successful flow completion
+    useEffect(() => {
+        const aal = searchParams.get('aal')
+        const finishedCase1 = completedFlow && !user.authenticator_enabled
+        const finishedCase2 = completedFlow && aal === 'aal2'
+        const needsAal2 = completedFlow && user.authenticator_enabled && aal === 'aal1'
+
+        if (finishedCase1 || finishedCase2) {
+            setSearchParams({ reauthed: true })
+            dispatch({ type: 'user/resetAuthedAt' })
+        } else if (needsAal2) {
+            setNeedsAal2(true)
+        }
+    }, [completedFlow, submittingFlow])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const data = new FormData(e.target)
+        completeFlow({
+            flowId: searchParams.get('flow'),
+            data: Object.fromEntries(data)
+        })
+    }
+
+    // Framer motion variants
+    const variants = {
+        ...jiggleVariants,
+        toRight: { x: 20, opacity: 0 },
+        toLeft: { x: -20, opacity: 0 },
+        fromRight: { x: 20, opacity: 0, }
+    }
+
+    return (
+        <div>
+            <h3>Confirm Login</h3>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <AnimatePresence mode="wait">
+                        {needsAal2
+                            ?
+                            <motion.div
+                                initial='fromRight'
+                                animate={authError ? 'jiggle' : 'static'}
+                                key='aal2'
+                                variants={variants}
+                            >
+                                <Totp />
+                            </motion.div>
+                            :
+                            <motion.div
+                                initial='static'
+                                animate={authError ? 'jiggle' : 'static'}
+                                exit='toLeft'
+                                key='aal1'
+                                variants={variants}
+                            >
+                                <PassWord />
+                            </motion.div>
+                        }
+                    </AnimatePresence >
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <SecondaryButton onClick={() => props.setVisible(false)}>
+                        Cancel
+                    </SecondaryButton>
+                    <GreenSubmitWithArrow submitting={submittingFlow} stroke={'var(--m-text-gray)'}>
+                        Continue
+                    </GreenSubmitWithArrow>
+                </div>
+            </form>
+        </div>
+    )
+})
+
+// This HOC is used to wrap a component that requires the user
+// to re-authenticate
+
+// In order to get a settings flow and update settings, a user
+// needs a recent seesion that is newer than the max age in the
+// ory settings.
+
+export default function withReAuth(Component) {
+
+    return (props) => {
+        const [continueToComponent, setContinueToComponent] = useState(false)
+        const [searchParams] = useSearchParams()
+        const reAuthIsFresh = useSelector(selectReauthIsFresh)
+
+        useEffect(() => {
+            const completedLoginFlow = searchParams.get('reauthed') === true
+
+            if (reAuthIsFresh || completedLoginFlow) {
+                setContinueToComponent(true)
+            }
+
+        }, [searchParams.get('reauthed'), reAuthIsFresh])
+
+        return (
+            <>
+                {continueToComponent
+                    ?
+                    <Component {...props} />
+                    :
+                    <ReAuthModal
+                        cleanUp={() => props.cleanUp && props.cleanUp()}
+                        blur={1}
+                    />
+                }
+            </>
+        )
+    }
+}

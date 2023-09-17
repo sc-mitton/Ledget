@@ -6,7 +6,7 @@ import { TextInput } from '../inputs-lib/textInputs'
 
 
 export const ShimmerDiv = (props) => {
-    const { shimmering, children, ...rest } = props
+    const { shimmering, children, style, ...rest } = props
     const [position, setPosition] = useState('static')
     const transitions = useTransition(shimmering, {
         from: { opacity: 0 },
@@ -27,7 +27,7 @@ export const ShimmerDiv = (props) => {
     return (
         <div
             className="loading-shimmer--container"
-            style={{ position: position }}
+            style={{ position: position, ...style }}
             {...rest}
         >
             {transitions(
