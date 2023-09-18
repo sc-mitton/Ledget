@@ -1,26 +1,41 @@
-from rest_framework import (
-    generics,
-    viewsets,
-    permissions,
-)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.views import APIView as ApiView
 from rest_framework.response import Response
 from rest_framework.exceptions import MethodNotAllowed
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_400_BAD_REQUEST,
+)
 
 from core.serializers import UserSerializer, DeviceSerializer
 from core.permissions import IsAal2
 
 
-class UserView(generics.RetrieveUpdateAPIView):
+class UserView(RetrieveUpdateAPIView):
     """Get me endpoint, returns user data and subscription data"""
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
 
     def get_object(self):
         return self.request.user
 
 
-class DeviceViewSet(viewsets.ModelViewSet):
+class ThisDeviceView(ApiView):
+
+    def get(self, request, *args, **kwargs):
+        # has 'ledget_device_token' cookie
+        try:
+            request.COOKIES['ledget_device_token']
+        except KeyError:
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        return Response(status=HTTP_200_OK)
+
+
+class DeviceViewSet(ModelViewSet):
     permission_classes = [IsAal2]
     serializer_class = DeviceSerializer
 

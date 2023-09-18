@@ -35,11 +35,11 @@ class OryBackend(BaseAuthentication):
             logger.error(f"{e.__class__.__name__} {e}")
             return None
 
-        try:
-            self.check_device_token(request, user)
-        except MissingDeviceTokenError as e:
-            logger.error(f"{e.__class__.__name__} {e}")
-            return None
+        # try:
+        #     self.check_device_token(request, user)
+        # except MissingDeviceTokenError as e:
+        #     logger.error(f"{e.__class__.__name__} {e}")
+        #     return None
 
         return (user, None)
 

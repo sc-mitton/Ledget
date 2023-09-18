@@ -12,7 +12,16 @@ import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces"
 import { LoginFlowContext, LoginFlowContextProvider } from "@context/Flow"
-import { GrnWideButton, TextInput, Checkbox, FormError, PasswordInput, BackButton } from "@ledget/shared-ui"
+import {
+    GrnWideButton,
+    TextInput,
+    Checkbox,
+    FormError,
+    PasswordInput,
+    BackButton,
+    SlideMotionDiv,
+    PlainTextInput
+} from "@ledget/shared-ui"
 
 const emailContext = createContext({})
 
@@ -63,25 +72,18 @@ const EmailForm = () => {
     }
 
     return (
-        <form
-            onSubmit={submit}
-            className="login-form"
-            noValidate
-        >
+        <form onSubmit={handleSubmit((data, e) => submit(e))} className="login-form">
             <div>
-                <TextInput>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Email"
-                        {...rest}
-                        ref={(e) => {
-                            ref(e)
-                            emailRef.current = e
-                        }}
-                    />
-                </TextInput>
+                <PlainTextInput
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    {...rest}
+                    ref={(e) => {
+                        ref(e)
+                        emailRef.current = e
+                    }}
+                />
                 {errors['email'] && <FormError msg={errors['email'].message} />}
                 <div id="remember-me-checkbox-container">
                     <Checkbox
@@ -91,14 +93,7 @@ const EmailForm = () => {
                         ref={rememberRef}
                     />
                 </div>
-                <GrnWideButton
-                    id="next"
-                    name="enter-password"
-                    aria-label="Continue"
-                    type="submit"
-                >
-                    Continue
-                </GrnWideButton>
+                <GrnWideButton>Continue</GrnWideButton>
             </div>
         </form >
     )
@@ -126,17 +121,14 @@ const AuthenticationForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
         if (pwdRef.current.value === '') {
             pwdRef.current.focus()
-        } else {
-            submit(e)
+            return
         }
+        submit(e)
     }
 
-    useEffect(() => {
-        pwdRef.current.focus()
-    }, [])
+    useEffect(() => { pwdRef.current.focus() }, [])
 
     return (
         <>
@@ -149,22 +141,15 @@ const AuthenticationForm = () => {
                 {responseError && <FormError msg={responseError} />}
                 <PasswordInput ref={pwdRef} />
                 <div id="forgot-password-container">
-                    <Link to="/recovery" tabIndex={0} >Forgot Password?</Link>
+                    <Link to="/recovery" tabIndex={0}>Forgot Password?</Link>
                 </div>
-                <input
-                    type="hidden"
-                    name="identifier"
-                    value={email || ''}
-                />
-                <CsrfToken csrf={csrf} />
-                <GrnWideButton
-                    name="method"
-                    value="password"
-                    type="submit"
-                >
+                <GrnWideButton name="method" value="password">
                     Sign In
                 </GrnWideButton>
                 {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
+
+                <input type="hidden" name="identifier" value={email || ''} />
+                <CsrfToken csrf={csrf} />
             </form >
         </>
     )
@@ -196,18 +181,14 @@ const AuthenticationWindow = () => {
 }
 
 function LoginFlow() {
-    const [loaded, setLoaded] = useState(false)
     const { email } = useContext(emailContext)
     const { getFlow, createFlow } = useContext(LoginFlowContext)
     const [searchParams] = useSearchParams()
-
-    useEffect(() => { setLoaded(true) }, [])
 
     useEffect(() => {
         // we might redirect to this page after the flow is initialized,
         // so we check for the flowId in the URL
         const flowId = searchParams.get("flow")
-
         // if the flow has expired, we need to get a new one
         flowId ? getFlow(flowId).catch(createFlow) : createFlow()
     }, [])
@@ -216,27 +197,13 @@ function LoginFlow() {
         <AnimatePresence mode="wait">
             {email === null
                 ?
-                <motion.div
-                    className='window'
-                    key="initial"
-                    initial={{ opacity: 0, x: !loaded ? 0 : -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -30 }}
-                    transition={{ ease: "easeInOut", duration: 0.2 }}
-                >
+                <SlideMotionDiv className='window' key="initial" first>
                     <InitialWindow />
-                </motion.div>
+                </SlideMotionDiv>
                 :
-                <motion.div
-                    className='window'
-                    key="authenticate"
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 30 }}
-                    transition={{ ease: "easeInOut", duration: 0.2 }}
-                >
+                <SlideMotionDiv className='window' key="authenticate" last>
                     <AuthenticationWindow />
-                </motion.div>
+                </SlideMotionDiv>
             }
         </AnimatePresence>
     )

@@ -56,18 +56,20 @@ const getFlow = async ({ url, params, transformResponse }) => {
 }
 
 const completeFlow = async ({ url, data, params }) => {
-    let result
-    const { flow } = params
-    if (flow) {
-        result = await axiosBaseQuery({
-            url: `${url}`,
-            method: 'POST',
-            data: data,
-            params: params,
-        })
-    }
+    const result = await axiosBaseQuery({
+        url: `${url}`,
+        method: 'POST',
+        data: data,
+        params: params,
+    })
     return result.data ? { data: result.data } : { error: result.error }
 }
+
+const endpoints = [
+    { name: 'settings', keepUnusedDataFor: 60 * 3 },
+    { name: 'login', keepUnusedDataFor: 60 * 3 },
+    { nam: 'logout' }
+]
 
 export const orySlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -114,6 +116,20 @@ export const orySlice = apiSlice.injectEndpoints({
             invalidatesTags: ['user'],
             cacheKey: 'completeLoginFlow'
         }),
+        getLogoutFlow: builder.query({
+            queryFn: (arg = {}) => getFlow({
+                url: '/self-service/logout',
+                params: { ...arg.params },
+            }),
+        }),
+        completeLogoutFlow: builder.mutation({
+            queryFn: (arg = {}) => completeFlow({
+                url: '/self-service/logout',
+                params: { ...arg.params },
+                data: arg.data
+            }),
+            invalidatesTags: ['user']
+        })
     }),
 })
 
@@ -121,5 +137,7 @@ export const {
     useLazyGetSettingsFlowQuery,
     useCompleteSettingsFlowMutation,
     useLazyGetLoginFlowQuery,
-    useCompleteLoginFlowMutation
+    useCompleteLoginFlowMutation,
+    useGetLogoutFlowQuery,
+    useCompleteLogoutFlowMutation,
 } = orySlice

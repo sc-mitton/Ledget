@@ -16,11 +16,12 @@ import {
     GreenSubmitButton,
     CopyButton,
     FormError,
-    JiggleDiv
+    JiggleDiv,
+    ZoomMotionDiv,
+    SlideMotionDiv
 } from '@ledget/shared-ui'
 import { withModal } from '@ledget/shared-utils'
 import { useSettingsFlow, withReAuth } from '@utils'
-import { ZoomMotionDiv, SlideMotionDiv } from '@components/pieces'
 
 
 const SetupApp = ({ codeMode, setCodeMode }) => {

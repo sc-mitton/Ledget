@@ -1,33 +1,53 @@
 import React, { useState, useEffect } from 'react'
 
 import "./styles/Logout.css"
-import { ory } from '@flow/ory'
 import { withSmallModal } from '@ledget/shared-utils'
 import { SecondaryButton, GreenSubmitButton } from '@ledget/shared-ui'
+import { useGetLogoutFlowQuery, useCompleteLogoutFlowMutation } from '@features/orySlice'
+
 
 function Logout(props) {
+    const [quedLogout, setQuedLogout] = useState(false)
     const [seconds, setSeconds] = useState(30)
-    const [loggingOut, setLoggingOut] = useState(false)
 
+    const {
+        data: flow,
+        isSuccess: fetchedFlow,
+        isLoading: fetchingFlow,
+        isError: errorFetchingFlow
+    } = useGetLogoutFlowQuery()
+    const [
+        completeLogoutFlow,
+        { isSuccess: logOutSuccess, isLoading: loggingOut }
+    ] = useCompleteLogoutFlowMutation()
+
+    // Auto logout feature
     useEffect(() => {
         const timer = setInterval(() => {
             setSeconds((prevSeconds) => prevSeconds - 1)
         }, 1000)
-
-        return () => {
-            clearInterval(timer)
-        }
+        return () => { clearInterval(timer) }
     }, [])
 
-    const handleLogout = async () => {
-        setLoggingOut(true)
-        await ory.logout(import.meta.env.VITE_LOGOUT_REDIRECT_URL)
-        setLoggingOut(false)
-    }
+    useEffect(() => {
+        seconds <= 0 && setQuedLogout(true)
+    }, [seconds])
 
     useEffect(() => {
-        seconds <= 0 && handleLogout()
-    }, [seconds])
+        if (quedLogout && fetchedFlow) {
+            completeLogoutFlow({ params: { token: flow?.logout_token } })
+        }
+    }, [quedLogout, fetchedFlow])
+
+    useEffect(() => {
+        if (logOutSuccess) {
+            window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL
+        }
+    }, [logOutSuccess])
+
+    useEffect(() => {
+        errorFetchingFlow && props.setVisible(false)
+    }, [errorFetchingFlow])
 
     return (
         <div>
@@ -43,8 +63,8 @@ function Logout(props) {
                     Cancel
                 </SecondaryButton>
                 <GreenSubmitButton
-                    onClick={handleLogout}
-                    submitting={loggingOut}
+                    onClick={() => { setQuedLogout(true) }}
+                    submitting={(fetchingFlow && quedLogout) || loggingOut}
                     aria-label="Sign out"
                 >
                     Logout
