@@ -96,7 +96,7 @@ export const CloseButton = (props, ref) => {
   )
 }
 
-export const BackButton = ({ withText, children, ...rest }) => {
+export const BackButton = ({ withText = true, children, ...rest }) => {
 
   return (
     <div>

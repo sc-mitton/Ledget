@@ -10,7 +10,7 @@ const useSettingsFlow = () => {
 
     // Fetch flow on mount
     useEffect(() => {
-        getFlow({ flowId: searchParams.get('flow') })
+        getFlow({ params: { id: searchParams.get('flow') } })
     }, [])
 
     // Set search params to flow id when flow is fetched

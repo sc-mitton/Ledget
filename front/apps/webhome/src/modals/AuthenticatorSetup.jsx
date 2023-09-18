@@ -127,8 +127,7 @@ const Authenticator = (props) => {
             const data = Object.fromEntries(formData)
 
             completeFlow({
-                params: { flowId: searchParams.get('flow') },
-                flowId: searchParams.get('flow'),
+                params: { flow: searchParams.get('flow') },
                 data: {
                     csrf_token: flow?.csrf_token,
                     method: 'totp',

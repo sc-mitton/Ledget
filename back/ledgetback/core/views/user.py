@@ -24,6 +24,11 @@ class UserView(RetrieveUpdateAPIView):
 
 
 class ThisDeviceView(ApiView):
+    '''
+    Checks if the ledget_device_token cookie is present,
+    doesn't do anything to validate the token, so this endpoint
+    should not be used security or anything.
+    '''
 
     def get(self, request, *args, **kwargs):
         # has 'ledget_device_token' cookie

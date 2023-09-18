@@ -46,6 +46,16 @@
       "version": "v0.36.0-beta.4"
    },
    {
+      "id": "has_device_token",
+      "match": {
+         "methods": [
+            "GET"
+         ],
+         "url": "https://localhost/api/v1/device/this"
+      },
+      "version": "v0.36.0-beta.4"
+   },
+   {
       "authenticators": [
          {
             "forward_http_headers": [

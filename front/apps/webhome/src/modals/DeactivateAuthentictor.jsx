@@ -17,12 +17,12 @@ const DeactivateAuthenticator = (props) => {
     // Handle completing flow
     const handleClick = () => {
         completeFlow({
-            flowId: flow.id,
             data: {
                 method: 'totp',
                 totp_unlink: true,
                 csrf_token: flow.csrf_token
-            }
+            },
+            params: { flow: flow.id }
         })
         updateUser({ data: { authenticator_enabled: false } })
     }

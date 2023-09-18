@@ -53,8 +53,7 @@ const useFlow = (aal) => {
             flowId = null
         }
         getFlow({
-            flowId: flowId,
-            params: { aal: aal, refresh: true }
+            params: { aal: aal, refresh: true, id: flowId }
         })
     }, [])
 
@@ -170,8 +169,8 @@ const ReAuthModal = withSmallModal((props) => {
         e.preventDefault()
         const data = new FormData(e.target)
         completeFlow({
-            flowId: searchParams.get('flow'),
-            data: Object.fromEntries(data)
+            data: Object.fromEntries(data),
+            params: { flow: searchParams.get('flow') }
         })
     }
 
