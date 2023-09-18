@@ -9,6 +9,7 @@ router.register(r'devices', user_views.DeviceViewSet, basename='devices')
 
 urlpatterns = [
      path('user/me', user_views.UserView.as_view(), name='user_me'),
+
      path('', include(router.urls)),
 
      path('prices', service_views.PriceView.as_view(), name='prices'),
