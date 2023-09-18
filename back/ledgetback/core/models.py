@@ -1,8 +1,7 @@
 import uuid
-from datetime import datetime
 
 from django.db import models
-
+from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 
@@ -55,17 +54,15 @@ class User(models.Model):
         super().__init__(*args, **kwargs)
         self._traits = None
         self._is_verified = False
-        self._devices = []
+        self._session_devices = []
         self._authentication_level = None
 
-    def save(self, *args, **kwargs):
-        print(kwargs)
-        if self.authenticator_enabled:
-            self.authenticator_enabled_on = datetime.now()
-        elif self.authenticator_enabled is False:
+    def __setattr__(self, name, value):
+        if name == 'authenticator_enabled' and value:
+            self.authenticator_enabled_on = timezone.now()
+        elif name == 'authenticator_enabled' and not value:
             self.authenticator_enabled_on = None
-
-        super().save(*args, **kwargs)
+        super().__setattr__(name, value)
 
     @property
     def is_customer(self):
@@ -102,12 +99,12 @@ class User(models.Model):
         return True
 
     @property
-    def devices(self):
-        return self._devices
+    def session_devices(self):
+        return self._session_devices
 
-    @devices.setter
-    def devices(self, value: list):
-        self._devices = value
+    @session_devices.setter
+    def session_devices(self, value: list):
+        self._session_devices = value
 
     @property
     def authentication_level(self):
@@ -176,7 +173,7 @@ class Device(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=100)
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user_agent = models.CharField(max_length=200)
-    location = models.CharField(max_length=100)
+
+    user_agent = models.CharField(max_length=200, editable=False)
+    location = models.CharField(max_length=100, editable=False)

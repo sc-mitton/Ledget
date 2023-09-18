@@ -96,10 +96,11 @@ export const CloseButton = (props, ref) => {
   )
 }
 
-export const BackButton = (props) => {
+export const BackButton = ({ withText, children, ...rest }) => {
+
   return (
     <div>
-      <button className="btn btn-2slim back-btn" {...props}>
+      <button className="btn btn-2slim back-btn" {...rest}>
         <svg width="20" height="20" viewBox="0 0 20 20">
           <g transform={'translate(19, 20) rotate(-180)'}>
             <path className="arrow-tail" d="M5 10L12.5 10" stroke="#292929" strokeWidth="2"
@@ -110,7 +111,8 @@ export const BackButton = (props) => {
               strokeLinecap="round" strokeLinejoin="round" fill="none" />
           </g>
         </svg>
-        <span>back</span>
+        {withText && <span>back</span>}
+        {children}
       </button>
     </div>
   )

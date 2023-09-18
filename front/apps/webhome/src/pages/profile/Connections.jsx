@@ -195,14 +195,14 @@ const Header = ({ onPlus }) => {
         <div className="header">
             <h1>Connections</h1>
             <div className='header-btns'>
-                {!editing && plaidItems.length > 0 &&
+                {!editing && plaidItems?.length > 0 &&
                     <IconButton
                         onClick={() => setEditing(!editing)}
                         aria-label="Edit institution connections"
                     >
                         <Edit />
                     </IconButton>}
-                {plaidItems.length === 0
+                {plaidItems?.length === 0
                     ? <button className="pulse" onClick={onPlus}><Plus /></button>
                     : <IconButton onClick={onPlus} aria-label="Add institution connection">
                         <Plus />
@@ -356,7 +356,7 @@ const Connections = () => {
                                     <form onSubmit={handleFormSubmit}>
                                         <Inputs />
                                         <SubmitForm
-                                            onClose={() => {
+                                            onCancel={() => {
                                                 setDeleteQue([])
                                                 setEditing(false)
                                             }}

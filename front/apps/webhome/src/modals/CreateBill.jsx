@@ -154,7 +154,7 @@ const Form = (props) => {
             </div>
             <SubmitForm
                 submitting={isLoading}
-                onClose={() => props.setVisible(false)}
+                onCancel={() => props.setVisible(false)}
             />
         </form>
     )

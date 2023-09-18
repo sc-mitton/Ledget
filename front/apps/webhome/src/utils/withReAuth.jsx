@@ -142,12 +142,12 @@ const ReAuthModal = withSmallModal((props) => {
     )
     const dispatch = useDispatch()
 
-    // Close modal after 7 minute timeout
+    // Close modal after 9 minute timeout
     // to avoid submitting expired flows
     useEffect(() => {
         const timeout = setTimeout(() => {
             props.setVisible(false)
-        }, 60 * 7 * 1000)
+        }, 60 * 9 * 1000)
         return () => clearTimeout(timeout)
     }, [])
 
@@ -241,6 +241,18 @@ export default function withReAuth(Component) {
         useEffect(() => {
             sessionIsFresh && setContinueToComponent(true)
         }, [sessionIsFresh])
+
+        // Timeout for the target component to be closed
+        // after 7 minutes since the session obtained by
+        // the reauth needs to be fresh. If the user sits
+        // around too long during the reauth, the session
+        // wont be fresh enough
+        useEffect(() => {
+            const timeout = setTimeout(() => {
+                props.onClose && props.onClose()
+            }, 60 * 9 * 1000)
+            return () => clearTimeout(timeout)
+        }, [])
 
         return (
             <>

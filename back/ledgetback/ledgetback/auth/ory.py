@@ -10,7 +10,7 @@ from jwt.exceptions import (
 )
 from jwt import decode
 
-from .errors import InvalidAuthHeaderError
+from .errors import InvalidAuthHeaderError, MissingDeviceTokenError
 
 
 logger = logging.getLogger('ledget')
@@ -35,7 +35,22 @@ class OryBackend(BaseAuthentication):
             logger.error(f"{e.__class__.__name__} {e}")
             return None
 
+        try:
+            self.check_device_token(request, user)
+        except MissingDeviceTokenError as e:
+            logger.error(f"{e.__class__.__name__} {e}")
+            return None
+
         return (user, None)
+
+    def check_device_token(self, request, user):
+
+        # Check the ledget_device_token cookie
+        device_token = request.COOKIES.get('ledget_device_token')
+        if user.device_set.filter(token=device_token).exists():
+            return
+        else:
+            raise MissingDeviceTokenError()
 
     def get_encoded_token(self, request) -> str:
 
@@ -60,6 +75,7 @@ class OryBackend(BaseAuthentication):
             algorithms=['RS256'],
             options={'verify_exp': True}
         )
+
         return decoded_token
 
     def get_user(self, decoded_token: dict):
@@ -74,7 +90,7 @@ class OryBackend(BaseAuthentication):
         user.authentication_level = \
             decoded_token['session']['authenticator_assurance_level']
         user.traits = identity.get('traits', {})
-        user.devices = identity.get('devices', [])
+        user.session_devices = identity.get('devices', [])
         user.is_verified = identity.get('verifiable_addresses', [{}])[0] \
                                    .get('verified', False)
 

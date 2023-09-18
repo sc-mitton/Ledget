@@ -103,28 +103,32 @@ class SubscriptionUpdateSerializer(serializers.Serializer):
     cancel_at_period_end = serializers.BooleanField(required=False)
 
 
-class DeviceSerializer(serializers.Serializer):
-    totp = serializers.CharField(write_only=True)
+class DeviceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Device
         exclude = ('user', 'token', )
-        extra_kwargs = {'id': {'required': False}}
 
     def create(self, validated_data):
         user = self.context['request'].user.id
 
+        try:
+            kwargs = {
+                'user_id': user.id,
+                'id': user.session_devices[0]['id'],
+                'user_agent': user.session_devices[0]['user_agent'],
+                'location': user.session_devices[0]['location'],
+            }
+        except KeyError:
+            raise serializers.ValidationError('Missing device information.')
+
         # create sha256 hash of totp, user_agent, user, and location
         hash_value = hashlib.sha256((
-            f"{validated_data['totp']}",
-            f"{validated_data['user_agent']}",
-            f"{validated_data['location']}",
-            user.id,
+            kwargs.values(),
             settings.SECRET_KEY
         ).encode('utf-8')).hexdigest()
 
         return Device.objects.create(
-            user_id=user.id,
             hash=hash_value,
-            **validated_data
+            **kwargs
         )

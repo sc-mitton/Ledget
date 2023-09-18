@@ -7,13 +7,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 
 import './style/Login.css'
-import { BackArrow } from "@ledget/shared-assets"
 import SocialAuth from "./SocialAuth"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces"
 import { LoginFlowContext, LoginFlowContextProvider } from "@context/Flow"
-import { GrnWideButton, TextInput, Checkbox, FormError, PasswordInput } from "@ledget/shared-ui"
+import { GrnWideButton, TextInput, Checkbox, FormError, PasswordInput, BackButton } from "@ledget/shared-ui"
 
 const emailContext = createContext({})
 
@@ -182,14 +181,13 @@ const AuthenticationWindow = () => {
             <div id="email-container">
                 <h3>Welcome Back</h3>
                 <div>
-                    <button
-                        aria-label="Back"
+                    <BackButton
+                        withText={false}
                         onClick={() => { setEmail(null) }}
                         style={{ marginTop: '1px', marginRight: '6px' }}
                     >
-                        <BackArrow />
-                    </button>
-                    <span>{`${initialEmailValue.current}`}</span>
+                        <span>{`${initialEmailValue.current}`}</span>
+                    </BackButton>
                 </div>
             </div>
             <AuthenticationForm />

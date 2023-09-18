@@ -8,12 +8,12 @@ from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 from core.serializers import UserSerializer, DeviceSerializer
-from core.permissions import IsObjectOwner
+from core.permissions import IsAal2
 
 
 class UserView(generics.RetrieveUpdateAPIView):
     """Get me endpoint, returns user data and subscription data"""
-    permission_classes = [permissions.IsAuthenticated, IsObjectOwner]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
 
     def get_object(self):
@@ -21,7 +21,7 @@ class UserView(generics.RetrieveUpdateAPIView):
 
 
 class DeviceViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAal2]
     serializer_class = DeviceSerializer
 
     def create(self, request, *args, **kwargs):
@@ -32,7 +32,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         response = Response(serializer.data, HTTP_201_CREATED, headers=headers)
         response.set_cookie(
-            key=f"device_token_{instance.id}",
+            key="ledget_device_token",
             value=f"{instance.token}",
             secure=True,
             samesite='None',

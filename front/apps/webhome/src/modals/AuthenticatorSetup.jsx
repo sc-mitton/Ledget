@@ -197,13 +197,13 @@ const Authenticator = (props) => {
     )
 }
 
-const EnrichedComponent = withReAuth(withModal(Authenticator))
+const EnrichedModal = withReAuth(withModal(Authenticator))
 
 export default function () {
     const navigate = useNavigate()
 
     return (
-        <EnrichedComponent
+        <EnrichedModal
             onClose={() => navigate('/profile/security')}
             blur={1}
         />

@@ -44,6 +44,13 @@ class IsObjectOwner(BasePermission):
             return False
 
 
+class IsAal2(IsAuthedVerifiedSubscriber):
+
+    def has_permission(self, request, view):
+        return super().has_permission(request, view) \
+                and request.user.authentication_level == 'aal2'
+
+
 class OwnsStripeSubscription(BasePermission):
 
     def has_permission(self, request, view):

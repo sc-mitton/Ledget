@@ -121,7 +121,7 @@ const Modal = withModal((props) => {
                 </div>
                 <SubmitForm
                     submitting={submitting}
-                    onClose={() => props.setVisible(false)}
+                    onCancel={() => props.setVisible(false)}
                 />
             </form>
         </>

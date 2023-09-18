@@ -25,7 +25,7 @@
 
 #email-container span,
 #email-container button {
-    opacity: .7;
+    opacity: .85;
 }
 
 #email-container button:hover {

@@ -60,13 +60,13 @@ const DeactivateAuthenticator = (props) => {
     )
 }
 
-const Modal = withReAuth(withSmallModal(DeactivateAuthenticator))
+const EnrichedModal = withReAuth(withSmallModal(DeactivateAuthenticator))
 
 export default function () {
     const navigate = useNavigate()
 
     return (
-        <Modal
+        <EnrichedModal
             onClose={() => navigate('/profile/security')}
             blur={1}
         />

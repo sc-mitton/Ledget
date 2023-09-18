@@ -87,6 +87,7 @@ export const orySlice = apiSlice.injectEndpoints({
                 }
             }),
             cacheKey: 'getSettingsFlow',
+            keepUnusedDataFor: 60 * 3,
         }),
         completeSettingsFlow: builder.mutation({
             queryFn: (arg) => completeFlow({
@@ -101,7 +102,8 @@ export const orySlice = apiSlice.injectEndpoints({
                 url: '/self-service/login',
                 params: { ...arg.params, id: arg.flowId },
             }),
-            cacheKey: 'getLoginFlow'
+            cacheKey: 'getLoginFlow',
+            keepUnusedDataFor: 60 * 3,
         }),
         completeLoginFlow: builder.mutation({
             queryFn: (arg) => completeFlow({
