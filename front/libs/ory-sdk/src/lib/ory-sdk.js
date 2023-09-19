@@ -85,13 +85,12 @@ const generateOryEndpoints = (builder) => {
     { name: 'logout' }
   ]
 
-  let generatedEndpoints = {}
-
+  let endpoints = {}
   for (const endpoint of endpointDefinitions) {
     const { nane, ...rest } = endpoint
     const baseName = `${endpoint.name.charAt(0).toUpperCase()}${endpoint.name.slice(1)}`
 
-    generatedEndpoints[`get${baseName}Flow`] = builder.query({
+    endpoints[`get${baseName}Flow`] = builder.query({
       queryFn: (arg) => getFlow({
         url: `/self-service/${endpoint.name}`,
         params: arg?.params,
@@ -103,7 +102,7 @@ const generateOryEndpoints = (builder) => {
 
     if (endpoint.name === 'logout') { break } // logout flow does not have a complete endpoint
 
-    generatedEndpoints[`complete${baseName}Flow`] = builder.mutation({
+    endpoints[`complete${baseName}Flow`] = builder.mutation({
       queryFn: (arg) => completeFlow({
         url: `/self-service/${endpoint.name}`,
         params: arg?.params,
@@ -114,7 +113,7 @@ const generateOryEndpoints = (builder) => {
     })
   }
 
-  generatedEndpoints['getUpdatedLogoutFlow'] = builder.query({
+  endpoints['getUpdatedLogoutFlow'] = builder.query({
     queryFn: (arg) => axiosBaseQuery({
       url: '/self-service/logout',
       method: 'GET',
@@ -123,7 +122,7 @@ const generateOryEndpoints = (builder) => {
     cacheKey: 'getUpdatedLogoutFlow',
   })
 
-  return generatedEndpoints
+  return endpoints
 }
 
 export const generateEndpoints = generateOryEndpoints

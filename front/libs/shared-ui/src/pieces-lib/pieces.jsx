@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { useTransition, animated, useSpring } from '@react-spring/web'
+import { useTransition, animated } from '@react-spring/web'
 
 import './styles/pieces.css'
 import { Alert2 } from '@ledget/shared-assets'
@@ -97,41 +97,3 @@ export const NodeImage = ({ node, attributes }) => {
     )
 }
 
-export const JiggleDiv = ({ jiggle, children, ...rest }) => {
-    const [jiggleCanBeFired, setJiggleCanBeFired] = useState(false)
-
-    const [props, api] = useSpring(() => ({
-        x: 0,
-    }))
-
-    // Jiggling shouldn't be fired on mount, so first
-    // the flag (jiggleCanBeFired) needs to be dropped
-    // before the animatio can be fired. This only happens
-    // when the jiggle prop is false at some point, then a true
-    // prop can be passed which will fire the animation
-    useEffect(() => {
-        if (!jiggleCanBeFired && !jiggle) {
-            setJiggleCanBeFired(true)
-        } else if (jiggleCanBeFired && jiggle) {
-            api.start({
-                to: async (next) => {
-                    await next({ x: 12 })
-                    await next({ x: -12 })
-                    await next({ x: 7 })
-                    await next({ x: -7 })
-                    await next({ x: 3 })
-                    await next({ x: -3 })
-                    await next({ x: 0 })
-                },
-                config: { duration: 100 },
-                onRest: () => setJiggleCanBeFired(false)
-            })
-        }
-    }, [jiggle])
-
-    return (
-        <animated.div style={props} {...rest}>
-            {children}
-        </animated.div>
-    )
-}

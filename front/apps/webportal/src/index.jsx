@@ -5,6 +5,7 @@ import "./style/style.css"
 import App from './App'
 import { UserProvider } from './context/UserContext'
 
+
 const root = ReactDOMClient.createRoot(document.getElementById('root'))
 
 root.render(

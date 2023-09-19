@@ -162,6 +162,9 @@ importers:
       '@reduxjs/toolkit':
         specifier: ^1.9.5
         version: 1.9.5(react-redux@8.1.2)(react@18.2.0)
+      '@stripe/react-stripe-js':
+        specifier: ^2.3.0
+        version: 2.3.0(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0)
       '@use-gesture/react':
         specifier: ^10.2.27
         version: 10.2.27(react@18.2.0)
@@ -319,8 +322,11 @@ importers:
       '@ory/integrations':
         specifier: ^1.1.4
         version: 1.1.5(@ory/client@1.1.51)(next@13.4.19)
+      '@reduxjs/toolkit':
+        specifier: ^1.9.5
+        version: 1.9.5(react-redux@8.1.2)(react@18.2.0)
       '@stripe/react-stripe-js':
-        specifier: ^2.0.0
+        specifier: ^2.1.2
         version: 2.1.2(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0)
       '@stripe/stripe-js':
         specifier: ^1.50.0
@@ -343,9 +349,15 @@ importers:
       react-hook-form:
         specifier: ^7.43.8
         version: 7.46.1(react@18.2.0)
+      react-redux:
+        specifier: ^8.1.1
+        version: 8.1.2(@types/react-dom@18.2.6)(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
       react-router-dom:
         specifier: ^6.9.0
         version: 6.11.2(react-dom@18.2.0)(react@18.2.0)
+      redux:
+        specifier: ^4.2.1
+        version: 4.2.1
       yup:
         specifier: ^1.0.2
         version: 1.2.0
@@ -443,6 +455,9 @@ importers:
       axios:
         specifier: ^1.5.0
         version: 1.5.0
+      redux:
+        specifier: ^4.2.1
+        version: 4.2.1
 
   libs/shared-assets: {}
 
@@ -3555,6 +3570,19 @@ packages:
 
   /@stripe/react-stripe-js@2.1.2(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-2JcKRvOdMD698uGrY0cINLHb6XHnY24L+wlWlw2+TbI2aXlQZ9t8Mc+KssFES+EuNgISbrp7fJR3w/13epfiOw==}
+    peerDependencies:
+      '@stripe/stripe-js': ^1.44.1 || ^2.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@stripe/stripe-js': 1.54.2
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@stripe/react-stripe-js@2.3.0(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-AOxsvRIXfIh0WkebAfITfCQY6NgnEDg3jOH7KfHGQPjPmcxJ+HFj/EZOEuyflDjlB1iTGPDCqK0MqiQ8LjLbag==}
     peerDependencies:
       '@stripe/stripe-js': ^1.44.1 || ^2.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0

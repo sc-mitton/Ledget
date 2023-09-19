@@ -13,7 +13,8 @@ import {
     PasswordInput,
     PlainTextInput,
     FormError,
-    jiggleVariants
+    SlideMotionDiv,
+    JiggleDiv
 } from '@ledget/shared-ui'
 
 const row1Style = { marginTop: '20px', fontWeight: '500', marginLeft: '2px' }
@@ -47,7 +48,7 @@ const useFlow = (aal) => {
         // user will be passed through to component
         if (sessionIsFresh) { return }
 
-        // If the all param is differnt, this means a new flow is needed
+        // If the aal param is differnt, this means a new flow is needed
         // and the search param flow id can't be used
         if (searchParams.get('aal') !== aal) {
             flowId = null
@@ -67,15 +68,12 @@ const useFlow = (aal) => {
     return { flow, isLoading, isError }
 }
 
-const ErrorFetchingFlow = () => (
-    <FormError msg={"Something went wrong, please try again later."} />
-)
+const ErrorFetchingFlow = () => (<FormError msg={"Something went wrong, please try again later."} />)
 
 const PassWord = () => {
     const pwdRef = useRef(null)
     const [searchParams] = useSearchParams()
-    const [, { isError }] = useCompleteLoginFlowMutation(
-        { fixedCacheKey: searchParams.get('flow') })
+    const [, { isError }] = useCompleteLoginFlowMutation({ fixedCacheKey: searchParams.get('flow') })
     const { flow, isLoading, isError: errorFetchingFlow } = useFlow('aal1')
 
     // Focus on password input on mount
@@ -92,7 +90,9 @@ const PassWord = () => {
                 To make this change, first confirm your login.
             </div>
             <div style={row2Style}>
-                <PasswordInput ref={pwdRef} loading={isLoading} required />
+                <JiggleDiv jiggle={isError}>
+                    <PasswordInput ref={pwdRef} loading={isLoading} required />
+                </JiggleDiv>
                 {flow && <HiddenInputs flow={flow} />}
                 {errorFetchingFlow && <ErrorFetchingFlow />}
             </div>
@@ -102,8 +102,7 @@ const PassWord = () => {
 
 const Totp = () => {
     const [searchParams] = useSearchParams()
-    const [, isError] = useCompleteLoginFlowMutation(
-        { fixedCacheKey: searchParams.get('flow') })
+    const [, isError] = useCompleteLoginFlowMutation({ fixedCacheKey: searchParams.get('flow') })
     const { flow, isError: errorFetchingFlow } = useFlow('aal2')
     const ref = useRef(null)
 
@@ -120,10 +119,12 @@ const Totp = () => {
                 Enter your authenticator code
             </div>
             <div style={row2Style}>
-                <PlainTextInput ref={ref} name="totp_code" placeholder='Code...' required />
-                {flow && <HiddenInputs flow={flow} />}
+                <JiggleMotionDiv jiggle={isError}>
+                    <PlainTextInput ref={ref} name="totp_code" placeholder='Code...' required />
+                </JiggleMotionDiv>
                 {errorFetchingFlow && <ErrorFetchingFlow />}
             </div>
+            {flow && <HiddenInputs flow={flow} />}
         </>
     )
 }
@@ -134,8 +135,7 @@ const ReAuthModal = withSmallModal((props) => {
     const [needsAal2, setNeedsAal2] = useState(false)
     const [completeFlow, {
         isLoading: submittingFlow,
-        isSuccess: completedFlow,
-        isError: authError
+        isSuccess: completedFlow
     }] = useCompleteLoginFlowMutation(
         { fixedCacheKey: searchParams.get('flow') }
     )
@@ -174,14 +174,6 @@ const ReAuthModal = withSmallModal((props) => {
         })
     }
 
-    // Framer motion variants
-    const variants = {
-        ...jiggleVariants,
-        toRight: { x: 20, opacity: 0 },
-        toLeft: { x: -20, opacity: 0 },
-        fromRight: { x: 20, opacity: 0, }
-    }
-
     return (
         <div>
             <h3>Confirm Login</h3>
@@ -190,24 +182,13 @@ const ReAuthModal = withSmallModal((props) => {
                     <AnimatePresence mode="wait">
                         {needsAal2
                             ?
-                            <motion.div
-                                initial='fromRight'
-                                animate={authError ? 'jiggle' : 'static'}
-                                key='aal2'
-                                variants={variants}
-                            >
+                            <SlideMotionDiv key='aal2' last>
                                 <Totp />
-                            </motion.div>
+                            </SlideMotionDiv>
                             :
-                            <motion.div
-                                initial='static'
-                                animate={authError ? 'jiggle' : 'static'}
-                                exit='toLeft'
-                                key='aal1'
-                                variants={variants}
-                            >
+                            <SlideMotionDiv key='aal1' first>
                                 <PassWord />
-                            </motion.div>
+                            </SlideMotionDiv>
                         }
                     </AnimatePresence >
                 </div>

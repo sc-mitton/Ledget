@@ -15,6 +15,7 @@
         "@ledget/shared-utils": "workspace:^",
         "@react-spring/web": "^9.7.2",
         "@reduxjs/toolkit": "^1.9.5",
+        "@stripe/react-stripe-js": "^2.3.0",
         "@use-gesture/react": "^10.2.27",
         "axios": "^1.4.0",
         "color": "^4.2.3",

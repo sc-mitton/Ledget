@@ -4,6 +4,7 @@ import { useSearchParams, useNavigate, createSearchParams } from "react-router-d
 
 import { sdk, sdkError } from "../api/sdk"
 import UserContext from "./UserContext"
+import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 
 const LoginFlowContext = createContext(null)
 const RegisterFlowContext = createContext(null)
@@ -12,55 +13,148 @@ const RecoveryFlowContext = createContext(null)
 
 const loginRedirectUri = import.meta.env.VITE_LOGIN_REDIRECT
 
+
+const errorHandler = (error) => {
+    const responseData = error.response?.data || {}
+    const error_id = responseData.error?.id
+
+    switch (error.response?.status) {
+        case 400: {
+            if (error_id === "session_already_available") {
+                console.log("session_already_available")
+                window.location.href = loginRedirectUri
+            }
+            return Promise.resolve()
+        }
+        case 401: {
+            console.warn("sdkError 401")
+            return Promise.resolve()
+        }
+        case 422: {
+            if (responseData.redirect_browser_to !== undefined) {
+                const currentUrl = new URL(window.location.href)
+
+                // need to add the base url since the `redirect_browser_to`
+                // is a relative url with no hostname
+                const redirect = new URL(responseData.redirect_browser_to, window.location.origin)
+
+                // If hostnames are differnt, redirect to the redirect url
+                if (currentUrl.hostname !== redirect.hostname) {
+                    console.warn("sdkError 422: Redirect browser to")
+                    window.location.href = responseData.redirect_browser_to
+                    return Promise.resolve()
+                }
+            }
+        }
+        // 410 retries are handled in RTK query
+        // if that didn't succeed, we use the default
+        case 410:
+        default: {
+            console.error(error)
+        }
+    }
+}
+
+const filterErrorMessages = (errorMessages) => {
+    const filteredMessages = []
+    for (const message of errorMessages) {
+        if (message.includes("credentials are invalid")) {
+            filteredMessages.push("Wrong username or password")
+        } else if (message.includes("An account with the same identifier")) {
+            filteredMessages.push("Hmm, something's not right. Please try again.")
+        }
+    }
+    return filteredMessages
+}
+
+const extractData = (event) => {
+    // map the entire form data to JSON for the request body
+    const form = event.target
+    const formData = new FormData(form)
+    let body = Object.fromEntries(formData)
+
+    // We need the method specified from the name and value of the submit button.
+    // when multiple submit buttons are present, the clicked one's value is used.
+    // We need the method specified from the name and value of the submit button.
+    // when multiple submit buttons are present, the clicked one's value is used.
+    if ("submitter" in event.nativeEvent) {
+        const method = (
+            event.nativeEvent
+        ).submitter
+        body = {
+            ...body,
+            ...{ [method.name]: method.value },
+        }
+    }
+    return body
+}
+
 function LoginFlowContextProvider({ children }) {
-    const [flow, setFlow] = useState(null)
+    const [
+        getFlow,
+        {
+            data: flow,
+            error: getFlowError,
+            isError: isGetFlowError,
+            isLoading: isFetchingFlow,
+            isSuccess
+        }
+    ] = useLazyGetLoginFlowQuery()
+    const [
+        completeFlow,
+        {
+            error: completeError,
+            isLoading: submittingFlow,
+            isError: isCompleteError,
+            isSuccess: isCompleteSuccess
+        }
+    ] = useCompleteLoginFlowMutation()
+
     const [csrf, setCsrf] = useState(null)
     const [responseError, setResponseError] = useState('')
     const [searchParams, setSearchParams] = useSearchParams()
-    const [authenticating, setAuthenticating] = useState(false)
 
-    const getFlow = useCallback(
-        (flowId) =>
-            sdk
-                // the flow data contains the form fields, error messages and csrf token
-                .getLoginFlow({ id: flowId })
-                .then(({ data: flow }) => setFlow(flow))
-                .catch(sdkErrorHandler),
-        [],
-    )
-
-    const sdkErrorHandler = sdkError(getFlow, setFlow, "/login", setResponseError, true)
-
-    const createFlow = () => {
-        const aal2 = searchParams.get("aal2")
-        const returnTo = searchParams.get("return_to")
-
-        sdk
-            // aal2 to request Two-Factor authentication
-            // aal1 is the default authentication level (Single-Factor)
-            // if the user has a session, refresh it
-            .createBrowserLoginFlow({
-                returnTo: returnTo || loginRedirectUri,
-                refresh: true,
-                aal: aal2 ? "aal2" : "aal1"
-            })
-            // flow contains the form fields and csrf token
-            .then(({ data: flow }) => {
-                // Update URI query params to include flow id
-                setSearchParams({
-                    flow: flow.id,
-                    aal: aal2 ? 'aal2' : 'aal1',
-                    return_to: flow.return_to
-                })
-                // Set the flow data
-                setFlow(flow)
-            })
+    const fetchFlow = ({ aal, refresh }) => {
+        // If the aal param is different, this means a new flow is needed
+        // and the search param flow id can't be used
+        let flowId = searchParams.get('flow')
+        if (searchParams.get('aal') !== aal) {
+            flowId = null
+        }
+        searchParams.set('aal', aal)
+        setSearchParams(searchParams)
+        getFlow({ params: { aal: aal, refresh: refresh, id: flowId } })
     }
 
+    // Update search params
     useEffect(() => {
-        if (!flow) {
-            return
+        if (isSuccess) {
+            searchParams.set('flow', flow?.id)
+            setSearchParams(searchParams)
         }
+    }, [isSuccess, flow?.id])
+
+    // Error handler
+    useEffect(() => {
+        if (isCompleteError || isGetFlowError) {
+            const error = getFlowError || completeError
+
+            const errorMessages = error.response?.data?.ui?.messages || []
+            const filteredMessages = filterErrorMessages(errorMessages)
+
+            errorHandler(error)
+            setResponseError(filteredMessages)
+        }
+    }, [getFlowError, isCompleteError])
+
+    useEffect(() => {
+        if (isCompleteSuccess) {
+            window.location.href = loginRedirectUri
+        }
+    }, [isCompleteSuccess])
+
+    useEffect(() => {
+        if (!flow) { return }
         setCsrf(
             flow.ui.nodes?.find(
                 node => node.group === 'default'
@@ -71,46 +165,18 @@ function LoginFlowContextProvider({ children }) {
 
     const submit = (event) => {
         event.preventDefault()
-        // map the entire form data to JSON for the request body
-        setAuthenticating(true)
-        const form = event.target
-        const formData = new FormData(form)
-        let body = Object.fromEntries(formData)
-        // We need the method specified from the name and value of the submit button.
-        // when multiple submit buttons are present, the clicked one's value is used.
-        // We need the method specified from the name and value of the submit button.
-        // when multiple submit buttons are present, the clicked one's value is used.
-        if ("submitter" in event.nativeEvent) {
-            const method = (
-                event.nativeEvent
-            ).submitter
-            body = {
-                ...body,
-                ...{ [method.name]: method.value },
-            }
-        }
-
-        sdk
-            .updateLoginFlow({
-                flow: flow.id,
-                updateLoginFlowBody: body,
-            })
-            .then((response) => {
-                if (response.status === 200) {
-                    window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
-                }
-            })
-            .catch(sdkErrorHandler)
-            .finally(() => setAuthenticating(false))
+        setResponseError('')
+        const data = extractData(event)
+        completeFlow({ data: data, params: { flow: flow.id } })
     }
 
     const data = {
+        fetchFlow,
         flow,
-        responseError,
         csrf,
-        authenticating,
-        createFlow,
-        getFlow,
+        responseError,
+        isFetchingFlow,
+        submittingFlow,
         submit,
     }
 
