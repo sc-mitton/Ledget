@@ -11,7 +11,7 @@ import SocialAuth from "./SocialAuth"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces"
-import { LoginFlowContext, LoginFlowContextProvider } from "@context/Flow"
+import { useLoginFlow } from "@context/Flow"
 import {
     GrnWideButton,
     Checkbox,
@@ -28,11 +28,10 @@ const schema = object().shape({
     email: string().email("Invalid email address"),
 })
 
-const EmailForm = ({ setEmail }) => {
+const EmailForm = ({ flow, setEmail }) => {
     const { register, handleSubmit, formState: { errors } } =
         useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const { ref, ...rest } = register('email')
-    const { flow } = useContext(LoginFlowContext)
     const rememberRef = useRef()
     const emailRef = useRef()
 
@@ -82,8 +81,7 @@ const EmailForm = ({ setEmail }) => {
     )
 }
 
-const AuthenticationForm = ({ email }) => {
-    const { flow, submit, responseError, csrf } = useContext(LoginFlowContext)
+const AuthenticationForm = ({ email, flow, onSubmit, responseError }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -91,7 +89,7 @@ const AuthenticationForm = ({ email }) => {
             pwdRef.current.focus()
             return
         }
-        submit(e)
+        onSubmit(e)
     }
 
     const pwdRef = useRef()
@@ -117,19 +115,34 @@ const AuthenticationForm = ({ email }) => {
                 {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
 
                 <input type="hidden" name="identifier" value={email || ''} />
-                <CsrfToken csrf={csrf} />
+                <CsrfToken csrf={flow?.csrf_token} />
             </form >
         </>
     )
 }
 
-const LoginFlow = () => {
+const Login = () => {
     const [email, setEmail] = useState(null)
-    const { flow, fetchFlow, isFetchingFlow, submit, csrf, submittingFlow } = useContext(LoginFlowContext)
+    const {
+        flow,
+        fetchFlow,
+        isFetchingFlow,
+        submit,
+        submittingFlow,
+        isCompleteSuccess,
+        responseError
+    } = useLoginFlow()
 
     useEffect(() => {
         fetchFlow({ aal: 'aal1', refresh: true })
     }, [])
+
+    // Handle success
+    useEffect(() => {
+        if (isCompleteSuccess) {
+            window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+        }
+    }, [isCompleteSuccess])
 
     return (
         <AnimatePresence mode="wait">
@@ -139,8 +152,17 @@ const LoginFlow = () => {
                     <div className="window-header">
                         <h2>Sign in to Ledget</h2>
                     </div>
-                    <EmailForm setEmail={setEmail} />
-                    <SocialAuth flow={flow} submit={submit} csrf={csrf} />
+                    <EmailForm
+                        setEmail={setEmail}
+                        flow={flow}
+                        onSubmit={submit}
+                        responseError={responseError}
+                    />
+                    <SocialAuth
+                        flow={flow}
+                        submit={submit}
+                        csrf={flow?.csrf_token}
+                    />
                     <WindowLoadingBar visible={isFetchingFlow} />
                 </SlideMotionDiv>
                 :
@@ -158,17 +180,11 @@ const LoginFlow = () => {
                             </BackButton>
                         </div>
                     </div>
-                    <AuthenticationForm email={email} />
+                    <AuthenticationForm flow={flow} email={email} />
                 </SlideMotionDiv>
             }
         </AnimatePresence>
     )
 }
-
-const Login = () => (
-    <LoginFlowContextProvider>
-        <LoginFlow />
-    </LoginFlowContextProvider>
-)
 
 export default Login

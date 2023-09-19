@@ -31,9 +31,9 @@ const SetupApp = ({ codeMode, setCodeMode }) => {
 
     useEffect(() => {
         if (flow) {
-            const node = flow.nodes.find(node => node.group === 'totp' && node.type === 'img')
+            const node = flow.ui.nodes.find(node => node.group === 'totp' && node.type === 'img')
             setQrNode(node)
-            const totpSecret = flow.nodes.find(node => node.group === 'totp' && node.type === 'text')
+            const totpSecret = flow.ui.nodes.find(node => node.group === 'totp' && node.type === 'text')
             setTotpSecret(totpSecret?.attributes.text.context.secret)
         }
     }, [flow])

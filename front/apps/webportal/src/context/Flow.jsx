@@ -6,7 +6,6 @@ import { sdk, sdkError } from "../api/sdk"
 import UserContext from "./UserContext"
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 
-const LoginFlowContext = createContext(null)
 const RegisterFlowContext = createContext(null)
 const VerificationFlowContext = createContext(null)
 const RecoveryFlowContext = createContext(null)
@@ -55,7 +54,9 @@ const errorHandler = (error) => {
     }
 }
 
-const filterErrorMessages = (errorMessages) => {
+const filterOutErrorMessages = (error) => {
+    const errorMessages = error.response?.data?.ui?.messages || []
+
     const filteredMessages = []
     for (const message of errorMessages) {
         if (message.includes("credentials are invalid")) {
@@ -89,7 +90,7 @@ const extractData = (event) => {
     return body
 }
 
-function LoginFlowContextProvider({ children }) {
+function useLoginFlow() {
     const [
         getFlow,
         {
@@ -110,7 +111,6 @@ function LoginFlowContextProvider({ children }) {
         }
     ] = useCompleteLoginFlowMutation()
 
-    const [csrf, setCsrf] = useState(null)
     const [responseError, setResponseError] = useState('')
     const [searchParams, setSearchParams] = useSearchParams()
 
@@ -126,6 +126,13 @@ function LoginFlowContextProvider({ children }) {
         getFlow({ params: { aal: aal, refresh: refresh, id: flowId } })
     }
 
+    const submit = (event) => {
+        event.preventDefault()
+        setResponseError('')
+        const data = extractData(event)
+        completeFlow({ data: data, params: { flow: flow.id } })
+    }
+
     // Update search params
     useEffect(() => {
         if (isSuccess) {
@@ -137,54 +144,21 @@ function LoginFlowContextProvider({ children }) {
     // Error handler
     useEffect(() => {
         if (isCompleteError || isGetFlowError) {
-            const error = getFlowError || completeError
-
-            const errorMessages = error.response?.data?.ui?.messages || []
-            const filteredMessages = filterErrorMessages(errorMessages)
-
+            const error = completeError || getFlowError
             errorHandler(error)
-            setResponseError(filteredMessages)
+            setResponseError(filterOutErrorMessages(error))
         }
     }, [getFlowError, isCompleteError])
 
-    useEffect(() => {
-        if (isCompleteSuccess) {
-            window.location.href = loginRedirectUri
-        }
-    }, [isCompleteSuccess])
-
-    useEffect(() => {
-        if (!flow) { return }
-        setCsrf(
-            flow.ui.nodes?.find(
-                node => node.group === 'default'
-                    && node.attributes.name === 'csrf_token'
-            )?.attributes.value
-        )
-    }, [flow])
-
-    const submit = (event) => {
-        event.preventDefault()
-        setResponseError('')
-        const data = extractData(event)
-        completeFlow({ data: data, params: { flow: flow.id } })
-    }
-
-    const data = {
+    return {
         fetchFlow,
         flow,
-        csrf,
         responseError,
         isFetchingFlow,
         submittingFlow,
+        isCompleteSuccess,
         submit,
     }
-
-    return (
-        <LoginFlowContext.Provider value={data}>
-            {children}
-        </LoginFlowContext.Provider>
-    )
 }
 
 function RegisterFlowContextProvider({ children }) {
@@ -558,8 +532,7 @@ function RecoveryFlowContextProvider({ children }) {
 }
 
 export {
-    LoginFlowContext,
-    LoginFlowContextProvider,
+    useLoginFlow,
     RegisterFlowContext,
     RegisterFlowContextProvider,
     VerificationFlowContext,

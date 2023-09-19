@@ -64,54 +64,49 @@ const completeFlow = async ({ url, data, params }) => {
   return result.data ? { data: result.data } : { error: result.error }
 }
 
+const endpointNames = [
+  'settings', 'login', 'registration', 'logout'
+]
+
 const generateOryEndpoints = (builder) => {
 
-  const endpointDefinitions = [
-    {
-      name: 'settings',
-      keepUnusedDataFor: 60 * 3,
-      transformResponse: (data) => {
-        const json = JSON.parse(data)
-        return {
-          id: json.id,
-          csrf_token: json.ui?.nodes.find((node) =>
-            node.attributes.name === 'csrf_token')?.attributes.value,
-          nodes: json.ui?.nodes,
-          expires_at: json.expires_at,
-        }
-      }
-    },
-    { name: 'login', keepUnusedDataFor: 60 * 3 },
-    { name: 'logout' }
-  ]
-
   let endpoints = {}
-  for (const endpoint of endpointDefinitions) {
+  endpointNames.forEach((endpoint) => {
     const { nane, ...rest } = endpoint
-    const baseName = `${endpoint.name.charAt(0).toUpperCase()}${endpoint.name.slice(1)}`
+    const baseName = `${endpoint.charAt(0).toUpperCase()}${endpoint.slice(1)}`
 
     endpoints[`get${baseName}Flow`] = builder.query({
       queryFn: (arg) => getFlow({
-        url: `/self-service/${endpoint.name}`,
+        url: `/self-service/${endpoint}`,
         params: arg?.params,
-        transformResponse: endpoint.transformResponse,
+        transformResponse: (data) => {
+          const json = JSON.parse(data)
+          return {
+            id: json.id,
+            csrf_token: json.ui?.nodes.find((node) =>
+              node.attributes.name === 'csrf_token')?.attributes.value,
+            nodes: json.ui?.nodes,
+            expires_at: json.expires_at,
+          }
+        },
+        keepUnusedDataFor: 60 * 3
       }),
       cacheKey: `get${baseName}Flow`,
       ...rest
     })
 
-    if (endpoint.name === 'logout') { break } // logout flow does not have a complete endpoint
+    if (endpoint === 'logout') return
 
     endpoints[`complete${baseName}Flow`] = builder.mutation({
       queryFn: (arg) => completeFlow({
-        url: `/self-service/${endpoint.name}`,
+        url: `/self-service/${endpoint}`,
         params: arg?.params,
         data: arg?.data,
       }),
       cacheKey: `complete${baseName}Flow`,
       ...rest
     })
-  }
+  })
 
   endpoints['getUpdatedLogoutFlow'] = builder.query({
     queryFn: (arg) => axiosBaseQuery({
