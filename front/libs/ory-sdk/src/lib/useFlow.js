@@ -41,6 +41,10 @@ const extractData = (event) => {
 }
 
 function useFlow(query, mutation, flowType) {
+    const [errMsg, setErrMsg] = useState('')
+    const [errId, setErrId] = useState('')
+    const [searchParams, setSearchParams] = useSearchParams()
+
     const [
         getFlow,
         {
@@ -60,11 +64,7 @@ function useFlow(query, mutation, flowType) {
             isError: isCompleteError,
             isSuccess: isCompleteSuccess
         }
-    ] = mutation()
-
-    const [errMsg, setErrMsg] = useState('')
-    const [errId, setErrId] = useState('')
-    const [searchParams, setSearchParams] = useSearchParams()
+    ] = mutation({ fixedCacheKey: searchParams.get('flow') })
 
     const fetchFlow = (args) => {
         // If the aal param is different, this means a new flow is needed
@@ -185,6 +185,8 @@ function useFlow(query, mutation, flowType) {
         flowStatus: {
             errMsg,
             errId,
+            isCompleteError,
+            isGetFlowError,
             isFetchingFlow,
             submittingFlow,
             isCompleteSuccess

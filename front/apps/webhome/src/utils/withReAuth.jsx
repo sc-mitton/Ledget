@@ -16,73 +16,20 @@ import {
     SlideMotionDiv,
     JiggleDiv
 } from '@ledget/shared-ui'
+import { useFlow } from '@ledget/ory-sdk'
 
 const row1Style = { marginTop: '20px', fontWeight: '500', marginLeft: '2px' }
 const row2Style = { margin: '16px 0 28px 0' }
 
-const HiddenInputs = ({ flow }) => {
-    const nodes = ['csrf_token', 'method', 'identifier']
-    return (
-        <>
-            {flow.ui.nodes.filter(node => nodes.includes(node.attributes.name))
-                .map(node => (
-                    <input
-                        key={node.attributes.name}
-                        type="hidden"
-                        name={node.attributes.name}
-                        value={node.attributes.value}
-                    />
-                ))}
-        </>
-    )
-}
-
-const useFlow = (aal) => {
-    const [getFlow, { data: flow, isLoading, isSuccess, isError }] = useLazyGetLoginFlowQuery()
-    const [searchParams, setSearchParams] = useSearchParams()
-    const sessionIsFresh = useSelector(selectSessionIsFresh)
-
-    useEffect(() => {
-        let flowId = searchParams.get('flow')
-        // No need to fetch flow if session is fresh,
-        // user will be passed through to component
-        if (sessionIsFresh) { return }
-
-        // If the aal param is differnt, this means a new flow is needed
-        // and the search param flow id can't be used
-        if (searchParams.get('aal') !== aal) {
-            flowId = null
-        }
-        getFlow({
-            params: { aal: aal, refresh: true, id: flowId }
-        })
-    }, [])
-
-    // Update search params
-    useEffect(() => {
-        if (isSuccess) {
-            setSearchParams({ flow: flow?.id, aal: aal })
-        }
-    }, [isSuccess, flow?.id])
-
-    return { flow, isLoading, isError }
-}
-
 const ErrorFetchingFlow = () => (<FormError msg={"Something went wrong, please try again later."} />)
 
-const PassWord = () => {
+const PassWord = ({ isFetchingFlow, isCompleteError }) => {
     const pwdRef = useRef(null)
-    const [searchParams] = useSearchParams()
-    const [, { isError }] = useCompleteLoginFlowMutation({ fixedCacheKey: searchParams.get('flow') })
-    const { flow, isLoading, isError: errorFetchingFlow } = useFlow('aal1')
 
-    // Focus on password input on mount
-    useEffect(() => { pwdRef.current?.focus() }, [])
-
-    // Focus on password input on error
+    // Focus password input on error
     useEffect(() => {
-        isError && pwdRef.current?.focus()
-    }, [isError])
+        isCompleteError && pwdRef.current?.focus()
+    }, [isCompleteError])
 
     return (
         <>
@@ -90,28 +37,31 @@ const PassWord = () => {
                 To make this change, first confirm your login.
             </div>
             <div style={row2Style}>
-                <JiggleDiv jiggle={isError}>
-                    <PasswordInput ref={pwdRef} loading={isLoading} required />
+                <JiggleDiv jiggle={isCompleteError}>
+                    <PasswordInput
+                        ref={pwdRef}
+                        loading={isFetchingFlow}
+                        required
+                    />
                 </JiggleDiv>
-                {flow && <HiddenInputs flow={flow} />}
-                {errorFetchingFlow && <ErrorFetchingFlow />}
+
             </div>
         </>
     )
 }
 
-const Totp = () => {
-    const [searchParams] = useSearchParams()
-    const [, isError] = useCompleteLoginFlowMutation({ fixedCacheKey: searchParams.get('flow') })
-    const { flow, isError: errorFetchingFlow } = useFlow('aal2')
+const Totp = ({ isCompleteError }) => {
     const ref = useRef(null)
-
     useEffect(() => {
-        if (isError) {
+        if (isCompleteError) {
             ref.current.value = ''
             ref.current.focus()
         }
-    }, [isError])
+    }, [isCompleteError])
+
+    useEffect(() => {
+        isCompleteSuccess && setFinishedAal2(true)
+    }, [isCompleteSuccess])
 
     return (
         <>
@@ -119,27 +69,56 @@ const Totp = () => {
                 Enter your authenticator code
             </div>
             <div style={row2Style}>
-                <JiggleMotionDiv jiggle={isError}>
+                <JiggleMotionDiv jiggle={isCompleteError}>
                     <PlainTextInput ref={ref} name="totp_code" placeholder='Code...' required />
                 </JiggleMotionDiv>
-                {errorFetchingFlow && <ErrorFetchingFlow />}
+                {errMsg && <ErrorFetchingFlow />}
             </div>
-            {flow && <HiddenInputs flow={flow} />}
         </>
     )
 }
 
 const ReAuthModal = withSmallModal((props) => {
-    const [searchParams, setSearchParams] = useSearchParams()
-    const { data: user } = useGetMeQuery()
-    const [needsAal2, setNeedsAal2] = useState(false)
-    const [completeFlow, {
-        isLoading: submittingFlow,
-        isSuccess: completedFlow
-    }] = useCompleteLoginFlowMutation(
-        { fixedCacheKey: searchParams.get('flow') }
+    const [searchParams] = useSearchParams()
+    const { flow, fetchFlow, submit, flowStatus } = useFlow(
+        useLazyGetLoginFlowQuery,
+        useCompleteLoginFlowMutation,
+        'login'
     )
+    const [, setSearchParams] = useSearchParams()
+    const { data: user } = useGetMeQuery()
     const dispatch = useDispatch()
+    const [needsAal2, setNeedsAal2] = useState(false)
+
+    const {
+        isFetchingFlow,
+        errorFetchingFlow,
+        isCompleteError,
+        isCompleteSuccess,
+        submittingFlow
+    } = flowStatus
+
+    // Fetch Flow on mount
+    useEffect(() => {
+        fetchFlow({ aal: 'aal1', refresh: true })
+    }, [])
+
+    // Handle Successful Flow Completion
+    useEffect(() => {
+        if (isCompleteSuccess) {
+            const aal = searchParams.get('aal')
+            const finishedCase1 = !user.authenticator_enabled && aal === 'aal1'
+            const finishedCase2 = user.authenticator_enabled && aal === 'aal2'
+
+            if (finishedCase1 || finishedCase2) {
+                dispatch({ type: 'user/resetAuthedAt' })
+                setSearchParams({}) // Clear search params
+            } else if (aal === 'aal1') {
+                fetchFlow({ aal: 'aal2', refresh: true })
+                setNeedsAal2(true)
+            }
+        }
+    }, [isCompleteSuccess])
 
     // Close modal after 9 minute timeout
     // to avoid submitting expired flows
@@ -150,61 +129,43 @@ const ReAuthModal = withSmallModal((props) => {
         return () => clearTimeout(timeout)
     }, [])
 
-    // Handle successful flow completion
-    useEffect(() => {
-        const aal = searchParams.get('aal')
-        const finishedCase1 = completedFlow && !user.authenticator_enabled
-        const finishedCase2 = completedFlow && aal === 'aal2'
-        const needsAal2 = completedFlow && user.authenticator_enabled && aal === 'aal1'
-
-        if (finishedCase1 || finishedCase2) {
-            dispatch({ type: 'user/resetAuthedAt' })
-            setSearchParams({}) // Clear search params
-        } else if (needsAal2) {
-            setNeedsAal2(true)
-        }
-    }, [completedFlow, submittingFlow])
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const data = new FormData(e.target)
-        completeFlow({
-            data: Object.fromEntries(data),
-            params: { flow: searchParams.get('flow') }
-        })
-    }
-
-    const [loaded, setLoaded] = useState(false)
-    useEffect(() => { setLoaded(true) }, [])
-
     return (
-        <div>
+        <form onSubmit={submit}>
             <h3>Confirm Login</h3>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <AnimatePresence mode="wait">
-                        {needsAal2
-                            ?
-                            <SlideMotionDiv key='aal2' last>
-                                <Totp />
-                            </SlideMotionDiv>
-                            :
-                            <SlideMotionDiv key='aal1' first={loaded}>
-                                <PassWord />
-                            </SlideMotionDiv>
-                        }
-                    </AnimatePresence >
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <SecondaryButton onClick={() => props.setVisible(false)}>
-                        Cancel
-                    </SecondaryButton>
-                    <GreenSubmitWithArrow submitting={submittingFlow} stroke={'var(--m-text-gray)'}>
-                        Continue
-                    </GreenSubmitWithArrow>
-                </div>
-            </form>
-        </div>
+            <AnimatePresence mode="wait">
+                {needsAal2
+                    ?
+                    <SlideMotionDiv key='aal2' last>
+                        <Totp
+                            isFetchingFlow={isFetchingFlow}
+                            isCompleteError={isCompleteError}
+                        />
+                    </SlideMotionDiv>
+                    :
+                    <SlideMotionDiv key='aal1' first={Boolean(flow)}>
+                        <PassWord
+                            isCompleteError={isCompleteError}
+                        />
+                    </SlideMotionDiv>
+                }
+            </AnimatePresence >
+            {errorFetchingFlow && <ErrorFetchingFlow />}
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <SecondaryButton onClick={() => props.setVisible(false)}>
+                    Cancel
+                </SecondaryButton>
+                <GreenSubmitWithArrow
+                    submitting={submittingFlow}
+                    stroke={'var(--m-text-gray)'}
+                    name="method"
+                    value={needsAal2 ? 'totp' : 'password'}
+                >
+                    Continue
+                </GreenSubmitWithArrow>
+            </div>
+            <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
+            <input type="hidden" name="identifier" value={user?.email || ''} />
+        </form>
     )
 })
 
