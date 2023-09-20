@@ -10,8 +10,6 @@ from jwt.exceptions import (
 )
 from jwt import decode
 
-from .errors import MissingDeviceTokenError
-
 
 logger = logging.getLogger('ledget')
 OATHKEEPER_PUBLIC_KEY = settings.OATHKEEPER_PUBLIC_KEY
@@ -34,28 +32,13 @@ class OryBackend(BaseAuthentication):
         try:
             token = header[auth_header_keys.index('bearer')*2 + 1]
             decoded_jwt = self.get_decoded_jwt(token)
-            user = self.get_user(decoded_jwt)
+            user = self.get_user(request, decoded_jwt)
         except (InvalidSignatureError, ExpiredSignatureError,
                 InvalidAlgorithmError, Exception) as e:
             logger.error(f"{e.__class__.__name__} {e}")
             return None
 
-        # try:
-        #     self.check_device_token(request, user)
-        # except MissingDeviceTokenError as e:
-        #     logger.error(f"{e.__class__.__name__} {e}")
-        #     return None
-
         return (user, None)
-
-    def check_device_token(self, request, user):
-
-        # Check the ledget_device_token cookie
-        device_token = request.COOKIES.get('ledget_device_token')
-        if user.device_set.filter(token=device_token).exists():
-            return
-        else:
-            raise MissingDeviceTokenError
 
     def get_decoded_jwt(self, token: str) -> dict | None:
         """Validate the token against the JWK from Oathkeeper and
@@ -70,20 +53,24 @@ class OryBackend(BaseAuthentication):
 
         return decoded_token
 
-    def get_user(self, decoded_token: dict):
+    def get_user(self, request, decoded_token: dict):
         """Return the user from the decoded token."""
 
+        device_token = request.COOKIES.get('ledget_device_token')
         identity = decoded_token['session']['identity']
 
         user = get_user_model().objects.select_related('customer') \
                                        .prefetch_related('device_set') \
                                        .get(pk=identity['id'])
 
+        user.device = user.device_set.filter(pk=device_token).first()
         user.authentication_level = \
             decoded_token['session']['authenticator_assurance_level']
         user.traits = identity.get('traits', {})
-        user.session_devices = identity.get('devices', [])
         user.is_verified = identity.get('verifiable_addresses', [{}])[0] \
                                    .get('verified', False)
+
+        if request.path == '/device':
+            user.session_devices = identity.get('devices', [])
 
         return user

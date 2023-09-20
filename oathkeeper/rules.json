@@ -46,13 +46,26 @@
       "version": "v0.36.0-beta.4"
    },
    {
-      "id": "has_device_token",
+      "authenticators": [
+         {
+            "handler": "anonymous"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "device_token_aal",
       "match": {
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/device/this"
+         "url": "https://localhost/api/v1/device-aal"
       },
+      "mutators": [
+         {
+            "handler": "noop"
+         }
+      ],
       "version": "v0.36.0-beta.4"
    },
    {
@@ -314,7 +327,7 @@
       "authorizer": {
          "handler": "allow"
       },
-      "id": "subscription_items",
+      "id": "subscription_item",
       "match": {
          "methods": [
             "PUT"

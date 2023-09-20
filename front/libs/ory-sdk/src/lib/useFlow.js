@@ -8,6 +8,7 @@ const formatErrorMessages = (errorMessages) => {
         switch (message.id) {
             case 4000006:
                 filteredMessages.push("Wrong email or password.")
+                break
             case 4000007:
                 filteredMessages.push("Hmm, something's not right. Please try again.")
                 break

@@ -61,13 +61,16 @@ local GenericAuthedBase = {
     mutators: [noop_mutator],
     authorizer: allow_authorizer,
   },
-  Base
+  GenericAuthedBase
   {
-    id: 'has_device_token',
+    id: 'device',
     match: {
-      methods: ['GET'],
-      url: base_url + '/device/this',
+      methods: ['POST'],
+      url: base_url + '/device',
     },
+    authenticators: [anonymous_authenticator],
+    mutators: [noop_mutator],
+    authorizer: allow_authorizer,
   },
   GenericAuthedBase
   {
@@ -143,7 +146,7 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
-    id: 'subscription_items',
+    id: 'subscription_item',
     match: {
       methods: ['PUT'],
       url: base_url + '/subscription_item',

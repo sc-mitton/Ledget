@@ -19,17 +19,11 @@
     width: 100%;
 }
 
-#authenticator-settings--container .faded-text {
-    margin: 0 auto;
+#authenticator-settings--container>div>svg {
+    margin-right: 8px;
 }
 
 #authenticator-settings--container>div {
     display: flex;
     align-items: center;
-}
-
-#authenticator-settings--container button {
-    float: right;
-    margin: 0;
-    border-radius: var(--border-radius1);
 }

@@ -303,7 +303,7 @@ div.body {
     background-color: var(--inner-window);
     border-radius: var(--border-radius2);
     padding: 12px;
-    margin: 0 -8px;
+    margin: 0 -2px;
 }
 
 .overlay {

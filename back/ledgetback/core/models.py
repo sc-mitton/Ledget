@@ -54,7 +54,7 @@ class User(models.Model):
         super().__init__(*args, **kwargs)
         self._traits = None
         self._is_verified = False
-        self._session_devices = []
+        self._device = None
         self._authentication_level = None
 
     def __setattr__(self, name, value):
@@ -97,6 +97,14 @@ class User(models.Model):
         authenticated in templates.
         """
         return True
+
+    @property
+    def device(self):
+        return self._device
+
+    @device.setter
+    def device(self, value):
+        self._device = value
 
     @property
     def session_devices(self):
@@ -177,3 +185,4 @@ class Device(models.Model):
 
     user_agent = models.CharField(max_length=200, editable=False)
     location = models.CharField(max_length=100, editable=False)
+    aal = models.CharField(max_length=4)

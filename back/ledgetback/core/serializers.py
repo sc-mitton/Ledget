@@ -113,26 +113,48 @@ class DeviceSerializer(serializers.ModelSerializer):
         model = Device
         exclude = ('user', 'token', )
 
-    def create(self, validated_data):
-        user = self.context['request'].user.id
-
+    def get_device_data(self, user):
         try:
-            kwargs = {
-                'user_id': user.id,
-                'id': user.session_devices[0]['id'],
+            data = {
                 'user_agent': user.session_devices[0]['user_agent'],
                 'location': user.session_devices[0]['location'],
             }
         except KeyError:
             raise serializers.ValidationError('Missing device information.')
 
-        # create sha256 hash of totp, user_agent, user, and location
+        return data
+
+    def get_hash_token(self, user):
+        kwargs = {
+            'user': user,
+            'id': user.session_devices[0]['id'],
+            **self.get_device_data(user)
+        }
+
+        # create sha256 hash of device id, user, user_agent,
+        # location, and secret key
         hash_value = hashlib.sha256((
             kwargs.values(),
             settings.SECRET_KEY
         ).encode('utf-8')).hexdigest()
 
-        return Device.objects.create(
+        return hash_value
+
+    def create(self, validated_data):
+        user = self.context['request'].user.id
+        hash_value = self.get_hash_token(user)
+
+        instance = Device.objects.create(
             hash=hash_value,
-            **kwargs
+            user=user,
+            id=user.session_devices[0]['id'],
+            aal=user.authentication_level,
         )
+        return instance
+
+    def update(self, instance, validated_data):
+        user = self.context['request'].user
+        instance.hash = self.get_hash_token(user)
+        if user.authentication_level == 'aal2':
+            instance.aal = 'aal2'
+        instance.save()

@@ -69,15 +69,15 @@ export const JiggleDiv = ({ jiggle, children, ...rest }) => {
         } else if (jiggleCanBeFired && jiggle) {
             api.start({
                 to: async (next) => {
-                    await next({ x: 12 })
-                    await next({ x: -12 })
-                    await next({ x: 7 })
-                    await next({ x: -7 })
-                    await next({ x: 3 })
-                    await next({ x: -3 })
+                    await next({ x: 10 })
+                    await next({ x: -10 })
+                    await next({ x: 5 })
+                    await next({ x: -5 })
+                    await next({ x: 2 })
+                    await next({ x: -2 })
                     await next({ x: 0 })
                 },
-                config: { duration: 100 },
+                config: { duration: 90 },
                 onRest: () => setJiggleCanBeFired(false)
             })
         }

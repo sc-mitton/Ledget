@@ -59,6 +59,21 @@ body {
     position: relative;
 }
 
+.wrapper-window {
+    width: 85%;
+    max-width: 400px;
+    border-radius: var(--border-radius3);
+    position: relative;
+}
+
+.nested-window {
+    font-size: 14px;
+    border-radius: var(--border-radius3);
+    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    box-shadow: rgba(149, 157, 165, 0.7) 0px 0px 2px;
+    padding: 32px 40px;
+}
+
 .window-header {
     margin-bottom: 24px;
 }

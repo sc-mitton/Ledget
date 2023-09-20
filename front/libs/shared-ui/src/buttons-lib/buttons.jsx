@@ -1,4 +1,5 @@
-import React, { forwardRef, useRef } from 'react';
+import React, { useRef } from 'react';
+import { Plus } from '@ledget/shared-assets';
 
 import './buttons.css'
 import { ExpandIcon, ArrowIcon, FacebookLogo, CloseIcon, GoogleLogo, CopyIcon } from '@ledget/shared-assets'
@@ -151,3 +152,9 @@ export const CopyButton = (props) => {
     </animated.div>
   )
 }
+
+export const PlusPill = (props) => (
+  <button className="btn-chcl btn-circle btn-scale2" {...props}>
+    <Plus stroke={'var(--window)'} width={'.7em'} height={'.7em'} />
+  </button>
+)

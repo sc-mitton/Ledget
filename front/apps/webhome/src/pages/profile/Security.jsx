@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useNavigate, Outlet } from 'react-router-dom'
 
 import './styles/Security.css'
 import { QrIcon } from '@ledget/shared-assets'
-import { GrayButton, GrnSlimArrowButton } from '@ledget/shared-ui'
+import { PlusPill, GrayButton } from '@ledget/shared-ui'
 import { useGetMeQuery } from '@features/userSlice'
 
 
-const AuthenticatorInfo = () => {
+const AuthenticatorApp = () => {
     const navigate = useNavigate()
     const { data: user } = useGetMeQuery()
 
@@ -18,8 +18,9 @@ const AuthenticatorInfo = () => {
         return d.toLocaleDateString('en-US', options)
     }
 
+
     return (
-        <>
+        <div id="authenticator-settings--container">
             {user.authenticator_enabled
                 ?
                 <>
@@ -32,41 +33,30 @@ const AuthenticatorInfo = () => {
                     </GrayButton>
                 </>
                 :
-                <span className="faded-text">Not set up</span>
+                <>
+                    <div id="authenticator-not-set-up">
+                        <QrIcon width={'1.25em'} height={'1.25em'} />
+                        <span>Authenticator App</span>
+                    </div>
+                    <div>
+                        <PlusPill onClick={() => navigate('/profile/security/authenticator-setup')} />
+                    </div>
+                </>
             }
-        </>
-    )
-}
-
-const AuthenticatorApp = () => {
-    const navigate = useNavigate()
-    const { data: user } = useGetMeQuery()
-
-    return (
-        <div>
-            <div id="authenticator-settings--header">
-                <h3 className="spaced-header2">Authenticator App</h3>
-                {!user.authenticator_enabled
-                    &&
-                    <GrnSlimArrowButton
-                        onClick={() => navigate('/profile/security/authenticator-setup')}
-                        stroke={'var(--m-text-gray)'}
-                    >
-                        Set Up
-                    </GrnSlimArrowButton>
-                }
-            </div>
-            <div className="inner-window body">
-                <div
-                    color="dark"
-                    id="authenticator-settings--container"
-                >
-                    <AuthenticatorInfo />
-                </div>
-            </div>
         </div>
     )
 }
+
+const Mfa = () => (
+    <div>
+        <div id="authenticator-settings--header">
+            <h3 className="spaced-header2">Multi-Factor Authentication</h3>
+        </div>
+        <div className="inner-window">
+            <AuthenticatorApp />
+        </div>
+    </div>
+)
 
 const Devices = () => {
     return (
@@ -85,7 +75,7 @@ const Security = () => {
             <div className="padded-content" id="security-page">
                 <h1 className="spaced-header">Security</h1>
                 <Devices />
-                <AuthenticatorApp />
+                <Mfa />
             </div>
             <Outlet />
         </>

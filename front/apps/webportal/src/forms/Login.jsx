@@ -11,6 +11,7 @@ import SocialAuth from "./SocialAuth"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces"
+import { ledgetapi } from "@api"
 import {
     GrnWideButton,
     Checkbox,
@@ -104,9 +105,10 @@ const AuthenticationForm = ({ email, flow, onSubmit, errMsg }) => {
                 onSubmit={handleSubmit}
                 id="authentication-form"
             >
-                <JiggleDiv jiggle={errMsg}>
-                    <PasswordInput ref={pwdRef} />
-                </JiggleDiv>
+                {errMsg && <div style={{ marginBottom: '12px' }}>
+                    <FormError msg={errMsg} />
+                </div>}
+                <PasswordInput ref={pwdRef} />
                 <div id="forgot-password-container">
                     <Link to="/recovery" tabIndex={0}>Forgot Password?</Link>
                 </div>
@@ -124,6 +126,7 @@ const AuthenticationForm = ({ email, flow, onSubmit, errMsg }) => {
 
 const Login = () => {
     const [email, setEmail] = useState(null)
+    const [deviceTokenAal, setDeviceTokenAal] = useState(false)
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
         useCompleteLoginFlowMutation,
@@ -134,8 +137,9 @@ const Login = () => {
         isFetchingFlow,
         submittingFlow,
         isCompleteSuccess,
-        errMsg,
-        errId
+        isCompleteError,
+        errId,
+        errMsg
     } = flowStatus
 
     useEffect(() => {
@@ -149,6 +153,13 @@ const Login = () => {
         }
     }, [isCompleteSuccess])
 
+    useEffect(() => {
+        ledgetapi.get('/device-aal').then((res) => {
+            setDeviceTokenAal(res.data.aal)
+        }).catch((err) => {
+            console.warn('error getting device token aal')
+        })
+    }, [])
 
     return (
         <AnimatePresence mode="wait">
@@ -158,36 +169,29 @@ const Login = () => {
                     <div className="window-header">
                         <h2>Sign in to Ledget</h2>
                     </div>
-                    <EmailForm
-                        setEmail={setEmail}
-                        flow={flow}
-                        onSubmit={submit}
-                        errMsg={errMsg}
-                    />
-                    <SocialAuth
-                        flow={flow}
-                        submit={submit}
-                        csrf={flow?.csrf_token}
-                    />
+                    <EmailForm setEmail={setEmail} flow={flow} onSubmit={submit} />
+                    <SocialAuth flow={flow} submit={submit} csrf={flow?.csrf_token} />
                     <WindowLoadingBar visible={isFetchingFlow} />
                 </SlideMotionDiv>
                 :
-                <SlideMotionDiv className='window' key="authenticate" last>
-                    <WindowLoadingBar visible={submittingFlow || isFetchingFlow} />
-                    <div id="email-container">
-                        <h3>Welcome Back</h3>
-                        <div>
-                            <BackButton
-                                withText={false}
-                                onClick={() => { setEmail(null) }}
-                                style={{ marginTop: '1px', marginRight: '6px' }}
-                            >
-                                <span>{`${email}`}</span>
-                            </BackButton>
+                <JiggleDiv jiggle={isCompleteError} className="wrapper-window">
+                    <SlideMotionDiv className='nested-window' key="authenticate" last>
+                        <WindowLoadingBar visible={submittingFlow || isFetchingFlow} />
+                        <div id="email-container">
+                            <h3>Welcome Back</h3>
+                            <div>
+                                <BackButton
+                                    withText={false}
+                                    onClick={() => { setEmail(null) }}
+                                    style={{ marginTop: '1px', marginRight: '6px' }}
+                                >
+                                    <span>{`${email}`}</span>
+                                </BackButton>
+                            </div>
                         </div>
-                    </div>
-                    <AuthenticationForm flow={flow} email={email} onSubmit={submit} />
-                </SlideMotionDiv>
+                        <AuthenticationForm flow={flow} email={email} onSubmit={submit} errMsg={errMsg} />
+                    </SlideMotionDiv>
+                </JiggleDiv>
             }
         </AnimatePresence>
     )

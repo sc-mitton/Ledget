@@ -6,35 +6,35 @@
 
 .switch-crib {
     margin-top: 1px;
-    width: 30px;
+    width: 26px;
     padding: 2px;
     border-radius: 20px;
 }
 
 .switch-crib.enabled {
-    background-color: var(--green-hlight);
+    background-color: var(--m-green);
     transition: background-color 0.2s ease-in-out;
 }
 
 .switch-crib.disabled {
-    background-color: var(--input-color);
+    background-color: rgb(0, 0, 0, .2);
     transition: background-color 0.2s ease-in-out;
 }
 
 .switch-pill {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
 }
 
 .switch-pill.disabled {
     transform: translateX(0);
-    background-color: var(--btn-mid-gray);
+    background-color: var(--btn-gray);
     transition: all 0.2s ease-in-out;
 }
 
 .switch-pill.enabled {
-    transform: translateX(14px);
-    background-color: var(--green-dark);
+    transform: translateX(12px);
+    background-color: var(--green-dark3);
     transition: all 0.2s ease-in-out;
 }

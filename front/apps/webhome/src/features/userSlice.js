@@ -87,6 +87,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['invoice'],
         }),
+        addRememberedDevice: builder.mutation({
+            query: ({ data }) => ({
+                url: 'device',
+                method: 'POST',
+                body: data,
+            })
+        }),
     })
 })
 

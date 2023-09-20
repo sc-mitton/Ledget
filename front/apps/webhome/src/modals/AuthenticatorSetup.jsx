@@ -108,14 +108,13 @@ const Authenticator = (props) => {
 
     // Handle successful flow completion
     useEffect(() => {
+        let timeout
         if (completedFlow) {
             updateUser({ data: { authenticator_enabled: true } })
-        }
-        const timeout = setTimeout(() => {
-            if (completedFlow) {
+            timeout = setTimeout(() => {
                 props.setVisible(false)
-            }
-        }, 1000)
+            }, 1000)
+        }
         return () => clearTimeout(timeout)
     }, [completedFlow])
 

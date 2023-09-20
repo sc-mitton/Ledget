@@ -38,13 +38,8 @@ const PassWord = ({ isFetchingFlow, isCompleteError }) => {
             </div>
             <div style={row2Style}>
                 <JiggleDiv jiggle={isCompleteError}>
-                    <PasswordInput
-                        ref={pwdRef}
-                        loading={isFetchingFlow}
-                        required
-                    />
+                    <PasswordInput ref={pwdRef} loading={isFetchingFlow} required />
                 </JiggleDiv>
-
             </div>
         </>
     )

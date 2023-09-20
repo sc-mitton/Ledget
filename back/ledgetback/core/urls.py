@@ -1,6 +1,7 @@
 from django.urls import path, include
 from core.views import service as service_views
-from core.views.user import UserView, ThisDeviceView, DeviceViewSet
+from core.views.user import UserView
+from core.views.device import DeviceViewSet
 
 from rest_framework.routers import DefaultRouter
 
@@ -9,7 +10,6 @@ router.register(r'devices', DeviceViewSet, basename='devices')
 
 urlpatterns = [
      path('user/me', UserView.as_view(), name='user_me'),
-     path('device/this', ThisDeviceView.as_view(), name='this_device'),
      path('', include(router.urls)),
 
      path('prices', service_views.PriceView.as_view(), name='prices'),
