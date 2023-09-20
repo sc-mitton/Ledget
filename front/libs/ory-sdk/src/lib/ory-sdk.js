@@ -65,7 +65,7 @@ const completeFlow = async ({ url, data, params }) => {
 }
 
 const endpointNames = [
-  'settings', 'login', 'registration', 'logout'
+  'settings', 'login', 'registration', 'logout', 'verification'
 ]
 
 const generateOryEndpoints = (builder) => {
@@ -81,13 +81,18 @@ const generateOryEndpoints = (builder) => {
         params: arg?.params,
         transformResponse: (data) => {
           const json = JSON.parse(data)
-          return {
-            id: json.id,
-            csrf_token: json.ui?.nodes.find((node) =>
-              node.attributes.name === 'csrf_token')?.attributes.value,
-            nodes: json.ui?.nodes,
-            expires_at: json.expires_at,
-          }
+          let filteredData = {}
+
+          const csrf_token = json.ui?.nodes.find((node) => node.attributes.name === 'csrf_token')?.attributes.value
+          const keys = ['logout_token', 'ui', 'id', 'expires_at']
+
+          keys.forEach((key) => {
+            if (json[key]) filteredData[key] = json[key]
+          })
+
+          if (csrf_token) filteredData['csrf_token'] = csrf_token
+
+          return json.error ? json.error : filteredData
         },
         keepUnusedDataFor: 60 * 3
       }),
@@ -112,7 +117,7 @@ const generateOryEndpoints = (builder) => {
     queryFn: (arg) => axiosBaseQuery({
       url: '/self-service/logout',
       method: 'GET',
-      params: { token: arg.token }
+      params: { token: arg.token },
     }),
     cacheKey: 'getUpdatedLogoutFlow',
   })

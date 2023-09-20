@@ -42,7 +42,7 @@ class NestedCreateMixin:
                 serializer_class=nested_obj_fields[key]
             )
 
-        return new_objs
+        return new_objs if len(new_objs) > 1 else new_objs[0]
 
     def get_model(self, serializer_class):
         '''

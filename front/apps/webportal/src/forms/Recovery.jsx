@@ -178,7 +178,7 @@ const AnimatedForms = () => {
 }
 
 const RecoveryFlow = () => {
-    const { getFlow, createFlow, responseError } = useContext(RecoveryFlowContext)
+    const { getFlow, createFlow, errMsg } = useContext(RecoveryFlowContext)
     const [searchParams] = useSearchParams()
 
     useEffect(() => {
@@ -191,11 +191,11 @@ const RecoveryFlow = () => {
 
     return (
         <div className="window" id="recovery-window">
-            {responseError
+            {errMsg
                 ?
                 <>
                     <SignUpFlowHeader />
-                    <FormError msg={responseError} />
+                    <FormError msg={errMsg} />
                 </>
                 :
                 <AnimatedForms />

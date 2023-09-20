@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { Replay } from "@ledget/shared-assets"
 import './styles/ResendButton.css'
 
-const ResendButton = () => {
+const ResendButton = (props) => {
     const [rotation, setRotation] = useState(0)
 
     return (
@@ -12,11 +12,8 @@ const ResendButton = () => {
             <motion.button
                 className="btn-secondary"
                 id="resend-btn"
-                type="submit"
-                value="code"
-                onClick={() => setRotation(rotation - 360)}
-                aria-label="Resend email"
-                name="resend"
+                onClick={() => setRotation(rotation + 360)}
+                {...props}
             >
                 <span>Resend</span>
                 <motion.div
@@ -26,7 +23,7 @@ const ResendButton = () => {
                     }}
                     id="resend-icon"
                 >
-                    <Replay fill={'var(--m-green)'} />
+                    <Replay fill={'var(--m-green-hover)'} />
                 </motion.div>
             </motion.button>
         </div>

@@ -5,6 +5,8 @@ import SubmitForm from '@components/pieces/SubmitForm'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { useForm, useController } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 
 import './styles/UpdatePayment.css'
 import { withModal } from '@ledget/shared-utils'
@@ -20,7 +22,6 @@ import {
     useGetPaymentMethodQuery,
     useUpdateDefaultPaymentMethodMutation
 } from '@features/userSlice'
-import { StripeElements } from '@ledget/shared-utils'
 
 const Modal = withModal((props) => {
     const [getSetupIntent, { data: setupIntent, isLoading: fetchingSetupIntent }] = useLazyGetSetupIntentQuery()
@@ -128,11 +129,18 @@ const Modal = withModal((props) => {
     )
 })
 
+export const cardOptions = {
+    fonts: [{
+        cssSrc: "https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap"
+    }]
+}
+
 const UpdatePayment = (props) => {
     const navigate = useNavigate()
+    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
     return (
-        <StripeElements pk={import.meta.env.VITE_STRIPE_PK_TEST}>
+        <Elements stripe={stripePromise} options={cardOptions}>
             <Modal
                 {...props}
                 onClose={() => navigate(-1)}
@@ -140,7 +148,7 @@ const UpdatePayment = (props) => {
                 minWidth={props.minWidth || '0px'}
                 blur={2}
             />
-        </StripeElements>
+        </Elements>
     )
 }
 

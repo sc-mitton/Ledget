@@ -261,11 +261,11 @@ class PaymentMethodView(APIView):
                 'exp_year': payment_methods.data[0].card.exp_year,
                 'last4': payment_methods.data[0].card.last4,
             }
-        except StripeError:
-            stripe_logger.error(StripeError.message)
+        except StripeError as e:
+            stripe_logger.error(e)
             return Response(
-                {'error': StripeError.message},
-                status=StripeError.response_code
+                {'error': e.message},
+                status=e.response_code
             )
 
         return Response(

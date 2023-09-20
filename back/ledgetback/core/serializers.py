@@ -59,10 +59,14 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.authentication_level
 
     def get_subscription(self, obj):
+        # If patch method, return early to avoid Stripe API call
+        if self.context['request'].method != 'GET':
+            return None
+
         try:
             sub = self.get_stripe_subscription(obj.customer.id)
-        except StripeError:
-            stripe_logger.error(StripeError.message)
+        except StripeError as e:
+            stripe_logger.error(e)
             raise serializers.ValidationError(
                 'Error retrieving subscription data.'
             )

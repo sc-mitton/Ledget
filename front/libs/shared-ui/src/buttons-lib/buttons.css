@@ -302,7 +302,8 @@
 .back-btn {
     width: auto;
     float: left;
-    margin-left: -16px;
+    padding-left: 6px;
+    margin-left: -8px;
 }
 
 .back-btn svg {

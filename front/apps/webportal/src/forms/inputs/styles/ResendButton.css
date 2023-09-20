@@ -14,7 +14,7 @@
 
 #resend-btn span {
     margin-right: 4px;
-    color: var(--m-green);
+    color: var(--m-green-hover);
 }
 
 #resend-btn svg {

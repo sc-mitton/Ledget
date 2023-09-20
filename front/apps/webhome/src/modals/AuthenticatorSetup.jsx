@@ -156,7 +156,7 @@ const Authenticator = (props) => {
                 <AnimatePresence mode="wait">
                     {onConfirmStep
                         ?
-                        <SlideMotionDiv index={0} key="confirm-code" last>
+                        <SlideMotionDiv key="confirm-code" last>
                             <JiggleDiv jiggle={submitError} className="content">
                                 <div>
                                     <label htmlFor="code">
@@ -168,7 +168,7 @@ const Authenticator = (props) => {
                             </JiggleDiv>
                         </SlideMotionDiv>
                         :
-                        <SlideMotionDiv index={1} key='setup-app' first>
+                        <SlideMotionDiv key='setup-app' first={Boolean(flow)}>
                             <SetupApp
                                 codeMode={codeMode}
                                 setCodeMode={setCodeMode}

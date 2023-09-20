@@ -5,6 +5,8 @@ import { useForm, useController } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { string } from 'yup'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 
 import './style/Checkout.css'
 import logoLight from '@assets/images/logoLight.svg'
@@ -21,7 +23,7 @@ import {
     CityStateZipInputs,
     baseBillingSchema
 } from '@ledget/shared-ui'
-import { StripeElements } from '@ledget/shared-utils'
+
 
 const schema = baseBillingSchema.shape({
     name: string()
@@ -150,7 +152,6 @@ const Form = (props) => {
     const { register, watch, handleSubmit, formState: { errors }, control, clearErrors } =
         useForm({ resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
     const { field: stateField } = useController({ name: 'state', control })
-    const price = watch('price', '')
 
     useEffect(() => { stateField.value && clearErrors('state') }, [stateField.value])
 
@@ -165,16 +166,19 @@ const Form = (props) => {
     // Create customer if not already created
     // if there is already a customer created,
     // this will return a 422 error, which can be ignored
-    const createCustomer = async () =>
+    const createCustomer = async () => {
         await ledgetapi.post(`customer`)
             .catch((error) => {
                 if (error.response?.status !== 422) {
                     setErrMsg('Something went wrong. Please try again later.')
                 }
             })
+    }
 
-    const createSubscription = async (data) =>
-        await ledgetapi.post(`subscription`, {
+    const createSubscription = async (data) => {
+        console.log(data)
+        console.log('creating subscription')
+        await ledgetapi.post('subscription', {
             price_id: data.price,
             trial_period_days: data.trial_period_days
         })
@@ -190,6 +194,8 @@ const Form = (props) => {
                     setErrMsg('Something went wrong. Please try again later.')
                 }
             })
+    }
+
 
     const confirmSetup = async (data) => {
         const result = await stripe.confirmCardSetup(
@@ -218,7 +224,7 @@ const Form = (props) => {
         try {
             if (!clientSecretRef.current) {
                 await createCustomer()
-                await createSubscription()
+                await createSubscription(data)
             }
             if (clientSecretRef.current) {
                 await confirmSetup(data)
@@ -274,31 +280,32 @@ const Form = (props) => {
     )
 }
 
-const StripeFooter = () => {
-    return (
-        <div className="stripe-logo-container">
-            <div>
-                powered by
-            </div>
-            <div>
-                <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
-                    <img className="stripe-logo" src={stripelogo} alt="Stripe" />
-                </a>
-            </div>
-        </div>
-    )
+export const cardOptions = {
+    fonts: [{
+        cssSrc: "https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap"
+    }]
 }
 
 const CheckoutWindow = () => {
+    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
+
     return (
-        <StripeElements pk={import.meta.env.VITE_STRIPE_PK_TEST}>
+        <Elements stripe={stripePromise} options={cardOptions}>
             <div id="checkout-window" className="window">
                 <Form id="billing-form" />
-                <StripeFooter />
+                <div className="stripe-logo-container">
+                    <div>powered by</div>
+                    <div>
+                        <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
+                            <img className="stripe-logo" src={stripelogo} alt="Stripe" />
+                        </a>
+                    </div>
+                </div>
             </div>
-        </StripeElements>
+        </Elements>
     )
 }
+
 
 export default CheckoutWindow
 

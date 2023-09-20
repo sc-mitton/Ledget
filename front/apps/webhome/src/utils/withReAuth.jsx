@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { withSmallModal } from '@ledget/shared-utils'
@@ -174,6 +174,9 @@ const ReAuthModal = withSmallModal((props) => {
         })
     }
 
+    const [loaded, setLoaded] = useState(false)
+    useEffect(() => { setLoaded(true) }, [])
+
     return (
         <div>
             <h3>Confirm Login</h3>
@@ -186,7 +189,7 @@ const ReAuthModal = withSmallModal((props) => {
                                 <Totp />
                             </SlideMotionDiv>
                             :
-                            <SlideMotionDiv key='aal1' first>
+                            <SlideMotionDiv key='aal1' first={loaded}>
                                 <PassWord />
                             </SlideMotionDiv>
                         }

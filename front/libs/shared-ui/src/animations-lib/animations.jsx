@@ -42,7 +42,7 @@ export const SlideMotionDiv = ({ children, first, last, ...rest }) => (
     <motion.div
         initial={{
             opacity: first ? 1 : 0,
-            x: first ? 0 : 50
+            x: first ? -50 : (last ? 50 : 0),
         }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: last ? 50 : -50 }}
@@ -56,9 +56,7 @@ export const SlideMotionDiv = ({ children, first, last, ...rest }) => (
 export const JiggleDiv = ({ jiggle, children, ...rest }) => {
     const [jiggleCanBeFired, setJiggleCanBeFired] = useState(false)
 
-    const [props, api] = useSpring(() => ({
-        x: 0,
-    }))
+    const [props, api] = useSpring(() => ({ x: 0 }))
 
     // Jiggling shouldn't be fired on mount, so first
     // the flag (jiggleCanBeFired) needs to be dropped

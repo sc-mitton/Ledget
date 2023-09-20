@@ -17,6 +17,10 @@
 
 /* ************* */
 
+#verification-form-container button {
+    margin-top: 12px;
+}
+
 #verify-your-email {
     height: 10em;
 }

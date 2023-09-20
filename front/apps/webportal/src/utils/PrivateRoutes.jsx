@@ -1,9 +1,12 @@
-import React, { useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
-import UserContext from '../context/UserContext'
 
 export const AuthenticatedRoute = () => {
-    const { user } = useContext(UserContext)
+    const [user, setUser] = useState(true)
+
+    useEffect(() => {
+        setUser(JSON.parse(sessionStorage.getItem('user' || null)))
+    }, [])
 
     return (
         user ? <Outlet /> : <Navigate to="/login" />
@@ -11,7 +14,11 @@ export const AuthenticatedRoute = () => {
 }
 
 export const UnauthenticatedRoute = () => {
-    const { user } = useContext(UserContext)
+    const [user, setUser] = useState(null)
+
+    useEffect(() => {
+        setUser(JSON.parse(sessionStorage.getItem('user' || null)))
+    }, [])
 
     return (
         user ? <Navigate to="/checkout" /> : <Outlet />

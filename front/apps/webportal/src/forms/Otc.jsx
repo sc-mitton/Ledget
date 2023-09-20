@@ -131,7 +131,6 @@ function Otc({ codeLength, required, reset, setReset }) {
                             required={required}
                             key={index}
                             type="text"
-                            name={`otc-${index}`}
                             id={`otc-${index}`}
                             value={input.digit}
                             autoComplete="one-time-code"

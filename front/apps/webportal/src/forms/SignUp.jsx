@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, createContext, useState } from "react"
+import React, { useEffect, useState } from "react"
 
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useNavigate } from "react-router-dom"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
-import { motion, AnimatePresence } from "framer-motion"
+import { AnimatePresence } from "framer-motion"
 
 import './style/SignUp.css'
 import SocialAuth from "./SocialAuth"
@@ -12,21 +12,20 @@ import { WindowLoadingBar } from "@pieces"
 import PasswordlessForm from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import PasskeyInfoModal from '@modals/PassKey'
-import { GrnWideButton, TextInput, FormError, FormErrorTip, PasswordInput } from "@ledget/shared-ui"
-import { RegisterFlowContext, RegisterFlowContextProvider } from "@context/Flow"
+import {
+    GrnWideButton,
+    FormError,
+    PasswordInput,
+    SlideMotionDiv,
+    PlainTextInput,
+    BackButton
+} from "@ledget/shared-ui"
+import { useFlow } from "@ledget/ory-sdk"
+import {
+    useLazyGetRegistrationFlowQuery,
+    useCompleteRegistrationFlowMutation
+} from '@features/orySlice'
 
-
-// Context for user info
-const userInfoContext = createContext({})
-const UserInfoContextProvider = ({ children }) => {
-    const [userInfo, setUserInfo] = useState({})
-
-    return (
-        <userInfoContext.Provider value={{ userInfo, setUserInfo }}>
-            {children}
-        </userInfoContext.Provider>
-    )
-}
 
 // Schema for yup form validation
 const schema = yup.object().shape({
@@ -37,102 +36,69 @@ const schema = yup.object().shape({
         .email('Email is invalid'),
 })
 
-function UserInfoForm() {
-    // Form for user info
-
-    const { register, handleSubmit, formState: { errors }, trigger }
+const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
+    // Form window for entering user info (name, email), or signing in with social auth
+    const { register, handleSubmit, formState: { errors } }
         = useForm({ resolver: yupResolver(schema), mode: 'onSubmt', reValidateMode: 'onBlur' })
-    const { csrf, responseError } = useContext(RegisterFlowContext)
-    const { setUserInfo } = useContext(userInfoContext)
-
-    const submit = (data) => {
-        setUserInfo(data)
-    }
 
     return (
-        <form onSubmit={handleSubmit((e) => submit(e))} className="sign-up-form" noValidate>
-            {responseError && <FormError msg={responseError} />}
-            <label htmlFor="name">Name</label>
-            <div className="split-inputs">
-                <TextInput>
-                    <input
+        <>
+            <WindowLoadingBar visible={flowStatus.isFetchingFlow} />
+            <div className="window-header">
+                <h2>Create Account</h2>
+                <h4>Step 1 of 4</h4>
+            </div>
+            <form
+                onSubmit={handleSubmit((e) =>
+                    setUserInfo(e)
+                )}
+                className="sign-up-form"
+                noValidate
+            >
+                <div className="signup-error-container">
+                    <FormError msg={flowStatus.errMsg} />
+                </div>
+                <label htmlFor="name">Name</label>
+                <div className="split-inputs">
+                    <PlainTextInput
                         id="name"
                         name="firstName"
                         placeholder="First"
                         {...register('firstName')}
-                        onBlur={(e) => {
-                            if (e.target.value) {
-                                trigger("firstName")
-                            }
-                        }}
+                        errors={errors}
                     />
-                    <FormErrorTip errors={[errors.firstName]} />
-                </TextInput>
-                <TextInput>
-                    <input
+                    <PlainTextInput
                         id="name"
                         name="lastName"
                         placeholder="Last"
                         {...register('lastName')}
-                        onBlur={(e) => {
-                            if (e.target.value) {
-                                trigger("lastName")
-                            }
-                        }}
+                        errors={errors}
                     />
-                    <FormErrorTip errors={[errors.lastName]} />
-                </TextInput>
-            </div>
-            <label htmlFor="email">Email</label>
-            <TextInput>
-                <input
+                </div>
+                <label htmlFor="email">Email</label>
+                <PlainTextInput
                     id="email"
                     name="email"
                     placeholder="Email"
                     required
                     {...register('email')}
-                    onBlur={(e) => {
-                        if (e.target.value) {
-                            trigger("email")
-                        }
-                    }}
+                    errors={errors}
                 />
-                <FormErrorTip errors={[errors.email]} />
-            </TextInput>
-            <CsrfToken csrf={csrf} />
-            {errors.email?.type !== 'required' &&
-                <div id="signup-error-container">
-                    <FormError msg={errors.email?.message} />
-                </div>
-            }
-            <div
-                style={{ marginTop: '16px' }}
-            >
-                <GrnWideButton
-                    type='submit'
-                    aria-label="Submit form"
+                <CsrfToken csrf={flow?.csrf_token} />
+                {errors.email?.type !== 'required' &&
+                    <div className="signup-error-container">
+                        <FormError msg={errors.email?.message} />
+                    </div>
+                }
+                <div
+                    style={{ marginTop: '16px' }}
                 >
-                    Continue
-                </GrnWideButton>
-            </div>
-        </form>
-    )
-}
-
-const UserInfoWindow = () => {
-    // Form window for entering user info (name, email), or signing in with social auth
-
-    const { flow, submit, csrf } = useContext(RegisterFlowContext)
-
-    return (
-        <>
-            <WindowLoadingBar visible={!flow} />
-            <div className="window-header">
-                <h2>Create Account</h2>
-                <h4>Step 1 of 4</h4>
-            </div>
-            <UserInfoForm />
-            <SocialAuth flow={flow} submit={submit} csrf={csrf} />
+                    <GrnWideButton type='submit' aria-label="Submit form">
+                        Continue
+                    </GrnWideButton>
+                </div>
+            </form>
+            <SocialAuth flow={flow} submit={submit} csrf={flow?.csrf_token} />
         </>
     )
 }
@@ -143,40 +109,51 @@ const passwordSchema = yup.object().shape({
         .min(10, 'Password must be at least 10 characters'),
 })
 
-const AuthenticationForm = () => {
-    const [pwdVisible, setPwdVisible] = useState(false)
-    const { userInfo } = useContext(userInfoContext)
-    const { flow, responseError, csrf, submit } = useContext(RegisterFlowContext)
-    const { register, handleSubmit, formState: { errors }, trigger } = useForm({
-        mode: 'onBlur',
+const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }) => {
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        mode: 'onSubmit', reValidateMode: 'onBlur',
         resolver: yupResolver(passwordSchema)
     })
 
     return (
         <>
+            <WindowLoadingBar visible={flowStatus.submittingFlow} />
+            <div className="window-header">
+                {typeof (PublicKeyCredential) != "undefined"
+                    ?
+                    <h2>Sign In Method</h2>
+                    :
+                    <h2>Create a Password</h2>
+                }
+                <div id="step--container">
+                    <BackButton
+                        withText={false}
+                        onClick={() => setUserInfo({})}
+                    />
+                    <h4>Step 2 of 4</h4>
+                </div>
+            </div>
             <form
                 action={flow.ui.action}
                 method={flow.ui.method}
                 onSubmit={handleSubmit((data, e) => submit(e))}
                 id="authentication-form"
             >
-                <FormError msg={responseError} />
+                <div className="signup-error-container">
+                    <FormError msg={flowStatus.errMsg} />
+                </div>
                 <label htmlFor="password">Password</label>
                 <PasswordInput
                     name='password'
                     placeholder="Enter a password..."
-                    register={register}
-                    pwdVisible={pwdVisible}
-                    setPwdVisible={setPwdVisible}
-                    trigger={trigger}
+                    {...register('password')}
                 />
-                {errors.password?.type !== 'required' &&
-                    <FormError msg={errors.password?.message} />}
-                <CsrfToken csrf={csrf} />
+                <FormError msg={errors.password?.message} />
+                <CsrfToken csrf={flow?.csrf_token} />
                 <input type='hidden' name='traits.email' value={userInfo.email} />
                 <input type='hidden' name='traits.name.first' value={userInfo.firstName} />
                 <input type='hidden' name='traits.name.last' value={userInfo.lastName} />
-                <GrnWideButton name="method" value="password" type="submit">
+                <GrnWideButton id="continue-button" name="method" value="password" type="submit">
                     Create
                 </GrnWideButton>
             </form >
@@ -192,84 +169,59 @@ const AuthenticationForm = () => {
     )
 }
 
-const AuthSelectionWindow = () => {
-    const { registering } = useContext(RegisterFlowContext)
-
-    return (
-        <>
-            <WindowLoadingBar visible={registering} />
-            <div className="window-header">
-                {typeof (PublicKeyCredential) != "undefined"
-                    ?
-                    <h2>Sign In Method</h2>
-                    :
-                    <h2>Create a Password</h2>
-                }
-                <h4>Step 2 of 4</h4>
-            </div>
-            <AuthenticationForm />
-        </>
+function SignUp() {
+    const navigate = useNavigate()
+    const { flow, fetchFlow, submit, flowStatus } = useFlow(
+        useLazyGetRegistrationFlowQuery,
+        useCompleteRegistrationFlowMutation,
+        'registration'
     )
-}
+    const { isCompleteSuccess, errId } = flowStatus
 
-function SignUpFlow() {
-    const { createFlow, getFlow } = useContext(RegisterFlowContext)
-    const { userInfo } = useContext(userInfoContext)
     const [searchParams] = useSearchParams()
-    const [loaded, setLoaded] = useState(false)
+    const [userInfo, setUserInfo] = useState({})
+
+    useEffect(() => { fetchFlow() }, [])
 
     useEffect(() => {
-        // we might redirect to this page after the flow is initialized,
-        // so we check for the flowId in the URL
-        const flowId = searchParams.get("flow")
-        // Get new flow if it's expired
-        flowId ? getFlow(flowId).catch(createFlow) : createFlow()
-    }, [])
+        if (isCompleteSuccess) {
+            navigate('/verification')
+        }
+    }, [isCompleteSuccess])
 
-    useEffect(() => { setLoaded(true) }, [])
+    // If the user is already logged in, redirect to the login redirect URL
+    useEffect(() => {
+        if (errId === 'session_already_available') {
+            window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+        }
+    }, [errId])
+
 
     return (
         <>
             <AnimatePresence mode="wait">
                 {Object.keys(userInfo).length === 0
                     ?
-                    <motion.div
-                        className='window'
-                        key="sign-up"
-                        initial={{ opacity: 0, x: !loaded ? 0 : -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -30 }}
-                        transition={{ ease: "easeInOut", duration: 0.2 }}
-                    >
-                        <UserInfoWindow />
-                    </motion.div>
+                    <SlideMotionDiv className='window' key="sign-up" first={Boolean(flow)}>
+                        <UserInfoWindow
+                            setUserInfo={setUserInfo}
+                            flow={flow}
+                            submit={submit}
+                            flowStatus={flowStatus}
+                        />
+                    </SlideMotionDiv>
                     :
-                    <motion.div
-                        className='window'
-                        key="authenticate"
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 30 }}
-                        transition={{ ease: "easeInOut", duration: 0.2 }}
-                    >
-                        <AuthSelectionWindow />
-                    </motion.div>
+                    <SlideMotionDiv className='window' key="authenticate" last>
+                        <AuthSelectionWindow
+                            flow={flow}
+                            submit={submit}
+                            flowStatus={flowStatus}
+                            userInfo={userInfo}
+                            setUserInfo={setUserInfo}
+                        />
+                    </SlideMotionDiv>
                 }
             </AnimatePresence >
-        </>
-    )
-}
-
-const SignUp = () => {
-    const [searchParams] = useSearchParams()
-
-    return (
-        <>
-            <RegisterFlowContextProvider>
-                <UserInfoContextProvider>
-                    <SignUpFlow />
-                </UserInfoContextProvider>
-            </RegisterFlowContextProvider>
             {searchParams.get('help') === 'true' && <PasskeyInfoModal />}
         </>
     )

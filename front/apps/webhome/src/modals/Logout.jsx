@@ -5,7 +5,6 @@ import { withSmallModal } from '@ledget/shared-utils'
 import { SecondaryButton, GreenSubmitButton } from '@ledget/shared-ui'
 import { useGetLogoutFlowQuery, useLazyGetUpdatedLogoutFlowQuery } from '@features/orySlice'
 
-
 function Logout(props) {
     const [quedLogout, setQuedLogout] = useState(false)
     const [seconds, setSeconds] = useState(30)

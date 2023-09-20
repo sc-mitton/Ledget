@@ -12,6 +12,7 @@ private_key = settings.OATHKEEPER_PRIVATE_KEY
 
 payload = {
     'session': {
+        'authenticator_assurance_level': 'aal1',
         'identity': {
             'id': str(uuid.uuid4()),
             'traits': {
@@ -33,6 +34,7 @@ payload = {
 
 payload2 = {
     'session': {
+        'authenticator_assurance_level': 'aal1',
         'identity': {
             'id': str(uuid.uuid4()),
             'traits': {

@@ -15,4 +15,6 @@ export const {
     useLazyGetUpdatedLogoutFlowQuery,
     useLazyGetRegistrationFlowQuery,
     useCompleteRegistrationFlowMutation,
+    useLazyGetVerificationFlowQuery,
+    useCompleteVerificationFlowMutation,
 } = orySlice

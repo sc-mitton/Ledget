@@ -64,7 +64,7 @@ class BudgetViewTests(ViewTestsMixin):
             )
             i += 1
 
-    @timeit
+    # @timeit
     def test_bill_creation(self):
         payload = single_bill_creation_payload
 

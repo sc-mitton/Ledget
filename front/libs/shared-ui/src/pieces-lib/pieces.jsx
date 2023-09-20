@@ -75,13 +75,25 @@ export const FormError = (props) => {
 
     return (
         <>
-            {props.msg && !props.msg?.includes('required') &&
+            {(typeof props.msg === 'string')
+                ?
+                props.msg && !props.msg?.includes('required') &&
                 <div className="form-error--container">
                     <Alert2 />
                     <div className="form-error">
                         {renderLines(props.msg)}
                     </div>
                 </div>
+                :
+                props.msg?.map((msg, index) => (
+                    !msg.includes('required') &&
+                    <div className="form-error--container" key={index}>
+                        <Alert2 />
+                        <div className="form-error">
+                            {renderLines(msg)}
+                        </div>
+                    </div>
+                ))
             }
         </>
     )

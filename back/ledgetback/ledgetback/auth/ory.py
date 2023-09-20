@@ -10,7 +10,7 @@ from jwt.exceptions import (
 )
 from jwt import decode
 
-from .errors import InvalidAuthHeaderError, MissingDeviceTokenError
+from .errors import MissingDeviceTokenError
 
 
 logger = logging.getLogger('ledget')
@@ -25,9 +25,14 @@ class OryBackend(BaseAuthentication):
         set the user in the request. If the token is absent, invalid,
         or expired, return None.
         """
+        header = request.META.get('HTTP_AUTHORIZATION', '').split(' ')
+        auth_header_keys = [header[i].lower()
+                            for i in range(0, len(header), 2)]
+        if 'bearer' not in auth_header_keys:
+            return None
 
         try:
-            token = self.get_encoded_token(request)
+            token = header[auth_header_keys.index('bearer')*2 + 1]
             decoded_jwt = self.get_decoded_jwt(token)
             user = self.get_user(decoded_jwt)
         except (InvalidSignatureError, ExpiredSignatureError,
@@ -50,20 +55,7 @@ class OryBackend(BaseAuthentication):
         if user.device_set.filter(token=device_token).exists():
             return
         else:
-            raise MissingDeviceTokenError()
-
-    def get_encoded_token(self, request) -> str:
-
-        header = request.META.get('HTTP_AUTHORIZATION', '').split(' ')
-        auth_header_keys = [header[i].lower()
-                            for i in range(0, len(header), 2)]
-
-        if 'bearer' not in auth_header_keys:
-            raise InvalidAuthHeaderError(
-                "Authorization header is missing or invalid."
-            )
-
-        return header[auth_header_keys.index('bearer')*2 + 1]
+            raise MissingDeviceTokenError
 
     def get_decoded_jwt(self, token: str) -> dict | None:
         """Validate the token against the JWK from Oathkeeper and

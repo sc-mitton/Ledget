@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useContext } from "react"
+import React, { useRef, useState, useEffect } from "react"
 
 import { Link } from "react-router-dom"
 import { AnimatePresence } from "framer-motion"
@@ -11,7 +11,6 @@ import SocialAuth from "./SocialAuth"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces"
-import { useLoginFlow } from "@context/Flow"
 import {
     GrnWideButton,
     Checkbox,
@@ -22,6 +21,8 @@ import {
     PlainTextInput,
     JiggleDiv
 } from "@ledget/shared-ui"
+import { useFlow } from "@ledget/ory-sdk"
+import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 
 
 const schema = object().shape({
@@ -81,7 +82,7 @@ const EmailForm = ({ flow, setEmail }) => {
     )
 }
 
-const AuthenticationForm = ({ email, flow, onSubmit, responseError }) => {
+const AuthenticationForm = ({ email, flow, onSubmit, errMsg }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -103,7 +104,7 @@ const AuthenticationForm = ({ email, flow, onSubmit, responseError }) => {
                 onSubmit={handleSubmit}
                 id="authentication-form"
             >
-                <JiggleDiv jiggle={responseError}>
+                <JiggleDiv jiggle={errMsg}>
                     <PasswordInput ref={pwdRef} />
                 </JiggleDiv>
                 <div id="forgot-password-container">
@@ -123,15 +124,19 @@ const AuthenticationForm = ({ email, flow, onSubmit, responseError }) => {
 
 const Login = () => {
     const [email, setEmail] = useState(null)
+    const { flow, fetchFlow, submit, flowStatus } = useFlow(
+        useLazyGetLoginFlowQuery,
+        useCompleteLoginFlowMutation,
+        'login'
+    )
+
     const {
-        flow,
-        fetchFlow,
         isFetchingFlow,
-        submit,
         submittingFlow,
         isCompleteSuccess,
-        responseError
-    } = useLoginFlow()
+        errMsg,
+        errId
+    } = flowStatus
 
     useEffect(() => {
         fetchFlow({ aal: 'aal1', refresh: true })
@@ -139,16 +144,17 @@ const Login = () => {
 
     // Handle success
     useEffect(() => {
-        if (isCompleteSuccess) {
+        if (isCompleteSuccess || errId === 'session_already_available') {
             window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
         }
     }, [isCompleteSuccess])
+
 
     return (
         <AnimatePresence mode="wait">
             {email === null
                 ?
-                <SlideMotionDiv className='window' key="initial" first>
+                <SlideMotionDiv className='window' key="initial" first={Boolean(flow)}>
                     <div className="window-header">
                         <h2>Sign in to Ledget</h2>
                     </div>
@@ -156,7 +162,7 @@ const Login = () => {
                         setEmail={setEmail}
                         flow={flow}
                         onSubmit={submit}
-                        responseError={responseError}
+                        errMsg={errMsg}
                     />
                     <SocialAuth
                         flow={flow}
@@ -180,7 +186,7 @@ const Login = () => {
                             </BackButton>
                         </div>
                     </div>
-                    <AuthenticationForm flow={flow} email={email} />
+                    <AuthenticationForm flow={flow} email={email} onSubmit={submit} />
                 </SlideMotionDiv>
             }
         </AnimatePresence>
