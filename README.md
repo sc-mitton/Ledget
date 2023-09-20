@@ -136,7 +136,7 @@ After authenticating with Ory, the client will POST to /device. During the middl
 set in the cookies, it will be matched with the user's device it belongs to (if there is any). Then the
 flow will be followed
 
-![alt-text](https://github.com/sc-mitton/Ledget/blob/assets/flowchart.png)
+![alt-text](https://github.com/sc-mitton/Ledget/blob/assets/diagram1.png)
 
 2. Now when when requests come through, in ory.py the request will check to see if
 there is a valida token for the remembered device or that the session's aal is aal2
@@ -154,4 +154,4 @@ be invalidated. This will be also be equivalent to a logout because then the use
 redirected to the logout page the next time they try and go to the page on that device.
 All it entails is removing the device from the device table in the db.
 
-![alt-text](https://github.com/sc-mitton/Ledget/blob/assets/loginFlow.png)
+![alt-text](https://github.com/sc-mitton/Ledget/blob/assets/diagram2.png)
