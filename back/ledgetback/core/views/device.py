@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.exceptions import MethodNotAllowed
-from rest_framework.status import HTTP_200_OK
+from rest_framework.status import HTTP_200_OK, HTTP_422_UNPROCESSABLE_ENTITY
 from rest_framework.permissions import IsAuthenticated
 
 from core.serializers import DeviceSerializer
@@ -26,11 +26,12 @@ class DeviceViewSet(ModelViewSet):
     serializer_class = DeviceSerializer
 
     def create(self, request, *args, **kwargs):
-        device_has_been_aal2 = request.user.device.aal == 'aal2'
+        device_has_been_aal2 = request.user.device \
+                               and request.user.device.aal == 'aal2'
         user_has_mfa = request.user.authenticator_enabled
 
         if not device_has_been_aal2 and user_has_mfa:
-            return Response({'data': {'messageId': 'needs_aal2'}})
+            return Response(status=HTTP_422_UNPROCESSABLE_ENTITY)
         elif not request.user.device:
             instance = self.add_device(request, *args, **kwargs)
         else:
