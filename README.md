@@ -131,10 +131,14 @@ how to know when aal1 is ok to except so that we don't force the user to authent
 multi factor every single time.
 
 Solution:
-1. When a user logs in on a new device, they will be force to authenticate with aal2.
-They will then have what's concidered a privileged session, which will allow the client
-to get a JWT from the server and establish that the device has authenticated with aal2
-at some point, and in the future will not be forced to authenticated with aal2.
+1. When a user logs in on a new device, they will initially sign to get aal1 (via password, oidc, etc.).
+After authenticating with Ory, the client will POST to /device. During the middleware, if the token is
+set in the cookies, it will be matched with the user's device it belongs to (if there is any).
+
+
+
+
+
 2. Then when requests come through, in ory.py the request will check to see if
 there is a valida token for the remembered device or that the session's aal is aal2
 3. This ensures against all scenarios:
