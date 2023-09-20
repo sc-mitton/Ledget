@@ -135,7 +135,7 @@ Solution:
 After authenticating with Ory, the client will POST to /device. During the middleware, if the token is
 set in the cookies, it will be matched with the user's device it belongs to (if there is any).
 
-![alt-text](https://github.com/sc-mitton/Ledget/assets/flowchart1.png)
+![alt-text](https://github.com/sc-mitton/Ledget/assets/flowchart.png)
 
 2. Then when requests come through, in ory.py the request will check to see if
 there is a valida token for the remembered device or that the session's aal is aal2
