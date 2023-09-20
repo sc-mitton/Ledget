@@ -131,27 +131,26 @@ how to know when aal1 is ok to except so that we don't force the user to authent
 multi factor every single time.
 
 Solution:
-1. When a user logs in on a new device, they will initially sign to get aal1 (via password, oidc, etc.).
+1. When a user logs in on a new device, they will initially sign in to get aal1 (via password, oidc, etc.).
 After authenticating with Ory, the client will POST to /device. During the middleware, if the token is
-set in the cookies, it will be matched with the user's device it belongs to (if there is any).
+set in the cookies, it will be matched with the user's device it belongs to (if there is any). Then the
+flow will be followed
 
 ![alt-text](https://github.com/sc-mitton/Ledget/assets/flowchart.png)
 
-2. Then when requests come through, in ory.py the request will check to see if
+2. Now when when requests come through, in ory.py the request will check to see if
 there is a valida token for the remembered device or that the session's aal is aal2
 3. This ensures against all scenarios:
     - When the device is recognized, the user will only be forced to authenticate with
       aal1 since they will already have a token set.
-    - In the event a jwt isn't set, aal2 will be required and upon authentication,
-      the client will call a special endpoint requiring aal2, where a jwt will be issued
-    - If the client tries to access an api endpoint without a jwt, access will be denied and
-      they'll be redirected to the login page. This is done in the react private route when
-      /user/me is called. A user wont be returned without the jwt and session cookie,
-      and react redirects the user to the login page
+    - In the event a token isn't set, aal2 will be required and upon authentication,
+      the client will call a special endpoint requiring aal2, where a token will be set
+    - If the client tries to access an api endpoint without a token, and they have mfa enabled,
+      access will be denied and they'll be redirected to the login page. The redirect is done in the
+      react private route when /user/me is called.
 4. The downside, is that devices will need to be stored in the database. When the user
 wants to forget (and also logout) a device, the token related to the device just needs to
 be invalidated. This will be also be equivalent to a logout because then the user will be
 redirected to the logout page the next time they try and go to the page on that device.
 All it entails is removing the device from the device table in the db.
-5. Note: aal2 will be required for all users regardless. They'll be asked for the second
-authentication method via email or their authenticator app if they've set it up.
+
