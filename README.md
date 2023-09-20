@@ -153,3 +153,5 @@ wants to forget (and also logout) a device, the token related to the device just
 be invalidated. This will be also be equivalent to a logout because then the user will be
 redirected to the logout page the next time they try and go to the page on that device.
 All it entails is removing the device from the device table in the db.
+
+![alt-text](https://github.com/sc-mitton/Ledget/blob/assets/loginFlow.png)
