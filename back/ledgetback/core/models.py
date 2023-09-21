@@ -120,7 +120,7 @@ class User(models.Model):
     @property
     def mfa_method(self):
         if self.authenticator_enabled:
-            return 'authenticator'
+            return 'totp'
         else:
             return None
 

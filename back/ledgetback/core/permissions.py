@@ -18,11 +18,12 @@ class IsAuthenticated(BasePermission):
                 or not request.user.is_authenticated:
             return False
 
-        aal = getattr(request.user.device, 'aal', None)
+        device_aal = getattr(request.user.device, 'aal', None)
+        session_aal = getattr(request.user, 'session_aal', None)
         if request.user.mfa_method:
-            return aal == 'aal2'
+            return device_aal == 'aal2' or session_aal == 'aal2'
         else:
-            return aal == 'aal1'
+            return device_aal == 'aal1'
 
 
 class IsAuthedVerifiedSubscriber(IsAuthenticated):

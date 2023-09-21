@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import './styles/Authenticator.css'
 import { useCompleteSettingsFlowMutation } from '@features/orySlice'
-import { useUpdateUserMutation } from '@features/userSlice'
+import { useUpdateUserMutation, useAddRememberedDeviceMutation } from '@features/userSlice'
 import {
     BackButton,
     GreenSubmitWithArrow,
@@ -105,12 +105,15 @@ const Authenticator = (props) => {
         isError: submitError
     }] = useCompleteSettingsFlowMutation()
     const [updateUser] = useUpdateUserMutation()
+    const [addRememberedDevice] = useAddRememberedDeviceMutation()
 
     // Handle successful flow completion
+    // Update the user's mfa settings and the device token cookie
     useEffect(() => {
         let timeout
         if (completedFlow) {
             updateUser({ data: { authenticator_enabled: true } })
+            addRememberedDevice()
             timeout = setTimeout(() => {
                 props.setVisible(false)
             }, 1000)

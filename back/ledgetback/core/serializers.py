@@ -126,7 +126,8 @@ class DeviceSerializer(serializers.ModelSerializer):
             'user_id': str(user.id),
             'id': user.session_devices[0]['id'],
             'user_agent': user.session_devices[0]['user_agent'],
-            'location': user.session_devices[0]['location']
+            'location': user.session_devices[0]['location'],
+            'aal': user.session_aal,
         }
 
     def create(self, validated_data):
@@ -137,7 +138,6 @@ class DeviceSerializer(serializers.ModelSerializer):
 
         instance = Device.objects.create(
             token=hash_token,
-            aal=user.session_aal,
             **kwargs
         )
         return instance

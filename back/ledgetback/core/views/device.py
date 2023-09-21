@@ -3,9 +3,10 @@ from rest_framework.response import Response
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.status import HTTP_200_OK, HTTP_422_UNPROCESSABLE_ENTITY
 from rest_framework.routers import Route, SimpleRouter
+from rest_framework.permissions import IsAuthenticated as CoreIsAuthenticated
 
 from core.serializers import DeviceSerializer
-from core.permissions import IsObjectOwner, IsAuthenticated
+from core.permissions import IsObjectOwner
 from core.models import Device
 
 
@@ -43,17 +44,19 @@ class DeviceViewSet(ModelViewSet):
     '''
     Device viewset for handling the remembered devices of the user.
     '''
-    permission_classes = [IsAuthenticated, IsObjectOwner]
+    permission_classes = [CoreIsAuthenticated, IsObjectOwner]
     serializer_class = DeviceSerializer
 
     def create(self, request, *args, **kwargs):
-        device_has_been_aal2 = request.user.device \
-                               and request.user.device.aal == 'aal2'
+        device_not_aal2 = not request.user.device \
+                               or request.user.device.aal != 'aal2'
+        session_is_aal1 = request.user.session_aal == 'aal1'
         mfa_enabled = bool(request.user.mfa_method)
 
-        if not device_has_been_aal2 and mfa_enabled:
+        print(device_not_aal2, session_is_aal1, mfa_enabled)
+        if (device_not_aal2 and session_is_aal1) and mfa_enabled:
             return Response(
-                {'error': f'{request.user_mfa_method}'},
+                {'error': f'{request.user.mfa_method}'},
                 HTTP_422_UNPROCESSABLE_ENTITY
             )
         elif not request.user.device:

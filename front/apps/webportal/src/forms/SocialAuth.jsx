@@ -13,6 +13,7 @@ function SocialAuth({ flow, submit, csrf }) {
         setSocialNodes(flow && flow.ui.nodes.filter(node => node.group === 'oidc'))
     }, [flow])
 
+
     const FacebookButton = (props) => (
         <FacebookLoginButton {...props} />
     )
@@ -62,6 +63,7 @@ function SocialAuth({ flow, submit, csrf }) {
                 action={flow && flow.ui.action}
                 method={flow && flow.ui.method}
                 id="social-login-form"
+                onSubmit={submit}
             >
                 {socialNodes ?
                     <SocialLoginButtons />

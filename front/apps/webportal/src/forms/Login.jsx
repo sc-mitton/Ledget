@@ -5,6 +5,7 @@ import { AnimatePresence } from "framer-motion"
 import { object, string } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
+import { useSearchParams } from "react-router-dom"
 
 import './style/Login.css'
 import SocialAuth from "./SocialAuth"
@@ -30,7 +31,7 @@ const schema = object().shape({
     email: string().email("Invalid email address"),
 })
 
-const EmailForm = ({ flow, setEmail }) => {
+const EmailForm = ({ flow, setEmail, socialSubmit }) => {
     const { register, handleSubmit, formState: { errors } } =
         useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
     const { ref, ...rest } = register('email')
@@ -56,77 +57,142 @@ const EmailForm = ({ flow, setEmail }) => {
     }
 
     return (
-        <form onSubmit={handleSubmit((data, e) => submit(e))} className="login-form">
-            <div>
-                <PlainTextInput
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    {...rest}
-                    ref={(e) => {
-                        ref(e)
-                        emailRef.current = e
-                    }}
-                />
-                {errors['email'] && <FormError msg={errors['email'].message} />}
-                <div id="remember-me-checkbox-container">
-                    <Checkbox
-                        id='remember'
-                        label='Remember me'
-                        name='remember'
-                        ref={rememberRef}
-                    />
-                </div>
-                <GrnWideButton>Continue</GrnWideButton>
-            </div>
-        </form >
-    )
-}
-
-const AuthenticationForm = ({ email, flow, onSubmit, errMsg }) => {
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if (pwdRef.current.value === '') {
-            pwdRef.current.focus()
-            return
-        }
-        onSubmit(e)
-    }
-
-    const pwdRef = useRef()
-    useEffect(() => { pwdRef.current.focus() }, [])
-
-    return (
         <>
-            <form
-                action={flow?.ui.action}
-                method={flow?.ui.method}
-                onSubmit={handleSubmit}
-                id="authentication-form"
-            >
-                {errMsg && <div style={{ marginBottom: '12px' }}>
-                    <FormError msg={errMsg} />
-                </div>}
-                <PasswordInput ref={pwdRef} />
-                <div id="forgot-password-container">
-                    <Link to="/recovery" tabIndex={0}>Forgot Password?</Link>
+            <div className="window-header">
+                <h2>Sign in to Ledget</h2>
+            </div>
+            <form onSubmit={handleSubmit((data, e) => submit(e))} className="login-form">
+                <div>
+                    <PlainTextInput
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        {...rest}
+                        ref={(e) => {
+                            ref(e)
+                            emailRef.current = e
+                        }}
+                    />
+                    {errors['email'] && <FormError msg={errors['email'].message} />}
+                    <div id="remember-me-checkbox-container">
+                        <Checkbox
+                            id='remember'
+                            label='Remember me'
+                            name='remember'
+                            ref={rememberRef}
+                        />
+                    </div>
+                    <GrnWideButton>Continue</GrnWideButton>
                 </div>
-                <GrnWideButton name="method" value="password">
-                    Sign In
-                </GrnWideButton>
-                {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
-
-                <input type="hidden" name="identifier" value={email || ''} />
-                <CsrfToken csrf={flow?.csrf_token} />
             </form >
+            <SocialAuth flow={flow} submit={socialSubmit} csrf={flow?.csrf_token} />
         </>
     )
 }
 
+const AuthenticatorMfa = () => (
+    <>
+        <h3>Enter your authenticator code</h3>
+        <div style={{ margin: '20px 0' }}>
+            <PlainTextInput name="totp" placeholder="Code" />
+        </div>
+        <GrnWideButton name="method" value='totp'>
+            Submit
+        </GrnWideButton>
+    </>
+)
+
+const EmailMfa = () => (
+    <div>Hello World</div>
+)
+
+const Password = React.forwardRef((props, ref) => {
+    useEffect(() => { ref.current?.focus() }, [])
+
+    return (
+        <>
+            <PasswordInput ref={ref} />
+            <div id="forgot-password-container">
+                <Link to="/recovery" tabIndex={0}>Forgot Password?</Link>
+            </div>
+            <GrnWideButton name="method" value="password">
+                Sign In
+            </GrnWideButton>
+            {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
+        </>
+    )
+})
+
+const AuthenticationForm = (props) => {
+    const [searchParams] = useSearchParams()
+    const { flow, fetchFlow, errMsg, email, setEmail, submit } = props
+    const pwdRef = useRef(null)
+
+    useEffect(() => {
+        if (searchParams.get('mfa') === 'totp') {
+            fetchFlow({ aal: 'aal2', refresh: true })
+        } else {
+            console.log('handle email / phone mfa')
+        }
+    }, [searchParams.get('mfa')])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (pwdRef.current?.value === '') {
+            pwdRef.current?.focus()
+            return
+        }
+
+        if (searchParams.get('aal')) {
+            submit(e)
+        } else {
+            console.log('handle submitting email / phone mfa')
+        }
+    }
+
+    return (
+        <form
+            action={flow?.ui.action}
+            method={flow?.ui.method}
+            onSubmit={handleSubmit}
+        >
+            <div id="email-container">
+                <h3>Welcome Back</h3>
+                <BackButton withText={false} onClick={() => { setEmail(null) }}>
+                    {email}
+                </BackButton>
+            </div>
+            {errMsg &&
+                <div style={{ marginBottom: '12px' }}>
+                    <FormError msg={errMsg} />
+                </div>
+            }
+            <AnimatePresence mode="wait">
+                {searchParams.get('aal') === 'aal1'
+                    ?
+                    <>
+                        <SlideMotionDiv key="aal1" first={searchParams.get('aal') === 'aal2'}>
+                            <Password ref={pwdRef} />
+                        </SlideMotionDiv>
+                    </>
+                    :
+                    <>
+                        <SlideMotionDiv key="aal2" last>
+                            {searchParams.get('mfa') === 'totp' && <AuthenticatorMfa />}
+                            {searchParams.get('mfa') === 'email' && <EmailMfa />}
+                        </SlideMotionDiv>
+                    </>
+                }
+            </AnimatePresence>
+            <input type="hidden" name="identifier" value={email || ''} />
+            <CsrfToken csrf={flow?.csrf_token} />
+        </form>
+    )
+}
+
 const Login = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
     const [email, setEmail] = useState(null)
-    const [aal2Method, setAal2Method] = useState('')
     const [submitting, setSubmitting] = useState(false)
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
@@ -144,7 +210,9 @@ const Login = () => {
     } = flowStatus
 
     useEffect(() => {
-        fetchFlow({ aal: 'aal1', refresh: true })
+        if (searchParams.get('aal') !== 'aal2') {
+            fetchFlow({ aal: 'aal1', refresh: true })
+        }
     }, [])
 
     useEffect(() => {
@@ -159,7 +227,11 @@ const Login = () => {
                 .then((res) => {
                     window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
                 }).catch((err) => {
-                    err.response.status === 422 && setAal2Method(err.response.error.method)
+                    if (err.response.status === 422) {
+                        setSearchParams({ mfa: err.response.data.error })
+                    } else {
+                        console.warn(err)
+                    }
                 }).finally(() => {
                     setSubmitting(false)
                 })
@@ -171,30 +243,21 @@ const Login = () => {
             {email === null
                 ?
                 <SlideMotionDiv className='window' key="initial" first={Boolean(flow)}>
-                    <div className="window-header">
-                        <h2>Sign in to Ledget</h2>
-                    </div>
-                    <EmailForm setEmail={setEmail} flow={flow} onSubmit={submit} />
-                    <SocialAuth flow={flow} submit={submit} csrf={flow?.csrf_token} />
+                    <EmailForm setEmail={setEmail} flow={flow} socialSubmit={submit} />
                     <WindowLoadingBar visible={isFetchingFlow} />
                 </SlideMotionDiv>
                 :
                 <JiggleDiv jiggle={isCompleteError} className="wrapper-window">
                     <SlideMotionDiv className='nested-window' key="authenticate" last>
+                        <AuthenticationForm
+                            flow={flow}
+                            submit={submit}
+                            fetchFlow={fetchFlow}
+                            errMsg={errMsg}
+                            email={email}
+                            setEmail={setEmail}
+                        />
                         <WindowLoadingBar visible={submitting || isFetchingFlow} />
-                        <div id="email-container">
-                            <h3>Welcome Back</h3>
-                            <div>
-                                <BackButton
-                                    withText={false}
-                                    onClick={() => { setEmail(null) }}
-                                    style={{ marginTop: '1px', marginRight: '6px' }}
-                                >
-                                    <span>{`${email}`}</span>
-                                </BackButton>
-                            </div>
-                        </div>
-                        <AuthenticationForm flow={flow} email={email} onSubmit={submit} errMsg={errMsg} />
                     </SlideMotionDiv>
                 </JiggleDiv>
             }

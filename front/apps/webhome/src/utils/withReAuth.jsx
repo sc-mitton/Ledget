@@ -65,7 +65,7 @@ const Totp = ({ isCompleteError }) => {
             </div>
             <div style={row2Style}>
                 <JiggleMotionDiv jiggle={isCompleteError}>
-                    <PlainTextInput ref={ref} name="totp_code" placeholder='Code...' required />
+                    <PlainTextInput ref={ref} name="totp_code" placeholder='Code' required />
                 </JiggleMotionDiv>
                 {errMsg && <ErrorFetchingFlow />}
             </div>

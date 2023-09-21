@@ -25,7 +25,6 @@
 }
 
 #email-container button:hover {
-    color: var(--m-green);
     transition: all 0.3s ease-out;
     opacity: 1;
 }
@@ -40,11 +39,18 @@
 #forgot-password-container {
     margin-left: 6px;
     margin-bottom: 6px;
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#forgot-password-container * {
+    font-size: 14px;
 }
 
 #forgot-password-container a {
-    font-size: 14px;
-    font-weight: 400;
+    font-weight: 500;
     color: var(--m-text-gray);
 }
 

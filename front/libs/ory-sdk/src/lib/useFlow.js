@@ -160,8 +160,8 @@ function useFlow(query, mutation, flowType) {
                 for (const key of searchParams.keys()) {
                     params[key] = searchParams.get(key)
                 }
-
                 getFlow({ params: params })
+                setErrMsg("Please try again.")
                 break
             default:
                 console.error(error)
