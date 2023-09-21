@@ -63,14 +63,19 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
-    id: 'device',
+    id: 'devices',
     match: {
-      methods: ['POST'],
-      url: base_url + '/device',
+      methods: ['GET', 'POST'],
+      url: base_url + '/devices',
     },
-    authenticators: [anonymous_authenticator],
-    mutators: [noop_mutator],
-    authorizer: allow_authorizer,
+  },
+  GenericAuthedBase
+  {
+    id: 'delete_device',
+    match: {
+      methods: ['DELETE'],
+      url: base_url + '/devices/<[a-zA-Z0-9]+>',
+    },
   },
   GenericAuthedBase
   {

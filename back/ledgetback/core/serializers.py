@@ -113,39 +113,27 @@ class DeviceSerializer(serializers.ModelSerializer):
         model = Device
         exclude = ('user', 'token', )
 
-    def get_device_data(self, user):
-        try:
-            data = {
-                'user_agent': user.session_devices[0]['user_agent'],
-                'location': user.session_devices[0]['location'],
-            }
-        except KeyError:
-            raise serializers.ValidationError('Missing device information.')
-
-        return data
-
     def get_hash_token(self, user):
-        kwargs = {
-            'user': user,
-            'id': user.session_devices[0]['id'],
-            **self.get_device_data(user)
-        }
-
         # create sha256 hash of device id, user, user_agent,
         # location, and secret key
-        hash_value = hashlib.sha256((
-            kwargs.values(),
-            settings.SECRET_KEY
-        ).encode('utf-8')).hexdigest()
 
+        unhashed = ''.join([
+            str(user.id),
+            user.session_devices[0]['id'],
+            user.session_devices[0]['user_agent'],
+            user.session_devices[0]['location'],
+            settings.SECRET_KEY
+        ])
+
+        hash_value = hashlib.sha256((unhashed).encode('utf-8')).hexdigest()
         return hash_value
 
     def create(self, validated_data):
-        user = self.context['request'].user.id
-        hash_value = self.get_hash_token(user)
+        user = self.context['request'].user
+        hash_token = self.get_hash_token(user)
 
         instance = Device.objects.create(
-            hash=hash_value,
+            token=hash_token,
             user=user,
             id=user.session_devices[0]['id'],
             aal=user.authentication_level,

@@ -48,22 +48,54 @@
    {
       "authenticators": [
          {
-            "handler": "anonymous"
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
          }
       ],
       "authorizer": {
          "handler": "allow"
       },
-      "id": "device_token_aal",
+      "id": "devices",
       "match": {
          "methods": [
-            "GET"
+            "GET",
+            "POST"
          ],
-         "url": "https://localhost/api/v1/device-aal"
+         "url": "https://localhost/api/v1/devices"
       },
       "mutators": [
          {
-            "handler": "noop"
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "delete_device",
+      "match": {
+         "methods": [
+            "DELETE"
+         ],
+         "url": "https://localhost/api/v1/devices/<[a-zA-Z0-9]+>"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
          }
       ],
       "version": "v0.36.0-beta.4"

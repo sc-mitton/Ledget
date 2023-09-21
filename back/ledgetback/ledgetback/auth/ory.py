@@ -26,6 +26,7 @@ class OryBackend(BaseAuthentication):
         header = request.META.get('HTTP_AUTHORIZATION', '').split(' ')
         auth_header_keys = [header[i].lower()
                             for i in range(0, len(header), 2)]
+
         if 'bearer' not in auth_header_keys:
             return None
 
@@ -55,7 +56,6 @@ class OryBackend(BaseAuthentication):
 
     def get_user(self, request, decoded_token: dict):
         """Return the user from the decoded token."""
-
         device_token = request.COOKIES.get('ledget_device_token')
         identity = decoded_token['session']['identity']
 
@@ -63,14 +63,14 @@ class OryBackend(BaseAuthentication):
                                        .prefetch_related('device_set') \
                                        .get(pk=identity['id'])
 
-        user.device = user.device_set.filter(pk=device_token).first()
+        user.device = user.device_set.filter(token=device_token).first()
         user.authentication_level = \
             decoded_token['session']['authenticator_assurance_level']
         user.traits = identity.get('traits', {})
         user.is_verified = identity.get('verifiable_addresses', [{}])[0] \
                                    .get('verified', False)
 
-        if request.path == '/device':
-            user.session_devices = identity.get('devices', [])
+        if request.path.endswith('devices'):
+            user.session_devices = decoded_token['session']['devices']
 
         return user

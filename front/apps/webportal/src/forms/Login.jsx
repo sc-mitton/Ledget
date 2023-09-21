@@ -126,7 +126,8 @@ const AuthenticationForm = ({ email, flow, onSubmit, errMsg }) => {
 
 const Login = () => {
     const [email, setEmail] = useState(null)
-    const [deviceTokenAal, setDeviceTokenAal] = useState(false)
+    const [aal2Method, setAal2Method] = useState('')
+    const [submitting, setSubmitting] = useState(false)
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
         useCompleteLoginFlowMutation,
@@ -146,20 +147,24 @@ const Login = () => {
         fetchFlow({ aal: 'aal1', refresh: true })
     }, [])
 
+    useEffect(() => {
+        submittingFlow && setSubmitting(true)
+        isCompleteError && setSubmitting(false)
+    }, [submittingFlow, isCompleteError])
+
     // Handle success
     useEffect(() => {
         if (isCompleteSuccess || errId === 'session_already_available') {
-            window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+            ledgetapi.post('/devices')
+                .then((res) => {
+                    window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+                }).catch((err) => {
+                    err.response.status === 422 && setAal2Method(err.response.error.method)
+                }).finally(() => {
+                    setSubmitting(false)
+                })
         }
     }, [isCompleteSuccess])
-
-    useEffect(() => {
-        ledgetapi.get('/device-aal').then((res) => {
-            setDeviceTokenAal(res.data.aal)
-        }).catch((err) => {
-            console.warn('error getting device token aal')
-        })
-    }, [])
 
     return (
         <AnimatePresence mode="wait">
@@ -176,7 +181,7 @@ const Login = () => {
                 :
                 <JiggleDiv jiggle={isCompleteError} className="wrapper-window">
                     <SlideMotionDiv className='nested-window' key="authenticate" last>
-                        <WindowLoadingBar visible={submittingFlow || isFetchingFlow} />
+                        <WindowLoadingBar visible={submitting || isFetchingFlow} />
                         <div id="email-container">
                             <h3>Welcome Back</h3>
                             <div>

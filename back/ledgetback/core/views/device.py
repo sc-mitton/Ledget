@@ -3,8 +3,11 @@ from rest_framework.response import Response
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.status import HTTP_200_OK, HTTP_422_UNPROCESSABLE_ENTITY
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.routers import Route, SimpleRouter
 
 from core.serializers import DeviceSerializer
+from core.permissions import IsObjectOwner
+from core.models import Device
 
 
 def put_patch_not_allowed(func):
@@ -18,20 +21,42 @@ def put_patch_not_allowed(func):
     return wrapper
 
 
+class CustomDeviceRouter(SimpleRouter):
+    routes = [
+        Route(
+            url=r'^{prefix}$',
+            mapping={'post': 'create', 'get': 'list'},
+            name='{basename}-list',
+            detail=False,
+            initkwargs={'suffix': 'List'}
+        ),
+        Route(
+            url=r'^{prefix}/{lookup}$',
+            mapping={'delete': 'destroy'},
+            name='{basename}-destroy',
+            detail=True,
+            initkwargs={'suffix': 'Destroy'}
+        )
+    ]
+
+
 class DeviceViewSet(ModelViewSet):
     '''
     Device viewset for handling the remembered devices of the user.
     '''
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsObjectOwner]
     serializer_class = DeviceSerializer
 
     def create(self, request, *args, **kwargs):
         device_has_been_aal2 = request.user.device \
                                and request.user.device.aal == 'aal2'
-        user_has_mfa = request.user.authenticator_enabled
+        mfa_enabled = bool(request.user.mfa_method)
 
-        if not device_has_been_aal2 and user_has_mfa:
-            return Response(status=HTTP_422_UNPROCESSABLE_ENTITY)
+        if not device_has_been_aal2 and mfa_enabled:
+            return Response(
+                {'error': f'{request.user_mfa_method}'},
+                HTTP_422_UNPROCESSABLE_ENTITY
+            )
         elif not request.user.device:
             instance = self.add_device(request, *args, **kwargs)
         else:
@@ -66,8 +91,13 @@ class DeviceViewSet(ModelViewSet):
     def get_queryset(self):
         return self.request.user.devices.all()
 
-    def get_object(self):
-        return self.request.user.device
+    def get_object(self, id=None):
+        if id:
+            object = Device.objects.get(id=id)
+        else:
+            object = self.request.user.device
+        self.check_object_permissions(self.request, object)
+        return object
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

@@ -56,6 +56,8 @@ class User(models.Model):
         self._is_verified = False
         self._device = None
         self._authentication_level = None
+        self._session_devices = None
+        self._mfa_method = None
 
     def __setattr__(self, name, value):
         if name == 'authenticator_enabled' and value:
@@ -113,6 +115,13 @@ class User(models.Model):
     @session_devices.setter
     def session_devices(self, value: list):
         self._session_devices = value
+
+    @property
+    def mfa_method(self):
+        if self.authenticator_enabled:
+            return 'authenticator'
+        else:
+            return None
 
     @property
     def authentication_level(self):
@@ -185,4 +194,5 @@ class Device(models.Model):
 
     user_agent = models.CharField(max_length=200, editable=False)
     location = models.CharField(max_length=100, editable=False)
-    aal = models.CharField(max_length=4)
+    aal = models.CharField(max_length=4, null=True, default=None)
+

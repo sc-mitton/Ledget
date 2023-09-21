@@ -1,11 +1,10 @@
 from django.urls import path, include
 from core.views import service as service_views
 from core.views.user import UserView
-from core.views.device import DeviceViewSet
+from core.views.device import DeviceViewSet, CustomDeviceRouter
 
-from rest_framework.routers import DefaultRouter
 
-router = DefaultRouter()
+router = CustomDeviceRouter()
 router.register(r'devices', DeviceViewSet, basename='devices')
 
 urlpatterns = [
