@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 import { useNavigate, Outlet } from 'react-router-dom'
 
 import './styles/Security.css'
 import { QrIcon } from '@ledget/shared-assets'
-import { PlusPill, GrayButton } from '@ledget/shared-ui'
-import { useGetMeQuery } from '@features/userSlice'
+import { PlusPill, GrayButton, ShimmerDiv } from '@ledget/shared-ui'
+import {
+    useGetMeQuery,
+    useGetDevicesQuery,
+    useDeleteRememberedDeviceMutation,
+} from '@features/userSlice'
+
 
 
 const AuthenticatorApp = () => {
@@ -21,7 +26,7 @@ const AuthenticatorApp = () => {
 
     return (
         <div id="authenticator-settings--container">
-            {user.authenticator_enabled
+            {user.mfa_method === 'authenticator'
                 ?
                 <>
                     <div>
@@ -58,7 +63,8 @@ const Mfa = () => (
     </div>
 )
 
-const Devices = () => {
+const Devices = ({ devices }) => {
+
     return (
         <div>
             <h3 className="spaced-header2">Devices</h3>
@@ -70,15 +76,17 @@ const Devices = () => {
 }
 
 const Security = () => {
+    const { data: devices, isLoading } = useGetDevicesQuery()
+
     return (
-        <>
+        <ShimmerDiv shimmering={isLoading}>
             <div className="padded-content" id="security-page">
                 <h1 className="spaced-header">Security</h1>
-                <Devices />
+                <Devices devices={devices} />
                 <Mfa />
             </div>
             <Outlet />
-        </>
+        </ShimmerDiv>
     )
 }
 
