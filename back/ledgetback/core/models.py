@@ -188,24 +188,27 @@ class Customer(models.Model):
 
 class Device(models.Model):
 
-    class AgentType(models.TextChoices):
-        MOBILE = 'mobile', _('Mobile')
-        PC = 'pc', _('PC')
-        TABLET = 'tablet', _('Tablet')
-        BOT = 'bot', _('Bot')
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=100)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    user_agent = models.CharField(max_length=200, editable=False)
     location = models.CharField(max_length=100, editable=False)
     aal = models.CharField(max_length=4, null=True, default=None)
     last_login = models.DateTimeField(auto_now=True)
-    agent_type = models.CharField(choices=AgentType.choices,
-                                  max_length=10,
-                                  null=True,
-                                  default=None)
+
+    # Parsed data from user agent
+    browser_family = models.CharField(max_length=20, null=True, default=None)
+    browser_version = models.CharField(max_length=20, null=True, default=None)
+    os_family = models.CharField(max_length=20, null=True, default=None)
+    os_version = models.CharField(max_length=20, null=True, default=None)
+    device_family = models.CharField(max_length=20, null=True, default=None)
+    device_brand = models.CharField(max_length=20, null=True, default=None)
+    device_model = models.CharField(max_length=20, null=True, default=None)
+    is_mobile = models.BooleanField(default=False)
+    is_pc = models.BooleanField(default=False)
+    is_tablet = models.BooleanField(default=False)
+    is_touch_capable = models.BooleanField(default=False)
+    is_bot = models.BooleanField(default=False)
 
     def __setattr__(self, name: str, *args, **kwargs) -> None:
         if name == 'token':

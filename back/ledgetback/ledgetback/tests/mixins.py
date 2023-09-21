@@ -86,11 +86,15 @@ class ViewTestsMixin(TestCase):
 
     def createClients(self):
         self.client = APIClient()
+        self.client.defaults['HTTP_AUTHORIZATION'] = 'bearer {}'.format(tokens[1])
+
         self.aal2_client = APIClient()
+        self.aal2_client.defaults['HTTP_AUTHORIZATION'] = 'bearer {}'.format(tokens[0])
+
         self.unauthed_client = APIClient()
 
-        self.client.defaults['HTTP_AUTHORIZATION'] = 'bearer {}'.format(tokens[1])
-        self.aal2_client.defaults['HTTP_AUTHORIZATION'] = 'bearer {}'.format(tokens[0])
+        self.client1_device = self.aal1_payload['session']['devices'][0]
+        self.aal2_client_device = self.aal2_payload['session']['devices'][0]
 
         for client in [self.client, self.aal2_client]:
             self.add_device(client)

@@ -1,6 +1,7 @@
 :root {
     /* Windows */
     --window: hsl(0, 0%, 98%);
+    --window2: rgb(241, 241, 241);
     --window-transparent: rgba(252, 248, 247, 0.8);
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-background-color: #f0f0f0;
@@ -246,7 +247,7 @@ fieldset {
     width: 90%;
     max-width: 1250px;
     margin: 28px auto;
-    margin-top: 70px;
+    margin-top: 88px;
     display: flex;
     justify-content: center;
 }

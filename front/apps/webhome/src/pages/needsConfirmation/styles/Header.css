@@ -4,12 +4,15 @@
 }
 
 #needs-confirmation-header {
-    padding: 8px 24px 8px 16px;
+    padding: 4px 16px 4px 16px;
+    margin: 4px 12px 8px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     max-width: 430px;
     width: 100%;
+    background-color: var(--window2);
+    border-radius: var(--border-radius25);
 }
 
 #needs-confirmation-header div {
@@ -24,9 +27,9 @@
 
 #number-of-items {
     font-weight: 500;
-    margin-right: 6px;
-    background-color: var(--icon-light-gray);
+    margin-right: 10px;
+    background-color: var(--icon-hover-light-gray);
     color: var(--faded-text);
     padding: 0 4px;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius1);
 }

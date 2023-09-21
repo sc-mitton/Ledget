@@ -2,14 +2,17 @@ import hashlib
 import logging
 
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from django.conf import settings
 import stripe
+from user_agents import parse as ua_parse
 
 from core.utils.stripe import stripe_error_handler, StripeError
 from core.models import User, Device
 
 stripe.api_key = settings.STRIPE_API_KEY
 stripe_logger = logging.getLogger('stripe')
+ledget_logger = logging.getLogger('ledget')
 
 
 class NewSubscriptionSerializer(serializers.Serializer):
@@ -113,42 +116,71 @@ class DeviceSerializer(serializers.ModelSerializer):
         model = Device
         exclude = ('user', 'token', )
 
-    def get_hash_token(self, *args):
+    def get_hash_token(self):
         # create sha256 hash of device id, user, user_agent,
         # location, and secret key
+        user = self.context['request'].user
+        unhashed = ''.join([
+            str(user.id),
+            user.session_devices[0]['id'],
+            user.session_aal,
+            settings.SECRET_KEY
+        ])
 
-        unhashed = ''.join([*args, settings.SECRET_KEY])
         hash_value = hashlib.sha256((unhashed).encode('utf-8')).hexdigest()
         return hash_value
 
-    def get_kwargs(self, user):
+    def parse_user_agent_kwargs(self):
+        ua_string = self.context['request'].user.session_devices[0]['user_agent']
+        user_agent = ua_parse(ua_string)
 
-        return {
-            'user_id': str(user.id),
-            'id': user.session_devices[0]['id'],
-            'user_agent': user.session_devices[0]['user_agent'],
-            'location': user.session_devices[0]['location'],
-            'aal': user.session_aal
-        }
+        kwargs = {}
+        for attr in Device._meta.get_fields():
+            if attr.name.startswith('is_'):
+                kwarg_keys = [attr.name]
+            else:
+                kwarg_keys = attr.name.split('_')
+
+            kwarg_value_temp = user_agent
+            for key in kwarg_keys:
+                kwarg_value_temp = getattr(kwarg_value_temp, key, None)
+
+            if kwarg_value_temp:
+                kwargs[attr.name] = kwarg_value_temp
+
+        return kwargs
 
     def create(self, validated_data):
+
         user = self.context['request'].user
+        hash_token = self.get_hash_token()
 
-        kwargs = self.get_kwargs(user)
-        hash_token = self.get_hash_token(*kwargs.values())
+        try:
+            kwargs = {
+                'user_id': str(user.id),
+                'id': user.session_devices[0]['id'],
+                'aal': user.session_aal,
+                **self.parse_user_agent_kwargs()
+            }
+        except Exception as e:
+            raise ValidationError(f'Error parsing new values: {e}')
 
-        instance = Device.objects.create(
-            token=hash_token,
-            **kwargs
-        )
+        instance = Device.objects.create(token=hash_token, **kwargs)
         return instance
 
     def update(self, instance, validated_data):
 
-        user = self.context['request'].user
-        kwargs = self.get_kwargs(user)
-        instance.token = self.get_hash_token(*kwargs.values())
+        try:
+            new_values = {
+                'token': self.get_hash_token(),
+                **self.parse_user_agent_kwargs()
+            }
+        except Exception as e:
+            raise ValidationError(f'Error parsing new values: {e}')
 
-        if user.session_aal == 'aal2':
+        for key, value in new_values.items():
+            setattr(instance, key, value)
+        if self.context['request'].user.session_aal == 'aal2':
             instance.aal = 'aal2'
+
         instance.save()

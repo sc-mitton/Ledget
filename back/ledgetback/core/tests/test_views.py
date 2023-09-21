@@ -47,7 +47,7 @@ class CoreViewTests(ViewTestsMixin):
         self.assertEqual(self.user.is_onboarded, True)
 
     def test_delete_remembered_device(self):
-        device_id = self.aal1_payload['session']['devices'][0]['id']
+        device_id = self.client1_device['id']
 
         response = self.client.delete(
             reverse('devices-destroy',  kwargs={'pk': device_id})
@@ -57,7 +57,7 @@ class CoreViewTests(ViewTestsMixin):
         self.assertFalse(Device.objects.filter(id=device_id).exists())
 
     def test_device_object_delete_permissions(self):
-        other_device = self.aal2_payload['session']['devices'][0]['id']
+        other_device = self.aal2_client_device['id']
 
         response = self.client.delete(
             reverse('devices-destroy',  kwargs={'pk': other_device})

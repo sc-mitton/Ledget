@@ -127,7 +127,7 @@ const Password = React.forwardRef((props, ref) => {
 const Login = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [email, setEmail] = useState(null)
-    const [submitting, setSubmitting] = useState(false)
+    const [showLoadingBar, setShowLoadingBar] = useState(false)
     const pwdRef = useRef(null)
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
@@ -145,21 +145,24 @@ const Login = () => {
     } = flowStatus
 
     useEffect(() => {
+        submittingFlow && setShowLoadingBar(true)
+    }, [submittingFlow])
+    useEffect(() => {
+        isCompleteError && setShowLoadingBar(false)
+    }, [isCompleteError])
+
+    useEffect(() => {
         const mfa = searchParams.get('mfa')
         const aal = searchParams.get('aal')
+
         if (!mfa && aal !== 'aal2') {
             fetchFlow({ aal: 'aal1', refresh: true })
-        } else if (mfa === 'totp') {
+        } else if (mfa === 'authenticator') {
             fetchFlow({ aal: 'aal2', refresh: true })
         } else {
             console.log('handle email / phone mfa')
         }
     }, [searchParams.get('mfa')])
-
-    useEffect(() => {
-        submittingFlow && setSubmitting(true)
-        isCompleteError && setSubmitting(false)
-    }, [submittingFlow, isCompleteError])
 
     // Handle success
     useEffect(() => {
@@ -174,7 +177,7 @@ const Login = () => {
                         console.warn(err)
                     }
                 }).finally(() => {
-                    setSubmitting(false)
+                    setShowLoadingBar(false)
                 })
         }
     }, [isCompleteSuccess])
@@ -197,8 +200,14 @@ const Login = () => {
         <form action={flow?.ui.action} method={flow?.ui.method} onSubmit={handleSubmit}>
             <div id="email-container">
                 <h3>Welcome Back</h3>
-                <BackButton withText={false} onClick={() => { setEmail(null) }}>
-                    {email}
+                <BackButton
+                    withText={false}
+                    onClick={() => {
+                        setEmail(null)
+                        setSearchParams({ aal: 'aal1' })
+                    }}
+                >
+                    {email || 'back'}
                 </BackButton>
             </div>
             {errMsg &&
@@ -213,7 +222,7 @@ const Login = () => {
 
     return (
         <AnimatePresence mode="wait">
-            {email === null
+            {email === null && !searchParams.get('mfa')
                 ?
                 <SlideMotionDiv className='window' key="initial" first={Boolean(flow)}>
                     <EmailForm setEmail={setEmail} flow={flow} socialSubmit={submit} />
@@ -234,7 +243,7 @@ const Login = () => {
                             </AuthForm>
                         </SlideMotionDiv>
                     }
-                    {searchParams.get('mfa') === 'totp' &&
+                    {searchParams.get('mfa') === 'authenticator' &&
                         <SlideMotionDiv className='nested-window' key="authenticate-phone" last>
                             <AuthForm><AuthenticatorMfa /></AuthForm>
                         </SlideMotionDiv>
@@ -244,7 +253,7 @@ const Login = () => {
                             <AuthForm><EmailMfa /></AuthForm>
                         </SlideMotionDiv>
                     }
-                    <WindowLoadingBar visible={submitting || isFetchingFlow} />
+                    <WindowLoadingBar visible={showLoadingBar || isFetchingFlow} />
                 </JiggleDiv>
             }
         </AnimatePresence>

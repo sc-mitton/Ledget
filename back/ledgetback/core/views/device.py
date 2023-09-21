@@ -55,9 +55,8 @@ class DeviceViewSet(ModelViewSet):
         device_not_aal2 = not request.user.device \
                                or request.user.device.aal != 'aal2'
         session_is_aal1 = request.user.session_aal == 'aal1'
-        mfa_enabled = bool(request.user.mfa_method)
 
-        if (device_not_aal2 and session_is_aal1) and mfa_enabled:
+        if (device_not_aal2 and session_is_aal1) and bool(request.user.mfa_method):
             return Response(
                 {'error': f'{request.user.mfa_method}'},
                 HTTP_422_UNPROCESSABLE_ENTITY
@@ -94,7 +93,6 @@ class DeviceViewSet(ModelViewSet):
         return serializer.save()
 
     def get_queryset(self):
-        print(self.request.user_agent.device)
         return Device.objects.filter(user=self.request.user)
 
     def get_object(self, id=None):
