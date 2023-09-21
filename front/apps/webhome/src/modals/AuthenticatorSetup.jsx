@@ -112,7 +112,7 @@ const Authenticator = (props) => {
     useEffect(() => {
         let timeout
         if (completedFlow) {
-            updateUser({ data: { authenticator_enabled: true } })
+            updateUser({ data: { mfa_method: 'authenticator' } })
             addRememberedDevice()
             timeout = setTimeout(() => {
                 props.setVisible(false)

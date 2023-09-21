@@ -1,11 +1,12 @@
 import json
 from unittest import skip # noqa
 from unittest.mock import patch
-from ledgetback.tests.utils import timeit # noqa
-
-from ledgetback.tests.mixins import ViewTestsMixin
 
 from django.urls import reverse
+
+from ledgetback.tests.utils import timeit # noqa
+from ledgetback.tests.mixins import ViewTestsMixin
+from core.models import Device
 
 
 class CoreViewTests(ViewTestsMixin):
@@ -44,3 +45,23 @@ class CoreViewTests(ViewTestsMixin):
         self.user.refresh_from_db()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.user.is_onboarded, True)
+
+    def test_delete_remembered_device(self):
+        device_id = self.aal1_payload['session']['devices'][0]['id']
+
+        response = self.client.delete(
+            reverse('devices-destroy',  kwargs={'pk': device_id})
+        )
+
+        self.assertEqual(response.status_code, 204)
+        self.assertFalse(Device.objects.filter(id=device_id).exists())
+
+    def test_device_object_delete_permissions(self):
+        other_device = self.aal2_payload['session']['devices'][0]['id']
+
+        response = self.client.delete(
+            reverse('devices-destroy',  kwargs={'pk': other_device})
+        )
+
+        self.assertEqual(response.status_code, 403)
+        self.assertTrue(Device.objects.filter(id=other_device).exists())

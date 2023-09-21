@@ -1,7 +1,11 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.exceptions import MethodNotAllowed
-from rest_framework.status import HTTP_200_OK, HTTP_422_UNPROCESSABLE_ENTITY
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_422_UNPROCESSABLE_ENTITY,
+    HTTP_204_NO_CONTENT
+)
 from rest_framework.routers import Route, SimpleRouter
 from rest_framework.permissions import IsAuthenticated as CoreIsAuthenticated
 
@@ -53,7 +57,6 @@ class DeviceViewSet(ModelViewSet):
         session_is_aal1 = request.user.session_aal == 'aal1'
         mfa_enabled = bool(request.user.mfa_method)
 
-        print(device_not_aal2, session_is_aal1, mfa_enabled)
         if (device_not_aal2 and session_is_aal1) and mfa_enabled:
             return Response(
                 {'error': f'{request.user.mfa_method}'},
@@ -91,20 +94,22 @@ class DeviceViewSet(ModelViewSet):
         return serializer.save()
 
     def get_queryset(self):
-        return self.request.user.devices.all()
+        print(self.request.user_agent.device)
+        return Device.objects.filter(user=self.request.user)
 
     def get_object(self, id=None):
         if id:
             object = Device.objects.get(id=id)
         else:
             object = self.request.user.device
+
         self.check_object_permissions(self.request, object)
         return object
 
     def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
+        instance = self.get_object(id=kwargs.get('pk'))
         self.perform_destroy(instance)
-        return Response(status=HTTP_200_OK)
+        return Response(status=HTTP_204_NO_CONTENT)
 
     @put_patch_not_allowed
     def partial_update(self, request, *args, **kwargs):

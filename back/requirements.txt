@@ -22,8 +22,11 @@ pyflakes==3.0.1
 PyJWT==2.7.0
 python-dateutil==2.8.2
 pytz==2023.3
+PyYAML==6.0.1
 requests==2.31.0
 six==1.12.0
 sqlparse==0.4.4
 stripe==5.4.0
 urllib3==2.0.3
+user-agents==2.2.0
+ua-parser==0.18.0

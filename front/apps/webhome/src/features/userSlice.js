@@ -24,6 +24,10 @@ export const selectSessionIsFresh = (state) => {
 export const extendedApiSlice = apiSlice.injectEndpoints({
 
     endpoints: (builder) => ({
+        getDevices: builder.query({
+            query: () => 'devices',
+            providesTags: ['devices'],
+        }),
         getMe: builder.query({
             query: () => 'user/me',
             providesTags: ['user']
@@ -93,6 +97,12 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
             })
         }),
+        deleteRememberedDevice: builder.mutation({
+            query: ({ deviceId }) => ({
+                url: `devices/${deviceId}`,
+                method: 'DELETE',
+            })
+        }),
     })
 })
 
@@ -107,4 +117,6 @@ export const {
     useGetPricesQuery,
     useUpdateSubscriptionItemsMutation,
     useAddRememberedDeviceMutation,
+    useGetDevicesQuery,
+    useDeleteRememberedDeviceMutation,
 } = extendedApiSlice

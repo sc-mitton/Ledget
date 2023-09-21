@@ -20,7 +20,7 @@ const VisibilityIcon = (props) => {
             aria-label={showIcon ? 'hide' : 'show'}
         >
             <img
-                style={{ width: '1.5rem', height: '1.5rem' }}
+                style={{ width: '1.3rem', height: '1.3rem' }}
                 src={showIcon ? hidePassword : showPassword}
                 alt={showIcon ? 'hide' : 'show'}
             />

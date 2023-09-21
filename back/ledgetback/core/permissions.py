@@ -20,6 +20,7 @@ class IsAuthenticated(BasePermission):
 
         device_aal = getattr(request.user.device, 'aal', None)
         session_aal = getattr(request.user, 'session_aal', None)
+
         if request.user.mfa_method:
             return device_aal == 'aal2' or session_aal == 'aal2'
         else:

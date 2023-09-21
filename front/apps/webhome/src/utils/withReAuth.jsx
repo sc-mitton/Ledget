@@ -102,8 +102,8 @@ const ReAuthModal = withSmallModal((props) => {
     useEffect(() => {
         if (isCompleteSuccess) {
             const aal = searchParams.get('aal')
-            const finishedCase1 = !user.authenticator_enabled && aal === 'aal1'
-            const finishedCase2 = user.authenticator_enabled && aal === 'aal2'
+            const finishedCase1 = !user.mfa_method && aal === 'aal1'
+            const finishedCase2 = user.mfa_method && aal === 'aal2'
 
             if (finishedCase1 || finishedCase2) {
                 dispatch({ type: 'user/resetAuthedAt' })

@@ -28,6 +28,12 @@ class UserManager(models.Manager):
 
 class User(models.Model):
 
+    # mfa choices
+    class MfaMethod(models.TextChoices):
+        AUTHENTICATOR = 'authenticator', _('Authenticator')
+        EMAIL = 'email', _('Email')
+        PHONE = 'phone', _('Phone')
+
     id = models.UUIDField(primary_key=True, editable=False)
     is_active = models.BooleanField(default=True)
     account_flag = models.CharField(
@@ -43,7 +49,8 @@ class User(models.Model):
         ],
     )
     is_onboarded = models.BooleanField(default=False)
-    authenticator_enabled = models.BooleanField(default=False)
+    mfa_method = models.CharField(choices=MfaMethod.choices,
+                                  null=True, default=None)
     authenticator_enabled_on = models.DateTimeField(null=True, default=None)
 
     objects = UserManager()
@@ -58,12 +65,11 @@ class User(models.Model):
         self._session_aal = None
         self._session_devices = None
         self._device = None
-        self._mfa_method = None
 
     def __setattr__(self, name, value):
-        if name == 'authenticator_enabled' and value:
+        if name == 'mfa_method' and value == self.MfaMethod.AUTHENTICATOR:
             self.authenticator_enabled_on = timezone.now()
-        elif name == 'authenticator_enabled' and not value:
+        elif name == 'mfa_method' and not value:
             self.authenticator_enabled_on = None
         super().__setattr__(name, value)
 
@@ -116,13 +122,6 @@ class User(models.Model):
     @session_devices.setter
     def session_devices(self, value: list):
         self._session_devices = value
-
-    @property
-    def mfa_method(self):
-        if self.authenticator_enabled:
-            return 'totp'
-        else:
-            return None
 
     @property
     def session_aal(self):
@@ -189,6 +188,12 @@ class Customer(models.Model):
 
 class Device(models.Model):
 
+    class AgentType(models.TextChoices):
+        MOBILE = 'mobile', _('Mobile')
+        PC = 'pc', _('PC')
+        TABLET = 'tablet', _('Tablet')
+        BOT = 'bot', _('Bot')
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=100)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -197,6 +202,10 @@ class Device(models.Model):
     location = models.CharField(max_length=100, editable=False)
     aal = models.CharField(max_length=4, null=True, default=None)
     last_login = models.DateTimeField(auto_now=True)
+    agent_type = models.CharField(choices=AgentType.choices,
+                                  max_length=10,
+                                  null=True,
+                                  default=None)
 
     def __setattr__(self, name: str, *args, **kwargs) -> None:
         if name == 'token':

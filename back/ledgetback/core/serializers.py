@@ -122,12 +122,13 @@ class DeviceSerializer(serializers.ModelSerializer):
         return hash_value
 
     def get_kwargs(self, user):
+
         return {
             'user_id': str(user.id),
             'id': user.session_devices[0]['id'],
             'user_agent': user.session_devices[0]['user_agent'],
             'location': user.session_devices[0]['location'],
-            'aal': user.session_aal,
+            'aal': user.session_aal
         }
 
     def create(self, validated_data):

@@ -94,7 +94,7 @@ const AuthenticatorMfa = () => (
     <>
         <h3>Enter your authenticator code</h3>
         <div style={{ margin: '20px 0' }}>
-            <PlainTextInput name="totp" placeholder="Code" />
+            <PlainTextInput name="totp_code" placeholder="Code" />
         </div>
         <GrnWideButton name="method" value='totp'>
             Submit
@@ -123,77 +123,12 @@ const Password = React.forwardRef((props, ref) => {
     )
 })
 
-const AuthenticationForm = (props) => {
-    const [searchParams] = useSearchParams()
-    const { flow, fetchFlow, errMsg, email, setEmail, submit } = props
-    const pwdRef = useRef(null)
-
-    useEffect(() => {
-        if (searchParams.get('mfa') === 'totp') {
-            fetchFlow({ aal: 'aal2', refresh: true })
-        } else {
-            console.log('handle email / phone mfa')
-        }
-    }, [searchParams.get('mfa')])
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if (pwdRef.current?.value === '') {
-            pwdRef.current?.focus()
-            return
-        }
-
-        if (searchParams.get('aal')) {
-            submit(e)
-        } else {
-            console.log('handle submitting email / phone mfa')
-        }
-    }
-
-    return (
-        <form
-            action={flow?.ui.action}
-            method={flow?.ui.method}
-            onSubmit={handleSubmit}
-        >
-            <div id="email-container">
-                <h3>Welcome Back</h3>
-                <BackButton withText={false} onClick={() => { setEmail(null) }}>
-                    {email}
-                </BackButton>
-            </div>
-            {errMsg &&
-                <div style={{ marginBottom: '12px' }}>
-                    <FormError msg={errMsg} />
-                </div>
-            }
-            <AnimatePresence mode="wait">
-                {searchParams.get('aal') === 'aal1'
-                    ?
-                    <>
-                        <SlideMotionDiv key="aal1" first={searchParams.get('aal') === 'aal2'}>
-                            <Password ref={pwdRef} />
-                        </SlideMotionDiv>
-                    </>
-                    :
-                    <>
-                        <SlideMotionDiv key="aal2" last>
-                            {searchParams.get('mfa') === 'totp' && <AuthenticatorMfa />}
-                            {searchParams.get('mfa') === 'email' && <EmailMfa />}
-                        </SlideMotionDiv>
-                    </>
-                }
-            </AnimatePresence>
-            <input type="hidden" name="identifier" value={email || ''} />
-            <CsrfToken csrf={flow?.csrf_token} />
-        </form>
-    )
-}
 
 const Login = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [email, setEmail] = useState(null)
     const [submitting, setSubmitting] = useState(false)
+    const pwdRef = useRef(null)
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
         useCompleteLoginFlowMutation,
@@ -210,10 +145,16 @@ const Login = () => {
     } = flowStatus
 
     useEffect(() => {
-        if (searchParams.get('aal') !== 'aal2') {
+        const mfa = searchParams.get('mfa')
+        const aal = searchParams.get('aal')
+        if (!mfa && aal !== 'aal2') {
             fetchFlow({ aal: 'aal1', refresh: true })
+        } else if (mfa === 'totp') {
+            fetchFlow({ aal: 'aal2', refresh: true })
+        } else {
+            console.log('handle email / phone mfa')
         }
-    }, [])
+    }, [searchParams.get('mfa')])
 
     useEffect(() => {
         submittingFlow && setSubmitting(true)
@@ -238,6 +179,38 @@ const Login = () => {
         }
     }, [isCompleteSuccess])
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (pwdRef.current?.value === '') {
+            pwdRef.current?.focus()
+            return
+        }
+
+        if (searchParams.get('aal')) {
+            submit(e)
+        } else {
+            console.log('handle submitting email / phone mfa')
+        }
+    }
+
+    const AuthForm = ({ children }) => (
+        <form action={flow?.ui.action} method={flow?.ui.method} onSubmit={handleSubmit}>
+            <div id="email-container">
+                <h3>Welcome Back</h3>
+                <BackButton withText={false} onClick={() => { setEmail(null) }}>
+                    {email}
+                </BackButton>
+            </div>
+            {errMsg &&
+                <div style={{ marginBottom: '12px' }}>
+                    <FormError msg={errMsg} />
+                </div>
+            }
+            {children}
+            <CsrfToken csrf={flow?.csrf_token} />
+        </form>
+    )
+
     return (
         <AnimatePresence mode="wait">
             {email === null
@@ -248,17 +221,30 @@ const Login = () => {
                 </SlideMotionDiv>
                 :
                 <JiggleDiv jiggle={isCompleteError} className="wrapper-window">
-                    <SlideMotionDiv className='nested-window' key="authenticate" last>
-                        <AuthenticationForm
-                            flow={flow}
-                            submit={submit}
-                            fetchFlow={fetchFlow}
-                            errMsg={errMsg}
-                            email={email}
-                            setEmail={setEmail}
-                        />
-                        <WindowLoadingBar visible={submitting || isFetchingFlow} />
-                    </SlideMotionDiv>
+                    {!searchParams.get('mfa') &&
+                        <SlideMotionDiv
+                            className='nested-window'
+                            key="authenticate-password"
+                            last={!searchParams.get('mfa')}
+                            first={searchParams.get('mfa')}
+                        >
+                            <AuthForm>
+                                <Password ref={pwdRef} />
+                                <input type="hidden" name="identifier" value={email || ''} />
+                            </AuthForm>
+                        </SlideMotionDiv>
+                    }
+                    {searchParams.get('mfa') === 'totp' &&
+                        <SlideMotionDiv className='nested-window' key="authenticate-phone" last>
+                            <AuthForm><AuthenticatorMfa /></AuthForm>
+                        </SlideMotionDiv>
+                    }
+                    {searchParams.get('mfa') === 'email' &&
+                        <SlideMotionDiv className='nested-window' key="authenticate-email" last>
+                            <AuthForm><EmailMfa /></AuthForm>
+                        </SlideMotionDiv>
+                    }
+                    <WindowLoadingBar visible={submitting || isFetchingFlow} />
                 </JiggleDiv>
             }
         </AnimatePresence>

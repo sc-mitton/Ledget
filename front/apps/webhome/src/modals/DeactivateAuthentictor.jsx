@@ -24,7 +24,7 @@ const DeactivateAuthenticator = (props) => {
             },
             params: { flow: flow.id }
         })
-        updateUser({ data: { authenticator_enabled: false } })
+        updateUser({ data: { mfa_method: null } })
     }
 
     // Close modal on success

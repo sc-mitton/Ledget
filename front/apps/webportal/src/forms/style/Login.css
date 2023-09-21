@@ -16,7 +16,8 @@
 #email-container div,
 #email-container button {
     display: flex;
-    align-items: center
+    align-items: center;
+    margin-left: -4px;
 }
 
 #email-container span,

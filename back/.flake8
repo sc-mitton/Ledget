@@ -6,4 +6,5 @@ exclude =
     **/settings/**,
     env,
     .env
+max-line-length = 88
 
