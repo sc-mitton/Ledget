@@ -36,7 +36,6 @@ from plaid.model.transactions_sync_request_options import (
 
 from core.permissions import (
     IsAuthedVerifiedSubscriber,
-    IsVerifiedAuthenticated,
     IsObjectOwner
 )
 from core.clients import plaid_client
@@ -160,7 +159,7 @@ class TransactionsSyncView(GenericAPIView):
 
 
 class PlaidLinkTokenView(APIView):
-    permission_classes = [IsVerifiedAuthenticated]
+    permission_classes = [IsAuthedVerifiedSubscriber]
 
     def get(self, request, *args, **kwargs):
         if kwargs.get('is_onboarding', False):

@@ -55,8 +55,9 @@ class User(models.Model):
         self._traits = None
         self._is_verified = False
         self._device = None
-        self._authentication_level = None
+        self._session_aal = None
         self._session_devices = None
+        self._device = None
         self._mfa_method = None
 
     def __setattr__(self, name, value):
@@ -124,12 +125,12 @@ class User(models.Model):
             return None
 
     @property
-    def authentication_level(self):
-        return self._authentication_level
+    def session_aal(self):
+        return self._session_aal
 
-    @authentication_level.setter
-    def authentication_level(self, value):
-        self._authentication_level = value
+    @session_aal.setter
+    def session_aal(self, value):
+        self._session_aal = value
 
     @property
     def is_anonymous(self):
@@ -195,4 +196,9 @@ class Device(models.Model):
     user_agent = models.CharField(max_length=200, editable=False)
     location = models.CharField(max_length=100, editable=False)
     aal = models.CharField(max_length=4, null=True, default=None)
+    last_login = models.DateTimeField(auto_now=True)
 
+    def __setattr__(self, name: str, *args, **kwargs) -> None:
+        if name == 'token':
+            self.last_login = timezone.now()
+        super().__setattr__(name, *args, **kwargs)

@@ -56,15 +56,20 @@ class OryBackend(BaseAuthentication):
 
     def get_user(self, request, decoded_token: dict):
         """Return the user from the decoded token."""
-        device_token = request.COOKIES.get('ledget_device_token')
+        device_token = request.COOKIES.get('ledget_device')
         identity = decoded_token['session']['identity']
 
-        user = get_user_model().objects.select_related('customer') \
-                                       .prefetch_related('device_set') \
-                                       .get(pk=identity['id'])
+        User = get_user_model()
+        user = User.objects \
+                   .prefetch_related('device__set') \
+                   .select_related('customer') \
+                   .get(pk=identity['id']) \
 
-        user.device = user.device_set.filter(token=device_token).first()
-        user.authentication_level = \
+        for device in user.device_set.all():
+            if device.token == device_token:
+                user.device = device
+
+        user.session_aal = \
             decoded_token['session']['authenticator_assurance_level']
         user.traits = identity.get('traits', {})
         user.is_verified = identity.get('verifiable_addresses', [{}])[0] \

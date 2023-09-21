@@ -2,11 +2,10 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.status import HTTP_200_OK, HTTP_422_UNPROCESSABLE_ENTITY
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.routers import Route, SimpleRouter
 
 from core.serializers import DeviceSerializer
-from core.permissions import IsObjectOwner
+from core.permissions import IsObjectOwner, IsAuthenticated
 from core.models import Device
 
 
@@ -64,7 +63,7 @@ class DeviceViewSet(ModelViewSet):
 
         response = Response(status=HTTP_200_OK)
         response.set_cookie(
-            key="ledget_device_token",
+            key="ledget_device",
             value=f"{instance.token}",
             secure=True,
             samesite='None',

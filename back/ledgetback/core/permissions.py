@@ -11,28 +11,31 @@ stripe.api_key = settings.STRIPE_API_KEY
 stripe_logger = logging.getLogger('stripe')
 
 
-class IsVerifiedAuthenticated(BasePermission):
+class IsAuthenticated(BasePermission):
 
     def has_permission(self, request, view):
-        return bool(request.user
-                    and request.user.is_authenticated
-                    and request.user.is_verified)
+        if isinstance(request.user, AnonymousUser) \
+                or not request.user.is_authenticated:
+            return False
+
+        aal = getattr(request.user.device, 'aal', None)
+        if request.user.mfa_method:
+            return aal == 'aal2'
+        else:
+            return aal == 'aal1'
 
 
-class IsAuthedVerifiedSubscriber(BasePermission):
+class IsAuthedVerifiedSubscriber(IsAuthenticated):
     """Class for bundling permissions for User views"""
 
     def has_permission(self, request, view):
-        if isinstance(request.user, AnonymousUser):
-            return False
+
         checks = [
-            request.user.is_authenticated,
-            request.user.is_verified,
             request.user.service_provisioned_until > int(time.time()),
             request.user.customer.subscription_not_canceled
         ]
 
-        return all(checks)
+        return super().has_permission(request, view) and all(checks)
 
 
 class IsObjectOwner(BasePermission):
@@ -42,13 +45,6 @@ class IsObjectOwner(BasePermission):
             return request.user.id == obj.id or request.user.id == obj.user_id
         except AttributeError:
             return False
-
-
-class IsAal2(IsAuthedVerifiedSubscriber):
-
-    def has_permission(self, request, view):
-        return super().has_permission(request, view) \
-                and request.user.authentication_level == 'aal2'
 
 
 class OwnsStripeSubscription(BasePermission):

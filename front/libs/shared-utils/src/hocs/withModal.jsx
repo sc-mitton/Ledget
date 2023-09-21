@@ -16,7 +16,7 @@ function withModal(WrappedComponent) {
             minWidth = '300px',
             maxWidth = '450px',
             zIndex = 1000,
-            blur = 4,
+            blur = 3,
             style,
             ...rest
         } = props

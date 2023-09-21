@@ -1,7 +1,7 @@
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import RetrieveUpdateAPIView
 
 from core.serializers import UserSerializer
+from core.permissions import IsAuthenticated
 
 
 class UserView(RetrieveUpdateAPIView):

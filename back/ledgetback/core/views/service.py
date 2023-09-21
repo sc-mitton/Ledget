@@ -8,7 +8,6 @@ from rest_framework.status import (
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 import stripe
 
@@ -22,7 +21,8 @@ from core.utils.stripe import stripe_error_handler, StripeError
 from core.models import Customer
 from core.permissions import (
     OwnsStripeSubscription,
-    CanCreateStripeSubscription
+    CanCreateStripeSubscription,
+    IsAuthenticated
 )
 
 

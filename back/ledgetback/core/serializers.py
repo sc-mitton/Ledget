@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
     subscription = serializers.SerializerMethodField(read_only=True)
     service_provisioned_until = serializers.SerializerMethodField(
         read_only=True)
-    authentication_level = serializers.SerializerMethodField(read_only=True)
+    session_aal = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -55,8 +55,8 @@ class UserSerializer(serializers.ModelSerializer):
     def get_service_provisioned_until(self, obj):
         return obj.service_provisioned_until
 
-    def get_authentication_level(self, obj):
-        return obj.authentication_level
+    def get_session_aal(self, obj):
+        return obj.session_aal
 
     def get_subscription(self, obj):
         # If patch method, return early to avoid Stripe API call
@@ -113,36 +113,41 @@ class DeviceSerializer(serializers.ModelSerializer):
         model = Device
         exclude = ('user', 'token', )
 
-    def get_hash_token(self, user):
+    def get_hash_token(self, *args):
         # create sha256 hash of device id, user, user_agent,
         # location, and secret key
 
-        unhashed = ''.join([
-            str(user.id),
-            user.session_devices[0]['id'],
-            user.session_devices[0]['user_agent'],
-            user.session_devices[0]['location'],
-            settings.SECRET_KEY
-        ])
-
+        unhashed = ''.join([*args, settings.SECRET_KEY])
         hash_value = hashlib.sha256((unhashed).encode('utf-8')).hexdigest()
         return hash_value
 
+    def get_kwargs(self, user):
+        return {
+            'user_id': str(user.id),
+            'id': user.session_devices[0]['id'],
+            'user_agent': user.session_devices[0]['user_agent'],
+            'location': user.session_devices[0]['location']
+        }
+
     def create(self, validated_data):
         user = self.context['request'].user
-        hash_token = self.get_hash_token(user)
+
+        kwargs = self.get_kwargs(user)
+        hash_token = self.get_hash_token(*kwargs.values())
 
         instance = Device.objects.create(
             token=hash_token,
-            user=user,
-            id=user.session_devices[0]['id'],
-            aal=user.authentication_level,
+            aal=user.session_aal,
+            **kwargs
         )
         return instance
 
     def update(self, instance, validated_data):
+
         user = self.context['request'].user
-        instance.hash = self.get_hash_token(user)
-        if user.authentication_level == 'aal2':
+        kwargs = self.get_kwargs(user)
+        instance.token = self.get_hash_token(*kwargs.values())
+
+        if user.session_aal == 'aal2':
             instance.aal = 'aal2'
         instance.save()
