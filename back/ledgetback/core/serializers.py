@@ -184,3 +184,9 @@ class DeviceSerializer(serializers.ModelSerializer):
             instance.aal = 'aal2'
 
         instance.save()
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['current_device'] = \
+            self.context['request'].user.device == instance
+        return representation

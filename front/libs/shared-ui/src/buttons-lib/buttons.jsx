@@ -38,6 +38,7 @@ export const GrnSlimArrowButton = withArrow(ButtonWithClassName('btn-grn btn-sli
 export const GreenSlimArrowSubmit = withLoadingRing(GrnSlimArrowButton)
 export const RedButton = withLoadingRing(ButtonWithClassName('btn-red btn-2slim'))
 export const GrnTextButton = ButtonWithClassName('btn-grn-text btn-2slim')
+export const IconButtonSubmit = withLoadingRing(IconButton)
 
 export const SmallArrowButton = ({ type, ...rest }) => (
   <button className="arrow-nav btn-scale2" {...rest}>

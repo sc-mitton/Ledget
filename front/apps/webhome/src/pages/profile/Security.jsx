@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import { useNavigate, Outlet } from 'react-router-dom'
 import _ from 'lodash.groupby'
@@ -6,7 +6,7 @@ import _ from 'lodash.groupby'
 import './styles/Security.css'
 import { QrIcon } from '@ledget/shared-assets'
 import { Tooltip } from "@components/pieces"
-import { PlusPill, GrayButton, IconButton, ShimmerDiv } from '@ledget/shared-ui'
+import { PlusPill, GrayButton, IconButtonSubmit, ShimmerDiv } from '@ledget/shared-ui'
 import { Disclosure } from '@headlessui/react'
 import {
     useGetMeQuery,
@@ -17,6 +17,11 @@ import { ArrowIcon, LogoutIcon, LocationIcon } from '@ledget/shared-assets'
 import Computer from '@ledget/shared-assets/src/icons/Computer.svg'
 import Phone from '@ledget/shared-assets/src/icons/Phone.svg'
 
+const formatDateTime = (date) => {
+    const d = new Date(date)
+    const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' }
+    return d.toLocaleDateString('en-US', options)
+}
 
 const AuthenticatorApp = () => {
     const navigate = useNavigate()
@@ -67,27 +72,23 @@ const Mfa = () => (
     </div>
 )
 
-const Devices = ({ devices }) => {
+const Device = ({ key, device, info, onLogout, processingDelete }) => {
+    const buttonRef = useRef(null)
+    const disclosureRef = useRef(null)
 
-    // Group by deviceFamily and location
-    const groupedDevices = Object.entries(_(devices, (device) => [device.device_family, device.location]))
+    const iconKey = Object.keys(info[0]).find(
+        (key) => key.includes('is_') && info[0][key]
+    )
 
-    const formatDate = (date) => {
-        const d = new Date(date)
-        const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' }
-        return d.toLocaleDateString('en-US', options)
-    }
-
-    const Device = ({ device, info }) => {
-        const iconKey = Object.keys(info[0]).find(
-            (key) => key.includes('is_') && info[0][key]
-        )
-
-        return (
-            <Disclosure>
-                {({ open }) => (
+    return (
+        <div ref={disclosureRef} key={key} className="device--container">
+            <Disclosure as={React.Fragment}>
+                {({ open, close }) => (
                     <>
-                        <Disclosure.Button key={device} className={`device ${open ? 'open' : 'closed'}`}>
+                        <Disclosure.Button
+                            key={device}
+                            className={`device ${open ? 'open' : 'closed'}`}
+                        >
                             <div className="device-icon">
                                 {iconKey === 'is_pc' && <img src={Computer} alt="computer" />}
                                 {iconKey === 'is_mobile' && <img src={Phone} alt="phone" />}
@@ -103,47 +104,84 @@ const Devices = ({ devices }) => {
                                     {device.split(',')[1] + ', ' + device.split(',')[2]}
                                 </div>
                             </div>
-                            <div><ArrowIcon /></div>
+                            <div className={`discolsure-indicator ${open ? 'open' : ''}`}>
+                                <ArrowIcon />
+                            </div>
                         </Disclosure.Button>
-                        <Disclosure.Panel>
+                        <Disclosure.Panel className={`device-sessions ${open ? 'open' : ''}`}>
                             {info.map((session) =>
-                                <div className="device-session">
-                                    <div>
-                                        <div className="device-session-info">
-                                            <span>Browser:</span>
-                                            <span>{session.browser_family}</span>
-                                        </div>
-                                        <div className="device-session-info">
-                                            <span>Last Login: </span>
-                                            <span>{formatDate(session.last_login)}</span>
-                                        </div>
+                                <div>
+                                    <div className="device-session-info">
+                                        <div>Browser:</div>
+                                        <div>{session.browser_family}</div>
+                                        <div>Last Login: </div>
+                                        <div>{formatDateTime(session.last_login)}</div>
                                     </div>
-                                    <Tooltip
-                                        msg={"Logout"}
-                                        ariaLabel={"Refresh list"}
-                                        style={{ left: '-30%' }}
-                                    >
-                                        <IconButton
-                                            onClick={() => useDeleteRememberedDeviceMutation(info.id)}
-                                        >
-                                            <LogoutIcon />
-                                        </IconButton>
-                                    </Tooltip>
+                                    <div className={`${session.current_device ? '' : 'logout-device'}`}>
+                                        {session.current_device
+                                            ?
+                                            <span className="current-device">
+                                                This Device
+                                            </span>
+                                            :
+                                            <Tooltip
+                                                msg={"Logout"}
+                                                ariaLabel={"Refresh list"}
+                                                style={{ left: '-30%' }}
+                                            >
+                                                <IconButtonSubmit
+                                                    submitting={processingDelete}
+                                                    onClick={() => onLogout()}
+                                                >
+                                                    <LogoutIcon />
+                                                </IconButtonSubmit>
+                                            </Tooltip>
+                                        }
+                                    </div>
                                 </div>
                             )}
                         </Disclosure.Panel>
                     </>
                 )}
             </Disclosure>
-        )
-    }
+        </div>
+    )
+}
+
+const Devices = ({ devices }) => {
+    const [deleteDevice, { isLoading: processingDelete }] = useDeleteRememberedDeviceMutation()
+
+    // Group by deviceFamily and location
+    const groupedDevices = Object.entries(_(devices, (device) => [device.device_family, device.location]))
 
     return (
         <>
             <h3 className="spaced-header2">Devices</h3>
             <div className="inner-window" id="device-list">
                 {(groupedDevices).map(([device, info]) =>
-                    <Device key={device} device={device} info={info} />)}
+                    <Device
+                        key={device}
+                        device={device}
+                        info={info}
+                        processingDelete={processingDelete}
+                        deleteDevice={deleteDevice}
+                    />)}
+                {(groupedDevices).map(([device, info]) =>
+                    <Device
+                        key={device}
+                        device={device}
+                        info={info}
+                        processingDelete={processingDelete}
+                        deleteDevice={deleteDevice}
+                    />)}
+                {(groupedDevices).map(([device, info]) =>
+                    <Device
+                        key={device}
+                        device={device}
+                        info={info}
+                        processingDelete={processingDelete}
+                        deleteDevice={deleteDevice}
+                    />)}
             </div>
         </>
     )
