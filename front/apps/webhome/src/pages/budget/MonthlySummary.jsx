@@ -19,7 +19,7 @@ const MonthlySummary = () => {
                     </div>
                     <div>
                         <StarsIcon
-                            fill={'var(--green-dark3)'}
+                            fill={'var(--green-dark4)'}
                             height={'1.8em'}
                             width={'1.8em'}
                         />

@@ -1,21 +1,15 @@
 import React, { useEffect, useRef } from 'react'
 
-import { useNavigate, Outlet } from 'react-router-dom'
 import _ from 'lodash.groupby'
 
-import './styles/Security.css'
-import { QrIcon } from '@ledget/shared-assets'
-import { Tooltip } from "@components/pieces"
-import { PlusPill, GrayButton, IconButtonSubmit, ShimmerDiv } from '@ledget/shared-ui'
 import { Disclosure } from '@headlessui/react'
-import {
-    useGetMeQuery,
-    useGetDevicesQuery,
-    useDeleteRememberedDeviceMutation,
-} from '@features/userSlice'
-import { ArrowIcon, LogoutIcon, LocationIcon } from '@ledget/shared-assets'
+import { useDeleteRememberedDeviceMutation, } from '@features/userSlice'
+import { IconButtonSubmit } from '@ledget/shared-ui'
 import Computer from '@ledget/shared-assets/src/icons/Computer.svg'
 import Phone from '@ledget/shared-assets/src/icons/Phone.svg'
+import { ArrowIcon, LogoutIcon, LocationIcon } from '@ledget/shared-assets'
+import { Tooltip } from "@components/pieces"
+
 
 const formatDateTime = (date) => {
     const d = new Date(date)
@@ -23,69 +17,34 @@ const formatDateTime = (date) => {
     return d.toLocaleDateString('en-US', options)
 }
 
-const AuthenticatorApp = () => {
-    const navigate = useNavigate()
-    const { data: user } = useGetMeQuery()
-
-    const formatDate = (date) => {
-        const d = new Date(date)
-        const options = { month: 'short', day: 'numeric', year: 'numeric' }
-        return d.toLocaleDateString('en-US', options)
-    }
-
-    return (
-        <div id="authenticator-settings--container">
-            {user.mfa_method === 'authenticator'
-                ?
-                <>
-                    <div>
-                        <QrIcon width={'1.25em'} height={'1.25em'} />
-                        <span>Added on {formatDate(user.authenticator_enabled_on)}</span>
-                    </div>
-                    <GrayButton onClick={() => navigate('/profile/security/delete-authenticator')}>
-                        remove
-                    </GrayButton>
-                </>
-                :
-                <>
-                    <div id="authenticator-not-set-up">
-                        <QrIcon width={'1.25em'} height={'1.25em'} />
-                        <span>Authenticator App</span>
-                    </div>
-                    <div>
-                        <PlusPill onClick={() => navigate('/profile/security/authenticator-setup')} />
-                    </div>
-                </>
-            }
-        </div>
-    )
-}
-
-const Mfa = () => (
-    <div>
-        <div id="authenticator-settings--header">
-            <h3 className="spaced-header2">Multi-Factor Authentication</h3>
-        </div>
-        <div className="inner-window">
-            <AuthenticatorApp />
-        </div>
-    </div>
-)
-
-const Device = ({ key, device, info, onLogout, processingDelete }) => {
+const Device = (props) => {
+    const { device, info, onLogout, processingDelete } = props
     const buttonRef = useRef(null)
-    const disclosureRef = useRef(null)
-
     const iconKey = Object.keys(info[0]).find(
         (key) => key.includes('is_') && info[0][key]
     )
 
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (
+                buttonRef.current
+                && buttonRef.current.getAttribute('data-headlessui-state') === 'open'
+                && !buttonRef.current.contains(e.target)
+            ) {
+                buttonRef.current.click()
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
+
     return (
-        <div ref={disclosureRef} key={key} className="device--container">
+        <div className="device--container">
             <Disclosure as={React.Fragment}>
-                {({ open, close }) => (
+                {({ open }) => (
                     <>
                         <Disclosure.Button
+                            ref={buttonRef}
                             key={device}
                             className={`device ${open ? 'open' : 'closed'}`}
                         >
@@ -110,7 +69,7 @@ const Device = ({ key, device, info, onLogout, processingDelete }) => {
                         </Disclosure.Button>
                         <Disclosure.Panel className={`device-sessions ${open ? 'open' : ''}`}>
                             {info.map((session) =>
-                                <div>
+                                <div key={session.id} className="device-session">
                                     <div className="device-session-info">
                                         <div>Browser:</div>
                                         <div>{session.browser_family}</div>
@@ -156,25 +115,9 @@ const Devices = ({ devices }) => {
 
     return (
         <>
-            <h3 className="spaced-header2">Devices</h3>
+            <h3>Devices</h3>
             <div className="inner-window" id="device-list">
-                {(groupedDevices).map(([device, info]) =>
-                    <Device
-                        key={device}
-                        device={device}
-                        info={info}
-                        processingDelete={processingDelete}
-                        deleteDevice={deleteDevice}
-                    />)}
-                {(groupedDevices).map(([device, info]) =>
-                    <Device
-                        key={device}
-                        device={device}
-                        info={info}
-                        processingDelete={processingDelete}
-                        deleteDevice={deleteDevice}
-                    />)}
-                {(groupedDevices).map(([device, info]) =>
+                {(groupedDevices).map(([device, info], index) =>
                     <Device
                         key={device}
                         device={device}
@@ -187,19 +130,4 @@ const Devices = ({ devices }) => {
     )
 }
 
-const Security = () => {
-    const { data: devices, isLoading } = useGetDevicesQuery()
-
-    return (
-        <ShimmerDiv shimmering={isLoading}>
-            <div className="padded-content" id="security-page">
-                <h1 className="spaced-header">Security</h1>
-                <Devices devices={devices} />
-                <Mfa />
-            </div>
-            <Outlet />
-        </ShimmerDiv>
-    )
-}
-
-export default Security
+export default Devices

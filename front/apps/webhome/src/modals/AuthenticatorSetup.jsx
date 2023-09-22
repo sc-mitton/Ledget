@@ -91,7 +91,6 @@ const SetupApp = ({ codeMode, setCodeMode }) => {
     )
 }
 
-
 const Authenticator = (props) => {
     const { flow } = useSettingsFlow()
     const [searchParams] = useSearchParams()

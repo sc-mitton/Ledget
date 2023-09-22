@@ -20,7 +20,7 @@ const YearlySummary = () => {
                         <StarsIcon
                             height={'1.8em'}
                             width={'1.8em'}
-                            fill={'var(--green-dark3)'}
+                            fill={'var(--green-dark4)'}
                         />
                     </div>
                 </div>
