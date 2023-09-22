@@ -24,10 +24,26 @@ const Header = () => {
     })
     const currentPath = location.pathname.split('/')[location.pathname.split('/').length - 1]
     const paths = [
-        { path: 'deposits', label: 'Deposits', icon: <DepositsIcon width={'1.4em'} height={'1.4em'} /> },
-        { path: 'credit', label: 'Credit', icon: <CardIcon width={'1.2em'} height={'1.2em'} /> },
-        { path: 'investments', label: 'Investments', icon: <StocksIcon width={'1.2em'} height={'1.2em'} /> },
-        { path: 'loans', label: 'Loans', icon: <ClockIcon /> },
+        {
+            path: 'deposits',
+            label: 'Deposits',
+            icon: <DepositsIcon fill={currentPath === 'deposits' && 'var(--green-dark4)'} />
+        },
+        {
+            path: 'credit',
+            label: 'Credit',
+            icon: <CardIcon fill={currentPath === 'credit' && 'var(--green-dark4)'} />
+        },
+        {
+            path: 'investments',
+            label: 'Investments',
+            icon: <StocksIcon fill={currentPath === 'investments' && 'var(--green-dark4)'} />
+        },
+        {
+            path: 'loans',
+            label: 'Loans',
+            icon: <ClockIcon fill={currentPath === 'loans' && 'var(--green-dark4)'} />
+        },
     ]
 
     return (
@@ -46,7 +62,7 @@ const Header = () => {
                             onClick={() => navigate(`/accounts/${path.path}`)}
                         >
                             {path.icon}
-                            <span>{path.label}</span>
+                            {path.label}
                         </li>
                     ))
                     }

@@ -84,9 +84,9 @@ const ChangePlanMenu = () => {
                         <GreenSlimArrowSubmit
                             submitting={isLoading}
                             rotate={0}
-                            stroke={'var(--m-text-gray'}
+                            stroke={'var(--green-dark3)'}
                         >
-                            <span>change</span>
+                            change
                         </GreenSlimArrowSubmit>
                     </Menu.Button>
                     <DropAnimation visible={open} className="dropdown" id="change-plan--menu">
@@ -208,7 +208,7 @@ const PaymentMethod = () => {
             <div id="card-info-container" className="body inner-window">
                 <div className="card-info--container">
                     <div>
-                        <CardIcon />
+                        <CardIcon width={'1.4em'} height={'1.4em'} />
                         <span >
                             {data?.payment_method.brand.charAt(0).toUpperCase()
                                 + data?.payment_method.brand.slice(1)}

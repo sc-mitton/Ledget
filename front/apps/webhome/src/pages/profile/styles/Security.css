@@ -27,3 +27,114 @@
     display: flex;
     align-items: center;
 }
+
+/* ------------------------------- Device List ------------------------------ */
+
+
+#device-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.device {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 6px;
+    gap: 16px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.device:hover,
+.device.open {
+    background-color: var(--window);
+    transition: background-color 0.2s ease-in-out;
+}
+
+.device.open {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.device>div:last-child {
+    transform: scale(1);
+    padding: 2px;
+    margin-right: 4px;
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+}
+
+.device:hover>div:last-child {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.device>div:nth-child(2) {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.device-title>span:first-child {
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+.device-title>span:nth-child(2) {
+    padding: 0px 8px;
+    border-radius: var(--border-radius1);
+    font-weight: 500;
+}
+
+.device-title>div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.device-icon {
+    display: flex;
+    align-items: center;
+}
+
+.device-icon img {
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+.device-location {
+    display: flex;
+}
+
+.device-location svg {
+    margin-right: 4px;
+    padding-top: 2px;
+}
+
+.device.closed>div:last-child svg {
+    transform: rotate(0deg);
+}
+
+.device.open>div:last-child svg {
+    transform: rotate(180deg);
+}
+
+.device-session {
+    background-color: var(--window);
+    border-bottom-left-radius: var(--border-radius2);
+    border-bottom-right-radius: var(--border-radius2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 6px 8px 16px;
+}
+
+.device-session button {
+    padding: 6px;
+}
+
+.device-session-info>span:first-child {
+    font-weight: 600;
+    margin-right: 4px;
+}

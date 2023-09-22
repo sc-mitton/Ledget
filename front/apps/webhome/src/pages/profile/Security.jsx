@@ -1,16 +1,21 @@
 import React from 'react'
 
 import { useNavigate, Outlet } from 'react-router-dom'
+import _ from 'lodash.groupby'
 
 import './styles/Security.css'
 import { QrIcon } from '@ledget/shared-assets'
-import { PlusPill, GrayButton, ShimmerDiv } from '@ledget/shared-ui'
+import { Tooltip } from "@components/pieces"
+import { PlusPill, GrayButton, IconButton, ShimmerDiv } from '@ledget/shared-ui'
+import { Disclosure } from '@headlessui/react'
 import {
     useGetMeQuery,
     useGetDevicesQuery,
     useDeleteRememberedDeviceMutation,
 } from '@features/userSlice'
-
+import { ArrowIcon, LogoutIcon, LocationIcon } from '@ledget/shared-assets'
+import Computer from '@ledget/shared-assets/src/icons/Computer.svg'
+import Phone from '@ledget/shared-assets/src/icons/Phone.svg'
 
 
 const AuthenticatorApp = () => {
@@ -22,7 +27,6 @@ const AuthenticatorApp = () => {
         const options = { month: 'short', day: 'numeric', year: 'numeric' }
         return d.toLocaleDateString('en-US', options)
     }
-
 
     return (
         <div id="authenticator-settings--container">
@@ -65,13 +69,83 @@ const Mfa = () => (
 
 const Devices = ({ devices }) => {
 
+    // Group by deviceFamily and location
+    const groupedDevices = Object.entries(_(devices, (device) => [device.device_family, device.location]))
+
+    const formatDate = (date) => {
+        const d = new Date(date)
+        const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' }
+        return d.toLocaleDateString('en-US', options)
+    }
+
+    const Device = ({ device, info }) => {
+        const iconKey = Object.keys(info[0]).find(
+            (key) => key.includes('is_') && info[0][key]
+        )
+
+        return (
+            <Disclosure>
+                {({ open }) => (
+                    <>
+                        <Disclosure.Button key={device} className={`device ${open ? 'open' : 'closed'}`}>
+                            <div className="device-icon">
+                                {iconKey === 'is_pc' && <img src={Computer} alt="computer" />}
+                                {iconKey === 'is_mobile' && <img src={Phone} alt="phone" />}
+                                {!iconKey && <img src={Computer} alt="computer" />}
+                            </div>
+                            <div className="device-info">
+                                <div className="device-title">
+                                    <span>{device.split(',')[0]}</span>&ndash;
+                                    <span>{`${info.length} session ${info.length > 1 ? 's' : ''}`}</span>
+                                </div>
+                                <div className="device-location">
+                                    <LocationIcon />
+                                    {device.split(',')[1] + ', ' + device.split(',')[2]}
+                                </div>
+                            </div>
+                            <div><ArrowIcon /></div>
+                        </Disclosure.Button>
+                        <Disclosure.Panel>
+                            {info.map((session) =>
+                                <div className="device-session">
+                                    <div>
+                                        <div className="device-session-info">
+                                            <span>Browser:</span>
+                                            <span>{session.browser_family}</span>
+                                        </div>
+                                        <div className="device-session-info">
+                                            <span>Last Login: </span>
+                                            <span>{formatDate(session.last_login)}</span>
+                                        </div>
+                                    </div>
+                                    <Tooltip
+                                        msg={"Logout"}
+                                        ariaLabel={"Refresh list"}
+                                        style={{ left: '-30%' }}
+                                    >
+                                        <IconButton
+                                            onClick={() => useDeleteRememberedDeviceMutation(info.id)}
+                                        >
+                                            <LogoutIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                            )}
+                        </Disclosure.Panel>
+                    </>
+                )}
+            </Disclosure>
+        )
+    }
+
     return (
-        <div>
+        <>
             <h3 className="spaced-header2">Devices</h3>
-            <div className="inner-window body">
-                <span>Devices</span>
+            <div className="inner-window" id="device-list">
+                {(groupedDevices).map(([device, info]) =>
+                    <Device key={device} device={device} info={info} />)}
             </div>
-        </div>
+        </>
     )
 }
 

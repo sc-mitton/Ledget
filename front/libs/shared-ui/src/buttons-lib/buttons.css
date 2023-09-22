@@ -93,15 +93,16 @@
 }
 
 .btn-grn {
-    color: var(--m-text-gray);
+    color: var(--green-dark4);
     background-color: var(--green-hlight);
-    transition: background-color .3s ease;
+    transition: all .3s ease;
     font-weight: 500;
 }
 
 .btn-grn:hover {
+    color: var(--green-dark4);
     background-color: var(--green-hlight3);
-    transition: background-color .3s ease;
+    transition: all .3s ease;
 }
 
 .btn-grn-text {

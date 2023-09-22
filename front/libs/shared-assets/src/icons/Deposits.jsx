@@ -1,8 +1,8 @@
 import React from 'react'
 
 const Deposits = ({
-    width = "1em",
-    height = "1em",
+    width = "1.4em",
+    height = "1.4em",
     className = null,
     fill = "#292929",
 }) => {

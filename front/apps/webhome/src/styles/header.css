@@ -165,7 +165,7 @@ header {
     color: var(--white-text);
 }
 
-#logout-icon {
+.header-nav #logout-icon {
     margin-left: 4px;
     margin-right: 10px;
 }

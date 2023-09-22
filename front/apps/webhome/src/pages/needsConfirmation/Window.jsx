@@ -15,7 +15,7 @@ import Options from "@components/dropdowns/Options"
 import ItemOptions from "./ItemOptions"
 import { Tooltip } from "@components/pieces"
 import { formatDateOrRelativeDate } from "@ledget/shared-utils"
-import { NarrowButton, ExpandableContainer, ExpandButton, GrnSlimButton, IconScaleButton } from "@ledget/shared-ui"
+import { NarrowButton, ExpandableContainer, ExpandButton, GrnSlimButton2, IconScaleButton } from "@ledget/shared-ui"
 
 // TODO: eventually these will go away, data will be pulled from backend
 // and logos will be brought in another way
@@ -232,12 +232,12 @@ const NewItem = (props) => {
                 </div>
             </div>
             <div className='new-item-icons' >
-                <GrnSlimButton
+                <GrnSlimButton2
                     aria-label="Choose budget category"
                     tabIndex={tabIndex}
                 >
                     {item.category}
-                </GrnSlimButton>
+                </GrnSlimButton2>
                 <Tooltip
                     msg="Confirm"
                     ariaLabel="Confirm"

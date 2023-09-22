@@ -101,7 +101,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query: ({ deviceId }) => ({
                 url: `devices/${deviceId}`,
                 method: 'DELETE',
-            })
+            }),
+            invalidatesTags: ['devices'],
         }),
     })
 })

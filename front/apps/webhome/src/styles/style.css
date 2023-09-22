@@ -28,6 +28,7 @@
     --green-dark: rgb(67, 199, 126);
     --green-dark2: rgb(71, 209, 133);
     --green-dark3: rgb(61, 174, 112);
+    --green-dark4: rgb(51, 144, 93);
     --accessible-green: rgb(81, 237, 151);
     --green-input-focus: rgb(96, 211, 156);
     --yellow: rgb(175, 175, 51);
@@ -261,7 +262,7 @@ div.body {
 }
 
 .body svg {
-    margin-right: 8px;
+    margin-right: 6px;
     opacity: .95;
 }
 
@@ -476,6 +477,10 @@ button.pulse:hover {
 .budget-item-name[role="button"]:hover {
     background-color: var(--m-green);
     transition: background-color .3s ease;
+}
+
+.budget-item-name * {
+    color: var(--green-dark3);
 }
 
 .budget-item-name span:first-child {

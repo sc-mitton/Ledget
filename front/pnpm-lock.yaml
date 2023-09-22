@@ -165,6 +165,9 @@ importers:
       '@stripe/react-stripe-js':
         specifier: ^2.3.0
         version: 2.3.0(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0)
+      '@stripe/stripe-js':
+        specifier: ^1.50.0
+        version: 1.54.2
       '@use-gesture/react':
         specifier: ^10.2.27
         version: 10.2.27(react@18.2.0)
@@ -189,6 +192,9 @@ importers:
       lodash.clamp:
         specifier: ^4.0.3
         version: 4.0.3
+      lodash.groupby:
+        specifier: ^4.6.0
+        version: 4.6.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -316,11 +322,8 @@ importers:
       '@ledget/shared-utils':
         specifier: workspace:^
         version: link:../../libs/shared-utils
-      '@ory/client':
-        specifier: ^1.1.28
-        version: 1.1.51
       '@ory/integrations':
-        specifier: ^1.1.4
+        specifier: ^1.1.5
         version: 1.1.5(@ory/client@1.1.51)(next@13.4.19)
       '@reduxjs/toolkit':
         specifier: ^1.9.5
@@ -8085,6 +8088,10 @@ packages:
   /lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
     dev: true
+
+  /lodash.groupby@4.6.0:
+    resolution: {integrity: sha512-5dcWxm23+VAoz+awKmBaiBvzox8+RqMgFhi7UvX9DHZr2HdxHXM/Wrf8cfKpsW37RNrvtPn6hSwNqurSILbmJw==}
+    dev: false
 
   /lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}

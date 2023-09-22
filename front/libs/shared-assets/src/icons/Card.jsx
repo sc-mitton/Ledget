@@ -3,8 +3,8 @@ import React from 'react'
 const Card = ({
     className = 'card',
     fill = "#292929",
-    width = "1.4em",
-    height = "1.4em"
+    width = "1.2em",
+    height = "1.2em"
 }) => {
 
     return (

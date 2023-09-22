@@ -18,11 +18,12 @@ export const GrayWideButton = ButtonWithClassName('btn-gr btn-wide')
 
 export const BlackSlimButton = ButtonWithClassName('btn-chcl btn-slim')
 export const GrnSlimButton = ButtonWithClassName('btn-grn btn-slim')
+export const GrnSlimButton2 = ButtonWithClassName('btn-grn btn-2slim')
 export const SlimButton = ButtonWithClassName('btn-clr btn-2slim')
 export const NarrowButton = ButtonWithClassName('btn-clr btn-narrow')
 export const IconButton = ButtonWithClassName('btn-clr btn-icon')
 export const IconButton2 = ButtonWithClassName('btn-gr2 btn-icon2')
-export const IconScaleButton = ButtonWithClassName('btn-scale2 btn-transparent')
+export const IconScaleButton = ButtonWithClassName('btn-scale2 btn-transparent btn-icon2')
 export const InputButton = ButtonWithClassName('btn-input btn-input-full')
 export const SlimInputButton = ButtonWithClassName('btn-input2 btn-2slim')
 

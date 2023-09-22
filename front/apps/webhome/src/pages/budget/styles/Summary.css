@@ -9,6 +9,9 @@
     margin-top: 8px;
 }
 
+.summary-stats--container * {
+    color: var(--green-dark3);
+}
 
 .summary-stats--container span {
     white-space: nowrap;

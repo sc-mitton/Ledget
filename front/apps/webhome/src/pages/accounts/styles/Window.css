@@ -14,7 +14,7 @@
     margin-right: 16px;
     padding: 2px 16px;
     font-weight: 500;
-    background-color: var(--input-color);
+    background-color: var(--icon-light-gray);
     border-radius: var(--border-radius3);
     transition: background-color 0.2s ease-in-out;
     display: flex;
@@ -24,5 +24,15 @@
 
 #accounts-window ul li[aria-current="page"] {
     background-color: transparent;
+    transition: background-color 0.5s ease-in-out;
+    color: var(--green-dark4);
+}
+
+#accounts-window ul li[aria-current="page"] svg {
+    fill: red;
+}
+
+#accounts-window ul li:not([aria-current="page"]):hover {
+    background-color: var(--icon-hover-light-gray);
     transition: background-color 0.5s ease-in-out;
 }

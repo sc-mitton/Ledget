@@ -59,6 +59,7 @@
 
 .new-item-icons>button:nth-child(1) {
     margin: 0 8px;
+    color: var(--green-dark3);
 }
 
 .new-item-icons button:last-child {
