@@ -11,18 +11,16 @@
     justify-content: center;
 }
 
-#verification-container-header img {
-    height: 2em;
-}
-
 /* ************* */
 
 #verification-form-container button {
     margin-top: 12px;
 }
 
-#verify-your-email {
-    height: 10em;
+#verify-graphic--container {
+    height: 4em;
+    margin-bottom: 24px;
+    position: relative;
 }
 
 #verification-form-container span {
@@ -31,4 +29,85 @@
 
 #verification-form-error-container * {
     font-size: 16px;
+}
+
+
+/* ------------------------------ Status Circles ----------------------------- */
+
+#verify-graphic--container img {
+    z-index: 3;
+}
+
+.status-circle {
+    position: absolute;
+    top: -34px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 50%;
+    transform: scale(1);
+}
+
+.status-circle:not(:last-child) {
+    z-index: 2;
+    width: 1.6rem;
+    height: 1.6rem;
+}
+
+.status-circle:last-child {
+    z-index: 1;
+    width: 2.2rem;
+    height: 2.2rem;
+}
+
+.status-circle.locked:not(:last-child) {
+    background-color: rgb(0, 0, 0, .05);
+    animation: pulse 10s ease-in-out infinite;
+}
+
+.status-circle.locked:last-child {
+    background-color: rgb(0, 0, 0, .05);
+    animation: pulse 10s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+.status-circle.unlocked:last-child {
+    background-color: rgb(212, 255, 231, 1);
+    animation: success .7s ease-out forwards;
+    animation-delay: .5s;
+    transition: all .5s ease-out;
+}
+
+.status-circle.unlocked:not(:last-child) {
+    background-color: rgb(154, 254, 197, .7);
+    animation: success .7s ease-out forwards;
+    animation-delay: .5s;
+    transition: all .5s ease-out;
+}
+
+@keyframes success {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(5);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }

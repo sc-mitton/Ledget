@@ -186,6 +186,7 @@ function useFlow(query, mutation, flowType) {
         flowStatus: {
             errMsg,
             errId,
+            completeError,
             isCompleteError,
             isGetFlowError,
             isFetchingFlow,

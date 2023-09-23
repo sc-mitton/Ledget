@@ -8,7 +8,7 @@ import CsrfToken from "./inputs/CsrfToken"
 import ResendButton from "./inputs/ResendButton"
 import Otc from "./Otc"
 import { WindowLoadingBar } from "@pieces"
-import { BlackWideButton, FormError, JiggleDiv } from "@ledget/shared-ui"
+import { GrnWideButton, FormError, JiggleDiv } from "@ledget/shared-ui"
 import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
 
@@ -43,11 +43,11 @@ const VerificationForm = ({ flow, error, submit }) => {
 
                 {flow && <CsrfToken csrf={flow.csrf_token} />}
 
-                <input type="hidden" name="email" value={user.traits?.email} />
+                <input type="hidden" name="email" value={user?.traits?.email} />
 
-                <BlackWideButton type="submit" name="method" value="code" disabled={otcDisabled}>
+                <GrnWideButton type="submit" name="method" value="code" disabled={otcDisabled}>
                     Submit
-                </BlackWideButton>
+                </GrnWideButton>
             </form>
             <form
                 action={flow?.ui.action}
@@ -64,6 +64,7 @@ const VerificationForm = ({ flow, error, submit }) => {
 
 const Verification = () => {
     const [jiggle, setJiggle] = useState(false)
+    const [codeIsCorrect, setCodeIsCorrect] = useState(false)
     const [unhandledIdMessage, setUnhandledIdMessage] = useState('')
     const navigate = useNavigate()
     const { flow, completedFlowData, fetchFlow, submit, flowStatus } = useFlow(
@@ -78,9 +79,7 @@ const Verification = () => {
         isCompleteSuccess
     } = flowStatus
 
-    useEffect(() => {
-        fetchFlow()
-    }, [])
+    useEffect(() => { fetchFlow() }, [])
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -88,6 +87,16 @@ const Verification = () => {
         }, 1000)
         return () => clearTimeout(timeout)
     }, [jiggle])
+
+    useEffect(() => {
+        let timeout
+        if (codeIsCorrect) {
+            timeout = setTimeout(() => {
+                navigate('/checkout')
+            }, 1500)
+        }
+        return () => clearTimeout(timeout)
+    }, [codeIsCorrect])
 
     // Response code handler
     useEffect(() => {
@@ -106,7 +115,7 @@ const Verification = () => {
                     break
                 case (1080002):
                     // Successful verification
-                    navigate('/checkout')
+                    setCodeIsCorrect(true)
                     break
                 case (1080003 || 1080002):
                     // Email w/ code/link sent
@@ -118,16 +127,26 @@ const Verification = () => {
         }
     }, [isCompleteSuccess])
 
+    const [test, setTest] = useState(false)
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            // setTest(true)
+        }, 3000)
+        return () => clearTimeout(timeout)
+    }, [])
+
     return (
         <JiggleDiv className="window" id="verification-window" jiggle={jiggle}>
             <WindowLoadingBar visible={isFetchingFlow || submittingFlow} />
             <div className="window-header">
-                <h2>Email Verification</h2>
+                <h2>Verify Email Address</h2>
                 <h4>Step 3 of 4</h4>
             </div>
             <div id="verification-form-container">
-                <div>
-                    <img id="verify-your-email" src={verifyEmail} alt="Verify Email" />
+                <div id='verify-graphic--container'>
+                    <img src={verifyEmail} alt="Verify Email" />
+                    <div className={`status-circle ${test ? 'unlocked' : 'locked'}`} />
+                    <div className={`status-circle ${test ? 'unlocked' : 'locked'}`} />
                 </div>
                 {errMsg
                     ?
@@ -137,7 +156,6 @@ const Verification = () => {
                     </div>
                     :
                     <>
-                        <h2>Verify your email address</h2>
                         <div className="subheader">
                             <span>Enter the code we sent to your email address </span>
                             <span>to verify your account:</span>

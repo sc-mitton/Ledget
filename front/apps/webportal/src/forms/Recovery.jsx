@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { AnimatePresence } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 
 import './style/Recovery.css'
 import Otc from './Otc'
@@ -11,7 +11,29 @@ import forgotPassword from '@assets/images/forgotPassword.svg'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory-sdk'
 
-const RecoveryForm = ({ flow, setEmail, submit }) => {
+const Error = ({ msg }) => (
+    <div className="recovery-error--container">
+        {msg
+            ?
+            <FormError msg={errMsg} />
+            :
+            <FormError msg={"Something went wrong, please try again later."} />
+        }
+    </div>
+)
+
+const MainGraphic = ({ unLocked }) => (
+    <div
+        className={`${(unLocked) ? 'unlocked' : 'locked'}`}
+        id="image-container"
+    >
+        <img src={forgotPassword} alt="Forgot password" />
+        <div className={`key-circle ${unLocked ? 'unlocked' : 'locked'}`} />
+        <div className={`key-circle ${unLocked ? 'unlocked' : 'locked'}`} />
+    </div>
+)
+
+const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }) => {
     const emailRef = useRef(null)
 
     useEffect(() => {
@@ -22,24 +44,25 @@ const RecoveryForm = ({ flow, setEmail, submit }) => {
         <>
             <div>
                 <h2>Forgot password?</h2>
-                <div style={{ margin: '8px 0', width: '70%' }}>
+                <div style={{ margin: '8px 0' }}>
                     <span>
                         Enter the email connected to your account and we'll
                         send you a recovery code.
                     </span>
                 </div>
+                {(isCompleteError || errMsg) && <Error msg={errMsg} />}
             </div>
-            <div id="forgot-password-image-container">
-                <img src={forgotPassword} alt="Forgot password" />
-            </div>
-            <form id="recovery-form" onSubmit={submit}>
+            <MainGraphic />
+            <form
+                onSubmit={submit}
+                className="recovery-form"
+            >
                 <PlainTextInput
                     type="email"
                     placeholder="Email"
                     autoComplete="email"
                     ref={emailRef}
                     name="email"
-                    onChange={(e) => setEmail(e.target.value)}
                 />
                 <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
                 <GrnWideButton
@@ -55,16 +78,13 @@ const RecoveryForm = ({ flow, setEmail, submit }) => {
     )
 }
 
-const RecoveryVerificationForm = ({ email, submit, flow, isCompleteSuccess }) => {
-    const navigate = useNavigate()
+const RecoveryVerificationForm = ({ submit, flow, codeSuccess, isCompleteError, errMsg }) => {
     const [searchParams, setsearchParams] = useSearchParams()
-    const [codeAttempted, setCodeAttempted] = useState(false)
     const [csrfToken, setCsrfToken] = useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault()
         submit(e)
-        setCodeAttempted(true)
     }
 
     useEffect(() => {
@@ -75,25 +95,6 @@ const RecoveryVerificationForm = ({ email, submit, flow, isCompleteSuccess }) =>
             })
         }
     }, [flow])
-
-    useEffect(() => {
-        let timeout
-        if (isCompleteSuccess && codeAttempted) {
-            setTimeout(() => {
-                // navigate('/login')
-            }, 1000)
-        }
-        return () => clearTimeout(timeout)
-    }, [isCompleteSuccess])
-
-    const [test, setTest] = useState(false)
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setTest(true)
-        }
-            , 4000)
-        return () => clearTimeout(timeout)
-    }, [])
 
     return (
         <>
@@ -111,20 +112,16 @@ const RecoveryVerificationForm = ({ email, submit, flow, isCompleteSuccess }) =>
                 <div style={{ margin: '4px 0' }}>
                     <span>Enter the code sent to your email </span>
                 </div>
+                {(isCompleteError || errMsg) && <Error msg={errMsg} />}
             </div>
-            <div
-                id="forgot-password-image-container"
-                className={`${(test) ? 'finished' : 'unfinished'}`}
-            // codeAttempted && isCompleteSuccess
+            <MainGraphic unLocked={codeSuccess} />
+            <form
+                id="recovery-verification-form"
+                className="recovery-form"
+                onSubmit={handleSubmit}
             >
-                <img src={forgotPassword} alt="Forgot password" />
-                <div className="success-circle" />
-                <div className="success-circle" />
-            </div>
-            <form id="recovery-verification-form" onSubmit={handleSubmit}>
                 <Otc codeLength={6} />
                 <input type="hidden" name="csrf_token" value={csrfToken} />
-                <input type="hidden" name="email" value={email} />
                 <div className="verification-button-container">
                     <GrnWideButton
                         name="method"
@@ -142,6 +139,7 @@ const RecoveryVerificationForm = ({ email, submit, flow, isCompleteSuccess }) =>
 
 const RecoverAccount = () => {
     const [searchParams, setSearchParams] = useSearchParams()
+    const [codeSuccess, setCodeSuccess] = useState(false)
 
     const {
         flow,
@@ -160,8 +158,21 @@ const RecoverAccount = () => {
         isCompleteSuccess,
         submittingFlow,
         isCompleteError,
+        completeError,
         errMsg
     } = flowStatus
+
+    useEffect(() => {
+        // If 422 error, redirect to login
+        let timeout
+        if (completeError?.status === 422) {
+            timeout = setTimeout(() => {
+                setSearchParams({})
+                navigate('/login')
+            }, 1500)
+        }
+        return () => clearTimeout(timeout)
+    }, [completeError])
 
     useEffect(() => {
         if (searchParams.get('step') !== 'verify' && isCompleteSuccess) {
@@ -171,40 +182,38 @@ const RecoverAccount = () => {
     }, [isCompleteSuccess])
 
     useEffect(() => { fetchFlow() }, [])
-    const [email, setEmail] = useState("")
 
     return (
         <div className="window" id="recovery-window">
             <WindowLoadingBar visible={isFetchingFlow || submittingFlow} />
-            <FormError msg={errMsg} />
-            {isCompleteError && !errMsg &&
-                <FormError msg={"Something went wrong, please try again later."} />}
             <AnimatePresence mode="wait">
                 {searchParams.get('step') === 'verify'
                     ?
                     <SlideMotionDiv
+                        className="recovery-form"
                         id="recovery-verification-form-container"
                         key="recovery-verification-form-container"
                         last
                     >
                         <RecoveryVerificationForm
-                            email={email}
                             flow={completedFlowData}
                             submit={submit}
-                            isCompleteSuccess={isCompleteSuccess}
+                            codeSuccess={codeSuccess}
+                            isCompleteError={isCompleteError}
+                            errMsg={errMsg}
                         />
                     </SlideMotionDiv>
                     :
                     <SlideMotionDiv
-                        className="recovery-form-container"
-                        key="recovery-form-container"
+                        id="recovery-code-form-container"
+                        key="recovery-code-form-container"
                         first={Boolean(flow)}
                     >
                         <RecoveryForm
-                            setEmail={setEmail}
                             flow={flow}
                             submit={submit}
-                            isCompleteSuccess={isCompleteSuccess}
+                            isCompleteError={isCompleteError}
+                            errMsg={errMsg}
                         />
                     </SlideMotionDiv>
                 }
