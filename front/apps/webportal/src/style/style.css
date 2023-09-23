@@ -147,6 +147,11 @@ button {
     background: transparent;
 }
 
+main {
+    width: 100vw;
+    height: 100vh;
+}
+
 /* Accessibility Focus Styling */
 main:focus-visible {
     outline: none;

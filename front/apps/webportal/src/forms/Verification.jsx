@@ -127,14 +127,6 @@ const Verification = () => {
         }
     }, [isCompleteSuccess])
 
-    const [test, setTest] = useState(false)
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            // setTest(true)
-        }, 3000)
-        return () => clearTimeout(timeout)
-    }, [])
-
     return (
         <JiggleDiv className="window" id="verification-window" jiggle={jiggle}>
             <WindowLoadingBar visible={isFetchingFlow || submittingFlow} />
@@ -145,8 +137,8 @@ const Verification = () => {
             <div id="verification-form-container">
                 <div id='verify-graphic--container'>
                     <img src={verifyEmail} alt="Verify Email" />
-                    <div className={`status-circle ${test ? 'unlocked' : 'locked'}`} />
-                    <div className={`status-circle ${test ? 'unlocked' : 'locked'}`} />
+                    <div className={`status-circle ${codeIsCorrect ? 'unlocked' : 'locked'}`} />
+                    <div className={`status-circle ${codeIsCorrect ? 'unlocked' : 'locked'}`} />
                 </div>
                 {errMsg
                     ?

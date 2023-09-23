@@ -35,6 +35,7 @@ const MainGraphic = ({ unLocked }) => (
 
 const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }) => {
     const emailRef = useRef(null)
+    const navigate = useNavigate()
 
     useEffect(() => {
         emailRef.current.focus()
@@ -43,6 +44,12 @@ const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }) => {
     return (
         <>
             <div>
+                <div style={{ margin: '0 0 8px -4px' }}>
+                    <BackButton
+                        onClick={() => { navigate('/login') }}
+                        style={{ float: 'none' }}
+                    />
+                </div>
                 <h2>Forgot password?</h2>
                 <div style={{ margin: '8px 0' }}>
                     <span>
@@ -166,6 +173,7 @@ const RecoverAccount = () => {
         // If 422 error, redirect to login
         let timeout
         if (completeError?.status === 422) {
+            setCodeSuccess(true)
             timeout = setTimeout(() => {
                 setSearchParams({})
                 navigate('/login')
