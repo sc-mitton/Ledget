@@ -18,7 +18,7 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --green-hlight: #8fffc0;
+    --green-hlight: rgb(143, 255, 191);
     --green-hlight2: rgb(194, 255, 220);
     --green-hlight3: rgb(136, 236, 188);
     --lighter-green: rgb(179, 226, 200);
@@ -29,6 +29,7 @@
     --green-dark1: rgb(49, 175, 105);
     --green-dark2: rgb(71, 209, 133);
     --green-dark3: rgb(61, 174, 112);
+    --green-dark4: rgb(51, 144, 93);
     --accessible-green: rgb(81, 237, 151);
     --green-input-focus: rgb(96, 211, 156);
 

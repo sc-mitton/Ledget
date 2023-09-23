@@ -1,45 +1,39 @@
-import React, { useEffect, useContext, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-import { useSearchParams } from 'react-router-dom'
-import { motion, AnimatePresence } from "framer-motion"
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { AnimatePresence } from "framer-motion"
 
 import './style/Recovery.css'
 import Otc from './Otc'
-import CsrfToken from './inputs/CsrfToken'
-import ResendButton from "./inputs/ResendButton"
 import { WindowLoadingBar } from '@pieces'
-import SignUpFlowHeader from "@pieces/SignUpFlowHeader"
-import { RecoveryFlowContext, RecoveryFlowContextProvider } from '@context/Flow'
-import { FormError, BackButton } from '@ledget/shared-ui'
+import { FormError, GrnWideButton, SlideMotionDiv, PlainTextInput, BackButton } from '@ledget/shared-ui'
 import forgotPassword from '@assets/images/forgotPassword.svg'
+import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
+import { useFlow } from '@ledget/ory-sdk'
 
-const RecoveryForm = ({ setEmail }) => {
-    const { flow, csrf, submit } = useContext(RecoveryFlowContext)
+const RecoveryForm = ({ flow, setEmail, submit }) => {
     const emailRef = useRef(null)
-    const [animationActive, setAnimationActive] = useState(false)
 
     useEffect(() => {
         emailRef.current.focus()
     }, [])
 
-    const handleButtonClick = () => {
-        sessionStorage.setItem('recovery_email', emailRef.current.value)
-        setAnimationActive(true)
-
-        setTimeout(() => {
-            setAnimationActive(false)
-        }, 1000)
-    }
-
     return (
-        <form
-            id="recovery-form"
-            action={flow?.ui.action}
-            method={flow?.ui.method}
-            onSubmit={submit}
-        >
-            <TextInput>
-                <input
+        <>
+            <div>
+                <h2>Forgot password?</h2>
+                <div style={{ margin: '8px 0', width: '70%' }}>
+                    <span>
+                        Enter the email connected to your account and we'll
+                        send you a recovery code.
+                    </span>
+                </div>
+            </div>
+            <div id="forgot-password-image-container">
+                <img src={forgotPassword} alt="Forgot password" />
+            </div>
+            <form id="recovery-form" onSubmit={submit}>
+                <PlainTextInput
                     type="email"
                     placeholder="Email"
                     autoComplete="email"
@@ -47,170 +41,176 @@ const RecoveryForm = ({ setEmail }) => {
                     name="email"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-            </TextInput>
-            <CsrfToken csrf={csrf} />
-            <button
-                className={`charcoal-button verification-button${animationActive ? ' animate' : ''}`}
-                onClick={handleButtonClick}
-                type="submit"
-                value="code"
-            >
-                Send recovery email
-            </button>
-        </form>
-    )
-}
-
-const RecoveryVerificationForm = ({ email }) => {
-    const { flow, submit, csrf, recovering } = useContext(RecoveryFlowContext)
-    const [animationActive, setAnimationActive] = useState(false)
-
-    const handleButtonClick = () => {
-        setAnimationActive(true)
-
-        setTimeout(() => {
-            setAnimationActive(false)
-        }, 1000)
-    }
-
-    return (
-        <>
-            {recovering && <WindowLoadingBar />}
-            <form
-                id="recovery-verification-form"
-                action={flow?.ui.action}
-                method={flow?.ui.method}
-                onSubmit={submit}
-            >
-                <Otc codeLength={6} />
-                <CsrfToken csrf={csrf} />
-                <input type="hidden" name="email" value={email} />
-                <div className="verification-button-container">
-                    <button
-                        className={`charcoal-button verification-button${animationActive ? ' animate' : ''}`}
-                        onClick={handleButtonClick}
-                        type="submit"
-                        value="code"
-                    >
-                        Verify Code
-                    </button>
-                </div>
-            </form>
-            <form
-                action={flow?.ui.action}
-                method={flow?.ui.method}
-                onSubmit={submit}
-            >
-                <ResendButton />
-                <CsrfToken csrf={csrf} />
-                <input type="hidden" name="email" value={email} />
+                <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
+                <GrnWideButton
+                    style={{ color: 'var(--green-dark4)' }}
+                    name='method'
+                    type="submit"
+                    value="code"
+                >
+                    Send code
+                </GrnWideButton>
             </form>
         </>
     )
 }
 
-const AnimatedForms = () => {
-    const [email, setEmail] = useState("")
-    const { codeSent, setCodeSent } = useContext(RecoveryFlowContext)
+const RecoveryVerificationForm = ({ email, submit, flow, isCompleteSuccess }) => {
+    const navigate = useNavigate()
+    const [searchParams, setsearchParams] = useSearchParams()
+    const [codeAttempted, setCodeAttempted] = useState(false)
+    const [csrfToken, setCsrfToken] = useState('')
 
-    useEffect(() => {
-        const storedEmail = sessionStorage.getItem('recovery_email')
-        if (storedEmail) {
-            setEmail(storedEmail)
-        }
-    }, [])
-
-    const handleBackButtonClick = (e) => {
-        setCodeSent(false)
-        sessionStorage.removeItem('recovery_email')
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        submit(e)
+        setCodeAttempted(true)
     }
 
+    useEffect(() => {
+        if (flow) {
+            flow.ui.nodes.find((n) => {
+                n.attributes.name === 'csrf_token'
+                    && (setCsrfToken(n.attributes.value))
+            })
+        }
+    }, [flow])
+
+    useEffect(() => {
+        let timeout
+        if (isCompleteSuccess && codeAttempted) {
+            setTimeout(() => {
+                // navigate('/login')
+            }, 1000)
+        }
+        return () => clearTimeout(timeout)
+    }, [isCompleteSuccess])
+
+    const [test, setTest] = useState(false)
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setTest(true)
+        }
+            , 4000)
+        return () => clearTimeout(timeout)
+    }, [])
+
     return (
-        <AnimatePresence mode="wait">
-            {!codeSent
-                ?
-                <motion.div
-                    className="recovery-form-container"
-                    key="recovery-form-container"
-                    initial={{ opacity: 0, x: email ? -30 : 0 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -30 }}
-                    transition={{ ease: "easeInOut", duration: 0.2 }}
-                >
-                    <>
-                        <SignUpFlowHeader steps={0} />
-                        <div id="forgot-password-image-container">
-                            <img src={forgotPassword} alt="Forgot password" />
-                        </div>
-                        <h2>Forgot password?</h2>
-                        <div className='subheader'>
-                            <span>Enter the email connected to your account: </span>
-                        </div>
-                        <RecoveryForm setEmail={setEmail} />
-                    </>
-                </motion.div>
-                :
-                <motion.div
-                    className="recovery-verification-form-container"
-                    key="recovery-verification-form-container"
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 30 }}
-                    transition={{ ease: "easeInOut", duration: 0.2 }}
-                >
-                    <>
-                        <BackButton
-                            onClick={handleBackButtonClick}
-                        />
-                        <div id="forgot-password-image-container">
-                            <img src={forgotPassword} alt="Forgot password" />
-                        </div>
-                        <h2>Recovery Code</h2>
-                        <div className='subheader'>
-                            <span>Enter the code sent to your email: </span>
-                        </div>
-                        <RecoveryVerificationForm email={email} />
-                    </>
-                </motion.div>
-            }
-        </AnimatePresence>
+        <>
+            <div>
+                <div style={{ margin: '0 0 8px -4px' }}>
+                    <BackButton
+                        onClick={() => {
+                            searchParams.delete('step')
+                            setsearchParams(searchParams)
+                        }}
+                        style={{ float: 'none' }}
+                    />
+                </div>
+                <h2>Recovery Code</h2>
+                <div style={{ margin: '4px 0' }}>
+                    <span>Enter the code sent to your email </span>
+                </div>
+            </div>
+            <div
+                id="forgot-password-image-container"
+                className={`${(test) ? 'finished' : 'unfinished'}`}
+            // codeAttempted && isCompleteSuccess
+            >
+                <img src={forgotPassword} alt="Forgot password" />
+                <div className="success-circle" />
+                <div className="success-circle" />
+            </div>
+            <form id="recovery-verification-form" onSubmit={handleSubmit}>
+                <Otc codeLength={6} />
+                <input type="hidden" name="csrf_token" value={csrfToken} />
+                <input type="hidden" name="email" value={email} />
+                <div className="verification-button-container">
+                    <GrnWideButton
+                        name="method"
+                        type="submit"
+                        value="code"
+                        style={{ color: 'var(--green-dark4)' }}
+                    >
+                        Verify Code
+                    </GrnWideButton>
+                </div>
+            </form>
+        </>
     )
 }
 
-const RecoveryFlow = () => {
-    const { getFlow, createFlow, errMsg } = useContext(RecoveryFlowContext)
-    const [searchParams] = useSearchParams()
+const RecoverAccount = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const {
+        flow,
+        fetchFlow,
+        submit,
+        flowStatus,
+        completedFlowData
+    } = useFlow(
+        useLazyGetRecoveryFlowQuery,
+        useCompleteRecoveryFlowMutation,
+        'recovery'
+    )
+
+    const {
+        isFetchingFlow,
+        isCompleteSuccess,
+        submittingFlow,
+        isCompleteError,
+        errMsg
+    } = flowStatus
 
     useEffect(() => {
-        // we might redirect to this page after the flow is initialized,
-        // so we check for the flowId in the URL
-        const flowId = searchParams.get("flow")
-        // Get new flow if it's expired
-        flowId ? getFlow(flowId).catch(createFlow) : createFlow()
-    }, [])
+        if (searchParams.get('step') !== 'verify' && isCompleteSuccess) {
+            searchParams.set('step', 'verify')
+            setSearchParams(searchParams)
+        }
+    }, [isCompleteSuccess])
+
+    useEffect(() => { fetchFlow() }, [])
+    const [email, setEmail] = useState("")
 
     return (
         <div className="window" id="recovery-window">
-            {errMsg
-                ?
-                <>
-                    <SignUpFlowHeader />
-                    <FormError msg={errMsg} />
-                </>
-                :
-                <AnimatedForms />
-            }
+            <WindowLoadingBar visible={isFetchingFlow || submittingFlow} />
+            <FormError msg={errMsg} />
+            {isCompleteError && !errMsg &&
+                <FormError msg={"Something went wrong, please try again later."} />}
+            <AnimatePresence mode="wait">
+                {searchParams.get('step') === 'verify'
+                    ?
+                    <SlideMotionDiv
+                        id="recovery-verification-form-container"
+                        key="recovery-verification-form-container"
+                        last
+                    >
+                        <RecoveryVerificationForm
+                            email={email}
+                            flow={completedFlowData}
+                            submit={submit}
+                            isCompleteSuccess={isCompleteSuccess}
+                        />
+                    </SlideMotionDiv>
+                    :
+                    <SlideMotionDiv
+                        className="recovery-form-container"
+                        key="recovery-form-container"
+                        first={Boolean(flow)}
+                    >
+                        <RecoveryForm
+                            setEmail={setEmail}
+                            flow={flow}
+                            submit={submit}
+                            isCompleteSuccess={isCompleteSuccess}
+                        />
+                    </SlideMotionDiv>
+                }
+            </AnimatePresence>
         </div>
     )
 }
 
-const RecoveryWindow = () => {
-
-    return (
-        <RecoveryFlowContextProvider>
-            <RecoveryFlow />
-        </RecoveryFlowContextProvider>
-    )
-}
-
-export default RecoveryWindow
+export default RecoverAccount

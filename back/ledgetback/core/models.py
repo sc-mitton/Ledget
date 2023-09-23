@@ -52,6 +52,7 @@ class User(models.Model):
     mfa_method = models.CharField(choices=MfaMethod.choices,
                                   null=True, default=None)
     authenticator_enabled_on = models.DateTimeField(null=True, default=None)
+    password_last_changed = models.DateTimeField(null=True, default=None)
 
     objects = UserManager()
     USERNAME_FIELD = 'id'
@@ -71,6 +72,7 @@ class User(models.Model):
             self.authenticator_enabled_on = timezone.now()
         elif name == 'mfa_method' and not value:
             self.authenticator_enabled_on = None
+
         super().__setattr__(name, value)
 
     @property

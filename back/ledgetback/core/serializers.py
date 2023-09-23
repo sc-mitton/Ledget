@@ -6,6 +6,7 @@ from rest_framework.exceptions import ValidationError
 from django.conf import settings
 import stripe
 from user_agents import parse as ua_parse
+from django.utils import timezone
 
 from core.utils.stripe import stripe_error_handler, StripeError
 from core.models import User, Device
@@ -37,11 +38,21 @@ class UserSerializer(serializers.ModelSerializer):
     service_provisioned_until = serializers.SerializerMethodField(
         read_only=True)
     session_aal = serializers.SerializerMethodField(read_only=True)
+    password_last_changed = serializers.CharField(required=False)
 
     class Meta:
         model = User
-        exclude = ('is_active',)
+        exclude = ('is_active', )
         kwargs = {'account_flag': {'read_only': True}}
+
+    def update(self, instance, validated_data):
+        password_last_changed = validated_data.pop('password_last_changed', None)
+        if password_last_changed:
+            instance.password_last_changed = timezone.now()
+        return super().update(instance, validated_data)
+
+    def validate_password_last_changed(self, value):
+        return value == 'now'
 
     def get_email(self, obj):
         return obj.traits.get('email', '')

@@ -17,4 +17,6 @@ export const {
     useCompleteRegistrationFlowMutation,
     useLazyGetVerificationFlowQuery,
     useCompleteVerificationFlowMutation,
+    useLazyGetRecoveryFlowQuery,
+    useCompleteRecoveryFlowMutation,
 } = orySlice

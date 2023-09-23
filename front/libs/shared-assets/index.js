@@ -49,3 +49,4 @@ export { default as CopyIcon } from './src/icons/CopyIcon.jsx';
 export { default as DownloadIcon } from './src/icons/DownloadIcon.jsx';
 export { default as LocationIcon } from './src/icons/LocationIcon.jsx';
 export { default as LedgetLogoIcon } from './src/brand/LogoIcon'
+export { default as LockIcon } from './src/icons/LockIcon.jsx';

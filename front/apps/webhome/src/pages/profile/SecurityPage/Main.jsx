@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Outlet } from 'react-router-dom'
 
-import './Security.css'
+import './styles/Main.css'
 import { useGetDevicesQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@ledget/shared-ui'
 import Devices from './Devices'
@@ -16,10 +16,10 @@ const Main = () => {
     return (
         <ShimmerDiv shimmering={isLoading}>
             <div className="padded-content" id="security-page">
-                <h1 className="spaced-header">Security</h1>
+                <h1>Security</h1>
                 <Devices devices={devices} />
-                <Mfa />
                 <Authentication />
+                <Mfa />
             </div>
             <Outlet />
         </ShimmerDiv>

@@ -65,7 +65,7 @@ const completeFlow = async ({ url, data, params }) => {
 }
 
 const endpointNames = [
-  'settings', 'login', 'registration', 'logout', 'verification'
+  'settings', 'login', 'registration', 'logout', 'verification', 'recovery'
 ]
 
 const generateOryEndpoints = (builder) => {

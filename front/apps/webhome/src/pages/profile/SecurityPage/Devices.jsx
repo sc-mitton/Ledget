@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 
 import _ from 'lodash.groupby'
 
+import './styles/Devices.css'
 import { Disclosure } from '@headlessui/react'
 import { useDeleteRememberedDeviceMutation, } from '@features/userSlice'
 import { IconButtonSubmit } from '@ledget/shared-ui'
@@ -115,7 +116,7 @@ const Devices = ({ devices }) => {
 
     return (
         <>
-            <h3>Devices</h3>
+            <h3 className="header2">Devices</h3>
             <div className="inner-window" id="device-list">
                 {(groupedDevices).map(([device, info], index) =>
                     <Device

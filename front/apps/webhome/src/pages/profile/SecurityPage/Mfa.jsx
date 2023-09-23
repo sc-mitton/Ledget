@@ -47,7 +47,7 @@ const AuthenticatorApp = () => {
 
 const Mfa = () => (
     <>
-        <h3>Multi-Factor Authentication</h3>
+        <h3 className="header2">Multi-Factor Authentication</h3>
         <div className="inner-window">
             <AuthenticatorApp />
         </div>

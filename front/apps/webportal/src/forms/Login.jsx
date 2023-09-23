@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react"
 
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { AnimatePresence } from "framer-motion"
 import { object, string } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -21,7 +21,8 @@ import {
     BackButton,
     SlideMotionDiv,
     PlainTextInput,
-    JiggleDiv
+    JiggleDiv,
+    LinkArrowButton
 } from "@ledget/shared-ui"
 import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
@@ -110,22 +111,20 @@ const Password = React.forwardRef((props, ref) => {
     useEffect(() => { ref.current?.focus() }, [])
 
     return (
-        <>
+        <div id="password-auth--container">
             <PasswordInput ref={ref} />
-            <div id="forgot-password-container">
-                <Link to="/recovery" tabIndex={0}>Forgot Password?</Link>
-            </div>
             <GrnWideButton name="method" value="password">
                 Sign In
             </GrnWideButton>
             {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
-        </>
+        </div>
     )
 })
 
 
 const Login = () => {
     const [searchParams, setSearchParams] = useSearchParams()
+    const navigate = useNavigate()
     const [email, setEmail] = useState(null)
     const [showLoadingBar, setShowLoadingBar] = useState(false)
     const pwdRef = useRef(null)
@@ -227,6 +226,14 @@ const Login = () => {
                 <SlideMotionDiv className='window' key="initial" first={Boolean(flow)}>
                     <EmailForm setEmail={setEmail} flow={flow} socialSubmit={submit} />
                     <WindowLoadingBar visible={isFetchingFlow} />
+                    <div id="account-recover--container">
+                        <LinkArrowButton
+                            onClick={() => navigate('/recovery')}
+                            aria-label="Recover Account"
+                        >
+                            Recover Account
+                        </LinkArrowButton>
+                    </div>
                 </SlideMotionDiv>
                 :
                 <JiggleDiv jiggle={isCompleteError} className="wrapper-window">

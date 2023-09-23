@@ -24,7 +24,7 @@ class IsAuthenticated(BasePermission):
         if request.user.mfa_method:
             return device_aal == 'aal2' or session_aal == 'aal2'
         else:
-            return device_aal == 'aal1'
+            return device_aal == 'aal1' or device_aal == 'aal2'
 
 
 class IsAuthedVerifiedSubscriber(IsAuthenticated):

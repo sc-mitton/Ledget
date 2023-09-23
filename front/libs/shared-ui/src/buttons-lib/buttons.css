@@ -56,6 +56,11 @@
     font-weight: 500;
 }
 
+.btn-wide.btn-grn,
+.btn-wide.btn-grn:hover {
+    color: var(--m-text-gray);
+}
+
 .btn-wide {
     border-radius: var(--border-radius2);
     padding: 12px 16px;

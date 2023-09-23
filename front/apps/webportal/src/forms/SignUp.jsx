@@ -104,14 +104,12 @@ const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
 }
 
 const passwordSchema = yup.object().shape({
-    password: yup.string()
-        .required('Please enter a password')
-        .min(10, 'Password must be at least 10 characters'),
+    password: yup.string().required().min(10, 'Minimum 10 characters'),
 })
 
 const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }) => {
     const { register, handleSubmit, formState: { errors } } = useForm({
-        mode: 'onSubmit', reValidateMode: 'onBlur',
+        mode: 'onBlur', reValidateMode: 'onBlur',
         resolver: yupResolver(passwordSchema)
     })
 
@@ -146,6 +144,7 @@ const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }
                 <PasswordInput
                     name='password'
                     placeholder="Enter a password..."
+                    error={errors.password}
                     {...register('password')}
                 />
                 <FormError msg={errors.password?.message} />

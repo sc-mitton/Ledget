@@ -2,12 +2,104 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-bottom: 32px;
+    margin: 32px 0;
+    position: relative;
 }
 
+/* --------------------------- Key Flip Animation --------------------------- */
 #forgot-password-image-container img {
-    width: 50%;
-    height: auto;
+    width: 25%;
+    min-width: 120px;
+    position: relative;
+    z-index: 2;
+    transform: rotateX(0deg);
+}
+
+#forgot-password-image-container.finish-animation img {
+    transform: rotateX(180deg);
+    transition: transform 0.4s ease-in-out;
+}
+
+#forgot-password-image-container .success-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* Smaller Circle */
+#forgot-password-image-container.unfinished .success-circle:not(:last-child) {
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgb(0, 0, 0, .05) 30%, rgba(240, 240, 240, 0) 30%);
+    animation: pulse 8s ease-in-out infinite;
+}
+
+#forgot-password-image-container.finished .success-circle:not(:last-child) {
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgb(154, 254, 197, .7) 30%, rgba(240, 240, 240, 0) 30%);
+    transition: all .7s;
+    transition-delay: 1s;
+    animation: activate 1s ease-in-out;
+}
+
+/* larger circle */
+#forgot-password-image-container.unfinished .success-circle:last-child {
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgb(0, 0, 0, .05) 30%, rgba(240, 240, 240, 0) 30%);
+    animation: pulse 8s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+#forgot-password-image-container.finished .success-circle:last-child {
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgb(212, 255, 231, 1) 30%, rgba(240, 240, 240, 0) 30%);
+    transition: all .7s;
+    transition-delay: 1s;
+    animation: activate 1s ease-in-out;
+    animation-delay: .2s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes activate {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+}
+
+
+
+/* ------------------------- End Key Flip Animation ------------------------- */
+
+#recovery-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 #recovery-window {
@@ -15,7 +107,7 @@
     width: auto;
 }
 
-#recovery-window h2 {
+#recovery-form-container h2 {
     margin-bottom: 8px;
 }
 
@@ -30,45 +122,22 @@
     position: relative;
 }
 
-.animate {
-    position: relative;
-    overflow: hidden;
-}
 
-.animate::before {
-    content: '';
-    position: absolute;
-    top: 0%;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(to right,
-            #242424 0%,
-            #4a4a4a 70%,
-            #242424 100%);
-    background-repeat: no-repeat;
-    animation: shimmer .7s linear;
-    z-index: -1;
-}
+/* ----------------------------- Responsiveness ----------------------------- */
 
-@keyframes shimmer {
-    0% {
-        transform: translateX(-100%);
+
+@media only screen and (max-width: 700px) {
+    #recovery-window {
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
     }
 
-    100% {
-        transform: translateX(200%);
+    #recovery-window>div {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        margin: 0 40px;
     }
-}
-
-#verify-recovery-code-button {
-    width: 100%;
-    z-index: 1;
-    position: relative;
-}
-
-#verification-form-container .form-error {
-    font-size: 16px;
-    font-weight: 600;
-    text-align: center;
 }

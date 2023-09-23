@@ -12,3 +12,7 @@
 #all-items-window {
     flex-grow: 1;
 }
+
+#all-items-window>div:first-child>div:last-child {
+    margin-right: -8px;
+}

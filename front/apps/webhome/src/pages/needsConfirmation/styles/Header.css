@@ -5,7 +5,7 @@
 
 #needs-confirmation-header {
     padding: 4px 16px 4px 16px;
-    margin: 4px 12px 8px 10px;
+    margin: 4px 12px 10px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -32,4 +32,8 @@
     color: var(--faded-text);
     padding: 0 4px;
     border-radius: var(--border-radius1);
+}
+
+#refresh-btn {
+    margin-right: -2px;
 }

@@ -20,6 +20,11 @@
     margin-bottom: 30px;
 }
 
+#profile-window .header2 {
+    margin-top: 28px;
+    margin-bottom: 12px;
+}
+
 #profile-window .content {
     flex: 2;
     border-radius: 0;

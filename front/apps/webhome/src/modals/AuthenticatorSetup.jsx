@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { AnimatePresence } from 'framer-motion'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import './styles/Authenticator.css'
 import { useCompleteSettingsFlowMutation } from '@features/orySlice'
@@ -20,14 +20,14 @@ import {
     ZoomMotionDiv,
     SlideMotionDiv
 } from '@ledget/shared-ui'
+import { useFlow } from '@ledget/ory-sdk'
 import { withModal } from '@ledget/shared-utils'
-import { useSettingsFlow, withReAuth } from '@utils'
+import { withReAuth } from '@utils'
 
 
-const SetupApp = ({ codeMode, setCodeMode }) => {
+const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
     const [qrNode, setQrNode] = useState(null)
     const [totpSecret, setTotpSecret] = useState('')
-    const { flow, isLoading, isError } = useSettingsFlow()
 
     useEffect(() => {
         if (flow) {
@@ -92,17 +92,26 @@ const SetupApp = ({ codeMode, setCodeMode }) => {
 }
 
 const Authenticator = (props) => {
-    const { flow } = useSettingsFlow()
-    const [searchParams] = useSearchParams()
+    const { flow, fetchFlow, submit, flowStatus } = useFlow(
+        useLazyGetSettingsFlowQuery,
+        useCompleteSettingsFlowMutation,
+        'settings'
+    )
+    const {
+        isFetchingFlow,
+        errorFetchingFlow,
+        isCompleteError,
+        isCompleteSuccess,
+        submittingFlow,
+        errMsg,
+    } = flowStatus
+
+    useEffect(() => { fetchFlow() }, [])
+
     const navigate = useNavigate()
     const [onConfirmStep, setConfirmStep] = useState(false)
     const [codeMode, setCodeMode] = useState(false)
 
-    const [completeFlow, {
-        isSuccess: completedFlow,
-        isLoading: submitingFlow,
-        isError: submitError
-    }] = useCompleteSettingsFlowMutation()
     const [updateUser] = useUpdateUserMutation()
     const [addRememberedDevice] = useAddRememberedDeviceMutation()
 
@@ -110,7 +119,7 @@ const Authenticator = (props) => {
     // Update the user's mfa settings and the device token cookie
     useEffect(() => {
         let timeout
-        if (completedFlow) {
+        if (isCompleteSuccess) {
             updateUser({ data: { mfa_method: 'authenticator' } })
             addRememberedDevice()
             timeout = setTimeout(() => {
@@ -118,27 +127,8 @@ const Authenticator = (props) => {
             }, 1000)
         }
         return () => clearTimeout(timeout)
-    }, [completedFlow])
+    }, [isCompleteSuccess])
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-
-        if (onConfirmStep) {
-            const formData = new FormData(e.target)
-            const data = Object.fromEntries(formData)
-
-            completeFlow({
-                params: { flow: searchParams.get('flow') },
-                data: {
-                    csrf_token: flow?.csrf_token,
-                    method: 'totp',
-                    ...data
-                }
-            })
-        } else {
-            setConfirmStep(true)
-        }
-    }
 
     const handleBack = () => {
         if (onConfirmStep) {
@@ -153,13 +143,14 @@ const Authenticator = (props) => {
     return (
         <div id="authenticator-page">
             <h2>Authenticator Setup</h2>
-            <form onSubmit={handleSubmit} id='authenticator-setup-form'>
+            <form onSubmit={submit} id='authenticator-setup-form'>
                 <AnimatePresence mode="wait">
                     {onConfirmStep
                         ?
                         <SlideMotionDiv key="confirm-code" last>
-                            <JiggleDiv jiggle={submitError} className="content">
+                            <JiggleDiv jiggle={isCompleteError} className="content">
                                 <div>
+                                    <FormError msg={errMsg} />
                                     <label htmlFor="code">
                                         Enter the code from your
                                         authenticator app
@@ -171,8 +162,11 @@ const Authenticator = (props) => {
                         :
                         <SlideMotionDiv key='setup-app' first={Boolean(flow)}>
                             <SetupApp
+                                flow={flow}
                                 codeMode={codeMode}
                                 setCodeMode={setCodeMode}
+                                isLoading={isFetchingFlow}
+                                isError={errorFetchingFlow}
                             />
                         </SlideMotionDiv>
                     }
@@ -182,8 +176,8 @@ const Authenticator = (props) => {
                     {onConfirmStep
                         ?
                         <GreenSubmitButton
-                            submitting={submitingFlow}
-                            success={completedFlow}
+                            submitting={submittingFlow}
+                            success={isCompleteSuccess}
                         >
                             Confirm
                         </GreenSubmitButton>
@@ -193,6 +187,7 @@ const Authenticator = (props) => {
                         </GreenSubmitWithArrow>
                     }
                 </div>
+                <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
             </form>
         </div>
     )

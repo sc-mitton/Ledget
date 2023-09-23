@@ -32,10 +32,3 @@
 #verification-form-error-container * {
     font-size: 16px;
 }
-
-/* Response Error */
-#recovery-window .form-error {
-    font-size: 16px;
-    font-weight: 600;
-    text-align: center;
-}

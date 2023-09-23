@@ -11,7 +11,7 @@ import ConnectionsPage from './Connections'
 import SettingsPage from './Settings'
 import { SecurityPage } from './SecurityPage'
 import { AuthenticatorSetup } from '@modals'
-import { UpdatePayment, CancelSubscription, ChangeBillCycle, DeactivateAuthentictor } from '@modals'
+import { UpdatePayment, CancelSubscription, ChangeBillCycle, DeactivateAuthentictor, ChangePassword } from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@ledget/shared-ui'
 
@@ -50,6 +50,7 @@ function Profile() {
                         <Route path="security" element={<SecurityPage />} >
                             <Route path="delete-authenticator" element={<DeactivateAuthentictor />} />
                             <Route path="authenticator-setup" element={<AuthenticatorSetup />} />
+                            <Route path="change-password" element={<ChangePassword />} />
                         </Route>
                     </Routes>
                 </motion.div>

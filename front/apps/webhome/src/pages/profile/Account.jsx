@@ -81,11 +81,7 @@ const ChangePlanMenu = () => {
             {({ open }) => (
                 <div style={{ position: 'relative' }}>
                     <Menu.Button as={React.Fragment}>
-                        <GreenSlimArrowSubmit
-                            submitting={isLoading}
-                            rotate={0}
-                            stroke={'var(--green-dark3)'}
-                        >
+                        <GreenSlimArrowSubmit submitting={isLoading} rotate={0}>
                             change
                         </GreenSlimArrowSubmit>
                     </Menu.Button>

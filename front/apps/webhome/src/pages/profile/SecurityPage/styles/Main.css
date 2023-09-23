@@ -1,0 +1,27 @@
+#security-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+}
+
+#security-page>div:first-child {
+    margin-top: 240px;
+}
+
+#authenticator-settings--container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#authenticator-settings--container>div>svg {
+    margin: 0 14px 0 2px;
+}
+
+#authenticator-settings--container>div {
+    display: flex;
+    align-items: center;
+    padding-right: 18px;
+}

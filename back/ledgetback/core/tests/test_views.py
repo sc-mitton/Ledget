@@ -1,6 +1,7 @@
 import json
 from unittest import skip # noqa
 from unittest.mock import patch
+from datetime import datetime
 
 from django.urls import reverse
 
@@ -65,3 +66,14 @@ class CoreViewTests(ViewTestsMixin):
 
         self.assertEqual(response.status_code, 403)
         self.assertTrue(Device.objects.filter(id=other_device).exists())
+
+    def test_password_last_changed(self):
+        response = self.client.patch(
+            reverse('user_me'),
+            data=json.dumps({"password_last_changed": "now"}),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertIsInstance(self.user.password_last_changed, datetime)

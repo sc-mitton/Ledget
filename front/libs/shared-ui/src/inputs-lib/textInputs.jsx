@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useRef, useState } from 'react'
 
 import { VisibilityIcon } from "@ledget/shared-assets"
 import { CardElement } from '@stripe/react-stripe-js'
@@ -27,24 +27,31 @@ export const TextInput = forwardRef((props, ref) => {
 })
 
 export const PlainTextInput = forwardRef((props, ref) => {
-    const { errors, ...rest } = props
+    const { errors, loading, ...rest } = props
 
     return (
-        <TextInput>
-            <input
-                type='text'
-                ref={ref}
-                {...rest}
-            />
-            {errors &&
-                <FormErrorTip
-                    errors={[
-                        Object.hasOwn(errors, rest.name)
-                        && errors[rest.name]
-                    ]}
-                />
+        <>
+            {loading
+                ?
+                <BlockShimmerDiv />
+                :
+                <TextInput>
+                    <input
+                        type='text'
+                        ref={ref}
+                        {...rest}
+                    />
+                    {errors &&
+                        <FormErrorTip
+                            errors={[
+                                Object.hasOwn(errors, rest.name)
+                                && errors[rest.name]
+                            ]}
+                        />
+                    }
+                </TextInput>
             }
-        </TextInput>
+        </>
     )
 })
 
@@ -235,11 +242,6 @@ export const baseBillingSchema = object({
 
 
 export const PasswordInput = React.forwardRef((props, ref) => {
-    const [pwdInput, setPwdInput] = useState(false)
-    let [visible, setVisible] = useState(false)
-    const localRef = useRef(null)
-    const r = ref || localRef
-
     const {
         name,
         inputType,
@@ -247,13 +249,17 @@ export const PasswordInput = React.forwardRef((props, ref) => {
         visible: propsVisible,
         setVisible: propsSetVisible,
         onChange,
+        error,
         ...rest
     } = props
 
-    if (propsVisible) {
-        visible = propsVisible
-        setVisible = propsSetVisible
-    }
+    const [pwdInput, setPwdInput] = useState(false)
+    let [localVis, setLocalVis] = useState(propsVisible || false)
+    const localRef = useRef(null)
+    const r = ref || localRef
+
+    const visible = propsVisible || localVis
+    const setVisible = propsSetVisible || setLocalVis
 
     return (
         <>
@@ -273,7 +279,10 @@ export const PasswordInput = React.forwardRef((props, ref) => {
                         {...rest}
                     />
                     {pwdInput && inputType != 'confirm-password' &&
-                        < VisibilityIcon mode={visible} onClick={() => setVisible(!visible)} />}
+                        < VisibilityIcon mode={visible} onClick={() => { setVisible(!visible) }} />}
+                    {error && (error.type === 'required' || error.msg?.includes('required'))
+                        && <FormErrorTip errors={[{ type: 'required' }]} />
+                    }
                 </TextInput>
             }
         </>
@@ -284,7 +293,7 @@ PasswordInput.defaultProps = {
     inputType: 'password',
     name: 'password',
     placeholder: 'Password',
-    setVisible: () => { },
+    setVisible: null,
     visible: null,
 }
 

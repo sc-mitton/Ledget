@@ -1,25 +1,3 @@
-#security-page {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow: auto;
-}
-
-#security-page h3,
-#security-page h4 {
-    margin-top: 12px;
-    margin-left: 2px;
-}
-
-#security-page>div {
-    margin: 8px 0;
-}
-
-#security-page>div:first-child {
-    margin-top: 240px;
-}
-
-
 /* ------------------------------- Device List ------------------------------ */
 
 #device-list {

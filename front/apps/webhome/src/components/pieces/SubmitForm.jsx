@@ -3,7 +3,7 @@ import React from 'react'
 
 import { SecondaryButton, GreenSubmitButton } from '@ledget/shared-ui'
 
-const SubmitForm = ({ submitting, onCancel }) => {
+const SubmitForm = ({ submitting, success, onCancel, ...submitProps }) => {
 
     const styles = {
         display: 'flex',
@@ -30,7 +30,7 @@ const SubmitForm = ({ submitting, onCancel }) => {
             >
                 Cancel
             </SecondaryButton>
-            <GreenSubmitButton submitting={submitting}>
+            <GreenSubmitButton success={success} submitting={submitting} {...submitProps}>
                 {'Save'}
             </GreenSubmitButton>
         </div >

@@ -34,7 +34,7 @@ const PassWord = ({ isFetchingFlow, isCompleteError }) => {
     return (
         <>
             <div className="body" style={row1Style}>
-                To make this change, first confirm your login.
+                To make this change, first confirm your login
             </div>
             <div style={row2Style}>
                 <JiggleDiv jiggle={isCompleteError}>
@@ -45,7 +45,7 @@ const PassWord = ({ isFetchingFlow, isCompleteError }) => {
     )
 }
 
-const Totp = ({ isCompleteError }) => {
+const Totp = ({ isFetchingFlow, isCompleteError, errMsg }) => {
     const ref = useRef(null)
     useEffect(() => {
         if (isCompleteError) {
@@ -54,19 +54,21 @@ const Totp = ({ isCompleteError }) => {
         }
     }, [isCompleteError])
 
-    useEffect(() => {
-        isCompleteSuccess && setFinishedAal2(true)
-    }, [isCompleteSuccess])
-
     return (
         <>
             <div className="body" style={row1Style}>
                 Enter your authenticator code
             </div>
             <div style={row2Style}>
-                <JiggleMotionDiv jiggle={isCompleteError}>
-                    <PlainTextInput ref={ref} name="totp_code" placeholder='Code' required />
-                </JiggleMotionDiv>
+                <JiggleDiv jiggle={isCompleteError}>
+                    <PlainTextInput
+                        ref={ref}
+                        loading={isFetchingFlow}
+                        name="totp_code"
+                        placeholder='Code'
+                        required
+                    />
+                </JiggleDiv>
                 {errMsg && <ErrorFetchingFlow />}
             </div>
         </>
@@ -90,7 +92,8 @@ const ReAuthModal = withSmallModal((props) => {
         errorFetchingFlow,
         isCompleteError,
         isCompleteSuccess,
-        submittingFlow
+        submittingFlow,
+        errMsg
     } = flowStatus
 
     // Fetch Flow on mount
@@ -107,7 +110,7 @@ const ReAuthModal = withSmallModal((props) => {
 
             if (finishedCase1 || finishedCase2) {
                 dispatch({ type: 'user/resetAuthedAt' })
-                setSearchParams({}) // Clear search params
+                setSearchParams({})
             } else if (aal === 'aal1') {
                 fetchFlow({ aal: 'aal2', refresh: true })
                 setNeedsAal2(true)
@@ -134,11 +137,13 @@ const ReAuthModal = withSmallModal((props) => {
                         <Totp
                             isFetchingFlow={isFetchingFlow}
                             isCompleteError={isCompleteError}
+                            errMsg={errMsg}
                         />
                     </SlideMotionDiv>
                     :
                     <SlideMotionDiv key='aal1' first={Boolean(flow)}>
                         <PassWord
+                            isFetchingFlow={isFetchingFlow}
                             isCompleteError={isCompleteError}
                         />
                     </SlideMotionDiv>
@@ -151,7 +156,6 @@ const ReAuthModal = withSmallModal((props) => {
                 </SecondaryButton>
                 <GreenSubmitWithArrow
                     submitting={submittingFlow}
-                    stroke={'var(--m-text-gray)'}
                     name="method"
                     value={needsAal2 ? 'totp' : 'password'}
                 >
@@ -178,20 +182,8 @@ export default function withReAuth(Component) {
         const sessionIsFresh = useSelector(selectSessionIsFresh)
 
         useEffect(() => {
-            sessionIsFresh && setContinueToComponent(true)
+            setContinueToComponent(sessionIsFresh)
         }, [sessionIsFresh])
-
-        // Timeout for the target component to be closed
-        // after 7 minutes since the session obtained by
-        // the reauth needs to be fresh. If the user sits
-        // around too long during the reauth, the session
-        // wont be fresh enough
-        useEffect(() => {
-            const timeout = setTimeout(() => {
-                props.onClose && props.onClose()
-            }, 60 * 9 * 1000)
-            return () => clearTimeout(timeout)
-        }, [])
 
         return (
             <>

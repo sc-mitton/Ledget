@@ -2,6 +2,7 @@
     /* Windows */
     --window: hsl(0, 0%, 98%);
     --window2: rgb(241, 241, 241);
+    --window-values: 250, 250, 250;
     --window-transparent: rgba(252, 248, 247, 0.8);
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-background-color: #f0f0f0;

@@ -30,7 +30,7 @@ const RefreshButton = ({ onClick }) => {
             style={{ left: '-.8rem' }}
         >
             <IconButton
-                id="refresh-icon"
+                id="refresh-btn"
                 aria-label="Refresh"
                 onClick={handleClick}
             >

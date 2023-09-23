@@ -53,7 +53,7 @@ export const withArrow = (Component) => {
                     width={'.8em'}
                     height={'.8em'}
                     rotation={rotate}
-                    stroke={stroke || '#FFFFFF'}
+                    stroke={'currentColor' || stroke}
                     style={{ marginLeft: '.5rem' }}
                 />
             </Component>
@@ -79,6 +79,7 @@ export const withCheckMark = (Component) => {
                     width={'.8em'}
                     height={'.8em'}
                     style={{ marginLeft: '.5rem' }}
+                    stroke={'currentColor'}
                 />
             </Component>
         )
@@ -102,10 +103,7 @@ export const withLoadingRing = (Component) => {
                 {...newProps}
                 ref={r}
             >
-                <LoadingRing
-                    visible={submitting}
-                    color={props.color || "dark"}
-                />
+                <LoadingRing visible={submitting} />
                 {!submitting && success &&
                     <CheckMark className="checkmark--pop" />
                 }

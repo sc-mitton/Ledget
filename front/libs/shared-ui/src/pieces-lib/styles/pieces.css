@@ -22,6 +22,7 @@
     width: 1em;
     height: 1em;
     animation: pop .3s ease;
+    color: inherit;
 }
 
 @keyframes pop {
@@ -44,19 +45,11 @@
     position: absolute;
     width: 14px;
     height: 14px;
+    color: inherit;
     animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-}
-
-.lds-ring.light div {
-    border: 2px solid var(--window);
+    border: 2px solid currentColor;
     border-radius: 50%;
-    border-color: var(--window) transparent transparent transparent;
-}
-
-.lds-ring.dark div {
-    border: 2.2px solid var(--btn-gray);
-    border-radius: 50%;
-    border-color: var(--btn-gray) transparent transparent transparent;
+    border-color: currentColor transparent transparent transparent;
 }
 
 .lds-ring div:nth-child(1) {

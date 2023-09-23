@@ -11,7 +11,7 @@ export const ExpandableContainer = ({ expanded, className, children, ...rest }) 
     </div>
 )
 
-export const LoadingRing = ({ color = 'light', visible }) => {
+export const LoadingRing = ({ visible }) => {
     return (
         <div
             style={{
@@ -23,7 +23,7 @@ export const LoadingRing = ({ color = 'light', visible }) => {
                 color: 'inherit'
             }}
         >
-            <div className={`lds-ring ${color}`}>
+            <div className="lds-ring">
                 <div></div>
                 <div></div>
                 <div></div>
@@ -33,7 +33,7 @@ export const LoadingRing = ({ color = 'light', visible }) => {
     )
 }
 
-export const LoadingRingDiv = ({ color = 'light', loading, children, style, ...rest }) => {
+export const LoadingRingDiv = ({ loading, children, style, ...rest }) => {
     const transition = useTransition(!loading, {
         from: { opacity: 0 },
         enter: { opacity: 1 },
@@ -42,7 +42,7 @@ export const LoadingRingDiv = ({ color = 'light', loading, children, style, ...r
 
     return (
         <div style={{ position: 'relative', ...style }} {...rest}>
-            <LoadingRing color={color} visible={loading} />
+            <LoadingRing visible={loading} />
             {transition((style, item) =>
                 item &&
                 <animated.div style={style}>

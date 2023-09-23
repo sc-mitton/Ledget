@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from "react"
 import "./style/Otc.css"
-import { useSearchParams } from "react-router-dom"
 
 function Otc({ codeLength, required, reset, setReset }) {
     const [inputStates, setInputStates] = useState([])
     const inputRefs = useRef([])
     const [code, setCode] = useState('')
-    const [searchParams] = useSearchParams()
 
     // Default props
     codeLength = codeLength || 6

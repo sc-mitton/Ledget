@@ -1,0 +1,43 @@
+#authentication-methods {
+    display: flex;
+    flex-direction: column;
+}
+
+.authentication-method:not(:last-child) {
+    border-bottom: 1.5px solid var(--subtle-border-color);
+}
+
+.authentication-method {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    gap: 12px;
+}
+
+.authentication-method:first-child {
+    padding-top: 4px;
+}
+
+.authentication-method:last-child {
+    padding-bottom: 4px;
+}
+
+.authentication-method>div:first-child {
+    display: flex;
+    align-items: center;
+}
+
+.authentication-method>div:nth-child(2) {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.authentication-method>div:nth-child(2)>span:first-child {
+    font-weight: 600;
+}
+
+.authentication-method>div:last-child {
+    display: flex;
+    align-items: center;
+}

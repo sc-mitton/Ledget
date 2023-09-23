@@ -37,24 +37,22 @@
     padding: 2px;
 }
 
-#forgot-password-container {
-    margin-left: 6px;
-    margin-bottom: 6px;
-    margin-right: 4px;
+#password-auth--container {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 8px;
 }
 
-#forgot-password-container * {
-    font-size: 14px;
+#account-recover--container {
+    height: 0;
+    width: 100%;
+    position: relative;
 }
 
-#forgot-password-container a {
-    font-weight: 500;
-    color: var(--m-text-gray);
-}
-
-#forgot-password-container a:hover {
-    border-bottom: 1.5px solid var(--m-text-gray);
+#account-recover--container button {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 44px;
 }
