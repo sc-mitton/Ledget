@@ -5,7 +5,7 @@
 }
 
 /* Email Graphic */
-#verification-form-container div:first-child {
+#verify-graphic--container {
     width: auto;
     display: flex;
     justify-content: center;
@@ -31,79 +31,15 @@
     font-size: 16px;
 }
 
-
-/* ------------------------------ Status Circles ----------------------------- */
-
 #verify-graphic--container img {
     z-index: 3;
 }
 
-.status-circle {
+#verification-pulse-status {
     position: absolute;
-    top: -32px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    margin: auto;
-    border-radius: 50%;
-}
-
-.status-circle:not(:last-child) {
-    z-index: 2;
-    width: 1.6rem;
-    height: 1.6rem;
-}
-
-.status-circle:last-child {
-    z-index: 1;
-    width: 2.4rem;
-    height: 2.4rem;
-}
-
-.status-circle.locked:not(:last-child) {
-    background-color: rgba(69, 255, 150, 0.7);
-    animation: pulse 10s ease-in-out infinite;
-}
-
-.status-circle.locked:last-child {
-    background-color: rgb(191, 255, 220);
-    animation: pulse 10s ease-in-out infinite;
-    animation-delay: 1s;
-}
-
-.status-circle.unlocked:not(:last-child) {
-    background-color: rgba(69, 255, 150, 0.7);
-    animation: success .7s ease-out forwards;
-    transition: all .5s ease-out;
-}
-
-.status-circle.unlocked:last-child {
-    background-color: rgb(191, 255, 220);
-    animation: success .7s ease-out forwards;
-    transition: all .5s ease-out;
-}
-
-@keyframes success {
-    0% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: scale(5);
-        opacity: 0;
-    }
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.4);
-    }
-
-    100% {
-        transform: scale(1);
-    }
+    margin-bottom: 32px;
 }

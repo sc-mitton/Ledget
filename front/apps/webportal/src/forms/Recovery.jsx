@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence } from "framer-motion"
 
 import './style/Recovery.css'
 import Otc from './Otc'
-import { WindowLoadingBar } from '@pieces'
+import { WindowLoadingBar, StatusPulse } from '@pieces'
 import { FormError, GrnWideButton, SlideMotionDiv, PlainTextInput, BackButton } from '@ledget/shared-ui'
 import forgotPassword from '@assets/images/forgotPassword.svg'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
@@ -28,8 +28,7 @@ const MainGraphic = ({ unLocked }) => (
         id="image-container"
     >
         <img src={forgotPassword} alt="Forgot password" />
-        <div className={`key-circle ${unLocked ? 'unlocked' : 'locked'}`} />
-        <div className={`key-circle ${unLocked ? 'unlocked' : 'locked'}`} />
+        <StatusPulse locked={!unLocked} size="medium" />
     </div>
 )
 

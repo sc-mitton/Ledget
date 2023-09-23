@@ -1,1 +1,1 @@
-export { WindowLoadingBar } from './pieces'
+export * from './pieces'

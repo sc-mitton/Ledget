@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useEffect, forwardRef } from "react"
 
 import { useNavigate } from "react-router-dom"
 import { AnimatePresence } from "framer-motion"
@@ -10,9 +10,11 @@ import { useSearchParams } from "react-router-dom"
 import './style/Login.css'
 import SocialAuth from "./SocialAuth"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
+import authenticator from '@assets/images/Authenticator.svg'
 import CsrfToken from "./inputs/CsrfToken"
-import { WindowLoadingBar } from "@pieces"
+import { WindowLoadingBar, StatusPulse } from "@pieces"
 import { ledgetapi } from "@api"
+import { CheckMark } from '@ledget/shared-assets'
 import {
     GrnWideButton,
     Checkbox,
@@ -91,8 +93,19 @@ const EmailForm = ({ flow, setEmail, socialSubmit }) => {
     )
 }
 
-const AuthenticatorMfa = () => (
+const AuthenticatorMfa = ({ finished }) => (
     <>
+        <div id="authenticator-graphic">
+            {finished &&
+                <div id="success-checkmark">
+                    <CheckMark
+                        stroke={'var(--green-dark'}
+                    />
+                </div>
+            }
+            <img src={authenticator} alt="Authenticator" />
+            <StatusPulse positive={finished} size="medium" />
+        </div>
         <h3>Enter your authenticator code</h3>
         <div style={{ margin: '20px 0' }}>
             <PlainTextInput name="totp_code" placeholder="Code" />
@@ -107,7 +120,7 @@ const EmailMfa = () => (
     <div>Hello World</div>
 )
 
-const Password = React.forwardRef((props, ref) => {
+const Password = forwardRef((props, ref) => {
     useEffect(() => { ref.current?.focus() }, [])
 
     return (
@@ -125,9 +138,12 @@ const Password = React.forwardRef((props, ref) => {
 const Login = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
+
     const [email, setEmail] = useState(null)
     const [showLoadingBar, setShowLoadingBar] = useState(false)
+    const [finished, setFinished] = useState(false)
     const pwdRef = useRef(null)
+
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
         useCompleteLoginFlowMutation,
@@ -161,6 +177,7 @@ const Login = () => {
         } else {
             console.log('handle email / phone mfa')
         }
+
     }, [searchParams.get('mfa')])
 
     // Handle success
@@ -168,7 +185,7 @@ const Login = () => {
         if (isCompleteSuccess || errId === 'session_already_available') {
             ledgetapi.post('/devices')
                 .then((res) => {
-                    window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+                    setFinished(true)
                 }).catch((err) => {
                     if (err.response.status === 422) {
                         setSearchParams({ mfa: err.response.data.error })
@@ -180,6 +197,17 @@ const Login = () => {
                 })
         }
     }, [isCompleteSuccess])
+
+    // Handle Finished
+    useEffect(() => {
+        let timeout
+        if (finished) {
+            setTimeout(() => {
+                window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+            }, 1500)
+        }
+        return () => clearTimeout(timeout)
+    }, [finished])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -237,7 +265,7 @@ const Login = () => {
                 </SlideMotionDiv>
                 :
                 <JiggleDiv jiggle={isCompleteError} className="wrapper-window">
-                    {!searchParams.get('mfa') &&
+                    {searchParams.get('mfa') &&
                         <SlideMotionDiv
                             className='nested-window'
                             key="authenticate-password"
@@ -250,9 +278,11 @@ const Login = () => {
                             </AuthForm>
                         </SlideMotionDiv>
                     }
-                    {searchParams.get('mfa') === 'authenticator' &&
+                    {searchParams.get('mfa') !== 'authenticator' &&
                         <SlideMotionDiv className='nested-window' key="authenticate-phone" last>
-                            <AuthForm><AuthenticatorMfa /></AuthForm>
+                            <AuthForm>
+                                <AuthenticatorMfa finished={finished} />
+                            </AuthForm>
                         </SlideMotionDiv>
                     }
                     {searchParams.get('mfa') === 'email' &&

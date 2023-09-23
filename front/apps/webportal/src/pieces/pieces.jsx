@@ -26,3 +26,16 @@ export const WindowLoadingBar = ({ visible }) => {
         </AnimatePresence>
     )
 }
+
+export const StatusPulse = ({ positive, colorDefaultPositive, size }) => (
+    <>
+        <div
+            id="inner-circle"
+            className={`status-circle ${positive ? 'positive' : 'negative'} ${colorDefaultPositive ? 'color-default-positive' : ''} ${size}`}
+        />
+        <div
+            id="outer-circle"
+            className={`status-circle ${positive ? 'positive' : 'negative'} ${colorDefaultPositive ? 'color-default-positive' : ''} ${size}`}
+        />
+    </>
+)

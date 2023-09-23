@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import "./style/Verification.css"
-import verifyEmail from "@assets/images/verifyEmail.svg"
 import CsrfToken from "./inputs/CsrfToken"
 import ResendButton from "./inputs/ResendButton"
 import Otc from "./Otc"
-import { WindowLoadingBar } from "@pieces"
+import { WindowLoadingBar, StatusPulse } from "@pieces"
 import { GrnWideButton, FormError, JiggleDiv } from "@ledget/shared-ui"
+import { VerifyEmail } from '@ledget/shared-assets'
 import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
 
@@ -136,9 +136,12 @@ const Verification = () => {
             </div>
             <div id="verification-form-container">
                 <div id='verify-graphic--container'>
-                    <img src={verifyEmail} alt="Verify Email" />
-                    <div className={`status-circle ${codeIsCorrect ? 'unlocked' : 'locked'}`} />
-                    <div className={`status-circle ${codeIsCorrect ? 'unlocked' : 'locked'}`} />
+                    <VerifyEmail
+                        stroke={codeIsCorrect ? 'var(--green-hlight)' : 'var(--window)'}
+                    />
+                    <div id="verification-pulse-status">
+                        <StatusPulse positive={codeIsCorrect} colorDefaultPositive={false} size={'small'} />
+                    </div>
                 </div>
                 {errMsg
                     ?

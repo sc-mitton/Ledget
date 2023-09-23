@@ -5,7 +5,7 @@
 #email-container {
     width: 100%;
     text-align: left;
-    margin-bottom: 40px;
+    margin-bottom: 8px;
 }
 
 #email-container h3 {
@@ -55,4 +55,40 @@
     left: 0;
     right: 0;
     top: 44px;
+}
+
+#authenticator-graphic {
+    display: flex;
+    justify-content: center;
+    margin: 8px;
+    position: relative;
+}
+
+#authenticator-graphic img {
+    height: 7em;
+    z-index: 3;
+}
+
+
+#success-checkmark {
+    position: absolute;
+    z-index: 50;
+    background-color: var(--window);
+    padding: 8px;
+    margin-left: 1px;
+    animation: popOn 0.3s ease-in-out forwards;
+}
+
+@keyframes popOn {
+    0% {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    100% {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }
