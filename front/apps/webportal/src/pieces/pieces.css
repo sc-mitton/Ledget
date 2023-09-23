@@ -132,7 +132,7 @@
 
 /* Outer Circle */
 #outer-circle.negative {
-    background-color: rgb(0, 0, 0, .05);
+    background-color: rgb(0, 0, 0, .03);
     animation: pulse 10s ease-in-out infinite;
     animation-delay: 1s;
 }

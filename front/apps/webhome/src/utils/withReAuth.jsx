@@ -77,14 +77,17 @@ const Totp = ({ isFetchingFlow, isCompleteError, errMsg }) => {
 
 const ReAuthModal = withSmallModal((props) => {
     const [searchParams] = useSearchParams()
+    const [, setSearchParams] = useSearchParams()
+
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
         useCompleteLoginFlowMutation,
         'login'
     )
-    const [, setSearchParams] = useSearchParams()
     const { data: user } = useGetMeQuery()
+
     const dispatch = useDispatch()
+    const sessionIsFresh = useSelector(selectSessionIsFresh)
     const [needsAal2, setNeedsAal2] = useState(false)
 
     const {
@@ -96,9 +99,13 @@ const ReAuthModal = withSmallModal((props) => {
         errMsg
     } = flowStatus
 
-    // Fetch Flow on mount
+    // Fetch Flow on mount, only fetch if session is stale
+    // If the session is fresh, then the user will already
+    // have reached the target component
     useEffect(() => {
-        fetchFlow({ aal: 'aal1', refresh: true })
+        if (!sessionIsFresh) {
+            fetchFlow({ aal: 'aal1', refresh: true })
+        }
     }, [])
 
     // Handle Successful Flow Completion
@@ -181,6 +188,9 @@ export default function withReAuth(Component) {
         const [continueToComponent, setContinueToComponent] = useState(false)
         const sessionIsFresh = useSelector(selectSessionIsFresh)
 
+        // Continue to modal if session is fresh,
+        // if it's stale, the user will be shown
+        // the reauth prompts
         useEffect(() => {
             setContinueToComponent(sessionIsFresh)
         }, [sessionIsFresh])

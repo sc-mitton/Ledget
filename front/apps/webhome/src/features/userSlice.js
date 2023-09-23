@@ -18,7 +18,7 @@ export const userReducer = userSlice.reducer
 // reauth is fresh if it happened less than 9 minutes ago
 // (subtracted 1 min to be safe)
 export const selectSessionIsFresh = (state) => {
-    return state.user.reAuthedAt && Date.now() - state.user.reAuthedAt < 1 * 60 * 1000
+    return state.user.reAuthedAt && Date.now() - state.user.reAuthedAt < 9 * 60 * 1000
 }
 
 export const extendedApiSlice = apiSlice.injectEndpoints({

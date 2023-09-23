@@ -177,7 +177,6 @@ const Login = () => {
         } else {
             console.log('handle email / phone mfa')
         }
-
     }, [searchParams.get('mfa')])
 
     // Handle success
@@ -265,7 +264,7 @@ const Login = () => {
                 </SlideMotionDiv>
                 :
                 <JiggleDiv jiggle={isCompleteError} className="wrapper-window">
-                    {searchParams.get('mfa') &&
+                    {!searchParams.get('mfa') &&
                         <SlideMotionDiv
                             className='nested-window'
                             key="authenticate-password"
@@ -278,7 +277,7 @@ const Login = () => {
                             </AuthForm>
                         </SlideMotionDiv>
                     }
-                    {searchParams.get('mfa') !== 'authenticator' &&
+                    {searchParams.get('mfa') === 'authenticator' &&
                         <SlideMotionDiv className='nested-window' key="authenticate-phone" last>
                             <AuthForm>
                                 <AuthenticatorMfa finished={finished} />

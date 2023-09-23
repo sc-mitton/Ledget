@@ -4,7 +4,7 @@ import { AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 
 import './styles/Authenticator.css'
-import { useCompleteSettingsFlowMutation } from '@features/orySlice'
+import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 import { useUpdateUserMutation, useAddRememberedDeviceMutation } from '@features/userSlice'
 import {
     BackButton,
@@ -144,6 +144,7 @@ const Authenticator = (props) => {
         <div id="authenticator-page">
             <h2>Authenticator Setup</h2>
             <form onSubmit={submit} id='authenticator-setup-form'>
+                <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
                 <AnimatePresence mode="wait">
                     {onConfirmStep
                         ?
@@ -187,7 +188,6 @@ const Authenticator = (props) => {
                         </GreenSubmitWithArrow>
                     }
                 </div>
-                <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
             </form>
         </div>
     )
