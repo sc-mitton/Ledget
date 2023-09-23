@@ -1,102 +1,104 @@
-#forgot-password-image-container {
+/* --------------------------- Key Flip Animation --------------------------- */
+#image-container {
     display: flex;
     justify-content: center;
     width: 100%;
-    margin: 32px 0;
+    margin: 36px 0;
     position: relative;
 }
 
-/* --------------------------- Key Flip Animation --------------------------- */
-#forgot-password-image-container img {
+#image-container img {
     width: 25%;
-    min-width: 120px;
+    min-width: 100px;
     position: relative;
     z-index: 2;
     transform: rotateX(0deg);
 }
 
-#forgot-password-image-container.finish-animation img {
+#image-container.unlocked img {
     transform: rotateX(180deg);
     transition: transform 0.4s ease-in-out;
 }
 
-#forgot-password-image-container .success-circle {
+/* Circles */
+
+.key-circle {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 50%;
+    transform: scale(1);
 }
 
-
-/* Smaller Circle */
-#forgot-password-image-container.unfinished .success-circle:not(:last-child) {
-    width: 140px;
-    height: 140px;
-    background: radial-gradient(circle, rgb(0, 0, 0, .05) 30%, rgba(240, 240, 240, 0) 30%);
-    animation: pulse 8s ease-in-out infinite;
+.key-circle:not(:last-child) {
+    z-index: 1;
+    width: 3rem;
+    height: 3rem;
 }
 
-#forgot-password-image-container.finished .success-circle:not(:last-child) {
-    width: 140px;
-    height: 140px;
-    background: radial-gradient(circle, rgb(154, 254, 197, .7) 30%, rgba(240, 240, 240, 0) 30%);
-    transition: all .7s;
-    transition-delay: 1s;
-    animation: activate 1s ease-in-out;
+.key-circle:last-child {
+    z-index: 0;
+    width: 4.5rem;
+    height: 4.5rem;
 }
 
-/* larger circle */
-#forgot-password-image-container.unfinished .success-circle:last-child {
-    width: 180px;
-    height: 180px;
-    background: radial-gradient(circle, rgb(0, 0, 0, .05) 30%, rgba(240, 240, 240, 0) 30%);
-    animation: pulse 8s ease-in-out infinite;
+.key-circle.locked:not(:last-child) {
+    background-color: rgb(0, 0, 0, .05);
+    animation: pulse 10s ease-in-out infinite;
+}
+
+.key-circle.locked:last-child {
+    background-color: rgb(0, 0, 0, .05);
+    animation: pulse 10s ease-in-out infinite;
     animation-delay: 1s;
 }
 
-#forgot-password-image-container.finished .success-circle:last-child {
-    width: 180px;
-    height: 180px;
-    background: radial-gradient(circle, rgb(212, 255, 231, 1) 30%, rgba(240, 240, 240, 0) 30%);
-    transition: all .7s;
-    transition-delay: 1s;
-    animation: activate 1s ease-in-out;
-    animation-delay: .2s;
+.key-circle.unlocked:last-child {
+    background-color: rgb(212, 255, 231, 1);
+    animation: success .7s ease-out forwards;
+    animation-delay: .5s;
+    transition: all .5s ease-out;
+}
+
+.key-circle.unlocked:not(:last-child) {
+    background-color: rgb(154, 254, 197, .7);
+    animation: success .7s ease-out forwards;
+    animation-delay: .5s;
+    transition: all .5s ease-out;
+}
+
+@keyframes success {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(5);
+        opacity: 0;
+    }
 }
 
 @keyframes pulse {
     0% {
-        transform: translate(-50%, -50%) scale(1);
+        transform: scale(1);
     }
 
     50% {
-        transform: translate(-50%, -50%) scale(1.2);
+        transform: scale(1.4);
     }
 
     100% {
-        transform: translate(-50%, -50%) scale(1);
+        transform: scale(1);
     }
 }
-
-@keyframes activate {
-    0% {
-        transform: translate(-50%, -50%) scale(0);
-    }
-
-    50% {
-        transform: translate(-50%, -50%) scale(1.2);
-    }
-
-    100% {
-        transform: translate(-50%, -50%) scale(0);
-    }
-}
-
-
 
 /* ------------------------- End Key Flip Animation ------------------------- */
 
-#recovery-form {
+.recovery-form {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -107,7 +109,7 @@
     width: auto;
 }
 
-#recovery-form-container h2 {
+#recovery-code-form-container h2 {
     margin-bottom: 8px;
 }
 
@@ -122,6 +124,9 @@
     position: relative;
 }
 
+.recovery-error--container {
+    margin: 16px -4px;
+}
 
 /* ----------------------------- Responsiveness ----------------------------- */
 
@@ -139,5 +144,9 @@
         flex-direction: column;
         justify-content: space-evenly;
         margin: 0 40px;
+    }
+
+    #recovery-window .recovery-form {
+        margin-bottom: 24px;
     }
 }
