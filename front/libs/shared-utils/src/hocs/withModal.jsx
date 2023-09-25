@@ -9,14 +9,15 @@ function withModal(WrappedComponent) {
     return (props) => {
         const {
             onClose = () => { },
-            hasBackground = true,
+            hasOverlay = true,
             hasExit = true,
+            overLayExit = true,
             focusOnMount = true,
             width = '70%',
             minWidth = '300px',
             maxWidth = '450px',
             zIndex = 1000,
-            blur = 3,
+            blur = 2,
             style,
             ...rest
         } = props
@@ -25,7 +26,7 @@ function withModal(WrappedComponent) {
         const modalRef = useRef(null)
 
         useAccessEsc({
-            refs: [modalRef],
+            refs: overLayExit ? [modalRef] : [],
             visible: visible,
             setVisible: setVisible,
         })
@@ -40,8 +41,8 @@ function withModal(WrappedComponent) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            background: hasBackground ? 'rgba(49, 49, 49, 0.7)' : 'transparent',
-            backdropFilter: hasBackground ? `blur(${blur}px)` : 'none'
+            background: hasOverlay ? 'rgba(49, 49, 49, 0.7)' : 'transparent',
+            backdropFilter: hasOverlay ? `blur(${blur}px)` : 'none'
         }
 
         const backgroundTransitions = useTransition(visible, {

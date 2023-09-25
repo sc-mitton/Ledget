@@ -10,11 +10,9 @@ import { useSearchParams } from "react-router-dom"
 import './style/Login.css'
 import SocialAuth from "./SocialAuth"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
-import authenticator from '@assets/images/Authenticator.svg'
 import CsrfToken from "./inputs/CsrfToken"
-import { WindowLoadingBar, StatusPulse } from "@pieces"
+import { WindowLoadingBar } from "@pieces"
 import { ledgetapi } from "@api"
-import { CheckMark } from '@ledget/shared-assets'
 import {
     GrnWideButton,
     Checkbox,
@@ -24,7 +22,8 @@ import {
     SlideMotionDiv,
     PlainTextInput,
     JiggleDiv,
-    LinkArrowButton
+    LinkArrowButton,
+    AuthenticatorGraphic
 } from "@ledget/shared-ui"
 import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
@@ -95,17 +94,7 @@ const EmailForm = ({ flow, setEmail, socialSubmit }) => {
 
 const AuthenticatorMfa = ({ finished }) => (
     <>
-        <div id="authenticator-graphic">
-            {finished &&
-                <div id="success-checkmark">
-                    <CheckMark
-                        stroke={'var(--green-dark'}
-                    />
-                </div>
-            }
-            <img src={authenticator} alt="Authenticator" />
-            <StatusPulse positive={finished} size="medium" />
-        </div>
+        <AuthenticatorGraphic finished={finished} />
         <h3>Enter your authenticator code</h3>
         <div style={{ margin: '20px 0' }}>
             <PlainTextInput name="totp_code" placeholder="Code" />
@@ -152,7 +141,7 @@ const Login = () => {
 
     const {
         isFetchingFlow,
-        submittingFlow,
+        isSubmittingFlow,
         isCompleteSuccess,
         isCompleteError,
         errId,
@@ -160,8 +149,8 @@ const Login = () => {
     } = flowStatus
 
     useEffect(() => {
-        submittingFlow && setShowLoadingBar(true)
-    }, [submittingFlow])
+        isSubmittingFlow && setShowLoadingBar(true)
+    }, [isSubmittingFlow])
     useEffect(() => {
         isCompleteError && setShowLoadingBar(false)
     }, [isCompleteError])
@@ -203,7 +192,7 @@ const Login = () => {
         if (finished) {
             setTimeout(() => {
                 window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
-            }, 1500)
+            }, 1200)
         }
         return () => clearTimeout(timeout)
     }, [finished])
@@ -264,7 +253,7 @@ const Login = () => {
                 </SlideMotionDiv>
                 :
                 <JiggleDiv jiggle={isCompleteError} className="wrapper-window">
-                    {!searchParams.get('mfa') &&
+                    {!searchParams.get('mfa') && !searchParams.get('mfa') &&
                         <SlideMotionDiv
                             className='nested-window'
                             key="authenticate-password"

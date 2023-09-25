@@ -19,11 +19,11 @@ const DeactivateAuthenticator = (props) => {
     )
     const {
         isFetchingFlow,
+        isCompleteSuccess,
+        isSubmittingFlow,
         errorFetchingFlow,
         isCompleteError,
         errMsg,
-        isCompleteSuccess,
-        submittingFlow,
     } = flowStatus
 
     useEffect(() => { fetchFlow() }, [])
@@ -57,7 +57,7 @@ const DeactivateAuthenticator = (props) => {
                             name="method"
                             value="totp"
                             success={isCompleteSuccess}
-                            submitting={submittingFlow}
+                            submitting={isSubmittingFlow}
                         >
                             Yes
                         </GreenSubmitButton>

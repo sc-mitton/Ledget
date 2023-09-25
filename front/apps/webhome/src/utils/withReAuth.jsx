@@ -14,7 +14,8 @@ import {
     PlainTextInput,
     FormError,
     SlideMotionDiv,
-    JiggleDiv
+    JiggleDiv,
+    AuthenticatorGraphic
 } from '@ledget/shared-ui'
 import { useFlow } from '@ledget/ory-sdk'
 
@@ -45,8 +46,11 @@ const PassWord = ({ isFetchingFlow, isCompleteError }) => {
     )
 }
 
-const Totp = ({ isFetchingFlow, isCompleteError, errMsg }) => {
+const Totp = ({ isFetchingFlow, isCompleteError, totpSuccess, errMsg }) => {
     const ref = useRef(null)
+    const [finished, setFinished] = useState(false)
+    const [searchParams] = useSearchParams()
+
     useEffect(() => {
         if (isCompleteError) {
             ref.current.value = ''
@@ -54,10 +58,19 @@ const Totp = ({ isFetchingFlow, isCompleteError, errMsg }) => {
         }
     }, [isCompleteError])
 
+    useEffect(() => {
+        if (totpSuccess && searchParams.get('aal') === 'aal2') {
+            setFinished(true)
+        }
+    }, [totpSuccess])
+
     return (
         <>
-            <div className="body" style={row1Style}>
+            <div style={{ margin: '4px' }}>
                 Enter your authenticator code
+            </div>
+            <div style={{ margin: '24px' }}>
+                <AuthenticatorGraphic finished={finished} />
             </div>
             <div style={row2Style}>
                 <JiggleDiv jiggle={isCompleteError}>
@@ -76,8 +89,7 @@ const Totp = ({ isFetchingFlow, isCompleteError, errMsg }) => {
 }
 
 const ReAuthModal = withSmallModal((props) => {
-    const [searchParams] = useSearchParams()
-    const [, setSearchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
@@ -88,14 +100,13 @@ const ReAuthModal = withSmallModal((props) => {
 
     const dispatch = useDispatch()
     const sessionIsFresh = useSelector(selectSessionIsFresh)
-    const [needsAal2, setNeedsAal2] = useState(false)
 
     const {
         isFetchingFlow,
         errorFetchingFlow,
         isCompleteError,
         isCompleteSuccess,
-        submittingFlow,
+        isSubmittingFlow,
         errMsg
     } = flowStatus
 
@@ -110,19 +121,25 @@ const ReAuthModal = withSmallModal((props) => {
 
     // Handle Successful Flow Completion
     useEffect(() => {
+        let timeout
         if (isCompleteSuccess) {
             const aal = searchParams.get('aal')
             const finishedCase1 = !user.mfa_method && aal === 'aal1'
             const finishedCase2 = user.mfa_method && aal === 'aal2'
 
-            if (finishedCase1 || finishedCase2) {
+            if (finishedCase2) {
+                timeout = setTimeout(() => {
+                    dispatch({ type: 'user/resetAuthedAt' })
+                    setSearchParams({})
+                }, 1000)
+            } else if (finishedCase1) {
                 dispatch({ type: 'user/resetAuthedAt' })
                 setSearchParams({})
             } else if (aal === 'aal1') {
                 fetchFlow({ aal: 'aal2', refresh: true })
-                setNeedsAal2(true)
             }
         }
+        return () => clearTimeout(timeout)
     }, [isCompleteSuccess])
 
     // Close modal after 9 minute timeout
@@ -138,12 +155,13 @@ const ReAuthModal = withSmallModal((props) => {
         <form onSubmit={submit}>
             <h3>Confirm Login</h3>
             <AnimatePresence mode="wait">
-                {needsAal2
+                {searchParams.get('aal') === 'aal2'
                     ?
                     <SlideMotionDiv key='aal2' last>
                         <Totp
                             isFetchingFlow={isFetchingFlow}
                             isCompleteError={isCompleteError}
+                            totpSuccess={isCompleteSuccess}
                             errMsg={errMsg}
                         />
                     </SlideMotionDiv>
@@ -162,9 +180,9 @@ const ReAuthModal = withSmallModal((props) => {
                     Cancel
                 </SecondaryButton>
                 <GreenSubmitWithArrow
-                    submitting={submittingFlow}
+                    submitting={isSubmittingFlow}
                     name="method"
-                    value={needsAal2 ? 'totp' : 'password'}
+                    value={searchParams.get('aal') === 'aal2' ? 'totp' : 'password'}
                 >
                     Continue
                 </GreenSubmitWithArrow>

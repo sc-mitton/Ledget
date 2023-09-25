@@ -1,17 +1,28 @@
-import React, { forwardRef, useRef } from 'react'
+import React, { forwardRef, useRef, useEffect, useState } from 'react'
 
 import { LoadingRing } from '../pieces-lib/pieces'
+import { TranslucentShimmerDiv } from '../pieces-lib/shimmer'
 import { ArrowIcon, CheckMark } from '@ledget/shared-assets'
 
 export const BaseButton = forwardRef((props, ref) => {
     const { className, children, ...rest } = props
     const localRef = useRef(null)
     const r = ref || localRef
+    const [clicked, setClicked] = useState(false)
+
+    useEffect(() => {
+        let timeout
+        if (clicked) {
+            timeout = setTimeout(() => setClicked(false), 200)
+        }
+        return () => clearTimeout(timeout)
+    }, [clicked])
 
     return (
         <button
             ref={r}
-            className={`btn ${className}`}
+            onMouseDown={() => setClicked(true)}
+            className={`btn ${className} ${clicked ? 'clicked' : ''}`}
             {...rest}
         >
             {children}
@@ -40,12 +51,12 @@ export const withArrow = (Component) => {
     return forwardRef((props, ref) => {
         const localRef = useRef(null)
         const r = ref || localRef
-        const { children, className, disabledHover, stroke, rotate = -90, ...rest } = props
+        const { children, className, disabledHover, loading, submitting, stroke, rotate = -90, ...rest } = props
 
         return (
             <Component
                 ref={r}
-                className={`scale-icon-btn ${className} ${disabledHover ? 'disabled-hover' : ''}`}
+                className={`scale-icon-btn ${className} ${disabledHover || submitting || loading ? 'disabled-hover' : ''}`}
                 {...rest}
             >
                 {children}
@@ -66,11 +77,11 @@ export const withCheckMark = (Component) => {
     return forwardRef((props, ref) => {
         const localRef = useRef(null)
         const r = ref || localRef
-        const { children, className, disabledHover, stroke, ...rest } = props
+        const { children, className, disabledHover, loading, submitting, stroke, ...rest } = props
 
         return (
             <Component
-                className={`scale-icon-btn ${className} ${disabledHover ? 'disabled-hover' : ''}`}
+                className={`scale-icon-btn ${className} ${disabledHover || submitting || loading ? 'disabled-hover' : ''}`}
                 ref={r}
                 {...rest}
             >
@@ -86,28 +97,25 @@ export const withCheckMark = (Component) => {
     })
 }
 
-export const withLoadingRing = (Component) => {
+export const withLoading = (Component) => {
 
     return forwardRef((props, ref) => {
         const localRef = useRef(null)
         const r = ref || localRef
-        const { children, submitting, success, ...rest } = props
-
-        const newProps = {
-            disabledHover: submitting || success,
-            ...rest
-        }
+        const { children, ...rest } = props
+        const { loading, submitting, success } = props
 
         return (
-            <Component
-                {...newProps}
-                ref={r}
-            >
+            <Component {...rest} ref={r}>
+                {loading && <TranslucentShimmerDiv />}
                 <LoadingRing visible={submitting} />
                 {!submitting && success &&
-                    <CheckMark className="checkmark--pop" />
+                    <CheckMark className="checkmark--pop" stroke={'currentColor'} />
                 }
-                <div style={{ color: submitting || success ? 'transparent' : 'inherit' }}>
+                <div
+                    className="with-loading-ring--container"
+                    style={{ color: submitting || loading || success ? 'transparent' : 'inherit' }}
+                >
                     {children}
                 </div>
             </Component>

@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Plus } from '@ledget/shared-assets';
 
 import './buttons.css'
 import { ExpandIcon, ArrowIcon, FacebookLogo, CloseIcon, GoogleLogo, CopyIcon } from '@ledget/shared-assets'
-import { ButtonWithClassName, withArrow, withCheckMark, withLoadingRing } from './button-utils'
+import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'
 import { animated, useSpring } from '@react-spring/web'
 
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')
@@ -11,6 +11,7 @@ export const BlackPrimaryButton = ButtonWithClassName('btn-chcl btn3')
 export const SecondaryButton = ButtonWithClassName('btn3 btn-scale btn-scale btn-second')
 export const GrnPrimaryButton = ButtonWithClassName('btn-grn btn3')
 export const GrayButton = ButtonWithClassName('btn-gr3 btn-slim')
+export const GrayArrowButton = withArrow(GrayButton)
 
 export const BlackWideButton = ButtonWithClassName('btn-chcl btn-wide')
 export const GrnWideButton = ButtonWithClassName('btn-grn btn-wide')
@@ -30,15 +31,15 @@ export const SlimInputButton = ButtonWithClassName('btn-input2 btn-2slim')
 // Specialised Buttons
 export const BlackPillButtonWithArrow = withArrow(BlackPillButton)
 export const BlackPrimaryButtonWithArrow = withArrow(BlackPrimaryButton)
-export const BlackSubmitWithArrow = withLoadingRing(withArrow(BlackPrimaryButton))
-export const GreenSubmitWithArrow = withLoadingRing(withArrow(GrnPrimaryButton))
-export const GreenSubmitButton = withLoadingRing(GrnPrimaryButton)
+export const BlackSubmitWithArrow = withLoading(withArrow(BlackPrimaryButton))
+export const GreenSubmitWithArrow = withLoading(withArrow(GrnPrimaryButton))
+export const GreenSubmitButton = withLoading(GrnPrimaryButton)
 export const GreenCheckSubmitButton = withCheckMark(GreenSubmitButton)
 export const GrnSlimArrowButton = withArrow(ButtonWithClassName('btn-grn btn-slim'))
-export const GreenSlimArrowSubmit = withLoadingRing(GrnSlimArrowButton)
-export const RedButton = withLoadingRing(ButtonWithClassName('btn-red btn-2slim'))
+export const GreenSlimArrowSubmit = withLoading(GrnSlimArrowButton)
+export const RedButton = withLoading(ButtonWithClassName('btn-red btn-2slim'))
 export const GrnTextButton = ButtonWithClassName('btn-grn-text btn-2slim')
-export const IconButtonSubmit = withLoadingRing(IconButton)
+export const IconButtonSubmit = withLoading(IconButton)
 export const LinkArrowButton = withArrow(ButtonWithClassName('btn-icon2'))
 
 export const SmallArrowButton = ({ type, ...rest }) => (
@@ -80,8 +81,7 @@ export const GoogleLoginButton = ({ props }) => (
   </GrayWideButton>
 )
 
-export const CloseButton = (props, ref) => {
-  const localRef = useRef(null)
+export const CloseButton = (props) => {
   const { style, ...rest } = props
 
   return (
@@ -100,27 +100,24 @@ export const CloseButton = (props, ref) => {
   )
 }
 
-export const BackButton = ({ withText = true, children, ...rest }) => {
-
-  return (
-    <div>
-      <button className="btn btn-2slim back-btn" {...rest}>
-        <svg width="20" height="20" viewBox="0 0 20 20">
-          <g transform={'translate(19, 20) rotate(-180)'}>
-            <path className="arrow-tail" d="M5 10L12.5 10" stroke="#292929" strokeWidth="2"
-              strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            <path className="arrow-head" d="M8 14L12 10" stroke="#292929" strokeWidth="2"
-              strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            <path className="arrow-head" d="M12 10L8 6" stroke="#292929" strokeWidth="2"
-              strokeLinecap="round" strokeLinejoin="round" fill="none" />
-          </g>
-        </svg>
-        {withText && <span>back</span>}
-        {children}
-      </button>
-    </div>
-  )
-}
+export const BackButton = ({ withText = true, children, ...rest }) => (
+  <div>
+    <button className="btn btn-2slim back-btn" {...rest}>
+      <svg width="20" height="20" viewBox="0 0 20 20">
+        <g transform={'translate(19, 20) rotate(-180)'}>
+          <path className="arrow-tail" d="M5 10L12.5 10" stroke="#292929" strokeWidth="2"
+            strokeLinecap="round" strokeLinejoin="round" fill="none" />
+          <path className="arrow-head" d="M8 14L12 10" stroke="#292929" strokeWidth="2"
+            strokeLinecap="round" strokeLinejoin="round" fill="none" />
+          <path className="arrow-head" d="M12 10L8 6" stroke="#292929" strokeWidth="2"
+            strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        </g>
+      </svg>
+      {withText && <span>back</span>}
+      {children}
+    </button>
+  </div>
+)
 
 export const CopyButton = (props) => {
   const { withText = true, onClick, ...rest } = props

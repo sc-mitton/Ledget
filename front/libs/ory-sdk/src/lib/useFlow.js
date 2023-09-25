@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom"
 
 const formatErrorMessages = (errorMessages) => {
     const filteredMessages = []
+    console.log(errorMessages)
     for (const message of errorMessages) {
         switch (message.id) {
             case 4000006:
@@ -11,6 +12,8 @@ const formatErrorMessages = (errorMessages) => {
                 break
             case 4000007:
                 filteredMessages.push("Hmm, something's not right. Please try again.")
+                break
+            case 4000008:
                 break
             default:
                 filteredMessages.push("Hmm, something's not right. Please try again later.")
@@ -53,19 +56,24 @@ function useFlow(query, mutation, flowType) {
             error: getFlowError,
             isError: isGetFlowError,
             isLoading: isFetchingFlow,
-            isSuccess: getFlowSuccess
+            isSuccess: isGetFlowSuccess
         }
     ] = query()
     const [
         completeFlow,
         {
-            data: completedFlowData,
+            data: result,
             error: completeError,
-            isLoading: submittingFlow,
+            isLoading: isSubmittingFlow,
             isError: isCompleteError,
             isSuccess: isCompleteSuccess
         }
-    ] = mutation({ fixedCacheKey: searchParams.get('flow') })
+    ] = mutation({
+        fixedCacheKey: `${Array.from(searchParams.values()).join('-')}`
+    })
+    // Fixed cache key because sometimes we reauth before going to a
+    // target component, and we don't want the mutation results to carry
+    // overy in between
 
     const fetchFlow = (args) => {
         // If the aal param is different, this means a new flow is needed
@@ -103,11 +111,11 @@ function useFlow(query, mutation, flowType) {
 
     // Update search params
     useEffect(() => {
-        if (getFlowSuccess) {
+        if (isGetFlowSuccess) {
             searchParams.set('flow', flow?.id)
             setSearchParams(searchParams)
         }
-    }, [getFlowSuccess, flow?.id])
+    }, [isGetFlowSuccess, flow?.id])
 
     // Error handler
     useEffect(() => {
@@ -121,6 +129,7 @@ function useFlow(query, mutation, flowType) {
         if (errorMessages) {
             setErrMsg(formatErrorMessages(errorMessages))
             setErrId(errorMessages[0].id)
+            console.log('errorId', errorMessages[0].id)
         }
 
         switch (status) {
@@ -173,7 +182,7 @@ function useFlow(query, mutation, flowType) {
         if (isCompleteSuccess && flowType === 'registration') {
             sessionStorage.setItem(
                 'user',
-                JSON.stringify(completedFlowData.identity)
+                JSON.stringify(result.identity)
             )
         }
     }, [isCompleteSuccess])
@@ -182,7 +191,7 @@ function useFlow(query, mutation, flowType) {
         flow,
         fetchFlow,
         submit,
-        completedFlowData,
+        result,
         flowStatus: {
             errMsg,
             errId,
@@ -190,7 +199,7 @@ function useFlow(query, mutation, flowType) {
             isCompleteError,
             isGetFlowError,
             isFetchingFlow,
-            submittingFlow,
+            isSubmittingFlow,
             isCompleteSuccess
         }
     }

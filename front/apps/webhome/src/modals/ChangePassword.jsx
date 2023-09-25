@@ -33,7 +33,7 @@ const ChangePassword = (props) => {
         errorFetchingFlow,
         isCompleteError,
         isCompleteSuccess,
-        submittingFlow,
+        isSubmittingFlow,
     } = flowStatus
 
     useEffect(() => { fetchFlow() }, [])
@@ -50,7 +50,7 @@ const ChangePassword = (props) => {
     }, [isCompleteSuccess])
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema), mode: 'onBlur', reValidateMode: 'onBlur'
+        resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur'
     })
     const [pwdVisible, setPwdVisible] = useState(false)
 
@@ -99,7 +99,7 @@ const ChangePassword = (props) => {
                     name="method"
                     value="password"
                     onCancel={() => { props.setVisible(false) }}
-                    submitting={submittingFlow}
+                    submitting={isSubmittingFlow}
                     success={isCompleteSuccess}
                 />
             </form>

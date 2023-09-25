@@ -181,14 +181,10 @@ function Header({ isNarrow }) {
     }
 
     useEffect(() => {
-        if (searchParams.get('confirm')
-            || location.pathname.includes('new')
-            || location.pathname.includes('update')
-            || location.pathname.includes('change')
-            || location.pathname.includes('cancel')
-            || location.pathname.includes('delete')
-            || location.pathname.includes('add')
-            || location.pathname.includes('authenticator-setup')
+        if (searchParams.get('confirm') ||
+            ['new', 'create', 'edit', 'change', 'cancel', 'delete', 'add', 'authenticator-setup', 'recovery-codes'].some(
+                (word) => location.pathname.includes(word)
+            )
         ) {
             setZindex(0)
         } else {

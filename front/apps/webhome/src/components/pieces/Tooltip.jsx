@@ -10,7 +10,7 @@ const Tooltip = (props) => {
         // Set a timeout to show the tooltip after 2 seconds
         timeoutRef.current = setTimeout(() => {
             setShow(true)
-        }, 1200) // 2000 milliseconds = 2 seconds
+        }, 1500) // 1500 milliseconds = 1.5 seconds
     }
 
     const handleMouseLeave = () => {

@@ -26,7 +26,7 @@ export { default as Plus } from './src/icons/Plus.jsx';
 export { default as Profile1 } from './src/icons/Profile1.jsx';
 export { default as Profile2 } from './src/icons/Profile2.jsx';
 export { default as Recommendations } from './src/icons/Recommendations.jsx';
-export { default as Replay } from './src/icons/Replay.jsx';
+export { default as ReplayIcon } from './src/icons/Replay.jsx';
 export { default as Return } from './src/icons/Return.jsx';
 export { default as Settings } from './src/icons/Settings.jsx';
 export { default as Shield } from './src/icons/Shield.jsx';
@@ -51,3 +51,4 @@ export { default as LocationIcon } from './src/icons/LocationIcon.jsx';
 export { default as LedgetLogoIcon } from './src/brand/LogoIcon'
 export { default as LockIcon } from './src/icons/LockIcon.jsx';
 export { default as VerifyEmail } from './src/icons/VerifyEmail.jsx';
+export { default as ShowIcon } from './src/icons/Show.jsx';

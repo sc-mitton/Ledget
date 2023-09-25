@@ -19,7 +19,7 @@ const formatDateTime = (date) => {
 }
 
 const Device = (props) => {
-    const { device, info, onLogout, processingDelete } = props
+    const { device, info, deleteDevice, processingDelete } = props
     const buttonRef = useRef(null)
     const iconKey = Object.keys(info[0]).find(
         (key) => key.includes('is_') && info[0][key]
@@ -91,7 +91,7 @@ const Device = (props) => {
                                             >
                                                 <IconButtonSubmit
                                                     submitting={processingDelete}
-                                                    onClick={() => onLogout()}
+                                                    onClick={() => { deleteDevice({ deviceId: session.id }) }}
                                                 >
                                                     <LogoutIcon />
                                                 </IconButtonSubmit>

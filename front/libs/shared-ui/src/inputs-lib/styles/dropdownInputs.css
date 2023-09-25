@@ -32,16 +32,16 @@
 
 .provence.selected {
     background-color: var(--green-hlight2);
-    transition: background-color .2s eas-in-out;
+    transition: all .2s eas-in-out;
 }
 
 .provence.active,
 .provence:hover {
     background-color: var(--icon-light-gray);
-    transition: background-color .2s eas-in-out;
+    transition: all .2s eas-in-out;
 }
 
 .provence.active.selected {
     background-color: var(--green-hlight3);
-    transition: background-color .2s eas-in-out;
+    transition: all .2s eas-in-out;
 }

@@ -1,29 +1,30 @@
 import React, { useEffect, useState } from 'react'
 
 import { AnimatePresence } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import './styles/Authenticator.css'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 import { useUpdateUserMutation, useAddRememberedDeviceMutation } from '@features/userSlice'
+import { Content as RecoveryCodes } from '@modals/RecoveryCodes'
+import { useFlow } from '@ledget/ory-sdk'
+import { withModal } from '@ledget/shared-utils'
+import { withReAuth } from '@utils'
 import {
     BackButton,
     GreenSubmitWithArrow,
+    GreenSubmitButton,
     PlainTextInput,
     LoadingRingDiv,
     NodeImage,
     GrnTextButton,
-    GreenSubmitButton,
     CopyButton,
     FormError,
     JiggleDiv,
     ZoomMotionDiv,
-    SlideMotionDiv
+    SlideMotionDiv,
+    AuthenticatorGraphic
 } from '@ledget/shared-ui'
-import { useFlow } from '@ledget/ory-sdk'
-import { withModal } from '@ledget/shared-utils'
-import { withReAuth } from '@utils'
-
 
 const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
     const [qrNode, setQrNode] = useState(null)
@@ -92,6 +93,12 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
 }
 
 const Authenticator = (props) => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [codeMode, setCodeMode] = useState(false)
+
+    const [updateUser] = useUpdateUserMutation()
+    const [addRememberedDevice] = useAddRememberedDeviceMutation()
+
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetSettingsFlowQuery,
         useCompleteSettingsFlowMutation,
@@ -102,18 +109,36 @@ const Authenticator = (props) => {
         errorFetchingFlow,
         isCompleteError,
         isCompleteSuccess,
-        submittingFlow,
+        isSubmittingFlow,
         errMsg,
     } = flowStatus
 
+    const handleBack = () => {
+        if (codeMode) {
+            setCodeMode(false)
+        } else if (searchParams.get('step') === 'setup') {
+            props.setVisible(false)
+        } else if (searchParams.get('step') === 'confirm') {
+            searchParams.set('step', 'setup')
+            setSearchParams(searchParams)
+        }
+    }
+
+    // Fetch flow on mount
     useEffect(() => { fetchFlow() }, [])
 
-    const navigate = useNavigate()
-    const [onConfirmStep, setConfirmStep] = useState(false)
-    const [codeMode, setCodeMode] = useState(false)
+    // Set initial view
+    useEffect(() => {
+        searchParams.set('step', 'setup')
+        setSearchParams(searchParams)
+    }, [])
 
-    const [updateUser] = useUpdateUserMutation()
-    const [addRememberedDevice] = useAddRememberedDeviceMutation()
+    // Close on errors
+    useEffect(() => {
+        if (errorGeneratingCodes || errMsg) {
+            props.setVisible(false)
+        }
+    }, [errMsg, errorGeneratingCodes])
 
     // Handle successful flow completion
     // Update the user's mfa settings and the device token cookie
@@ -123,45 +148,22 @@ const Authenticator = (props) => {
             updateUser({ data: { mfa_method: 'authenticator' } })
             addRememberedDevice()
             timeout = setTimeout(() => {
-                props.setVisible(false)
-            }, 1000)
+                searchParams.delete('step')
+                searchParams.set('lookup_secret_regenerate', true)
+            }, 1200)
         }
         return () => clearTimeout(timeout)
     }, [isCompleteSuccess])
 
-
-    const handleBack = () => {
-        if (onConfirmStep) {
-            setConfirmStep(false)
-        } else if (codeMode) {
-            setCodeMode(false)
-        } else {
-            navigate('/profile/security')
-        }
-    }
-
     return (
         <div id="authenticator-page">
-            <h2>Authenticator Setup</h2>
             <form onSubmit={submit} id='authenticator-setup-form'>
                 <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
                 <AnimatePresence mode="wait">
-                    {onConfirmStep
-                        ?
-                        <SlideMotionDiv key="confirm-code" last>
-                            <JiggleDiv jiggle={isCompleteError} className="content">
-                                <div>
-                                    <FormError msg={errMsg} />
-                                    <label htmlFor="code">
-                                        Enter the code from your
-                                        authenticator app
-                                    </label>
-                                    <PlainTextInput name="totp_code" placeholder="Code" />
-                                </div>
-                            </JiggleDiv>
-                        </SlideMotionDiv>
-                        :
-                        <SlideMotionDiv key='setup-app' first={Boolean(flow)}>
+                    {/* Page 1: Setup App */}
+                    {searchParams.get('step') === 'setup' &&
+                        <SlideMotionDiv key='setup-app'>
+                            <h2>Authenticator App</h2>
                             <SetupApp
                                 flow={flow}
                                 codeMode={codeMode}
@@ -171,19 +173,57 @@ const Authenticator = (props) => {
                             />
                         </SlideMotionDiv>
                     }
+                    {/* Page 2: Confirm Code */}
+                    {searchParams.get('step') === 'confirm' &&
+                        <SlideMotionDiv
+                            key="confirm-code"
+                            first={searchParams.get('lookup_secret_regenerate')}
+                            last={!searchParams.get('lookup_secret_regenerate')}
+                        >
+                            <JiggleDiv jiggle={isCompleteError} className="content">
+                                <div>
+                                    <AuthenticatorGraphic finished={isCompleteSuccess} />
+                                    <label htmlFor="code" >
+                                        Enter the code from your
+                                        authenticator app
+                                    </label>
+                                    <PlainTextInput name="totp_code" placeholder="Code" />
+                                </div>
+                            </JiggleDiv>
+                        </SlideMotionDiv>
+                    }
+                    {/* Page 3: Recovery Codes */}
+                    {searchParams.get('lookup_secret_regenerate') &&
+                        <SlideMotionDiv key="lookup-secrets" last>
+                            <RecoveryCodes />
+                        </SlideMotionDiv>
+                    }
                 </AnimatePresence>
-                <div>
+                {/* Nav Buttons */}
+                <div
+                    style={{
+                        visibility: searchParams.get('lookup_secret_regenerate')
+                            ? 'hidden' : 'visible'
+                    }}
+                >
                     <BackButton onClick={handleBack} type="button" />
-                    {onConfirmStep
+                    {searchParams.get('step') === 'confirm'
                         ?
                         <GreenSubmitButton
-                            submitting={submittingFlow}
-                            success={isCompleteSuccess}
+                            name="method"
+                            value="totp"
+                            submitting={isSubmittingFlow}
                         >
                             Confirm
                         </GreenSubmitButton>
                         :
-                        <GreenSubmitWithArrow stroke={'var(--m-text-gray)'}>
+                        <GreenSubmitWithArrow
+                            type="button"
+                            onClick={() => {
+                                searchParams.set('step', 'confirm')
+                                setSearchParams(searchParams)
+                            }}
+                        >
                             Next
                         </GreenSubmitWithArrow>
                     }
@@ -202,20 +242,9 @@ export default function () {
         <EnrichedModal
             onClose={() => navigate('/profile/security')}
             blur={1}
+            maxWidth={400}
         />
     )
 }
 
-// <div id="recovery-codes-button--container">
-// <span>Recovery Codes:</span>
-// <div>
-//     <GrnSlimButton className="recovery-codes-button">
-//         Download
-//         <DownloadIcon stroke={'var(--green-dark3)'} />
-//     </GrnSlimButton>
-//     <GrnSlimButton className="recovery-codes-button">
-//         Copy
-//         <CopyIcon fill={'var(--green-dark3)'} />
-//     </GrnSlimButton>
-// </div>
-// </div>
+

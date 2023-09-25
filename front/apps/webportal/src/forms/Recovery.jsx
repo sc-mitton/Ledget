@@ -5,8 +5,8 @@ import { AnimatePresence } from "framer-motion"
 
 import './style/Recovery.css'
 import Otc from './Otc'
-import { WindowLoadingBar, StatusPulse } from '@pieces'
-import { FormError, GrnWideButton, SlideMotionDiv, PlainTextInput, BackButton } from '@ledget/shared-ui'
+import { WindowLoadingBar } from '@pieces'
+import { FormError, GrnWideButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse } from '@ledget/shared-ui'
 import forgotPassword from '@assets/images/forgotPassword.svg'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory-sdk'
@@ -152,7 +152,7 @@ const RecoverAccount = () => {
         fetchFlow,
         submit,
         flowStatus,
-        completedFlowData
+        result
     } = useFlow(
         useLazyGetRecoveryFlowQuery,
         useCompleteRecoveryFlowMutation,
@@ -162,7 +162,7 @@ const RecoverAccount = () => {
     const {
         isFetchingFlow,
         isCompleteSuccess,
-        submittingFlow,
+        isSubmittingFlow,
         isCompleteError,
         completeError,
         errMsg
@@ -176,7 +176,7 @@ const RecoverAccount = () => {
             timeout = setTimeout(() => {
                 setSearchParams({})
                 navigate('/login')
-            }, 1500)
+            }, 1200)
         }
         return () => clearTimeout(timeout)
     }, [completeError])
@@ -192,7 +192,7 @@ const RecoverAccount = () => {
 
     return (
         <div className="window" id="recovery-window">
-            <WindowLoadingBar visible={isFetchingFlow || submittingFlow} />
+            <WindowLoadingBar visible={isFetchingFlow || isSubmittingFlow} />
             <AnimatePresence mode="wait">
                 {searchParams.get('step') === 'verify'
                     ?
@@ -203,7 +203,7 @@ const RecoverAccount = () => {
                         last
                     >
                         <RecoveryVerificationForm
-                            flow={completedFlowData}
+                            flow={result}
                             submit={submit}
                             codeSuccess={codeSuccess}
                             isCompleteError={isCompleteError}

@@ -4,6 +4,8 @@ import { useTransition, animated } from '@react-spring/web'
 
 import './styles/pieces.css'
 import { Alert2 } from '@ledget/shared-assets'
+import { CheckMark } from '@ledget/shared-assets'
+import authenticator from '@ledget/shared-assets/src/images/authenticator.svg'
 
 export const ExpandableContainer = ({ expanded, className, children, ...rest }) => (
     <div className={`animated-container ${expanded ? 'expanded' : 'collapsed'} ${className}`} {...rest}>
@@ -53,19 +55,16 @@ export const LoadingRingDiv = ({ loading, children, style, ...rest }) => {
     )
 }
 
-export const FormErrorTip = ({ errors }) => {
-
-    return (
-        <>
-            {
-                errors.some((error) => error?.type === 'required' || error?.message === 'required') &&
-                <div className='error-tip'>
-                    <Alert2 />
-                </div>
-            }
-        </>
-    )
-}
+export const FormErrorTip = ({ errors }) => (
+    <>
+        {
+            errors.some((error) => error?.type === 'required' || error?.message === 'required') &&
+            <div className='error-tip'>
+                <Alert2 />
+            </div>
+        }
+    </>
+)
 
 export const FormError = (props) => {
     const renderLines = (text) => {
@@ -109,3 +108,33 @@ export const NodeImage = ({ node, attributes }) => {
     )
 }
 
+export const StatusPulse = ({ positive, colorDefaultPositive, size }) => (
+    <>
+        <div
+            id="inner-circle"
+            className={`status-circle ${positive ? 'positive' : 'negative'} ${colorDefaultPositive ? 'color-default-positive' : ''} ${size}`}
+        />
+        <div
+            id="outer-circle"
+            className={`status-circle ${positive ? 'positive' : 'negative'} ${colorDefaultPositive ? 'color-default-positive' : ''} ${size}`}
+        />
+    </>
+)
+
+export const AuthenticatorGraphic = (props) => {
+    const { finished } = props
+
+    return (
+        <div id="authenticator-graphic">
+            {finished &&
+                <div id="success-checkmark">
+                    <CheckMark
+                        stroke={'var(--green-dark'}
+                    />
+                </div>
+            }
+            <img src={authenticator} alt="Authenticator" />
+            <StatusPulse positive={finished} size="medium-large" />
+        </div>
+    )
+}

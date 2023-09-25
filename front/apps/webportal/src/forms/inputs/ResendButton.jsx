@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { motion } from 'framer-motion'
-import { Replay } from "@ledget/shared-assets"
+import { ReplayIcon } from "@ledget/shared-assets"
 import './styles/ResendButton.css'
 
 const ResendButton = (props) => {
@@ -23,7 +23,7 @@ const ResendButton = (props) => {
                     }}
                     id="resend-icon"
                 >
-                    <Replay fill={'var(--m-green-hover)'} />
+                    <ReplayIcon fill={'var(--m-green-hover)'} />
                 </motion.div>
             </motion.button>
         </div>

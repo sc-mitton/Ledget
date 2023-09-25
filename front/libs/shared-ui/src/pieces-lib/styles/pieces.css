@@ -106,3 +106,158 @@
     font-weight: 500;
     color: var(--mute-red);
 }
+
+
+
+/* ------------------------------ Status status-pulse ------------------------------ */
+
+
+#authenticator-graphic {
+    display: flex;
+    justify-content: center;
+    margin: 8px;
+    position: relative;
+}
+
+#authenticator-graphic img {
+    height: 7em;
+    z-index: 3;
+}
+
+
+#success-checkmark {
+    position: absolute;
+    z-index: 50;
+    background-color: var(--window);
+    padding: 8px;
+    margin-left: 1px;
+    animation: popOn 0.3s ease-in-out forwards;
+}
+
+@keyframes popOn {
+    0% {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    100% {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.status-circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 50%;
+    box-shadow: none;
+}
+
+#inner-circle {
+    z-index: 2;
+}
+
+#outer-circle {
+    z-index: 1;
+}
+
+/* Small */
+
+#inner-circle.small {
+    width: 28px;
+    height: 28px;
+}
+
+#outer-circle.small {
+    width: 40px;
+    height: 40px;
+}
+
+/* Medium */
+#inner-circle.medium {
+    width: 40px;
+    height: 40px;
+}
+
+#outer-circle.medium {
+    width: 65px;
+    height: 65px;
+}
+
+#inner-circle.medium-large {
+    width: 45px;
+    height: 45px;
+}
+
+#outer-circle.medium-large {
+    width: 70px;
+    height: 70px;
+}
+
+/* Inner Circle */
+#inner-circle.negative {
+    background-color: rgb(0, 0, 0, .06);
+    animation: status-pulse 4s ease-in-out infinite;
+}
+
+#inner-circle.color-default-positive {
+    background-color: rgba(140, 251, 188, 0.7);
+}
+
+#inner-circle.positive {
+    background-color: rgba(69, 255, 150, 0.7);
+    transition: all .5s ease-out;
+}
+
+#inner-circle.positive {
+    animation: success .6s ease-out forwards;
+}
+
+/* Outer Circle */
+#outer-circle.negative {
+    background-color: rgb(0, 0, 0, .04);
+    animation: status-pulse 4s ease-in-out infinite;
+    animation-delay: .5s;
+}
+
+#outer-circle.positive,
+#outer-circle.color-default-positive {
+    background-color: rgb(212, 255, 231, 1);
+    transition: all .5s ease-out;
+}
+
+#outer-circle.positive {
+    animation: success .6s ease-out forwards;
+}
+
+@keyframes success {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+@keyframes status-pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.4);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

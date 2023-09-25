@@ -6,8 +6,8 @@ import "./style/Verification.css"
 import CsrfToken from "./inputs/CsrfToken"
 import ResendButton from "./inputs/ResendButton"
 import Otc from "./Otc"
-import { WindowLoadingBar, StatusPulse } from "@pieces"
-import { GrnWideButton, FormError, JiggleDiv } from "@ledget/shared-ui"
+import { WindowLoadingBar } from "@pieces"
+import { GrnWideButton, FormError, JiggleDiv, StatusPulse } from "@ledget/shared-ui"
 import { VerifyEmail } from '@ledget/shared-assets'
 import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
@@ -67,7 +67,7 @@ const Verification = () => {
     const [codeIsCorrect, setCodeIsCorrect] = useState(false)
     const [unhandledIdMessage, setUnhandledIdMessage] = useState('')
     const navigate = useNavigate()
-    const { flow, completedFlowData, fetchFlow, submit, flowStatus } = useFlow(
+    const { flow, result, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetVerificationFlowQuery,
         useCompleteVerificationFlowMutation,
         'verification'
@@ -75,7 +75,7 @@ const Verification = () => {
     const {
         errMsg,
         isFetchingFlow,
-        submittingFlow,
+        isSubmittingFlow,
         isCompleteSuccess
     } = flowStatus
 
@@ -93,14 +93,14 @@ const Verification = () => {
         if (codeIsCorrect) {
             timeout = setTimeout(() => {
                 navigate('/checkout')
-            }, 1500)
+            }, 1200)
         }
         return () => clearTimeout(timeout)
     }, [codeIsCorrect])
 
     // Response code handler
     useEffect(() => {
-        const messages = completedFlowData?.ui?.messages || []
+        const messages = result?.ui?.messages || []
         for (const message of messages) {
             switch (message.id) {
                 case (4070006):
@@ -129,7 +129,7 @@ const Verification = () => {
 
     return (
         <JiggleDiv className="window" id="verification-window" jiggle={jiggle}>
-            <WindowLoadingBar visible={isFetchingFlow || submittingFlow} />
+            <WindowLoadingBar visible={isFetchingFlow || isSubmittingFlow} />
             <div className="window-header">
                 <h2>Verify Email Address</h2>
                 <h4>Step 3 of 4</h4>

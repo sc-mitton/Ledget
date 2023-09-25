@@ -115,7 +115,7 @@ const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }
 
     return (
         <>
-            <WindowLoadingBar visible={flowStatus.submittingFlow} />
+            <WindowLoadingBar visible={flowStatus.isSubmittingFlow} />
             <div className="window-header">
                 {typeof (PublicKeyCredential) != "undefined"
                     ?

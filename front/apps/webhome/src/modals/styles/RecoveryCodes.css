@@ -1,0 +1,27 @@
+#recovery-codes--container {
+    display: flex;
+    flex-direction: column;
+}
+
+#recovery-codes--container span {
+    margin: 16px 0;
+}
+
+#recovery-codes--container>div {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px;
+}
+
+#recovery-codes--container>div button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    max-width: 120px;
+}
+
+#recovery-codes--container button {
+    float: center;
+}

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 
 import './styles/Header.css'
-import { Replay, CheckAll } from '@ledget/shared-assets'
+import { ReplayIcon, CheckAll } from '@ledget/shared-assets'
 import { Tooltip } from '@components/pieces'
 import { IconButton } from '@ledget/shared-ui'
 
@@ -37,7 +37,7 @@ const RefreshButton = ({ onClick }) => {
                 <animated.div
                     style={props}
                 >
-                    <Replay />
+                    <ReplayIcon />
                 </animated.div>
             </IconButton>
         </Tooltip>
