@@ -55,7 +55,7 @@ function useFlow(query, mutation, flowType) {
             data: flow,
             error: getFlowError,
             isError: isGetFlowError,
-            isLoading: isFetchingFlow,
+            isLoading: isGettingFlow,
             isSuccess: isGetFlowSuccess
         }
     ] = query()
@@ -64,7 +64,7 @@ function useFlow(query, mutation, flowType) {
         {
             data: result,
             error: completeError,
-            isLoading: isSubmittingFlow,
+            isLoading: isCompletingFlow,
             isError: isCompleteError,
             isSuccess: isCompleteSuccess
         }
@@ -195,11 +195,12 @@ function useFlow(query, mutation, flowType) {
         flowStatus: {
             errMsg,
             errId,
-            completeError,
-            isCompleteError,
             isGetFlowError,
-            isFetchingFlow,
-            isSubmittingFlow,
+            isGetFlowSuccess,
+            isGettingFlow,
+            completeError,
+            isCompletingFlow,
+            isCompleteError,
             isCompleteSuccess
         }
     }

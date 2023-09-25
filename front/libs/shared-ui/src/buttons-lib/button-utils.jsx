@@ -89,7 +89,6 @@ export const withCheckMark = (Component) => {
                 <CheckMark
                     width={'.8em'}
                     height={'.8em'}
-                    style={{ marginLeft: '.5rem' }}
                     stroke={'currentColor'}
                 />
             </Component>

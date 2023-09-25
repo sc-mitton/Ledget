@@ -23,7 +23,7 @@ export const ProvenceSelect = ({ field, errors }) => {
             })
 
     useEffect(() => {
-        field && field.onChange(provence)
+        field && field.onChange(provence?.value)
     }, [provence])
 
     return (

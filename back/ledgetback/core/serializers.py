@@ -19,7 +19,6 @@ ledget_logger = logging.getLogger('ledget')
 class NewSubscriptionSerializer(serializers.Serializer):
     price_id = serializers.CharField()
     trial_period_days = serializers.IntegerField(required=False)
-    billing_cycle_anchor = serializers.IntegerField(required=False)
 
     def validate_trial_period_days(self, value):
         if value > 30:

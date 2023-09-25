@@ -1,9 +1,9 @@
-.limit-amount--container svg {
+.limit-amount--container button svg {
     opacity: .4;
     transition: opacity .2s ease;
 }
 
-.limit-amount--container:focus-within svg {
+.limit-amount--container:focus-within button svg {
     opacity: 1;
     transition: opacity .2s ease;
 }
@@ -20,7 +20,7 @@
     padding: 2px;
 }
 
-.increment-arrows--container svg {
+.increment-arrows--container button svg {
     margin: 2px;
 }
 
@@ -41,8 +41,18 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    position: relative;
 }
 
 .dollar-range-input--container>div {
     width: 100%;
+}
+
+#emoji-picker-ledget--button {
+    transform: scale(1.2);
+    margin: 0 4px;
+}
+
+#emoji-picker-ledget--button:hover {
+    transform: scale(1.5);
 }

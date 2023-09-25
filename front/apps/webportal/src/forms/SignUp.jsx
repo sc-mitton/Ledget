@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion"
 
 import './style/SignUp.css'
 import SocialAuth from "./SocialAuth"
+import ledgetapi from '@api/axios'
 import { WindowLoadingBar } from "@pieces"
 import PasswordlessForm from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
@@ -43,7 +44,7 @@ const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
 
     return (
         <>
-            <WindowLoadingBar visible={flowStatus.isFetchingFlow} />
+            <WindowLoadingBar visible={flowStatus.isGettingFlow} />
             <div className="window-header">
                 <h2>Create Account</h2>
                 <h4>Step 1 of 4</h4>
@@ -115,7 +116,7 @@ const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }
 
     return (
         <>
-            <WindowLoadingBar visible={flowStatus.isSubmittingFlow} />
+            <WindowLoadingBar visible={flowStatus.isCompletingFlow} />
             <div className="window-header">
                 {typeof (PublicKeyCredential) != "undefined"
                     ?
@@ -184,7 +185,12 @@ function SignUp() {
 
     useEffect(() => {
         if (isCompleteSuccess) {
-            navigate('/verification')
+            ledgetapi.post('devices')
+                .then(() => { navigate('/verification') })
+                .catch(() => { navigate('/login') })
+            // fall back to login if device creation fails
+            // since they can always log in and then user will
+            // be forced to verify and subscribe there instead
         }
     }, [isCompleteSuccess])
 

@@ -11,7 +11,7 @@ import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { GreenCheckSubmitButton, BlackSubmitWithArrow, SlimButton } from '@ledget/shared-ui'
+import { GreenCheckSubmitButton, BlackSubmitWithArrow, BlackSlimButton2 } from '@ledget/shared-ui'
 
 
 export const TabView = ({ children }) => {
@@ -75,7 +75,7 @@ export const TabView = ({ children }) => {
     )
 }
 
-export const BottomButtons = ({ expanded }) => {
+export const BottomButtons = () => {
     const navigate = useNavigate()
     const { itemsEmpty } = useContext(ItemsContext)
     const location = useLocation()
@@ -139,20 +139,15 @@ export const BottomButtons = ({ expanded }) => {
 
     return (
         <div
-            className={`btn-container ${expanded ? 'expanded' : ''}`}
+            className="btn-container"
         >
             <GreenCheckSubmitButton
-                style={{ visibility: expanded ? 'visible' : 'hidden' }}
-                disabled={!expanded}
                 aria-label="Add Category"
                 type="submit"
             >
-                <span>Save</span>
+                Save
             </GreenCheckSubmitButton>
             <BlackSubmitWithArrow
-                style={{
-                    visibility: itemsEmpty ? 'hidden' : 'visible'
-                }}
                 aria-label="Next"
                 onClick={handleClick}
                 disabled={itemsEmpty}
@@ -170,13 +165,13 @@ export const RecommendationsButton = () => {
 
     return (
         <div>
-            <SlimButton
+            <BlackSlimButton2
                 className="btn-icon-r"
                 onClick={() => setRecommendationsMode(true)}
                 aria-label="Recommendations"
             >
-                Recommendations <RecommendationsIcon fill={'m-text-gray'} />
-            </SlimButton>
+                Recommendations <RecommendationsIcon fill={'currentColor'} />
+            </BlackSlimButton2>
         </div>
     )
 }

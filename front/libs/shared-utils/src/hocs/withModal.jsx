@@ -11,6 +11,8 @@ function withModal(WrappedComponent) {
             onClose = () => { },
             hasOverlay = true,
             hasExit = true,
+            hideModal = false,
+            hideOverlay = false,
             overLayExit = true,
             focusOnMount = true,
             width = '70%',
@@ -45,7 +47,7 @@ function withModal(WrappedComponent) {
             backdropFilter: hasOverlay ? `blur(${blur}px)` : 'none'
         }
 
-        const backgroundTransitions = useTransition(visible, {
+        const backgroundTransitions = useTransition(visible && !hideOverlay, {
             from: { opacity: 0 },
             enter: { opacity: 1, ...backgroundConfig },
             leave: { opacity: 0 },
@@ -66,7 +68,7 @@ function withModal(WrappedComponent) {
             ...style
         }
 
-        const modalContainerTransitions = useTransition(visible, {
+        const modalContainerTransitions = useTransition(visible && !hideModal, {
             from: {
                 opacity: 0,
                 scale: 0.92,

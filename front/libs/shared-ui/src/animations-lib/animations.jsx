@@ -45,7 +45,7 @@ export const SlideMotionDiv = ({ children, first, last, ...rest }) => (
             x: first ? -50 : (last ? 50 : 0),
         }}
         animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: last ? 50 : -50 }}
+        exit={{ opacity: 0, x: last ? 50 : (first ? -50 : 0) }}
         transition={{ duration: 0.15 }}
         {...rest}
     >

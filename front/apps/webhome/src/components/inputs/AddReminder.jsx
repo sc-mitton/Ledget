@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import './styles/Dropdowns.css'
 import ComboSelect from './ComboSelect'
 import { Plus, CheckMark } from '@ledget/shared-assets'
-import { SlimInputButton, DropAnimation } from '@ledget/shared-ui'
+import { BlackSlimButton, DropAnimation } from '@ledget/shared-ui'
 
 const defaultOptions = [
     { id: 1, value: { offset: 1, period: 'day' }, disabled: false },
@@ -78,7 +78,7 @@ const AddReminder = ({ value, onChange }) => {
                 {({ open }) => (
                     <>
                         <ComboSelect.Button
-                            as={SlimInputButton}
+                            as={BlackSlimButton}
                             id="add-reminder-btn"
                             style={{ fontWeight: '400' }}
                         >
@@ -86,12 +86,12 @@ const AddReminder = ({ value, onChange }) => {
                             {selectedReminders.length > 0
                                 ?
                                 <CheckMark
-                                    stroke={'var(--m-text-gray)'}
+                                    stroke={'currentColor'}
                                     width={'.7em'}
                                     height={'.7em'}
                                 /> :
                                 <Plus
-                                    stroke={'var(--m-text-gray)'}
+                                    stroke={'currentColor'}
                                     strokeWidth={'20'}
                                     width={'.8em'}
                                     height={'.8em'}

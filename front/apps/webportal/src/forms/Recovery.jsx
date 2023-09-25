@@ -160,9 +160,9 @@ const RecoverAccount = () => {
     )
 
     const {
-        isFetchingFlow,
+        isGettingFlow,
         isCompleteSuccess,
-        isSubmittingFlow,
+        isCompletingFlow,
         isCompleteError,
         completeError,
         errMsg
@@ -192,7 +192,7 @@ const RecoverAccount = () => {
 
     return (
         <div className="window" id="recovery-window">
-            <WindowLoadingBar visible={isFetchingFlow || isSubmittingFlow} />
+            <WindowLoadingBar visible={isGettingFlow || isCompletingFlow} />
             <AnimatePresence mode="wait">
                 {searchParams.get('step') === 'verify'
                     ?

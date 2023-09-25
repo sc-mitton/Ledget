@@ -140,8 +140,8 @@ const Login = () => {
     )
 
     const {
-        isFetchingFlow,
-        isSubmittingFlow,
+        isGettingFlow,
+        isCompletingFlow,
         isCompleteSuccess,
         isCompleteError,
         errId,
@@ -149,8 +149,8 @@ const Login = () => {
     } = flowStatus
 
     useEffect(() => {
-        isSubmittingFlow && setShowLoadingBar(true)
-    }, [isSubmittingFlow])
+        isCompletingFlow && setShowLoadingBar(true)
+    }, [isCompletingFlow])
     useEffect(() => {
         isCompleteError && setShowLoadingBar(false)
     }, [isCompleteError])
@@ -241,7 +241,7 @@ const Login = () => {
                 ?
                 <SlideMotionDiv className='window' key="initial" first={Boolean(flow)}>
                     <EmailForm setEmail={setEmail} flow={flow} socialSubmit={submit} />
-                    <WindowLoadingBar visible={isFetchingFlow} />
+                    <WindowLoadingBar visible={isGettingFlow} />
                     <div id="account-recover--container">
                         <LinkArrowButton
                             onClick={() => navigate('/recovery')}
@@ -278,7 +278,7 @@ const Login = () => {
                             <AuthForm><EmailMfa /></AuthForm>
                         </SlideMotionDiv>
                     }
-                    <WindowLoadingBar visible={showLoadingBar || isFetchingFlow} />
+                    <WindowLoadingBar visible={showLoadingBar || isGettingFlow} />
                 </JiggleDiv>
             }
         </AnimatePresence>

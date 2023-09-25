@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
 import "./style/Otc.css"
 
-function Otc({ codeLength, required, reset, setReset }) {
+function Otc({ codeLength, required }) {
     const [inputStates, setInputStates] = useState([])
     const inputRefs = useRef([])
     const [code, setCode] = useState('')
@@ -9,8 +9,6 @@ function Otc({ codeLength, required, reset, setReset }) {
     // Default props
     codeLength = codeLength || 6
     required = required || true
-    reset = reset || false
-    setReset = setReset || (() => { })
 
     // Create list of refs and states
     useEffect(() => {
@@ -21,21 +19,6 @@ function Otc({ codeLength, required, reset, setReset }) {
         setInputStates(states)
         inputRefs.current = Array(codeLength).fill('')
     }, [])
-
-    // Reset the code when reset is set to true
-    useEffect(() => {
-        if (reset) {
-            const states = []
-            for (let i = 0; i < codeLength; i++) {
-                states.push({ digit: "" })
-            }
-            setInputStates(states)
-            inputRefs.current[0]?.focus()
-        }
-        return () => {
-            setReset(false)
-        }
-    }, [reset])
 
     // Focus the first input on mount
     // Timeout is needed to allow rendering of componenet

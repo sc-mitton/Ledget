@@ -105,12 +105,11 @@ const Authenticator = (props) => {
         'settings'
     )
     const {
-        isFetchingFlow,
+        isGettingFlow,
         errorFetchingFlow,
         isCompleteError,
         isCompleteSuccess,
-        isSubmittingFlow,
-        errMsg,
+        isCompletingFlow,
     } = flowStatus
 
     const handleBack = () => {
@@ -133,13 +132,6 @@ const Authenticator = (props) => {
         setSearchParams(searchParams)
     }, [])
 
-    // Close on errors
-    useEffect(() => {
-        if (errorGeneratingCodes || errMsg) {
-            props.setVisible(false)
-        }
-    }, [errMsg, errorGeneratingCodes])
-
     // Handle successful flow completion
     // Update the user's mfa settings and the device token cookie
     useEffect(() => {
@@ -150,6 +142,7 @@ const Authenticator = (props) => {
             timeout = setTimeout(() => {
                 searchParams.delete('step')
                 searchParams.set('lookup_secret_regenerate', true)
+                setSearchParams(searchParams)
             }, 1200)
         }
         return () => clearTimeout(timeout)
@@ -168,7 +161,7 @@ const Authenticator = (props) => {
                                 flow={flow}
                                 codeMode={codeMode}
                                 setCodeMode={setCodeMode}
-                                isLoading={isFetchingFlow}
+                                isLoading={isGettingFlow}
                                 isError={errorFetchingFlow}
                             />
                         </SlideMotionDiv>
@@ -193,9 +186,11 @@ const Authenticator = (props) => {
                         </SlideMotionDiv>
                     }
                     {/* Page 3: Recovery Codes */}
-                    {searchParams.get('lookup_secret_regenerate') &&
+                    {!searchParams.get('step') &&
+                        searchParams.get('lookup_secret_regenerate') &&
+
                         <SlideMotionDiv key="lookup-secrets" last>
-                            <RecoveryCodes />
+                            <RecoveryCodes setVisible={props.setVisible} />
                         </SlideMotionDiv>
                     }
                 </AnimatePresence>
@@ -212,7 +207,7 @@ const Authenticator = (props) => {
                         <GreenSubmitButton
                             name="method"
                             value="totp"
-                            submitting={isSubmittingFlow}
+                            submitting={isCompletingFlow}
                         >
                             Confirm
                         </GreenSubmitButton>

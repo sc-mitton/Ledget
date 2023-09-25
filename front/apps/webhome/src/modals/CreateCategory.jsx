@@ -18,8 +18,8 @@ export const schema = object().shape({
 })
 
 const radioOptions = [
-    { name: 'period', value: 'month', label: 'Month', default: true },
-    { name: 'period', value: 'year', label: 'Year' },
+    { name: 'period', value: 'month', label: 'Monthly', default: true },
+    { name: 'period', value: 'year', label: 'Yearly' },
 ]
 
 const Form = (props) => {

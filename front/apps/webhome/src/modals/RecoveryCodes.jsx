@@ -16,23 +16,27 @@ export const Content = (props) => {
     const location = useLocation()
 
     const [
-        completeSettingsFlow,
+        confirmSecrets,
         {
-            data: recoveryCodesFlow,
-            isSuccess: haveFetchedCodes,
-            isError: haveFetchedCodesError
+            isSuccess: secretsAreConfirmed,
+            isError: secretsSavedError,
         }
-    ] = useCompleteSettingsFlowMutation({
-        fixedCacheKey: "recovery-codes"
-    })
+    ] = useCompleteSettingsFlowMutation()
+    const [
+        getSecrets, // either generate or retrieve
+        {
+            data: secretsFlow,
+            isSuccess: secretsAreFetched,
+            isError: secretsFetchError,
+        }
+    ] = useCompleteSettingsFlowMutation()
 
     const { flow, fetchFlow, flowStatus } = useFlow(
         useLazyGetSettingsFlowQuery,
         useCompleteSettingsFlowMutation,
         'settings'
     )
-    const { isGetFlowError } = flowStatus
-
+    const { isGetFlowError, isGetFlowSuccess, isGettingFlow } = flowStatus
 
     const handleDownload = () => {
         const codes = recoveryCodes.join('\n')
@@ -50,18 +54,16 @@ export const Content = (props) => {
     }
 
     const handleSaveCodes = () => {
-        const csrf_token = recoveryCodesFlow.ui.nodes.find(node => {
-            if (node.attributes.id === 'csrf_token') {
-                return true
-            }
-        }).attributes.value
+        const csrf_token = recoveryCodesFlow.ui.nodes.find(node =>
+            node.attributes.name === 'csrf_token'
+        ).attributes.value
 
-        completeSettingsFlow({
+        confirmSecrets({
             params: { flow: searchParams.get('flow') },
             data: {
                 csrf_token: csrf_token,
-                method: 'lookup_secret_confirm',
-                lookup_secret_save: true,
+                method: 'lookup_secret',
+                lookup_secret_confirm: true,
             }
         })
     }
@@ -70,47 +72,54 @@ export const Content = (props) => {
     // if on the authenticator setup modal)
     useEffect(() => { fetchFlow() }, [])
 
-    // Get current recovery codes after flow is fetched,
-    // unless there is already a submitted flow cached
-    // (like when the user is on the authenticator setup modal)
+    // Get current recovery codes after flow is fetched
     useEffect(() => {
-        if (searchParams.get('flow') && !recoveryCodesFlow) {
-            completeSettingsFlow({
+        if (isGetFlowSuccess) {
+            getSecrets({
                 params: { flow: searchParams.get('flow') },
                 data: {
                     csrf_token: flow.csrf_token,
                     method: 'lookup_secret',
                     ...(searchParams.get('lookup_secret_regenerate')
-                        ? { lookup_secret_generate: true } : {}),
+                        ? { lookup_secret_regenerate: true } : {}),
                     ...(searchParams.get('lookup_secret_reveal')
                         ? { lookup_secret_reveal: true } : {}),
                 }
             })
         }
-    }, [searchParams.get('flow')])
+    }, [isGetFlowSuccess])
 
     // Extract recovery codes from flow
     // and save the codes if we're in the autenticator setup
     useEffect(() => {
-        if (haveFetchedCodes) {
-            recoveryCodesFlow.ui.nodes.find(node => {
+        if (secretsAreFetched) {
+            secretsFlow.ui.nodes.find(node => {
                 if (node.attributes.id === 'lookup_secret_codes') {
                     setRecoveryCodes(node.attributes.text.text.split(','))
                     return true
                 }
             })
         }
-        if (haveFetchedCodes && location.pathname.includes('authenticator-setup')) {
+        if (secretsAreFetched && location.pathname.includes('authenticator-setup')) {
             handleSaveCodes()
         }
-    }, [haveFetchedCodes])
+    }, [secretsAreFetched])
 
     // Close on any errors fetching flow or codes
     useEffect(() => {
-        if (isGetFlowError || haveFetchedCodesError) {
+        if (secretsSavedError || secretsFetchError) {
+            console.log('secretsSavedError', secretsSavedError)
+            console.log('secretsFetchError', secretsFetchError)
+            // props.setVisible(false)
+        }
+    }, [secretsSavedError, secretsFetchError])
+
+    // Close once the codes have been saved (only if not in authenticator setup)
+    useEffect(() => {
+        if (secretsAreConfirmed && !location.pathname.includes('authenticator-setup')) {
             props.setVisible(false)
         }
-    }, [isGetFlowError, haveFetchedCodesError])
+    }, [secretsAreConfirmed])
 
     return (
         <div id="recovery-codes--container">
@@ -118,9 +127,13 @@ export const Content = (props) => {
             <span>
                 Use these codes in case you lose access to your authenticator app.
             </span>
-            <div>
+            <div
+                style={{
+                    ...(location.pathname.includes('authenticator-setup') ? { marginBottom: '0' } : {})
+                }}
+            >
                 <GreenSubmitButton
-                    loading={flowStatus.isFetchingFlow || flowStatus.isSubmittingFlow}
+                    loading={isGettingFlow || isCompletingFlow}
                     className="recovery-codes-button"
                     onClick={handleDownload}
                 >
@@ -128,7 +141,7 @@ export const Content = (props) => {
                     <DownloadIcon stroke={'var(--green-dark3)'} />
                 </GreenSubmitButton>
                 <GreenSubmitButton
-                    loading={flowStatus.isFetchingFlow || flowStatus.isSubmittingFlow}
+                    loading={isGettingFlow || isCompletingFlow}
                     className="recovery-codes-button"
                     onClick={handleCopy}
                 >
@@ -137,6 +150,7 @@ export const Content = (props) => {
                 </GreenSubmitButton>
             </div>
             {searchParams.get('lookup_secret_regenerate') &&
+                !location.pathname.includes('authenticator-setup') &&
                 <div>
                     <SecondaryButton
                         className="recovery-codes-button"

@@ -143,10 +143,10 @@ class SubscriptionView(GenericAPIView):
         except Exception as e:
             return Response({'error': str(e)}, HTTP_400_BAD_REQUEST)
 
-        setup_intent = stripe_subscription.pending_setup_intent
-        if setup_intent:
+        pending_setup_intent = stripe_subscription.pending_setup_intent
+        if pending_setup_intent:
             return Response(
-                {'client_secret': setup_intent.client_secret},
+                {'client_secret': pending_setup_intent.client_secret},
                 HTTP_200_OK
             )
         else:

@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react'
+import React, { forwardRef, useRef, useState } from 'react'
 
 import { VisibilityIcon } from "@ledget/shared-assets"
 import { CardElement } from '@stripe/react-stripe-js'
@@ -234,7 +234,7 @@ export const baseBillingSchema = object({
     city: string()
         .required()
         .matches(/^[a-zA-Z ]+$/, 'Invalid city'),
-    state: object().required('required'),
+    state: string().required(),
     zip: string()
         .required()
         .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),

@@ -5,8 +5,8 @@ import { InputButton, DropAnimation } from '@ledget/shared-ui'
 import { ArrowIcon } from '@ledget/shared-assets'
 
 const options = [
-    { id: 1, value: 'month', label: 'Month', default: true },
-    { id: 2, value: 'year', label: 'Year' }
+    { id: 1, value: 'month', label: 'Monthly', default: true },
+    { id: 2, value: 'year', label: 'Yearly' }
 ]
 
 const PeriodSelect = (props) => {
@@ -40,7 +40,6 @@ const PeriodSelect = (props) => {
 
     return (
         <>
-            <label htmlFor="period">Type</label>
             <ComboSelect
                 name="period"
                 value={localValue}

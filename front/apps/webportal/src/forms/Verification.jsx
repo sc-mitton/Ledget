@@ -12,10 +12,9 @@ import { VerifyEmail } from '@ledget/shared-assets'
 import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
 
-const VerificationForm = ({ flow, error, submit }) => {
+const VerificationForm = ({ flow, key, submit }) => {
 
     const [otcDisabled, setOtcDisabled] = useState(false)
-    const [reset, setReset] = useState(false)
 
     const [user, setUser] = useState({})
     useEffect(() => {
@@ -28,24 +27,26 @@ const VerificationForm = ({ flow, error, submit }) => {
         flow ? setOtcDisabled(false) : setOtcDisabled(true)
     }, [flow])
 
-    useEffect(() => {
-        error && setReset(true)
-    }, [error])
-
     return (
         <>
             <form
+                key={key}
                 action={flow?.ui.action}
                 method={flow?.ui.method}
                 onSubmit={submit}
             >
-                <Otc codeLength={6} reset={reset} setReset={setReset} />
+                <Otc codeLength={6} />
 
                 {flow && <CsrfToken csrf={flow.csrf_token} />}
 
                 <input type="hidden" name="email" value={user?.traits?.email} />
 
-                <GrnWideButton type="submit" name="method" value="code" disabled={otcDisabled}>
+                <GrnWideButton
+                    type="submit"
+                    name="method"
+                    value="code"
+                    disabled={otcDisabled}
+                >
                     Submit
                 </GrnWideButton>
             </form>
@@ -74,8 +75,9 @@ const Verification = () => {
     )
     const {
         errMsg,
-        isFetchingFlow,
-        isSubmittingFlow,
+        isCompleteError,
+        isGettingFlow,
+        isCompletingFlow,
         isCompleteSuccess
     } = flowStatus
 
@@ -129,7 +131,7 @@ const Verification = () => {
 
     return (
         <JiggleDiv className="window" id="verification-window" jiggle={jiggle}>
-            <WindowLoadingBar visible={isFetchingFlow || isSubmittingFlow} />
+            <WindowLoadingBar visible={isGettingFlow || isCompletingFlow} />
             <div className="window-header">
                 <h2>Verify Email Address</h2>
                 <h4>Step 3 of 4</h4>
@@ -155,7 +157,11 @@ const Verification = () => {
                             <span>Enter the code we sent to your email address </span>
                             <span>to verify your account:</span>
                         </div>
-                        <VerificationForm flow={flow} error={errMsg} submit={submit} />
+                        <VerificationForm
+                            flow={flow}
+                            key={isCompleteError ? Date.now() : 'verification-form'}
+                            submit={submit}
+                        />
                     </>
                 }
             </div>

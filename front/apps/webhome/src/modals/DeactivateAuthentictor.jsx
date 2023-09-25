@@ -18,9 +18,9 @@ const DeactivateAuthenticator = (props) => {
         'settings'
     )
     const {
-        isFetchingFlow,
+        isGettingFlow,
         isCompleteSuccess,
-        isSubmittingFlow,
+        isCompletingFlow,
         errorFetchingFlow,
         isCompleteError,
         errMsg,
@@ -42,7 +42,7 @@ const DeactivateAuthenticator = (props) => {
 
     return (
         <form onSubmit={submit} >
-            <fieldset disabled={isFetchingFlow} id="deactivate-authenticator--content">
+            <fieldset disabled={isGettingFlow} id="deactivate-authenticator--content">
                 <div>
                     <h3>Remove Your Authenticator?</h3>
                     You will no longer be able to use your authenticator app to log in.
@@ -57,7 +57,7 @@ const DeactivateAuthenticator = (props) => {
                             name="method"
                             value="totp"
                             success={isCompleteSuccess}
-                            submitting={isSubmittingFlow}
+                            submitting={isCompletingFlow}
                         >
                             Yes
                         </GreenSubmitButton>

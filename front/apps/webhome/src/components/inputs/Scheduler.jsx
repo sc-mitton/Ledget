@@ -769,7 +769,6 @@ export const BillScheduler = (props) => {
 
     return (
         <>
-            <label htmlFor="name">Schedule</label>
             <Scheduler
                 day={day}
                 setDay={setDay}

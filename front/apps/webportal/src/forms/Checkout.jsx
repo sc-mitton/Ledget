@@ -4,7 +4,7 @@ import { useState, useRef } from 'react'
 import { useForm, useController } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
-import { string } from 'yup'
+import { string, number } from 'yup'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
@@ -24,6 +24,7 @@ import {
     baseBillingSchema
 } from '@ledget/shared-ui'
 
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
 const schema = baseBillingSchema.shape({
     name: string()
@@ -34,10 +35,10 @@ const schema = baseBillingSchema.shape({
                 return words.length === 2
             }
             return true
-        }),
+        })
 })
 
-const Prices = ({ prices, register }) => (
+const PriceRadios = ({ prices, register }) => (
     <>
         {prices &&
             <div id="prices-container">
@@ -80,6 +81,7 @@ const Prices = ({ prices, register }) => (
         }
     </>
 )
+
 
 const OrderSummary = ({ unit_amount, trial_period_days }) => {
 
@@ -139,10 +141,10 @@ const Form = (props) => {
     const { prices, error } = usePrices()
     const stripe = useStripe()
     const elements = useElements()
-    const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem('clientSecret')))
+    const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem('clientSecret') || null))
+    const [trial_period_days, setTrial_period_days] = useState(undefined)
+    const [unit_amount, setUnit_amount] = useState(undefined)
 
-    const [trial_period_days, setTrialPeriodDays] = useState(0)
-    const [unit_amount, setUnitAmount] = useState(0)
     const [processing, setProcessing] = useState(false)
     const [cardEntered, setCardEntered] = useState(false)
     const [cardNotEnteredError, setCardNotEnteredError] = useState(false)
@@ -157,11 +159,11 @@ const Form = (props) => {
 
     useEffect(() => {
         if (prices) {
-            const price = watch('price', prices[0].id)
-            price && setTrialPeriodDays(prices.find(p => p.id === price).metadata.trial_period_days)
-            price && setUnitAmount(prices.find(p => p.id === price).unit_amount)
+            const price = prices.find(p => p.id === watch('price'))
+            setTrial_period_days(price.metadata.trial_period_days)
+            setUnit_amount(price.unit_amount)
         }
-    }, [watch('price')])
+    }, [watch('price'), prices])
 
     // Create customer if not already created
     // if there is already a customer created,
@@ -176,11 +178,9 @@ const Form = (props) => {
     }
 
     const createSubscription = async (data) => {
-        console.log(data)
-        console.log('creating subscription')
         await ledgetapi.post('subscription', {
             price_id: data.price,
-            trial_period_days: data.trial_period_days
+            trial_period_days: trial_period_days
         })
             .then((response) => {
                 if (response.status === 200) {
@@ -195,7 +195,6 @@ const Form = (props) => {
                 }
             })
     }
-
 
     const confirmSetup = async (data) => {
         const result = await stripe.confirmCardSetup(
@@ -216,7 +215,12 @@ const Form = (props) => {
                 }
             }
         )
-        result.error && setCardErrMsg(result.error?.message)
+
+        if (result.error) {
+            setCardErrMsg(result.error?.message)
+        } else {
+            window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+        }
     }
 
     const onSubmit = async (data) => {
@@ -246,7 +250,7 @@ const Form = (props) => {
         <>
             <WindowLoadingBar visible={processing} />
             <form onSubmit={submitBillingForm} {...props}>
-                {prices && <Prices register={register} prices={prices} />}
+                <PriceRadios register={register} prices={prices} />
                 <div>
                     <div id="text-inputs--container">
                         <h4>Billing Info</h4>
@@ -258,7 +262,6 @@ const Form = (props) => {
                             onComplete={() => setCardEntered(true)}
                             clearError={() => setCardNotEnteredError(false)}
                         />
-
                         {cardErrMsg && <FormError msg={cardErrMsg} />}
                         {errMsg &&
                             <div className="general-error" >
@@ -287,7 +290,6 @@ export const cardOptions = {
 }
 
 const CheckoutWindow = () => {
-    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
     return (
         <Elements stripe={stripePromise} options={cardOptions}>
@@ -305,7 +307,6 @@ const CheckoutWindow = () => {
         </Elements>
     )
 }
-
 
 export default CheckoutWindow
 

@@ -93,7 +93,7 @@ ory update identity-config "$(ory list projects | grep "ledget" | cut -f1)" -f p
 For working with the stripe webhook, you'll also need to use the stripe cli:
 
 ```
-stripe listen --forward-to https://localhost/hooks/stripe --skip-verify -H X-Forwarded-For:13.235.14.237
+stripe listen --forward-to https://localhost/hooks/stripe --skip-verify --headers "X-Forwarded-For:3.18.12.63"
 ```
 
 ## Subscription Status Docs

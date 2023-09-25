@@ -24,7 +24,7 @@ const row2Style = { margin: '16px 0 28px 0' }
 
 const ErrorFetchingFlow = () => (<FormError msg={"Something went wrong, please try again later."} />)
 
-const PassWord = ({ isFetchingFlow, isCompleteError }) => {
+const PassWord = ({ isGettingFlow, isCompleteError }) => {
     const pwdRef = useRef(null)
 
     // Focus password input on error
@@ -39,14 +39,14 @@ const PassWord = ({ isFetchingFlow, isCompleteError }) => {
             </div>
             <div style={row2Style}>
                 <JiggleDiv jiggle={isCompleteError}>
-                    <PasswordInput ref={pwdRef} loading={isFetchingFlow} required />
+                    <PasswordInput ref={pwdRef} loading={isGettingFlow} required />
                 </JiggleDiv>
             </div>
         </>
     )
 }
 
-const Totp = ({ isFetchingFlow, isCompleteError, totpSuccess, errMsg }) => {
+const Totp = ({ isGettingFlow, isCompleteError, totpSuccess, errMsg }) => {
     const ref = useRef(null)
     const [finished, setFinished] = useState(false)
     const [searchParams] = useSearchParams()
@@ -76,7 +76,7 @@ const Totp = ({ isFetchingFlow, isCompleteError, totpSuccess, errMsg }) => {
                 <JiggleDiv jiggle={isCompleteError}>
                     <PlainTextInput
                         ref={ref}
-                        loading={isFetchingFlow}
+                        loading={isGettingFlow}
                         name="totp_code"
                         placeholder='Code'
                         required
@@ -102,11 +102,11 @@ const ReAuthModal = withSmallModal((props) => {
     const sessionIsFresh = useSelector(selectSessionIsFresh)
 
     const {
-        isFetchingFlow,
+        isGettingFlow,
         errorFetchingFlow,
         isCompleteError,
         isCompleteSuccess,
-        isSubmittingFlow,
+        isCompletingFlow,
         errMsg
     } = flowStatus
 
@@ -131,10 +131,12 @@ const ReAuthModal = withSmallModal((props) => {
                 timeout = setTimeout(() => {
                     dispatch({ type: 'user/resetAuthedAt' })
                     setSearchParams({})
+                    props.setVisible(false)
                 }, 1000)
             } else if (finishedCase1) {
                 dispatch({ type: 'user/resetAuthedAt' })
                 setSearchParams({})
+                props.setVisible(false)
             } else if (aal === 'aal1') {
                 fetchFlow({ aal: 'aal2', refresh: true })
             }
@@ -157,9 +159,13 @@ const ReAuthModal = withSmallModal((props) => {
             <AnimatePresence mode="wait">
                 {searchParams.get('aal') === 'aal2'
                     ?
-                    <SlideMotionDiv key='aal2' last>
+                    <SlideMotionDiv
+                        key='aal2'
+                        first={false}
+                        last={!isCompleteSuccess}
+                    >
                         <Totp
-                            isFetchingFlow={isFetchingFlow}
+                            isGettingFlow={isGettingFlow}
                             isCompleteError={isCompleteError}
                             totpSuccess={isCompleteSuccess}
                             errMsg={errMsg}
@@ -168,7 +174,7 @@ const ReAuthModal = withSmallModal((props) => {
                     :
                     <SlideMotionDiv key='aal1' first={Boolean(flow)}>
                         <PassWord
-                            isFetchingFlow={isFetchingFlow}
+                            isGettingFlow={isGettingFlow}
                             isCompleteError={isCompleteError}
                         />
                     </SlideMotionDiv>
@@ -180,7 +186,7 @@ const ReAuthModal = withSmallModal((props) => {
                     Cancel
                 </SecondaryButton>
                 <GreenSubmitWithArrow
-                    submitting={isSubmittingFlow}
+                    submitting={isCompletingFlow}
                     name="method"
                     value={searchParams.get('aal') === 'aal2' ? 'totp' : 'password'}
                 >
@@ -210,20 +216,29 @@ export default function withReAuth(Component) {
         // if it's stale, the user will be shown
         // the reauth prompts
         useEffect(() => {
-            setContinueToComponent(sessionIsFresh)
+            let timeout = setTimeout(() => {
+                setContinueToComponent(sessionIsFresh)
+            }, 200)
+            return () => clearTimeout(timeout)
         }, [sessionIsFresh])
 
         return (
             <>
-                {continueToComponent
-                    ?
-                    <Component {...props} />
-                    :
-                    <ReAuthModal
-                        onClose={() => { props.onClose && props.onClose() }}
-                        blur={1}
-                    />
-                }
+                <Component
+                    {...props}
+                    hideModal={!continueToComponent}
+                />
+                <ReAuthModal
+                    onClose={() => {
+                        if (!sessionIsFresh && props.onClose) {
+                            props.onClose()
+                        }
+                    }}
+                    hideModal={sessionIsFresh}
+                    hideOverlay={sessionIsFresh}
+                    hasOverlay={false}
+                    blur={1}
+                />
             </>
         )
     }

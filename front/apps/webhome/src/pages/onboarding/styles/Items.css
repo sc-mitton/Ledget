@@ -4,7 +4,6 @@
 }
 
 #onboarding-app form>div>div {
-    margin-right: 12px;
     margin-top: 8px;
 }
 
@@ -44,6 +43,11 @@
     transform: scale(1);
     opacity: 1;
     visibility: visible;
+    padding: 12px;
+}
+
+#onboarding-app label:first-child {
+    margin-left: 2px;
 }
 
 #onboarding-app .checkbox-container label {
@@ -51,11 +55,19 @@
 }
 
 #onboarding-app #bill-scheduler--container>div:last-child {
-    margin: 6px 0;
+    margin: 8px 0;
+}
+
+#create-bill--form>div:first-child {
+    margin: 32px 0;
 }
 
 /* ----------------------------- Suggested Items ---------------------------- */
 
+#recommendations-button--container {
+    display: flex;
+    justify-content: center;
+}
 
 .recommendations-container {
     display: block;
@@ -80,7 +92,19 @@
 
 /* ------------------------- Individual Rows Styling ------------------------ */
 
+.split-row-inputs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.split-row-inputs>div {
+    flex: 1;
+}
+
 .budget-item {
+    width: 100%;
     position: absolute;
     left: 0;
     right: 8px;
@@ -122,60 +146,5 @@
 /* -------------------------- Bill Window Specific -------------------------- */
 
 #onboarding-app #add-bills--window form>div {
-    grid-template-columns: 1fr 1fr;
-}
-
-/* ----------------------------- Responsiveness ----------------------------- */
-
-@media (max-width: 768px) {
-
-    #onboarding-app #budget-items--container {
-        width: auto;
-    }
-
-    #onboarding-app #budget-items--container>div {
-        width: 100%;
-        margin: 0 auto;
-    }
-
-    #onboarding-app form>div>div:nth-child(2) {
-        margin-right: 0;
-    }
-
-    #onboarding-app form>div {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    #onboarding-app #bill-scheduler--container>div:last-child {
-        margin: 8px 0;
-    }
-}
-
-@media (max-width: 480px) {
-    #onboarding-app #budget-items--container>div {
-        width: 100%;
-    }
-
-    #onboarding-app form>div,
-    #onboarding-app #add-bills--window form>div {
-        grid-template-columns: 1fr;
-    }
-
-    #onboarding-app form>div>div {
-        margin-right: 0;
-    }
-
-    #onboarding-app form>div>div:nth-child(3) {
-        order: 2;
-        margin-bottom: 16px;
-    }
-
-    #onboarding-app form>div>div:nth-child(4) {
-        order: 1;
-    }
-
-    #onboarding-app #budget-items--container.expand {
-        padding: 12px;
-    }
-
+    grid-template-columns: 1fr;
 }

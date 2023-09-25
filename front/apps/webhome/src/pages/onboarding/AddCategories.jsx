@@ -105,10 +105,10 @@ const RecommendationsView = () => {
 
         setBufferItem({
             period: type,
-            name: type === 'month'
+            name: type === 'monthly'
                 ? monthRecommendations[target.getAttribute('item-number')].name
                 : yearRecommendations[target.getAttribute('item-number')].name,
-            emoji: type === 'month'
+            emoji: type === 'monthly'
                 ? monthRecommendations[target.getAttribute('item-number')].emoji
                 : yearRecommendations[target.getAttribute('item-number')].emoji
         })
@@ -129,7 +129,7 @@ const RecommendationsView = () => {
                                 ${monthItems.some((item) => item.name === suggestion.name.toLowerCase())
                                     ? 'selected' : 'unselected'}`}
                             style={{ '--animation-order': monthAnimationOrder[index] }}
-                            onClick={(e) => handleClick(e, 'month')}
+                            onClick={(e) => handleClick(e, 'monthly')}
                             role='button'
                             item-number={index}
                         >
@@ -168,7 +168,7 @@ const ListView = () => {
     return (
         <>
             <Tab.Panel>
-                <CategoriesColumn period={'month'} />
+                <CategoriesColumn period={'monthly'} />
             </Tab.Panel>
             <Tab.Panel>
                 {
@@ -245,7 +245,7 @@ const Form = ({ children }) => {
             }
         }
         body.alerts = alerts
-        if (body.period === 'month') {
+        if (body.period === 'monthly') {
             setMonthItems((prev) => [...prev, body])
         } else {
             setYearItems((prev) => [...prev, body])
@@ -267,6 +267,7 @@ const Form = ({ children }) => {
 
     return (
         <form
+            id="add-categories-form"
             onSubmit={handleSubmit((data, e) => submit(data, e))}
             key={`create-category-form-${formKey}`}
         >

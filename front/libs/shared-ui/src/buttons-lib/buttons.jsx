@@ -18,6 +18,7 @@ export const GrnWideButton = ButtonWithClassName('btn-grn btn-wide')
 export const GrayWideButton = ButtonWithClassName('btn-gr btn-wide')
 
 export const BlackSlimButton = ButtonWithClassName('btn-chcl btn-slim')
+export const BlackSlimButton2 = ButtonWithClassName('btn-chcl btn-2slim')
 export const GrnSlimButton = ButtonWithClassName('btn-grn btn-slim')
 export const GrnSlimButton2 = ButtonWithClassName('btn-grn btn-2slim')
 export const SlimButton = ButtonWithClassName('btn-clr btn-2slim')

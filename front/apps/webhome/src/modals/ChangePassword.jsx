@@ -29,11 +29,11 @@ const ChangePassword = (props) => {
         'settings'
     )
     const {
-        isFetchingFlow,
+        isGettingFlow,
         errorFetchingFlow,
         isCompleteError,
         isCompleteSuccess,
-        isSubmittingFlow,
+        isCompletingFlow,
     } = flowStatus
 
     useEffect(() => { fetchFlow() }, [])
@@ -77,7 +77,7 @@ const ChangePassword = (props) => {
                             error={errors.password}
                             visible={pwdVisible}
                             setVisible={setPwdVisible}
-                            loading={isFetchingFlow}
+                            loading={isGettingFlow}
                         />
                         <FormError msg={errors.password?.message} />
                     </div>
@@ -89,7 +89,7 @@ const ChangePassword = (props) => {
                             {...register("confirmPassword")}
                             error={errors.confirmPassword}
                             visible={pwdVisible}
-                            loading={isFetchingFlow}
+                            loading={isGettingFlow}
                         />
                         <FormError msg={errors.confirmPassword?.message} />
                     </div>
@@ -99,7 +99,7 @@ const ChangePassword = (props) => {
                     name="method"
                     value="password"
                     onCancel={() => { props.setVisible(false) }}
-                    submitting={isSubmittingFlow}
+                    submitting={isCompletingFlow}
                     success={isCompleteSuccess}
                 />
             </form>

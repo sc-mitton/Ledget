@@ -19,7 +19,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
 }
 
 /* -------------------------------- Positions ------------------------------- */
@@ -244,6 +243,27 @@
     }
 }
 
+.btn-chcl.btn-wide.clicked::before {
+    animation: big-burst 1s ease-out forwards;
+}
+
+@keyframes big-burst {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.07;
+    }
+
+    30% {
+        transform: translate(-50%, -50%) scale(50);
+        opacity: 0.07;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(5);
+        opacity: 0;
+    }
+}
+
 /* -------------------------------- Specialty -------------------------------- */
 
 /* Input Buttons */
@@ -289,9 +309,12 @@
 }
 
 .btn-scale2:focus-visible {
-    box-shadow: none;
     transform: scale(1.2);
     transition: transform .3s ease;
+}
+
+.btn-scale2.btn-icon2:focus-visible {
+    box-shadow: none;
 }
 
 .btn-scale2:active {

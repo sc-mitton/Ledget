@@ -13,6 +13,8 @@
 
 #period-select-btn {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 #add-alert-btn svg,

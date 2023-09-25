@@ -74,17 +74,6 @@ input.emoji {
     margin-right: 2px;
 }
 
-#emoji-picker-ledget--button {
-    cursor: pointer;
-    font-size: 16px;
-    color: rgb(0, 0, 0, 1);
-    border-radius: 6px;
-    padding-left: 6px;
-    padding-right: 6px;
-    height: 140%;
-    transform: scale(1.2);
-}
-
 /* ---------------------------- Create Bill Form ---------------------------- */
 
 .limit-button {

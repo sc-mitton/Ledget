@@ -181,7 +181,6 @@ const Form = ({ children }) => {
 
     const [period, setPeriod] = useState(null)
     const [scheduleMissing, setScheduleMissing] = useState(false)
-    const [readyToSubmit, setReadyToSubmit] = useState(false)
     const [hasSchedule, setHasSchedule] = useState(false)
 
     const { register, watch, handleSubmit, reset, formState: { errors, isValid }, control } = useForm({
@@ -197,7 +196,7 @@ const Form = ({ children }) => {
         }
 
         handleSubmit((data) => {
-            if (body.errors) { return }
+            if (!hasSchedule || body.errors) { return }
 
             const item = { ...body, ...data }
             if (body.period === 'month') {
@@ -210,25 +209,27 @@ const Form = ({ children }) => {
         reset()
     }
 
-    useEffect(() => {
-        if (hasSchedule && isValid) {
-            setReadyToSubmit(true)
-        } else {
-            setReadyToSubmit(false)
-        }
-    }, [hasSchedule, isValid])
-
     return (
         <form
+            id="create-bill--form"
             onSubmit={submitForm}
             key={`create-bill-form-${monthItems.length}-${yearItems.length}}`}
         >
             <div>
-                <div>
-                    <PeriodSelect
-                        value={period}
-                        onChange={setPeriod}
-                    />
+                <div className="split-row-inputs">
+                    <div>
+                        <PeriodSelect
+                            value={period}
+                            onChange={setPeriod}
+                        />
+                    </div>
+                    <div >
+                        <BillScheduler
+                            billPeriod={`${period}ly`}
+                            error={scheduleMissing}
+                            setHasSchedule={setHasSchedule}
+                        />
+                    </div>
                 </div>
                 <div>
                     <EmojiComboText
@@ -238,15 +239,7 @@ const Form = ({ children }) => {
                         error={[errors.name]}
                     />
                 </div>
-                <div id="bill-scheduler--container">
-                    <BillScheduler
-                        billPeriod={`${period}ly`}
-                        error={scheduleMissing}
-                        setHasSchedule={setHasSchedule}
-                    />
-                    <AddReminder />
-                </div>
-                <div>
+                <div >
                     <DollarRangeInput
                         rangeMode={watch('range', '')}
                         control={control}
@@ -261,7 +254,7 @@ const Form = ({ children }) => {
                     />
                 </div>
             </div>
-            {children(readyToSubmit)}
+            <BottomButtons />
         </form>
     )
 }
@@ -270,10 +263,9 @@ const Window = () => {
     const { itemsEmpty, recommendationsMode } = useContext(ItemsContext)
 
     return (
-        <div className="window2" id="add-bills--window">
+        <div className="window3" id="add-bills--window">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2>Bills</h2>
-                {!recommendationsMode && < RecommendationsButton />}
             </div>
             {(itemsEmpty && !recommendationsMode) &&
                 <div
@@ -283,16 +275,15 @@ const Window = () => {
                         maxWidth: '350px'
                     }}
                 >
-                    Add your monthly and yearly bills or click on the upper right icon for recommendations.
+                    Add your monthly and yearly bills
                 </div>
             }
             {(itemsEmpty && !recommendationsMode) && <hr className="spaced-header" />}
+            <div id="recommendations-button--container">
+                {!recommendationsMode && < RecommendationsButton />}
+            </div>
             <BillsList />
-            <Form >
-                {(readyToSubmit) => (
-                    <BottomButtons expanded={readyToSubmit || !itemsEmpty} />
-                )}
-            </Form>
+            <Form />
         </div>
     )
 }

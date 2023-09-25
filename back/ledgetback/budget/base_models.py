@@ -12,8 +12,8 @@ class BudgetItem(models.Model):
         abstract = True
 
     class CategoryType(models.TextChoices):
-        YEAR = 'year', _('Year')
-        MONTH = 'month', _('Month')
+        YEAR = 'yearly', _('Yearly')
+        MONTH = 'monthly', _('Monthly')
 
     period = models.CharField(
         max_length=255,

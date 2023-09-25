@@ -2,7 +2,8 @@ import React, { createContext, useContext, useState } from 'react'
 import Picker from '@emoji-mart/react'
 
 import './styles/EmojiPicker.css'
-import { IconButton2, DropAnimation } from '@ledget/shared-ui'
+import { FaceIcon } from '@ledget/shared-assets'
+import { IconScaleButton, DropAnimation } from '@ledget/shared-ui'
 
 const EmojiContext = createContext()
 
@@ -92,13 +93,12 @@ const EmojiPicker = () => {
     )
 }
 
-const EmojiButton = ({ emoji }) => {
+const EmojiButton = ({ emoji, ...rest }) => {
     const { picker, setPicker } = useContext(EmojiContext)
 
     return (
-        <IconButton2
+        <IconScaleButton
             type="button"
-            id="emoji-picker-ledget--button"
             onClick={(e) => {
                 e.stopPropagation()
                 setPicker(!picker)
@@ -114,13 +114,11 @@ const EmojiButton = ({ emoji }) => {
             aria-expanded={picker}
             aria-controls="emoji-picker-ledget--container"
             tabIndex={0}
-            style={{
-                color: !emoji && "rgb(0, 0, 0, .4)",
-                marginRight: '4px'
-            }}
+            style={{ color: !emoji && "rgb(0, 0, 0, .4)" }}
+            {...rest}
         >
             {emoji ? emoji.native : '☺'}
-        </IconButton2>
+        </IconScaleButton>
     )
 }
 
