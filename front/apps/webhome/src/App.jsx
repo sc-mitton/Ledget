@@ -101,7 +101,7 @@ const MainApp = () => {
 
     useLayoutEffect(() => {
         const handleResize = () => {
-            setIsNarrow(ref.current.offsetWidth < 950)
+            setIsNarrow(ref.current.offsetWidth < 1000)
         }
         handleResize()
         window.addEventListener('resize', handleResize)

@@ -47,13 +47,12 @@
 
 #recovery-codes-buttons--container:hover,
 #recovery-codes-buttons--container:focus-within {
-    background-color: var(--green-hlight);
+    background-color: var(--inner-window);
     transition: all 0.3s ease-in-out;
 }
 
 #recovery-codes-buttons--container:hover>span,
 #recovery-codes-buttons--container:focus-within>span {
-    color: var(--green-dark4);
     transition: all 0.3s ease-in-out;
     font-weight: 500;
 }
@@ -61,10 +60,6 @@
 #recovery-codes-buttons--container>div {
     display: flex;
     align-items: center;
-}
-
-#recovery-codes-buttons--container #recovery-codes-buttons button {
-    color: var(--green-dark4);
 }
 
 #recovery-codes-buttons--container #recovery-codes-buttons button,

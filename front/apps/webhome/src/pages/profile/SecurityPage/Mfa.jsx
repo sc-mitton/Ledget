@@ -20,7 +20,7 @@ const AuthenticatorApp = ({ user }) => {
 
     return (
         <div id="authenticator-settings--container">
-            {user.mfa_method === 'authenticator'
+            {user.mfa_device === 'authenticator'
                 ?
                 <>
                     <div id="authenticator-set-up">
@@ -112,7 +112,7 @@ const Mfa = () => {
                 <AuthenticatorApp user={user} />
             </div>
             <div>
-                {user.mfa_method && <RecoveryCodes />}
+                {user.mfa_device && <RecoveryCodes />}
             </div>
         </>
     )
