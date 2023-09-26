@@ -170,8 +170,8 @@ const Authenticator = (props) => {
                     {searchParams.get('step') === 'confirm' &&
                         <SlideMotionDiv
                             key="confirm-code"
-                            first={searchParams.get('lookup_secret_regenerate')}
-                            last={!searchParams.get('lookup_secret_regenerate')}
+                            first={!searchParams.get('step')}
+                            last={searchParams.get('step') === 'setup'}
                         >
                             <JiggleDiv jiggle={isCompleteError} className="content">
                                 <div>
@@ -188,7 +188,6 @@ const Authenticator = (props) => {
                     {/* Page 3: Recovery Codes */}
                     {!searchParams.get('step') &&
                         searchParams.get('lookup_secret_regenerate') &&
-
                         <SlideMotionDiv key="lookup-secrets" last>
                             <RecoveryCodes setVisible={props.setVisible} />
                         </SlideMotionDiv>

@@ -4,16 +4,13 @@ function useAccessEsc({ refs, visible, setVisible }) {
     useEffect(() => {
         const handleClick = (event) => {
             event.stopPropagation()
-            let flag = false
+            let shouldClose = false
             for (const ref of refs) {
                 if (ref.current && !ref.current.contains(event.target)) {
-                    continue
-                } else {
-                    flag = true
-                    break
+                    shouldClose = true
                 }
             }
-            if (!flag) {
+            if (shouldClose) {
                 setVisible(false)
             }
         }

@@ -132,7 +132,7 @@ export const Content = (props) => {
                     ...(location.pathname.includes('authenticator-setup') ? { marginBottom: '0' } : {})
                 }}
             >
-                <BlackSubmitButton
+                <GreenSubmitButton
                     type="button"
                     loading={isGettingFlow || isFetchingSecrets}
                     className="recovery-codes-button"
@@ -140,8 +140,8 @@ export const Content = (props) => {
                 >
                     Download
                     <DownloadIcon stroke={'currentColor'} />
-                </BlackSubmitButton>
-                <BlackSubmitButton
+                </GreenSubmitButton>
+                <GreenSubmitButton
                     type="button"
                     loading={isGettingFlow || isFetchingSecrets}
                     className="recovery-codes-button"
@@ -149,7 +149,7 @@ export const Content = (props) => {
                 >
                     Copy
                     <CopyIcon fill={'currentColor'} />
-                </BlackSubmitButton>
+                </GreenSubmitButton>
             </div>
             {searchParams.get('lookup_secret_regenerate') &&
                 !location.pathname.includes('authenticator-setup') &&
@@ -161,12 +161,12 @@ export const Content = (props) => {
                     >
                         Cancel
                     </SecondaryButton>
-                    <GreenSubmitButton
+                    < BlackSubmitButton
                         type="button"
                         onClick={handleSaveCodes}
                     >
                         Keep
-                    </GreenSubmitButton>
+                    </ BlackSubmitButton>
                 </div>
             }
         </div>
