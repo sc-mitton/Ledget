@@ -68,7 +68,7 @@ const AuthenticatorApp = ({ user }) => {
 
     return (
         <div className="mfa-settings--container">
-            {user.mfa_device === 'authenticator'
+            {user.mfa_method === 'totp'
                 ?
                 <>
                     <div id="authenticator-set-up">

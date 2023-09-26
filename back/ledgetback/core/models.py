@@ -53,12 +53,11 @@ class User(models.Model):
         ],
     )
     is_onboarded = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
     password_last_changed = models.DateTimeField(null=True, default=timezone.now)
 
-    mfa_device = models.CharField(choices=MfaDevice.choices,
-                                  null=True, default=None)
     mfa_method = models.CharField(choices=MfaMethod.choices,
-                                  null=True, default=None)
+                                  null=True, default=MfaMethod.HOTP, max_length=4)
     mfa_enabled_on = models.DateTimeField(null=True, default=None)
 
     objects = UserManager()
@@ -75,7 +74,7 @@ class User(models.Model):
         self._device = None
 
     def __setattr__(self, name, value):
-        if name == 'mfa_device':
+        if name == 'mfa_method':
             self.mfa_enabled_on = timezone.now() if value else None
 
         super().__setattr__(name, value)
@@ -97,14 +96,6 @@ class User(models.Model):
     @traits.setter
     def traits(self, value: dict):
         self._traits = value
-
-    @property
-    def is_verified(self):
-        return self._is_verified
-
-    @is_verified.setter
-    def is_verified(self, value: bool):
-        self._is_verified = value
 
     @property
     def is_authenticated(self):

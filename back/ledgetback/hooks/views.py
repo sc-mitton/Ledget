@@ -139,3 +139,19 @@ class OrySettingsPasswordHook(APIView):
                             status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)
+
+
+class OryVerificationHook(APIView):
+    """Handling the Ory webhook by creating a user and a customer."""
+    permission_classes = [CameFromOry]
+
+    def post(self, request, *args, **kwargs):
+        try:
+            user = get_user_model().objects.get(id=request.data['user_id'])
+            user.is_verified = True
+            user.save()
+        except Exception as e:
+            return Response(data={'error': str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_200_OK)

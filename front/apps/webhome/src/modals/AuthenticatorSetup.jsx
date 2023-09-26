@@ -137,7 +137,7 @@ const Authenticator = (props) => {
     useEffect(() => {
         let timeout
         if (isCompleteSuccess) {
-            updateUser({ data: { mfa_method: 'authenticator' } })
+            updateUser({ data: { mfa_method: 'totp' } })
             addRememberedDevice()
             timeout = setTimeout(() => {
                 searchParams.delete('step')

@@ -72,8 +72,6 @@ class OryBackend(BaseAuthentication):
         user.session_aal = \
             decoded_token['session']['authenticator_assurance_level']
         user.traits = identity.get('traits', {})
-        user.is_verified = identity.get('verifiable_addresses', [{}])[0] \
-                                   .get('verified', False)
 
         if request.path.endswith('devices'):
             user.session_devices = decoded_token['session']['devices']
