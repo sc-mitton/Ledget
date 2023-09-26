@@ -57,7 +57,7 @@ const Device = (props) => {
                             <div className="device-info">
                                 <div className="device-title">
                                     <span>{device.split(',')[0]}</span>&ndash;
-                                    <span>{`${info.length} session ${info.length > 1 ? 's' : ''}`}</span>
+                                    <span>{`${info.length} session${info.length > 1 ? 's' : ''}`}</span>
                                 </div>
                                 <div className="device-location">
                                     <LocationIcon />

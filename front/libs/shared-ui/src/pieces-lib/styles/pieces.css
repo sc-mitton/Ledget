@@ -112,18 +112,17 @@
 /* ------------------------------ Status status-pulse ------------------------------ */
 
 
-#authenticator-graphic {
+.auth-factor-status-graphic {
     display: flex;
     justify-content: center;
     margin: 8px;
     position: relative;
 }
 
-#authenticator-graphic img {
+.auth-factor-status-graphic img {
     height: 7em;
     z-index: 3;
 }
-
 
 #success-checkmark {
     position: absolute;

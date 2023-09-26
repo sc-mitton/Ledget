@@ -6,6 +6,7 @@ import './styles/pieces.css'
 import { Alert2 } from '@ledget/shared-assets'
 import { CheckMark } from '@ledget/shared-assets'
 import authenticator from '@ledget/shared-assets/src/images/authenticator.svg'
+import recoveryCodeGraphic from '@ledget/shared-assets/src/images/recoveryCodeGraphic.svg'
 
 export const ExpandableContainer = ({ expanded, className, children, ...rest }) => (
     <div className={`animated-container ${expanded ? 'expanded' : 'collapsed'} ${className}`} {...rest}>
@@ -121,11 +122,11 @@ export const StatusPulse = ({ positive, colorDefaultPositive, size }) => (
     </>
 )
 
-export const AuthenticatorGraphic = (props) => {
+export const TotpAppGraphic = (props) => {
     const { finished } = props
 
     return (
-        <div id="authenticator-graphic">
+        <div className="auth-factor-status-graphic">
             {finished &&
                 <div id="success-checkmark">
                     <CheckMark
@@ -134,6 +135,17 @@ export const AuthenticatorGraphic = (props) => {
                 </div>
             }
             <img src={authenticator} alt="Authenticator" />
+            <StatusPulse positive={finished} size="medium-large" />
+        </div>
+    )
+}
+
+export const RecoveryCodeGraphic = (props) => {
+    const { finished } = props
+
+    return (
+        <div className="auth-factor-status-graphic">
+            <img src={recoveryCodeGraphic} alt="Authenticator" />
             <StatusPulse positive={finished} size="medium-large" />
         </div>
     )

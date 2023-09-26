@@ -15,7 +15,7 @@ import {
     FormError,
     SlideMotionDiv,
     JiggleDiv,
-    AuthenticatorGraphic
+    TotpAppGraphic
 } from '@ledget/shared-ui'
 import { useFlow } from '@ledget/ory-sdk'
 
@@ -74,7 +74,7 @@ const Totp = ({ isGettingFlow, isCompleteError, totpSuccess, errMsg }) => {
                 Enter your authenticator code
             </div>
             <div style={{ margin: '24px' }}>
-                <AuthenticatorGraphic finished={finished} />
+                <TotpAppGraphic finished={finished} />
             </div>
             <div style={row2Style}>
                 <JiggleDiv jiggle={isCompleteError}>

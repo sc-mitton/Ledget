@@ -182,7 +182,7 @@ function Header({ isNarrow }) {
 
     useEffect(() => {
         if (searchParams.get('confirm') ||
-            ['new', 'create', 'edit', 'change', 'cancel', 'delete', 'add', 'authenticator-setup', 'recovery-codes'].some(
+            ['new', 'create', 'edit', 'change', 'update', 'cancel', 'delete', 'add', 'authenticator-setup', 'recovery-codes'].some(
                 (word) => location.pathname.includes(word)
             )
         ) {

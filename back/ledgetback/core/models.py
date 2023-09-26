@@ -29,10 +29,14 @@ class UserManager(models.Manager):
 class User(models.Model):
 
     # mfa choices
-    class MfaMethod(models.TextChoices):
-        AUTHENTICATOR = 'authenticator', _('Authenticator')
+    class MfaDevice(models.TextChoices):
+        AUTHENTICATOR = 'totp', _('Authenticator')
         EMAIL = 'email', _('Email')
         PHONE = 'phone', _('Phone')
+
+    class MfaMethod(models.TextChoices):
+        TOTP = 'totp', _('TOTP')
+        HOTP = 'hotp', _('HOTP')
 
     id = models.UUIDField(primary_key=True, editable=False)
     is_active = models.BooleanField(default=True)
@@ -49,10 +53,13 @@ class User(models.Model):
         ],
     )
     is_onboarded = models.BooleanField(default=False)
+    password_last_changed = models.DateTimeField(null=True, default=timezone.now)
+
+    mfa_device = models.CharField(choices=MfaDevice.choices,
+                                  null=True, default=None)
     mfa_method = models.CharField(choices=MfaMethod.choices,
                                   null=True, default=None)
-    authenticator_enabled_on = models.DateTimeField(null=True, default=None)
-    password_last_changed = models.DateTimeField(null=True, default=timezone.now)
+    mfa_enabled_on = models.DateTimeField(null=True, default=None)
 
     objects = UserManager()
     USERNAME_FIELD = 'id'
@@ -68,10 +75,8 @@ class User(models.Model):
         self._device = None
 
     def __setattr__(self, name, value):
-        if name == 'mfa_method' and value == self.MfaMethod.AUTHENTICATOR:
-            self.authenticator_enabled_on = timezone.now()
-        elif name == 'mfa_method' and not value:
-            self.authenticator_enabled_on = None
+        if name == 'mfa_device':
+            self.mfa_enabled_on = timezone.now() if value else None
 
         super().__setattr__(name, value)
 

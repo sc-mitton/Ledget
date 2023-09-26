@@ -33,18 +33,16 @@
     width: auto;
     gap: 6px;
     align-items: center;
-    background-color: var(--inner-window);
+    background-color: var(--window);
     border-radius: var(--border-radius2);
-    padding: 0px 12px;
+    padding: 0px 10px;
     cursor: pointer;
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    margin-top: 8px;
 }
 
 #recovery-codes-buttons--container>span {
     font-size: 13px;
+    font-weight: 500;
 }
 
 #recovery-codes-buttons--container:hover,

@@ -44,16 +44,54 @@
     gap: 8px;
 }
 
-#account-recover--container {
+.below-login--container {
     height: 0;
     width: 100%;
     position: relative;
 }
 
-#account-recover--container button {
+.below-login--container button {
     position: absolute;
     margin: 0 auto;
     left: 0;
     right: 0;
     top: 44px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.mfa-prompt--container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.mfa-prompt--container * {
+    margin-top: 8px;
+    font-size: 15px;
+}
+
+.recover-propt--container span {
+    color: var(--sub-text);
+}
+
+.mfa-prompt--container button {
+    color: var(--green-dark2);
+    position: relative;
+}
+
+/* Draw line to right hover effect for button */
+.mfa-prompt--container button:before {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -1px;
+    left: 0;
+    background-color: var(--green-dark2);
+}
+
+.mfa-prompt--container button:hover:before {
+    width: 100%;
+    transition: all 0.2s ease-out;
 }

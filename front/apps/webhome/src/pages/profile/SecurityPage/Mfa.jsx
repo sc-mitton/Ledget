@@ -27,7 +27,7 @@ const AuthenticatorApp = ({ user }) => {
                         <QrIcon width={'1.3em'} height={'1.3em'} />
                         <div>
                             <span>Authenticator App</span>
-                            <span>Added {formatDate(user.authenticator_enabled_on)}</span>
+                            <span>Added {formatDate(user.mfa_enabled_on)}</span>
                         </div>
                     </div>
                     <GrayButton onClick={() => navigate('/profile/security/delete-authenticator')}>
@@ -107,10 +107,12 @@ const Mfa = () => {
                 }}
             >
                 <h3>Multi-Factor</h3>
-                {user.mfa_method && <RecoveryCodes />}
             </div>
             <div className="inner-window">
                 <AuthenticatorApp user={user} />
+            </div>
+            <div>
+                {user.mfa_method && <RecoveryCodes />}
             </div>
         </>
     )

@@ -23,7 +23,7 @@ import {
     JiggleDiv,
     ZoomMotionDiv,
     SlideMotionDiv,
-    AuthenticatorGraphic
+    TotpAppGraphic
 } from '@ledget/shared-ui'
 
 const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
@@ -175,7 +175,7 @@ const Authenticator = (props) => {
                         >
                             <JiggleDiv jiggle={isCompleteError} className="content">
                                 <div>
-                                    <AuthenticatorGraphic finished={isCompleteSuccess} />
+                                    <TotpAppGraphic finished={isCompleteSuccess} />
                                     <label htmlFor="code" >
                                         Enter the code from your
                                         authenticator app

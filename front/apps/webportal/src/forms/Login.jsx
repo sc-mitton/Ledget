@@ -23,7 +23,8 @@ import {
     PlainTextInput,
     JiggleDiv,
     LinkArrowButton,
-    AuthenticatorGraphic
+    TotpAppGraphic,
+    RecoveryCodeGraphic
 } from "@ledget/shared-ui"
 import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
@@ -92,22 +93,73 @@ const EmailForm = ({ flow, setEmail, socialSubmit }) => {
     )
 }
 
-const AuthenticatorMfa = ({ finished }) => (
-    <>
-        <AuthenticatorGraphic finished={finished} />
-        <h3>Enter your authenticator code</h3>
-        <div style={{ margin: '20px 0' }}>
-            <PlainTextInput name="totp_code" placeholder="Code" />
-        </div>
-        <GrnWideButton name="method" value='totp'>
-            Submit
-        </GrnWideButton>
-    </>
-)
+const Mfa = ({ finished }) => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [loaded, setLoaded] = useState(false)
 
-const EmailMfa = () => (
-    <div>Hello World</div>
-)
+    // Map of method name to input code name
+    const inputNameMap = {
+        totp: 'totp_code',
+        lookup_secret: 'lookup_secret'
+    }
+
+    const LookupSecretPrompt = () => (
+        <div className="mfa-prompt--container">
+            <span>Or use a&nbsp;</span>
+            <button
+                onClick={() => {
+                    searchParams.set('mfa', 'lookup_secret')
+                    setSearchParams(searchParams)
+                }}
+            >
+                recovery code
+            </button>
+        </div>
+    )
+
+    useEffect(() => {
+        !loaded && setLoaded(true)
+    }, [])
+
+    return (
+        <>
+            {searchParams.get('mfa') === 'lookup_secret' &&
+                <div className="mfa-container">
+                    <RecoveryCodeGraphic finished={finished} />
+                    <h4>Enter your recovery code</h4>
+                </div >
+            }
+            {
+                searchParams.get('mfa') === 'totp' &&
+                <div className="mfa-container">
+                    <TotpAppGraphic finished={finished} />
+                    <h4>Enter your authenticator code</h4>
+                    <LookupSecretPrompt />
+                </div>
+            }
+            {
+                searchParams.get('mfa') === 'hotp' &&
+                <div className="mfa-container">
+                    <RecoveryCodePrompt />
+                    <h4>Enter the code sent to your email</h4>
+                    <LookupSecretPrompt />
+                </div>
+            }
+            <div style={{ margin: '20px 0' }}>
+                <PlainTextInput
+                    name={inputNameMap[searchParams.get('mfa')]}
+                    placeholder='Code'
+                />
+            </div>
+            <GrnWideButton
+                name="method"
+                value={searchParams.get('mfa')}
+            >
+                Submit
+            </GrnWideButton>
+        </>
+    )
+}
 
 const Password = forwardRef((props, ref) => {
     useEffect(() => { ref.current?.focus() }, [])
@@ -161,7 +213,7 @@ const Login = () => {
 
         if (!mfa && aal !== 'aal2') {
             fetchFlow({ aal: 'aal1', refresh: true })
-        } else if (mfa === 'authenticator') {
+        } else if (mfa === 'totp') {
             fetchFlow({ aal: 'aal2', refresh: true })
         } else {
             console.log('handle email / phone mfa')
@@ -218,13 +270,19 @@ const Login = () => {
             <div id="email-container">
                 <h3>Welcome Back</h3>
                 <BackButton
+                    type="button"
                     withText={false}
                     onClick={() => {
-                        setEmail(null)
-                        setSearchParams({ aal: 'aal1' })
+                        if (searchParams.get('mfa') === 'lookup_secret') {
+                            navigate(-1)
+                        } else if (searchParams.get('aal') === 'aal1') {
+                            setEmail(null)
+                        } else {
+                            navigate('/login')
+                        }
                     }}
                 >
-                    {email || 'back'}
+                    {searchParams.get('aal') === 'aal2' ? 'back' : email}
                 </BackButton>
             </div>
             {errMsg &&
@@ -243,7 +301,7 @@ const Login = () => {
                 ?
                 <SlideMotionDiv className='window' key="initial" first={Boolean(flow)}>
                     <EmailForm setEmail={setEmail} flow={flow} socialSubmit={submit} />
-                    <div id="account-recover--container">
+                    <div className="below-login--container">
                         <LinkArrowButton
                             onClick={() => navigate('/recovery')}
                             aria-label="Recover Account"
@@ -255,10 +313,11 @@ const Login = () => {
                 </SlideMotionDiv>
                 :
                 <JiggleDiv jiggle={isCompleteError} className="wrapper-window">
+                    {/* 1st Factor */}
                     {!searchParams.get('mfa') &&
                         <SlideMotionDiv
                             className='nested-window'
-                            key="authenticate-password"
+                            key="aal1-step"
                             last={!searchParams.get('mfa')}
                             first={searchParams.get('mfa')}
                         >
@@ -268,16 +327,12 @@ const Login = () => {
                             </AuthForm>
                         </SlideMotionDiv>
                     }
-                    {searchParams.get('mfa') === 'authenticator' &&
-                        <SlideMotionDiv className='nested-window' key="authenticate-phone" last>
+                    {/* 2nd Factor */}
+                    {['totp', 'lookup_secret', 'hotp'].includes(searchParams.get('mfa')) &&
+                        <SlideMotionDiv className='nested-window' key="aal2-step" last>
                             <AuthForm>
-                                <AuthenticatorMfa finished={finished} />
+                                <Mfa finished={finished} />
                             </AuthForm>
-                        </SlideMotionDiv>
-                    }
-                    {searchParams.get('mfa') === 'email' &&
-                        <SlideMotionDiv className='nested-window' key="authenticate-email" last>
-                            <AuthForm><EmailMfa /></AuthForm>
                         </SlideMotionDiv>
                     }
                     <WindowLoadingBar visible={showLoadingBar || isGettingFlow} />
