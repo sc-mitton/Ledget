@@ -11,8 +11,7 @@ import {
     EmojiComboText,
     DollarRangeInput,
     PeriodSelect,
-    BillScheduler,
-    AddReminder
+    BillScheduler
 } from '@components/inputs'
 import { ShadowedContainer, DollarCentsRange } from '@components/pieces'
 import { Bell, BellOff } from '@ledget/shared-assets'
@@ -211,7 +210,6 @@ const Form = ({ children }) => {
 
     return (
         <form
-            id="create-bill--form"
             onSubmit={submitForm}
             key={`create-bill-form-${monthItems.length}-${yearItems.length}}`}
         >

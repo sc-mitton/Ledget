@@ -189,10 +189,12 @@ const Login = () => {
     // Handle Finished
     useEffect(() => {
         let timeout
-        if (finished) {
+        if (finished && searchParams.get('mfa')) {
             setTimeout(() => {
                 window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
             }, 1200)
+        } else if (finished) {
+            window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
         }
         return () => clearTimeout(timeout)
     }, [finished])
@@ -241,7 +243,6 @@ const Login = () => {
                 ?
                 <SlideMotionDiv className='window' key="initial" first={Boolean(flow)}>
                     <EmailForm setEmail={setEmail} flow={flow} socialSubmit={submit} />
-                    <WindowLoadingBar visible={isGettingFlow} />
                     <div id="account-recover--container">
                         <LinkArrowButton
                             onClick={() => navigate('/recovery')}
@@ -250,10 +251,11 @@ const Login = () => {
                             Recover Account
                         </LinkArrowButton>
                     </div>
+                    <WindowLoadingBar visible={isGettingFlow} />
                 </SlideMotionDiv>
                 :
                 <JiggleDiv jiggle={isCompleteError} className="wrapper-window">
-                    {!searchParams.get('mfa') && !searchParams.get('mfa') &&
+                    {!searchParams.get('mfa') &&
                         <SlideMotionDiv
                             className='nested-window'
                             key="authenticate-password"

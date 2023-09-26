@@ -53,6 +53,7 @@
     margin: 0 4px;
 }
 
-#emoji-picker-ledget--button:hover {
+#emoji-picker-ledget--button:hover,
+#emoji-picker-ledget--button:focus {
     transform: scale(1.5);
 }

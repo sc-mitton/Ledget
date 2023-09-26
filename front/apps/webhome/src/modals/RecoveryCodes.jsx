@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 
 import './styles/RecoveryCodes.css'
-import { GreenSubmitButton, GreenSubmitWithArrow, SecondaryButton } from '@ledget/shared-ui'
+import { GreenSubmitButton, BlackSubmitButton, SecondaryButton } from '@ledget/shared-ui'
 import { withSmallModal } from '@ledget/shared-utils'
 import { withReAuth } from '@utils'
 import { useFlow } from '@ledget/ory-sdk'
@@ -25,9 +25,10 @@ export const Content = (props) => {
     const [
         getSecrets, // either generate or retrieve
         {
-            data: secretsFlow,
-            isSuccess: secretsAreFetched,
-            isError: secretsFetchError,
+            data: recoveryCodesFlow,
+            isSuccess: codesAreFetched,
+            isError: codesFetchError,
+            isLoading: isFetchingSecrets,
         }
     ] = useCompleteSettingsFlowMutation()
 
@@ -43,7 +44,7 @@ export const Content = (props) => {
         const element = document.createElement('a')
         const file = new Blob([codes], { type: 'text/plain' })
         element.href = URL.createObjectURL(file)
-        element.download = 'recovery-codes.txt'
+        element.download = 'ledget-recovery-codes.txt'
         document.body.appendChild(element)
         element.click()
     }
@@ -76,7 +77,7 @@ export const Content = (props) => {
     useEffect(() => {
         if (isGetFlowSuccess) {
             getSecrets({
-                params: { flow: searchParams.get('flow') },
+                params: { flow: searchParams.get('flow') || flow.id },
                 data: {
                     csrf_token: flow.csrf_token,
                     method: 'lookup_secret',
@@ -92,27 +93,22 @@ export const Content = (props) => {
     // Extract recovery codes from flow
     // and save the codes if we're in the autenticator setup
     useEffect(() => {
-        if (secretsAreFetched) {
-            secretsFlow.ui.nodes.find(node => {
+        if (codesAreFetched) {
+            recoveryCodesFlow.ui.nodes.find(node => {
                 if (node.attributes.id === 'lookup_secret_codes') {
                     setRecoveryCodes(node.attributes.text.text.split(','))
                     return true
                 }
             })
         }
-        if (secretsAreFetched && location.pathname.includes('authenticator-setup')) {
-            handleSaveCodes()
-        }
-    }, [secretsAreFetched])
+    }, [codesAreFetched])
 
     // Close on any errors fetching flow or codes
     useEffect(() => {
-        if (secretsSavedError || secretsFetchError) {
-            console.log('secretsSavedError', secretsSavedError)
-            console.log('secretsFetchError', secretsFetchError)
-            // props.setVisible(false)
+        if (secretsSavedError || codesFetchError) {
+            props.setVisible(false)
         }
-    }, [secretsSavedError, secretsFetchError])
+    }, [secretsSavedError, codesFetchError])
 
     // Close once the codes have been saved (only if not in authenticator setup)
     useEffect(() => {
@@ -124,45 +120,53 @@ export const Content = (props) => {
     return (
         <div id="recovery-codes--container">
             <h2>Recovery Codes</h2>
-            <span>
-                Use these codes in case you lose access to your authenticator app.
-            </span>
+            {!location.pathname.includes('authenticator-setup') && searchParams.get('lookup_secret_regenerate')
+                && <span>Save your new recovery codes and confirm to invalidate the old ones.</span>
+            }
+            {location.pathname.includes('authenticator-setup')
+                && <span>Use these codes in case you lose access to your authenticator app.</span>
+            }
             <div
+                id="recovery-codes-save--container"
                 style={{
                     ...(location.pathname.includes('authenticator-setup') ? { marginBottom: '0' } : {})
                 }}
             >
-                <GreenSubmitButton
-                    loading={isGettingFlow || isCompletingFlow}
+                <BlackSubmitButton
+                    type="button"
+                    loading={isGettingFlow || isFetchingSecrets}
                     className="recovery-codes-button"
                     onClick={handleDownload}
                 >
                     Download
-                    <DownloadIcon stroke={'var(--green-dark3)'} />
-                </GreenSubmitButton>
-                <GreenSubmitButton
-                    loading={isGettingFlow || isCompletingFlow}
+                    <DownloadIcon stroke={'currentColor'} />
+                </BlackSubmitButton>
+                <BlackSubmitButton
+                    type="button"
+                    loading={isGettingFlow || isFetchingSecrets}
                     className="recovery-codes-button"
                     onClick={handleCopy}
                 >
                     Copy
-                    <CopyIcon fill={'var(--green-dark3)'} />
-                </GreenSubmitButton>
+                    <CopyIcon fill={'currentColor'} />
+                </BlackSubmitButton>
             </div>
             {searchParams.get('lookup_secret_regenerate') &&
                 !location.pathname.includes('authenticator-setup') &&
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
                     <SecondaryButton
+                        type="button"
                         className="recovery-codes-button"
                         onClick={() => props.setVisible(false)}
                     >
                         Cancel
                     </SecondaryButton>
-                    <GreenSubmitWithArrow
+                    <GreenSubmitButton
+                        type="button"
                         onClick={handleSaveCodes}
                     >
-                        Save Codes
-                    </GreenSubmitWithArrow>
+                        Keep
+                    </GreenSubmitButton>
                 </div>
             }
         </div>

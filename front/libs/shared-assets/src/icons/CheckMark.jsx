@@ -2,7 +2,7 @@ import React from 'react'
 
 const CheckMark = ({
     className = 'checkmark',
-    stroke = "#292929",
+    stroke = "currentColor",
     width = ".9em",
     height = ".9em",
     ...rest

@@ -291,7 +291,7 @@ div.body {
     border-radius: var(--border-radius3);
     background-color: var(--window-background-color);
     width: 75%;
-    max-width: 350px;
+    max-width: 375px;
 }
 
 .window-header {
@@ -473,6 +473,7 @@ button.pulse:hover {
 
 .budget-item-name[role="button"] {
     cursor: pointer;
+    color: var(--green-dark4);
 }
 
 .budget-item-name[role="button"]:hover {
@@ -481,7 +482,7 @@ button.pulse:hover {
 }
 
 .budget-item-name * {
-    color: var(--green-dark3);
+    color: var(--green-dark4);
 }
 
 .budget-item-name span:first-child {
@@ -503,7 +504,13 @@ button.pulse:hover {
 }
 
 .budget-item-name.selected {
-    background-color: var(--m-green-hover);
+    background-color: var(--btn-gray);
+    color: var(--white-text);
+    transition: background-color .3s ease;
+}
+
+.budget-item-name.selected:hover {
+    background-color: var(--btn-hover-gray);
     transition: background-color .3s ease;
 }
 

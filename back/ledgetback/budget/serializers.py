@@ -27,7 +27,7 @@ class ReminderSerializer(ModelSerializer):
 
 
 class CategorySerializer(NestedCreateMixin, ModelSerializer):
-    alerts = AlertSerializer(many=True)
+    alerts = AlertSerializer(many=True, required=False)
 
     class Meta:
         model = Category
@@ -38,7 +38,7 @@ class CategorySerializer(NestedCreateMixin, ModelSerializer):
 
 
 class BillSerializer(NestedCreateMixin, ModelSerializer):
-    reminders = ReminderSerializer(many=True)
+    reminders = ReminderSerializer(many=True, required=False)
 
     class Meta:
         model = Bill

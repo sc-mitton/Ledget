@@ -52,7 +52,7 @@ class User(models.Model):
     mfa_method = models.CharField(choices=MfaMethod.choices,
                                   null=True, default=None)
     authenticator_enabled_on = models.DateTimeField(null=True, default=None)
-    password_last_changed = models.DateTimeField(null=True, default=None)
+    password_last_changed = models.DateTimeField(null=True, default=timezone.now)
 
     objects = UserManager()
     USERNAME_FIELD = 'id'

@@ -20,16 +20,18 @@ export const ItemsContext = React.createContext()
 export const ItemsProvider = ({ children }) => {
     const [fetchBills, { data: fetchedBills, isSuccess: fetchedBillsSuccess }] = useLazyGetBillsQuery()
     const [fetchCategories, { data: fetchedCategories, isSuccess: fetchedCategoriesSuccess }] = useLazyGetCategoriesQuery()
+
     const [monthItems, setMonthItems] = useState([])
     const [yearItems, setYearItems] = useState([])
     const [itemsEmpty, setItemsEmpty] = useState(true)
     const [recommendationsMode, setRecommendationsMode] = useState(false)
     const [emptyYearItems, setEmptyYearItems] = useState(true)
+    const [bufferItem, setBufferItem] = useState(undefined)
+
     const monthApi = useSpringRef()
     const yearApi = useSpringRef()
     const monthContainerApi = useSpringRef()
     const yearContainerApi = useSpringRef()
-    const [bufferItem, setBufferItem] = useState(undefined)
     const location = useLocation()
 
     const monthTransitions = useTransition(

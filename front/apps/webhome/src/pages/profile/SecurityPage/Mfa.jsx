@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, createSearchParams } from 'react-router-dom'
 
 import './styles/Mfa.css'
 import { useGetMeQuery } from '@features/userSlice'
@@ -61,16 +61,15 @@ const RecoveryCodes = () => {
                     ariaLabel={"Generate new recovery codes"}
                     style={{ left: '-260%' }}
                 >
-                    <IconScaleButton >
-                        <ReplayIcon
-                            fill="currentColor"
-                            onClick={() => {
-                                navigate({
-                                    pathname: '/profile/security/recovery-codes',
-                                    query: { lookup_secret_regenerate: true },
-                                })
-                            }}
-                        />
+                    <IconScaleButton
+                        onClick={() => {
+                            navigate({
+                                pathname: '/profile/security/recovery-codes',
+                                search: `?${createSearchParams({ lookup_secret_regenerate: true })}`
+                            })
+                        }}
+                    >
+                        <ReplayIcon fill="currentColor" />
                     </IconScaleButton>
                 </Tooltip>
                 <Tooltip
@@ -78,16 +77,15 @@ const RecoveryCodes = () => {
                     ariaLabel={"Show recovery codes"}
                     style={{ left: '-220%' }}
                 >
-                    <IconScaleButton >
-                        <ShowIcon
-                            stroke="currentColor"
-                            onClick={() => {
-                                navigate({
-                                    pathname: '/profile/security/recovery-codes',
-                                    query: { lookup_secret_reveal: true },
-                                })
-                            }}
-                        />
+                    <IconScaleButton
+                        onClick={() => {
+                            navigate({
+                                pathname: '/profile/security/recovery-codes',
+                                search: `?${createSearchParams({ lookup_secret_reveal: true })}`
+                            })
+                        }}
+                    >
+                        <ShowIcon stroke="currentColor" />
                     </IconScaleButton>
                 </Tooltip>
             </div>

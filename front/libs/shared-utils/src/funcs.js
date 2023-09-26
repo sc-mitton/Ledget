@@ -55,7 +55,7 @@ export const makeIntCurrencyFromStr = (s) => {
 export const getLongestLength = (items, key) => {
     const longestLength = items.reduce((acc, curr) => {
         if (curr[key] && curr[key].toString().length > acc) {
-            return curr[key].toString().length
+            return curr[key].toString().length + 5
         } else {
             return acc
         }

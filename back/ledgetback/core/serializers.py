@@ -170,6 +170,7 @@ class DeviceSerializer(serializers.ModelSerializer):
                 'user_id': str(user.id),
                 'id': user.session_devices[0]['id'],
                 'aal': user.session_aal,
+                'location': user.session_devices[0]['location'],
                 **self.parse_user_agent_kwargs()
             }
         except Exception as e:

@@ -18,7 +18,7 @@ function withModal(WrappedComponent) {
             width = '70%',
             minWidth = '300px',
             maxWidth = '450px',
-            zIndex = 1000,
+            zIndex = 100,
             blur = 2,
             style,
             ...rest

@@ -154,7 +154,7 @@ export const BottomButtons = () => {
                 submitting={isBillLoading || isCategoryLoading}
                 type="button"
             >
-                {location.pathname === '/welcome/add-bills' ? 'Next' : 'Finish'}
+                Next
             </BlackSubmitWithArrow>
         </div>
     )

@@ -229,12 +229,12 @@
 @keyframes burst {
     0% {
         transform: translate(-50%, -50%) scale(0);
-        opacity: 0.07;
+        opacity: 0.06;
     }
 
     30% {
-        transform: translate(-50%, -50%) scale(6);
-        opacity: 0.07;
+        transform: translate(-50%, -50%) scale(9);
+        opacity: 0.06;
     }
 
     100% {
@@ -250,12 +250,12 @@
 @keyframes big-burst {
     0% {
         transform: translate(-50%, -50%) scale(0);
-        opacity: 0.07;
+        opacity: 0.06;
     }
 
     30% {
         transform: translate(-50%, -50%) scale(50);
-        opacity: 0.07;
+        opacity: 0.06;
     }
 
     100% {

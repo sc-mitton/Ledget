@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -25,6 +25,7 @@ const row2Style = { margin: '16px 0 28px 0' }
 const ErrorFetchingFlow = () => (<FormError msg={"Something went wrong, please try again later."} />)
 
 const PassWord = ({ isGettingFlow, isCompleteError }) => {
+    const location = useLocation()
     const pwdRef = useRef(null)
 
     // Focus password input on error
@@ -35,7 +36,10 @@ const PassWord = ({ isGettingFlow, isCompleteError }) => {
     return (
         <>
             <div className="body" style={row1Style}>
-                To make this change, first confirm your login
+                {['setup', 'change', 'delete'].some((word) => location.pathname.includes(word))
+                    ? 'To make this change, first confirm your login'
+                    : 'First confirm your login'
+                }
             </div>
             <div style={row2Style}>
                 <JiggleDiv jiggle={isCompleteError}>

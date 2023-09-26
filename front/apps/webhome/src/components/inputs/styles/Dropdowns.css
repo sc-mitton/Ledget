@@ -9,6 +9,8 @@
 
 #add-alert-btn {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 #period-select-btn {

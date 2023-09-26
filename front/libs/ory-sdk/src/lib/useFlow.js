@@ -69,7 +69,7 @@ function useFlow(query, mutation, flowType) {
             isSuccess: isCompleteSuccess
         }
     ] = mutation({
-        fixedCacheKey: `${Array.from(searchParams.values()).join('-')}`
+        fixedCacheKey: `${searchParams.get('flow') + searchParams.get('aal')}`
     })
     // Fixed cache key because sometimes we reauth before going to a
     // target component, and we don't want the mutation results to carry

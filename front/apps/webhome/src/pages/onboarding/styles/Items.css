@@ -1,6 +1,6 @@
 #onboarding-app form>div {
     display: grid;
-    grid-template-columns: 3fr 4fr 4fr 4fr;
+    grid-template-columns: 1fr;
 }
 
 #onboarding-app form>div>div {
@@ -58,8 +58,8 @@
     margin: 8px 0;
 }
 
-#create-bill--form>div:first-child {
-    margin: 32px 0;
+#onboarding-app form>div:first-child {
+    margin: 20px 0 32px 0;
 }
 
 /* ----------------------------- Suggested Items ---------------------------- */
@@ -67,6 +67,7 @@
 #recommendations-button--container {
     display: flex;
     justify-content: center;
+    margin-top: 12px;
 }
 
 .recommendations-container {
@@ -103,7 +104,7 @@
     flex: 1;
 }
 
-.budget-item {
+.budget-item--container {
     width: 100%;
     position: absolute;
     left: 0;
@@ -114,15 +115,23 @@
     overflow: hidden;
 }
 
+.budget-item {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    width: 100%;
+}
+
 .budget-item>div:first-child {
-    flex-grow: 1;
+    flex-grow: 3;
     flex-shrink: 1;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
 }
 
 .budget-item>div:not(:first-child) {
-    flex: 1 0 0%;
+    flex: 2 0 0%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -140,11 +149,5 @@
 #onboarding-app .budget-dollar--container {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-}
-
-/* -------------------------- Bill Window Specific -------------------------- */
-
-#onboarding-app #add-bills--window form>div {
-    grid-template-columns: 1fr;
+    justify-content: flex-end;
 }

@@ -45,36 +45,38 @@ const CategoriesColumn = ({ period }) => {
             <animated.div style={containerProps} >
                 {transitions((style, item, index) =>
                     <animated.div
-                        className="budget-item"
+                        className="budget-item--container"
                         style={style}
                         {...bind(item)}
                     >
-                        <div
-                            className="budget-item-name--container"
-                            style={{ flexBasis: getLongestLength(context.items, 'name') }}
-                        >
-                            <GripButton />
-                            <div className="budget-item-name">
-                                <span>{item.emoji}</span>
-                                <span>{formatName(item.name)}</span>
-                            </div>
-                        </div>
-                        <div >
+                        <GripButton />
+                        <div className="budget-item">
                             <div
-                                className="budget-dollar--container"
-                                style={{ width: `${getLongestLength(context.items, 'limit_amount')}ch` }}
+                                className="budget-item-name--container"
+                                style={{ flexBasis: getLongestLength(context.items, 'name') }}
                             >
-                                {`${formatRoundedCurrency(item.limit_amount)}`}
+                                <div className="budget-item-name">
+                                    <span>{item.emoji}</span>
+                                    <span>{formatName(item.name)}</span>
+                                </div>
                             </div>
-                        </div >
-                        <div >
-                            <div style={{ opacity: item.alerts.length > 0 ? '1' : '.5' }}>
-                                {item.alerts.length > 0
-                                    ? <Bell numberOfAlerts={item.alerts.length} />
-                                    : <BellOff />}
+                            <div >
+                                <div
+                                    className="budget-dollar--container"
+                                    style={{ width: `${getLongestLength(context.items, 'limit_amount')}ch` }}
+                                >
+                                    {`${formatRoundedCurrency(item.limit_amount)}`}
+                                </div>
+                            </div >
+                            <div >
+                                <div style={{ opacity: item.alerts.length > 0 ? '1' : '.5' }}>
+                                    {item.alerts.length > 0
+                                        ? <Bell numberOfAlerts={item.alerts.length} />
+                                        : <BellOff />}
+                                </div>
                             </div>
+                            <DeleteButton onClick={() => handleDelete(item)} />
                         </div>
-                        <DeleteButton onClick={() => handleDelete(item)} />
                     </animated.div>
                 )}
             </animated.div>
@@ -105,10 +107,10 @@ const RecommendationsView = () => {
 
         setBufferItem({
             period: type,
-            name: type === 'monthly'
+            name: type === 'month'
                 ? monthRecommendations[target.getAttribute('item-number')].name
                 : yearRecommendations[target.getAttribute('item-number')].name,
-            emoji: type === 'monthly'
+            emoji: type === 'month'
                 ? monthRecommendations[target.getAttribute('item-number')].emoji
                 : yearRecommendations[target.getAttribute('item-number')].emoji
         })
@@ -129,12 +131,18 @@ const RecommendationsView = () => {
                                 ${monthItems.some((item) => item.name === suggestion.name.toLowerCase())
                                     ? 'selected' : 'unselected'}`}
                             style={{ '--animation-order': monthAnimationOrder[index] }}
-                            onClick={(e) => handleClick(e, 'monthly')}
+                            onClick={(e) => handleClick(e, 'month')}
                             role='button'
                             item-number={index}
                         >
                             {`${suggestion.emoji} ${suggestion.name}`}
-                            <CheckMark width={'.7em'} height={'.7em'} />
+                            <CheckMark
+                                width={'.7em'}
+                                height={'.7em'}
+                                stroke={monthItems.some((item) => item.name === suggestion.name.toLowerCase())
+                                    ? 'var(--white-text)' : 'currentColor'
+                                }
+                            />
                         </div>
                     ))}
                 </div>
@@ -153,7 +161,13 @@ const RecommendationsView = () => {
                             item-number={index}
                         >
                             {`${suggestion.emoji} ${suggestion.name}`}
-                            <CheckMark width={'.7em'} height={'.7em'} />
+                            <CheckMark
+                                width={'.7em'}
+                                height={'.7em'}
+                                stroke={yearItems.some((item) => item.name === suggestion.name.toLowerCase())
+                                    ? 'var(--white-text)' : 'currentColor'
+                                }
+                            />
                         </div>
                     ))}
                 </div>
@@ -168,7 +182,7 @@ const ListView = () => {
     return (
         <>
             <Tab.Panel>
-                <CategoriesColumn period={'monthly'} />
+                <CategoriesColumn period={'month'} />
             </Tab.Panel>
             <Tab.Panel>
                 {
@@ -236,6 +250,8 @@ const Form = ({ children }) => {
         let body = Object.fromEntries(formData)
         body = { ...body, ...data }
 
+        console.log(body)
+
         // Extract alerts
         let alerts = []
         for (const [key, value] of Object.entries(body)) {
@@ -245,7 +261,7 @@ const Form = ({ children }) => {
             }
         }
         body.alerts = alerts
-        if (body.period === 'monthly') {
+        if (body.period === 'month') {
             setMonthItems((prev) => [...prev, body])
         } else {
             setYearItems((prev) => [...prev, body])
@@ -267,13 +283,17 @@ const Form = ({ children }) => {
 
     return (
         <form
-            id="add-categories-form"
             onSubmit={handleSubmit((data, e) => submit(data, e))}
             key={`create-category-form-${formKey}`}
         >
             <div>
-                <div>
-                    <PeriodSelect value={period} onChange={setPeriod} />
+                <div className="split-row-inputs">
+                    <div>
+                        <PeriodSelect value={period} onChange={setPeriod} />
+                    </div>
+                    <div>
+                        <AddAlert limitAmount={watch('limit_amount', '')} />
+                    </div>
                 </div>
                 <div>
                     <EmojiComboText
@@ -290,9 +310,6 @@ const Form = ({ children }) => {
                         < FormErrorTip errors={[errors.limit_amount]} />
                     </LimitAmountInput>
                 </div>
-                <div>
-                    <AddAlert limitAmount={watch('limit_amount', '')} />
-                </div>
             </div>
             {children(readyToSubmit)}
         </form>
@@ -303,10 +320,9 @@ const Window = () => {
     const { itemsEmpty, recommendationsMode, setRecommendationsMode } = useContext(ItemsContext)
 
     return (
-        <div className="window2">
+        <div className="window3">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2>Budget Categories</h2>
-                {!recommendationsMode && < RecommendationsButton />}
             </div>
             {(itemsEmpty && !recommendationsMode) &&
                 <div
@@ -316,10 +332,14 @@ const Window = () => {
                         maxWidth: '350px'
                     }}
                 >
-                    Add your personalized categories or click on the upper right icon for recommendations.
+                    Add your spending categories
                 </div>
             }
             {(itemsEmpty && !recommendationsMode) && <hr className="spaced-header" />}
+
+            <div id="recommendations-button--container">
+                {!recommendationsMode && < RecommendationsButton />}
+            </div>
             <CategoriesList />
             <Form >
                 {(readyToSubmit) => (

@@ -6,6 +6,7 @@ import { AnimatePresence } from "framer-motion"
 import './style/Recovery.css'
 import Otc from './Otc'
 import { WindowLoadingBar } from '@pieces'
+import { ledgetapi } from "@api"
 import { FormError, GrnWideButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse } from '@ledget/shared-ui'
 import forgotPassword from '@assets/images/forgotPassword.svg'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
@@ -28,7 +29,7 @@ const MainGraphic = ({ unLocked }) => (
         id="image-container"
     >
         <img src={forgotPassword} alt="Forgot password" />
-        <StatusPulse locked={!unLocked} size="medium" />
+        <StatusPulse positive={unLocked} size="medium" />
     </div>
 )
 
@@ -172,11 +173,33 @@ const RecoverAccount = () => {
         // If 422 error, redirect to login
         let timeout
         if (completeError?.status === 422) {
-            setCodeSuccess(true)
-            timeout = setTimeout(() => {
-                setSearchParams({})
-                navigate('/login')
-            }, 1200)
+
+            ledgetapi.post('/devices')
+                .then((res) => {
+
+                    setCodeSuccess(true)
+                    timeout = setTimeout(() => {
+                        window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+                    }, 1200)
+
+                }).catch((err) => {
+
+                    if (err.response.status === 422) {
+                        setCodeSuccess(true)
+                        timeout = setTimeout(() => {
+                            navigate({
+                                pathname: '/login',
+                                query: {
+                                    aal: 'aal2',
+                                    mfa: err.response.data.error
+                                }
+                            })
+                        }, 1200)
+                    } else {
+                        console.warn(err)
+                    }
+
+                })
         }
         return () => clearTimeout(timeout)
     }, [completeError])
@@ -196,6 +219,7 @@ const RecoverAccount = () => {
             <AnimatePresence mode="wait">
                 {searchParams.get('step') === 'verify'
                     ?
+                    // Verify Step
                     <SlideMotionDiv
                         className="recovery-form"
                         id="recovery-verification-form-container"
@@ -205,12 +229,13 @@ const RecoverAccount = () => {
                         <RecoveryVerificationForm
                             flow={result}
                             submit={submit}
-                            codeSuccess={codeSuccess}
+                            finished={codeSuccess}
                             isCompleteError={isCompleteError}
                             errMsg={errMsg}
                         />
                     </SlideMotionDiv>
                     :
+                    // Initial Step
                     <SlideMotionDiv
                         id="recovery-code-form-container"
                         key="recovery-code-form-container"

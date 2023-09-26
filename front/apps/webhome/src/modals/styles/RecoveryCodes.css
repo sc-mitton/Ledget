@@ -7,21 +7,24 @@
     margin: 16px 0;
 }
 
-#recovery-codes--container>div {
+#recovery-codes-save--container {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin: 20px;
 }
 
-#recovery-codes--container>div button {
+#recovery-codes-save--container button {
     display: flex;
     align-items: center;
-    gap: 4px;
     flex: 1;
     max-width: 120px;
 }
 
-#recovery-codes--container button {
+#recovery-codes-save--container button svg {
+    margin-left: 6px;
+}
+
+#recovery-codes-save--container button {
     float: center;
 }

@@ -61,7 +61,7 @@ const Device = (props) => {
                                 </div>
                                 <div className="device-location">
                                     <LocationIcon />
-                                    {device.split(',')[1] + ', ' + device.split(',')[2]}
+                                    {device.split(',')[2] === undefined ? 'unknown' : device.split(',')[1] + ', ' + device.split(',')[2]}
                                 </div>
                             </div>
                             <div className={`discolsure-indicator ${open ? 'open' : ''}`}>
