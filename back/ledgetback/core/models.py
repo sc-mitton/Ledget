@@ -32,7 +32,7 @@ class User(models.Model):
     class MfaDevice(models.TextChoices):
         AUTHENTICATOR = 'totp', _('Authenticator')
         EMAIL = 'email', _('Email')
-        PHONE = 'phone', _('Phone')
+        SMS = 'sms', _('SMS')
 
     class MfaMethod(models.TextChoices):
         TOTP = 'totp', _('TOTP')

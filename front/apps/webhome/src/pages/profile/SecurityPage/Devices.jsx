@@ -21,6 +21,7 @@ const formatDateTime = (date) => {
 const Device = (props) => {
     const { device, info, deleteDevice, processingDelete } = props
     const buttonRef = useRef(null)
+    const panelRef = useRef(null)
     const iconKey = Object.keys(info[0]).find(
         (key) => key.includes('is_') && info[0][key]
     )
@@ -31,6 +32,7 @@ const Device = (props) => {
                 buttonRef.current
                 && buttonRef.current.getAttribute('data-headlessui-state') === 'open'
                 && !buttonRef.current.contains(e.target)
+                && !panelRef.current.contains(e.target)
             ) {
                 buttonRef.current.click()
             }
@@ -68,7 +70,7 @@ const Device = (props) => {
                                 <ArrowIcon />
                             </div>
                         </Disclosure.Button>
-                        <Disclosure.Panel className={`device-sessions ${open ? 'open' : ''}`}>
+                        <Disclosure.Panel className={`device-sessions ${open ? 'open' : ''}`} ref={panelRef}>
                             {info.map((session) =>
                                 <div key={session.id} className="device-session">
                                     <div className="device-session-info">

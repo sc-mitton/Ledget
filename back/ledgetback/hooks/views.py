@@ -11,11 +11,12 @@ from rest_framework.status import (
 from django.contrib.auth import get_user_model
 from django.db.transaction import atomic
 from django.conf import settings
+from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 import stripe
 
 from core.models import Customer
-from hooks.decorators import ory_api_key_auth
+from hooks.permissions import CameFromOry
 
 stripe_logger = logging.getLogger('stripe')
 stripe.api_key = settings.STRIPE_API_KEY
@@ -107,10 +108,10 @@ class StripeHookView(APIView):
         customer.save()
 
 
-class OryHookView(APIView):
+class OryRegistrationHook(APIView):
     """Handling the Ory webhook by creating a user and a customer."""
+    permission_classes = [CameFromOry]
 
-    @ory_api_key_auth
     def post(self, request, *args, **kwargs):
         try:
             self.create_user(request.data['user_id'])
@@ -123,3 +124,18 @@ class OryHookView(APIView):
     @atomic
     def create_user(self, id):
         get_user_model().objects.create_user(id=id)
+
+
+class OrySettingsPasswordHook(APIView):
+    """Handling the Ory webhook by creating a user and a customer."""
+    permission_classes = [CameFromOry]
+
+    def post(self, request, *args, **kwargs):
+        try:
+            user = get_user_model().objects.get(id=request.data['user_id'])
+            user.password_last_changed = timezone.now()
+        except Exception as e:
+            return Response(data={'error': str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_200_OK)

@@ -2,7 +2,7 @@ import React from 'react';
 import { Plus } from '@ledget/shared-assets';
 
 import './buttons.css'
-import { ExpandIcon, ArrowIcon, FacebookLogo, CloseIcon, GoogleLogo, CopyIcon } from '@ledget/shared-assets'
+import { ExpandIcon, ArrowIcon, FacebookLogo, CloseIcon, GoogleLogo, CopyIcon, Delete } from '@ledget/shared-assets'
 import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'
 import { animated, useSpring } from '@react-spring/web'
 
@@ -157,6 +157,13 @@ export const CopyButton = (props) => {
 
 export const PlusPill = (props) => (
   <button className="btn-chcl btn-circle btn-scale2" {...props}>
-    <Plus stroke={'var(--window)'} width={'.7em'} height={'.7em'} />
+    <Plus stroke={'var(--window)'} width={'.9em'} height={'.9em'} />
+  </button>
+)
+
+
+export const DeleteButton = ({ className, ...rest }) => (
+  <button className={`btn delete-button ${className}`} {...rest}>
+    <Delete width={'1.3em'} height={'1.3em'} />
   </button>
 )

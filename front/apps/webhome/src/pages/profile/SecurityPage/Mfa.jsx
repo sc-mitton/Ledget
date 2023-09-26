@@ -5,9 +5,57 @@ import { useNavigate, createSearchParams } from 'react-router-dom'
 import './styles/Mfa.css'
 import { useGetMeQuery } from '@features/userSlice'
 import { Tooltip } from '@components/pieces'
-import { PlusPill, GrayButton, IconScaleButton } from '@ledget/shared-ui'
-import { QrIcon, ReplayIcon, ShowIcon } from '@ledget/shared-assets'
+import { PlusPill, GrayButton, IconScaleButton, DeleteButton } from '@ledget/shared-ui'
+import { QrIcon, SmsAuthIcon, ReplayIcon, ShowIcon } from '@ledget/shared-assets'
 
+
+const SmsAuth = ({ user }) => {
+    const navigate = useNavigate()
+
+    return (
+        <div className="mfa-settings--container">
+            {user.mfa_device === 'sms'
+                ?
+                <>
+                    <div id="sms-auth-set-up">
+                        <SmsAuthIcon width={'1.5em'} height={'1.5em'} />
+                        <div>
+                            <span>SMS Verification</span>
+                            <span>Added {formatDate(user.mfa_enabled_on)}</span>
+                        </div>
+                    </div>
+                    <GrayButton
+                        onClick={() => navigate('/profile/security/delete-sms-verification')}
+                    >
+                        remove
+                    </GrayButton>
+                </>
+                :
+                <>
+                    <div id="sms-auth-not-set-up">
+                        <SmsAuthIcon width={'1.5em'} height={'1.5em'} />
+                        <span
+                            style={{ marginLeft: '-2px' }}
+                        >
+                            SMS Verification
+                        </span>
+                    </div>
+                    <div style={{ position: 'relative' }}>
+                        <Tooltip
+                            msg={"Add SMS Verification"}
+                            ariaLabel={"Add SMS Verification"}
+                            style={{ left: '-205%' }}
+                        >
+                            <PlusPill
+                                onClick={() => navigate('/profile/security/sms-verification-setup')}
+                            />
+                        </Tooltip>
+                    </div>
+                </>
+            }
+        </div>
+    )
+}
 
 const AuthenticatorApp = ({ user }) => {
     const navigate = useNavigate()
@@ -19,7 +67,7 @@ const AuthenticatorApp = ({ user }) => {
     }
 
     return (
-        <div id="authenticator-settings--container">
+        <div className="mfa-settings--container">
             {user.mfa_device === 'authenticator'
                 ?
                 <>
@@ -30,9 +78,19 @@ const AuthenticatorApp = ({ user }) => {
                             <span>Added {formatDate(user.mfa_enabled_on)}</span>
                         </div>
                     </div>
-                    <GrayButton onClick={() => navigate('/profile/security/delete-authenticator')}>
-                        remove
-                    </GrayButton>
+                    <div className="delete-btn--container">
+                        <Tooltip
+                            msg={"Remove authenticator"}
+                            ariaLabel={"Remove authenticator"}
+                            style={{ left: '-183%' }}
+                        >
+                            <DeleteButton
+                                className="delete-button-show"
+                                onClick={() => navigate('/profile/security/delete-authenticator')}
+                                aria-label={"Delete Authenticator"}
+                            />
+                        </Tooltip>
+                    </div>
                 </>
                 :
                 <>
@@ -40,9 +98,7 @@ const AuthenticatorApp = ({ user }) => {
                         <QrIcon width={'1.25em'} height={'1.25em'} />
                         <span>Authenticator App</span>
                     </div>
-                    <div>
-                        <PlusPill onClick={() => navigate('/profile/security/authenticator-setup')} />
-                    </div>
+                    <PlusPill onClick={() => navigate('/profile/security/authenticator-setup')} />
                 </>
             }
         </div>
@@ -107,12 +163,11 @@ const Mfa = () => {
                 }}
             >
                 <h3>Multi-Factor</h3>
+                <RecoveryCodes />
             </div>
-            <div className="inner-window">
+            <div className="inner-window" id="mfa-options--container">
                 <AuthenticatorApp user={user} />
-            </div>
-            <div>
-                {user.mfa_device && <RecoveryCodes />}
+                <SmsAuth user={user} />
             </div>
         </>
     )

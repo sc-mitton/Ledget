@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 
-import { Plus, Edit, Delete } from '@ledget/shared-assets'
+import { Plus, Edit } from '@ledget/shared-assets'
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
@@ -18,7 +18,7 @@ import { usePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@ledget/shared-utils'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { Tooltip } from '@components/pieces'
-import { SecondaryButton, GrnPrimaryButton, IconButton, ShimmerDiv } from '@ledget/shared-ui'
+import { SecondaryButton, GrnPrimaryButton, IconButton, ShimmerDiv, DeleteButton } from '@ledget/shared-ui'
 
 const DeleteContext = React.createContext()
 
@@ -75,14 +75,12 @@ const DeleteAllButton = ({ onClick }) => {
                 }}
                 type={'left'}
             >
-                <button
-                    className={`btn delete-button ${deleteClass}`}
+                <DeleteButton
+                    className={deleteClass}
                     aria-label="Remove account"
                     onClick={() => onClick()}
                     disabled={!editing}
-                >
-                    <Delete width={'1.3em'} height={'1.3em'} />
-                </button>
+                />
             </Tooltip>
         </div >
     )

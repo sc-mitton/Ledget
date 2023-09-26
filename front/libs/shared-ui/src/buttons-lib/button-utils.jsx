@@ -113,7 +113,9 @@ export const withLoading = (Component) => {
                 }
                 <div
                     className="with-loading-ring--container"
-                    style={{ color: submitting || loading || success ? 'transparent' : 'inherit' }}
+                    style={{
+                        visibility: loading || submitting || success ? 'hidden' : 'visible',
+                    }}
                 >
                     {children}
                 </div>

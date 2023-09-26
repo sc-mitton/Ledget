@@ -50,9 +50,15 @@
     color: var(--green-dark2);
 }
 
-#card-info-container {
+#card-info--container {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+#card-info--container>div:first-child {
+    display: flex;
     align-items: center;
 }
 

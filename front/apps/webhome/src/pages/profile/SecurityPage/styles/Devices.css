@@ -145,6 +145,7 @@
 .current-device {
     color: var(--green-dark2);
     font-size: 14px;
+    margin-right: 4px;
 }
 
 .logout-device {

@@ -11,7 +11,6 @@ import { PasswordInput, FormError } from '@ledget/shared-ui'
 import { withSmallModal } from '@ledget/shared-utils'
 import { withReAuth } from '@utils'
 import { useFlow } from '@ledget/ory-sdk'
-import { useUpdateUserMutation } from '@features/userSlice'
 import { useLazyGetSettingsFlowQuery, useCompleteSettingsFlowMutation } from '@features/orySlice'
 
 const schema = object().shape({
@@ -22,7 +21,6 @@ const schema = object().shape({
 })
 
 const ChangePassword = (props) => {
-    const [updateUser] = useUpdateUserMutation()
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetSettingsFlowQuery,
         useCompleteSettingsFlowMutation,
@@ -41,7 +39,6 @@ const ChangePassword = (props) => {
     useEffect(() => {
         let timeout
         if (isCompleteSuccess) {
-            updateUser({ data: { password_last_changed: 'now' } })
             timeout = setTimeout(() => {
                 props.setVisible(false)
             }, 1000)

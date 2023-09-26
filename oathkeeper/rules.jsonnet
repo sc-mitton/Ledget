@@ -74,7 +74,7 @@ local GenericAuthedBase = {
     id: 'delete_device',
     match: {
       methods: ['DELETE'],
-      url: base_url + '/devices/<[a-zA-Z0-9]+>',
+      url: base_url + '/devices/<[a-zA-Z0-9-]+>',
     },
   },
   GenericAuthedBase

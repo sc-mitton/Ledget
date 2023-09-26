@@ -1,3 +1,8 @@
+#mfa-options--container.inner-window {
+    display: flex;
+    flex-direction: column;
+}
+
 #authenticator-set-up {
     display: flex;
 }
@@ -11,21 +16,42 @@
     font-weight: 500
 }
 
-#authenticator-settings--container {
+.mfa-settings--container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    box-sizing: border-box;
 }
 
-#authenticator-settings--container>div>svg {
-    margin: 0 14px 0 2px;
-}
-
-#authenticator-settings--container>div {
+.mfa-settings--container>div {
     display: flex;
     align-items: center;
-    padding-right: 12px;
+    gap: 14px;
+}
+
+.mfa-settings--container:not(:first-child) {
+    padding: 14px 3px 4px 3px;
+}
+
+.mfa-settings--container:not(:last-child) {
+    padding: 4px 3px 14px 3px;
+    border-bottom: 2px solid var(--subtle-border-color);
+}
+
+.mfa-settings--container .delete-btn--container {
+    position: relative;
+    transform: scale(.73);
+    margin-left: 2px;
+
+}
+
+.mfa-settings--container .delete-btn--container .tooltip {
+    transform: scale(1.3);
+}
+
+.mfa-settings--container button {
+    margin-right: 7.5px;
 }
 
 #recovery-codes-buttons--container {
@@ -37,7 +63,6 @@
     border-radius: var(--border-radius2);
     padding: 0px 10px;
     cursor: pointer;
-    margin-top: 8px;
 }
 
 #recovery-codes-buttons--container>span {

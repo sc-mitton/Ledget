@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import './styles/Main.css'
 import { useGetDevicesQuery, selectSessionIsFresh } from '@features/userSlice'
-import { ShimmerDiv } from '@ledget/shared-ui'
+import { ShimmerDiv, SlimInputButton } from '@ledget/shared-ui'
 import Devices from './Devices'
 import Mfa from './Mfa'
 import Authentication from './Authentication'
@@ -37,6 +37,11 @@ const Main = () => {
                 <Devices devices={devices} />
                 <Authentication />
                 <Mfa />
+                <div id="delete-account--button">
+                    <SlimInputButton >
+                        Delete Account
+                    </SlimInputButton >
+                </div>
             </div>
             <Outlet />
         </ShimmerDiv>

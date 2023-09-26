@@ -148,7 +148,7 @@ const Plan = () => {
                         <ChangePlanMenu />
                     </div>
                 </div>
-                <div className="body inner-window">
+                <div className="inner-window">
                     <div id="invoice-details--container">
                         <div>
                             <span>Renews:</span>
@@ -201,19 +201,17 @@ const PaymentMethod = () => {
                     </GrnSlimButton>
                 </div>
             </div>
-            <div id="card-info-container" className="body inner-window">
-                <div className="card-info--container">
-                    <div>
-                        <CardIcon width={'1.4em'} height={'1.4em'} />
-                        <span >
-                            {data?.payment_method.brand.charAt(0).toUpperCase()
-                                + data?.payment_method.brand.slice(1)}
-                            &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
-                            {data?.payment_method.last4}
-                        </span>
-                    </div>
-                    <div><span >{`Exp. ${expDate}`}</span></div>
+            <div id="card-info--container" className="inner-window">
+                <div>
+                    <CardIcon width={'1.4em'} height={'1.4em'} />
                 </div>
+                <div >
+                    {data?.payment_method.brand.charAt(0).toUpperCase()
+                        + data?.payment_method.brand.slice(1)}
+                    &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
+                    {data?.payment_method.last4}
+                </div>
+                <div>{`Exp. ${expDate}`}</div>
             </div>
         </div>
     )

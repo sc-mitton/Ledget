@@ -91,7 +91,7 @@
          "methods": [
             "DELETE"
          ],
-         "url": "https://localhost/api/v1/devices/<[a-zA-Z0-9]+>"
+         "url": "https://localhost/api/v1/devices/<[a-zA-Z0-9-]+>"
       },
       "mutators": [
          {

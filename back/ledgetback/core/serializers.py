@@ -131,9 +131,9 @@ class DeviceSerializer(serializers.ModelSerializer):
         # location, and secret key
         user = self.context['request'].user
         unhashed = ''.join([
-            str(user.id),
             user.session_devices[0]['id'],
             user.session_aal,
+            str(user.id),
             settings.SECRET_KEY
         ])
 
@@ -201,3 +201,8 @@ class DeviceSerializer(serializers.ModelSerializer):
         representation['current_device'] = \
             self.context['request'].user.device == instance
         return representation
+
+
+# Instead of storing the hashed token in the database, we could store
+# a shared secret and use a HMAC to verify the token. This would allow
+# us to invalidate all tokens for a user by changing the shared secret.
