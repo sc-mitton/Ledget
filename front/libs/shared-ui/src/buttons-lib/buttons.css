@@ -43,25 +43,25 @@
 .btn3 {
     padding: 6px 12px;
     border-radius: var(--border-radius2);
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .btn-slim {
     padding: 0px 8px;
     border-radius: var(--border-radius2);
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .btn-2slim {
     padding: 2px 12px;
     border-radius: var(--border-radius2);
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .btn-narrow {
     padding: 4px 0px;
     border-radius: 6px;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .btn-wide.btn-grn,
@@ -109,7 +109,7 @@
     color: var(--green-dark4);
     background-color: var(--green-hlight);
     transition: all .3s ease;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .btn-grn:hover {

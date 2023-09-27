@@ -126,7 +126,7 @@ const Mfa = ({ finished }) => {
                 </div>
             }
             {
-                searchParams.get('mfa') === 'hotp' &&
+                searchParams.get('mfa') === 'otp' &&
                 <div className="mfa-container">
                     <RecoveryCodePrompt />
                     <h4>Enter the code sent to your email</h4>
@@ -306,7 +306,7 @@ const Login = () => {
                         </SlideMotionDiv>
                     }
                     {/* 2nd Factor */}
-                    {['totp', 'lookup_secret', 'hotp'].includes(searchParams.get('mfa')) &&
+                    {['totp', 'lookup_secret', 'otp'].includes(searchParams.get('mfa')) &&
                         <SlideMotionDiv className='nested-window' key="aal2-step" last>
                             <AuthForm>
                                 <Mfa finished={finished} />

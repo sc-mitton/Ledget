@@ -104,6 +104,20 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['devices'],
         }),
+        createOtp: builder.mutation({
+            query: ({ data }) => ({
+                url: 'otp',
+                method: 'POST',
+                body: data,
+            }),
+        }),
+        verifyOtp: builder.mutation({
+            query: ({ data, id }) => ({
+                url: `otp/${id}`,
+                method: 'GET',
+                body: data,
+            }),
+        }),
     })
 })
 
@@ -120,4 +134,6 @@ export const {
     useAddRememberedDeviceMutation,
     useGetDevicesQuery,
     useDeleteRememberedDeviceMutation,
+    useCreateOtpMutation,
+    useVerifyOtpMutation,
 } = extendedApiSlice

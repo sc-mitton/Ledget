@@ -63,46 +63,33 @@
     border-radius: var(--border-radius2);
     padding: 0px 10px;
     cursor: pointer;
-}
-
-#recovery-codes-buttons--container>span {
-    font-size: 13px;
-    font-weight: 500;
-}
-
-#recovery-codes-buttons--container:hover,
-#recovery-codes-buttons--container:focus-within {
-    background-color: var(--inner-window);
-    transition: all 0.3s ease-in-out;
-}
-
-#recovery-codes-buttons--container:hover>span,
-#recovery-codes-buttons--container:focus-within>span {
-    transition: all 0.3s ease-in-out;
-    font-weight: 500;
+    transition-delay: .3s;
 }
 
 #recovery-codes-buttons--container>div {
     display: flex;
     align-items: center;
+    transition-delay: .3s;
+}
+
+#recovery-codes-buttons--container>span {
+    font-size: 13px;
+    font-weight: 500;
+    transition-delay: .3s;
 }
 
 #recovery-codes-buttons--container #recovery-codes-buttons button,
 #recovery-codes-buttons--container #recovery-codes-buttons svg {
     max-width: 0;
     transition: all 0.2s ease-in-out;
-}
-
-#recovery-codes-buttons--container:not(:hover) #recovery-codes-buttons button,
-#recovery-codes-buttons--container:not(:focus) #recovery-codes-buttons button {
-    padding-left: 0;
-    padding-right: 0;
-    transition: all 0.2s ease-in-out;
+    transition-delay: .3s;
 }
 
 #recovery-codes-buttons--container:hover #recovery-codes-buttons,
 #recovery-codes-buttons--container:focus-within #recovery-codes-buttons {
-    gap: 5px;
+    gap: 0;
+    transition: all 0.2s ease-in-out;
+    transition-delay: .3s;
 }
 
 #recovery-codes-buttons--container:hover #recovery-codes-buttons button,
@@ -110,4 +97,33 @@
 #recovery-codes-buttons--container:focus-within #recovery-codes-buttons button,
 #recovery-codes-buttons--container:focus-within #recovery-codes-buttons svg {
     max-width: 1.5rem;
+    transition-delay: .3s;
+}
+
+#recovery-codes-buttons--container:hover,
+#recovery-codes-buttons--container:focus-within {
+    background-color: var(--inner-window);
+    transition: all 0.3s ease-in-out;
+    transition-delay: .3s;
+}
+
+#recovery-codes-buttons--container:hover>span,
+#recovery-codes-buttons--container:focus-within>span {
+    transition: all 0.3s ease-in-out;
+    font-weight: 500;
+    transition-delay: .3s;
+}
+
+#recovery-codes-buttons--container:not(:hover) #recovery-codes-buttons button,
+#recovery-codes-buttons--container:not(:focus) #recovery-codes-buttons button {
+    padding-left: 0;
+    padding-right: 0;
+    transition: all 0.2s ease-in-out;
+    transition-delay: .3s;
+}
+
+#recovery-codes-buttons--container:hover #recovery-codes-buttons,
+#recovery-codes-buttons--container:focus-within #recovery-codes-buttons {
+    gap: 5px;
+    transition-delay: .3s;
 }

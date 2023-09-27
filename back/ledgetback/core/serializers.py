@@ -120,6 +120,9 @@ class SubscriptionUpdateSerializer(serializers.Serializer):
     cancel_at_period_end = serializers.BooleanField(required=False)
 
 
+# Instead of storing the hashed token in the database, we could store
+# a shared secret and use a HMAC to verify the token. This would allow
+# us to invalidate all tokens for a user by changing the shared secret.
 class DeviceSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -203,6 +206,12 @@ class DeviceSerializer(serializers.ModelSerializer):
         return representation
 
 
-# Instead of storing the hashed token in the database, we could store
-# a shared secret and use a HMAC to verify the token. This would allow
-# us to invalidate all tokens for a user by changing the shared secret.
+class OtpSerializer(serializers.Serializer):
+    phone_number = serializers.CharField(required=False)
+    code = serializers.CharField(required=False)
+
+    def validate_phone_number(self, value):
+        return len(value) > 0 and len(value) <= 20
+
+    def validate_code(self, value):
+        return len(value) == 6

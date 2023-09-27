@@ -11,6 +11,10 @@ import './styles/SmsSetup.css'
 import { withModal } from '@ledget/shared-utils'
 import { withReAuth } from '@utils'
 import {
+    useCreateOtpMutation,
+    useVerifyOtpMutation,
+} from '@features/userSlice'
+import {
     BackButton,
     GreenSubmitWithArrow,
     GreenSubmitButton,
@@ -24,19 +28,21 @@ import {
 
 
 const schema = object().shape({
-    phone: string().required()
+    phone: string().required('required')
 })
 
 const SmsAdd = (props) => {
+    const [addOtp, { isLoading: addOtpLoading, isError: addOtpError }] = useCreateOtpMutation()
     const [searchParams, setSearchParams] = useSearchParams()
     const [value, setValue] = useState('')
 
-    const { handleSubmit, errors, control, setFocus } = useForm({
+    const { handleSubmit, register, setFocus } = useForm({
         resolver: yupResolver(schema),
         mode: 'onSubmit',
         revalidateMode: 'onBlur'
     })
-    const { field: phoneField } = useController({ name: 'phone', control })
+    const { onChange: formChange, ...rest } = register('phone')
+
 
     const handleAutoFormat = (e) => {
         const { value } = e.target
@@ -48,14 +54,10 @@ const SmsAdd = (props) => {
         setValue(formatted)
     }
 
-    useEffect(() => {
-        phoneField.onChange(value)
-    }, [value])
-
     const onSubmit = (data) => {
         searchParams.set('step', 'verify')
         setSearchParams(searchParams)
-        console.log(data)
+
     }
 
     useEffect(() => { setFocus('phone') }, [])
@@ -81,18 +83,23 @@ const SmsAdd = (props) => {
                         placeholder="(000) 000-0000"
                         autoComplete="tel"
                         value={value}
-                        errors={errors}
-                        onChange={handleAutoFormat}
+                        onChange={(e) => {
+                            handleAutoFormat(e)
+                            formChange(e)
+                        }}
+                        {...rest}
                         autoFocus
                     />
+                    {addOtpError && <FormError msg={'Check your number and try again please.'} />}
                 </div>
                 <div>
                     <SecondaryButton
+                        type="button"
                         onClick={() => { props.setVisible(false) }}
                     >
                         Cancel
                     </SecondaryButton>
-                    <GreenSubmitWithArrow>
+                    <GreenSubmitWithArrow loading={addOtpLoading}>
                         Next
                     </GreenSubmitWithArrow>
                 </div>

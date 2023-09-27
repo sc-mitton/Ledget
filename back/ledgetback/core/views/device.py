@@ -4,20 +4,23 @@ from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.status import (
     HTTP_200_OK,
     HTTP_422_UNPROCESSABLE_ENTITY,
-    HTTP_204_NO_CONTENT
+    HTTP_204_NO_CONTENT,
+    HTTP_400_BAD_REQUEST
 )
 from rest_framework.routers import Route, SimpleRouter
 from rest_framework.permissions import IsAuthenticated as CoreIsAuthenticated
 from rest_framework.views import APIView
 from django.conf import settings
+import messagebird
 
-from core.serializers import DeviceSerializer
+from core.serializers import DeviceSerializer, OtpSerializer
 from core.permissions import IsObjectOwner, IsAuthenticated
 from core.models import Device
 
 
 BIRD_API_KEY = settings.BIRD_API_KEY
 BIRD_SIGNING_KEY = settings.BIRD_SIGNING_KEY
+mbird_client = messagebird.Client(BIRD_API_KEY)
 
 
 def put_patch_not_allowed(func):
@@ -122,9 +125,40 @@ class DeviceViewSet(ModelViewSet):
 
 class OtpView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = OtpSerializer
 
-    def post(self):
-        pass
+    def post(self, request, *arg, **kwargs):
+        try:
+            verify = mbird_client.verify_create(
+                recipient=request.data.phone_number,
+                type='tts',
+                template="Your verification code for Ledget is %token."
+            )
+        except messagebird.client.ErrorException as e:
+            return Response(
+                {'error': f'{e.errors[0].description}'},
+                HTTP_400_BAD_REQUEST
+            )
 
-    def get(self):
-        pass
+        return Response({'data': {id: verify.id}}, HTTP_200_OK)
+
+    def get(self, request, *args, **kwargs):
+
+        id = kwargs.get('otp_id')
+        try:
+            verify = mbird_client.verify.verify(id, request.data.otp)
+        except Exception as e: # noqa
+            return Response(
+                {'error': 'Invalid OTP'},
+                HTTP_400_BAD_REQUEST
+            )
+        if verify.status != 'verified':
+            return Response(
+                {'error': 'Invalid OTP'},
+                HTTP_400_BAD_REQUEST
+            )
+
+        self.request.user.phone_number = verify.recipient
+        self.request.user.mfa_method = 'otp'
+        self.request.user.save()
+        return Response({'data': {id: verify.id}}, HTTP_200_OK)

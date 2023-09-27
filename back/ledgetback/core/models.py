@@ -36,7 +36,7 @@ class User(models.Model):
 
     class MfaMethod(models.TextChoices):
         TOTP = 'totp', _('TOTP')
-        HOTP = 'hotp', _('HOTP')
+        OTP = 'otp', _('OTP')
 
     id = models.UUIDField(primary_key=True, editable=False)
     is_active = models.BooleanField(default=True)

@@ -5,7 +5,7 @@ const Close = ({
     width = "1em",
     height = "1em",
     stroke = "#242424",
-    strokeWidth = "24"
+    strokeWidth = "20"
 }) => {
 
     return (
