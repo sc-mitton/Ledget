@@ -274,22 +274,8 @@
     position: relative;
 }
 
-.keypad-graphic-status.finished .burst {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    animation: success-burst 6s ease-out infinite;
-    z-index: 0;
-    background: radial-gradient(circle at center, rgba(90, 255, 162, 0.7) 0,
-            rgba(90, 255, 162, 0.7) 45%, rgb(0, 0, 0, 0) 45%, rgb(0, 0, 0, 0) 100%),
-        radial-gradient(circle at center, rgb(212, 255, 231, 1) 0,
-            rgb(212, 255, 231, 1) 60%, rgb(0, 0, 0, 0) 60%, rgb(0, 0, 0, 0) 100%);
-}
-
-.keypad-graphic-status>div:not(:first-child) {
-    background-color: var(--m-text-gray);
+.keypad-graphic-status>div {
+    clip-path: inset(0);
     color: var(--white-text);
     border-radius: 50%;
     font-size: 12px;
@@ -301,25 +287,33 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    z-index: 1;
-}
-
-.keypad-graphic-status.finished>div:not(:first-child) {
-    color: var(--green-dark4);
-    background-color: var(--green-hlight);
-    font-weight: 500;
-    transition: color .3s ease;
-    transition-delay: .2s;
 }
 
 .keypad-graphic-status>div:last-child {
     grid-column: 2;
 }
 
-.keypad-graphic-status.unfinished>div:not(:first-child) {
-    animation: vary-background 2s ease-in-out infinite;
-    animation-delay: calc(var(--key-animation-delay) * 100ms);
+.keypad-graphic-status.finished>div {
+    color: var(--green-dark4);
+    font-weight: 500;
+    transition: color .3s ease;
+    transition-delay: .2s;
 }
+
+.keypad-graphic-status.finished>div:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* animation: success-burst 6s ease-out infinite; */
+    z-index: -1;
+    background: linear-gradient(45deg, red, blue);
+    /* background: radial-gradient(circle at center, rgba(90, 255, 162, 0.7) 0,
+            rgba(90, 255, 162, 0.7) 45%, rgb(0, 0, 0, 0) 45%, rgb(0, 0, 0, 0) 100%),
+        radial-gradient(circle at center, rgb(212, 255, 231, 1) 0,
+            rgb(212, 255, 231, 1) 60%, rgb(0, 0, 0, 0) 60%, rgb(0, 0, 0, 0) 100%); */
+
+}
+
 
 @keyframes success-burst {
     0% {

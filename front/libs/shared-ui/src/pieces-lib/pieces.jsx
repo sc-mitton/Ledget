@@ -162,7 +162,6 @@ export const KeyPadGraphic = (props) => {
 
     return (
         <div className={`keypad-graphic-status ${finished ? 'finished' : 'finished'}`}>
-            <div className="burst" />
             {nums.map((num, index) => (
                 <div
                     key={index}
