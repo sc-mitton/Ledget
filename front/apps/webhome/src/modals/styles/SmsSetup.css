@@ -1,0 +1,21 @@
+#sms-setup-form>div:first-child {
+    display: flex;
+    flex-direction: column;
+}
+
+#sms-setup-form>div img {
+    height: 5.5rem;
+    margin: 32px 0;
+}
+
+#sms-setup-form>div:last-child {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#sms-setup-form>div:first-child>div:first-child {
+    display: flex;
+    justify-content: center;
+}

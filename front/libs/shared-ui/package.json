@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.14",
     "@ledget/shared-assets": "workspace:^",
+    "@ledget/shared-utils": "workspace:^",
     "@react-spring/web": "^9.7.2",
     "@stripe/react-stripe-js": "^2.0.0",
     "framer-motion": "^10.16.4",

@@ -197,4 +197,12 @@ local GenericAuthedBase = {
       url: base_url + '/next_invoice',
     },
   },
+  GenericAuthedBase
+  {
+    id: 'otp',
+    match: {
+      methods: ['POST', 'GET'],
+      url: base_url + '/(otp|otp\/[0-9a-zA-Z-]+)',
+    }
+  }
 ]

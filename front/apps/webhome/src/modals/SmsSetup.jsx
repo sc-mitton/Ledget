@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
-import { useForm, useController } from 'react-hook-form'
+import { useForm, useController, set } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 
+import './styles/SmsSetup.css'
 import { withModal } from '@ledget/shared-utils'
 import { withReAuth } from '@utils'
 import {
@@ -18,6 +19,7 @@ import {
     FormError,
     JiggleDiv,
     SlideMotionDiv,
+    KeyPadGraphic,
 } from '@ledget/shared-ui'
 
 
@@ -29,7 +31,7 @@ const SmsAdd = (props) => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [value, setValue] = useState('')
 
-    const { handleSubmit, errors, control } = useForm({
+    const { handleSubmit, errors, control, setFocus } = useForm({
         resolver: yupResolver(schema),
         mode: 'onSubmit',
         revalidateMode: 'onBlur'
@@ -52,19 +54,25 @@ const SmsAdd = (props) => {
 
     const onSubmit = (data) => {
         searchParams.set('step', 'verify')
+        setSearchParams(searchParams)
         console.log(data)
     }
+
+    useEffect(() => { setFocus('phone') }, [])
 
     return (
         <div>
             <h2>Text Message</h2>
             <h4>2-Step Verification Setup</h4>
             <form
+                id="sms-setup-form"
                 onSubmit={handleSubmit(onSubmit)}
-                style={{ marginTop: '16px' }}
             >
-                <div style={{ margin: '32px 0' }}>
-                    <span style={{ marginLeft: '2px' }}>
+                <div >
+                    <div>
+                        <KeyPadGraphic />
+                    </div>
+                    <span>
                         Enter your phone number
                     </span>
                     <PlainTextInput
@@ -78,13 +86,7 @@ const SmsAdd = (props) => {
                         autoFocus
                     />
                 </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end'
-                    }}
-                >
+                <div>
                     <SecondaryButton
                         onClick={() => { props.setVisible(false) }}
                     >
@@ -109,6 +111,9 @@ const SmsVerify = (props) => {
 
 const SmsSetup = (props) => {
     const [searchParams] = useSearchParams()
+    const [loaded, setLoaded] = useState(false)
+
+    useEffect(() => { setLoaded(true) }, [])
 
     return (
         <div>
@@ -119,7 +124,7 @@ const SmsSetup = (props) => {
                         <SmsVerify props={props} />
                     </SlideMotionDiv>
                     :
-                    <SlideMotionDiv first>
+                    <SlideMotionDiv first={loaded}>
                         <SmsAdd props={props} />
                     </SlideMotionDiv>
                 }

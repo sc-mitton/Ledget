@@ -7,6 +7,7 @@ import { Alert2 } from '@ledget/shared-assets'
 import { CheckMark } from '@ledget/shared-assets'
 import authenticator from '@ledget/shared-assets/src/images/authenticator.svg'
 import recoveryCodeGraphic from '@ledget/shared-assets/src/images/recoveryCodeGraphic.svg'
+import { shuffleArray } from '@ledget/shared-utils'
 
 export const ExpandableContainer = ({ expanded, className, children, ...rest }) => (
     <div className={`animated-container ${expanded ? 'expanded' : 'collapsed'} ${className}`} {...rest}>
@@ -147,6 +148,29 @@ export const RecoveryCodeGraphic = (props) => {
         <div className="auth-factor-status-graphic">
             <img src={recoveryCodeGraphic} alt="Authenticator" />
             <StatusPulse positive={finished} size="medium-large" />
+        </div>
+    )
+}
+
+
+export const KeyPadGraphic = (props) => {
+    const { finished } = props
+    const nums = Array(10).fill().map((_, index) => index + 1)
+    const shuffledNums = shuffleArray(
+        Array(10).fill().map((_, index) => index + 1)
+    )
+
+    return (
+        <div className={`keypad-graphic-status ${finished ? 'finished' : 'finished'}`}>
+            <div className="burst" />
+            {nums.map((num, index) => (
+                <div
+                    key={index}
+                    style={{ '--key-animation-delay': shuffledNums[index] }}
+                >
+                    {num}
+                </div>
+            ))}
         </div>
     )
 }
