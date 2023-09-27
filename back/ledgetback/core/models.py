@@ -59,6 +59,7 @@ class User(models.Model):
     mfa_method = models.CharField(choices=MfaMethod.choices,
                                   null=True, default=MfaMethod.HOTP, max_length=4)
     mfa_enabled_on = models.DateTimeField(null=True, default=None)
+    phone_number = models.CharField(max_length=20, null=True, default=None)
 
     objects = UserManager()
     USERNAME_FIELD = 'id'

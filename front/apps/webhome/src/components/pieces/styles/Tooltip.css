@@ -1,15 +1,15 @@
 .tooltip {
-    display: inline-block;
+    display: inline-flex;
     position: relative;
     cursor: pointer;
     white-space: nowrap;
-    z-index: 0;
+    z-index: 100;
 }
 
 .tooltiptext {
     position: absolute;
     visibility: hidden;
-    z-index: 1000;
+    z-index: 1100;
     bottom: 100%;
     left: -50%;
     margin-bottom: 8px;
@@ -23,10 +23,16 @@
     transition: transform 0.2s, opacity 0.2s;
 }
 
-.tooltip .tooltiptext.show {
+.tooltip:hover .tooltiptext {
     visibility: visible;
     transform: scale(1);
+    transition-delay: 1.2s;
     opacity: 1;
+}
+
+.tooltiptext.right {
+    bottom: -50%;
+    left: 150%;
 }
 
 .tooltiptext.top::after {
@@ -49,4 +55,15 @@
     border-width: 4px;
     border-style: solid;
     border-color: transparent transparent transparent var(--btn-hover-gray);
+}
+
+.tooltiptext.right::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -4px;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent var(--btn-hover-gray) transparent transparent;
 }

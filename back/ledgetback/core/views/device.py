@@ -8,10 +8,16 @@ from rest_framework.status import (
 )
 from rest_framework.routers import Route, SimpleRouter
 from rest_framework.permissions import IsAuthenticated as CoreIsAuthenticated
+from rest_framework.views import APIView
+from django.conf import settings
 
 from core.serializers import DeviceSerializer
-from core.permissions import IsObjectOwner
+from core.permissions import IsObjectOwner, IsAuthenticated
 from core.models import Device
+
+
+BIRD_API_KEY = settings.BIRD_API_KEY
+BIRD_SIGNING_KEY = settings.BIRD_SIGNING_KEY
 
 
 def put_patch_not_allowed(func):
@@ -111,4 +117,14 @@ class DeviceViewSet(ModelViewSet):
 
     @put_patch_not_allowed
     def partial_update(self, request, *args, **kwargs):
+        pass
+
+
+class OtpView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self):
+        pass
+
+    def get(self):
         pass

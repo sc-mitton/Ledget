@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect, forwardRef } from "react"
+import React, { useState, useEffect } from "react"
 
 import { useNavigate } from "react-router-dom"
 import { AnimatePresence } from "framer-motion"
-import { object, string } from "yup"
+import { object, string, boolean } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from "react-hook-form"
+import { set, useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
 
 import './style/Login.css'
@@ -32,49 +32,37 @@ import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@feature
 
 const schema = object().shape({
     email: string().email("Invalid email address"),
+    remember: boolean()
 })
 
 const EmailForm = ({ flow, setEmail, socialSubmit }) => {
-    const { register, handleSubmit, formState: { errors } } =
+    const { register, handleSubmit, formState: { errors }, setFocus } =
         useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
-    const { ref, ...rest } = register('email')
-    const rememberRef = useRef()
-    const emailRef = useRef()
 
-    useEffect(() => {
-        flow && emailRef.current.focus()
-    }, [flow])
+    const submit = (data) => {
 
-    const submit = (e) => {
-        e.preventDefault()
-        if (emailRef.current.value === '') {
-            emailRef.current.focus()
+        if (data.remember) {
+            localStorage.setItem('loginEmail', JSON.stringify(data.email))
         } else {
-            if (rememberRef.current.checked) {
-                localStorage.setItem('loginEmail', JSON.stringify(emailRef.current.value))
-            } else {
-                localStorage.removeItem('loginEmail')
-            }
-            setEmail(emailRef.current.value)
+            localStorage.removeItem('loginEmail')
         }
+        setEmail(data.email)
     }
+
+    useEffect(() => { setFocus('email') }, [])
 
     return (
         <>
             <div className="window-header">
                 <h2>Sign in to Ledget</h2>
             </div>
-            <form onSubmit={handleSubmit((data, e) => submit(e))} className="login-form">
+            <form onSubmit={handleSubmit(submit)} className="login-form">
                 <div>
                     <PlainTextInput
                         type="email"
                         name="email"
                         placeholder="Email"
-                        {...rest}
-                        ref={(e) => {
-                            ref(e)
-                            emailRef.current = e
-                        }}
+                        {...register('email')}
                     />
                     {errors['email'] && <FormError msg={errors['email'].message} />}
                     <div id="remember-me-checkbox-container">
@@ -82,7 +70,7 @@ const EmailForm = ({ flow, setEmail, socialSubmit }) => {
                             id='remember'
                             label='Remember me'
                             name='remember'
-                            ref={rememberRef}
+                            {...register('remember')}
                         />
                     </div>
                     <GrnWideButton>Continue</GrnWideButton>
@@ -161,20 +149,15 @@ const Mfa = ({ finished }) => {
     )
 }
 
-const Password = forwardRef((props, ref) => {
-    useEffect(() => { ref.current?.focus() }, [])
-
-    return (
-        <div id="password-auth--container">
-            <PasswordInput ref={ref} />
-            <GrnWideButton name="method" value="password">
-                Sign In
-            </GrnWideButton>
-            {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
-        </div>
-    )
-})
-
+const Password = () => (
+    <div id="password-auth--container">
+        <PasswordInput autofocus required />
+        <GrnWideButton name="method" value="password">
+            Sign In
+        </GrnWideButton>
+        {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
+    </div>
+)
 
 const Login = () => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -183,7 +166,6 @@ const Login = () => {
     const [email, setEmail] = useState(null)
     const [showLoadingBar, setShowLoadingBar] = useState(false)
     const [finished, setFinished] = useState(false)
-    const pwdRef = useRef(null)
 
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
@@ -253,10 +235,6 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (pwdRef.current?.value === '') {
-            pwdRef.current?.focus()
-            return
-        }
 
         if (searchParams.get('aal')) {
             submit(e)
@@ -322,7 +300,7 @@ const Login = () => {
                             first={searchParams.get('mfa')}
                         >
                             <AuthForm>
-                                <Password ref={pwdRef} />
+                                <Password />
                                 <input type="hidden" name="identifier" value={email || ''} />
                             </AuthForm>
                         </SlideMotionDiv>

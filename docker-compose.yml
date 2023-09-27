@@ -96,6 +96,9 @@ services:
       - plaid_dev_api_key
       - plaid_sand_api_key
       - plaid_client_id
+      - bird_api_key
+      - bird_api_key_id
+      - bird_signing_key
     depends_on:
       - db
     ports:
@@ -118,6 +121,12 @@ secrets:
     file: ./secrets/postgres_user
   postgres_password:
     file: ./secrets/postgres_password
+  bird_api_key:
+    file: ./secrets/bird_dev_api_key
+  bird_api_key_id:
+    file: ./secrets/bird_dev_api_key_id
+  bird_signing_key:
+    file: ./secrets/bird_dev_signing_key
   stripe_webhook_secret:
     file: ./secrets/stripe_dev_webhook_secret
   stripe_api_key:

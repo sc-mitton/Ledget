@@ -14,19 +14,20 @@
     flex: 1;
     line-height: 1;
     margin: .2em;
-    padding: 6px 0px;
+    padding: 4px 0px;
     font-size: 1.5em;
     text-align: center;
     appearance: textfield;
     -webkit-appearance: textfield;
-    border: 2px solid var(--green-hlight3);
-    color: var(--m-green);
+    border: 2px solid transparent;
+    background-color: var(--green-hlight2);
+    color: var(--m-green-hover);
     border-radius: var(--border-radius2);
 }
 
 .otc input[type="text"]:focus {
     border: 2px solid var(--green-hlight3);
-    box-shadow: 0 2px 4px rgb(0, 0, 0, 0.12);
+    background-color: var(--window);
 }
 
 .otc input::-webkit-outer-spin-button,
@@ -49,10 +50,10 @@
 }
 
 .otc div::before {
-    width: 12px;
+    width: 8px;
     content: '';
     height: 3px;
-    margin: 0 .25em;
+    margin: 0 .2em;
     order: 1;
     background: var(--green-hlight3);
 }

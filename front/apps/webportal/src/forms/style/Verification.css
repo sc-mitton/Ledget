@@ -15,6 +15,7 @@
 
 #verification-form-container button {
     margin-top: 12px;
+    color: var(--green-dark3);
 }
 
 #verify-graphic--container {

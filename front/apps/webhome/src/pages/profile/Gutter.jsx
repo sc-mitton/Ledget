@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 import { animated } from '@react-spring/web'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import { Tooltip } from '@components/pieces'
 import { Profile1, Shield, Settings, Link } from '@ledget/shared-assets'
 import { usePillAnimation } from '@utils/hooks'
 import { useGetMeQuery } from '@features/userSlice'
@@ -40,9 +41,13 @@ const NavList = () => {
                 className={`slim side-nav-item${rootPath === route ? "-current" : ''}`}
                 aria-current={rootPath === route ? "page" : null}
             >
-                <div>
+                <Tooltip
+                    msg={route.charAt(0).toUpperCase() + route.slice(1)}
+                    ariaLabel={route.charAt(0).toUpperCase() + route.slice(1)}
+                    type="right"
+                >
                     <Icon name={route} />
-                </div>
+                </Tooltip>
                 <div>
                     {route.charAt(0).toUpperCase() + route.slice(1)}
                 </div>
@@ -68,9 +73,17 @@ const Profile = () => {
             id="profile"
             aria-current={location.pathname === "/profile/details" ? "page" : null}
         >
-            <div>
+            <Tooltip
+                msg={"Profile"}
+                ariaLabel={"Profile"}
+                type="right"
+                style={{
+                    bottom: '10%',
+                    left: '120%'
+                }}
+            >
                 <Profile1 width="1.6em" height="1.6em" />
-            </div>
+            </Tooltip>
             <div>
                 <span>{`${user?.name.first}'s`} Ledget</span>
                 <br />

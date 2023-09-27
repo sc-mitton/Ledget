@@ -80,10 +80,12 @@ const ChangePlanMenu = () => {
         <Menu>
             {({ open }) => (
                 <div style={{ position: 'relative' }}>
-                    <Menu.Button as={React.Fragment}>
-                        <GreenSlimArrowSubmit submitting={isLoading} rotate={0}>
-                            change
-                        </GreenSlimArrowSubmit>
+                    <Menu.Button
+                        as={GreenSlimArrowSubmit}
+                        submitting={isLoading}
+                        rotate={0}
+                    >
+                        change
                     </Menu.Button>
                     <DropAnimation visible={open} className="dropdown" id="change-plan--menu">
                         <Items />

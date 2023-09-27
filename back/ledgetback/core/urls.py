@@ -1,7 +1,11 @@
 from django.urls import path, include
 from core.views import service as service_views
 from core.views.user import UserView
-from core.views.device import DeviceViewSet, CustomDeviceRouter
+from core.views.device import (
+     DeviceViewSet,
+     CustomDeviceRouter,
+     OtpView
+)
 
 
 router = CustomDeviceRouter()
@@ -27,6 +31,9 @@ urlpatterns = [
 
      path('next_invoice', service_views.NextInvoice.as_view(),
           name='next_invoice'),
+
+     path('otp/', OtpView.as_view(), name='otp_create'),
+     path('otp/<str:otp_id>', OtpView.as_view(), name='otp_verify'),
 
      path('', include('budget.urls')),
      path('', include('financials.urls')),

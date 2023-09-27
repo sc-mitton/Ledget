@@ -47,7 +47,7 @@ const SmsAuth = ({ user }) => {
                             style={{ left: '-205%' }}
                         >
                             <PlusPill
-                                onClick={() => navigate('/profile/security/sms-verification-setup')}
+                                onClick={() => navigate('/profile/security/sms-setup')}
                             />
                         </Tooltip>
                     </div>

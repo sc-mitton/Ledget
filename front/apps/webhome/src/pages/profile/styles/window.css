@@ -139,10 +139,17 @@
     margin-bottom: 2px
 }
 
+#gutter .tooltiptext {
+    visibility: hidden;
+}
+
 
 /* Responsive */
 
 @media only screen and (max-width: 900px) {
+    #gutter .tooltiptext {
+        visibility: visible;
+    }
 
     #gutter {
         width: 52px;

@@ -17,6 +17,7 @@ filetype==1.2.0
 gprof2dot==2022.7.29
 idna==3.4
 mccabe==0.7.0
+messagebird==2.1.0
 nulltype==2.3.1
 Pillow==10.0.0
 plaid-python==14.0.0
