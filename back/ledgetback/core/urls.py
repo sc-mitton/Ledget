@@ -32,7 +32,7 @@ urlpatterns = [
      path('next_invoice', service_views.NextInvoice.as_view(),
           name='next_invoice'),
 
-     path('otp/', OtpView.as_view(), name='otp_create'),
+     path('otp', OtpView.as_view(), name='otp_create'),
      path('otp/<str:otp_id>', OtpView.as_view(), name='otp_verify'),
 
      path('', include('budget.urls')),

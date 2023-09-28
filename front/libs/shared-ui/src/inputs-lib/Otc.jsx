@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
-import "./style/Otc.css"
+import "./styles/Otc.css"
 
-function Otc({ codeLength, required }) {
+function Otc({ codeLength, required, colorful = true }) {
     const [inputStates, setInputStates] = useState([])
     const inputRefs = useRef([])
     const [code, setCode] = useState('')
@@ -104,7 +104,7 @@ function Otc({ codeLength, required }) {
     )
 
     return (
-        <div className="otc">
+        <div className={`otc ${colorful ? 'green' : 'gray'}`}>
             <fieldset>
                 <div>
                     {inputStates.map((input, index) => (
@@ -119,6 +119,7 @@ function Otc({ codeLength, required }) {
                             onChange={(e) => handleChange(e, index)}
                             onKeyDown={(e) => handleKeyDown(e, index)}
                             ref={(el) => (inputRefs.current[index] = el)}
+                            size={1}
                         />
                     ))}
                 </div>

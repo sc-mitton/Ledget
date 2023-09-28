@@ -140,7 +140,7 @@ const SuccessWindow = (props) => {
             </div>
             <div>
                 <GrnPrimaryButton
-                    onClick={() => { props.setVisible(false) }}
+                    onClick={() => { props.closeModal() }}
                     style={{ float: 'right' }}
                 >
                     OK

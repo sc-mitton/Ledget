@@ -1,21 +1,59 @@
-#sms-setup-form>div:first-child {
+#otp-setup-form>div:first-child {
     display: flex;
     flex-direction: column;
 }
 
-#sms-setup-form>div img {
-    height: 5.5rem;
+#otp-setup-form>div img {
+    height: 5rem;
     margin: 32px 0;
 }
 
-#sms-setup-form>div:last-child {
+#otp-setup-form>div:last-child {
     margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
 }
 
-#sms-setup-form>div:first-child>div:first-child {
+#otp-verify-form>div:last-child {
+    display: flex;
+    margin-top: 12px;
+    justify-content: center;
+}
+
+#otp-verify-form>div:last-child button {
+    width: 100%;
+    background-color: transparent;
+    color: var(--m-text-gray);
+    font-weight: 500;
+    background: transparent;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+#otp-verify-form>div:last-child button:hover {
+    font-weight: 400;
+    transition: all 0.3s ease-in-out;
+}
+
+#otp-verify-form>div:last-child button span {
+    position: absolute;
+    inset: 0;
+    margin: 0 auto;
+    background: radial-gradient(circle, var(--green-hlight2) 0%, var(--green-hlight2) 100%);
+    max-width: 50%;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+
+#otp-verify-form>div:last-child button:hover span {
+    opacity: 1;
+    max-width: 100%;
+    transition: all 0.2s ease-in-out;
+    z-index: -1;
+}
+
+#otp-setup-form>div:first-child>div:first-child {
     display: flex;
     justify-content: center;
 }

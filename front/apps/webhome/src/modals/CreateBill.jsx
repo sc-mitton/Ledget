@@ -77,7 +77,7 @@ const Form = (props) => {
     const watchRange = watch('range', false)
 
     useEffect(() => {
-        isSuccess && props.setVisible(false)
+        isSuccess && props.closeModal()
     }, [isSuccess])
 
     const submitForm = (e) => {
@@ -154,7 +154,7 @@ const Form = (props) => {
             </div>
             <SubmitForm
                 submitting={isLoading}
-                onCancel={() => props.setVisible(false)}
+                onCancel={() => props.closeModal()}
             />
         </form>
     )

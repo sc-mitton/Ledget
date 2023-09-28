@@ -35,7 +35,7 @@ const Modal = withSmallModal((props) => {
         let timeout
         if (updated) {
             timeout = setTimeout(() => {
-                props.setVisible(false)
+                props.closeModal()
             }, 1200)
         }
         return () => { clearTimeout(timeout) }

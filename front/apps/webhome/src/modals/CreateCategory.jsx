@@ -53,7 +53,7 @@ const Form = (props) => {
     }
 
     useEffect(() => {
-        isSuccess && props.setVisible(false)
+        isSuccess && props.closeModal()
     }, [isSuccess])
 
     return (
@@ -90,7 +90,7 @@ const Form = (props) => {
             </div>
             <SubmitForm
                 submitting={isLoading}
-                onCancel={() => props.setVisible(false)}
+                onCancel={() => props.closeModal()}
             />
         </form>
 

@@ -24,7 +24,7 @@ class IsAuthenticated(BasePermission):
         if request.user.mfa_method == 'totp':
             return device_aal == 'aal2' or session_aal == 'aal2'
         elif request.user.mfa_method == 'otp':
-            return True  # not implemented yet
+            return device_aal == 'aal1.5'
         else:
             return device_aal == 'aal1' or device_aal == 'aal2'
 

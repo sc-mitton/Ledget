@@ -57,7 +57,7 @@ class User(models.Model):
     password_last_changed = models.DateTimeField(null=True, default=timezone.now)
 
     mfa_method = models.CharField(choices=MfaMethod.choices,
-                                  null=True, default=MfaMethod.HOTP, max_length=4)
+                                  null=True, default=MfaMethod.OTP, max_length=4)
     mfa_enabled_on = models.DateTimeField(null=True, default=None)
     phone_number = models.CharField(max_length=20, null=True, default=None)
 
@@ -186,13 +186,17 @@ class Customer(models.Model):
 
 
 class Device(models.Model):
+    class Aal(models.TextChoices):
+        AAL1 = 'aal1', _('AAL1')
+        AAL15 = 'aal1.5', _('AAL1.5')
+        AAL2 = 'aal2', _('AAL2')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=100)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     location = models.CharField(max_length=100, editable=False)
-    aal = models.CharField(max_length=4, null=True, default=None)
+    aal = models.CharField(choices=Aal.choices, max_length=7, default=Aal.AAL1)
     last_login = models.DateTimeField(auto_now=True)
 
     # Parsed data from user agent

@@ -45,7 +45,7 @@ function Logout(props) {
     }, [logOutSuccess])
 
     useEffect(() => {
-        errorFetchingFlow && props.setVisible(false)
+        errorFetchingFlow && props.closeModal()
     }, [errorFetchingFlow])
 
     return (
@@ -56,7 +56,7 @@ function Logout(props) {
             </div>
             <div style={{ display: 'flex', 'justifyContent': 'end', marginTop: '8px' }}>
                 <SecondaryButton
-                    onClick={() => props.setVisible(false)}
+                    onClick={() => props.closeModal()}
                     aria-label="Cancel"
                 >
                     Cancel

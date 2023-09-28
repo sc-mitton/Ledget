@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
-import { useForm, useController, set } from 'react-hook-form'
+import { set, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 
@@ -13,6 +13,7 @@ import { withReAuth } from '@utils'
 import {
     useCreateOtpMutation,
     useVerifyOtpMutation,
+    useGetMeQuery,
 } from '@features/userSlice'
 import {
     BackButton,
@@ -24,15 +25,19 @@ import {
     JiggleDiv,
     SlideMotionDiv,
     KeyPadGraphic,
+    SmsVerifyStatus,
+    Otc
 } from '@ledget/shared-ui'
 
 
 const schema = object().shape({
-    phone: string().required('required')
+    phone: string().required('required').transform((value) =>
+        value.replace(/[^0-9]/g, '')
+    )
 })
 
 const SmsAdd = (props) => {
-    const [addOtp, { isLoading: addOtpLoading, isError: addOtpError }] = useCreateOtpMutation()
+    const [addOtp, { data: result, isLoading, isSuccess, isError }] = useCreateOtpMutation()
     const [searchParams, setSearchParams] = useSearchParams()
     const [value, setValue] = useState('')
 
@@ -43,10 +48,8 @@ const SmsAdd = (props) => {
     })
     const { onChange: formChange, ...rest } = register('phone')
 
-
     const handleAutoFormat = (e) => {
         const { value } = e.target
-        console.log(value)
         // Auto format like (000) 000-0000 and only except numbers
         let formatted = value.replace(/[^0-9]/g, '')
         formatted = formatted.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')
@@ -55,10 +58,15 @@ const SmsAdd = (props) => {
     }
 
     const onSubmit = (data) => {
-        searchParams.set('step', 'verify')
-        setSearchParams(searchParams)
-
+        addOtp({ data: data })
     }
+
+    useEffect(() => {
+        if (isSuccess) {
+            searchParams.set('id', result.id)
+            setSearchParams(searchParams)
+        }
+    }, [isSuccess])
 
     useEffect(() => { setFocus('phone') }, [])
 
@@ -67,7 +75,7 @@ const SmsAdd = (props) => {
             <h2>Text Message</h2>
             <h4>2-Step Verification Setup</h4>
             <form
-                id="sms-setup-form"
+                id="otp-setup-form"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div >
@@ -90,16 +98,16 @@ const SmsAdd = (props) => {
                         {...rest}
                         autoFocus
                     />
-                    {addOtpError && <FormError msg={'Check your number and try again please.'} />}
+                    {isError && <FormError msg={'Check your number and try again please.'} />}
                 </div>
                 <div>
                     <SecondaryButton
                         type="button"
-                        onClick={() => { props.setVisible(false) }}
+                        onClick={() => { props.closeModal() }}
                     >
                         Cancel
                     </SecondaryButton>
-                    <GreenSubmitWithArrow loading={addOtpLoading}>
+                    <GreenSubmitWithArrow submitting={isLoading}>
                         Next
                     </GreenSubmitWithArrow>
                 </div>
@@ -109,31 +117,119 @@ const SmsAdd = (props) => {
 }
 
 const SmsVerify = (props) => {
-    return (
-        <JiggleDiv>
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [verifyOtp, { isLoading, isSucess, isError }] = useVerifyOtpMutation()
 
+    const onSubmit = (e) => {
+        const data = Object.fromEntries(new FormData(e.target))
+        verifyOtp({
+            data: { 'code': data.code },
+            id: searchParams.get('id')
+        })
+    }
+
+    useEffect(() => {
+        let timeout
+        if (isSucess) {
+            timeout = setTimeout(() => {
+                props.closeModal()
+            }, 1200)
+        }
+    }, [isSucess])
+
+    return (
+        <JiggleDiv jiggle={isError}>
+            <h3>Enter the code we texted you</h3>
+            <div >
+                <BackButton
+                    onClick={() => {
+                        searchParams.delete('id')
+                        setSearchParams(searchParams)
+                    }}
+                />
+            </div>
+            <form
+                id="otp-verify-form"
+                onSubmit={onSubmit}
+            >
+                <div >
+                    <div>
+                        <SmsVerifyStatus />
+                    </div>
+                    <Otc colorful={false} />
+                </div>
+                <div>
+                    <GreenSubmitButton
+                        submitting={isLoading}>
+                        Verify
+                        <span />
+                    </GreenSubmitButton>
+                </div>
+            </form>
         </JiggleDiv>
     )
 }
 
 const SmsSetup = (props) => {
-    const [searchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
     const [loaded, setLoaded] = useState(false)
+    const { data: user } = useGetMeQuery()
 
-    useEffect(() => { setLoaded(true) }, [])
+    useEffect(() => {
+        if (user.mfa_method !== 'totp') {
+            searchParams.set('continue', true)
+            setSearchParams(searchParams)
+        }
+        setLoaded(true)
+    }, [])
 
     return (
         <div>
             <AnimatePresence mode="wait">
-                {searchParams.get('step') === 'verify'
+                {/* Step 1: Confirm Step in case user has authenticator app */}
+                {!searchParams.get('continue')
                     ?
-                    <SlideMotionDiv last>
-                        <SmsVerify props={props} />
+                    <SlideMotionDiv first={loaded}>
+                        <h2>Are you sure?</h2>
+                        <div style={{ margin: '12px 0' }}>
+                            Adding text message verification will
+                            remove your authenticator app.
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                            <SecondaryButton
+                                type="button"
+                                onClick={() => props.closeModal()}
+                            >
+                                Cancel
+                            </SecondaryButton>
+                            <GreenSubmitWithArrow
+                                onClick={() => {
+                                    searchParams.set('continue', true)
+                                    setSearchParams(searchParams)
+                                }}
+                            >
+                                Continue
+                            </GreenSubmitWithArrow>
+                        </div>
                     </SlideMotionDiv>
                     :
-                    <SlideMotionDiv first={loaded}>
-                        <SmsAdd props={props} />
-                    </SlideMotionDiv>
+                    <>
+                        {!searchParams.get('id')
+                            ?
+                            // Step 2: Add Phone Number
+                            <SlideMotionDiv
+                                first={Boolean(searchParams.get('id'))}
+                                last={!Boolean(searchParams.get('id'))}
+                            >
+                                <SmsAdd {...props} />
+                            </SlideMotionDiv>
+                            :
+                            // Step 3: Confirm Code
+                            <SlideMotionDiv last>
+                                <SmsVerify {...props} />
+                            </SlideMotionDiv>
+                        }
+                    </>
                 }
             </AnimatePresence>
         </div>

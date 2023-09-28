@@ -34,7 +34,7 @@ const DeactivateAuthenticator = (props) => {
         if (isCompleteSuccess) {
             updateUser({ data: { mfa_method: null } })
             timeout = setTimeout(() => {
-                props.setVisible(false)
+                props.closeModal()
             }, 1000)
         }
         return () => clearTimeout(timeout)
@@ -50,7 +50,7 @@ const DeactivateAuthenticator = (props) => {
                     {!errMsg && (isCompleteError || errorFetchingFlow) &&
                         <FormError msg={"Something went wrong, please try again later."} />}
                     <div>
-                        <SecondaryButton onClick={() => props.setVisible(false)}>
+                        <SecondaryButton onClick={() => props.closeModal()}>
                             Cancel
                         </SecondaryButton>
                         <GreenSubmitButton

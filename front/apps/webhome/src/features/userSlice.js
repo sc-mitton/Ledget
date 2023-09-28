@@ -10,6 +10,16 @@ const userSlice = createSlice({
         resetAuthedAt: (state) => {
             state.reAuthedAt = Date.now()
         }
+    },
+    extraReducers: (builder) => {
+        builder.addMatcher(
+            apiSlice.endpoints.getMe.matchFulfilled,
+            (state, action) => {
+                if (Date.now() - Date.parse(action.payload.last_login) < 1000 * 60 * 9) {
+                    state.reAuthedAt = Date.now()
+                }
+            }
+        )
     }
 })
 export const { resetAuthedAt } = userSlice.actions
@@ -18,7 +28,7 @@ export const userReducer = userSlice.reducer
 // reauth is fresh if it happened less than 9 minutes ago
 // (subtracted 1 min to be safe)
 export const selectSessionIsFresh = (state) => {
-    return state.user.reAuthedAt && Date.now() - state.user.reAuthedAt < 9 * 60 * 1000
+    return state.user.reAuthedAt && Date.now() - state.user.reAuthedAt < 1000 * 60 * 9
 }
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
@@ -110,6 +120,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
+            transformResponse: response => response.data
         }),
         verifyOtp: builder.mutation({
             query: ({ data, id }) => ({

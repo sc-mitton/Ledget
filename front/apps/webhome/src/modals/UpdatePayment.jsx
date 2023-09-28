@@ -54,7 +54,7 @@ const Modal = withModal((props) => {
     }, [isUpdatingPayment])
 
     useEffect(() => {
-        updateSuccess && props.setVisible(false)
+        updateSuccess && props.closeModal()
     }, [updateSuccess])
 
     const confirmSetup = async (data) => {
@@ -122,7 +122,7 @@ const Modal = withModal((props) => {
                 </div>
                 <SubmitForm
                     submitting={submitting}
-                    onCancel={() => props.setVisible(false)}
+                    onCancel={() => props.closeModal()}
                 />
             </form>
         </>

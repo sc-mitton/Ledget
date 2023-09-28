@@ -19,6 +19,7 @@ import {
 } from '@ledget/shared-ui'
 import { useFlow } from '@ledget/ory-sdk'
 
+
 const row1Style = { marginTop: '20px', fontWeight: '500', marginLeft: '2px' }
 const row2Style = { margin: '16px 0 28px 0' }
 
@@ -135,27 +136,18 @@ const ReAuthModal = withSmallModal((props) => {
                 timeout = setTimeout(() => {
                     dispatch({ type: 'user/resetAuthedAt' })
                     setSearchParams({})
-                    props.setVisible(false)
+                    props.closeModal()
                 }, 1000)
             } else if (finishedCase1) {
                 dispatch({ type: 'user/resetAuthedAt' })
                 setSearchParams({})
-                props.setVisible(false)
+                props.closeModal()
             } else if (aal === 'aal1') {
                 fetchFlow({ aal: 'aal2', refresh: true })
             }
         }
         return () => clearTimeout(timeout)
     }, [isCompleteSuccess])
-
-    // Close modal after 9 minute timeout
-    // to avoid submitting expired flows
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            props.setVisible(false)
-        }, 60 * 9 * 1000)
-        return () => clearTimeout(timeout)
-    }, [])
 
     return (
         <form onSubmit={submit}>
@@ -186,7 +178,7 @@ const ReAuthModal = withSmallModal((props) => {
             </AnimatePresence >
             {errorFetchingFlow && <ErrorFetchingFlow />}
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <SecondaryButton onClick={() => props.setVisible(false)}>
+                <SecondaryButton onClick={() => props.closeModal()}>
                     Cancel
                 </SecondaryButton>
                 <GreenSubmitWithArrow
@@ -214,17 +206,25 @@ export default function withReAuth(Component) {
 
     return (props) => {
         const [continueToComponent, setContinueToComponent] = useState(false)
-        const sessionIsFresh = useSelector(selectSessionIsFresh)
+        const reAuthedAt = useSelector((state) => state.user.reAuthedAt)
 
         // Continue to modal if session is fresh,
         // if it's stale, the user will be shown
         // the reauth prompts
         useEffect(() => {
-            let timeout = setTimeout(() => {
-                setContinueToComponent(sessionIsFresh)
-            }, 200)
-            return () => clearTimeout(timeout)
-        }, [sessionIsFresh])
+            const sessionIsFresh = Date.now() - reAuthedAt < 1000 * 60 * 9
+            let interval
+
+            if (sessionIsFresh) {
+                setContinueToComponent(true)
+                interval = setInterval(() => {
+                    const isFreshCheck = Date.now() - reAuthedAt < 1000 * 60 * 9
+                    !isFreshCheck && props.onClose()
+                }, [1000])
+            }
+
+            return () => clearInterval(interval)
+        }, [reAuthedAt])
 
         return (
             <>
@@ -233,14 +233,8 @@ export default function withReAuth(Component) {
                     hideModal={!continueToComponent}
                 />
                 <ReAuthModal
-                    onClose={() => {
-                        if (!sessionIsFresh && props.onClose) {
-                            props.onClose()
-                        }
-                    }}
-                    hideModal={sessionIsFresh}
-                    hideOverlay={sessionIsFresh}
-                    hasOverlay={false}
+                    hideAll={continueToComponent}
+                    hasOverlay={props.reAuthOverlay ?? false}
                     blur={1}
                 />
             </>

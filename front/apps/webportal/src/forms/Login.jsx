@@ -151,7 +151,7 @@ const Mfa = ({ finished }) => {
 
 const Password = () => (
     <div id="password-auth--container">
-        <PasswordInput autofocus required />
+        <PasswordInput autoFocus required />
         <GrnWideButton name="method" value="password">
             Sign In
         </GrnWideButton>

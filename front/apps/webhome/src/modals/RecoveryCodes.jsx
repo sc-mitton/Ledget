@@ -106,14 +106,14 @@ export const Content = (props) => {
     // Close on any errors fetching flow or codes
     useEffect(() => {
         if (secretsSavedError || codesFetchError) {
-            props.setVisible(false)
+            props.closeModal()
         }
     }, [secretsSavedError, codesFetchError])
 
     // Close once the codes have been saved (only if not in authenticator setup)
     useEffect(() => {
         if (secretsAreConfirmed && !location.pathname.includes('authenticator-setup')) {
-            props.setVisible(false)
+            props.closeModal()
         }
     }, [secretsAreConfirmed])
 
@@ -157,7 +157,7 @@ export const Content = (props) => {
                     <SecondaryButton
                         type="button"
                         className="recovery-codes-button"
-                        onClick={() => props.setVisible(false)}
+                        onClick={() => props.closeModal()}
                     >
                         Cancel
                     </SecondaryButton>

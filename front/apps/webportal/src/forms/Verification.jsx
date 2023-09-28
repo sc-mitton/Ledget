@@ -5,9 +5,8 @@ import { useNavigate } from "react-router-dom"
 import "./style/Verification.css"
 import CsrfToken from "./inputs/CsrfToken"
 import ResendButton from "./inputs/ResendButton"
-import Otc from "./Otc"
 import { WindowLoadingBar } from "@pieces"
-import { GrnWideButton, FormError, JiggleDiv, StatusPulse } from "@ledget/shared-ui"
+import { GrnWideButton, FormError, JiggleDiv, StatusPulse, Otc } from "@ledget/shared-ui"
 import { VerifyEmail } from '@ledget/shared-assets'
 import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'

@@ -250,8 +250,6 @@ const Form = ({ children }) => {
         let body = Object.fromEntries(formData)
         body = { ...body, ...data }
 
-        console.log(body)
-
         // Extract alerts
         let alerts = []
         for (const [key, value] of Object.entries(body)) {

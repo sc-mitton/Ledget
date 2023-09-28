@@ -4,10 +4,9 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from "framer-motion"
 
 import './style/Recovery.css'
-import Otc from './Otc'
 import { WindowLoadingBar } from '@pieces'
 import { ledgetapi } from "@api"
-import { FormError, GrnWideButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse } from '@ledget/shared-ui'
+import { FormError, GrnWideButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc } from '@ledget/shared-ui'
 import forgotPassword from '@assets/images/forgotPassword.svg'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory-sdk'

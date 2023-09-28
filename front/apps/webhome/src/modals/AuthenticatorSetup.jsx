@@ -116,7 +116,7 @@ const Authenticator = (props) => {
         if (codeMode) {
             setCodeMode(false)
         } else if (searchParams.get('step') === 'setup') {
-            props.setVisible(false)
+            props.closeModal()
         } else if (searchParams.get('step') === 'confirm') {
             searchParams.set('step', 'setup')
             setSearchParams(searchParams)
@@ -189,7 +189,7 @@ const Authenticator = (props) => {
                     {!searchParams.get('step') &&
                         searchParams.get('lookup_secret_regenerate') &&
                         <SlideMotionDiv key="lookup-secrets" last>
-                            <RecoveryCodes setVisible={props.setVisible} />
+                            <RecoveryCodes closeModal={() => props.closeModal()} />
                         </SlideMotionDiv>
                     }
                 </AnimatePresence>

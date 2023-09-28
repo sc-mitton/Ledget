@@ -38,6 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
         read_only=True)
     session_aal = serializers.SerializerMethodField(read_only=True)
     password_last_changed = serializers.CharField(required=False)
+    last_login = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -96,6 +97,12 @@ class UserSerializer(serializers.ModelSerializer):
                 'interval': sub.plan.interval,
             }
         }
+
+    def get_last_login(self, obj):
+        if obj.device:
+            return obj.device.last_login
+        else:
+            return None
 
     @stripe_error_handler
     def get_stripe_subscription(self, customer_id):
@@ -207,11 +214,26 @@ class DeviceSerializer(serializers.ModelSerializer):
 
 
 class OtpSerializer(serializers.Serializer):
-    phone_number = serializers.CharField(required=False)
+    phone = serializers.CharField(required=False)
     code = serializers.CharField(required=False)
 
-    def validate_phone_number(self, value):
-        return len(value) > 0 and len(value) <= 20
+    def validate_phone(self, value):
+        if not len(value) > 0 and len(value) <= 20:
+            raise ValidationError('Invalid phone number.')
+        return value
 
     def validate_code(self, value):
-        return len(value) == 6
+        if len(value) != 6:
+            raise ValidationError('Invalid code.')
+        return value
+
+    def get_field_kwargs(self, field_name):
+        '''Make phone required on post, and code required on get'''
+
+        kwargs = super().get_field_kwargs(field_name)
+        if self.context['request'].method == 'POST':
+            kwargs['required'] = field_name == 'phone'
+        elif self.context['request'].method == 'GET':
+            kwargs['required'] = field_name == 'code'
+
+        return kwargs

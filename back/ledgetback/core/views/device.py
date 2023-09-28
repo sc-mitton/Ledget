@@ -9,7 +9,7 @@ from rest_framework.status import (
 )
 from rest_framework.routers import Route, SimpleRouter
 from rest_framework.permissions import IsAuthenticated as CoreIsAuthenticated
-from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from django.conf import settings
 import messagebird
 
@@ -123,30 +123,34 @@ class DeviceViewSet(ModelViewSet):
         pass
 
 
-class OtpView(APIView):
+class OtpView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = OtpSerializer
 
     def post(self, request, *arg, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        print(serializer.validated_data['phone'])
+
         try:
             verify = mbird_client.verify_create(
-                recipient=request.data.phone_number,
-                type='tts',
-                template="Your verification code for Ledget is %token."
+                recipient=serializer.validated_data['phone'],
             )
         except messagebird.client.ErrorException as e:
             return Response(
-                {'error': f'{e.errors[0].description}'},
-                HTTP_400_BAD_REQUEST
+                {'error': e.message},
+                status=HTTP_400_BAD_REQUEST
             )
 
-        return Response({'data': {id: verify.id}}, HTTP_200_OK)
+        return Response({'data': {'id': verify.id}}, HTTP_200_OK)
 
     def get(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
         id = kwargs.get('otp_id')
         try:
-            verify = mbird_client.verify.verify(id, request.data.otp)
+            verify = mbird_client.verify.verify(id, serializer.validated_data['code'])
         except Exception as e: # noqa
             return Response(
                 {'error': 'Invalid OTP'},
@@ -160,5 +164,7 @@ class OtpView(APIView):
 
         self.request.user.phone_number = verify.recipient
         self.request.user.mfa_method = 'otp'
+        self.request.user.device.aal = 'aal1.5'
         self.request.user.save()
+
         return Response({'data': {id: verify.id}}, HTTP_200_OK)

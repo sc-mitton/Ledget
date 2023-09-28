@@ -199,10 +199,18 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
-    id: 'otp',
+    id: 'otp_create',
     match: {
-      methods: ['POST', 'GET'],
-      url: base_url + '/(otp|otp\/[0-9a-zA-Z-]+)',
+      methods: ['POST'],
+      url: base_url + '/otp',
+    }
+  },
+  GenericAuthedBase
+  {
+    id: 'otp_verify',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/otp/<[a-zA-Z0-9-]+>',
     }
   }
 ]

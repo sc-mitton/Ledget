@@ -4,7 +4,7 @@ import { useTransition, animated } from '@react-spring/web'
 
 import './styles/pieces.css'
 import { Alert2 } from '@ledget/shared-assets'
-import { CheckMark } from '@ledget/shared-assets'
+import { CheckMark, SmsAuthIcon } from '@ledget/shared-assets'
 import authenticator from '@ledget/shared-assets/src/images/authenticator.svg'
 import recoveryCodeGraphic from '@ledget/shared-assets/src/images/recoveryCodeGraphic.svg'
 import { shuffleArray } from '@ledget/shared-utils'
@@ -141,16 +141,12 @@ export const TotpAppGraphic = (props) => {
     )
 }
 
-export const RecoveryCodeGraphic = (props) => {
-    const { finished } = props
-
-    return (
-        <div className="auth-factor-status-graphic">
-            <img src={recoveryCodeGraphic} alt="Authenticator" />
-            <StatusPulse positive={finished} size="medium-large" />
-        </div>
-    )
-}
+export const RecoveryCodeGraphic = (props) => (
+    <div className="auth-factor-status-graphic">
+        <img src={recoveryCodeGraphic} alt="Authenticator" />
+        <StatusPulse positive={props.finished} size="medium-large" />
+    </div>
+)
 
 
 export const KeyPadGraphic = (props) => {
@@ -173,3 +169,20 @@ export const KeyPadGraphic = (props) => {
         </div>
     )
 }
+
+export const SmsVerifyStatus = (props) => (
+    <div className="sms-verify-status">
+        {props.finished &&
+            <div id="success-checkmark">
+                <CheckMark
+                    stroke={'var(--green-hlight'}
+                />
+            </div>
+        }
+        <SmsAuthIcon
+            width={'3.5em'}
+            height={'3.5em'}
+        />
+        <StatusPulse positive={props.finished} size="medium" />
+    </div>
+)

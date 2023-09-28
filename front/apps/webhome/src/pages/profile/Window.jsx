@@ -60,7 +60,7 @@ function Profile() {
                             <Route path="authenticator-setup" element={<AuthenticatorSetup />} />
                             <Route path="change-password" element={<ChangePassword />} />
                             <Route path="recovery-codes" element={<RecoveryCodes />} />
-                            <Route path="sms-setup" element={<SmsSetup />} />
+                            <Route path="otp-setup" element={<SmsSetup />} />
                         </Route>
                     </Routes>
                 </motion.div>

@@ -1,6 +1,7 @@
 .input-container {
     background-color: var(--input-color);
     border-radius: var(--border-radius2);
+    border: solid 1px rgb(0, 0, 0, .02);
     padding: 10px 16px;
     margin: 6px 0;
     box-sizing: border-box;
@@ -68,6 +69,7 @@
 .card-container {
     background-color: var(--input-color);
     border-radius: var(--border-radius2);
+    border: solid 1px rgb(0, 0, 0, .02);
     z-index: 0;
     padding: 16px 16px;
     margin: 4px 0;

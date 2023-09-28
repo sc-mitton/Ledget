@@ -40,7 +40,7 @@ const ChangePassword = (props) => {
         let timeout
         if (isCompleteSuccess) {
             timeout = setTimeout(() => {
-                props.setVisible(false)
+                props.closeModal()
             }, 1000)
         }
         return () => clearTimeout(timeout)
@@ -95,7 +95,7 @@ const ChangePassword = (props) => {
                 <SubmitForm
                     name="method"
                     value="password"
-                    onCancel={() => { props.setVisible(false) }}
+                    onCancel={() => { props.closeModal() }}
                     submitting={isCompletingFlow}
                     success={isCompleteSuccess}
                 />

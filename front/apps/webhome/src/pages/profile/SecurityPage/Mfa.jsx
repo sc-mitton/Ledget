@@ -47,7 +47,7 @@ const SmsAuth = ({ user }) => {
                             style={{ left: '-205%' }}
                         >
                             <PlusPill
-                                onClick={() => navigate('/profile/security/sms-setup')}
+                                onClick={() => navigate('/profile/security/otp-setup')}
                             />
                         </Tooltip>
                     </div>
@@ -109,13 +109,13 @@ const RecoveryCodes = () => {
     const navigate = useNavigate()
 
     return (
-        <div id="recovery-codes-buttons--container">
+        <div id="recovery-codes-btns--container">
             <span>Recovery Codes</span>
-            <div id="recovery-codes-buttons">
+            <div id="recovery-codes-btns">
                 <Tooltip
                     msg={"Generate new codes"}
                     ariaLabel={"Generate new recovery codes"}
-                    style={{ left: '-260%' }}
+                    style={{ left: '-168%' }}
                 >
                     <IconScaleButton
                         onClick={() => {
@@ -131,7 +131,7 @@ const RecoveryCodes = () => {
                 <Tooltip
                     msg={"Show recovery codes"}
                     ariaLabel={"Show recovery codes"}
-                    style={{ left: '-220%' }}
+                    style={{ left: '-147%' }}
                 >
                     <IconScaleButton
                         onClick={() => {

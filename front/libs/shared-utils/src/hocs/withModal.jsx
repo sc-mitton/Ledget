@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
 import './modal.css'
@@ -9,10 +9,10 @@ function withModal(WrappedComponent) {
     return (props) => {
         const {
             onClose = () => { },
+            hideAll = false,
+            hideModal = false,
             hasOverlay = true,
             hasExit = true,
-            hideModal = false,
-            hideOverlay = false,
             overLayExit = true,
             focusOnMount = true,
             width = '70%',
@@ -24,13 +24,13 @@ function withModal(WrappedComponent) {
             ...rest
         } = props
 
-        const [visible, setVisible] = useState(true)
+        const [closeAll, setCloseAll] = useState(false)
         const modalRef = useRef(null)
 
         useAccessEsc({
             refs: overLayExit ? [modalRef] : [],
-            visible: visible,
-            setVisible: setVisible,
+            visible: closeAll,
+            setVisible: () => setCloseAll(true),
         })
 
         const backgroundConfig = {
@@ -44,10 +44,10 @@ function withModal(WrappedComponent) {
             justifyContent: 'center',
             alignItems: 'center',
             background: hasOverlay ? 'rgba(49, 49, 49, 0.7)' : 'transparent',
-            backdropFilter: hasOverlay ? `blur(${blur}px)` : 'none'
+            backdropFilter: hasOverlay ? `blur(${blur}px)` : 'none',
         }
 
-        const backgroundTransitions = useTransition(visible && !hideOverlay, {
+        const backgroundTransitions = useTransition(!closeAll && !hideAll, {
             from: { opacity: 0 },
             enter: { opacity: 1, ...backgroundConfig },
             leave: { opacity: 0 },
@@ -68,7 +68,7 @@ function withModal(WrappedComponent) {
             ...style
         }
 
-        const modalContainerTransitions = useTransition(visible && !hideModal, {
+        const modalContainerTransitions = useTransition(!closeAll && !hideModal && !hideAll, {
             from: {
                 opacity: 0,
                 scale: 0.92,
@@ -103,15 +103,14 @@ function withModal(WrappedComponent) {
                                     >
                                         {hasExit &&
                                             <CloseButton
-                                                onClick={() => setVisible(false)}
+                                                onClick={() => setCloseAll(true)}
                                                 aria-label="Close modal"
                                                 style={{ zIndex: zIndex + 2 }}
                                             />
                                         }
                                         <WrappedComponent
                                             {...rest}
-                                            visible={visible}
-                                            setVisible={setVisible}
+                                            closeModal={() => setCloseAll(true)}
                                         />
                                     </animated.div>
                                 )

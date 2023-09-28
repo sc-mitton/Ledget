@@ -369,11 +369,6 @@
     transition: transform .3s ease;
 }
 
-.scale-icon-btn:focus {
-    outline: none;
-    box-shadow: none;
-}
-
 .scale-icon-btn svg {
     max-width: 0;
     margin: 0;
@@ -446,7 +441,6 @@ button.disabled-hover:hover svg {
 
 .back-btn {
     width: auto;
-    float: left;
     padding-left: 6px;
     margin-left: -8px;
 }
