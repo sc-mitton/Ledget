@@ -167,3 +167,10 @@ export const DeleteButton = ({ className, ...rest }) => (
     <Delete width={'1.3em'} height={'1.3em'} />
   </button>
 )
+
+export const GreenGrowButton = withLoading(({ children, ...rest }) => (
+  <button className="btn-grow" {...rest}>
+    <span />
+    {children}
+  </button>
+))

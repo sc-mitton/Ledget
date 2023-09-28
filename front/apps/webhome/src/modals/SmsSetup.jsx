@@ -18,7 +18,7 @@ import {
 import {
     BackButton,
     GreenSubmitWithArrow,
-    GreenSubmitButton,
+    GreenGrowButton,
     SecondaryButton,
     PlainTextInput,
     FormError,
@@ -163,11 +163,9 @@ const SmsVerify = (props) => {
                     <Otc colorful={false} />
                 </div>
                 <div>
-                    <GreenSubmitButton
-                        submitting={isLoading}>
+                    <GreenGrowButton submitting={isLoading}>
                         Verify
-                        <span />
-                    </GreenSubmitButton>
+                    </GreenGrowButton>
                 </div>
             </form>
         </JiggleDiv>

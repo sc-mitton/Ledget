@@ -4,7 +4,8 @@ from .views import (
     StripeHookView,
     OryRegistrationHook,
     OrySettingsPasswordHook,
-    OryVerificationHook
+    OryVerificationHook,
+    OrySettingsProfileHook
 )
 
 urlpatterns = [
@@ -12,7 +13,7 @@ urlpatterns = [
     path('ory/registration', OryRegistrationHook.as_view(), name='ory_register_hook'),
     path('ory/settings/password', OrySettingsPasswordHook.as_view(),
          name='ory_settings_password_hook'),
-    path('ory/settings/profile', OrySettingsPasswordHook.as_view(),
+    path('ory/settings/profile', OrySettingsProfileHook.as_view(),
          name='ory_settings_password_hook'),
     path('ory/verification', OryVerificationHook.as_view(),
          name='ory_verification_hook')

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useNavigate } from "react-router-dom"
 
 const formatErrorMessages = (errorMessages) => {
     const filteredMessages = []
@@ -28,6 +28,8 @@ const extractData = (event) => {
     const form = event.target
     const formData = new FormData(form)
     let body = Object.fromEntries(formData)
+
+    // remove empty values
     body = Object.fromEntries(Object.entries(body).filter(([_, v]) => v !== ""))
 
     // We need the method specified from the name and value of the submit button.
@@ -48,6 +50,7 @@ function useFlow(query, mutation, flowType) {
     const [errMsg, setErrMsg] = useState('')
     const [errId, setErrId] = useState('')
     const [searchParams, setSearchParams] = useSearchParams()
+    const navigate = useNavigate()
 
     const [
         getFlow,
@@ -142,20 +145,26 @@ function useFlow(query, mutation, flowType) {
             case 401: {
                 console.warn("sdkError 401")
             }
+            case 403: {
+                // Session is too old usually, and we need to start a new flow
+                console.warn("sdkError 403")
+                navigate(0)
+            }
             case 422: {
-                if (errorData.redirect_browser_to !== undefined) {
-                    const currentUrl = new URL(window.location.href)
+                console.log("sdkError 422")
+                // if (errorData.redirect_browser_to !== undefined) {
+                //     const currentUrl = new URL(window.location.href)
 
-                    // need to add the base url since the `redirect_browser_to`
-                    // is a relative url with no hostname
-                    const redirect = new URL(errorData.redirect_browser_to, window.location.origin)
+                //     // need to add the base url since the `redirect_browser_to`
+                //     // is a relative url with no hostname
+                //     const redirect = new URL(errorData.redirect_browser_to, window.location.origin)
 
-                    // If hostnames are differnt, redirect to the redirect url
-                    if (currentUrl.hostname !== redirect.hostname) {
-                        console.warn("sdkError 422: Redirect browser to")
-                        window.location.href = errorData.redirect_browser_to
-                    }
-                }
+                //     // If hostnames are differnt, redirect to the redirect url
+                //     if (currentUrl.hostname !== redirect.hostname) {
+                //         console.warn("sdkError 422: Redirect browser to")
+                //         window.location.href = errorData.redirect_browser_to
+                //     }
+                // }
             }
             case 200:
                 break

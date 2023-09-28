@@ -2,7 +2,6 @@ import React, { useEffect, useLayoutEffect, useState, useRef } from 'react'
 
 import { Routes, Outlet, Navigate, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useDispatch } from 'react-redux'
 
 import Header from './Header'
 import Budget from '@pages/budget/Window'

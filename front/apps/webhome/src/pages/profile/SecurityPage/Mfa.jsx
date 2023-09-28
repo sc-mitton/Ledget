@@ -163,7 +163,7 @@ const Mfa = () => {
                 }}
             >
                 <h3>Multi-Factor</h3>
-                <RecoveryCodes />
+                {user.mfa_method === 'totp' && <RecoveryCodes />}
             </div>
             <div className="inner-window" id="mfa-options--container">
                 <AuthenticatorApp user={user} />

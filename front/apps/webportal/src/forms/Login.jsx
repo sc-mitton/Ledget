@@ -175,9 +175,9 @@ const Login = () => {
 
     const [email, setEmail] = useState(null)
 
+    const [createOtp, { data: otp, isLoading: creatingOtp, isSuccess: createdOtp }] = useCreateOtpMutation()
     const [verifyOtp, { isSuccess: otpVerified, isLoading: verifyingOtp, isError: isOtpVerifyError }] = useVerifyOtpMutation()
     const [refreshDevices, { isLoading: isRefreshingDevices, isSuccess: devicesRefreshedSuccess }] = useRefreshDevicesMutation()
-    const [createOtp, { data: otp, isLoading: creatingOtp, isSuccess: createdOtp }] = useCreateOtpMutation()
 
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,

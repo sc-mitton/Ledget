@@ -37,6 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
     service_provisioned_until = serializers.SerializerMethodField(
         read_only=True)
     session_aal = serializers.SerializerMethodField(read_only=True)
+    highest_aal = serializers.SerializerMethodField(read_only=True)
     password_last_changed = serializers.CharField(required=False)
     last_login = serializers.SerializerMethodField(read_only=True)
 
@@ -71,6 +72,14 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_session_aal(self, obj):
         return obj.session_aal
+
+    def get_highest_aal(self, obj):
+        if obj.mfa_method == 'totp':
+            return 'aal2'
+        elif obj.mfa_method == 'otp':
+            return 'aal15'
+        else:
+            return 'aal1'
 
     def get_subscription(self, obj):
         # If patch method, return early to avoid Stripe API call

@@ -4,24 +4,44 @@ import { createSlice } from '@reduxjs/toolkit'
 const userSlice = createSlice({
     name: 'user',
     initialState: {
-        reAuthedAt: null
+        reAuthed: {
+            level: 'none',
+            at: null,
+        }
     },
     reducers: {
-        resetAuthedAt: (state) => {
-            state.reAuthedAt = Date.now()
-        }
+        aal1ReAuthed: (state) => {
+            state.reAuthed = {
+                level: 'aal1',
+                at: Date.now()
+            }
+        },
+        aal15ReAuthed: (state) => {
+            state.reAuthed = {
+                level: 'aal15',
+                at: Date.now()
+            }
+        },
+        aal2ReAuthed: (state) => {
+            state.reAuthed = {
+                level: 'aal2',
+                at: Date.now()
+            }
+        },
     },
     extraReducers: (builder) => {
         builder.addMatcher(
             apiSlice.endpoints.getMe.matchFulfilled,
             (state, action) => {
                 if (Date.now() - Date.parse(action.payload.last_login) < 1000 * 60 * 9) {
-                    state.reAuthedAt = Date.now()
+                    state.reAuthed.level = payload.session_level
+                    state.reAuthed.at = Date.now()
                 }
             }
         )
     }
 })
+
 export const { resetAuthedAt } = userSlice.actions
 export const userReducer = userSlice.reducer
 

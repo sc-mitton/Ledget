@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import './styles/DeactivateAuthenticator.css'
 import { useUpdateUserMutation } from '@features/userSlice'
@@ -12,6 +12,9 @@ import { useFlow } from '@ledget/ory-sdk'
 
 const DeactivateAuthenticator = (props) => {
     const [updateUser] = useUpdateUserMutation()
+    const [searchParams] = useSearchParams()
+    const unLinkTotpForm = useRef(null)
+    const [forgetRecoveryCodes, { isSuccess: isCodesDeleted, isLoading: isDeletingCodes }] = useCompleteSettingsFlowMutation()
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetSettingsFlowQuery,
         useCompleteSettingsFlowMutation,
@@ -40,33 +43,55 @@ const DeactivateAuthenticator = (props) => {
         return () => clearTimeout(timeout)
     }, [isCompleteSuccess])
 
+    // Delete recovery codes first before unlinking totp device
+    const handleUnlinkSubmit = (e) => {
+        e.preventDefault()
+        forgetRecoveryCodes({
+            data: {
+                csrf_token: flow?.csrf_token,
+                method: 'lookup_secret',
+                lookup_secret_disable: true,
+            },
+            params: { flow: searchParams.get('flow') }
+        })
+    }
+
+    // Unlink totp on codes deleted
+    useEffect(() => {
+        if (isCodesDeleted) {
+            unLinkTotpForm.current.submit()
+        }
+    }, [isCodesDeleted])
+
     return (
-        <form onSubmit={submit} >
-            <fieldset disabled={isGettingFlow} id="deactivate-authenticator--content">
-                <div>
-                    <h3>Remove Your Authenticator?</h3>
-                    You will no longer be able to use your authenticator app to log in.
-                    <FormError msg={errMsg} />
-                    {!errMsg && (isCompleteError || errorFetchingFlow) &&
-                        <FormError msg={"Something went wrong, please try again later."} />}
+        <>
+            <form onSubmit={submit} >
+                <fieldset disabled={isGettingFlow} id="deactivate-authenticator--content">
                     <div>
-                        <SecondaryButton onClick={() => props.closeModal()}>
-                            Cancel
-                        </SecondaryButton>
-                        <GreenSubmitButton
-                            name="method"
-                            value="totp"
-                            success={isCompleteSuccess}
-                            submitting={isCompletingFlow}
-                        >
-                            Yes
-                        </GreenSubmitButton>
+                        <h3>Remove Your Authenticator?</h3>
+                        You will no longer be able to use your authenticator app to log in.
+                        <FormError msg={errMsg} />
+                        {!errMsg && (isCompleteError || errorFetchingFlow) &&
+                            <FormError msg={"Something went wrong, please try again later."} />}
+                        <div>
+                            <SecondaryButton onClick={() => props.closeModal()}>
+                                Cancel
+                            </SecondaryButton>
+                            <GreenSubmitButton
+                                name="method"
+                                value="totp"
+                                success={isCompleteSuccess}
+                                submitting={isCompletingFlow || isDeletingCodes}
+                            >
+                                Yes
+                            </GreenSubmitButton>
+                        </div>
                     </div>
-                </div>
-                <input type="hidden" name="totp_unlink" value="true" />
-                <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
-            </fieldset>
-        </form>
+                    <input type="hidden" name="totp_unlink" value="true" />
+                    <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
+                </fieldset>
+            </form>
+        </>
     )
 }
 

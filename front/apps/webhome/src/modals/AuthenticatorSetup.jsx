@@ -95,6 +95,7 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
 const Authenticator = (props) => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [codeMode, setCodeMode] = useState(false)
+    const [loaded, setLoaded] = useState(false)
 
     const [updateUser] = useUpdateUserMutation()
     const [addRememberedDevice] = useAddRememberedDeviceMutation()
@@ -148,6 +149,14 @@ const Authenticator = (props) => {
         return () => clearTimeout(timeout)
     }, [isCompleteSuccess])
 
+    // Set loaded state after 100ms (for animation divs)
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setLoaded(true)
+        }, 100)
+        return () => clearTimeout(timeout)
+    }, [])
+
     return (
         <div id="authenticator-page">
             <form onSubmit={submit} id='authenticator-setup-form'>
@@ -155,7 +164,7 @@ const Authenticator = (props) => {
                 <AnimatePresence mode="wait">
                     {/* Page 1: Setup App */}
                     {searchParams.get('step') === 'setup' &&
-                        <SlideMotionDiv key='setup-app'>
+                        <SlideMotionDiv key='setup-app' first={loaded}>
                             <h2>Authenticator App</h2>
                             <SetupApp
                                 flow={flow}
@@ -171,7 +180,7 @@ const Authenticator = (props) => {
                         <SlideMotionDiv
                             key="confirm-code"
                             first={!searchParams.get('step')}
-                            last={searchParams.get('step') === 'setup'}
+                            last={searchParams.get('step') === 'confirm'}
                         >
                             <JiggleDiv jiggle={isCompleteError} className="content">
                                 <div>
@@ -194,34 +203,31 @@ const Authenticator = (props) => {
                     }
                 </AnimatePresence>
                 {/* Nav Buttons */}
-                <div
-                    style={{
-                        visibility: searchParams.get('lookup_secret_regenerate')
-                            ? 'hidden' : 'visible'
-                    }}
-                >
-                    <BackButton onClick={handleBack} type="button" />
-                    {searchParams.get('step') === 'confirm'
-                        ?
-                        <GreenSubmitButton
-                            name="method"
-                            value="totp"
-                            submitting={isCompletingFlow}
-                        >
-                            Confirm
-                        </GreenSubmitButton>
-                        :
-                        <GreenSubmitWithArrow
-                            type="button"
-                            onClick={() => {
-                                searchParams.set('step', 'confirm')
-                                setSearchParams(searchParams)
-                            }}
-                        >
-                            Next
-                        </GreenSubmitWithArrow>
-                    }
-                </div>
+                {!searchParams.get('lookup_secret_regenerate') &&
+                    <div>
+                        <BackButton onClick={handleBack} type="button" />
+                        {searchParams.get('step') === 'confirm'
+                            ?
+                            <GreenSubmitButton
+                                name="method"
+                                value="totp"
+                                submitting={isCompletingFlow}
+                            >
+                                Confirm
+                            </GreenSubmitButton>
+                            :
+                            <GreenSubmitWithArrow
+                                type="button"
+                                onClick={() => {
+                                    searchParams.set('step', 'confirm')
+                                    setSearchParams(searchParams)
+                                }}
+                            >
+                                Next
+                            </GreenSubmitWithArrow>
+                        }
+                    </div>
+                }
             </form>
         </div>
     )

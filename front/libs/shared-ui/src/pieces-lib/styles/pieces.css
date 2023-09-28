@@ -111,11 +111,9 @@
 
 /* ------------------------------ Status status-pulse ------------------------------ */
 
-
 .auth-factor-status-graphic {
     display: flex;
     justify-content: center;
-    margin: 8px;
     position: relative;
 }
 

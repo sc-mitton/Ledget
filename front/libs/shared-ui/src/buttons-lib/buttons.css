@@ -295,6 +295,7 @@
 .delete-button-show:hover {
     transform: rotate(-45deg);
     transition: all .22s ease;
+    transition-delay: .1s;
 }
 
 .delete-button.show {
@@ -484,4 +485,42 @@ button.disabled-hover:hover svg {
         opacity: 1;
         transform: scale(1);
     }
+}
+
+.btn-grow {
+    width: 100%;
+    background-color: transparent;
+    color: var(--m-text-gray);
+    font-weight: 500;
+    background: transparent;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: var(--border-radius2);
+}
+
+.btn-grow:hover {
+    font-weight: 400;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-grow span {
+    position: absolute;
+    inset: 0;
+    margin: 0 auto;
+    background: radial-gradient(circle, var(--green-hlight2) 0%, var(--green-hlight2) 100%);
+    max-width: 50%;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-grow:hover span {
+    opacity: 1;
+    max-width: 100%;
+    transition: all 0.2s ease-in-out;
+    z-index: -1;
 }

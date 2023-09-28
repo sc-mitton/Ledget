@@ -144,7 +144,7 @@ export const TotpAppGraphic = (props) => {
 export const RecoveryCodeGraphic = (props) => (
     <div className="auth-factor-status-graphic">
         <img src={recoveryCodeGraphic} alt="Authenticator" />
-        <StatusPulse positive={props.finished} size="medium-large" />
+        <StatusPulse positive={props.finished} size="medium" />
     </div>
 )
 

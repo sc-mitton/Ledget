@@ -21,38 +21,6 @@
     justify-content: center;
 }
 
-#otp-verify-form>div:last-child button {
-    width: 100%;
-    background-color: transparent;
-    color: var(--m-text-gray);
-    font-weight: 500;
-    background: transparent;
-    transition: all 0.3s ease-in-out;
-    overflow: hidden;
-}
-
-#otp-verify-form>div:last-child button:hover {
-    font-weight: 400;
-    transition: all 0.3s ease-in-out;
-}
-
-#otp-verify-form>div:last-child button span {
-    position: absolute;
-    inset: 0;
-    margin: 0 auto;
-    background: radial-gradient(circle, var(--green-hlight2) 0%, var(--green-hlight2) 100%);
-    max-width: 50%;
-    opacity: 0;
-    transition: all 0.2s ease-in-out;
-}
-
-#otp-verify-form>div:last-child button:hover span {
-    opacity: 1;
-    max-width: 100%;
-    transition: all 0.2s ease-in-out;
-    z-index: -1;
-}
-
 #otp-setup-form>div:first-child>div:first-child {
     display: flex;
     justify-content: center;
