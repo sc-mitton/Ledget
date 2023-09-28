@@ -1,7 +1,7 @@
 .input-container {
-    background-color: var(--input-color);
+    background-color: var(--input-background);
     border-radius: var(--border-radius2);
-    border: solid 1px rgb(0, 0, 0, .02);
+    border: var(--input-border);
     padding: 10px 16px;
     margin: 6px 0;
     box-sizing: border-box;
@@ -15,6 +15,7 @@
 .input-container:focus-within {
     outline: none;
     box-shadow: var(--input-focus-drop-shadow);
+    border: solid 1px transparent;
 }
 
 .input-container input::placeholder {
@@ -52,7 +53,7 @@
 }
 
 .menu-text-input-container>div:focus-within {
-    background-color: var(--input-color);
+    background-color: var(--input-background);
     box-shadow: var(--accessible-focus-drop-shadow);
     color: var(--input-placeholder);
 }
@@ -67,9 +68,9 @@
 
 /* ------------------------------ Card Element ------------------------------ */
 .card-container {
-    background-color: var(--input-color);
+    background-color: var(--input-background);
     border-radius: var(--border-radius2);
-    border: solid 1px rgb(0, 0, 0, .02);
+    border: var(--input-border);
     z-index: 0;
     padding: 16px 16px;
     margin: 4px 0;

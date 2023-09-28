@@ -51,7 +51,8 @@
     --scroll-shadow-top: 180deg, rgba(248, 248, 248), transparent;
 
     /* Input Colors */
-    --input-color: #e9e9e9;
+    --input-background: #e9e9e9;
+    --input-border: solid 1px rgb(0, 0, 0, .02);
 
     /* Text */
     --m-text-gray: #292929;
@@ -355,7 +356,7 @@ textarea {
 }
 
 input:-webkit-autofill {
-    -webkit-box-shadow: inset 0 0 0px 9999px var(--input-color) !important;
+    -webkit-box-shadow: inset 0 0 0px 9999px var(--input-background) !important;
     background-color: transparent !important;
     background-clip: content-box !important;
     border: none;
@@ -682,7 +683,7 @@ ul hr {
 .tab-list {
     position: relative;
     border-radius: var(--border-radius2);
-    background-color: var(--input-color);
+    background-color: var(--input-background);
     z-index: 0;
     display: flex;
     justify-content: center;

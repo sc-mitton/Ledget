@@ -50,7 +50,8 @@
     --scroll-shadow-top: 180deg, rgba(248, 248, 248), transparent;
 
     /* Input Colors */
-    --input-color: #ededed;
+    --input-background: #ededed;
+    --input-border: solid 1px rgb(0, 0, 0, .02);
 
     /* Text */
     --m-text-gray: #292929;
@@ -63,7 +64,7 @@
     --faded-text: rgb(0, 0, 0, .3);
 
     /* Icons & Buttons */
-    --btn-light-gray: var(--input-color);
+    --btn-light-gray: var(--input-background);
     --btn-light-gray-hover: rgb(228, 228, 228);
     --btn-gray: #3b3b3b;
     --btn-hover-gray: #292929;
@@ -191,7 +192,7 @@ label:focus-visible {
 /* Override default browser styles */
 
 input:-webkit-autofill {
-    -webkit-box-shadow: inset 0 0 0px 9999px var(--input-color) !important;
+    -webkit-box-shadow: inset 0 0 0px 9999px var(--input-background) !important;
     background-color: none;
     background-clip: content-box !important;
     border: none;

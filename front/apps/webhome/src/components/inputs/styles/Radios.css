@@ -2,7 +2,7 @@
     display: inline-flex;
     flex-direction: row;
     margin: 4px 0;
-    background-color: var(--input-color);
+    background-color: var(--input-background);
     border-radius: var(--border-radius2);
 }
 

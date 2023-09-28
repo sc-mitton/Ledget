@@ -316,11 +316,11 @@
 /* Input Buttons */
 .btn-input {
     color: var(--input-placeholder2);
-    background-color: var(--input-color);
+    background-color: var(--input-background);
 }
 
 .btn-input2 {
-    background-color: var(--input-color);
+    background-color: var(--input-background);
 }
 
 .btn-input2:hover {

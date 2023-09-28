@@ -153,7 +153,7 @@ const ModeSelector = ({ mode, setMode }) => {
             onChange={setMode}
             style={{
                 borderRadius: 'var(--border-radius2)',
-                backgroundColor: 'var(--input-color)',
+                backgroundColor: 'var(--input-background)',
                 display: 'inline-block',
             }}
         >

@@ -3,7 +3,7 @@
     width: auto;
     margin: 4px 0;
     padding: 10px 12px 11px 12px;
-    background-color: var(--input-color);
+    background-color: var(--input-background);
     border-radius: var(--border-radius2);
     display: flex;
     align-items: center;

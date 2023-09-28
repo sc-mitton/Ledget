@@ -50,7 +50,7 @@
 }
 
 .block-shimmer--container .loading-shimmer {
-    background-color: var(--input-color);
+    background-color: var(--input-background);
 }
 
 .block-shimmer--container .shimmer {

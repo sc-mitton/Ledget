@@ -234,6 +234,9 @@ export default function withReAuth(Component) {
                 />
                 <ReAuthModal
                     hideAll={continueToComponent}
+                    onClose={() =>
+                        !continueToComponent && props.onClose()
+                    }
                     hasOverlay={props.reAuthOverlay ?? false}
                     blur={1}
                 />
