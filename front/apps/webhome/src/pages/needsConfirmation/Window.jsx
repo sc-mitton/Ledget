@@ -66,10 +66,10 @@ const AccountLogo = ({ account }) => {
 }
 
 // End TODO
-const translate = 13
+const translate = 15
 const expandedTranslate = 85
 const expandedHeight = 320
-const collapsedHeight = 110
+const collapsedHeight = 115
 const scale = .1
 const stackMax = 2
 
@@ -91,6 +91,9 @@ const getContainerHeight = (length, expanded) => {
 
 const getOpacity = (index, expanded) => {
     const belowStackMax = index > stackMax
+    if (!expanded && index == 1) {
+        return .8
+    }
     return (!expanded && belowStackMax && index !== 0) ? 0 : 1
 }
 
@@ -143,7 +146,6 @@ const useItemAnimations = (expanded, items) => {
         overflowY: "hidden",
     }))
 
-
     const itemTransitions = useTransition(
         items,
         {
@@ -162,9 +164,9 @@ const useItemAnimations = (expanded, items) => {
                 left: 0,
                 right: 0,
                 position: 'absolute',
-                borderRadius: "var(--border-radius3)",
+                borderRadius: "var(--border-radius25)",
                 boxShadow: "var(--new-item-drop-shadow)",
-                background: "var(--window)",
+                background: 'var(--window)',
                 padding: "16px 24px",
                 display: "flex",
                 flexDirection: "row",

@@ -62,10 +62,14 @@ const SmsAdd = (props) => {
     }
 
     useEffect(() => {
+        let timeout
         if (isSuccess) {
-            searchParams.set('id', result.id)
-            setSearchParams(searchParams)
+            timeout = setTimeout(() => {
+                searchParams.set('id', result.id)
+                setSearchParams(searchParams)
+            }, 1000)
         }
+        return () => clearTimeout(timeout)
     }, [isSuccess])
 
     useEffect(() => { setFocus('phone') }, [])
@@ -80,7 +84,7 @@ const SmsAdd = (props) => {
             >
                 <div >
                     <div>
-                        <KeyPadGraphic />
+                        <KeyPadGraphic finished={isSuccess} />
                     </div>
                     <span>
                         Enter your phone number
@@ -154,7 +158,7 @@ const SmsVerify = (props) => {
             >
                 <div >
                     <div>
-                        <SmsVerifyStatus />
+                        <SmsVerifyStatus finished={isSucess} />
                     </div>
                     <Otc colorful={false} />
                 </div>

@@ -301,6 +301,8 @@ div.body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    z-index: 0;
 }
 
 .inner-window {
@@ -561,7 +563,7 @@ button:hover .animated-stroke2 line:last-child {
     text-align: left;
     display: flex;
     flex-direction: column;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .dropdown button {

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { AnimatePresence } from "framer-motion"
 import { object, string, boolean } from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
-import { set, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
 
 import './style/Login.css'
@@ -12,7 +12,6 @@ import SocialAuth from "./SocialAuth"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces"
-import { ledgetapi } from "@api"
 import {
     GrnWideButton,
     Checkbox,
@@ -24,10 +23,14 @@ import {
     JiggleDiv,
     LinkArrowButton,
     TotpAppGraphic,
-    RecoveryCodeGraphic
+    RecoveryCodeGraphic,
+    SmsVerifyStatus,
+    Otc
 } from "@ledget/shared-ui"
 import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
+import { useRefreshDevicesMutation } from '@features/deviceSlice'
+import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/otpSlice'
 
 
 const schema = object().shape({
@@ -40,7 +43,6 @@ const EmailForm = ({ flow, setEmail, socialSubmit }) => {
         useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
 
     const submit = (data) => {
-
         if (data.remember) {
             localStorage.setItem('loginEmail', JSON.stringify(data.email))
         } else {
@@ -81,17 +83,10 @@ const EmailForm = ({ flow, setEmail, socialSubmit }) => {
     )
 }
 
-const Mfa = ({ finished }) => {
+const LookupSecretPrompt = () => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const [loaded, setLoaded] = useState(false)
 
-    // Map of method name to input code name
-    const inputNameMap = {
-        totp: 'totp_code',
-        lookup_secret: 'lookup_secret'
-    }
-
-    const LookupSecretPrompt = () => (
+    return (
         <div className="mfa-prompt--container">
             <span>Or use a&nbsp;</span>
             <button
@@ -104,50 +99,65 @@ const Mfa = ({ finished }) => {
             </button>
         </div>
     )
+}
 
-    useEffect(() => {
-        !loaded && setLoaded(true)
-    }, [])
+const TotpMfa = ({ finished }) => {
+    const [searchParams] = useSearchParams()
 
     return (
         <>
-            {searchParams.get('mfa') === 'lookup_secret' &&
-                <div className="mfa-container">
-                    <RecoveryCodeGraphic finished={finished} />
-                    <h4>Enter your recovery code</h4>
-                </div >
-            }
-            {
-                searchParams.get('mfa') === 'totp' &&
-                <div className="mfa-container">
-                    <TotpAppGraphic finished={finished} />
-                    <h4>Enter your authenticator code</h4>
-                    <LookupSecretPrompt />
-                </div>
-            }
-            {
-                searchParams.get('mfa') === 'otp' &&
-                <div className="mfa-container">
-                    <RecoveryCodePrompt />
-                    <h4>Enter the code sent to your email</h4>
-                    <LookupSecretPrompt />
-                </div>
-            }
+            <div className="mfa-container">
+                <TotpAppGraphic finished={finished} />
+                <h4>Enter your authenticator code</h4>
+                <LookupSecretPrompt />
+            </div>
             <div style={{ margin: '20px 0' }}>
                 <PlainTextInput
-                    name={inputNameMap[searchParams.get('mfa')]}
+                    name='totp_code'
                     placeholder='Code'
                 />
             </div>
-            <GrnWideButton
-                name="method"
-                value={searchParams.get('mfa')}
-            >
+            <GrnWideButton name="method" value={searchParams.get('mfa')}>
                 Submit
             </GrnWideButton>
         </>
     )
 }
+
+const RecoveryMfa = ({ finished }) => {
+    const [searchParams] = useSearchParams()
+
+    return (
+        <>
+            <div className="mfa-container">
+                <RecoveryCodeGraphic finished={finished} />
+                <h4>Enter your recovery code</h4>
+            </div >
+            <div style={{ margin: '20px 0' }}>
+                <PlainTextInput
+                    name='lookup_secret'
+                    placeholder='Code'
+                />
+            </div>
+            <GrnWideButton name="method" value={searchParams.get('mfa')}>
+                Submit
+            </GrnWideButton>
+        </>
+    )
+}
+
+const OtpMfa = ({ finished }) => (
+    <>
+        <div className="mfa-container">
+            <SmsVerifyStatus finished={finished} />
+            <h4>Enter the code sent to your phone</h4>
+            <LookupSecretPrompt />
+            <div style={{ margin: '12px 0' }}>
+                <Otc colorful={false} />
+            </div>
+        </div>
+    </>
+)
 
 const Password = () => (
     <div id="password-auth--container">
@@ -164,8 +174,10 @@ const Login = () => {
     const navigate = useNavigate()
 
     const [email, setEmail] = useState(null)
-    const [showLoadingBar, setShowLoadingBar] = useState(false)
-    const [finished, setFinished] = useState(false)
+
+    const [verifyOtp, { isSuccess: otpVerified, isLoading: verifyingOtp, isError: isOtpVerifyError }] = useVerifyOtpMutation()
+    const [refreshDevices, { isLoading: isRefreshingDevices, isSuccess: devicesRefreshedSuccess }] = useRefreshDevicesMutation()
+    const [createOtp, { data: otp, isLoading: creatingOtp, isSuccess: createdOtp }] = useCreateOtpMutation()
 
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
@@ -183,13 +195,6 @@ const Login = () => {
     } = flowStatus
 
     useEffect(() => {
-        isCompletingFlow && setShowLoadingBar(true)
-    }, [isCompletingFlow])
-    useEffect(() => {
-        isCompleteError && setShowLoadingBar(false)
-    }, [isCompleteError])
-
-    useEffect(() => {
         const mfa = searchParams.get('mfa')
         const aal = searchParams.get('aal')
 
@@ -198,58 +203,63 @@ const Login = () => {
         } else if (mfa === 'totp') {
             fetchFlow({ aal: 'aal2', refresh: true })
         } else {
-            console.log('handle email / phone mfa')
+            createOtp()
         }
     }, [searchParams.get('mfa')])
 
-    // Handle success
+    // Set otp id search params
     useEffect(() => {
-        if (isCompleteSuccess || errId === 'session_already_available') {
-            ledgetapi.post('/devices')
-                .then((res) => {
-                    setFinished(true)
-                }).catch((err) => {
-                    if (err.response.status === 422) {
-                        setSearchParams({ mfa: err.response.data.error })
-                    } else {
-                        console.warn(err)
-                    }
-                }).finally(() => {
-                    setShowLoadingBar(false)
-                })
+        if (createdOtp) {
+            searchParams.set('id', otp.id)
+            setSearchParams(searchParams)
         }
-    }, [isCompleteSuccess])
+    }, [createdOtp])
 
-    // Handle Finished
+    // Refresh devices on finishing login steps
+    useEffect(() => {
+        if (isCompleteSuccess || errId === 'session_already_available' || otpVerified) {
+            refreshDevices()
+        }
+    }, [isCompleteSuccess, otpVerified])
+
+    // Handle Login Finished
     useEffect(() => {
         let timeout
-        if (finished && searchParams.get('mfa')) {
-            setTimeout(() => {
+        if (devicesRefreshedSuccess) {
+            if (searchParams.get('mfa')) {
+                setTimeout(() => {
+                    window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+                }, 1000)
+            } else {
                 window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
-            }, 1200)
-        } else if (finished) {
-            window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+            }
         }
         return () => clearTimeout(timeout)
-    }, [finished])
+    }, [devicesRefreshedSuccess])
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
         if (searchParams.get('aal')) {
             submit(e)
         } else {
-            console.log('handle submitting email / phone mfa')
+            const data = Object.fromEntries(new FormData(e.target))
+            verifyOtp({
+                id: searchParams.get('id'),
+                data: data.code
+            })
         }
     }
 
-    const AuthForm = ({ children }) => (
-        <form action={flow?.ui.action} method={flow?.ui.method} onSubmit={handleSubmit}>
+    const OryFormWrapper = ({ children }) => (
+        <form onSubmit={handleSubmit}>
             <div id="email-container">
-                <h3>Welcome Back</h3>
+                <h3>
+                    {searchParams.get('mfa')
+                        ? '2-Step Verification'
+                        : 'Welcome Back'}
+                </h3>
                 <BackButton
                     type="button"
-                    withText={false}
                     onClick={() => {
                         if (searchParams.get('mfa') === 'lookup_secret') {
                             navigate(-1)
@@ -260,7 +270,7 @@ const Login = () => {
                         }
                     }}
                 >
-                    {searchParams.get('aal') === 'aal2' ? 'back' : email}
+                    {searchParams.get('mfa') ? 'back' : email}
                 </BackButton>
             </div>
             {errMsg &&
@@ -290,7 +300,7 @@ const Login = () => {
                     <WindowLoadingBar visible={isGettingFlow} />
                 </SlideMotionDiv>
                 :
-                <JiggleDiv jiggle={isCompleteError} className="wrapper-window">
+                <JiggleDiv jiggle={isCompleteError || isOtpVerifyError} className="wrapper-window">
                     {/* 1st Factor */}
                     {!searchParams.get('mfa') &&
                         <SlideMotionDiv
@@ -305,15 +315,29 @@ const Login = () => {
                             </AuthForm>
                         </SlideMotionDiv>
                     }
-                    {/* 2nd Factor */}
-                    {['totp', 'lookup_secret', 'otp'].includes(searchParams.get('mfa')) &&
+                    {/* Totp 2nd Factor */}
+                    {['totp', 'lookup_secret'].includes(searchParams.get('mfa')) &&
                         <SlideMotionDiv className='nested-window' key="aal2-step" last>
-                            <AuthForm>
-                                <Mfa finished={finished} />
-                            </AuthForm>
+                            <OryFormWrapper>
+                                <TotpMfa finished={devicesRefreshedSuccess} />
+                            </OryFormWrapper>
                         </SlideMotionDiv>
                     }
-                    <WindowLoadingBar visible={showLoadingBar || isGettingFlow} />
+                    {/* Otp 2nd Factor */}
+                    {searchParams.get('mfa') === 'otp' &&
+                        <SlideMotionDiv className='nested-window' key="aal2-step" last>
+                            <OtpMfa finished={devicesRefreshedSuccess} />
+                        </SlideMotionDiv>
+                    }
+                    {/* Recovery Code 2nd Factor */}
+                    {searchParams.get('mfa') === 'lookup_secret' &&
+                        <SlideMotionDiv className='nested-window' key="aal2-step" last>
+                            <OryFormWrapper>
+                                <RecoveryMfa finished={devicesRefreshedSuccess} />
+                            </OryFormWrapper>
+                        </SlideMotionDiv>
+                    }
+                    <WindowLoadingBar visible={verifyingOtp || creatingOtp || isGettingFlow || isCompletingFlow || isRefreshingDevices} />
                 </JiggleDiv>
             }
         </AnimatePresence>
