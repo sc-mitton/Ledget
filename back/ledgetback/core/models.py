@@ -57,7 +57,7 @@ class User(models.Model):
     password_last_changed = models.DateTimeField(null=True, default=timezone.now)
 
     mfa_method = models.CharField(choices=MfaMethod.choices,
-                                  null=True, default=MfaMethod.OTP, max_length=4)
+                                  null=True, default=None, max_length=4)
     mfa_enabled_on = models.DateTimeField(null=True, default=None)
     phone_number = models.CharField(max_length=20, null=True, default=None)
 

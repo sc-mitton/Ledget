@@ -260,6 +260,7 @@ const Login = () => {
                 </h3>
                 <BackButton
                     type="button"
+                    withText={Boolean(searchParams.get('mfa'))}
                     onClick={() => {
                         if (searchParams.get('mfa') === 'lookup_secret') {
                             navigate(-1)
@@ -309,10 +310,10 @@ const Login = () => {
                             last={!searchParams.get('mfa')}
                             first={searchParams.get('mfa')}
                         >
-                            <AuthForm>
+                            <OryFormWrapper>
                                 <Password />
                                 <input type="hidden" name="identifier" value={email || ''} />
-                            </AuthForm>
+                            </OryFormWrapper>
                         </SlideMotionDiv>
                     }
                     {/* Totp 2nd Factor */}

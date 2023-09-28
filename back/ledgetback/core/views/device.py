@@ -61,11 +61,12 @@ class DeviceViewSet(ModelViewSet):
     serializer_class = DeviceSerializer
 
     def create(self, request, *args, **kwargs):
-        device_not_aal2 = not request.user.device \
-                               or request.user.device.aal != 'aal2'
+        device_is_aal1 = not request.user.device or request.user.device.aal == 'aal1'
         session_is_aal1 = request.user.session_aal == 'aal1'
+        use_has_mfa = bool(request.user.mfa_method)
 
-        if (device_not_aal2 and session_is_aal1) and bool(request.user.mfa_method):
+        # can't create new device when user has mfa set up
+        if (device_is_aal1 and session_is_aal1) and use_has_mfa:
             return Response(
                 {'error': f'{request.user.mfa_method}'},
                 HTTP_422_UNPROCESSABLE_ENTITY
@@ -81,6 +82,7 @@ class DeviceViewSet(ModelViewSet):
             value=f"{instance.token}",
             secure=True,
             samesite='None',
+            httponly=True,
         )
         return response
 
