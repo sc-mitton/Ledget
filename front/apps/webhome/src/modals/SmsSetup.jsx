@@ -10,11 +10,8 @@ import { object, string } from 'yup'
 import './styles/SmsSetup.css'
 import { withModal } from '@ledget/shared-utils'
 import { withReAuth } from '@utils'
-import {
-    useCreateOtpMutation,
-    useVerifyOtpMutation,
-    useGetMeQuery,
-} from '@features/userSlice'
+import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/authSlice'
+import { useGetMeQuery } from '@features/userSlice'
 import {
     BackButton,
     GreenSubmitWithArrow,

@@ -85,13 +85,13 @@ class ViewTestsMixin(TestCase):
         self.createClients()
 
     def createClients(self):
-        self.client = APIClient()
+        self.client = APIClient(enforce_csrf_checks=False)
         self.client.defaults['HTTP_AUTHORIZATION'] = 'bearer {}'.format(tokens[1])
 
-        self.aal2_client = APIClient()
+        self.aal2_client = APIClient(enforce_csrf_checks=False)
         self.aal2_client.defaults['HTTP_AUTHORIZATION'] = 'bearer {}'.format(tokens[0])
 
-        self.unauthed_client = APIClient()
+        self.unauthed_client = APIClient(enforce_csrf_checks=False)
 
         self.client1_device = self.aal1_payload['session']['devices'][0]
         self.aal2_client_device = self.aal2_payload['session']['devices'][0]

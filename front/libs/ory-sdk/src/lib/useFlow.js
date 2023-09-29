@@ -141,14 +141,17 @@ function useFlow(query, mutation, flowType) {
                     console.error("session_already_available")
                     setErrId("session_already_available")
                 }
+                break
             }
             case 401: {
                 console.warn("sdkError 401")
+                break
             }
             case 403: {
                 // Session is too old usually, and we need to start a new flow
                 console.warn("sdkError 403")
                 navigate(0)
+                break
             }
             case 422: {
                 console.log("sdkError 422")
@@ -165,6 +168,7 @@ function useFlow(query, mutation, flowType) {
                 //         window.location.href = errorData.redirect_browser_to
                 //     }
                 // }
+                break
             }
             case 200:
                 break

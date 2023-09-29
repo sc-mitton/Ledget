@@ -15,11 +15,6 @@ DOMAIN = 'localhost'
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = True
-SESSION_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
 
 if DEBUG:
@@ -29,6 +24,19 @@ else:
 
 MEDIA_ROOT = '/ledgetback/media'
 
+
+# ---------------------------------------------------------------------------- #
+#                                 Csrf Settings                                #
+# ---------------------------------------------------------------------------- #
+
+CSRF_COOKIE_NAME = 'led_csrftoken'
+CSRF_COOKIE_AGE = 60 * 60 * 24 * 30  # 1 month
+CSRF_SAMESITE = 'lax'
+CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = ['https://localhost:3000']
+CSRF_COOKIE_HTTPONLY = False
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
+CSRF_COOKIE_DOMAIN = 'localhost'
 
 # ---------------------------------------------------------------------------- #
 #                                    Secrets                                   #

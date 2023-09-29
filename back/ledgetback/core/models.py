@@ -71,6 +71,7 @@ class User(models.Model):
         self._is_verified = False
         self._device = None
         self._session_aal = None
+        self._session_id = None
         self._session_devices = None
         self._device = None
 
@@ -129,6 +130,14 @@ class User(models.Model):
     @session_aal.setter
     def session_aal(self, value):
         self._session_aal = value
+
+    @property
+    def session_id(self):
+        return self._session_id
+
+    @session_id.setter
+    def session_id(self, value):
+        self._session_id = value
 
     @property
     def is_anonymous(self):

@@ -1,6 +1,6 @@
 import logging
 
-from rest_framework.authentication import BaseAuthentication
+from rest_framework.authentication import SessionAuthentication
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from jwt.exceptions import (
@@ -15,7 +15,7 @@ logger = logging.getLogger('ledget')
 OATHKEEPER_PUBLIC_KEY = settings.OATHKEEPER_PUBLIC_KEY
 
 
-class OryBackend(BaseAuthentication):
+class OryBackend(SessionAuthentication):
 
     def authenticate(self, request):
         """
@@ -69,6 +69,7 @@ class OryBackend(BaseAuthentication):
             if device.token == device_token:
                 user.device = device
 
+        user.session_id = decoded_token['session']['id']
         user.session_aal = \
             decoded_token['session']['authenticator_assurance_level']
         user.traits = identity.get('traits', {})

@@ -18,7 +18,8 @@ import {
     ChangePassword,
     AuthenticatorSetup,
     RecoveryCodes,
-    SmsSetup
+    SmsSetup,
+    DeleteAccount
 } from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@ledget/shared-ui'
@@ -61,6 +62,7 @@ function Profile() {
                             <Route path="change-password" element={<ChangePassword />} />
                             <Route path="recovery-codes" element={<RecoveryCodes />} />
                             <Route path="otp-setup" element={<SmsSetup />} />
+                            <Route path="delete-account" element={<DeleteAccount />} />
                         </Route>
                     </Routes>
                 </motion.div>

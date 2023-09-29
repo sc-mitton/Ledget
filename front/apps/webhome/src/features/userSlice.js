@@ -1,55 +1,4 @@
 import { apiSlice } from '@api/apiSlice'
-import { createSlice } from '@reduxjs/toolkit'
-
-const userSlice = createSlice({
-    name: 'user',
-    initialState: {
-        reAuthed: {
-            level: 'none',
-            at: null,
-        }
-    },
-    reducers: {
-        aal1ReAuthed: (state) => {
-            state.reAuthed = {
-                level: 'aal1',
-                at: Date.now()
-            }
-        },
-        aal15ReAuthed: (state) => {
-            state.reAuthed = {
-                level: 'aal15',
-                at: Date.now()
-            }
-        },
-        aal2ReAuthed: (state) => {
-            state.reAuthed = {
-                level: 'aal2',
-                at: Date.now()
-            }
-        },
-    },
-    extraReducers: (builder) => {
-        builder.addMatcher(
-            apiSlice.endpoints.getMe.matchFulfilled,
-            (state, action) => {
-                if (Date.now() - Date.parse(action.payload.last_login) < 1000 * 60 * 9) {
-                    state.reAuthed.level = payload.session_level
-                    state.reAuthed.at = Date.now()
-                }
-            }
-        )
-    }
-})
-
-export const { resetAuthedAt } = userSlice.actions
-export const userReducer = userSlice.reducer
-
-// reauth is fresh if it happened less than 9 minutes ago
-// (subtracted 1 min to be safe)
-export const selectSessionIsFresh = (state) => {
-    return state.user.reAuthedAt && Date.now() - state.user.reAuthedAt < 1000 * 60 * 9
-}
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
 
@@ -120,35 +69,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 body: { price: priceId },
             }),
             invalidatesTags: ['invoice'],
-        }),
-        addRememberedDevice: builder.mutation({
-            query: () => ({
-                url: 'devices',
-                method: 'POST',
-            })
-        }),
-        deleteRememberedDevice: builder.mutation({
-            query: ({ deviceId }) => ({
-                url: `devices/${deviceId}`,
-                method: 'DELETE',
-            }),
-            invalidatesTags: ['devices'],
-        }),
-        createOtp: builder.mutation({
-            query: ({ data }) => ({
-                url: 'otp',
-                method: 'POST',
-                body: data,
-            }),
-            transformResponse: response => response.data
-        }),
-        verifyOtp: builder.mutation({
-            query: ({ data, id }) => ({
-                url: `otp/${id}`,
-                method: 'GET',
-                body: data,
-            }),
-        }),
+        })
     })
 })
 
@@ -161,10 +82,5 @@ export const {
     useUpdateDefaultPaymentMethodMutation,
     useUpdateSubscriptionMutation,
     useGetPricesQuery,
-    useUpdateSubscriptionItemsMutation,
-    useAddRememberedDeviceMutation,
-    useGetDevicesQuery,
-    useDeleteRememberedDeviceMutation,
-    useCreateOtpMutation,
-    useVerifyOtpMutation,
+    useUpdateSubscriptionItemsMutation
 } = extendedApiSlice

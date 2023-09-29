@@ -3,6 +3,7 @@ import React, { useEffect, useLayoutEffect, useState, useRef } from 'react'
 import { Routes, Outlet, Navigate, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 
+import "./styles/style.css";
 import Header from './Header'
 import Budget from '@pages/budget/Window'
 import Spending from '@pages/spending/Window'
@@ -13,8 +14,6 @@ import { WelcomeConnect, AddCategories, AddBills } from '@pages/onboarding'
 import { SkeletonDashboard } from '@pages/onboarding'
 import { CreateCategory, CreateBill } from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
-import "./styles/style.css";
-
 
 const PrivateRoute = () => {
     const { isSuccess, isLoading, isPending } = useGetMeQuery()
@@ -145,7 +144,6 @@ const MainApp = () => {
 
 const App = () => {
     const { isLoading } = useGetMeQuery()
-
 
     return (
         <>

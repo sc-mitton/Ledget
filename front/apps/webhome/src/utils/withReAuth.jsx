@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import './ReAuth.css'
 import { useSearchParams, useLocation } from 'react-router-dom'
@@ -7,8 +7,9 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { withSmallModal } from '@ledget/shared-utils'
 import { useGetMeQuery } from '@features/userSlice'
-import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/userSlice'
+import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/authSlice'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
+import { useFlow } from '@ledget/ory-sdk'
 import {
     GreenSubmitWithArrow,
     SecondaryButton,
@@ -24,7 +25,6 @@ import {
     BackButton,
     GreenGrowButton
 } from '@ledget/shared-ui'
-import { useFlow } from '@ledget/ory-sdk'
 
 
 const ErrorFetchingFlow = () => (<FormError msg={"Something went wrong, please try again later."} />)
@@ -154,7 +154,7 @@ const Totp = () => {
                 <JiggleDiv jiggle={isCompleteError}>
                     <PlainTextInput
                         loading={isGettingFlow}
-                        name="totp_code"
+                        name={`${useLookupSecret ? 'lookup_secret' : 'totp_code'}`}
                         placeholder='Code'
                         autoFocus
                         required
@@ -277,6 +277,7 @@ const ReAuthModals = withSmallModal((props) => {
 // In order to get a settings flow and update settings, a user
 // needs a recent seesion that is newer than the max age in the
 // ory settings.
+
 export default function withReAuth(Component) {
 
     return (props) => {

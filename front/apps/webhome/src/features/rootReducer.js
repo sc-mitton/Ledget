@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import { apiSlice } from '@api/apiSlice'
-import { userReducer } from '@features/userSlice'
+import { authSlice } from '@features/authSlice'
 
 const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
-    user: userReducer,
+    auth: authSlice.reducer,
 })
 
 export default rootReducer
