@@ -33,6 +33,9 @@ class PlaidItem(models.Model):
     id = models.CharField(max_length=40, primary_key=True, editable=False)
     access_token = models.CharField(max_length=100, null=True)
     cursor = models.CharField(max_length=256, null=True, blank=True)
+    login_required = models.BooleanField(default=False)
+    new_account_available = models.BooleanField(default=False)
+    permission_revoked = models.BooleanField(default=False)
 
 
 class Account(models.Model):

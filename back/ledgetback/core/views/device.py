@@ -11,6 +11,8 @@ from rest_framework.routers import Route, SimpleRouter
 from rest_framework.permissions import IsAuthenticated as CoreIsAuthenticated
 from rest_framework.generics import GenericAPIView
 from django.conf import settings
+from django.utils import timezone
+from django.db import transaction
 import messagebird
 
 from core.serializers import DeviceSerializer, OtpSerializer
@@ -155,18 +157,29 @@ class OtpView(GenericAPIView):
             verify = mbird_client.verify.verify(id, serializer.validated_data['code'])
         except Exception as e: # noqa
             return Response(
-                {'error': 'Invalid OTP'},
+                {'error': 'Invalid code'},
                 HTTP_400_BAD_REQUEST
             )
         if verify.status != 'verified':
             return Response(
-                {'error': 'Invalid OTP'},
+                {'error': 'Invalid code'},
                 HTTP_400_BAD_REQUEST
             )
 
-        self.request.user.phone_number = verify.recipient
-        self.request.user.mfa_method = 'otp'
-        self.request.user.device.aal = 'aal1.5'
-        self.request.user.save()
+        self._update_objects(request, verify.recipient)
 
         return Response({'data': {id: verify.id}}, HTTP_200_OK)
+
+    @transaction.atomic
+    def _update_objects(self, request, recipient: str):
+
+        if request.user.mfa_method != 'otp':
+            self.request.user.phone_number = recipient
+            self.request.user.mfa_method = 'otp'
+            self.request.user.device.aal = 'aal15'
+            self.request.user.device.save()
+        else:
+            # update otp verification details
+            self.request.user.last_otp_verification = timezone.now()
+
+        self.request.user.save()

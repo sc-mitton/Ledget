@@ -71,7 +71,7 @@ services:
       - "traefik.http.routers.hooks.rule=(Host(`localhost`) && PathPrefix(`/hooks`))"
       - "traefik.http.routers.hooks.entrypoints=websecure"
       - "traefik.http.routers.hooks.tls=true"
-      - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.sourcerange=3.18.12.63, 3.130.192.231, 13.235.14.237, 13.235.122.149, 18.211.135.69, 35.154.171.200, 52.15.183.38, 54.88.130.119, 54.88.130.237, 54.187.174.169, 54.187.205.235, 54.187.216.72, 34.22.170.75, 35.242.228.133"
+      - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.sourcerange=3.18.12.63, 3.130.192.231, 13.235.14.237, 13.235.122.149, 18.211.135.69, 35.154.171.200, 52.15.183.38, 54.88.130.119, 54.88.130.237, 54.187.174.169, 54.187.205.235, 54.187.216.72, 34.22.170.75, 35.242.228.133, 52.21.26.131, 52.21.47.157, 52.41.247.19, 52.88.82.239"
       - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.ipstrategy.depth=1"
       - "traefik.http.routers.hooks.middlewares=hooksIpWhitelist@docker"
       - "traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET,POST,PUT,PATCH,DELETE,OPTIONS"

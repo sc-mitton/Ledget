@@ -59,6 +59,7 @@ class User(models.Model):
     mfa_method = models.CharField(choices=MfaMethod.choices,
                                   null=True, default=None, max_length=4)
     mfa_enabled_on = models.DateTimeField(null=True, default=None)
+    last_otp_verification = models.DateTimeField(null=True, default=None)
     phone_number = models.CharField(max_length=20, null=True, default=None)
 
     objects = UserManager()
@@ -148,6 +149,15 @@ class User(models.Model):
         return False
 
     @property
+    def highest_aal(self):
+        if self.mfa_method == 'totp':
+            return 'aal2'
+        elif self.mfa_method == 'otp':
+            return 'aal15'
+        else:
+            return 'aal1'
+
+    @property
     def plaid_items(self):
         return self.plaiditem_set.all()
 
@@ -197,7 +207,7 @@ class Customer(models.Model):
 class Device(models.Model):
     class Aal(models.TextChoices):
         AAL1 = 'aal1', _('AAL1')
-        AAL15 = 'aal1.5', _('AAL1.5')
+        AAL15 = 'aal15', _('AAL15')
         AAL2 = 'aal2', _('AAL2')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)

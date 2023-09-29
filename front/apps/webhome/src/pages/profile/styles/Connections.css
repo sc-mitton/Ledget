@@ -7,7 +7,7 @@
 
 #connections-page .header {
     margin-bottom: 12px;
-    width: 96.5%;
+    margin-right: 22px;
 }
 
 #connections-page .institution {
@@ -19,6 +19,7 @@
 
 #connections-page .institution .header2 {
     margin-bottom: 12px;
+    padding: 0 4px;
     height: 100%;
     opacity: 1;
 }
@@ -27,24 +28,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-#connections-page .account-name>div:first-child {
-    font-weight: 500;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-}
-
-#connections-page .account-name>div:last-child {
-    display: flex;
-    align-items: center;
-    opacity: .5;
-}
-
-#connections-page .account-name>div:last-child span {
-    font-size: 12px;
 }
 
 #connections-page #accounts-list {
@@ -65,23 +48,56 @@
     position: relative;
 }
 
+/* -------------------------- Account Rows Styling -------------------------- */
+
+
+
 #connections-page #accounts {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+    row-gap: 6px;
+    background-color: var(--inner-window);
+    border-radius: var(--border-radius3);
+    padding: 8px;
+}
+
+#connections-page #account-headers {
+    padding: 4px 16px;
+    font-weight: 500;
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+#connections-page #account-headers>div:nth-child(3) {
+    text-align: right;
 }
 
 #connections-page #accounts>div {
-    flex: 1;
+    padding: 3px 0;
+
 }
 
-#connections-page #accounts>div:first-child {
-    margin-right: 12px;
+#connections-page #accounts>div:nth-child(3n) {
+    margin-right: 10px;
 }
 
-#connections-page #accounts>div:last-child {
-    margin-left: 12px;
+#connections-page #accounts>div:nth-child(3n + 1) {
+    margin-left: 10px;
 }
 
+#connections-page #accounts>div:nth-child(n+3):nth-last-child(-n+3) {
+    border-bottom: 0;
+}
+
+#connections-page #accounts>div:nth-child(3n) {
+    text-align: right;
+}
+
+#connections-page #accounts>div:nth-child(3n + 2),
+#connections-page #accounts>div:nth-child(3n + 3) {
+    opacity: .8;
+    font-size: 13px;
+}
 
 /* ------------------------------ Misc ----------------------------- */
 
@@ -95,18 +111,4 @@
 
 #connections-page .footer-container {
     padding-right: 16px;
-}
-
-@media only screen and (max-width: 768px) {
-    #connections-page #accounts {
-        flex-direction: column;
-    }
-
-    #connections-page #accounts>div:first-child {
-        margin-right: 0px;
-    }
-
-    #connections-page #accounts>div:last-child {
-        margin-left: 0px;
-    }
 }

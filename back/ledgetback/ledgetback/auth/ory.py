@@ -1,18 +1,9 @@
 import logging
 
 from rest_framework.authentication import SessionAuthentication
-from django.conf import settings
 from django.contrib.auth import get_user_model
-from jwt.exceptions import (
-    InvalidSignatureError,
-    ExpiredSignatureError,
-    InvalidAlgorithmError
-)
-from jwt import decode
-
 
 logger = logging.getLogger('ledget')
-OATHKEEPER_PUBLIC_KEY = settings.OATHKEEPER_PUBLIC_KEY
 
 
 class OryBackend(SessionAuthentication):
@@ -23,36 +14,17 @@ class OryBackend(SessionAuthentication):
         set the user in the request. If the token is absent, invalid,
         or expired, return None.
         """
-        header = request.META.get('HTTP_AUTHORIZATION', '').split(' ')
-        auth_header_keys = [header[i].lower()
-                            for i in range(0, len(header), 2)]
 
-        if 'bearer' not in auth_header_keys:
-            return None
+        # header should already be decoded by middleware
 
         try:
-            token = header[auth_header_keys.index('bearer')*2 + 1]
-            decoded_jwt = self.get_decoded_jwt(token)
+            decoded_jwt = request.META.get('HTTP_AUTHORIZATION')
             user = self.get_user(request, decoded_jwt)
-        except (InvalidSignatureError, ExpiredSignatureError,
-                InvalidAlgorithmError, Exception) as e:
+        except Exception as e:
             logger.error(f"{e.__class__.__name__} {e}")
             return None
 
         return (user, None)
-
-    def get_decoded_jwt(self, token: str) -> dict | None:
-        """Validate the token against the JWK from Oathkeeper and
-        return it if valid. Otherwise, return None."""
-
-        decoded_token = decode(
-            token,
-            key=OATHKEEPER_PUBLIC_KEY,
-            algorithms=['RS256'],
-            options={'verify_exp': True}
-        )
-
-        return decoded_token
 
     def get_user(self, request, decoded_token: dict):
         """Return the user from the decoded token."""

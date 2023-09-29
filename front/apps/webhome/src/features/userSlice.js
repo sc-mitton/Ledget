@@ -53,7 +53,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         updateSubscription: builder.mutation({
             query: ({ subId, cancelAtPeriodEnd, cancelationReason, feedback }) => ({
                 url: `subscription/${subId}`,
-                method: cancelAtPeriodEnd ? 'DELETE' : 'POST',
+                method: cancelAtPeriodEnd ? 'DELETE' : 'PATCH',
                 body: {
                     cancel_at_period_end: cancelAtPeriodEnd,
                     cancelation_reason: cancelationReason,

@@ -127,7 +127,7 @@ class SubscriptionItemsView(GenericAPIView):
 
 
 class SubscriptionView(GenericAPIView):
-    """Class for handling the subscription"""
+    """Class for handling creating a subscription"""
     permission_classes = [IsAuthenticated, CanCreateStripeSubscription]
     serializer_class = NewSubscriptionSerializer
 

@@ -99,7 +99,12 @@ BIRD_API_KEY_ID = get_secret('bird_api_key_id')
 #                                    Caching                                   #
 # ---------------------------------------------------------------------------- #
 
-
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
+    }
+}
 
 # ---------------------------------- Testing --------------------------------- #
 

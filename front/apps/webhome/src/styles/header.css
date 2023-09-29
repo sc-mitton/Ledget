@@ -51,6 +51,10 @@ header {
     border-radius: 24px;
 }
 
+.header-container.narrow .profile-button {
+    margin-right: 0;
+}
+
 /* ------------------------------ Dropdown Menu ----------------------------- */
 
 .profile-dropdown.wide {

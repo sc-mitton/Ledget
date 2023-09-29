@@ -29,7 +29,7 @@ import {
 
 const ErrorFetchingFlow = () => (<FormError msg={"Something went wrong, please try again later."} />)
 
-const PassWord = (onCancel) => {
+const PassWord = ({ onCancel }) => {
     const location = useLocation()
     const { data: user } = useGetMeQuery()
     const dispatch = useDispatch()
@@ -72,7 +72,10 @@ const PassWord = (onCancel) => {
                 {isGetFlowError && <ErrorFetchingFlow />}
             </div>
             <div>
-                <SecondaryButton onClick={() => onCancel()}>
+                <SecondaryButton
+                    type="button"
+                    onClick={() => onCancel()}
+                >
                     Cancel
                 </SecondaryButton>
                 <GreenSubmitWithArrow
@@ -260,7 +263,7 @@ const ReAuthModals = withSmallModal((props) => {
             }
             {searchParams.get('aal') === 'aal15' &&
                 <SlideMotionDiv
-                    key='aal2'
+                    key='aal15'
                     first={false}
                     last
                 >
@@ -284,7 +287,7 @@ export default function withReAuth(Component) {
         const { data: user } = useGetMeQuery()
         const [searchParams, setSearchParams] = useSearchParams()
         const [continueToComponent, setContinueToComponent] = useState(false)
-        const reAuthed = useSelector((state) => state.user.reAuthed)
+        const reAuthed = useSelector(state => state.auth.reAuthed)
         const { requiredAal } = props
 
         // Controller for checking if the user has reached the required

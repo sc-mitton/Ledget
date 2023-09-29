@@ -74,12 +74,7 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.session_aal
 
     def get_highest_aal(self, obj):
-        if obj.mfa_method == 'totp':
-            return 'aal2'
-        elif obj.mfa_method == 'otp':
-            return 'aal15'
-        else:
-            return 'aal1'
+        return obj.highest_aal
 
     def get_subscription(self, obj):
         # If patch method, return early to avoid Stripe API call

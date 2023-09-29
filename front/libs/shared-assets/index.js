@@ -54,3 +54,4 @@ export { default as VerifyEmail } from './src/icons/VerifyEmail.jsx';
 export { default as ShowIcon } from './src/icons/Show.jsx';
 export { default as FaceIcon } from './src/icons/FaceIcon.jsx';
 export { default as SmsAuthIcon } from './src/icons/SmsAuth.jsx';
+export { default as RelinkIcon } from './src/icons/Relink.jsx';

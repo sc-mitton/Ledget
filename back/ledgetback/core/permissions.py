@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 import logging
 
 from rest_framework.permissions import BasePermission
@@ -9,6 +10,7 @@ import stripe
 
 stripe.api_key = settings.STRIPE_API_KEY
 stripe_logger = logging.getLogger('stripe')
+logger = logging.getLogger('ledget')
 
 
 class IsAuthenticated(BasePermission):
@@ -19,12 +21,14 @@ class IsAuthenticated(BasePermission):
             return False
 
         device_aal = getattr(request.user.device, 'aal', None)
+
+        # in reality the device_aal should be at least as high as the session aal
         session_aal = getattr(request.user, 'session_aal', None)
 
         if request.user.mfa_method == 'totp':
             return device_aal == 'aal2' or session_aal == 'aal2'
         elif request.user.mfa_method == 'otp':
-            return device_aal == 'aal1.5'
+            return device_aal == 'aal15'
         else:
             return device_aal == 'aal1' or device_aal == 'aal2'
 
@@ -66,7 +70,7 @@ class OwnsStripeSubscription(BasePermission):
         return stripe.Subscription.list(customer=customer_id).data[0].id
 
 
-class CanCreateStripeSubscription(BaseException):
+class CanCreateStripeSubscription(BasePermission):
 
     def has_permission(self, request, view):
 
@@ -89,3 +93,50 @@ class CanCreateStripeSubscription(BaseException):
                 return False
 
         return True
+
+
+class BaseFreshSessionClass(BasePermission):
+    message = 'Required session aal or freshness is not met'
+
+    def check_session_is_fresh(self, request, aal):
+        try:
+            if aal == 'aal15':
+                seconds_since_last_login = self.get_last_aal15_login_delta(request)
+            else:
+                seconds_since_last_login = self.get_last_ory_login_delta(request, aal)
+        except Exception as e:
+            logger.error(f'Error checking session freshness: {e}')
+            return False
+
+        if seconds_since_last_login is None:
+            return False
+
+        return seconds_since_last_login < settings.SESSION_MAX_AGE_SECONDS
+
+    def get_last_ory_login_delta(self, request, aal):
+        logins = request.META['session']['authentication_methods']
+        login = next((login for login in logins if login['aal'] == aal), None)
+
+        if login:
+            completed_at = datetime.strptime(
+                login['completed_at'],
+                '%Y-%m-%dT%H:%M:%S.%fZ'
+            )
+            return int(time.time()) - int(completed_at.timestamp())
+        else:
+            return None
+
+    def get_last_aal15_login_delta(self, request):
+        pass
+
+
+class HighestAalFreshSession(BaseFreshSessionClass):
+
+    def has_permission(self, request):
+        return self.check_session_is_fresh(request, request.user.highest_aal)
+
+
+class Aal1FreshSession(BaseFreshSessionClass):
+
+    def has_permission(self, request):
+        return self.check_session_is_fresh(request, 'aal1')

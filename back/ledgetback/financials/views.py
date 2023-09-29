@@ -36,7 +36,8 @@ from plaid.model.transactions_sync_request_options import (
 
 from core.permissions import (
     IsAuthedVerifiedSubscriber,
-    IsObjectOwner
+    IsObjectOwner,
+    HighestAalFreshSession
 )
 from core.clients import plaid_client
 from financials.models import (
@@ -204,7 +205,8 @@ class PlaidItemsListView(ListAPIView):
 
 
 class DestroyPlaidItemView(DestroyAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
+    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner,
+                          HighestAalFreshSession]
 
     def get_object(self):
         obj = get_object_or_404(PlaidItem, pk=self.kwargs['item_id'])

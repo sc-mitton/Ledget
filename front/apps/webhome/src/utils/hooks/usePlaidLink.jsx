@@ -8,10 +8,10 @@ import {
 } from '@features/plaidSlice'
 
 function usePlaidLink(onBoarding = false) {
-    const [addNewPlaidItem] = useAddNewPlaidItemMutation()
     const [plaidToken, setPlaidToken] = useState(null)
     const [isOauthRedirect, setIsOauthRedirect] = useState(false)
     const [fetchToken, { data: fetchedToken, isSuccess }] = useLazyGetPlaidTokenQuery()
+    const [addNewPlaidItem] = useAddNewPlaidItemMutation()
 
     useEffect(() => {
         if (window.location.href.includes('oauth_state_id')) {

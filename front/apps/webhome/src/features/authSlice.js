@@ -8,8 +8,7 @@ export const authSlice = createSlice({
         reAuthed: {
             level: 'none',
             at: null,
-        },
-        csrfToken: null,
+        }
     },
     reducers: {
         aal1ReAuthed: (state) => {

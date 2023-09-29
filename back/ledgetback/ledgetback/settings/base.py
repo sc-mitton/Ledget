@@ -28,13 +28,13 @@ LOCAL_APPS = [
     'financials.apps.FinancialsConfig',
 ]
 
-
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'ledgetback.middleware.OryAuthenticationMiddleware',
     'ledgetback.middleware.CustomCsrfMiddleware',
 ]
 
@@ -53,6 +53,8 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'core.User'
+
+SESSION_MAX_AGE_SECONDS = 60 * 10  # 10 minutes in seconds
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 

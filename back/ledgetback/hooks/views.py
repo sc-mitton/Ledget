@@ -16,7 +16,8 @@ from django.core.exceptions import ObjectDoesNotExist
 import stripe
 
 from core.models import Customer
-from hooks.permissions import CameFromOry
+from financials.models import PlaidItem
+from hooks.permissions import CameFromOry, CameFromPlaid
 
 stripe_logger = logging.getLogger('stripe')
 stripe.api_key = settings.STRIPE_API_KEY
@@ -127,7 +128,7 @@ class OryRegistrationHook(APIView):
 
 
 class OrySettingsPasswordHook(APIView):
-    """Handling the Ory webhook by creating a user and a customer."""
+    """Ory webhook for updating password_last_changed"""
     permission_classes = [CameFromOry]
 
     def post(self, request, *args, **kwargs):
@@ -142,7 +143,7 @@ class OrySettingsPasswordHook(APIView):
 
 
 class OryVerificationHook(APIView):
-    """Handling the Ory webhook by creating a user and a customer."""
+    """Ory webhook for updating verification status"""
     permission_classes = [CameFromOry]
 
     def post(self, request, *args, **kwargs):
@@ -157,10 +158,48 @@ class OryVerificationHook(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class OrySettingsProfileHook(APIView):
-    permission_classes = [CameFromOry]
+class PlaidItemHookView(APIView):
+    """Plaid webhook"""
+    permission_classes = [CameFromPlaid]
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
+        item = self.get_item(request.data['item_id'])
+        handler = self.get_handler(request.data['webhook_code'])
+
+        if not handler or not item:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            handler(item, request.data)
 
         return Response(status=status.HTTP_200_OK)
+
+    def get_handler(self, webhook_code):
+        handle_root = webhook_code.lower()
+        return getattr(self, f"handle_{handle_root}", None)
+
+    def get_item(self, id):
+        try:
+            return PlaidItem.objects.get(id=id)
+        except ObjectDoesNotExist:
+            return None
+
+    def handle_error(self, item, data):
+
+        if data['error']['error_code'] == 'ITEM_LOGIN_REQUIRED':
+            item.login_required = True
+            item.save()
+
+    def handle_login_repared(self, item, data):
+        item.login_required = False
+        item.save()
+
+    def handle_new_account_available(self, item, data):
+        item.new_account_available = True
+        item.save()
+
+    def handle_permission_revoked(self, item, data):
+        item.permission_revoked = True
+        item.save()
+
+    def handle_update_acknolwedged(self, item, data):
+        pass

@@ -18,7 +18,9 @@ import { usePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@ledget/shared-utils'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { Tooltip } from '@components/pieces'
+import { RelinkIcon } from '@ledget/shared-assets'
 import { SecondaryButton, GrnPrimaryButton, IconButton, ShimmerDiv, DeleteButton } from '@ledget/shared-ui'
+import { withReAuth } from '@utils'
 
 const DeleteContext = React.createContext()
 
@@ -86,30 +88,9 @@ const DeleteAllButton = ({ onClick }) => {
     )
 }
 
-const Account = ({ account }) => {
-    return (
-        <div className={'account-name'} >
-            <div>
-                <span>
-                    {account.name}
-                </span>
-            </div >
-            <div>
-                <span>
-                    {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
-                    &nbsp;&nbsp;
-                    &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
-                    {account.mask}
-                </span>
-            </div>
-        </div>
-    )
-}
-
 const PlaidItem = ({ item }) => {
     const { deleteQue, setDeleteQue } = useContext(DeleteContext)
     const [removed, setRemoved] = useState(false)
-    const mid = item.accounts.length / 2 + 1
 
     const handleRemoveAll = () => {
         // Filter out accounts from delete que
@@ -164,23 +145,26 @@ const PlaidItem = ({ item }) => {
                     <DeleteAllButton onClick={handleRemoveAll} />
                 </div>
             </div >
+            <div id="account-headers">
+                <div>Acct. Name</div>
+                <div>Type</div>
+                <div>Acct. Num.</div>
+            </div>
             <div id="accounts">
-                <div>
-                    {item.accounts.slice(0, mid).map((account) => (
-                        <Account
-                            key={account.id}
-                            account={{ ...account, itemId: item.id }}
-                        />
-                    ))}
-                </div>
-                <div>
-                    {item.accounts.slice(mid, item.accounts.length).map((account) => (
-                        <Account
-                            key={account.id}
-                            account={{ ...account, itemId: item.id }}
-                        />
-                    ))}
-                </div>
+                {item.accounts.map((account) => (
+                    <>
+                        <div>
+                            {account.name}
+                        </div >
+                        <div>
+                            {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
+                        </div>
+                        <div>
+                            &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
+                            {account.mask}
+                        </div>
+                    </>
+                ))}
             </div>
         </animated.div >
     )
@@ -211,26 +195,7 @@ const Header = ({ onPlus }) => {
     )
 }
 
-const Inputs = () => {
-    const { deleteQue } = useContext(DeleteContext)
-
-    return (
-        deleteQue.map((val, index) => (
-            <input
-                key={index}
-                type="hidden"
-                name={val.accountId
-                    ? `accounts[${index}][id]`
-                    : `items[${index}][id]`}
-                value={
-                    val.accountId ? val.accountId : val.itemId
-                }
-            />
-        ))
-    )
-}
-
-const ConfirmModal = withSmallModal((props) => {
+const ConfirmModal = withReAuth(withSmallModal((props) => {
     const { deleteQue, setDeleteQue, setEditing } = useContext(DeleteContext)
     const [deletePlaidItem] = useDeletePlaidItemMutation()
     const [, setSearchParams] = useSearchParams()
@@ -283,20 +248,18 @@ const ConfirmModal = withSmallModal((props) => {
             </div>
         </div>
     )
-})
+}))
 
-const EmptyState = ({ visible }) => {
-    return (
-        <Desert>
-            <div id="no-connections-message">
-                <h2>No Connections</h2>
-                <span>Click the plus icon to get started </span>
-                <br />
-                <span>connecting your accounts</span>
-            </div>
-        </Desert >
-    )
-}
+const EmptyState = () => (
+    <Desert>
+        <div id="no-connections-message">
+            <h2>No Connections</h2>
+            <span>Click the plus icon to get started </span>
+            <br />
+            <span>connecting your accounts</span>
+        </div>
+    </Desert >
+)
 
 const Connections = () => {
     const {
@@ -323,6 +286,21 @@ const Connections = () => {
         }
     }
 
+    const Inputs = () => (
+        deleteQue.map((val, index) => (
+            <input
+                key={index}
+                type="hidden"
+                name={val.accountId
+                    ? `accounts[${index}][id]`
+                    : `items[${index}][id]`}
+                value={
+                    val.accountId ? val.accountId : val.itemId
+                }
+            />
+        ))
+    )
+
     return (
         <>
             {showConfirmModal &&
@@ -342,10 +320,7 @@ const Connections = () => {
                             <ShadowedContainer id="accounts-list">
                                 <div>
                                     {plaidItems?.map((item) => (
-                                        <PlaidItem
-                                            key={item.id}
-                                            item={item}
-                                        />
+                                        <PlaidItem key={item.id} item={item} />
                                     ))}
                                 </div>
                             </ShadowedContainer>

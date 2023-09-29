@@ -26,6 +26,14 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['PlaidItem'],
         }),
+        updatePlaidItem: builder.mutation({
+            query: ({ plaidItemId, data }) => ({
+                url: `/plaid_item/${plaidItemId}`,
+                method: 'PATCH',
+                body: data,
+            }),
+            invalidatesTags: ['PlaidItem'],
+        }),
     })
 })
 
@@ -34,4 +42,5 @@ export const {
     useGetPlaidItemsQuery,
     useAddNewPlaidItemMutation,
     useDeletePlaidItemMutation,
+    useUpdatePlaidItemMutation,
 } = extendedApiSlice

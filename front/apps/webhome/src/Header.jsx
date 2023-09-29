@@ -197,7 +197,7 @@ function Header({ isNarrow }) {
             <header
                 style={{ zIndex: zIndex }}
             >
-                <div className="header-container">
+                <div className={`header-container ${isNarrow ? 'narrow' : ''}`}>
                     <div className="header-logo"><LedgetLogoIcon /></div>
                     <div className="header-right">
                         <div>
