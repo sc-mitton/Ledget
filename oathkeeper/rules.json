@@ -168,6 +168,33 @@
       "authorizer": {
          "handler": "allow"
       },
+      "id": "plaid_link_token",
+      "match": {
+         "methods": [
+            "GET"
+         ],
+         "url": "https://localhost/api/v1/plaid_link_token/<[a-zA-Z0-9]+>"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
       "id": "plaid_token_exchange",
       "match": {
          "methods": [
@@ -222,10 +249,11 @@
       "authorizer": {
          "handler": "allow"
       },
-      "id": "destroy_plaid_item",
+      "id": "plaid_item",
       "match": {
          "methods": [
-            "DELETE"
+            "DELETE",
+            "PATCH"
          ],
          "url": "https://localhost/api/v1/plaid_item/<[a-zA-Z0-9]+>"
       },

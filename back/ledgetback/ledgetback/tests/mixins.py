@@ -3,6 +3,7 @@ from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.urls import reverse
+from django.test import modify_settings
 
 import uuid
 import jwt
@@ -23,6 +24,7 @@ session_payloads = [
                                 + 'rv:109.0) Gecko/20100101 Firefox/117.0'
                 }
             ],
+            'id': str(uuid.uuid4()),
             'authenticator_assurance_level': f'aal{i%2 + 1}',
             'identity': {
                 'id': str(uuid.uuid4()),
@@ -50,6 +52,9 @@ tokens = [
 ]
 
 
+@modify_settings(MIDDLEWARE={
+    'remove': 'ledgetback.middleware.CustomCsrfMiddleware'
+})
 class ViewTestsMixin(TestCase):
     '''Mixing for view tests which provides a client and user.
     Additionally, the OATHKEEPER_PUBLIC_KEY is overrriden and
@@ -85,13 +90,13 @@ class ViewTestsMixin(TestCase):
         self.createClients()
 
     def createClients(self):
-        self.client = APIClient(enforce_csrf_checks=False)
+        self.client = APIClient()
         self.client.defaults['HTTP_AUTHORIZATION'] = 'bearer {}'.format(tokens[1])
 
-        self.aal2_client = APIClient(enforce_csrf_checks=False)
+        self.aal2_client = APIClient()
         self.aal2_client.defaults['HTTP_AUTHORIZATION'] = 'bearer {}'.format(tokens[0])
 
-        self.unauthed_client = APIClient(enforce_csrf_checks=False)
+        self.unauthed_client = APIClient()
 
         self.client1_device = self.aal1_payload['session']['devices'][0]
         self.aal2_client_device = self.aal2_payload['session']['devices'][0]

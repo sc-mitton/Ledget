@@ -31,7 +31,7 @@ REASON_MISSING_SECRET_KEY = "The SECRET_KEY setting must not be empty."
 
 
 class BadDigest(Exception):
-    def __init__(self, reason):
+    def __init__(self):
         self.reason = REASON_MISSING_HMAC_DIGEST
 
 

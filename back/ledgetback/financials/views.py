@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
-    DestroyAPIView,
+    RetrieveUpdateDestroyAPIView,
     GenericAPIView
 )
 from rest_framework.response import Response
@@ -37,13 +37,10 @@ from plaid.model.transactions_sync_request_options import (
 from core.permissions import (
     IsAuthedVerifiedSubscriber,
     IsObjectOwner,
-    HighestAalFreshSession
+    highest_aal_freshness
 )
+from financials.models import PlaidItem, Transaction
 from core.clients import plaid_client
-from financials.models import (
-    PlaidItem,
-    Transaction
-)
 from financials.serializers import (
     ExchangePlaidTokenSerializer,
     PlaidItemsSerializer,
@@ -168,19 +165,27 @@ class PlaidLinkTokenView(APIView):
         else:
             redirect_uri = PLAID_REDIRECT_URI
 
-        try:
-            request = LinkTokenCreateRequest(
-                products=plaid_products,
-                client_name='Ledget',
-                country_codes=list(
-                    map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)
-                ),
-                language='en',
-                redirect_uri=redirect_uri,
-                user=LinkTokenCreateRequestUser(
-                    client_user_id=str(request.user.id)
-                )
+        request_kwargs = {
+            'client_name': 'Ledget',
+            'country_codes': list(
+                map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)
+            ),
+            'language': 'en',
+            'redirect_uri': redirect_uri,
+            'user': LinkTokenCreateRequestUser(
+                client_user_id=str(request.user.id)
             )
+        }
+        print(kwargs.get('item_id', False))
+        if kwargs.get('item_id', False):
+            request_kwargs['access_token'] = \
+                PlaidItem.objects.get(id=kwargs['item_id']).access_token
+            request_kwargs['update'] = {"account_selection_enabled": True}
+        else:
+            request_kwargs['products'] = plaid_products
+
+        try:
+            request = LinkTokenCreateRequest(**request_kwargs)
             response = plaid_client.link_token_create(request)
             return Response(data=response.to_dict(),
                             status=HTTP_200_OK)
@@ -204,15 +209,16 @@ class PlaidItemsListView(ListAPIView):
         return PlaidItem.objects.filter(user=self.request.user).all()
 
 
-class DestroyPlaidItemView(DestroyAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner,
-                          HighestAalFreshSession]
+class PlaidItemView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
+    serializer_class = PlaidItemsSerializer
 
     def get_object(self):
         obj = get_object_or_404(PlaidItem, pk=self.kwargs['item_id'])
         self.check_object_permissions(self.request, obj)
         return obj
 
+    @highest_aal_freshness
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
 

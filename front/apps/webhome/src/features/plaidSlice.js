@@ -3,17 +3,18 @@ import { apiSlice } from '@api/apiSlice'
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getPlaidToken: builder.query({
-            query: ({ isOnboarding }) => ({
-                url: `plaid_link_token${isOnboarding ? '?is_onboarding=true' : ''}`,
+            query: ({ isOnboarding, itemId }) => ({
+                url: `plaid_link_token${isOnboarding ? '?is_onboarding=true' : ''}${itemId ? `/${itemId}` : ''}`,
             }),
+            providesTags: ['PlaidToken'],
         }),
         getPlaidItems: builder.query({
             query: () => 'plaid_items',
             providesTags: ['PlaidItem'],
         }),
         deletePlaidItem: builder.mutation({
-            query: ({ plaidItemId }) => ({
-                url: `/plaid_item/${plaidItemId}`,
+            query: ({ itemId }) => ({
+                url: `/plaid_item/${itemId}`,
                 method: 'DELETE'
             }),
             invalidatesTags: ['PlaidItem'],
@@ -27,8 +28,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['PlaidItem'],
         }),
         updatePlaidItem: builder.mutation({
-            query: ({ plaidItemId, data }) => ({
-                url: `/plaid_item/${plaidItemId}`,
+            query: ({ itemId, data }) => ({
+                url: `/plaid_item/${itemId}`,
                 method: 'PATCH',
                 body: data,
             }),
@@ -38,6 +39,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
+    useGetPlaidTokenQuery,
     useLazyGetPlaidTokenQuery,
     useGetPlaidItemsQuery,
     useAddNewPlaidItemMutation,

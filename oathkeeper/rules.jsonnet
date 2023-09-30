@@ -95,6 +95,14 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
+    id: 'plaid_link_token',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/plaid_link_token/<[a-zA-Z0-9]+>',
+    },
+  },
+  GenericAuthedBase
+  {
     id: 'plaid_token_exchange',
     match: {
       methods: ['POST'],
@@ -111,9 +119,9 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
-    id: 'destroy_plaid_item',
+    id: 'plaid_item',
     match: {
-      methods: ['DELETE'],
+      methods: ['DELETE', 'PATCH'],
       url: base_url + '/plaid_item/<[a-zA-Z0-9]+>',
     },
   },

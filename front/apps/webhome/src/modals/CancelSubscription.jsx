@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 
 import { useSpring, animated } from '@react-spring/web'
 import { useNavigate } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 
 import './styles/CancelSubscription.css'
 import { withModal } from '@ledget/shared-utils'
-import { RedButton, GrnPrimaryButton } from '@ledget/shared-ui'
+import { withReAuth } from '@utils'
+import { RedButton, GrnPrimaryButton, SlideMotionDiv } from '@ledget/shared-ui'
 import { useUpdateSubscriptionMutation, useGetMeQuery } from '@features/userSlice'
 import { BakedSelect } from '@components/dropdowns'
 
@@ -48,7 +50,6 @@ export const CancelationWindow = (props) => {
         }
         !cancelationReason && reasonApi.start({ ...pulseConfig })
         !feedback && feedbackApi.start({ ...pulseConfig })
-
     }
 
     return (
@@ -133,10 +134,11 @@ const SuccessWindow = (props) => {
             <div className="body" style={{ margin: '16px 0 16px 0' }}>
                 If you change your mind, you can stop the
                 cancellation at any time before the end of
-                the current billing cycle.
+                the current billing cycle. After that, your
+                account will be deleted along with all of your
+                account data.
             </div>
             <div>
-
             </div>
             <div>
                 <GrnPrimaryButton
@@ -150,27 +152,36 @@ const SuccessWindow = (props) => {
     )
 }
 
-const Modal = withModal((props) => {
+const CancelationModal = withReAuth(withModal((props) => {
     const [{ isSuccess }] = useUpdateSubscriptionMutation()
+    const [loaded, setLoaded] = useState(false)
+
+    useEffect(() => { setLoaded(true) }, [])
 
     return (
-        isSuccess
-            ? <SuccessWindow {...props} />
-            : <CancelationWindow {...props} />
+        <AnimatePresence mode="wait">
+            {isSuccess
+                ?
+                <SlideMotionDiv first={loaded}>
+                    <SuccessWindow {...props} />
+                </SlideMotionDiv>
+                :
+                <SlideMotionDiv last>
+                    <CancelationWindow {...props} />
+                </SlideMotionDiv>
+            }
+        </AnimatePresence>
     )
-})
+}))
 
-const ChangePlan = (props) => {
+export default function () {
     const navigate = useNavigate()
 
     return (
-        <Modal
-            {...props}
-            onClose={() => navigate(-1)}
+        <CancelationModal
+            onClose={() => navigate('/profile/details')}
             maxWidth={'350px'}
             blur={2}
         />
     )
 }
-
-export default ChangePlan

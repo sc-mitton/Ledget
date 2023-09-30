@@ -1,9 +1,12 @@
 import time
 from datetime import datetime
 import logging
+import functools
 
+from rest_framework.status import HTTP_401_UNAUTHORIZED
 from rest_framework.permissions import BasePermission
 from django.contrib.auth.models import AnonymousUser
+from rest_framework.response import Response
 from django.conf import settings
 import stripe
 
@@ -11,6 +14,8 @@ import stripe
 stripe.api_key = settings.STRIPE_API_KEY
 stripe_logger = logging.getLogger('stripe')
 logger = logging.getLogger('ledget')
+
+AAL_FRESHNESS_ERROR_MESSAGE = 'Required session aal or freshness is not met'
 
 
 class IsAuthenticated(BasePermission):
@@ -96,7 +101,7 @@ class CanCreateStripeSubscription(BasePermission):
 
 
 class BaseFreshSessionClass(BasePermission):
-    message = 'Required session aal or freshness is not met'
+    message = AAL_FRESHNESS_ERROR_MESSAGE
 
     def check_session_is_fresh(self, request, aal):
         try:
@@ -132,11 +137,27 @@ class BaseFreshSessionClass(BasePermission):
 
 class HighestAalFreshSession(BaseFreshSessionClass):
 
-    def has_permission(self, request):
+    def has_permission(self, request, view):
         return self.check_session_is_fresh(request, request.user.highest_aal)
 
 
 class Aal1FreshSession(BaseFreshSessionClass):
 
-    def has_permission(self, request):
+    def has_permission(self, request, view):
         return self.check_session_is_fresh(request, 'aal1')
+
+
+def highest_aal_freshness(func):
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        request = args[1]
+        if not HighestAalFreshSession().check_session_is_fresh(
+                request, request.user.highest_aal):
+            return Response(
+                {'error': AAL_FRESHNESS_ERROR_MESSAGE},
+                status=HTTP_401_UNAUTHORIZED
+            )
+        else:
+            return func(*args, **kwargs)
+    return wrapper

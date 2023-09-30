@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import './styles/Welcome.css'
 import './styles/Main.css'
 import { Plus, CheckMark3 } from '@ledget/shared-assets'
-import { usePlaidLink } from '@utils/hooks'
+import { useBakedPlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { Base64Logo } from '@components/pieces'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
@@ -57,7 +57,7 @@ const InstitutionLogos = ({ plaidItems }) => {
 }
 
 const BottomButtons = ({ continueDisabled }) => {
-    const { open } = usePlaidLink({ onBoarding: true })
+    const { open } = useBakedPlaidLink({ onBoarding: true })
     const navigate = useNavigate()
 
     return (

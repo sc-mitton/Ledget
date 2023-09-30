@@ -20,11 +20,6 @@ const Main = () => {
                 <Devices devices={devices} />
                 <Authentication />
                 <Mfa />
-                <div id="delete-account--button">
-                    <SlimInputButton >
-                        Delete Account
-                    </SlimInputButton >
-                </div>
             </div>
             <Outlet />
         </ShimmerDiv>

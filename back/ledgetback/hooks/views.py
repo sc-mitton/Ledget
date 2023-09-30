@@ -80,14 +80,17 @@ class StripeHookView(APIView):
         customer.delete()
 
     def handle_customer_subscription_deleted(self, event):
-        # This is a permanent cancelation
+        # This is a permanent cancelation, and all of the user's data is
+        # going to be deleted. The end of the billing period has been reacehd
+        # and the user has not reactivated, so it's time to take out the trash
 
         try:
-            customer = Customer.objects.get(id=event.data.object.customer)
+            customer_id = event.data.object.customer
+            user = get_user_model().objects.filter(customer__id=customer_id).first()
         except ObjectDoesNotExist:
             return  # Customer already deleted and we don't need to do anything
 
-        customer.delete()
+        user.delete()
 
     # Events related to the subscription
     def handle_invoice_paid(self, event):
@@ -185,7 +188,7 @@ class PlaidItemHookView(APIView):
 
     def handle_error(self, item, data):
 
-        if data['error']['error_code'] == 'ITEM_LOGIN_REQUIRED':
+        if data.get('error', {}).get('error_code', None) == 'ITEM_LOGIN_REQUIRED':
             item.login_required = True
             item.save()
 

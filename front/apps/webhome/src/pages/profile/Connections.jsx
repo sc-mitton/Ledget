@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Plus, Edit } from '@ledget/shared-assets'
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
+import { usePlaidLink } from 'react-plaid-link'
 
 import './styles/Connections.css'
 import { Desert } from '@components/pieces'
@@ -14,12 +15,12 @@ import {
     Base64Logo,
     ShadowedContainer
 } from '@components/pieces'
-import { usePlaidLink } from '@utils/hooks'
+import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@ledget/shared-utils'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { Tooltip } from '@components/pieces'
 import { RelinkIcon } from '@ledget/shared-assets'
-import { SecondaryButton, GrnPrimaryButton, IconButton, ShimmerDiv, DeleteButton } from '@ledget/shared-ui'
+import { SecondaryButton, GrnPrimaryButton, IconButton, ShimmerDiv, DeleteButton, BlackSubmitButton } from '@ledget/shared-ui'
 import { withReAuth } from '@utils'
 
 const DeleteContext = React.createContext()
@@ -72,8 +73,8 @@ const DeleteAllButton = ({ onClick }) => {
                 msg={'Remove account'}
                 ariaLabel={'Remove Account'}
                 style={{
-                    left: '-320%',
-                    bottom: '-20%',
+                    left: '-460%',
+                    bottom: '-50%',
                 }}
                 type={'left'}
             >
@@ -85,6 +86,22 @@ const DeleteAllButton = ({ onClick }) => {
                 />
             </Tooltip>
         </div >
+    )
+}
+
+const ReconnectButton = ({ itemId }) => {
+    const { open, fetchingToken } = useBakedUpdatePlaidLink()
+
+    return (
+        <div className={`reconnect--container ${fetchingToken ? '' : 'wiggle'}`}>
+            <BlackSubmitButton
+                onClick={() => !fetchingToken && open()}
+                aria-label="Reconnect"
+            >
+                <RelinkIcon fill={'var(--window)'} />
+                Reconnect
+            </BlackSubmitButton>
+        </div>
     )
 }
 
@@ -129,6 +146,9 @@ const PlaidItem = ({ item }) => {
 
     return (
         <animated.div className="institution" style={springProps}>
+            {(item.login_required || item.permission_revoked) &&
+                <ReconnectButton itemId={item.id} />
+            }
             <div className="header2">
                 <div>
                     <Base64Logo
@@ -145,12 +165,12 @@ const PlaidItem = ({ item }) => {
                     <DeleteAllButton onClick={handleRemoveAll} />
                 </div>
             </div >
-            <div id="account-headers">
+            <div className="account-headers">
                 <div>Acct. Name</div>
                 <div>Type</div>
                 <div>Acct. Num.</div>
             </div>
-            <div id="accounts">
+            <div className="accounts">
                 {item.accounts.map((account) => (
                     <>
                         <div>
@@ -170,31 +190,6 @@ const PlaidItem = ({ item }) => {
     )
 }
 
-const Header = ({ onPlus }) => {
-    const { editing, setEditing, plaidItems } = useContext(DeleteContext)
-
-    return (
-        <div className="header">
-            <h1>Connections</h1>
-            <div className='header-btns'>
-                {!editing && plaidItems?.length > 0 &&
-                    <IconButton
-                        onClick={() => setEditing(!editing)}
-                        aria-label="Edit institution connections"
-                    >
-                        <Edit />
-                    </IconButton>}
-                {plaidItems?.length === 0
-                    ? <button className="pulse" onClick={onPlus}><Plus /></button>
-                    : <IconButton onClick={onPlus} aria-label="Add institution connection">
-                        <Plus />
-                    </IconButton>
-                }
-            </div>
-        </div>
-    )
-}
-
 const ConfirmModal = withReAuth(withSmallModal((props) => {
     const { deleteQue, setDeleteQue, setEditing } = useContext(DeleteContext)
     const [deletePlaidItem] = useDeletePlaidItemMutation()
@@ -207,7 +202,7 @@ const ConfirmModal = withReAuth(withSmallModal((props) => {
 
     const finalSubmit = () => {
         for (const que of deleteQue) {
-            deletePlaidItem({ plaidItemId: que.itemId })
+            deletePlaidItem({ itemId: que.itemId })
         }
         setEditing(false)
         props.setVisible(false)
@@ -261,6 +256,32 @@ const EmptyState = () => (
     </Desert >
 )
 
+
+const MainHeader = ({ onPlus }) => {
+    const { editing, setEditing, plaidItems } = useContext(DeleteContext)
+
+    return (
+        <div className="header">
+            <h1>Connections</h1>
+            <div className='header-btns'>
+                {!editing && plaidItems?.length > 0 &&
+                    <IconButton
+                        onClick={() => setEditing(!editing)}
+                        aria-label="Edit institution connections"
+                    >
+                        <Edit />
+                    </IconButton>}
+                {plaidItems?.length === 0
+                    ? <button className="pulse" onClick={onPlus}><Plus /></button>
+                    : <IconButton onClick={onPlus} aria-label="Add institution connection">
+                        <Plus />
+                    </IconButton>
+                }
+            </div>
+        </div>
+    )
+}
+
 const Connections = () => {
     const {
         plaidItems,
@@ -271,7 +292,7 @@ const Connections = () => {
         setDeleteQue,
     } = useContext(DeleteContext)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
-    const { open, exit, ready } = usePlaidLink()
+    const { open, exit, ready } = useBakedPlaidLink()
 
     // if (import.meta.env.VITE_PLAID_REDIRECT_URI) {
     //     config.receivedRedirectUri = import.meta.env.VITE_PLAID_REDIRECT_URI
@@ -311,7 +332,7 @@ const Connections = () => {
             }
             <ShimmerDiv shimmering={fetchingPlaidItems}>
                 <div id="connections-page" className="padded-content">
-                    <Header onPlus={() => open()} />
+                    <MainHeader onPlus={() => open()} />
                     {plaidItems?.length === 0
                         ?
                         <EmptyState />
