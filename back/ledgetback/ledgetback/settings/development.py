@@ -29,7 +29,7 @@ MEDIA_ROOT = '/ledgetback/media'
 #                                 Csrf Settings                                #
 # ---------------------------------------------------------------------------- #
 
-CSRF_COOKIE_NAME = 'led_csrftoken'
+CSRF_COOKIE_NAME = 'csrftoken'
 CSRF_COOKIE_AGE = 60 * 60 * 24 * 30  # 1 month
 CSRF_SAMESITE = 'lax'
 CSRF_COOKIE_SECURE = True
