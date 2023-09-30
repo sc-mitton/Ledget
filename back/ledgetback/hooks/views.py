@@ -86,11 +86,12 @@ class StripeHookView(APIView):
 
         try:
             customer_id = event.data.object.customer
-            user = get_user_model().objects.filter(customer__id=customer_id).first()
+            customer = Customer.objects.get(id=customer_id)
         except ObjectDoesNotExist:
             return  # Customer already deleted and we don't need to do anything
 
-        user.delete()
+        customer.subscription_status = Customer.SubscriptionStatus.DELETED
+        customer.save()
 
     # Events related to the subscription
     def handle_invoice_paid(self, event):

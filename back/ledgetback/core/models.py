@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
+import core.tasks as tasks
 
 
 class UserManager(models.Manager):
@@ -178,6 +179,7 @@ class Customer(models.Model):
         PAST_DUE = 'past_due', _('Past Due')
         CANCELED = 'canceled', _('Canceled')
         PAUSED = 'paused', _('Paused')
+        DELETED = 'deleted', _('Deleted')
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     id = models.CharField(max_length=40, primary_key=True, editable=False)
@@ -191,6 +193,15 @@ class Customer(models.Model):
     feedback = models.CharField(max_length=1000, null=True, default=None)
     cancelation_reason = models.CharField(max_length=1000,
                                           null=True, default=None)
+
+    def delete(self, *args, **kwargs):
+        '''
+        Customers are deleted after the end of the billing cycle and
+        the stripe webhook is hit. When this happens, the third party
+        data needs to be deleted. As much as possible is kept for analytics.
+        Cleanup happens by kicking off a celery task.
+        '''
+        tasks.cleanup.delay(self.user.id)
 
     @property
     def has_current_subscription(self):

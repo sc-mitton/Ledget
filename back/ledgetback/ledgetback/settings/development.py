@@ -96,6 +96,13 @@ BIRD_SIGNING_KEY = get_secret('bird_signing_key')
 BIRD_API_KEY_ID = get_secret('bird_api_key_id')
 
 # ---------------------------------------------------------------------------- #
+#                                    Celery                                    #
+# ---------------------------------------------------------------------------- #
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+
+# ---------------------------------------------------------------------------- #
 #                                    Caching                                   #
 # ---------------------------------------------------------------------------- #
 

@@ -7,5 +7,5 @@ urlpatterns = [
 ]
 
 
-if settings.DEBUG:
+if settings.SILK_DEBUG:
     urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]

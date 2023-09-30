@@ -17,6 +17,7 @@ RUN if [ $DEV = "true" ]; then pip install -r requirements.dev.txt; fi
 
 ###
 FROM python:3.11-slim-bullseye
+
 ENV PYTHONUNBUFFERED 1
 
 RUN groupadd -g 999 python && \

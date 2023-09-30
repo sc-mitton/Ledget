@@ -98,7 +98,7 @@ header {
     position: absolute;
     top: -7px;
     /* left: 48px; */
-    right: 48px;
+    right: 30px;
     display: inline-block;
     border-right: 6px solid transparent;
     border-bottom: 6px solid var(--subtle-border-color);
@@ -110,7 +110,7 @@ header {
     position: absolute;
     top: -6px;
     /* left: 48px; */
-    right: 48px;
+    right: 30px;
     display: inline-block;
     border-right: 6px solid transparent;
     border-bottom: 6px solid var(--window);

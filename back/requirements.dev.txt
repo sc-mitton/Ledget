@@ -39,6 +39,7 @@ PyJWT==2.7.0
 python-dateutil==2.8.2
 pytz==2023.3
 PyYAML==6.0.1
+redis==5.0.1
 requests==2.31.0
 six==1.12.0
 sqlparse==0.4.4
