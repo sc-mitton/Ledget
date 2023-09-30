@@ -12,6 +12,8 @@ services:
       - postgres_password
     volumes:
       - dev-db-data:/var/lib/postgresql/data/
+  message-broker:
+    image: redis:7.0.5-alpine
   oathkeeper:
     build:
       context: ./oathkeeper
