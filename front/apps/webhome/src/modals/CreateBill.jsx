@@ -121,6 +121,7 @@ const Form = (props) => {
                     className="padded-row"
                     style={{ order: watchRange ? 2 : 1 }}
                 >
+                    <label htmlFor="schedule">Schedule</label>
                     <BillScheduler
                         billPeriod={billPeriod}
                         error={scheduleMissing}
@@ -169,7 +170,7 @@ export default (props) => {
         <Modal
             {...props}
             onClose={() => navigate(-1)}
-            maxWidth={props.maxWidth || '425px'}
+            maxWidth={props.maxWidth || '400px'}
             minWidth={props.minWidth || '0px'}
             blur={2}
         />

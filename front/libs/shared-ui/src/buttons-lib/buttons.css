@@ -318,6 +318,7 @@
 .btn-input {
     color: var(--input-placeholder2);
     background-color: var(--input-background);
+    border: var(--input-border);
 }
 
 .btn-input2 {
@@ -330,7 +331,7 @@
 
 .btn-input-full {
     padding: 11px 11px;
-    margin: 4px 0;
+    margin: 6px 0;
     border-radius: var(--border-radius2);
     width: 100%;
 }

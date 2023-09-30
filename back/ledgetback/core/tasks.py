@@ -6,12 +6,19 @@ from plaid.model.item_remove_request import ItemRemoveRequest
 from django.conf import settings
 
 import ory_client
+from ory_client.api import identity_api
 from core.clients import plaid_client
 
 logger = logging.getLogger('ledget')
 ory_configuration = ory_client.Configuration(
     access_token=settings.ORY_API_KEY,
 )
+
+
+class OryException(Exception):
+    def __init__(self, status):
+        self.message = 'Failed to delete ory identity'
+        self.status = status
 
 
 @shared_task(auto_retry_for=(Exception,), retry_backoff=10, retry_jitter=True,
@@ -26,11 +33,12 @@ def delete_plaid_item(item_id, access_token):
         return False
 
 
-@shared_task(auto_retry_for=(Exception,), retry_backoff=10, retry_jitter=True,
+@shared_task(auto_retry_for=(OryException,), retry_backoff=10, retry_jitter=True,
              retry_kwargs={'max_retries': 3})
 def delete_ory_identity(user_id):
     with ory_client.ApiClient(ory_configuration) as api_client:
-        api_instance = ory_client.AdminApi(api_client)
+        api_instance = identity_api.IdentityApi(api_client)
+
         try:
             api_instance.delete_identity(user_id)
         except ory_client.ApiException as e:
@@ -38,6 +46,7 @@ def delete_ory_identity(user_id):
                 logger.error(f'Failed to delete ory identity: {e}')
             else:
                 logger.info(f'No ory identity found for user {user_id}')
+                raise OryException(e.status)
 
 
 @shared_task
@@ -55,8 +64,3 @@ def cleanup(user_id):
         grouped_delete_tasks()
 
     delete_ory_identity.delay(user_id)
-
-
-@shared_task
-def test_add(x, y):
-    return x + y

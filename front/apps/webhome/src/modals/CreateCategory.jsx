@@ -14,7 +14,7 @@ import { FormErrorTip } from '@ledget/shared-ui'
 
 export const schema = object().shape({
     name: string().required().lowercase(),
-    limit_amount: number().required('required'),
+    limit_amount: number().required('required')
 })
 
 const radioOptions = [
@@ -32,13 +32,10 @@ const Form = (props) => {
     })
     const watchLimitAmount = watch('limit_amount', '')
 
-    const submit = (e) => {
+    const submit = (data, e) => {
         e.preventDefault()
         const formData = new FormData(e.target)
         let body = Object.fromEntries(formData)
-
-        body.limit_amount = Number(body.limit.replace(/[^0-9]/g, '')) * 100
-        delete body.limit
 
         let alerts = []
         for (const [key, value] of Object.entries(body)) {
@@ -47,9 +44,8 @@ const Form = (props) => {
                 delete body[key]
             }
         }
-        body.alerts = alerts
 
-        addNewCategory({ data: body })
+        addNewCategory({ data: { ...body, ...data, alerts: alerts } })
     }
 
     useEffect(() => {
@@ -58,7 +54,7 @@ const Form = (props) => {
 
     return (
         <form
-            onSubmit={handleSubmit((data, e) => submit(e))}
+            onSubmit={handleSubmit((data, e) => submit(data, e))}
             id="new-cat-form"
             className="create-form"
         >
@@ -85,6 +81,7 @@ const Form = (props) => {
                     </LimitAmountInput>
                 </div>
                 <div>
+                    <label htmlFor="limit_amount">Alert</label>
                     <AddAlert limitAmount={watchLimitAmount} />
                 </div>
             </div>

@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, useContext, forwardRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 
 import './styles/Dropdowns.css'
 import './styles/Scheduler.css'
 import Radios from './Radios'
 import { useClickClose } from '@utils'
 import { Calendar, ArrowIcon } from '@ledget/shared-assets'
-import { FormErrorTip, DropAnimation } from '@ledget/shared-ui'
+import { FormErrorTip, DropAnimation, InputButton } from '@ledget/shared-ui'
 
 const pickerContext = React.createContext()
 
@@ -84,7 +84,7 @@ const Button = ({ children, ...props }) => {
 
     return (
         <>
-            <div
+            <InputButton
                 onClick={() => setOpen(!open)}
                 onKeyDown={(event) => {
                     if (event.key === 'Enter') {
@@ -110,8 +110,8 @@ const Button = ({ children, ...props }) => {
                     }}
                 >
                     <Calendar
-                        width={'1.5em'}
-                        height={'1.5em'}
+                        width={'1.4em'}
+                        height={'1.4em'}
                         fill={
                             placeholder
                                 ? 'var(--m-text-gray)'
@@ -135,7 +135,7 @@ const Button = ({ children, ...props }) => {
                     }
                 />
                 {children}
-            </div>
+            </InputButton>
         </>
 
     )

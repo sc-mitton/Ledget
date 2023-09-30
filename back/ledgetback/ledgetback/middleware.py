@@ -36,12 +36,13 @@ class BadDigest(Exception):
 
 
 def _get_hmac(request):
-    try:
-        session_id = request.META.get('HTTP_AUTHORIZATION')['session']['id']
-    except KeyError:
+    auth_token = request.META.get('HTTP_AUTHORIZATION')
+    if not auth_token or not settings.SECRET_KEY:
         raise BadDigest
 
-    if settings.SECRET_KEY is None:
+    try:
+        session_id = auth_token['session']['id']
+    except KeyError:
         raise BadDigest
 
     unhashed = ''.join([settings.SECRET_KEY, session_id])
@@ -94,6 +95,7 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
             raise RejectRequest(reason)
 
     def process_request(self, request):
+
         try:
             csrf_secret = self._get_secret(request)
             if csrf_secret is None:
@@ -103,6 +105,12 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
         else:
             if csrf_secret is not None:
                 request.META["CSRF_COOKIE"] = csrf_secret
+
+    def process_view(self, request, callback, callback_args, callback_kwargs):
+        # exempt /hook paths
+        print('callback: ', getattr(callback, "csrf_exempt", False))
+
+        return super().process_view(request, callback, callback_args, callback_kwargs)
 
 
 class OryAuthenticationMiddleware(MiddlewareMixin):

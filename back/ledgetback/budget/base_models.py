@@ -23,7 +23,7 @@ class BudgetItem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=False, blank=False)
-    emoji = models.CharField(max_length=10, null=False, blank=False)
+    emoji = models.CharField(max_length=10, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
 
 
