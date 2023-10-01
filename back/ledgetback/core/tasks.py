@@ -1,24 +1,22 @@
-import http
 import logging
 import json
-import requests
 
 from celery import shared_task, group
 from plaid.model.item_remove_request import ItemRemoveRequest
 from django.conf import settings
 import plaid
 from core.clients import create_plaid_client
-
+import ory_client
+from ory_client.api import identity_api
 
 logger = logging.getLogger('ledget')
 
 plaid_client = create_plaid_client()
 
-
-class OryException(Exception):
-    def __init__(self, status):
-        self.message = 'Failed to delete ory identity'
-        self.status = status
+ory_configuration = ory_client.Configuration(
+    host=settings.ORY_HOST,
+    access_token=settings.ORY_API_KEY
+)
 
 
 @shared_task(auto_retry_for=(plaid.ApiException,), retry_backoff=10, retry_jitter=True,
@@ -34,22 +32,13 @@ def delete_plaid_item(item_id: str, access_token: str):
             raise plaid.ApiException(e.status, e.reason, e.body)
 
 
-@shared_task(auto_retry_for=(OryException,), retry_backoff=10, retry_jitter=True,
-             retry_kwargs={'max_retries': 3})
-def delete_ory_identity(user_id):
+@shared_task(auto_retry_for=(ory_client.ApiException,), retry_backoff=10,
+             retry_jitter=True, retry_kwargs={'max_retries': 3})
+def delete_ory_identity(user_id: str):
 
-    try:
-        requests.delete(
-            f'{settings.ORY_HOST}/admin/identities/{user_id}',
-            headers={
-                'Content-Type': 'application/json',
-                'Authorization': f'Bearer {settings.ORY_API_KEY}',
-            },
-        )
-    # Raise OryException if the status code is not 204
-    except requests.exceptions.HTTPError as e:
-        if e.response.status_code != http.HTTPStatus.NO_CONTENT:
-            raise OryException(e.response.status_code)
+    with ory_client.ApiClient(ory_configuration) as api_client:
+        api_instance = identity_api.IdentityApi(api_client)
+        api_instance.delete_identity(user_id)
 
 
 @shared_task
