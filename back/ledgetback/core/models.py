@@ -40,7 +40,7 @@ class User(models.Model):
         OTP = 'otp', _('OTP')
 
     id = models.UUIDField(primary_key=True, editable=False)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)  # tombstone
     account_flag = models.CharField(
         max_length=20,
         choices=[('service_abuse', 'Service abuse')],
@@ -56,6 +56,8 @@ class User(models.Model):
     is_onboarded = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
     password_last_changed = models.DateTimeField(null=True, default=timezone.now)
+    created_on = models.DateTimeField(auto_now_add=True)
+    canceled_on = models.DateTimeField(null=True, default=None)
 
     mfa_method = models.CharField(choices=MfaMethod.choices,
                                   null=True, default=None, max_length=4)
@@ -201,7 +203,7 @@ class Customer(models.Model):
         data needs to be deleted. As much as possible is kept for analytics.
         Cleanup happens by kicking off a celery task.
         '''
-        tasks.cleanup.delay(str(self.user.id))
+        tasks.cancelation_cleanup.delay(str(self.user_id))
         return super().delete(*args, **kwargs)
 
     @property

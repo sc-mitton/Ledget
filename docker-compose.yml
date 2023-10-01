@@ -132,6 +132,7 @@ services:
       - plaid_api_key
       - postgres_user
       - postgres_password
+      - plaid_client_id
   ory:
     image: oryd/ory
     ports:

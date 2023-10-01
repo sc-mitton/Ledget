@@ -4,6 +4,9 @@ import json
 from celery import shared_task, group
 from plaid.model.item_remove_request import ItemRemoveRequest
 from django.conf import settings
+from django.utils import timezone
+from django.contrib.auth import get_user_model
+from django.db import transaction
 import plaid
 from core.clients import create_plaid_client
 import ory_client
@@ -29,10 +32,10 @@ def delete_plaid_item(item_id: str, access_token: str):
         response = json.loads(e.body)
         if not response['error_code'] == 'ITEM_NOT_FOUND':
             logger.error(f'Failed to delete plaid item {item_id}: {e}')
-            raise plaid.ApiException(e.status, e.reason, e.body)
+            raise plaid.ApiException(e)
 
 
-@shared_task(auto_retry_for=(ory_client.ApiException,), retry_backoff=10,
+@shared_task(auto_retry_for=(ory_client.ApiException), retry_backoff=10,
              retry_jitter=True, retry_kwargs={'max_retries': 3})
 def delete_ory_identity(user_id: str):
 
@@ -42,11 +45,15 @@ def delete_ory_identity(user_id: str):
 
 
 @shared_task
-def cleanup(user_id: str) -> None:
+def cancelation_cleanup(user_id: str) -> None:
     '''
     Deletes all third party data for a user. This is called when a user
     cancels their subscription and their billing cycle ends.
     '''
+    try:
+        user = get_user_model().objects.get(id=user_id)
+    except get_user_model().DoesNotExist:
+        return
 
     from financials.models import PlaidItem
     plaid_items = PlaidItem.objects.filter(user_id=user_id)
@@ -59,5 +66,17 @@ def cleanup(user_id: str) -> None:
     if delete_tasks:
         grouped_delete_tasks = group(delete_tasks)
         grouped_delete_tasks()
+
+    @transaction.atomic
+    def _update_db():
+        try:
+            user.is_active = False
+            user.canceled_on = timezone.now()
+            user.save()
+            plaid_items.delete()
+        except Exception as e:
+            logger.error(f'Failed to update db for user {user_id} on cancelation: {e}')
+
+    _update_db()
 
     delete_ory_identity.delay(user_id)
