@@ -82,12 +82,23 @@ pm2 delete all
 
 ## Webhook Testing
 
+To test ory webhooks, you can use this command.
+Dependencies: ngrok & ory (you may need to create an ngrok account)
 
 ```
-ngrok http 127.0.0.1:443 --host-header='localhost'
-
+ngrok http 127.0.0.1:443 --host-header='localhost' --log=stdout > ngrok.log &
+export NGROK_TUNNEL=$(grep "url=" ngrok.log | awk -F 'url=' '{print $2}')
+export NGROK_PID=$(ps aux | grep ngrok | awk '{print $2}')
 ory get identity-config reverent-lewin-bqqp1o2zws --format yaml > project-configuration.yaml
+sed -i '' -e 's|https.*ngrok.*hooks|'$NGROK_TUNNEL'\/hooks|g' project-configuration.yaml
 ory update identity-config "$(ory list projects | grep "ledget" | cut -f1)" -f project-configuration.yaml
+```
+
+Close the tunnel:
+
+```
+kill -9 $NGROK_PID
+rm ngrok.log
 ```
 
 For working with the stripe webhook, you'll also need to use the stripe cli:
