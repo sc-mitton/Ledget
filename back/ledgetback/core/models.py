@@ -201,7 +201,8 @@ class Customer(models.Model):
         data needs to be deleted. As much as possible is kept for analytics.
         Cleanup happens by kicking off a celery task.
         '''
-        tasks.cleanup.delay(self.user.id)
+        tasks.cleanup.delay(str(self.user.id))
+        return super().delete(*args, **kwargs)
 
     @property
     def has_current_subscription(self):

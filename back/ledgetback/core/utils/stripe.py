@@ -42,7 +42,7 @@ def stripe_error_handler(func):
             )
         except Exception:
             raise StripeError(
-                {'error': 'Something went wrong.'},
+                {'error': 'Something went wrong with stripe.'},
                 HTTP_503_SERVICE_UNAVAILABLE
             )
 

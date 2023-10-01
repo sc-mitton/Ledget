@@ -58,6 +58,8 @@ STRIPE_API_KEY = get_secret('stripe_api_key')
 STRIPE_WEBHOOK_SECRET = get_secret('stripe_webhook_secret')
 
 # Ory
+ORY_HOOK_API_KEY = get_secret('ory_hook_api_key')
+ORY_HOST = 'https://reverent-lewin-bqqp1o2zws.projects.oryapis.com'
 ORY_API_KEY = get_secret('ory_api_key')
 oathkeeper_endpoint = 'http://oathkeeper:4456/.well-known/jwks.json'
 jwks = requests.get(oathkeeper_endpoint).json()['keys']
@@ -67,11 +69,7 @@ OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
 
 # Plaid
 PLAID_SANDBOX = True
-if PLAID_SANDBOX:
-    PLAID_API_KEY = get_secret('plaid_sand_api_key')
-else:
-    PLAID_API_KEY = get_secret('plaid_dev_api_key')
-
+PLAID_API_KEY = get_secret('plaid_api_key')
 PLAID_CLIENT_ID = get_secret('plaid_client_id')
 PLAID_REDIRECT_URI_ONBOARDING = 'https://localhost:3000/welcome/connect'
 PLAID_REDIRECT_URI = 'https://localhost:3000/profile/connections'

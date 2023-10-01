@@ -11,13 +11,15 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 import plaid
 
-from core.clients import plaid_client
+from core.clients import create_plaid_client
 from financials.models import PlaidItem
 from financials.models import Account, Institution
 
 PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
 
 logger = logging.getLogger('ledget')
+
+plaid_client = create_plaid_client()
 
 
 class CustomBase64ImageField(serializers.Field):

@@ -12,10 +12,12 @@ from plaid.model.webhook_verification_key_get_request import (
 )
 import plaid
 
-from core.clients import plaid_client
+from core.clients import create_plaid_client
+
+plaid_client = create_plaid_client
 
 
-ory_api_key = settings.ORY_API_KEY
+ORY_HOOK_API_KEY = settings.ORY_HOOK_API_KEY
 logger = logging.getLogger('ledget')
 
 
@@ -27,7 +29,7 @@ class CameFromOry(BasePermission):
         key = auth_header[-1]
 
         if auth_scheme.lower() == 'api-key' \
-           and compare_digest(key, ory_api_key):
+           and compare_digest(key, ORY_HOOK_API_KEY):
             return True
         else:
             return False

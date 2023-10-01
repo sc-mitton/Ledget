@@ -11,13 +11,17 @@ if PLAID_SANDBOX:
 else:
     plaid_host = plaid.Environment.Development
 
-plaid_config = plaid.Configuration(
-    host=plaid_host,
-    api_key={
-        'clientId': PLAID_CLIENT_ID,
-        'secret': PLAID_API_KEY,
-    }
-)
 
-api_client = plaid.ApiClient(plaid_config)
-plaid_client = plaid_api.PlaidApi(api_client)
+def create_plaid_client():
+    '''Create a new client for testing.'''
+    configuration = plaid.Configuration(
+        host=plaid_host,
+        api_key={
+            'clientId': PLAID_CLIENT_ID,
+            'secret': PLAID_API_KEY,
+            'plaidVersion': '2020-09-14'
+        }
+    )
+
+    api_client = plaid.ApiClient(configuration)
+    return plaid_api.PlaidApi(api_client)

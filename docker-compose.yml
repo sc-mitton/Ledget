@@ -79,7 +79,7 @@ services:
       - "traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET,POST,PUT,PATCH,DELETE,OPTIONS"
       - "traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://localhost:3000, https://localhost:3001, https://localhost"
       - "traefik.http.middlewares.cors.headers.accesscontrolallowcredentials=true"
-      - "traefik.http.middlewares.cors.headers.accesscontrolallowheaders=Content-Type"
+      - "traefik.http.middlewares.cors.headers.accesscontrolallowheaders=Content-Type, X-CsrfToken"
       - "traefik.http.middlewares.cors.headers.accesscontrolmaxage=100"
       - "traefik.http.middlewares.cors.headers.addvaryheader=true"
     environment:
@@ -94,12 +94,12 @@ services:
     secrets:
       - stripe_webhook_secret
       - stripe_api_key
+      - ory_hook_api_key
       - ory_api_key
       - django_secret_key
       - postgres_user
       - postgres_password
-      - plaid_dev_api_key
-      - plaid_sand_api_key
+      - plaid_api_key
       - plaid_client_id
       - bird_api_key
       - bird_api_key_id
@@ -121,9 +121,17 @@ services:
       - CELERY_BROKER_URL=redis://messages:6379/0
       - CELERY_RESULT_BACKEND=redis://messages:6379/0
       - SILK_DEBUG=false
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_PORT=5432
     depends_on:
       - messages
       - ledgetback
+    secrets:
+      - ory_api_key
+      - plaid_api_key
+      - postgres_user
+      - postgres_password
   ory:
     image: oryd/ory
     ports:
@@ -151,15 +159,15 @@ secrets:
     file: ./secrets/stripe_dev_webhook_secret
   stripe_api_key:
     file: ./secrets/stripe_dev_api_key
-  plaid_dev_api_key:
-    file: ./secrets/plaid_dev_api_key
-  plaid_sand_api_key:
+  plaid_api_key:
     file: ./secrets/plaid_sand_api_key
   plaid_client_id:
     file: ./secrets/plaid_dev_client_id
   django_secret_key:
     file: ./secrets/django_dev_secret_key
+  ory_hook_api_key:
+    file: ./secrets/ory_hook_api_key
   ory_api_key:
-    file: ./secrets/ory_dev_api_key
+    file: ./secrets/ory_api_key
   jwks.json:
     file: ./secrets/dev_jwks.json

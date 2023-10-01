@@ -277,6 +277,7 @@ div.body {
 .window {
     box-shadow: var(--window-drop-shadow);
     border-radius: var(--border-radius3);
+    border: 1px solid white;
     padding: 12px 20px;
     box-sizing: border-box;
 }

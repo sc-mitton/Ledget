@@ -40,12 +40,14 @@ from core.permissions import (
     highest_aal_freshness
 )
 from financials.models import PlaidItem, Transaction
-from core.clients import plaid_client
+from core.clients import create_plaid_client
 from financials.serializers import (
     ExchangePlaidTokenSerializer,
     PlaidItemsSerializer,
     TransactionsSyncSerializer
 )
+
+plaid_client = create_plaid_client()
 
 logger = logging.getLogger('ledget')
 

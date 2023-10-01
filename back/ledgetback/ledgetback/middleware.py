@@ -10,8 +10,6 @@ from jwt import decode
 from django.conf import settings
 from django.utils.regex_helper import _lazy_re_compile
 from django.utils.deprecation import MiddlewareMixin
-from rest_framework.response import Response
-from rest_framework import status
 from django.utils.crypto import constant_time_compare
 from django.middleware.csrf import (
     InvalidTokenFormat,
@@ -62,13 +60,6 @@ def _does_match(item1, item2):
 
 class CustomCsrfMiddleware(CsrfViewMiddleware):
 
-    def _reject(self, request, reason):
-        logger.warning("Forbidden (%s): %s", reason, request.path)
-        return Response(
-            {'detail': 'Forbidden', 'reason': reason},
-            status.HTTP_403_FORBIDDEN
-        )
-
     def _check_token(self, request):
 
         # Get the two relevant pieces of information, the
@@ -98,17 +89,19 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
 
         try:
             csrf_secret = self._get_secret(request)
-            if csrf_secret is None:
-                raise InvalidTokenFormat(REASON_CSRF_TOKEN_MISSING)
         except InvalidTokenFormat:
             _add_new_csrf_cookie(request)
         else:
             if csrf_secret is not None:
+                # Use the same secret next time.
                 request.META["CSRF_COOKIE"] = csrf_secret
+            elif request.method == 'GET':
+                # add token to request if it doesn't exist
+                _add_new_csrf_cookie(request)
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
-        # exempt /hook paths
-        print('callback: ', getattr(callback, "csrf_exempt", False))
+        if not getattr(callback, 'csrf_ignore', False):
+            setattr(callback, 'csrf_exempt', False)
 
         return super().process_view(request, callback, callback_args, callback_kwargs)
 

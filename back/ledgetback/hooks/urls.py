@@ -7,18 +7,18 @@ from .views import (
     OryVerificationHook,
     PlaidItemHookView
 )
-from django.views.decorators.csrf import csrf_exempt
+from ledgetback.decorators import csrf_ignore
 
 
 urlpatterns = [
-    path('stripe', csrf_exempt(StripeHookView.as_view()),
+    path('stripe', csrf_ignore(StripeHookView.as_view()),
          name='stripe_hook'),
-    path('ory/registration', csrf_exempt(OryRegistrationHook.as_view()),
+    path('ory/registration', csrf_ignore(OryRegistrationHook.as_view()),
          name='ory_register_hook'),
-    path('ory/settings/password', csrf_exempt(OrySettingsPasswordHook.as_view()),
+    path('ory/settings/password', csrf_ignore(OrySettingsPasswordHook.as_view()),
          name='ory_settings_password_hook'),
-    path('ory/verification', csrf_exempt(OryVerificationHook.as_view()),
+    path('ory/verification', csrf_ignore(OryVerificationHook.as_view()),
          name='ory_verification_hook'),
-    path('plaid/item', csrf_exempt(PlaidItemHookView.as_view()),
+    path('plaid/item', csrf_ignore(PlaidItemHookView.as_view()),
          name='plaid_item_hook')
 ]

@@ -67,7 +67,7 @@ const AccountLogo = ({ account }) => {
 
 // End TODO
 const translate = 15
-const expandedTranslate = 85
+const expandedTranslate = 87
 const expandedHeight = 320
 const collapsedHeight = 115
 const scale = .1
@@ -165,6 +165,7 @@ const useItemAnimations = (expanded, items) => {
                 right: 0,
                 position: 'absolute',
                 borderRadius: "var(--border-radius3)",
+                border: '1.5px solid white',
                 boxShadow: "var(--new-item-drop-shadow)",
                 background: 'var(--window)',
                 padding: "16px 24px",
