@@ -1,0 +1,6 @@
+/* Resend Btn */
+#resend-btn-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}

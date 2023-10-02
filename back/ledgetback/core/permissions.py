@@ -16,6 +16,7 @@ stripe_logger = logging.getLogger('stripe')
 logger = logging.getLogger('ledget')
 
 AAL_FRESHNESS_ERROR_MESSAGE = 'Required session aal or freshness is not met'
+OATHKEEPER_HEADER = settings.OATHKEEPER_AUTH_HEADER.upper()
 
 
 class IsAuthenticated(BasePermission):
@@ -120,8 +121,9 @@ class BaseFreshSessionClass(BasePermission):
         return seconds_since_last_login < settings.SESSION_MAX_AGE_SECONDS
 
     def get_last_ory_login_delta(self, request, aal):
-        logins = request.META['session']['authentication_methods']
+        logins = request.META[OATHKEEPER_HEADER]['session']['authentication_methods']
         login = next((login for login in logins if login['aal'] == aal), None)
+        print(login)
 
         if login:
             completed_at = datetime.strptime(

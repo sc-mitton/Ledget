@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useState, useRef } from 'react'
 
 import { useForm, useController } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
-import { string, number } from 'yup'
+import { string } from 'yup'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
@@ -12,7 +12,7 @@ import './style/Checkout.css'
 import logoLight from '@assets/images/logoLight.svg'
 import stripelogo from '@assets/images/stripelogo.svg'
 import ledgetapi from '@api/axios'
-import usePrices from '@api/hooks/usePrices'
+import { useGetPricesQuery } from '@features/pricesSlice'
 import { WindowLoadingBar } from '../pieces'
 import { Star } from '@ledget/shared-assets'
 import {
@@ -138,7 +138,7 @@ const OrderSummary = ({ unit_amount, trial_period_days }) => {
 }
 
 const Form = (props) => {
-    const { prices, error } = usePrices()
+    const { data: prices } = useGetPricesQuery()
     const stripe = useStripe()
     const elements = useElements()
     const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem('clientSecret') || null))

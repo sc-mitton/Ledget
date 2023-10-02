@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.test import TestCase
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
@@ -11,6 +13,7 @@ from core.models import Customer
 
 public_key = settings.OATHKEEPER_PUBLIC_KEY
 private_key = settings.OATHKEEPER_PRIVATE_KEY
+current_time = datetime.utcnow().isoformat(timespec='milliseconds') + 'Z'
 
 session_payloads = [
     {
@@ -26,6 +29,13 @@ session_payloads = [
             ],
             'id': str(uuid.uuid4()),
             'authenticator_assurance_level': f'aal{i%2 + 1}',
+            'authentication_methods': [
+                {
+                    "aal": "aal1",
+                    "completed_at": current_time,
+                    "method": "password"
+                }
+            ],
             'identity': {
                 'id': str(uuid.uuid4()),
                 'traits': {
@@ -106,5 +116,5 @@ class ViewTestsMixin(TestCase):
 
     def add_device(self, client):
         '''Test that a device is created when a user logs in'''
-        response = client.post(reverse('devices-list'))
+        response = client.post(reverse('devices'))
         self.assertEqual(response.status_code, 200)

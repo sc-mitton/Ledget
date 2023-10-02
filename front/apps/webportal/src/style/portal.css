@@ -50,6 +50,7 @@ body {
     max-width: 325px;
     font-size: 14px;
     border-radius: var(--border-radius3);
+    border: 1.5px solid var(--window-border);
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     box-shadow: rgba(149, 157, 165, 0.7) 0px 0px 2px;
     padding: 32px 40px;
@@ -68,6 +69,7 @@ body {
 .nested-window {
     font-size: 14px;
     border-radius: var(--border-radius3);
+    border: 1.5px solid var(--window-border);
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     box-shadow: rgba(149, 157, 165, 0.7) 0px 0px 2px;
     padding: 32px 40px;

@@ -29,7 +29,7 @@ class TestTasks(ViewTestsMixin):
         mock_filter.return_value = [Mock(**plaid_item)]
 
         # The task we're testing
-        cancelation_cleanup(self.user)
+        cancelation_cleanup(str(self.user.id))
 
         mock_item_remove.assert_called_once_with(ItemRemoveRequest(
             access_token=plaid_item['access_token']

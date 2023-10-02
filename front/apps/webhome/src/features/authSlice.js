@@ -34,8 +34,8 @@ export const authSlice = createSlice({
         builder.addMatcher(
             apiSlice.endpoints.getMe.matchFulfilled,
             (state, action) => {
-                if (Date.now() - Date.parse(action.payload.last_login) < 1000 * 60 * 9) {
-                    state.reAuthed.level = payload.session_aal
+                if (Date.now() - Date.parse(action.payload?.last_login) < 1000 * 60 * 9) {
+                    state.reAuthed.level = action.payload?.session_aal
                     state.reAuthed.at = Date.now()
                 }
             }

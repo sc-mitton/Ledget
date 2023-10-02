@@ -86,8 +86,8 @@ class DestroyDeviceView(DestroyAPIView):
     permission_classes = [IsAuthenticated, IsObjectOwner, Aal1FreshSession]
     serializer_class = DeviceSerializer
 
-    def get_object(self, id=None):
-        obj = Device.objects.get(id=id)
+    def get_object(self):
+        obj = Device.objects.get(id=self.kwargs['id'])
         self.check_object_permissions(self.request, obj)
         return obj
 
@@ -99,7 +99,6 @@ class OtpView(GenericAPIView):
     def post(self, request, *arg, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        print(serializer.validated_data['phone'])
 
         try:
             verify = mbird_client.verify_create(

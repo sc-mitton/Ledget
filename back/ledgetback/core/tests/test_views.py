@@ -51,9 +51,9 @@ class CoreViewTests(ViewTestsMixin):
         device_id = self.client1_device['id']
 
         response = self.client.delete(
-            reverse('devices-destroy',  kwargs={'pk': device_id})
+            reverse('device',  kwargs={'id': device_id})
         )
-
+        print(response.data)
         self.assertEqual(response.status_code, 204)
         self.assertFalse(Device.objects.filter(id=device_id).exists())
 
@@ -61,7 +61,7 @@ class CoreViewTests(ViewTestsMixin):
         other_device = self.aal2_client_device['id']
 
         response = self.client.delete(
-            reverse('devices-destroy',  kwargs={'pk': other_device})
+            reverse('device',  kwargs={'id': other_device})
         )
 
         self.assertEqual(response.status_code, 403)

@@ -61,11 +61,17 @@ STRIPE_WEBHOOK_SECRET = get_secret('stripe_webhook_secret')
 ORY_HOOK_API_KEY = get_secret('ory_hook_api_key')
 ORY_HOST = 'https://reverent-lewin-bqqp1o2zws.projects.oryapis.com'
 ORY_API_KEY = get_secret('ory_api_key')
+ORY_AUTH_HEADER = 'HTTP_AUTHORIZATION'
+ORY_AUTH_SCHEME = 'Api-Key'
+
+# Oathkeeper
 oathkeeper_endpoint = 'http://oathkeeper:4456/.well-known/jwks.json'
 jwks = requests.get(oathkeeper_endpoint).json()['keys']
 OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
     json.dumps(jwks[0])
 )
+OATHKEEPER_AUTH_HEADER = 'HTTP_AUTHORIZATION'
+OATHKEEPER_AUTH_SCHEME = 'Bearer'
 
 # Plaid
 PLAID_SANDBOX = True

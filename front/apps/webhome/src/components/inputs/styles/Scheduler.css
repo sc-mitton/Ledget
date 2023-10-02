@@ -1,6 +1,7 @@
 #schedule-dropdown-button {
     justify-content: space-between;
     position: relative;
+    overflow: auto;
 }
 
 #schedule-dropdown {

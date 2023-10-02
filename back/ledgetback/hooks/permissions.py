@@ -18,17 +18,20 @@ plaid_client = create_plaid_client
 
 
 ORY_HOOK_API_KEY = settings.ORY_HOOK_API_KEY
+ORY_HEADER = settings.ORY_AUTH_HEADER
+ORY_SCHEME = settings.ORY_AUTH_SCHEME.lower()
+
 logger = logging.getLogger('ledget')
 
 
 class CameFromOry(BasePermission):
 
     def has_permission(self, request, view):
-        auth_header = request.META.get('HTTP_AUTHORIZATION', '').split(' ')
+        auth_header = request.META.get(ORY_HEADER, '').split(' ')
         auth_scheme = auth_header[0].lower()
         key = auth_header[-1]
 
-        if auth_scheme.lower() == 'api-key' \
+        if auth_scheme.lower() == ORY_SCHEME \
            and compare_digest(key, ORY_HOOK_API_KEY):
             return True
         else:
