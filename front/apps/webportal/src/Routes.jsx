@@ -10,7 +10,6 @@ import CheckoutWindow from '@forms/Checkout'
 import VerificationWindow from '@forms/Verification'
 import RecoverWindow from '@forms/Recovery'
 import Header from './Header'
-import { AuthenticatedRoute, UnauthenticatedRoute } from '@utils'
 
 function AnimatedRoutes() {
     const location = useLocation()
@@ -30,16 +29,12 @@ function AnimatedRoutes() {
                     }}
                 >
                     <Routes location={location} key={location.pathname.split('/')[1]} >
-                        <Route path="/" element={<UnauthenticatedRoute />}>
-                            <Route exact path="/" element={<Navigate to="/login" />} />
-                            <Route exact path="/login" element={<LoginWindow />} />
-                            <Route exact path="/recovery" element={<RecoverWindow />} />
-                        </Route>
+                        <Route exact path="/" element={<Navigate to="/login" />} />
+                        <Route exact path="/login" element={<LoginWindow />} />
+                        <Route exact path="/recovery" element={<RecoverWindow />} />
                         <Route path="/register" element={<SignUpWindow />} />
-                        <Route path="/" element={<AuthenticatedRoute />}>
-                            <Route path="/verification" element={<VerificationWindow />} />
-                            <Route path="/checkout" element={<CheckoutWindow />} />
-                        </Route>
+                        <Route path="/verification" element={<VerificationWindow />} />
+                        <Route path="/checkout" element={<CheckoutWindow />} />
                     </Routes>
                 </motion.div >
             </AnimatePresence>
