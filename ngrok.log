@@ -1,0 +1,8 @@
+t=2023-10-01T20:16:48-0600 lvl=info msg="no configuration paths supplied"
+t=2023-10-01T20:16:48-0600 lvl=info msg="using configuration at default config path" path="/Users/scmitton/Library/Application Support/ngrok/ngrok.yml"
+t=2023-10-01T20:16:48-0600 lvl=info msg="open config file" path="/Users/scmitton/Library/Application Support/ngrok/ngrok.yml" err=nil
+t=2023-10-01T20:16:48-0600 lvl=info msg="starting web service" obj=web addr=127.0.0.1:4040 allow_hosts=[]
+t=2023-10-01T20:16:48-0600 lvl=info msg="client session established" obj=tunnels.session obj=csess id=a00741a48f51
+t=2023-10-01T20:16:48-0600 lvl=info msg="tunnel session started" obj=tunnels.session
+t=2023-10-01T20:16:48-0600 lvl=info msg="started tunnel" obj=tunnels name=command_line addr=https://127.0.0.1:443 url=https://9d25-2601-681-77e-21e0-9407-d090-faba-73fd.ngrok-free.app
+t=2023-10-01T20:16:48-0600 lvl=info msg="update available" obj=updater

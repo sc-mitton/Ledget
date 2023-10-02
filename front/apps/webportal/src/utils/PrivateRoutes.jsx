@@ -1,26 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 
-export const AuthenticatedRoute = () => {
-    const [user, setUser] = useState(true)
+export const AuthenticatedRoute = () => (
+    JSON.parse(sessionStorage.getItem('user' || null))
+        ? <Outlet /> : <Navigate to="/login" />
+)
 
-    useEffect(() => {
-        setUser(JSON.parse(sessionStorage.getItem('user' || null)))
-    }, [])
-
-    return (
-        user ? <Outlet /> : <Navigate to="/login" />
-    )
-}
-
-export const UnauthenticatedRoute = () => {
-    const [user, setUser] = useState(null)
-
-    useEffect(() => {
-        setUser(JSON.parse(sessionStorage.getItem('user' || null)))
-    }, [])
-
-    return (
-        user ? <Navigate to="/checkout" /> : <Outlet />
-    )
-}
+export const UnauthenticatedRoute = () => (
+    JSON.parse(sessionStorage.getItem('user' || null))
+        ? <Navigate to="/checkout" /> : <Outlet />
+)

@@ -6,8 +6,6 @@ import { ArrowIcon, CheckMark } from '@ledget/shared-assets'
 
 export const BaseButton = forwardRef((props, ref) => {
     const { className, children, ...rest } = props
-    const localRef = useRef(null)
-    const r = ref || localRef
     const [clicked, setClicked] = useState(false)
 
     useEffect(() => {
@@ -20,7 +18,7 @@ export const BaseButton = forwardRef((props, ref) => {
 
     return (
         <button
-            ref={r}
+            ref={ref}
             onMouseDown={() => setClicked(true)}
             className={`btn ${className} ${clicked ? 'clicked' : ''}`}
             {...rest}
@@ -32,12 +30,10 @@ export const BaseButton = forwardRef((props, ref) => {
 
 export const ButtonWithClassName = (className) => forwardRef((props, ref) => {
     const { children, className: classNameInner, ...rest } = props
-    const localRef = useRef(null)
-    const r = ref || localRef
 
     return (
         <BaseButton
-            ref={r}
+            ref={ref}
             className={`${className} ${classNameInner ? classNameInner : ''}`}
             {...rest}
         >
@@ -49,13 +45,12 @@ export const ButtonWithClassName = (className) => forwardRef((props, ref) => {
 export const withArrow = (Component) => {
 
     return forwardRef((props, ref) => {
-        const localRef = useRef(null)
-        const r = ref || localRef
-        const { children, className, disabledHover, loading, submitting, stroke, rotate = -90, ...rest } = props
+        const { children, className, disabledHover, loading,
+            submitting, stroke, rotate = -90, ...rest } = props
 
         return (
             <Component
-                ref={r}
+                ref={ref}
                 className={`scale-icon-btn ${className} ${disabledHover || submitting || loading ? 'disabled-hover' : ''}`}
                 {...rest}
             >

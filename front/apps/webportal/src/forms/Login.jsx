@@ -173,7 +173,7 @@ const Login = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
 
-    const [email, setEmail] = useState(null)
+    const [email, setEmail] = useState('')
 
     const [createOtp, { data: otp, isLoading: creatingOtp, isSuccess: createdOtp }] = useCreateOtpMutation()
     const [verifyOtp, { isSuccess: otpVerified, isLoading: verifyingOtp, isError: isOtpVerifyError }] = useVerifyOtpMutation()
