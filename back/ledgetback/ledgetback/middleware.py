@@ -88,6 +88,7 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
     def process_request(self, request):
 
         try:
+            # Get original secret (in the cookies)
             csrf_secret = self._get_secret(request)
         except InvalidTokenFormat:
             _add_new_csrf_cookie(request)
@@ -95,9 +96,14 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
             if csrf_secret is not None:
                 # Use the same secret next time.
                 request.META["CSRF_COOKIE"] = csrf_secret
-            elif request.method == 'GET':
-                # add token to request if it doesn't exist
+
+        if csrf_secret is None:
+            try:
+                # add token to request since it's not there
+                # will only work if a valid session is present
                 _add_new_csrf_cookie(request)
+            except BadDigest:
+                return
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
         if not getattr(callback, 'csrf_ignore', False):
