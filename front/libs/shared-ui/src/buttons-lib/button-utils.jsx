@@ -20,7 +20,7 @@ export const BaseButton = forwardRef((props, ref) => {
         <button
             ref={ref}
             onMouseDown={() => setClicked(true)}
-            className={`btn ${className} ${clicked ? 'clicked' : ''}`}
+            className={`btn ${className} ${false ? 'clicked' : ''}`}
             {...rest}
         >
             {children}
