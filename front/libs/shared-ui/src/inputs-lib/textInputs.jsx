@@ -187,6 +187,16 @@ export const ZipInput = forwardRef((props, ref) => {
     )
 })
 
+export const baseBillingSchema = object({
+    city: string()
+        .required()
+        .matches(/^[a-zA-Z ]+$/, 'Invalid city'),
+    state: string().required('required'),
+    zip: string()
+        .required()
+        .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
+})
+
 export const CityStateZipInputs = ({ errors, register, field, loading }) => {
 
     const hasErrorMsg = (field) => {
@@ -205,7 +215,7 @@ export const CityStateZipInputs = ({ errors, register, field, loading }) => {
                 <div id="state-container">
                     {loading
                         ? <BlockShimmerDiv />
-                        : <ProvenceSelect field={field} errors={[errors.state]} />}
+                        : <ProvenceSelect field={field} errors={errors} />}
                 </div>
                 <div id="zip-container">
                     {loading
@@ -229,17 +239,6 @@ export const CityStateZipInputs = ({ errors, register, field, loading }) => {
         </>
     )
 }
-
-export const baseBillingSchema = object({
-    city: string()
-        .required()
-        .matches(/^[a-zA-Z ]+$/, 'Invalid city'),
-    state: string().required(),
-    zip: string()
-        .required()
-        .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
-})
-
 
 export const PasswordInput = React.forwardRef((props, ref) => {
     const {

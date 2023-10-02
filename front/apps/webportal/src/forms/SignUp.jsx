@@ -171,7 +171,7 @@ const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }
 
 function SignUp() {
     const navigate = useNavigate()
-    const { flow, fetchFlow, submit, flowStatus } = useFlow(
+    const { flow, fetchFlow, submit, result, flowStatus } = useFlow(
         useLazyGetRegistrationFlowQuery,
         useCompleteRegistrationFlowMutation,
         'registration'
@@ -185,6 +185,7 @@ function SignUp() {
 
     useEffect(() => {
         if (isCompleteSuccess) {
+            sessionStorage.setItem('user', JSON.stringify(result.identity))
             ledgetapi.post('devices')
                 .then(() => { navigate('/verification') })
                 .catch(() => { navigate('/login') })
@@ -200,7 +201,6 @@ function SignUp() {
             window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
         }
     }, [errId])
-
 
     return (
         <>

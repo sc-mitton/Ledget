@@ -53,7 +53,7 @@ export const ProvenceSelect = ({ field, errors }) => {
                                 stroke={(focused && !provence) ? 'var(--green-input-focus)' : 'var(--m-text-gray)'}
                             />
                         </Combobox.Button>
-                        <FormErrorTip errors={errors} />
+                        {errors[field.name] && <FormErrorTip errors={[{ type: 'required' }]} />}
                     </TextInput>
                     <div className="provence-options--container">
                         <DropAnimation

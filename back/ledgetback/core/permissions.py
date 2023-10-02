@@ -45,7 +45,8 @@ class IsAuthedVerifiedSubscriber(IsAuthenticated):
 
         checks = [
             request.user.service_provisioned_until > int(time.time()),
-            request.user.customer.subscription_not_canceled
+            request.user.customer.subscription_not_canceled,
+            request.user.is_active
         ]
 
         return super().has_permission(request, view) and all(checks)

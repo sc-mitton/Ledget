@@ -190,16 +190,6 @@ function useFlow(query, mutation, flowType) {
         }
     }, [isGetFlowError, isCompleteError])
 
-    // Success Handler
-    useEffect(() => {
-        if (isCompleteSuccess && flowType === 'registration') {
-            sessionStorage.setItem(
-                'user',
-                JSON.stringify(result.identity)
-            )
-        }
-    }, [isCompleteSuccess])
-
     return {
         flow,
         fetchFlow,

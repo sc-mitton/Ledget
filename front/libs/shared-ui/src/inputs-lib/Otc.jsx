@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
 import "./styles/Otc.css"
 
-function Otc({ codeLength, required, colorful = true }) {
+function Otc({ codeLength, required, colorful = false }) {
     const [inputStates, setInputStates] = useState([])
     const inputRefs = useRef([])
     const [code, setCode] = useState('')
