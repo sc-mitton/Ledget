@@ -140,7 +140,7 @@ class DeviceSerializer(serializers.ModelSerializer):
         model = Device
         exclude = ('user', 'token', )
 
-    def get_hash_token(self):
+    def _get_hash_token(self):
         # create sha256 hash of device id, user, user_agent,
         # location, and secret key
         user = self.context['request'].user
@@ -154,7 +154,7 @@ class DeviceSerializer(serializers.ModelSerializer):
         hash_value = hashlib.sha256((unhashed).encode('utf-8')).hexdigest()
         return hash_value
 
-    def parse_user_agent_kwargs(self):
+    def _parse_user_agent_kwargs(self):
         ua_string = self.context['request'].user.session_devices[0]['user_agent']
         user_agent = ua_parse(ua_string)
 
@@ -177,7 +177,7 @@ class DeviceSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
 
         user = self.context['request'].user
-        hash_token = self.get_hash_token()
+        hash_token = self._get_hash_token()
 
         try:
             kwargs = {
@@ -185,7 +185,7 @@ class DeviceSerializer(serializers.ModelSerializer):
                 'id': user.session_devices[0]['id'],
                 'aal': user.session_aal,
                 'location': user.session_devices[0]['location'],
-                **self.parse_user_agent_kwargs()
+                **self._parse_user_agent_kwargs()
             }
         except Exception as e:
             raise ValidationError(f'Error parsing new values: {e}')
@@ -193,12 +193,12 @@ class DeviceSerializer(serializers.ModelSerializer):
         instance = Device.objects.create(token=hash_token, **kwargs)
         return instance
 
-    def update(self, instance, validated_data):
+    def update(self, instance):
 
         try:
             new_values = {
-                'token': self.get_hash_token(),
-                **self.parse_user_agent_kwargs()
+                'token': self._get_hash_token(),
+                **self._parse_user_agent_kwargs()
             }
         except Exception as e:
             raise ValidationError(f'Error parsing new values: {e}')
@@ -211,6 +211,10 @@ class DeviceSerializer(serializers.ModelSerializer):
         instance.save()
 
     def to_representation(self, instance):
+        '''
+        Indicate if the device is the current device for the user when
+        sending back data
+        '''
         representation = super().to_representation(instance)
         representation['current_device'] = \
             self.context['request'].user.device == instance

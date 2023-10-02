@@ -14,23 +14,30 @@ from django.utils.crypto import constant_time_compare
 from django.middleware.csrf import (
     InvalidTokenFormat,
     CsrfViewMiddleware,
-    RejectRequest,
-    _check_token_format,
+    RejectRequest
+
 )
 
 OATHKEEPER_PUBLIC_KEY = settings.OATHKEEPER_PUBLIC_KEY
 
 logger = logging.getLogger('ledget')
 
-invalid_token_chars_re = _lazy_re_compile("[^a-zA-Z0-9]")
 REASON_CSRF_TOKEN_MISSING = "CSRF token missing."
 REASON_MISSING_HMAC_DIGEST = "HMAC digest missing."
 REASON_MISSING_SECRET_KEY = "The SECRET_KEY setting must not be empty."
+REASON_INVALID_CHARACTERS = "CSRF token contains invalid characters."
+
+invalid_token_chars_re = _lazy_re_compile("[^a-zA-Z0-9]")
 
 
 class BadDigest(Exception):
     def __init__(self):
         self.reason = REASON_MISSING_HMAC_DIGEST
+
+
+def _check_token_format(token):
+    if invalid_token_chars_re.search(token):
+        raise InvalidTokenFormat(REASON_INVALID_CHARACTERS)
 
 
 def _get_hmac(request):
@@ -59,6 +66,17 @@ def _does_match(item1, item2):
 
 
 class CustomCsrfMiddleware(CsrfViewMiddleware):
+
+    def _get_secret(self, request):
+        try:
+            csrf_secret = request.COOKIES[settings.CSRF_COOKIE_NAME]
+        except KeyError:
+            return None
+
+        # can raise InvalidTokenFormat
+        _check_token_format(csrf_secret)
+
+        return csrf_secret
 
     def _check_token(self, request):
 
@@ -96,14 +114,9 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
             if csrf_secret is not None:
                 # Use the same secret next time.
                 request.META["CSRF_COOKIE"] = csrf_secret
-
-        if csrf_secret is None:
-            try:
-                # add token to request since it's not there
-                # will only work if a valid session is present
+            elif csrf_secret == '':
+                # Empty string indicates new cookie needs to be set.
                 _add_new_csrf_cookie(request)
-            except BadDigest:
-                return
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
         if not getattr(callback, 'csrf_ignore', False):

@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Plus } from '@ledget/shared-assets';
 
 import './buttons.css'
-import { ExpandIcon, ArrowIcon, FacebookLogo, CloseIcon, GoogleLogo, CopyIcon, Delete } from '@ledget/shared-assets'
+import {
+  ExpandIcon,
+  ArrowIcon,
+  FacebookLogo,
+  CloseIcon,
+  GoogleLogo,
+  CopyIcon,
+  Delete,
+  ReplayIcon,
+  CheckMark
+} from '@ledget/shared-assets'
 import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'
 import { animated, useSpring } from '@react-spring/web'
 
@@ -174,3 +184,33 @@ export const GreenGrowButton = withLoading(({ children, ...rest }) => (
     {children}
   </button>
 ))
+
+export const ResendButton = ({ success, ...rest }) => {
+  const [rotation, setRotation] = useState(0)
+
+  return (
+    <button
+      onClick={() => setRotation(rotation + 360)}
+      className="resend-btn"
+      {...rest}
+    >
+      Resend
+      <div
+        className="resend-icon"
+        style={{ '--key-rotation': rotation + 'deg' }}
+      >
+        {success
+          ?
+          <CheckMark
+            className="resend-btn-success-icon"
+            stroke={'currentColor'}
+            height={'.8em'}
+            width={'.8em'}
+          />
+          :
+          <ReplayIcon fill={'currentColor'} />
+        }
+      </div>
+    </button>
+  )
+}

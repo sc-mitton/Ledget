@@ -7,7 +7,7 @@ import CheckoutWindow from '@forms/Checkout'
 import VerificationWindow from '@forms/Verification'
 import RecoverWindow from '@forms/Recovery'
 import Header from './Header'
-import { AuthenticatedRoute, UnauthenticatedRoute } from '@utils'
+import { SendRegisteredToCheckout, ProtectedCheckout } from '@utils'
 
 function AnimatedRoutes() {
     const location = useLocation()
@@ -27,14 +27,14 @@ function AnimatedRoutes() {
                     }}
                 >
                     <Routes location={location} key={location.pathname.split('/')[1]} >
-                        <Route path="/" element={<UnauthenticatedRoute />}>
+                        <Route path="/" element={<SendRegisteredToCheckout />}>
                             <Route exact path="/" element={<Navigate to="/login" />} />
                             <Route exact path="/login" element={<LoginWindow />} />
                             <Route exact path="/recovery" element={<RecoverWindow />} />
                         </Route>
                         <Route path="/register" element={<SignUpWindow />} />
                         <Route path="/verification" element={<VerificationWindow />} />
-                        <Route path="/" element={<AuthenticatedRoute />}>
+                        <Route path="/" element={<ProtectedCheckout />}>
                             <Route path="/checkout" element={<CheckoutWindow />} />
                         </Route>
                     </Routes>

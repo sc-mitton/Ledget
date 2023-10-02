@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 import { useNavigate } from "react-router-dom"
 
 import "./style/Verification.css"
 import CsrfToken from "./inputs/CsrfToken"
-import ResendButton from "./inputs/ResendButton"
 import { WindowLoadingBar } from "@pieces"
-import { GrnWideButton, FormError, JiggleDiv, StatusPulse, Otc } from "@ledget/shared-ui"
+import { GrnWideButton, FormError, JiggleDiv, StatusPulse, Otc, ResendButton } from "@ledget/shared-ui"
 import { VerifyEmail } from '@ledget/shared-assets'
 import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
 
-const VerificationForm = ({ flow, key, submit }) => {
+const VerificationForm = ({ flow, isCompleteError, submit, refreshSuccess }) => {
     const [otcDisabled, setOtcDisabled] = useState(false)
-
 
     useEffect(() => {
         flow ? setOtcDisabled(false) : setOtcDisabled(true)
@@ -22,17 +20,18 @@ const VerificationForm = ({ flow, key, submit }) => {
     return (
         <>
             <form
-                key={key}
+                key={isCompleteError ? Date.now() : 'verification-form'}
                 action={flow?.ui.action}
                 method={flow?.ui.method}
                 onSubmit={submit}
             >
                 <Otc codeLength={6} />
-
                 {flow && <CsrfToken csrf={flow.csrf_token} />}
-
-                <input type="hidden" name="email" value={user?.traits?.email} />
-
+                <input
+                    type="hidden"
+                    name="email"
+                    value={JSON.parse(sessionStorage.getItem('identifier'))}
+                />
                 <GrnWideButton
                     type="submit"
                     name="method"
@@ -47,7 +46,15 @@ const VerificationForm = ({ flow, key, submit }) => {
                 method={flow?.ui.method}
                 onSubmit={submit}
             >
-                <ResendButton aria-label="Resend email" type="submit" name="method" value="code" />
+                <div id="resend-btn-container">
+                    <ResendButton
+                        success={refreshSuccess}
+                        aria-label="Resend email"
+                        type="submit"
+                        name="method"
+                        value="code"
+                    />
+                </div>
                 {flow && <CsrfToken csrf={flow.csrf_token} />}
                 <input
                     type="hidden"
@@ -63,6 +70,7 @@ const Verification = () => {
     const [jiggle, setJiggle] = useState(false)
     const [codeIsCorrect, setCodeIsCorrect] = useState(false)
     const [unhandledIdMessage, setUnhandledIdMessage] = useState('')
+    const [refreshSuccess, setRefreshSuccess] = useState(false)
     const navigate = useNavigate()
     const { flow, result, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetVerificationFlowQuery,
@@ -96,6 +104,14 @@ const Verification = () => {
         return () => clearTimeout(timeout)
     }, [codeIsCorrect])
 
+    // Lower refreshSuccess flag
+    useEffect(() => {
+        let timeout = setTimeout(() => {
+            setRefreshSuccess(false)
+        }, 1200)
+        return () => clearTimeout(timeout)
+    }, [refreshSuccess])
+
     // Response code handler
     useEffect(() => {
         const messages = result?.ui?.messages || []
@@ -115,8 +131,9 @@ const Verification = () => {
                     // Successful verification
                     setCodeIsCorrect(true)
                     break
-                case (1080003 || 1080002):
+                case (1080003):
                     // Email w/ code/link sent
+                    setRefreshSuccess(true)
                     break
                 default:
                     setUnhandledIdMessage('Well this is awkward... something went wrong.\n Please try back again later.')
@@ -155,7 +172,8 @@ const Verification = () => {
                         </div>
                         <VerificationForm
                             flow={flow}
-                            key={isCompleteError ? Date.now() : 'verification-form'}
+                            isCompleteError={isCompleteError}
+                            refreshSuccess={refreshSuccess}
                             submit={submit}
                         />
                     </>

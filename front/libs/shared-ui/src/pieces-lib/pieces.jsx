@@ -4,7 +4,7 @@ import { useTransition, animated } from '@react-spring/web'
 
 import './styles/pieces.css'
 import { Alert2 } from '@ledget/shared-assets'
-import { CheckMark, SmsAuthIcon } from '@ledget/shared-assets'
+import { CheckMark, SmsAuthIcon, ReplayIcon } from '@ledget/shared-assets'
 import authenticator from '@ledget/shared-assets/src/images/authenticator.svg'
 import recoveryCodeGraphic from '@ledget/shared-assets/src/images/recoveryCodeGraphic.svg'
 import { shuffleArray } from '@ledget/shared-utils'

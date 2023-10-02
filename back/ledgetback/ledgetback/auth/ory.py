@@ -17,8 +17,11 @@ class OryBackend(SessionAuthentication):
 
         # header should already be decoded by middleware
 
+        decoded_jwt = request.META.get('HTTP_AUTHORIZATION')
+        if not decoded_jwt:
+            return
+
         try:
-            decoded_jwt = request.META.get('HTTP_AUTHORIZATION')
             user = self.get_user(request, decoded_jwt)
         except Exception as e:
             logger.error(f"{e.__class__.__name__} {e}")

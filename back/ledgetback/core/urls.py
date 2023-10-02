@@ -2,18 +2,17 @@ from django.urls import path, include
 from core.views import service as service_views
 from core.views.user import UserView
 from core.views.device import (
-     DeviceViewSet,
-     CustomDeviceRouter,
-     OtpView
+     OtpView,
+     DeviceView,
+     DestroyDeviceView
 )
 
 
-router = CustomDeviceRouter()
-router.register(r'devices', DeviceViewSet, basename='devices')
-
 urlpatterns = [
      path('user/me', UserView.as_view(), name='user_me'),
-     path('', include(router.urls)),
+
+     path('device/<str:id>', DestroyDeviceView.as_view(), name='device'),
+     path('devices', DeviceView.as_view(), name='devices'),
 
      path('prices', service_views.PriceView.as_view(), name='prices'),
      path('default_payment_method', service_views.PaymentMethodView.as_view(),
