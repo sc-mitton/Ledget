@@ -286,7 +286,7 @@ const Login = () => {
 
     return (
         <AnimatePresence mode="wait">
-            {email === null && !searchParams.get('mfa')
+            {!email && !searchParams.get('mfa')
                 ?
                 <SlideMotionDiv className='window' key="initial" first={Boolean(flow)}>
                     <EmailForm setEmail={setEmail} flow={flow} socialSubmit={submit} />

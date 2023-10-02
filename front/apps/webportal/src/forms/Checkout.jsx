@@ -204,7 +204,7 @@ const Form = (props) => {
                     card: elements.getElement(CardElement),
                     billing_details: {
                         name: data.name,
-                        email: JSON.parse(sessionStorage.getItem("user")).email,
+                        email: JSON.parse(sessionStorage.getItem("identifier")),
                         address: {
                             city: data.city,
                             state: data.state,

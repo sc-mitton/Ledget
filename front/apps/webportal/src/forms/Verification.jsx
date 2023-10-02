@@ -12,15 +12,8 @@ import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
 
 const VerificationForm = ({ flow, key, submit }) => {
-
     const [otcDisabled, setOtcDisabled] = useState(false)
 
-    const [user, setUser] = useState({})
-    useEffect(() => {
-        setUser(
-            JSON.parse(sessionStorage.getItem('user'))
-        )
-    }, [])
 
     useEffect(() => {
         flow ? setOtcDisabled(false) : setOtcDisabled(true)
@@ -56,7 +49,11 @@ const VerificationForm = ({ flow, key, submit }) => {
             >
                 <ResendButton aria-label="Resend email" type="submit" name="method" value="code" />
                 {flow && <CsrfToken csrf={flow.csrf_token} />}
-                <input type="hidden" name="email" value={user?.traits?.email} />
+                <input
+                    type="hidden"
+                    name="email"
+                    value={JSON.parse(sessionStorage.getItem('identifier'))}
+                />
             </form>
         </>
     )

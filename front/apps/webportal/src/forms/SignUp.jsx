@@ -185,7 +185,7 @@ function SignUp() {
 
     useEffect(() => {
         if (isCompleteSuccess) {
-            sessionStorage.setItem('user', JSON.stringify(result.identity))
+            sessionStorage.setItem('identifier', JSON.stringify(result.identity?.email))
             ledgetapi.post('devices')
                 .then(() => { navigate('/verification') })
                 .catch(() => { navigate('/login') })
