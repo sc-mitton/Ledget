@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from rest_framework.serializers import Serializer as S
 from rest_framework.serializers import ListSerializer as LS
 
@@ -25,29 +27,27 @@ class NestedCreateMixin:
 
     def recursive_create(self, validated_data, serializer_class):
 
-        nested_obj_fields = self.get_serializer_nested_fields(serializer_class)
+        fields = self._get_nested_fields(serializer_class)
 
         new_objs, nested_objs = self.bulk_create_objects(
             model=self.get_model(serializer_class),
             validated_data=validated_data,
-            nested_obj_keys=list(nested_obj_fields.keys())
+            nested_obj_keys=list(fields.keys())
         )
 
         # Recursively create the nested objects
         # if there aren't any nested keys, this will just skip,
         # and we'll have hit our base case
-        for key in nested_obj_fields.keys():
+        for key in fields.keys():
             self.recursive_create(
                 validated_data=nested_objs[key],
-                serializer_class=nested_obj_fields[key]
+                serializer_class=fields[key]
             )
 
-        if len(new_objs) == 0:
-            return None
-        elif len(new_objs) == 1:
+        if len(new_objs) == 1:
             return new_objs[0]
         else:
-            return new_objs
+            return new_objs if new_objs else None
 
     def get_model(self, serializer_class):
         '''
@@ -60,7 +60,23 @@ class NestedCreateMixin:
         else:
             raise Exception(f"Serializer {serializer_class} has no model")
 
-    def get_serializer_nested_fields(self, serializer_class) -> dict:
+    def _get_nested_fields(self, serializer_class) -> dict:
+
+        # extracted_nested_fields = OrderedDict()
+        # extracted_fields = OrderedDict()
+
+        # if (isinstance(self, LS)):
+        #     fields = self.child.fields
+        # else:
+        #     fields = self.fields
+
+        # for field in fields:
+        #     if isinstance(fields[field], LS):
+        #         extracted_nested_fields[field] = fields[field]
+        #     else:
+        #         extracted_fields[field] = fields[field]
+
+        # return extracted_fields, extracted_nested_fields
 
         declared_fields = serializer_class.__dict__.get('_declared_fields', {})
         fields = {key: val
