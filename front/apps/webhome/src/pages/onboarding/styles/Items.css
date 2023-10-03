@@ -20,6 +20,12 @@
     margin-right: 0;
 }
 
+#add-categories--window>div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 #onboarding-app #budget-items--container {
     display: flex;
     flex-direction: column;
@@ -62,6 +68,18 @@
     margin: 20px 0 32px 0;
 }
 
+#recommendations-btn {
+    color: var(--m-text-gray);
+    font-weight: 500;
+    background-color: var(--green-hlight2);
+    transition: background-color .2s ease-out;
+}
+
+#recommendations-btn:hover {
+    background-color: var(--green-hlight);
+    transition: background-color .2s ease-out;
+}
+
 /* ----------------------------- Suggested Items ---------------------------- */
 
 #recommendations-button--container {
@@ -91,7 +109,14 @@
     cursor: pointer;
 }
 
-/* ------------------------- Individual Rows Styling ------------------------ */
+.empty-message--container {
+    margin: 24px 0 16px 0;
+    text-align: center;
+    font-weight: 500;
+    opacity: .4;
+}
+
+/* ---------------------------- Input Row Styling --------------------------- */
 
 .split-row-inputs {
     display: flex;
@@ -103,6 +128,8 @@
 .split-row-inputs>div {
     flex: 1;
 }
+
+/* ------------------------- Individual Rows Styling ------------------------ */
 
 .budget-item--container {
     width: 100%;
@@ -119,35 +146,37 @@
     display: flex;
     flex-direction: row;
     overflow: hidden;
+    position: absolute;
     width: 100%;
 }
 
-.budget-item>div:first-child {
-    flex-grow: 3;
+.budget-item>div:first-of-type {
+    flex-grow: 1;
     flex-shrink: 1;
     display: flex;
     align-items: center;
     justify-content: flex-start;
 }
 
-.budget-item>div:not(:first-child) {
+.budget-item>div:not(:first-of-type):not(:last-of-type) {
     flex: 2 0 0%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
 }
 
-.budget-item-name--container {
-    display: flex;
-    align-items: center;
-}
-
-#onboarding-app .amount--container {
-    white-space: nowrap;
-}
-
-#onboarding-app .budget-dollar--container {
+.budget-item>div:last-of-type {
+    flex: 1 0 0%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+}
+
+.budget-item.bill-item .amount--container {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+
+.budget-item.bill-item .budget-dollar--container {
+    display: flex;
 }

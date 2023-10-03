@@ -62,7 +62,7 @@ def _get_hmac(request):
     return hmac
 
 
-def _add_new_csrf_hmac_cookie(request):
+def add_new_csrf_hmac_cookie(request):
     csrf_secret = _get_hmac(request)
     request.META.update({
         'CSRF_COOKIE': csrf_secret,
@@ -98,7 +98,6 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
 
         try:
             request_csrf_token = request.META[settings.CSRF_HEADER_NAME]
-            print(request_csrf_token)
             token_source = settings.CSRF_HEADER_NAME
         except KeyError:
             raise RejectRequest(REASON_CSRF_TOKEN_MISSING)
@@ -118,7 +117,7 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
         try:
             csrf_secret = self._get_secret(request)
         except NeedsNewCsrfToken:
-            _add_new_csrf_hmac_cookie(request)
+            add_new_csrf_hmac_cookie(request)
         else:
             if csrf_secret:
                 request.META["CSRF_COOKIE"] = csrf_secret

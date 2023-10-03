@@ -44,8 +44,11 @@ const Form = (props) => {
                 delete body[key]
             }
         }
+        if (alerts.length > 0) {
+            body.alerts = alerts
+        }
 
-        addNewCategory({ data: { ...body, ...data, alerts: alerts } })
+        addNewCategory({ data: { ...body, ...data } })
     }
 
     useEffect(() => {

@@ -23,7 +23,7 @@ from core.permissions import (
     Aal1FreshSession
 )
 from core.models import Device
-from ledgetback.decorators import csrf_ignore
+from ledgetback.decorators import csrf_ignore, ensure_csrf_cookie
 
 
 BIRD_API_KEY = settings.BIRD_API_KEY
@@ -31,6 +31,7 @@ BIRD_SIGNING_KEY = settings.BIRD_SIGNING_KEY
 mbird_client = messagebird.Client(BIRD_API_KEY)
 
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 @method_decorator(csrf_ignore, name='dispatch')
 class DeviceView(ListCreateAPIView):
     permission_classes = [CoreIsAuthenticated, IsObjectOwner]

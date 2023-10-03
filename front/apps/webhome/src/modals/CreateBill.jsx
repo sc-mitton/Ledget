@@ -58,7 +58,10 @@ export const extractBill = (e) => {
             delete body[key]
         }
     }
-    body.reminders = reminders
+
+    if (reminders.length > 0) {
+        body.reminders = reminders
+    }
     delete body.range
 
     return body

@@ -14,7 +14,6 @@ import {
     BillScheduler
 } from '@components/inputs'
 import { ShadowedContainer, DollarCentsRange } from '@components/pieces'
-import { Bell, BellOff } from '@ledget/shared-assets'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { billSchema, extractBill } from '@modals/CreateBill'
 import { DeleteButton } from '@components/buttons'
@@ -25,7 +24,6 @@ import { CloseButton, Checkbox } from '@ledget/shared-ui'
 const BillsColumn = ({ period }) => {
     const context = useContext(ItemsContext)[period]
     const [nameFlexBasis, setNameFlexBasis] = useState('auto')
-    const [amountFlexBasis, setAmountFlexBasis] = useState('auto')
 
     const {
         items,
@@ -37,12 +35,6 @@ const BillsColumn = ({ period }) => {
     useEffect(() => {
         const longestNameLength = getLongestLength(context.items, 'name')
         setNameFlexBasis(`${longestNameLength + 1}ch`)
-
-        const longestAmountLengths = {
-            upper: getLongestLength(context.items, 'upper_amount'),
-            lower: getLongestLength(context.items, 'lower_amount')
-        }
-        setAmountFlexBasis(`${longestAmountLengths.upper + longestAmountLengths.lower + 1}ch`)
     }, [items])
 
     const handleDelete = (toDelete) => {
@@ -54,7 +46,7 @@ const BillsColumn = ({ period }) => {
             <animated.div style={containerProps} >
                 {transitions((style, item, index) =>
                     <animated.div
-                        className="budget-item"
+                        className="budget-item bill-item"
                         style={style}
                     >
                         <div
@@ -66,28 +58,11 @@ const BillsColumn = ({ period }) => {
                                 <span>{formatName(item.name)}</span>
                             </div>
                         </div>
-                        <div
-                            className="amount--container"
-                            style={{ flexBasis: amountFlexBasis }}
-                        >
-                            <div
-                                className="budget-dollar--container"
-                                style={{
-                                    width: `${getLongestLength(context.items, 'lower_amount')
-                                        + getLongestLength(context.items, 'upper_amount') + 3
-                                        }ch`
-                                }}
-                            >
+                        <div className="amount--container">
+                            <div className="budget-dollar--container">
                                 <DollarCentsRange lower={item.lower_amount} upper={item.upper_amount} />
                             </div>
                         </div >
-                        <div >
-                            <div style={{ opacity: item.reminders.length > 0 ? '1' : '.5' }}>
-                                {item.reminders.length > 0
-                                    ? <Bell numberOfAlerts={item.reminders.length} />
-                                    : <BellOff />}
-                            </div>
-                        </div>
                         <DeleteButton onClick={() => handleDelete(item)} />
                     </animated.div>
                 )}
@@ -97,30 +72,30 @@ const BillsColumn = ({ period }) => {
 }
 
 const ListView = () => {
-    const { year: { isEmpty: emptyYearItems } } = useContext(ItemsContext)
+    const {
+        year: { isEmpty: emptyYearItems },
+        month: { isEmpty: emptyMonthItems }
+    } = useContext(ItemsContext)
 
     return (
         <>
             <Tab.Panel>
-                <BillsColumn period={'month'} />
+                {(emptyMonthItems)
+                    ?
+                    <div className="empty-message--container">
+                        <span>Looks like you haven't added any</span><br />
+                        <span>monthly bills yet...</span>
+                    </div>
+                    : <BillsColumn period={'month'} />}
             </Tab.Panel>
             <Tab.Panel>
-                {
-                    emptyYearItems
-                        ?
-                        <div
-                            style={{
-                                margin: '24px 0 16px 0',
-                                textAlign: 'center',
-                                fontWeight: '500',
-                                opacity: '.4'
-                            }}
-                        >
-                            <span>Looks you haven't added any</span><br />
-                            <span> yearly bills yet...</span>
-                        </div>
-                        : <BillsColumn period={'year'} />
-                }
+                {(emptyYearItems)
+                    ?
+                    <div className="empty-message--container">
+                        <span>Looks like you haven't added any</span><br />
+                        <span>yearly bills yet...</span>
+                    </div>
+                    : <BillsColumn period={'year'} />}
             </Tab.Panel>
         </>
     )
@@ -264,6 +239,7 @@ const Window = () => {
         <div className="window3" id="add-bills--window">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2>Bills</h2>
+                {!recommendationsMode && < RecommendationsButton />}
             </div>
             {(itemsEmpty && !recommendationsMode) &&
                 <div
@@ -277,9 +253,6 @@ const Window = () => {
                 </div>
             }
             {(itemsEmpty && !recommendationsMode) && <hr className="spaced-header" />}
-            <div id="recommendations-button--container">
-                {!recommendationsMode && < RecommendationsButton />}
-            </div>
             <BillsList />
             <Form />
         </div>

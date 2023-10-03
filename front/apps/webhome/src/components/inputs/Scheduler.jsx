@@ -94,6 +94,7 @@ const Button = ({ children, ...props }) => {
                 ref={buttonRef}
                 tabIndex={0}
                 role="button"
+                type="button"
                 name="schedule-dropdown"
                 id="schedule-dropdown-button"
                 aria-label="Open schedule dropdown"

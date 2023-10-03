@@ -6,13 +6,13 @@ import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
 
 import './styles/Items.css'
+import { CheckMark } from '@ledget/shared-assets'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { ItemsProvider, ItemsContext } from './ItemsContext'
 import { useItemsDrag } from './hooks'
-import { Bell, BellOff, CheckMark } from '@ledget/shared-assets'
 import { ShadowedContainer } from '@components/pieces'
 import { DeleteButton, GripButton } from '@components/buttons'
-import { EmojiComboText, AddAlert, LimitAmountInput, PeriodSelect } from '@components/inputs'
+import { EmojiComboText, LimitAmountInput, PeriodSelect } from '@components/inputs'
 import { schema as categorySchema } from '@modals/CreateCategory'
 import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
 import { formatName, formatRoundedCurrency, getLongestLength, shuffleArray } from '@ledget/shared-utils'
@@ -45,38 +45,26 @@ const CategoriesColumn = ({ period }) => {
             <animated.div style={containerProps} >
                 {transitions((style, item, index) =>
                     <animated.div
-                        className="budget-item--container"
+                        className="budget-item category-item"
                         style={style}
                         {...bind(item)}
                     >
                         <GripButton />
-                        <div className="budget-item">
-                            <div
-                                className="budget-item-name--container"
-                                style={{ flexBasis: getLongestLength(context.items, 'name') }}
-                            >
-                                <div className="budget-item-name">
-                                    <span>{item.emoji}</span>
-                                    <span>{formatName(item.name)}</span>
-                                </div>
+                        <div
+                            className="budget-item-name--container"
+                            style={{ flexBasis: getLongestLength(context.items, 'name') }}
+                        >
+                            <div className="budget-item-name">
+                                <span>{item.emoji}</span>
+                                <span>{formatName(item.name)}</span>
                             </div>
-                            <div >
-                                <div
-                                    className="budget-dollar--container"
-                                    style={{ width: `${getLongestLength(context.items, 'limit_amount')}ch` }}
-                                >
-                                    {`${formatRoundedCurrency(item.limit_amount)}`}
-                                </div>
-                            </div >
-                            <div >
-                                <div style={{ opacity: item.alerts.length > 0 ? '1' : '.5' }}>
-                                    {item.alerts.length > 0
-                                        ? <Bell numberOfAlerts={item.alerts.length} />
-                                        : <BellOff />}
-                                </div>
-                            </div>
-                            <DeleteButton onClick={() => handleDelete(item)} />
                         </div>
+                        <div >
+                            <div className="budget-dollar--container">
+                                {`${formatRoundedCurrency(item.limit_amount)}`}
+                            </div>
+                        </div >
+                        <DeleteButton onClick={() => handleDelete(item)} />
                     </animated.div>
                 )}
             </animated.div>
@@ -177,27 +165,31 @@ const RecommendationsView = () => {
 }
 
 const ListView = () => {
-    const { year: { isEmpty: emptyYearItems } } = useContext(ItemsContext)
+    const {
+        year: { isEmpty: emptyYearItems },
+        month: { isEmpty: emptyMonthItems }
+    } = useContext(ItemsContext)
 
     return (
         <>
             <Tab.Panel>
-                <CategoriesColumn period={'month'} />
+                {
+                    (emptyMonthItems)
+                        ?
+                        <div className="empty-message--container">
+                            <span>Looks like you haven't added any</span><br />
+                            <span>monthly categories yet...</span>
+                        </div>
+                        : <CategoriesColumn period={'month'} />
+                }
             </Tab.Panel>
             <Tab.Panel>
                 {
-                    emptyYearItems
+                    (emptyYearItems)
                         ?
-                        <div
-                            style={{
-                                margin: '24px 0 16px 0',
-                                textAlign: 'center',
-                                fontWeight: '500',
-                                opacity: '.4'
-                            }}
-                        >
-                            <span>Looks you haven't added any</span><br />
-                            <span> yearly categories yet...</span>
+                        <div className="empty-message--container">
+                            <span>Looks like you haven't added any</span><br />
+                            <span>yearly categories yet...</span>
                         </div>
                         : <CategoriesColumn period={'year'} />
                 }
@@ -221,8 +213,7 @@ const CategoriesList = () => {
     )
 }
 
-const Form = ({ children }) => {
-    const [readyToSubmit, setReadyToSubmit] = useState(false)
+const Form = () => {
     const {
         month: { setItems: setMonthItems },
         year: { setItems: setYearItems },
@@ -230,18 +221,13 @@ const Form = ({ children }) => {
         setBufferItem
     } = useContext(ItemsContext)
     const [formKey, setFormKey] = useState(Date.now())
-    const [emoji, setEmoji] = useState('')
     const [period, setPeriod] = useState('month')
 
-    const { register, watch, handleSubmit, reset, setValue, formState: { errors, isValid }, control } = useForm({
+    const { register, handleSubmit, reset, setValue, formState: { errors }, control } = useForm({
         resolver: yupResolver(categorySchema),
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
     })
-
-    useEffect(() => {
-        isValid && setReadyToSubmit(true)
-    }, [isValid])
 
     const submit = (data, e) => {
         e.preventDefault()
@@ -250,15 +236,6 @@ const Form = ({ children }) => {
         let body = Object.fromEntries(formData)
         body = { ...body, ...data }
 
-        // Extract alerts
-        let alerts = []
-        for (const [key, value] of Object.entries(body)) {
-            if (key.includes('alert')) {
-                alerts.push({ percent_amount: Number(value.replace(/[^0-9]/g, '')) })
-                delete body[key]
-            }
-        }
-        body.alerts = alerts
         if (body.period === 'month') {
             setMonthItems((prev) => [...prev, body])
         } else {
@@ -267,7 +244,6 @@ const Form = ({ children }) => {
 
         reset()
         setFormKey(Date.now())
-        setEmoji('')
     }
 
     useEffect(() => {
@@ -287,21 +263,17 @@ const Form = ({ children }) => {
             <div>
                 <div className="split-row-inputs">
                     <div>
+                        <label htmlFor="period">Period</label>
                         <PeriodSelect value={period} onChange={setPeriod} />
                     </div>
                     <div>
-                        <AddAlert limitAmount={watch('limit_amount', '')} />
+                        <EmojiComboText
+                            name="name"
+                            placeholder="Name"
+                            register={register}
+                            error={[errors.name]}
+                        />
                     </div>
-                </div>
-                <div>
-                    <EmojiComboText
-                        name="name"
-                        placeholder="Name"
-                        register={register}
-                        error={[errors.name]}
-                        emoji={emoji}
-                        setEmoji={setEmoji}
-                    />
                 </div>
                 <div>
                     <LimitAmountInput control={control}>
@@ -309,7 +281,7 @@ const Form = ({ children }) => {
                     </LimitAmountInput>
                 </div>
             </div>
-            {children(readyToSubmit)}
+            <BottomButtons />
         </form>
     )
 }
@@ -318,43 +290,27 @@ const Window = () => {
     const { itemsEmpty, recommendationsMode, setRecommendationsMode } = useContext(ItemsContext)
 
     return (
-        <div className="window3">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="window3" id="add-categories--window">
+            <div>
                 <h2>Budget Categories</h2>
+                {!recommendationsMode && < RecommendationsButton />}
             </div>
             {(itemsEmpty && !recommendationsMode) &&
-                <div
-                    className=" body"
-                    style={{
-                        marginTop: '12px',
-                        maxWidth: '350px'
-                    }}
-                >
+                <div style={{ marginTop: '12px', maxWidth: '350px' }}>
                     Add your spending categories
                 </div>
             }
             {(itemsEmpty && !recommendationsMode) && <hr className="spaced-header" />}
-
-            <div id="recommendations-button--container">
-                {!recommendationsMode && < RecommendationsButton />}
-            </div>
             <CategoriesList />
-            <Form >
-                {(readyToSubmit) => (
-                    <BottomButtons expanded={readyToSubmit || !itemsEmpty} />
-                )}
-            </Form>
+            <Form />
         </div>
     )
 }
 
-const AddCategories = () => {
-
+export default function () {
     return (
         <ItemsProvider>
             <Window />
         </ItemsProvider>
     )
 }
-
-export default AddCategories

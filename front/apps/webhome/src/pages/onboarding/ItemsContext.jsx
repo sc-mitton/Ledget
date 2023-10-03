@@ -26,6 +26,7 @@ export const ItemsProvider = ({ children }) => {
     const [itemsEmpty, setItemsEmpty] = useState(true)
     const [recommendationsMode, setRecommendationsMode] = useState(false)
     const [emptyYearItems, setEmptyYearItems] = useState(true)
+    const [emptyMonthItems, setEmptyMonthItems] = useState(true)
     const [bufferItem, setBufferItem] = useState(undefined)
 
     const monthApi = useSpringRef()
@@ -44,8 +45,7 @@ export const ItemsProvider = ({ children }) => {
     )
 
     const monthContainerProps = useSpring({
-        height: monthItems.length * (itemHeight + itemPadding),
-        maxHeight: 6 * (itemHeight + itemPadding),
+        height: 6 * (itemHeight + itemPadding),
         ref: monthContainerApi,
         config: { duration: 100 },
         position: 'relative',
@@ -54,8 +54,7 @@ export const ItemsProvider = ({ children }) => {
         overflowY: monthItems.length >= 6 ? 'scroll' : 'hidden',
     })
     const yearContainerProps = useSpring({
-        height: yearItems.length * (itemHeight + itemPadding),
-        maxHeight: 6 * (itemHeight + itemPadding),
+        height: 6 * (itemHeight + itemPadding),
         ref: yearContainerApi,
         position: 'relative',
         overflowX: 'hidden',
@@ -104,6 +103,9 @@ export const ItemsProvider = ({ children }) => {
     useEffect(() => {
         monthApi.start()
         monthContainerApi.start()
+        if (monthItems.length > 0) {
+            setEmptyMonthItems(false)
+        }
     }, [monthItems])
 
     useEffect(() => {
@@ -129,6 +131,7 @@ export const ItemsProvider = ({ children }) => {
         api: monthApi,
         containerProps: monthContainerProps,
         containerApi: monthContainerApi,
+        isEmpty: emptyMonthItems
     }
 
     const yearContext = {

@@ -11,7 +11,7 @@ import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { GreenCheckSubmitButton, BlackSubmitWithArrow, BlackSlimButton2 } from '@ledget/shared-ui'
+import { BlackCheckSubmitButton, BlackSubmitWithArrow, GrnTextButton } from '@ledget/shared-ui'
 
 
 export const TabView = ({ children }) => {
@@ -90,6 +90,9 @@ export const BottomButtons = () => {
         e.preventDefault()
         const newMonthItems = monthItems.filter(item => !item.fetchedFromServer)
         const newYearItems = yearItems.filter(item => !item.fetchedFromServer)
+        if (newMonthItems.length === 0 && newYearItems.length === 0) {
+            navigate('/welcome/add-categories')
+        }
 
         switch (location.pathname) {
             case '/welcome/add-bills':
@@ -141,12 +144,12 @@ export const BottomButtons = () => {
         <div
             className="btn-container"
         >
-            <GreenCheckSubmitButton
+            <BlackCheckSubmitButton
                 aria-label="Add Category"
                 type="submit"
             >
                 Save
-            </GreenCheckSubmitButton>
+            </BlackCheckSubmitButton>
             <BlackSubmitWithArrow
                 aria-label="Next"
                 onClick={handleClick}
@@ -165,13 +168,14 @@ export const RecommendationsButton = () => {
 
     return (
         <div>
-            <BlackSlimButton2
+            <GrnTextButton
+                id="recommendations-btn"
                 className="btn-icon-r"
                 onClick={() => setRecommendationsMode(true)}
                 aria-label="Recommendations"
             >
                 Recommendations <RecommendationsIcon fill={'currentColor'} />
-            </BlackSlimButton2>
+            </GrnTextButton>
         </div>
     )
 }

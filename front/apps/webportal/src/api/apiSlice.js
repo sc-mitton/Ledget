@@ -9,7 +9,6 @@ export const apiSlice = createApi({
         prepareHeaders: async (headers, { extra }) => {
             // Set http_x_csrftoken header from the cookies
             const csrftoken = Cookies.get('csrftoken') || ''
-            console.log(csrftoken)
             if (csrftoken) {
                 headers.set('X-CsrfToken', csrftoken)
             }

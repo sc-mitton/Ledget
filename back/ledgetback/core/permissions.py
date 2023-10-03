@@ -123,7 +123,6 @@ class BaseFreshSessionClass(BasePermission):
     def get_last_ory_login_delta(self, request, aal):
         logins = request.META[OATHKEEPER_HEADER]['session']['authentication_methods']
         login = next((login for login in logins if login['aal'] == aal), None)
-        print(login)
 
         if login:
             completed_at = datetime.strptime(

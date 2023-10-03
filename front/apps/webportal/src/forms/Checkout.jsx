@@ -38,49 +38,53 @@ const schema = baseBillingSchema.shape({
         })
 })
 
-const PriceRadios = ({ prices, register }) => (
-    <>
-        {prices &&
-            <div id="prices-container">
-                <div id="prices-container-header">
-                    <img src={logoLight} alt="Ledget" />
+const PriceRadios = ({ register }) => {
+    const { data: prices } = useGetPricesQuery()
+
+    return (
+        <>
+            {prices &&
+                <div id="prices-container">
+                    <div id="prices-container-header">
+                        <img src={logoLight} alt="Ledget" />
+                    </div>
+                    <div id="subscription-radios--container">
+                        {prices.map((p, i) =>
+                            <label
+                                key={i}
+                                htmlFor={`price-${i}`}
+                            >
+                                <input
+                                    name='price'
+                                    type="radio"
+                                    value={p.id}
+                                    id={`price-${i}`}
+                                    {...register('price')}
+                                    defaultChecked={i === 0}
+                                />
+                                <div className="subscription-radio--container">
+                                    {p.nickname.toLowerCase() == 'year' &&
+                                        <div className="dog-ear">
+                                            <Star fill={'var(--green-hlight)'} />
+                                        </div>
+                                    }
+                                    <span className="nickname">{p.nickname}</span>
+                                    <span className="unit-amount">
+                                        ${
+                                            p.nickname.toLowerCase() == 'year'
+                                                ? p.unit_amount / 1200
+                                                : p.unit_amount / 100
+                                        }<span> /mo</span>
+                                    </span>
+                                </div>
+                            </label>
+                        )}
+                    </div>
                 </div>
-                <div id="subscription-radios--container">
-                    {prices.map((p, i) =>
-                        <label
-                            key={i}
-                            htmlFor={`price-${i}`}
-                        >
-                            <input
-                                name='price'
-                                type="radio"
-                                value={p.id}
-                                id={`price-${i}`}
-                                {...register('price')}
-                                defaultChecked={i === 0}
-                            />
-                            <div className="subscription-radio--container">
-                                {p.nickname.toLowerCase() == 'year' &&
-                                    <div className="dog-ear">
-                                        <Star fill={'var(--green-hlight)'} />
-                                    </div>
-                                }
-                                <span className="nickname">{p.nickname}</span>
-                                <span className="unit-amount">
-                                    ${
-                                        p.nickname.toLowerCase() == 'year'
-                                            ? p.unit_amount / 1200
-                                            : p.unit_amount / 100
-                                    }<span> /mo</span>
-                                </span>
-                            </div>
-                        </label>
-                    )}
-                </div>
-            </div>
-        }
-    </>
-)
+            }
+        </>
+    )
+}
 
 
 const OrderSummary = ({ unit_amount, trial_period_days }) => {
@@ -250,7 +254,7 @@ const Form = (props) => {
         <>
             <WindowLoadingBar visible={processing} />
             <form onSubmit={submitBillingForm} {...props}>
-                <PriceRadios register={register} prices={prices} />
+                <PriceRadios register={register} />
                 <div>
                     <div id="text-inputs--container">
                         <h4>Billing Info</h4>
@@ -290,21 +294,26 @@ export const cardOptions = {
 }
 
 const CheckoutWindow = () => {
+    const { isLoading } = useGetPricesQuery()
 
     return (
-        <Elements stripe={stripePromise} options={cardOptions}>
-            <div id="checkout-window" className="window">
-                <Form id="billing-form" />
-                <div className="stripe-logo-container">
-                    <div>powered by</div>
-                    <div>
-                        <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
-                            <img className="stripe-logo" src={stripelogo} alt="Stripe" />
-                        </a>
+        <>
+            {!isLoading &&
+                <Elements stripe={stripePromise} options={cardOptions}>
+                    <div id="checkout-window" className="window">
+                        <Form id="billing-form" />
+                        <div className="stripe-logo-container">
+                            <div>powered by</div>
+                            <div>
+                                <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
+                                    <img className="stripe-logo" src={stripelogo} alt="Stripe" />
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </Elements>
+                </Elements>
+            }
+        </>
     )
 }
 

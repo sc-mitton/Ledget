@@ -53,12 +53,12 @@
     --scroll-shadow-top: 180deg, rgba(248, 248, 248), transparent;
 
     /* Input Colors */
-    --input-background: #e9e9e9;
+    --input-background: rgba(218, 218, 218, 0.5);
     --input-border: solid 1px rgb(0, 0, 0, .02);
 
     /* Text */
     --m-text-gray: #292929;
-    --input-placeholder: #848484;
+    --input-placeholder: #222222;
     --input-placeholder2: #a6a6a6;
     --input-focus: #6b9bf6;
     --white-text: #f8f8f8;
@@ -97,7 +97,7 @@
 @-moz-document url-prefix() {
     :root {
         --input-focus: rgb(31, 108, 252);
-        --input-placeholder: #343434;
+        --input-placeholder: #222222;
         --m-text-gray: rgb(44, 44, 44);
     }
 }
