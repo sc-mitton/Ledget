@@ -23,7 +23,7 @@ function AnimatedRoutes() {
                     exit={{ opacity: 0 }}
                     key={location.pathname}
                     transition={{
-                        opacity: { duration: .25, ease: "easeIn" }
+                        opacity: { duration: .15, ease: "easeIn" }
                     }}
                 >
                     <Routes location={location} key={location.pathname.split('/')[1]} >

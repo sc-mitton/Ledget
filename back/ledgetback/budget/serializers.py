@@ -1,15 +1,23 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ListSerializer as LS
 
-from ledgetback.serializers import (
-    NestedCreateMixin,
-    ListCreateSerializer
-)
+from ledgetback.serializers import NestedCreateMixin
 from .models import (
     Category,
     Alert,
     Bill,
     Reminder
 )
+
+
+class ListCreateSerializer(NestedCreateMixin, LS):
+
+    def create(self, validated_data):
+        validated_data = [{
+            'user_id': self.context['request'].user.id,
+            **data
+        } for data in validated_data]
+
+        return super().create(validated_data)
 
 
 class AlertSerializer(ModelSerializer):
@@ -36,6 +44,10 @@ class CategorySerializer(NestedCreateMixin, ModelSerializer):
         required_fields = ['name', 'period', 'limit_amount']
         list_serializer_class = ListCreateSerializer
 
+    def create(self, validated_data, *args, **kwargs):
+        validated_data['user_id'] = self.context['request'].user.id
+        return super().create(validated_data, *args, **kwargs)
+
 
 class BillSerializer(NestedCreateMixin, ModelSerializer):
     reminders = ReminderSerializer(many=True, required=False)
@@ -46,3 +58,7 @@ class BillSerializer(NestedCreateMixin, ModelSerializer):
                   if field.name != 'user'] + ['reminders']
         required_fields = ['name', 'period', 'upper_amount']
         list_serializer_class = ListCreateSerializer
+
+    def create(self, validated_data, *args, **kwargs):
+        validated_data['user_id'] = self.context['request'].user.id
+        return super().create(validated_data, *args, **kwargs)

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
-import { set, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 
@@ -15,7 +15,7 @@ import { useGetMeQuery } from '@features/userSlice'
 import {
     BackButton,
     GreenSubmitWithArrow,
-    GreenGrowButton,
+    LightGrnWideButton,
     SecondaryButton,
     PlainTextInput,
     FormError,
@@ -34,14 +34,12 @@ const schema = object().shape({
 })
 
 const SmsAdd = (props) => {
-    const [addOtp, { data: result, isLoading, isSuccess, isError }] = useCreateOtpMutation()
+    const [createOtp, { data: result, isLoading, isSuccess, isError }] = useCreateOtpMutation()
     const [searchParams, setSearchParams] = useSearchParams()
     const [value, setValue] = useState('')
 
-    const { handleSubmit, register, setFocus } = useForm({
-        resolver: yupResolver(schema),
-        mode: 'onSubmit',
-        revalidateMode: 'onBlur'
+    const { handleSubmit, register } = useForm({
+        resolver: yupResolver(schema), mode: 'onSubmit', revalidateMode: 'onBlur'
     })
     const { onChange: formChange, ...rest } = register('phone')
 
@@ -54,9 +52,7 @@ const SmsAdd = (props) => {
         setValue(formatted)
     }
 
-    const onSubmit = (data) => {
-        addOtp({ data: data })
-    }
+    const onSubmit = (data) => { createOtp({ data: data }) }
 
     useEffect(() => {
         let timeout
@@ -68,8 +64,6 @@ const SmsAdd = (props) => {
         }
         return () => clearTimeout(timeout)
     }, [isSuccess])
-
-    useEffect(() => { setFocus('phone') }, [])
 
     return (
         <div>
@@ -136,6 +130,7 @@ const SmsVerify = (props) => {
                 props.closeModal()
             }, 1200)
         }
+        return () => clearTimeout(timeout)
     }, [isSucess])
 
     return (
@@ -160,9 +155,9 @@ const SmsVerify = (props) => {
                     <Otc colorful={false} />
                 </div>
                 <div>
-                    <GreenGrowButton submitting={isLoading}>
+                    <LightGrnWideButton submitting={isLoading}>
                         Verify
-                    </GreenGrowButton>
+                    </LightGrnWideButton>
                 </div>
             </form>
         </JiggleDiv>

@@ -121,6 +121,7 @@ main {
     margin: 0;
     background-color: var(--window);
     position: relative;
+    overflow-y: auto;
 }
 
 div,

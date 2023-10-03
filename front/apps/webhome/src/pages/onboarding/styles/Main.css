@@ -21,3 +21,8 @@
     max-height: 100px;
     transition: max-height 0.3s ease-in-out;
 }
+
+#onboarding-app .btn-container>button {
+    background-color: var(--green-hlight2);
+    color: var(--green-dark4);
+}

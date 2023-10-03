@@ -48,6 +48,7 @@ const PeriodSelect = (props) => {
             >
                 {({ open }) => (
                     <>
+                        <label htmlFor="period-select-btn">Period</label>
                         <ComboSelect.Button
                             as={InputButton}
                             id="period-select-btn"

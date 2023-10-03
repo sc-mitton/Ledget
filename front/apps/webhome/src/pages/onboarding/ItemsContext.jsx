@@ -45,7 +45,7 @@ export const ItemsProvider = ({ children }) => {
     )
 
     const monthContainerProps = useSpring({
-        height: 6 * (itemHeight + itemPadding),
+        height: 5 * (itemHeight + itemPadding),
         ref: monthContainerApi,
         config: { duration: 100 },
         position: 'relative',
@@ -54,7 +54,7 @@ export const ItemsProvider = ({ children }) => {
         overflowY: monthItems.length >= 6 ? 'scroll' : 'hidden',
     })
     const yearContainerProps = useSpring({
-        height: 6 * (itemHeight + itemPadding),
+        height: 5 * (itemHeight + itemPadding),
         ref: yearContainerApi,
         position: 'relative',
         overflowX: 'hidden',

@@ -173,25 +173,23 @@ const ListView = () => {
     return (
         <>
             <Tab.Panel>
-                {
-                    (emptyMonthItems)
-                        ?
-                        <div className="empty-message--container">
-                            <span>Looks like you haven't added any</span><br />
-                            <span>monthly categories yet...</span>
-                        </div>
-                        : <CategoriesColumn period={'month'} />
+                {emptyMonthItems
+                    ?
+                    <div className="empty-message--container">
+                        <span>Looks like you haven't added any</span><br />
+                        <span>monthly categories yet...</span>
+                    </div>
+                    : <CategoriesColumn period={'month'} />
                 }
             </Tab.Panel>
             <Tab.Panel>
-                {
-                    (emptyYearItems)
-                        ?
-                        <div className="empty-message--container">
-                            <span>Looks like you haven't added any</span><br />
-                            <span>yearly categories yet...</span>
-                        </div>
-                        : <CategoriesColumn period={'year'} />
+                {emptyYearItems
+                    ?
+                    <div className="empty-message--container">
+                        <span>Looks like you haven't added any</span><br />
+                        <span>yearly categories yet...</span>
+                    </div>
+                    : <CategoriesColumn period={'year'} />
                 }
             </Tab.Panel>
         </>
@@ -199,16 +197,36 @@ const ListView = () => {
 }
 
 const CategoriesList = () => {
-    const { itemsEmpty, recommendationsMode } = useContext(ItemsContext)
+    const {
+        recommendationsMode,
+        year: { isEmpty: emptyYearItems },
+        month: { isEmpty: emptyMonthItems }
+    } = useContext(ItemsContext)
+
+    const StartPrompt = () => (
+        <div className="start-prompt">
+            Add some budget categories
+        </div>
+    )
+
+    console.log(!recommendationsMode && (emptyYearItems && emptyMonthItems))
 
     return (
         <div
             id="budget-items--container"
-            className={`${(itemsEmpty && !recommendationsMode) ? '' : 'expand'}`}
+            className={`${!emptyYearItems && !emptyMonthItems ? '' : 'expand'}`}
         >
-            <TabView>
-                {recommendationsMode ? <RecommendationsView /> : <ListView />}
-            </TabView>
+            {!recommendationsMode && (emptyYearItems && emptyMonthItems)
+                ?
+                <StartPrompt />
+                :
+                <TabView>
+                    {recommendationsMode
+                        ? <RecommendationsView />
+                        : <ListView />
+                    }
+                </TabView>
+            }
         </div>
     )
 }
@@ -263,7 +281,6 @@ const Form = () => {
             <div>
                 <div className="split-row-inputs">
                     <div>
-                        <label htmlFor="period">Period</label>
                         <PeriodSelect value={period} onChange={setPeriod} />
                     </div>
                     <div>
@@ -287,7 +304,7 @@ const Form = () => {
 }
 
 const Window = () => {
-    const { itemsEmpty, recommendationsMode, setRecommendationsMode } = useContext(ItemsContext)
+    const { recommendationsMode } = useContext(ItemsContext)
 
     return (
         <div className="window3" id="add-categories--window">
@@ -295,12 +312,6 @@ const Window = () => {
                 <h2>Budget Categories</h2>
                 {!recommendationsMode && < RecommendationsButton />}
             </div>
-            {(itemsEmpty && !recommendationsMode) &&
-                <div style={{ marginTop: '12px', maxWidth: '350px' }}>
-                    Add your spending categories
-                </div>
-            }
-            {(itemsEmpty && !recommendationsMode) && <hr className="spaced-header" />}
             <CategoriesList />
             <Form />
         </div>

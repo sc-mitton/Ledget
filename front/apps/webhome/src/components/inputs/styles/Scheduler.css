@@ -42,17 +42,17 @@
 }
 
 .picker-item.selected {
-    background-color: var(--green-hlight);
+    background-color: var(--green-hlight2);
     transition: all 0.3s ease-out;
 }
 
 .picker-item.active {
-    background-color: var(--green-hlight2);
+    background-color: var(--icon-light-gray);
     transition: all 0.3s ease-out;
 }
 
 .picker-item.unselected:hover {
-    background-color: var(--green-hlight2);
+    background-color: var(--icon-light-gray);
     transition: all 0.3s ease-out;
 }
 

@@ -101,7 +101,7 @@ const ListView = () => {
     )
 }
 
-const RecommendationsView = ({ recommendations }) => {
+const RecommendationsView = () => {
     const { isLoading, isError } = useGetBillRecommendationsQuery()
     const { setRecommendationsMode } = useContext(ItemsContext)
     const {
@@ -109,6 +109,7 @@ const RecommendationsView = ({ recommendations }) => {
         year: { items: yearItems },
         setBufferItem,
     } = useContext(ItemsContext)
+    const { data: billRecommendations } = useGetBillRecommendationsQuery()
 
     return (
         <>
@@ -131,20 +132,34 @@ const RecommendationsView = ({ recommendations }) => {
 }
 
 const BillsList = () => {
-    const { itemsEmpty, recommendationsMode } = useContext(ItemsContext)
-    const { data: billRecommendations } = useGetBillRecommendationsQuery()
+    const {
+        recommendationsMode,
+        year: { isEmpty: emptyYearItems },
+        month: { isEmpty: emptyMonthItems }
+    } = useContext(ItemsContext)
+
+    const StartPrompt = () => (
+        <div className="start-prompt">
+            Add some of your bills to get started
+        </div>
+    )
 
     return (
         <div
             id="budget-items--container"
-            className={`${itemsEmpty ? '' : 'expand'}`}
+            className={`${!emptyYearItems && !emptyMonthItems ? '' : 'expand'}`}
         >
-            <TabView>
-                {recommendationsMode
-                    ? <RecommendationsView recommendations={billRecommendations} />
-                    : <ListView />
-                }
-            </TabView>
+            {!recommendationsMode && (emptyYearItems && emptyMonthItems)
+                ?
+                <StartPrompt />
+                :
+                <TabView>
+                    {recommendationsMode
+                        ? <RecommendationsView />
+                        : <ListView />
+                    }
+                </TabView>
+            }
         </div>
     )
 }
@@ -233,7 +248,7 @@ const Form = ({ children }) => {
 }
 
 const Window = () => {
-    const { itemsEmpty, recommendationsMode } = useContext(ItemsContext)
+    const { recommendationsMode } = useContext(ItemsContext)
 
     return (
         <div className="window3" id="add-bills--window">
@@ -241,18 +256,6 @@ const Window = () => {
                 <h2>Bills</h2>
                 {!recommendationsMode && < RecommendationsButton />}
             </div>
-            {(itemsEmpty && !recommendationsMode) &&
-                <div
-                    className=" body"
-                    style={{
-                        marginTop: '12px',
-                        maxWidth: '350px'
-                    }}
-                >
-                    Add your monthly and yearly bills
-                </div>
-            }
-            {(itemsEmpty && !recommendationsMode) && <hr className="spaced-header" />}
             <BillsList />
             <Form />
         </div>

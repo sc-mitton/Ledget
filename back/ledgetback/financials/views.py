@@ -119,10 +119,17 @@ class TransactionsSyncView(GenericAPIView):
 
     def filter_transaction(self, unfiltered):
         filtered = {}
+        target_fields = [
+            field.name for field in Transaction._meta.get_fields()
+            if field.name not in Transaction.ignored_plaid_fields
+        ]
         for k, v in unfiltered.items():
             if k in Transaction.nested_plaid_fields:
-                filtered.update(**unfiltered[k])
-            elif k not in Transaction.unused_plaid_fields:
+                filtered.update(**{
+                    k: v for k, v in unfiltered[k].items()
+                    if k in target_fields
+                })
+            elif k in target_fields:
                 filtered[k] = v
 
         return filtered
@@ -134,6 +141,8 @@ class TransactionsSyncView(GenericAPIView):
         self.bulk_remove_transactions()
         plaid_item.cursor = cursor
         plaid_item.save()
+
+        # reset buffers
         self.added = []
         self.modified = []
         self.removed = []

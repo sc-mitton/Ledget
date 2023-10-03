@@ -66,7 +66,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query: ({ data }) => ({
                 url: 'otp',
                 method: 'POST',
-                body: data,
+                ...(data ? { body: data } : {})
             }),
             transformResponse: response => response.data
         }),
@@ -83,10 +83,10 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 export const { resetAuthedAt } = authSlice.actions
 export const authReducer = authSlice.reducer
 
-// reauth is fresh if it happened less than 9 minutes ago
-// (subtracted 1 min to be safe)
-export const selectSessionIsFresh = (state) => {
-    return state.user.reAuthedAt && Date.now() - state.user.reAuthedAt < 1000 * 60 * 9
+export const seletSessionIsFreshAal1 = (state) => {
+    const isFresh = state.reAuthedAt && Date.now() - state.reAuthedAt < 1000 * 60 * 9
+    const aalGood = state.reAuthedLevel && state.reAuthedLevel >= 1
+    return isFresh && aalGood
 }
 
 export const {

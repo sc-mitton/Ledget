@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { withSmallModal } from '@ledget/shared-utils'
 import { useGetMeQuery } from '@features/userSlice'
-import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/authSlice'
+import { useCreateOtpMutation, useVerifyOtpMutation, seletSessionIsFreshAal1 } from '@features/authSlice'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory-sdk'
 import {
@@ -23,7 +23,7 @@ import {
     RecoveryCodeGraphic,
     Otc,
     BackButton,
-    GreenGrowButton
+    LightGrnWideButton
 } from '@ledget/shared-ui'
 
 
@@ -38,6 +38,7 @@ const PassWord = ({ onCancel }) => {
         useCompleteLoginFlowMutation,
         'login'
     )
+    const sessionIsFreshAal1 = useSelector(seletSessionIsFreshAal1)
 
     const {
         isGettingFlow,
@@ -48,7 +49,9 @@ const PassWord = ({ onCancel }) => {
     } = flowStatus
 
     useEffect(() => {
-        fetchFlow({ aal: 'aal1', refresh: true })
+        if (!sessionIsFreshAal1) {
+            fetchFlow({ aal: 'aal1', refresh: true })
+        }
     }, [])
 
     useEffect(() => {
@@ -180,13 +183,14 @@ const Totp = () => {
 }
 
 const Otp = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
     const dispatch = useDispatch()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const { data: user } = useGetMeQuery()
     const [createOtp, { data: otp, isLoading: creatingOtp, isSuccess: createdOtp, isError: isCreateOtpError }] = useCreateOtpMutation()
     const [verifyOtp, { isSuccess: otpVerified, isLoading: verifyingOtp, isError: isOtpVerifyError }] = useVerifyOtpMutation()
 
     useEffect(() => {
-        createOtp()
+        createOtp({ data: user.phone_number })
     }, [])
 
     useEffect(() => {
@@ -227,12 +231,12 @@ const Otp = () => {
                 {isCreateOtpError && <ErrorFetchingFlow />}
             </div>
             <div>
-                <GreenGrowButton
+                <LightGrnWideButton
                     loading={creatingOtp}
                     submitting={verifyingOtp}
                 >
                     Confirm
-                </GreenGrowButton>
+                </LightGrnWideButton>
             </div>
         </form>
     )
@@ -295,7 +299,7 @@ export default function withReAuth(Component) {
         // object in the redux store
         useEffect(() => {
             const sessionIsFresh = Date.now() - reAuthed.at < 1000 * 60 * 9
-            const aalGood = reAuthed.aal === (requiredAal ?? user.highest_aal)
+            const aalGood = reAuthed.level === (requiredAal ?? user.highest_aal)
             let interval
 
             // If requirements are met, start the poller to check freshness
@@ -303,6 +307,9 @@ export default function withReAuth(Component) {
             if (sessionIsFresh && aalGood) {
 
                 setContinueToComponent(true)
+                if (searchParams.get('aal')) {
+                    searchParams.delete('flow')
+                }
                 searchParams.delete('aal')
                 setSearchParams(searchParams)
 

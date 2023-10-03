@@ -1,6 +1,3 @@
-from collections import OrderedDict
-
-from rest_framework.serializers import Serializer as S
 from rest_framework.serializers import ListSerializer as LS
 
 import logging
@@ -18,118 +15,111 @@ class NestedCreateMixin:
                if not isinstance(validated_data, list) \
                else validated_data
 
-        if hasattr(self, 'child'):
-            serializer_class = self.child.__class__
+        result = self._recursive_bulk_create(data, self)
+        if isinstance(self, LS):
+            return result if isinstance(result, list) else [result]
         else:
-            serializer_class = self.__class__
+            return result[0] if isinstance(result, list) else result
 
-        return self.recursive_create(data, serializer_class=serializer_class)
+    def _recursive_bulk_create(self, validated_data: list, serializer) -> list:
+        # Base case
+        if not validated_data:
+            return
 
-    def recursive_create(self, validated_data, serializer_class):
-
-        fields = self._get_nested_fields(serializer_class)
-
-        new_objs, nested_objs = self.bulk_create_objects(
-            model=self.get_model(serializer_class),
-            validated_data=validated_data,
-            nested_obj_keys=list(fields.keys())
+        nested_fields = self._get_nested_fields(serializer)
+        validated_data, nested_data = self._seperate_unnested_data(
+            validated_data, nested_fields.keys()
         )
 
-        # Recursively create the nested objects
-        # if there aren't any nested keys, this will just skip,
-        # and we'll have hit our base case
-        for key in fields.keys():
-            self.recursive_create(
-                validated_data=nested_objs[key],
-                serializer_class=fields[key]
-            )
+        model = self.get_model(serializer)
+        new_objs = self._bulk_create_objects(model, validated_data)
 
-        if len(new_objs) == 1:
-            return new_objs[0]
-        else:
-            return new_objs if new_objs else None
+        # Map the nested data from each new object into the same list
+        # in order to bulk create all at the same time
+        mapped_nested_data = {field: [] for field in nested_fields.keys()}
+        for n, nested_objs in enumerate(nested_data):
+            foreign_key_field = new_objs[n]._meta.model_name + '_id'
+            foreign_key = new_objs[n].id
 
-    def get_model(self, serializer_class):
+            for key, value in nested_objs.items():
+                mapped_nested_data[key] += [
+                    {**nested_obj, foreign_key_field: foreign_key}
+                    for nested_obj in value
+                ]
+
+        # Recurse
+        for field, serializer in nested_fields.items():
+            self._recursive_bulk_create(mapped_nested_data[field], serializer)
+
+        return new_objs
+
+    def get_model(self, serializer):
         '''
         Get the model from the serializer class
         '''
-        if hasattr(serializer_class, 'Meta'):
-            return serializer_class.Meta.model
-        elif hasattr(serializer_class.child, 'Meta'):
-            return serializer_class.child.Meta.model
+        if hasattr(serializer, 'Meta'):
+            return serializer.Meta.model
+        elif hasattr(serializer.child, 'Meta'):
+            return serializer.child.Meta.model
         else:
-            raise Exception(f"Serializer {serializer_class} has no model")
+            raise Exception(f"Serializer {serializer} has no model")
 
-    def _get_nested_fields(self, serializer_class) -> dict:
-
-        # extracted_nested_fields = OrderedDict()
-        # extracted_fields = OrderedDict()
-
-        # if (isinstance(self, LS)):
-        #     fields = self.child.fields
-        # else:
-        #     fields = self.fields
-
-        # for field in fields:
-        #     if isinstance(fields[field], LS):
-        #         extracted_nested_fields[field] = fields[field]
-        #     else:
-        #         extracted_fields[field] = fields[field]
-
-        # return extracted_fields, extracted_nested_fields
-
-        declared_fields = serializer_class.__dict__.get('_declared_fields', {})
-        fields = {key: val
-                  for key, val in declared_fields.items()
-                  if isinstance(val, (S, LS))}
-
-        return fields
-
-    def bulk_create_objects(self, model, validated_data: list,
-                            nested_obj_keys: list):
+    def _get_nested_fields(self, serializer) -> dict:
         '''
-        Bulk create the objects, and return the nested_objects
-        Example:
+        Goes through the serializer's fields and returns
+        an ordered dict of the nested fields (field_name: field)
+        '''
+
+        nested_fields = {}
+
+        if (isinstance(serializer, LS)):
+            fields = serializer.child.fields
+        else:
+            fields = serializer.fields
+
+        for field in fields:
+            if isinstance(fields[field], LS):
+                nested_fields[field] = fields[field]
+
+        return nested_fields
+
+    def _seperate_unnested_data(self, validated_data: list,
+                                nested_fields: list) -> tuple:
+        '''
+        Takes in the list of validated data objects and returns
+        the list of objects with the nested objects stripped, and the
+        nested objects expanded out into their own list.
+
+        e.g. [
+            {field1: v1, field2: v2, nestedObjs1: [...], nestedObjs2: [...], ...},
+            {field1: v1, field2: v2, nestedObjs1: [...], nestedObjs2: [...], ...},
+        ] ->
         [
-            { 'name': 'foo', 'nested_key': [ { 'name': 'bar', 'age: 16 } ] },
-            ...
+            {field1: v1, field2: v2, ...},
+            {field1: v1, field2: v2, ...},
+        ],
+        [
+            {nestedObjs1: [...], nestedObjs2: [...], ...},
+            {nestedObjs1: [...], nestedObjs2: [...], ...},
         ]
-
-        :param model: The model to create
-        :param validated_data: The data to create the db objects with
-        :param nested_keys: The keys that are nested
         '''
+
+        nested_data = []
+
+        for n, obj in enumerate(validated_data):
+            nested_data.append({
+                field: obj.pop(field) for field in nested_fields
+                if field in obj
+            })
+            validated_data[n] = obj
+
+        return validated_data, nested_data
+
+    def _bulk_create_objects(self, model, validated_data: list):
 
         objs = []
-        nested_objs = {key: [] for key in nested_obj_keys}
-        has_user_field = hasattr(model, 'user')
-
         for obj in validated_data:
-            obj_without_nested = {
-                key: val
-                for key, val in obj.items()
-                if key not in nested_obj_keys
-            }
-            if has_user_field:
-                obj_without_nested['user'] = self.context['request'].user
-            objs.append(model(**obj_without_nested))
+            objs.append(model(**obj))
+        model.objects.bulk_create(objs)
 
-            for key in nested_obj_keys:
-                for nested_obj in obj[key]:
-                    nested_objs[key].append({
-                        **nested_obj,
-                        model.__name__.lower(): objs[-1]
-                    })
-
-        try:
-            new_objs = model.objects.bulk_create(objs)
-        except Exception as e:
-            logger.error(f"Error creating {model.__name__} objects: {e}")
-
-        return new_objs, nested_objs
-
-
-class ListCreateSerializer(NestedCreateMixin, LS):
-
-    def create(self, validated_data):
-        return super().create(validated_data)
+        return objs

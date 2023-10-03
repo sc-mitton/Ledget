@@ -65,7 +65,7 @@ class Transaction(models.Model):
     Having a blank category or bill field is considered misc. category
     '''
 
-    unused_plaid_fields = [
+    ignored_plaid_fields = [
             'account_owner',
             'category',
             'category_id',

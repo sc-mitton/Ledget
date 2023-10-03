@@ -780,6 +780,9 @@ export const BillScheduler = (props) => {
                 weekDay={weekDay}
                 setWeekDay={setWeekDay}
             >
+                <label htmlFor="schedule-dropdown-button">
+                    Schedule
+                </label>
                 <Scheduler.Button>
                     {error &&
                         <FormErrorTip errors={[{ type: 'required' }]} />}

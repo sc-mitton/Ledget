@@ -100,11 +100,13 @@ class OtpView(GenericAPIView):
     def post(self, request, *arg, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        recipient = '{}{}'.format(
+            serializer.validated_data['country_code'],
+            serializer.validated_data['phone']
+        )
 
         try:
-            verify = mbird_client.verify_create(
-                recipient=serializer.validated_data['phone'],
-            )
+            verify = mbird_client.verify_create(recipient=int(recipient))
         except messagebird.client.ErrorException as e:
             return Response(
                 {'error': e.message},

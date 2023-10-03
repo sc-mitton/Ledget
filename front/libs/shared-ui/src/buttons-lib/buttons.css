@@ -76,6 +76,13 @@
     justify-content: center;
 }
 
+.btn-wide2 {
+    border-radius: var(--border-radius2);
+    padding: 8px 16px;
+    width: 100%;
+    justify-content: center;
+}
+
 .btn-icon {
     padding: 4px;
     margin: 2px;
@@ -128,6 +135,18 @@
     color: var(--green-dark2);
     transition: all .3s ease;
 }
+
+.btn-grn2 {
+    background-color: var(--green-hlight2);
+    color: var(--green-dark4);
+    transition: all .3s ease;
+}
+
+.btn-grn2:hover {
+    background-color: var(--green-hlight3);
+    transition: all .3s ease;
+}
+
 
 .btn-gr {
     box-shadow: var(--btn-drop-shadow);
@@ -470,43 +489,6 @@ button.disabled-hover:hover svg {
     transform: translateX(3px);
 }
 
-.btn-grow {
-    width: 100%;
-    background-color: transparent;
-    color: var(--m-text-gray);
-    font-weight: 500;
-    background: transparent;
-    transition: all 0.3s ease-in-out;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px;
-    border-radius: var(--border-radius2);
-}
-
-.btn-grow:hover {
-    font-weight: 400;
-    transition: all 0.3s ease-in-out;
-}
-
-.btn-grow span {
-    position: absolute;
-    inset: 0;
-    margin: 0 auto;
-    background: radial-gradient(circle, var(--green-hlight2) 0%, var(--green-hlight2) 100%);
-    max-width: 50%;
-    opacity: 0;
-    transition: all 0.2s ease-in-out;
-}
-
-.btn-grow:hover span {
-    opacity: 1;
-    max-width: 100%;
-    transition: all 0.2s ease-in-out;
-    z-index: -1;
-}
 
 /* Resend Button */
 .resend-btn {

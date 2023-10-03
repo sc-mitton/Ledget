@@ -155,7 +155,11 @@ const Verification = () => {
                         stroke={codeIsCorrect ? 'var(--green-hlight)' : 'var(--window)'}
                     />
                     <div id="verification-pulse-status">
-                        <StatusPulse positive={codeIsCorrect} colorDefaultPositive={false} size={'small'} />
+                        <StatusPulse
+                            positive={codeIsCorrect}
+                            colorDefaultPositive={false}
+                            size={'small'}
+                        />
                     </div>
                 </div>
                 {errMsg

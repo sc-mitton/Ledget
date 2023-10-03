@@ -26,6 +26,7 @@ export const GrayArrowButton = withArrow(GrayButton)
 export const BlackWideButton = ButtonWithClassName('btn-chcl btn-wide')
 export const GrnWideButton = ButtonWithClassName('btn-grn btn-wide')
 export const GrayWideButton = ButtonWithClassName('btn-gr btn-wide')
+export const LightGrnWideButton = ButtonWithClassName('btn-grn2 btn-wide2')
 
 export const BlackSlimButton = ButtonWithClassName('btn-chcl btn-slim')
 export const BlackSlimButton2 = ButtonWithClassName('btn-chcl btn-2slim')
@@ -178,13 +179,6 @@ export const DeleteButton = ({ className, ...rest }) => (
     <Delete width={'1.3em'} height={'1.3em'} />
   </button>
 )
-
-export const GreenGrowButton = withLoading(({ children, ...rest }) => (
-  <button className="btn-grow" {...rest}>
-    <span />
-    {children}
-  </button>
-))
 
 export const ResendButton = ({ success, ...rest }) => {
   const [rotation, setRotation] = useState(0)
