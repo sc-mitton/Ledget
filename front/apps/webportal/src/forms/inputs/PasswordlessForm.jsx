@@ -147,7 +147,7 @@ export const PasskeySignIn = () => {
             <PasswordlessOptionsHeader />
             <div className='passwordless-inputs-container'>
                 <GrayWideButton
-                    name="method"
+                    name="webauthn_register_trigger"
                     value="webauthn"
                 >
                     <PasskeyIcon />

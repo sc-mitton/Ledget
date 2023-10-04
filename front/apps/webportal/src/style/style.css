@@ -187,6 +187,7 @@ a::before {
     width: 100%;
     transform: scaleX(0);
     transition: transform .2s ease-in-out;
+    transition-delay: .1s;
     transform-origin: bottom right;
 }
 
@@ -196,6 +197,7 @@ a:hover::before {
     transform-origin: bottom left;
     background-color: var(--m-green-hover);
     transition: transform .2s ease-in-out;
+    transition-delay: .2s;
 }
 
 label:focus-visible {

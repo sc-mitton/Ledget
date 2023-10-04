@@ -4,7 +4,7 @@ import json
 
 from django.shortcuts import get_object_or_404
 from django.conf import settings
-from django.db import transaction
+from django.db import transaction, models
 from rest_framework.views import APIView
 from rest_framework.generics import (
     CreateAPIView,
@@ -59,6 +59,16 @@ PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
 plaid_products = []
 for product in PLAID_PRODUCTS:
     plaid_products.append(Products(product))
+
+
+transaction_fields = [
+    f.name if not issubclass(f.__class__, models.ForeignKey)
+    else f"{f.name}_id"
+    for f in Transaction._meta.fields
+]
+filter_target_fields = [
+    f for f in transaction_fields if f not in Transaction.ignored_plaid_fields
+]
 
 
 class TransactionsSyncView(GenericAPIView):
@@ -119,18 +129,11 @@ class TransactionsSyncView(GenericAPIView):
 
     def filter_transaction(self, unfiltered):
         filtered = {}
-        target_fields = [
-            field.name for field in Transaction._meta.get_fields()
-            if field.name not in Transaction.ignored_plaid_fields
-        ]
-        for k, v in unfiltered.items():
-            if k in Transaction.nested_plaid_fields:
-                filtered.update(**{
-                    k: v for k, v in unfiltered[k].items()
-                    if k in target_fields
-                })
-            elif k in target_fields:
-                filtered[k] = v
+        for field in filter_target_fields:
+            if unfiltered.get(field, False):
+                filtered[field] = unfiltered[field]
+        for nested_field in Transaction.nested_plaid_fields:
+            filtered.update(**unfiltered[nested_field])
 
         return filtered
 
@@ -187,7 +190,7 @@ class PlaidLinkTokenView(APIView):
                 client_user_id=str(request.user.id)
             )
         }
-        print(kwargs.get('item_id', False))
+
         if kwargs.get('item_id', False):
             request_kwargs['access_token'] = \
                 PlaidItem.objects.get(id=kwargs['item_id']).access_token

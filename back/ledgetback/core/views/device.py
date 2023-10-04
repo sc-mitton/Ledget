@@ -108,7 +108,9 @@ class OtpView(GenericAPIView):
         )
 
         try:
-            verify = mbird_client.verify_create(recipient=int(recipient))
+            verify = mbird_client.verify_create(
+                recipient=int(recipient)
+            )
         except messagebird.client.ErrorException as e:
             return Response(
                 {'error': e.message},
