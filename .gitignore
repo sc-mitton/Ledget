@@ -47,3 +47,4 @@ testem.log
 /typings
 ngrok.log
 sketch.ipynb
+**/token.json

@@ -9,7 +9,6 @@ from rest_framework.status import (
     HTTP_200_OK,
 )
 from django.contrib.auth import get_user_model
-from django.db.transaction import atomic
 from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
@@ -119,16 +118,16 @@ class OryRegistrationHook(APIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            self.create_user(request.data['user_id'])
+            print(request.data)
+            new_user = {'id': request.data['user_id']}
+            if request.data.get('is_verified', False):
+                new_user['is_verified'] = True
+            get_user_model().objects.create_user(**new_user)
         except Exception as e:
             return Response(data={'error': str(e)},
                             status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)
-
-    @atomic
-    def create_user(self, id):
-        get_user_model().objects.create_user(id=id)
 
 
 class OrySettingsPasswordHook(APIView):

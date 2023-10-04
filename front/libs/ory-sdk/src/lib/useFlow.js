@@ -150,6 +150,8 @@ function useFlow(query, mutation, flowType) {
             case 403: {
                 // Session is too old usually, and we need to start a new flow
                 console.warn("sdkError 403")
+                searchParams.delete('flow')
+                setSearchParams(searchParams)
                 navigate(0)
                 break
             }

@@ -26,13 +26,12 @@ const Modal = withModal((props) => {
                 </p>
                 <h3>What if I sign in on a different device?</h3>
                 <p>
-                    Passkeys are automatically synced across apple and google accounts, but if you want to
-                    sign in on a device that doesn't have a passkey, you can scan a qr code from your phone
-                    to create a new key on that device and register it.
+                    Passkeys are automatically synced across apple and google accounts, you can also
+                    scan a QR code from your phone to register a device.
                 </p>
                 <h3>Is it safe?</h3>
                 <p>Passkeys are even safer than passwords, and make it easier for you to use
-                    your apps while worrying about attackers less. A win win!
+                    your apps, a win win!
                 </p>
             </div>
         </div>

@@ -55,7 +55,7 @@ class User(models.Model):
     )
     is_onboarded = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
-    password_last_changed = models.DateTimeField(null=True, default=timezone.now)
+    password_last_changed = models.DateTimeField(null=True, default=None)
     created_on = models.DateTimeField(auto_now_add=True)
     canceled_on = models.DateTimeField(null=True, default=None)
 

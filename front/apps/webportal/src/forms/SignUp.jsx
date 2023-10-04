@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 import { useSearchParams, useNavigate } from "react-router-dom"
 import * as yup from 'yup'
@@ -133,8 +133,8 @@ const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }
                 </div>
             </div>
             <form
-                action={flow.ui.action}
-                method={flow.ui.method}
+                action={flow?.ui.action}
+                method={flow?.ui.method}
                 onSubmit={handleSubmit((data, e) => submit(e))}
                 id="authentication-form"
             >
