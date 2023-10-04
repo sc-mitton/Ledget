@@ -154,6 +154,7 @@ export const BottomButtons = () => {
                 aria-label="Next"
                 onClick={handleClick}
                 disabled={itemsEmpty}
+                success={isBillSuccess || isCategorySuccess}
                 submitting={isBillLoading || isCategoryLoading}
                 type="button"
             >

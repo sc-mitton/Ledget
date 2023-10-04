@@ -31,7 +31,9 @@ const PasswordReset = () => {
                     <div><LockIcon /></div>
                     <div>
                         <span>Password</span>
-                        <span>Last changed {formatDate(user.password_last_changed)} at {formatTime(user.password_last_changed)}</span>
+                        {user.password_last_changed &&
+                            <span>Last changed {formatDate(user.password_last_changed)}
+                                at {formatTime(user.password_last_changed)}</span>}
                     </div>
                     <div>
                         <GrayButton

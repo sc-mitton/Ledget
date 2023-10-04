@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import './styles/Dropdowns.css'
 import ComboSelect from './ComboSelect'
 import { Plus, CheckMark } from '@ledget/shared-assets'
-import { BlackSlimButton, DropAnimation } from '@ledget/shared-ui'
+import { SlimInputButton, DropAnimation } from '@ledget/shared-ui'
 
 const defaultOptions = [
     { id: 1, value: { offset: 1, period: 'day' }, disabled: false },
@@ -78,11 +78,12 @@ const AddReminder = ({ value, onChange }) => {
                 {({ open }) => (
                     <>
                         <ComboSelect.Button
-                            as={BlackSlimButton}
+                            as={SlimInputButton}
+                            className={`${selectedReminders.length > 0 ? '' : 'unset'}`}
                             id="add-reminder-btn"
                             style={{ fontWeight: '400' }}
                         >
-                            Reminder
+                            <span>Reminder</span>
                             {selectedReminders.length > 0
                                 ?
                                 <CheckMark

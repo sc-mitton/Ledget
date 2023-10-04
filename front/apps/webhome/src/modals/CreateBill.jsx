@@ -26,14 +26,14 @@ const radioOptions = [
 export const billSchema = object().shape({
     name: string().required().lowercase(),
     range: boolean(),
-    lower_amount: number().when('range', {
+    lower_amount: number('Enter an amount').when('range', {
         is: true,
-        then: () => number().required('required')
+        then: () => number('Enter an amount').required('required')
             .test('lower_amount', 'First value must be smaller', (value, { parent }) => {
                 return value < parent.upper_amount
             })
     }),
-    upper_amount: number().required('required')
+    upper_amount: number('Enter an amount').required('required')
 })
 
 export const extractBill = (e) => {
@@ -108,6 +108,25 @@ const Form = (props) => {
                 onChange={setBillPeriod}
             />
             <hr />
+            <div className="padded-row">
+                <label htmlFor="schedule">Schedule</label>
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: '8px',
+                        margin: '8px 0',
+                        alignItems: 'center',
+                    }}
+                >
+                    <div>
+                        <BillScheduler
+                            billPeriod={billPeriod}
+                            error={scheduleMissing}
+                        />
+                    </div>
+                    <AddReminder />
+                </div>
+            </div>
             <div>
                 <EmojiComboText
                     name="name"
@@ -116,44 +135,20 @@ const Form = (props) => {
                     error={[errors.name]}
                 />
             </div>
-            <div
-                className="split-inputs padded-row bottom-row"
-                style={{ ...(watchRange ? { flexDirection: 'column' } : {}) }}
-            >
-                <div
-                    className="padded-row"
-                    style={{ order: watchRange ? 2 : 1 }}
-                >
-                    <label htmlFor="schedule">Schedule</label>
-                    <BillScheduler
-                        billPeriod={billPeriod}
-                        error={scheduleMissing}
+            <div className="padded-row">
+                <DollarRangeInput
+                    rangeMode={watchRange}
+                    control={control}
+                    errors={errors}
+                />
+                <div id="range-checkbox--container">
+                    <Checkbox
+                        label='Range'
+                        name='range'
+                        id="range"
+                        aria-label='Change bill amount to a range.'
+                        {...register('range')}
                     />
-                    <div id="add-reminder--container">
-                        <AddReminder />
-                    </div>
-                </div>
-                <div
-                    className="padded-row"
-                    style={{
-                        order: watchRange ? 1 : 2,
-                        ...(watchRange ? { marginLeft: '0' } : {})
-                    }}
-                >
-                    <DollarRangeInput
-                        rangeMode={watchRange}
-                        control={control}
-                        errors={errors}
-                    />
-                    <div id="range-checkbox--container">
-                        <Checkbox
-                            label='Range'
-                            name='range'
-                            id="range"
-                            aria-label='Change bill amount to a range.'
-                            {...register('range')}
-                        />
-                    </div>
                 </div>
             </div>
             <SubmitForm
@@ -173,7 +168,7 @@ export default (props) => {
         <Modal
             {...props}
             onClose={() => navigate(-1)}
-            maxWidth={props.maxWidth || '400px'}
+            maxWidth={props.maxWidth || '350px'}
             minWidth={props.minWidth || '0px'}
             blur={2}
         />

@@ -14,13 +14,21 @@
 }
 
 #period-select-btn {
-    width: 100%;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
 }
 
-#add-alert-btn svg,
-#add-reminder-btn svg {
+#add-reminder-btn {
+    gap: 12px;
+}
+
+#add-reminder-btn.unset span,
+#add-reminder-btn.unset svg {
+    opacity: .5
+}
+
+#add-alert-btn svg {
     margin-left: 6px;
 }
 

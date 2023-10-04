@@ -4,8 +4,8 @@ import './styles/Dropdowns.css'
 import './styles/Scheduler.css'
 import Radios from './Radios'
 import { useClickClose } from '@utils'
-import { Calendar, ArrowIcon } from '@ledget/shared-assets'
-import { FormErrorTip, DropAnimation, InputButton } from '@ledget/shared-ui'
+import { ArrowIcon } from '@ledget/shared-assets'
+import { SlimInputButton, FormErrorTip, DropAnimation } from '@ledget/shared-ui'
 
 const pickerContext = React.createContext()
 
@@ -78,13 +78,13 @@ const Button = ({ children, ...props }) => {
         } else if (week && weekDay) {
             setPlaceholder(`${week}${getSuffix(week)} ${dayMap[weekDay]}`)
         } else if (day) {
-            setPlaceholder(`${day}${getSuffix(day)}`)
+            setPlaceholder(`The ${day}${getSuffix(day)}`)
         }
     }, [day, month, week, weekDay])
 
     return (
         <>
-            <InputButton
+            <SlimInputButton
                 onClick={() => setOpen(!open)}
                 onKeyDown={(event) => {
                     if (event.key === 'Enter') {
@@ -103,26 +103,8 @@ const Button = ({ children, ...props }) => {
                 aria-controls="schedule-dropdown"
                 {...props}
             >
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        whiteSpace: 'nowrap',
-                    }}
-                >
-                    <Calendar
-                        width={'1.4em'}
-                        height={'1.4em'}
-                        fill={
-                            placeholder
-                                ? 'var(--m-text-gray)'
-                                : 'var(--input-placeholder2)'
-                        }
-                    />
-                    <span style={{
-                        opacity: placeholder ? '1' : '.4',
-                        margin: '0 8px',
-                    }}>
+                <div>
+                    <span style={{ opacity: placeholder ? '1' : '.5' }}>
                         {placeholder || 'Schedule'}
                     </span>
                 </div>
@@ -136,7 +118,7 @@ const Button = ({ children, ...props }) => {
                     }
                 />
                 {children}
-            </InputButton>
+            </SlimInputButton>
         </>
 
     )
@@ -576,7 +558,6 @@ const DayWeekPicker = () => {
                 visible={open}
                 className="dropdown"
                 id="schedule-dropdown"
-                style={{ marginTop: '4px' }}
             >
                 <div
                     ref={ref}
@@ -780,9 +761,6 @@ export const BillScheduler = (props) => {
                 weekDay={weekDay}
                 setWeekDay={setWeekDay}
             >
-                <label htmlFor="schedule-dropdown-button">
-                    Schedule
-                </label>
                 <Scheduler.Button>
                     {error &&
                         <FormErrorTip errors={[{ type: 'required' }]} />}

@@ -233,8 +233,8 @@ const CategoriesList = () => {
 
 const Form = () => {
     const {
-        month: { setItems: setMonthItems },
-        year: { setItems: setYearItems },
+        month: { setItems: setMonthItems, items: monthItems },
+        year: { setItems: setYearItems, items: yearItems },
         bufferItem,
         setBufferItem
     } = useContext(ItemsContext)
@@ -244,12 +244,11 @@ const Form = () => {
     const { register, handleSubmit, reset, setValue, formState: { errors }, control } = useForm({
         resolver: yupResolver(categorySchema),
         mode: 'onSubmit',
-        reValidateMode: 'onSubmit',
+        reValidateMode: 'onChange',
     })
 
     const submit = (data, e) => {
         e.preventDefault()
-
         const formData = new FormData(e.target)
         let body = Object.fromEntries(formData)
         body = { ...body, ...data }
@@ -259,10 +258,15 @@ const Form = () => {
         } else {
             setYearItems((prev) => [...prev, body])
         }
-
-        reset()
-        setFormKey(Date.now())
     }
+
+    useEffect(() => {
+        let timeout = setTimeout(() => {
+            reset()
+            setFormKey(Date.now())
+        }, 100)
+        return () => clearTimeout(timeout)
+    }, [monthItems, yearItems])
 
     useEffect(() => {
         if (bufferItem) {
@@ -279,23 +283,30 @@ const Form = () => {
             key={`create-category-form-${formKey}`}
         >
             <div>
-                <div className="split-row-inputs">
-                    <div>
-                        <PeriodSelect value={period} onChange={setPeriod} />
-                    </div>
-                    <div>
-                        <EmojiComboText
-                            name="name"
-                            placeholder="Name"
-                            register={register}
-                            error={[errors.name]}
-                        />
-                    </div>
+                <div>
+                    <EmojiComboText
+                        name="name"
+                        placeholder="Name"
+                        register={register}
+                        error={[errors.name]}
+                    />
                 </div>
                 <div>
                     <LimitAmountInput control={control}>
                         < FormErrorTip errors={[errors.limit_amount]} />
                     </LimitAmountInput>
+                </div>
+                <div
+                    style={{
+                        display: 'inline-flex',
+                        flexDirection: 'column',
+                        gap: '6px'
+                    }}
+                >
+                    <label>Refreshes</label>
+                    <div>
+                        <PeriodSelect value={period} onChange={setPeriod} />
+                    </div>
                 </div>
             </div>
             <BottomButtons />

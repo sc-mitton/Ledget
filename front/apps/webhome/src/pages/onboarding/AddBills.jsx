@@ -154,17 +154,14 @@ const BillsList = () => {
                 <StartPrompt />
                 :
                 <TabView>
-                    {recommendationsMode
-                        ? <RecommendationsView />
-                        : <ListView />
-                    }
+                    {recommendationsMode ? <RecommendationsView /> : <ListView />}
                 </TabView>
             }
         </div>
     )
 }
 
-const Form = ({ children }) => {
+const Form = () => {
     const { items: monthItems, setItems: setMonthItems } = useContext(ItemsContext).month
     const { items: yearItems, setItems: setYearItems } = useContext(ItemsContext).year
 
@@ -172,11 +169,12 @@ const Form = ({ children }) => {
     const [scheduleMissing, setScheduleMissing] = useState(false)
     const [hasSchedule, setHasSchedule] = useState(false)
 
-    const { register, watch, handleSubmit, reset, formState: { errors, isValid }, control } = useForm({
+    const { register, watch, handleSubmit, reset, formState: { errors }, control } = useForm({
         resolver: yupResolver(billSchema),
-        mode: 'onSubmit',
-        reValidateMode: 'onSubmit',
+        mode: 'onSubmit', reValidateMode: 'onChange'
     })
+
+    useEffect(() => { console.log(watch('range')) }, [watch('range')])
 
     const submitForm = (e) => {
         const body = extractBill(e)
@@ -194,9 +192,17 @@ const Form = ({ children }) => {
                 setYearItems([...yearItems, item])
             }
         })(e)
-
-        reset()
     }
+
+    useEffect(() => { hasSchedule && setScheduleMissing(false) }, [hasSchedule])
+
+    useEffect(() => {
+        let timeout = setTimeout(() => {
+            reset()
+            setScheduleMissing(false)
+        }, 100)
+        return () => clearTimeout(timeout)
+    }, [monthItems, yearItems])
 
     return (
         <form
@@ -204,7 +210,8 @@ const Form = ({ children }) => {
             key={`create-bill-form-${monthItems.length}-${yearItems.length}}`}
         >
             <div>
-                <div className="split-row-inputs">
+                <label>Schedule</label>
+                <div className="padded-input-row">
                     <div>
                         <PeriodSelect
                             value={period}
@@ -249,10 +256,9 @@ const Form = ({ children }) => {
 
 const Window = () => {
     const { recommendationsMode } = useContext(ItemsContext)
-
     return (
         <div className="window3" id="add-bills--window">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
                 <h2>Bills</h2>
                 {!recommendationsMode && < RecommendationsButton />}
             </div>

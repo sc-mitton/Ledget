@@ -26,6 +26,12 @@
     margin-right: 0;
 }
 
+#onboarding-app #add-bills--window>div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 #add-categories--window>div:first-child {
     display: flex;
     justify-content: space-between;
@@ -119,15 +125,21 @@
 
 /* ---------------------------- Input Row Styling --------------------------- */
 
-.split-row-inputs {
+#onboarding-app .split-row-inputs {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 8px;
 }
 
-.split-row-inputs>div {
+#onboarding-app .split-row-inputs>div {
     flex: 1;
+}
+
+#onboarding-app .padded-input-row {
+    display: flex;
+    gap: 8px;
+    padding-bottom: 4px;
 }
 
 /* ------------------------- Individual Rows Styling ------------------------ */

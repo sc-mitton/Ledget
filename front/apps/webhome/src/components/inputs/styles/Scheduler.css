@@ -2,11 +2,19 @@
     justify-content: space-between;
     position: relative;
     overflow: auto;
+    gap: 12px;
+}
+
+#schedule-dropdown-button>div:first-child {
+    display: flex;
+    justify-content: space-between;
+    white-space: nowrap;
 }
 
 #schedule-dropdown {
     z-index: 1000;
     padding: 8px 8px 4px 8px;
+    margin-top: 8px;
 }
 
 #schedule-dropdown label {

@@ -1,0 +1,107 @@
+.limit-amount--container button svg {
+    opacity: .4;
+    transition: opacity .2s ease;
+}
+
+.limit-amount--container:focus-within button svg {
+    opacity: 1;
+    transition: opacity .2s ease;
+}
+
+.increment-arrows--container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 4px;
+    bottom: 0;
+    right: 8px;
+    border-radius: var(--border-radius1);
+    padding: 2px;
+}
+
+.increment-arrows--container button svg {
+    margin: 2px;
+}
+
+.increment-arrows--container button {
+    margin: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
+}
+
+.dollar-range-input--container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.dollar-range-input--container>div {
+    width: 100%;
+}
+
+#emoji-picker-ledget--button {
+    transform: scale(1.2);
+    margin: 0 4px;
+}
+
+#emoji-picker-ledget--button:hover,
+#emoji-picker-ledget--button:focus {
+    transform: scale(1.5);
+}
+
+.dollar-range-input--container.range-mode>div:first-child {
+    transform: scaleX(1);
+    animation: split-left .3s ease-out;
+}
+
+.dollar-range-input--container.range-mode>div:last-child {
+    transform: scaleX(1);
+    animation: split-right .3s ease-out;
+}
+
+@function calculate_scale($keyframe) {
+    @return .1 * sin(20 * $keyframe - 3.14) * exp(-5*$keyframe)+1;
+}
+
+// Define keyframes for split-left animation
+@keyframes split-left {
+    @for $i from 0 through 10 {
+        $percent: 0% + $i * 10%;
+
+        #{$percent} {
+            transform: scaleX(calculate_scale($i/10));
+            transform-origin: left;
+        }
+    }
+}
+
+// Define keyframes for split-right animation
+@keyframes split-right {
+    @for $i from 0 through 10 {
+        $percent: 0% + $i * 10%;
+
+        #{$percent} {
+            transform: scaleX(calculate_scale($i/10));
+            transform-origin: right;
+        }
+    }
+}
+
+.dollar-range-input--container.range-mode>div:first-child {
+    transform: scaleX(1);
+    animation: split-left .7s ease-out;
+}
+
+.dollar-range-input--container.range-mode>div:last-child {
+    transform: scaleX(1);
+    animation: split-right .7s ease-out;
+}

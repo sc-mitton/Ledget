@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 
 import { useController } from 'react-hook-form'
 
-import './styles/Text.css'
+import './styles/Text.scss'
 import Emoji from './Emoji'
 import { formatCurrency, formatRoundedCurrency, makeIntCurrencyFromStr } from '@ledget/shared-utils'
 import { IconButton2, TextInput, FormErrorTip, FormError } from '@ledget/shared-ui'
@@ -191,6 +191,7 @@ const DollarInput = ({ field, name, error, ...rest }) => {
 }
 
 export const DollarRangeInput = ({ rangeMode, control, errors = {} }) => {
+
     const {
         field: lowerField,
     } = useController({
@@ -207,7 +208,7 @@ export const DollarRangeInput = ({ rangeMode, control, errors = {} }) => {
     return (
         <>
             <label htmlFor="upper_amount">Amount</label>
-            <div className="dollar-range-input--container">
+            <div className={`dollar-range-input--container ${rangeMode ? 'range-mode' : ''}`}>
                 {rangeMode &&
                     <DollarInput
                         style={{ marginRight: '8px' }}
@@ -224,6 +225,10 @@ export const DollarRangeInput = ({ rangeMode, control, errors = {} }) => {
                 {(errors.lower_amount?.type !== 'required' && errors.lower_amount?.message !== 'required')
                     && <FormError msg={errors.lower_amount?.message} />}
             </div>
+            {(errors.lower_amount?.type !== 'required'
+                && errors.lower_amount?.type !== 'typeError'
+                && errors.lower_amount?.message !== 'required')
+                && <FormError msg={errors.lower_amount?.message} />}
         </>
     )
 }
