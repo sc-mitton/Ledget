@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom"
 import CsrfToken from "./inputs/CsrfToken"
 import { FacebookLoginButton, GoogleLoginButton } from "@ledget/shared-ui"
 
-function SocialAuth({ flow, submit, csrf }) {
+function SocialAuth({ flow, submit }) {
     const location = useLocation()
     const [socialNodes, setSocialNodes] = useState([])
 
@@ -13,29 +13,25 @@ function SocialAuth({ flow, submit, csrf }) {
         setSocialNodes(flow && flow.ui.nodes.filter(node => node.group === 'oidc'))
     }, [flow])
 
-
-    const FacebookButton = (props) => (
-        <FacebookLoginButton {...props} />
-    )
-
-    const GoogleButton = (props) => (
-        <GoogleLoginButton {...props} />
-    )
     const SocialLoginButtons = () => {
         return (
             <>
                 {socialNodes.map(node => {
-                    const props = {
-                        id: node.id,
-                        type: node.attributes.type,
-                        name: node.attributes.name,
-                        value: node.attributes.value,
-                        disabled: node.attributes.disabled,
-                        "aria-label": `${node.attributes.value} login`
-                    }
                     return (
-                        node.attributes.value === 'facebook' && <FacebookButton {...props} key={'facebook-login'} />
-                        || node.attributes.value === 'google' && <GoogleButton {...props} key={'google-login'} />
+                        node.attributes.value === 'facebook' &&
+                        <FacebookLoginButton
+                            id={node.id}
+                            {...node.attributes}
+                            key={'facebook-login'}
+                            aria-label="facebook login"
+                        />
+                        || node.attributes.value === 'google' &&
+                        <GoogleLoginButton
+                            id={node.id}
+                            {...node.attributes}
+                            key={'google-login'}
+                            aria-label="google login"
+                        />
                     )
                 })}
             </>
@@ -69,7 +65,7 @@ function SocialAuth({ flow, submit, csrf }) {
                     <SocialLoginButtons />
                     : <DefaultButtons />
                 }
-                <CsrfToken csrf={csrf} />
+                <CsrfToken csrf={flow?.csrf_token} />
             </form>
         </div>
     )

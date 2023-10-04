@@ -23,17 +23,6 @@ body {
     font-size: 14px;
 }
 
-#top-header a {
-    border-bottom: 1.5px solid var(--m-text-gray);
-    transition: all 0.3s ease-out;
-}
-
-#top-header a:hover {
-    border-bottom: 1.5px solid var(--m-green);
-    color: var(--m-green);
-    transition: all 0.3s ease-out;
-}
-
 #top-header img {
     height: 2.2em;
 }

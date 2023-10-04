@@ -155,19 +155,19 @@ function useFlow(query, mutation, flowType) {
             }
             case 422: {
                 console.log("sdkError 422")
-                // if (errorData.redirect_browser_to !== undefined) {
-                //     const currentUrl = new URL(window.location.href)
+                if (errorData.redirect_browser_to !== undefined) {
+                    const currentUrl = new URL(window.location.href)
 
-                //     // need to add the base url since the `redirect_browser_to`
-                //     // is a relative url with no hostname
-                //     const redirect = new URL(errorData.redirect_browser_to, window.location.origin)
+                    // need to add the base url since the `redirect_browser_to`
+                    // is a relative url with no hostname
+                    const redirect = new URL(errorData.redirect_browser_to, window.location.origin)
 
-                //     // If hostnames are differnt, redirect to the redirect url
-                //     if (currentUrl.hostname !== redirect.hostname) {
-                //         console.warn("sdkError 422: Redirect browser to")
-                //         window.location.href = errorData.redirect_browser_to
-                //     }
-                // }
+                    // If hostnames are differnt, redirect to the redirect url
+                    if (currentUrl.hostname !== redirect.hostname) {
+                        console.warn("sdkError 422: Redirect browser to")
+                        window.location.href = errorData.redirect_browser_to
+                    }
+                }
                 break
             }
             case 200:

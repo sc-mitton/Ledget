@@ -77,7 +77,7 @@ export const ExpandButton = ({ onClick, flipped, ...rest }) => (
   </button>
 )
 
-export const FacebookLoginButton = ({ props }) => (
+export const FacebookLoginButton = (props) => (
   <GrayWideButton
     className="btn-fb"
     {...props}
@@ -86,7 +86,7 @@ export const FacebookLoginButton = ({ props }) => (
   </GrayWideButton>
 )
 
-export const GoogleLoginButton = ({ props }) => (
+export const GoogleLoginButton = (props) => (
   <GrayWideButton
     className="btn-google"
     {...props}

@@ -99,7 +99,7 @@ const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
                     </GrnWideButton>
                 </div>
             </form>
-            <SocialAuth flow={flow} submit={submit} csrf={flow?.csrf_token} />
+            <SocialAuth flow={flow} submit={submit} />
         </>
     )
 }

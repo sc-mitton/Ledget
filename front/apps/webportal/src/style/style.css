@@ -169,16 +169,33 @@ button:focus-visible {
 a {
     outline: none;
     text-decoration: none;
-    border-bottom: 1.5px solid rgb(0, 0, 0, 0);
+    border-bottom: 2px solid var(--m-text-gray);
     text-decoration-skip-ink: none;
-    transition: border-bottom .2s ease;
-    text-underline-offset: 2px;
+    text-underline-offset: 1.5px;
     cursor: pointer;
+    position: relative;
 }
 
-a:focus-visible,
-a:hover {
-    border-bottom: 1.5px solid var(--m-text-gray);
+a::before {
+    content: "";
+    display: block;
+    height: 2px;
+    background-color: var(--m-text-gray);
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    transform: scaleX(0);
+    transition: transform .2s ease-in-out;
+    transform-origin: bottom right;
+}
+
+a:focus-visible::before,
+a:hover::before {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+    background-color: var(--m-green-hover);
+    transition: transform .2s ease-in-out;
 }
 
 label:focus-visible {
