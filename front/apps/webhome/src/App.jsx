@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState, useRef } from 'react'
+import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 
 import { Routes, Outlet, Navigate, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -12,7 +12,7 @@ import Accounts from '@pages/accounts/Window'
 import NotFound from '@pages/notFound/NotFound'
 import { WelcomeConnect, AddCategories, AddBills } from '@pages/onboarding'
 import { SkeletonDashboard } from '@pages/onboarding'
-import { CreateCategory, CreateBill } from '@modals'
+import { CreateCategory, CreateBill, ForceVerification } from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
 
 const PrivateRoute = () => {
@@ -128,6 +128,7 @@ const MainApp = () => {
                                 <Route path="new-category" element={<CreateCategory />} />
                                 <Route path="new-bill" element={<CreateBill />} />
                                 <Route path="edit" element={<div>edit</div>} />
+                                <Route path="verify-email" element={<ForceVerification />} />
                             </Route>
                             <Route path="spending" element={
                                 isNarrow ? <Spending /> : <Navigate to="/budget" />
