@@ -20,7 +20,8 @@ from core.serializers import DeviceSerializer, OtpSerializer
 from core.permissions import (
     IsObjectOwner,
     IsAuthenticated,
-    Aal1FreshSession
+    Aal1FreshSession,
+    highest_aal_freshness
 )
 from core.models import Device
 from ledgetback.decorators import csrf_ignore, ensure_csrf_cookie
@@ -97,6 +98,7 @@ class OtpView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = OtpSerializer
 
+    @highest_aal_freshness
     def post(self, request, *arg, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -133,15 +135,16 @@ class OtpView(GenericAPIView):
                 HTTP_400_BAD_REQUEST
             )
 
-        self._update_objects(request, verify.recipient)
+        self._update_objects(request, serializer_data=serializer.validated_data)
 
         return Response({'data': {id: verify.id}}, HTTP_200_OK)
 
     @transaction.atomic
-    def _update_objects(self, request, recipient: str):
+    def _update_objects(self, request, serializer_data):
 
         if request.user.mfa_method != 'otp':
-            self.request.user.phone_number = recipient
+            self.request.user.phone_number = serializer_data['phone_number']
+            self.request.user.phone_country_code = serializer_data['country_code']
             self.request.user.mfa_method = 'otp'
             self.request.user.device.aal = 'aal15'
             self.request.user.device.save()

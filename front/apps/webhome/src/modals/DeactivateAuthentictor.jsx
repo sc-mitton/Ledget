@@ -46,26 +46,28 @@ const DeactivateAuthenticator = (props) => {
     // Delete recovery codes first before unlinking totp device
     const handleUnlinkSubmit = (e) => {
         e.preventDefault()
-        forgetRecoveryCodes({
-            data: {
-                csrf_token: flow?.csrf_token,
-                method: 'lookup_secret',
-                lookup_secret_disable: true,
-            },
-            params: { flow: searchParams.get('flow') }
-        })
+        if (isCodesDeleted) {
+            forgetRecoveryCodes({
+                data: {
+                    csrf_token: flow?.csrf_token,
+                    method: 'lookup_secret',
+                    lookup_secret_disable: true,
+                },
+                params: { flow: searchParams.get('flow') }
+            })
+        } else {
+            submit(e)
+        }
     }
 
     // Unlink totp on codes deleted
     useEffect(() => {
-        if (isCodesDeleted) {
-            unLinkTotpForm.current.submit()
-        }
+        isCodesDeleted && unLinkTotpForm.current.submit()
     }, [isCodesDeleted])
 
     return (
         <>
-            <form onSubmit={submit} >
+            <form onSubmit={handleUnlinkSubmit} ref={unLinkTotpForm}>
                 <fieldset disabled={isGettingFlow} id="deactivate-authenticator--content">
                     <div>
                         <h3>Remove Your Authenticator?</h3>

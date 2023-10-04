@@ -19,7 +19,7 @@ import { animated, useSpring } from '@react-spring/web'
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')
 export const BlackPrimaryButton = ButtonWithClassName('btn-chcl btn3')
 export const SecondaryButton = ButtonWithClassName('btn3 btn-scale btn-scale btn-second')
-export const GrnPrimaryButton = ButtonWithClassName('btn-grn btn3')
+export const GrnPrimaryButton = ButtonWithClassName('btn-grn2 btn3')
 export const GrayButton = ButtonWithClassName('btn-gr3 btn-slim')
 export const GrayArrowButton = withArrow(GrayButton)
 

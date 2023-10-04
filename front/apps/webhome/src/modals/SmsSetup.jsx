@@ -17,7 +17,7 @@ import {
     GreenSubmitWithArrow,
     LightGrnWideButton,
     SecondaryButton,
-    PlainTextInput,
+    PhoneInput,
     FormError,
     JiggleDiv,
     SlideMotionDiv,
@@ -30,27 +30,18 @@ import {
 const schema = object().shape({
     phone: string().required('required').transform((value) =>
         value.replace(/[^0-9]/g, '')
-    )
+    ),
+    country_code: string().required('required')
 })
 
 const SmsAdd = (props) => {
     const [createOtp, { data: result, isLoading, isSuccess, isError }] = useCreateOtpMutation()
     const [searchParams, setSearchParams] = useSearchParams()
-    const [value, setValue] = useState('')
 
     const { handleSubmit, register } = useForm({
         resolver: yupResolver(schema), mode: 'onSubmit', revalidateMode: 'onBlur'
     })
     const { onChange: formChange, ...rest } = register('phone')
-
-    const handleAutoFormat = (e) => {
-        const { value } = e.target
-        // Auto format like (000) 000-0000 and only except numbers
-        let formatted = value.replace(/[^0-9]/g, '')
-        formatted = formatted.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')
-
-        setValue(formatted)
-    }
 
     const onSubmit = (data) => { createOtp({ data: data }) }
 
@@ -73,25 +64,16 @@ const SmsAdd = (props) => {
                 id="otp-setup-form"
                 onSubmit={handleSubmit(onSubmit)}
             >
+                {/* Other countries may be needed in future */}
                 <div >
-                    <div>
-                        <KeyPadGraphic finished={isSuccess} />
-                    </div>
-                    <span>
-                        Enter your phone number
-                    </span>
-                    <PlainTextInput
-                        name="phone"
-                        type="tel"
-                        placeholder="(000) 000-0000"
-                        autoComplete="tel"
-                        value={value}
-                        onChange={(e) => {
-                            handleAutoFormat(e)
-                            formChange(e)
-                        }}
-                        {...rest}
-                        autoFocus
+                    <div><KeyPadGraphic finished={isSuccess} /></div>
+                    <span>Enter your phone number</span>
+                    <PhoneInput onChange={formChange} {...rest} />
+                    <input
+                        type="hidden"
+                        name="country_code"
+                        value={1}
+                        {...register('country_code')}
                     />
                     {isError && <FormError msg={'Check your number and try again please.'} />}
                 </div>

@@ -296,3 +296,34 @@ PasswordInput.defaultProps = {
     visible: null,
 }
 
+
+export const PhoneInput = forwardRef((props, ref) => {
+    const [value, setValue] = useState('')
+    const { onChange, ...rest } = props
+
+    const handleAutoFormat = (e) => {
+        const { value } = e.target
+        // Auto format like (000) 000-0000 and only except numbers
+        let formatted = value.replace(/[^0-9]/g, '')
+        formatted = formatted.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')
+
+        setValue(formatted)
+    }
+
+    return (
+        <PlainTextInput
+            name="phone"
+            type="tel"
+            placeholder="(000) 000-0000"
+            autoComplete="tel"
+            value={value}
+            onChange={(e) => {
+                handleAutoFormat(e)
+                onChange(e)
+            }}
+            ref={ref}
+            {...rest}
+            autoFocus
+        />
+    )
+})
