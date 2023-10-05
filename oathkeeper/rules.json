@@ -91,7 +91,7 @@
          "methods": [
             "DELETE"
          ],
-         "url": "https://localhost/api/v1/devices/<[a-zA-Z0-9-]+>"
+         "url": "https://localhost/api/v1/device/<[a-zA-Z0-9-]+>"
       },
       "mutators": [
          {
@@ -335,7 +335,8 @@
       "id": "subscription",
       "match": {
          "methods": [
-            "POST"
+            "POST",
+            "GET"
          ],
          "url": "https://localhost/api/v1/subscription"
       },

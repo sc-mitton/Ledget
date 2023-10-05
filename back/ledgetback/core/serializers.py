@@ -40,9 +40,9 @@ class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     is_customer = serializers.SerializerMethodField(read_only=True)
     is_verified = serializers.SerializerMethodField(read_only=True)
-    subscription = serializers.SerializerMethodField(read_only=True)
     service_provisioned_until = serializers.SerializerMethodField(
         read_only=True)
+    subscription_status = serializers.SerializerMethodField(read_only=True)
     session_aal = serializers.SerializerMethodField(read_only=True)
     highest_aal = serializers.SerializerMethodField(read_only=True)
     password_last_changed = serializers.CharField(required=False)
@@ -83,42 +83,14 @@ class UserSerializer(serializers.ModelSerializer):
     def get_highest_aal(self, obj):
         return obj.highest_aal
 
-    def get_subscription(self, obj):
-        # If patch method, return early to avoid Stripe API call
-        if self.context['request'].method != 'GET':
-            return None
-
-        try:
-            sub = self.get_stripe_subscription(obj.customer.id)
-        except stripe.error.InvalidRequestError:
-            return None
-        except Exception:
-            raise ServiceUnavailable
-
-        return {
-            'id': sub.id,
-            'status': sub.status,
-            'current_period_end': sub.current_period_end,
-            'cancel_at_period_end': sub.cancel_at_period_end,
-            'plan': {
-                'id': sub.plan.id,
-                'amount': sub.plan.amount,
-                'nickname': sub.plan.nickname,
-                'interval': sub.plan.interval,
-            }
-        }
+    def get_subscription_status(self, obj):
+        return obj.customer.subscription_status
 
     def get_last_login(self, obj):
         if obj.device:
             return obj.device.last_login
         else:
             return None
-
-    def get_stripe_subscription(self, customer_id):
-        subs = stripe.Subscription.list(customer=customer_id)
-        sub = next((s for s in subs if s.status == 'active'), None) or subs.data[0] # noqa
-
-        return sub
 
 
 class PaymentMethodSerializer(serializers.Serializer):

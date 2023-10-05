@@ -145,7 +145,7 @@ local GenericAuthedBase = {
   {
     id: 'subscription',
     match: {
-      methods: ['POST'],
+      methods: ['POST', 'GET'],
       url: base_url + '/subscription',
     },
   },

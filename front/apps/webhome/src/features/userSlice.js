@@ -11,6 +11,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query: () => 'user/me',
             providesTags: ['user']
         }),
+        getSubscription: builder.query({
+            query: () => 'subscription',
+        }),
         getPrices: builder.query({
             query: () => 'prices'
         }),
@@ -75,6 +78,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useGetMeQuery,
+    useGetSubscriptionQuery,
     useGetPaymentMethodQuery,
     useGetNextInvoiceQuery,
     useUpdateUserMutation,

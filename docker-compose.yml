@@ -12,7 +12,7 @@ services:
       - postgres_password
     volumes:
       - dev-db-data:/var/lib/postgresql/data/
-  messages:
+  redis:
     image: redis:7.2.1-alpine
   oathkeeper:
     build:
@@ -86,8 +86,8 @@ services:
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_PORT=5432
-      - CELERY_BROKER_URL=redis://messages:6379/0
-      - CELERY_RESULT_BACKEND=redis://messages:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - SILK_DEBUG=false
     volumes:
       - ./back/ledgetback:/ledgetback
@@ -106,7 +106,7 @@ services:
       - bird_signing_key
     depends_on:
       - db
-      - messages
+      - redis
     ports:
       - 8000:8000
   celery:
@@ -118,14 +118,14 @@ services:
     environment:
       - DEBUG=true
       - DJANGO_ALLOWED_HOSTS=localhost
-      - CELERY_BROKER_URL=redis://messages:6379/0
-      - CELERY_RESULT_BACKEND=redis://messages:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - SILK_DEBUG=false
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_PORT=5432
     depends_on:
-      - messages
+      - redis
       - ledgetback
     secrets:
       - ory_api_key

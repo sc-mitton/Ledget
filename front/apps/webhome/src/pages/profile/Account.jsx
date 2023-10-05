@@ -9,7 +9,8 @@ import {
     useGetMeQuery,
     useGetPaymentMethodQuery,
     useUpdateSubscriptionMutation,
-    useGetNextInvoiceQuery
+    useGetNextInvoiceQuery,
+    useGetSubscriptionQuery
 } from '@features/userSlice'
 import { GrnSlimButton, GreenSlimArrowSubmit, ShimmerDiv, DropAnimation } from '@ledget/shared-ui'
 
@@ -30,7 +31,7 @@ const Info = () => {
 
 const ChangePlanMenu = () => {
     const [updateSubscription, { isLoading }] = useUpdateSubscriptionMutation()
-    const { data: user } = useGetMeQuery()
+    const { data: subscription } = useGetSubscriptionQuery()
     const navigate = useNavigate()
 
     const nickNameMap = {
@@ -40,14 +41,14 @@ const ChangePlanMenu = () => {
 
     const options = [
         {
-            label: nickNameMap[user.subscription.plan.nickname],
+            label: nickNameMap[subscription.plan.nickname],
             onClick: () => navigate('/profile/details/change-bill-cycle'),
             cancel_at_period_end: false,
         },
         {
             label: "Don't Cancel",
             onClick: () => updateSubscription({
-                subId: user.subscription.id,
+                subId: subscription.id,
                 cancelAtPeriodEnd: false
             }),
             cancel_at_period_end: true
@@ -61,7 +62,7 @@ const ChangePlanMenu = () => {
 
     const Items = () => (
         <Menu.Items static>
-            {options.filter((op) => op.cancel_at_period_end === user.subscription.cancel_at_period_end)
+            {options.filter((op) => op.cancel_at_period_end === subscription.cancel_at_period_end)
                 .map((op, i) => (
                     <Menu.Item key={op.label} as={React.Fragment}>
                         {({ active }) => (
@@ -97,11 +98,11 @@ const ChangePlanMenu = () => {
 }
 
 const Plan = () => {
-    const { data: user } = useGetMeQuery()
+    const { data: subscription } = useGetSubscriptionQuery()
     const { data: nextInvoice } = useGetNextInvoiceQuery()
     const nextTimeStamp = nextInvoice.next_payment_date
         ? new Date(nextInvoice.next_payment_date * 1000)
-        : new Date(user.subscription.plan.current_period_end * 1000)
+        : new Date(subscription.plan.current_period_end * 1000)
     const nextDate = nextTimeStamp.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
@@ -115,22 +116,22 @@ const Plan = () => {
             paused: 'var(--yellow)',
             default: 'var(--red)'
         }
-        if (user.subscription.cancel_at_period_end) {
+        if (subscription.cancel_at_period_end) {
             return statusColorMap.paused
         } else {
-            return statusColorMap[user.subscription.status]
+            return statusColorMap[subscription.status]
                 || statusColorMap.default
         }
     }
 
     const getStatus = () => {
-        if (user.subscription.cancel_at_period_end) {
+        if (subscription.cancel_at_period_end) {
             return 'canceled'
         }
-        if (user.subscription.status === 'trialing') {
+        if (subscription.status === 'trialing') {
             return 'trial'
         }
-        return user.subscription.status?.toLowerCase()
+        return subscription.status?.toLowerCase()
     }
 
     return (
@@ -154,16 +155,16 @@ const Plan = () => {
                     <div id="invoice-details--container">
                         <div>
                             <span>Renews:</span>
-                            <span>{`${user.subscription.plan.interval}ly`}</span>
+                            <span>{`${subscription.plan.interval}ly`}</span>
                         </div>
                         <div>
                             <span>
-                                {user.subscription.cancel_at_period_end ? 'Ending on:' : 'Next charge:'}
+                                {subscription.cancel_at_period_end ? 'Ending on:' : 'Next charge:'}
                             </span>
                             <span>
-                                {user.subscription.cancel_at_period_end
+                                {subscription.cancel_at_period_end
                                     ? nextDate
-                                    : `$${user.subscription.plan.amount / 100} on ${nextDate}`}
+                                    : `$${subscription.plan.amount / 100} on ${nextDate}`}
                             </span>
                         </div>
                         <div>{nextInvoice.balance > 0 && 'Account Credit'}</div>

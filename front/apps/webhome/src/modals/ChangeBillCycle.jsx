@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import './styles/ChangeBillCycle.css'
 import { withSmallModal } from '@ledget/shared-utils'
@@ -6,20 +6,20 @@ import { useNavigate } from 'react-router-dom'
 import { GreenSubmitButton, LoadingRing } from '@ledget/shared-ui'
 import {
     useGetPricesQuery,
-    useGetMeQuery,
-    useUpdateSubscriptionItemsMutation
+    useUpdateSubscriptionItemsMutation,
+    useGetSubscriptionQuery
 } from '@features/userSlice'
 
 const Modal = withSmallModal((props) => {
     const [updateSubscriptionItems, { isLoading: updating, isSuccess: updated }] = useUpdateSubscriptionItemsMutation()
-    const { data: user } = useGetMeQuery()
+    const { data: subscription } = useGetSubscriptionQuery()
     const { data: prices, isSuccess: fetchedPrices } = useGetPricesQuery()
     const [newPlan, setNewPlan] = useState(null)
 
     useEffect(() => {
         if (fetchedPrices) {
             const newPlan = prices.find(
-                price => price.nickname !== user.subscription.plan.nickname
+                price => price.nickname !== subscription.plan.nickname
             )
             setNewPlan(newPlan || prices[0])
         }
@@ -55,7 +55,7 @@ const Modal = withSmallModal((props) => {
                 <div />
                 <span>
                     This will take effect immediately.
-                    {user.subscription.plan.nickname === 'Year' &&
+                    {subscription.plan.nickname === 'Year' &&
                         ' The amount left in your subscription will be prorated and applied to your new plan.'
                     }
                 </span>

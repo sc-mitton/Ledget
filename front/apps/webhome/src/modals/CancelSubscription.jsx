@@ -8,14 +8,14 @@ import './styles/CancelSubscription.css'
 import { withModal } from '@ledget/shared-utils'
 import { withReAuth } from '@utils'
 import { RedButton, GrnPrimaryButton, SlideMotionDiv } from '@ledget/shared-ui'
-import { useUpdateSubscriptionMutation, useGetMeQuery } from '@features/userSlice'
+import { useUpdateSubscriptionMutation, useGetSubscriptionQuery } from '@features/userSlice'
 import { BakedSelect } from '@components/dropdowns'
 
 
 export const CancelationWindow = (props) => {
     const [feedback, setFeedback] = useState('')
     const [updateSubscription, { isSuccess, isLoading }] = useUpdateSubscriptionMutation()
-    const { data: user } = useGetMeQuery()
+    const { data: subscription } = useGetSubscriptionQuery()
     const [cancelationReason, setCancelationReason] = React.useState('')
 
     const [reasonSprings, reasonApi] = useSpring(() => ({
@@ -41,7 +41,7 @@ export const CancelationWindow = (props) => {
     const handleClick = () => {
         if (cancelationReason && feedback) {
             updateSubscription({
-                subId: user.subscription.id,
+                subId: subscription.id,
                 cancelAtPeriodEnd: true,
                 cancelationReason: cancelationReason,
                 feedback: feedback

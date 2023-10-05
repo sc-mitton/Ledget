@@ -131,12 +131,38 @@ class SubscriptionView(GenericAPIView):
     permission_classes = [IsAuthenticated, CanCreateStripeSubscription]
     serializer_class = NewSubscriptionSerializer
 
+    def get(self, request, *args, **kwargs):
+        '''
+        Get the current subscription for the user
+        '''
+        try:
+            sub = self._get_stripe_subscription(request.user.customer.id)
+        except StripeError as e:
+            stripe_logger.error(e.message)
+            return Response(status=e.response_code)
+
+        return Response(
+            data={
+                'id': sub.id,
+                'status': sub.status,
+                'current_period_end': sub.current_period_end,
+                'cancel_at_period_end': sub.cancel_at_period_end,
+                'plan': {
+                    'id': sub.plan.id,
+                    'amount': sub.plan.amount,
+                    'nickname': sub.plan.nickname,
+                    'interval': sub.plan.interval,
+                }
+            },
+            status=HTTP_200_OK
+        )
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         try:
-            stripe_subscription = self.create_subscription(
+            stripe_subscription = self._create_subscription(
               customer=request.user.customer.id,
               **serializer.validated_data
             )
@@ -152,7 +178,13 @@ class SubscriptionView(GenericAPIView):
         else:
             return Response(status=HTTP_200_OK)
 
-    def create_subscription(self, **kwargs):
+    @stripe_error_handler
+    def _get_stripe_subscription(self, customer_id):
+        subs = stripe.Subscription.list(customer=customer_id)
+        sub = next((s for s in subs if s.status == 'active'), None) or subs.data[0]
+        return sub
+
+    def _create_subscription(self, **kwargs):
         default_args = {
             'payment_behavior': 'default_incomplete',
             'payment_settings': {
