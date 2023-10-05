@@ -86,6 +86,8 @@ const MainApp = () => {
                 navigate('/budget/verify-email')
             } else if (!user.is_customer || user.service_provisioned_until == 0) {
                 window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT
+            } else if (user.service_provisioned_until < Math.floor(Date.now() / 1000)) {
+                navigate('/profile/details/update-payment')
             }
         }, 1000)
         return () => { clearTimeout(timeout) }

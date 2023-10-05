@@ -148,6 +148,7 @@ header {
     transition: all 0.3s ease-out;
     cursor: pointer;
     border-radius: var(--border-radius3);
+    z-index: 1;
 }
 
 .nav-item a,

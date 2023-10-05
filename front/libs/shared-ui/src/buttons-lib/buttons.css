@@ -114,9 +114,9 @@
 
 .btn-grn {
     color: var(--green-dark4);
-    background-color: var(--green-hlight);
+    background-color: var(--green-hlight2);
     transition: all .3s ease;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .btn-grn:hover {

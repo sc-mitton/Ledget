@@ -171,7 +171,7 @@ All it entails is removing the device from the device table in the db.
 
 ## Handling access to the service
 
-When the react app is mounted
+When the react app is mounted:
 
 1. there is a private route which will redirect any requests that have
 no session to the login page.

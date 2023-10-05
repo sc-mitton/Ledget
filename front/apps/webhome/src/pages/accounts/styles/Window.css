@@ -20,6 +20,7 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    z-index: 1;
 }
 
 #accounts-window ul li[aria-current="page"] {
