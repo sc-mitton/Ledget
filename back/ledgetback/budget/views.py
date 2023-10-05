@@ -6,7 +6,7 @@ from rest_framework import status
 from django.db.models import Count, Min, Max
 from django.db.models.functions import ExtractDay, ExtractMonth
 
-from core.permissions import IsAuthedVerifiedSubscriber
+from core.permissions import IsAuthenticated
 from budget.serializers import (
     CategorySerializer,
     BillSerializer
@@ -27,7 +27,7 @@ class BulkCreateMixin:
 
 
 class CategoryView(BulkCreateMixin, ListCreateAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber]
+    permission_classes = [IsAuthenticated]
     serializer_class = CategorySerializer
 
     def get_queryset(self):
@@ -35,7 +35,7 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
 
 
 class BillView(BulkCreateMixin, ListCreateAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber]
+    permission_classes = [IsAuthenticated]
     serializer_class = BillSerializer
 
     def get_queryset(self):
@@ -43,7 +43,7 @@ class BillView(BulkCreateMixin, ListCreateAPIView):
 
 
 class RecomendedBillsView(APIView):
-    permission_classes = [IsAuthedVerifiedSubscriber]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         data = {

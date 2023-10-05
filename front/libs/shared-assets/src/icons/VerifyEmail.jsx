@@ -5,7 +5,7 @@ const VerifyEmail = ({
     width = "4em",
     height = "4em",
     fill = "#292929",
-    stroke = "fafafa"
+    stroke = "#fafafa"
 }) => {
     return (
         <svg

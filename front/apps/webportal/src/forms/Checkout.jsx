@@ -86,7 +86,6 @@ const PriceRadios = ({ register }) => {
     )
 }
 
-
 const OrderSummary = ({ unit_amount, trial_period_days }) => {
 
     const getDaySuffix = (day) => {

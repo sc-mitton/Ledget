@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import { Plus } from '@ledget/shared-assets';
 
 import './buttons.css'
@@ -180,11 +180,13 @@ export const DeleteButton = ({ className, ...rest }) => (
   </button>
 )
 
-export const ResendButton = ({ success, ...rest }) => {
+export const ResendButton = forwardRef((props, ref) => {
   const [rotation, setRotation] = useState(0)
+  const { success, ...rest } = props
 
   return (
     <button
+      ref={ref}
       onClick={() => setRotation(rotation + 360)}
       className="resend-btn"
       {...rest}
@@ -208,4 +210,4 @@ export const ResendButton = ({ success, ...rest }) => {
       </div>
     </button>
   )
-}
+})

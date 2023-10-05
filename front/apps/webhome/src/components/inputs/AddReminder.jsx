@@ -7,11 +7,13 @@ import { SlimInputButton, DropAnimation } from '@ledget/shared-ui'
 
 const defaultOptions = [
     { id: 1, value: { offset: 1, period: 'day' }, disabled: false },
-    { id: 2, value: { offset: 3, period: 'day' }, disabled: false },
-    { id: 3, value: { offset: 5, period: 'day' }, disabled: false },
-    { id: 4, value: { offset: 1, period: 'week' }, disabled: false },
-    { id: 5, value: { offset: 2, period: 'week' }, disabled: false },
-    { id: 6, value: { offset: 3, period: 'week' }, disabled: false }
+    { id: 2, value: { offset: 2, period: 'day' }, disabled: false },
+    { id: 3, value: { offset: 3, period: 'day' }, disabled: false },
+    { id: 4, value: { offset: 4, period: 'day' }, disabled: false },
+    { id: 5, value: { offset: 5, period: 'day' }, disabled: false },
+    { id: 6, value: { offset: 1, period: 'week' }, disabled: false },
+    { id: 7, value: { offset: 2, period: 'week' }, disabled: false },
+    { id: 8, value: { offset: 3, period: 'week' }, disabled: false }
 ]
 
 const AddReminder = ({ value, onChange }) => {

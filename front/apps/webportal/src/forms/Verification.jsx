@@ -3,68 +3,15 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import "./style/Verification.css"
-import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces"
-import { GrnWideButton, FormError, JiggleDiv, StatusPulse, Otc, ResendButton } from "@ledget/shared-ui"
-import { VerifyEmail } from '@ledget/shared-assets'
+import {
+    FormError,
+    JiggleDiv,
+    VerificationForm,
+    VerificationStatusGraphic
+} from "@ledget/shared-ui"
 import { useFlow } from "@ledget/ory-sdk"
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
-
-const VerificationForm = ({ flow, isCompleteError, submit, refreshSuccess }) => {
-    const [otcDisabled, setOtcDisabled] = useState(false)
-
-    useEffect(() => {
-        flow ? setOtcDisabled(false) : setOtcDisabled(true)
-    }, [flow])
-
-    return (
-        <>
-            <form
-                key={isCompleteError ? Date.now() : 'verification-form'}
-                action={flow?.ui.action}
-                method={flow?.ui.method}
-                onSubmit={submit}
-            >
-                <Otc codeLength={6} />
-                {flow && <CsrfToken csrf={flow.csrf_token} />}
-                <input
-                    type="hidden"
-                    name="email"
-                    value={JSON.parse(sessionStorage.getItem('identifier'))}
-                />
-                <GrnWideButton
-                    type="submit"
-                    name="method"
-                    value="code"
-                    disabled={otcDisabled}
-                >
-                    Submit
-                </GrnWideButton>
-            </form>
-            <form
-                action={flow?.ui.action}
-                method={flow?.ui.method}
-                onSubmit={submit}
-            >
-                <div id="resend-btn-container">
-                    <ResendButton
-                        success={refreshSuccess}
-                        aria-label="Resend email"
-                        type="submit"
-                        name="method"
-                        value="code"
-                    />
-                </div>
-                {flow && <CsrfToken csrf={flow.csrf_token} />}
-                <input
-                    type="hidden"
-                    name="email"
-                    value={JSON.parse(sessionStorage.getItem('identifier'))}
-                />
-            </form>
-        </>
-    )
-}
 
 const Verification = () => {
     const [jiggle, setJiggle] = useState(false)
@@ -79,7 +26,6 @@ const Verification = () => {
     )
     const {
         errMsg,
-        isCompleteError,
         isGettingFlow,
         isCompletingFlow,
         isCompleteSuccess
@@ -125,7 +71,7 @@ const Verification = () => {
                     // Expired verification flow
                     // Send new email & navigate to verification page
                     // which will create a new verification flow
-                    navigate('/verification')
+                    navigate(0)
                     break
                 case (1080002):
                     // Successful verification
@@ -149,19 +95,8 @@ const Verification = () => {
                 <h2>Verify Email Address</h2>
                 <h4>Step 3 of 4</h4>
             </div>
-            <div id="verification-form-container">
-                <div id='verify-graphic--container'>
-                    <VerifyEmail
-                        stroke={codeIsCorrect ? 'var(--green-hlight)' : 'var(--window)'}
-                    />
-                    <div id="verification-pulse-status">
-                        <StatusPulse
-                            positive={codeIsCorrect}
-                            colorDefaultPositive={false}
-                            size={'small'}
-                        />
-                    </div>
-                </div>
+            <div id="verification--container">
+                <VerificationStatusGraphic finished={codeIsCorrect} />
                 {errMsg
                     ?
                     <div id="verification-form-error-container">
@@ -176,9 +111,11 @@ const Verification = () => {
                         </div>
                         <VerificationForm
                             flow={flow}
-                            isCompleteError={isCompleteError}
                             refreshSuccess={refreshSuccess}
                             submit={submit}
+                            identifier={JSON.parse(sessionStorage.getItem('identifier'))}
+                            loading={isGettingFlow}
+                            submitting={isCompletingFlow}
                         />
                     </>
                 }

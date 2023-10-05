@@ -12,5 +12,7 @@ export const {
     useCompleteLoginFlowMutation,
     useGetLogoutFlowQuery,
     useCompleteLogoutFlowMutation,
-    useLazyGetUpdatedLogoutFlowQuery
+    useLazyGetUpdatedLogoutFlowQuery,
+    useLazyGetVerificationFlowQuery,
+    useCompleteVerificationFlowMutation,
 } = orySlice

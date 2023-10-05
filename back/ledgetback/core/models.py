@@ -169,7 +169,10 @@ class User(models.Model):
     def service_provisioned_until(self):
         '''Return the timestamp of when the service is provisioned until, i.e.
         the end of the current billing period plus 3 days for leniency.'''
-        return int(self.customer.period_end) + (3 * 24 * 60 * 60)
+        if not hasattr(self, 'customer') or int(self.customer.period_end) == 0:
+            return 0
+        else:
+            return int(self.customer.period_end) + (3 * 24 * 60 * 60)
 
 
 class Customer(models.Model):

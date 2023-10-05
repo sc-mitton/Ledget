@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 
-import { Routes, Outlet, Navigate, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { Routes, Outlet, Navigate, Route, useLocation, useNavigate } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 
 import "./styles/style.css";
 import Header from './Header'
@@ -10,6 +10,7 @@ import Spending from '@pages/spending/Window'
 import Profile from '@pages/profile/Window'
 import Accounts from '@pages/accounts/Window'
 import NotFound from '@pages/notFound/NotFound'
+import { SlideMotionDiv, ZoomMotionDiv } from '@ledget/shared-ui'
 import { WelcomeConnect, AddCategories, AddBills } from '@pages/onboarding'
 import { SkeletonDashboard } from '@pages/onboarding'
 import { CreateCategory, CreateBill, ForceVerification } from '@modals'
@@ -40,49 +41,23 @@ const OnboardedRoute = () => {
 const OnboardingApp = () => {
     const location = useLocation()
 
-    const config = {
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        zIndex: 0,
-        overflowY: 'auto',
-        overflowX: 'hidden',
-    }
-
     return (
         <>
             <SkeletonDashboard />
-            <div style={{ ...config, backgroundColor: 'var(--overlay2)' }}>
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        initial={{
-                            opacity: 0,
-                            transform:
-                                location.pathname === '/welcome/connect'
-                                    ? 'translateX(0%)'
-                                    : 'translateX(20%)',
-                            ...config
-                        }}
-                        animate={{
-                            opacity: 1,
-                            transform: 'translateX(0)',
-                        }}
-                        exit={{ opacity: 0, transform: 'translateX(-20%)' }}
-                        key={location.pathname}
-                        transition={{ ease: "easeInOut", duration: 0.2 }}
-                        id="onboarding-app"
-                    >
-                        <Routes location={location} key={location.pathname} >
-                            <Route path="/connect" element={<WelcomeConnect />} />
-                            <Route path="/add-categories" element={<AddCategories />} />
-                            <Route path="/add-bills" element={<AddBills />} />
-                            <Route path="*" element={<NotFound />} />
-                        </Routes>
-                    </motion.div>
-                </AnimatePresence>
-            </div>
+            <AnimatePresence mode="wait">
+                <SlideMotionDiv
+                    fixed={location.pathname === '/welcome/connect'}
+                    key={location.pathname}
+                    id="onboarding-app"
+                >
+                    <Routes location={location} key={location.pathname} >
+                        <Route path="/connect" element={<WelcomeConnect />} />
+                        <Route path="/add-categories" element={<AddCategories />} />
+                        <Route path="/add-bills" element={<AddBills />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </SlideMotionDiv>
+            </AnimatePresence>
         </>
     )
 }
@@ -90,14 +65,9 @@ const OnboardingApp = () => {
 const MainApp = () => {
     const [isNarrow, setIsNarrow] = useState(false)
     const location = useLocation()
+    const navigate = useNavigate()
     const ref = useRef(null)
-
-    const config = {
-        backgroundColor: 'transparent',
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-    }
+    const { data: user } = useGetMeQuery()
 
     useLayoutEffect(() => {
         const handleResize = () => {
@@ -108,23 +78,32 @@ const MainApp = () => {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
+    // Handling the situations where the user missed the initial email verification
+    // or had errors in the checkout process
+    useEffect(() => {
+        let timeout = setTimeout(() => {
+            if (!user?.is_verified) {
+                navigate('/budget/verify-email')
+            } else if (!user.is_customer || user.service_provisioned_until == 0) {
+                window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT
+            }
+        }, 1000)
+        return () => { clearTimeout(timeout) }
+    }, [location.pathname])
+
     return (
         <>
             <Header isNarrow={isNarrow} />
             <AnimatePresence mode="wait">
-                <motion.div
-                    initial={{ opacity: 0, transform: 'scale(0.98)', ...config }}
-                    animate={{ opacity: 1, transform: 'scale(1)' }}
-                    exit={{ opacity: 0, transform: 'scale(0.98)' }}
+                <ZoomMotionDiv
                     key={location.pathname.split('/')[1]}
-                    transition={{ duration: 0.2 }}
+                    style={{ width: '100%', height: '100%', display: 'flex' }}
                 >
                     <div className="dashboard" ref={ref}>
                         <Routes location={location} key={location.pathname.split('/')[1]} >
-                            <Route
-                                path="budget"
-                                element={<><Budget />{!isNarrow && <Spending />}</>}
-                            >
+                            <Route path="budget" element={
+                                <><Budget />{!isNarrow && <Spending />}</>
+                            }>
                                 <Route path="new-category" element={<CreateCategory />} />
                                 <Route path="new-bill" element={<CreateBill />} />
                                 <Route path="edit" element={<div>edit</div>} />
@@ -138,7 +117,7 @@ const MainApp = () => {
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     </div>
-                </motion.div>
+                </ZoomMotionDiv>
             </AnimatePresence>
         </>
     )

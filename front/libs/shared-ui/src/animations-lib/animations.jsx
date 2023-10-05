@@ -38,20 +38,34 @@ export const ZoomMotionDiv = ({ children, ...rest }) => (
     </motion.div>
 )
 
-export const SlideMotionDiv = ({ children, first, last, ...rest }) => (
-    <motion.div
-        initial={{
-            opacity: first ? 1 : 0,
-            x: first ? -50 : (last ? 50 : 0),
-        }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: last ? 50 : (first ? -50 : 0) }}
-        transition={{ duration: 0.15 }}
-        {...rest}
-    >
-        {children}
-    </motion.div>
-)
+export const SlideMotionDiv = (props) => {
+    const initialMap = {
+        first: { opacity: 0, x: -50 },
+        last: { opacity: 0, x: 50 },
+        default: { opacity: 0, x: 50 },
+        fixed: { opacity: 1, x: 0 },
+    }
+
+    const exitMap = {
+        first: { opacity: 0, x: 50 },
+        last: { opacity: 0, x: -50 },
+        default: { opacity: 0, x: -50 },
+        fixed: { opacity: 1, x: 0 },
+    }
+    const { children, first, last, fixed, ...rest } = props
+
+    return (
+        <motion.div
+            initial={initialMap[first || last || fixed || 'default']}
+            animate={{ opacity: 1, x: 0 }}
+            exit={exitMap[first || last || fixed || 'default']}
+            transition={{ duration: 0.15 }}
+            {...rest}
+        >
+            {children}
+        </motion.div>
+    )
+}
 
 export const JiggleDiv = ({ jiggle, children, ...rest }) => {
     const [jiggleCanBeFired, setJiggleCanBeFired] = useState(false)

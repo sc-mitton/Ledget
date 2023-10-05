@@ -7,13 +7,20 @@ from django.conf import settings
 import stripe
 from user_agents import parse as ua_parse
 from django.utils import timezone
+from rest_framework.exceptions import APIException
 
-from core.utils.stripe import stripe_error_handler, StripeError
+
 from core.models import User, Device
 
 stripe.api_key = settings.STRIPE_API_KEY
 stripe_logger = logging.getLogger('stripe')
 ledget_logger = logging.getLogger('ledget')
+
+
+class ServiceUnavailable(APIException):
+    status_code = 503
+    default_detail = 'Service temporarily unavailable, try again later.'
+    default_code = 'service_unavailable'
 
 
 class NewSubscriptionSerializer(serializers.Serializer):
@@ -83,11 +90,10 @@ class UserSerializer(serializers.ModelSerializer):
 
         try:
             sub = self.get_stripe_subscription(obj.customer.id)
-        except StripeError as e:
-            stripe_logger.error(e)
-            raise serializers.ValidationError(
-                'Error retrieving subscription data.'
-            )
+        except stripe.error.InvalidRequestError:
+            return None
+        except Exception:
+            raise ServiceUnavailable
 
         return {
             'id': sub.id,
@@ -108,7 +114,6 @@ class UserSerializer(serializers.ModelSerializer):
         else:
             return None
 
-    @stripe_error_handler
     def get_stripe_subscription(self, customer_id):
         subs = stripe.Subscription.list(customer=customer_id)
         sub = next((s for s in subs if s.status == 'active'), None) or subs.data[0] # noqa

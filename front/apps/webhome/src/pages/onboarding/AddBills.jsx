@@ -174,8 +174,6 @@ const Form = () => {
         mode: 'onSubmit', reValidateMode: 'onChange'
     })
 
-    useEffect(() => { console.log(watch('range')) }, [watch('range')])
-
     const submitForm = (e) => {
         const body = extractBill(e)
         if (body.errors) {
