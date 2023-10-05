@@ -28,6 +28,7 @@ find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')' -exec mv 
 
 # Create secrets
 cd ..
+mkdir secrets
 get_random_secret_key > ./secrets/django_dev_secret_key
 echo dev_user > ./secrets/postgres_user && echo dev_user_password > ./secrets/postgres_password
 brew install stripe
@@ -43,3 +44,7 @@ touch back/ledgetback/logs/ledget_logs
 
 # Download ory
 brew install ory/tap/cli
+
+# Install pm2
+npm install pm2@latest -g
+npm install nx@latest -g

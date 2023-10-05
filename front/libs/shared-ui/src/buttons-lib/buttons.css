@@ -114,7 +114,7 @@
 
 .btn-grn {
     color: var(--green-dark4);
-    background-color: var(--green-hlight2);
+    background-color: var(--green-hlight);
     transition: all .3s ease;
     font-weight: 500;
 }
