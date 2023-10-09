@@ -105,7 +105,7 @@ const Button = ({ children, ...props }) => {
             >
                 <div>
                     <span style={{ opacity: placeholder ? '1' : '.5' }}>
-                        {placeholder || 'Schedule'}
+                        {placeholder || 'Repeats on'}
                     </span>
                 </div>
                 <ArrowIcon

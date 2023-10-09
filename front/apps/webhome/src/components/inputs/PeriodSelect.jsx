@@ -40,6 +40,11 @@ const PeriodSelect = (props) => {
 
     return (
         <>
+            {props.hasLabel &&
+                <label htmlFor="period">
+                    Refreshes
+                </label>
+            }
             <ComboSelect
                 name="period"
                 value={localValue}
@@ -51,7 +56,10 @@ const PeriodSelect = (props) => {
                         <ComboSelect.Button
                             as={SlimInputButton}
                             id="period-select-btn"
-                            style={{ color: 'var(--m-text-gray)' }}
+                            style={{
+                                color: 'var(--m-text-gray)',
+                                marginTop: props.hasLabel ? '6px' : '0px'
+                            }}
                             ref={buttonRef}
                         >
                             {options.find((option) => option.value === localValue)?.label}

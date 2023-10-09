@@ -14,6 +14,32 @@ import {
 } from '@features/userSlice'
 import { GrnSlimButton, GreenSlimArrowSubmit, ShimmerDiv, DropAnimation } from '@ledget/shared-ui'
 
+
+const getStatusColor = (subscription) => {
+    const statusColorMap = {
+        active: 'var(--green-dark2)',
+        trialing: 'var(--green-dark2)',
+        paused: 'var(--yellow)',
+        default: 'var(--red)'
+    }
+    if (subscription.cancel_at_period_end) {
+        return statusColorMap.paused
+    } else {
+        return statusColorMap[subscription.status]
+            || statusColorMap.default
+    }
+}
+
+const getStatus = (subscription) => {
+    if (subscription.cancel_at_period_end) {
+        return 'canceled'
+    }
+    if (subscription.status === 'trialing') {
+        return 'trial'
+    }
+    return subscription.status?.toLowerCase()
+}
+
 const Info = () => {
     const { data: user } = useGetMeQuery()
 
@@ -109,31 +135,6 @@ const Plan = () => {
         day: 'numeric'
     })
 
-    const getStatusColor = () => {
-        const statusColorMap = {
-            active: 'var(--green-dark2)',
-            trialing: 'var(--green-dark2)',
-            paused: 'var(--yellow)',
-            default: 'var(--red)'
-        }
-        if (subscription.cancel_at_period_end) {
-            return statusColorMap.paused
-        } else {
-            return statusColorMap[subscription.status]
-                || statusColorMap.default
-        }
-    }
-
-    const getStatus = () => {
-        if (subscription.cancel_at_period_end) {
-            return 'canceled'
-        }
-        if (subscription.status === 'trialing') {
-            return 'trial'
-        }
-        return subscription.status?.toLowerCase()
-    }
-
     return (
         <div className="section">
             <div>
@@ -142,9 +143,9 @@ const Plan = () => {
                         <h3>Plan</h3>
                         <span
                             className="indicator"
-                            style={{ color: getStatusColor() }}
+                            style={{ color: getStatusColor(subscription) }}
                         >
-                            {getStatus()}
+                            {getStatus(subscription)}
                         </span>
                     </div>
                     <div>
@@ -223,12 +224,13 @@ const PaymentMethod = () => {
 const Account = () => {
     const { isLoading: loadingPaymentMethod } = useGetPaymentMethodQuery()
     const { isLoading: loadingInvoice } = useGetNextInvoiceQuery()
+    const { isLoading: loadingSubscription } = useGetSubscriptionQuery()
     const { data: user } = useGetMeQuery()
 
     return (
         <>
             <ShimmerDiv
-                shimmering={loadingInvoice || loadingPaymentMethod}
+                shimmering={loadingInvoice || loadingPaymentMethod || loadingSubscription}
                 style={{ borderRadius: 'var(--border-radius3)' }}
             >
                 <div id="account-page" className="padded-content">

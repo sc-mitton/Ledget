@@ -21,7 +21,7 @@ from core.utils.stripe import stripe_error_handler, StripeError
 from core.models import Customer
 from core.permissions import (
     OwnsStripeSubscription,
-    CanCreateStripeSubscription,
+    can_create_stripe_subscription,
     IsAuthenticated
 )
 
@@ -128,7 +128,7 @@ class SubscriptionItemsView(GenericAPIView):
 
 class SubscriptionView(GenericAPIView):
     """Class for handling creating a subscription"""
-    permission_classes = [IsAuthenticated, CanCreateStripeSubscription]
+    permission_classes = [IsAuthenticated]
     serializer_class = NewSubscriptionSerializer
 
     def get(self, request, *args, **kwargs):
@@ -157,6 +157,7 @@ class SubscriptionView(GenericAPIView):
             status=HTTP_200_OK
         )
 
+    @can_create_stripe_subscription
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

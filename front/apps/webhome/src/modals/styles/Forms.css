@@ -1,14 +1,25 @@
-.create-form {
+.create-form,
+.new-bill-form {
     display: flex;
     flex-direction: column;
     justify-content: start;
     width: 100%;
-    margin-top: 4px;
     padding: 0 4px;
+}
+
+.create-form>div:nth-last-of-type(2),
+.new-bill-form>div:nth-last-of-type(2) {
+    margin-bottom: 20px;
+}
+
+.create-form>div:first-of-type,
+.new-bill-form>div:first-of-type {
+    margin-top: 12px;
 }
 
 .create-form label {
     font-weight: 500;
+    margin-left: 2px;
 }
 
 .form-top {
@@ -40,6 +51,13 @@
 
 .padded-row {
     margin-top: 4px;
+}
+
+.multi-input-row {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0;
+    align-items: center;
 }
 
 .split-inputs {

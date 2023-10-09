@@ -178,7 +178,7 @@
 }
 
 .btn-gr3:hover {
-    background-color: var(--green-hlight);
+    background-color: var(--green-hlight2);
     color: var(--green-dark4);
     transition: all .3s ease;
 }

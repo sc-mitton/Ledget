@@ -120,7 +120,7 @@ const BlackRadios = (props) => {
             {...rest}
             className="black-radios-container"
         >
-            <Pill styles={{ backgroundColor: 'var(--btn-gray)' }} />
+            <Pill styles={{ backgroundColor: 'var(--btn-mid-gray)' }} />
             {options.map((option, index) => (
                 <Input
                     key={index}

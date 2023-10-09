@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -11,17 +11,13 @@ import { withModal } from '@ledget/shared-utils'
 import {
     EmojiComboText,
     DollarRangeInput,
-    BlackRadios,
     AddReminder,
     BillScheduler,
+    PeriodSelect
 } from '@components/inputs'
 import { Checkbox } from '@ledget/shared-ui'
 import { useAddnewBillMutation } from '@features/billSlice'
 
-const radioOptions = [
-    { name: 'period', value: 'monthly', label: 'Monthly', default: true },
-    { name: 'period', value: 'yearly', label: 'Yearly' },
-]
 
 export const billSchema = object().shape({
     name: string().required().lowercase(),
@@ -96,66 +92,56 @@ const Form = (props) => {
     }
 
     return (
-        <form
-            className="create-form"
-            id="new-bill-form"
-            onSubmit={submitForm}
-        >
+        <>
             <h2>New Bill</h2>
-            <BlackRadios
-                options={radioOptions}
-                value={billPeriod}
-                onChange={setBillPeriod}
-            />
-            <hr />
-            <div className="padded-row">
-                <label htmlFor="schedule">Schedule</label>
-                <div
-                    style={{
-                        display: 'flex',
-                        gap: '8px',
-                        margin: '8px 0',
-                        alignItems: 'center',
-                    }}
-                >
-                    <div>
-                        <BillScheduler
-                            billPeriod={billPeriod}
-                            error={scheduleMissing}
-                        />
+            <form
+                className="create-form"
+                id="new-bill-form"
+                onSubmit={submitForm}
+            >
+                <div className="padded-row">
+                    <label htmlFor="schedule">Schedule</label>
+                    <div className="multi-input-row">
+                        <div><PeriodSelect /></div>
+                        <div>
+                            <BillScheduler
+                                billPeriod={billPeriod}
+                                error={scheduleMissing}
+                            />
+                        </div>
+                        <AddReminder />
                     </div>
-                    <AddReminder />
                 </div>
-            </div>
-            <div>
-                <EmojiComboText
-                    name="name"
-                    placeholder="Name"
-                    register={register}
-                    error={[errors.name]}
-                />
-            </div>
-            <div className="padded-row">
-                <DollarRangeInput
-                    rangeMode={watchRange}
-                    control={control}
-                    errors={errors}
-                />
-                <div id="range-checkbox--container">
-                    <Checkbox
-                        label='Range'
-                        name='range'
-                        id="range"
-                        aria-label='Change bill amount to a range.'
-                        {...register('range')}
+                <div>
+                    <EmojiComboText
+                        name="name"
+                        placeholder="Name"
+                        register={register}
+                        error={[errors.name]}
                     />
                 </div>
-            </div>
-            <SubmitForm
-                submitting={isLoading}
-                onCancel={() => props.closeModal()}
-            />
-        </form>
+                <div className="padded-row">
+                    <DollarRangeInput
+                        rangeMode={watchRange}
+                        control={control}
+                        errors={errors}
+                    />
+                    <div id="range-checkbox--container">
+                        <Checkbox
+                            label='Range'
+                            name='range'
+                            id="range"
+                            aria-label='Change bill amount to a range.'
+                            {...register('range')}
+                        />
+                    </div>
+                </div>
+                <SubmitForm
+                    submitting={isLoading}
+                    onCancel={() => props.closeModal()}
+                />
+            </form>
+        </>
     )
 }
 

@@ -47,8 +47,8 @@ export const SlideMotionDiv = (props) => {
     }
 
     const exitMap = {
-        first: { opacity: 0, x: 50 },
-        last: { opacity: 0, x: -50 },
+        first: { opacity: 0, x: -50 },
+        last: { opacity: 0, x: 50 },
         default: { opacity: 0, x: -50 },
         fixed: { opacity: 1, x: 0 },
     }
@@ -56,9 +56,9 @@ export const SlideMotionDiv = (props) => {
 
     return (
         <motion.div
-            initial={initialMap[first || last || fixed || 'default']}
+            initial={initialMap[fixed ? 'fixed' : first ? 'first' : last ? 'last' : 'default']}
             animate={{ opacity: 1, x: 0 }}
-            exit={exitMap[first || last || fixed || 'default']}
+            exit={exitMap[fixed ? 'fixed' : first ? 'first' : last ? 'last' : 'default']}
             transition={{ duration: 0.15 }}
             {...rest}
         >

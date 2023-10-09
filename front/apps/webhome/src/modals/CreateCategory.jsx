@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 import './styles/Forms.css'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
-import { AddAlert, EmojiComboText, LimitAmountInput, BlackRadios } from '@components/inputs'
+import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect } from '@components/inputs'
 import { withModal } from '@ledget/shared-utils'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@ledget/shared-ui'
@@ -16,11 +16,6 @@ export const schema = object().shape({
     name: string().required().lowercase(),
     limit_amount: number().required('required')
 })
-
-const radioOptions = [
-    { name: 'period', value: 'month', label: 'Monthly', default: true },
-    { name: 'period', value: 'year', label: 'Yearly' },
-]
 
 const Form = (props) => {
     const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation()
@@ -56,44 +51,43 @@ const Form = (props) => {
     }, [isSuccess])
 
     return (
-        <form
-            onSubmit={handleSubmit((data, e) => submit(data, e))}
-            id="new-cat-form"
-            className="create-form"
-        >
+        <>
             <h2>New Category</h2>
-            <div style={{ margin: '4px 0' }}>
-                <BlackRadios options={radioOptions} />
-            </div>
-            <hr />
-            <div>
-                <EmojiComboText
-                    name="name"
-                    placeholder="Name"
-                    register={register}
-                    error={[errors.name]}
-                />
-            </div>
-            <div
-                className="split-inputs"
-                style={{ marginBottom: '20px' }}
+            <form
+                onSubmit={handleSubmit((data, e) => submit(data, e))}
+                id="new-cat-form"
+                className="create-form"
             >
-                <div>
-                    <LimitAmountInput control={control}>
-                        < FormErrorTip errors={[errors.limit_amount]} />
-                    </LimitAmountInput>
+                <div className="multi-input-row">
+                    <div>
+                        <PeriodSelect hasLabel={true} />
+                    </div>
                 </div>
                 <div>
-                    <label htmlFor="limit_amount">Alert</label>
-                    <AddAlert limitAmount={watchLimitAmount} />
+                    <EmojiComboText
+                        name="name"
+                        placeholder="Name"
+                        register={register}
+                        error={[errors.name]}
+                    />
                 </div>
-            </div>
-            <SubmitForm
-                submitting={isLoading}
-                onCancel={() => props.closeModal()}
-            />
-        </form>
-
+                <div className="split-inputs">
+                    <div>
+                        <LimitAmountInput control={control}>
+                            < FormErrorTip errors={[errors.limit_amount]} />
+                        </LimitAmountInput>
+                    </div>
+                    <div>
+                        <label htmlFor="limit_amount">Alert</label>
+                        <AddAlert limitAmount={watchLimitAmount} />
+                    </div>
+                </div>
+                <SubmitForm
+                    submitting={isLoading}
+                    onCancel={() => props.closeModal()}
+                />
+            </form>
+        </>
     )
 }
 
