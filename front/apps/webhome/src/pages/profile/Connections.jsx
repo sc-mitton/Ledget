@@ -206,8 +206,6 @@ const ConfirmModal = withReAuth(withSmallModal((props) => {
 
     useEffect(() => {
         let timeout
-        console.log('isSuccess', isSuccess)
-        console.log('isLoading', isLoading)
         if (isSuccess) {
             timeout = setTimeout(() => {
                 props.closeModal()

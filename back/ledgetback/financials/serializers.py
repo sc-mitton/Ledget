@@ -51,13 +51,14 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
     accounts = AccountSerializer(many=True, write_only=True)
     institution = InstitutionSerializer(write_only=True)
     public_token = serializers.CharField(write_only=True)
+    id = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
 
         try:
-            self.update_or_create_institution(validated_data['institution'])
-            plaid_item = self.create_plaid_item(validated_data)
-            self.create_accounts(plaid_item, validated_data)
+            self._update_or_create_institution(validated_data['institution'])
+            plaid_item = self._create_plaid_item(validated_data)
+            self._create_accounts(plaid_item, validated_data)
         except plaid.ApiException as e:
             logger.error(f"Plaid error: {e}")
             raise serializers.ValidationError(
@@ -69,15 +70,15 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
         return plaid_item
 
-    def update_or_create_institution(self, institution_data):
+    def _update_or_create_institution(self, institution_data):
         institution, created = Institution.objects.get_or_create(
             id=institution_data['id']
         )
         if created:
-            self.update_institution_metadata(institution)
+            self._update_institution_metadata(institution)
 
-    def update_institution_metadata(self, institution):
-        resonse = self.get_plaid_institution(institution.id)
+    def _update_institution_metadata(self, institution):
+        resonse = self._get_plaid_institution(institution.id)
         data = resonse.to_dict()['institution']
 
         if data.get('logo'):
@@ -92,7 +93,7 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
         institution.name = data.get('name')
         institution.save()
 
-    def create_plaid_item(self, validated_data):
+    def _create_plaid_item(self, validated_data):
 
         exchange_request = ItemPublicTokenExchangeRequest(
             validated_data['public_token']
@@ -109,7 +110,7 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
         return plaid_item
 
-    def create_accounts(self, plaid_item, validated_data):
+    def _create_accounts(self, plaid_item, validated_data):
         accounts_data = validated_data['accounts']
         institution_id = validated_data['institution']['id']
         new_accounts = [
@@ -122,7 +123,7 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
         ]
         Account.objects.bulk_create(new_accounts)
 
-    def get_plaid_institution(self, institution_id):
+    def _get_plaid_institution(self, institution_id):
 
         institution_request = InstitutionsGetByIdRequest(
             institution_id=institution_id,

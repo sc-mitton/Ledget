@@ -26,6 +26,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
             invalidatesTags: ['PlaidItem'],
+            extraOptions: { maxRetries: 5 }
         }),
         updatePlaidItem: builder.mutation({
             query: ({ itemId, data }) => ({
@@ -34,6 +35,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
             invalidatesTags: ['PlaidItem'],
+            extraOptions: { maxRetries: 5 }
         }),
     })
 })

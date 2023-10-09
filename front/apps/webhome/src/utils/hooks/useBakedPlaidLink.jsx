@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { usePlaidLink as useLink } from 'react-plaid-link'
 
-import {
-    useGetPlaidTokenQuery,
-    useAddNewPlaidItemMutation
-} from '@features/plaidSlice'
+import { useGetPlaidTokenQuery, useAddNewPlaidItemMutation } from '@features/plaidSlice'
+import { useTransactionsSyncMutation } from '@features/transactionsSlice'
 
 export function useBakedPlaidLink(onBoarding) {
     const [isOauthRedirect, setIsOauthRedirect] = useState(false)
     const { data: fetchedToken, refech: refetchToken } = useGetPlaidTokenQuery({ isOnboarding: onBoarding })
 
-    const [addNewPlaidItem] = useAddNewPlaidItemMutation()
+    const [addNewPlaidItem, { data: newPlaidItem, isSuccess: newItemAddSuccess }] = useAddNewPlaidItemMutation()
+    const [syncTransactions] = useTransactionsSyncMutation()
 
     useEffect(() => {
         let timeout = setTimeout(() => {
@@ -27,6 +26,10 @@ export function useBakedPlaidLink(onBoarding) {
             setIsOauthRedirect(true)
         }
     }, [])
+
+    useEffect(() => {
+        newItemAddSuccess && syncTransactions(newPlaidItem?.id)
+    }, [newItemAddSuccess])
 
     const config = {
         onSuccess: (public_token, metadata) => {
