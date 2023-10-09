@@ -46,8 +46,8 @@
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
     --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
-    --new-item-drop-shadow: rgba(0, 0, 0, .15) 0px 2px 12px;
-    --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    --new-item-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
+    --window-drop-shadow: rgba(149, 157, 165, 0.15) 0px 8px 36px;
     --window-drop-shadow2: rgba(0, 0, 0, 0.1) 0px 2px 12px;
     --scroll-shadow-bottom: 0deg, rgba(248, 248, 248), transparent;
     --scroll-shadow-top: 180deg, rgba(248, 248, 248), transparent;
