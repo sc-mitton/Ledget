@@ -251,7 +251,7 @@ const ReAuthModals = withSmallModal((props) => {
                 &&
                 <SlideMotionDiv
                     key='aal1'
-                    first={searchParams.get('aal') === 'aal1'}
+                    first={Boolean(searchParams.get('flow'))}
                 >
                     <PassWord onCancel={() => props.closeModal()} />
                 </SlideMotionDiv>

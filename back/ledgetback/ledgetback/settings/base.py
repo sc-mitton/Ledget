@@ -54,7 +54,7 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'core.User'
 
-SESSION_MAX_AGE_SECONDS = 60 * 10  # 10 minutes in seconds
+SESSION_MAX_AGE_SECONDS = 60 * 10 # 10 minutes in seconds
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 

@@ -50,6 +50,13 @@
     position: relative;
 }
 
+#confirm-modal-bottom-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
 /* -------------------------- Account Rows Styling -------------------------- */
 
 
@@ -112,6 +119,12 @@
 
 #no-connections-message {
     font-weight: 500;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: .7;
 }
 
 #no-connections-message h2 {

@@ -161,7 +161,7 @@ secrets:
   stripe_api_key:
     file: ./secrets/stripe_dev_api_key
   plaid_api_key:
-    file: ./secrets/plaid_sand_api_key
+    file: ./secrets/plaid_dev_api_key
   plaid_client_id:
     file: ./secrets/plaid_dev_client_id
   django_secret_key:

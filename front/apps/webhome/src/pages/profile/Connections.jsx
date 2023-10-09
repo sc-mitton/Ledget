@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, Fragment } from 'react'
 
 import { Plus, Edit } from '@ledget/shared-assets'
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
-import { usePlaidLink } from 'react-plaid-link'
 
 import './styles/Connections.css'
-import { Desert } from '@components/pieces'
 import {
     useGetPlaidItemsQuery,
     useDeletePlaidItemMutation,
@@ -20,7 +18,7 @@ import { withSmallModal } from '@ledget/shared-utils'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { Tooltip } from '@components/pieces'
 import { RelinkIcon } from '@ledget/shared-assets'
-import { SecondaryButton, GrnPrimaryButton, IconButton, ShimmerDiv, DeleteButton, BlackSubmitButton } from '@ledget/shared-ui'
+import { SecondaryButton, GreenSubmitButton, IconButton, ShimmerDiv, DeleteButton, BlackSubmitButton } from '@ledget/shared-ui'
 import { withReAuth } from '@utils'
 
 const DeleteContext = React.createContext()
@@ -172,7 +170,7 @@ const PlaidItem = ({ item }) => {
             </div>
             <div className="accounts">
                 {item.accounts.map((account) => (
-                    <>
+                    <Fragment key={account.name}>
                         <div>
                             {account.name}
                         </div >
@@ -183,7 +181,7 @@ const PlaidItem = ({ item }) => {
                             &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
                             {account.mask}
                         </div>
-                    </>
+                    </Fragment>
                 ))}
             </div>
         </animated.div >
@@ -191,8 +189,8 @@ const PlaidItem = ({ item }) => {
 }
 
 const ConfirmModal = withReAuth(withSmallModal((props) => {
-    const { deleteQue, setDeleteQue, setEditing } = useContext(DeleteContext)
-    const [deletePlaidItem] = useDeletePlaidItemMutation()
+    const { deleteQue } = useContext(DeleteContext)
+    const [deletePlaidItem, { isLoading, isSuccess }] = useDeletePlaidItemMutation()
     const [, setSearchParams] = useSearchParams()
 
     useEffect(() => {
@@ -204,9 +202,19 @@ const ConfirmModal = withReAuth(withSmallModal((props) => {
         for (const que of deleteQue) {
             deletePlaidItem({ itemId: que.itemId })
         }
-        setEditing(false)
-        props.setVisible(false)
     }
+
+    useEffect(() => {
+        let timeout
+        console.log('isSuccess', isSuccess)
+        console.log('isLoading', isLoading)
+        if (isSuccess) {
+            timeout = setTimeout(() => {
+                props.closeModal()
+            }, 1000)
+        }
+        return () => clearTimeout(timeout)
+    }, [isSuccess])
 
     return (
         <div>
@@ -216,46 +224,34 @@ const ConfirmModal = withReAuth(withSmallModal((props) => {
                 and all of the data associated with this bank. <strong>This action
                     cannot be undone.</strong>
             </p>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    marginTop: '24px',
-                }}
-            >
+            <div id="confirm-modal-bottom-btns">
                 <SecondaryButton
-                    onClick={() => {
-                        props.setVisible(false)
-                        setDeleteQue([])
-                        setEditing(false)
-                    }}
+                    onClick={() => { props.closeModal() }}
                     aria-label="Cancel"
                 >
                     Cancel
                 </SecondaryButton>
-                <GrnPrimaryButton
+                <GreenSubmitButton
                     onClick={finalSubmit}
+                    submitting={isLoading}
+                    success={isSuccess}
                     aria-label="Confirm"
                 >
                     Confirm
-                </GrnPrimaryButton>
+                </GreenSubmitButton>
             </div>
         </div>
     )
 }))
 
 const EmptyState = () => (
-    <Desert>
-        <div id="no-connections-message">
-            <h2>No Connections</h2>
-            <span>Click the plus icon to get started </span>
-            <br />
-            <span>connecting your accounts</span>
-        </div>
-    </Desert >
+    <div id="no-connections-message">
+        <h2>No Connections</h2>
+        <span>Click the plus icon to get started </span>
+        <br />
+        <span>connecting your accounts</span>
+    </div>
 )
-
 
 const MainHeader = ({ onPlus }) => {
     const { editing, setEditing, plaidItems } = useContext(DeleteContext)
@@ -327,7 +323,11 @@ const Connections = () => {
             {showConfirmModal &&
                 <ConfirmModal
                     blur={2}
-                    onClose={() => { setShowConfirmModal(false) }}
+                    onClose={() => {
+                        setShowConfirmModal(false)
+                        setEditing(false)
+                        setDeleteQue([])
+                    }}
                 />
             }
             <ShimmerDiv shimmering={fetchingPlaidItems}>

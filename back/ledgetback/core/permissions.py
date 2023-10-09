@@ -97,13 +97,14 @@ class BaseFreshSessionClass(BasePermission):
 
     def get_last_ory_login_delta(self, request, aal):
         logins = request.META[OATHKEEPER_HEADER]['session']['authentication_methods']
-        login = next((login for login in logins if login['aal'] == aal), None)
+        last_login = None
+        for login in reversed(logins):
+            if login['aal'] == aal:
+                last_login = login
+                break
 
-        if login:
-            completed_at = datetime.strptime(
-                login['completed_at'],
-                '%Y-%m-%dT%H:%M:%S.%fZ'
-            )
+        if last_login:
+            completed_at = datetime.fromisoformat(last_login['completed_at'])
             return int(time.time()) - int(completed_at.timestamp())
         else:
             return None
