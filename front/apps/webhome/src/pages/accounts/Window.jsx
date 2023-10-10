@@ -5,9 +5,11 @@ import { animated } from '@react-spring/web'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import './styles/Window.css'
+import './styles/Main.css'
 import NotFound from '@pages/notFound/NotFound'
 import { usePillAnimation } from '@utils/hooks'
 import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/shared-assets'
+import { useGetAccountsQuery } from "@features/accountsSlice"
 import Deposits from './Deposits'
 
 
@@ -80,6 +82,7 @@ const Header = () => {
 function Window() {
     const navigate = useNavigate()
     const location = useLocation()
+    useGetAccountsQuery()
 
     useEffect(() => {
         navigate('/accounts/deposits')
@@ -100,7 +103,7 @@ function Window() {
                         location={location}
                         key={location.pathname.split('/')[2]}
                     >
-                        <Route path="deposits" element={<div>Deposits</div>} />
+                        <Route path="deposits" element={<Deposits />} />
                         <Route path="investments" element={<div>Investments</div>} />
                         <Route path="credit" element={<div>Credit</div>} />
                         <Route path="loans" element={<div>Loans</div>} />

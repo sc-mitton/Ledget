@@ -47,8 +47,8 @@
     --new-item-drop-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px;
     --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     --window-drop-shadow2: rgba(0, 0, 0, 0.1) 0px 2px 12px;
-    --scroll-shadow-bottom: 0deg, rgba(248, 248, 248), transparent;
-    --scroll-shadow-top: 180deg, rgba(248, 248, 248), transparent;
+    --scroll-shadow: 0deg, rgba(248, 248, 248), transparent;
+    --scroll-shadow: 180deg, rgba(248, 248, 248), transparent;
 
     /* Input Colors */
     --input-background: #ededed;

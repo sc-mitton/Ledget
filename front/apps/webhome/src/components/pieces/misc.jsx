@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { formatCurrency } from '@ledget/shared-utils'
 
 export const DollarCents = ({ value, ...props }) => {

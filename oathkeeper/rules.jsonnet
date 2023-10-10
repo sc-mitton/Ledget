@@ -220,5 +220,13 @@ local GenericAuthedBase = {
       methods: ['GET'],
       url: base_url + '/otp/<[a-zA-Z0-9-]+>',
     }
+  },
+  GenericAuthedBase
+  {
+    id: 'accounts',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/accounts',
+    }
   }
 ]

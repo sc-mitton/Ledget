@@ -11,9 +11,7 @@ from rest_framework.status import (
 import plaid
 
 
-from plaid.model.transactions_sync_request import (
-    TransactionsSyncRequest
-)
+from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.model.transactions_sync_request_options import (
     TransactionsSyncRequestOptions
 )
@@ -135,5 +133,3 @@ class TransactionsSyncView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         return serializer.validated_data['item_id']
-
-

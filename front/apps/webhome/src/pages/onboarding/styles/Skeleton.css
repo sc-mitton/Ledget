@@ -117,8 +117,8 @@
     height: 60px;
     position: absolute;
     bottom: 0;
-    background: -webkit-linear-gradient(var(--scroll-shadow-bottom));
-    background: linear-gradient(var(--scroll-shadow-bottom))
+    background: -webkit-linear-gradient(0deg, var(--scroll-shadow));
+    background: linear-gradient(180deg, var(--scroll-shadow))
 }
 
 .item-container.skeleton {

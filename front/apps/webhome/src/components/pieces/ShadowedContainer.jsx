@@ -1,29 +1,38 @@
-import React, { forwardRef, useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 import { useTransition, animated } from '@react-spring/web'
-import { set } from 'react-hook-form'
 
-const useShadowTransition = ({ location, visible }) => {
+const useShadowTransition = ({ location, direction, visible }) => {
     const styles = {
         top: {
             top: '0',
-            background: `linear-gradient(var(--scroll-shadow-top))`
+            background: `linear-gradient(${direction === 'horizontal' ? '0deg' : '180deg'}, var(--scroll-shadow))`,
         },
         bottom: {
             bottom: '0',
-            background: `linear-gradient(var(--scroll-shadow-bottom))`
+            background: `linear-gradient(${direction === 'horizontal' ? '90deg' : '0deg'}, var(--scroll-shadow))`,
         }
+    }
+
+    const horizontalStyles = {
+        width: '10px',
+        top: 0,
+        bottom: 0,
+    }
+
+    const verticalStyles = {
+        height: '40px',
+        left: 0,
+        right: 0,
     }
 
     const transitions = useTransition(visible, {
         from: { opacity: 0 },
         enter: {
-            width: "100%",
-            height: "40px",
             zIndex: 2,
             opacity: 1,
             position: "absolute",
-            left: 0,
+            ...((direction === 'horizontal') ? horizontalStyles : verticalStyles),
             ...styles[location]
         },
         leave: { opacity: 0 },
@@ -34,7 +43,7 @@ const useShadowTransition = ({ location, visible }) => {
 }
 
 const ShadowedContainer = (props) => {
-    const { showShadow = true, children, style, onScroll, ...rest } = props
+    const { showShadow = true, children, style, onScroll, direction, ...rest } = props
 
     const ref = useRef(null)
     const [bottomShadow, setBottomShadow] = useState(false)
@@ -42,11 +51,13 @@ const ShadowedContainer = (props) => {
 
     const bottomTransitions = useShadowTransition({
         location: 'bottom',
-        visible: showShadow && bottomShadow
+        visible: showShadow && bottomShadow,
+        direction: direction
     })
     const topTransitions = useShadowTransition({
         location: 'top',
-        visible: showShadow && topShadow
+        visible: showShadow && topShadow,
+        direction: direction
     })
 
     const handleScroll = (e) => {
@@ -80,10 +91,18 @@ const ShadowedContainer = (props) => {
 
     useEffect(() => {
         const setBottomShadowDelayed = () => {
-            if (showShadow) {
+            if (showShadow && direction !== 'horizontal') {
                 if (ref.current?.firstChild.scrollHeight !== ref.current?.firstChild.clientHeight) {
                     setBottomShadow(true)
                 } else if ((ref.current?.firstChild.scrollTopMax - ref.current?.firstChild.scrollTop) !== 0) {
+                    setBottomShadow(true)
+                } else {
+                    setBottomShadow(false)
+                }
+            } else {
+                if (ref.current?.firstChild.scrollWidth !== ref.current?.firstChild.clientWidth) {
+                    setBottomShadow(true)
+                } else if ((ref.current?.firstChild.scrollLeftMax - ref.current?.firstChild.scrollLeft) !== 0) {
                     setBottomShadow(true)
                 } else {
                     setBottomShadow(false)
