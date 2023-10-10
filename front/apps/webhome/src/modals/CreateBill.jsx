@@ -94,6 +94,7 @@ const Form = (props) => {
     return (
         <>
             <h2>New Bill</h2>
+            <hr />
             <form
                 className="create-form"
                 id="new-bill-form"

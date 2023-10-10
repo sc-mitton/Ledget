@@ -53,11 +53,24 @@
     margin-top: 4px;
 }
 
+.extra-padded-row {
+    margin: 8px 0;
+}
+
 .multi-input-row {
     display: flex;
     gap: 8px;
     margin: 8px 0;
     align-items: center;
+    justify-content: space-between;
+}
+
+.multi-input-row>div {
+    flex: 1;
+}
+
+.multi-input-row button {
+    width: 100%;
 }
 
 .split-inputs {

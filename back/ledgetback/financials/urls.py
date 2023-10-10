@@ -1,12 +1,12 @@
 from django.urls import path
 
-from financials.views import (
+from financials.views.items import (
      PlaidTokenExchangeView,
      PlaidItemsListView,
      PlaidItemView,
-     PlaidLinkTokenView,
-     TransactionsSyncView,
+     PlaidLinkTokenView
 )
+from financials.views.transactions import TransactionsSyncView
 
 
 urlpatterns = [

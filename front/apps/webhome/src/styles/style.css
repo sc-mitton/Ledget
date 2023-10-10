@@ -90,7 +90,7 @@
     --border-radius4: 24px;
 
     /* Padding */
-    --padding1: 8px 12px;
+    --padding1: 8px 0px;
 }
 
 /* Override color values for Firefox */
@@ -226,7 +226,7 @@ hr {
     height: 1px;
     border: 0;
     border-top: 2px solid var(--subtle-border-color);
-    margin: 12px 0 16px 0;
+    margin: 8px 0 12px 0;
     padding: 0;
 }
 
@@ -279,7 +279,7 @@ div.body {
     box-shadow: var(--window-drop-shadow);
     border-radius: var(--border-radius3);
     border: 1px solid white;
-    padding: 12px 20px;
+    padding: 12px 28px;
     box-sizing: border-box;
 }
 

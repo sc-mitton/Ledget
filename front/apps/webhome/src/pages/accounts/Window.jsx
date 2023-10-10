@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { Outlet, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { animated } from '@react-spring/web'
+import { AnimatePresence, motion } from 'framer-motion'
 
 import './styles/Window.css'
 import NotFound from '@pages/notFound/NotFound'
 import { usePillAnimation } from '@utils/hooks'
 import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/shared-assets'
+import Deposits from './Deposits'
+
 
 const Header = () => {
     const ref = useRef(null)
@@ -76,6 +79,7 @@ const Header = () => {
 
 function Window() {
     const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
         navigate('/accounts/deposits')
@@ -83,15 +87,27 @@ function Window() {
 
     return (
         <div className="window" id="accounts-window">
-            <Routes>
-                <Route path="/" element={<Header />}>
-                    <Route path="deposits" element={<div>Deposits</div>} />
-                    <Route path="investments" element={<div>Investments</div>} />
-                    <Route path="credit" element={<div>Credit</div>} />
-                    <Route path="loans" element={<div>Loans</div>} />
-                    <Route path="*" element={<NotFound />} />
-                </Route>
-            </Routes>
+            <Header />
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={location.pathname.split('/')[2]}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    <Routes
+                        path="/"
+                        location={location}
+                        key={location.pathname.split('/')[2]}
+                    >
+                        <Route path="deposits" element={<div>Deposits</div>} />
+                        <Route path="investments" element={<div>Investments</div>} />
+                        <Route path="credit" element={<div>Credit</div>} />
+                        <Route path="loans" element={<div>Loans</div>} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </motion.div>
+            </AnimatePresence>
         </div>
     )
 }

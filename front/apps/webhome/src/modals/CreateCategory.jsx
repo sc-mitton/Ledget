@@ -53,15 +53,14 @@ const Form = (props) => {
     return (
         <>
             <h2>New Category</h2>
+            <hr />
             <form
                 onSubmit={handleSubmit((data, e) => submit(data, e))}
                 id="new-cat-form"
                 className="create-form"
             >
-                <div className="multi-input-row">
-                    <div>
-                        <PeriodSelect hasLabel={true} />
-                    </div>
+                <div className="extra-padded-row">
+                    <div><PeriodSelect hasLabel={true} /></div>
                 </div>
                 <div>
                     <EmojiComboText
@@ -100,7 +99,7 @@ export default (props) => {
         <Modal
             {...props}
             onClose={() => navigate(-1)}
-            maxWidth={props.maxWidth || '375px'}
+            maxWidth={props.maxWidth || '350px'}
             minWidth={props.minWidth || '0px'}
             blur={2}
         />
