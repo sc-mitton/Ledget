@@ -199,10 +199,10 @@ function Header({ isNarrow }) {
             >
                 <div className={`header-container ${isNarrow ? 'narrow' : ''}`}>
                     <div className="header-logo"><LedgetLogoIcon /></div>
+                    <div>
+                        <Navigation isNarrow={isNarrow} />
+                    </div>
                     <div className="header-right">
-                        <div>
-                            <Navigation isNarrow={isNarrow} />
-                        </div>
                         <DropDownMenu setModal={setModal} isNarrow={isNarrow} />
                     </div>
                 </div>

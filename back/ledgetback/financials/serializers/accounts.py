@@ -2,15 +2,7 @@ import base64
 
 from rest_framework import serializers
 
-from django.conf import settings
-
-from core.clients import create_plaid_client
 from financials.models import Account, Institution
-
-PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
-
-
-plaid_client = create_plaid_client()
 
 
 class CustomBase64ImageField(serializers.Field):

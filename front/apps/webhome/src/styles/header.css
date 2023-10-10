@@ -18,15 +18,24 @@ header {
     max-width: 1250px;
 }
 
+.header-container>div:nth-child(2) {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 16px;
+}
+
+@media (max-width: 700px) {
+    .header-container>div:nth-child(2) {
+        justify-content: center;
+    }
+}
+
 .header-right {
     display: flex;
     align-items: center;
     height: 100%;
     margin-right: 12px;
-}
-
-.header-right>div {
-    margin: 0 8px;
 }
 
 .header-logo {
@@ -119,11 +128,6 @@ header {
 }
 
 /* ------------------------------- Nav ------------------------------- */
-
-.header-nav {
-    width: 100%;
-    height: 100%;
-}
 
 .header-nav ul {
     width: 100%;

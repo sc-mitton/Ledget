@@ -3,7 +3,7 @@ import React from 'react'
 import { Menu } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom'
 
-import { CashFlow, Graph, Plus, Edit, Ellipsis2 } from '@ledget/shared-assets'
+import { Graph, Plus, Edit, Ellipsis2 } from '@ledget/shared-assets'
 import MonthPicker from '@components/inputs/MonthPicker'
 import { IconButton, DropAnimation } from '@ledget/shared-ui'
 
@@ -80,9 +80,6 @@ const Header = () => {
         <div className="window-header">
             <MonthPicker />
             <div className="header-btns">
-                <IconButton aria-label="Toggle cash flow view">
-                    <CashFlow />
-                </IconButton>
                 <IconButton
                     aria-label="Toggle graph view"
                     style={{

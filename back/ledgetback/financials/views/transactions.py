@@ -21,7 +21,7 @@ from plaid.model.transactions_sync_request_options import (
 from core.permissions import IsAuthedVerifiedSubscriber
 from financials.models import Transaction
 from core.clients import create_plaid_client
-from financials.serializers import TransactionsSyncSerializer
+from financials.serializers.transactions import TransactionsSyncSerializer
 
 
 plaid_client = create_plaid_client()

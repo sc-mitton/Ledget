@@ -24,7 +24,10 @@ from core.permissions import (
     IsAuthedVerifiedSubscriber
 )
 from core.clients import create_plaid_client
-from financials.serializers import ExchangePlaidTokenSerializer, PlaidItemsSerializer
+from financials.serializers.items import (
+    ExchangePlaidTokenSerializer,
+    PlaidItemsSerializer
+)
 from financials.models import PlaidItem
 
 plaid_client = create_plaid_client()
