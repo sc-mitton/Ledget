@@ -1,29 +1,18 @@
 import { useRef, useState, useEffect } from 'react'
 
+import './styles/ShadowedContainer.css'
 import { useTransition, animated } from '@react-spring/web'
 
 const useShadowTransition = ({ location, direction, visible }) => {
     const styles = {
         top: {
             top: '0',
-            background: `linear-gradient(${direction === 'horizontal' ? '0deg' : '180deg'}, var(--scroll-shadow))`,
+            background: `linear-gradient(180deg, var(--scroll-shadow))`,
         },
         bottom: {
             bottom: '0',
-            background: `linear-gradient(${direction === 'horizontal' ? '90deg' : '0deg'}, var(--scroll-shadow))`,
+            background: `linear-gradient(0deg, var(--scroll-shadow))`,
         }
-    }
-
-    const horizontalStyles = {
-        width: '10px',
-        top: 0,
-        bottom: 0,
-    }
-
-    const verticalStyles = {
-        height: '40px',
-        left: 0,
-        right: 0,
     }
 
     const transitions = useTransition(visible, {
@@ -32,7 +21,9 @@ const useShadowTransition = ({ location, direction, visible }) => {
             zIndex: 2,
             opacity: 1,
             position: "absolute",
-            ...((direction === 'horizontal') ? horizontalStyles : verticalStyles),
+            height: '40px',
+            left: 0,
+            right: 0,
             ...styles[location]
         },
         leave: { opacity: 0 },
@@ -43,7 +34,7 @@ const useShadowTransition = ({ location, direction, visible }) => {
 }
 
 const ShadowedContainer = (props) => {
-    const { showShadow = true, children, style, onScroll, direction, ...rest } = props
+    const { showShadow = true, children, onScroll, direction, ...rest } = props
 
     const ref = useRef(null)
     const [bottomShadow, setBottomShadow] = useState(false)
@@ -91,22 +82,12 @@ const ShadowedContainer = (props) => {
 
     useEffect(() => {
         const setBottomShadowDelayed = () => {
-            if (showShadow && direction !== 'horizontal') {
-                if (ref.current?.firstChild.scrollHeight !== ref.current?.firstChild.clientHeight) {
-                    setBottomShadow(true)
-                } else if ((ref.current?.firstChild.scrollTopMax - ref.current?.firstChild.scrollTop) !== 0) {
-                    setBottomShadow(true)
-                } else {
-                    setBottomShadow(false)
-                }
+            if (ref.current?.firstChild.scrollHeight !== ref.current?.firstChild.clientHeight) {
+                setBottomShadow(true)
+            } else if ((ref.current?.firstChild.scrollTopMax - ref.current?.firstChild.scrollTop) !== 0) {
+                setBottomShadow(true)
             } else {
-                if (ref.current?.firstChild.scrollWidth !== ref.current?.firstChild.clientWidth) {
-                    setBottomShadow(true)
-                } else if ((ref.current?.firstChild.scrollLeftMax - ref.current?.firstChild.scrollLeft) !== 0) {
-                    setBottomShadow(true)
-                } else {
-                    setBottomShadow(false)
-                }
+                setBottomShadow(false)
             }
         }
         let timeoutId = setTimeout(setBottomShadowDelayed, 200)
@@ -117,12 +98,7 @@ const ShadowedContainer = (props) => {
 
     return (
         <div
-            style={{
-                position: 'relative',
-                width: '100%',
-                height: '100%',
-                ...style
-            }}
+            className="scroll-shadows--container"
             ref={ref}
             {...rest}
         >

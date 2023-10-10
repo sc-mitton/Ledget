@@ -16,58 +16,56 @@ const Wafers = () => {
                     />
                 </span>
             </div>
-            <ShadowedContainer direction='horizontal'>
-                <div className="account-wafers--container">
-                    {accountsData?.accounts.filter(account => account.type === 'depository').map(account => (
-                        <div key={account.account_id} className="account-wafer">
-                            <div className={`wafer-name--container ${account.official_name.length > 18 ? 'masked' : ''}`}>
-                                <div className={`${account.official_name.length > 18 ? 'scrolling-text' : ''}`}>
-                                    {account.official_name}
-                                </div>
-                                {account.official_name.length > 18 &&
-                                    <div className='scrolling-text'>{account.official_name}</div>}
-                                {account.official_name.length > 18 &&
-                                    <div className='spacer'>spacer</div>
-                                }
+            <div className="account-wafers--container">
+                {accountsData?.accounts.filter(account => account.type === 'depository').map(account => (
+                    <div key={account.account_id} className="account-wafer">
+                        <div className={`wafer-name--container ${account.official_name.length > 18 ? 'masked' : ''}`}>
+                            <div className={`${account.official_name.length > 18 ? 'scrolling-text' : ''}`}>
+                                {account.official_name}
                             </div>
-                            <div className="wafer-meta--container">
-                                <div>
-                                    {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
-                                    &nbsp;&bull;&nbsp;&bull;&nbsp;
-                                    {account.mask}
-                                </div>
-                            </div>
-                            <div className="wafer-balance--container">
-                                <DollarCents value={String(account.balances.current * 100)} />
+                            {account.official_name.length > 18 &&
+                                <div className='scrolling-text'>{account.official_name}</div>}
+                            {account.official_name.length > 18 &&
+                                <div className='spacer'>spacer</div>
+                            }
+                        </div>
+                        <div className="wafer-meta--container">
+                            <div>
+                                {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
+                                &nbsp;&bull;&nbsp;&bull;&nbsp;
+                                {account.mask}
                             </div>
                         </div>
-                    ))}
-                    {accountsData?.accounts.filter(account => account.type === 'depository').map(account => (
-                        <div key={account.account_id} className="account-wafer">
-                            <div className={`wafer-name--container ${account.official_name.length > 18 ? 'masked' : ''}`}>
-                                <div className={`${account.official_name.length > 18 ? 'scrolling-text' : ''}`}>
-                                    {account.official_name}
-                                </div>
-                                {account.official_name.length > 18 &&
-                                    <div className='scrolling-text'>{account.official_name}</div>}
-                                {account.official_name.length > 18 &&
-                                    <div className='spacer'>spacer</div>
-                                }
+                        <div className="wafer-balance--container">
+                            <DollarCents value={String(account.balances.current * 100)} />
+                        </div>
+                    </div>
+                ))}
+                {accountsData?.accounts.filter(account => account.type === 'depository').map(account => (
+                    <div key={account.account_id} className="account-wafer">
+                        <div className={`wafer-name--container ${account.official_name.length > 18 ? 'masked' : ''}`}>
+                            <div className={`${account.official_name.length > 18 ? 'scrolling-text' : ''}`}>
+                                {account.official_name}
                             </div>
-                            <div className="wafer-meta--container">
-                                <div>
-                                    {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
-                                    &nbsp;&bull;&nbsp;&bull;&nbsp;
-                                    {account.mask}
-                                </div>
-                            </div>
-                            <div className="wafer-balance--container">
-                                <DollarCents value={String(account.balances.current * 100)} />
+                            {account.official_name.length > 18 &&
+                                <div className='scrolling-text'>{account.official_name}</div>}
+                            {account.official_name.length > 18 &&
+                                <div className='spacer'>spacer</div>
+                            }
+                        </div>
+                        <div className="wafer-meta--container">
+                            <div>
+                                {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
+                                &nbsp;&bull;&nbsp;&bull;&nbsp;
+                                {account.mask}
                             </div>
                         </div>
-                    ))}
-                </div>
-            </ShadowedContainer>
+                        <div className="wafer-balance--container">
+                            <DollarCents value={String(account.balances.current * 100)} />
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
