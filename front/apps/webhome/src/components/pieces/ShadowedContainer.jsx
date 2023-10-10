@@ -1,55 +1,13 @@
 import { useRef, useState, useEffect } from 'react'
 
 import './styles/ShadowedContainer.css'
-import { useTransition, animated } from '@react-spring/web'
-
-const useShadowTransition = ({ location, direction, visible }) => {
-    const styles = {
-        top: {
-            top: '0',
-            background: `linear-gradient(180deg, var(--scroll-shadow))`,
-        },
-        bottom: {
-            bottom: '0',
-            background: `linear-gradient(0deg, var(--scroll-shadow))`,
-        }
-    }
-
-    const transitions = useTransition(visible, {
-        from: { opacity: 0 },
-        enter: {
-            zIndex: 2,
-            opacity: 1,
-            position: "absolute",
-            height: '40px',
-            left: 0,
-            right: 0,
-            ...styles[location]
-        },
-        leave: { opacity: 0 },
-        config: { duration: 100 }
-    })
-
-    return transitions
-}
 
 const ShadowedContainer = (props) => {
-    const { showShadow = true, children, onScroll, direction, ...rest } = props
+    const { showShadow = true, children, onScroll, ...rest } = props
 
     const ref = useRef(null)
     const [bottomShadow, setBottomShadow] = useState(false)
     const [topShadow, setTopShadow] = useState(false)
-
-    const bottomTransitions = useShadowTransition({
-        location: 'bottom',
-        visible: showShadow && bottomShadow,
-        direction: direction
-    })
-    const topTransitions = useShadowTransition({
-        location: 'top',
-        visible: showShadow && topShadow,
-        direction: direction
-    })
 
     const handleScroll = (e) => {
         onScroll && onScroll(e)
@@ -97,18 +55,10 @@ const ShadowedContainer = (props) => {
     }, [showShadow])
 
     return (
-        <div
-            className="scroll-shadows--container"
-            ref={ref}
-            {...rest}
-        >
+        <div className="scroll-shadows--container" ref={ref} {...rest}>
             {children}
-            {bottomTransitions((style, item) =>
-                item && <animated.div style={style} />
-            )}
-            {topTransitions((style, item) =>
-                item && <animated.div style={style} />
-            )}
+            {showShadow && bottomShadow && <div className="bottom-shadow" />}
+            {showShadow && topShadow && <div className="top-shadow" />}
         </div>
     )
 }
