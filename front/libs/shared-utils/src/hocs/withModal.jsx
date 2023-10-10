@@ -34,11 +34,8 @@ function withModal(WrappedComponent) {
         })
 
         const backgroundConfig = {
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            position: 'absolute',
+            inset: 0,
+            position: 'fixed',
             zIndex: zIndex,
             display: 'flex',
             justifyContent: 'center',
