@@ -48,6 +48,7 @@
     --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
     --new-item-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
     --active-wafer-drop-shadow: var(--green-hlight) 0px 0px 2px 2px;
+    --wafer-hover-drop-shadow: rgb(0, 0, 0, .4) 0px 0px 4px 2px;
     --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
     --window-drop-shadow: rgba(149, 157, 165, 0.15) 0px 8px 36px;
     --window-drop-shadow2: rgba(0, 0, 0, 0.1) 0px 2px 12px;
@@ -333,6 +334,8 @@ div.body {
 @media screen and (max-width: 450px) {
     .window {
         box-shadow: var(--window-drop-shadow2);
+        padding: 16px;
+        padding-top: 12px;
     }
 }
 

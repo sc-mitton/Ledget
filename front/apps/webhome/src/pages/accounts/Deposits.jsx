@@ -3,6 +3,8 @@ import { useState, useEffect, Fragment } from 'react'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import { Base64Logo, DollarCents } from '@components/pieces'
+import { digitMonthToAbrev, formatMDY } from "@ledget/shared-utils"
+import { ShimmerDiv } from "@ledget/shared-ui"
 
 const Wafers = ({ setCurrentAccount, currentAccount }) => {
     const { data: accountsData, isSuccess } = useGetAccountsQuery()
@@ -31,7 +33,9 @@ const Wafers = ({ setCurrentAccount, currentAccount }) => {
                     return (
                         <div
                             key={account.account_id}
-                            className={`account-wafer ${account.account_id === currentAccount?.account_id ? 'active' : ''}`}
+                            className={`account-wafer ${currentAccount === account.account_id ? 'active' : 'inactive'}`}
+                            role="button"
+                            onClick={() => setCurrentAccount(account.account_id)}
                         >
                             <Base64Logo
                                 data={institution.logo}
@@ -62,30 +66,45 @@ const Wafers = ({ setCurrentAccount, currentAccount }) => {
 
 const Transactions = ({ currentAccount }) => {
     const { data: transactionsData } = useGetTransactionsQuery('depository')
+    let previousMonth = null
 
     return (
-        <div className="transactions-window">
-            <div className="transactions-rows">
-                <div>Name</div>
-                <div>Date</div>
-                <div>Amount</div>
-                {transactionsData.filter(transaction => transaction.account === currentAccount).map(transaction => (
+        <div className="transactions-rows">
+            <div></div>
+            <div>Name</div>
+            <div>Amount</div>
+            {transactionsData.filter(transaction => currentAccount === transaction.account).map(transaction => {
+                const currentMonth = transaction.date.slice(5, 7)
+                let newMonth = false
+                if (previousMonth !== currentMonth) {
+                    previousMonth = currentMonth
+                    newMonth = true
+                }
+                return (
                     <Fragment key={transaction.id}>
-                        <div>{transaction.name}</div>
-                        <div>{transaction.date}</div>
+                        <div>{
+                            newMonth && `${digitMonthToAbrev(currentMonth)}`}</div>
+                        <div>
+                            {transaction.name}
+                            <br />
+                            <span>
+                                {formatMDY(transaction.date)}
+                            </span>
+                        </div>
                         <DollarCents
                             value={String(transaction.amount * 100)}
                             style={{ textAlign: 'start' }}
                         />
                     </Fragment>
-                ))}
-            </div>
+                )
+            })}
         </div>
     )
 }
 
 const Deposits = () => {
-    const [currentAccount, setCurrentAccount] = useState(null)
+    const [currentAccount, setCurrentAccount] = useState('')
+    const { isLoading } = useGetTransactionsQuery('depository')
 
     return (
         <>
@@ -93,7 +112,9 @@ const Deposits = () => {
                 setCurrentAccount={setCurrentAccount}
                 currentAccount={currentAccount}
             />
-            <Transactions currentAccount={currentAccount} />
+            <ShimmerDiv shimmering={isLoading} className="transactions-window">
+                <Transactions currentAccount={currentAccount} />
+            </ShimmerDiv>
         </>
     )
 }

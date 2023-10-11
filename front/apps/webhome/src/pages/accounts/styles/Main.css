@@ -35,7 +35,7 @@
     padding: 10px 16px;
     min-width: 18ch;
     max-width: 18ch;
-    height: 6.5rem;
+    height: 6rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -43,17 +43,21 @@
     flex-wrap: nowrap;
     box-shadow: var(--new-item-drop-shadow);
     cursor: pointer;
-    transition: all .2s ease-in-out;
     transform: scale(1);
+    transition: all .2s ease-out;
 }
 
 .account-wafer.active {
     box-shadow: var(--active-wafer-drop-shadow);
 }
 
-.account-wafer:hover {
-    transition: all .2s ease-in-out;
-    transform: scale(1.02);
+.account-wafer.inactive:active {
+    transform: scale(.95);
+}
+
+.account-wafer.inactive:hover {
+    box-shadow: var(--wafer-hover-drop-shadow);
+    transition: all .2s ease-out;
 }
 
 .account-wafer * {
@@ -158,6 +162,48 @@
     font-size: 1.1rem;
 }
 
+/* ------------------------------ Transactions ------------------------------ */
+
+.transactions-window {
+    flex-grow: 1;
+    margin-top: 10px;
+    padding: 4px;
+}
+
+.transactions-rows {
+    display: grid;
+    grid-template-columns: auto minmax(auto, 1fr) auto;
+}
+
+.transactions-rows>div:nth-child(3n+2) {
+    padding-left: 20px;
+}
+
+.transactions-rows>div:nth-child(3n+3) {
+    padding-right: 20px;
+}
+
+.transactions-rows>div:nth-child(-n + 3) {
+    font-weight: 500;
+}
+
+.transactions-rows>div:nth-child(3n + 1):not(:nth-child(-n+3)) {
+    padding-right: 14px;
+    opacity: .5;
+}
+
+.transactions-rows>div:not(:nth-child(-n+3)):not(:nth-child(3n + 1)) {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-top: 1.5px solid var(--subtle-border-color);
+}
+
+.transactions-rows>div:nth-child(3n+2) span {
+    opacity: .7;
+}
+
+/* ------------------------------- Responsive ------------------------------- */
+
 @media (max-width: 700px) {
     .account-wafers--container {
         flex-direction: column;
@@ -191,36 +237,8 @@
         order: 1;
         margin-left: -12px;
     }
-}
 
-
-/* ------------------------------ Transactions ------------------------------ */
-
-.transactions-window {
-    flex-grow: 1;
-    margin-top: 10px;
-    padding: 4px;
-}
-
-.transactions-rows {
-    display: grid;
-    grid-template-columns: auto minmax(auto, 1fr) auto;
-    row-gap: 8px;
-}
-
-.transactions-rows>div:nth-child(-n + 3) {
-    font-weight: 500;
-}
-
-.transactions-rows>div:nth-child(3n + 2) {
-    padding-left: 16px;
-}
-
-.transactions-rows>div:nth-child(3n + 3) {
-    padding-right: 12px;
-}
-
-.transactions-rows>div:not(:nth-child(-n+3)) {
-    padding-top: 8px;
-    border-top: 1.5px solid var(--subtle-border-color);
+    .transactions-rows>div:nth-child(3n + 3) {
+        padding-right: 0px;
+    }
 }

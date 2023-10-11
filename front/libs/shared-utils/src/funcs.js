@@ -102,3 +102,65 @@ export const formatDateOrRelativeDate = (unixTimestamp) => {
         return `${month}/${day}/${year}`;
     }
 }
+
+
+export const digitMonthToAbrev = (month) => {
+    switch (month) {
+        case '01':
+            return 'Jan'
+        case '02':
+            return 'Feb'
+        case '03':
+            return 'Mar'
+        case '04':
+            return 'Apr'
+        case '05':
+            return 'May'
+        case '06':
+            return 'Jun'
+        case '07':
+            return 'Jul'
+        case '08':
+            return 'Aug'
+        case '09':
+            return 'Sept'
+        case '10':
+            return 'Oct'
+        case '11':
+            return 'Nov'
+        case '12':
+            return 'Dec'
+        default:
+            return 'Unknown'
+    }
+}
+
+export const addDaySuffix = (day) => {
+    // strip leading zeros
+    day = day.replace(/^0+/, '')
+
+    switch (day) {
+        case '1':
+        case '21':
+        case '31':
+            return `${day}st`
+        case '2':
+        case '22':
+            return `${day}nd`
+        case '3':
+        case '23':
+            return `${day}rd`
+        default:
+            return `${day}th`
+    }
+}
+
+export const formatMDY = (date) => {
+    const newDate = new Date(date)
+    const config = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    }
+    return newDate.toLocaleDateString('en-US', config).replace(/\/0?/g, '/').replace(/^0+/, '')
+}
