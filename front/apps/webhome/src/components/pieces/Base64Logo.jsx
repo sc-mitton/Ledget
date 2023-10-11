@@ -13,10 +13,10 @@ const Base64Image = (props) => {
     const { data, backgroundColor, alt, style, ...rest } = props
 
     const config = {
-        padding: '2px 12px',
+        padding: '2px 2px',
         backgroundColor: backgroundColor,
-        borderRadius: 'var(--border-radius2)',
-        display: 'flex',
+        borderRadius: 'var(--border-radius4)',
+        display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
         color: getContrastColor(backgroundColor),

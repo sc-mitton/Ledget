@@ -24,25 +24,12 @@ const InstitutionLogos = ({ plaidItems }) => {
                             <div
                                 key={item.id}
                                 className="institution-logo"
-                                style={{
-                                    marginLeft: index === 0 ? '0' : '-.5rem',
-                                }}
+                                style={{ marginLeft: index === 0 ? '0' : '-.5rem' }}
                             >
                                 <Base64Logo
                                     data={item.institution.logo}
-                                    item={item}
                                     alt={item.institution.name.charAt(0).toUpperCase()}
                                     backgroundColor={item.institution.primary_color}
-                                    style={{
-                                        width: '2rem',
-                                        height: '2rem',
-                                        padding: '0',
-                                        borderRadius: '50%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        boxShadow: 'var(--button-drop-shadow)'
-                                    }}
                                 />
                             </div>
                         ))}

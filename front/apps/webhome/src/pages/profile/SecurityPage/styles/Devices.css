@@ -96,7 +96,7 @@
     background-color: var(--window);
     border-bottom-left-radius: var(--border-radius2);
     border-bottom-right-radius: var(--border-radius2);
-    padding: 20px 12px 8px 12px;
+    padding: 8px 12px 0px 12px;
     z-index: 0;
 }
 

@@ -7,7 +7,7 @@
     --window-transparent: rgba(252, 248, 247, 0.8);
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-background-color: #f0f0f0;
-    --inner-window: rgba(0, 0, 0, .027);
+    --inner-window: rgba(0, 0, 0, .03);
     --inner-window-lighter: rgba(0, 0, 0, .02);
 
     --background-color: #fcfcfc;
@@ -47,6 +47,7 @@
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
     --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
     --new-item-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
+    --active-wafer-drop-shadow: var(--green-hlight) 0px 0px 2px 2px;
     --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
     --window-drop-shadow: rgba(149, 157, 165, 0.15) 0px 8px 36px;
     --window-drop-shadow2: rgba(0, 0, 0, 0.1) 0px 2px 12px;
@@ -253,7 +254,7 @@ fieldset {
     width: 90%;
     max-width: 1250px;
     margin: 28px auto;
-    margin-top: 88px;
+    margin-top: 72px;
     display: flex;
     justify-content: center;
 }
@@ -279,7 +280,8 @@ div.body {
     box-shadow: var(--window-drop-shadow);
     border-radius: var(--border-radius3);
     border: 1px solid white;
-    padding: 12px 28px;
+    padding: 28px;
+    padding-top: 12px;
     box-sizing: border-box;
 }
 
@@ -313,7 +315,7 @@ div.body {
     background-color: var(--inner-window);
     border-radius: var(--border-radius25);
     padding: 12px;
-    margin: 0 -2px;
+    margin: -2px;
 }
 
 .overlay {

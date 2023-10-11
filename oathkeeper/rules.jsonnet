@@ -183,10 +183,18 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
-    id: 'transactions',
+    id: 'sync_transactions',
     match: {
       methods: ['POST'],
       url: base_url + '/transactions/sync',
+    },
+  },
+  GenericAuthedBase
+  {
+    id: 'transactions',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/transactions',
     },
   },
   GenericAuthedBase

@@ -1,7 +1,7 @@
 import logging
 
 from django.db import transaction, models
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
@@ -17,9 +17,12 @@ from plaid.model.transactions_sync_request_options import (
 )
 
 from core.permissions import IsAuthedVerifiedSubscriber
-from financials.models import Transaction
 from core.clients import create_plaid_client
-from financials.serializers.transactions import TransactionsSyncSerializer
+from financials.models import Transaction
+from financials.serializers.transactions import (
+    TransactionsSyncSerializer,
+    TransactionSerializer
+)
 
 
 plaid_client = create_plaid_client()
@@ -133,3 +136,16 @@ class TransactionsSyncView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         return serializer.validated_data['item_id']
+
+
+class TransactionsView(ListAPIView):
+    serializer_class = TransactionSerializer
+    permission_classes = [IsAuthedVerifiedSubscriber]
+
+    def get_queryset(self):
+        account_type = self.request.query_params.get('account_type', None)
+
+        return Transaction.objects.filter(
+            account__plaid_item__user_id=self.request.user.id,
+            account__type=account_type
+        )

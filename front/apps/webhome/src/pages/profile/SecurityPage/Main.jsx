@@ -1,10 +1,8 @@
-import React from 'react'
-
 import { Outlet } from 'react-router-dom'
 
 import './styles/Main.css'
 import { useGetDevicesQuery } from '@features/authSlice'
-import { ShimmerDiv, SlimInputButton } from '@ledget/shared-ui'
+import { ShimmerDiv } from '@ledget/shared-ui'
 import Devices from './Devices'
 import Mfa from './Mfa'
 import Authentication from './Authentication'

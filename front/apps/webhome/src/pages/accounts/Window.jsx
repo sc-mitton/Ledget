@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Outlet, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { animated } from '@react-spring/web'
@@ -17,9 +17,10 @@ const Header = () => {
     const ref = useRef(null)
     const location = useLocation()
     const navigate = useNavigate()
+    const [windowWidth, setWindowWidth] = useState(0)
     const { props } = usePillAnimation({
         ref: ref,
-        update: [location.pathname],
+        update: [location.pathname, windowWidth],
         querySelectall: '[role=link]',
         find: (element) => element.getAttribute('aria-current') === 'page',
         styles: {
@@ -51,12 +52,31 @@ const Header = () => {
         },
     ]
 
+
+    // Resize observer to update nav pill when responsive layout changes
+    useEffect(() => {
+        const observer = new ResizeObserver(entries => {
+            for (const entry of entries) {
+                const newWidth = entry.contentRect.width
+                setWindowWidth(newWidth)
+            }
+        })
+
+        if (ref.current) {
+            observer.observe(ref.current)
+        }
+
+        return () => {
+            observer.disconnect()
+        }
+    }, [])
+
     return (
-        <div>
+        <>
             <div className='window-header'>
-                <h1>Accounts</h1>
+                <h2>Your Accounts</h2>
             </div>
-            <div style={{ padding: 'var(--padding1)' }}>
+            <div id="accounts-header-nav">
                 <ul ref={ref}>
                     {paths.map((path) => (
                         <li
@@ -75,7 +95,7 @@ const Header = () => {
                 </ul>
                 <Outlet />
             </div>
-        </div>
+        </>
     )
 }
 
@@ -88,13 +108,19 @@ function Window() {
         navigate('/accounts/deposits')
     }, [])
 
+    const baseConfig = {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+    }
+
     return (
         <div className="window" id="accounts-window">
             <Header />
             <AnimatePresence mode="wait">
                 <motion.div
                     key={location.pathname.split('/')[2]}
-                    initial={{ opacity: 0 }}
+                    initial={{ opacity: 0, ...baseConfig }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                 >

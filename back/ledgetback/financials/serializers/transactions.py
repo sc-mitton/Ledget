@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from financials.models import PlaidItem
+from financials.models import PlaidItem, Transaction
 
 
 class TransactionsSyncSerializer(serializers.Serializer):
@@ -11,3 +11,9 @@ class TransactionsSyncSerializer(serializers.Serializer):
             return item
         except PlaidItem.DoesNotExist:
             raise serializers.ValidationError()
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = '__all__'

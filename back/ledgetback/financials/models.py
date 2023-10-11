@@ -85,7 +85,7 @@ class Transaction(models.Model):
 
     # ID info
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    transaction_id = models.CharField(max_length=100, primary_key=True)
+    transaction_id = models.CharField(max_length=100, primary_key=True, editable=False)
     transaction_code = models.CharField(max_length=100, null=True, blank=True)
     transaction_type = models.CharField(max_length=100, null=True, blank=True)
 

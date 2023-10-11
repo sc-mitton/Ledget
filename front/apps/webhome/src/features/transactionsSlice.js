@@ -9,6 +9,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 body: { item_id: itemId },
             }),
         }),
+        getTransactions: builder.query({
+            query: (accountType) => ({
+                url: 'transactions',
+                params: { account_type: accountType },
+            }),
+            keepUnusedDataFor: 60 * 15, // 15 minutes
+        }),
         addNewTransaction: builder.mutation({
             query: ({ data }) => ({
                 url: 'transaction',
@@ -22,5 +29,6 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useTransactionsSyncMutation,
-    useAddNewTransactionMutation
+    useAddNewTransactionMutation,
+    useGetTransactionsQuery,
 } = extendedApiSlice

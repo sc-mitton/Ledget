@@ -1,6 +1,8 @@
 #accounts-window {
     width: 100%;
     max-width: 900px;
+    display: flex;
+    flex-direction: column;
 }
 
 #accounts-window ul {
@@ -8,10 +10,10 @@
     justify-content: flex-start;
     margin: 4px 0 4px 0;
     position: relative;
+    gap: 8px;
 }
 
 #accounts-window ul li {
-    margin-right: 16px;
     padding: 2px 16px;
     font-weight: 500;
     background-color: var(--icon-light-gray);
@@ -29,11 +31,15 @@
     color: var(--green-dark4);
 }
 
-#accounts-window ul li[aria-current="page"] svg {
-    fill: red;
-}
-
 #accounts-window ul li:not([aria-current="page"]):hover {
     background-color: var(--icon-hover-light-gray);
     transition: background-color 0.5s ease-in-out;
+}
+
+@media (max-width: 600px) {
+    #accounts-header-nav svg {
+        visibility: collapse;
+        width: 0;
+        margin: 0;
+    }
 }

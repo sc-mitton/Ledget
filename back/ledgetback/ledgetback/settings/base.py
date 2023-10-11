@@ -49,7 +49,7 @@ WSGI_APPLICATION = 'ledgetback.wsgi.application'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'ledgetback.auth.ory.OryBackend',
-    ),
+    )
 }
 
 AUTH_USER_MODEL = 'core.User'

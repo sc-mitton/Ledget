@@ -35,7 +35,6 @@
 #connections-page #accounts-list {
     display: flex;
     overflow: hidden;
-    position: absolute;
     top: 0;
     left: 0;
     margin-bottom: 24px;

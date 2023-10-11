@@ -28,3 +28,14 @@
 .checklist>div div:last-child {
     opacity: .7
 }
+
+.institution-logo img {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--button-drop-shadow);
+}

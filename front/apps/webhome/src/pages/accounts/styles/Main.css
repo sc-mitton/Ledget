@@ -1,32 +1,41 @@
-.accounts-list--container {
+.account-wafers--container {
     display: flex;
-    gap: 28px;
-    align-items: center;
+    gap: 20px;
+    align-items: flex-end;
 }
 
-.accounts-list--container>div:first-child>span * {
+.account-wafers--container>div:first-child {
+    padding-bottom: 20px;
+}
+
+.account-wafers--container>div:first-child>span * {
     font-size: 2rem;
     font-weight: 500;
 }
 
+.account-wafers--container>div:first-child>span {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
 
 /* --------------------------------- Wafers --------------------------------- */
-.account-wafers--container {
+.account-wafers {
     display: flex;
     gap: 12px;
     overflow-x: scroll;
     overflow-y: hidden;
-    padding: 20px 0px;
+    padding: 16px 10px 16px 10px;
+    width: 100%;
     background-image: radial-gradient(ellipse at center, rgb(0, 0, 0, .15) 1%, var(--window) 70%);
 }
 
 .account-wafer {
     background-color: var(--logo-dark);
     border-radius: var(--border-radius4);
-    padding: 20px;
-    padding-bottom: 10px;
-    min-width: 20ch;
-    height: 5.5rem;
+    padding: 10px 16px;
+    min-width: 18ch;
+    max-width: 18ch;
+    height: 6.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -38,8 +47,11 @@
     transform: scale(1);
 }
 
+.account-wafer.active {
+    box-shadow: var(--active-wafer-drop-shadow);
+}
+
 .account-wafer:hover {
-    box-shadow: var(--item-hover-drop-shadow);
     transition: all .2s ease-in-out;
     transform: scale(1.02);
 }
@@ -48,12 +60,28 @@
     color: var(--white-text);
 }
 
+.account-wafer>div:first-child {
+    margin-bottom: 2px;
+    transform: scale(1.1);
+}
+
+.account-wafer>div:first-child img {
+    filter: grayscale(1) contrast(130%);
+}
+
 .wafer-name--container {
-    white-space: nowrap;
     position: relative;
     overflow: hidden;
-    z-index: 0;
     width: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    white-space: nowrap;
+    padding-left: 4px;
+    margin-left: -4px;
+}
+
+.wafer-name--container * {
+    font-weight: 400;
 }
 
 .wafer-name--container.masked {
@@ -65,7 +93,6 @@
 }
 
 .scrolling-text:first-child {
-    z-index: 10;
     position: absolute;
     animation: infinite-scrolling1 14s linear infinite;
     animation-delay: 2s;
@@ -83,6 +110,10 @@
 
     50.01% {
         transform: translateX(115%);
+    }
+
+    90% {
+        transform: translateX(0%);
     }
 
     100% {
@@ -105,6 +136,11 @@
         transform: translateX(115%);
     }
 
+    90% {
+        opacity: 1;
+        transform: translateX(-115%);
+    }
+
     100% {
         opacity: 1;
         transform: translateX(-115%);
@@ -116,9 +152,75 @@
     opacity: .8;
     font-weight: 300;
     font-size: .8rem;
-    white-space: nowrap;
 }
 
 .wafer-balance--container * {
     font-size: 1.1rem;
+}
+
+@media (max-width: 700px) {
+    .account-wafers--container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0px;
+    }
+
+    .account-wafers--container>div:first-child {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+        margin-left: 4px;
+        order: 2;
+    }
+
+    .account-wafers--container>div:first-child>span * {
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-bottom: -1px;
+    }
+
+    .account-wafers--container>div:first-child>span {
+        font-size: 1.2rem;
+    }
+
+    .account-wafers--container>div:first-child {
+        padding-bottom: 0px;
+    }
+
+    .account-wafers {
+        order: 1;
+        margin-left: -12px;
+    }
+}
+
+
+/* ------------------------------ Transactions ------------------------------ */
+
+.transactions-window {
+    flex-grow: 1;
+    margin-top: 10px;
+    padding: 4px;
+}
+
+.transactions-rows {
+    display: grid;
+    grid-template-columns: auto minmax(auto, 1fr) auto;
+    row-gap: 8px;
+}
+
+.transactions-rows>div:nth-child(-n + 3) {
+    font-weight: 500;
+}
+
+.transactions-rows>div:nth-child(3n + 2) {
+    padding-left: 16px;
+}
+
+.transactions-rows>div:nth-child(3n + 3) {
+    padding-right: 12px;
+}
+
+.transactions-rows>div:not(:nth-child(-n+3)) {
+    padding-top: 8px;
+    border-top: 1.5px solid var(--subtle-border-color);
 }
