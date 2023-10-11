@@ -69,11 +69,12 @@ const Transactions = ({ currentAccount }) => {
     let previousMonth = null
 
     return (
-        <div className="transactions-rows">
-            <div></div>
-            <div>Name</div>
-            <div>Amount</div>
-            {transactionsData.filter(transaction => currentAccount === transaction.account).map(transaction => {
+        <div className="transaction-rows">
+            <div className="transaction-row">
+                <div>Name</div>
+                <div>Amount</div>
+            </div>
+            {transactionsData.filter(transaction => currentAccount === transaction.account).map((transaction) => {
                 const currentMonth = transaction.date.slice(5, 7)
                 let newMonth = false
                 if (previousMonth !== currentMonth) {
@@ -81,21 +82,34 @@ const Transactions = ({ currentAccount }) => {
                     newMonth = true
                 }
                 return (
-                    <Fragment key={transaction.id}>
-                        <div>{
-                            newMonth && `${digitMonthToAbrev(currentMonth)}`}</div>
-                        <div>
-                            {transaction.name}
-                            <br />
-                            <span>
-                                {formatMDY(transaction.date)}
-                            </span>
+                    <>
+                        <div
+                            className="transaction-row"
+                            key={transaction.id}
+                            type="button"
+                        >
+                            {newMonth &&
+                                <div className="month-delimiter">
+                                    {`${digitMonthToAbrev(currentMonth)}`}
+                                </div>
+                            }
+                            <div>
+                                <span>{transaction.name}</span>
+                                <span>
+                                    {formatMDY(transaction.date)}
+                                </span>
+                            </div>
+                            <DollarCents
+                                value={String(transaction.amount * 100)}
+                                isDebit={transaction.amount < 0}
+                                style={{
+                                    textAlign: 'start',
+                                }}
+                                className={transaction.amount < 0 ? 'debit' : 'credit'}
+                            />
                         </div>
-                        <DollarCents
-                            value={String(transaction.amount * 100)}
-                            style={{ textAlign: 'start' }}
-                        />
-                    </Fragment>
+                        <hr />
+                    </>
                 )
             })}
         </div>

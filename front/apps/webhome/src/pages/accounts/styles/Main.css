@@ -170,37 +170,68 @@
     padding: 4px;
 }
 
-.transactions-rows {
-    display: grid;
-    grid-template-columns: auto minmax(auto, 1fr) auto;
+.transaction-rows {
+    margin-left: 44px;
 }
 
-.transactions-rows>div:nth-child(3n+2) {
-    padding-left: 20px;
+.transaction-row {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    gap: 8px;
+    transition: background-color .2s ease-out;
+    cursor: pointer;
+    padding: 4px 0;
+    margin: 2px 0;
 }
 
-.transactions-rows>div:nth-child(3n+3) {
-    padding-right: 20px;
+.transaction-row:not(:first-child):hover {
+    background-color: var(--inner-window);
+    transition: background-color .2s ease-out;
+    border-radius: var(--border-radius1);
 }
 
-.transactions-rows>div:nth-child(-n + 3) {
+.transaction-row:first-child {
     font-weight: 500;
 }
 
-.transactions-rows>div:nth-child(3n + 1):not(:nth-child(-n+3)) {
-    padding-right: 14px;
+.transaction-row>div:nth-last-child(3) {
+    position: absolute;
+    left: -44px;
     opacity: .5;
 }
 
-.transactions-rows>div:not(:nth-child(-n+3)):not(:nth-child(3n + 1)) {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    border-top: 1.5px solid var(--subtle-border-color);
+.transaction-row>div:nth-last-child(2) {
+    flex: 0 1 90%;
+    padding: 0px 16px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
 }
 
-.transactions-rows>div:nth-child(3n+2) span {
+.transaction-row>div:nth-last-child(2) span:last-child {
     opacity: .7;
 }
+
+.transaction-row>div:last-child {
+    flex: 0 0 10%;
+    padding: 0px 16px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.transaction-row .debit * {
+    color: var(--green-dark3);
+}
+
+.transaction-row+hr {
+    margin: 0;
+}
+
+.transaction-rows>div:last-of-type+hr {
+    visibility: hidden;
+}
+
 
 /* ------------------------------- Responsive ------------------------------- */
 
@@ -238,7 +269,14 @@
         margin-left: -12px;
     }
 
-    .transactions-rows>div:nth-child(3n + 3) {
+    .transaction-row>div:nth-last-child(2) {
+        padding-left: 0px;
         padding-right: 0px;
     }
+
+    .transaction-row>div:last-child {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
 }

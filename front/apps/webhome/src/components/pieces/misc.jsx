@@ -1,12 +1,15 @@
 import { formatCurrency } from '@ledget/shared-utils'
 
-export const DollarCents = ({ value, style, ...props }) => {
+export const DollarCents = ({ value, isDebit, style, ...rest }) => {
     const str = formatCurrency(value)
 
     return (
-        <div style={{ textAlign: 'end', ...style }}>
+        <div
+            style={{ textAlign: 'end', ...style }}
+            {...rest}
+        >
             <span>
-                {`${str.split('.')[0]}`}
+                {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
             </span>
             <span style={{ fontSize: '.7em' }}>
                 {`.${str.split('.')[1]}`}
