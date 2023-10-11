@@ -1,4 +1,6 @@
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect } from 'react'
+
+import { useNavigate, Outlet } from 'react-router-dom'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
@@ -67,12 +69,23 @@ const Wafers = ({ setCurrentAccount, currentAccount }) => {
 const Transactions = ({ currentAccount }) => {
     const { data: transactionsData } = useGetTransactionsQuery('depository')
     let previousMonth = null
+    const navigate = useNavigate()
+
+    const amountFlexBasis = transactionsData
+        .filter(transaction => currentAccount === transaction.account)
+        .reduce((acc, transaction) => {
+            const amountLength = String(transaction.amount).length
+            return amountLength > acc ? amountLength : acc
+        }, 0) + 2
+
 
     return (
         <div className="transaction-rows">
             <div className="transaction-row">
                 <div>Name</div>
-                <div>Amount</div>
+                <div style={{ flexBasis: `${amountFlexBasis}ch` }}>
+                    Amount
+                </div>
             </div>
             {transactionsData.filter(transaction => currentAccount === transaction.account).map((transaction) => {
                 const currentMonth = transaction.date.slice(5, 7)
@@ -87,6 +100,7 @@ const Transactions = ({ currentAccount }) => {
                             className="transaction-row"
                             key={transaction.id}
                             type="button"
+                            onClick={() => navigate(`/accounts/transaction/${transaction.transaction_id}`)}
                         >
                             {newMonth &&
                                 <div className="month-delimiter">
@@ -104,6 +118,7 @@ const Transactions = ({ currentAccount }) => {
                                 isDebit={transaction.amount < 0}
                                 style={{
                                     textAlign: 'start',
+                                    flexBasis: `${amountFlexBasis}ch`,
                                 }}
                                 className={transaction.amount < 0 ? 'debit' : 'credit'}
                             />
@@ -129,6 +144,7 @@ const Deposits = () => {
             <ShimmerDiv shimmering={isLoading} className="transactions-window">
                 <Transactions currentAccount={currentAccount} />
             </ShimmerDiv>
+            <Outlet />
         </>
     )
 }

@@ -6,11 +6,17 @@ import { BlackPrimaryButton } from '@ledget/shared-ui'
 
 import './NotFound.css'
 
-const NotFound = () => {
+const NotFound = ({ hasBackground }) => {
     const navigate = useNavigate()
 
     return (
-        <div className="window" id="not-found-window">
+        <div
+            className="window"
+            id="not-found-window"
+            style={{
+                ...(!hasBackground ? { backgroundColor: 'none', boxShadow: 'none' } : {})
+            }}
+        >
             <div>
                 <Desert />
                 <h1>404 Not Found</h1>

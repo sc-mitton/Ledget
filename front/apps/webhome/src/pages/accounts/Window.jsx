@@ -8,6 +8,7 @@ import './styles/Window.css'
 import './styles/Main.css'
 import NotFound from '@pages/notFound/NotFound'
 import { usePillAnimation } from '@utils/hooks'
+import { TransactionItem } from '@modals'
 import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/shared-assets'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import Deposits from './Deposits'
@@ -119,7 +120,7 @@ function Window() {
             <Header />
             <AnimatePresence mode="wait">
                 <motion.div
-                    key={location.pathname.split('/')[2]}
+                    key={location.pathname.split('/')[1]}
                     initial={{ opacity: 0, ...baseConfig }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -129,7 +130,9 @@ function Window() {
                         location={location}
                         key={location.pathname.split('/')[2]}
                     >
-                        <Route path="deposits" element={<Deposits />} />
+                        <Route path="deposits" element={<Deposits />} >
+                            <Route path="transaction/:id" element={<TransactionItem />} />
+                        </Route>
                         <Route path="investments" element={<div>Investments</div>} />
                         <Route path="credit" element={<div>Credit</div>} />
                         <Route path="loans" element={<div>Loans</div>} />
