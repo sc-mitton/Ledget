@@ -175,6 +175,7 @@
 .transactions--container {
     flex-grow: 1;
     position: relative;
+    border-radius: var(--border-radius3);
 }
 
 .transactions--table {
@@ -233,6 +234,11 @@
     box-shadow: var(--window) 0 -8px 4px 2px;
 }
 
+.transactions--table>div:last-child,
+.transactions--table>div:last-child>div {
+    margin-bottom: 12px;
+}
+
 /* Border bottom for all cells except last child */
 .transactions--table>div:nth-child(2n+3):not(:last-child)>div::after {
     content: '';
@@ -270,6 +276,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border-top-left-radius: var(--border-radius2);
+    border-bottom-left-radius: var(--border-radius2);
 }
 
 /* Date sub text */
@@ -283,14 +291,6 @@
     padding-right: 12px;
     display: flex;
     align-items: center;
-}
-
-.transactions--table>div:nth-child(2n+3):hover>div:first-child {
-    border-top-left-radius: var(--border-radius2);
-    border-bottom-left-radius: var(--border-radius2);
-}
-
-.transactions--table>div:nth-child(2n+3):hover>div:last-child {
     border-top-right-radius: var(--border-radius2);
     border-bottom-right-radius: var(--border-radius2);
 }

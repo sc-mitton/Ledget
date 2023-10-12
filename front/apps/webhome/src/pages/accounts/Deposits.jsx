@@ -5,9 +5,10 @@ import { useNavigate, Outlet } from 'react-router-dom'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import { Base64Logo, DollarCents } from '@components/pieces'
+import { ShimmerDiv } from '@ledget/shared-ui'
 
 const Wafers = ({ setCurrentAccount, currentAccount }) => {
-    const { data: accountsData, isSuccess } = useGetAccountsQuery()
+    const { data: accountsData, isSuccess, isLoading } = useGetAccountsQuery()
 
     useEffect(() => {
         isSuccess && setCurrentAccount(accountsData.accounts[0].account_id)
@@ -31,9 +32,11 @@ const Wafers = ({ setCurrentAccount, currentAccount }) => {
                     const nameIsLong = account.official_name.length > 18
 
                     return (
-                        <div
+                        <ShimmerDiv
                             key={account.account_id}
                             className={`account-wafer ${currentAccount === account.account_id ? 'active' : 'inactive'}`}
+                            shimmering={isLoading}
+                            background="var(--logo-dark)"
                             role="button"
                             tabIndex={0}
                             onClick={() => setCurrentAccount(account.account_id)}
@@ -57,7 +60,7 @@ const Wafers = ({ setCurrentAccount, currentAccount }) => {
                             <div className="wafer-balance--container">
                                 <DollarCents value={String(account.balances.current * 100)} />
                             </div>
-                        </div>
+                        </ShimmerDiv>
                     )
                 })}
             </div>
@@ -125,11 +128,13 @@ const Deposits = () => {
                 setCurrentAccount={setCurrentAccount}
                 currentAccount={currentAccount}
             />
-            {!isLoading &&
-                <div className="transactions--container">
-                    <Transactions currentAccount={currentAccount} />
-                </div>
-            }
+            <ShimmerDiv
+                className="transactions--container"
+                shimmering={isLoading}
+                background="var(--inner-window)"
+            >
+                <Transactions currentAccount={currentAccount} />
+            </ShimmerDiv>
             <Outlet />
         </>
     )
