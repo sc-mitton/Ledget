@@ -110,6 +110,11 @@ function Window() {
         navigate('/accounts/deposits')
     }, [])
 
+    const config = {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+    }
 
     return (
         <div className="window" id="accounts-window">
@@ -117,7 +122,7 @@ function Window() {
             <AnimatePresence mode="wait">
                 <motion.div
                     key={location.pathname.split('/')[1]}
-                    initial={{ opacity: 0 }}
+                    initial={{ opacity: 0, ...config }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                 >

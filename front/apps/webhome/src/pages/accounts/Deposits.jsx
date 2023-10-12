@@ -71,7 +71,7 @@ const Transactions = ({ currentAccount }) => {
     const navigate = useNavigate()
 
     return (
-        <div className="transactions--container">
+        <div className="transactions--table">
             <div className="transactions--header">
                 <div>Name</div>
                 <div>Amount</div>
@@ -125,7 +125,11 @@ const Deposits = () => {
                 setCurrentAccount={setCurrentAccount}
                 currentAccount={currentAccount}
             />
-            {!isLoading && <Transactions currentAccount={currentAccount} />}
+            {!isLoading &&
+                <div className="transactions--container">
+                    <Transactions currentAccount={currentAccount} />
+                </div>
+            }
             <Outlet />
         </>
     )
