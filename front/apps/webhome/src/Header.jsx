@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
 import { animated } from '@react-spring/web'
-import { useSearchParams } from 'react-router-dom'
 
 import './styles/header.css'
 import { Logout, Help } from '@modals'
@@ -157,9 +156,6 @@ const DropDownMenu = ({ isNarrow, setModal }) => {
 
 function Header({ isNarrow }) {
     const [modal, setModal] = useState('')
-    const location = useLocation()
-    const [searchParams] = useSearchParams()
-    const [zIndex, setZindex] = useState(1000)
 
     const Modal = ({ selection }) => {
         switch (selection) {
@@ -180,23 +176,9 @@ function Header({ isNarrow }) {
         }
     }
 
-    useEffect(() => {
-        if (searchParams.get('confirm') ||
-            ['new', 'create', 'edit', 'change', 'update', 'cancel', 'delete', 'add', 'setup', 'recovery-codes'].some(
-                (word) => location.pathname.includes(word)
-            )
-        ) {
-            setZindex(0)
-        } else {
-            setZindex(1000)
-        }
-    }, [location.pathname, searchParams])
-
     return (
         <>
-            <header
-                style={{ zIndex: zIndex }}
-            >
+            <header style={{ zIndex: 1000 }}>
                 <div className={`header-container ${isNarrow ? 'narrow' : ''}`}>
                     <div className="header-logo"><LedgetLogoIcon /></div>
                     <div>
