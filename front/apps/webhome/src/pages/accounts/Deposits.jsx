@@ -1,12 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 
 import { useNavigate, Outlet } from 'react-router-dom'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import { Base64Logo, DollarCents } from '@components/pieces'
-import { digitMonthToAbrev, formatMDY } from "@ledget/shared-utils"
-import { ShimmerDiv } from "@ledget/shared-ui"
 
 const Wafers = ({ setCurrentAccount, currentAccount }) => {
     const { data: accountsData, isSuccess } = useGetAccountsQuery()
@@ -74,54 +72,45 @@ const Transactions = ({ currentAccount }) => {
 
     return (
         <div className="transactions--container">
-            <table className="transactions-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {transactionsData.filter(transaction => currentAccount === transaction.account).map((transaction) => {
-                        const currentMonth = transaction.date.slice(5, 7)
-                        let newMonth = false
-                        if (previousMonth !== currentMonth) {
-                            previousMonth = currentMonth
-                            newMonth = true
-                        }
-                        return (
-                            <>
-                                <tr
-                                    key={transaction.id}
-                                    type="button"
-                                    onClick={() => navigate(`/accounts/transaction/${transaction.transaction_id}`)}
-                                >
-                                    <td>
-                                        {newMonth &&
-                                            <div colSpan="2" className="month-delimiter">
-                                                {`${digitMonthToAbrev(currentMonth)}`}
-                                            </div>
-                                        }
-                                        <span>{transaction.name}</span>
-                                        <br />
-                                        <span>
-                                            {formatMDY(transaction.date)}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <DollarCents
-                                            value={String(transaction.amount * 100)}
-                                            isDebit={transaction.amount < 0}
-                                            style={{ textAlign: 'start' }}
-                                            className={transaction.amount < 0 ? 'debit' : 'credit'}
-                                        />
-                                    </td>
-                                </tr>
-                            </>
-                        )
-                    })}
-                </tbody>
-            </table>
+            <div className="transactions--header">
+                <div>Name</div>
+                <div>Amount</div>
+            </div>
+            {transactionsData.filter(transaction => currentAccount === transaction.account).map((transaction) => {
+                const date = new Date(transaction.datetime)
+                const currentMonth = date.getMonth()
+                let newMonth = false
+                if (currentMonth !== previousMonth) {
+                    previousMonth = currentMonth
+                    newMonth = true
+                }
+
+                return (
+                    <Fragment key={transaction.transaction_id}>
+                        <div className={newMonth ? 'month-delimiter' : ''}>
+                            {newMonth && `${date.toLocaleString('default', { month: 'short' })}`}
+                        </div>
+                        <div
+                            key={transaction.id}
+                            type="button"
+                            onClick={() => navigate(`/accounts/transaction/${transaction.transaction_id}`)}
+                        >
+                            <div>
+                                <span>{transaction.name}</span>
+                                <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
+                            </div>
+                            <div>
+                                <DollarCents
+                                    value={String(transaction.amount * 100)}
+                                    isDebit={transaction.amount < 0}
+                                    style={{ textAlign: 'start' }}
+                                    className={transaction.amount < 0 ? 'debit' : 'credit'}
+                                />
+                            </div>
+                        </div>
+                    </Fragment>
+                )
+            })}
         </div>
     )
 }
@@ -136,7 +125,7 @@ const Deposits = () => {
                 setCurrentAccount={setCurrentAccount}
                 currentAccount={currentAccount}
             />
-            <Transactions currentAccount={currentAccount} />
+            {!isLoading && <Transactions currentAccount={currentAccount} />}
             <Outlet />
         </>
     )
