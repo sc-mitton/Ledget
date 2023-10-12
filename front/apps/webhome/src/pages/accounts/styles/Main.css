@@ -210,13 +210,13 @@
 /* Name Header */
 .transactions--header>div:first-child {
     grid-column: 2;
-    padding: 0 10px 8px 12px;
+    padding: 0 10px 0px 12px;
 }
 
 /* Amount Header */
 .transactions--header>div:last-child {
     grid-column: 3;
-    padding-bottom: 8px;
+    padding-bottom: 0px;
 }
 
 .transactions--table>div:nth-child(2n+3) {
@@ -259,6 +259,7 @@
 /* name cells, amount cells */
 .transactions--table>div:nth-child(2n+3)>div {
     position: relative;
+    cursor: pointer;
     z-index: 0;
 }
 

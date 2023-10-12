@@ -93,7 +93,7 @@ const Transactions = ({ currentAccount }) => {
                         <div
                             key={transaction.id}
                             type="button"
-                            onClick={() => navigate(`/accounts/transaction/${transaction.transaction_id}`)}
+                            onClick={() => navigate(`/accounts/deposits/transaction/${transaction.transaction_id}`)}
                         >
                             <div>
                                 <span>{transaction.name}</span>
