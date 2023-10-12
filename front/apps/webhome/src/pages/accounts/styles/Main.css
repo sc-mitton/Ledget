@@ -165,7 +165,9 @@
 }
 
 .wafer-balance--container * {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 1px;
 }
 
 /* ------------------------------ Transactions ------------------------------ */
@@ -174,10 +176,42 @@
     overflow: auto;
     display: grid;
     grid-template-columns: auto 1fr auto;
-    max-height: 150px;
+    margin-top: 12px;
+    padding-right: 12px;
 }
 
 .transactions--header {
+    display: contents;
+}
+
+/* Headers */
+.transactions--header>div {
+    font-weight: 500;
+    padding-right: 0px;
+    position: relative;
+    background-color: var(--window);
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    box-shadow: var(--window) 0 8px 8px 2px;
+}
+
+/* Name Header */
+.transactions--header>div:first-child {
+    grid-column: 2;
+    padding: 0 8px;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+}
+
+/* Amount Header */
+.transactions--header>div:last-child {
+    grid-column: 3;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+}
+
+.transactions--container>div:nth-child(2n+3) {
     display: contents;
 }
 
@@ -186,95 +220,67 @@
     align-items: flex-start;
     position: sticky;
     top: 28px;
-    color: rgb(var(--charcoal-rgb), .7);
+    color: rgb(var(--charcoal-rgb), .5);
     background-color: var(--window);
     box-shadow: var(--window) 0 -8px 4px 2px;
 }
 
-/* Name Header */
-.transactions--header>div:first-child {
-    grid-column: 2;
-    font-weight: 500;
-    padding: 8px;
-    padding-right: 0px;
-}
-
-/* Amount Header */
-.transactions--header>div:nth-child(2) {
-    grid-column: 3;
-    font-weight: 500;
-    padding: 8px 0;
-}
-
-/* Amount Header, Name Header */
-.transactions--header {
-    position: relative;
-    background-color: var(--window);
-    position: sticky;
-    top: 0px;
-    z-index: 1;
-}
-
-.transactions--container>div:nth-child(2n+2):not(:nth-child(-n+1)) {
-    display: contents;
-}
-
 /* Border bottom for all cells except last child */
-.transactions--container>div:nth-child(2n+2):not(:nth-child(-n+1)):not(:last-child)>div::after {
+.transactions--container>div:nth-child(2n+3):not(:last-child)>div::after {
     content: '';
     position: absolute;
     bottom: -4px;
     left: 0;
     width: 100%;
-    height: 1.5px;
+    height: 1.25px;
     background-color: var(--subtle-border-color);
 }
 
-.transactions--container>div:nth-child(2n+2):not(:nth-child(-n+1)):hover>div {
+.transactions--container>div:nth-child(2n+3):hover>div {
     background-color: rgb(var(--m-green-values), .1);
     cursor: pointer;
 }
 
 /* Month Marker */
-.transactions--container>div:nth-child(2n+1):not(:nth-child(-n+1)) {
+.transactions--container>div:nth-child(2n+2) {
     margin: 4px 0;
     padding: 4px 0;
-    padding-right: 20px;
+    padding-right: 12px;
     padding-left: 4px;
 }
 
 /* name cells, amount cells */
-.transactions--container>div:nth-child(2n+2):not(:nth-child(-n+1))>div {
+.transactions--container>div:nth-child(2n+3)>div {
     margin: 4px 0;
     position: relative;
     z-index: 0;
 }
 
 /* all name cells */
-.transactions--container>div:nth-child(2n+2):not(:nth-child(-n+1))>div:first-child {
+.transactions--container>div:nth-child(2n+3)>div:first-child {
     padding: 4px 10px;
     display: flex;
     flex-direction: column;
 }
 
 /* Date sub text */
-.transactions--container>div:nth-child(2n+2):not(:nth-child(-n+1))>div:first-child span:last-child {
+.transactions--container>div:nth-child(2n+3)>div:first-child span:last-child {
     opacity: .7;
 }
 
 /* all amount cells */
-.transactions--container>div:nth-child(2n+2):not(:nth-child(-n+1))>div:last-child {
+.transactions--container>div:nth-child(2n+3)>div:last-child {
     padding: 4px 10px 4px 0;
     display: flex;
     align-items: center;
 }
 
-.transactions--container>div:nth-child(2n+2):not(:nth-child(-n+1)):hover>div:first-child {
+.transactions--container>div:nth-child(2n+3):hover>div:first-child {
     border-top-left-radius: var(--border-radius1);
     border-bottom-left-radius: var(--border-radius1);
 }
 
-.transactions--container>div:nth-child(2n+2):not(:nth-child(-n+1)):hover>div:last-child {
+.transactions--container>div:nth-child(2n+3):hover>div:last-child {
     border-top-right-radius: var(--border-radius1);
     border-bottom-right-radius: var(--border-radius1);
 }
@@ -319,18 +325,26 @@
         margin-left: -12px;
     }
 
+    .transactions--container {
+        margin-right: -8px;
+    }
+
     /* all name cells */
-    .transactions--container>div:nth-child(2n+2):not(:nth-child(-n+2))>div:first-child {
+    .transactions--container>div:nth-child(2n+3)>div:first-child {
         padding-left: 4px;
         padding-right: 4px;
     }
 
     /* all amount cells */
-    .transactions--container>div:nth-child(2n+2):not(:nth-child(-n+2))>div:last-child {
+    .transactions--container>div:nth-child(2n+3)>div:last-child {
         padding-right: 4px;
     }
 
-    .transactions--container>div:first-child {
+    .transactions--header>div:first-child {
         padding-left: 4px;
+    }
+
+    .transactions--header>div:last-child {
+        padding-right: 4px;
     }
 }
