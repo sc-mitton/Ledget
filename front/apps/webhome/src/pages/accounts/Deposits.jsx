@@ -73,54 +73,56 @@ const Transactions = ({ currentAccount }) => {
     const navigate = useNavigate()
 
     return (
-        <table className="transactions-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                {transactionsData.filter(transaction => currentAccount === transaction.account).map((transaction) => {
-                    const currentMonth = transaction.date.slice(5, 7)
-                    let newMonth = false
-                    if (previousMonth !== currentMonth) {
-                        previousMonth = currentMonth
-                        newMonth = true
-                    }
-                    return (
-                        <>
-                            <tr
-                                key={transaction.id}
-                                type="button"
-                                onClick={() => navigate(`/accounts/transaction/${transaction.transaction_id}`)}
-                            >
-                                <td>
-                                    {newMonth &&
-                                        <div colSpan="2" className="month-delimiter">
-                                            {`${digitMonthToAbrev(currentMonth)}`}
-                                        </div>
-                                    }
-                                    <span>{transaction.name}</span>
-                                    <br />
-                                    <span>
-                                        {formatMDY(transaction.date)}
-                                    </span>
-                                </td>
-                                <td>
-                                    <DollarCents
-                                        value={String(transaction.amount * 100)}
-                                        isDebit={transaction.amount < 0}
-                                        style={{ textAlign: 'start' }}
-                                        className={transaction.amount < 0 ? 'debit' : 'credit'}
-                                    />
-                                </td>
-                            </tr>
-                        </>
-                    )
-                })}
-            </tbody>
-        </table>
+        <div className="transactions--container">
+            <table className="transactions-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {transactionsData.filter(transaction => currentAccount === transaction.account).map((transaction) => {
+                        const currentMonth = transaction.date.slice(5, 7)
+                        let newMonth = false
+                        if (previousMonth !== currentMonth) {
+                            previousMonth = currentMonth
+                            newMonth = true
+                        }
+                        return (
+                            <>
+                                <tr
+                                    key={transaction.id}
+                                    type="button"
+                                    onClick={() => navigate(`/accounts/transaction/${transaction.transaction_id}`)}
+                                >
+                                    <td>
+                                        {newMonth &&
+                                            <div colSpan="2" className="month-delimiter">
+                                                {`${digitMonthToAbrev(currentMonth)}`}
+                                            </div>
+                                        }
+                                        <span>{transaction.name}</span>
+                                        <br />
+                                        <span>
+                                            {formatMDY(transaction.date)}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <DollarCents
+                                            value={String(transaction.amount * 100)}
+                                            isDebit={transaction.amount < 0}
+                                            style={{ textAlign: 'start' }}
+                                            className={transaction.amount < 0 ? 'debit' : 'credit'}
+                                        />
+                                    </td>
+                                </tr>
+                            </>
+                        )
+                    })}
+                </tbody>
+            </table>
+        </div>
     )
 }
 
@@ -134,9 +136,7 @@ const Deposits = () => {
                 setCurrentAccount={setCurrentAccount}
                 currentAccount={currentAccount}
             />
-            <ShimmerDiv shimmering={isLoading}>
-                <Transactions currentAccount={currentAccount} />
-            </ShimmerDiv>
+            <Transactions currentAccount={currentAccount} />
             <Outlet />
         </>
     )

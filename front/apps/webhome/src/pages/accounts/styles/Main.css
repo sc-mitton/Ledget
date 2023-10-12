@@ -170,6 +170,11 @@
 
 /* ------------------------------ Transactions ------------------------------ */
 
+.transactions--container {
+    flex-grow: 1;
+    max-height: 100px;
+}
+
 .month-delimiter {
     position: absolute;
     left: -44px;
@@ -177,13 +182,12 @@
 }
 
 .transactions-table {
+    border-spacing: 0 10px;
     margin-top: 4px;
     width: calc(100% - 44px);
     position: relative;
     overflow: auto;
-    border-spacing: 0 10px;
     margin-left: 44px;
-    box-sizing: border-box;
 }
 
 .transactions-table thead {
@@ -203,14 +207,30 @@
     position: relative;
 }
 
-.transactions-table tbody tr:not(:last-child)::after,
-.transactions-table thead tr::after {
+.transactions-table tbody {
+    white-space: nowrap;
+    position: relative;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.transactions-table tbody tr:not(:last-child)::after {
     content: '';
     position: absolute;
     left: 0;
     right: 0;
     bottom: -6px;
     height: 1.5px;
+    background-color: var(--subtle-border-color);
+}
+
+.transactions-table thead tr::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
     background-color: var(--subtle-border-color);
 }
 
