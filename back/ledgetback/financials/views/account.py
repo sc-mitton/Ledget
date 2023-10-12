@@ -7,7 +7,7 @@ import plaid
 from core.permissions import IsAuthedVerifiedSubscriber
 from core.clients import create_plaid_client
 from financials.models import PlaidItem
-from financials.serializers.account import InstitutionSerializer
+from financials.serializers.accounts import InstitutionSerializer
 
 plaid_client = create_plaid_client()
 

@@ -72,21 +72,13 @@ const Transactions = ({ currentAccount }) => {
     let previousMonth = null
     const navigate = useNavigate()
 
-    const amountFlexBasis = transactionsData
-        .filter(transaction => currentAccount === transaction.account)
-        .reduce((acc, transaction) => {
-            const amountLength = String(transaction.amount).length
-            return amountLength > acc ? amountLength : acc
-        }, 0) + 2
-
     return (
         <table className="transactions-table">
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th style={{ flexBasis: `${amountFlexBasis}ch` }}>Amount</th>
+                    <th>Amount</th>
                 </tr>
-                <hr />
             </thead>
             <tbody>
                 {transactionsData.filter(transaction => currentAccount === transaction.account).map((transaction) => {
@@ -110,11 +102,12 @@ const Transactions = ({ currentAccount }) => {
                                         </div>
                                     }
                                     <span>{transaction.name}</span>
+                                    <br />
                                     <span>
                                         {formatMDY(transaction.date)}
                                     </span>
                                 </td>
-                                <td style={{ flexBasis: `${amountFlexBasis}ch` }}>
+                                <td>
                                     <DollarCents
                                         value={String(transaction.amount * 100)}
                                         isDebit={transaction.amount < 0}
@@ -123,7 +116,6 @@ const Transactions = ({ currentAccount }) => {
                                     />
                                 </td>
                             </tr>
-                            <hr />
                         </>
                     )
                 })}

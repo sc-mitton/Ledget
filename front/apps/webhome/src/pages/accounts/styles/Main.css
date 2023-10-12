@@ -178,24 +178,12 @@
 
 .transactions-table {
     margin-top: 4px;
-    padding-left: 44px;
-    width: 100%;
+    width: calc(100% - 44px);
     position: relative;
     overflow: auto;
-    height: 100px;
-}
-
-.transactions-table hr {
-    margin: 0;
-}
-
-.transactions-table tr {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    gap: 8px;
-    padding: 4px 0;
-    margin: 2px 0;
+    border-spacing: 0 10px;
+    margin-left: 44px;
+    box-sizing: border-box;
 }
 
 .transactions-table thead {
@@ -207,41 +195,54 @@
     font-weight: 500;
 }
 
-.transactions-table tbody tr {
-    cursor: pointer;
-    transition: background-color .2s ease-out;
+.transactions-table td {
+    border: none;
 }
 
-.transactions-table tbody tr:hover {
-    background-color: rgb(var(--m-green-values), .1);
-    transition: background-color .2s ease-out;
-    border-radius: var(--border-radius1);
+.transactions-table tr {
+    position: relative;
+}
+
+.transactions-table tbody tr:not(:last-child)::after,
+.transactions-table thead tr::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1.5px;
+    background-color: var(--subtle-border-color);
 }
 
 .transactions-table tbody tr td:first-child,
 .transactions-table thead tr th:first-child {
-    flex: 0 1 90%;
-    padding: 0px 16px;
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
+    padding: 4px 16px;
+    cursor: pointer;
+    text-align: left;
+    border-top-left-radius: var(--border-radius1);
+    border-bottom-left-radius: var(--border-radius1);
 }
 
-.transactions-table tbody tr td:last-child,
-.transactions-table thead tr th:last-child {
-    flex-shrink: 0;
-    flex-grow: 0;
-    padding: 0px 16px;
-    display: flex;
-    align-items: flex-start;
+.transactions-table tbody tr td:last-of-type,
+.transactions-table thead tr th:last-of-type {
+    padding: 4px 0px 4px 16px;
+    cursor: pointer;
+    text-align: left;
+    border-top-right-radius: var(--border-radius1);
+    border-bottom-right-radius: var(--border-radius1);
 }
 
-.transactions-table tbody tr:last-of-type+hr {
-    visibility: collapse;
+.transactions-table tbody tr td:first-child span:last-child {
+    opacity: .7;
 }
 
 .transactions-table .debit * {
     color: var(--green-dark3);
+}
+
+.transactions-table tbody tr:hover td {
+    background-color: rgb(var(--m-green-values), .1);
+    transition: background-color .2s ease-out;
 }
 
 /* ------------------------------- Responsive ------------------------------- */
