@@ -85,6 +85,7 @@ const Header = () => {
                             className='window-header--item btn-icon-l'
                             role='link'
                             aria-current={currentPath === path.path ? 'page' : null}
+                            tabIndex={0}
                             onClick={() => navigate(`/accounts/${path.path}`)}
                         >
                             {path.icon}

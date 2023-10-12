@@ -47,6 +47,12 @@
     transition: all .2s ease-out;
 }
 
+.account-wafer:focus-visible {
+    outline: none;
+    border-radius: var(--border-radius4);
+    transform: scale(1.05);
+}
+
 .account-wafer.active {
     box-shadow: var(--active-wafer-drop-shadow);
 }
@@ -164,44 +170,56 @@
 
 /* ------------------------------ Transactions ------------------------------ */
 
-.transactions-window {
-    flex-grow: 1;
-    margin-top: 10px;
-    padding: 4px;
-}
-
-.transaction-rows {
-    margin-left: 44px;
-}
-
-.transaction-row {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    gap: 8px;
-    transition: background-color .2s ease-out;
-    cursor: pointer;
-    padding: 4px 0;
-    margin: 2px 0;
-}
-
-.transaction-row:not(:first-child):hover {
-    background-color: rgb(var(--m-green-values), .1);
-    transition: background-color .2s ease-out;
-    border-radius: var(--border-radius1);
-}
-
-.transaction-row:first-child {
-    font-weight: 500;
-}
-
-.transaction-row>div:nth-last-child(3) {
+.month-delimiter {
     position: absolute;
     left: -44px;
     opacity: .5;
 }
 
-.transaction-row>div:nth-last-child(2) {
+.transactions-table {
+    margin-top: 4px;
+    padding-left: 44px;
+    width: 100%;
+    position: relative;
+    overflow: auto;
+    height: 100px;
+}
+
+.transactions-table hr {
+    margin: 0;
+}
+
+.transactions-table tr {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    gap: 8px;
+    padding: 4px 0;
+    margin: 2px 0;
+}
+
+.transactions-table thead {
+    position: sticky;
+    top: 0px;
+}
+
+.transactions-table thead * {
+    font-weight: 500;
+}
+
+.transactions-table tbody tr {
+    cursor: pointer;
+    transition: background-color .2s ease-out;
+}
+
+.transactions-table tbody tr:hover {
+    background-color: rgb(var(--m-green-values), .1);
+    transition: background-color .2s ease-out;
+    border-radius: var(--border-radius1);
+}
+
+.transactions-table tbody tr td:first-child,
+.transactions-table thead tr th:first-child {
     flex: 0 1 90%;
     padding: 0px 16px;
     display: flex;
@@ -209,11 +227,8 @@
     flex-direction: column;
 }
 
-.transaction-row>div:nth-last-child(2) span:last-child {
-    opacity: .7;
-}
-
-.transaction-row>div:last-child {
+.transactions-table tbody tr td:last-child,
+.transactions-table thead tr th:last-child {
     flex-shrink: 0;
     flex-grow: 0;
     padding: 0px 16px;
@@ -221,18 +236,13 @@
     align-items: flex-start;
 }
 
-.transaction-row .debit * {
+.transactions-table tbody tr:last-of-type+hr {
+    visibility: collapse;
+}
+
+.transactions-table .debit * {
     color: var(--green-dark3);
 }
-
-.transaction-row+hr {
-    margin: 0;
-}
-
-.transaction-rows>div:last-of-type+hr {
-    visibility: hidden;
-}
-
 
 /* ------------------------------- Responsive ------------------------------- */
 
@@ -270,12 +280,14 @@
         margin-left: -12px;
     }
 
-    .transaction-row>div:nth-last-child(2) {
+    .transactions-table tbody tr td:first-child,
+    .transactions-table thead tr th:first-child {
         padding-left: 8px;
         padding-right: 8px;
     }
 
-    .transaction-row>div:last-child {
+    .transactions-table tbody tr td:last-child,
+    .transactions-table thead tr th:last-child {
         padding-left: 8px;
         padding-right: 8px;
     }

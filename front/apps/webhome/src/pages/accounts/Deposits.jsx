@@ -37,6 +37,7 @@ const Wafers = ({ setCurrentAccount, currentAccount }) => {
                             key={account.account_id}
                             className={`account-wafer ${currentAccount === account.account_id ? 'active' : 'inactive'}`}
                             role="button"
+                            tabIndex={0}
                             onClick={() => setCurrentAccount(account.account_id)}
                         >
                             <Base64Logo
@@ -78,56 +79,56 @@ const Transactions = ({ currentAccount }) => {
             return amountLength > acc ? amountLength : acc
         }, 0) + 2
 
-
     return (
-        <div className="transaction-rows">
-            <div className="transaction-row">
-                <div>Name</div>
-                <div style={{ flexBasis: `${amountFlexBasis}ch` }}>
-                    Amount
-                </div>
-            </div>
-            {transactionsData.filter(transaction => currentAccount === transaction.account).map((transaction) => {
-                const currentMonth = transaction.date.slice(5, 7)
-                let newMonth = false
-                if (previousMonth !== currentMonth) {
-                    previousMonth = currentMonth
-                    newMonth = true
-                }
-                return (
-                    <>
-                        <div
-                            className="transaction-row"
-                            key={transaction.id}
-                            type="button"
-                            onClick={() => navigate(`/accounts/transaction/${transaction.transaction_id}`)}
-                        >
-                            {newMonth &&
-                                <div className="month-delimiter">
-                                    {`${digitMonthToAbrev(currentMonth)}`}
-                                </div>
-                            }
-                            <div>
-                                <span>{transaction.name}</span>
-                                <span>
-                                    {formatMDY(transaction.date)}
-                                </span>
-                            </div>
-                            <DollarCents
-                                value={String(transaction.amount * 100)}
-                                isDebit={transaction.amount < 0}
-                                style={{
-                                    textAlign: 'start',
-                                    flexBasis: `${amountFlexBasis}ch`,
-                                }}
-                                className={transaction.amount < 0 ? 'debit' : 'credit'}
-                            />
-                        </div>
-                        <hr />
-                    </>
-                )
-            })}
-        </div>
+        <table className="transactions-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th style={{ flexBasis: `${amountFlexBasis}ch` }}>Amount</th>
+                </tr>
+                <hr />
+            </thead>
+            <tbody>
+                {transactionsData.filter(transaction => currentAccount === transaction.account).map((transaction) => {
+                    const currentMonth = transaction.date.slice(5, 7)
+                    let newMonth = false
+                    if (previousMonth !== currentMonth) {
+                        previousMonth = currentMonth
+                        newMonth = true
+                    }
+                    return (
+                        <>
+                            <tr
+                                key={transaction.id}
+                                type="button"
+                                onClick={() => navigate(`/accounts/transaction/${transaction.transaction_id}`)}
+                            >
+                                <td>
+                                    {newMonth &&
+                                        <div colSpan="2" className="month-delimiter">
+                                            {`${digitMonthToAbrev(currentMonth)}`}
+                                        </div>
+                                    }
+                                    <span>{transaction.name}</span>
+                                    <span>
+                                        {formatMDY(transaction.date)}
+                                    </span>
+                                </td>
+                                <td style={{ flexBasis: `${amountFlexBasis}ch` }}>
+                                    <DollarCents
+                                        value={String(transaction.amount * 100)}
+                                        isDebit={transaction.amount < 0}
+                                        style={{ textAlign: 'start' }}
+                                        className={transaction.amount < 0 ? 'debit' : 'credit'}
+                                    />
+                                </td>
+                            </tr>
+                            <hr />
+                        </>
+                    )
+                })}
+            </tbody>
+        </table>
     )
 }
 
@@ -141,7 +142,7 @@ const Deposits = () => {
                 setCurrentAccount={setCurrentAccount}
                 currentAccount={currentAccount}
             />
-            <ShimmerDiv shimmering={isLoading} className="transactions-window">
+            <ShimmerDiv shimmering={isLoading}>
                 <Transactions currentAccount={currentAccount} />
             </ShimmerDiv>
             <Outlet />
