@@ -5,7 +5,7 @@ import { useNavigate, Outlet } from 'react-router-dom'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import { Base64Logo, DollarCents } from '@components/pieces'
-import { ShimmerDiv } from '@ledget/shared-ui'
+import { ShimmerDiv, Shimmer } from '@ledget/shared-ui'
 
 const Wafers = ({ setCurrentAccount, currentAccount }) => {
     const { data: accountsData, isSuccess, isLoading } = useGetAccountsQuery()
@@ -32,7 +32,7 @@ const Wafers = ({ setCurrentAccount, currentAccount }) => {
                     const nameIsLong = account.official_name.length > 18
 
                     return (
-                        <ShimmerDiv
+                        <div
                             key={account.account_id}
                             className={`account-wafer ${currentAccount === account.account_id ? 'active' : 'inactive'}`}
                             shimmering={isLoading}
@@ -60,13 +60,33 @@ const Wafers = ({ setCurrentAccount, currentAccount }) => {
                             <div className="wafer-balance--container">
                                 <DollarCents value={String(account.balances.current * 100)} />
                             </div>
-                        </ShimmerDiv>
+                        </div>
                     )
                 })}
             </div>
         </div>
     )
 }
+
+const SkeletonWafers = () => (
+    <div className="account-wafers--container">
+        <div>
+            <span>Total Deposits</span>
+            <span>
+                <DollarCents value="0" />
+            </span>
+        </div>
+        <div className="shimmering-account-wafers">
+            {Array(4).fill().map((_, index) => (
+                <ShimmerDiv
+                    className="shimmering-account-wafer"
+                    shimmering={true}
+                    background="var(--inner-window-solid)"
+                />
+            ))}
+        </div>
+    </div>
+)
 
 const Transactions = ({ currentAccount }) => {
     const { data: transactionsData } = useGetTransactionsQuery('depository')
@@ -120,17 +140,23 @@ const Transactions = ({ currentAccount }) => {
 
 const Deposits = () => {
     const [currentAccount, setCurrentAccount] = useState('')
-    const { isLoading } = useGetTransactionsQuery('depository')
+    const { isLoading: isloadingTransactions } = useGetTransactionsQuery('depository')
+    const { isLoading: isLoadingAccounts } = useGetAccountsQuery()
 
     return (
         <>
-            <Wafers
-                setCurrentAccount={setCurrentAccount}
-                currentAccount={currentAccount}
-            />
+            {isLoadingAccounts
+                ?
+                <SkeletonWafers />
+                :
+                <Wafers
+                    setCurrentAccount={setCurrentAccount}
+                    currentAccount={currentAccount}
+                />
+            }
             <ShimmerDiv
                 className="transactions--container"
-                shimmering={isLoading}
+                shimmering={isloadingTransactions}
                 background="var(--inner-window)"
             >
                 <Transactions currentAccount={currentAccount} />

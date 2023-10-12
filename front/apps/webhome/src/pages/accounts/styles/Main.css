@@ -6,6 +6,9 @@
 
 .account-wafers--container>div:first-child {
     padding-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
 }
 
 .account-wafers--container>div:first-child>span * {
@@ -19,17 +22,22 @@
 }
 
 /* --------------------------------- Wafers --------------------------------- */
-.account-wafers {
+.account-wafers,
+.shimmering-account-wafers {
     display: flex;
     gap: 12px;
     overflow-x: scroll;
     overflow-y: hidden;
     padding: 16px 10px 16px 10px;
     width: 100%;
+}
+
+.account-wafers {
     background-image: radial-gradient(ellipse at center, rgb(0, 0, 0, .15) 1%, var(--window) 70%);
 }
 
-.account-wafer {
+.account-wafer,
+.shimmering-account-wafer {
     background-color: var(--logo-dark);
     border-radius: var(--border-radius4);
     padding: 10px 16px;
@@ -41,10 +49,13 @@
     justify-content: space-between;
     align-items: flex-start;
     flex-wrap: nowrap;
-    box-shadow: var(--new-item-drop-shadow);
     cursor: pointer;
     transform: scale(1);
     transition: all .2s ease-out;
+}
+
+.account-wafer {
+    box-shadow: var(--new-item-drop-shadow);
 }
 
 .account-wafer:focus-visible {
@@ -310,6 +321,7 @@
 
     .account-wafers--container>div:first-child {
         display: flex;
+        flex-direction: row;
         align-items: flex-end;
         gap: 8px;
         margin-left: 4px;
