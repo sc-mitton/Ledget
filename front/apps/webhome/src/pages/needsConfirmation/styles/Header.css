@@ -20,9 +20,8 @@
     align-items: center;
 }
 
-#needs-confirmation-header button {
-    display: flex;
-    align-items: center;
+#needs-confirmation-header>div:last-child {
+    gap: -2px;
 }
 
 #number-of-items {
@@ -32,8 +31,4 @@
     color: var(--faded-text);
     padding: 0 4px;
     border-radius: var(--border-radius1);
-}
-
-#refresh-btn {
-    margin-right: -2px;
 }

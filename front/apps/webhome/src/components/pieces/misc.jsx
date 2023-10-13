@@ -8,7 +8,7 @@ export const DollarCents = ({ value, isDebit, style, ...rest }) => {
             style={{ textAlign: 'end', ...style }}
             {...rest}
         >
-            <span>
+            <span style={{ fontSize: 'inherit' }}>
                 {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
             </span>
             <span style={{ fontSize: '.7em' }}>

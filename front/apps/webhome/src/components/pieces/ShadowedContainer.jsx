@@ -48,7 +48,7 @@ const ShadowedContainer = (props) => {
                 setBottomShadow(false)
             }
         }
-        let timeoutId = setTimeout(setBottomShadowDelayed, 200)
+        let timeoutId = setTimeout(setBottomShadowDelayed, 0)
         return () => {
             clearTimeout(timeoutId)
         }

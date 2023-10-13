@@ -1,4 +1,3 @@
-import React from 'react'
 import './styles/Tooltip.css'
 
 const Tooltip = (props) => {

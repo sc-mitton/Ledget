@@ -1,48 +1,7 @@
-import React, { useState } from 'react'
-
-import { useSpring, animated } from '@react-spring/web'
-
 import './styles/Header.css'
-import { ReplayIcon, CheckAll } from '@ledget/shared-assets'
-import { Tooltip } from '@components/pieces'
-import { IconButton } from '@ledget/shared-ui'
+import { CheckAll } from '@ledget/shared-assets'
+import { IconButton, RefreshButton, Tooltip } from '@ledget/shared-ui'
 
-
-const RefreshButton = ({ onClick }) => {
-    const [cycle, setCycle] = useState(1)
-
-    const [props, set] = useSpring(() => ({
-        transform: 'rotate(0deg)',
-        config: { tention: 180, friction: 20 },
-    }))
-
-    const handleClick = () => {
-        set.start({
-            transform: `rotate(${360 * cycle}deg)`,
-            onRest: () => setCycle(cycle + 1),
-        })
-    }
-
-    return (
-        <Tooltip
-            msg={"Refresh"}
-            ariaLabel={"Refresh list"}
-            style={{ left: '-.8rem' }}
-        >
-            <IconButton
-                id="refresh-btn"
-                aria-label="Refresh"
-                onClick={handleClick}
-            >
-                <animated.div
-                    style={props}
-                >
-                    <ReplayIcon />
-                </animated.div>
-            </IconButton>
-        </Tooltip>
-    )
-}
 
 const CheckAllButton = () => {
 
@@ -73,7 +32,7 @@ const NewItemsHeader = () => {
                     <h4>Need Confirmation</h4>
                 </div>
                 <div>
-                    <RefreshButton />
+                    <RefreshButton hasBackground={false} />
                     <CheckAllButton />
                 </div>
             </div>

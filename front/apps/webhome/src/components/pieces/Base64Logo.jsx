@@ -1,5 +1,6 @@
-import React from 'react'
 import Color from 'color';
+
+import './styles/Base64Logo.css'
 
 function getContrastColor(bgColor) {
     const color = Color(bgColor);
@@ -25,16 +26,11 @@ const Base64Image = (props) => {
 
     return (
         <div
+            className='base64-image--container'
             style={config}
             {...rest}
         >
             <img
-                style={{
-                    height: '1.2em',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
                 src={`data:image/png;base64,${data}`}
                 alt={alt}
             />

@@ -1,24 +1,19 @@
 .account-wafers--container {
     display: flex;
     gap: 20px;
-    align-items: flex-end;
+    align-items: flex-start;
 }
 
 .account-wafers--container>div:first-child {
-    padding-bottom: 20px;
+    padding-top: 28px;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
 }
 
-.account-wafers--container>div:first-child>span * {
-    font-size: 2rem;
+.account-wafers--container>div:first-child>div {
     font-weight: 500;
-}
-
-.account-wafers--container>div:first-child>span {
-    font-weight: 500;
-    font-size: 1.1rem;
+    font-size: 30px;
 }
 
 /* --------------------------------- Wafers --------------------------------- */
@@ -50,12 +45,52 @@
     align-items: flex-start;
     flex-wrap: nowrap;
     cursor: pointer;
-    transform: scale(1);
-    transition: all .2s ease-out;
+    transition: box-shadow .2s ease-out;
 }
 
 .account-wafer {
+    opacity: 0;
     box-shadow: var(--new-item-drop-shadow);
+    animation: slide-in 2s cubic-bezier(.05, .97, .24, .93) forwards, fade-in .3s ease-in-out forwards;
+    animation-delay: calc(var(--wafer-index) * 100ms);
+    transform: scale(1)
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in {
+    0% {
+        transform: scale(1) translateX(calc(30% + var(--wafer-index) * 5%));
+    }
+
+    100% {
+        transform: scale(1) translateX(0%);
+    }
+}
+
+@keyframes active-wafer-click {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateX(0%);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(.95) translateX(0%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateX(0%);
+    }
 }
 
 .account-wafer:focus-visible {
@@ -69,12 +104,12 @@
 }
 
 .account-wafer.inactive:active {
-    transform: scale(.95);
+    animation: fade-in, slide-in, active-wafer-click .5s ease-out forwards;
 }
 
 .account-wafer.inactive:hover {
     box-shadow: var(--wafer-hover-drop-shadow);
-    transition: all .2s ease-out;
+    transition: box-shadow .2s ease-out;
 }
 
 .account-wafer * {
@@ -195,8 +230,8 @@
     overflow: auto;
     display: grid;
     grid-template-columns: auto 1fr auto;
-    grid-auto-rows: 1fr;
-    grid-template-rows: auto;
+    grid-auto-rows: minmax(auto, 80px);
+    grid-template-rows: min-content;
     row-gap: 8px;
     margin-top: 12px;
     padding-right: 12px;
@@ -210,8 +245,8 @@
 /* Headers */
 .transactions--header>div {
     font-weight: 500;
-    padding-right: 0px;
-    position: relative;
+    font-size: 16px;
+    letter-spacing: .5px;
     background-color: var(--window);
     position: sticky;
     top: 0px;
@@ -310,6 +345,12 @@
     color: var(--green-dark3);
 }
 
+.refresh-btn--container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* ------------------------------- Responsive ------------------------------- */
 
 @media (max-width: 700px) {
@@ -320,22 +361,21 @@
     }
 
     .account-wafers--container>div:first-child {
+        padding-top: 0px;
         display: flex;
         flex-direction: row;
         align-items: flex-end;
         gap: 8px;
         margin-left: 4px;
+        margin-bottom: 4px;
         order: 2;
     }
 
-    .account-wafers--container>div:first-child>span * {
-        font-size: 1.4rem;
+    /* All accounts balance */
+    .account-wafers--container>div:first-child>div {
         font-weight: 500;
-        margin-bottom: -1px;
-    }
-
-    .account-wafers--container>div:first-child>span {
-        font-size: 1.2rem;
+        font-size: 22px;
+        margin-bottom: -2px;
     }
 
     .account-wafers--container>div:first-child {

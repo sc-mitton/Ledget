@@ -1,11 +1,13 @@
 import { useState, useEffect, Fragment } from 'react'
 
-import { useNavigate, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet, useSearchParams } from 'react-router-dom'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import { Base64Logo, DollarCents } from '@components/pieces'
-import { ShimmerDiv, Shimmer } from '@ledget/shared-ui'
+import { ShimmerDiv, RefreshButton } from '@ledget/shared-ui'
+
+
 
 const Wafers = ({ setCurrentAccount, currentAccount }) => {
     const { data: accountsData, isSuccess, isLoading } = useGetAccountsQuery()
@@ -17,17 +19,16 @@ const Wafers = ({ setCurrentAccount, currentAccount }) => {
     return (
         <div className="account-wafers--container">
             <div>
-                <span>Total Deposits</span>
-                <span>
-                    <DollarCents value={
+                <h3>Total Deposits</h3>
+                <DollarCents
+                    value={
                         String(accountsData?.accounts.filter(account => account.type === 'depository')
                             .reduce((acc, account) => acc + account.balances.current, 0) * 100)
                     }
-                    />
-                </span>
+                />
             </div>
             <div className="account-wafers">
-                {accountsData?.accounts.filter(account => account.type === 'depository').map(account => {
+                {accountsData?.accounts.filter(account => account.type === 'depository').map((account, index) => {
                     const institution = accountsData.institutions.find(item => item.id === account.institution_id)
                     const nameIsLong = account.official_name.length > 18
 
@@ -36,6 +37,7 @@ const Wafers = ({ setCurrentAccount, currentAccount }) => {
                             key={account.account_id}
                             className={`account-wafer ${currentAccount === account.account_id ? 'active' : 'inactive'}`}
                             shimmering={isLoading}
+                            style={{ '--wafer-index': index }}
                             background="var(--logo-dark)"
                             role="button"
                             tabIndex={0}
@@ -79,6 +81,7 @@ const SkeletonWafers = () => (
         <div className="shimmering-account-wafers">
             {Array(4).fill().map((_, index) => (
                 <ShimmerDiv
+                    key={index}
                     className="shimmering-account-wafer"
                     shimmering={true}
                     background="var(--inner-window-solid)"
@@ -138,10 +141,16 @@ const Transactions = ({ currentAccount }) => {
     )
 }
 
+
 const Deposits = () => {
     const [currentAccount, setCurrentAccount] = useState('')
     const { isLoading: isloadingTransactions } = useGetTransactionsQuery('depository')
     const { isLoading: isLoadingAccounts } = useGetAccountsQuery()
+    const [, setSearchParams] = useSearchParams()
+
+    useEffect(() => {
+        setSearchParams({ list: 'all' })
+    }, [])
 
     return (
         <>
@@ -161,6 +170,9 @@ const Deposits = () => {
             >
                 <Transactions currentAccount={currentAccount} />
             </ShimmerDiv>
+            <div className='refresh-btn--container' >
+                <RefreshButton />
+            </div>
             <Outlet />
         </>
     )

@@ -13,6 +13,7 @@ import {
   ReplayIcon,
   CheckMark
 } from '@ledget/shared-assets'
+import Tooltip from '../pieces-lib/Tooltip'
 import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'
 import { animated, useSpring } from '@react-spring/web'
 
@@ -211,3 +212,31 @@ export const ResendButton = forwardRef((props, ref) => {
     </button>
   )
 })
+
+
+export const RefreshButton = ({ fill, hasBackground = true, ...rest }) => (
+  <Tooltip
+    msg={"Refresh"}
+    ariaLabel={"Refresh list"}
+    style={{ left: '-.7rem' }}
+  >
+    {hasBackground
+      ?
+      <IconButton2
+        className="refresh-btn"
+        aria-label="Refresh"
+        {...rest}
+      >
+        <ReplayIcon fill={fill} />
+      </IconButton2>
+      :
+      <IconButton
+        className="refresh-btn-clr"
+        aria-label="Refresh"
+        {...rest}
+      >
+        <ReplayIcon fill={fill} />
+      </IconButton>
+    }
+  </Tooltip>
+)

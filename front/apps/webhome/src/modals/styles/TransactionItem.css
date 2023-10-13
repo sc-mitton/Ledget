@@ -1,0 +1,66 @@
+/* Header */
+.transaction-info--header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.transaction-info--header>div:first-child {
+    font-size: 32px;
+}
+
+.transaction-info--header :last-child {
+    width: 70%;
+    white-space: wrap;
+    text-align: center;
+    font-size: 1.17em;
+    font-weight: 500;
+}
+
+
+/* All Info */
+.transaction-info--container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.transaction-info--container a {
+    text-decoration: underline;
+}
+
+.transaction-info--container .inner-window>div {
+    display: flex;
+    align-items: center;
+}
+
+.transaction-info--container .inner-window>div {
+    gap: 6px;
+}
+
+.transaction-info--container .inner-window:first-child {
+    display: flex;
+    gap: 12px;
+}
+
+.transaction-info--container .inner-window:not(:first-child)>div {
+    display: grid;
+    column-gap: 20px;
+    row-gap: 0px;
+    grid-template-columns: minmax(0, auto) 1fr;
+}
+
+.transaction-info--container .inner-window:not(:first-child)>div>div {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.transaction-info--container .inner-window:not(:first-child)>div span {
+    padding-top: 3px;
+}
+
+.transaction-info--container .inner-window:not(:first-child)>div>div:nth-child(2n+1) {
+    font-weight: 500;
+}
