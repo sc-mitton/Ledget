@@ -8,7 +8,6 @@ import { Base64Logo, DollarCents } from '@components/pieces'
 import { ShimmerDiv, RefreshButton } from '@ledget/shared-ui'
 
 
-
 const Wafers = ({ setCurrentAccount, currentAccount }) => {
     const { data: accountsData, isSuccess, isLoading } = useGetAccountsQuery()
 

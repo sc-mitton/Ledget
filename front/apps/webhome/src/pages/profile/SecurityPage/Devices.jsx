@@ -5,11 +5,10 @@ import _ from 'lodash.groupby'
 import './styles/Devices.css'
 import { Disclosure } from '@headlessui/react'
 import { useDeleteRememberedDeviceMutation, } from '@features/authSlice'
-import { IconButtonSubmit } from '@ledget/shared-ui'
+import { IconButtonSubmit, Tooltip } from '@ledget/shared-ui'
 import Computer from '@ledget/shared-assets/src/icons/Computer.svg'
 import Phone from '@ledget/shared-assets/src/icons/Phone.svg'
 import { ArrowIcon, LogoutIcon, LocationIcon } from '@ledget/shared-assets'
-import { Tooltip } from "@components/pieces"
 
 
 const formatDateTime = (date) => {

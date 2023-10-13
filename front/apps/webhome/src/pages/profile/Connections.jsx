@@ -16,9 +16,8 @@ import {
 import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@ledget/shared-utils'
 import SubmitForm from '@components/pieces/SubmitForm'
-import { Tooltip } from '@components/pieces'
 import { RelinkIcon } from '@ledget/shared-assets'
-import { SecondaryButton, GreenSubmitButton, IconButton, ShimmerDiv, DeleteButton, BlackSubmitButton } from '@ledget/shared-ui'
+import { SecondaryButton, GreenSubmitButton, IconButton, ShimmerDiv, DeleteButton, BlackSubmitButton, Tooltip } from '@ledget/shared-ui'
 import { withReAuth } from '@utils'
 
 const DeleteContext = React.createContext()
