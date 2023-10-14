@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment } from 'react'
 
 import { useNavigate, Outlet } from 'react-router-dom'
+import Big from 'big.js'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { useGetTransactionsQuery, useTransactionsSyncMutation } from '@features/transactionsSlice'
@@ -93,6 +94,7 @@ const SkeletonWafers = () => (
 const Transactions = ({ currentAccount }: { currentAccount: string }) => {
     const { data: transactionsData } = useGetTransactionsQuery('depository')
     let previousMonth: number | null = null
+    let previousYear: number | null = null
     const navigate = useNavigate()
 
     return (
@@ -104,16 +106,23 @@ const Transactions = ({ currentAccount }: { currentAccount: string }) => {
             {transactionsData.filter((transaction: any) => currentAccount === transaction.account).map((transaction: any) => {
                 const date = new Date(transaction.datetime)
                 const currentMonth = date.getMonth()
+                const currentYear = date.getFullYear()
                 let newMonth = false
+                let newYear = false
                 if (currentMonth !== previousMonth) {
                     previousMonth = currentMonth
                     newMonth = true
+                }
+                if (currentYear !== previousYear) {
+                    previousYear = currentYear
+                    newYear = true
                 }
 
                 return (
                     <Fragment key={transaction.transaction_id}>
                         <div className={newMonth ? 'month-delimiter' : ''}>
-                            {newMonth && `${date.toLocaleString('default', { month: 'short' })}`}
+                            <span>{newMonth && `${date.toLocaleString('default', { month: 'short' })}`}</span>
+                            <span>{newYear && `${date.toLocaleString('default', { year: 'numeric' })}`}</span>
                         </div>
                         <div
                             key={transaction.id}
@@ -126,8 +135,7 @@ const Transactions = ({ currentAccount }: { currentAccount: string }) => {
                             </div>
                             <div>
                                 <DollarCents
-                                    value={String(transaction.amount * 100)}
-                                    isDebit={transaction.amount < 0}
+                                    value={Big(transaction.amount).times(100).toNumber()}
                                     style={{ textAlign: 'start' }}
                                     className={transaction.amount < 0 ? 'debit' : 'credit'}
                                 />
@@ -151,15 +159,21 @@ const Deposits = () => {
         if (isSuccess) {
             dispatch(popToast({
                 type: 'success',
-                message: `Synced${syncResult?.added ? `, ${syncResult?.added} new transactions` : 'successfully'}`
-            }))
-        } else if (isError) {
-            dispatch(popToast({
-                type: 'error',
-                message: 'Sync failed'
+                message: `Synced${syncResult?.added ? `, ${syncResult?.added} new transactions` : ' successfully'}`,
+                timer: syncResult?.added ? 2500 : 2000
             }))
         }
     }, [isSuccess])
+
+    useEffect(() => {
+        if (isError) {
+            dispatch(popToast({
+                type: 'error',
+                message: 'There was an error syncing your transactions',
+                timer: 2500
+            }))
+        }
+    }, [isError])
 
     return (
         <>
@@ -181,6 +195,7 @@ const Deposits = () => {
             </ShimmerDiv>
             <div className='refresh-btn--container' >
                 <RefreshButton
+                    loading={isloadingTransactions}
                     onClick={() => { syncTransactions(currentAccount) }}
                 />
             </div>

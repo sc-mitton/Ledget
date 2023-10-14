@@ -1,9 +1,8 @@
-import React from 'react'
-
 const Alert2 = ({
     width = "1em",
     height = "1em",
     className = null,
+    fill = '#F47788'
 }) => {
 
     return (
@@ -14,7 +13,7 @@ const Alert2 = ({
             className={className}
             aria-label="Alert"
         >
-            <circle fill="#F47788" cx="16" cy="16.1" r="16" />
+            <circle fill={fill} cx="16" cy="16.1" r="16" />
             <g>
                 <path fill="#FFFFFF" d="M18.5,25.7c0,0.4-0.3,0.6-0.6,0.6h-3.7c-0.4,0-0.6-0.3-0.6-0.6V22c0-0.4,0.3-0.6,0.6-0.6l3.7,0
                     c0.4,0,0.6,0.3,0.6,0.6V25.7z"/>

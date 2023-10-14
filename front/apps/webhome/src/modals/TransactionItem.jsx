@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import { useParams, useNavigate } from 'react-router-dom';
+import Big from 'big.js'
 
 import './styles/TransactionItem.css'
 import { LocationIcon } from '@ledget/assets'
@@ -36,8 +37,7 @@ const TransactionModal = withModal((props) => {
         <>
             <div className='transaction-info--header'>
                 <DollarCents
-                    isDebit={item?.amount < 0}
-                    value={String(item?.amount * 100)}
+                    value={Big(item?.amount).times(100).toNumber()}
                     style={{ textAlign: 'center' }}
                 />
                 <div>{item?.name}</div>

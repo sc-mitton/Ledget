@@ -23,16 +23,15 @@
     left: 0%;
     height: 2.5px;
     background-color: var(--logo-dark);
-    animation: loading-bar calc(var(--toast-timer) - 50ms) linear forwards;
+    animation: loading-bar calc(var(--toast-timer) - 300ms) linear forwards;
     mask-image: linear-gradient(to right,
-            transparent 0%,
-            black 15%,
+            black 0%,
             black 80%,
             transparent 100%);
 }
 
 .toast.error::after {
-    background-color: var(--mute-red);
+    background-color: var(--dark-red);
 }
 
 @keyframes loading-bar {
@@ -46,7 +45,7 @@
 }
 
 .toast.error * {
-    color: var(--hover-red);
+    color: var(--dark-red);
 }
 
 .toast>div {

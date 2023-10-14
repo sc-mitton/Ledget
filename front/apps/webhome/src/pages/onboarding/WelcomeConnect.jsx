@@ -95,7 +95,7 @@ const SecurityMessage = () => (
 )
 
 const WelcomeConnect = () => {
-    const [transactionsSync] = useTransactionsSyncMutation()
+    const [syncTransactions] = useTransactionsSyncMutation()
     const {
         data: plaidItems,
         isSuccess: fetchedPlaidItemsSuccess
@@ -108,7 +108,7 @@ const WelcomeConnect = () => {
     useEffect(() => {
         if (plaidItems?.length > 0 && loaded) {
             setTimeout(() => {
-                transactionsSync(plaidItems[plaidItems.length - 1].id)
+                syncTransactions(plaidItems[plaidItems.length - 1].id)
             }, 4000)
         }
     }, [plaidItems])

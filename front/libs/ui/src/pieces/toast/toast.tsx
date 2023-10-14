@@ -50,7 +50,6 @@ export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], c
           setUiToastStack([...uiToastStack, toast])
 
           const timeout = setTimeout(() => {
-            console.log('cleaning up toast', toast.id)
             cleanUp(toast.id)
             setUiToastStack((prev) => prev.filter((t) => t.id !== toast.id))
           }, toast.timer || 5000)
@@ -66,7 +65,8 @@ export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], c
       opacity: 0,
       transform: 'translateX(50%)',
       maxHeight: '500px',
-      margin: '8px 0'
+      marginTop: '8px',
+      marginBottom: '8px',
     },
     enter: {
       opacity: 1,
@@ -80,15 +80,16 @@ export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], c
       marginBottom: '8px',
     },
     leave: {
-      opacity: 0,
-      transform: 'translateX(50%)',
-      maxHeight: '0px',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      paddingLeft: '0px',
-      paddingRight: '0px',
-      marginTop: '0px',
-      marginBottom: '0px',
+      to: async (next, cancel) => {
+        await next({ opacity: 0, transform: 'translateX(50%)' })
+        await next({
+          maxHeight: '0px',
+          paddingTop: '0px',
+          paddingBottom: '0px',
+          marginTop: '0px',
+          marginBottom: '0px',
+        })
+      }
     },
     config: { duration: 200 },
   })
@@ -109,7 +110,7 @@ export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], c
               />
             }
             {item.type === 'info' && <InfoIcon width={'1.25em'} height={'1.25em'} />}
-            {item.type === 'error' && <Alert2 width={'1.25em'} height={'1.25em'} />}
+            {item.type === 'error' && <Alert2 width={'1.25em'} height={'1.25em'} fill={'var(--dark-red)'} />}
           </div>
           <div>
             <span>{item.message}</span>

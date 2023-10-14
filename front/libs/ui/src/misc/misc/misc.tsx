@@ -46,8 +46,11 @@ export const Base64Image = (props: Base64ImageProps) => {
   )
 }
 
-export const DollarCents = ({ value = '0.00', isDebit = false, style = {}, ...rest }) => {
-  const str = formatCurrency(value) || '0.00'
+export const DollarCents = ({ value = 0, style = {}, ...rest }:
+  { value: string | number, isDebit?: boolean, style?: React.CSSProperties, [key: string]: any }
+) => {
+  const str = typeof value === 'string' ? formatCurrency(value.replace(/^-/, '')) : formatCurrency(Math.abs(value));
+  const isDebit = Number(value) < 0
 
   return (
     <div
@@ -64,7 +67,7 @@ export const DollarCents = ({ value = '0.00', isDebit = false, style = {}, ...re
   )
 }
 
-export const DollarCentsRange = ({ lower = '0', upper = '0' }) => {
+export const DollarCentsRange = ({ lower = 0, upper = 0 }) => {
 
   return (
     <>

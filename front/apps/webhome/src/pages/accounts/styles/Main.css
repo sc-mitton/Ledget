@@ -313,12 +313,28 @@
 
 .month-delimiter {
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
     position: sticky;
     top: 28px;
+}
+
+.month-delimiter span {
+    padding-right: 4px;
     color: rgb(var(--charcoal-rgb), .5);
     background-color: var(--window);
-    box-shadow: var(--window) 0 -8px 4px 2px;
+    box-shadow: var(--window) 0 -2px 4px 2px;
+}
+
+.month-delimiter span>:first-child {
+    position: relative;
+    z-index: 0;
+}
+
+.month-delimiter span>:last-child {
+    position: relative;
+    z-index: 1;
+    background-color: transparent;
 }
 
 .transactions--table>div:last-child,

@@ -1,4 +1,4 @@
-import { useState, forwardRef, ReactNode, ButtonHTMLAttributes } from 'react';
+import { useState, forwardRef, ReactNode, ButtonHTMLAttributes, useEffect } from 'react';
 
 import './buttons.css';
 import {
@@ -14,6 +14,7 @@ import {
   Plus
 } from '@ledget/assets'
 import { Tooltip } from '../pieces/tooltip/tooltip'
+import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'
 
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')
@@ -175,29 +176,48 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
 );
 
 
-export const RefreshButton = ({ fill = '#292929', hasBackground = true, ...rest }) => (
-  <Tooltip
-    msg={"Refresh"}
-    ariaLabel={"Refresh list"}
-    style={{ left: '-.7rem' }}
-  >
-    {hasBackground
-      ?
-      <IconButton2
-        className="refresh-btn"
-        aria-label="Refresh"
-        {...rest}
-      >
-        <ReplayIcon fill={fill} />
-      </IconButton2>
-      :
-      <IconButton
-        className="refresh-btn-clr"
-        aria-label="Refresh"
-        {...rest}
-      >
-        <ReplayIcon fill={fill} />
-      </IconButton>
+export const RefreshButton = ({ fill = '#292929', hasBackground = true, loading = false, onClick = () => { }, ...rest }) => {
+  const [active, setActive] = useState(false)
+
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      setActive(false)
+    }, 700)
+    return () => {
+      clearTimeout(timeout)
     }
-  </Tooltip>
-)
+  }, [active])
+
+  return (
+    <Tooltip
+      msg={"Refresh"}
+      ariaLabel={"Refresh list"}
+      style={{ left: '-.7rem' }}
+    >
+      {hasBackground
+        ?
+        <IconButton2
+          className={`refresh-btn ${active ? 'active' : ''} ${loading ? 'loading' : ''}`}
+          onClick={() => {
+            setActive(true)
+            onClick()
+          }}
+          aria-label="Refresh"
+          {...rest}
+        >
+          <LoadingRing visible={loading} className="refresh-loading-ring" />
+          <ReplayIcon fill={fill} />
+        </IconButton2>
+        :
+        <IconButton
+          className="refresh-btn-clr"
+          aria-label="Refresh"
+          {...rest}
+        >
+          <LoadingRing visible={loading} />
+          <ReplayIcon fill={fill} />
+        </IconButton>
+      }
+    </Tooltip>
+  )
+}

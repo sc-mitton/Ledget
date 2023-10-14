@@ -2,7 +2,9 @@ import logging
 
 from django.db import transaction, models
 from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_500_INTERNAL_SERVER_ERROR,
@@ -10,19 +12,16 @@ from rest_framework.status import (
 )
 import plaid
 
-
 from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.model.transactions_sync_request_options import (
     TransactionsSyncRequestOptions
 )
 
-from core.permissions import IsAuthedVerifiedSubscriber
+from core.permissions import IsAuthedVerifiedSubscriber, IsObjectOwner
 from core.clients import create_plaid_client
 from financials.models import Transaction
-from financials.serializers.transactions import (
-    TransactionsSyncSerializer,
-    TransactionSerializer
-)
+from financials.serializers.transactions import TransactionSerializer
+from financials.models import PlaidItem
 
 
 plaid_client = create_plaid_client()
@@ -40,8 +39,7 @@ filter_target_fields = [
 
 
 class TransactionsSyncView(GenericAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber]
-    serializer_class = TransactionsSyncSerializer
+    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
     plaid_options = TransactionsSyncRequestOptions(
         include_personal_finance_category=True
     )
@@ -137,15 +135,22 @@ class TransactionsSyncView(GenericAPIView):
         pass
 
     def get_plaid_item(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
 
-        return serializer.validated_data['item_id']
+        try:
+            id = self.request.query_params.get('item', None)
+            print('id', id)
+            plaid_item = PlaidItem.objects.get(accounts__id=id)
+        except PlaidItem.DoesNotExist:
+            raise ValidationError('Invalid account id')
+
+        self.check_object_permissions(request, plaid_item)
+        return plaid_item
 
 
 class TransactionsView(ListAPIView):
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthedVerifiedSubscriber]
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         account_type = self.request.query_params.get('account_type', None)
