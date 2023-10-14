@@ -2,9 +2,9 @@ import React from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 
-import { withModal } from '@ledget/shared-utils'
+import { withModal } from '@ledget/utils'
 import './PassKey.css'
-import { PasskeyIcon } from "@ledget/shared-assets"
+import { PasskeyIcon } from "shared-assets"
 
 const Modal = withModal((props) => {
     return (

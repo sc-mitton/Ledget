@@ -7,7 +7,7 @@ import { object, string, boolean, number } from "yup"
 
 import './styles/Forms.css'
 import SubmitForm from '@components/pieces/SubmitForm'
-import { withModal } from '@ledget/shared-utils'
+import { withModal } from '@ledget/utils'
 import {
     EmojiComboText,
     DollarRangeInput,
@@ -15,7 +15,7 @@ import {
     BillScheduler,
     PeriodSelect
 } from '@components/inputs'
-import { Checkbox } from '@ledget/shared-ui'
+import { Checkbox } from '@ledget/ui'
 import { useAddnewBillMutation } from '@features/billSlice'
 
 

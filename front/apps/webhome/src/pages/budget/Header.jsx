@@ -3,9 +3,9 @@ import React from 'react'
 import { Menu } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom'
 
-import { Graph, Plus, Edit, Ellipsis2 } from '@ledget/shared-assets'
+import { Graph, Plus, Edit, Ellipsis2 } from '@ledget/assets'
 import MonthPicker from '@components/inputs/MonthPicker'
-import { IconButton, DropAnimation } from '@ledget/shared-ui'
+import { IconButton, DropAnimation } from '@ledget/ui'
 
 const Wrapper = ({ onClick, children }) => {
 

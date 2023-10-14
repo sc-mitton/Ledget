@@ -14,7 +14,7 @@ import stripelogo from '@assets/images/stripelogo.svg'
 import ledgetapi from '@api/axios'
 import { useGetPricesQuery } from '@features/pricesSlice'
 import { WindowLoadingBar } from '../pieces'
-import { Star } from '@ledget/shared-assets'
+import { Star } from '@ledget/assets'
 import {
     BlackWideButton,
     CardInput,
@@ -22,7 +22,7 @@ import {
     NameOnCardInput,
     CityStateZipInputs,
     baseBillingSchema
-} from '@ledget/shared-ui'
+} from '@ledget/ui'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 

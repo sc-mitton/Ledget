@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useLocation, useNavigate, Link } from 'react-router-dom'
-import { BlackPillButtonWithArrow } from '@ledget/shared-ui'
+import { BlackPillButtonWithArrow } from '@ledget/ui'
 
 import logo from "@assets/images/logo.svg"
 

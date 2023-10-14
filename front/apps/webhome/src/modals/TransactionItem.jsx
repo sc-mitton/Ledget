@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
 
 import './styles/TransactionItem.css'
-import { LocationIcon } from '@ledget/shared-assets'
+import { LocationIcon } from '@ledget/assets'
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import { useGetAccountsQuery } from "@features/accountsSlice"
-import { withModal } from '@ledget/shared-utils'
+import { withModal } from '@ledget/utils'
 import { Base64Logo, DollarCents } from '@components/pieces'
 
 

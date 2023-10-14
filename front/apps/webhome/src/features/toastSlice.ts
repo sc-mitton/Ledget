@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { ToastItem } from '@ledget/ui'
 
-interface ToastItem {
-    message: string;
-    type: string;
-}
 
 export const toastSlice = createSlice({
     name: "toast",

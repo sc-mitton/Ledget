@@ -21,7 +21,7 @@ import {
     SmsSetup
 } from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
-import { ShimmerDiv } from '@ledget/shared-ui'
+import { ShimmerDiv } from '@ledget/ui'
 
 function Profile() {
     const { isLoading: userLoading } = useGetMeQuery()

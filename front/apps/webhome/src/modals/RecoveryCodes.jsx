@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 
 import './styles/RecoveryCodes.css'
-import { GreenSubmitButton, BlackSubmitButton, SecondaryButton } from '@ledget/shared-ui'
-import { withSmallModal } from '@ledget/shared-utils'
+import { GreenSubmitButton, BlackSubmitButton, SecondaryButton } from '@ledget/ui'
+import { withSmallModal } from '@ledget/utils'
 import { withReAuth } from '@utils'
-import { useFlow } from '@ledget/ory-sdk'
-import { DownloadIcon, CopyIcon } from '@ledget/shared-assets'
+import { useFlow } from 'ory-sdk'
+import { DownloadIcon, CopyIcon } from '@ledget/assets'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 
 export const Content = (props) => {

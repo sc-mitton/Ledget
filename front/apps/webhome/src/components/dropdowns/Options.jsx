@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react'
 
-import { DropAnimation } from '@ledget/shared-ui'
+import { DropAnimation } from '@ledget/ui'
 import { useClickClose } from "@utils/hooks"
 import './Options.css'
 

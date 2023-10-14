@@ -1,4 +1,4 @@
-import { formatCurrency } from '@ledget/shared-utils'
+import { formatCurrency } from '@ledget/utils'
 
 export const DollarCents = ({ value, isDebit, style, ...rest }) => {
     const str = formatCurrency(value)

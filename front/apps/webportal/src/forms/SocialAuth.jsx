@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 
 import CsrfToken from "./inputs/CsrfToken"
-import { FacebookLoginButton, GoogleLoginButton } from "@ledget/shared-ui"
+import { FacebookLoginButton, GoogleLoginButton } from "shared-ui"
 
 function SocialAuth({ flow, submit }) {
     const location = useLocation()

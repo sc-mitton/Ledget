@@ -6,10 +6,10 @@ import { AnimatePresence } from "framer-motion"
 import './style/Recovery.css'
 import { WindowLoadingBar } from '@pieces'
 import { ledgetapi } from "@api"
-import { FormError, GrnWideButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc } from '@ledget/shared-ui'
+import { FormError, GrnWideButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc } from '@ledget/ui'
 import forgotPassword from '@assets/images/forgotPassword.svg'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from 'ory-sdk'
 
 const Error = ({ msg }) => (
     <div className="recovery-error--container">

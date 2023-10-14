@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom'
 import './styles/Forms.css'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect } from '@components/inputs'
-import { withModal } from '@ledget/shared-utils'
+import { withModal } from '@ledget/utils'
 import SubmitForm from '@components/pieces/SubmitForm'
-import { FormErrorTip } from '@ledget/shared-ui'
+import { FormErrorTip } from '@ledget/ui'
 
 export const schema = object().shape({
     name: string().required().lowercase(),

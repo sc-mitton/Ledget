@@ -5,7 +5,7 @@ import { useNavigate, Outlet, useSearchParams } from 'react-router-dom'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import { Base64Logo, DollarCents } from '@components/pieces'
-import { ShimmerDiv, RefreshButton } from '@ledget/shared-ui'
+import { ShimmerDiv, RefreshButton } from '@ledget/ui'
 
 
 const Wafers = ({ setCurrentAccount, currentAccount }) => {

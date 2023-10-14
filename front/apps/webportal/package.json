@@ -7,9 +7,6 @@
   "scripts": {},
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",
-    "@ledget/shared-assets": "workspace:^",
-    "@ledget/shared-ui": "workspace:^",
-    "@ledget/shared-utils": "workspace:^",
     "@ory/integrations": "^1.1.5",
     "@reduxjs/toolkit": "^1.9.5",
     "@stripe/react-stripe-js": "^2.1.2",

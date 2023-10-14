@@ -9,13 +9,13 @@ import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
 import './styles/UpdatePayment.css'
-import { withModal } from '@ledget/shared-utils'
+import { withModal } from '@ledget/utils'
 import {
     CardInput,
     CityStateZipInputs,
     baseBillingSchema as schema,
     FormError
-} from '@ledget/shared-ui'
+} from '@ledget/ui'
 import {
     useLazyGetSetupIntentQuery,
     useGetMeQuery,

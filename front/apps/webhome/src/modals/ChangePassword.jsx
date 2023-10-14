@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom'
 
 import { } from '@features/orySlice'
 import SubmitForm from '@components/pieces/SubmitForm'
-import { PasswordInput, FormError } from '@ledget/shared-ui'
-import { withSmallModal } from '@ledget/shared-utils'
+import { PasswordInput, FormError } from '@ledget/ui'
+import { withSmallModal } from '@ledget/utils'
 import { withReAuth } from '@utils'
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from 'ory-sdk'
 import { useLazyGetSettingsFlowQuery, useCompleteSettingsFlowMutation } from '@features/orySlice'
 
 const schema = object().shape({

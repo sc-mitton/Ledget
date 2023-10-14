@@ -1,7 +1,8 @@
 .account-wafers--container {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto;
     gap: 20px;
-    align-items: flex-start;
+    align-self: flex-start;
 }
 
 .account-wafers--container>div:first-child {
@@ -19,16 +20,16 @@
 /* --------------------------------- Wafers --------------------------------- */
 .account-wafers,
 .shimmering-account-wafers {
-    display: flex;
+    display: inline-flex;
     gap: 12px;
     overflow-x: scroll;
     overflow-y: hidden;
     padding: 16px 10px 16px 10px;
-    width: 100%;
 }
 
 .account-wafers {
-    background-image: radial-gradient(ellipse at center, rgb(0, 0, 0, .15) 1%, var(--window) 70%);
+    background-image: radial-gradient(ellipse at center, rgb(0, 0, 0, .2) 1%, var(--window) 70%);
+    mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
 }
 
 .account-wafer,
@@ -51,7 +52,7 @@
 .account-wafer {
     opacity: 0;
     box-shadow: var(--new-item-drop-shadow);
-    animation: slide-in 2s cubic-bezier(.05, .97, .24, .93) forwards, fade-in .3s ease-in-out forwards;
+    animation: slide-in .9s cubic-bezier(.14, .74, .39, .94) forwards, fade-in .3s ease-in-out forwards;
     animation-delay: calc(var(--wafer-index) * 100ms);
     transform: scale(1)
 }
@@ -346,6 +347,7 @@
 }
 
 .refresh-btn--container {
+    margin-top: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -355,8 +357,7 @@
 
 @media (max-width: 700px) {
     .account-wafers--container {
-        flex-direction: column;
-        align-items: flex-start;
+        grid-template-columns: 1fr;
         gap: 0px;
     }
 

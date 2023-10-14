@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom'
 
 import './styles/Welcome.css'
 import './styles/Main.css'
-import { Plus, CheckMark3 } from '@ledget/shared-assets'
+import { Plus, CheckMark3 } from '@ledget/assets'
 import { useBakedPlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { Base64Logo } from '@components/pieces'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
-import { GrnPrimaryButton, ExpandableContainer, LoadingRing, BlackPrimaryButtonWithArrow } from '@ledget/shared-ui'
+import { GrnPrimaryButton, ExpandableContainer, LoadingRing, BlackPrimaryButtonWithArrow } from '@ledget/ui'
 
 const InstitutionLogos = ({ plaidItems }) => {
     const { isLoading } = useGetPlaidItemsQuery()

@@ -4,8 +4,8 @@ import { useNavigate, createSearchParams } from 'react-router-dom'
 
 import './styles/Mfa.css'
 import { useGetMeQuery } from '@features/userSlice'
-import { PlusPill, GrayButton, IconScaleButton, DeleteButton, Tooltip } from '@ledget/shared-ui'
-import { QrIcon, SmsAuthIcon, ReplayIcon, ShowIcon } from '@ledget/shared-assets'
+import { PlusPill, GrayButton, IconScaleButton, DeleteButton, Tooltip } from '@ledget/ui'
+import { QrIcon, SmsAuthIcon, ReplayIcon, ShowIcon } from '@ledget/assets'
 
 
 const SmsAuth = ({ user }) => {

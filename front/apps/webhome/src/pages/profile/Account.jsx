@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
 
 import './styles/Account.css'
-import { CardIcon } from '@ledget/shared-assets'
+import { CardIcon } from '@ledget/assets'
 import {
     useGetMeQuery,
     useGetPaymentMethodQuery,
@@ -12,7 +12,7 @@ import {
     useGetNextInvoiceQuery,
     useGetSubscriptionQuery
 } from '@features/userSlice'
-import { GrnSlimButton, GreenSlimArrowSubmit, ShimmerDiv, DropAnimation } from '@ledget/shared-ui'
+import { GrnSlimButton, GreenSlimArrowSubmit, ShimmerDiv, DropAnimation } from '@ledget/ui'
 
 
 const getStatusColor = (subscription) => {

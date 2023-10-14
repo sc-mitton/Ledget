@@ -9,8 +9,8 @@ import {
     JiggleDiv,
     VerificationForm,
     VerificationStatusGraphic
-} from "@ledget/shared-ui"
-import { useFlow } from "@ledget/ory-sdk"
+} from "shared-ui"
+import { useFlow } from "ory-sdk"
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
 
 const Verification = () => {

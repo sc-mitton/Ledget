@@ -9,7 +9,7 @@ import './styles/Main.css'
 import NotFound from '@pages/notFound/NotFound'
 import { usePillAnimation } from '@utils/hooks'
 import { TransactionItem } from '@modals'
-import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/shared-assets'
+import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/assets'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import Deposits from './Deposits'
 
@@ -121,7 +121,7 @@ function Window() {
             <Header />
             <AnimatePresence mode="wait">
                 <motion.div
-                    key={location.pathname.split('/')[1]}
+                    key={location.pathname.split('/')[2]}
                     initial={{ opacity: 0, ...config }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}

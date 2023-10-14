@@ -2,8 +2,8 @@ import React from 'react'
 
 import './styles/Window.css'
 import NeedsConfirmationWindow from '../needsConfirmation/Window'
-import { Plus, Funnel } from '@ledget/shared-assets'
-import { IconButton, Tooltip } from '@ledget/shared-ui'
+import { Plus, Funnel } from '@ledget/assets'
+import { IconButton, Tooltip } from '@ledget/ui'
 
 const HistoryHeader = () => {
     return (

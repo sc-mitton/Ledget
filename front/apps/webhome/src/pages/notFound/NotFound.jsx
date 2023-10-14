@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { Desert } from '@components/pieces'
-import { BlackPrimaryButton } from '@ledget/shared-ui'
+import { BlackPrimaryButton } from '@ledget/ui'
 
 import './NotFound.css'
 

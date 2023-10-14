@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import './styles/MonthPicker.css'
 import { monthMappings } from '@assets/data/monthMappings'
-import { SmallArrowButton, IconButton, DropAnimation } from '@ledget/shared-ui'
-import { ArrowIcon } from '@ledget/shared-assets'
+import { SmallArrowButton, IconButton, DropAnimation } from '@ledget/ui'
+import { ArrowIcon } from '@ledget/assets'
 
 const MonthPicker = () => {
     const dates = {

@@ -1,6 +1,6 @@
 import './styles/Header.css'
-import { CheckAll } from '@ledget/shared-assets'
-import { IconButton, RefreshButton, Tooltip } from '@ledget/shared-ui'
+import { CheckAll } from '@ledget/assets'
+import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
 
 
 const CheckAllButton = () => {

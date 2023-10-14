@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import './styles/ChangeBillCycle.css'
-import { withSmallModal } from '@ledget/shared-utils'
+import { withSmallModal } from '@ledget/utils'
 import { useNavigate } from 'react-router-dom'
-import { GreenSubmitButton, LoadingRing } from '@ledget/shared-ui'
+import { GreenSubmitButton, LoadingRing } from '@ledget/ui'
 import {
     useGetPricesQuery,
     useUpdateSubscriptionItemsMutation,

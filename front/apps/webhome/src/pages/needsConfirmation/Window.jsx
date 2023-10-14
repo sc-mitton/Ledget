@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useContext, createContext } from 'react'
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 
 import "./styles/Window.css"
-import { Ellipsis, CheckMark } from "@ledget/shared-assets"
+import { Ellipsis, CheckMark } from "shared-assets"
 import Wells from "@assets/logos/Wells"
 import Ally from "@assets/logos/Ally"
 import Discover from "@assets/logos/Discover"
@@ -13,8 +13,8 @@ import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import Header from './Header'
 import Options from "@components/dropdowns/Options"
 import ItemOptions from "./ItemOptions"
-import { } from "@components/pieces"
-import { NarrowButton, ExpandableContainer, ExpandButton, GrnSlimButton2, IconScaleButton, Tooltip } from "@ledget/shared-ui"
+import { NarrowButton, ExpandableContainer, ExpandButton, GrnSlimButton2, IconScaleButton, Tooltip } from "shared-ui"
+import { formatDateOrRelativeDate } from '@ledget/utils'
 
 // TODO: eventually these will go away, data will be pulled from backend
 // and logos will be brought in another way

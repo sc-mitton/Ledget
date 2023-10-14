@@ -5,11 +5,11 @@ import { useSearchParams, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { withSmallModal } from '@ledget/shared-utils'
+import { withSmallModal } from '@ledget/utils'
 import { useGetMeQuery } from '@features/userSlice'
 import { useCreateOtpMutation, useVerifyOtpMutation, seletSessionIsFreshAal1 } from '@features/authSlice'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from 'ory-sdk'
 import {
     GreenSubmitWithArrow,
     SecondaryButton,
@@ -24,7 +24,7 @@ import {
     Otc,
     BackButton,
     LightGrnWideButton
-} from '@ledget/shared-ui'
+} from '@ledget/ui'
 
 
 const ErrorFetchingFlow = () => (<FormError msg={"Something went wrong, please try again later."} />)

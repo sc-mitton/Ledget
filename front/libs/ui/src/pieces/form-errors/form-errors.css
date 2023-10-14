@@ -1,0 +1,32 @@
+/* ------------------------------- Form Errors ------------------------------ */
+
+.error-tip {
+    position: absolute;
+    top: -8px;
+    right: -2px;
+    height: 12px;
+    width: 12px;
+    animation: pop .22s ease;
+}
+
+.form-error--container {
+    margin-left: -6px;
+    display: flex;
+    align-items: center;
+}
+
+.form-error--container svg {
+    height: .9em;
+    margin-left: 10px;
+    margin-right: 5px;
+    position: relative;
+    text-align: left;
+    animation: pop .22s ease;
+}
+
+.form-error {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--mute-red);
+}

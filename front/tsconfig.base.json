@@ -10,30 +10,16 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ledget/ory-sdk": [
-        "libs/ory-sdk/src/index.js"
-      ],
-      "@ledget/shared-assets": [
-        "libs/shared-assets/src/index.js"
-      ],
-      "@ledget/shared-ui": [
-        "libs/shared-ui/src/index.js"
-      ],
-      "@ledget/shared-utils": [
-        "libs/shared-utils/src/index.js"
-      ]
+      "@ledget/assets": ["libs/assets/src/index.js"],
+      "@ledget/ui": ["libs/ui/src/index.ts"],
+      "@ledget/utils": ["libs/utils/src/index.ts"],
+      "ory-sdk": ["libs/ory-sdk/src/index.js"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

@@ -1,5 +1,5 @@
 
-import { SecondaryButton, GreenSubmitButton } from '@ledget/shared-ui'
+import { SecondaryButton, GreenSubmitButton } from '@ledget/ui'
 
 const SubmitForm = ({ submitting, success, onCancel, ...submitProps }) => {
 

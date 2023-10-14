@@ -6,7 +6,7 @@ import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
 
 import './styles/Items.css'
-import { CheckMark } from '@ledget/shared-assets'
+import { CheckMark } from '@ledget/assets'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { ItemsProvider, ItemsContext } from './ItemsContext'
 import { useItemsDrag } from './hooks'
@@ -15,8 +15,8 @@ import { DeleteButton, GripButton } from '@components/buttons'
 import { EmojiComboText, LimitAmountInput, PeriodSelect } from '@components/inputs'
 import { schema as categorySchema } from '@modals/CreateCategory'
 import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
-import { formatName, formatRoundedCurrency, getLongestLength, shuffleArray } from '@ledget/shared-utils'
-import { CloseButton, FormErrorTip } from '@ledget/shared-ui'
+import { formatName, formatRoundedCurrency, getLongestLength, shuffleArray } from '@ledget/utils'
+import { CloseButton, FormErrorTip } from '@ledget/ui'
 
 const yearRecommendationsIndexes = Array.from({ length: yearRecommendations.length - 1 }, (_, i) => i + 1)
 const monthRecommendationsIndexes = Array.from({ length: monthRecommendations.length - 1 }, (_, i) => i + 1)

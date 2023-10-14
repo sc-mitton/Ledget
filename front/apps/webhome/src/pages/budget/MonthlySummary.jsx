@@ -1,7 +1,7 @@
 import React from 'react'
 
 import './styles/Summary.css'
-import { Recommendations as StarsIcon } from '@ledget/shared-assets'
+import { Recommendations as StarsIcon } from '@ledget/assets'
 
 
 const MonthlySummary = () => {

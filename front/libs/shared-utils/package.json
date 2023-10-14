@@ -1,5 +1,5 @@
 {
-  "name": "@ledget/shared-utils",
+  "name": "shared-utils",
   "version": "1.0.0",
   "description": "",
   "main": "./index.js",
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ledget/shared-ui": "workspace:^",
+    "shared-ui": "workspace:^",
     "@react-spring/web": "^9.7.2",
     "@stripe/react-stripe-js": "^2.0.0",
     "@stripe/stripe-js": "^1.50.0",

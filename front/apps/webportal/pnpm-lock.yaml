@@ -8,13 +8,13 @@ importers:
 
   .:
     dependencies:
-      '@ledget/shared-assets':
+      'shared-assets':
         specifier: workspace:^
         version: link:../../libs/shared-assets
-      '@ledget/shared-ui':
+      'shared-ui':
         specifier: workspace:^
         version: link:../../libs/shared-ui
-      '@ledget/shared-utils':
+      'shared-utils':
         specifier: workspace:^
         version: link:../../libs/shared-utils
       '@ory/integrations':

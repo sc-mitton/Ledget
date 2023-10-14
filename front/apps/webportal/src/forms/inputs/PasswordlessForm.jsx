@@ -3,9 +3,9 @@ import React, { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { filterNodesByGroups, isUiNodeInputAttributes } from '@ory/integrations/ui'
 
-import { PasskeyIcon, HelpIcon } from "@ledget/shared-assets"
+import { PasskeyIcon, HelpIcon } from "shared-assets"
 import './styles/PasswordlessFormSection.css'
-import { GrayWideButton } from '@ledget/shared-ui'
+import { GrayWideButton } from '@ledget/ui'
 
 
 const PasswordlessOptionsHeader = () => {

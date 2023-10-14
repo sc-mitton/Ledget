@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 
 import './styles/SmsSetup.css'
-import { withModal } from '@ledget/shared-utils'
+import { withModal } from '@ledget/utils'
 import { withReAuth } from '@utils'
 import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/authSlice'
 import { useGetMeQuery } from '@features/userSlice'
@@ -24,7 +24,7 @@ import {
     KeyPadGraphic,
     SmsVerifyStatus,
     Otc
-} from '@ledget/shared-ui'
+} from '@ledget/ui'
 
 
 const schema = object().shape({

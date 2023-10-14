@@ -8,8 +8,8 @@ import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@f
 import { useUpdateUserMutation } from '@features/userSlice'
 import { useAddRememberedDeviceMutation } from '@features/authSlice'
 import { Content as RecoveryCodes } from '@modals/RecoveryCodes'
-import { useFlow } from '@ledget/ory-sdk'
-import { withModal } from '@ledget/shared-utils'
+import { useFlow } from 'ory-sdk'
+import { withModal } from '@ledget/utils'
 import { withReAuth } from '@utils'
 import {
     BackButton,
@@ -25,7 +25,7 @@ import {
     ZoomMotionDiv,
     SlideMotionDiv,
     TotpAppGraphic
-} from '@ledget/shared-ui'
+} from '@ledget/ui'
 
 const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
     const [qrNode, setQrNode] = useState(null)

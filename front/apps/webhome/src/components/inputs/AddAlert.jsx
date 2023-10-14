@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from 'react'
 
 
 import './styles/Dropdowns.css'
-import { Plus, Return, CheckMark } from '@ledget/shared-assets'
+import { Plus, Return, CheckMark } from '@ledget/assets'
 import ComboSelect from './ComboSelect'
-import { formatRoundedCurrency } from '@ledget/shared-utils'
-import { InputButton, MenuTextInput, DropAnimation } from '@ledget/shared-ui'
+import { formatRoundedCurrency } from '@ledget/utils'
+import { InputButton, MenuTextInput, DropAnimation } from '@ledget/ui'
 
 const formatDollar = (value, percentage) => {
     if (!value) return ''

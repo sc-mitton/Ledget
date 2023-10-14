@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react'
 
 import ComboSelect from './ComboSelect'
-import { SlimInputButton, DropAnimation } from '@ledget/shared-ui'
-import { ArrowIcon } from '@ledget/shared-assets'
+import { SlimInputButton, DropAnimation } from '@ledget/ui'
+import { ArrowIcon } from '@ledget/assets'
 
 const options = [
     { id: 1, value: 'month', label: 'Monthly', default: true },

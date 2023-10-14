@@ -5,10 +5,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import './styles/DeactivateAuthenticator.css'
 import { useUpdateUserMutation } from '@features/userSlice'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
-import { withSmallModal } from '@ledget/shared-utils'
-import { GreenSubmitButton, SecondaryButton, FormError } from '@ledget/shared-ui'
+import { withSmallModal } from '@ledget/utils'
+import { GreenSubmitButton, SecondaryButton, FormError } from '@ledget/ui'
 import { withReAuth } from '@utils'
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from 'ory-sdk'
 
 const DeactivateAuthenticator = (props) => {
     const [updateUser] = useUpdateUserMutation()

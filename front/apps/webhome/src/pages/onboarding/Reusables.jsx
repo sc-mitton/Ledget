@@ -6,12 +6,12 @@ import { Tab } from '@headlessui/react'
 import { useLocation } from 'react-router-dom'
 
 import { ItemsContext } from './ItemsContext'
-import { Recommendations as RecommendationsIcon } from '@ledget/shared-assets'
+import { Recommendations as RecommendationsIcon } from '@ledget/assets'
 import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { BlackCheckSubmitButton, BlackSubmitWithArrow, GrnTextButton } from '@ledget/shared-ui'
+import { BlackCheckSubmitButton, BlackSubmitWithArrow, GrnTextButton } from '@ledget/ui'
 
 
 export const TabView = ({ children }) => {

@@ -3,14 +3,14 @@ import { useEffect, useState } from "react"
 import { useNavigate } from 'react-router-dom'
 
 import './styles/ForceVerification.css'
-import { withModal } from '@ledget/shared-utils'
+import { withModal } from '@ledget/utils'
 import {
     FormError,
     JiggleDiv,
     VerificationForm,
     VerificationStatusGraphic
-} from "@ledget/shared-ui"
-import { useFlow } from "@ledget/ory-sdk"
+} from "shared-ui"
+import { useFlow } from "ory-sdk"
 import { useGetMeQuery } from '@features/userSlice'
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
 

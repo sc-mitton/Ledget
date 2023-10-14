@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, Fragment } from 'react'
 
-import { Plus, Edit } from '@ledget/shared-assets'
+import { Plus, Edit } from '@ledget/assets'
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
@@ -14,10 +14,10 @@ import {
     ShadowedContainer
 } from '@components/pieces'
 import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks'
-import { withSmallModal } from '@ledget/shared-utils'
+import { withSmallModal } from '@ledget/utils'
 import SubmitForm from '@components/pieces/SubmitForm'
-import { RelinkIcon } from '@ledget/shared-assets'
-import { SecondaryButton, GreenSubmitButton, IconButton, ShimmerDiv, DeleteButton, BlackSubmitButton, Tooltip } from '@ledget/shared-ui'
+import { RelinkIcon } from '@ledget/assets'
+import { SecondaryButton, GreenSubmitButton, IconButton, ShimmerDiv, DeleteButton, BlackSubmitButton, Tooltip } from '@ledget/ui'
 import { withReAuth } from '@utils'
 
 const DeleteContext = React.createContext()
