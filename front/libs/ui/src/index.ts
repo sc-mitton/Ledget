@@ -1,3 +1,4 @@
+export * from './misc/misc/misc';
 export * from './pieces/node-image/node-image';
 export * from './pieces/containers/containers';
 export * from './pieces/loading-indicators/loading-indicators';

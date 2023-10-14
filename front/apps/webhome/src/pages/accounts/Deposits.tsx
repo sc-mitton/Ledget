@@ -1,14 +1,14 @@
 import { useState, useEffect, Fragment } from 'react'
 
 import { useNavigate, Outlet, useSearchParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
-import { Base64Logo, DollarCents } from '@components/pieces'
-import { ShimmerDiv, RefreshButton } from '@ledget/ui'
+import { ShimmerDiv, RefreshButton, Base64Image, DollarCents } from '@ledget/ui'
 
 
-const Wafers = ({ setCurrentAccount, currentAccount }) => {
+const Wafers = ({ setCurrentAccount, currentAccount }: { setCurrentAccount: (account: string) => void, currentAccount: string }) => {
     const { data: accountsData, isSuccess, isLoading } = useGetAccountsQuery()
 
     useEffect(() => {
@@ -21,28 +21,26 @@ const Wafers = ({ setCurrentAccount, currentAccount }) => {
                 <h3>Total Deposits</h3>
                 <DollarCents
                     value={
-                        String(accountsData?.accounts.filter(account => account.type === 'depository')
-                            .reduce((acc, account) => acc + account.balances.current, 0) * 100)
+                        String(accountsData?.accounts.filter((account: any) => account.type === 'depository')
+                            .reduce((acc: number, account: any) => acc + account.balances.current, 0) * 100)
                     }
                 />
             </div>
             <div className="account-wafers">
-                {accountsData?.accounts.filter(account => account.type === 'depository').map((account, index) => {
-                    const institution = accountsData.institutions.find(item => item.id === account.institution_id)
+                {accountsData?.accounts.filter((account: any) => account.type === 'depository').map((account: any, index: number) => {
+                    const institution = accountsData.institutions.find((item: any) => item.id === account.institution_id)
                     const nameIsLong = account.official_name.length > 18
 
                     return (
                         <div
                             key={account.account_id}
                             className={`account-wafer ${currentAccount === account.account_id ? 'active' : 'inactive'}`}
-                            shimmering={isLoading}
-                            style={{ '--wafer-index': index }}
-                            background="var(--logo-dark)"
+                            style={{ '--wafer-index': index } as React.CSSProperties}
                             role="button"
                             tabIndex={0}
                             onClick={() => setCurrentAccount(account.account_id)}
                         >
-                            <Base64Logo
+                            <Base64Image
                                 data={institution.logo}
                                 alt={institution.name.charAt(0).toUpperCase()}
                             />
@@ -78,7 +76,7 @@ const SkeletonWafers = () => (
             </span>
         </div>
         <div className="shimmering-account-wafers">
-            {Array(4).fill().map((_, index) => (
+            {Array(4).fill(0).map((_, index) => (
                 <ShimmerDiv
                     key={index}
                     className="shimmering-account-wafer"
@@ -90,9 +88,9 @@ const SkeletonWafers = () => (
     </div>
 )
 
-const Transactions = ({ currentAccount }) => {
+const Transactions = ({ currentAccount }: { currentAccount: string }) => {
     const { data: transactionsData } = useGetTransactionsQuery('depository')
-    let previousMonth = null
+    let previousMonth: number | null = null
     const navigate = useNavigate()
 
     return (
@@ -101,7 +99,7 @@ const Transactions = ({ currentAccount }) => {
                 <div>Name</div>
                 <div>Amount</div>
             </div>
-            {transactionsData.filter(transaction => currentAccount === transaction.account).map((transaction) => {
+            {transactionsData.filter((transaction: any) => currentAccount === transaction.account).map((transaction: any) => {
                 const date = new Date(transaction.datetime)
                 const currentMonth = date.getMonth()
                 let newMonth = false
@@ -117,7 +115,7 @@ const Transactions = ({ currentAccount }) => {
                         </div>
                         <div
                             key={transaction.id}
-                            type="button"
+                            role="button"
                             onClick={() => navigate(`/accounts/deposits/transaction/${transaction.transaction_id}`)}
                         >
                             <div>
@@ -140,16 +138,41 @@ const Transactions = ({ currentAccount }) => {
     )
 }
 
-
 const Deposits = () => {
     const [currentAccount, setCurrentAccount] = useState('')
     const { isLoading: isloadingTransactions } = useGetTransactionsQuery('depository')
     const { isLoading: isLoadingAccounts } = useGetAccountsQuery()
     const [, setSearchParams] = useSearchParams()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setSearchParams({ list: 'all' })
     }, [])
+
+    const [refreshing, setRefreshing] = useState(false)
+    const [isRefreshed, setIsRefreshed] = useState(false)
+    useEffect(() => {
+        let refreshingTimeout: NodeJS.Timeout
+        let isRefreshedTimeout: NodeJS.Timeout
+
+        if (refreshing) {
+            dispatch({ type: 'info', message: 'Refreshing accounts' })
+            refreshingTimeout = setTimeout(() => {
+                setIsRefreshed(true)
+            }, 2000)
+        }
+        if (isRefreshed) {
+            dispatch({ type: 'success', message: 'Accounts refreshed' })
+            isRefreshedTimeout = setTimeout(() => {
+                setRefreshing(false)
+                setIsRefreshed(false)
+            }, 2000)
+        }
+        return () => {
+            clearTimeout(refreshingTimeout)
+            clearTimeout(isRefreshedTimeout)
+        }
+    }, [refreshing, isRefreshed])
 
     return (
         <>
@@ -170,7 +193,9 @@ const Deposits = () => {
                 <Transactions currentAccount={currentAccount} />
             </ShimmerDiv>
             <div className='refresh-btn--container' >
-                <RefreshButton />
+                <RefreshButton
+                    onClick={() => { setRefreshing(true) }}
+                />
             </div>
             <Outlet />
         </>

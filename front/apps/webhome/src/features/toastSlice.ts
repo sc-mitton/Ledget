@@ -1,26 +1,28 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { ToastItem } from '@ledget/ui'
+import type { ToastItem, NewToast } from '@ledget/ui'
 
 
 export const toastSlice = createSlice({
     name: "toast",
     initialState: {
-        toast: [] as ToastItem[]
+        freshToast: [] as ToastItem[]
     },
     reducers: {
-        popToast: (state, action: PayloadAction<ToastItem>) => {
-            state.toast = [...state.toast, action.payload]
-
-            // Remove toast after 5 seconds
-            setTimeout(() => {
-                const index = state.toast.findIndex((item) => item === action.payload);
-
-                if (index !== -1) {
-                    state.toast.splice(index, 1);
-                }
-            }, 5000)
+        popToast: (state, action: PayloadAction<NewToast>) => {
+            const newToast: ToastItem = {
+                id: Math.random().toString(36).slice(2),
+                message: action.payload.message,
+                type: action.payload.type
+            };
+            state.freshToast = [...state.freshToast, newToast]
+        },
+        tossToast: (state, action: PayloadAction<ToastItem>) => {
+            state.freshToast = state.freshToast.filter((toast) => toast.id !== action.payload.id)
         }
     }
 })
 
 export const { popToast } = toastSlice.actions;
+export const { tossToast } = toastSlice.actions;
+
+export const toastStackSelector = (state: any) => state.toast.freshToast;

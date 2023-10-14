@@ -1,8 +1,23 @@
 .toast--container {
-    background-color: var(--green-hlight2);
-    border-radius: var(--border-radius2);
     position: fixed;
     bottom: 12px;
     right: 12px;
     translate: transform(-100%, -100%);
+}
+
+.toast {
+    background-color: var(--green-hlight2);
+    border-radius: var(--border-radius2);
+    display: flex;
+    width: 30ch;
+    height: 3ch;
+}
+
+.toast>div {
+    align-items: center;
+}
+
+.toast>div:last-child {
+    flex-grow: 1;
+    overflow: hidden;
 }

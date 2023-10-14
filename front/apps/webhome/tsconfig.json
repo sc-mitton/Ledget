@@ -8,7 +8,22 @@
     "types": [
       "vite/client",
       "vitest"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@api/*": [
+        "src/api/*"
+      ],
+      "@features/*": [
+        "src/features/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ]
+    }
   },
   "files": [],
   "include": [],

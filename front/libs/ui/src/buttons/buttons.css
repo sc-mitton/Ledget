@@ -263,7 +263,7 @@
     }
 }
 
-.btn-chcl.btn-wide.clicked::before {
+.btn-wide.clicked::before {
     animation: big-burst 1s ease-out forwards;
 }
 
@@ -274,7 +274,7 @@
     }
 
     30% {
-        transform: translate(-50%, -50%) scale(50);
+        transform: translate(-50%, -50%) scale(30);
         opacity: 0.06;
     }
 

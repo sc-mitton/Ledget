@@ -2,9 +2,9 @@ import { apiSlice } from '@api/apiSlice'
 
 export const accountsSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getAccounts: builder.query({
+        getAccounts: builder.query<any, void>({
             query: () => `/accounts`,
-            keepUnusedDataFor: 60 * 30 // 30 minutes
+            keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
     }),
 })

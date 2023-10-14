@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import './form-errors.css';
 
 import { Alert2 } from '@ledget/assets'
+import { type } from 'os';
 
 interface Error {
   message?: string,
@@ -11,7 +12,7 @@ interface Error {
 export const FormErrorTip = ({ errors }: { errors: Error[] }) => (
   <>
     {
-      errors.some((error: any) => error.type === 'required' || error.message === 'required') &&
+      errors.some((error: any) => error?.type === 'required' || error?.message === 'required') &&
       <div className='error-tip'>
         <Alert2 />
       </div>
@@ -29,25 +30,29 @@ export const FormError = ({ msg }: { msg: string | string[] }) => {
 
   return (
     <>
-      {(typeof msg === 'string')
-        ?
-        !msg.includes('required') &&
-        <div className="form-error--container">
-          <Alert2 />
-          <div className="form-error">
-            {renderLines(msg)}
-          </div>
-        </div>
-        :
-        msg.map((m, index) => (
-          !m.includes('required') &&
-          <div className="form-error--container" key={index}>
-            <Alert2 />
-            <div className="form-error">
-              {renderLines(m)}
+      {msg &&
+        <>
+          {(typeof msg === 'string')
+            ?
+            !msg.includes('required') &&
+            <div className="form-error--container">
+              <Alert2 />
+              <div className="form-error">
+                {renderLines(msg)}
+              </div>
             </div>
-          </div>
-        ))
+            :
+            msg.map((m, index) => (
+              !m.includes('required') &&
+              <div className="form-error--container" key={index}>
+                <Alert2 />
+                <div className="form-error">
+                  {renderLines(m)}
+                </div>
+              </div>
+            ))
+          }
+        </>
       }
     </>
   )

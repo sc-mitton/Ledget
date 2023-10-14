@@ -1,9 +1,23 @@
 .account-wafers--container {
     display: grid;
-    grid-template-columns: auto auto;
-    gap: 20px;
+    grid-template-columns: min-content auto;
+    gap: 16px;
     align-self: flex-start;
+    animation: delay-auto-width .5s ease-in-out forwards;
+    animation-delay: 1s;
+    width: 100%;
 }
+
+@keyframes delay-auto-width {
+    0% {
+        width: 100%;
+    }
+
+    100% {
+        width: auto;
+    }
+}
+
 
 .account-wafers--container>div:first-child {
     padding-top: 28px;
@@ -24,12 +38,37 @@
     gap: 12px;
     overflow-x: scroll;
     overflow-y: hidden;
-    padding: 16px 10px 16px 10px;
+    padding: 16px 14px 16px 14px;
 }
 
 .account-wafers {
-    background-image: radial-gradient(ellipse at center, rgb(0, 0, 0, .2) 1%, var(--window) 70%);
     mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+    z-index: 1;
+    position: relative;
+}
+
+.account-wafers::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(ellipse at center, rgb(0, 0, 0, .15) 1%, var(--window) 70%);
+    opacity: 0;
+    z-index: 0;
+    animation: fade-in-background-image .5s ease-in-out forwards;
+    animation-delay: 1.1s;
+}
+
+@keyframes fade-in-background-image {
+    0% {
+        animation: fade-in-background-image 2s ease-in-out forwards;
+        animation-delay: 1s;
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .account-wafer,
@@ -40,6 +79,7 @@
     min-width: 18ch;
     max-width: 18ch;
     height: 6rem;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

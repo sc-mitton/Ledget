@@ -2,6 +2,8 @@ import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 
 import { Routes, Outlet, Navigate, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import "./styles/style.css";
 import Header from './Header'
@@ -10,11 +12,12 @@ import Spending from '@pages/spending/Window'
 import Profile from '@pages/profile/Window'
 import Accounts from '@pages/accounts/Window'
 import NotFound from '@pages/notFound/NotFound'
-import { SlideMotionDiv, ZoomMotionDiv } from '@ledget/ui'
+import { SlideMotionDiv, ZoomMotionDiv, Toast } from '@ledget/ui'
 import { WelcomeConnect, AddCategories, AddBills } from '@pages/onboarding'
 import { SkeletonDashboard } from '@pages/onboarding'
 import { CreateCategory, CreateBill, ForceVerification } from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
+import { toastStackSelector, tossToast } from '@features/toastSlice'
 
 const PrivateRoute = () => {
     const { isSuccess, isLoading, isPending } = useGetMeQuery()
@@ -68,6 +71,8 @@ const MainApp = () => {
     const navigate = useNavigate()
     const ref = useRef(null)
     const { data: user } = useGetMeQuery()
+    const toastStack = useSelector(toastStackSelector)
+    const dispatch = useDispatch()
 
     useLayoutEffect(() => {
         const handleResize = () => {
@@ -121,6 +126,7 @@ const MainApp = () => {
                     </div>
                 </ZoomMotionDiv>
             </AnimatePresence>
+            <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />
         </>
     )
 }
