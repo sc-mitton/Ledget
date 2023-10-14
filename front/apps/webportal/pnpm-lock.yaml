@@ -20,8 +20,6 @@ importers:
 
   ../..: {}
 
-  ../../libs/ory-sdk: {}
-
   ../webhome: {}
 
 packages:

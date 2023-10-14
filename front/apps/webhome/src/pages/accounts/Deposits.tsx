@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
-import { ShimmerDiv, RefreshButton, Base64Image, DollarCents } from '@ledget/ui'
+import { ShimmerDiv, RefreshButton, Base64Image, DollarCents } from '../../../../../libs/ui/src'
 
 
 const Wafers = ({ setCurrentAccount, currentAccount }: { setCurrentAccount: (account: string) => void, currentAccount: string }) => {
@@ -21,7 +21,7 @@ const Wafers = ({ setCurrentAccount, currentAccount }: { setCurrentAccount: (acc
                 <h3>Total Deposits</h3>
                 <DollarCents
                     value={
-                        String(accountsData?.accounts.filter((account: any) => account.type === 'depository')
+                        isLoading ? '0.00' : String(accountsData?.accounts.filter((account: any) => account.type === 'depository')
                             .reduce((acc: number, account: any) => acc + account.balances.current, 0) * 100)
                     }
                 />

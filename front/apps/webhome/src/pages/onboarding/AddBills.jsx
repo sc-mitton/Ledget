@@ -13,11 +13,11 @@ import {
     PeriodSelect,
     BillScheduler
 } from '@components/inputs'
-import { ShadowedContainer, DollarCentsRange } from '@components/pieces'
+import { ShadowedContainer } from '@components/pieces'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { billSchema, extractBill } from '@modals/CreateBill'
 import { DeleteButton } from '@components/buttons'
-import { formatName, getLongestLength } from ''@ledget/ui/utils''
+import { formatName, getLongestLength, DollarCentsRange } from '@ledget/ui'
 import { useGetBillRecommendationsQuery } from '@features/billSlice'
 import { CloseButton, Checkbox } from '@ledget/ui'
 

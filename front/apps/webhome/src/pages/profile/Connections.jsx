@@ -9,15 +9,21 @@ import {
     useGetPlaidItemsQuery,
     useDeletePlaidItemMutation,
 } from '@features/plaidSlice'
-import {
-    Base64Logo,
-    ShadowedContainer
-} from '@components/pieces'
 import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@ledget/ui'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { RelinkIcon } from '@ledget/assets'
-import { SecondaryButton, GreenSubmitButton, IconButton, ShimmerDiv, DeleteButton, BlackSubmitButton, Tooltip } from '@ledget/ui'
+import { ShadowedContainer } from '@components/pieces'
+import {
+    SecondaryButton,
+    GreenSubmitButton,
+    IconButton,
+    ShimmerDiv,
+    DeleteButton,
+    BlackSubmitButton,
+    Tooltip,
+    Base64Image
+} from '@ledget/ui'
 import { withReAuth } from '@utils'
 
 const DeleteContext = React.createContext()
@@ -148,7 +154,7 @@ const PlaidItem = ({ item }) => {
             }
             <div className="header2">
                 <div>
-                    <Base64Logo
+                    <Base64Image
                         data={item.institution.logo}
                         alt={item.institution.name}
                         backgroundColor={item.institution.primary_color}

@@ -9,7 +9,7 @@ import { withSmallModal } from '@ledget/ui'
 import { useGetMeQuery } from '@features/userSlice'
 import { useCreateOtpMutation, useVerifyOtpMutation, seletSessionIsFreshAal1 } from '@features/authSlice'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
-import { useFlow } from 'ory-sdk'
+import { useFlow } from '@ledget/ory-sdk'
 import {
     GreenSubmitWithArrow,
     SecondaryButton,

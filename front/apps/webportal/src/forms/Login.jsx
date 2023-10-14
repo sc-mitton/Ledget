@@ -27,7 +27,7 @@ import {
     SmsVerifyStatus,
     Otc
 } from "@ledget/ui"
-import { useFlow } from "ory-sdk"
+import { useFlow } from '@ledget/ory-sdk'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 import { useRefreshDevicesMutation } from '@features/deviceSlice'
 import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/otpSlice'

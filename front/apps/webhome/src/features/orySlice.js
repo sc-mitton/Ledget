@@ -1,5 +1,5 @@
 import { apiSlice } from '@api/apiSlice'
-import { generateEndpoints } from 'ory-sdk'
+import { generateEndpoints } from '@ledget/ory-sdk'
 
 export const orySlice = apiSlice.injectEndpoints({
     endpoints: (builder) => generateEndpoints(builder),

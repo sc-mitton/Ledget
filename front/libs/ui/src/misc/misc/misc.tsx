@@ -11,14 +11,14 @@ function getContrastColor(bgColor: string | undefined) {
   return whiteContrast > blackContrast ? 'white' : 'black';
 }
 
-interface Base64LogoProps {
+interface Base64ImageProps {
   data: string;
   alt: string;
   backgroundColor?: string;
   style?: React.CSSProperties;
 }
 
-export const Base64Image = (props: Base64LogoProps) => {
+export const Base64Image = (props: Base64ImageProps) => {
   const { data, backgroundColor, alt, style, ...rest } = props
 
   const config = {
@@ -46,7 +46,7 @@ export const Base64Image = (props: Base64LogoProps) => {
   )
 }
 
-export const DollarCents = ({ value = '0', isDebit = false, style = {}, ...rest }) => {
+export const DollarCents = ({ value = '0.00', isDebit = false, style = {}, ...rest }) => {
   const str = formatCurrency(value) || '0.00'
 
   return (

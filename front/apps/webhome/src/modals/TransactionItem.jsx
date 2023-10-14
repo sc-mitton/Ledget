@@ -6,8 +6,7 @@ import './styles/TransactionItem.css'
 import { LocationIcon } from '@ledget/assets'
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import { useGetAccountsQuery } from "@features/accountsSlice"
-import { withModal } from '@ledget/ui'
-import { Base64Logo, DollarCents } from '@components/pieces'
+import { withModal, Base64Image, DollarCents } from '@ledget/ui'
 
 
 const TransactionModal = withModal((props) => {
@@ -50,7 +49,7 @@ const TransactionModal = withModal((props) => {
             <div className='transaction-info--container'>
                 <div className='inner-window'>
                     <div >
-                        <Base64Logo
+                        <Base64Image
                             data={institution?.logo}
                             alt={institution?.name.charAt(0).toUpperCase()}
                         />

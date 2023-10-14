@@ -46,7 +46,7 @@ const extractData = (event) => {
     return body
 }
 
-function useFlow(query, mutation, flowType) {
+export function useFlow(query, mutation, flowType) {
     const [errMsg, setErrMsg] = useState('')
     const [errId, setErrId] = useState('')
     const [searchParams, setSearchParams] = useSearchParams()
@@ -210,5 +210,3 @@ function useFlow(query, mutation, flowType) {
         }
     }
 }
-
-export default useFlow
