@@ -6,9 +6,7 @@ import './styles/Devices.css'
 import { Disclosure } from '@headlessui/react'
 import { useDeleteRememberedDeviceMutation, } from '@features/authSlice'
 import { IconButtonSubmit, Tooltip } from '@ledget/ui'
-import Computer from 'shared-assets/src/icons/Computer.svg'
-import Phone from 'shared-assets/src/icons/Phone.svg'
-import { ArrowIcon, LogoutIcon, LocationIcon } from '@ledget/assets'
+import { ArrowIcon, LogoutIcon, LocationIcon, ComputerIcon, PhoneIcon } from '@ledget/assets'
 
 
 const formatDateTime = (date) => {
@@ -51,9 +49,9 @@ const Device = (props) => {
                             className={`device ${open ? 'open' : 'closed'}`}
                         >
                             <div className="device-icon">
-                                {iconKey === 'is_pc' && <img src={Computer} alt="computer" />}
-                                {iconKey === 'is_mobile' && <img src={Phone} alt="phone" />}
-                                {!iconKey && <img src={Computer} alt="computer" />}
+                                {iconKey === 'is_pc' && <ComputerIcon />}
+                                {iconKey === 'is_mobile' && <PhoneIcon />}
+                                {!iconKey && <ComputerIcon />}
                             </div>
                             <div className="device-info">
                                 <div className="device-title">

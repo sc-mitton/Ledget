@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Arrow = ({
     stroke = 'rgb(36, 36, 36)',
     scale = 1,
@@ -7,6 +5,7 @@ const Arrow = ({
     strokeWidth = "23",
     width = "1.1em",
     height = "1.1em",
+    syle = {}
 }) => {
     const centerX = 144 / 2
     const centerY = 144 / 2
@@ -17,6 +16,7 @@ const Arrow = ({
             height={height}
             viewBox={`0 0 ${144} ${144}`}
             aria-label="Arrow"
+            style={syle}
         >
             <g transform={
                 `translate(${centerX}, ${centerY})

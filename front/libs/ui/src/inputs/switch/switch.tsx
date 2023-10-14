@@ -8,7 +8,7 @@ interface DefaultSwitchProps {
   children: React.ReactNode
 }
 
-const DefaultSwitch = ({ checked, onChange, children, ...rest }: DefaultSwitchProps) => {
+export const DefaultSwitch = ({ checked, onChange, children, ...rest }: DefaultSwitchProps) => {
 
   return (
     <Switch.Group>
@@ -29,4 +29,3 @@ const DefaultSwitch = ({ checked, onChange, children, ...rest }: DefaultSwitchPr
   )
 }
 
-export default DefaultSwitch

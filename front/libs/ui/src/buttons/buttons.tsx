@@ -13,7 +13,7 @@ import {
   CheckMark,
   Plus
 } from '@ledget/assets'
-import Tooltip from '../pieces/tooltip/tooltip'
+import { Tooltip } from '../pieces/tooltip/tooltip'
 import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'
 import { animated, useSpring } from '@react-spring/web'
 
@@ -126,39 +126,12 @@ export const BackButton = ({ children, withText = true, ...rest }: { children: R
   </div>
 )
 
-export const CopyButton = (props) => {
-  const { withText = true, onClick, ...rest } = props
-  const [springProps, copyBtnApi] = useSpring(() => ({
-    from: { transform: 'scale(1)' }
-  }))
-
-  const handleClick = () => {
-    copyBtnApi.start({
-      to: async (next, cancel) => {
-        await next({ transform: 'scale(1)' })
-        await next({ transform: 'scale(0.9)' })
-        await next({ transform: 'scale(1)' })
-      },
-      config: { duration: 150 }
-    })
-    onClick()
-  }
-
-  return (
-    <animated.div style={springProps}>
-      <SlimInputButton
-        onClick={() => {
-          handleClick()
-          onClick()
-        }}
-        {...rest}
-      >
-        <CopyIcon />
-        {withText && 'Copy'}
-      </SlimInputButton>
-    </animated.div>
-  )
-}
+export const CopyButton = ({ withText = true, ...rest }) => (
+  <SlimInputButton className="copy-btn" {...rest}>
+    <CopyIcon />
+    {withText && 'Copy'}
+  </SlimInputButton>
+)
 
 export const PlusPill = ({ ...props }) => (
   <button className="btn-chcl btn-circle btn-scale2" {...props}>

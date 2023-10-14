@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
 import './with-modal.css'
-import useAccessEsc from '../../hooks/use-access-esc/use-access-esc'
+import { useAccessEsc } from '../../hooks/use-access-esc/use-access-esc'
 import { CloseButton } from '@ledget/ui'
 
 export interface IWithModal {
@@ -21,7 +21,7 @@ export interface IWithModal {
   style?: React.CSSProperties
 }
 
-function withModal(WrappedComponent: React.FC<any>) {
+export function withModal(WrappedComponent: React.FC<any>) {
   return (props: IWithModal) => {
     const {
       onClose = () => { },
@@ -135,5 +135,3 @@ function withModal(WrappedComponent: React.FC<any>) {
     )
   }
 }
-
-export default withModal

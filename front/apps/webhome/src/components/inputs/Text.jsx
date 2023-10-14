@@ -5,7 +5,7 @@ import { useController } from 'react-hook-form'
 import './styles/Text.scss'
 import Emoji from './Emoji'
 import { formatCurrency, formatRoundedCurrency, makeIntCurrencyFromStr } from '@ledget/utils'
-import { IconButton2, TextInput, FormErrorTip, FormError } from '@ledget/ui'
+import { IconButton2, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/assets'
 
 export const EmojiComboText = (props) => {
@@ -30,7 +30,7 @@ export const EmojiComboText = (props) => {
     return (
         <>
             <label htmlFor="name">Name</label>
-            <TextInput>
+            <TextInputWrapper>
                 <Emoji emoji={emoji} setEmoji={setEmoji}>
                     {({ emoji }) => (
                         <>
@@ -56,7 +56,7 @@ export const EmojiComboText = (props) => {
                     style={{ marginLeft: '4px' }}
                 />
                 <FormErrorTip errors={error} />
-            </TextInput>
+            </TextInputWrapper>
         </>
     )
 }
@@ -120,7 +120,7 @@ export const LimitAmountInput = ({ control, children }) => {
     return (
         <>
             <label htmlFor="limit">Limit</label>
-            <TextInput className="limit-amount--container">
+            <TextInputWrapper className="limit-amount--container">
                 <input
                     name='limit_amount'
                     type="text"
@@ -149,7 +149,7 @@ export const LimitAmountInput = ({ control, children }) => {
                 />
                 <IncrementDecrementButton val={val} setVal={setVal} field={field} />
                 {children}
-            </TextInput>
+            </TextInputWrapper>
         </>
     )
 }
@@ -158,7 +158,7 @@ const DollarInput = ({ field, name, error, ...rest }) => {
     const [val, setVal] = useState(undefined)
 
     return (
-        <TextInput className="limit-amount--container" {...rest}>
+        <TextInputWrapper className="limit-amount--container" {...rest}>
             <input
                 name={name}
                 type="text"
@@ -186,7 +186,7 @@ const DollarInput = ({ field, name, error, ...rest }) => {
             />
             <IncrementDecrementButton val={val} setVal={setVal} field={field} />
             <FormErrorTip errors={[error]} />
-        </TextInput>
+        </TextInputWrapper>
     )
 }
 

@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react"
 import "./otc.css"
 
 
-function Otc({ codeLength = 6, required = true, colorful = false }) {
+export function Otc({ codeLength = 6, required = true, colorful = false }) {
   const [inputStates, setInputStates] = useState<Array<{ digit: string }>>([])
   const inputRefs = useRef<Array<HTMLInputElement | null>>([])
   const [code, setCode] = useState('')
@@ -132,5 +132,3 @@ function Otc({ codeLength = 6, required = true, colorful = false }) {
     </div>
   )
 }
-
-export default Otc

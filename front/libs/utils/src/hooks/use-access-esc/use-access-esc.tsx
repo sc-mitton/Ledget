@@ -6,7 +6,7 @@ interface I {
   setVisible: (b: boolean) => void
 }
 
-function useAccessEsc({ refs, visible, setVisible }: I) {
+export function useAccessEsc({ refs, visible, setVisible }: I) {
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       event.stopPropagation()
@@ -37,5 +37,3 @@ function useAccessEsc({ refs, visible, setVisible }: I) {
     }
   }, [refs, visible, setVisible])
 }
-
-export default useAccessEsc

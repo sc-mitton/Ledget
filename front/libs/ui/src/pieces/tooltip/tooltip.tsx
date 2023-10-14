@@ -10,7 +10,7 @@ interface Props {
   children: React.ReactNode
 }
 
-const Tooltip = ({ msg, type = 'top', ariaLabel, style, children, ...rest }: Props) => {
+export const Tooltip = ({ msg, type = 'top', ariaLabel, style, children, ...rest }: Props) => {
 
   return (
     <div
@@ -29,5 +29,3 @@ const Tooltip = ({ msg, type = 'top', ariaLabel, style, children, ...rest }: Pro
     </div>
   )
 }
-
-export default Tooltip

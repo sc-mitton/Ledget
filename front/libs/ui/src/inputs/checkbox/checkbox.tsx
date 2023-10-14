@@ -10,7 +10,7 @@ interface CheckboxProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref) => {
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref) => {
 
   const handleLabelKeyDown = (event: React.KeyboardEvent<HTMLLabelElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -54,5 +54,3 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref) => {
     </ div >
   )
 })
-
-export default Checkbox

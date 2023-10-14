@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 
 import './select-provence.css'
-import { DropAnimation } from '../animations/animations'
+import { DropAnimation } from '../../animations/animations'
 import { Combobox } from '@headlessui/react'
 import { states as provences } from './provences-data'
-import { TextInput } from "./textInputs";
+import { TextInputWrapper } from "../text/text";
 import { ArrowIcon } from '@ledget/assets'
-import { FormErrorTip } from '../pieces/pieces'
+import { FormErrorTip } from '../../pieces/form-errors/form-errors'
 
 export const SelectProvence = ({ field, errors }) => {
   const [query, setQuery] = useState('')
@@ -30,7 +30,7 @@ export const SelectProvence = ({ field, errors }) => {
     <Combobox value={provence} onChange={setProvence}>
       {({ open }) => (
         <>
-          <TextInput ref={inputRef}>
+          <TextInputWrapper ref={inputRef}>
             <Combobox.Input
               onChange={(event) => setQuery(event.target.value)}
               displayValue={(provence) => provence?.abbreviation}
@@ -54,7 +54,7 @@ export const SelectProvence = ({ field, errors }) => {
               />
             </Combobox.Button>
             {errors[field.name] && <FormErrorTip errors={[{ type: 'required' }]} />}
-          </TextInput>
+          </TextInputWrapper>
           <div className="provence-options--container">
             <DropAnimation
               visible={open}

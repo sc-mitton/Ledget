@@ -1,8 +1,6 @@
 
 import './status-pulse.css'
-import { CheckMark, SmsAuthIcon, VerifyEmail } from '@ledget/assets'
-import authenticator from 'shared-assets/src/images/authenticator.svg'
-import recoveryCodeGraphic from 'shared-assets/src/images/recoveryCodeGraphic.svg'
+import { CheckMark, SmsAuthIcon, VerifyEmail, AuthenticatorImage, RecoveryCodeImage } from '@ledget/assets'
 import { shuffleArray } from '@ledget/utils'
 
 
@@ -36,7 +34,7 @@ export const TotpAppGraphic = ({ finished = false }) => {
           />
         </div>
       }
-      <img src={authenticator} alt="Authenticator" />
+      <AuthenticatorImage />
       <StatusPulse positive={finished} size="medium-large" />
     </div>
   )
@@ -44,7 +42,7 @@ export const TotpAppGraphic = ({ finished = false }) => {
 
 export const RecoveryCodeGraphic = ({ finished = false }) => (
   <div className="auth-factor-status-graphic">
-    <img src={recoveryCodeGraphic} alt="Authenticator" />
+    <RecoveryCodeImage />
     <StatusPulse positive={finished} size="medium" />
   </div>
 )

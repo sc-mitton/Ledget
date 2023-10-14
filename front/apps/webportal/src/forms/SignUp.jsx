@@ -20,7 +20,7 @@ import {
     SlideMotionDiv,
     PlainTextInput,
     BackButton
-} from "shared-ui"
+} from "@ledget/ui"
 import { useFlow } from "ory-sdk"
 import {
     useLazyGetRegistrationFlowQuery,

@@ -26,7 +26,7 @@ import {
     RecoveryCodeGraphic,
     SmsVerifyStatus,
     Otc
-} from "shared-ui"
+} from "@ledget/ui"
 import { useFlow } from "ory-sdk"
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 import { useRefreshDevicesMutation } from '@features/deviceSlice'

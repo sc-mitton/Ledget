@@ -55,3 +55,7 @@ export { default as ShowIcon } from './icons/Show.jsx';
 export { default as FaceIcon } from './icons/FaceIcon.jsx';
 export { default as SmsAuthIcon } from './icons/SmsAuth.jsx';
 export { default as RelinkIcon } from './icons/Relink.jsx';
+export { default as ComputerIcon } from './icons/Computer.jsx';
+export { default as PhoneIcon } from './icons/Phone.jsx';
+export { default as AuthenticatorImage } from './images/Authenticator.jsx';
+export { default as RecoveryCodeImage } from './images/RecoveryCode.jsx';

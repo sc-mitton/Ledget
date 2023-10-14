@@ -1,3 +1,6 @@
+export * from './pieces/node-image/node-image';
+export * from './pieces/containers/containers';
+export * from './pieces/loading-indicators/loading-indicators';
 export * from './pieces/toast/toast';
 export * from './forms/verification-form/verification-form';
 export * from './animations/animations';

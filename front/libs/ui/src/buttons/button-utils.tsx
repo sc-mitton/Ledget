@@ -1,7 +1,7 @@
-import { forwardRef, ButtonHTMLAttributes, ComponentType, FC, useRef, useEffect, useState } from 'react'
+import { forwardRef, ButtonHTMLAttributes, FC, useEffect, useState } from 'react'
 
-import { LoadingRing } from '../pieces/pieces'
-import { TranslucentShimmerDiv } from '../pieces/shimmer'
+import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
+import { TranslucentShimmerDiv } from '../pieces/shimmer/shimmer'
 import { ArrowIcon, CheckMark } from '@ledget/assets'
 
 interface BaseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -86,7 +86,6 @@ export const withArrow = (Component: FC<any>) => {
                     height={'.8em'}
                     rotation={rotate}
                     stroke={'currentColor' || stroke}
-                    style={{ marginLeft: '.5rem' }}
                 />
             </Component>
         )

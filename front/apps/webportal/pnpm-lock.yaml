@@ -8,15 +8,6 @@ importers:
 
   .:
     dependencies:
-      'shared-assets':
-        specifier: workspace:^
-        version: link:../../libs/shared-assets
-      'shared-ui':
-        specifier: workspace:^
-        version: link:../../libs/shared-ui
-      'shared-utils':
-        specifier: workspace:^
-        version: link:../../libs/shared-utils
       '@ory/integrations':
         specifier: ^1.1.5
         version: 1.1.5(@ory/client@1.2.8)(next@13.5.1)
@@ -30,12 +21,6 @@ importers:
   ../..: {}
 
   ../../libs/ory-sdk: {}
-
-  ../../libs/shared-assets: {}
-
-  ../../libs/shared-ui: {}
-
-  ../../libs/shared-utils: {}
 
   ../webhome: {}
 

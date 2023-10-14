@@ -1,12 +1,12 @@
 import React, { forwardRef, useRef, useState } from 'react'
 import { FC } from 'react'
 
-import { VisibilityIcon } from "shared-assets"
+import { VisibilityIcon } from "@ledget/assets"
 import { CardElement } from '@stripe/react-stripe-js'
 import { object, string } from 'yup'
 
 
-import './test.css'
+import './text.css'
 import './password-input.css'
 import { FormErrorTip, FormError } from '../../pieces/form-errors/form-errors'
 import { SelectProvence } from '../select-provence/select-provence'

@@ -2,9 +2,9 @@
 import './verification-form.css';
 import { useState, useEffect, useRef } from 'react'
 
-import './styles/Verification.css'
+import './verification-form.css'
 import { GreenSubmitButton, ResendButton } from '../../buttons/buttons'
-import Otc from '../../inputs/otc/otc'
+import { Otc } from '../../inputs/otc/otc'
 
 interface VerificationFormProps {
   flow: any
@@ -15,7 +15,7 @@ interface VerificationFormProps {
   submitting: boolean
 }
 
-const VerificationForm = (props: VerificationFormProps) => {
+export const VerificationForm = (props: VerificationFormProps) => {
   const { flow, submit, identifier, refreshSuccess, loading, submitting } = props
   const [otcDisabled, setOtcDisabled] = useState(false)
   const resendRef = useRef<HTMLButtonElement>(null)
@@ -80,4 +80,3 @@ const VerificationForm = (props: VerificationFormProps) => {
     </>
   )
 }
-export default VerificationForm
