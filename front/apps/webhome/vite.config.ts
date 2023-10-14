@@ -50,6 +50,7 @@ export default defineConfig({
       '@api': path.resolve(__dirname, './src/api'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@modals': path.resolve(__dirname, './src/modals'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
     }
   },
 

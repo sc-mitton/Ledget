@@ -32,10 +32,6 @@ const TransactionModal = withModal((props) => {
         }
     }, [accountsFetched, item])
 
-    useEffect(() => {
-        console.log('item', item)
-    }, [item])
-
     return (
         <>
             <div className='transaction-info--header'>

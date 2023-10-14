@@ -59,6 +59,7 @@ class TransactionsSyncView(GenericAPIView):
             self.first_sync = True
         cursor = plaid_item.cursor or ''
         has_more = True
+        response_data = {'added': 0, 'modified': 0, 'removed': 0}
 
         try:
             while has_more:
@@ -73,6 +74,10 @@ class TransactionsSyncView(GenericAPIView):
                 has_more = response['has_more']
                 cursor = response['next_cursor']
                 self.extend_lists(response)
+
+            response_data['added'] += len(self.added)
+            response_data['modified'] += len(self.modified)
+            response_data['removed'] += len(self.removed)
             self.flush_to_db(plaid_item, cursor)
 
         except plaid.ApiException as e:
@@ -87,7 +92,7 @@ class TransactionsSyncView(GenericAPIView):
                 status=HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-        return Response(status=HTTP_200_OK)
+        return Response(response_data, HTTP_200_OK)
 
     def extend_lists(self, response):
         for _ in ['added', 'modified', 'removed']:

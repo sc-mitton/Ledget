@@ -23,9 +23,12 @@
       "@utils/*": [
         "src/utils/*"
       ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
       "@ledget/ui": [
-        "node_modules/@ledget/ui/src"
-      ]
+        "../../libs/ui/src"
+      ],
     }
   },
   "files": [],

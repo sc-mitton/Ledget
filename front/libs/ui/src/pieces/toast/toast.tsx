@@ -1,78 +1,134 @@
 import { useEffect, useState } from 'react'
 
+import { useNavigate } from 'react-router-dom'
+
 import './toast.css'
 import { CheckMark3 as CheckMarkIcon, Info as InfoIcon } from '@ledget/assets';
 import { useTransition, animated } from '@react-spring/web';
-import { t } from 'vitest/dist/types-198fd1d9';
+import { Alert2 } from '@ledget/assets'
 
-export type ToastType = 'success' | 'info';
+export type ToastType = 'success' | 'info' | 'error';
 
 export interface ToastItem {
   id: string;
   message: string;
   type: ToastType;
+  timer?: number;
+  actionLink?: string;
+  actionMessage?: string;
 }
 
 export interface NewToast extends Omit<ToastItem, 'id'> { }
 
 export type toastCleanUp = (toastId: string) => void;
 
-export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[], cleanUp: toastCleanUp }) => {
-  const [currentToastStack, setCurrentToastStack] = useState<ToastItem[]>([])
-  const [propsToastHeight, setPropsToastHeight] = useState(0)
-  const [hasNewToast, setHasNewToast] = useState(false)
+export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], cleanUp: toastCleanUp }) => {
+  const [uiToastStack, setUiToastStack] = useState<ToastItem[]>([])
+  const [timeoutMap, setTimeoutMap] = useState<Record<string, NodeJS.Timeout>>({})
+  const navigate = useNavigate()
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout
-
-    for (const toast of currentToastStack) {
-
-      if (!currentToastStack.find((t) => t.id === toast.id)) {
-        // toast is new and should be added to stack
-        setCurrentToastStack([...currentToastStack, toast])
-
-        // timeout for the toast to expire
-        timeout = setTimeout(() => {
-          cleanUp(toast.id)
-          setCurrentToastStack((prev) => prev.filter((t) => t.id !== toast.id))
-        }, 500)
-
+    for (const id in timeoutMap) {
+      if (!uiToastStack.find((t) => t.id === id)) {
+        clearTimeout(timeoutMap[id])
+        // remove the timeout from the map
+        setTimeoutMap((prev) => {
+          const { [id]: _, ...rest } = prev
+          return rest
+        })
       }
     }
-
-    return () => clearTimeout(timeout)
-  }, [hasNewToast, cleanUp])
+  }, [uiToastStack])
 
   // Keep track of the stack height being passed as a prop,
   // and if it increase, then trigger the addition of a new
   // toast ui item
   useEffect(() => {
-    if (toastStack.length > propsToastHeight) {
-      setHasNewToast(true)
-    } else {
-      setHasNewToast(false)
+    if (toastStack.length > uiToastStack.length) {
+      toastStack.forEach((toast) => {
+        if (!uiToastStack.find((t) => t.id === toast.id)) {
+          setUiToastStack([...uiToastStack, toast])
+
+          const timeout = setTimeout(() => {
+            console.log('cleaning up toast', toast.id)
+            cleanUp(toast.id)
+            setUiToastStack((prev) => prev.filter((t) => t.id !== toast.id))
+          }, toast.timer || 5000)
+
+          setTimeoutMap((prev) => ({ ...prev, [toast.id]: timeout }))
+        }
+      })
     }
-    setPropsToastHeight(toastStack.length)
   }, [toastStack])
 
-  const transitions = useTransition(currentToastStack, {
-    from: { opacity: 0, transform: 'scale(.9) translateY(-50%)', height: 0 },
-    enter: { opacity: 1, transform: 'scale(1) translateY(0%)', height: 'auto' },
-    leave: { opacity: 0, transform: 'scale(.9) translateY(50%)', height: 0 },
+  const transitions = useTransition(uiToastStack, {
+    from: {
+      opacity: 0,
+      transform: 'translateX(50%)',
+      maxHeight: '500px',
+      margin: '8px 0'
+    },
+    enter: {
+      opacity: 1,
+      transform: 'translateX(0%)',
+      maxHeight: '500px',
+      paddingTop: '8px',
+      paddingBottom: '8px',
+      paddingLeft: '10px',
+      paddingRight: '10px',
+      marginTop: '8px',
+      marginBottom: '8px',
+    },
+    leave: {
+      opacity: 0,
+      transform: 'translateX(50%)',
+      maxHeight: '0px',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      marginTop: '0px',
+      marginBottom: '0px',
+    },
     config: { duration: 200 },
   })
 
   return (
     <div className='toast--container'>
-      {/* List of toast items here */}
       {transitions((style, item) => (
-        <animated.div style={style} className='toast'>
+        <animated.div
+          style={{ ...style, ...{ '--toast-timer': `${item.timer || 5000}ms` } as React.CSSProperties }}
+          className={`toast ${item.type}`}
+        >
           <div>
-            {item.type === 'success' && <CheckMarkIcon width={'2em'} height={'2em'} />}
-            {item.type === 'info' && <InfoIcon width={'2em'} height={'2em'} />}
+            {item.type === 'success' &&
+              <CheckMarkIcon
+                width={'1.25em'} height={'1.25em'}
+                fill={'var(--logo-dark'}
+                stroke={'var(--window'}
+              />
+            }
+            {item.type === 'info' && <InfoIcon width={'1.25em'} height={'1.25em'} />}
+            {item.type === 'error' && <Alert2 width={'1.25em'} height={'1.25em'} />}
           </div>
           <div>
-            {item.message}
+            <span>{item.message}</span>
+            {item.actionLink && item.actionMessage &&
+              <a
+                aria-label={item.actionMessage}
+                onClick={() => {
+                  if (item.actionLink?.startsWith('http')) {
+                    window.open(item.actionLink, '_blank')
+                  } else if (item.actionLink?.startsWith('/')) {
+                    navigate(item.actionLink)
+                  }
+                  cleanUp(item.id)
+                  setUiToastStack((prev) => prev.filter((t) => t.id !== item.id))
+                }}
+              >
+                {item.actionMessage}
+              </a>
+            }
           </div>
         </animated.div>
       ))

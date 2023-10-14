@@ -9,7 +9,7 @@ import App from './App';
 import rootReducer from '@features/rootReducer';
 import { apiSlice } from '@api/apiSlice'
 
-const store = configureStore({
+export const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(apiSlice.middleware),

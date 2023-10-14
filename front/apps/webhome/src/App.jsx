@@ -2,8 +2,6 @@ import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 
 import { Routes, Outlet, Navigate, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
 
 import "./styles/style.css";
 import Header from './Header'
@@ -18,6 +16,7 @@ import { SkeletonDashboard } from '@pages/onboarding'
 import { CreateCategory, CreateBill, ForceVerification } from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
 import { toastStackSelector, tossToast } from '@features/toastSlice'
+import { useAppDispatch, useAppSelector } from '@hooks/store'
 
 const PrivateRoute = () => {
     const { isSuccess, isLoading, isPending } = useGetMeQuery()
@@ -71,8 +70,8 @@ const MainApp = () => {
     const navigate = useNavigate()
     const ref = useRef(null)
     const { data: user } = useGetMeQuery()
-    const toastStack = useSelector(toastStackSelector)
-    const dispatch = useDispatch()
+    const toastStack = useAppSelector(toastStackSelector)
+    const dispatch = useAppDispatch()
 
     useLayoutEffect(() => {
         const handleResize = () => {

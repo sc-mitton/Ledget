@@ -1,12 +1,12 @@
 import { useState, useEffect, Fragment } from 'react'
 
-import { useNavigate, Outlet, useSearchParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useNavigate, Outlet } from 'react-router-dom'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
-import { useGetTransactionsQuery } from '@features/transactionsSlice'
-import { ShimmerDiv, RefreshButton, Base64Image, DollarCents } from '../../../../../libs/ui/src'
-
+import { useGetTransactionsQuery, useTransactionsSyncMutation } from '@features/transactionsSlice'
+import { ShimmerDiv, RefreshButton, Base64Image, DollarCents } from '@ledget/ui'
+import { popToast } from '@features/toastSlice'
+import { useAppDispatch } from '@hooks/store'
 
 const Wafers = ({ setCurrentAccount, currentAccount }: { setCurrentAccount: (account: string) => void, currentAccount: string }) => {
     const { data: accountsData, isSuccess, isLoading } = useGetAccountsQuery()
@@ -21,8 +21,10 @@ const Wafers = ({ setCurrentAccount, currentAccount }: { setCurrentAccount: (acc
                 <h3>Total Deposits</h3>
                 <DollarCents
                     value={
-                        isLoading ? '0.00' : String(accountsData?.accounts.filter((account: any) => account.type === 'depository')
-                            .reduce((acc: number, account: any) => acc + account.balances.current, 0) * 100)
+                        isSuccess
+                            ? String(accountsData?.accounts.filter((account: any) => account.type === 'depository')
+                                .reduce((acc: number, account: any) => acc + account.balances.current, 0) * 100)
+                            : '0.00'
                     }
                 />
             </div>
@@ -142,37 +144,22 @@ const Deposits = () => {
     const [currentAccount, setCurrentAccount] = useState('')
     const { isLoading: isloadingTransactions } = useGetTransactionsQuery('depository')
     const { isLoading: isLoadingAccounts } = useGetAccountsQuery()
-    const [, setSearchParams] = useSearchParams()
-    const dispatch = useDispatch()
+    const [syncTransactions, { isSuccess, isError, data: syncResult }] = useTransactionsSyncMutation()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        setSearchParams({ list: 'all' })
-    }, [])
-
-    const [refreshing, setRefreshing] = useState(false)
-    const [isRefreshed, setIsRefreshed] = useState(false)
-    useEffect(() => {
-        let refreshingTimeout: NodeJS.Timeout
-        let isRefreshedTimeout: NodeJS.Timeout
-
-        if (refreshing) {
-            dispatch({ type: 'info', message: 'Refreshing accounts' })
-            refreshingTimeout = setTimeout(() => {
-                setIsRefreshed(true)
-            }, 2000)
+        if (isSuccess) {
+            dispatch(popToast({
+                type: 'success',
+                message: `Synced${syncResult?.added ? `, ${syncResult?.added} new transactions` : 'successfully'}`
+            }))
+        } else if (isError) {
+            dispatch(popToast({
+                type: 'error',
+                message: 'Sync failed'
+            }))
         }
-        if (isRefreshed) {
-            dispatch({ type: 'success', message: 'Accounts refreshed' })
-            isRefreshedTimeout = setTimeout(() => {
-                setRefreshing(false)
-                setIsRefreshed(false)
-            }, 2000)
-        }
-        return () => {
-            clearTimeout(refreshingTimeout)
-            clearTimeout(isRefreshedTimeout)
-        }
-    }, [refreshing, isRefreshed])
+    }, [isSuccess])
 
     return (
         <>
@@ -194,7 +181,7 @@ const Deposits = () => {
             </ShimmerDiv>
             <div className='refresh-btn--container' >
                 <RefreshButton
-                    onClick={() => { setRefreshing(true) }}
+                    onClick={() => { syncTransactions(currentAccount) }}
                 />
             </div>
             <Outlet />

@@ -11,13 +11,12 @@ export const toastSlice = createSlice({
         popToast: (state, action: PayloadAction<NewToast>) => {
             const newToast: ToastItem = {
                 id: Math.random().toString(36).slice(2),
-                message: action.payload.message,
-                type: action.payload.type
+                ...action.payload
             };
             state.freshToast = [...state.freshToast, newToast]
         },
-        tossToast: (state, action: PayloadAction<ToastItem>) => {
-            state.freshToast = state.freshToast.filter((toast) => toast.id !== action.payload.id)
+        tossToast: (state, action: PayloadAction<string>) => {
+            state.freshToast = state.freshToast.filter((toast) => toast.id !== action.payload)
         }
     }
 })
