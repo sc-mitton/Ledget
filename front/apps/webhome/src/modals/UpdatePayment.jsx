@@ -9,7 +9,7 @@ import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
 import './styles/UpdatePayment.css'
-import { withModal } from '@ledget/utils'
+import { withModal } from '@ledget/ui'
 import {
     CardInput,
     CityStateZipInputs,

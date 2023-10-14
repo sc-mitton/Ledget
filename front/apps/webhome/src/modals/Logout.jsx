@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import "./styles/Logout.css"
-import { withSmallModal } from '@ledget/utils'
+import { withSmallModal } from '@ledget/ui'
 import { SecondaryButton, GreenSubmitButton } from '@ledget/ui'
 import { useGetLogoutFlowQuery, useLazyGetUpdatedLogoutFlowQuery } from '@features/orySlice'
 

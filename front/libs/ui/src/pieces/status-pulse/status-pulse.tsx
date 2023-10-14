@@ -1,7 +1,7 @@
 
 import './status-pulse.css'
 import { CheckMark, SmsAuthIcon, VerifyEmail, AuthenticatorImage, RecoveryCodeImage } from '@ledget/assets'
-import { shuffleArray } from '@ledget/utils'
+import { shuffleArray } from '../../utils/funcs'
 
 
 interface StatusPulseProps {

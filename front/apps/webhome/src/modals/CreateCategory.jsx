@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import './styles/Forms.css'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect } from '@components/inputs'
-import { withModal } from '@ledget/utils'
+import { withModal } from '@ledget/ui'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@ledget/ui'
 

@@ -1,3 +1,5 @@
+export * from './modal/with-small-modal/with-small-modal';
+export * from './modal/with-modal/with-modal';
 export * from './misc/misc/misc';
 export * from './pieces/node-image/node-image';
 export * from './pieces/containers/containers';

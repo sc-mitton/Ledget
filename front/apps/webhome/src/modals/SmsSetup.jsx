@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 
 import './styles/SmsSetup.css'
-import { withModal } from '@ledget/utils'
+import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
 import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/authSlice'
 import { useGetMeQuery } from '@features/userSlice'

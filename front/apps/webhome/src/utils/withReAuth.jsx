@@ -5,7 +5,7 @@ import { useSearchParams, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { withSmallModal } from '@ledget/utils'
+import { withSmallModal } from '@ledget/ui'
 import { useGetMeQuery } from '@features/userSlice'
 import { useCreateOtpMutation, useVerifyOtpMutation, seletSessionIsFreshAal1 } from '@features/authSlice'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'

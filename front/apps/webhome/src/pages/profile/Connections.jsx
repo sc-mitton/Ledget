@@ -14,7 +14,7 @@ import {
     ShadowedContainer
 } from '@components/pieces'
 import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks'
-import { withSmallModal } from '@ledget/utils'
+import { withSmallModal } from '@ledget/ui'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { RelinkIcon } from '@ledget/assets'
 import { SecondaryButton, GreenSubmitButton, IconButton, ShimmerDiv, DeleteButton, BlackSubmitButton, Tooltip } from '@ledget/ui'

@@ -22,6 +22,9 @@
       ],
       "@utils/*": [
         "src/utils/*"
+      ],
+      "@ledget/ui": [
+        "node_modules/@ledget/ui/src"
       ]
     }
   },

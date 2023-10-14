@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 
-import { withModal } from '@ledget/utils'
+import { withModal } from '@ledget/ui'
 import './PassKey.css'
 import { PasskeyIcon } from "@ledget/assets"
 

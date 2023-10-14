@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import './styles/CancelSubscription.css'
-import { withModal } from '@ledget/utils'
+import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
 import { RedButton, GrnPrimaryButton, SlideMotionDiv } from '@ledget/ui'
 import { useUpdateSubscriptionMutation, useGetSubscriptionQuery } from '@features/userSlice'

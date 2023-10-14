@@ -6,7 +6,7 @@ import './styles/TransactionItem.css'
 import { LocationIcon } from '@ledget/assets'
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import { useGetAccountsQuery } from "@features/accountsSlice"
-import { withModal } from '@ledget/utils'
+import { withModal } from '@ledget/ui'
 import { Base64Logo, DollarCents } from '@components/pieces'
 
 

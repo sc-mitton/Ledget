@@ -15,7 +15,6 @@ import {
 } from '@ledget/assets'
 import { Tooltip } from '../pieces/tooltip/tooltip'
 import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'
-import { animated, useSpring } from '@react-spring/web'
 
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')
 export const BlackPrimaryButton = ButtonWithClassName('btn-chcl btn3')

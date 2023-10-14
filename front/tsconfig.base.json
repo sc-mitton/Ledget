@@ -24,9 +24,6 @@
       "@ledget/ui": [
         "libs/ui/src/index.ts"
       ],
-      "@ledget/utils": [
-        "libs/utils/src/index.ts"
-      ],
       "ory-sdk": [
         "libs/ory-sdk/src/index.js"
       ]

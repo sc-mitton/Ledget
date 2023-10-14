@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from 'react-router-dom'
 
 import './styles/ForceVerification.css'
-import { withModal } from '@ledget/utils'
+import { withModal } from '@ledget/ui'
 import {
     FormError,
     JiggleDiv,

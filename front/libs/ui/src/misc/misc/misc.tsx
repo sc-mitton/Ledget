@@ -1,7 +1,7 @@
 import Color from 'color';
 
 import './misc.css'
-import { formatCurrency } from '@ledget/utils'
+import { formatCurrency } from '../../utils/funcs'
 
 function getContrastColor(bgColor: string | undefined) {
   const color = Color(bgColor);

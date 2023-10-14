@@ -14,7 +14,7 @@ import Header from './Header'
 import Options from "@components/dropdowns/Options"
 import ItemOptions from "./ItemOptions"
 import { NarrowButton, ExpandableContainer, ExpandButton, GrnSlimButton2, IconScaleButton, Tooltip } from "@ledget/ui"
-import { formatDateOrRelativeDate } from '@ledget/utils'
+import { formatDateOrRelativeDate } from ''@ledget/ui/utils''
 
 // TODO: eventually these will go away, data will be pulled from backend
 // and logos will be brought in another way

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { AnimatePresence } from 'framer-motion'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -9,7 +9,7 @@ import { useUpdateUserMutation } from '@features/userSlice'
 import { useAddRememberedDeviceMutation } from '@features/authSlice'
 import { Content as RecoveryCodes } from '@modals/RecoveryCodes'
 import { useFlow } from 'ory-sdk'
-import { withModal } from '@ledget/utils'
+import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
 import {
     BackButton,

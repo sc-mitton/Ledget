@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import './styles/ChangeBillCycle.css'
-import { withSmallModal } from '@ledget/utils'
+import { withSmallModal } from '@ledget/ui'
 import { useNavigate } from 'react-router-dom'
 import { GreenSubmitButton, LoadingRing } from '@ledget/ui'
 import {

@@ -15,7 +15,7 @@ import { DeleteButton, GripButton } from '@components/buttons'
 import { EmojiComboText, LimitAmountInput, PeriodSelect } from '@components/inputs'
 import { schema as categorySchema } from '@modals/CreateCategory'
 import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
-import { formatName, formatRoundedCurrency, getLongestLength, shuffleArray } from '@ledget/utils'
+import { formatName, formatRoundedCurrency, getLongestLength, shuffleArray } from ''@ledget/ui/utils''
 import { CloseButton, FormErrorTip } from '@ledget/ui'
 
 const yearRecommendationsIndexes = Array.from({ length: yearRecommendations.length - 1 }, (_, i) => i + 1)
