@@ -27,19 +27,23 @@ export const Shimmer = ({ shimmering = false }) => {
 }
 
 export const ShimmerText = ({ shimmering = false, length = 12, ...rest }) => (
-  <div
-    {...rest}
-    style={{
-      width: `${length}ch`,
-      height: '2.5ch',
-      margin: '2px 0',
-      borderRadius: 'var(--border-radius1)',
-      backgroundColor: 'var(--icon-light-gray)',
-      position: 'relative'
-    }}
-  >
-    <Shimmer shimmering={shimmering} />
-  </div>
+  <>
+    {shimmering &&
+      <div
+        {...rest}
+        style={{
+          width: `${length}ch`,
+          height: '2.5ch',
+          margin: '2px 0',
+          borderRadius: 'var(--border-radius1)',
+          backgroundColor: 'var(--icon-light-gray)',
+          position: 'relative'
+        }}
+      >
+        <Shimmer shimmering={shimmering} />
+      </div>
+    }
+  </>
 )
 
 type ShimmerDivProps = React.HTMLProps<HTMLDivElement> & {
