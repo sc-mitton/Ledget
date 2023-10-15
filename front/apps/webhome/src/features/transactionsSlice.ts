@@ -1,6 +1,11 @@
 import { apiSlice } from '@api/apiSlice'
 
 type accountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
+interface getTransactionsParams {
+    type: accountType
+    account: string
+    cursor?: string
+}
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -12,10 +17,10 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 invalidatesTags: ['transactions']
             }),
         }),
-        getTransactions: builder.query<any, accountType>({
-            query: (accountType) => ({
+        getTransactions: builder.query<any, getTransactionsParams>({
+            query: (params) => ({
                 url: 'transactions',
-                params: { account_type: accountType },
+                params: params,
                 providesTags: ['transactions'],
             }),
             keepUnusedDataFor: 60 * 15, // 15 minutes
@@ -25,5 +30,5 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useTransactionsSyncMutation,
-    useGetTransactionsQuery,
+    useGetTransactionsQuery
 } = extendedApiSlice

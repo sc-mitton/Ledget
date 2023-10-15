@@ -358,6 +358,11 @@
     cursor: pointer;
 }
 
+.transactions--table>div.transaction-shimmer:nth-child(2n+3):hover>div {
+    background-color: transparent;
+    cursor: default;
+}
+
 /* Month Marker */
 .transactions--table>div:nth-child(2n+2) {
     padding: 4px 0;

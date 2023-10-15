@@ -1,11 +1,11 @@
-import { useState, useEffect, Fragment } from 'react'
+import React, { useState, FC, useEffect, Fragment } from 'react'
 
 import { useNavigate, Outlet } from 'react-router-dom'
 import Big from 'big.js'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { useGetTransactionsQuery, useTransactionsSyncMutation } from '@features/transactionsSlice'
-import { ShimmerDiv, RefreshButton, Base64Image, DollarCents } from '@ledget/ui'
+import { ShimmerDiv, RefreshButton, Base64Image, DollarCents, ShimmerText } from '@ledget/ui'
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
 
@@ -91,70 +91,103 @@ const SkeletonWafers = () => (
     </div>
 )
 
-const Transactions = ({ currentAccount }: { currentAccount: string }) => {
-    const { data: transactionsData } = useGetTransactionsQuery('depository')
+const TransactionsTable: FC<React.HTMLProps<HTMLDivElement> & { shimmering: boolean }> = ({ children, shimmering = false, ...props }) => (
+    <ShimmerDiv
+        className="transactions--container"
+        shimmering={shimmering}
+        background="var(--inner-window)"
+    >
+        <div className="transactions--table" {...props}>
+            {children}
+        </div>
+    </ShimmerDiv>
+)
+
+const TransactionShimmer = ({ shimmering = false }) => (
+    <>
+        <div />
+        <div className="transaction-shimmer">
+            <div>
+                <ShimmerText shimmering={shimmering} length={25} />
+                <ShimmerText shimmering={shimmering} length={10} />
+            </div>
+            <div>
+                <ShimmerText shimmering={shimmering} length={10} />
+            </div>
+        </div>
+    </>
+)
+
+const TransactionsHeader = () => (
+    <div className="transactions--header">
+        <div>Name</div>
+        <div>Amount</div>
+    </div>
+)
+
+const Transactions = ({ account, cursor, type }: { account: string, cursor: string, type: string }) => {
+    const { data: { results: transactionsData } } = useGetTransactionsQuery({ type: 'depository', account: account, cursor: cursor })
     let previousMonth: number | null = null
     let previousYear: number | null = null
     const navigate = useNavigate()
 
-    return (
-        <div className="transactions--table">
-            <div className="transactions--header">
-                <div>Name</div>
-                <div>Amount</div>
-            </div>
-            {transactionsData.filter((transaction: any) => currentAccount === transaction.account).map((transaction: any) => {
-                const date = new Date(transaction.datetime)
-                const currentMonth = date.getMonth()
-                const currentYear = date.getFullYear()
-                let newMonth = false
-                let newYear = false
-                if (currentMonth !== previousMonth) {
-                    previousMonth = currentMonth
-                    newMonth = true
-                }
-                if (currentYear !== previousYear) {
-                    previousYear = currentYear
-                    newYear = true
-                }
+    return transactionsData.map((transaction: any) => {
+        const date = new Date(transaction.datetime)
+        const currentMonth = date.getMonth()
+        const currentYear = date.getFullYear()
+        let newMonth = false
+        let newYear = false
+        if (currentMonth !== previousMonth) {
+            previousMonth = currentMonth
+            newMonth = true
+        }
+        if (currentYear !== previousYear) {
+            previousYear = currentYear
+            newYear = true
+        }
 
-                return (
-                    <Fragment key={transaction.transaction_id}>
-                        <div className={newMonth ? 'month-delimiter' : ''}>
-                            <span>{newMonth && `${date.toLocaleString('default', { month: 'short' })}`}</span>
-                            <span>{newYear && `${date.toLocaleString('default', { year: 'numeric' })}`}</span>
-                        </div>
-                        <div
-                            key={transaction.id}
-                            role="button"
-                            onClick={() => navigate(`/accounts/deposits/transaction/${transaction.transaction_id}`)}
-                        >
-                            <div>
-                                <span>{transaction.name}</span>
-                                <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
-                            </div>
-                            <div>
-                                <DollarCents
-                                    value={Big(transaction.amount).times(100).toNumber()}
-                                    style={{ textAlign: 'start' }}
-                                    className={transaction.amount < 0 ? 'debit' : 'credit'}
-                                />
-                            </div>
-                        </div>
-                    </Fragment>
-                )
-            })}
-        </div>
-    )
+        return (
+            <Fragment key={transaction.transaction_id}>
+                <div className={newMonth ? 'month-delimiter' : ''}>
+                    <span>{newMonth && `${date.toLocaleString('default', { month: 'short' })}`}</span>
+                    <span>{newYear && `${date.toLocaleString('default', { year: 'numeric' })}`}</span>
+                </div>
+                <div
+                    key={transaction.id}
+                    role="button"
+                    onClick={() => navigate(`/accounts/deposits/transaction/${transaction.transaction_id}`)}
+                >
+                    <div>
+                        <span>{transaction.name}</span>
+                        <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
+                    </div>
+                    <div>
+                        <DollarCents
+                            value={Big(transaction.amount).times(100).toNumber()}
+                            style={{ textAlign: 'start' }}
+                            className={transaction.amount < 0 ? 'debit' : 'credit'}
+                        />
+                    </div>
+                </div>
+            </Fragment>
+        )
+    })
 }
 
 const Deposits = () => {
     const [currentAccount, setCurrentAccount] = useState('')
-    const { isLoading: isloadingTransactions } = useGetTransactionsQuery('depository')
-    const { isLoading: isLoadingAccounts } = useGetAccountsQuery()
-    const [syncTransactions, { isSuccess, isError, data: syncResult }] = useTransactionsSyncMutation()
+    const [paginationCursors, setPaginationCursors] = useState([''])
     const dispatch = useAppDispatch()
 
+    const { isLoading: isLoadingAccounts } = useGetAccountsQuery()
+    const [syncTransactions, { isSuccess, isError, data: syncResult }] = useTransactionsSyncMutation()
+    const { isLoading: isloadingTransactions, data: getTransactionsResult } = useGetTransactionsQuery({
+        type: 'depository',
+        account: currentAccount,
+        cursor: paginationCursors[paginationCursors.length - 1]
+    })
+
+    // Dispatch synced toast
     useEffect(() => {
         if (isSuccess) {
             dispatch(popToast({
@@ -165,6 +198,7 @@ const Deposits = () => {
         }
     }, [isSuccess])
 
+    // Dispatch error toast
     useEffect(() => {
         if (isError) {
             dispatch(popToast({
@@ -174,6 +208,13 @@ const Deposits = () => {
             }))
         }
     }, [isError])
+
+    const handleScroll = (e: React.UIEvent<HTMLElement>) => {
+        const bottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight
+        if (bottom) {
+            setPaginationCursors((prev) => [...prev, getTransactionsResult?.next])
+        }
+    }
 
     return (
         <>
@@ -186,13 +227,16 @@ const Deposits = () => {
                     currentAccount={currentAccount}
                 />
             }
-            <ShimmerDiv
-                className="transactions--container"
-                shimmering={isloadingTransactions}
-                background="var(--inner-window)"
+            <TransactionsTable
+                onScroll={(e) => handleScroll(e)}
+                shimmering={isloadingTransactions && paginationCursors.length === 1}
             >
-                <Transactions currentAccount={currentAccount} />
-            </ShimmerDiv>
+                <TransactionsHeader />
+                {paginationCursors.map((cursor, index) => (
+                    <Transactions key={index} cursor={cursor} account={currentAccount} type={'depository'} />
+                ))}
+                <TransactionShimmer shimmering={(Boolean(paginationCursors.length > 1))} />
+            </TransactionsTable>
             <div className='refresh-btn--container' >
                 <RefreshButton
                     loading={isloadingTransactions}

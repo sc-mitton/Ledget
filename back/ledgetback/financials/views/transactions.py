@@ -4,7 +4,7 @@ from django.db import transaction, models
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.pagination import CursorPagination
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_500_INTERNAL_SERVER_ERROR,
@@ -147,15 +147,23 @@ class TransactionsSyncView(GenericAPIView):
         return plaid_item
 
 
+class TransactionsPagination(CursorPagination):
+    page_size = 50
+    ordering = '-date'
+
+
 class TransactionsView(ListAPIView):
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthedVerifiedSubscriber]
-    pagination_class = LimitOffsetPagination
+    pagination_class = TransactionsPagination
 
     def get_queryset(self):
-        account_type = self.request.query_params.get('account_type', None)
+
+        type = self.request.query_params.get('type', None)
+        account = self.request.query_params.get('account', None)
 
         return Transaction.objects.filter(
             account__plaid_item__user_id=self.request.user.id,
-            account__type=account_type
+            account__type=type,
+            account_id=account
         )

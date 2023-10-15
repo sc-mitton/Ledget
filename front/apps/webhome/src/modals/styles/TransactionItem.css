@@ -46,9 +46,13 @@
 
 .transaction-info--container .inner-window:not(:first-child)>div {
     display: grid;
-    column-gap: 20px;
+    column-gap: 16px;
     row-gap: 0px;
     grid-template-columns: minmax(0, auto) 1fr;
+}
+
+.transaction-info--container .inner-window:not(:first-child)>div .merchant-cell {
+    grid-column: span 2;
 }
 
 .transaction-info--container .inner-window:not(:first-child)>div>div {

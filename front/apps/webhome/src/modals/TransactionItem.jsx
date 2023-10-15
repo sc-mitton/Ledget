@@ -37,7 +37,7 @@ const TransactionModal = withModal((props) => {
         <>
             <div className='transaction-info--header'>
                 <DollarCents
-                    value={Big(item?.amount).times(100).toNumber()}
+                    value={item?.amount ? new Big(item.amount).times(100).toNumber() : null}
                     style={{ textAlign: 'center' }}
                 />
                 <div>{item?.name}</div>
@@ -63,6 +63,11 @@ const TransactionModal = withModal((props) => {
                 </div>
                 <div className='inner-window'>
                     <div>
+                        {item?.merchant_name &&
+                            <>
+                                <div className="merchant-cell">{item?.merchant_name}</div>
+                            </>
+                        }
                         {(item?.address || item?.city || item?.region) &&
                             <>
                                 <div>Location </div>
@@ -71,12 +76,6 @@ const TransactionModal = withModal((props) => {
                                     <span>{item?.address}</span>
                                     <span>{`${item?.city}${item?.region ? ', ' + item.region : ''}`}</span>
                                 </div>
-                            </>
-                        }
-                        {item?.merchant_name &&
-                            <>
-                                <div>Merchant</div>
-                                <div>{item?.merchant_name}</div>
                             </>
                         }
                         <div>Date </div>
