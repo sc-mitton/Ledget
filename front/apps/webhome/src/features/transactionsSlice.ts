@@ -32,3 +32,5 @@ export const {
     useTransactionsSyncMutation,
     useGetTransactionsQuery
 } = extendedApiSlice
+
+export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransactions.useQueryState

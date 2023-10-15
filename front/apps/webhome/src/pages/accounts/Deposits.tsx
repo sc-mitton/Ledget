@@ -1,19 +1,28 @@
 import React, { useState, FC, useEffect, Fragment } from 'react'
 
-import { useNavigate, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet, useSearchParams, useLocation } from 'react-router-dom'
 import Big from 'big.js'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
-import { useGetTransactionsQuery, useTransactionsSyncMutation } from '@features/transactionsSlice'
+import {
+    useGetTransactionsQuery,
+    useGetTransactionQueryState,
+    useTransactionsSyncMutation,
+    accountType
+} from '@features/transactionsSlice'
 import { ShimmerDiv, RefreshButton, Base64Image, DollarCents, ShimmerText } from '@ledget/ui'
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
 
-const Wafers = ({ setCurrentAccount, currentAccount }: { setCurrentAccount: (account: string) => void, currentAccount: string }) => {
-    const { data: accountsData, isSuccess, isLoading } = useGetAccountsQuery()
+const Wafers = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    const { data: accountsData, isSuccess } = useGetAccountsQuery()
 
     useEffect(() => {
-        isSuccess && setCurrentAccount(accountsData.accounts[0].account_id)
+        if (isSuccess) {
+            searchParams.set('account', accountsData.accounts[0].account_id)
+            setSearchParams(searchParams)
+        }
     }, [isSuccess])
 
     return (
@@ -37,11 +46,14 @@ const Wafers = ({ setCurrentAccount, currentAccount }: { setCurrentAccount: (acc
                     return (
                         <div
                             key={account.account_id}
-                            className={`account-wafer ${currentAccount === account.account_id ? 'active' : 'inactive'}`}
+                            className={`account-wafer ${searchParams.get('account') === account.account_id ? 'active' : 'inactive'}`}
                             style={{ '--wafer-index': index } as React.CSSProperties}
                             role="button"
                             tabIndex={0}
-                            onClick={() => setCurrentAccount(account.account_id)}
+                            onClick={() => {
+                                searchParams.set('account', account.account_id)
+                                setSearchParams(searchParams)
+                            }}
                         >
                             <Base64Image
                                 data={institution.logo}
@@ -91,17 +103,18 @@ const SkeletonWafers = () => (
     </div>
 )
 
-const TransactionsTable: FC<React.HTMLProps<HTMLDivElement> & { shimmering: boolean }> = ({ children, shimmering = false, ...props }) => (
-    <ShimmerDiv
-        className="transactions--container"
-        shimmering={shimmering}
-        background="var(--inner-window)"
-    >
-        <div className="transactions--table" {...props}>
-            {children}
-        </div>
-    </ShimmerDiv>
-)
+const TransactionsTable: FC<React.HTMLProps<HTMLDivElement> & { shimmering: boolean }> =
+    ({ children, shimmering = false, ...props }) => (
+        <ShimmerDiv
+            className="transactions--container"
+            shimmering={shimmering}
+            background="var(--inner-window)"
+        >
+            <div className="transactions--table" {...props}>
+                {children}
+            </div>
+        </ShimmerDiv>
+    )
 
 const TransactionShimmer = ({ shimmering = false }) => (
     <>
@@ -125,11 +138,38 @@ const TransactionsHeader = () => (
     </div>
 )
 
-const Transactions = ({ account, cursor, type }: { account: string, cursor: string, type: string }) => {
-    const { data: { results: transactionsData } } = useGetTransactionsQuery({ type: 'depository', account: account, cursor: cursor })
+const Transactions = ({ cursor }: { cursor: string }) => {
+    const location = useLocation()
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const getTransactionType = (): string => {
+        switch (location.pathname.split('/')[2]) {
+            case 'deposits':
+                return 'depository';
+            case 'credit':
+                return 'credit';
+            case 'loan':
+                return 'loan';
+            default:
+                return 'depository';
+        }
+    }
+
+    const { data: { results: transactionsData, next }, isSuccess } = useGetTransactionsQuery({
+        type: getTransactionType() as accountType,
+        account: searchParams.get('account') as string,
+        cursor: cursor
+    })
     let previousMonth: number | null = null
     let previousYear: number | null = null
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (isSuccess) {
+            searchParams.set('cursor', next)
+            setSearchParams(searchParams)
+        }
+    }, [isSuccess])
 
     return transactionsData.map((transaction: any) => {
         const date = new Date(transaction.datetime)
@@ -175,17 +215,13 @@ const Transactions = ({ account, cursor, type }: { account: string, cursor: stri
 }
 
 const Deposits = () => {
-    const [currentAccount, setCurrentAccount] = useState('')
-    const [paginationCursors, setPaginationCursors] = useState([''])
     const dispatch = useAppDispatch()
+    const [searchParams] = useSearchParams()
 
     const { isLoading: isLoadingAccounts } = useGetAccountsQuery()
-    const [syncTransactions, { isSuccess, isError, data: syncResult }] = useTransactionsSyncMutation()
-    const { isLoading: isloadingTransactions, data: getTransactionsResult } = useGetTransactionsQuery({
-        type: 'depository',
-        account: currentAccount,
-        cursor: paginationCursors[paginationCursors.length - 1]
-    })
+    const [syncTransactions,
+        { isSuccess, isError, data: syncResult, isLoading: isSyncing }
+    ] = useTransactionsSyncMutation()
 
     // Dispatch synced toast
     useEffect(() => {
@@ -212,36 +248,29 @@ const Deposits = () => {
     const handleScroll = (e: React.UIEvent<HTMLElement>) => {
         const bottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight
         if (bottom) {
-            setPaginationCursors((prev) => [...prev, getTransactionsResult?.next])
+
         }
     }
 
     return (
         <>
-            {isLoadingAccounts
-                ?
-                <SkeletonWafers />
-                :
-                <Wafers
-                    setCurrentAccount={setCurrentAccount}
-                    currentAccount={currentAccount}
-                />
-            }
-            <TransactionsTable
+            {isLoadingAccounts ? <SkeletonWafers /> : <Wafers />}
+            {/* <TransactionsTable
                 onScroll={(e) => handleScroll(e)}
-                shimmering={isloadingTransactions && paginationCursors.length === 1}
+                shimmering={!searchParams.get('cursor')}
             >
                 <TransactionsHeader />
-                {paginationCursors.map((cursor, index) => (
-                    <Transactions key={index} cursor={cursor} account={currentAccount} type={'depository'} />
-                ))}
+                paginationCursors.map((cursor, index) => (
+                    <Transactions key={index} cursor={cursor} />
+                ))
                 <TransactionShimmer shimmering={(Boolean(paginationCursors.length > 1))} />
-            </TransactionsTable>
+            </TransactionsTable> */}
             <div className='refresh-btn--container' >
-                <RefreshButton
-                    loading={isloadingTransactions}
-                    onClick={() => { syncTransactions(currentAccount) }}
-                />
+                {searchParams.get('account') &&
+                    <RefreshButton
+                        loading={isSyncing}
+                        onClick={() => { syncTransactions(searchParams.get('account') as string) }}
+                    />}
             </div>
             <Outlet />
         </>

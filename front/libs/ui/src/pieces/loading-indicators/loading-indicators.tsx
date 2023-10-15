@@ -4,7 +4,7 @@ import { useTransition, animated } from '@react-spring/web'
 
 
 
-export const LoadingRing = ({ visible = false, className = '' }) => {
+export const LoadingRing = ({ visible = false }) => {
   return (
     <div
       style={{
@@ -16,7 +16,7 @@ export const LoadingRing = ({ visible = false, className = '' }) => {
         color: 'inherit'
       }}
     >
-      <div className={`lds-ring ${className}`}>
+      <div className={`lds-ring`}>
         <div></div>
         <div></div>
         <div></div>

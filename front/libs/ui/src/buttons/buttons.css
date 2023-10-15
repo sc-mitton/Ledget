@@ -563,10 +563,6 @@ button.disabled-hover:hover svg {
     transform: scale(1);
 }
 
-.refresh-btn svg {
-    opacity: 1;
-}
-
 .refresh-btn.active svg,
 .refresh-btn-clr.active svg {
     animation: spin 0.3s ease-in-out forwards;
@@ -583,26 +579,6 @@ button.disabled-hover:hover svg {
 
     100% {
         transform: rotate(360deg);
-    }
-}
-
-.refresh-btn.loading svg {
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-    transition-delay: .3s;
-}
-
-.refresh-btn .refresh-loading-ring {
-    animation: fade-on 0.3s ease-in-out forwards 0.3s;
-}
-
-@keyframes fade-on {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
     }
 }
 
