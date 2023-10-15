@@ -1,6 +1,6 @@
 import { apiSlice } from '@api/apiSlice'
 
-type accountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
+export type accountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 interface getTransactionsParams {
     type: accountType
     account: string
