@@ -1,4 +1,6 @@
 import logging
+from base64 import b64encode
+from urllib import parse
 
 from django.db import transaction, models
 from rest_framework.generics import GenericAPIView, ListAPIView
@@ -148,8 +150,21 @@ class TransactionsSyncView(GenericAPIView):
 
 
 class TransactionsPagination(CursorPagination):
-    page_size = 50
+    page_size = 25
     ordering = '-date'
+
+    def encode_cursor(self, cursor):
+        tokens = {}
+        if cursor.offset != 0:
+            tokens['o'] = str(cursor.offset)
+        if cursor.reverse:
+            tokens['r'] = '1'
+        if cursor.position is not None:
+            tokens['p'] = cursor.position
+
+        querystring = parse.urlencode(tokens, doseq=True)
+        encoded = b64encode(querystring.encode('ascii')).decode('ascii')
+        return encoded
 
 
 class TransactionsView(ListAPIView):
