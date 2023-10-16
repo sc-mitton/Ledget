@@ -6,7 +6,7 @@ import './styles/Text.scss'
 import Emoji from './Emoji'
 import { formatCurrency, formatRoundedCurrency, makeIntCurrencyFromStr } from '@ledget/ui'
 import { IconButton2, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
-import { ArrowIcon } from '@ledget/assets'
+import { ArrowIcon } from '@ledget/media'
 
 export const EmojiComboText = (props) => {
     const {

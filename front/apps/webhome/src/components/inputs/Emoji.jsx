@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react'
 import Picker from '@emoji-mart/react'
 
 import './styles/EmojiPicker.css'
-import { FaceIcon } from '@ledget/assets'
+import { FaceIcon } from '@ledget/media'
 import { IconScaleButton, DropAnimation } from '@ledget/ui'
 
 const EmojiContext = createContext()

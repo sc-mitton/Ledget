@@ -13,7 +13,7 @@ import {
     Help as HelpIcon,
     LogoutIcon,
     LedgetLogoIcon
-} from '@ledget/assets'
+} from '@ledget/media'
 import { DropAnimation } from '@ledget/ui'
 import { usePillAnimation } from '@utils/hooks'
 

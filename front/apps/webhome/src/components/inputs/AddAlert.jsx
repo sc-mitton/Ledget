@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 
 
 import './styles/Dropdowns.css'
-import { Plus, Return, CheckMark } from '@ledget/assets'
+import { Plus, Return, CheckMark } from '@ledget/media'
 import ComboSelect from './ComboSelect'
 import { formatRoundedCurrency } from '@ledget/ui'
 import { InputButton, MenuTextInput, DropAnimation } from '@ledget/ui'

@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
 
 import './styles/Account.css'
-import { CardIcon } from '@ledget/assets'
+import { CardIcon } from '@ledget/media'
 import {
     useGetMeQuery,
     useGetPaymentMethodQuery,

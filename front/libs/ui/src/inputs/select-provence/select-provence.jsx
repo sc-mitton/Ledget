@@ -5,7 +5,7 @@ import { DropAnimation } from '../../animations/animations'
 import { Combobox } from '@headlessui/react'
 import { states as provences } from './provences-data'
 import { TextInputWrapper } from "../text/text";
-import { ArrowIcon } from '@ledget/assets'
+import { ArrowIcon } from '@ledget/media'
 import { FormErrorTip } from '../../pieces/form-errors/form-errors'
 
 export const SelectProvence = ({ field, errors }) => {

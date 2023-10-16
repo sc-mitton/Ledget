@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import './styles/Welcome.css'
 import './styles/Main.css'
-import { Plus, CheckMark3 } from '@ledget/assets'
+import { Plus, CheckMark3 } from '@ledget/media'
 import { useBakedPlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'

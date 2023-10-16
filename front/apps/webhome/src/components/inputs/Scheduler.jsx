@@ -4,7 +4,7 @@ import './styles/Dropdowns.css'
 import './styles/Scheduler.css'
 import Radios from './Radios'
 import { useClickClose } from '@utils'
-import { ArrowIcon } from '@ledget/assets'
+import { ArrowIcon } from '@ledget/media'
 import { SlimInputButton, FormErrorTip, DropAnimation } from '@ledget/ui'
 
 const pickerContext = React.createContext()

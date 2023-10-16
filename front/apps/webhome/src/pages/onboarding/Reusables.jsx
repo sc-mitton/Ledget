@@ -6,7 +6,7 @@ import { Tab } from '@headlessui/react'
 import { useLocation } from 'react-router-dom'
 
 import { ItemsContext } from './ItemsContext'
-import { Recommendations as RecommendationsIcon } from '@ledget/assets'
+import { Recommendations as RecommendationsIcon } from '@ledget/media'
 import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'

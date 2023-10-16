@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { Listbox } from '@headlessui/react'
 import { DropAnimation, SlimInputButton } from '@ledget/ui'
-import { ArrowIcon, CheckMark } from '@ledget/assets'
+import { ArrowIcon, CheckMark } from '@ledget/media'
 
 const BakedSelect = ({ value, onChange, options, children }) => {
     const [sel, setSel] = useState(value)

@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import './styles/Dropdowns.css'
 import ComboSelect from './ComboSelect'
-import { Plus, CheckMark } from '@ledget/assets'
+import { Plus, CheckMark } from '@ledget/media'
 import { SlimInputButton, DropAnimation } from '@ledget/ui'
 
 const defaultOptions = [

@@ -6,7 +6,7 @@ import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
 
 import './styles/Items.css'
-import { CheckMark } from '@ledget/assets'
+import { CheckMark } from '@ledget/media'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { ItemsProvider, ItemsContext } from './ItemsContext'
 import { useItemsDrag } from './hooks'

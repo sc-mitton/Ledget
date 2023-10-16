@@ -26,9 +26,18 @@
       "@hooks/*": [
         "src/hooks/*"
       ],
+      "@modals/*": [
+        "src/modals/*"
+      ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
       "@ledget/ui": [
         "../../libs/ui/src"
       ],
+      "@ledget/media": [
+        "../../libs/media/src"
+      ]
     }
   },
   "files": [],

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, Fragment } from 'react'
 
-import { Plus, Edit } from '@ledget/assets'
+import { Plus, Edit } from '@ledget/media'
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
@@ -12,7 +12,7 @@ import {
 import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@ledget/ui'
 import SubmitForm from '@components/pieces/SubmitForm'
-import { RelinkIcon } from '@ledget/assets'
+import { RelinkIcon } from '@ledget/media'
 import { ShadowedContainer } from '@components/pieces'
 import {
     SecondaryButton,

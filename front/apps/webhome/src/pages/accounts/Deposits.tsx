@@ -24,7 +24,6 @@ import {
 } from './Pieces'
 import pathMappings from './path-mappings'
 
-
 const AccountWafers = ({ onClick }: { onClick: (val: string) => void }) => {
     const { data: accountsData, isSuccess } = useGetAccountsQuery()
     const [currentAccount, setCurrentAccount] = useState<string | null>(null)

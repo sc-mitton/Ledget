@@ -7,7 +7,7 @@ import { GreenSubmitButton, BlackSubmitButton, SecondaryButton } from '@ledget/u
 import { withSmallModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
 import { useFlow } from '@ledget/ory-sdk'
-import { DownloadIcon, CopyIcon } from '@ledget/assets'
+import { DownloadIcon, CopyIcon } from '@ledget/media'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 
 export const Content = (props) => {

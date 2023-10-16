@@ -6,7 +6,7 @@ import './styles/Devices.css'
 import { Disclosure } from '@headlessui/react'
 import { useDeleteRememberedDeviceMutation, } from '@features/authSlice'
 import { IconButtonSubmit, Tooltip } from '@ledget/ui'
-import { ArrowIcon, LogoutIcon, LocationIcon, ComputerIcon, PhoneIcon } from '@ledget/assets'
+import { ArrowIcon, LogoutIcon, LocationIcon, ComputerIcon, PhoneIcon } from '@ledget/media'
 
 
 const formatDateTime = (date) => {

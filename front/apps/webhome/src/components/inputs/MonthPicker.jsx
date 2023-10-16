@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import './styles/MonthPicker.css'
 import { monthMappings } from '@assets/data/monthMappings'
 import { SmallArrowButton, IconButton, DropAnimation } from '@ledget/ui'
-import { ArrowIcon } from '@ledget/assets'
+import { ArrowIcon } from '@ledget/media'
 
 const MonthPicker = () => {
     const dates = {

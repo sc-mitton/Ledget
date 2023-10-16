@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 
 import ComboSelect from './ComboSelect'
 import { SlimInputButton, DropAnimation } from '@ledget/ui'
-import { ArrowIcon } from '@ledget/assets'
+import { ArrowIcon } from '@ledget/media'
 
 const options = [
     { id: 1, value: 'month', label: 'Monthly', default: true },

@@ -14,7 +14,7 @@ import stripelogo from '@assets/images/stripelogo.svg'
 import ledgetapi from '@api/axios'
 import { useGetPricesQuery } from '@features/pricesSlice'
 import { WindowLoadingBar } from '../pieces'
-import { Star } from '@ledget/assets'
+import { Star } from '@ledget/media'
 import {
     BlackWideButton,
     CardInput,

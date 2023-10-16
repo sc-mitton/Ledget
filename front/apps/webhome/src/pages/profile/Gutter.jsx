@@ -4,7 +4,7 @@ import { animated } from '@react-spring/web'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { Tooltip } from '@ledget/ui'
-import { Profile1, Shield, Settings, Link } from '@ledget/assets'
+import { Profile1, Shield, Settings, Link } from '@ledget/media'
 import { usePillAnimation } from '@utils/hooks'
 import { useGetMeQuery } from '@features/userSlice'
 import { useEffect } from 'react'

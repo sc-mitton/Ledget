@@ -1,5 +1,5 @@
 import './styles/Header.css'
-import { CheckAll } from '@ledget/assets'
+import { CheckAll } from '@ledget/media'
 import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
 
 

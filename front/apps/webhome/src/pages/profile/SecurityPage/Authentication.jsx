@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import './styles/Authentication.css'
-import { LockIcon } from '@ledget/assets'
+import { LockIcon } from '@ledget/media'
 import { GrayButton } from '@ledget/ui'
 import { useGetMeQuery } from '@features/userSlice'
 
