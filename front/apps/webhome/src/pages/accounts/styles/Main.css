@@ -36,9 +36,19 @@
 .shimmering-account-wafers {
     display: inline-flex;
     gap: 12px;
-    overflow-x: scroll;
+    overflow-x: hidden;
     overflow-y: hidden;
     padding: 16px 14px 16px 14px;
+}
+
+@keyframes make-scroll {
+    0% {
+        overflow-x: hidden;
+    }
+
+    100% {
+        overflow-x: scroll;
+    }
 }
 
 .account-wafers {

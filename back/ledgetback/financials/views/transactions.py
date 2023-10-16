@@ -1,12 +1,11 @@
 import logging
-from base64 import b64encode
-from urllib import parse
+from collections import OrderedDict
 
 from django.db import transaction, models
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from rest_framework.pagination import CursorPagination
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_500_INTERNAL_SERVER_ERROR,
@@ -149,22 +148,16 @@ class TransactionsSyncView(GenericAPIView):
         return plaid_item
 
 
-class TransactionsPagination(CursorPagination):
+class TransactionsPagination(LimitOffsetPagination):
     page_size = 25
-    ordering = '-date'
+    ordering = '-datetime'
 
-    def encode_cursor(self, cursor):
-        tokens = {}
-        if cursor.offset != 0:
-            tokens['o'] = str(cursor.offset)
-        if cursor.reverse:
-            tokens['r'] = '1'
-        if cursor.position is not None:
-            tokens['p'] = cursor.position
-
-        querystring = parse.urlencode(tokens, doseq=True)
-        encoded = b64encode(querystring.encode('ascii')).decode('ascii')
-        return encoded
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('results', data)
+        ]))
 
 
 class TransactionsView(ListAPIView):
