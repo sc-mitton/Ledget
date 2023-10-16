@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { Outlet, Routes, Route, useNavigate, useLocation, Location } from 'react-router-dom'
+import { Outlet, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -11,7 +11,7 @@ import { usePillAnimation } from '@utils/hooks'
 import TransactionItem from '@modals/TransactionItem'
 import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/media'
 import { useGetAccountsQuery } from "@features/accountsSlice"
-import Deposits from './Deposits'
+import Deposits from './DepositsTab'
 
 const getNavIcon = (key = '', isCurrent: boolean) => {
     const fill = isCurrent ? 'var(--green-dark4)' : 'currentColor'
