@@ -1,10 +1,10 @@
 import { apiSlice } from '@api/apiSlice'
 import { current } from '@reduxjs/toolkit'
 
-export type accountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
+export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 
 export interface GetTransactionsParams {
-    type: accountType
+    type: AccountType
     account: string
     offset: number
     limit: number
@@ -38,7 +38,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
             merge: (currentCache, newItems) => {
                 if (currentCache.results) {
-                    const { results, ...rest } = currentCache
+                    const { results } = currentCache
                     const { results: newResults, ...newRest } = newItems
                     return {
                         results: [...results, ...newResults],

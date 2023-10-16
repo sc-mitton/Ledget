@@ -1,7 +1,6 @@
-import React, { useState, FC, HTMLProps, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 
-import { AnimatePresence } from 'framer-motion'
-import { useNavigate, Outlet, useLocation, Location } from 'react-router-dom'
+import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import Big from 'big.js'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
@@ -9,38 +8,27 @@ import {
     useLazyGetTransactionsQuery,
     useTransactionsSyncMutation,
     useGetTransactionQueryState,
-    accountType,
     GetTransactionsParams
 } from '@features/transactionsSlice'
 import {
-    ShimmerDiv,
     RefreshButton,
     Base64Image,
-    DollarCents,
-    ShimmerText,
-    FadeInOutDiv
+    DollarCents
 } from '@ledget/ui'
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
+import {
+    SkeletonWafers,
+    TransactionsHeader,
+    TransactionsTable
+} from './Pieces'
+import pathMappings from './path-mappings'
 
 
-const getTransactionType = (location: Location): string => {
-    switch (location.pathname.split('/')[2]) {
-        case 'deposits':
-            return 'depository';
-        case 'credit':
-            return 'credit';
-        case 'loan':
-            return 'loan';
-        default:
-            return 'depository';
-    }
-}
-
-const AccountWafers = ({ onClick }:
-    { onClick: (val: string) => void }) => {
+const AccountWafers = ({ onClick }: { onClick: (val: string) => void }) => {
     const { data: accountsData, isSuccess } = useGetAccountsQuery()
     const [currentAccount, setCurrentAccount] = useState<string | null>(null)
+    const location = useLocation()
 
     useEffect(() => {
         if (isSuccess) {
@@ -51,125 +39,64 @@ const AccountWafers = ({ onClick }:
     return (
         <div className="account-wafers--container">
             <div>
-                <h3>Total Deposits</h3>
+                <h3>{pathMappings.getWaferTitle(location)}</h3>
                 <DollarCents
                     value={
                         isSuccess
-                            ? String(accountsData?.accounts.filter((account: any) => account.type === 'depository')
-                                .reduce((acc: number, account: any) => acc + account.balances.current, 0) * 100)
+                            ? Big(accountsData?.accounts
+                                .filter((account: any) => account.type === pathMappings.getAccountType(location))
+                                .reduce((acc: number, account: any) => acc + account.balances.current, 0))
+                                .times(100)
+                                .toNumber()
                             : '0.00'
                     }
                 />
             </div>
             <div className="account-wafers">
-                {accountsData?.accounts.filter((account: any) => account.type === 'depository').map((account: any, index: number) => {
-                    const institution = accountsData.institutions.find((item: any) => item.id === account.institution_id)
-                    const nameIsLong = account.official_name.length > 18
+                {accountsData?.accounts
+                    .filter((account: any) => account.type === pathMappings.getAccountType(location))
+                    .map((account: any, index: number) => {
+                        const institution = accountsData.institutions.find((item: any) => item.id === account.institution_id)
+                        const nameIsLong = account.official_name.length > 18
 
-                    return (
-                        <div
-                            key={account.account_id}
-                            className={`account-wafer ${currentAccount === account.account_id ? 'active' : 'inactive'}`}
-                            style={{ '--wafer-index': index } as React.CSSProperties}
-                            role="button"
-                            tabIndex={0}
-                            onClick={() => {
-                                onClick(account.account_id)
-                                setCurrentAccount(account.account_id)
-                            }}
-                        >
-                            <Base64Image
-                                data={institution.logo}
-                                alt={institution.name.charAt(0).toUpperCase()}
-                            />
-                            <div className={`wafer-name--container ${nameIsLong ? 'masked' : ''}`}>
-                                <div className={`${nameIsLong ? 'scrolling-text' : ''}`}>
-                                    {account.official_name}
+                        return (
+                            <div
+                                key={account.account_id}
+                                className={`account-wafer ${currentAccount === account.account_id ? 'active' : 'inactive'}`}
+                                style={{ '--wafer-index': index } as React.CSSProperties}
+                                role="button"
+                                tabIndex={0}
+                                onClick={() => {
+                                    onClick(account.account_id)
+                                    setCurrentAccount(account.account_id)
+                                }}
+                            >
+                                <Base64Image
+                                    data={institution.logo}
+                                    alt={institution.name.charAt(0).toUpperCase()}
+                                />
+                                <div className={`wafer-name--container ${nameIsLong ? 'masked' : ''}`}>
+                                    <div className={`${nameIsLong ? 'scrolling-text' : ''}`}>
+                                        {account.official_name}
+                                    </div>
+                                    {nameIsLong && <div className='scrolling-text'>{account.official_name}</div>}
+                                    {nameIsLong && <div className='spacer'>spacer</div>}
                                 </div>
-                                {nameIsLong && <div className='scrolling-text'>{account.official_name}</div>}
-                                {nameIsLong && <div className='spacer'>spacer</div>}
+                                <div className='wafer-meta--container'>
+                                    {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
+                                    &nbsp;&bull;&nbsp;&bull;&nbsp;
+                                    {account.mask}
+                                </div>
+                                <div className="wafer-balance--container">
+                                    <DollarCents value={String(account.balances.current * 100)} />
+                                </div>
                             </div>
-                            <div className='wafer-meta--container'>
-                                {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
-                                &nbsp;&bull;&nbsp;&bull;&nbsp;
-                                {account.mask}
-                            </div>
-                            <div className="wafer-balance--container">
-                                <DollarCents value={String(account.balances.current * 100)} />
-                            </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
             </div>
         </div>
     )
 }
-
-const SkeletonWafers = () => (
-    <div className="account-wafers--container">
-        <div>
-            <span>Total Deposits</span>
-            <span>
-                <DollarCents value="0" />
-            </span>
-        </div>
-        <div className="shimmering-account-wafers">
-            {Array(4).fill(0).map((_, index) => (
-                <ShimmerDiv
-                    key={index}
-                    className="shimmering-account-wafer"
-                    shimmering={true}
-                    background="var(--inner-window-solid)"
-                />
-            ))}
-        </div>
-    </div>
-)
-
-const TransactionsHeader = () => (
-    <div className="transactions--header">
-        <div>Name</div>
-        <div>Amount</div>
-    </div>
-)
-
-const TransactionShimmer = () => (
-    <>
-        <div />
-        <div className="transaction-shimmer">
-            <div>
-                <ShimmerText shimmering={true} length={25} />
-                <ShimmerText shimmering={true} length={10} />
-            </div>
-            <div>
-                <ShimmerText shimmering={true} length={10} />
-            </div>
-        </div>
-    </>
-)
-
-const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { shimmering: boolean }>
-    = ({ children, shimmering, className, ...rest }) => {
-        const containerRef = React.useRef<HTMLDivElement>(null)
-
-        return (
-            <div className={`transactions--container ${className}`} ref={containerRef}>
-                <AnimatePresence mode="wait">
-                    {shimmering
-                        ? <FadeInOutDiv className='transactions--table' {...rest}>
-                            <TransactionsHeader />
-                            {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
-                                .fill(0)
-                                .map((_, index) => <TransactionShimmer key={index} />)}
-                        </FadeInOutDiv>
-                        : <FadeInOutDiv className={`transactions--table ${className}`} {...rest}>
-                            {children}
-                        </FadeInOutDiv>
-                    }
-                </AnimatePresence>
-            </div>
-        )
-    }
 
 const Transactions = ({ getTransactionsParams }: { getTransactionsParams: GetTransactionsParams }) => {
     const [getTransactions, {
@@ -248,7 +175,7 @@ const Deposits = () => {
     const location = useLocation()
 
     const [getTransactionsParams, setGetTransactionsParams] = useState<GetTransactionsParams>({
-        type: getTransactionType(location) as accountType,
+        type: pathMappings.getTransactionType(location),
         account: '',
         offset: 0,
         limit: 25
@@ -258,7 +185,7 @@ const Deposits = () => {
     const {
         data: transactionsData,
         isLoading: isLoadingTransactions,
-        isFetching: isFetchingTransactions
+        isFetching: isFetchingTransactions,
     } = useGetTransactionQueryState(getTransactionsParams)
     const {
         data: accountsData,
@@ -316,6 +243,9 @@ const Deposits = () => {
         const bottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight
         // Update cursors to add new transactions node to the end
         if (bottom && transactionsData?.next !== undefined) {
+            // Set offset to next cursor, unless there is no next cursor
+            // in which case there is no more data to be fetched, and we
+            // keep params as is
             setGetTransactionsParams((prev) => ({ ...prev, offset: transactionsData?.next || prev.offset }))
         }
     }
@@ -336,6 +266,7 @@ const Deposits = () => {
             }
             <TransactionsTable
                 onScroll={(e) => handleScroll(e)}
+                skeleton={isLoadingTransactions || isLoadingAccounts}
                 shimmering={isLoadingTransactions || isLoadingAccounts}
                 className={`${fetchMorePulse ? 'fetching-more' : isLoadingTransactions ? 'loading' : ''}`}
             >
