@@ -13,7 +13,8 @@ import {
 import {
     RefreshButton,
     Base64Image,
-    DollarCents
+    DollarCents,
+    ZipperButton
 } from '@ledget/ui'
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
@@ -172,6 +173,7 @@ const Deposits = () => {
 
     const dispatch = useAppDispatch()
     const location = useLocation()
+    const navigate = useNavigate()
 
     const [getTransactionsParams, setGetTransactionsParams] = useState<GetTransactionsParams>({
         type: pathMappings.getTransactionType(location),
@@ -271,15 +273,24 @@ const Deposits = () => {
             >
                 {getTransactionsParams.account && <Transactions getTransactionsParams={getTransactionsParams} />}
             </TransactionsTable>
-            <div className='refresh-btn--container' >
-                <RefreshButton
-                    loading={isSyncing}
-                    onClick={() => {
-                        getTransactionsParams.account && syncTransactions(getTransactionsParams.account)
-                    }}
-                />
-            </div>
+            {isSuccessLoadingAccounts && accountsData?.accounts.length > 0 &&
+                <div className='refresh-btn--container' >
+                    <RefreshButton
+                        loading={isSyncing}
+                        onClick={() => {
+                            getTransactionsParams.account && syncTransactions(getTransactionsParams.account)
+                        }}
+                    />
+                </div>}
             <Outlet />
+            {accountsData?.accounts.length === 0 &&
+                <div className="add-accounts-btn--container" >
+                    <h2>No Accounts Added Yet</h2>
+                    <ZipperButton onClick={() => { navigate('/profile/connections') }} >
+                        Add account
+                    </ZipperButton>
+                </div>
+            }
         </>
     )
 }

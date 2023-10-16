@@ -1,6 +1,6 @@
 import { useState, forwardRef, ReactNode, ButtonHTMLAttributes, useEffect } from 'react';
 
-import './buttons.css';
+import './buttons.scss';
 import {
   ExpandIcon,
   ArrowIcon,
@@ -197,7 +197,7 @@ export const RefreshButton = ({ fill = '#292929', hasBackground = true, loading 
       {hasBackground
         ?
         <IconButton2
-          className={`refresh-btn ${active ? 'active' : ''} ${loading ? 'loading' : ''}`}
+          className={`refresh-btn ${active ? 'active' : ''} ${(!active && loading) ? 'loading' : ''}`}
           onClick={() => {
             setActive(true)
             onClick()
@@ -205,7 +205,7 @@ export const RefreshButton = ({ fill = '#292929', hasBackground = true, loading 
           aria-label="Refresh"
           {...rest}
         >
-          {!active && <LoadingRing visible={loading} />}
+          {loading && <LoadingRing visible={loading} className="refresh-loading-ring" />}
           {(active || !loading) && <ReplayIcon fill={fill} />}
         </IconButton2>
         :
@@ -221,3 +221,19 @@ export const RefreshButton = ({ fill = '#292929', hasBackground = true, loading 
     </Tooltip>
   )
 }
+
+export const ZipperButton
+  = ({ children, className, onClick, ...rest }:
+    { className?: string, children?: React.ReactNode, onClick?: () => void }) => (
+    <button
+      {...rest}
+      className={`${className} zipper-btn`}
+      onClick={onClick}
+    >
+      <div>
+        {children}
+        <Plus width={'.9em'} height={'.9em'} stroke={'currentColor'} />
+      </div>
+      <span />
+    </button>
+  )
