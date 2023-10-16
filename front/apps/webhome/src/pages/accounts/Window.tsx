@@ -13,11 +13,10 @@ import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/media'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import Deposits from './Deposits'
 
-const getNavIcon = (location: Location, isCurrent: boolean) => {
-    const path = location.pathname.split('/')[2]
+const getNavIcon = (key = '', isCurrent: boolean) => {
     const fill = isCurrent ? 'var(--green-dark4)' : 'currentColor'
 
-    switch (path) {
+    switch (key) {
         case 'deposits':
             return <DepositsIcon fill={fill} />
         case 'credit':
@@ -31,10 +30,8 @@ const getNavIcon = (location: Location, isCurrent: boolean) => {
     }
 }
 
-const getNavLabel = (location: Location) => {
-    const path = location.pathname.split('/')[2]
-
-    switch (path) {
+const getNavLabel = (key = '') => {
+    switch (key) {
         case 'deposits':
             return 'Deposits'
         case 'credit':
@@ -47,7 +44,6 @@ const getNavLabel = (location: Location) => {
             return null
     }
 }
-
 
 const Header = () => {
     const ref = useRef(null)
@@ -101,8 +97,8 @@ const Header = () => {
                             tabIndex={0}
                             onClick={() => navigate(`/accounts/${path}`)}
                         >
-                            {getNavIcon(location, currentPath === path)}
-                            {getNavLabel(location)}
+                            {getNavIcon(path, currentPath === path)}
+                            {getNavLabel(path)}
                         </li>
                     ))
                     }

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import { useSpring } from '@react-spring/web'
 
@@ -22,13 +21,13 @@ interface Props {
  * @param {string} args.querySelectAll - A string representing the CSS selector to query for the DOM elements to animate behind.
  * @returns {Object} An object containing the animated props from `useSpring`.
  */
-const usePillAnimation = ({ ref, find, querySelectall, update = [], refresh = [], styles = {} }: Props) => {
+const usePillAnimation = ({ ref, find, querySelectall, update = [], refresh = [], styles = {} }: Props): any => {
     const [selectors, setSelectors] = useState<HTMLElement[]>([])
 
-    const [selectorWidth, setSelectorWidth] = useState(0)
-    const [selectorHeight, setSelectorHeight] = useState(0)
-    const [selectorLeft, setSelectorLeft] = useState(0)
-    const [selectorTop, setSelectorTop] = useState(0)
+    const [selectorWidth, setSelectorWidth] = useState<number>()
+    const [selectorHeight, setSelectorHeight] = useState<number>()
+    const [selectorLeft, setSelectorLeft] = useState<number>()
+    const [selectorTop, setSelectorTop] = useState<number>()
 
     let baseStyles = {
         position: "absolute",

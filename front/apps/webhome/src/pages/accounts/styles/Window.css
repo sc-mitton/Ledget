@@ -25,13 +25,13 @@
     z-index: 1;
 }
 
-#accounts-window ul li[aria-current="page"] {
+#accounts-window ul li[aria-current="true"] {
     background-color: transparent;
     transition: background-color 0.5s ease-in-out;
     color: var(--green-dark4);
 }
 
-#accounts-window ul li:not([aria-current="page"]):hover {
+#accounts-window ul li:not([aria-current="true"]):hover {
     background-color: var(--icon-hover-light-gray);
     transition: background-color 0.5s ease-in-out;
 }
