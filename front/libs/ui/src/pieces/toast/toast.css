@@ -16,7 +16,7 @@
     overflow: hidden;
 }
 
-.toast::after {
+.toast.has-loading-bar::after {
     content: "";
     position: absolute;
     bottom: 0;

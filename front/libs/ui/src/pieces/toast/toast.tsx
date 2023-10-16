@@ -16,6 +16,7 @@ export interface ToastItem {
   timer?: number;
   actionLink?: string;
   actionMessage?: string;
+  hasLoadingBar?: boolean;
 }
 
 export interface NewToast extends Omit<ToastItem, 'id'> { }
@@ -99,7 +100,7 @@ export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], c
       {transitions((style, item) => (
         <animated.div
           style={{ ...style, ...{ '--toast-timer': `${item.timer || 5000}ms` } as React.CSSProperties }}
-          className={`toast ${item.type}`}
+          className={`toast ${item.type} ${item.hasLoadingBar ? 'has-loading-bar' : ''}}`}
         >
           <div>
             {item.type === 'success' &&
