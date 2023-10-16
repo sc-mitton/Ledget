@@ -272,8 +272,41 @@
 .transactions--container {
     flex-grow: 1;
     position: relative;
+    overflow: hidden;
+}
+
+.transactions--container.loading {
     border-radius: var(--border-radius3);
 }
+
+.transactions--container.fetching-more::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 52px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgb(0, 0, 0, .07);
+    animation: fetching-more .7s ease-in-out forwards;
+}
+
+@keyframes fetching-more {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+        box-shadow: rgb(0, 0, 0, .04) 0 0 0px 8px;
+    }
+
+    100% {
+        transform: scale(14);
+        opacity: 0;
+        box-shadow: rgb(0, 0, 0, .04) 0 0 0px 8px;
+    }
+}
+
 
 .transactions--table {
     position: absolute;
@@ -330,7 +363,7 @@
 }
 
 .month-delimiter span {
-    padding-right: 4px;
+    padding-right: 6px;
     color: rgb(var(--charcoal-rgb), .5);
     background-color: var(--window);
     box-shadow: var(--window) 0 -2px 4px 2px;

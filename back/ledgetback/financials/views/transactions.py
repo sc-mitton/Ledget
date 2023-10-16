@@ -154,10 +154,21 @@ class TransactionsPagination(LimitOffsetPagination):
 
     def get_paginated_response(self, data):
         return Response(OrderedDict([
-            ('next', self.get_next_link()),
-            ('previous', self.get_previous_link()),
+            ('next', self.get_next_offset()),
+            ('previous', self.get_previous_offset()),
             ('results', data)
         ]))
+
+    def get_next_offset(self):
+        if self.offset + self.limit >= self.count:
+            return None
+
+        return self.offset + self.limit
+
+    def get_previous_offset(self):
+        if self.offset <= 0:
+            return None
+        return self.offset - self.limit
 
 
 class TransactionsView(ListAPIView):

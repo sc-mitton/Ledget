@@ -21,7 +21,7 @@ const TransactionModal = withModal((props) => {
     const {
         data: transactionsData,
         isSuccess: transactionsFetched
-    } = useGetTransactionsQuery(location.state.reduxCacheKey)
+    } = useGetTransactionsQuery(location.state.getTransactionsParams)
     const { data: accountsData, isSuccess: accountsFetched } = useGetAccountsQuery()
 
     useEffect(() => {

@@ -9,7 +9,8 @@ import {
     useLazyGetTransactionsQuery,
     useTransactionsSyncMutation,
     useGetTransactionQueryState,
-    accountType
+    accountType,
+    GetTransactionsParams
 } from '@features/transactionsSlice'
 import {
     ShimmerDiv,
@@ -36,13 +37,14 @@ const getTransactionType = (location: Location): string => {
     }
 }
 
-const AccountWafers = ({ currentAccount, setCurrentAccount }:
-    { currentAccount: string, setCurrentAccount: (val: string) => void }) => {
+const AccountWafers = ({ onClick }:
+    { onClick: (val: string) => void }) => {
     const { data: accountsData, isSuccess } = useGetAccountsQuery()
+    const [currentAccount, setCurrentAccount] = useState<string | null>(null)
 
     useEffect(() => {
         if (isSuccess) {
-            setCurrentAccount(accountsData.accounts[0].account_id)
+            setCurrentAccount(accountsData?.accounts[0].account_id)
         }
     }, [isSuccess])
 
@@ -71,7 +73,10 @@ const AccountWafers = ({ currentAccount, setCurrentAccount }:
                             style={{ '--wafer-index': index } as React.CSSProperties}
                             role="button"
                             tabIndex={0}
-                            onClick={() => { setCurrentAccount(account.account_id) }}
+                            onClick={() => {
+                                onClick(account.account_id)
+                                setCurrentAccount(account.account_id)
+                            }}
                         >
                             <Base64Image
                                 data={institution.logo}
@@ -143,34 +148,33 @@ const TransactionShimmer = () => (
     </>
 )
 
-const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { shimmering: boolean }> = ({ children, shimmering, ...rest }) => {
-    const containerRef = React.useRef<HTMLDivElement>(null)
+const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { shimmering: boolean }>
+    = ({ children, shimmering, className, ...rest }) => {
+        const containerRef = React.useRef<HTMLDivElement>(null)
 
-    return (
-        <div className="transactions--container" ref={containerRef}>
-            <AnimatePresence mode="wait">
-                {shimmering
-                    ? <FadeInOutDiv className="transactions--table" {...rest}>
-                        <TransactionsHeader />
-                        {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
-                            .fill(0)
-                            .map((_, index) => <TransactionShimmer key={index} />)}
-                    </FadeInOutDiv>
-                    : <FadeInOutDiv className="transactions--table" {...rest}>
-                        {children}
-                    </FadeInOutDiv>
-                }
-            </AnimatePresence>
-        </div>
-    )
-}
+        return (
+            <div className={`transactions--container ${className}`} ref={containerRef}>
+                <AnimatePresence mode="wait">
+                    {shimmering
+                        ? <FadeInOutDiv className='transactions--table' {...rest}>
+                            <TransactionsHeader />
+                            {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
+                                .fill(0)
+                                .map((_, index) => <TransactionShimmer key={index} />)}
+                        </FadeInOutDiv>
+                        : <FadeInOutDiv className={`transactions--table ${className}`} {...rest}>
+                            {children}
+                        </FadeInOutDiv>
+                    }
+                </AnimatePresence>
+            </div>
+        )
+    }
 
-const Transactions = ({ offset = 0, limit = 25, currentAccount = '' }) => {
-    const location = useLocation()
+const Transactions = ({ getTransactionsParams }: { getTransactionsParams: GetTransactionsParams }) => {
     const [getTransactions, {
         data: transactionsData,
         isSuccess: isTransactionsSuccess,
-        isFetching: isFetchingTransactions
     }] = useLazyGetTransactionsQuery()
 
     let previousMonth: number | null = null
@@ -179,12 +183,9 @@ const Transactions = ({ offset = 0, limit = 25, currentAccount = '' }) => {
 
     useEffect(() => {
         getTransactions({
-            type: getTransactionType(location) as accountType,
-            account: currentAccount,
-            offset: offset,
-            limit: limit
-        }, offset === 0)
-    }, [offset])
+            ...getTransactionsParams
+        }, getTransactionsParams.offset === 0)
+    }, [getTransactionsParams.offset, getTransactionsParams.account])
 
     return (
         <>
@@ -217,14 +218,7 @@ const Transactions = ({ offset = 0, limit = 25, currentAccount = '' }) => {
                                 onClick={() => {
                                     navigate(
                                         `/accounts/deposits/transaction/${transaction.transaction_id}`,
-                                        {
-                                            state: {
-                                                reduxCacheKey: {
-                                                    account: currentAccount,
-                                                    type: getTransactionType(location)
-                                                }
-                                            }
-                                        }
+                                        { state: { getTransactionsParams: getTransactionsParams } }
                                     )
                                 }}
                             >
@@ -244,37 +238,44 @@ const Transactions = ({ offset = 0, limit = 25, currentAccount = '' }) => {
                     )
                 })
             }
-            {isFetchingTransactions && <><TransactionShimmer /><TransactionShimmer /></>}
         </>
     )
 }
-
-const transactionsFetchLimit = 25
 
 const Deposits = () => {
 
     const dispatch = useAppDispatch()
     const location = useLocation()
 
-    const [offset, setOffset] = useState(0)
-    const [currentAccount, setCurrentAccount] = useState('')
+    const [getTransactionsParams, setGetTransactionsParams] = useState<GetTransactionsParams>({
+        type: getTransactionType(location) as accountType,
+        account: '',
+        offset: 0,
+        limit: 25
+    })
+    const [fetchMorePulse, setFetchMorePulse] = useState(false)
 
     const {
         data: transactionsData,
-        isLoading: isLoadingTransactions
-    } = useGetTransactionQueryState({
-        type: getTransactionType(location) as accountType,
-        account: currentAccount,
-        offset: offset,
-        limit: transactionsFetchLimit
-    })
+        isLoading: isLoadingTransactions,
+        isFetching: isFetchingTransactions
+    } = useGetTransactionQueryState(getTransactionsParams)
     const {
+        data: accountsData,
         isLoading: isLoadingAccounts,
-        isError: isErrorLoadingAccounts
+        isError: isErrorLoadingAccounts,
+        isSuccess: isSuccessLoadingAccounts
     } = useGetAccountsQuery()
     const [syncTransactions,
         { isSuccess, isError, data: syncResult, isLoading: isSyncing }
     ] = useTransactionsSyncMutation()
+
+    // Set first account on get accounts success
+    useEffect(() => {
+        if (isSuccessLoadingAccounts) {
+            setGetTransactionsParams((prev) => ({ ...prev, account: accountsData?.accounts[0].account_id }))
+        }
+    }, [isSuccessLoadingAccounts])
 
     // Dispatch synced toast
     useEffect(() => {
@@ -298,11 +299,22 @@ const Deposits = () => {
         }
     }, [isError])
 
+    // Fetch more transactions animation
+    useEffect(() => {
+        if (getTransactionsParams.offset > 0 && isFetchingTransactions) {
+            setFetchMorePulse(true)
+        }
+        let timeout = setTimeout(() => {
+            setFetchMorePulse(false)
+        }, 1500)
+        return () => { clearTimeout(timeout) }
+    }, [isFetchingTransactions])
+
     const handleScroll = (e: React.UIEvent<HTMLElement>) => {
         const bottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight
         // Update cursors to add new transactions node to the end
-        if (transactionsData?.next && bottom) {
-            setOffset(offset + transactionsFetchLimit)
+        if (bottom && transactionsData?.next !== undefined) {
+            setGetTransactionsParams((prev) => ({ ...prev, offset: transactionsData?.next || prev.offset }))
         }
     }
 
@@ -311,27 +323,27 @@ const Deposits = () => {
             {(isLoadingAccounts || isErrorLoadingAccounts)
                 ? <SkeletonWafers />
                 : <AccountWafers
-                    setCurrentAccount={setCurrentAccount}
-                    currentAccount={currentAccount}
+                    onClick={(accountId) =>
+                        setGetTransactionsParams({
+                            ...getTransactionsParams,
+                            account: accountId,
+                            offset: 0
+                        })
+                    }
                 />
             }
             <TransactionsTable
                 onScroll={(e) => handleScroll(e)}
-                shimmering={isLoadingTransactions}
+                shimmering={isLoadingTransactions || isLoadingAccounts}
+                className={`${fetchMorePulse ? 'fetching-more' : isLoadingTransactions ? 'loading' : ''}`}
             >
-                {currentAccount &&
-                    <Transactions
-                        currentAccount={currentAccount}
-                        offset={offset}
-                        limit={transactionsFetchLimit}
-                    />}
+                {getTransactionsParams.account && <Transactions getTransactionsParams={getTransactionsParams} />}
             </TransactionsTable>
             <div className='refresh-btn--container' >
                 <RefreshButton
                     loading={isSyncing}
                     onClick={() => {
-                        const account = currentAccount as string
-                        account && syncTransactions(account)
+                        getTransactionsParams.account && syncTransactions(getTransactionsParams.account)
                     }}
                 />
             </div>

@@ -2,17 +2,18 @@ import { apiSlice } from '@api/apiSlice'
 import { current } from '@reduxjs/toolkit'
 
 export type accountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
-interface getTransactionsParams {
+
+export interface GetTransactionsParams {
     type: accountType
     account: string
-    offset?: number
-    limit?: number
+    offset: number
+    limit: number
 }
 
 interface TransactionsResponse {
     results: any[]
-    next?: string
-    previous?: string
+    next?: number
+    previous?: number
 }
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
@@ -25,7 +26,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 invalidatesTags: ['transactions']
             }),
         }),
-        getTransactions: builder.query<TransactionsResponse, getTransactionsParams>({
+        getTransactions: builder.query<TransactionsResponse, GetTransactionsParams>({
             query: (params) => ({
                 url: 'transactions',
                 params: params,
@@ -38,9 +39,10 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             merge: (currentCache, newItems) => {
                 if (currentCache.results) {
                     const { results, ...rest } = currentCache
+                    const { results: newResults, ...newRest } = newItems
                     return {
-                        results: [...currentCache.results, ...newItems.results],
-                        ...rest
+                        results: [...results, ...newResults],
+                        ...newRest
                     }
                 }
                 return currentCache
