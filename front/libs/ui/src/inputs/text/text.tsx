@@ -1,7 +1,7 @@
 import React, { forwardRef, useRef, useState } from 'react'
 import { FC } from 'react'
 
-import { VisibilityIcon } from "@ledget/assets"
+import { VisibilityIcon } from "@ledget/media"
 import { CardElement } from '@stripe/react-stripe-js'
 import { object, string } from 'yup'
 
@@ -317,7 +317,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>((props,
             {...rest}
           />
           {pwdInput && inputType != 'confirm-password' &&
-            < VisibilityIcon mode={visible} onClick={() => { setVisible(!visible) }} />}
+            <VisibilityIcon mode={visible} onClick={() => { setVisible(!visible) }} />}
           {error && (error.type === 'required' || error.msg?.includes('required'))
             && <FormErrorTip errors={[{ type: 'required' }]} />
           }

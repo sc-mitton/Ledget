@@ -12,7 +12,7 @@ import {
   ReplayIcon,
   CheckMark,
   Plus
-} from '@ledget/assets'
+} from '@ledget/media'
 import { Tooltip } from '../pieces/tooltip/tooltip'
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'

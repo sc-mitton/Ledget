@@ -3,9 +3,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import './toast.css'
-import { CheckMark3 as CheckMarkIcon, Info as InfoIcon } from '@ledget/assets';
+import { CheckMark3 as CheckMarkIcon, Info as InfoIcon, Alert2 } from '@ledget/media';
 import { useTransition, animated } from '@react-spring/web';
-import { Alert2 } from '@ledget/assets'
 
 export type ToastType = 'success' | 'info' | 'error';
 

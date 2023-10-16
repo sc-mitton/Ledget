@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { filterNodesByGroups, isUiNodeInputAttributes } from '@ory/integrations/ui'
 
-import { PasskeyIcon, HelpIcon } from "@ledget/assets"
+import { PasskeyIcon, HelpIcon } from "@ledget/media"
 import './styles/PasswordlessFormSection.css'
 import { GrayWideButton } from '@ledget/ui'
 

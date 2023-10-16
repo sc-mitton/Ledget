@@ -15,7 +15,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ledget/assets": ["libs/assets/src/index.js"],
       "@ledget/media": ["libs/media/src/index.ts"],
       "@ledget/ory-sdk": ["libs/ory-sdk/src/index.js"],
       "@ledget/ui": ["libs/ui/src/index.ts"]

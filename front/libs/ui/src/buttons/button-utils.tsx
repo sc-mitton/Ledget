@@ -2,7 +2,7 @@ import { forwardRef, ButtonHTMLAttributes, FC, useEffect, useState } from 'react
 
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { TranslucentShimmerDiv } from '../pieces/shimmer/shimmer'
-import { ArrowIcon, CheckMark } from '@ledget/assets'
+import { ArrowIcon, CheckMark } from '@ledget/media'
 
 interface BaseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
