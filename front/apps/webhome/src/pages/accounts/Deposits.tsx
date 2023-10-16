@@ -1,6 +1,7 @@
-import React, { useState, FC, HTMLProps, useEffect, Fragment, forwardRef } from 'react'
+import React, { useState, FC, HTMLProps, useEffect, Fragment } from 'react'
 
-import { useNavigate, Outlet, useSearchParams, useLocation, Location } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
+import { useNavigate, Outlet, useLocation, Location } from 'react-router-dom'
 import Big from 'big.js'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
@@ -10,9 +11,17 @@ import {
     useGetTransactionQueryState,
     accountType
 } from '@features/transactionsSlice'
-import { ShimmerDiv, RefreshButton, Base64Image, DollarCents, ShimmerText } from '@ledget/ui'
+import {
+    ShimmerDiv,
+    RefreshButton,
+    Base64Image,
+    DollarCents,
+    ShimmerText,
+    FadeInOutDiv
+} from '@ledget/ui'
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
+
 
 const getTransactionType = (location: Location): string => {
     switch (location.pathname.split('/')[2]) {
@@ -27,14 +36,13 @@ const getTransactionType = (location: Location): string => {
     }
 }
 
-const Wafers = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
+const AccountWafers = ({ currentAccount, setCurrentAccount }:
+    { currentAccount: string, setCurrentAccount: (val: string) => void }) => {
     const { data: accountsData, isSuccess } = useGetAccountsQuery()
 
     useEffect(() => {
         if (isSuccess) {
-            searchParams.set('account', accountsData.accounts[0].account_id)
-            setSearchParams(searchParams)
+            setCurrentAccount(accountsData.accounts[0].account_id)
         }
     }, [isSuccess])
 
@@ -59,14 +67,11 @@ const Wafers = () => {
                     return (
                         <div
                             key={account.account_id}
-                            className={`account-wafer ${searchParams.get('account') === account.account_id ? 'active' : 'inactive'}`}
+                            className={`account-wafer ${currentAccount === account.account_id ? 'active' : 'inactive'}`}
                             style={{ '--wafer-index': index } as React.CSSProperties}
                             role="button"
                             tabIndex={0}
-                            onClick={() => {
-                                searchParams.set('account', account.account_id)
-                                setSearchParams(searchParams)
-                            }}
+                            onClick={() => { setCurrentAccount(account.account_id) }}
                         >
                             <Base64Image
                                 data={institution.logo}
@@ -141,30 +146,27 @@ const TransactionShimmer = () => (
 const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { shimmering: boolean }> = ({ children, shimmering, ...rest }) => {
     const containerRef = React.useRef<HTMLDivElement>(null)
 
-
-
     return (
         <div className="transactions--container" ref={containerRef}>
-            <div className="transactions--table" {...rest}>
+            <AnimatePresence mode="wait">
                 {shimmering
-                    ?
-                    <>
+                    ? <FadeInOutDiv className="transactions--table" {...rest}>
                         <TransactionsHeader />
                         {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
                             .fill(0)
                             .map((_, index) => <TransactionShimmer key={index} />)}
-                    </>
-                    :
-                    children
+                    </FadeInOutDiv>
+                    : <FadeInOutDiv className="transactions--table" {...rest}>
+                        {children}
+                    </FadeInOutDiv>
                 }
-            </div>
+            </AnimatePresence>
         </div>
     )
 }
 
-const Transactions = ({ offset = 0, limit = 25 }) => {
+const Transactions = ({ offset = 0, limit = 25, currentAccount = '' }) => {
     const location = useLocation()
-    const [searchParams] = useSearchParams()
     const [getTransactions, {
         data: transactionsData,
         isSuccess: isTransactionsSuccess,
@@ -178,7 +180,7 @@ const Transactions = ({ offset = 0, limit = 25 }) => {
     useEffect(() => {
         getTransactions({
             type: getTransactionType(location) as accountType,
-            account: searchParams.get('account') as string,
+            account: currentAccount,
             offset: offset,
             limit: limit
         }, offset === 0)
@@ -186,6 +188,7 @@ const Transactions = ({ offset = 0, limit = 25 }) => {
 
     return (
         <>
+            <TransactionsHeader />
             {isTransactionsSuccess && transactionsData &&
                 transactionsData.results?.map((transaction: any) => {
                     const date = new Date(transaction.datetime)
@@ -211,7 +214,19 @@ const Transactions = ({ offset = 0, limit = 25 }) => {
                             <div
                                 key={transaction.id}
                                 role="button"
-                                onClick={() => navigate(`/accounts/deposits/transaction/${transaction.transaction_id}`)}
+                                onClick={() => {
+                                    navigate(
+                                        `/accounts/deposits/transaction/${transaction.transaction_id}`,
+                                        {
+                                            state: {
+                                                reduxCacheKey: {
+                                                    account: currentAccount,
+                                                    type: getTransactionType(location)
+                                                }
+                                            }
+                                        }
+                                    )
+                                }}
                             >
                                 <div>
                                     <span>{transaction.name}</span>
@@ -239,17 +254,17 @@ const transactionsFetchLimit = 25
 const Deposits = () => {
 
     const dispatch = useAppDispatch()
-    const [searchParams] = useSearchParams()
     const location = useLocation()
 
     const [offset, setOffset] = useState(0)
+    const [currentAccount, setCurrentAccount] = useState('')
 
     const {
         data: transactionsData,
         isLoading: isLoadingTransactions
     } = useGetTransactionQueryState({
         type: getTransactionType(location) as accountType,
-        account: searchParams.get('account') as string,
+        account: currentAccount,
         offset: offset,
         limit: transactionsFetchLimit
     })
@@ -272,7 +287,7 @@ const Deposits = () => {
         }
     }, [isSuccess])
 
-    // // Dispatch synced error toast
+    // Dispatch synced error toast
     useEffect(() => {
         if (isError) {
             dispatch(popToast({
@@ -293,20 +308,29 @@ const Deposits = () => {
 
     return (
         <>
-            {(isLoadingAccounts || isErrorLoadingAccounts) ? <SkeletonWafers /> : <Wafers />}
+            {(isLoadingAccounts || isErrorLoadingAccounts)
+                ? <SkeletonWafers />
+                : <AccountWafers
+                    setCurrentAccount={setCurrentAccount}
+                    currentAccount={currentAccount}
+                />
+            }
             <TransactionsTable
                 onScroll={(e) => handleScroll(e)}
                 shimmering={isLoadingTransactions}
             >
-                <TransactionsHeader />
-                {searchParams.get('account') &&
-                    <Transactions offset={offset} limit={transactionsFetchLimit} />}
+                {currentAccount &&
+                    <Transactions
+                        currentAccount={currentAccount}
+                        offset={offset}
+                        limit={transactionsFetchLimit}
+                    />}
             </TransactionsTable>
             <div className='refresh-btn--container' >
                 <RefreshButton
                     loading={isSyncing}
                     onClick={() => {
-                        const account = searchParams.get('account') as string
+                        const account = currentAccount as string
                         account && syncTransactions(account)
                     }}
                 />

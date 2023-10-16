@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Big from 'big.js'
 
 import './styles/TransactionItem.css'
@@ -11,16 +11,22 @@ import { withModal, Base64Image, DollarCents } from '@ledget/ui'
 
 
 const TransactionModal = withModal((props) => {
+    const { id } = useParams()
+    const location = useLocation()
+
     const [item, setItem] = useState(null)
     const [institution, setInstitution] = useState(null)
     const [account, setAccount] = useState([])
-    const { data: transactionsData, isSuccess: transactionsFetched } = useGetTransactionsQuery('depository')
-    const { data: accountsData, isSuccess: accountsFetched, isLoading } = useGetAccountsQuery()
-    const { id } = useParams()
+
+    const {
+        data: transactionsData,
+        isSuccess: transactionsFetched
+    } = useGetTransactionsQuery(location.state.reduxCacheKey)
+    const { data: accountsData, isSuccess: accountsFetched } = useGetAccountsQuery()
 
     useEffect(() => {
         transactionsFetched &&
-            setItem(transactionsData.find(item => item.transaction_id === id))
+            setItem(transactionsData.results.find(item => item.transaction_id === id))
     }, [transactionsFetched])
 
     useEffect(() => {

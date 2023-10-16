@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from 'react'
+import React, { forwardRef, useEffect, useState, useId } from 'react'
 
 import { useTransition, animated, useSpring } from '@react-spring/web'
 import { motion } from 'framer-motion'
@@ -107,3 +107,19 @@ export const JiggleDiv = ({ jiggle, children, ...rest }: { jiggle: boolean, chil
   )
 }
 
+export const FadeInOutDiv = ({ children, ...rest }: { children: React.ReactNode }) => {
+  const id = useId()
+
+  return (
+    <motion.div
+      key={id}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      {...rest}
+    >
+      {children}
+    </motion.div>
+  )
+}
