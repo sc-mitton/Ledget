@@ -7,6 +7,7 @@ export * from './pieces/loading-indicators/loading-indicators';
 export * from './pieces/toast/toast';
 export * from './forms/verification-form/verification-form';
 export * from './animations/animations';
+export * from './animations/hooks'
 export * from './pieces/status-pulse/status-pulse';
 export * from './pieces/tooltip/tooltip';
 export * from './pieces/form-errors/form-errors';

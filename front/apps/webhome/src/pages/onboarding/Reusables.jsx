@@ -11,7 +11,7 @@ import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { BlackCheckSubmitButton, BlackSubmitWithArrow, GrnTextButton } from '@ledget/ui'
+import { GreenCheckSubmitButton, GreenSubmitWithArrow, GrnTextButton } from '@ledget/ui'
 
 
 export const TabView = ({ children }) => {
@@ -35,7 +35,7 @@ export const TabView = ({ children }) => {
         update: [updatePill],
         refresh: [],
         querySelectall: '[role=tab]',
-        styles: { backgroundColor: 'var(--green-hlight)' },
+        styles: { backgroundColor: 'var(--green-hlight)', zIndex: -1 },
         find: (element) => {
             return element.getAttribute('data-headlessui-state') === 'selected'
         }
@@ -81,7 +81,7 @@ export const BottomButtons = () => {
     const location = useLocation()
     const [addNewBill, { isLoading: isBillLoading, isSuccess: isBillSuccess }] = useAddnewBillMutation()
     const [addNewCategory, { isLoading: isCategoryLoading, isSuccess: isCategorySuccess }] = useAddNewCategoryMutation()
-    const { data: user, refetch: refetchUser } = useGetMeQuery()
+    const { refetch: refetchUser } = useGetMeQuery()
     const [updateUser, { isSuccess: patchedUserSuccess }] = useUpdateUserMutation()
 
     const { month: { items: monthItems }, year: { items: yearItems } } = useContext(ItemsContext)
@@ -134,23 +134,23 @@ export const BottomButtons = () => {
         }
     }, [patchedUserSuccess])
 
-    useEffect(() => {
-        if (user?.is_onboarded) {
-            navigate('/budget')
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (user?.is_onboarded) {
+    //         navigate('/budget')
+    //     }
+    // }, [user])
 
     return (
         <div
             className="btn-container"
         >
-            <BlackCheckSubmitButton
+            <GreenCheckSubmitButton
                 aria-label="Add Category"
                 type="submit"
             >
                 Save
-            </BlackCheckSubmitButton>
-            <BlackSubmitWithArrow
+            </GreenCheckSubmitButton>
+            <GreenSubmitWithArrow
                 aria-label="Next"
                 onClick={handleClick}
                 disabled={itemsEmpty}
@@ -158,7 +158,7 @@ export const BottomButtons = () => {
                 type="button"
             >
                 Next
-            </BlackSubmitWithArrow>
+            </GreenSubmitWithArrow>
         </div>
     )
 }

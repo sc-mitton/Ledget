@@ -93,7 +93,7 @@ export const withArrow = (Component: FC<any>) => {
 }
 
 export const withCheckMark = (Component: FC<any>) => {
-    return (props: LoadingButtonProps & { [key: string]: any }) => {
+    return (props: LoadingButtonProps) => {
         const {
             children,
             className,
@@ -122,11 +122,10 @@ export const withCheckMark = (Component: FC<any>) => {
 
 export const withLoading = (Component: FC<any>) => {
 
-    return (props: LoadingButtonProps & { [key: string]: any }) => {
+    return (props: LoadingButtonProps) => {
 
         const {
             children,
-            className,
             loading,
             submitting,
             success,

@@ -65,7 +65,7 @@ class PlaidLinkTokenView(APIView):
 
         if kwargs.get('item_id', False):
             request_kwargs['access_token'] = \
-                PlaidItem.objects.get(id=kwargs['item_id']).access_token
+                PlaidItem.objects.get(id=kwargs['id']).access_token
             request_kwargs['update'] = {"account_selection_enabled": True}
         else:
             request_kwargs['products'] = plaid_products
@@ -100,7 +100,7 @@ class PlaidItemView(RetrieveUpdateDestroyAPIView):
     serializer_class = PlaidItemsSerializer
 
     def get_object(self):
-        obj = get_object_or_404(PlaidItem, pk=self.kwargs['item_id'])
+        obj = get_object_or_404(PlaidItem, pk=self.kwargs['id'])
         self.check_object_permissions(self.request, obj)
         return obj
 

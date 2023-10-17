@@ -1,12 +1,37 @@
 import { apiSlice } from '@api/apiSlice'
 
-export const accountsSlice = apiSlice.injectEndpoints({
+
+interface Account {
+    id: string
+    order: number
+    [key: string]: any
+}
+
+interface UpdateAccountsParams {
+    accounts: Account[]
+}
+
+const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ['Accounts'] })
+
+
+export const accountsSlice = apiWithTag.injectEndpoints({
     endpoints: (builder) => ({
         getAccounts: builder.query<any, void>({
             query: () => `/accounts`,
+            providesTags: ['Accounts'],
             keepUnusedDataFor: 60 * 30, // 30 minutes
+        }),
+        updateAccounts: builder.mutation<any, UpdateAccountsParams>({
+            query: (data) => ({
+                url: `/accounts`,
+                method: 'PUT',
+                body: data,
+            }),
+            invalidatesTags: ['Accounts'],
         }),
     }),
 })
 
-export const { useGetAccountsQuery } = accountsSlice
+export const { useGetAccountsQuery, useUpdateAccountsMutation } = accountsSlice
+
+export const useGetAccountsQueryState = accountsSlice.endpoints.getAccounts.useQueryState

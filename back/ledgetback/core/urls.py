@@ -21,7 +21,7 @@ urlpatterns = [
           name='customer'),
      path('subscription', service_views.SubscriptionView.as_view(),
           name='subscription'),
-     path('subscription/<str:sub_id>',
+     path('subscription/<str:id>',
           service_views.UpateSubscriptionView.as_view()),
      path('subscription_item', service_views.SubscriptionItemsView.as_view(),
           name='subscription_item'),

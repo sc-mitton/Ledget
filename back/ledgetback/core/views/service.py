@@ -62,7 +62,7 @@ class UpateSubscriptionView(GenericAPIView):
 
         try:
             stripe.Subscription.modify(
-                kwargs.get('sub_id', ''),
+                kwargs.get('id', ''),
                 **serializer.validated_data
             )
             return Response(status=HTTP_200_OK)

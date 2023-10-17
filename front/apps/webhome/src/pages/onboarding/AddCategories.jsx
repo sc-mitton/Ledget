@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
@@ -9,19 +9,27 @@ import './styles/Items.css'
 import { CheckMark } from '@ledget/media'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { ItemsProvider, ItemsContext } from './ItemsContext'
-import { useItemsDrag } from './hooks'
 import { ShadowedContainer } from '@components/pieces'
 import { DeleteButton, GripButton } from '@components/buttons'
 import { EmojiComboText, LimitAmountInput, PeriodSelect } from '@components/inputs'
 import { schema as categorySchema } from '@modals/CreateCategory'
 import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
-import { formatName, formatRoundedCurrency, getLongestLength, shuffleArray } from '@ledget/ui'
-import { CloseButton, FormErrorTip } from '@ledget/ui'
+import {
+    formatName,
+    formatRoundedCurrency,
+    getLongestLength,
+    shuffleArray,
+    useSpringDrag,
+    CloseButton,
+    FormErrorTip
+} from '@ledget/ui'
+import { itemHeight, itemPadding } from './constants'
 
 const yearRecommendationsIndexes = Array.from({ length: yearRecommendations.length - 1 }, (_, i) => i + 1)
 const monthRecommendationsIndexes = Array.from({ length: monthRecommendations.length - 1 }, (_, i) => i + 1)
 const yearAnimationOrder = shuffleArray(yearRecommendationsIndexes)
 const monthAnimationOrder = shuffleArray(monthRecommendationsIndexes)
+
 
 const CategoriesColumn = ({ period }) => {
     const context = useContext(ItemsContext)[period]
@@ -34,11 +42,16 @@ const CategoriesColumn = ({ period }) => {
         containerProps,
     } = context
 
-    const bind = useItemsDrag(items, setItems, api)
-
-    const handleDelete = (toDelete) => {
-        setItems(items.filter((category) => category !== toDelete))
-    }
+    const bind = useSpringDrag({
+        items: items,
+        updateOrder: (newOrder) => setItems(newOrder),
+        api: api,
+        style: {
+            padding: itemPadding,
+            size: itemHeight,
+            axis: 'y'
+        }
+    })
 
     return (
         <ShadowedContainer style={{ height: 'auto' }}>
@@ -52,7 +65,7 @@ const CategoriesColumn = ({ period }) => {
                         <GripButton />
                         <div
                             className="budget-item-name--container"
-                            style={{ flexBasis: getLongestLength(context.items, 'name') }}
+                            style={{ flexBasis: getLongestLength(context.items, 'name') + 6 }}
                         >
                             <div className="budget-item-name">
                                 <span>{item.emoji}</span>
@@ -209,8 +222,6 @@ const CategoriesList = () => {
         </div>
     )
 
-    console.log(!recommendationsMode && (emptyYearItems && emptyMonthItems))
-
     return (
         <div
             id="budget-items--container"
@@ -283,6 +294,18 @@ const Form = () => {
             key={`create-category-form-${formKey}`}
         >
             <div>
+                <div
+                    style={{
+                        display: 'inline-flex',
+                        flexDirection: 'column',
+                        gap: '6px'
+                    }}
+                >
+                    <label>Refreshes</label>
+                    <div>
+                        <PeriodSelect value={period} onChange={setPeriod} />
+                    </div>
+                </div>
                 <div>
                     <EmojiComboText
                         name="name"
@@ -295,18 +318,6 @@ const Form = () => {
                     <LimitAmountInput control={control}>
                         < FormErrorTip errors={[errors.limit_amount]} />
                     </LimitAmountInput>
-                </div>
-                <div
-                    style={{
-                        display: 'inline-flex',
-                        flexDirection: 'column',
-                        gap: '6px'
-                    }}
-                >
-                    <label>Refreshes</label>
-                    <div>
-                        <PeriodSelect value={period} onChange={setPeriod} />
-                    </div>
                 </div>
             </div>
             <BottomButtons />

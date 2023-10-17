@@ -28,3 +28,12 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         exclude = ('plaid_item', 'institution')
+
+
+class AccountBalanceSerializer(serializers.ModelSerializer):
+    institution = InstitutionSerializer()
+
+    class Meta:
+        model = Account
+        fields = '__all__'
+

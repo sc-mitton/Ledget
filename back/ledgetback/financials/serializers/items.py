@@ -13,7 +13,10 @@ from django.conf import settings
 from core.clients import create_plaid_client
 from financials.models import PlaidItem
 from financials.models import Account, Institution
-from financials.serializers.accounts import AccountSerializer, InstitutionSerializer
+from financials.serializers.account import (
+    AccountSerializer,
+    InstitutionSerializer
+)
 
 PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
 plaid_client = create_plaid_client()

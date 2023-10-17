@@ -30,26 +30,29 @@ export const TransactionsHeader = () => (
     </div>
 )
 
-export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boolean, shimmering: boolean }>
-    = ({ children, skeleton, shimmering, className, ...rest }) => {
+export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boolean, shimmering: boolean, hide: boolean }>
+    = ({ children, skeleton, shimmering, className, hide = false, ...rest }) => {
         const containerRef = useRef<HTMLDivElement>(null)
 
         return (
-            <div className={`transactions--container ${className}`} ref={containerRef}>
-                <AnimatePresence mode="wait">
-                    {skeleton
-                        ? <FadeInOutDiv className='transactions--table' {...rest}>
-                            <TransactionsHeader />
-                            {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
-                                .fill(0)
-                                .map((_, index) => <TransactionShimmer key={index} shimmering={shimmering} />)}
-                        </FadeInOutDiv>
-                        : <FadeInOutDiv className={`transactions--table ${className}`} {...rest}>
-                            {children}
-                        </FadeInOutDiv>
-                    }
-                </AnimatePresence>
-            </div>
+            <> {!hide &&
+                <div className={`transactions--container ${className}`} ref={containerRef}>
+                    <AnimatePresence mode="wait">
+                        {skeleton
+                            ? <FadeInOutDiv className='transactions--table' {...rest}>
+                                <TransactionsHeader />
+                                {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
+                                    .fill(0)
+                                    .map((_, index) => <TransactionShimmer key={index} shimmering={shimmering} />)}
+                            </FadeInOutDiv>
+                            : <FadeInOutDiv className={`transactions--table ${className}`} {...rest}>
+                                {children}
+                            </FadeInOutDiv>
+                        }
+                    </AnimatePresence>
+                </div>
+            }
+            </>
         )
     }
 

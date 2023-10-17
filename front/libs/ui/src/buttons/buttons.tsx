@@ -235,5 +235,6 @@ export const ZipperButton
         <Plus width={'.9em'} height={'.9em'} stroke={'currentColor'} />
       </div>
       <span />
+      <span />
     </button>
   )

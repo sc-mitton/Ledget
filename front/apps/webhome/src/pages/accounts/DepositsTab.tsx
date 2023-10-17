@@ -45,7 +45,7 @@ const Deposits = () => {
 
     // Set first account on get accounts success
     useEffect(() => {
-        if (isSuccessLoadingAccounts) {
+        if (isSuccessLoadingAccounts && accountsData?.accounts.length > 0) {
             setGetTransactionsParams((prev) => ({ ...prev, account: accountsData?.accounts[0].account_id }))
         }
     }, [isSuccessLoadingAccounts])
@@ -101,6 +101,7 @@ const Deposits = () => {
             {(isLoadingAccounts || isErrorLoadingAccounts)
                 ? <SkeletonWafers />
                 : <AccountWafers
+                    hide={!isLoadingAccounts && isSuccessLoadingAccounts && accountsData?.accounts.length === 0}
                     onClick={(accountId) =>
                         setGetTransactionsParams({
                             ...getTransactionsParams,
@@ -111,6 +112,7 @@ const Deposits = () => {
                 />
             }
             <TransactionsTable
+                hide={!isLoadingAccounts && isSuccessLoadingAccounts && accountsData?.accounts.length === 0}
                 onScroll={(e) => handleScroll(e)}
                 skeleton={isLoadingTransactions || isLoadingAccounts}
                 shimmering={isLoadingTransactions || isLoadingAccounts}
@@ -124,7 +126,8 @@ const Deposits = () => {
                     <RefreshButton
                         loading={isSyncing}
                         onClick={() => {
-                            getTransactionsParams.account && syncTransactions(getTransactionsParams.account)
+                            getTransactionsParams.account &&
+                                syncTransactions(getTransactionsParams.account)
                         }}
                     />
                 </div>}

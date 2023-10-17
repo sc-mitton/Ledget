@@ -58,6 +58,7 @@ class Account(models.Model):
     type = models.CharField(max_length=50, null=False, blank=False)
     verification_status = models.CharField(max_length=50, null=True,
                                            blank=True)
+    order = models.IntegerField(null=True, blank=True)
 
 
 class Transaction(models.Model):

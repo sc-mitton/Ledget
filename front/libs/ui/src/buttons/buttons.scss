@@ -667,6 +667,22 @@ button.disabled-hover:hover svg {
     z-index: 0;
 }
 
+.zipper-btn>span:not(:last-child) {
+    opacity: 0;
+}
+
+.zipper-btn:hover>span:not(:last-child),
+.zipper-btn:focus-visible>span:not(:last-child) {
+    width: 200%;
+    height: 500%;
+    position: absolute;
+    background-image: conic-gradient(rgba(var(--m-green-values), .5), rgb(var(--m-green-values), .7), rgba(var(--m-green-values), .5));
+    animation: travel 3s linear infinite;
+    z-index: 1;
+    opacity: 1;
+    transition: opacity .3s ease-out;
+}
+
 @keyframes travel {
     from {
         transform: rotate(0);
