@@ -148,7 +148,7 @@ export const BottomButtons = () => {
                 aria-label="Add Category"
                 type="submit"
             >
-                Save
+                Add
             </GreenCheckSubmitButton>
             <GreenSubmitWithArrow
                 aria-label="Next"
