@@ -44,7 +44,7 @@ const CategoriesColumn = ({ period }) => {
 
     const bind = useSpringDrag({
         items: items,
-        updateOrder: (newOrder) => setItems(newOrder),
+        onRest: (newOrder) => setItems(newOrder),
         api: api,
         style: {
             padding: itemPadding,

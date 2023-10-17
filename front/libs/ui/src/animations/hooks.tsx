@@ -9,7 +9,8 @@ interface Item {
 interface UseItemsDrag {
     (args: {
         items: Item[],
-        updateOrder: (items: Item[]) => void,
+        indexCol: string,
+        onRest: (items: Item[]) => void,
         api: any,
         style: {
             axis: 'x' | 'y'
@@ -17,14 +18,6 @@ interface UseItemsDrag {
             padding: number,
         }
     }): any
-}
-
-function _toConsumableArray<T>(arr: T[] | ArrayLike<T>): T[] {
-    if (Array.isArray(arr)) {
-        return [...arr];
-    } else {
-        return Array.from(arr);
-    }
 }
 
 function move<T>(array: T[], moveIndex: number, toIndex: number): T[] {
@@ -113,16 +106,35 @@ function fn(
     }
 }
 
-const useSpringDrag: UseItemsDrag = ({ items, updateOrder, api, style }) => {
+const useSpringDrag: UseItemsDrag = ({ items, indexCol = 'id', onRest, api, style, }) => {
     return useDrag(({ args: [originalIndex], active, movement: [x, y] }) => {
-        if (!document.activeElement!.getAttribute('draggable-item')) {
+        if (!document.activeElement || !document.activeElement.getAttribute('draggable-item')) {
             return
         }
-
-        const curIndex = items.indexOf(originalIndex)
+        const curIndex = items.findIndex((item) => {
+            if (item.item) {
+                // console.log('item.item', item.item)
+                // console.log('originalIndex.item', originalIndex.item)
+                return originalIndex.item
+                    ? item.item[indexCol] === originalIndex.item[indexCol]
+                    : item.item[indexCol] === originalIndex[indexCol]
+            } else {
+                // console.log('item', item)
+                // console.log('originalIndex', originalIndex)
+                return originalIndex.item
+                    ? item[indexCol] === originalIndex[indexCol] || originalIndex.item[indexCol]
+                    : item[indexCol] === originalIndex[indexCol]
+            }
+        })
 
         if (style.axis === 'x') {
+            console.log('curIndex', curIndex)
+            console.log('styleSize', style.size)
+            console.log('x', x)
+            console.log('items.length', items.length)
+
             const curCol = clamp(Math.round((curIndex * style.size + x) / style.size), 0, items.length - 1)
+            // console.log('curCol', curCol)
             const newCategories = move<Item>(items, curIndex, curCol)
             api.start(fn(
                 newCategories,
@@ -134,7 +146,7 @@ const useSpringDrag: UseItemsDrag = ({ items, updateOrder, api, style }) => {
                 style.size,
                 style.padding
             ))
-            if (!active) updateOrder(newCategories)
+            if (!active) onRest(newCategories)
         } else {
             const curRow = clamp(Math.round((curIndex * style.size + y) / style.size), 0, items.length - 1)
             const newCategories = move<Item>(items, curIndex, curRow)
@@ -148,7 +160,7 @@ const useSpringDrag: UseItemsDrag = ({ items, updateOrder, api, style }) => {
                 style.size,
                 style.padding
             ))
-            if (!active) updateOrder(newCategories)
+            if (!active) onRest(newCategories)
         }
     })
 }

@@ -1,7 +1,5 @@
-import React from 'react'
-
 import './buttons.css'
-import { Delete, Grip } from '@ledget/media'
+import { Delete, Grip, CornerGrip } from '@ledget/media'
 
 export const DeleteButton = ({ onClick }) => (
     <div>
@@ -23,5 +21,16 @@ export const GripButton = (props) => (
         {...props}
     >
         <Grip />
+    </button>
+)
+
+export const CornerGripButton = (props) => (
+    <button
+        className="btn corner-grip-btn"
+        aria-label="Move"
+        draggable-item="true"
+        {...props}
+    >
+        <CornerGrip />
     </button>
 )

@@ -3,4 +3,14 @@
 .grip-btn {
     cursor: grab;
     margin-right: 6px;
+    touch-action: none;
+}
+
+.corner-grip-btn {
+    opacity: .3;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: grab;
+    touch-action: none;
 }
