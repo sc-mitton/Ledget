@@ -35,7 +35,7 @@ export const TabView = ({ children }) => {
         update: [updatePill],
         refresh: [],
         querySelectall: '[role=tab]',
-        styles: { backgroundColor: 'var(--green-hlight)', zIndex: -1 },
+        styles: { zIndex: -1 },
         find: (element) => {
             return element.getAttribute('data-headlessui-state') === 'selected'
         }
@@ -52,14 +52,7 @@ export const TabView = ({ children }) => {
                     {['Monthly', 'Yearly'].map((tab, i) => (
                         <Tab key={i} as={React.Fragment}>
                             {({ selected }) => (
-                                <button
-                                    className="btn-2slim"
-                                    style={{
-                                        color: selected
-                                            ? 'var(--m-text-gray)'
-                                            : 'var(--input-placeholder)'
-                                    }}
-                                >
+                                <button className="btn-2slim">
                                     {tab}
                                 </button>
                             )}

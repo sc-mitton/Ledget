@@ -11,7 +11,6 @@ import { withModal, Base64Image, DollarCents } from '@ledget/ui'
 
 
 const TransactionModal = withModal((props) => {
-    const { id } = useParams()
     const location = useLocation()
 
     const [item, setItem] = useState<any>({})
@@ -26,7 +25,7 @@ const TransactionModal = withModal((props) => {
 
     useEffect(() => {
         transactionsFetched &&
-            setItem(transactionsData.results.find(item => item.transaction_id === id))
+            setItem(transactionsData.results.find(item => item.transaction_id === location.state.transactionId))
     }, [transactionsFetched])
 
     useEffect(() => {
@@ -53,7 +52,7 @@ const TransactionModal = withModal((props) => {
                     <div >
                         <Base64Image
                             data={institution?.logo}
-                            alt={institution?.name.charAt(0).toUpperCase()}
+                            alt={institution?.name?.charAt(0).toUpperCase()}
                         />
                         <a
                             style={{ color: institution?.primary_color }}

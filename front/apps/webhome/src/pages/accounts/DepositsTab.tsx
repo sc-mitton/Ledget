@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { useNavigate, Outlet, useLocation } from 'react-router-dom'
+import { useNavigate, Outlet, useLocation, useSearchParams } from 'react-router-dom'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import {
@@ -19,6 +19,7 @@ const Deposits = () => {
     const dispatch = useAppDispatch()
     const location = useLocation()
     const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const [getTransactionsParams, setGetTransactionsParams] = useState<GetTransactionsParams>({
         type: pathMappings.getTransactionType(location),
@@ -46,9 +47,20 @@ const Deposits = () => {
     // Set first account on get accounts success
     useEffect(() => {
         if (isSuccessLoadingAccounts && accountsData?.accounts.length > 0) {
-            setGetTransactionsParams((prev) => ({ ...prev, account: accountsData?.accounts[0].account_id }))
+            searchParams.set('account', accountsData?.accounts[0].account_id)
+            setSearchParams(searchParams)
         }
     }, [isSuccessLoadingAccounts])
+
+    // Update transaction account query param when search param changes
+    useEffect(() => {
+        if (searchParams.get('account')) {
+            setGetTransactionsParams((prev) => ({
+                ...prev,
+                account: searchParams.get('account') || ''
+            }))
+        }
+    }, [searchParams.get('account')])
 
     // Dispatch synced toast
     useEffect(() => {
@@ -101,21 +113,12 @@ const Deposits = () => {
             {(isLoadingAccounts || isErrorLoadingAccounts)
                 ? <SkeletonWafers />
                 : <AccountWafers
-                    hide={!isLoadingAccounts && isSuccessLoadingAccounts && accountsData?.accounts.length === 0}
-                    onClick={(accountId) =>
-                        setGetTransactionsParams({
-                            ...getTransactionsParams,
-                            account: accountId,
-                            offset: 0
-                        })
-                    }
+                    onClick={() => setGetTransactionsParams({ ...getTransactionsParams, offset: 0 })}
                 />
             }
             <TransactionsTable
-                hide={!isLoadingAccounts && isSuccessLoadingAccounts && accountsData?.accounts.length === 0}
                 onScroll={(e) => handleScroll(e)}
-                skeleton={isLoadingTransactions || isLoadingAccounts}
-                shimmering={isLoadingTransactions || isLoadingAccounts}
+                skeleton={(isFetchingTransactions && getTransactionsParams.offset == 0) || isLoadingAccounts}
                 className={`${fetchMorePulse ? 'fetching-more' : isLoadingTransactions ? 'loading' : ''}`}
             >
                 {getTransactionsParams.account &&

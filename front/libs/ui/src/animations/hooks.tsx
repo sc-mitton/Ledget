@@ -4,6 +4,7 @@ import clamp from 'lodash.clamp'
 interface UseItemsDrag {
     (args: {
         order: React.MutableRefObject<number[]>
+        indexCol?: string,
         api: any,
         onRest?: (newOrder: number[]) => void,
         style: {
@@ -48,17 +49,17 @@ function swap<T>(array: T[], moveIndex: number, toIndex: number): T[] {
 
 function fn(
     order: number[],
+    indexCol: string,
     active = false,
-    originalIndex = 0,
+    itemId = '',
     curIndex = 0,
     delta = 0,
     axis = 'y',
     itemSize = 0,
     padding = 0,
-): (index: number) => { y?: number, x?: number, zIndex: number, immediate: false | ((key: any) => boolean) } {
-
-    return (index: number) => {
-        if (active && index === originalIndex) {
+): (index: number, item: any) => { y?: number, x?: number, zIndex: number, immediate: false | ((key: any) => boolean) } {
+    return (index: number, item: any) => {
+        if (active && item._item[indexCol] === itemId) {
             const pos = Math.min(
                 Math.max(curIndex * (itemSize + padding) + delta, 0),
                 (order.length - 1) * (itemSize + padding)
@@ -69,11 +70,10 @@ function fn(
                 ...(axis === 'x' ? { x: pos } : { y: pos }),
                 ...(axis === 'x' ? { immediate: xImmediate } : { immediate: yImmediate }),
                 zIndex: 1,
-                scale: 1.04,
-                boxShadow: 'rgba(255, 255, 255, .1) 0px 4px 12px'
+                scale: 1.04
             })
         } else {
-            const pos = order.indexOf(index) * (itemSize + padding)
+            const pos = order.indexOf(item._item[indexCol]) * (itemSize + padding)
             return ({
                 ...(axis === 'x' ? { x: pos } : { y: pos }),
                 zIndex: 0,
@@ -84,13 +84,12 @@ function fn(
     }
 }
 
-const useSpringDrag: UseItemsDrag = ({ order, api, style, onRest }) => {
-    return useDrag(({ args: [originalIndex], active, movement: [x, y] }) => {
+const useSpringDrag: UseItemsDrag = ({ order, indexCol = 'id', api, style, onRest }) => {
+    return useDrag(({ args: [itemId], active, movement: [x, y] }) => {
         if (!document.activeElement || !document.activeElement.getAttribute('draggable-item')) {
             return
         }
-
-        const curIndex = order.current.indexOf(originalIndex)
+        const curIndex = order.current.indexOf(itemId)
         const curPosition = clamp(
             style.axis === 'x'
                 ? Math.round((curIndex * style.size + x) / style.size)
@@ -101,8 +100,9 @@ const useSpringDrag: UseItemsDrag = ({ order, api, style, onRest }) => {
         const newOrder = swap<number>(order.current, curIndex, curPosition)
         api.start(fn(
             newOrder,
+            indexCol,
             active,
-            originalIndex,
+            itemId,
             curIndex,
             style.axis === 'x' ? x : y,
             style.axis,

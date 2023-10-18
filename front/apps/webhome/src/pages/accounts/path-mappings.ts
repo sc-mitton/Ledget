@@ -4,7 +4,7 @@ import { Location } from 'react-router-dom'
 
 const pathMappings = {
     getTransactionType: (location: Location): AccountType => {
-        switch (location.pathname.split('/')[location.pathname.split('/').length - 1]) {
+        switch (location.pathname.split('/')[2]) {
             case 'deposits':
                 return 'depository'
             case 'credit':
@@ -18,7 +18,7 @@ const pathMappings = {
         }
     },
     getAccountType: (location: Location): AccountType => {
-        switch (location.pathname.split('/')[location.pathname.split('/').length - 1]) {
+        switch (location.pathname.split('/')[2]) {
             case 'deposits':
                 return 'depository'
             case 'credit':
@@ -32,7 +32,7 @@ const pathMappings = {
         }
     },
     getWaferTitle: (location: Location): string => {
-        switch (location.pathname.split('/')[location.pathname.split('/').length - 1]) {
+        switch (location.pathname.split('/')[2]) {
             case 'deposits':
                 return 'Total Deposits'
             case 'credit':

@@ -60,26 +60,28 @@ const Form = (props) => {
                 className="create-form"
             >
                 <div className="extra-padded-row">
-                    <div><PeriodSelect hasLabel={true} /></div>
-                </div>
-                <div>
-                    <EmojiComboText
-                        name="name"
-                        placeholder="Name"
-                        register={register}
-                        error={[errors.name]}
-                    />
+                    <div>
+                        <PeriodSelect labelPrefix={'Resets'} />
+                    </div>
+                    <div>
+                        <AddAlert limitAmount={watchLimitAmount} />
+                    </div>
                 </div>
                 <div className="split-inputs">
+                    <div>
+                        <EmojiComboText
+                            name="name"
+                            placeholder="Name"
+                            register={register}
+                            error={[errors.name]}
+                        />
+                    </div>
                     <div>
                         <LimitAmountInput control={control}>
                             < FormErrorTip errors={[errors.limit_amount]} />
                         </LimitAmountInput>
                     </div>
-                    <div>
-                        <label htmlFor="limit_amount">Alert</label>
-                        <AddAlert limitAmount={watchLimitAmount} />
-                    </div>
+
                 </div>
                 <SubmitForm
                     submitting={isLoading}

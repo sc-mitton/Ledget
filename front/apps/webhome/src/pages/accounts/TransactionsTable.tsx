@@ -1,6 +1,6 @@
 import { Fragment, useEffect, FC, HTMLProps, useRef } from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import Big from 'big.js'
 
@@ -30,29 +30,26 @@ export const TransactionsHeader = () => (
     </div>
 )
 
-export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boolean, shimmering: boolean, hide: boolean }>
-    = ({ children, skeleton, shimmering, className, hide = false, ...rest }) => {
+export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boolean }>
+    = ({ children, skeleton, className, ...rest }) => {
         const containerRef = useRef<HTMLDivElement>(null)
 
         return (
-            <> {!hide &&
-                <div className={`transactions--container ${className}`} ref={containerRef}>
-                    <AnimatePresence mode="wait">
-                        {skeleton
-                            ? <FadeInOutDiv className='transactions--table' {...rest}>
-                                <TransactionsHeader />
-                                {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
-                                    .fill(0)
-                                    .map((_, index) => <TransactionShimmer key={index} shimmering={shimmering} />)}
-                            </FadeInOutDiv>
-                            : <FadeInOutDiv className={`transactions--table ${className}`} {...rest}>
-                                {children}
-                            </FadeInOutDiv>
-                        }
-                    </AnimatePresence>
-                </div>
-            }
-            </>
+            <div className={`transactions--container ${className}`} ref={containerRef}>
+                <AnimatePresence mode="wait">
+                    {skeleton
+                        ? <FadeInOutDiv className='transactions--table' {...rest}>
+                            <TransactionsHeader />
+                            {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
+                                .fill(0)
+                                .map((_, index) => <TransactionShimmer key={index} shimmering={true} />)}
+                        </FadeInOutDiv>
+                        : <FadeInOutDiv className={`transactions--table ${className}`} {...rest}>
+                            {children}
+                        </FadeInOutDiv>
+                    }
+                </AnimatePresence>
+            </div>
         )
     }
 
@@ -65,6 +62,7 @@ export const Transactions = ({ queryParams }: { queryParams: GetTransactionsPara
     let previousMonth: number | null = null
     let previousYear: number | null = null
     const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
         getTransactions({
@@ -102,8 +100,13 @@ export const Transactions = ({ queryParams }: { queryParams: GetTransactionsPara
                                 role="button"
                                 onClick={() => {
                                     navigate(
-                                        `/accounts/deposits/transaction/${transaction.transaction_id}`,
-                                        { state: { getTransactionsParams: queryParams } }
+                                        `${location.pathname}/transaction${location.search}`,
+                                        {
+                                            state: {
+                                                getTransactionsParams: queryParams,
+                                                transactionId: transaction.transaction_id,
+                                            }
+                                        }
                                     )
                                 }}
                             >

@@ -54,7 +54,9 @@
 }
 
 .extra-padded-row {
-    margin: 8px 0;
+    margin: 12px 0;
+    display: flex;
+    gap: 8px;
 }
 
 .multi-input-row {

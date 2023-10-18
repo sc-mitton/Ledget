@@ -87,6 +87,15 @@
     transition: background-color .2s ease-out;
 }
 
+#onboarding-app .tab-list button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#onboarding-app .tab-list button[aria-selected='true'] {
+    color: var(--white-text);
+}
+
 /* ----------------------------- Suggested Items ---------------------------- */
 
 #recommendations-button--container {

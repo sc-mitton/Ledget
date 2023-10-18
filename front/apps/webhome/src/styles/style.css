@@ -49,7 +49,7 @@
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
     --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
     --new-item-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
-    --new-item-white-drop-shadow: rgba(255, 255, 255, 0.3) 0px 4px 12px;
+    --new-item-white-drop-shadow: rgba(255, 255, 255, .5) 0px 4px 10px;
     --active-wafer-drop-shadow: var(--green-hlight) 0px 0px 2px 2px;
     --wafer-hover-drop-shadow: rgb(0, 0, 0, .4) 0px 0px 10px 2px;
     --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
@@ -476,7 +476,7 @@ button.pulse:hover {
 .budget-item-name {
     padding: 2px 12px;
     border-radius: var(--border-radius2);
-    background-color: var(--green-hlight);
+    background-color: var(--green-hlight2);
     display: inline-block;
     white-space: nowrap;
     transition: background-color .3s ease;

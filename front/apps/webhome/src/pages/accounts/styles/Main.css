@@ -2,7 +2,7 @@
 .skeleton-account-wafers--container {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 16px;
+    gap: 10px;
     animation: delay-auto-width .5s ease-in-out forwards;
     animation-delay: 1s;
 }
@@ -19,7 +19,7 @@
 
 .skeleton-account-wafers--container>div:first-child,
 .account-wafers--container>div:first-child {
-    padding-top: 25px;
+    padding-top: 28px;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -48,7 +48,7 @@
     gap: 12px;
     overflow-x: hidden;
     overflow-y: hidden;
-    padding: 16px 14px 16px 14px;
+    padding: 16px;
     animation: make-scroll 1s ease-in-out forwards;
     animation-delay: 1s;
 }

@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 
 import './styles/Dropdowns.css'
-import { Plus, Return, CheckMark } from '@ledget/media'
+import { Plus, Return, ArrowIcon, CheckMark } from '@ledget/media'
 import ComboSelect from './ComboSelect'
 import { formatRoundedCurrency } from '@ledget/ui'
-import { InputButton, MenuTextInput, DropAnimation } from '@ledget/ui'
+import { SlimInputButton, MenuTextInput, DropAnimation } from '@ledget/ui'
 
 const formatDollar = (value, percentage) => {
     if (!value) return ''
@@ -185,14 +185,22 @@ const AddAlert = (props) => {
                 <span style={{ color: 'var(--input-placeholder2)' }}>
                     Add Alert
                 </span>}
-            <Plus
-                stroke={selectedAlerts.length <= 0
-                    ? 'var(--input-placeholder2)'
-                    : 'var(--m-text-gray)'}
-                strokeWidth={'20'}
-                width={'.8em'}
-                height={'.8em'}
-            />
+            {selectedAlerts.length > 0
+                ?
+                <ArrowIcon
+                    stroke={'var(--m-text-gray)'}
+                    strokeWidth={'20'}
+                    width={'.8em'}
+                    height={'.8em'}
+                />
+                :
+                <Plus
+                    stroke={'var(--input-placeholder2)'}
+                    strokeWidth={'20'}
+                    width={'.8em'}
+                    height={'.8em'}
+                />
+            }
         </>
     )
 
@@ -208,7 +216,7 @@ const AddAlert = (props) => {
             {({ open }) => (
                 <>
                     <ComboSelect.Button
-                        as={InputButton}
+                        as={SlimInputButton}
                         id="add-alert-btn"
                         ref={buttonRef}
                     >

@@ -1,14 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 
-import { useLocation, Location } from 'react-router-dom'
+import { useLocation, Location, useSearchParams } from 'react-router-dom'
 import { animated, useTransition, useSpringRef } from '@react-spring/web'
 import Big from 'big.js'
 
 import { CornerGripButton } from '@components/buttons'
 import { Base64Image, DollarCents, ShimmerDiv, useSpringDrag } from '@ledget/ui'
-import { useGetAccountsQuery, useGetAccountsQueryState, useUpdateAccountsMutation } from "@features/accountsSlice"
+import { useGetAccountsQuery, useGetAccountsQueryState } from "@features/accountsSlice"
 import pathMappings from './path-mappings'
-
 
 const waferWidth = 172
 const waferPadding = 12
@@ -64,20 +63,18 @@ const WafersHeader = () => {
     )
 }
 
-
 const filterAccounts = (accounts: any[], location: Location) => {
     return accounts.filter((account: any) =>
         account.type === pathMappings.getAccountType(location)
     )
 }
 
-export const AccountWafers = ({ onClick, hide = false }: { onClick: (val: string) => void, hide: boolean }) => {
+export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
     const { } = useGetAccountsQuery()
     const { data, isSuccess } = useGetAccountsQueryState()
-    const [updateAccounts] = useUpdateAccountsMutation()
 
-    const [currentAccount, setCurrentAccount] = useState<string | null>(null)
     const location = useLocation()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const waferApi = useSpringRef()
     const transitions = useTransition(
@@ -107,22 +104,24 @@ export const AccountWafers = ({ onClick, hide = false }: { onClick: (val: string
     // Set first account on get accounts success
     useEffect(() => {
         if (isSuccess && data?.accounts.length > 0) {
-            setCurrentAccount(data?.accounts[0].account_id)
+            searchParams.set('account', data?.accounts[0].account_id)
+            setSearchParams(searchParams)
         }
     }, [isSuccess])
 
-    const order = useRef(filterAccounts(data?.accounts || [], location).map((_, index) => index))
+    const order = useRef(filterAccounts(data?.accounts || [], location).map((item) => item.account_id))
     const bind = useSpringDrag({
         order: order,
+        indexCol: 'account_id',
         style: { axis: 'x', size: waferWidth, padding: waferPadding },
         api: waferApi
     })
 
     const handleClick = (id: string) => {
-        onClick(id)
-        setCurrentAccount(id)
+        searchParams.set('account', id)
+        setSearchParams(searchParams)
+        onClick()
         waferApi.start((index: any, item: any) => {
-            console.log(item._item.account_id)
             if (item._item.account_id === id) {
                 return ({
                     to: async (next: any) => {
@@ -138,60 +137,58 @@ export const AccountWafers = ({ onClick, hide = false }: { onClick: (val: string
     return (
         <div className="account-wafers--container">
             <WafersHeader />
-            {!hide &&
-                <div
-                    className="account-wafers"
-                    style={{ height: '19ch' }}
-                >
-                    {transitions((style, account, state, index) => {
-                        const institution = data.institutions.find((item: any) => item.id === account.institution_id)
-                        const nameIsLong = account.official_name.length > 18
-                        return (
-                            <animated.div
-                                style={style}
-                                className="account-wafer--container"
-                                {...bind(index)}
+            <div
+                className="account-wafers"
+                style={{ height: '19ch' }}
+            >
+                {transitions((style, account) => {
+                    const institution = data.institutions.find((item: any) => item.id === account.institution_id)
+                    const nameIsLong = account.official_name.length > 18
+                    return (
+                        <animated.div
+                            style={style}
+                            className="account-wafer--container"
+                            {...bind(account.account_id)}
+                        >
+                            <div
+                                tabIndex={0}
+                                key={account.account_id}
+                                className={`account-wafer ${searchParams.get('account') === account.account_id ? 'active' : 'inactive'}`}
                             >
+                                <CornerGripButton
+                                    id={`${account.account_id}`}
+                                    tabIndex={-1}
+                                />
+                                <Base64Image
+                                    data={institution.logo}
+                                    alt={institution.name.charAt(0).toUpperCase()}
+                                />
                                 <div
-                                    tabIndex={0}
-                                    key={account.account_id}
-                                    className={`account-wafer ${currentAccount === account.account_id ? 'active' : 'inactive'}`}
+                                    role="button"
+                                    tabIndex={-1}
+                                    onClick={() => { handleClick(account.account_id) }}
                                 >
-                                    <CornerGripButton
-                                        id={`${account.account_id}`}
-                                        tabIndex={-1}
-                                    />
-                                    <Base64Image
-                                        data={institution.logo}
-                                        alt={institution.name.charAt(0).toUpperCase()}
-                                    />
-                                    <div
-                                        role="button"
-                                        tabIndex={-1}
-                                        onClick={() => { handleClick(account.account_id) }}
-                                    >
-                                        <div className={`wafer-name--container ${nameIsLong ? 'masked' : ''}`}>
-                                            <div className={`${nameIsLong ? 'scrolling-text' : ''}`}>
-                                                {account.official_name}
-                                            </div>
-                                            {nameIsLong && <div className='scrolling-text'>{account.official_name}</div>}
-                                            {nameIsLong && <div className='spacer'>spacer</div>}
+                                    <div className={`wafer-name--container ${nameIsLong ? 'masked' : ''}`}>
+                                        <div className={`${nameIsLong ? 'scrolling-text' : ''}`}>
+                                            {account.official_name}
                                         </div>
-                                        <div className='wafer-meta--container'>
-                                            {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
-                                            &nbsp;&bull;&nbsp;&bull;&nbsp;
-                                            {account.mask}
-                                        </div>
-                                        <div className="wafer-balance--container">
-                                            <DollarCents value={String(account.balances.current * 100)} />
-                                        </div>
+                                        {nameIsLong && <div className='scrolling-text'>{account.official_name}</div>}
+                                        {nameIsLong && <div className='spacer'>spacer</div>}
+                                    </div>
+                                    <div className='wafer-meta--container'>
+                                        {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
+                                        &nbsp;&bull;&nbsp;&bull;&nbsp;
+                                        {account.mask}
+                                    </div>
+                                    <div className="wafer-balance--container">
+                                        <DollarCents value={String(account.balances.current * 100)} />
                                     </div>
                                 </div>
-                            </animated.div>
-                        )
-                    })}
-                </div>
-            }
+                            </div>
+                        </animated.div>
+                    )
+                })}
+            </div>
         </div>
     )
 }

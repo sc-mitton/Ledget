@@ -41,13 +41,13 @@ const CategoriesColumn = ({ period }) => {
         containerProps,
     } = context
 
-    const order = useRef(items.map((_, index) => index))
+    let order = useRef(items.map((item) => item.id))
 
     const bind = useSpringDrag({
         order: order,
         api: api,
         onRest: (newOrder) => {
-            setItems(newOrder.map((index) => items[index]))
+            setItems(newOrder.map((itemId) => items.find((item) => item.id === itemId)))
         },
         style: {
             padding: itemPadding,
@@ -59,12 +59,12 @@ const CategoriesColumn = ({ period }) => {
     return (
         <ShadowedContainer style={{ height: 'auto' }}>
             <animated.div style={containerProps} >
-                {transitions((style, item, state, index) => {
+                {transitions((style, item) => {
                     return (
                         <animated.div
                             className="budget-item category-item"
                             style={style}
-                            {...bind(index)}
+                            {...bind(item.id)}
                         >
                             <GripButton />
                             <div
@@ -325,7 +325,7 @@ const Form = () => {
                 >
                     <div>
                         <PeriodSelect
-                            labelPrefix={'Refresh'}
+                            labelPrefix={'Reset'}
                             value={period}
                             onChange={setPeriod}
                         />

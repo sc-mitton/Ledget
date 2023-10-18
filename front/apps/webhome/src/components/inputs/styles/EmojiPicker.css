@@ -11,7 +11,7 @@
 }
 
 em-emoji-picker {
-    height: 35vh;
+    height: 30vh;
     box-shadow: var(--mid-elevation-drop-shadow);
     --font-family: font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     --rgb-accent: 81, 237, 151;

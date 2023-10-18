@@ -139,12 +139,12 @@ function Window() {
                         key={location.pathname.split('/')[2]}
                     >
                         <Route path="deposits" element={<Deposits />} >
-                            <Route path="transaction/:id" element={<TransactionItem />} />
+                            <Route path="transaction" element={<TransactionItem />} />
                         </Route>
                         <Route path="investments" element={<div>Investments</div>} />
                         <Route path="credit" element={<div>Credit</div>} />
                         <Route path="loans" element={<div>Loans</div>} />
-                        <Route path="*" element={<NotFound />} />
+                        <Route path="*" element={<NotFound hasBackground={false} />} />
                     </Routes>
                 </motion.div>
             </AnimatePresence>
