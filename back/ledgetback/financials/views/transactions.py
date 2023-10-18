@@ -139,7 +139,6 @@ class TransactionsSyncView(GenericAPIView):
 
         try:
             id = self.request.query_params.get('item', None)
-            print('id', id)
             plaid_item = PlaidItem.objects.get(accounts__id=id)
         except PlaidItem.DoesNotExist:
             raise ValidationError('Invalid account id')

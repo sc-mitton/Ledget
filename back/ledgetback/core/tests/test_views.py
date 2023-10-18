@@ -28,7 +28,6 @@ class CoreViewTests(ViewTestsMixin):
         response = self.client.delete(
             reverse('device',  kwargs={'id': device_id})
         )
-        print(response.data)
         self.assertEqual(response.status_code, 204)
         self.assertFalse(Device.objects.filter(id=device_id).exists())
 

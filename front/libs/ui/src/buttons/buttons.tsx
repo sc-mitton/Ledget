@@ -205,7 +205,7 @@ export const RefreshButton = ({ fill = '#292929', hasBackground = true, loading 
           aria-label="Refresh"
           {...rest}
         >
-          {loading && <LoadingRing visible={loading} className="refresh-loading-ring" />}
+          {loading && <LoadingRing visible={true} className="refresh-loading-ring" />}
           {(active || !loading) && <ReplayIcon fill={fill} />}
         </IconButton2>
         :

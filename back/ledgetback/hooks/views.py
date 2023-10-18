@@ -118,7 +118,6 @@ class OryRegistrationHook(APIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            print(request.data)
             new_user = {'id': request.data['user_id']}
             if request.data.get('is_verified', False):
                 new_user['is_verified'] = True
