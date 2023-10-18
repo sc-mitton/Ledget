@@ -9,7 +9,7 @@ import { Base64Image, DollarCents, ShimmerDiv, useSpringDrag } from '@ledget/ui'
 import { useGetAccountsQuery, useGetAccountsQueryState } from "@features/accountsSlice"
 import pathMappings from './path-mappings'
 
-const waferWidth = 172
+const waferWidth = 165
 const waferPadding = 12
 
 export const SkeletonWafers = () => (
