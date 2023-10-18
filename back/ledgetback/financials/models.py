@@ -38,8 +38,19 @@ class PlaidItem(models.Model):
     permission_revoked = models.BooleanField(default=False)
 
 
+class UserAccountThroughModel(models.Model):
+    account = models.ForeignKey('Account', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='accounts')
+    order = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ('order',)
+        unique_together = ('account', 'user')
+
+
 class Account(models.Model):
 
+    users = models.ManyToManyField(User, through=UserAccountThroughModel)
     plaid_item = models.ForeignKey(PlaidItem,
                                    on_delete=models.CASCADE,
                                    related_name='accounts')
@@ -58,7 +69,6 @@ class Account(models.Model):
     type = models.CharField(max_length=50, null=False, blank=False)
     verification_status = models.CharField(max_length=50, null=True,
                                            blank=True)
-    order = models.IntegerField(null=True, blank=True)
 
 
 class Transaction(models.Model):

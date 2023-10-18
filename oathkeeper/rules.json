@@ -636,7 +636,8 @@
       "id": "accounts",
       "match": {
          "methods": [
-            "GET"
+            "GET",
+            "PATCH"
          ],
          "url": "https://localhost/api/v1/accounts"
       },

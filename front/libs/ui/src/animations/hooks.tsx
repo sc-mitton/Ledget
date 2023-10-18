@@ -3,10 +3,10 @@ import clamp from 'lodash.clamp'
 
 interface UseItemsDrag {
     (args: {
-        order: React.MutableRefObject<number[]>
+        order: React.MutableRefObject<string[]>
         indexCol?: string,
         api: any,
-        onRest?: (newOrder: number[]) => void,
+        onRest?: (newOrder: string[]) => void,
         style: {
             axis: 'x' | 'y'
             size: number,
@@ -48,7 +48,7 @@ function swap<T>(array: T[], moveIndex: number, toIndex: number): T[] {
 }
 
 function fn(
-    order: number[],
+    order: string[],
     indexCol: string,
     active = false,
     itemId = '',
@@ -97,7 +97,7 @@ const useSpringDrag: UseItemsDrag = ({ order, indexCol = 'id', api, style, onRes
             0,
             order.current.length - 1
         )
-        const newOrder = swap<number>(order.current, curIndex, curPosition)
+        const newOrder = swap<string>(order.current, curIndex, curPosition)
         api.start(fn(
             newOrder,
             indexCol,

@@ -16,6 +16,11 @@ class AccountsView(UpdateAPIView):
     serializer_class = AccountSerializer
     permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
 
+    def get_serializer(self, *args, **kwargs):
+        if isinstance(kwargs.get('data', {}), list):
+            kwargs['many'] = True
+        return super().get_serializer(*args, **kwargs)
+
     def get_object(self, request):
         account = Account.objects.get(id=self.request.query_params.get('id'))
         self.check_object_permissions(request, account)
@@ -23,7 +28,7 @@ class AccountsView(UpdateAPIView):
     def get(self, request, *args, **kwargs):
         '''Get all the account data belonging to a specific user'''
         already_fetched_tokens = []
-        accounts = Account.objects.filter(plaid_item__user_id=request.user.id) \
+        accounts = Account.objects.filter(users__pk=request.user.id) \
                                   .select_related('institution') \
                                   .select_related('plaid_item')
 

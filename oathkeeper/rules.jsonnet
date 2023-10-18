@@ -233,7 +233,7 @@ local GenericAuthedBase = {
   {
     id: 'accounts',
     match: {
-      methods: ['GET'],
+      methods: ['GET', 'PATCH'],
       url: base_url + '/accounts',
     }
   }

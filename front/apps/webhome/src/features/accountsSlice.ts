@@ -7,9 +7,6 @@ interface Account {
     [key: string]: any
 }
 
-interface UpdateAccountsParams {
-    accounts: Account[]
-}
 
 const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ['Accounts'] })
 
@@ -21,7 +18,7 @@ export const accountsSlice = apiWithTag.injectEndpoints({
             providesTags: ['Accounts'],
             keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
-        updateAccounts: builder.mutation<any, UpdateAccountsParams>({
+        updateAccounts: builder.mutation<any, Account[]>({
             query: (data) => ({
                 url: `/accounts`,
                 method: 'PUT',

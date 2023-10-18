@@ -23,17 +23,40 @@ class InstitutionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AccountListSerializer(serializers.ListSerializer):
+
+    def update(self, instance, validated_data):
+        account_mapping = {account.id: account for account in instance}
+        data_mapping = {account['id']: account for account in validated_data}
+
+        updated = []
+        updated_keys = []
+        new = []
+        for account_id, data in data_mapping.items():
+            account = account_mapping.get(account_id, None)
+            if account:
+                for attr, value in data.items():
+                    if hasattr(account, attr):
+                        updated_keys.append(attr)
+                        setattr(account, attr, value)
+                updated.append(account)
+            else:
+                new.append(self.child.Meta.model(**data))
+
+        if new:
+            self.child.Meta.model.objects.bulk_create(new)
+        if updated:
+            self.child.Meta.model.objects.bulk_update(updated, updated_keys)
+
+        return new + updated
+
+
 class AccountSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Account
-        exclude = ('plaid_item', 'institution')
-
-
-class AccountBalanceSerializer(serializers.ModelSerializer):
     institution = InstitutionSerializer()
 
     class Meta:
         model = Account
-        fields = '__all__'
-
+        fields = [field.name for field in model._meta.fields
+                  if field.name != 'user'] + ['institution']
+        exclude = ('plaid_item', 'institution')
+        list_serializer_class = AccountListSerializer

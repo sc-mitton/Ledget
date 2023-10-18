@@ -6,7 +6,7 @@ import Big from 'big.js'
 
 import { CornerGripButton } from '@components/buttons'
 import { Base64Image, DollarCents, ShimmerDiv, useSpringDrag } from '@ledget/ui'
-import { useGetAccountsQuery, useGetAccountsQueryState } from "@features/accountsSlice"
+import { useGetAccountsQuery, useGetAccountsQueryState, useUpdateAccountsMutation } from "@features/accountsSlice"
 import pathMappings from './path-mappings'
 
 const waferWidth = 165
@@ -72,6 +72,7 @@ const filterAccounts = (accounts: any[], location: Location) => {
 export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
     const { } = useGetAccountsQuery()
     const { data, isSuccess } = useGetAccountsQueryState()
+    const [updateOrder] = useUpdateAccountsMutation()
 
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -114,6 +115,14 @@ export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
         order: order,
         indexCol: 'account_id',
         style: { axis: 'x', size: waferWidth, padding: waferPadding },
+        onRest: (newOrder: string[]) => {
+            updateOrder(
+                newOrder.map((id, index) => ({
+                    id: id,
+                    order: index
+                }))
+            )
+        },
         api: waferApi
     })
 
