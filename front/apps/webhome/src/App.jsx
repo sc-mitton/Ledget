@@ -51,6 +51,7 @@ const OnboardingApp = () => {
                     fixed={location.pathname === '/welcome/connect'}
                     key={location.pathname}
                     id="onboarding-app"
+                    style={{ backgroundColor: 'var(--overlay2)' }}
                 >
                     <Routes location={location} key={location.pathname} >
                         <Route path="/connect" element={<WelcomeConnect />} />

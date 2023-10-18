@@ -1,17 +1,11 @@
 import { useDrag } from '@use-gesture/react'
 import clamp from 'lodash.clamp'
 
-interface Item {
-    item: any,
-    [key: string]: any;
-}
-
 interface UseItemsDrag {
     (args: {
-        items: Item[],
-        indexCol: string,
-        onRest: (items: Item[]) => void,
+        order: React.MutableRefObject<number[]>
         api: any,
+        onRest?: (newOrder: number[]) => void,
         style: {
             axis: 'x' | 'y'
             size: number,
@@ -20,7 +14,7 @@ interface UseItemsDrag {
     }): any
 }
 
-function move<T>(array: T[], moveIndex: number, toIndex: number): T[] {
+function swap<T>(array: T[], moveIndex: number, toIndex: number): T[] {
     /* #move - Moves an array item from one position in an array to another.
         Note: This is a pure function, so a new array will be returned instead of altering the array argument.
         Arguments:
@@ -52,116 +46,71 @@ function move<T>(array: T[], moveIndex: number, toIndex: number): T[] {
     return array;
 }
 
-
-function swapArrayLocs<T>(arr: T[], index1: number, index2: number): T[] {
-    const newArr = [...arr]
-    const temp = newArr[index1]
-    newArr[index1] = newArr[index2]
-    newArr[index2] = temp
-    return newArr
-}
-
 function fn(
-    items: Item[],
+    order: number[],
     active = false,
+    originalIndex = 0,
     curIndex = 0,
     delta = 0,
-    originalIndex: number,
-    axis: 'x' | 'y',
-    itemSize: number,
-    padding?: number,
-): (index: number, item: Item) => { y?: number, x?: number, zIndex: number, immediate: false | ((key: any) => boolean) } {
-    if (axis === 'x') {
-        return (index, item) => ({
-            x: (active && item.item === originalIndex)
-                ? Math.min(
-                    Math.max(curIndex * (itemSize + padding!) + delta, 0),
-                    (items.length - 1) * (itemSize + padding!)
-                )
-                : items.indexOf(item) * (itemSize + padding!),
-            zIndex: (active && item.item === originalIndex) ? 1 : 0,
-            immediate: (active && item.item === originalIndex)
-                ? (key) => key === 'x' || key === 'zIndex'
-                : false
-        })
-    } else {
-        return (index, item) => {
-            if (active && item.item === originalIndex) {
-                return {
-                    y: Math.min(
-                        Math.max(curIndex * (itemSize + padding!) + delta, 0),
-                        (items.length - 1) * (itemSize + padding!)
-                    ),
-                    zIndex: 1,
-                    immediate: (key) => key === 'y' || key === 'zIndex'
-                }
-            } else {
-                return {
-                    y: items.indexOf(item.item) * (itemSize + padding!),
-                    zIndex: 0,
-                    immediate: false
-                }
-            }
+    axis = 'y',
+    itemSize = 0,
+    padding = 0,
+): (index: number) => { y?: number, x?: number, zIndex: number, immediate: false | ((key: any) => boolean) } {
+
+    return (index: number) => {
+        if (active && index === originalIndex) {
+            const pos = Math.min(
+                Math.max(curIndex * (itemSize + padding) + delta, 0),
+                (order.length - 1) * (itemSize + padding)
+            )
+            const xImmediate = (key: any) => key === 'x' || key === 'zIndex'
+            const yImmediate = (key: any) => key === 'y' || key === 'zIndex'
+            return ({
+                ...(axis === 'x' ? { x: pos } : { y: pos }),
+                ...(axis === 'x' ? { immediate: xImmediate } : { immediate: yImmediate }),
+                zIndex: 1,
+                scale: 1.04,
+                boxShadow: 'rgba(255, 255, 255, .1) 0px 4px 12px'
+            })
+        } else {
+            const pos = order.indexOf(index) * (itemSize + padding)
+            return ({
+                ...(axis === 'x' ? { x: pos } : { y: pos }),
+                zIndex: 0,
+                immediate: false,
+                scale: 1,
+            })
         }
     }
 }
 
-const useSpringDrag: UseItemsDrag = ({ items, indexCol = 'id', onRest, api, style, }) => {
+const useSpringDrag: UseItemsDrag = ({ order, api, style, onRest }) => {
     return useDrag(({ args: [originalIndex], active, movement: [x, y] }) => {
         if (!document.activeElement || !document.activeElement.getAttribute('draggable-item')) {
             return
         }
-        const curIndex = items.findIndex((item) => {
-            if (item.item) {
-                // console.log('item.item', item.item)
-                // console.log('originalIndex.item', originalIndex.item)
-                return originalIndex.item
-                    ? item.item[indexCol] === originalIndex.item[indexCol]
-                    : item.item[indexCol] === originalIndex[indexCol]
-            } else {
-                // console.log('item', item)
-                // console.log('originalIndex', originalIndex)
-                return originalIndex.item
-                    ? item[indexCol] === originalIndex[indexCol] || originalIndex.item[indexCol]
-                    : item[indexCol] === originalIndex[indexCol]
-            }
-        })
 
-        if (style.axis === 'x') {
-            console.log('curIndex', curIndex)
-            console.log('styleSize', style.size)
-            console.log('x', x)
-            console.log('items.length', items.length)
-
-            const curCol = clamp(Math.round((curIndex * style.size + x) / style.size), 0, items.length - 1)
-            // console.log('curCol', curCol)
-            const newCategories = move<Item>(items, curIndex, curCol)
-            api.start(fn(
-                newCategories,
-                active,
-                originalIndex,
-                curIndex,
-                x,
-                style.axis,
-                style.size,
-                style.padding
-            ))
-            if (!active) onRest(newCategories)
-        } else {
-            const curRow = clamp(Math.round((curIndex * style.size + y) / style.size), 0, items.length - 1)
-            const newCategories = move<Item>(items, curIndex, curRow)
-            api.start(fn(
-                newCategories,
-                active,
-                curIndex,
-                y,
-                originalIndex,
-                style.axis,
-                style.size,
-                style.padding
-            ))
-            if (!active) onRest(newCategories)
-        }
+        const curIndex = order.current.indexOf(originalIndex)
+        const curPosition = clamp(
+            style.axis === 'x'
+                ? Math.round((curIndex * style.size + x) / style.size)
+                : Math.round((curIndex * style.size + y) / style.size),
+            0,
+            order.current.length - 1
+        )
+        const newOrder = swap<number>(order.current, curIndex, curPosition)
+        api.start(fn(
+            newOrder,
+            active,
+            originalIndex,
+            curIndex,
+            style.axis === 'x' ? x : y,
+            style.axis,
+            style.size,
+            style.padding
+        ))
+        if (!active) order.current = newOrder
+        if (!active && onRest) { onRest(newOrder) }
     })
 }
 

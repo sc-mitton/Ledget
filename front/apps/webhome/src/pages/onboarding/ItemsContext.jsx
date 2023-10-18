@@ -8,7 +8,7 @@ import { useLazyGetBillsQuery } from '@features/billSlice'
 import { useLazyGetCategoriesQuery } from '@features/categorySlice'
 
 const transitionConfig = {
-    from: () => ({ opacity: 0, zIndex: 0, fontWeight: 500 }),
+    from: () => ({ opacity: 0, zIndex: 0, scale: 1 }),
     enter: (item, index) => ({ opacity: 1, y: index * (itemHeight + itemPadding) }),
     update: (item, index) => ({ y: index * (itemHeight + itemPadding) }),
     leave: () => ({ opacity: 0 }),

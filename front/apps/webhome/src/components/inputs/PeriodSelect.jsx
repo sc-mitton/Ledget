@@ -41,9 +41,7 @@ const PeriodSelect = (props) => {
     return (
         <>
             {props.hasLabel &&
-                <label htmlFor="period">
-                    Refreshes
-                </label>
+                <label htmlFor="period">Refreshes</label>
             }
             <ComboSelect
                 name="period"
@@ -62,19 +60,18 @@ const PeriodSelect = (props) => {
                             }}
                             ref={buttonRef}
                         >
-                            {options.find((option) => option.value === localValue)?.label}
-                            {
-                                <ArrowIcon
-                                    width={'.8em'}
-                                    height={'.8em'}
-                                    stroke={`var(--m-text-gray)`}
-                                />
+                            {props.labelPrefix && `${props.labelPrefix} `}
+                            {props.labelPrefix
+                                ? `${options.find((option) => option.value === localValue)?.label.charAt(0).toLowerCase()}${options.find((option) => option.value === localValue)?.label.slice(1)}`
+                                : `${options.find((option) => option.value === localValue)?.label}`
                             }
+                            {<ArrowIcon
+                                width={'.8em'}
+                                height={'.8em'}
+                                stroke={`var(--m-text-gray)`}
+                            />}
                         </ComboSelect.Button>
-                        <ComboSelect.Options
-                            className="select-container"
-                            static
-                        >
+                        <ComboSelect.Options className="select-container" static>
                             <DropAnimation
                                 className="dropdown select"
                                 visible={open}

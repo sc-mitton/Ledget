@@ -49,7 +49,7 @@ export const TabView = ({ children }) => {
         <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
             <Tab.List className="tab-list--container" ref={tabListRef}>
                 <div className="tab-list">
-                    {['Month', 'Year'].map((tab, i) => (
+                    {['Monthly', 'Yearly'].map((tab, i) => (
                         <Tab key={i} as={React.Fragment}>
                             {({ selected }) => (
                                 <button

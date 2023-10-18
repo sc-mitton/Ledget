@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, useRef } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
@@ -33,7 +33,6 @@ const monthAnimationOrder = shuffleArray(monthRecommendationsIndexes)
 
 const CategoriesColumn = ({ period }) => {
     const context = useContext(ItemsContext)[period]
-
     const {
         items,
         setItems,
@@ -42,44 +41,50 @@ const CategoriesColumn = ({ period }) => {
         containerProps,
     } = context
 
+    const order = useRef(items.map((_, index) => index))
+
     const bind = useSpringDrag({
-        items: items,
-        onRest: (newOrder) => setItems(newOrder),
+        order: order,
         api: api,
+        onRest: (newOrder) => {
+            setItems(newOrder.map((index) => items[index]))
+        },
         style: {
             padding: itemPadding,
             size: itemHeight,
-            axis: 'y'
+            axis: 'y',
         }
     })
 
     return (
         <ShadowedContainer style={{ height: 'auto' }}>
             <animated.div style={containerProps} >
-                {transitions((style, item, index) =>
-                    <animated.div
-                        className="budget-item category-item"
-                        style={style}
-                        {...bind(item)}
-                    >
-                        <GripButton />
-                        <div
-                            className="budget-item-name--container"
-                            style={{ flexBasis: getLongestLength(context.items, 'name') + 6 }}
+                {transitions((style, item, state, index) => {
+                    return (
+                        <animated.div
+                            className="budget-item category-item"
+                            style={style}
+                            {...bind(index)}
                         >
-                            <div className="budget-item-name">
-                                <span>{item.emoji}</span>
-                                <span>{formatName(item.name)}</span>
+                            <GripButton />
+                            <div
+                                className="budget-item-name--container"
+                                style={{ flexBasis: getLongestLength(context.items, 'name') + 6 }}
+                            >
+                                <div className="budget-item-name">
+                                    <span>{item.emoji}</span>
+                                    <span>{formatName(item.name)}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div >
-                            <div className="budget-dollar--container">
-                                {`${formatRoundedCurrency(item.limit_amount)}`}
-                            </div>
-                        </div >
-                        <DeleteButton onClick={() => handleDelete(item)} />
-                    </animated.div>
-                )}
+                            <div >
+                                <div className="budget-dollar--container">
+                                    {`${formatRoundedCurrency(item.limit_amount)}`}
+                                </div>
+                            </div >
+                            <DeleteButton onClick={() => handleDelete(item)} />
+                        </animated.div>
+                    )
+                })}
             </animated.div>
         </ShadowedContainer>
     )
@@ -294,30 +299,37 @@ const Form = () => {
             key={`create-category-form-${formKey}`}
         >
             <div>
+
+                <div className='split-row-inputs'>
+                    <div>
+                        <EmojiComboText
+                            name="name"
+                            placeholder="Name"
+                            register={register}
+                            error={[errors.name]}
+                        />
+                    </div>
+                    <div>
+                        <LimitAmountInput control={control}>
+                            < FormErrorTip errors={[errors.limit_amount]} />
+                        </LimitAmountInput>
+                    </div>
+                </div>
                 <div
                     style={{
                         display: 'inline-flex',
                         flexDirection: 'column',
-                        gap: '6px'
+                        gap: '6px',
+                        marginTop: "8px"
                     }}
                 >
-                    <label>Refreshes</label>
                     <div>
-                        <PeriodSelect value={period} onChange={setPeriod} />
+                        <PeriodSelect
+                            labelPrefix={'Refresh'}
+                            value={period}
+                            onChange={setPeriod}
+                        />
                     </div>
-                </div>
-                <div>
-                    <EmojiComboText
-                        name="name"
-                        placeholder="Name"
-                        register={register}
-                        error={[errors.name]}
-                    />
-                </div>
-                <div>
-                    <LimitAmountInput control={control}>
-                        < FormErrorTip errors={[errors.limit_amount]} />
-                    </LimitAmountInput>
                 </div>
             </div>
             <BottomButtons />
