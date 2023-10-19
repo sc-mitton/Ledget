@@ -109,7 +109,7 @@ const useSpringDrag: UseItemsDrag = ({ order, indexCol = 'id', api, style, onRes
             style.size,
             style.padding
         ))
-        if (!active && order.current !== newOrder && onRest) { onRest(newOrder) }
+        if (!active && onRest) { onRest(newOrder) }
         if (!active) order.current = newOrder
     })
 }

@@ -117,12 +117,14 @@ export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
         indexCol: 'account_id',
         style: { axis: 'x', size: waferWidth, padding: waferPadding },
         onRest: (newOrder: string[]) => {
-            updateOrder(
-                newOrder.map((id, index) => ({
-                    account: id,
-                    order: index
-                }))
-            )
+            if (order.current !== newOrder) {
+                updateOrder(
+                    newOrder.map((id, index) => ({
+                        account: id,
+                        order: index
+                    }))
+                )
+            }
         },
         api: waferApi
     })
