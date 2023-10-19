@@ -48,7 +48,7 @@
     gap: 12px;
     overflow-x: hidden;
     overflow-y: hidden;
-    padding: 16px;
+    padding: 16px 8px 22px 8px;
     animation: make-scroll 1s ease-in-out forwards;
     animation-delay: 1s;
 }
@@ -64,7 +64,6 @@
 }
 
 .account-wafers {
-    mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
     z-index: 0;
     position: relative;
 }
@@ -107,6 +106,10 @@
     border-radius: var(--border-radius4);
 }
 
+.account-wafer--container:active {
+    box-shadow: var(--wafer-drag-drop-shadow);
+}
+
 .account-wafer--container {
     position: absolute;
 }
@@ -122,6 +125,7 @@
     position: absolute;
     inset: 0;
     padding: 10px 0px;
+    margin: 0 4px;
 }
 
 .account-wafer * {
@@ -154,7 +158,6 @@
 .account-wafer.inactive {
     transform: scale(1);
     transition: all .2s ease-out;
-    box-shadow: var(--wafer-drop-shadow);
 }
 
 .account-wafer.inactive:hover,
@@ -162,10 +165,9 @@
     border: none;
     outline: none;
     box-shadow: none;
-    transform: scale(1.03);
+    transform: scale(1.02);
     transition: all .2s ease-out;
     border-radius: var(--border-radius4);
-    box-shadow: var(--wafer-hover-drop-shadow);
 }
 
 /* Wafer Text */
@@ -504,11 +506,6 @@
 
     .account-wafers {
         order: 1;
-        margin-left: -12px;
-    }
-
-    .transactions--table {
-        margin-right: -8px;
     }
 
     /* all name cells */

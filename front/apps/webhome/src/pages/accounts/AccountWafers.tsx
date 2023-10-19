@@ -10,7 +10,7 @@ import { useGetAccountsQuery, useGetAccountsQueryState, useUpdateAccountsMutatio
 import pathMappings from './path-mappings'
 
 const waferWidth = 165
-const waferPadding = 12
+const waferPadding = 6
 
 export const SkeletonWafers = () => (
     <div className="skeleton-account-wafers--container">
@@ -76,6 +76,7 @@ export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
 
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
+    const [turnOffBottomMask, setTurnOffBottomMask] = useState(false)
 
     const waferApi = useSpringRef()
     const transitions = useTransition(
@@ -148,7 +149,14 @@ export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
             <WafersHeader />
             <div
                 className="account-wafers"
-                style={{ height: '19ch' }}
+                onScroll={(e) => {
+                    const scrollContainer = e.target as HTMLDivElement
+                    setTurnOffBottomMask(scrollContainer.scrollWidth - scrollContainer.scrollLeft <= scrollContainer.clientWidth)
+                }}
+                style={{
+                    height: '16.5ch',
+                    maskImage: `linear-gradient(to right, transparent, black 1%, black ${turnOffBottomMask ? 100 : 99}%, transparent)`
+                }}
             >
                 {transitions((style, account) => {
                     const institution = data.institutions.find((item: any) => item.id === account.institution_id)
