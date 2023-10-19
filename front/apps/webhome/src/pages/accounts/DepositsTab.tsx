@@ -3,20 +3,14 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, Outlet, useLocation, useSearchParams } from 'react-router-dom'
 
 import { useGetAccountsQuery } from "@features/accountsSlice"
-import {
-    useTransactionsSyncMutation,
-    useGetTransactionQueryState,
-    GetTransactionsParams
-} from '@features/transactionsSlice'
+import { useGetTransactionQueryState, GetTransactionsParams } from '@features/transactionsSlice'
 import { EdgeGlowPillButton } from '@ledget/ui'
-import { popToast } from '@features/toastSlice'
-import { useAppDispatch } from '@hooks/store'
+
 import pathMappings from './path-mappings'
 import { AccountWafers, SkeletonWafers } from './AccountWafers'
 import { TransactionsTable, Transactions } from './TransactionsTable'
 
 const Deposits = () => {
-    const dispatch = useAppDispatch()
     const location = useLocation()
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -40,9 +34,7 @@ const Deposits = () => {
         isError: isErrorLoadingAccounts,
         isSuccess: isSuccessLoadingAccounts
     } = useGetAccountsQuery()
-    const [syncTransactions,
-        { isSuccess, isError, data: syncResult, isLoading: isSyncing }
-    ] = useTransactionsSyncMutation()
+
 
     // Set first account on get accounts success
     useEffect(() => {
@@ -61,30 +53,6 @@ const Deposits = () => {
             }))
         }
     }, [searchParams.get('account')])
-
-    // Dispatch synced toast
-    useEffect(() => {
-        if (isSuccess) {
-            dispatch(popToast({
-                type: 'success',
-                message: `Synced${syncResult?.added ? `, ${syncResult?.added} new transactions` : ' successfully'}`,
-                timer: syncResult?.added ? 2500 : 2000,
-                hasLoadingBar: false
-            }))
-        }
-    }, [isSuccess])
-
-    // Dispatch synced error toast
-    useEffect(() => {
-        if (isError) {
-            dispatch(popToast({
-                type: 'error',
-                message: 'There was an error syncing your transactions',
-                timer: 2500,
-                hasLoadingBar: false
-            }))
-        }
-    }, [isError])
 
     // Fetch more transactions animation
     useEffect(() => {
