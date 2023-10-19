@@ -59,14 +59,6 @@ const Form = (props) => {
                 id="new-cat-form"
                 className="create-form"
             >
-                <div className="extra-padded-row">
-                    <div>
-                        <PeriodSelect labelPrefix={'Resets'} />
-                    </div>
-                    <div>
-                        <AddAlert limitAmount={watchLimitAmount} />
-                    </div>
-                </div>
                 <div className="split-inputs">
                     <div>
                         <EmojiComboText
@@ -82,6 +74,14 @@ const Form = (props) => {
                         </LimitAmountInput>
                     </div>
 
+                </div>
+                <div className="extra-padded-row">
+                    <div>
+                        <PeriodSelect labelPrefix={'Resets'} />
+                    </div>
+                    <div>
+                        <AddAlert limitAmount={watchLimitAmount} />
+                    </div>
                 </div>
                 <SubmitForm
                     submitting={isLoading}

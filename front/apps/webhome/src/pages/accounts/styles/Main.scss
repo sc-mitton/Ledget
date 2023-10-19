@@ -2,7 +2,7 @@
 .skeleton-account-wafers--container {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 10px;
+    gap: 24px;
     animation: delay-auto-width .5s ease-in-out forwards;
     animation-delay: 1s;
 }
@@ -48,7 +48,7 @@
     gap: 12px;
     overflow-x: hidden;
     overflow-y: hidden;
-    padding: 16px 8px 22px 8px;
+    padding: 16px 0px 22px 0px;
     animation: make-scroll 1s ease-in-out forwards;
     animation-delay: 1s;
 }
@@ -73,7 +73,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: radial-gradient(ellipse at center, rgb(0, 0, 0, .15) 1%, var(--window) 70%);
+    // background-image: radial-gradient(ellipse at center, rgb(0, 0, 0, .15) 1%, var(--window) 70%);
     opacity: 0;
     z-index: -1;
     animation: fade-in-background-image .5s ease-in-out forwards;
@@ -327,47 +327,39 @@
 
 .transactions--table {
     position: absolute;
+    z-index: 0;
     inset: 0;
     overflow: auto;
+    scrollbar-gutter: stable;
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-auto-rows: minmax(auto, 80px);
     grid-template-rows: min-content;
     row-gap: 8px;
     margin-top: 12px;
-    padding-right: 12px;
-    mask-image: linear-gradient(to bottom, black 0%, black calc(100% - 12px), transparent);
+    background-color: var(--inner-window-solid);
+    padding: 8px 12px 8px 8px;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 16px, black calc(100% - 16px), transparent)
 }
 
 .transactions--header {
-    display: contents;
+    grid-auto-rows: minmax(auto, 80px);
+    grid-template-rows: min-content;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding-left: 56px;
+    padding-right: 30px;
+
+    >div {
+        align-self: center;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0px;
+        z-index: 1;
+    }
 }
 
-/* Headers */
-.transactions--header>div {
-    font-weight: 500;
-    font-size: 16px;
-    letter-spacing: .5px;
-    background-color: var(--window);
-    position: sticky;
-    top: 0px;
-    z-index: 1;
-    box-shadow: var(--window) 0 8px 8px 2px;
-}
-
-/* Name Header */
-.transactions--header>div:first-child {
-    grid-column: 2;
-    padding: 0 10px 0px 12px;
-}
-
-/* Amount Header */
-.transactions--header>div:last-child {
-    grid-column: 3;
-    padding-bottom: 0px;
-}
-
-.transactions--table>div:nth-child(2n+3) {
+.transactions--table>div:nth-child(2n) {
     display: contents;
 }
 
@@ -380,10 +372,10 @@
 }
 
 .month-delimiter span {
-    padding-right: 6px;
-    color: rgb(var(--charcoal-rgb), .5);
-    background-color: var(--window);
-    box-shadow: var(--window) 0 -2px 4px 2px;
+    padding-right: 10px;
+    color: rgb(var(--charcoal-rgb), .3);
+    background-color: var(--inner-window-solid);
+    box-shadow: var(--inner-window-solid) 0 0px 4px 2px;
 }
 
 .month-delimiter span>:first-child {
@@ -397,13 +389,8 @@
     background-color: transparent;
 }
 
-.transactions--table>div:last-child,
-.transactions--table>div:last-child>div {
-    margin-bottom: 12px;
-}
-
 /* Border bottom for all cells except last child */
-.transactions--table>div:nth-child(2n+3):not(:last-child)>div::after {
+.transactions--table>div:nth-child(2n):not(:last-child)>div::after {
     content: '';
     position: absolute;
     bottom: -4px;
@@ -413,8 +400,8 @@
     background-color: var(--subtle-border-color);
 }
 
-.transactions--table>div:nth-child(2n+3):hover>div {
-    background-color: rgb(var(--m-green-values), .1);
+.transactions--table.not-skeleton>div:nth-child(2n):hover>div {
+    background-color: rgb(var(--m-green-values), .15);
     cursor: pointer;
 }
 
@@ -431,14 +418,13 @@
 }
 
 /* name cells, amount cells */
-.transactions--table>div:nth-child(2n+3)>div {
+.transactions--table>div:nth-child(2n)>div {
     position: relative;
-    cursor: pointer;
     z-index: 0;
 }
 
 /* all name cells */
-.transactions--table>div:nth-child(2n+3)>div:first-child {
+.transactions--table>div:nth-child(2n)>div:first-child {
     padding: 4px;
     padding-left: 12px;
     display: flex;
@@ -449,12 +435,13 @@
 }
 
 /* Date sub text */
-.transactions--table>div:nth-child(2n+3)>div:first-child span:last-child {
-    opacity: .7;
+.transactions--table>div:nth-child(2n)>div:first-child span:last-child {
+    opacity: .4;
+    font-weight: 400;
 }
 
 /* all amount cells */
-.transactions--table>div:nth-child(2n+3)>div:last-child {
+.transactions--table>div:nth-child(2n)>div:last-child {
     padding: 4px;
     padding-right: 12px;
     display: flex;
@@ -477,7 +464,9 @@
 /* ------------------------------- Responsive ------------------------------- */
 
 @media (max-width: 700px) {
-    .account-wafers--container {
+
+    .account-wafers--container,
+    .skeleton-account-wafers--container {
         grid-template-columns: 1fr;
         gap: 0px;
     }
@@ -508,21 +497,19 @@
         order: 1;
     }
 
+    .transactions--header {
+        margin-top: 16px;
+        padding-right: 24px;
+    }
+
     /* all name cells */
-    .transactions--table>div:nth-child(2n+3)>div:first-child {
+    .transactions--table>div:nth-child(2n)>div:first-child {
         padding-left: 8px;
+        padding-right: 20px;
     }
 
     /* all amount cells */
-    .transactions--table>div:nth-child(2n+3)>div:last-child {
-        padding-right: 8px;
-    }
-
-    .transactions--header>div:first-child {
-        padding-left: 8px;
-    }
-
-    .transactions--header>div:last-child {
+    .transactions--table>div:nth-child(2n)>div:last-child {
         padding-right: 8px;
     }
 }

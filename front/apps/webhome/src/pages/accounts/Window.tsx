@@ -5,7 +5,7 @@ import { animated } from '@react-spring/web'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import './styles/Window.css'
-import './styles/Main.css'
+import './styles/Main.scss'
 import NotFound from '@pages/notFound/NotFound'
 import { usePillAnimation } from '@utils/hooks'
 import TransactionItem from '@modals/TransactionItem'
@@ -45,6 +45,21 @@ const getNavLabel = (key = '') => {
     }
 }
 
+const getNavHeaderPhrase = (key = '') => {
+    switch (key) {
+        case 'deposits':
+            return 'Your Accounts'
+        case 'credit':
+            return 'Your Credit Cards'
+        case 'investments':
+            return 'Your Investments'
+        case 'loans':
+            return 'Your Loans'
+        default:
+            return null
+    }
+}
+
 const Header = () => {
     const ref = useRef(null)
     const location = useLocation()
@@ -61,7 +76,6 @@ const Header = () => {
         }
     })
     const currentPath = location.pathname.split('/')[location.pathname.split('/').length - 1]
-
 
     // Resize observer to update nav pill when responsive layout changes
     useEffect(() => {
@@ -84,7 +98,7 @@ const Header = () => {
     return (
         <>
             <div className='window-header'>
-                <h2>Your Accounts</h2>
+                <h2>{getNavHeaderPhrase(currentPath)}</h2>
             </div>
             <div id="accounts-header-nav">
                 <ul ref={ref}>

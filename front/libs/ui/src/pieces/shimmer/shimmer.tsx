@@ -4,7 +4,7 @@ import { useTransition, animated } from '@react-spring/web'
 import { TextInputWrapper } from '../../inputs/text/text'
 
 
-export const Shimmer = ({ shimmering = false }) => {
+export const Shimmer = ({ shimmering = false, lightness = 90 }) => {
   const transitions = useTransition(shimmering, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -19,14 +19,17 @@ export const Shimmer = ({ shimmering = false }) => {
             style={styles}
             className="loading-shimmer"
           >
-            <div className="shimmer" />
+            <div
+              className={`shimmer`}
+              style={{ '--shimmer-lightness': `${lightness}%` } as React.CSSProperties}
+            />
           </animated.div>
       )}
     </>
   )
 }
 
-export const ShimmerText = ({ shimmering = false, length = 12, ...rest }) => (
+export const ShimmerText = ({ shimmering = false, length = 12, lightness = 90, ...rest }) => (
   <>
     <div
       {...rest}
@@ -39,7 +42,7 @@ export const ShimmerText = ({ shimmering = false, length = 12, ...rest }) => (
         position: 'relative'
       }}
     >
-      <Shimmer shimmering={shimmering} />
+      <Shimmer shimmering={shimmering} lightness={lightness} />
     </div>
   </>
 )

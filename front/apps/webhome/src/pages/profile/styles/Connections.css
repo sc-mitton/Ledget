@@ -26,6 +26,13 @@
     opacity: 1;
 }
 
+#connections-page .institution .header2 img {
+    filter: grayscale(1) contrast(130%);
+    background-color: var(--logo-dark);
+    padding: 2px;
+    border-radius: 50%;
+}
+
 #connections-page .header2>div:first-child {
     display: flex;
     align-items: center;

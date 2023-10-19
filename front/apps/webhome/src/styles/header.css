@@ -25,12 +25,6 @@ header {
     margin-right: 16px;
 }
 
-@media (max-width: 700px) {
-    .header-container>div:nth-child(2) {
-        justify-content: center;
-    }
-}
-
 .header-right {
     display: flex;
     align-items: center;
@@ -177,4 +171,24 @@ header {
 .header-nav #logout-icon {
     margin-left: 4px;
     margin-right: 10px;
+}
+
+/* Responsiveness */
+
+@media (max-width: 700px) {
+    .header-container>div:nth-child(2) {
+        justify-content: center;
+    }
+
+    .nav-item {
+        opacity: .4;
+    }
+
+    .current-nav-item * {
+        color: var(--m-text-gray);
+    }
+
+    .header-container>div span {
+        visibility: hidden;
+    }
 }

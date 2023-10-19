@@ -23,7 +23,7 @@
     --alert-red: #f35050;
     --dark-red: #8b2424;
 
-    --green-hlight: #8fffc0;
+    --green-hlight: rgb(112, 226, 162);
     --green-hlight2: rgb(194, 255, 220);
     --green-hlight3: rgb(136, 236, 188);
     --lighter-green: rgb(179, 226, 200);
@@ -142,6 +142,7 @@ option,
 span {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-size: 14px;
+    letter-spacing: 0.2px;
     color: var(--m-text-gray);
 }
 
@@ -261,7 +262,7 @@ fieldset {
     width: 90%;
     max-width: 1250px;
     margin: 28px auto;
-    margin-top: 72px;
+    margin-top: 60px;
     display: flex;
     justify-content: center;
 }
@@ -287,7 +288,7 @@ div.body {
     box-shadow: var(--window-drop-shadow);
     border-radius: var(--border-radius3);
     border: 1px solid white;
-    padding: 12px 28px;
+    padding: 12px 28px 28px 28px;
     box-sizing: border-box;
 }
 

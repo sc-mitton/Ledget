@@ -8,7 +8,7 @@ import {
     useGetTransactionQueryState,
     GetTransactionsParams
 } from '@features/transactionsSlice'
-import { RefreshButton, ZipperButton } from '@ledget/ui'
+import { EdgeGlowPillButton } from '@ledget/ui'
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
 import pathMappings from './path-mappings'
@@ -118,29 +118,19 @@ const Deposits = () => {
             }
             <TransactionsTable
                 onScroll={(e) => handleScroll(e)}
-                skeleton={(isFetchingTransactions && getTransactionsParams.offset == 0) || isLoadingAccounts}
+                skeleton={isFetchingTransactions && getTransactionsParams.offset == 0 || isLoadingAccounts}
                 className={`${fetchMorePulse ? 'fetching-more' : isLoadingTransactions ? 'loading' : ''}`}
             >
                 {getTransactionsParams.account &&
                     <Transactions queryParams={getTransactionsParams} />}
             </TransactionsTable>
-            {isSuccessLoadingAccounts && accountsData?.accounts.length > 0 &&
-                <div className='refresh-btn--container' >
-                    <RefreshButton
-                        loading={isSyncing}
-                        onClick={() => {
-                            getTransactionsParams.account &&
-                                syncTransactions(getTransactionsParams.account)
-                        }}
-                    />
-                </div>}
             <Outlet />
             {accountsData?.accounts.length === 0 &&
                 <div className="add-accounts-btn--container" >
                     <h2>No Accounts Added Yet</h2>
-                    <ZipperButton onClick={() => { navigate('/profile/connections') }} >
+                    <EdgeGlowPillButton onClick={() => { navigate('/profile/connections') }} >
                         Add account
-                    </ZipperButton>
+                    </EdgeGlowPillButton>
                 </div>
             }
         </>

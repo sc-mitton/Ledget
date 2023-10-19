@@ -222,7 +222,7 @@ export const RefreshButton = ({ fill = '#292929', hasBackground = true, loading 
   )
 }
 
-export const ZipperButton
+export const EdgeGlowPillButton
   = ({ children, className, onClick, ...rest }:
     { className?: string, children?: React.ReactNode, onClick?: () => void }) => (
     <button

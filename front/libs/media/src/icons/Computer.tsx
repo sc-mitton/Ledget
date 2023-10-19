@@ -1,4 +1,32 @@
+const Computer = ({
+    className = '',
+    width = "4.5em",
+    height = "4.5em",
+}) => {
 
-const Computer = () => <img src={'./computer.svg'} alt={'computer'} className={'icon'} />
+    return (
+        <>
+            <svg
+                className={className}
+                width={width}
+                height={height}
+                viewBox="0 0 288 288"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                aria-label="Computer"
+            >
+                <g>
+                    <path fill={'#43C77E'} d="M37.1,197.7V73.6c0-4.2,3.4-7.6,7.6-7.6h198.6c4.2,0,7.6,3.4,7.6,7.6v124.1c0,1.2,0.3,2.5,0.9,3.6l25.9,9.6
+                        c2.7,5-0.9,11.1-6.7,11.1H17c-5.7,0-9.4-6.1-6.7-11.1l25.9-9.6C36.8,200.2,37.1,199,37.1,197.7z"/>
+                    <path fill={'#7aefad'} d="M51.7,182.6V85.9c0-4,3.2-7.2,7.2-7.2h170.2c4,0,7.2,3.2,7.2,7.2v96.7c0,4-3.2,7.2-7.2,7.2H58.9
+                        C54.9,189.8,51.7,186.6,51.7,182.6z"/>
+                    <path fill={'#8FFFC0'} d="M53.8,187.7c-1.3-1.3-2.1-3.1-2.1-5.1V85.9c0-4,3.2-7.2,7.2-7.2h170.2c1.8,0,3.5,0.7,4.8,1.8L53.8,187.7z" />
+                    <path fill={'#8FFFC0'} d="M165.7,211.8v1.9c0,1.8-1.5,3.3-3.3,3.3h-39.2c-1.8,0-3.3-1.5-3.3-3.3v-1.9H165.7z" />
+                </g>
+            </svg>
+        </>
+    )
+}
 
 export default Computer

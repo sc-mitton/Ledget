@@ -1,11 +1,10 @@
-import { Fragment, useEffect, FC, HTMLProps, useRef } from 'react'
+import { Fragment, useEffect, useState, FC, HTMLProps, useRef } from 'react'
 
 import { useNavigate, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
 import Big from 'big.js'
 
 import { useLazyGetTransactionsQuery, GetTransactionsParams } from '@features/transactionsSlice'
-import { ShimmerText, FadeInOutDiv, DollarCents } from '@ledget/ui'
+import { ShimmerText, DollarCents } from '@ledget/ui'
 
 
 export const TransactionShimmer = ({ shimmering = true }) => (
@@ -13,21 +12,14 @@ export const TransactionShimmer = ({ shimmering = true }) => (
         <div />
         <div className="transaction-shimmer">
             <div>
-                <ShimmerText shimmering={shimmering} length={25} />
-                <ShimmerText shimmering={shimmering} length={10} />
+                <ShimmerText lightness={90} shimmering={shimmering} length={25} />
+                <ShimmerText lightness={90} shimmering={shimmering} length={10} />
             </div>
             <div>
-                <ShimmerText shimmering={shimmering} length={10} />
+                <ShimmerText lightness={90} shimmering={shimmering} length={10} />
             </div>
         </div>
     </>
-)
-
-export const TransactionsHeader = () => (
-    <div className="transactions--header">
-        <div>Name</div>
-        <div>Amount</div>
-    </div>
 )
 
 export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boolean }>
@@ -35,21 +27,32 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boole
         const containerRef = useRef<HTMLDivElement>(null)
 
         return (
-            <div className={`transactions--container ${className}`} ref={containerRef}>
-                <AnimatePresence mode="wait">
+            <>
+                <div className="transactions--header">
+                    <div>Name</div>
+                    <div>Amount</div>
+                </div>
+                <div
+                    className={`transactions--container ${className}`}
+                    ref={containerRef}
+                >
                     {skeleton
-                        ? <FadeInOutDiv className='transactions--table' {...rest}>
-                            <TransactionsHeader />
+                        ?
+                        <div className='transactions--table' {...rest}>
                             {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
                                 .fill(0)
                                 .map((_, index) => <TransactionShimmer key={index} shimmering={true} />)}
-                        </FadeInOutDiv>
-                        : <FadeInOutDiv className={`transactions--table ${className}`} {...rest}>
+                        </div>
+                        :
+                        <div
+                            className={`transactions--table not-skeleton ${className}`}
+                            {...rest}
+                        >
                             {children}
-                        </FadeInOutDiv>
+                        </div>
                     }
-                </AnimatePresence>
-            </div>
+                </div>
+            </>
         )
     }
 
@@ -72,7 +75,6 @@ export const Transactions = ({ queryParams }: { queryParams: GetTransactionsPara
 
     return (
         <>
-            <TransactionsHeader />
             {isTransactionsSuccess && transactionsData &&
                 transactionsData.results?.map((transaction: any) => {
                     const date = new Date(transaction.datetime)

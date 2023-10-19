@@ -70,7 +70,7 @@
     cursor: pointer;
     margin: 8px;
     padding: 4px;
-    border-radius: var(--border-radius3);
+    border-radius: var(--border-radius2);
     transition: background-color .3s ease-in-out;
     display: flex;
     flex-direction: row;

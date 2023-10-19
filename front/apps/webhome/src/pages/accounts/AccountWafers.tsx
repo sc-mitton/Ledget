@@ -48,12 +48,12 @@ const WafersHeader = () => {
     return (
         <div>
             <h3>{pathMappings.getWaferTitle(location)}</h3>
+
             <DollarCents
                 value={
                     isSuccess
-                        ? Big(data?.accounts
-                            .filter((account: any) => account.type === pathMappings.getAccountType(location))
-                            .reduce((acc: number, account: any) => acc + account.balances.current, 0))
+                        ? data?.accounts.filter((account: any) => account.type === pathMappings.getAccountType(location))
+                            .reduce((acc: number, account: any) => Big(acc).add(account.balances.current), 0)
                             .times(100)
                             .toNumber()
                         : '0.00'

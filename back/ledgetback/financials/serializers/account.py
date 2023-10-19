@@ -51,9 +51,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = [field.name for field in model._meta.fields
-                  if field.name != 'user'] + ['institution']
-        exclude = ('plaid_item', 'institution')
+        exclude = ('plaid_item',)
         list_serializer_class = AccountLS
 
 
