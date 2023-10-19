@@ -2,7 +2,7 @@ import { apiSlice } from '@api/apiSlice'
 
 
 interface Account {
-    id: string
+    account: string
     order: number
     [key: string]: any
 }
@@ -15,13 +15,12 @@ export const accountsSlice = apiWithTag.injectEndpoints({
     endpoints: (builder) => ({
         getAccounts: builder.query<any, void>({
             query: () => `/accounts`,
-            providesTags: ['Accounts'],
             keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
         updateAccounts: builder.mutation<any, Account[]>({
             query: (data) => ({
                 url: `/accounts`,
-                method: 'PUT',
+                method: 'PATCH',
                 body: data,
             }),
             invalidatesTags: ['Accounts'],

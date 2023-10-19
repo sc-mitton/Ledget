@@ -118,7 +118,7 @@ export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
         onRest: (newOrder: string[]) => {
             updateOrder(
                 newOrder.map((id, index) => ({
-                    id: id,
+                    account: id,
                     order: index
                 }))
             )

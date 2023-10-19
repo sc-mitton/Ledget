@@ -26,22 +26,22 @@ class InstitutionSerializer(serializers.ModelSerializer):
 class AccountLS(serializers.ListSerializer):
 
     def update(self, instance, validated_data):
-        instance_mapping = {i.id: i for i in instance}
-        data_mapping = {account['id']: account for account in validated_data}
+        instance_mapping = {i.account_id: i for i in instance}
+        data_mapping = {data['account'].id: data for data in validated_data}
 
         updated = []
-        updated_keys = []
+        updated_keys = {}
         for account_id, data in data_mapping.items():
-            account = instance_mapping.get(account_id, None)
-            if account:
+            inst = instance_mapping.get(account_id, None)
+            if inst:
                 for attr, value in data.items():
-                    if hasattr(account, attr):
-                        updated_keys.append(attr)
-                        setattr(account, attr, value)
-                updated.append(account)
+                    if hasattr(inst, attr):
+                        updated_keys[attr] = True
+                        setattr(inst, attr, value)
+                updated.append(inst)
 
         if updated:
-            self.child.Meta.model.objects.bulk_update(updated, updated_keys)
+            self.child.Meta.model.objects.bulk_update(updated, updated_keys.keys())
 
         return updated
 
@@ -61,5 +61,5 @@ class UserAccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserAccount
-        fields = '__all__'
+        exclude = ('user',)
         list_serializer_class = AccountLS

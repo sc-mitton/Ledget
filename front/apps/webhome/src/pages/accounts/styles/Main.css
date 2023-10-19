@@ -108,12 +108,7 @@
 }
 
 .account-wafer--container {
-    box-shadow: var(--new-item-drop-shadow);
     position: absolute;
-}
-
-.account-wafer--container:active {
-    box-shadow: var(--new-item-white-drop-shadow);
 }
 
 .skeleton-account-wafer--container {
@@ -159,6 +154,7 @@
 .account-wafer.inactive {
     transform: scale(1);
     transition: all .2s ease-out;
+    box-shadow: var(--wafer-drop-shadow);
 }
 
 .account-wafer.inactive:hover,
@@ -169,6 +165,7 @@
     transform: scale(1.03);
     transition: all .2s ease-out;
     border-radius: var(--border-radius4);
+    box-shadow: var(--wafer-hover-drop-shadow);
 }
 
 /* Wafer Text */
