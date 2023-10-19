@@ -38,19 +38,21 @@ class PlaidItem(models.Model):
     permission_revoked = models.BooleanField(default=False)
 
 
-class UserAccountThroughModel(models.Model):
+class UserAccount(models.Model):
     account = models.ForeignKey('Account', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='accounts')
-    order = models.PositiveIntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=0)
 
     class Meta:
+        db_table = 'financials_user_account'
         ordering = ('order',)
         unique_together = ('account', 'user')
 
 
 class Account(models.Model):
 
-    users = models.ManyToManyField(User, through=UserAccountThroughModel)
+    users = models.ManyToManyField(User, through=UserAccount,
+                                   related_name='accounts')
     plaid_item = models.ForeignKey(PlaidItem,
                                    on_delete=models.CASCADE,
                                    related_name='accounts')

@@ -9,10 +9,11 @@ from plaid.model.country_code import CountryCode
 from rest_framework import serializers
 from django.core.files.base import ContentFile
 from django.conf import settings
+from django.db import transaction
 
 from core.clients import create_plaid_client
 from financials.models import PlaidItem
-from financials.models import Account, Institution
+from financials.models import Account, Institution, UserAccount
 from financials.serializers.account import (
     AccountSerializer,
     InstitutionSerializer
@@ -33,8 +34,7 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
         try:
             self._update_or_create_institution(validated_data['institution'])
-            plaid_item = self._create_plaid_item(validated_data)
-            self._create_accounts(plaid_item, validated_data)
+            plaid_item = self._add_objects(validated_data)
         except plaid.ApiException as e:
             logger.error(f"Plaid error: {e}")
             raise serializers.ValidationError(
@@ -69,6 +69,14 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
         institution.name = data.get('name')
         institution.save()
 
+    @transaction.atomic
+    def _add_objects(self, validated_data):
+        plaid_item = self._create_plaid_item(validated_data)
+        self._create_accounts(plaid_item, validated_data)
+
+        return plaid_item
+
+    @transaction.atomic
     def _create_plaid_item(self, validated_data):
 
         exchange_request = ItemPublicTokenExchangeRequest(
@@ -86,6 +94,7 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
         return plaid_item
 
+    @transaction.atomic
     def _create_accounts(self, plaid_item, validated_data):
         accounts_data = validated_data['accounts']
         institution_id = validated_data['institution']['id']
@@ -99,6 +108,10 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
             for account in accounts_data
         ]
         Account.objects.bulk_create(new_accounts)
+
+        bulkconnect = [UserAccount(user=self.context['request'].user, account=account)
+                       for account in new_accounts]
+        UserAccount.objects.bulk_create(bulkconnect)
 
     def _get_plaid_institution(self, institution_id):
 
