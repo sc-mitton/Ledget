@@ -52,7 +52,7 @@ class CategorySerializer(NestedCreateMixin, ModelSerializer):
         return super().create(validated_data, *args, **kwargs)
 
     def get_amount_spent(self, obj):
-        pass
+        return obj.amount_spent
 
 
 class BillSerializer(NestedCreateMixin, ModelSerializer):

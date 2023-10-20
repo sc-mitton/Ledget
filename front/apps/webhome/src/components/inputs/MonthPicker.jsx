@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
+
+import { useSearchParams } from 'react-router-dom'
 
 import './styles/MonthPicker.css'
 import { monthMappings } from '@assets/data/monthMappings'

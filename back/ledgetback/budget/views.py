@@ -34,7 +34,10 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
         '''
         SELECT
             ...columns
-            SUM(financials_transaction.amount) FILTER (WHERE EXTRACT(MONTH FROM financials_transaction.date) = date_here) AS amount_spent
+            SUM(financials_transaction.amount)
+                FILTER
+                (WHERE EXTRACT(MONTH FROM financials_transaction.date) = date_here)
+                AS amount_spent
         FROM budget_category
         LEFT OUTER JOIN financials_transaction
         ON (budget_category.id = financials_transaction.category_id)
@@ -44,7 +47,10 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
 
         month = self.request.query_params.get('month', None)
         year = self.request.query_params.get('year', None)
-        s = Sum('transaction__amount', filter=Q(transaction__date__month=month, transaction__date__year=year))
+        s = Sum(
+            'transaction__amount',
+            filter=Q(transaction__date__month=month, transaction__date__year=year)
+        )
         qset = Category.objects.filter(user=self.request.user).annotate(amount_spent=s)
 
         return qset
