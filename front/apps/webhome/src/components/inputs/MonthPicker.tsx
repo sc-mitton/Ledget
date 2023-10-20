@@ -3,27 +3,66 @@ import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import './styles/MonthPicker.css'
-import { monthMappings } from '@assets/data/monthMappings'
+import { useGetMeQuery } from '@features/userSlice'
 import { SmallArrowButton, IconButton, DropAnimation } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 
+export const monthMappings: [string | number, string | number][] = [
+    ['Jan', 'January'],
+    ['Feb', 'February'],
+    ['Mar', 'March'],
+    ['Apr', 'April'],
+    ['May', 'May'],
+    ['Jun', 'June'],
+    ['Jul', 'July'],
+    ['Aug', 'August'],
+    ['Sep', 'September'],
+    ['Oct', 'October'],
+    ['Nov', 'November'],
+    ['Dec', 'December'],
+]
+
 const MonthPicker = () => {
-    const dates = {
-        2021: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        2022: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        2023: [1, 2, 3, 4],
-    }
-    const [year, setYear] = useState(
-        Object.keys(dates)[Object.keys(dates).length - 1]
-    )
-    const [month, setMonth] = useState(dates[year][dates[year].length - 1])
+    const { data: user, isSuccess: userIsFetched } = useGetMeQuery()
+    const [searchParams, setSearchParams] = useSearchParams()
 
-    const [picker, setPicker] = useState(false)
-    const [pickerYear, setPickerYear] = useState(year)
-    const monthPickerRef = useRef(null)
+    const [dateOptions, setDateOptions] = useState<{ [year: number]: number[] }>({
+        [new Date().getFullYear()]: [new Date().getMonth() + 1]
+    })
+    const [showPicker, setShowPicker] = useState(false)
+    const [pickerYear, setPickerYear] = useState(new Date().getFullYear())
+    const monthPickerRef = useRef<HTMLDivElement>(null)
 
-    const handleArrowClick = () => setPicker(!picker)
+    // Set date options based on when the user was created
+    useEffect(() => {
+        searchParams.set('month', `${new Date().getMonth() + 1}`)
+        searchParams.set('year', `${new Date().getFullYear()}`)
+        setSearchParams(searchParams)
+        if (userIsFetched && user) {
+            const userCreatedOn = new Date(user.created_on)
+            const currentDate = new Date()
 
+            const currentYear = currentDate.getFullYear()
+            const currentMonth = currentDate.getMonth() + 1
+            const userCreatedYear = userCreatedOn.getFullYear()
+            const userCreatedMonth = userCreatedOn.getMonth() + 1
+
+            for (let i = 0; i++; i < (currentYear - userCreatedYear) * 12 + (currentMonth - userCreatedMonth)) {
+                const year = userCreatedYear + Math.floor(i / 12)
+                const month = userCreatedMonth + (i % 12)
+
+                let newDateOptions: { [year: number]: number[] } = {}
+                if (newDateOptions[year]) {
+                    newDateOptions[year].push(month)
+                } else {
+                    newDateOptions[year] = [month]
+                }
+                setDateOptions(newDateOptions)
+            }
+        }
+    }, [userIsFetched, user])
+
+    // Event listeners for closing the month picker
     useEffect(() => {
         window.addEventListener("mousedown", handleClickOutside)
         window.addEventListener("keydown", handleKeyDown)
@@ -33,22 +72,23 @@ const MonthPicker = () => {
         }
     }, [])
 
+    // Focus the month picker when it is opened
     useEffect(() => {
-        if (picker && monthPickerRef.current) {
-            monthPickerRef.current.focus();
+        if (showPicker && monthPickerRef.current) {
+            monthPickerRef.current.focus()
         }
-    }, [picker]);
+    }, [showPicker])
 
-    const handleClickOutside = (event) => {
-        if (monthPickerRef.current && !monthPickerRef.current.contains(event.target)) {
-            setPicker(false)
+    const handleClickOutside = (event: MouseEvent) => {
+        if (monthPickerRef.current && !monthPickerRef.current.contains(event.target as Node)) {
+            setShowPicker(false)
         }
     }
 
-    const handleArrowNavigation = (event) => {
+    const handleArrowNavigation = (event: KeyboardEvent) => {
         // Handle arrow navigation in the month picker
 
-        if (picker && monthPickerRef.current) {
+        if (showPicker && monthPickerRef.current) {
             const buttons = monthPickerRef.current.querySelectorAll('button');
             const currentIndex = Array.from(buttons).findIndex((button) => button === document.activeElement)
 
@@ -77,61 +117,63 @@ const MonthPicker = () => {
         window.addEventListener("keydown", handleArrowNavigation);
         return () => {
             window.removeEventListener("keydown", handleArrowNavigation);
-        };
-    }, [picker])
+        }
+    }, [showPicker])
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
         if (monthPickerRef.current && ['Escape', 'Esc', 'Tab'].includes(event.key)) {
-            setPicker(false)
+            setShowPicker(false)
         }
     }
 
     const renderMonths = () => {
-        return dates[pickerYear].map((index) => {
+        return dateOptions[pickerYear].map((month) => {
+            const isSelected = (searchParams.get('month') === `${month}` && searchParams.get('year') == `${pickerYear}`)
             return (
                 <button
-                    key={index}
+                    key={month}
                     className={
-                        `month-picker-item${(month === index && year == pickerYear) ? '-selected' : ''}`
+                        `month-picker-item${isSelected ? '-selected' : ''}`
                     }
                     onClick={() => {
-                        setPicker(false)
-                        setYear(pickerYear)
-                        setMonth(index)
+                        setShowPicker(false)
+                        searchParams.set('month', `${month}`)
+                        searchParams.set('year', `${pickerYear}`)
+                        setSearchParams(searchParams)
                     }}
                 >
-                    {monthMappings[index - 1][0]}
+                    {monthMappings[month - 1][0]}
                 </button>
             )
         })
     }
 
     const incrementYear = () => {
-        if (pickerYear < Object.keys(dates)[Object.keys(dates).length - 1]) {
+        if (pickerYear < parseInt(searchParams.get('year') || '')) {
             setPickerYear(pickerYear + 1)
         }
     }
 
     const decrementYear = () => {
-        if (pickerYear > Object.keys(dates)[0]) {
+        if (pickerYear > parseInt(searchParams.get('year') || '')) {
             setPickerYear(pickerYear - 1)
         }
     }
 
     return (
         <div id="month-picker" ref={monthPickerRef}>
-            <h1>{monthMappings[month - 1][1]} {year}</h1>
+            <h1>{monthMappings[parseInt(searchParams.get('month') || '1') - 1][1]} {searchParams.get('year')}</h1>
             <div id="header-arrow-container">
                 <IconButton
                     id='header-arrow'
-                    onClick={handleArrowClick}
+                    onClick={() => { setShowPicker(!showPicker) }}
                     aria-label="Open month picker"
                 >
                     <ArrowIcon width={'1.3em'} height={'1.3em'} />
                 </IconButton>
             </div>
             <DropAnimation
-                visible={picker}
+                visible={showPicker}
                 className="dropdown"
                 id="picker-container"
             >

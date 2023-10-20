@@ -51,14 +51,14 @@
 }
 
 .month-picker-item-selected {
-    background-color: var(--green-hlight);
+    background-color: var(--green-hlight2);
     color: var(--m-text-gray);
 }
 
 .month-picker-item:hover,
 .month-picker-item:focus,
 .arrow-nav:focus-visible {
-    background-color: var(--green-hlight2);
+    background-color: var(--icon-light-gray);
     box-shadow: none;
     outline: none;
 }

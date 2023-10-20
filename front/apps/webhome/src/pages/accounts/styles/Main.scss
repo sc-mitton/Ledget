@@ -360,10 +360,10 @@
     flex-direction: column;
     align-items: flex-start;
     position: sticky;
-    top: 28px;
+    top: 6px;
 
     span {
-        padding: 0 5px;
+        padding: 0 8px 0 4px;
         color: rgb(var(--charcoal-rgb), .3);
         background-color: var(--inner-window-solid);
         box-shadow: var(--inner-window-solid) 0 0px 4px 2px;
@@ -374,6 +374,7 @@
         }
 
         &:last-child {
+            font-size: 12px;
             position: relative;
             z-index: 1;
             background-color: transparent;
@@ -398,7 +399,7 @@ $greenDark3: var(--green-dark3);
     grid-auto-rows: minmax(auto, 80px);
     grid-template-rows: min-content;
     row-gap: 8px;
-    padding: 8px 12px 8px 8px;
+    padding: 10px 12px 8px 8px;
 
     >div:nth-child(2n):not(:last-child)>div::after {
         content: '';

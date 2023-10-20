@@ -111,7 +111,7 @@ export function withModal(WrappedComponent: React.FC<any>) {
       width: width,
       maxWidth: maxWidth,
       minWidth: minWidth,
-      borderRadius: '12px',
+      borderRadius: 'var(--border-radius3)',
       padding: '28px',
       zIndex: zIndex + 1,
       position: "relative",
