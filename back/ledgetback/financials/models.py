@@ -129,7 +129,8 @@ class Transaction(models.Model):
     pending = models.BooleanField(null=True, blank=True)
     pending_transaction_id = models.CharField(max_length=100, null=True,
                                               blank=True)
-    amount = models.FloatField(null=False, blank=False)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=False,
+                                 blank=False)
     iso_currency_code = models.CharField(max_length=3, null=True, blank=True)
     unnoficial_currency_code = models.CharField(max_length=10, null=True,
                                                 blank=True)

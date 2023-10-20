@@ -4,6 +4,9 @@ const apiWithTags = apiSlice.enhanceEndpoints({
     addTagTypes: ['devices', 'user', 'payment_method', 'invoice'],
 })
 
+
+type SubscriptionStatus = 'active' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'past_due' | 'trialing' | 'deleted'
+
 interface User {
     password_last_changed: string,
     last_login: string,
@@ -18,7 +21,7 @@ interface User {
     service_provisioned_until: number,
     session_aal: 'aal1' | 'aal15' | 'aal2',
     highest_aal: 'aal1' | 'aal15' | 'aal2',
-    subscription_status: 'active' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'past_due' | 'trialing' | 'deleted',
+    subscription_status: SubscriptionStatus,
     email: string,
     name: {
         first: string,
@@ -47,6 +50,45 @@ interface Device {
     [key: string]: any,
 }
 
+interface Subscription {
+    id: string,
+    status: SubscriptionStatus,
+    current_period_end: number,
+    cancel_at_period_end: boolean,
+    plan: {
+        id: string,
+        amount: number,
+        nickname: string,
+        interval: 'month' | 'year',
+    }
+}
+
+interface NextInvoice {
+    next_payment: number
+    next_payment_date: number
+    balance: number
+}
+
+interface PaymentMethod {
+    id: string
+    brand: string
+    exp_month: number
+    exp_year: number
+    last4: string
+}
+
+interface UpdatePaymentMethod {
+    paymentMethodId: string
+    oldPaymentMethodId: string
+}
+
+interface UpdateSubscription {
+    subId: string
+    cancelAtPeriodEnd: boolean
+    cancelationReason: string
+    feedback: string
+}
+
 
 export const extendedApiSlice = apiWithTags.injectEndpoints({
 
@@ -59,30 +101,30 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
             query: () => 'user/me',
             providesTags: ['user']
         }),
-        getSubscription: builder.query({
+        getSubscription: builder.query<Subscription, void>({
             query: () => 'subscription',
         }),
         getPrices: builder.query({
             query: () => 'prices'
         }),
-        getPaymentMethod: builder.query({
+        getPaymentMethod: builder.query<PaymentMethod, void>({
             query: () => 'default_payment_method',
             providesTags: ['payment_method'],
         }),
-        getSetupIntent: builder.query({
+        getSetupIntent: builder.query<{ client_secret: string }, void>({
             query: () => ({
                 url: 'setup_intent',
                 method: 'GET',
             })
         }),
-        getNextInvoice: builder.query({
+        getNextInvoice: builder.query<NextInvoice, void>({
             query: () => ({
                 url: 'next_invoice',
                 method: 'GET',
             }),
             providesTags: ['invoice'],
         }),
-        updateDefaultPaymentMethod: builder.mutation({
+        updateDefaultPaymentMethod: builder.mutation<any, UpdatePaymentMethod>({
             query: ({ paymentMethodId, oldPaymentMethodId }) => ({
                 url: 'default_payment_method',
                 method: 'POST',
@@ -93,7 +135,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
             }),
             invalidatesTags: ['payment_method'],
         }),
-        updateUser: builder.mutation({
+        updateUser: builder.mutation<any, User>({
             query: ({ data }) => ({
                 url: 'user/me',
                 method: 'PATCH',
@@ -101,7 +143,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
             }),
             invalidatesTags: ['user'],
         }),
-        updateSubscription: builder.mutation({
+        updateSubscription: builder.mutation<any, UpdateSubscription>({
             query: ({ subId, cancelAtPeriodEnd, cancelationReason, feedback }) => ({
                 url: `subscription/${subId}`,
                 method: cancelAtPeriodEnd ? 'DELETE' : 'PATCH',
@@ -113,7 +155,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
             }),
             invalidatesTags: ['user'],
         }),
-        updateSubscriptionItems: builder.mutation({
+        updateSubscriptionItems: builder.mutation<any, { priceId: string }>({
             query: ({ priceId }) => ({
                 url: 'subscription_item',
                 method: 'PUT',

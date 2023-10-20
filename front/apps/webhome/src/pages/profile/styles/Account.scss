@@ -80,13 +80,18 @@
 }
 
 
-#invoice-details--container>div>span:first-child {
-    font-weight: 500;
-    margin-right: 8px;
-}
+#invoice-details--container {
+    display: grid;
+    grid-template-columns: minmax(auto, max-content) 1fr;
+    column-gap: 16px;
 
-#invoice-details--container>div {
-    white-space: nowrap;
+    &>div:nth-child(2n + 1) {
+        font-weight: 500;
+    }
+
+    &>div {
+        white-space: nowrap;
+    }
 }
 
 .card-info--container {

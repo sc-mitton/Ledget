@@ -3,7 +3,7 @@ import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
 
-import './styles/Account.css'
+import './styles/Account.scss'
 import { CardIcon } from '@ledget/media'
 import {
     useGetMeQuery,
@@ -154,19 +154,15 @@ const Plan = () => {
                 </div>
                 <div className="inner-window">
                     <div id="invoice-details--container">
+                        <div>Renews</div>
+                        <span>{`${subscription.plan.interval}ly`}</span>
                         <div>
-                            <span>Renews:</span>
-                            <span>{`${subscription.plan.interval}ly`}</span>
+                            {subscription.cancel_at_period_end ? 'Ending on' : 'Next charge'}
                         </div>
                         <div>
-                            <span>
-                                {subscription.cancel_at_period_end ? 'Ending on:' : 'Next charge:'}
-                            </span>
-                            <span>
-                                {subscription.cancel_at_period_end
-                                    ? nextDate
-                                    : `$${subscription.plan.amount / 100} on ${nextDate}`}
-                            </span>
+                            {subscription.cancel_at_period_end
+                                ? nextDate
+                                : `$${subscription.plan.amount / 100} on ${nextDate}`}
                         </div>
                         <div>{nextInvoice.balance > 0 && 'Account Credit'}</div>
                         <div>{nextInvoice.balance > 0 && `$${nextInvoice.balance / -100}`}</div>

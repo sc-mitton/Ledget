@@ -5,10 +5,13 @@ interface Alert {
 }
 
 interface Category {
+    id: string,
     period: 'year' | 'month',
     name: string,
-    emoji: string,
+    created: string,
+    emoji: string | null,
     limit_amount: number,
+    amount_spent: number,
     alerts: Alert[],
 }
 
