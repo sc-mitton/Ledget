@@ -73,7 +73,6 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    // background-image: radial-gradient(ellipse at center, rgb(0, 0, 0, .15) 1%, var(--window) 70%);
     opacity: 0;
     z-index: -1;
     animation: fade-in-background-image .5s ease-in-out forwards;
@@ -291,6 +290,15 @@
     flex-grow: 1;
     position: relative;
     overflow: hidden;
+
+    &::before {
+        content: '';
+        background-color: var(--inner-window-solid);
+        inset: 0;
+        position: absolute;
+        height: 100%;
+        border-radius: var(--table-border-radius);
+    }
 }
 
 .transactions--container.loading {
@@ -325,32 +333,16 @@
     }
 }
 
-.transactions--table {
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    overflow: auto;
-    scrollbar-gutter: stable;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-auto-rows: minmax(auto, 80px);
-    grid-template-rows: min-content;
-    row-gap: 8px;
-    margin-top: 12px;
-    background-color: var(--inner-window-solid);
-    padding: 8px 12px 8px 8px;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 16px, black calc(100% - 16px), transparent)
-}
-
 .transactions--header {
     grid-auto-rows: minmax(auto, 80px);
     grid-template-rows: min-content;
     display: grid;
     grid-template-columns: 1fr auto;
     padding-left: 56px;
-    padding-right: 30px;
+    padding-right: 40px;
+    margin: 8px 0;
 
-    >div {
+    &>div {
         align-self: center;
         font-size: 15px;
         font-weight: 500;
@@ -369,89 +361,103 @@
     align-items: flex-start;
     position: sticky;
     top: 28px;
-}
 
-.month-delimiter span {
-    padding-right: 10px;
-    color: rgb(var(--charcoal-rgb), .3);
-    background-color: var(--inner-window-solid);
-    box-shadow: var(--inner-window-solid) 0 0px 4px 2px;
-}
+    span {
+        padding: 0 5px;
+        color: rgb(var(--charcoal-rgb), .3);
+        background-color: var(--inner-window-solid);
+        box-shadow: var(--inner-window-solid) 0 0px 4px 2px;
 
-.month-delimiter span>:first-child {
-    position: relative;
-    z-index: 0;
-}
+        &:first-child {
+            position: relative;
+            z-index: 0;
+        }
 
-.month-delimiter span>:last-child {
-    position: relative;
-    z-index: 1;
-    background-color: transparent;
+        &:last-child {
+            position: relative;
+            z-index: 1;
+            background-color: transparent;
+        }
+    }
 }
 
 /* Border bottom for all cells except last child */
-.transactions--table>div:nth-child(2n):not(:last-child)>div::after {
-    content: '';
+$subtleBorderColor: var(--subtle-border-color);
+$mGreenValues: var(--m-green-values);
+$borderRadius2: var(--border-radius2);
+$greenDark3: var(--green-dark3);
+
+.transactions--table {
     position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 100%;
-    height: 1.25px;
-    background-color: var(--subtle-border-color);
-}
-
-.transactions--table.not-skeleton>div:nth-child(2n):hover>div {
-    background-color: rgb(var(--m-green-values), .15);
-    cursor: pointer;
-}
-
-.transactions--table>div.transaction-shimmer:nth-child(2n+3):hover>div {
-    background-color: transparent;
-    cursor: default;
-}
-
-/* Month Marker */
-.transactions--table>div:nth-child(2n+2) {
-    padding: 4px 0;
-    padding-right: 12px;
-    padding-left: 4px;
-}
-
-/* name cells, amount cells */
-.transactions--table>div:nth-child(2n)>div {
-    position: relative;
     z-index: 0;
-}
+    inset: 0;
+    overflow: auto;
+    scrollbar-gutter: stable;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-auto-rows: minmax(auto, 80px);
+    grid-template-rows: min-content;
+    row-gap: 8px;
+    padding: 8px 12px 8px 8px;
 
-/* all name cells */
-.transactions--table>div:nth-child(2n)>div:first-child {
-    padding: 4px;
-    padding-left: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-top-left-radius: var(--border-radius2);
-    border-bottom-left-radius: var(--border-radius2);
-}
+    >div:nth-child(2n):not(:last-child)>div::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 100%;
+        height: 1.25px;
+        background-color: $subtleBorderColor;
+    }
 
-/* Date sub text */
-.transactions--table>div:nth-child(2n)>div:first-child span:last-child {
-    opacity: .4;
-    font-weight: 400;
-}
+    &.not-skeleton>div:nth-child(2n):hover>div {
+        background-color: rgb($mGreenValues, 0.15);
+        cursor: pointer;
+    }
 
-/* all amount cells */
-.transactions--table>div:nth-child(2n)>div:last-child {
-    padding: 4px;
-    padding-right: 12px;
-    display: flex;
-    align-items: center;
-    border-top-right-radius: var(--border-radius2);
-    border-bottom-right-radius: var(--border-radius2);
-}
+    >div.transaction-shimmer:nth-child(2n + 3):hover>div {
+        background-color: transparent;
+        cursor: default;
+    }
 
-.transactions--table .debit * {
-    color: var(--green-dark3);
+    >div:nth-child(2n + 2) {
+        padding: 4px 0;
+        padding-right: 12px;
+        padding-left: 4px;
+    }
+
+    >div:nth-child(2n)>div {
+        position: relative;
+        z-index: 0;
+
+        &:first-child {
+            padding: 4px;
+            padding-left: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-top-left-radius: $borderRadius2;
+            border-bottom-left-radius: $borderRadius2;
+
+            span:last-child {
+                opacity: 0.4;
+                font-weight: 400;
+            }
+        }
+
+        &:last-child {
+            padding: 4px;
+            padding-right: 12px;
+            display: flex;
+            align-items: center;
+            border-top-right-radius: $borderRadius2;
+            border-bottom-right-radius: $borderRadius2;
+        }
+    }
+
+    .debit * {
+        color: $greenDark3;
+    }
 }
 
 /* ------------------------------- Responsive ------------------------------- */
@@ -464,45 +470,57 @@
         gap: 0px;
     }
 
-    .account-wafers--container>div:first-child {
-        padding-top: 0px;
-        display: flex;
-        flex-direction: row;
-        align-items: flex-end;
-        gap: 8px;
-        margin-left: 4px;
-        margin-bottom: 4px;
-        order: 2;
-    }
+    .account-wafers--container {
 
-    /* All accounts balance */
-    .account-wafers--container>div:first-child>div {
-        font-weight: 500;
-        font-size: 22px;
-        margin-bottom: -2px;
-    }
+        // Balance header container
+        &>div:first-child {
+            padding-top: 0px;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            gap: 8px;
+            margin-left: 4px;
+            margin-bottom: 4px;
+            order: 2;
+        }
 
-    .account-wafers--container>div:first-child {
-        padding-bottom: 0px;
-    }
+        // All accounts balance */
+        &>div:first-child>div {
+            font-weight: 500;
+            font-size: 22px;
+            margin-bottom: -2px;
+        }
 
-    .account-wafers {
-        order: 1;
+        &>div:first-child {
+            padding-bottom: 0px;
+        }
+
+        .account-wafers {
+            padding-top: 8px;
+            order: 1;
+        }
     }
 
     .transactions--header {
         margin-top: 16px;
-        padding-right: 24px;
+        padding-right: 34px;
+
+        &>div {
+            font-size: 14px;
+        }
     }
 
-    /* all name cells */
-    .transactions--table>div:nth-child(2n)>div:first-child {
-        padding-left: 8px;
-        padding-right: 20px;
-    }
+    .transactions--table {
 
-    /* all amount cells */
-    .transactions--table>div:nth-child(2n)>div:last-child {
-        padding-right: 8px;
+        /* all name cells */
+        &>div:nth-child(2n)>div:first-child {
+            padding-left: 8px;
+            padding-right: 20px;
+        }
+
+        /* all amount cells */
+        &>div:nth-child(2n)>div:last-child {
+            padding-right: 8px;
+        }
     }
 }

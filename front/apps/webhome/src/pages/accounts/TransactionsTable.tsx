@@ -22,9 +22,74 @@ export const TransactionShimmer = ({ shimmering = true }) => (
     </>
 )
 
+const getMaskImage = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
+    switch (string) {
+        case 'top':
+            return 'linear-gradient(to bottom, transparent 0%, black 16px, black calc(100% - 0px), transparent)'
+        case 'bottom':
+            return 'linear-gradient(to bottom, transparent 0%, black 0px, black calc(100% - 16px), transparent)'
+        case 'bottom-top':
+            return 'linear-gradient(to bottom, transparent 0%, black 16px, black calc(100% - 16px), transparent)'
+        default:
+            return ''
+    }
+}
+
+const getBorderRadius = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
+    switch (string) {
+        case 'top':
+            return '0 0 var(--border-radius3) var(--border-radius3)'
+        case 'bottom':
+            return 'var(--border-radius3) var(--border-radius3) 0 0'
+        case 'bottom-top':
+            return '0 0 0 0'
+        default:
+            return 'var(--border-radius3)'
+    }
+}
+
 export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boolean }>
     = ({ children, skeleton, className, ...rest }) => {
         const containerRef = useRef<HTMLDivElement>(null)
+        const tableRef = useRef<HTMLDivElement>(null)
+        const [shadow, setShadow] = useState<'top' | 'bottom' | 'bottom-top' | ''>('')
+
+        useEffect(() => {
+            let timeout = setTimeout(() => {
+                if (tableRef.current && tableRef.current) {
+                    const { scrollTop, scrollHeight, offsetHeight } = tableRef.current
+                    if (scrollTop === 0 && scrollHeight === offsetHeight) {
+                        setShadow('')
+                    } else if (scrollTop === 0 && scrollHeight > offsetHeight) {
+                        setShadow('bottom')
+                    } else if (scrollTop > 0 && scrollTop + offsetHeight < scrollHeight) {
+                        setShadow('bottom-top')
+                    } else if (scrollTop + offsetHeight === scrollHeight) {
+                        setShadow('top')
+                    }
+                }
+            }, 50)
+
+            const handleScroll = (e: Event) => {
+                if (tableRef.current && tableRef.current) {
+                    const { scrollTop, scrollHeight, offsetHeight } = e.target as HTMLDivElement
+                    if (scrollTop === 0 && scrollHeight === offsetHeight) {
+                        setShadow('')
+                    } else if (scrollTop === 0 && scrollHeight > offsetHeight) {
+                        setShadow('bottom')
+                    } else if (scrollTop > 0 && scrollTop + offsetHeight < scrollHeight) {
+                        setShadow('bottom-top')
+                    } else if (scrollTop + offsetHeight === scrollHeight) {
+                        setShadow('top')
+                    }
+                }
+            }
+            tableRef.current?.addEventListener('scroll', handleScroll)
+            return () => {
+                tableRef.current?.removeEventListener('scroll', handleScroll)
+                clearTimeout(timeout)
+            }
+        }, [skeleton])
 
         return (
             <>
@@ -35,16 +100,24 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boole
                 <div
                     className={`transactions--container ${className}`}
                     ref={containerRef}
+                    style={{
+                        '--table-border-radius': getBorderRadius(shadow),
+                        maskImage: getMaskImage(shadow),
+                    } as React.CSSProperties}
                 >
                     {skeleton
                         ?
-                        <div className='transactions--table' {...rest}>
+                        <div
+                            className='transactions--table'
+                            {...rest}
+                        >
                             {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
                                 .fill(0)
                                 .map((_, index) => <TransactionShimmer key={index} shimmering={true} />)}
                         </div>
                         :
                         <div
+                            ref={tableRef}
                             className={`transactions--table not-skeleton ${className}`}
                             {...rest}
                         >
@@ -103,17 +176,12 @@ export const Transactions = ({ queryParams }: { queryParams: GetTransactionsPara
                                 onClick={() => {
                                     navigate(
                                         `${location.pathname}/transaction${location.search}`,
-                                        {
-                                            state: {
-                                                getTransactionsParams: queryParams,
-                                                transactionId: transaction.transaction_id,
-                                            }
-                                        }
+                                        { state: { getTransactionsParams: queryParams, transactionId: transaction.transaction_id } }
                                     )
                                 }}
                             >
                                 <div>
-                                    <span>{transaction.name}</span>
+                                    <span>{transaction.preferred_name || transaction.name}</span>
                                     <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
                                 </div>
                                 <div>

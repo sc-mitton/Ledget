@@ -1,15 +1,27 @@
 import { apiSlice } from '@api/apiSlice'
 
+interface Alert {
+    percent_amount: number
+}
+
+interface Category {
+    period: 'year' | 'month',
+    name: string,
+    emoji: string,
+    limit_amount: number,
+    alerts: Alert[],
+}
+
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getCategories: builder.query({
+        getCategories: builder.query<Category[], void>({
             query: () => ({
                 url: 'categories',
                 method: 'GET',
             }),
         }),
-        addNewCategory: builder.mutation({
-            query: ({ data }) => ({
+        addNewCategory: builder.mutation<any, Category[] | Category>({
+            query: (data) => ({
                 url: 'category',
                 method: 'POST',
                 body: data,

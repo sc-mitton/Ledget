@@ -92,7 +92,7 @@ class PlaidItemsListView(ListAPIView):
     serializer_class = PlaidItemsSerializer
 
     def get_queryset(self):
-        return PlaidItem.objects.filter(user=self.request.user).all()
+        return PlaidItem.objects.filter(user=self.request.user)
 
 
 class PlaidItemView(RetrieveUpdateDestroyAPIView):

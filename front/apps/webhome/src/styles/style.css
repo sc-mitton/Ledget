@@ -339,7 +339,8 @@ div.body {
 
 @media screen and (max-width: 450px) {
     .window {
-        box-shadow: var(--window-drop-shadow2);
+        box-shadow: none;
+        border: none;
         padding: 16px;
         padding-top: 12px;
     }

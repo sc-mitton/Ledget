@@ -89,14 +89,10 @@ export const BottomButtons = () => {
 
         switch (location.pathname) {
             case '/welcome/add-bills':
-                addNewBill({
-                    data: [...newMonthItems, ...newYearItems]
-                })
+                addNewBill([...newMonthItems, ...newYearItems])
                 break
             case '/welcome/add-categories':
-                addNewCategory({
-                    data: [...newMonthItems, ...newYearItems]
-                })
+                addNewCategory([...newMonthItems, ...newYearItems])
                 break
             default:
                 break

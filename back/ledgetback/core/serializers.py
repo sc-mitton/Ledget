@@ -171,9 +171,11 @@ class DeviceSerializer(serializers.ModelSerializer):
         return instance
 
     def update(self, instance):
+        user = self.context['request'].user
 
         try:
             new_values = {
+                'location': user.session_devices[0]['location'],
                 'token': self._get_hash_token(),
                 **self._parse_user_agent_kwargs()
             }

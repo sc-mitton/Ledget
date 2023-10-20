@@ -13,7 +13,7 @@ def validate_week_number(value):
 
 class Category(BudgetItem):
 
-    limit_amount = models.IntegerField(null=False, blank=False)
+    limit_amount = models.IntegerField(null=True, blank=True)
 
 
 class Bill(BudgetItem):

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 
 import './styles/Dropdowns.css'
-import './styles/Scheduler.css'
+import './styles/Scheduler.scss'
 import Radios from './Radios'
 import { useClickClose } from '@utils'
 import { ArrowIcon } from '@ledget/media'

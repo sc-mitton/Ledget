@@ -3,7 +3,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import Count, Min, Max
+from django.db.models import Count, Min, Max, Sum, Q
 from django.db.models.functions import ExtractDay, ExtractMonth
 
 from core.permissions import IsAuthenticated
@@ -31,7 +31,23 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
     serializer_class = CategorySerializer
 
     def get_queryset(self):
-        return Category.objects.filter(user=self.request.user)
+        '''
+        SELECT
+            ...columns
+            SUM(financials_transaction.amount) FILTER (WHERE EXTRACT(MONTH FROM financials_transaction.date) = date_here) AS amount_spent
+        FROM budget_category
+        LEFT OUTER JOIN financials_transaction
+        ON (budget_category.id = financials_transaction.category_id)
+        WHERE budget_category.user_id = 'user_id_here'
+        GROUP BY budget_category.id
+        '''
+
+        month = self.request.query_params.get('month', None)
+        year = self.request.query_params.get('year', None)
+        s = Sum('transaction__amount', filter=Q(transaction__date__month=month, transaction__date__year=year))
+        qset = Category.objects.filter(user=self.request.user).annotate(amount_spent=s)
+
+        return qset
 
 
 class BillView(BulkCreateMixin, ListCreateAPIView):

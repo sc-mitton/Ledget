@@ -121,8 +121,7 @@ const Header = () => {
             dispatch(popToast({
                 type: 'success',
                 message: `Synced${syncResult?.added ? `, ${syncResult?.added} new transactions` : ' successfully'}`,
-                timer: syncResult?.added ? 2500 : 2000,
-                hasLoadingBar: false
+                hasLoadingBar: true,
             }))
         }
     }, [isTransactionsSyncSuccess])
@@ -133,8 +132,6 @@ const Header = () => {
             dispatch(popToast({
                 type: 'error',
                 message: 'There was an error syncing your transactions',
-                timer: 2500,
-                hasLoadingBar: false
             }))
         }
     }, [isTransactionsSyncError])

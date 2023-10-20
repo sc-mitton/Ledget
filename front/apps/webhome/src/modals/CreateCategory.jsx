@@ -43,7 +43,7 @@ const Form = (props) => {
             body.alerts = alerts
         }
 
-        addNewCategory({ data: { ...body, ...data } })
+        addNewCategory({ ...body, ...data })
     }
 
     useEffect(() => {

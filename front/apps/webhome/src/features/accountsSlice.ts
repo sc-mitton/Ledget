@@ -1,12 +1,10 @@
 import { apiSlice } from '@api/apiSlice'
 
-
 interface Account {
     account: string
     order: number
     [key: string]: any
 }
-
 
 const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ['Accounts'] })
 

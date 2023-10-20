@@ -38,20 +38,9 @@ class PlaidItem(models.Model):
     permission_revoked = models.BooleanField(default=False)
 
 
-class UserAccount(models.Model):
-    account = models.ForeignKey('Account', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    order = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        db_table = 'financials_user_account'
-        ordering = ('order',)
-        unique_together = ('account', 'user')
-
-
 class Account(models.Model):
 
-    users = models.ManyToManyField(User, through=UserAccount,
+    users = models.ManyToManyField(User, through='UserAccount',
                                    related_name='accounts')
     plaid_item = models.ForeignKey(PlaidItem,
                                    on_delete=models.CASCADE,
@@ -71,6 +60,17 @@ class Account(models.Model):
     type = models.CharField(max_length=50, null=False, blank=False)
     verification_status = models.CharField(max_length=50, null=True,
                                            blank=True)
+
+
+class UserAccount(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        db_table = 'financials_user_account'
+        ordering = ('order',)
+        unique_together = ('account', 'user')
 
 
 class Transaction(models.Model):
@@ -107,9 +107,23 @@ class Transaction(models.Model):
                                  null=True, blank=True)
     bill = models.ForeignKey(Bill, on_delete=models.SET_NULL,
                              null=True, blank=True)
+    category_confirmed = models.BooleanField(null=True, blank=True)
+    bill_confirmed = models.BooleanField(null=True, blank=True)
+    wrong_predicted_category = models.ForeignKey(Category,
+                                                 on_delete=models.SET_NULL,
+                                                 null=True,
+                                                 blank=True,
+                                                 related_name='wrong_predicted_category'
+                                                 )
+    wrong_predicted_bill = models.ForeignKey(Bill,
+                                             on_delete=models.SET_NULL,
+                                             null=True,
+                                             blank=True,
+                                             related_name='wrong_predicted_bill')
 
     # Transaction info
     name = models.CharField(max_length=100, null=False, blank=False)
+    preferred_name = models.CharField(max_length=100, null=True, blank=True)
     merchant_name = models.CharField(max_length=100, null=True, blank=True)
     payment_channel = models.CharField(max_length=100, null=True, blank=True)
     pending = models.BooleanField(null=True, blank=True)
@@ -138,3 +152,46 @@ class Transaction(models.Model):
     lat = models.FloatField(null=True, blank=True)
     lon = models.FloatField(null=True, blank=True)
     store_number = models.CharField(max_length=50, null=True, blank=True)
+
+    def create(self, validated_data):
+
+        keys = ['category', 'category_id', 'bill', 'bill_id', 'predicted_category',
+                'predicted_category_id', 'predicted_bill', 'predicted_bill_id']
+
+        add_predicted_category = True
+        for key in keys:
+            if key in validated_data:
+                add_predicted_category = False
+                break
+
+        if add_predicted_category:
+            validated_data['predicted_category'] = Category.objects.get_or_create(
+                user_id=self.context['request'].user.id,
+                category_name='miscellaneous',
+                period='month',
+            )
+
+        return super().create(validated_data)
+
+    def bulk_create(self, validated_data):
+
+        keys = ['category', 'category_id', 'bill', 'bill_id', 'predicted_category',
+                'predicted_category_id', 'predicted_bill', 'predicted_bill_id']
+
+        predicted_category = Category.objects.get_or_create(
+            user_id=self.context['request'].user.id,
+            category_name='miscellaneous',
+            period='month',
+        )
+
+        for data in validated_data:
+            add_predicted_category = True
+            for key in keys:
+                if key in data:
+                    add_predicted_category = False
+                    break
+
+            if add_predicted_category:
+                data['predicted_category'] = predicted_category
+
+        return super().bulk_create(validated_data)

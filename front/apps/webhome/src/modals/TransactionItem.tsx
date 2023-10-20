@@ -45,7 +45,7 @@ const TransactionModal = withModal((props) => {
                     value={item?.amount && new Big(item.amount).times(100).toNumber()}
                     style={{ textAlign: 'center' }}
                 />
-                <div>{item?.name}</div>
+                <div>{item?.preferred_name || item?.name}</div>
             </div>
             <div className='transaction-info--container'>
                 <div className='inner-window'>

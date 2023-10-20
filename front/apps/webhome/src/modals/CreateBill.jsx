@@ -87,7 +87,7 @@ const Form = (props) => {
 
         handleSubmit((data) => {
             if (body.errors) { return }
-            addNewBill({ data: { ...body, ...data } })
+            addNewBill({ ...body, ...data })
         })(e)
     }
 

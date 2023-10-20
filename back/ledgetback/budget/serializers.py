@@ -1,4 +1,5 @@
 from rest_framework.serializers import ModelSerializer, ListSerializer as LS
+from rest_framework.serializers import SerializerMethodField
 
 from ledgetback.serializers import NestedCreateMixin
 from .models import (
@@ -36,17 +37,22 @@ class ReminderSerializer(ModelSerializer):
 
 class CategorySerializer(NestedCreateMixin, ModelSerializer):
     alerts = AlertSerializer(many=True, required=False)
+    amount_spent = SerializerMethodField(read_only=True)
 
     class Meta:
         model = Category
         fields = [field.name for field in model._meta.fields
-                  if field.name != 'user'] + ['alerts']
+                  if field.name != 'user'] + ['alerts', 'amount_spent']
+        extra_kwargs = {'limit_amount': {'required': True}}
         required_fields = ['name', 'period', 'limit_amount']
         list_serializer_class = ListCreateSerializer
 
     def create(self, validated_data, *args, **kwargs):
         validated_data['user_id'] = self.context['request'].user.id
         return super().create(validated_data, *args, **kwargs)
+
+    def get_amount_spent(self, obj):
+        pass
 
 
 class BillSerializer(NestedCreateMixin, ModelSerializer):

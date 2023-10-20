@@ -47,7 +47,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }
                 return currentCache
             },
-            keepUnusedDataFor: 60 * 15, // 15 minutes
+            keepUnusedDataFor: 60 * 30, // 15 minutes
         })
     }),
 })
