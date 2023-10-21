@@ -21,6 +21,7 @@
     --mute-red: #fe8797;
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
+    --red-rgb: 243, 80, 80;
     --dark-red: #8b2424;
 
     --green-hlight: rgb(112, 226, 162);
@@ -261,7 +262,7 @@ fieldset {
 
 .dashboard {
     width: 90%;
-    max-width: 1250px;
+    max-width: 1400px;
     margin: 28px auto;
     margin-top: 60px;
     display: flex;

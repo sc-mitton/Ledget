@@ -75,9 +75,40 @@ export const DollarCentsRange = ({ lower = 0, upper = 0 }) => (
   </>
 )
 
-export const StaticProgressCircle = ({ value = 0, size = 50, strokeWidth = 5, ...rest }) => (
-  <div className="progress-circle">
-
+export const StaticProgressCircle = ({
+  value = 0,
+  size = '1.1rem',
+  strokeWidth = 5,
+  noProgress = false
+}) => (
+  <div className="progress-circle--container" style={{ width: size, height: size }}>
+    <div className="progress-circle--svg">
+      <svg viewBox="0 0 36 36" style={{ width: size, height: size }}>
+        <circle
+          className="progress-circle--background"
+          cx="18"
+          cy="18"
+          r="14"
+          strokeWidth={strokeWidth}
+          stroke='rgb(var(--charcoal-rgb), .1)'
+          strokeLinecap='round'
+          transform="rotate(-90 18 18)"
+          fill="transparent"
+        />
+        <circle
+          className="progress-circle--foreground"
+          cx="18"
+          cy="18"
+          r="14"
+          strokeWidth={noProgress ? 0 : strokeWidth}
+          stroke={value > 1 ? `rgb(var(--red-rgb), ${Math.min(value + 1, 5) / 5})` : 'var(--green-dark3)'}
+          fill="transparent"
+          transform="rotate(-90 18 18)"
+          strokeLinecap='round'
+          strokeDasharray={`${value ? parseFloat((value % 1).toFixed(2)) * 88 : 0}, 88`}
+        />
+      </svg>
+    </div>
   </div>
 )
 

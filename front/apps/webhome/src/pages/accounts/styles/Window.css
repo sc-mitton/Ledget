@@ -15,7 +15,7 @@
 
 #accounts-window ul li {
     padding: 2px 16px;
-    font-weight: 500;
+    font-weight: 400;
     background-color: var(--icon-light-gray);
     border-radius: var(--border-radius3);
     transition: background-color 0.2s ease-in-out;

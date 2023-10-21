@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { Outlet } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation, createSearchParams, useSearchParams } from 'react-router-dom'
 
 import './styles/Window.css'
 import './styles/Budget.scss'
@@ -33,6 +33,8 @@ const Wrapper = ({ onClick, children }) => {
 
 const DropDown = () => {
     const navigate = useNavigate()
+    const location = useLocation()
+    const [searchParams] = useSearchParams()
 
     return (
         <Menu>
@@ -53,7 +55,13 @@ const DropDown = () => {
                                     Yearly budget
                                 </Wrapper>
                                 <Wrapper
-                                    onClick={() => navigate('/budget/new-category')}
+                                    onClick={() => navigate({
+                                        pathname: `/budget/new-category`,
+                                        search: createSearchParams({
+                                            month: searchParams.get('month'),
+                                            year: searchParams.get('year')
+                                        }).toString()
+                                    })}
                                 >
                                     <Plus
                                         width={'1em'}
@@ -63,7 +71,13 @@ const DropDown = () => {
                                     New category
                                 </Wrapper>
                                 <Wrapper
-                                    onClick={() => navigate('/budget/new-bill')}
+                                    onClick={() => navigate({
+                                        pathname: `/budget/new-bill`,
+                                        search: createSearchParams({
+                                            month: searchParams.get('month'),
+                                            year: searchParams.get('year')
+                                        }).toString()
+                                    })}
                                 >
                                     <Plus
                                         width={'1em'}

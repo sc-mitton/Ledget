@@ -48,7 +48,6 @@ const WafersHeader = () => {
     return (
         <div>
             <h3>{pathMappings.getWaferTitle(location)}</h3>
-
             <DollarCents
                 value={
                     isSuccess

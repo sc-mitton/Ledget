@@ -1,11 +1,9 @@
-import { Fragment } from 'react'
-
 import { useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
 
 import { useGetCategoriesQuery } from '@features/categorySlice'
 import { useGetBillsQuery } from '@features/billSlice'
-import { DollarCents } from '@ledget/ui'
+import { DollarCents, StaticProgressCircle } from '@ledget/ui'
 
 
 const BudgetItemRows = ({ period }: { period: 'year' | 'month' }) => {
@@ -34,6 +32,12 @@ const BudgetItemRows = ({ period }: { period: 'year' | 'month' }) => {
                         <DollarCents value={category.amount_spent ? Big(category.amount_spent).toFixed(2) : '0.00'} />
                         {category.limit_amount ? <div>/</div> : <div />}
                         {category.limit_amount ? <DollarCents value={Big(category.limit_amount).div(100).toFixed(2)} /> : <div />}
+                        <div>
+                            <StaticProgressCircle
+                                value={category.limit_amount ? Math.round(category.amount_spent / category.limit_amount) : undefined}
+                                noProgress={!category.limit_amount}
+                            />
+                        </div>
                     </div>
                 ))}
             </div>

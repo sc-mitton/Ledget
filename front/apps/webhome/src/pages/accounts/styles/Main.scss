@@ -360,7 +360,7 @@
     top: 6px;
 
     span {
-        padding: 0 8px 0 4px;
+        padding: 0 12px 0 4px;
         color: rgb(var(--charcoal-rgb), .3);
         background-color: var(--inner-window-solid);
         box-shadow: var(--inner-window-solid) 0 0px 4px 2px;
@@ -396,7 +396,7 @@ $greenDark3: var(--green-dark3);
     grid-auto-rows: minmax(auto, 80px);
     grid-template-rows: min-content;
     row-gap: 8px;
-    padding: 10px 12px 8px 8px;
+    padding: 12px 12px 8px 8px;
 
     &>div:nth-child(2n) {
         display: contents;

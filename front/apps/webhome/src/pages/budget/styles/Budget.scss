@@ -4,13 +4,16 @@ $charcoalValues: var(--charcoal-rgb);
 
 .budget-items-table--container {
     position: relative;
-    height: 100%;
+    height: 50%;
+    overflow-x: hidden;
+    overflow-y: auto;
 
     .budget-items--table {
+        padding-right: 16px;
         position: absolute;
         inset: 0;
         display: grid;
-        grid-template-columns: 5fr 1fr minmax(auto, min-content) 1fr;
+        grid-template-columns: 5fr 1fr minmax(auto, min-content) 1fr minmax(auto, min-content);
         grid-auto-rows: minmax(auto, 60px);
 
         &>div {
@@ -19,23 +22,21 @@ $charcoalValues: var(--charcoal-rgb);
             cursor: pointer;
 
             &>div {
-                padding-top: 8px;
-                padding-bottom: 8px;
+                padding-top: 6px;
+                padding-bottom: 6px;
                 transition: all .2s ease-in-out;
                 position: relative;
                 display: flex;
                 align-items: center;
-                margin: 4px 0;
+                margin: 6px 0;
             }
 
             &:hover>div {
-                background-color: rgb($mGreenValues, 0.15);
                 transition: all .2s ease-in-out;
-                // background-color: var(--btn-light-light-gray);
+                background-color: var(--btn-light-light-gray);
 
-                &:nth-child(4n+1) {
+                &:nth-child(5n+1) {
                     span {
-                        color: var(--green-dark4);
                         background-color: transparent;
                         transition: all .2s ease-in-out;
                     }
@@ -46,13 +47,13 @@ $charcoalValues: var(--charcoal-rgb);
                 content: '';
                 position: absolute;
                 left: 0;
-                bottom: -4px;
+                bottom: -6px;
                 width: 100%;
-                height: 1.5px;
+                height: 1.25px;
                 background-color: $subtleBorderColor;
             }
 
-            &>div:nth-child(4n + 1) {
+            &>div:nth-child(5n + 1) {
                 padding-right: 24px;
                 display: inline-flex;
                 gap: 6px;
@@ -68,20 +69,31 @@ $charcoalValues: var(--charcoal-rgb);
                 }
             }
 
-            &>div:nth-child(4n + 2) {
+            // Amount spent cell
+            &>div:nth-child(5n + 2) {
                 font-weight: 500;
             }
 
-            &>div:nth-child(4n + 3) {
+            // Dash cell
+            &>div:nth-child(5n + 3) {
                 padding: 0 8px;
             }
 
-            &>div:nth-child(4n + 4) {
+            // Limit amount cell
+            &>div:nth-child(5n + 4) {
                 opacity: .8;
                 padding-right: 16px;
                 text-align: end;
                 display: flex;
                 justify-content: flex-end;
+            }
+
+            // progress circle cell
+            &>div:nth-child(5n + 5) {
+                display: flex;
+                padding-right: 16px;
+                align-items: center;
+                justify-content: center;
                 border-top-right-radius: calc(var(--border-radius25));
                 border-bottom-right-radius: calc(var(--border-radius25));
             }

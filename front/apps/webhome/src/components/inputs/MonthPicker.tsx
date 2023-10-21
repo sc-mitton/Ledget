@@ -162,7 +162,7 @@ const MonthPicker = () => {
 
     return (
         <div id="month-picker" ref={monthPickerRef}>
-            <h1>{monthMappings[parseInt(searchParams.get('month') || '1') - 1][1]} {searchParams.get('year')}</h1>
+            <h2>{monthMappings[parseInt(searchParams.get('month') || '1') - 1][1]} {searchParams.get('year')}</h2>
             <div id="header-arrow-container">
                 <IconButton
                     id='header-arrow'
