@@ -1,12 +1,11 @@
-import './styles/View.css'
-import MonthlySummary from './MonthlySummary'
-import YearlySummary from './YearlySummary'
-import { MonthSummaryHeader, YearSummaryHeader } from './SummaryHeaders'
+import './styles/View.scss'
+
+import { MonthlySummary, YearlySummary, MonthSummaryHeader, YearSummaryHeader } from './Summary'
 import BudgetItemRows from './BudgetItemRows'
 
 const ColumnarView = () => (
     <>
-        <div className="columnar--view">
+        <div className="columnar--view budget--header">
             <div>
                 <MonthSummaryHeader />
                 <MonthlySummary />

@@ -1,6 +1,6 @@
 import Color from 'color';
 
-import './misc.css'
+import './misc.scss'
 import { formatCurrency } from '../../utils/funcs'
 
 function getContrastColor(bgColor: string | undefined) {
@@ -67,13 +67,18 @@ export const DollarCents = ({ value = 0, style = {}, ...rest }:
   )
 }
 
-export const DollarCentsRange = ({ lower = 0, upper = 0 }) => {
+export const DollarCentsRange = ({ lower = 0, upper = 0 }) => (
+  <>
+    {lower && <DollarCents value={lower} />}
+    {lower && <span>&nbsp;&nbsp;&ndash;&nbsp;&nbsp;</span>}
+    <DollarCents value={upper} />
+  </>
+)
 
-  return (
-    <>
-      {lower && <DollarCents value={lower} />}
-      {lower && <span>&nbsp;&nbsp;&ndash;&nbsp;&nbsp;</span>}
-      <DollarCents value={upper} />
-    </>
-  )
-}
+export const StaticProgressCircle = ({ value = 0, size = 50, strokeWidth = 5, ...rest }) => (
+  <div className="progress-circle">
+
+  </div>
+)
+
+

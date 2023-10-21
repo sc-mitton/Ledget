@@ -1,0 +1,93 @@
+$subtleBorderColor: var(--subtle-border-color);
+$mGreenValues: var(--m-green-values);
+$charcoalValues: var(--charcoal-rgb);
+
+.budget-items-table--container {
+    position: relative;
+    height: 100%;
+
+    .budget-items--table {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        grid-template-columns: 5fr 1fr minmax(auto, min-content) 1fr;
+        grid-auto-rows: minmax(auto, 60px);
+
+        &>div {
+            position: relative;
+            display: contents;
+            cursor: pointer;
+
+            &>div {
+                padding-top: 8px;
+                padding-bottom: 8px;
+                transition: all .2s ease-in-out;
+                position: relative;
+                display: flex;
+                align-items: center;
+                margin: 4px 0;
+            }
+
+            &:hover>div {
+                background-color: rgb($mGreenValues, 0.15);
+                transition: all .2s ease-in-out;
+                // background-color: var(--btn-light-light-gray);
+
+                &:nth-child(4n+1) {
+                    span {
+                        color: var(--green-dark4);
+                        background-color: transparent;
+                        transition: all .2s ease-in-out;
+                    }
+                }
+            }
+
+            &:not(:last-child)>div::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: -4px;
+                width: 100%;
+                height: 1.5px;
+                background-color: $subtleBorderColor;
+            }
+
+            &>div:nth-child(4n + 1) {
+                padding-right: 24px;
+                display: inline-flex;
+                gap: 6px;
+                border-top-left-radius: calc(var(--border-radius25));
+                border-bottom-left-radius: calc(var(--border-radius25));
+
+                span {
+                    border-radius: var(--border-radius2);
+                    background-color: rgb(var(--charcoal-rgb), .05);
+                    padding: 2px 12px;
+                    font-size: 13px;
+                    transition: all .2s ease-in-out;
+                }
+            }
+
+            &>div:nth-child(4n + 2) {
+                font-weight: 500;
+            }
+
+            &>div:nth-child(4n + 3) {
+                padding: 0 8px;
+            }
+
+            &>div:nth-child(4n + 4) {
+                opacity: .8;
+                padding-right: 16px;
+                text-align: end;
+                display: flex;
+                justify-content: flex-end;
+                border-top-right-radius: calc(var(--border-radius25));
+                border-bottom-right-radius: calc(var(--border-radius25));
+            }
+        }
+
+
+    }
+
+}

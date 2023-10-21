@@ -1,0 +1,70 @@
+/* ------------------------------ Columnar View ----------------------------- */
+
+#budget--container {
+    padding: var(--padding1);
+    z-index: 0;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .budget--content {
+        margin-top: 16px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        &>div {
+            flex-grow: 1;
+        }
+    }
+
+    .columnar--view {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 54px;
+
+        &>div:first-child {
+            margin-right: 8px;
+            flex: 1;
+        }
+
+        &>div:last-child {
+            margin-left: 8px;
+            flex: 1;
+        }
+    }
+
+    #tab-view--list {
+        height: 100%;
+        width: 100%;
+        display: inline-flex;
+
+        button {
+            margin: 8px 0;
+            text-align: left;
+            transition: all .2s ease-in-out;
+            border-radius: calc(var(--border-radius4) + 6px);
+
+            &:first-child {
+                margin-right: 24px;
+            }
+
+            &:focus {
+                outline: none;
+                box-shadow: none;
+            }
+
+            &[data-headlessui-state=''] {
+                opacity: .4;
+                transition: all .2s ease-in-out;
+            }
+
+            &[data-headlessui-state=''] .summary-stats--container {
+                background-color: var(--btn-light-gray);
+                transition: all .2s ease-in-out;
+            }
+        }
+    }
+}

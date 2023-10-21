@@ -1,10 +1,8 @@
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
 
 import { Tab } from '@headlessui/react'
 
-import MonthlySummary from './MonthlySummary'
-import YearlySummary from './YearlySummary'
-import { MonthSummaryHeader, YearSummaryHeader } from './SummaryHeaders'
+import { MonthSummaryHeader, YearSummaryHeader, MonthlySummary, YearlySummary } from './Summary'
 import BudgetItemRows from './BudgetItemRows'
 import { useGetCategoriesQuery } from '@features/categorySlice'
 import { useGetBillsQuery } from '@features/billSlice'

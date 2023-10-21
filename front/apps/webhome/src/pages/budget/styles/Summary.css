@@ -24,7 +24,7 @@
 
 .summary-stats--container>div>div span:first-child {
     font-size: 1.4rem;
-    font-weight: 600;
+    font-weight: 400;
     white-space: nowrap;
     line-height: 1;
 }
@@ -47,4 +47,18 @@
 
 .summary-stats--container>div>div:last-child {
     margin-left: 12px;
+}
+
+.summary-header--container span {
+    font-weight: 400;
+}
+
+.summary-header--container h3 {
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+.summary-header--container h3,
+.summary-header--container h3 span {
+    font-size: 1.1rem;
 }

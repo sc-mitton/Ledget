@@ -170,6 +170,7 @@ class Transaction(models.Model):
                 user_id=self.context['request'].user.id,
                 category_name='miscellaneous',
                 period='month',
+                emoji='🪣'
             )
 
         return super().create(validated_data)
@@ -183,6 +184,7 @@ class Transaction(models.Model):
             user_id=self.context['request'].user.id,
             category_name='miscellaneous',
             period='month',
+            emoji='🪣'
         )
 
         for data in validated_data:

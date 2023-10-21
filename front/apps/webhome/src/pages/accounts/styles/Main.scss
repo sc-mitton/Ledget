@@ -299,25 +299,26 @@
         height: 100%;
         border-radius: var(--table-border-radius);
     }
+
+    &.loading {
+        border-radius: var(--border-radius3);
+    }
+
+    &.fetching-more::after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        width: 80px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: rgb(0, 0, 0, .08);
+        animation: fetching-more .7s ease-in-out forwards;
+    }
 }
 
-.transactions--container.loading {
-    border-radius: var(--border-radius3);
-}
-
-.transactions--container.fetching-more::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: 80px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: rgb(0, 0, 0, .08);
-    animation: fetching-more .7s ease-in-out forwards;
-}
 
 @keyframes fetching-more {
     0% {
@@ -349,10 +350,6 @@
         letter-spacing: 0px;
         z-index: 1;
     }
-}
-
-.transactions--table>div:nth-child(2n) {
-    display: contents;
 }
 
 .month-delimiter {
@@ -401,7 +398,11 @@ $greenDark3: var(--green-dark3);
     row-gap: 8px;
     padding: 10px 12px 8px 8px;
 
-    >div:nth-child(2n):not(:last-child)>div::after {
+    &>div:nth-child(2n) {
+        display: contents;
+    }
+
+    &>div:nth-child(2n):not(:last-child)>div::after {
         content: '';
         position: absolute;
         bottom: -4px;

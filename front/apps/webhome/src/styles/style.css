@@ -8,7 +8,7 @@
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-background-color: #f0f0f0;
     --inner-window: rgba(0, 0, 0, .03);
-    --inner-window-solid: rgb(243, 243, 243);
+    --inner-window-solid: rgb(244, 244, 244);
     --inner-window-lighter: rgba(0, 0, 0, .02);
 
     --background-color: #fcfcfc;
@@ -74,6 +74,7 @@
     --faded-text: rgb(0, 0, 0, .3);
 
     /* Icons & Buttons */
+    --btn-light-light-gray: #eeeeee;
     --btn-light-gray: #e6e4e4;
     --btn-hover-light-gray: #dad9d9;
     --btn-gray: #3b3b3b;

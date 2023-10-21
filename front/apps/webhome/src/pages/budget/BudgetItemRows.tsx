@@ -1,7 +1,11 @@
+import { Fragment } from 'react'
+
 import { useSearchParams } from 'react-router-dom'
+import Big from 'big.js'
 
 import { useGetCategoriesQuery } from '@features/categorySlice'
 import { useGetBillsQuery } from '@features/billSlice'
+import { DollarCents } from '@ledget/ui'
 
 
 const BudgetItemRows = ({ period }: { period: 'year' | 'month' }) => {
@@ -17,7 +21,23 @@ const BudgetItemRows = ({ period }: { period: 'year' | 'month' }) => {
     const { data: bills, isSuccess: isBillsSuccess } = useGetBillsQuery()
 
     return (
-        <div>BudgetItemRows</div>
+        <div className="budget-items-table--container">
+            <div className="budget-items--table">
+                {categories && categories.filter(category => category.period === period).map((category) => (
+                    <div>
+                        <div>
+                            <span>
+                                {category.emoji}&nbsp;&nbsp;
+                                {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
+                            </span>
+                        </div>
+                        <DollarCents value={category.amount_spent ? Big(category.amount_spent).toFixed(2) : '0.00'} />
+                        {category.limit_amount ? <div>/</div> : <div />}
+                        {category.limit_amount ? <DollarCents value={Big(category.limit_amount).div(100).toFixed(2)} /> : <div />}
+                    </div>
+                ))}
+            </div>
+        </div>
     )
 }
 
