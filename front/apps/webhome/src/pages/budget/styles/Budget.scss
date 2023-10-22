@@ -96,6 +96,7 @@ $charcoalValues: var(--charcoal-rgb);
                 justify-content: center;
                 border-top-right-radius: calc(var(--border-radius25));
                 border-bottom-right-radius: calc(var(--border-radius25));
+                position: relative;
             }
         }
 

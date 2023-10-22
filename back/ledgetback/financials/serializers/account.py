@@ -5,7 +5,7 @@ from rest_framework import serializers
 from financials.models import Account, Institution, UserAccount
 
 
-class CustomBase64ImageField(serializers.Field):
+class CustomBase64LogoField(serializers.Field):
     def to_representation(self, value):
         if value and value.path:
             with open(value.path, "rb") as f:
@@ -15,7 +15,7 @@ class CustomBase64ImageField(serializers.Field):
 
 
 class InstitutionSerializer(serializers.ModelSerializer):
-    logo = CustomBase64ImageField(required=False, read_only=True)
+    logo = CustomBase64LogoField(required=False, read_only=True)
     id = serializers.CharField()
 
     class Meta:

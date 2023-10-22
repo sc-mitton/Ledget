@@ -11,17 +11,18 @@ function getContrastColor(bgColor: string | undefined) {
   return whiteContrast > blackContrast ? 'white' : 'black';
 }
 
-interface Base64ImageProps {
+interface Base64LogoProps {
   data: string;
   alt: string;
   backgroundColor?: string;
   style?: React.CSSProperties;
 }
 
-export const Base64Image = (props: Base64ImageProps) => {
+export const Base64Logo = (props: Base64LogoProps) => {
   const { data, backgroundColor, alt, style, ...rest } = props
 
   const config = {
+    filter: 'grayscale(1)',
     padding: '2px 2px',
     backgroundColor: backgroundColor,
     borderRadius: 'var(--border-radius4)',

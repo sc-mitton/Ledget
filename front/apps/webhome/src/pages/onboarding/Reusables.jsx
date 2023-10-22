@@ -159,7 +159,7 @@ export const RecommendationsButton = () => {
         <div>
             <GrnTextButton
                 id="recommendations-btn"
-                className="btn-icon-r"
+
                 onClick={() => setRecommendationsMode(true)}
                 aria-label="Recommendations"
             >

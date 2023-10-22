@@ -36,7 +36,7 @@ const SmsAuth = ({ user }) => {
                         <span
                             style={{ marginLeft: '-2px' }}
                         >
-                            SMS Verification
+                            Text Verification
                         </span>
                     </div>
                     <div style={{ position: 'relative' }}>

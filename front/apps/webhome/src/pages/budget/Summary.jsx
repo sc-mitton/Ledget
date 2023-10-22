@@ -1,6 +1,9 @@
+import { useSearchParams } from 'react-router-dom'
+
 import './styles/Summary.css'
 import { Recommendations as StarsIcon } from '@ledget/media'
-
+import { useGetBillsQuery } from '@features/billSlice'
+import { useGetCategoriesQuery } from '@features/categorySlice'
 
 const MonthSummaryHeader = () => {
     return (
@@ -25,6 +28,17 @@ const YearSummaryHeader = () => {
 }
 
 const MonthlySummary = () => {
+    const [searchParams] = useSearchParams()
+    const {
+        data: categories,
+        isSuccess: isCategoriesSuccess,
+        isLoading: isCategoriesLoading,
+    } = useGetCategoriesQuery({
+        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
+        year: searchParams.get('year') || `${new Date().getFullYear()}`,
+    })
+    const { data: bills, isSuccess: isBillsSuccess } = useGetBillsQuery()
+
     return (
         <div className="budget-summary--container">
             <div className="summary-stats--container">
@@ -51,6 +65,17 @@ const MonthlySummary = () => {
 }
 
 const YearlySummary = () => {
+    const [searchParams] = useSearchParams()
+    const {
+        data: categories,
+        isSuccess: isCategoriesSuccess,
+        isLoading: isCategoriesLoading,
+    } = useGetCategoriesQuery({
+        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
+        year: searchParams.get('year') || `${new Date().getFullYear()}`,
+    })
+    const { data: bills, isSuccess: isBillsSuccess } = useGetBillsQuery()
+
     return (
         <div className="budget-summary--container">
             <div className="summary-stats--container">
@@ -64,11 +89,7 @@ const YearlySummary = () => {
                         <span>left for 2023</span>
                     </div>
                     <div>
-                        <StarsIcon
-                            height={'1.8em'}
-                            width={'1.8em'}
-                            fill={'var(--green-dark4)'}
-                        />
+                        <StarsIcon height={'1.8em'} width={'1.8em'} fill={'var(--green-dark4)'} />
                     </div>
                 </div>
             </div>

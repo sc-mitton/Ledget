@@ -48,6 +48,7 @@
 .new-item-data div:last-child svg {
     border-radius: var(--border-radius);
     margin-right: 8px;
+    filter: grayscale(100%);
 }
 
 .new-item-icons {
@@ -59,7 +60,6 @@
 
 .new-item-icons>button:nth-child(1) {
     margin: 0 10px;
-    color: var(--green-dark4);
     font-weight: 400;
 }
 
@@ -71,7 +71,6 @@
 .category-icon {
     transform: scale(1);
     transition: all .2s ease-out;
-    background-color: var(--green-hlight2);
     padding: 2px 12px;
     cursor: pointer;
     border-radius: var(--border-radius2);

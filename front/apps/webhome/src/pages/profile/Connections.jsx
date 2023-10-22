@@ -22,7 +22,7 @@ import {
     DeleteButton,
     BlackSubmitButton,
     Tooltip,
-    Base64Image
+    Base64Logo
 } from '@ledget/ui'
 import { withReAuth } from '@utils'
 
@@ -154,7 +154,7 @@ const PlaidItem = ({ item }) => {
             }
             <div className="header2">
                 <div>
-                    <Base64Image
+                    <Base64Logo
                         data={item.institution.logo}
                         alt={item.institution.name}
                         style={{ marginRight: '12px' }}

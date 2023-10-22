@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 
+from core.models import User
 from budget.base_models import Notification, BudgetItem
 
 
@@ -93,3 +94,33 @@ class Reminder(Notification):
         null=False
     )
     offset = models.IntegerField(null=False, blank=False)
+
+
+class UserCategory(models.Model):
+
+    class Meta:
+        db_table = 'budget_user_category'
+        unique_together = ('user', 'category')
+
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='user_categories')
+    category = models.ForeignKey(Category,
+                                 on_delete=models.CASCADE,
+                                 related_name='user_categories')
+    order = models.IntegerField(null=False, blank=False)
+
+
+class UserBill(models.Model):
+
+    class Meta:
+        db_table = 'budget_user_bill'
+        unique_together = ('user', 'bill')
+
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='user_bills')
+    bill = models.ForeignKey(Bill,
+                             on_delete=models.CASCADE,
+                             related_name='user_bills')
+    order = models.IntegerField(null=False, blank=False)

@@ -5,7 +5,7 @@ import { animated, useTransition, useSpringRef } from '@react-spring/web'
 import Big from 'big.js'
 
 import { CornerGripButton } from '@components/buttons'
-import { Base64Image, DollarCents, ShimmerDiv, useSpringDrag } from '@ledget/ui'
+import { Base64Logo, DollarCents, ShimmerDiv, useSpringDrag } from '@ledget/ui'
 import { useGetAccountsQuery, useGetAccountsQueryState, useUpdateAccountsMutation } from "@features/accountsSlice"
 import pathMappings from './path-mappings'
 
@@ -177,7 +177,7 @@ export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
                                     id={`${account.account_id}`}
                                     tabIndex={-1}
                                 />
-                                <Base64Image
+                                <Base64Logo
                                     data={institution.logo}
                                     alt={institution.name.charAt(0).toUpperCase()}
                                 />
