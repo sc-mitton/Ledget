@@ -1,7 +1,6 @@
 #budget-window {
     flex-grow: 2;
     flex-shrink: 1;
-    margin: 0 12px;
     display: flex;
     flex-direction: column;
 }

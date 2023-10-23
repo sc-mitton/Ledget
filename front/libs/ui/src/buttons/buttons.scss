@@ -148,6 +148,17 @@
     transition: all .3s ease;
 }
 
+.btn-blue {
+    background-color: var(--blue-hlight2);
+    color: var(--blue-dark4);
+    transition: all .3s ease;
+}
+
+.btn-blue:hover {
+    background-color: var(--blue-hlight3);
+    transition: all .3s ease;
+}
+
 
 .btn-gr {
     box-shadow: var(--btn-drop-shadow);

@@ -12,7 +12,7 @@ import {
     useGetNextInvoiceQuery,
     useGetSubscriptionQuery
 } from '@features/userSlice'
-import { GrnSlimButton, GreenSlimArrowSubmit, ShimmerDiv, DropAnimation } from '@ledget/ui'
+import { BlueSlimButton, BlueSlimArrowButton, ShimmerDiv, DropAnimation } from '@ledget/ui'
 
 
 const getStatusColor = (subscription) => {
@@ -108,7 +108,7 @@ const ChangePlanMenu = () => {
             {({ open }) => (
                 <div style={{ position: 'relative' }}>
                     <Menu.Button
-                        as={GreenSlimArrowSubmit}
+                        as={BlueSlimArrowButton}
                         submitting={isLoading}
                         rotate={0}
                     >
@@ -193,12 +193,12 @@ const PaymentMethod = () => {
                     <h3>Payment Method</h3>
                 </div>
                 <div>
-                    <GrnSlimButton
+                    <BlueSlimButton
                         aria-label="Change plan"
                         onClick={() => navigate("/profile/details/update-payment")}
                     >
                         update
-                    </GrnSlimButton>
+                    </BlueSlimButton>
                 </div>
             </div>
             <div id="card-info--container" className="inner-window">

@@ -2,7 +2,6 @@
     flex-grow: 1;
     flex-shrink: 0;
     min-width: 375px;
-    margin: 0 10px;
     height: inherit;
     max-height: inherit;
     display: flex;
