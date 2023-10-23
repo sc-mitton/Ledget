@@ -1,0 +1,39 @@
+#needs-confirmation-header-container {
+    display: flex;
+    justify-content: center;
+}
+
+#needs-confirmation-header {
+    padding: 4px 16px 4px 16px;
+    margin: 4px 12px 10px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 430px;
+    width: 100%;
+    background-color: var(--window2);
+    border-radius: var(--border-radius25);
+
+    div {
+        display: flex;
+        align-items: center;
+    }
+
+    div:first-child {
+        gap: 2px;
+    }
+
+    #number-of-items {
+        font-weight: 500;
+        margin-right: 10px;
+        background-color: var(--icon-hover-light-gray);
+        color: var(--faded-text);
+        padding: 0 4px;
+        border-radius: var(--border-radius1);
+
+        &+span {
+            font-weight: 500;
+            color: var(--faded-text);
+        }
+    }
+}

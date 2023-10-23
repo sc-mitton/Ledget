@@ -1,4 +1,4 @@
-import './styles/Header.css'
+import './styles/Header.scss'
 import { CheckAll } from '@ledget/media'
 import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
 
@@ -29,7 +29,7 @@ const NewItemsHeader = () => {
                     <div id="number-of-items">
                         10
                     </div>
-                    <h4>Need Confirmation</h4>
+                    <span>New budget items</span>
                 </div>
                 <div>
                     <RefreshButton hasBackground={false} />

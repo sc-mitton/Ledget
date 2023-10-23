@@ -31,7 +31,11 @@ const BudgetItemRows = ({ period }: { period: 'year' | 'month' }) => {
                         </div>
                         <DollarCents value={category.amount_spent ? Big(category.amount_spent).toFixed(2) : '0.00'} />
                         {category.limit_amount ? <div>/</div> : <div />}
-                        {category.limit_amount ? <DollarCents value={Big(category.limit_amount).div(100).toFixed(2)} /> : <div />}
+                        {category.limit_amount
+                            ? <DollarCents
+                                hasCents={false}
+                                value={Big(category.limit_amount).div(100).toFixed(2)} />
+                            : <div />}
                         <div>
                             <StaticProgressCircle
                                 value={category.limit_amount ? Math.round(category.amount_spent / category.limit_amount) : undefined}

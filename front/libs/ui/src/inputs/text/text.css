@@ -24,7 +24,7 @@
 
 .input-container input:focus::placeholder {
     transition: color .2s ease;
-    color: var(--green-input-focus);
+    color: var(--input-focus);
     opacity: 1;
 }
 
