@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Shield = ({
     width = "1em",

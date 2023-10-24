@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const SmsAuth = ({
     width = "1em",

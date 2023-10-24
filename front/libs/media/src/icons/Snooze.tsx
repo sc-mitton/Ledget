@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Snooze = ({
     width = "1em",

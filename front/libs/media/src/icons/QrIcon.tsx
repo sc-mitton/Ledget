@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const QrIcon = ({
     width = "1em",

@@ -60,3 +60,4 @@ export { default as PhoneIcon } from './icons/Phone';
 export { default as AuthenticatorImage } from './images/Authenticator';
 export { default as RecoveryCodeImage } from './images/RecoveryCode';
 export { default as CornerGrip } from './icons/CornerGrip';
+export { default as ThumbUp } from './icons/ThumbUp';

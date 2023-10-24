@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Stocks = ({
     width = "1.2em",

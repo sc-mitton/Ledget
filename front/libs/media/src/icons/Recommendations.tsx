@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Suggestions = ({
     width = "1.25em",

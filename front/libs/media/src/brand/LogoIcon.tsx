@@ -1,5 +1,3 @@
-import React from 'react'
-
 const LedgetLogoIcon = ({
     width = "2.7em",
     height = "2.7em",

@@ -18,6 +18,8 @@ $header-height: calc(1em + .5rem);
         position: relative;
         font-size: $stats-font-size;
         font-weight: 500;
+        display: flex;
+        align-items: baseline;
 
         &>span:nth-child(2) {
             font-size: calc($stats-font-size - .375rem);
@@ -25,7 +27,7 @@ $header-height: calc(1em + .5rem);
             margin-right: 4px;
         }
 
-        &>span:last-child {
+        &>span:last-of-type {
             font-size: calc($stats-font-size - .375rem);
             font-weight: 400;
         }

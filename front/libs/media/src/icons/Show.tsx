@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Show = ({
     width = "1.6em",

@@ -1,6 +1,7 @@
 
 import './styles/BudgetSummary.scss'
 import { DollarCents } from '@ledget/ui'
+import { ThumbUp } from '@ledget/media'
 
 const BudgetSummary = () => {
     return (
@@ -24,6 +25,7 @@ const BudgetSummary = () => {
             <div>
                 <DollarCents value={641364} />
                 <span>left</span>
+                <ThumbUp />
             </div>
             <div>
                 <h4>yearly budget</h4>
@@ -34,6 +36,7 @@ const BudgetSummary = () => {
             <div>
                 <DollarCents value={641364} />
                 <span>left</span>
+                <ThumbUp />
             </div>
         </div>
     )

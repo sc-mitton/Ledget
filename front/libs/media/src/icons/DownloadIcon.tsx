@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Download = ({
     stroke = 'var(--m-text-gray)',

@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Grip = ({
     width = "1em",

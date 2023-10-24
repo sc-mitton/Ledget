@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Split = ({
     width = "1.8em",

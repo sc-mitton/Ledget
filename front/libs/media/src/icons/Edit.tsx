@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Edit = ({
     width = "1.1em",

@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Return = ({
     stroke = '#292929',

@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Bell = ({
     width = "1.5em",

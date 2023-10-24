@@ -1,4 +1,4 @@
-import React from 'react';
+'react';
 
 const GoogleLogo = ({
     width = "1.3em",

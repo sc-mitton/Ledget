@@ -1,4 +1,4 @@
-import React from 'react'
+'react'
 
 const Face = ({
     fill = 'var(--m-text-gray)',
