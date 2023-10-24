@@ -39,13 +39,14 @@
     --blue-dark4: rgb(68, 97, 160);
 
     --accessible-color: rgb(81, 146, 237);
+    --accessible-color: rgb(81, 237, 151);
 
     --charcoal-rgb: 41, 41, 41;
     --window-rgb: 252, 248, 247;
 
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-color);
-    --input-focus-drop-shadow: 0 0 0px 1.5px var(--blue-hlight3);
+    --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
     --low-elevation-drop-shadow: rgba(0, 0, 0, 0.02) 0px 1px 6px 0px;
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
@@ -105,11 +106,17 @@
 /* Override color values for Firefox */
 @-moz-document url-prefix() {
     :root {
-        --input-focus: rgb(96, 140, 211);
+        --input-focus: rgb(96, 211, 156);
         --input-placeholder: #2a2a2a;
         --m-text-gray: rgb(44, 44, 44);
     }
 }
+
+
+#root {
+    height: 100%;
+}
+
 
 html,
 body {
@@ -158,8 +165,9 @@ button {
 }
 
 main {
-    width: 100vw;
-    height: 100vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Accessibility Focus Styling */

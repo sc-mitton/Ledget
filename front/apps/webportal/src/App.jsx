@@ -2,6 +2,8 @@ import { BrowserRouter } from 'react-router-dom'
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 
+import "./style/base.css"
+import "./style/portal.scss"
 import rootReducer from '@features/rootReducer';
 import { apiSlice } from '@api/apiSlice'
 import Routes from './Routes'

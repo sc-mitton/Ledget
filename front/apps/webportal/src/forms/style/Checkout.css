@@ -21,9 +21,9 @@
 }
 
 #verification-window {
-    max-width: 375px;
+    max-width: 23.5rem;
     width: 60%;
-    padding: 40px 60px;
+    padding: 2rem;
 }
 
 #prices-container {

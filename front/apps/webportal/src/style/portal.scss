@@ -1,7 +1,6 @@
 body {
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     margin: 0;
     padding: 0;
     background-color: var(--window);
@@ -12,7 +11,7 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 44px;
+    padding: .75rem 2.75rem;
     box-sizing: border-box;
     width: 100%;
     background-color: var(--window);
@@ -28,7 +27,7 @@ body {
 }
 
 .page {
-    height: 100%;
+    flex-grow: 1;
     width: 100%;
     display: grid;
     place-items: center;
@@ -36,23 +35,22 @@ body {
 
 .window {
     width: 85%;
-    max-width: 325px;
+    max-width: 20rem;
     font-size: .875rem;
     border-radius: var(--border-radius3);
     border: 1.5px solid var(--window-border);
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     box-shadow: rgba(149, 157, 165, 0.7) 0px 0px 2px;
-    padding: 32px 40px;
+    padding: 2rem 2.25rem;
+    margin: 1rem 0;
     position: relative;
-    margin-bottom: 80px;
 }
 
 .wrapper-window {
     width: 85%;
-    max-width: 400px;
+    max-width: 25rem;
     border-radius: var(--border-radius3);
     position: relative;
-    margin-bottom: 80px;
 }
 
 .nested-window {
@@ -61,17 +59,17 @@ body {
     border: 1.5px solid var(--window-border);
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     box-shadow: rgba(149, 157, 165, 0.7) 0px 0px 2px;
-    padding: 32px 40px;
+    padding: 2rem 2.5rem;
 }
 
 .window-header {
-    margin-bottom: 24px;
+    margin-bottom: 1.5rem;
 }
 
 .subheader {
     display: flex;
     flex-direction: column;
-    margin-bottom: 16px;
+    margin-bottom: 1.5rem;
     width: 90%;
 }
 
@@ -85,7 +83,7 @@ body {
         max-width: 100%;
         padding: 0;
         height: auto;
-        border-radius: 0px;
+        border-radius: 0;
         box-shadow: none;
         position: static;
         border: none;
@@ -98,8 +96,8 @@ body {
 }
 
 #remember-me-checkbox-container {
-    margin-top: -8px;
-    margin-bottom: 2px;
+    margin-top: -.5rem;
+    margin-bottom: .25rem;
 }
 
 
@@ -120,15 +118,15 @@ button {
 }
 
 .btn-icon-left svg {
-    margin-right: 8px;
+    margin-right: .5rem;
 }
 
 
 /* --------------------------------- Inputs --------------------------------- */
 label {
     font-weight: 500;
-    margin-bottom: 4px;
-    margin-left: 0px;
+    margin-bottom: .25rem;
+    margin-left: 0;
     display: block;
 }
 
@@ -147,14 +145,14 @@ input:focus {
 }
 
 .spaced-input {
-    margin: 8px 0;
+    margin: .5rem 0;
 }
 
 .split-inputs {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: .5rem;
 }
 
 .split-inputs .input-container {
@@ -166,8 +164,8 @@ input:focus {
 
 #social-login-header {
     text-align: center;
-    margin-top: 40px;
-    margin-bottom: 12px;
+    margin-top: 2.5rem;
+    margin-bottom: .75rem;
     display: flex;
     flex-direction: row;
     font-weight: 500;
@@ -182,11 +180,11 @@ input:focus {
 }
 
 #social-login-header:before {
-    margin-right: 10px
+    margin-right: .625rem;
 }
 
 #social-login-header:after {
-    margin-left: 10px
+    margin-left: .625rem;
 }
 
 #social-login-form {
@@ -197,11 +195,11 @@ input:focus {
 }
 
 #social-login-form button:first-child {
-    margin-right: 8px;
+    margin-right: .5rem;
 }
 
 #social-login-form button:last-child {
-    margin-left: 8px;
+    margin-left: .5rem;
 }
 
 /* ---------------------------- Misc ---------------------------- */
@@ -211,11 +209,11 @@ input:focus {
     font-size: .875rem;
     height: 0;
     position: relative;
-    bottom: -48px;
+    bottom: -3rem;
 }
 
 .window p {
     font-weight: 500;
-    margin-right: 16px;
-    margin-bottom: 32px;
+    margin-right: 1rem;
+    margin-bottom: 2rem;
 }

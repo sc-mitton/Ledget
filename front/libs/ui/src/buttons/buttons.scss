@@ -14,11 +14,6 @@
     position: relative;
     overflow: hidden;
     transition: all .3s ease;
-
-    &:hover {
-        gap: .375em;
-        transition: all .3s ease;
-    }
 }
 
 .with-loading-ring--container {
@@ -112,7 +107,7 @@
     color: var(--white-text);
     transition: all .3s ease;
 
-    &hover {
+    &:hover {
         background-color: var(--btn-hover-gray);
         transition: all .3s ease;
     }
@@ -120,11 +115,11 @@
 
 .btn-grn {
     color: var(--green-dark4);
-    background-color: var(--green-hlight);
+    background-color: var(--green-hlight2);
     transition: all .3s ease;
     font-weight: 500;
 
-    &hover {
+    &:hover {
         color: var(--green-dark4);
         background-color: var(--green-hlight3);
         transition: all .3s ease;
@@ -562,10 +557,16 @@ button.disabled-hover:hover svg {
     margin: 4px 0;
     gap: 4px;
 
-    svg {
-        transform: scale(1);
-        transition: all 0.2s ease-in-out;
-        animation: pop-fade-in 0.3s ease-in-out;
+    div {
+        color: inherit;
+        display: flex;
+        align-items: center;
+
+        svg {
+            transform: scale(1);
+            transition: all 0.2s ease-in-out;
+            animation: pop-fade-in 0.3s ease-in-out;
+        }
     }
 
     &:hover svg {
