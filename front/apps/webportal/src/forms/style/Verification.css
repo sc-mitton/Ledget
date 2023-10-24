@@ -1,5 +1,5 @@
 #verification-container-header {
-    padding: 12px 0 36px 0px;
+    padding: .75em 0 2.25em 0;
     display: flex;
     justify-content: start;
 }

@@ -14,7 +14,7 @@
 
 .loading-bar {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -45,7 +45,7 @@
 }
 
 .signup-container-header {
-    margin-bottom: 12px;
+    margin-bottom: .75em;
 }
 
 .signup-container-header img {

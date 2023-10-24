@@ -1,28 +1,28 @@
 .exit-button {
     position: absolute;
-    right: 12px;
-    top: 12px;
-    padding: 6px;
+    right: .75em;
+    top: .75em;
+    padding: .375em;
 }
 
 .edit-button {
-    padding: 4px 12px;
+    padding: .25em .75em;
     font-weight: 500;
 }
 
 .edit-button:hover {
     background-color: var(--icon-hover-light-gray);
     transition: all 0.3s;
-    border-radius: 4px;
+    border-radius: .25em;
 }
 
 .cancel-button {
-    padding: 4px 8px;
+    padding: .25em .5em;
     font-weight: 500;
-    margin: 0 4px;
+    margin: 0 .25em;
     background-color: var(--btn-gray);
     color: var(--window);
-    border-radius: 4px;
+    border-radius: .25em;
 }
 
 .cancel-button:hover {

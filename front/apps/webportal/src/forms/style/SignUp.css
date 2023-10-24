@@ -3,8 +3,8 @@
 }
 
 .sign-up-window #authentication-form>div:last-of-type {
-    margin-top: -4px;
-    margin-bottom: 8px;
+    margin-top: -.25em;
+    margin-bottom: .5em;
 }
 
 #step--container button {
@@ -18,9 +18,9 @@
 }
 
 .signup-error-container {
-    margin: 8px 0 8px -6px;
+    margin: .5em 0 .5em -.375em;
 }
 
 #continue-button {
-    margin-top: 16px;
+    margin-top: 1em;
 }

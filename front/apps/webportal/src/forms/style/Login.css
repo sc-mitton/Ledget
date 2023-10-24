@@ -5,19 +5,19 @@
 #email-container {
     width: 100%;
     text-align: left;
-    margin-bottom: 8px;
+    margin-bottom: .5em;
 }
 
 #email-container h3 {
     margin: 0;
-    margin-bottom: 2px;
+    margin-bottom: .125em;
 }
 
 #email-container div,
 #email-container button {
     display: flex;
     align-items: center;
-    margin-left: -4px;
+    margin-left: -.25em;
 }
 
 #email-container span,
@@ -34,14 +34,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 2px;
+    padding: .125em;
 }
 
 #password-auth--container {
-    margin-top: 32px;
+    margin-top: 2em;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: .5em;
 }
 
 .below-login--container {
@@ -55,7 +55,7 @@
     margin: 0 auto;
     left: 0;
     right: 0;
-    top: 44px;
+    top: 2.75em;
     font-size: .875rem;
     font-weight: 500;
 }
@@ -67,7 +67,7 @@
 }
 
 .mfa-prompt--container * {
-    margin-top: 8px;
+    margin-top: .5em;
     font-size: .9375rem;
 }
 

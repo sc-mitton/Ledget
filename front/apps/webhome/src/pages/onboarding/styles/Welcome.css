@@ -1,9 +1,9 @@
 .checklist {
-    margin: 20px 0 20px 0;
+    margin: 1.25em 0 1.25em 0;
 }
 
 .checklist>div {
-    margin: 8px 0;
+    margin: .5em 0;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -13,16 +13,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 4px;
-    margin-right: 8px;
+    margin-top: .25em;
+    margin-right: .5em;
 }
 
 #onboarding-app #institution-logos {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 20px;
-    margin-left: 4px;
+    margin-bottom: 1.25em;
+    margin-left: .25em;
 }
 
 .checklist>div div:last-child {

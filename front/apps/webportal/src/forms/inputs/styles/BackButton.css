@@ -2,13 +2,13 @@
     float: left;
     text-align: left;
     font-weight: 600;
-    padding: 8px 4px;
+    padding: .5em .25em;
     display: flex;
     align-items: center;
 }
 
 .back-button svg {
-    margin-right: 3px;
+    margin-right: .25em;
 }
 
 .back-button .arrow-tail {
@@ -26,6 +26,6 @@
 }
 
 .back-button:hover .arrow-head {
-    transform: translateX(3px);
+    transform: translateX(.25em);
     transition: all 0.2s ease-in;
 }

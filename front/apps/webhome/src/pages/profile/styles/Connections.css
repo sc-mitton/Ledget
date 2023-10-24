@@ -6,22 +6,22 @@
 }
 
 #connections-page .header {
-    margin-bottom: 12px;
-    margin-right: 28px;
+    margin-bottom: .75em;
+    margin-right: 1.75em;
 }
 
 #connections-page .institution {
     width: 100%;
-    margin-top: 24px;
-    margin-bottom: 16px;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
     max-height: 100%;
     position: relative;
 }
 
 #connections-page .institution .header2 {
-    margin-bottom: 12px;
-    margin-right: 6px;
-    padding: 0 4px;
+    margin-bottom: .75em;
+    margin-right: .375em;
+    padding: 0 .25em;
     height: 100%;
     opacity: 1;
 }
@@ -29,7 +29,7 @@
 #connections-page .institution .header2 img {
     filter: grayscale(1) contrast(130%);
     background-color: var(--logo-dark);
-    padding: 2px;
+    padding: .125em;
     border-radius: 50%;
 }
 
@@ -44,13 +44,13 @@
     overflow: hidden;
     top: 0;
     left: 0;
-    margin-bottom: 24px;
+    margin-bottom: 1.5em;
 }
 
 #connections-page #accounts-list>div {
     width: 100%;
     height: 100%;
-    padding-right: 22px;
+    padding-right: 1.375em;
     overflow-y: scroll;
     overflow-x: hidden;
     position: relative;
@@ -60,7 +60,7 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin-top: 24px;
+    margin-top: 1.5em;
 }
 
 /* -------------------------- Account Rows Styling -------------------------- */
@@ -73,7 +73,7 @@
 }
 
 #connections-page .account-headers {
-    padding: 6px 10px;
+    padding: .375em .525em;
     font-weight: 600;
     display: grid;
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
@@ -84,7 +84,7 @@
 }
 
 #connections-page .accounts>div {
-    padding: 4px 0;
+    padding: .25em 0;
 }
 
 /* Alternate Row Styling */
@@ -96,13 +96,13 @@
 
 
 #connections-page .accounts>div:nth-child(3n) {
-    padding-right: 16px;
+    padding-right: 1em;
     border-top-right-radius: var(--border-radius1);
     border-bottom-right-radius: var(--border-radius1);
 }
 
 #connections-page .accounts>div:nth-child(3n + 1) {
-    padding-left: 10px;
+    padding-left: .525em;
     border-top-left-radius: var(--border-radius1);
     border-bottom-left-radius: var(--border-radius1);
 }
@@ -134,11 +134,11 @@
 }
 
 #no-connections-message h2 {
-    margin-bottom: 6px;
+    margin-bottom: .375em;
 }
 
 #connections-page .footer-container {
-    padding-right: 16px;
+    padding-right: 1em;
 }
 
 .reconnect--container {
@@ -153,14 +153,14 @@
 }
 
 .reconnect--container.wiggle button {
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: .25em;
+    padding-bottom: .25em;
     position: absolute;
     animation: wiggle 4.5s infinite ease-out;
 }
 
 .reconnect--container button svg {
-    margin-right: 4px;
+    margin-right: .25em;
 }
 
 @keyframes wiggle {

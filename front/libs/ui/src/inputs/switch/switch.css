@@ -5,10 +5,10 @@
 }
 
 .switch-crib {
-    margin-top: 1px;
-    width: 26px;
-    padding: 2px;
-    border-radius: 20px;
+    margin-top: .0625em;
+    width: 1.625em;
+    padding: .125em;
+    border-radius: 1.25em;
 }
 
 .switch-crib.enabled {
@@ -22,8 +22,8 @@
 }
 
 .switch-pill {
-    width: 10px;
-    height: 10px;
+    width: .525rem;
+    height: .525rem;
     border-radius: 50%;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .switch-pill.enabled {
-    transform: translateX(12px);
+    transform: translateX(.75rem);
     background-color: var(--green-dark3);
     transition: all 0.2s ease-in-out;
 }

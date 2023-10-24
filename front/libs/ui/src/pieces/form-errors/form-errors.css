@@ -2,23 +2,23 @@
 
 .error-tip {
     position: absolute;
-    top: -8px;
-    right: -2px;
-    height: 12px;
-    width: 12px;
+    top: -.5em;
+    right: -.125em;
+    height: .75em;
+    width: .75em;
     animation: pop .22s ease;
 }
 
 .form-error--container {
-    margin-left: -6px;
+    margin-left: -.375em;
     display: flex;
     align-items: center;
 }
 
 .form-error--container svg {
     height: .9em;
-    margin-left: 10px;
-    margin-right: 5px;
+    margin-left: .625em;
+    margin-right: .3125em;
     position: relative;
     text-align: left;
     animation: pop .22s ease;

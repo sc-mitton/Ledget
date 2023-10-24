@@ -218,7 +218,7 @@ a:hover::before {
 label:focus-visible {
     outline: none;
     box-shadow: var(--accessible-focus-drop-shadow);
-    border-radius: 4px;
+    border-radius: var(--border-radius1);
 }
 
 

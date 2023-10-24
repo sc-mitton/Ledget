@@ -1,17 +1,17 @@
 .toast--container {
     position: fixed;
-    bottom: 36px;
-    right: 24px;
+    bottom: 2.25em;
+    right: 1.5em;
     translate: transform(-100%, -100%);
 }
 
 .toast {
     background-color: var(--window);
-    border-radius: 10px;
+    border-radius: calc(var(--border-radius2) + 2px);
     box-shadow: var(--mid-elevation-drop-shadow);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: .625em;
     position: relative;
     overflow: hidden;
 }
@@ -52,12 +52,12 @@
 }
 
 .toast>div:last-child {
-    padding-right: 8px;
+    padding-right: .5em;
     flex-grow: 1;
     overflow: hidden;
     font-weight: 500;
     display: flex;
-    gap: 8px;
+    gap: .5em;
 }
 
 .toast>div:last-child a {

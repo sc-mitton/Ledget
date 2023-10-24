@@ -27,22 +27,22 @@
 .mfa-settings--container>div {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: .825em;
 }
 
 .mfa-settings--container:not(:first-child) {
-    padding: 14px 3px 4px 3px;
+    padding: .825em .1875em .25em .1875em;
 }
 
 .mfa-settings--container:not(:last-child) {
-    padding: 4px 3px 14px 3px;
+    padding: .25em .1875em .825em .1875em;
     border-bottom: 2px solid var(--subtle-border-color);
 }
 
 .mfa-settings--container .delete-btn--container {
     position: relative;
     transform: scale(.73);
-    margin-left: 2px;
+    margin-left: .125em;
 
 }
 
@@ -51,7 +51,7 @@
 }
 
 .mfa-settings--container button {
-    margin-right: 7.5px;
+    margin-right: .5em;
 }
 
 
@@ -60,11 +60,11 @@
 #recovery-codes-btns--container {
     display: inline-flex;
     width: auto;
-    gap: 0px;
+    gap: 0;
     align-items: center;
     background-color: var(--window);
     border-radius: var(--border-radius2);
-    padding: 0px 10px;
+    padding: 0 .625em;
     cursor: pointer;
     transition: gap 0.2s ease-out;
     transition-delay: .3s;
@@ -82,13 +82,13 @@
 
 #recovery-codes-btns--container:hover,
 #recovery-codes-btns--container:focus-within {
-    gap: 6px;
+    gap: .375em;
     transition: gap 0.2s ease-out;
     transition-delay: .1s;
 }
 
 #recovery-codes-btns--container #recovery-codes-btns button {
-    padding: 2px 0;
+    padding: .125em 0;
     margin: 0;
     transition: all 0.2s ease-out;
     transition-delay: .1s;
@@ -96,8 +96,8 @@
 
 #recovery-codes-btns--container:hover #recovery-codes-btns button,
 #recovery-codes-btns--container:focus-within #recovery-codes-btns button {
-    margin: 0 2px;
-    padding: 2px;
+    margin: 0 .125em;
+    padding: .125em;
     transition: all 0.3s ease-out;
     transition-delay: .1s;
 }
@@ -114,7 +114,7 @@
 
 #recovery-codes-btns--container:focus-within #recovery-codes-btns svg,
 #recovery-codes-btns--container:hover #recovery-codes-btns svg {
-    max-width: 30px;
+    max-width: 1.875rem;
     transform: scale(1);
     opacity: 1;
     transition: all 0.3s ease-out;

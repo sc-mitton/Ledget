@@ -28,8 +28,8 @@
     box-sizing: border-box;
     display: block;
     position: absolute;
-    width: 14px;
-    height: 14px;
+    width: .875em;
+    height: .875em;
     color: inherit;
     animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border: 2px solid currentColor;

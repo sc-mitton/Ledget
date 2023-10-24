@@ -12,8 +12,8 @@
     content: "";
     position: absolute;
     width: 0%;
-    height: 2px;
-    bottom: -1px;
+    height: .125em;
+    bottom: -.0625;
     left: 0;
     background-color: var(--green-dark2);
 }
@@ -24,18 +24,18 @@
 }
 
 .reauth-form>div:first-of-type {
-    margin-top: 8px;
-    margin-left: 2px;
-    margin-bottom: 16px;
+    margin-top: .5em;
+    margin-left: .125em;
+    margin-bottom: 1em;
     font-weight: 500;
 }
 
 .reauth-form .graphic {
-    margin: 20px 0;
+    margin: 1.25em 0;
 }
 
 .reauth-form>div:nth-child(2) {
-    margin: 16px 0;
+    margin: 1em 0;
 }
 
 .reauth-form>div:last-of-type {

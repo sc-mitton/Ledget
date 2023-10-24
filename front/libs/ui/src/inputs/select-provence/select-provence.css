@@ -4,7 +4,7 @@
 
 .provence-options {
     position: absolute;
-    top: 4px;
+    top: .25em;
     background-color: var(--window);
     box-shadow: rgba(0, 0, 0, .15) 0px 3px 15px;
     border-radius: var(--border-radius2);
@@ -15,7 +15,7 @@
 
 .provence-options ul {
     margin: 0;
-    padding: 4px;
+    padding: .25em;
 }
 
 .provence-options li {
@@ -24,10 +24,10 @@
 
 .provence {
     width: auto;
-    padding: 4px 12px;
-    margin: 2px 0;
+    padding: .25em .75em;
+    margin: .125em 0;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: .375em;
 }
 
 .provence.selected {

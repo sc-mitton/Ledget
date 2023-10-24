@@ -10,16 +10,16 @@
 .authentication-method {
     display: flex;
     justify-content: space-between;
-    padding: 12px 0;
-    gap: 12px;
+    padding: .75em 0;
+    gap: .75em;
 }
 
 .authentication-method:first-child {
-    padding-top: 4px;
+    padding-top: .25em;
 }
 
 .authentication-method:last-child {
-    padding-bottom: 4px;
+    padding-bottom: .25em;
 }
 
 .authentication-method>div:first-child {

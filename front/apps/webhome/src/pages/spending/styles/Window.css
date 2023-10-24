@@ -1,7 +1,7 @@
 #spending-window {
     flex-grow: 1;
     flex-shrink: 0;
-    min-width: 375px;
+    min-width: 23.5rem;
     height: inherit;
     max-height: inherit;
     display: flex;
@@ -13,5 +13,5 @@
 }
 
 #all-items-window>div:first-child>div:last-child {
-    margin-right: -8px;
+    margin-right: -.5em;
 }

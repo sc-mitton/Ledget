@@ -1,6 +1,6 @@
 #checkout-window {
     width: 90%;
-    max-width: 500px;
+    max-width: 31.25rem;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -13,7 +13,7 @@
 
 #checkout-container {
     flex-grow: 1;
-    margin: 44px 52px;
+    margin: 2.75em 3.25em;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -36,7 +36,7 @@
 }
 
 #prices-container-header {
-    padding: 24px 52px 0px 52px;
+    padding: 1.5em 3.25em 0 3.25em;
     display: flex;
     justify-content: start;
 }
@@ -49,12 +49,12 @@
     font-weight: 600;
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     color: var(--logo-dark);
-    margin: 6px 0;
-    margin-left: 4px;
+    margin: .375em 0;
+    margin-left: .25em;
 }
 
 #billing-form {
-    padding-bottom: 0px;
+    padding-bottom: 0;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -62,7 +62,7 @@
 }
 
 #billing-form>div:nth-child(2) {
-    padding: 32px;
+    padding: 2em;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -70,10 +70,8 @@
 }
 
 #text-inputs--container {
-    margin: 8px 0 40px 0;
+    margin: .5em 0 2.5em 0;
 }
-
-
 
 /* ---------------------------------- plans --------------------------------- */
 
@@ -81,23 +79,22 @@
     display: flex;
     justify-content: center;
     flex-direction: row;
-    padding: 28px 64px;
+    padding: 1.75em 4em;
 }
-
 
 #subscription-radios--container input[type="radio"] {
     display: none;
 }
 
 .subscription-radio--container {
-    margin: 0 12px;
+    margin: 0 .75em;
     text-align: center;
     flex: .5;
     position: relative;
     overflow: hidden;
     border-radius: var(--border-radius25);
-    padding: 6px 16px;
-    min-width: 120px;
+    padding: .375em 1em;
+    min-width: 7.5rem;
     cursor: pointer;
 }
 
@@ -118,8 +115,8 @@ input[type="radio"]:not(:checked)+.subscription-radio--container {
     top: -1px;
     right: -1px;
     background-color: var(--green-dark1);
-    width: 45px;
-    height: 45px;
+    width: 2.875rem;
+    height: 2.875rem;
     transform: translate(50%, -50%) rotate(45deg);
 }
 
@@ -133,13 +130,13 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
 
 .dog-ear svg {
     position: absolute;
-    top: 32px;
-    left: 16px;
+    top: 2em;
+    left: 1em;
     transform: rotate(-45deg);
 }
 
 .nickname {
-    margin-right: 8px;
+    margin-right: 1em;
     font-size: 1.1em;
 }
 
@@ -149,7 +146,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
 
 .price-nickname {
     font-size: 1.3em;
-    padding-right: 12px;
+    padding-right: .75em;
 }
 
 .unit-amount span {
@@ -166,9 +163,9 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
     text-align: left;
     display: flex;
     justify-content: end;
-    padding: 12px 8px;
-    margin-bottom: 8px;
-    border-top: 2px solid rgba(0, 0, 0, 0.07);
+    padding: .75em .5em;
+    margin-bottom: .5em;
+    border-top: .125em solid rgba(0, 0, 0, 0.07);
 }
 
 .order-summary-container table {
@@ -188,7 +185,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
 }
 
 .order-summary-container tr td:first-child {
-    padding-right: 16px;
+    padding-right: 1em;
 }
 
 .order-summary-container tr td:last-child {
@@ -201,16 +198,16 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
 
 /* --------------------------------- Errors --------------------------------- */
 .general-error {
-    margin-bottom: 24px;
+    margin-bottom: 1.5em;
     text-align: center;
     font-weight: 500;
 }
 
 .general-error img {
     height: 1em;
-    margin-right: 8px;
+    margin-right: .5em;
     position: relative;
-    top: 2px;
+    top: .125em;
     text-align: left;
     animation: pop .22s ease;
 }
@@ -223,7 +220,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
     text-align: center;
     opacity: .3;
     position: relative;
-    bottom: -24px;
+    bottom: -1.5em;
     height: 0;
 }
 
@@ -238,7 +235,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
 .stripe-logo {
     position: relative;
     top: .2em;
-    height: 25px;
+    height: 1.5em;
 }
 
 /* -------------------------- Error Loading Prices -------------------------- */
@@ -256,7 +253,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
 }
 
 #checkout-window-loading-error #message {
-    padding: 4px 40px;
+    padding: .25em 2.5em;
     font-weight: 500;
 }
 
@@ -269,13 +266,13 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
         max-width: 100%;
         height: 100%;
         margin: 0;
-        border-radius: 0px;
+        border-radius: 0;
         padding: 0;
     }
 
     #checkout-container {
         width: 80%;
-        max-width: 500px;
+        max-width: 32rem;
         margin: 0 auto;
         margin-top: 10%;
         margin-bottom: 10%;
@@ -285,11 +282,11 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
         width: 100%;
         max-width: 70%;
         margin: 0;
-        border-radius: 0px;
+        border-radius: 0;
     }
 
     #prices-container {
-        border-radius: 0px;
+        border-radius: 0;
     }
 
     #prices-container-header img {
