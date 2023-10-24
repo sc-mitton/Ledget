@@ -13,7 +13,12 @@
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    gap: 6px;
+    transition: all .3s ease;
+
+    &:hover {
+        gap: .375em;
+        transition: all .3s ease;
+    }
 }
 
 .with-loading-ring--container {

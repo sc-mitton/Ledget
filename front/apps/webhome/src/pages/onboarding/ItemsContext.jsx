@@ -91,14 +91,14 @@ export const ItemsProvider = ({ children }) => {
 
     useEffect(() => {
         if (fetchedCategoriesSuccess) {
-            for (const category of fetchedCategories) {
+            fetchedCategories.filter(category => category.name !== 'miscellaneous').forEach(category => {
                 const { period, ...rest } = category
                 if (period === 'month' && monthItems.length === 0) {
                     setMonthItems((prev) => [...prev, { ...rest, fetchedFromServer: true }])
                 } else if (period === 'year' && yearItems.length === 0) {
                     setYearItems((prev) => [...prev, { ...rest, fetchedFromServer: true }])
                 }
-            }
+            })
         }
     }, [fetchedCategories])
 

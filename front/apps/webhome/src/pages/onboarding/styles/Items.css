@@ -76,14 +76,16 @@
 }
 
 #recommendations-btn {
-    color: var(--m-text-gray);
-    font-weight: 500;
+    color: var(--green-dark4);
+    font-weight: 400;
     background-color: var(--green-hlight2);
     transition: background-color .2s ease-out;
+
+    gap: .375rem;
 }
 
 #recommendations-btn:hover {
-    background-color: var(--green-hlight);
+    background-color: var(--green-hlight3);
     transition: background-color .2s ease-out;
 }
 

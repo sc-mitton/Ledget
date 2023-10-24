@@ -123,11 +123,11 @@ export const BottomButtons = () => {
         }
     }, [patchedUserSuccess])
 
-    useEffect(() => {
-        if (user?.is_onboarded) {
-            navigate('/budget')
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (user?.is_onboarded) {
+    //         navigate('/budget')
+    //     }
+    // }, [user])
 
     return (
         <div

@@ -51,7 +51,7 @@
 
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-color);
-    --input-focus-drop-shadow: 0 0 0px 1.5px var(--blue-hlight3);
+    --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
     --low-elevation-drop-shadow: rgba(0, 0, 0, 0.02) 0px 1px 6px 0px;
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
@@ -73,12 +73,12 @@
     --input-border: solid 1px rgb(0, 0, 0, .02);
 
     /* Text */
+    --input-focus: rgb(96, 140, 211);
     --input-focus: rgb(96, 211, 156);
     --m-text-gray: #292929;
     --sub-text: #3d3d3d;
     --input-placeholder: #848484;
     --input-placeholder2: #a6a6a6;
-    --input-focus: rgb(96, 140, 211);
     --white-text: #f8f8f8;
     --muted-text-gray: #848484;
     --faded-text: rgb(0, 0, 0, .3);
