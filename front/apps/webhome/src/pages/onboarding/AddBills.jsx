@@ -60,7 +60,11 @@ const BillsColumn = ({ period }) => {
                         </div>
                         <div className="amount--container">
                             <div className="budget-dollar--container">
-                                <DollarCentsRange lower={item.lower_amount} upper={item.upper_amount} />
+                                <DollarCentsRange
+                                    lower={item.lower_amount}
+                                    upper={item.upper_amount}
+                                    style={{ textAlign: 'end' }}
+                                />
                             </div>
                         </div >
                         <DeleteButton onClick={() => handleDelete(item)} />

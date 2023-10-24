@@ -54,10 +54,7 @@ export const DollarCents = ({ value = 0, style = {}, hasCents = true, ...rest }:
   const isDebit = Number(value) < 0
 
   return (
-    <div
-      style={{ textAlign: 'end', ...style }}
-      {...rest}
-    >
+    <>
       <span style={{ fontSize: 'inherit' }}>
         {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
       </span>
@@ -65,15 +62,15 @@ export const DollarCents = ({ value = 0, style = {}, hasCents = true, ...rest }:
         <span style={{ fontSize: '.7em' }}>
           {`.${str.split('.')[1]}`}
         </span>}
-    </div>
+    </>
   )
 }
 
 export const DollarCentsRange = ({ lower = 0, upper = 0 }) => (
   <>
-    {lower && <DollarCents value={lower} />}
+    {lower && <div><DollarCents value={lower} /></div>}
     {lower && <span>&nbsp;&nbsp;&ndash;&nbsp;&nbsp;</span>}
-    <DollarCents value={upper} />
+    <div><DollarCents value={upper} /></div>
   </>
 )
 

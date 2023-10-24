@@ -41,10 +41,9 @@ const TransactionModal = withModal((props) => {
     return (
         <>
             <div className='transaction-info--header'>
-                <DollarCents
-                    value={item?.amount && new Big(item.amount).times(100).toNumber()}
-                    style={{ textAlign: 'center' }}
-                />
+                <div style={{ textAlign: 'center' }}>
+                    <DollarCents value={item?.amount && new Big(item.amount).times(100).toNumber()} />
+                </div>
                 <div>{item?.preferred_name || item?.name}</div>
             </div>
             <div className='transaction-info--container'>

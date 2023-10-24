@@ -16,9 +16,7 @@ export const SkeletonWafers = () => (
     <div className="skeleton-account-wafers--container">
         <div>
             <span>Total Deposits</span>
-            <span>
-                <DollarCents value="0" />
-            </span>
+            <span><DollarCents value="0" /></span>
         </div>
         <div
             className="skeleton-wafers"

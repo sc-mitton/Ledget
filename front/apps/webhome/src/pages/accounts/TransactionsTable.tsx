@@ -185,11 +185,11 @@ export const Transactions = ({ queryParams }: { queryParams: GetTransactionsPara
                                     <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
                                 </div>
                                 <div>
-                                    <DollarCents
-                                        value={Big(transaction.amount).times(100).toNumber()}
-                                        style={{ textAlign: 'start' }}
-                                        className={transaction.amount < 0 ? 'debit' : 'credit'}
-                                    />
+                                    <div className={transaction.amount < 0 ? 'debit' : 'credit'}>
+                                        <DollarCents
+                                            value={Big(transaction.amount).times(100).toNumber()}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </Fragment>
