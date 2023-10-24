@@ -73,7 +73,7 @@ const Header = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
-    const currentPath = location.pathname.split('/')[location.pathname.split('/').length - 1]
+    const currentPath = location.pathname.split('/')[2]
 
     const [syncTransactions, {
         isSuccess: isTransactionsSyncSuccess,
@@ -158,7 +158,6 @@ const Header = () => {
                     {['deposits', 'credit', 'loans', 'investments'].map((path) => (
                         <li
                             key={path}
-                            className='window-header--item btn-icon-l'
                             role='link'
                             aria-current={currentPath === path}
                             tabIndex={0}

@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Delete = ({
     className = '',
     fill = "#292929",
@@ -12,6 +10,7 @@ const Delete = ({
     return (
         <>
             <svg
+                className={className}
                 width={width}
                 height={height}
                 viewBox="0 0 144 144"

@@ -23,6 +23,7 @@
     align-items: center;
     cursor: pointer;
     z-index: 1;
+    gap: 8px;
 }
 
 #accounts-window ul li[aria-current="true"] {
