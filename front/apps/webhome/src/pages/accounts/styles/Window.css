@@ -1,6 +1,6 @@
 #accounts-window {
     width: 100%;
-    max-width: 1000px;
+    max-width: 62.5rem;
     display: flex;
     flex-direction: column;
 }
@@ -8,13 +8,13 @@
 #accounts-window ul {
     display: flex;
     justify-content: flex-start;
-    margin: 4px 0 4px 0;
+    margin: .25em 0 .25em 0;
     position: relative;
-    gap: 8px;
+    gap: .5em;
 }
 
 #accounts-window ul li {
-    padding: 2px 16px;
+    padding: .125em 1em;
     font-weight: 400;
     background-color: var(--icon-light-gray);
     border-radius: var(--border-radius3);
@@ -23,7 +23,7 @@
     align-items: center;
     cursor: pointer;
     z-index: 1;
-    gap: 8px;
+    gap: .5em;
 }
 
 #accounts-window ul li[aria-current="true"] {

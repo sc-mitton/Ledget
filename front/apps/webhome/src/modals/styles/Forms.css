@@ -8,60 +8,60 @@
 
 .create-form>div:nth-last-of-type(2),
 .new-bill-form>div:nth-last-of-type(2) {
-    margin-bottom: 20px;
+    margin-bottom: 1.25em;
 }
 
 .create-form>div:first-of-type,
 .new-bill-form>div:first-of-type {
-    margin-top: 12px;
+    margin-top: .75em;
 }
 
 .create-form label {
     font-weight: 500;
-    margin-left: 2px;
+    margin-left: .125em;
 }
 
 .form-top {
-    margin-bottom: 16px;
+    margin-bottom: 1em;
 }
 
 .flex-responsive1 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-top: 8px;
+    margin-top: .5em;
     box-sizing: border-box;
 }
 
 .flex-responsive1 label,
 .flex-responsive2 label {
-    margin-left: 4px;
+    margin-left: .25em;
 }
 
 .flex-responsive1>div:first-child {
     flex: 6;
-    padding-right: 4px;
+    padding-right: .25em;
 }
 
 .flex-responsive1>div:last-child {
     flex: 4;
-    padding-left: 4px;
+    padding-left: .25em;
 }
 
 .padded-row {
-    margin-top: 4px;
+    margin-top: .25em;
 }
 
 .extra-padded-row {
-    margin: 12px 0;
+    margin: .75em 0;
     display: flex;
-    gap: 8px;
+    gap: .5em;
 }
 
 .multi-input-row {
     display: flex;
-    gap: 8px;
-    margin: 8px 0;
+    gap: .5em;
+    margin: .5em 0;
     align-items: center;
     justify-content: space-between;
 }
@@ -83,27 +83,27 @@
 
 .split-inputs>div:first-child {
     flex: 1;
-    margin-right: 4px;
+    margin-right: .25em;
 }
 
 .split-inputs>div:last-child {
     flex: 1;
-    margin-left: 4px;
+    margin-left: .25em;
 }
 
 /* ---------------------------------- Emoji --------------------------------- */
 
 input.emoji {
-    width: 20px;
+    width: 1.25em;
     font-size: 1rem;
-    padding: 0 4px 0 0;
+    padding: 0 .25em 0 0;
 }
 
 #emoji-picker-ledget--button-container {
     display: flex;
     align-items: center;
-    margin-left: -6px;
-    margin-right: 2px;
+    margin-left: -.75em;
+    margin-right: .125em;
 }
 
 /* ---------------------------- Create Bill Form ---------------------------- */
@@ -119,19 +119,19 @@ input.emoji {
 }
 
 #bottom-inputs .checkbox-container {
-    margin-left: 12px;
+    margin-left: .75em;
 }
 
 #new-bill-form #add-reminder--container {
-    margin-top: 8px;
+    margin-top: .5em;
 }
 
 #new-bill-form #range-checkbox--container label {
-    margin-top: 2px;
+    margin-top: .125em;
 }
 
 #new-bill-form .bottom-row {
-    margin-bottom: 24px;
+    margin-bottom: 1.5em;
 }
 
 @media only screen and (max-width: 700px) {
@@ -140,15 +140,15 @@ input.emoji {
     }
 
     .split-inputs>div:first-child {
-        margin-right: 0px;
+        margin-right: 0;
     }
 
     .split-inputs>div:last-child {
-        margin-left: 0px;
+        margin-left: 0;
     }
 
     #new-bill-form #range-checkbox--container label {
-        margin-bottom: 8px;
+        margin-bottom: .5em;
     }
 
     #new-bill-form .bottom-row>div:first-child {

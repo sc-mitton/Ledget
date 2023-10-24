@@ -1,7 +1,7 @@
 .start-prompt {
     font-weight: 500;
     text-align: center;
-    padding: 12px;
+    padding: .75em;
 }
 
 #onboarding-app form>div {
@@ -10,7 +10,7 @@
 }
 
 #onboarding-app form>div>div {
-    margin-top: 8px;
+    margin-top: .5em;
 }
 
 #onboarding-app form>div>div>label {
@@ -44,35 +44,35 @@
     background-color: var(--window-transparent);
     box-shadow: var(--low-elevation-drop-shadow);
     border-radius: var(--border-radius3);
-    max-height: 160px;
+    max-height: 10rem;
     opacity: 1;
     width: auto;
     margin: 0 auto;
 
-    margin-bottom: 8px;
-    margin-top: 21px;
-    padding: 16px;
+    margin-bottom: .5em;
+    margin-top: 1.3em;
+    padding: 1em;
 }
 
 #onboarding-app #budget-items--container.expand {
-    max-height: 1000px;
+    max-height: 62.5rem;
 }
 
 #onboarding-app label:first-of-type {
-    margin-left: 2px;
+    margin-left: .125em;
     font-weight: 500;
 }
 
 #onboarding-app .checkbox-container label {
-    margin: 2px 0;
+    margin: .125em 0;
 }
 
 #onboarding-app #bill-scheduler--container>div:last-child {
-    margin: 8px 0;
+    margin: .5em 0;
 }
 
 #onboarding-app form>div:first-child {
-    margin: 0px 0 20px 0;
+    margin: 0 0 1.25em 0;
 }
 
 #recommendations-btn {
@@ -80,7 +80,6 @@
     font-weight: 400;
     background-color: var(--green-hlight2);
     transition: background-color .2s ease-out;
-
     gap: .375rem;
 }
 
@@ -103,19 +102,19 @@
 #recommendations-button--container {
     display: flex;
     justify-content: center;
-    margin-top: 12px;
+    margin-top: .75em;
 }
 
 .recommendations-container {
     display: block;
     margin: 0 auto;
-    margin-top: 12px;
+    margin-top: .75em;
     text-align: center;
 }
 
 .recommendations-container>div {
     display: inline-flex;
-    margin: 4px 6px;
+    margin: .25em .375em;
     animation-name: pop-fade-in;
     animation-duration: 350ms;
     animation-delay: calc(var(--animation-order) * 30ms);
@@ -128,7 +127,7 @@
 }
 
 .empty-message--container {
-    margin: 24px 0 16px 0;
+    margin: 1.5rem 0 1rem 0;
     text-align: center;
     font-weight: 500;
     opacity: .4;
@@ -140,7 +139,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    gap: .5em;
 }
 
 #onboarding-app .split-row-inputs>div {
@@ -149,8 +148,8 @@
 
 #onboarding-app .padded-input-row {
     display: flex;
-    gap: 8px;
-    padding-bottom: 4px;
+    gap: .5em;
+    padding-top: .25em;
 }
 
 /* ------------------------- Individual Rows Styling ------------------------ */
@@ -159,7 +158,7 @@
     width: 100%;
     position: absolute;
     left: 0;
-    right: 8px;
+    right: .5em;
     display: flex;
     align-items: center;
     flex-direction: row;

@@ -4,25 +4,25 @@
 }
 
 #recovery-codes--container span {
-    margin: 16px 0;
+    margin: 1em 0;
 }
 
 #recovery-codes-save--container {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin: 20px;
+    gap: .525em;
+    margin: 1.25em;
 }
 
 #recovery-codes-save--container button {
     display: flex;
     align-items: center;
     flex: 1;
-    max-width: 120px;
+    max-width: 7.5em;
 }
 
 #recovery-codes-save--container button svg {
-    margin-left: 6px;
+    margin-left: .375em;
 }
 
 #recovery-codes-save--container button {

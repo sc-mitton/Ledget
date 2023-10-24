@@ -22,8 +22,8 @@
 .transaction-info--container {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 16px;
+    gap: .75em;
+    margin-top: 1em;
 }
 
 .transaction-info--container a {
@@ -36,18 +36,18 @@
 }
 
 .transaction-info--container .inner-window>div {
-    gap: 6px;
+    gap: .375em;
 }
 
 .transaction-info--container .inner-window:first-child {
     display: flex;
-    gap: 12px;
+    gap: .75em;
 }
 
 .transaction-info--container .inner-window:not(:first-child)>div {
     display: grid;
-    column-gap: 16px;
-    row-gap: 0px;
+    column-gap: 1em;
+    row-gap: 0;
     grid-template-columns: minmax(0, auto) 1fr;
 }
 
@@ -58,11 +58,11 @@
 .transaction-info--container .inner-window:not(:first-child)>div>div {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: .125em;
 }
 
 .transaction-info--container .inner-window:not(:first-child)>div span {
-    padding-top: 3px;
+    padding-top: .1875em;
 }
 
 .transaction-info--container .inner-window:not(:first-child)>div>div:nth-child(2n+1) {

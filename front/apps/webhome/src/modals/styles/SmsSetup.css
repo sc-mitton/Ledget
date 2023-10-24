@@ -5,11 +5,11 @@
 
 #otp-setup-form>div img {
     height: 5rem;
-    margin: 32px 0;
+    margin: 2em 0;
 }
 
 #otp-setup-form>div:last-child {
-    margin-top: 20px;
+    margin-top: 1.25em;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -17,7 +17,7 @@
 
 #otp-verify-form>div:last-child {
     display: flex;
-    margin-top: 12px;
+    margin-top: 1.25em;
     justify-content: center;
 }
 

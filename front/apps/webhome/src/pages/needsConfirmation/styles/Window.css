@@ -1,7 +1,7 @@
 #new-items-container {
     width: 102%;
     position: relative;
-    max-width: 430px;
+    max-width: 27rem;
     position: relative;
     transform: translateX(-50%);
     left: 50%;
@@ -18,9 +18,9 @@
     display: block;
     opacity: 0;
     position: absolute;
-    bottom: -10px;
+    bottom: -.625em;
     width: 100%;
-    height: 10px;
+    height: .625em;
 }
 
 .new-item-data {
@@ -47,7 +47,7 @@
 
 .new-item-data div:last-child svg {
     border-radius: var(--border-radius);
-    margin-right: 8px;
+    margin-right: 1em;
     filter: grayscale(100%);
 }
 
@@ -59,19 +59,19 @@
 }
 
 .new-item-icons>button:nth-child(1) {
-    margin: 0 10px;
+    margin: 0 .625em;
     font-weight: 400;
 }
 
 .new-item-icons button:last-child {
-    margin-left: 6px;
+    margin-left: .375em;
 }
 
 /* Category Icon */
 .category-icon {
     transform: scale(1);
     transition: all .2s ease-out;
-    padding: 2px 12px;
+    padding: .125em .75em;
     cursor: pointer;
     border-radius: var(--border-radius2);
     font-weight: 500;
@@ -84,5 +84,5 @@
 
 
 .confirm-button {
-    margin: 0 2px;
+    margin: 0 .125em;
 }

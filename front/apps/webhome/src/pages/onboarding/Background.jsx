@@ -1,6 +1,3 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
-
-import './styles/Skeleton.css'
 import { LedgetLogoIcon } from '@ledget/media'
 
 const Header = () => (

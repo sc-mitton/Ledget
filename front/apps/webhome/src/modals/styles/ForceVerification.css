@@ -1,12 +1,12 @@
 #force-verification-form--container .subheader {
     display: flex;
     flex-direction: column;
-    margin-bottom: 16px;
+    margin-bottom: 1em;
     width: 90%;
 }
 
 #force-verification-form--container button {
-    margin-top: 12px;
+    margin-top: .75em;
     color: var(--green-dark3);
 }
 

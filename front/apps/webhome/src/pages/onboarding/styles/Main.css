@@ -28,6 +28,6 @@
 #onboarding-app .btn-container {
     display: flex;
     justify-content: space-between;
-    max-height: 100px;
+    max-height: 6.25rem;
     transition: max-height 0.3s ease-in-out;
 }
