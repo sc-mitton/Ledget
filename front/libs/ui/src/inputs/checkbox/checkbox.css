@@ -46,7 +46,7 @@
 .checkbox span:first-child {
     width: 14px;
     height: 14px;
-    font-size: 12px;
+    font-size: .75rem;
     transform: scale(1);
     border: 1.5px solid var(--btn-gray);
     border-radius: var(--border-radius);

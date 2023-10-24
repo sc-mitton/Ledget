@@ -28,7 +28,7 @@
 
 .radial-fill-window span {
     font-weight: 500;
-    font-size: 18px;
+    font-size: 1.125rem;
 }
 
 @keyframes fillWindowAnimation {

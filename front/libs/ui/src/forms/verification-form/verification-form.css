@@ -27,7 +27,7 @@
 }
 
 #verification-form-error-container * {
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 #resend-btn-container {

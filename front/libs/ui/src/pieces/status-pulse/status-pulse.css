@@ -225,7 +225,7 @@
     height: .8em;
     color: var(--white-text);
     border-radius: 50%;
-    font-size: 11px;
+    font-size: .6875rem;
     font-weight: 400;
     padding: 5px;
     display: flex;

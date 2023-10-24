@@ -68,7 +68,7 @@
 
 .mfa-prompt--container * {
     margin-top: 8px;
-    font-size: 15px;
+    font-size: .9375rem;
 }
 
 .recover-propt--container span {
