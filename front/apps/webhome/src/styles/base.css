@@ -153,7 +153,7 @@ select,
 option,
 span {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    font-size: 14px;
+    font-size: .875rem;
     letter-spacing: 0.2px;
     color: var(--m-text-gray);
 }
@@ -162,7 +162,7 @@ p,
 textarea {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-weight: 400;
-    font-size: 14px;
+    font-size: .875rem;
     color: var(--m-text-gray);
     opacity: .8
 }
@@ -388,7 +388,7 @@ input:-webkit-autofill {
     background-color: transparent !important;
     background-clip: content-box !important;
     border: none;
-    font-size: 14px;
+    font-size: .875rem;
     outline: none;
 }
 

@@ -29,7 +29,7 @@
 
 .new-item-data div:first-child span:first-child {
     font-weight: 600;
-    font-size: 14px;
+    font-size: .875rem;
 }
 
 .new-item-data div:last-child {

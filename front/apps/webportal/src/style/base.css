@@ -134,7 +134,7 @@ textarea,
 select,
 option {
     font-family: "Source Sans 3";
-    font-size: 16px;
+    font-size: 1rem;
     color: var(--m-text-gray);
 }
 

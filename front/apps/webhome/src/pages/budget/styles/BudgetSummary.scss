@@ -9,21 +9,21 @@ $container-height: 3rem;
 
     &>div {
         position: absolute;
-        height: 30%;
+        height: calc(1em + .375rem);
         top: calc(0% + $container-padding);
         width: calc(100% / 3 - $container-padding);
         border-radius: var(--border-radius1);
         cursor: pointer;
         z-index: 0;
-
         transition: left 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, z-index 0s linear 0.3s;
 
         h4 {
             position: absolute;
             top: calc(0%);
-            left: $container-padding;
+            left: .5rem;
             font-size: 1em;
             font-weight: 400;
+            transition: top 0.3s ease-in-out;
         }
 
         &:first-child {
@@ -55,6 +55,11 @@ $container-height: 3rem;
             height: calc(100% - $container-padding * 2);
             width: calc(2* 100% / 3 - $container-padding);
             transition: left 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, z-index 0s linear 0s, bottom 0.3s ease-in-out .3s;
+        }
+
+        &:hover h4 {
+            top: calc(0% + .25rem);
+            transition: top 0.3s ease-in-out;
         }
     }
 }

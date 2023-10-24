@@ -29,7 +29,7 @@ img {
 
 body {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    font-size: 14px;
+    font-size: .875rem;
     height: 100%;
     background-color: var(--window);
 }
@@ -45,7 +45,7 @@ textarea,
 select,
 option {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    font-size: 14px;
+    font-size: .875rem;
     color: var(--m-text-gray);
 }
 

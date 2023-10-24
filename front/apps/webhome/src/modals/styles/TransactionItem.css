@@ -6,14 +6,14 @@
 }
 
 .transaction-info--header>div:first-child {
-    font-size: 32px;
+    font-size: 2rem;
 }
 
 .transaction-info--header :last-child {
     width: 70%;
     white-space: wrap;
     text-align: center;
-    font-size: 1.17em;
+    font-size: 1.125rem;
     font-weight: 500;
 }
 

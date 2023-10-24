@@ -20,7 +20,7 @@ body {
 }
 
 #top-header * {
-    font-size: 14px;
+    font-size: .875rem;
 }
 
 #top-header img {
@@ -37,7 +37,7 @@ body {
 .window {
     width: 85%;
     max-width: 325px;
-    font-size: 14px;
+    font-size: .875rem;
     border-radius: var(--border-radius3);
     border: 1.5px solid var(--window-border);
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
@@ -56,7 +56,7 @@ body {
 }
 
 .nested-window {
-    font-size: 14px;
+    font-size: .875rem;
     border-radius: var(--border-radius3);
     border: 1.5px solid var(--window-border);
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
@@ -208,7 +208,7 @@ input:focus {
 
 .below-window-container {
     text-align: center;
-    font-size: 14px;
+    font-size: .875rem;
     height: 0;
     position: relative;
     bottom: -48px;

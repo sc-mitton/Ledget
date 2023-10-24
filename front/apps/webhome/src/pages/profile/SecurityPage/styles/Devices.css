@@ -144,7 +144,7 @@
 
 .current-device {
     color: var(--green-dark2);
-    font-size: 14px;
+    font-size: .875rem;
     margin-right: 4px;
 }
 
