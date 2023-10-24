@@ -2,15 +2,15 @@
 
 .grip-btn {
     cursor: grab;
-    margin-right: 6px;
+    margin-right: .375rem;
     touch-action: none;
 }
 
 .corner-grip-btn {
     opacity: .3;
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: .5rem;
+    right: .5rem;
     cursor: grab;
     touch-action: none;
 }

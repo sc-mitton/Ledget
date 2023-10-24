@@ -5,8 +5,8 @@
 
 #em-picker-container {
     position: absolute;
-    top: 18px;
-    left: -18px;
+    top: 1.125rem;
+    left: -1.125rem;
     right: 0;
 }
 
@@ -18,13 +18,6 @@ em-emoji-picker {
     --rgb-background: var(--charcoal-rgb);
     --rgb-input: var(--charcoal-rgb);
     --border-radius: var(--border-radius3);
-    /* --background-rgb: 202, 252, 224;
-    --border-radius: 12px;
-    --color-border-over: rgba(0, 0, 0, 0.1);
-    --color-border: rgba(0, 0, 0, 0.05);
-    --rgb-background: 255, 255, 255;
-    --rgb-color: 150, 150, 150;
-    --rgb-input: 255, 235, 235; */
 }
 
 /* Shrink em-emoji-picker even more when screen is shrunk */

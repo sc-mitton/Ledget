@@ -4,7 +4,7 @@
 }
 
 .select {
-    margin-top: 8px;
+    margin-top: .5rem;
 }
 
 #add-alert-btn {
@@ -16,12 +16,12 @@
 #period-select-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: .5rem;
     justify-content: space-between;
 }
 
 #add-reminder-btn {
-    gap: 12px;
+    gap: .75rem;
 }
 
 #add-reminder-btn.unset span,
@@ -30,7 +30,7 @@
 }
 
 #add-alert-btn svg {
-    margin-left: 6px;
+    margin-left: .375rem;
 }
 
 .slct-item {
@@ -39,8 +39,8 @@
     justify-content: space-between;
     font-weight: 500;
     width: auto;
-    padding: 4px 12px;
-    margin: 2px 0;
+    padding: .25rem .75rem;
+    margin: .125rem 0;
     transition: background-color 0.3s ease-out;
     border-radius: var(--border-radius);
     cursor: pointer;
@@ -62,7 +62,7 @@
 }
 
 .slct-item.custom-input {
-    padding: 2px 8px;
+    padding: .125rem .5rem;
 }
 
 .slct-item.custom-input input[type='text'] {
@@ -79,7 +79,7 @@
     font-size: 1em;
     display: inline;
     opacity: 0;
-    margin: 0 8px;
+    margin: 0 .5rem;
 }
 
 .slct-item div:last-child span.active {
@@ -89,8 +89,8 @@
 #return-btn {
     opacity: 0;
     border-radius: var(--border-radius);
-    padding: 0px 6px;
-    margin: 4px;
+    padding: 0 .375rem;
+    margin: .25rem;
     display: flex;
 }
 
@@ -101,11 +101,11 @@
     justify-content: center;
     opacity: .4;
     border-radius: var(--border-radius);
-    padding: 2px;
-    margin: 0px 2px;
+    padding: .125rem;
+    margin: 0 .125rem;
     background-color: var(--btn-gray);
 }
 
 #return-btn-focused svg {
-    padding: 2px 4px;
+    padding: .125rem .25rem;
 }

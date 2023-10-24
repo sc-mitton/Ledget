@@ -20,10 +20,10 @@ const Dashboard = () => (
         <Header />
         <div
             style={{
-                backgroundColor: 'transparent',
-                width: '100%',
-                height: '100%',
+                backgroundColor: 'var(--overlay2)',
                 display: 'flex',
+                position: 'fixed',
+                inset: '0px',
             }}
         >
         </div>
