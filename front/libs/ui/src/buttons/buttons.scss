@@ -106,11 +106,11 @@
     background-color: var(--btn-gray);
     color: var(--white-text);
     transition: all .3s ease;
-}
 
-.btn-chcl:hover {
-    background-color: var(--btn-hover-gray);
-    transition: all .3s ease;
+    &hover {
+        background-color: var(--btn-hover-gray);
+        transition: all .3s ease;
+    }
 }
 
 .btn-grn {
@@ -118,68 +118,68 @@
     background-color: var(--green-hlight);
     transition: all .3s ease;
     font-weight: 500;
-}
 
-.btn-grn:hover {
-    color: var(--green-dark4);
-    background-color: var(--green-hlight3);
-    transition: all .3s ease;
+    &hover {
+        color: var(--green-dark4);
+        background-color: var(--green-hlight3);
+        transition: all .3s ease;
+    }
 }
 
 .btn-grn-text {
     color: var(--green-dark);
     transition: all .3s ease;
+
+    &:hover {
+        background-color: var(--green-hlight2);
+        color: var(--green-dark2);
+        transition: all .3s ease;
+    }
 }
 
-.btn-grn-text:hover {
-    background-color: var(--green-hlight2);
-    color: var(--green-dark2);
-    transition: all .3s ease;
-}
 
 .btn-grn2 {
     background-color: var(--green-hlight2);
     color: var(--green-dark4);
     transition: all .3s ease;
-}
 
-.btn-grn2:hover {
-    background-color: var(--green-hlight3);
-    transition: all .3s ease;
+    &:hover {
+        background-color: var(--green-hlight3);
+        transition: all .3s ease;
+    }
 }
 
 .btn-blue {
     background-color: var(--blue-hlight2);
     color: var(--blue-dark4);
     transition: all .3s ease;
-}
 
-.btn-blue:hover {
-    background-color: var(--blue-hlight3);
-    transition: all .3s ease;
+    &:hover {
+        background-color: var(--blue-hlight3);
+        transition: all .3s ease;
+    }
 }
-
 
 .btn-gr {
     box-shadow: var(--btn-drop-shadow);
     background-color: var(--btn-light-gray);
     transition: all .3s ease;
-}
 
-.btn-gr:hover {
-    background-color: var(--btn-light-gray-hover);
-    transition: all .3s ease;
+    &:hover {
+        background-color: var(--btn-light-gray-hover);
+        transition: all .3s ease;
+    }
 }
 
 .btn-gr2 {
     box-shadow: var(--btn-drop-shadow);
     background-color: rgb(0, 0, 0, .05);
     transition: all .3s ease;
-}
 
-.btn-gr2:hover {
-    background-color: rgb(0, 0, 0, .08);
-    transition: all .3s ease;
+    &:hover {
+        background-color: rgb(0, 0, 0, .08);
+        transition: all .3s ease;
+    }
 }
 
 .btn-gr3 {
@@ -187,34 +187,34 @@
     color: rgb(0, 0, 0, .7);
     transition: all .3s ease;
     font-weight: 400;
-}
 
-.btn-gr3:hover {
-    background-color: var(--green-hlight2);
-    color: var(--green-dark4);
-    transition: all .3s ease;
+    &:hover {
+        background-color: var(--green-hlight2);
+        color: var(--green-dark4);
+        transition: all .3s ease;
+    }
 }
 
 .btn-clr {
     background-color: transparent;
     color: var(--m-text-gray);
     transition: all .3s ease;
-}
 
-.btn-clr:hover {
-    background-color: rgb(0, 0, 0, 0.05);
-    transition: all .3s ease;
+    &:hover {
+        background-color: rgb(0, 0, 0, 0.05);
+        transition: all .3s ease;
+    }
 }
 
 .btn-discreet {
     background-color: var(--icon-light-gray);
     color: var(--faded-text);
     transition: all .3s ease;
-}
 
-.btn-discreet:hover {
-    background-color: var(--icon-hover-light-gray);
-    transition: all .3s ease;
+    &:hover {
+        background-color: var(--icon-hover-light-gray);
+        transition: all .3s ease;
+    }
 }
 
 .btn-red {
@@ -223,11 +223,11 @@
     font-weight: 500;
     margin: 4px 0;
     transition: all .3s ease;
-}
 
-.btn-red:hover {
-    background-color: var(--hover-red);
-    transition: all .3s ease;
+    &:hover {
+        background-color: var(--hover-red);
+        transition: all .3s ease;
+    }
 }
 
 .btn-red2::before,
@@ -298,6 +298,46 @@
 
 /* -------------------------------- Specialty -------------------------------- */
 
+
+// Animated-stroke
+
+button {
+    .animated-stroke {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+
+        line:last-child,
+        line:first-child {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+    }
+
+    &:hover {
+        .animated-stroke {
+            animation: draw 1s ease-in-out forwards;
+
+            line:first-child {
+                animation: draw .5s ease-in-out forwards;
+                animation-delay: .1s;
+            }
+
+            line:last-child {
+                animation: draw .5s ease-in-out forwards;
+                animation-delay: .2s;
+            }
+
+        }
+    }
+}
+
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+
 /* ------- Delete Button ------ */
 
 .delete-button {
@@ -305,20 +345,23 @@
     margin: 0 2px;
     cursor: auto;
     transition: opacity .22s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(0deg);
+    transition: all .22s ease;
+
+    span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 .delete-button-show {
     margin: 0 2px;
     opacity: 1;
     cursor: pointer;
-    transition: all .22s ease;
-}
-
-.delete-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: rotate(0deg);
     transition: all .22s ease;
 }
 
@@ -337,12 +380,6 @@
 
 .delete-button.remove {
     animation: pop-out .22s ease;
-}
-
-.delete-button span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 /* Input Buttons */
@@ -371,26 +408,26 @@
 .btn-scale {
     transform: scale(1);
     transition: transform .3s ease;
-}
 
-.btn-scale:hover {
-    transform: scale(1.05);
-    transition: transform .3s ease;
+    &:hover {
+        transform: scale(1.05);
+        transition: transform .3s ease;
+    }
 }
 
 .btn-scale2 {
     transform: scale(1);
     transition: transform .3s ease;
-}
 
-.btn-scale2:hover {
-    transform: scale(1.2);
-    transition: transform .3s ease;
-}
+    &:hover {
+        transform: scale(1.2);
+        transition: transform .3s ease;
+    }
 
-.btn-scale2:focus-visible {
-    transform: scale(1.2);
-    transition: transform .3s ease;
+    &:focus-visible {
+        transform: scale(1.2);
+        transition: transform .3s ease;
+    }
 }
 
 .btn-scale2.btn-icon2:focus-visible {
@@ -408,19 +445,21 @@
     transition: transform .3s ease;
 }
 
-.scale-icon-btn svg {
-    max-width: 0;
-    margin: 0;
-    padding: 0;
-    transform: scale(0);
-    transition: all 0.2s ease-in-out;
-}
+.scale-icon-btn {
+    &:hover svg {
+        max-width: 1.5rem;
+        margin-left: 0.3rem;
+        transform: scale(1);
+        transition: all 0.2s ease-in-out;
+    }
 
-.scale-icon-btn:hover svg {
-    max-width: 1.5rem;
-    margin-left: 0.3rem;
-    transform: scale(1);
-    transition: all 0.2s ease-in-out;
+    svg {
+        max-width: 0;
+        margin: 0;
+        padding: 0;
+        transform: scale(0);
+        transition: all 0.2s ease-in-out;
+    }
 }
 
 button.disabled-hover:hover svg {
@@ -437,22 +476,23 @@ button.disabled-hover:hover svg {
     border-radius: var(--border-radius2);
     font-weight: 500;
     padding: 6px 10px;
-}
 
-.expand-button>div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    &>div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
 }
 
 .expand-button--icon {
     transform: rotate(180deg);
     transition: transform .5s ease-out;
-}
 
-.expand-button--icon.flipped {
-    transition: transform .5s ease-out;
-    transform: rotate(0deg);
+    &.flipped {
+        transition: transform .5s ease-out;
+        transform: rotate(0deg);
+    }
 }
 
 .btn-fb svg,
@@ -467,11 +507,12 @@ button.disabled-hover:hover svg {
     align-items: center;
     margin: 0 12px;
     border-radius: var(--border-radius);
+
+    &:first-child {
+        justify-content: flex-end;
+    }
 }
 
-.arrow-nav:first-child {
-    justify-content: flex-end;
-}
 
 .checkmark--pop {
     position: absolute;
@@ -482,31 +523,30 @@ button.disabled-hover:hover svg {
     width: auto;
     padding-left: 6px;
     margin-left: -8px;
-}
 
-.back-btn svg {
-    height: 1.3em;
-    width: 1.3em;
-}
+    svg {
+        height: 1.3em;
+        width: 1.3em;
+    }
 
-.back-btn .arrow-tail {
-    stroke-dasharray: 50;
-    stroke-dashoffset: 50;
-    transition: stroke-dashoffset 0.2s ease-in;
-}
+    .arrow-tail {
+        stroke-dasharray: 50;
+        stroke-dashoffset: 50;
+        transition: stroke-dashoffset 0.2s ease-in;
+    }
 
-.back-btn:hover .arrow-tail {
-    stroke-dashoffset: 0;
-}
+    &:hover .arrow-tail {
+        stroke-dashoffset: 0;
+    }
 
-.back-btn .arrow-head {
-    transition: all 0.2s ease-in;
-}
+    .arrow-head {
+        transition: all 0.2s ease-in;
+    }
 
-.back-btn:hover .arrow-head {
-    transform: translateX(3px);
+    &:hover .arrow-head {
+        transform: translateX(3px);
+    }
 }
-
 
 /* Resend Button */
 .resend-btn {
@@ -516,24 +556,24 @@ button.disabled-hover:hover svg {
     padding: 4px 8px;
     margin: 4px 0;
     gap: 4px;
-}
 
-.resend-btn svg {
-    transform: scale(1);
-    transition: all 0.2s ease-in-out;
-    animation: pop-fade-in 0.3s ease-in-out;
-}
+    svg {
+        transform: scale(1);
+        transition: all 0.2s ease-in-out;
+        animation: pop-fade-in 0.3s ease-in-out;
+    }
 
-.resend-btn:hover svg {
-    transform: scale(1.1);
-    transition: all 0.2s ease-in-out;
-}
+    &:hover svg {
+        transform: scale(1.1);
+        transition: all 0.2s ease-in-out;
+    }
 
-.resend-icon:active svg {
-    display: flex;
-    align-items: center;
-    color: inherit;
-    animation: pop-fade-in, rotate 0.3s ease-in-out,
+    &:active svg {
+        display: flex;
+        align-items: center;
+        color: inherit;
+        animation: pop-fade-in, rotate 0.3s ease-in-out,
+    }
 }
 
 .resend-btn-success-icon {
@@ -645,56 +685,55 @@ button.disabled-hover:hover svg {
     overflow: hidden;
     padding: 2px;
 
-}
+    svg {
+        transform: scale(1);
+        transition: all .2s ease-out;
+    }
 
-.zipper-btn svg {
-    transform: scale(1);
-    transition: all .2s ease-out;
-}
+    &:hover svg {
+        transform: scale(1.2);
+        transition: all .2s ease-out;
+    }
 
-.zipper-btn:hover svg {
-    transform: scale(1.2);
-    transition: all .2s ease-out;
-}
+    &>div {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--btn-gray);
+        gap: 8px;
+        padding: 4px 20px;
+        border-radius: var(--border-radius4);
+        color: var(--white-text);
+        font-weight: 500;
+    }
 
+    &>span:last-child {
+        width: 200%;
+        height: 500%;
+        position: absolute;
+        background-image: conic-gradient(rgba(var(--charcoal-rgb), .3), rgb(var(--charcoal-rgb)), rgba(var(--charcoal-rgb), .3));
+        animation: travel 3s linear infinite;
+        z-index: 0;
+    }
 
-.zipper-btn>div {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--btn-gray);
-    gap: 8px;
-    padding: 4px 20px;
-    border-radius: var(--border-radius4);
-    color: var(--white-text);
-    font-weight: 500;
-}
+    &>span:not(:last-child) {
+        opacity: 0;
+    }
 
-.zipper-btn>span:last-child {
-    width: 200%;
-    height: 500%;
-    position: absolute;
-    background-image: conic-gradient(rgba(var(--charcoal-rgb), .3), rgb(var(--charcoal-rgb)), rgba(var(--charcoal-rgb), .3));
-    animation: travel 3s linear infinite;
-    z-index: 0;
-}
+    &:hover>span:not(:last-child),
+    &:focus-visible>span:not(:last-child) {
+        width: 200%;
+        height: 500%;
+        position: absolute;
+        background-image: conic-gradient(rgba(var(--m-green-values), .5), rgb(var(--m-green-values), .7), rgba(var(--m-green-values), .5));
+        animation: travel 3s linear infinite;
+        z-index: 1;
+        opacity: 1;
+        transition: opacity .3s ease-out;
+    }
 
-.zipper-btn>span:not(:last-child) {
-    opacity: 0;
-}
-
-.zipper-btn:hover>span:not(:last-child),
-.zipper-btn:focus-visible>span:not(:last-child) {
-    width: 200%;
-    height: 500%;
-    position: absolute;
-    background-image: conic-gradient(rgba(var(--m-green-values), .5), rgb(var(--m-green-values), .7), rgba(var(--m-green-values), .5));
-    animation: travel 3s linear infinite;
-    z-index: 1;
-    opacity: 1;
-    transition: opacity .3s ease-out;
 }
 
 @keyframes travel {
