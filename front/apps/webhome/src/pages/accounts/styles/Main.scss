@@ -2,7 +2,7 @@
 .skeleton-account-wafers--container {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 24px;
+    gap: 1.5em;
     animation: delay-auto-width .5s ease-in-out forwards;
     animation-delay: 1s;
 }
@@ -19,7 +19,7 @@
 
 .skeleton-account-wafers--container>div:first-child,
 .account-wafers--container>div:first-child {
-    padding-top: 28px;
+    padding-top: 1.75em;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -28,7 +28,7 @@
 .skeleton-account-wafers--container>div:first-child>div,
 .account-wafers--container>div:first-child>div {
     font-weight: 500;
-    font-size: 30px;
+    font-size: 1.875em;
 }
 
 .add-accounts-btn--container {
@@ -38,17 +38,17 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 12px;
+    gap: .75em;
 }
 
 /* --------------------------------- Wafers --------------------------------- */
 .account-wafers,
 .skeleton-wafers {
     display: inline-flex;
-    gap: 12px;
+    gap: .75em;
     overflow-x: hidden;
     overflow-y: hidden;
-    padding: 16px 0px 22px 0px;
+    padding: 1em 0 1.375em 0;
     animation: make-scroll 1s ease-in-out forwards;
     animation-delay: 1s;
 }
@@ -93,14 +93,14 @@
 
 .skeleton-account-wafers {
     display: flex;
-    gap: 12px;
+    gap: .75em;
 }
 
 /* Individual Wafers */
 .account-wafer--container,
 .skeleton-account-wafer--container {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: .525em;
+    padding-bottom: .525em;
     height: 6rem;
     border-radius: var(--border-radius4);
 }
@@ -123,8 +123,8 @@
     border-radius: var(--border-radius4);
     position: absolute;
     inset: 0;
-    padding: 10px 0px;
-    margin: 0 4px;
+    padding: .525em 0;
+    margin: 0 .25em;
 }
 
 .account-wafer * {
@@ -176,13 +176,13 @@
     flex-direction: column;
     align-items: flex-start;
     cursor: pointer;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 1em;
+    padding-right: 1em;
 }
 
 .account-wafer>div:nth-child(2) {
-    margin-left: 12px;
-    margin-bottom: 2px;
+    margin-left: .75em;
+    margin-bottom: .125em;
 }
 
 .account-wafer>div:nth-child(2) img {
@@ -196,8 +196,8 @@
     display: inline-flex;
     flex-direction: column;
     white-space: nowrap;
-    padding-left: 4px;
-    margin-left: -4px;
+    padding-left: .25em;
+    margin-left: -.25em;
 }
 
 .wafer-name--container * {
@@ -275,13 +275,13 @@
 }
 
 .wafer-balance--container {
-    margin-top: 8px;
+    margin-top: .5em;
 }
 
 .wafer-balance--container * {
     font-size: 1rem;
     font-weight: 300;
-    letter-spacing: 1px;
+    letter-spacing: .0625em;
 }
 
 /* ------------------------------ Transactions ------------------------------ */
@@ -307,12 +307,12 @@
     &.fetching-more::after {
         content: '';
         position: absolute;
-        bottom: -20px;
+        bottom: -1.25em;
         left: 0;
         right: 0;
         margin: 0 auto;
-        width: 80px;
-        height: 12px;
+        width: 5rem;
+        height: .75em;
         border-radius: 50%;
         background-color: rgb(0, 0, 0, .08);
         animation: fetching-more .7s ease-in-out forwards;
@@ -324,31 +324,13 @@
     0% {
         transform: scale(0);
         opacity: 1;
-        box-shadow: rgb(0, 0, 0, .03) 0 0 0px 8px;
+        box-shadow: rgb(0, 0, 0, .03) 0 0 0 .5em;
     }
 
     100% {
         transform: scale(14);
         opacity: 0;
-        box-shadow: rgb(0, 0, 0, .03) 0 0 0px 8px;
-    }
-}
-
-.transactions--header {
-    grid-auto-rows: minmax(auto, 80px);
-    grid-template-rows: min-content;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    padding-left: 3.5em;
-    padding-right: 2.5em;
-    margin: 8px 0;
-
-    &>div {
-        align-self: center;
-        font-size: 15px;
-        font-weight: 500;
-        letter-spacing: 0px;
-        z-index: 1;
+        box-shadow: rgb(0, 0, 0, .03) 0 0 0 .5em;
     }
 }
 
@@ -357,13 +339,13 @@
     flex-direction: column;
     align-items: flex-start;
     position: sticky;
-    top: 6px;
+    top: .375em;
 
     span {
-        padding: 0 12px 0 4px;
+        padding: 0 .75em 0 .25em;
         color: rgb(var(--charcoal-rgb), .3);
         background-color: var(--inner-window-solid);
-        box-shadow: var(--inner-window-solid) 0 0px 4px 2px;
+        box-shadow: var(--inner-window-solid) 0 0 .25em .125em;
 
         &:first-child {
             position: relative;
@@ -371,7 +353,7 @@
         }
 
         &:last-child {
-            font-size: 12px;
+            font-size: .75em;
             position: relative;
             z-index: 1;
             background-color: transparent;
@@ -393,10 +375,10 @@ $charcoal: var(--charcoal-rgb);
     scrollbar-gutter: stable;
     display: grid;
     grid-template-columns: auto 1fr auto;
-    grid-auto-rows: minmax(auto, 80px);
+    grid-auto-rows: minmax(auto, 5rem);
     grid-template-rows: min-content;
-    row-gap: 8px;
-    padding: 12px 12px 8px 8px;
+    row-gap: .5em;
+    padding: .75em .75em .5em .5em;
 
     &>div:nth-child(2n) {
         display: contents;
@@ -405,7 +387,7 @@ $charcoal: var(--charcoal-rgb);
     &>div:nth-child(2n):not(:last-child)>div::after {
         content: '';
         position: absolute;
-        bottom: -4px;
+        bottom: -.25em;
         left: 0;
         width: 100%;
         height: 1.25px;
@@ -423,9 +405,9 @@ $charcoal: var(--charcoal-rgb);
     }
 
     >div:nth-child(2n + 2) {
-        padding: 4px 0;
-        padding-right: 12px;
-        padding-left: 4px;
+        padding: .25em 0;
+        padding-right: .75em;
+        padding-left: .25em;
     }
 
     >div:nth-child(2n)>div {
@@ -433,8 +415,8 @@ $charcoal: var(--charcoal-rgb);
         z-index: 0;
 
         &:first-child {
-            padding: 4px;
-            padding-left: 12px;
+            padding: .25em;
+            padding-left: .75em;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -448,8 +430,8 @@ $charcoal: var(--charcoal-rgb);
         }
 
         &:last-child {
-            padding: 4px;
-            padding-right: 12px;
+            padding: .25em;
+            padding-right: .75em;
             display: flex;
             align-items: center;
             border-top-right-radius: $borderRadius2;
@@ -469,46 +451,46 @@ $charcoal: var(--charcoal-rgb);
     .account-wafers--container,
     .skeleton-account-wafers--container {
         grid-template-columns: 1fr;
-        gap: 0px;
+        gap: 0;
     }
 
     .account-wafers--container {
 
         // Balance header container
         &>div:first-child {
-            padding-top: 0px;
+            padding-top: 0;
             display: flex;
             flex-direction: row;
             align-items: flex-end;
-            gap: 8px;
-            margin-left: 4px;
-            margin-bottom: 4px;
+            gap: .5em;
+            margin-left: .25em;
+            margin-bottom: 1em;
             order: 2;
         }
 
         // All accounts balance */
         &>div:first-child>div {
             font-weight: 500;
-            font-size: 22px;
-            margin-bottom: -2px;
+            font-size: 1.375rem;
+            margin-bottom: -.125em;
         }
 
         &>div:first-child {
-            padding-bottom: 0px;
+            padding-bottom: 0;
         }
 
         .account-wafers {
-            padding-top: 8px;
+            padding-top: .5em;
             order: 1;
         }
     }
 
     .transactions--header {
-        margin-top: 16px;
-        padding-right: 34px;
+        margin-top: 1em;
+        padding-right: 2.25em;
 
         &>div {
-            font-size: 14px;
+            font-size: .875em;
         }
     }
 
@@ -516,13 +498,13 @@ $charcoal: var(--charcoal-rgb);
 
         /* all name cells */
         &>div:nth-child(2n)>div:first-child {
-            padding-left: 8px;
-            padding-right: 20px;
+            padding-left: .5em;
+            padding-right: 1.25em;
         }
 
         /* all amount cells */
         &>div:nth-child(2n)>div:last-child {
-            padding-right: 8px;
+            padding-right: .5em;
         }
     }
 }

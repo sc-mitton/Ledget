@@ -93,10 +93,6 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boole
 
         return (
             <>
-                <div className="transactions--header">
-                    <div>Name</div>
-                    <div>Amount</div>
-                </div>
                 <div
                     className={`transactions--container ${className}`}
                     ref={containerRef}

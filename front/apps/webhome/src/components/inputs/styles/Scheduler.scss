@@ -2,7 +2,7 @@
     justify-content: space-between;
     position: relative;
     overflow: auto;
-    gap: 12px;
+    gap: .75em;
 
     &>div:first-child {
         display: flex;
@@ -13,8 +13,8 @@
 
 #schedule-dropdown {
     z-index: 1000;
-    padding: 16px 16px 12px 16px;
-    margin-top: 8px;
+    padding: 1em 1em .75em 1em;
+    margin-top: .5em;
 
     label {
         margin: 0;
@@ -22,7 +22,7 @@
     }
 
     fieldset {
-        margin: 4px;
+        margin: .25em;
     }
 }
 
@@ -33,7 +33,7 @@
 
 
 .day-picker {
-    padding: 4px;
+    padding: .25em;
 }
 
 .day.picker-item {
@@ -41,9 +41,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2px;
-    width: 24px;
-    height: 24px;
+    padding: .125em;
+    width: 2.25em;
+    height: 2.25em;
     border-radius: var(--border-radius1);
 }
 
@@ -51,7 +51,7 @@
     cursor: pointer;
     display: flex;
     justify-content: center;
-    padding: 2px;
+    padding: .125em;
     border-radius: var(--border-radius1);
 
     &.selected {
@@ -79,9 +79,9 @@
 .week-picker-container {
     display: flex;
     flex-direction: column;
-    margin: 8px;
-    margin-top: 16px;
-    padding: 4px;
+    margin: .5em;
+    margin-top: 1em;
+    padding: .25em;
 }
 
 .week-picker {
@@ -90,32 +90,32 @@
     flex-wrap: nowrap;
 
     .picker-item {
-        margin: 0 6px;
-        padding: 0px 6px;
+        margin: 0 .75em;
+        padding: 0px .75em;
     }
 }
 
 .week-day-picker {
-    margin-top: 4px;
+    margin-top: .25em;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
 
     .picker-item {
-        margin: 0 2px;
-        padding: 0px 6px;
+        margin: 0 .125em;
+        padding: 0px .75em;
     }
 }
 
 #month-day-picker-container {
-    margin: 8px;
-    padding: 4px;
+    margin: .5em;
+    padding: .25em;
 }
 
 #month-picker2-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 12px;
+    margin-bottom: .75em;
 }
 
 #month-picker2 {
@@ -132,12 +132,12 @@
     }
 
     &>div:first-child .picker-item {
-        padding: 2px 4px;
-        margin: 2px 4px;
+        padding: .125em .25em;
+        margin: .125em .25em;
     }
 
     &>div:last-child .picker-item {
-        padding: 2px 4px;
-        margin: 2px 4.5px;
+        padding: .125em .25em;
+        margin: .125em 4.5px;
     }
 }

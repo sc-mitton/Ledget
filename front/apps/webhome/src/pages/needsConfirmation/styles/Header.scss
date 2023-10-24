@@ -4,12 +4,12 @@
 }
 
 #needs-confirmation-header {
-    padding: 4px 16px 4px 16px;
-    margin: 4px 12px 10px 10px;
+    padding: .25em 1em .25em 1em;
+    margin: .25em .75em .625em .625em;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 430px;
+    max-width: 27rem;
     width: 100%;
     background-color: var(--window2);
     border-radius: var(--border-radius25);
@@ -20,15 +20,15 @@
     }
 
     div:first-child {
-        gap: 2px;
+        gap: .125em;
     }
 
     #number-of-items {
         font-weight: 500;
-        margin-right: 10px;
+        margin-right: .625em;
         background-color: var(--icon-hover-light-gray);
         color: var(--faded-text);
-        padding: 0 4px;
+        padding: 0 .25em;
         border-radius: var(--border-radius1);
 
         &+span {

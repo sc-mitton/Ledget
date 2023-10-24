@@ -43,4 +43,8 @@
         width: 0;
         margin: 0;
     }
+
+    #accounts-window ul li {
+        gap: 0;
+    }
 }

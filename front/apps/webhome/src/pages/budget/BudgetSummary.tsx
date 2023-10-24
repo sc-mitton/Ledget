@@ -8,35 +8,32 @@ const BudgetSummary = () => {
         <div className="inner-window" id="budget-summary--container">
             <div>
                 <h4>total</h4>
-                <div className="summary-stats--container">
-
-                </div>
             </div>
-            <div>
+            <div className="summary-stats">
                 <DollarCents value={380664} />
                 <span>spent</span>
             </div>
-            <div>
+            <div tabIndex={0}>
                 <h4>monthly budget</h4>
-                <div className="summary-stats--container">
+                <div className="summary-stats monthly">
 
                 </div>
             </div>
-            <div>
+            <div className="summary-stats monthly">
                 <DollarCents value={641364} />
                 <span>left</span>
-                <ThumbUp />
+                <ThumbUp fill={'currentColor'} />
             </div>
-            <div>
+            <div tabIndex={0}>
                 <h4>yearly budget</h4>
-                <div className="summary-stats--container">
+                <div className="summary-stats yearly">
 
                 </div>
             </div>
-            <div>
+            <div className="summary-stats yearly" >
                 <DollarCents value={641364} />
                 <span>left</span>
-                <ThumbUp />
+                <ThumbUp fill={'currentColor'} />
             </div>
         </div>
     )

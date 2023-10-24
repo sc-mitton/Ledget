@@ -16,7 +16,7 @@ export const SkeletonWafers = () => (
     <div className="skeleton-account-wafers--container">
         <div>
             <span>Total Deposits</span>
-            <span><DollarCents value="0" /></span>
+            <div><DollarCents value="0" /></div>
         </div>
         <div
             className="skeleton-wafers"
@@ -46,16 +46,18 @@ const WafersHeader = () => {
     return (
         <div>
             <h3>{pathMappings.getWaferTitle(location)}</h3>
-            <DollarCents
-                value={
-                    isSuccess
-                        ? data?.accounts.filter((account: any) => account.type === pathMappings.getAccountType(location))
-                            .reduce((acc: number, account: any) => Big(acc).add(account.balances.current), 0)
-                            .times(100)
-                            .toNumber()
-                        : '0.00'
-                }
-            />
+            <div>
+                <DollarCents
+                    value={
+                        isSuccess
+                            ? data?.accounts.filter((account: any) => account.type === pathMappings.getAccountType(location))
+                                .reduce((acc: number, account: any) => Big(acc).add(account.balances.current), 0)
+                                .times(100)
+                                .toNumber()
+                            : '0.00'
+                    }
+                />
+            </div>
         </div>
     )
 }

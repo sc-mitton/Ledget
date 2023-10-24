@@ -4,7 +4,7 @@
     border: none;
     cursor: pointer;
     margin: 0 auto;
-    margin-top: 0px;
+    margin-top: 0;
     width: 2.5em;
     height: 2.5em;
     display: flex;
@@ -19,8 +19,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 12px;
-    margin-bottom: 30px;
+    padding-top: .75em;
+    margin-bottom: 30;
 }
 
 #info-container span {
@@ -42,11 +42,11 @@
 
 #account-page .header2 button span,
 #account-page .header2 button {
-    font-size: 13px;
+    font-size: .8125rem;
 }
 
 #account-page .indicator {
-    margin-left: 12px;
+    margin-left: .75em;
     color: var(--green-dark2);
 }
 
@@ -54,7 +54,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 8px;
+    gap: .5em;
 }
 
 #card-info--container>div:first-child {
@@ -63,19 +63,19 @@
 }
 
 #change-plan--menu {
-    top: 26px;
+    top: 1.525em;
     right: 0;
 }
 
 .nickname--container {
-    margin: 0px 0px 4px -6px;
+    margin: 0 0 .25em -.375em;
     display: inline-block;
 }
 
 .nickname--container>span:first-child {
     background-color: var(--icon-light-gray);
     border-radius: var(--border-radius1);
-    padding: 0px 10px;
+    padding: 0 10;
     font-weight: 500;
 }
 
@@ -83,7 +83,7 @@
 #invoice-details--container {
     display: grid;
     grid-template-columns: minmax(auto, max-content) 1fr;
-    column-gap: 16px;
+    column-gap: 1em;
 
     &>div:nth-child(2n + 1) {
         font-weight: 500;
@@ -101,15 +101,15 @@
 }
 
 .card-info--container>div:first-child {
-    margin-right: 12px;
+    margin-right: .75em;
     display: flex;
     align-items: center;
 }
 
-@media (max-width: 550px) {
+@media (max-width: 550) {
     .card-info--container {
         flex-direction: column;
         align-items: flex-start;
-        gap: 4px;
+        gap: .25em;
     }
 }

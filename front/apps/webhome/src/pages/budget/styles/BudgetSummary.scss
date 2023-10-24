@@ -1,6 +1,7 @@
-$container-padding: .75rem;
-$stats-font-size: 1.125rem;
-$header-height: calc(1em + .5rem);
+$container-padding: calc(.25em + .5vw);
+$stats-font-size: clamp(1rem, calc(.875rem + .25vw), 1.125rem);
+$header-font-size: clamp(.75rem, calc(.75em + .25vw), 1rem);
+$header-height: calc($header-font-size + .5rem);
 
 #budget-summary--container {
     background-color: rgb(var(--inner-window-rgb), 0.95);
@@ -10,26 +11,39 @@ $header-height: calc(1em + .5rem);
     display: flex;
     align-items: flex-end;
 
+    svg {
+        vertical-align: middle;
+        display: inline-block;
+        margin-bottom: .25em;
+        margin-left: .25em;
+    }
+
     // Summary Stats
-    &>div:nth-child(even) {
+    .summary-stats {
         flex: 1;
         margin-top: .125em;
         margin-left: .25em;
         position: relative;
         font-size: $stats-font-size;
         font-weight: 500;
-        display: flex;
-        align-items: baseline;
 
         &>span:nth-child(2) {
             font-size: calc($stats-font-size - .375rem);
             font-weight: 400;
-            margin-right: 4px;
+            margin-right: .25em;
         }
 
         &>span:last-of-type {
             font-size: calc($stats-font-size - .375rem);
             font-weight: 400;
+        }
+
+        &.monthly * {
+            color: var(--green-dark4);
+        }
+
+        &.yearly * {
+            color: var(--blue-dark4);
         }
     }
 
@@ -46,7 +60,7 @@ $header-height: calc(1em + .5rem);
             position: absolute;
             top: calc(0%);
             left: .5rem;
-            font-size: 1em;
+            font-size: $header-font-size;
             font-weight: 400;
             transition: all 0.3s ease-in-out;
         }
@@ -78,7 +92,10 @@ $header-height: calc(1em + .5rem);
             }
         }
 
-        &:not(:first-child):hover {
+        &:not(:first-child):hover,
+        &:not(:first-child):focus-visible {
+            outline: none;
+            box-shadow: none;
             z-index: 1;
             left: $container-padding;
             height: calc(100% - $container-padding * 2);
@@ -86,8 +103,10 @@ $header-height: calc(1em + .5rem);
             transition: left 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, z-index 0s linear 0s, bottom 0.3s ease-in-out .3s;
         }
 
-        &:not(:first-child):hover h4 {
+        &:not(:first-child):hover h4,
+        &:not(:first-child):focus-visible h4 {
             left: .75rem;
+            font-weight: 500;
             top: calc(0% + .375rem);
             transition: all 0.3s ease-in-out;
         }

@@ -12,3 +12,10 @@
 #budget-window .window {
     padding: 1em 1.5em;
 }
+
+@media screen and (max-width: 450px) {
+    #budget-window {
+        padding-left: .5em;
+        padding-right: .5em;
+    }
+}
