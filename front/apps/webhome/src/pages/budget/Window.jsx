@@ -2,38 +2,31 @@ import React, { useState, useEffect } from 'react'
 
 import { Outlet } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
-import { useNavigate, useLocation, createSearchParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, createSearchParams, useSearchParams } from 'react-router-dom'
 
 import './styles/Window.css'
-import './styles/Budget.scss'
-import { Graph, Plus, Edit, Ellipsis2 } from '@ledget/media'
+import { Plus, Edit, Ellipsis2 } from '@ledget/media'
 import { IconButton, DropAnimation } from '@ledget/ui'
 import MonthPicker from '@components/inputs/MonthPicker'
-import { ShadowedContainer } from '@components/pieces'
-import TabView from './TabView'
-import ColumnarView from './ColumnarView'
+import BudgetSummary from './BudgetSummary'
 
 
-const Wrapper = ({ onClick, children }) => {
-
-    return (
-        <Menu.Item as={React.Fragment}>
-            {({ active }) => (
-                <button
-                    className={`dropdown-item
+const Wrapper = ({ onClick, children }) => (
+    <Menu.Item as={React.Fragment}>
+        {({ active }) => (
+            <button
+                className={`dropdown-item
                         ${active && "active-dropdown-item"}`}
-                    onClick={() => onClick()}
-                >
-                    {children}
-                </button>
-            )}
-        </Menu.Item>
-    )
-}
+                onClick={() => onClick()}
+            >
+                {children}
+            </button>
+        )}
+    </Menu.Item>
+)
 
 const DropDown = () => {
     const navigate = useNavigate()
-    const location = useLocation()
     const [searchParams] = useSearchParams()
 
     return (
@@ -95,27 +88,6 @@ const DropDown = () => {
     )
 }
 
-const Header = () => {
-
-    return (
-        <div className="window-header">
-            <MonthPicker />
-            <div className="header-btns">
-                <IconButton
-                    aria-label="Toggle graph view"
-                    style={{
-                        margin: "0 0.5em"
-                    }}
-                >
-                    <Graph />
-                </IconButton>
-                <DropDown />
-            </div>
-        </div>
-    )
-}
-
-
 const Budget = () => {
     const [tabView, setTabView] = useState(false)
 
@@ -134,11 +106,8 @@ const Budget = () => {
     }, [])
 
     return (
-        <ShadowedContainer style={{ display: 'flex' }}>
-            <div id="budget--container" >
-                {tabView ? <TabView /> : <ColumnarView />}
-            </div>
-        </ShadowedContainer>
+        <div id="budget--container" style={{ display: 'flex' }}>
+        </div>
     )
 }
 
@@ -146,7 +115,13 @@ function Window() {
     return (
         <>
             <div className="window" id="budget-window">
-                <Header />
+                <div className="window-header">
+                    <MonthPicker />
+                    <div className="header-btns">
+                        <DropDown />
+                    </div>
+                </div>
+                <BudgetSummary />
                 <Budget />
             </div>
             <Outlet />

@@ -8,6 +8,7 @@
     --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-background-color: #f0f0f0;
     --inner-window: rgba(0, 0, 0, .03);
+    --inner-window-rgb: 244, 244, 244;
     --inner-window-solid: rgb(244, 244, 244);
     --inner-window-lighter: rgba(0, 0, 0, .02);
 
@@ -40,7 +41,7 @@
     --yellow: rgb(175, 175, 51);
 
     --blue-hlight: rgb(143, 182, 255);
-    --blue-hlight2: rgb(194, 216, 255);
+    --blue-hlight2: rgb(223, 234, 253);
     --blue-hlight3: rgb(170, 195, 238);
     --m-blue: rgb(81, 99, 237);
     --blue-dark4: rgb(68, 97, 160);

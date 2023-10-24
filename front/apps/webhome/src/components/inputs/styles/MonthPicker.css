@@ -52,7 +52,7 @@
 
 .month-picker-item-selected {
     background-color: var(--green-hlight2);
-    color: var(--m-text-gray);
+    color: var(--green-dark4);
 }
 
 .month-picker-item:hover,
