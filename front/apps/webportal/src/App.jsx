@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import rootReducer from '@features/rootReducer';
 import { apiSlice } from '@api/apiSlice'
 import Routes from './Routes'
-import "./style/base.css"
 
 
 const store = configureStore({
