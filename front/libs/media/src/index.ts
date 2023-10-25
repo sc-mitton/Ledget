@@ -7,6 +7,7 @@ export { default as CardIcon } from './icons/Card';
 export { default as CashFlow } from './icons/CashFlow';
 export { default as CheckAll } from './icons/CheckAll';
 export { default as CheckMark } from './icons/CheckMark';
+export { default as CheckMark2 } from './icons/CheckMark2';
 export { default as CheckMark3 } from './icons/CheckMark3';
 export { default as ClockIcon } from './icons/Clock';
 export { default as Delete } from './icons/Delete';

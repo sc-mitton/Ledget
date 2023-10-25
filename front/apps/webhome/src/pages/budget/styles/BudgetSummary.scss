@@ -1,5 +1,5 @@
 $container-padding: calc(.25em + .5vw);
-$stats-font-size: clamp(1rem, calc(.875rem + .25vw), 1.125rem);
+$base-stats-font-size: clamp(1rem, calc(.875rem + .25vw), 1.125rem);
 
 $header-font-size: clamp(.8125rem, calc(.75em + .25vw), 1rem);
 $header-height: calc($header-font-size + .5rem);
@@ -11,31 +11,39 @@ $header-gap: calc(.375em + .25vw);
     display: flex;
     align-items: flex-end;
 
-    // Summary teaser
+    // Summary stats
     &>div:nth-child(4) {
         display: flex;
         width: 100%;
+    }
 
-        &>div {
-            flex: 1;
+    .summary-stats,
+    .summary-stats-teaser {
+        z-index: 1;
+
+        &.month * {
+            color: var(--green-dark4);
         }
 
-        &>div:not(:first-child) {
-            margin-left: $header-gap;
+        &.year * {
+            color: var(--blue-dark4);
         }
     }
 
-    // Summary Stats
-    .summary-stats {
+    .summary-stats-teaser {
         margin-top: calc($header-height + .25em);
         border-radius: var(--border-radius1);
         flex: 1;
         padding-left: .25em;
         padding-right: .5em;
         position: relative;
-        font-size: $stats-font-size;
         font-weight: 500;
-        z-index: 1;
+        font-size: $base-stats-font-size;
+
+        &:not(:first-child) {
+            margin-left: $header-gap;
+        }
+
 
         svg {
             vertical-align: middle;
@@ -49,22 +57,76 @@ $header-gap: calc(.375em + .25vw);
         }
 
         &>div>span:nth-child(2) {
-            font-size: calc($stats-font-size - .25rem);
+            font-size: calc($base-stats-font-size - .25rem);
             font-weight: 400;
             margin-right: .25em;
         }
 
         &>div>span:last-of-type {
-            font-size: calc($stats-font-size - .25rem);
+            font-size: calc($base-stats-font-size - .25rem);
             font-weight: 400;
         }
+    }
 
-        &.monthly * {
-            color: var(--green-dark4);
+    .summary-stats {
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        display: flex;
+
+        * {
+            font-size: $base-stats-font-size;
         }
 
-        &.yearly * {
-            color: var(--blue-dark4);
+        // Each individual statistic
+        &>div {
+            flex: 1;
+            display: inline-flex;
+            justify-content: center;
+            align-items: baseline;
+
+            &:not(:last-child) {
+                font-weight: 500;
+            }
+
+            &>div>span:nth-child(2) {
+                font-size: calc($base-stats-font-size - .25rem);
+                font-weight: 400;
+                margin-right: .25em;
+            }
+
+            &>span:last-of-type {
+                margin-left: .125em;
+                font-size: calc($base-stats-font-size - .25rem);
+                font-weight: 400;
+            }
+
+            &>div:last-child {
+                align-self: center;
+                margin-left: .5em;
+            }
+        }
+
+        &>div:last-child {
+            gap: .125em;
+
+            &>div:last-child {
+                margin-left: .375em;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        &.show {
+            z-index: 3;
+            visibility: visible;
+            opacity: 1;
+            transition: visibility 0.3s ease-in-out .3s, opacity 0.2s ease-in-out .4s;
         }
     }
 
@@ -120,19 +182,19 @@ $header-gap: calc(.375em + .25vw);
             outline: none;
             box-shadow: none;
             z-index: 2;
-            left: 0;
-            height: 100%;
-            width: 100%;
+            left: -1%;
+            height: 103%;
+            width: 102%;
+            border-radius: var(--border-radius25);
             transition: top 0.3s ease-in-out .3s, left 0.3s ease-in-out .3s, width 0.3s ease-in-out .3s,
-                height 0.3s ease-in-out .3s, z-index .3s linear 0s, bottom 0.3s ease-in-out .6s;
+                height 0.3s ease-in-out .3s, z-index .3s linear 0s, bottom 0.3s ease-in-out .6s, border-radius 0.3s ease-in-out .3s;
         }
 
         &:not(:first-child):hover h4,
         &:not(:first-child):focus-visible h4 {
-            left: .75rem;
-            font-weight: 500;
-            font-size: calc($header-font-size + .25rem);
-            transition: all 0.3s ease-in-out .3s;
+            visibility: none;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out, visibility 0.3s ease-in-out .3s;
         }
     }
 
@@ -141,22 +203,45 @@ $header-gap: calc(.375em + .25vw);
 @media (max-width: 550px) {
     #budget-summary--container {
 
-        .summary-stats {
+        .summary-stats-teaser {
             text-align: end;
-        }
-
-        .summary-stats:not(:first-child):not(:last-child) {
-            margin: $header-gap 0;
-        }
-
-        .summary-stats:last-child,
-        .summary-stats:first-child {
             margin-top: 0;
+        }
+
+        .summary-stats-teaser.month {
+            margin-top: calc($header-gap + $header-height*.25);
+            margin-bottom: calc($header-gap + $header-height*.25);
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100%;
+
+            &>div {
+                display: auto;
+                align-self: center;
+                justify-self: start;
+
+            }
+
+            &>div:first-child {
+                order: 0;
+            }
+
+            &>div:nth-child(2),
+            &>div:nth-child(3) {
+                order: 2;
+            }
+
+            &>div:last-child {
+                order: 1;
+            }
         }
 
         // Headers
         &>div:nth-child(-n+3) {
-            height: $header-height;
+            height: calc($header-height*1.25);
             overflow-x: auto;
 
             &:first-child {
@@ -180,14 +265,6 @@ $header-gap: calc(.375em + .25vw);
             &:not(:first-child):hover,
             &:not(:first-child):focus-visible {
                 top: 0;
-            }
-
-            &:not(:first-child):hover h4,
-            &:not(:first-child):focus-visible h4 {
-                top: 1.25em;
-                left: .75rem;
-                font-weight: 500;
-                font-size: calc($header-font-size + .25rem);
             }
         }
 

@@ -9,4 +9,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    circle:first-child {
+        stroke: currentColor;
+        opacity: .2;
+    }
+
+    circle:last-child {
+        stroke: currentColor;
+    }
 }
