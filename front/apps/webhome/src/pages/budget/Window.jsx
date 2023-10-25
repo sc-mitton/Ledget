@@ -9,6 +9,7 @@ import { Plus, Edit, Ellipsis2 } from '@ledget/media'
 import { IconButton, DropAnimation } from '@ledget/ui'
 import MonthPicker from '@components/inputs/MonthPicker'
 import BudgetSummary from './BudgetSummary'
+import SpendingCategories from './SpendingCategories'
 
 
 const Wrapper = ({ onClick, children }) => (
@@ -107,6 +108,7 @@ const Budget = () => {
 
     return (
         <div id="budget--container" style={{ display: 'flex' }}>
+            <SpendingCategories tabView={tabView} />
         </div>
     )
 }

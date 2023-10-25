@@ -4,7 +4,7 @@ interface Alert {
     percent_amount: number
 }
 
-interface Category {
+export interface Category {
     id: string,
     period: 'year' | 'month',
     name: string,

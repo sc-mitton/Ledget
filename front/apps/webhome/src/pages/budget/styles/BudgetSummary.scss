@@ -44,7 +44,6 @@ $header-gap: calc(.375em + .25vw);
             margin-left: $header-gap;
         }
 
-
         svg {
             vertical-align: middle;
             margin-bottom: .25em;
@@ -72,7 +71,7 @@ $header-gap: calc(.375em + .25vw);
         position: absolute;
         visibility: hidden;
         opacity: 0;
-        top: 60%;
+        top: 50%;
         left: 0;
         width: 100%;
         transform: translateY(-50%);
@@ -184,9 +183,10 @@ $header-gap: calc(.375em + .25vw);
             outline: none;
             box-shadow: none;
             z-index: 2;
-            left: -1%;
+            left: 0;
+            top: -.375em;
             height: 120%;
-            width: 102%;
+            width: 100%;
             border-radius: var(--border-radius25);
             transition: top 0.3s ease-in-out .3s, left 0.3s ease-in-out .3s, width 0.3s ease-in-out .3s,
                 height 0.3s ease-in-out .3s, z-index .3s linear 0s, bottom 0.3s ease-in-out .6s, border-radius 0.3s ease-in-out .3s;
@@ -199,7 +199,6 @@ $header-gap: calc(.375em + .25vw);
             transition: opacity 0.2s ease-in-out, visibility 0.3s ease-in-out .3s;
         }
     }
-
 }
 
 @media (max-width: 550px) {
@@ -265,7 +264,7 @@ $header-gap: calc(.375em + .25vw);
 
             &:not(:first-child):hover,
             &:not(:first-child):focus-visible {
-                top: 0;
+                top: -.375em;
             }
         }
 
