@@ -11,15 +11,31 @@ $header-gap: calc(.375em + .25vw);
     display: flex;
     align-items: flex-end;
 
+    // Summary teaser
+    &>div:nth-child(4) {
+        display: flex;
+        width: 100%;
+
+        &>div {
+            flex: 1;
+        }
+
+        &>div:not(:first-child) {
+            margin-left: $header-gap;
+        }
+    }
+
     // Summary Stats
     .summary-stats {
         margin-top: calc($header-height + .25em);
+        border-radius: var(--border-radius1);
         flex: 1;
         padding-left: .25em;
         padding-right: .5em;
         position: relative;
         font-size: $stats-font-size;
         font-weight: 500;
+        z-index: 1;
 
         svg {
             vertical-align: middle;
@@ -59,8 +75,8 @@ $header-gap: calc(.375em + .25vw);
         border-radius: var(--border-radius1);
         z-index: 0;
         top: 0;
-        transition: left 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, z-index 0s linear 0.3s;
-        overflow-x: auto;
+        transition: top 0.3s ease-in-out, left 0.3s ease-in-out, width 0.3s ease-in-out,
+            height 0.3s ease-in-out, z-index 0s linear 0s, bottom 0.3s ease-in-out .3s;
 
         h4 {
             position: absolute;
@@ -103,11 +119,12 @@ $header-gap: calc(.375em + .25vw);
         &:not(:first-child):focus-visible {
             outline: none;
             box-shadow: none;
-            z-index: 1;
+            z-index: 2;
             left: 0;
             height: 100%;
             width: 100%;
-            transition: left 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, z-index 0s linear 0s, bottom 0.3s ease-in-out .3s;
+            transition: top 0.3s ease-in-out .3s, left 0.3s ease-in-out .3s, width 0.3s ease-in-out .3s,
+                height 0.3s ease-in-out .3s, z-index .3s linear 0s, bottom 0.3s ease-in-out .6s;
         }
 
         &:not(:first-child):hover h4,
@@ -115,28 +132,66 @@ $header-gap: calc(.375em + .25vw);
             left: .75rem;
             font-weight: 500;
             font-size: calc($header-font-size + .25rem);
-            transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out .3s;
         }
     }
 
-    // Summary teaser
-    &>div:nth-child(4) {
-        display: flex;
-        width: 100%;
-
-        &>div {
-            flex: 1;
-        }
-
-        &>div:not(:first-child) {
-            margin-left: $header-gap;
-        }
-    }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 550px) {
     #budget-summary--container {
 
+        .summary-stats {
+            text-align: end;
+        }
+
+        .summary-stats:not(:first-child):not(:last-child) {
+            margin: $header-gap 0;
+        }
+
+        .summary-stats:last-child,
+        .summary-stats:first-child {
+            margin-top: 0;
+        }
+
+        // Headers
+        &>div:nth-child(-n+3) {
+            height: $header-height;
+            overflow-x: auto;
+
+            &:first-child {
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+
+            &:nth-child(2) {
+                left: 0;
+                top: calc(100% / 3 + $header-gap/2);
+                width: 100%;
+            }
+
+            &:nth-child(3) {
+                left: 0;
+                top: calc(2/3 * 100% + $header-gap);
+                width: 100%;
+            }
+
+            &:not(:first-child):hover,
+            &:not(:first-child):focus-visible {
+                top: 0;
+            }
+
+            &:not(:first-child):hover h4,
+            &:not(:first-child):focus-visible h4 {
+                top: 1.25em;
+                left: .75rem;
+                font-weight: 500;
+                font-size: calc($header-font-size + .25rem);
+            }
+        }
+
+        // Summary teaser
         &>div:nth-child(4) {
             flex-direction: column;
             align-items: flex-end;
