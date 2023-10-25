@@ -1,6 +1,5 @@
 #spending-window {
-    flex-grow: 1;
-    flex-shrink: 0;
+    flex: 1;
     min-width: 23.5rem;
     height: inherit;
     max-height: inherit;

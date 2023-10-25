@@ -61,7 +61,8 @@ export const DollarCents = ({ value = 0, style = {}, hasCents = true, ...rest }:
       {hasCents &&
         <span style={{ fontSize: '.7em' }}>
           {`.${str.split('.')[1]}`}
-        </span>}
+        </span>
+      }
     </>
   )
 }

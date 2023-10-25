@@ -29,7 +29,7 @@ const NewItemsHeader = () => {
                     <div id="number-of-items">
                         10
                     </div>
-                    <span>New budget items</span>
+                    <span>Items to confirm</span>
                 </div>
                 <div>
                     <RefreshButton hasBackground={false} />

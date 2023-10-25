@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
 import { animated } from '@react-spring/web'
 
-import './styles/header.css'
+import './styles/header.scss'
 import { Logout, Help } from '@modals'
 import {
     Profile1,
@@ -180,13 +180,9 @@ function Header({ isNarrow }) {
         <>
             <header style={{ zIndex: 1000 }}>
                 <div className={`header-container ${isNarrow ? 'narrow' : ''}`}>
-                    <div className="header-logo"><LedgetLogoIcon /></div>
-                    <div>
-                        <Navigation isNarrow={isNarrow} />
-                    </div>
-                    <div className="header-right">
-                        <DropDownMenu setModal={setModal} isNarrow={isNarrow} />
-                    </div>
+                    <div><LedgetLogoIcon /></div>
+                    <div><Navigation isNarrow={isNarrow} /></div>
+                    <DropDownMenu setModal={setModal} isNarrow={isNarrow} />
                 </div>
             </header>
             <Modal selection={modal} />

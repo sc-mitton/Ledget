@@ -475,7 +475,7 @@ button.disabled-hover:hover svg {
     margin-bottom: .5em;
     border-radius: var(--border-radius2);
     font-weight: 500;
-    padding: .375em 10;
+    padding: .375em .625em;
 
     &>div {
         display: flex;

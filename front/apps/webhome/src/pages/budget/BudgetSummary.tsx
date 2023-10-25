@@ -5,35 +5,44 @@ import { ThumbUp } from '@ledget/media'
 
 const BudgetSummary = () => {
     return (
-        <div className="inner-window" id="budget-summary--container">
+        <div id="budget-summary--container">
             <div>
-                <h4>total</h4>
-            </div>
-            <div className="summary-stats">
-                <DollarCents value={380664} />
-                <span>spent</span>
+                <h4>Total</h4>
             </div>
             <div tabIndex={0}>
-                <h4>monthly budget</h4>
+                <h4>Monthly</h4>
+            </div>
+            <div tabIndex={0}>
+                <h4>Yearly</h4>
+            </div>
+
+            <div>
+                <div className="summary-stats">
+                    <div>
+                        <DollarCents value={380664} />
+                    </div>
+                    <div>
+                        <span>spent</span>
+                    </div>
+                </div>
                 <div className="summary-stats monthly">
-
+                    <div>
+                        <DollarCents value={641364} />
+                    </div>
+                    <div>
+                        <span>left</span>
+                        <ThumbUp fill={'currentColor'} />
+                    </div>
                 </div>
-            </div>
-            <div className="summary-stats monthly">
-                <DollarCents value={641364} />
-                <span>left</span>
-                <ThumbUp fill={'currentColor'} />
-            </div>
-            <div tabIndex={0}>
-                <h4>yearly budget</h4>
-                <div className="summary-stats yearly">
-
+                <div className="summary-stats yearly" >
+                    <div>
+                        <DollarCents value={641364} />
+                    </div>
+                    <div>
+                        <span>left</span>
+                        <ThumbUp fill={'currentColor'} />
+                    </div>
                 </div>
-            </div>
-            <div className="summary-stats yearly" >
-                <DollarCents value={641364} />
-                <span>left</span>
-                <ThumbUp fill={'currentColor'} />
             </div>
         </div>
     )
