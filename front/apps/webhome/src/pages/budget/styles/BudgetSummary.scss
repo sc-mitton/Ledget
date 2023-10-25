@@ -72,21 +72,21 @@ $header-gap: calc(.375em + .25vw);
         position: absolute;
         visibility: hidden;
         opacity: 0;
-        top: 50%;
+        top: 60%;
         left: 0;
         width: 100%;
         transform: translateY(-50%);
         pointer-events: none;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
 
         * {
             font-size: $base-stats-font-size;
         }
 
-        // Each individual statistic
+        // Each statistic cell
         &>div {
-            flex: 1;
-            display: inline-flex;
+            display: flex;
             justify-content: center;
             align-items: baseline;
 
@@ -94,19 +94,21 @@ $header-gap: calc(.375em + .25vw);
                 font-weight: 500;
             }
 
-            &>div>span:nth-child(2) {
-                font-size: calc($base-stats-font-size - .25rem);
-                font-weight: 400;
-                margin-right: .25em;
+            &>div {
+                display: flex;
+                flex-direction: column;
+                align-items: baseline;
+                font-size: calc($base-stats-font-size);
+                font-weight: 500;
+
+                &>div:last-of-type {
+                    font-size: calc($base-stats-font-size - .25rem);
+                    font-weight: 400;
+                    margin-top: -.125em;
+                }
             }
 
-            &>span:last-of-type {
-                margin-left: .125em;
-                font-size: calc($base-stats-font-size - .25rem);
-                font-weight: 400;
-            }
-
-            &>div:last-child {
+            &>div:not(:first-child):last-child {
                 align-self: center;
                 margin-left: .5em;
             }
@@ -183,7 +185,7 @@ $header-gap: calc(.375em + .25vw);
             box-shadow: none;
             z-index: 2;
             left: -1%;
-            height: 103%;
+            height: 120%;
             width: 102%;
             border-radius: var(--border-radius25);
             transition: top 0.3s ease-in-out .3s, left 0.3s ease-in-out .3s, width 0.3s ease-in-out .3s,
@@ -214,15 +216,14 @@ $header-gap: calc(.375em + .25vw);
         }
 
         .summary-stats {
-            display: grid;
             grid-template-columns: 1fr 1fr;
             height: 100%;
 
             &>div {
+                margin-left: 1em;
                 display: auto;
                 align-self: center;
                 justify-self: start;
-
             }
 
             &>div:first-child {

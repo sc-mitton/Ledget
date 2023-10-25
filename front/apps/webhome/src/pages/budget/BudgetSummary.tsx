@@ -46,14 +46,14 @@ const BudgetSummary = () => {
                                         <DollarCents value={641364} />
                                     </div>
                                     <div>
-                                        <span>left</span>
+                                        <span>{period === 'total' ? 'spent' : 'left'}</span>
                                         {hasThumbs && <ThumbUp fill={'currentColor'} />}
                                     </div>
                                 </div>
                                 <div
                                     className={`summary-stats
                                         ${period}
-                                        ${period === 'month' && showMonthStats ? 'show' : 'show'}
+                                        ${period === 'month' && showMonthStats ? 'show' : ''}
                                         ${period === 'year' && showYearStats ? 'show' : ''}`}
                                     aria-hidden={
                                         (period === 'month' && !showMonthStats) ||
@@ -62,23 +62,30 @@ const BudgetSummary = () => {
                                     aria-label={`${period} stats`}
                                 >
                                     <div>
-                                        <div><DollarCents value={641364} /></div>
-                                        <span>spent</span>
+                                        <div>
+                                            <div><DollarCents value={641364} /></div>
+                                            <div>spent</div>
+                                        </div>
                                     </div>
                                     <div>
-                                        <div><DollarCents value={41364} /></div>
-                                        <span>spending left</span>
-                                        <StaticProgressCircle value={.35} />
+                                        <div>
+                                            <div><DollarCents value={41364} /></div>
+                                            <div>spending left</div>
+                                        </div>
+                                        <StaticProgressCircle value={.5} size={'1.2em'} />
                                     </div>
                                     <div>
-                                        <div><DollarCents value={41364} /></div>
-                                        <span> in bills left</span>
-                                        <StaticProgressCircle value={.85} />
+                                        <div>
+                                            <div><DollarCents value={41364} /></div>
+                                            <div> in bills left</div>
+                                        </div>
+                                        <StaticProgressCircle value={.85} size={'1.2em'} />
                                     </div>
                                     <div>
-                                        <span />
-                                        <span>9 of 11</span>
-                                        <span>bills paid</span>
+                                        <div>
+                                            <span>9 of 11</span>
+                                            <div>bills paid</div>
+                                        </div>
                                         <div>
                                             <CheckMark2 fill={'currentColor'} />
                                         </div>
