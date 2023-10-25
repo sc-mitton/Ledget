@@ -5,6 +5,9 @@
     gap: 1.5em;
     animation: delay-auto-width .5s ease-in-out forwards;
     animation-delay: 1s;
+    margin: 1.5em 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 @keyframes delay-auto-width {
@@ -19,16 +22,17 @@
 
 .skeleton-account-wafers--container>div:first-child,
 .account-wafers--container>div:first-child {
-    padding-top: 1.75em;
     display: flex;
+    margin-left: .25em;
     align-items: flex-start;
+    justify-content: center;
     flex-direction: column;
 }
 
 .skeleton-account-wafers--container>div:first-child>div,
 .account-wafers--container>div:first-child>div {
     font-weight: 500;
-    font-size: 1.875em;
+    font-size: 1.375em;
 }
 
 .add-accounts-btn--container {
@@ -45,10 +49,11 @@
 .account-wafers,
 .skeleton-wafers {
     display: inline-flex;
+    height: 7rem;
     gap: .75em;
     overflow-x: hidden;
     overflow-y: hidden;
-    padding: 1em 0;
+    padding: 1em 0 1em .25em;
     animation: make-scroll 1s ease-in-out forwards;
     animation-delay: 1s;
 }
@@ -145,7 +150,7 @@
 }
 
 .account-wafer.active {
-    box-shadow: var(--active-wafer-drop-shadow);
+    background-color: rgb(var(--charcoal-rgb), .9);
     border-radius: var(--border-radius4);
 }
 
@@ -182,11 +187,14 @@
 
 .account-wafer>div:nth-child(2) {
     margin-left: .75em;
-    margin-bottom: .125em;
 }
 
 .account-wafer>div:nth-child(2) img {
     filter: grayscale(1) contrast(130%);
+}
+
+.account-wafer.active>div:nth-child(2) img {
+    filter: grayscale(1) contrast(90%);
 }
 
 .wafer-name--container {
@@ -297,7 +305,7 @@
         inset: 0;
         position: absolute;
         height: 100%;
-        border-radius: var(--table-border-radius);
+        border-radius: var(--inner-window-border-radius);
     }
 
     &.loading {
@@ -314,7 +322,7 @@
         width: 5rem;
         height: .75em;
         border-radius: 50%;
-        background-color: rgb(0, 0, 0, .08);
+        background-color: rgb(var(--m-green-values), .4);
         animation: fetching-more .7s ease-in-out forwards;
     }
 }
@@ -324,13 +332,13 @@
     0% {
         transform: scale(0);
         opacity: 1;
-        box-shadow: rgb(0, 0, 0, .03) 0 0 0 .5em;
+        box-shadow: rgb(var(--m-green-values), .2) 0 0 0 .5em;
     }
 
     100% {
         transform: scale(14);
         opacity: 0;
-        box-shadow: rgb(0, 0, 0, .03) 0 0 0 .5em;
+        box-shadow: rgb(var(--m-green-values), .2) 0 0 0 .5em;
     }
 }
 
@@ -447,11 +455,26 @@ $charcoal: var(--charcoal-rgb);
 /* ------------------------------- Responsive ------------------------------- */
 
 @media (max-width: 700px) {
+    .wafer-balance--container {
+        margin-top: 0;
+    }
+
+    .account-wafer--container,
+    .skeleton-account-wafer--container {
+        height: 5.25rem;
+    }
+
 
     .account-wafers--container,
     .skeleton-account-wafers--container {
         grid-template-columns: 1fr;
         gap: 0;
+    }
+
+    .account-wafers,
+    .skeleton-account-wafers {
+        padding: 1em 0;
+        height: 6.25rem;
     }
 
     .account-wafers--container {
@@ -462,6 +485,7 @@ $charcoal: var(--charcoal-rgb);
             display: flex;
             flex-direction: row;
             align-items: flex-end;
+            justify-content: flex-start;
             gap: .5em;
             margin-left: .25em;
             margin-bottom: 1em;
@@ -471,8 +495,6 @@ $charcoal: var(--charcoal-rgb);
         // All accounts balance */
         &>div:first-child>div {
             font-weight: 500;
-            font-size: 1.375rem;
-            margin-bottom: -.125em;
         }
 
         &>div:first-child {

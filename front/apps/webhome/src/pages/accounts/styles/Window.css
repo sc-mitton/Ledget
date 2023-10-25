@@ -19,7 +19,7 @@
     background-color: var(--icon-light-gray);
     border-radius: var(--border-radius3);
     transition: background-color 0.2s ease-in-out;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     cursor: pointer;
     z-index: 1;
@@ -38,7 +38,7 @@
 }
 
 @media (max-width: 600px) {
-    #accounts-header-nav svg {
+    #accounts-header-nav ul li svg {
         visibility: collapse;
         width: 0;
         margin: 0;
@@ -46,5 +46,12 @@
 
     #accounts-window ul li {
         gap: 0;
+    }
+}
+
+@media (max-width: 450px) {
+
+    #accounts-window .window-header {
+        visibility: collapse;
     }
 }

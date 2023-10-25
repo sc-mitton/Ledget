@@ -1,12 +1,13 @@
 $container-padding: calc(.25em + .5vw);
 $stats-font-size: clamp(1rem, calc(.875rem + .25vw), 1.125rem);
+
 $header-font-size: clamp(.8125rem, calc(.75em + .25vw), 1rem);
 $header-height: calc($header-font-size + .5rem);
-
+$header-gap: calc(.375em + .25vw);
 
 #budget-summary--container {
+    margin: 1em 0;
     position: relative;
-    padding: $container-padding 0;
     display: flex;
     align-items: flex-end;
 
@@ -15,14 +16,13 @@ $header-height: calc($header-font-size + .5rem);
         margin-top: calc($header-height + .25em);
         flex: 1;
         padding-left: .25em;
-        padding-right: 2em;
+        padding-right: .5em;
         position: relative;
         font-size: $stats-font-size;
         font-weight: 500;
 
         svg {
             vertical-align: middle;
-            display: inline-block;
             margin-bottom: .25em;
             margin-left: .25em;
         }
@@ -56,9 +56,9 @@ $header-height: calc($header-font-size + .5rem);
     &>div:nth-child(-n+3) {
         position: absolute;
         height: $header-height;
-        top: calc(0% + $container-padding);
         border-radius: var(--border-radius1);
         z-index: 0;
+        top: 0;
         transition: left 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, z-index 0s linear 0.3s;
         overflow-x: auto;
 
@@ -73,14 +73,14 @@ $header-height: calc($header-font-size + .5rem);
         }
 
         &:first-child {
-            width: calc(100% / 3 - $container-padding * 2);
+            width: calc(100% / 3 - $header-gap);
             background-color: var(--btn-light-gray);
         }
 
         &:nth-child(2) {
             cursor: pointer;
-            left: calc(1/3 * 100%);
-            width: calc(100% / 3 - $container-padding * 2);
+            left: calc(100% / 3 + $header-gap/2);
+            width: calc(100% / 3 - $header-gap);
             background-color: var(--green-hlight2);
 
             h4 {
@@ -90,8 +90,8 @@ $header-height: calc($header-font-size + .5rem);
 
         &:nth-child(3) {
             cursor: pointer;
-            left: calc(2/3 * 100%);
-            width: calc(100% / 3 - $container-padding);
+            left: calc(2/3 * 100% + $header-gap);
+            width: calc(100% / 3 - $header-gap);
             background-color: var(--blue-hlight2);
 
             h4 {
@@ -105,8 +105,8 @@ $header-height: calc($header-font-size + .5rem);
             box-shadow: none;
             z-index: 1;
             left: 0;
-            height: calc(100% - $container-padding * 2);
-            width: calc(100%);
+            height: 100%;
+            width: 100%;
             transition: left 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, z-index 0s linear 0s, bottom 0.3s ease-in-out .3s;
         }
 
@@ -126,6 +126,20 @@ $header-height: calc($header-font-size + .5rem);
 
         &>div {
             flex: 1;
+        }
+
+        &>div:not(:first-child) {
+            margin-left: $header-gap;
+        }
+    }
+}
+
+@media (max-width: 700px) {
+    #budget-summary--container {
+
+        &>div:nth-child(4) {
+            flex-direction: column;
+            align-items: flex-end;
         }
     }
 }

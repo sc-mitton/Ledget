@@ -146,7 +146,7 @@ export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
     }
 
     return (
-        <div className="account-wafers--container">
+        <div className="account-wafers--container inner-window">
             <WafersHeader />
             <div
                 className="account-wafers"
@@ -155,7 +155,6 @@ export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
                     setTurnOffBottomMask(scrollContainer.scrollWidth - scrollContainer.scrollLeft <= scrollContainer.clientWidth)
                 }}
                 style={{
-                    height: '16.5ch',
                     maskImage: `linear-gradient(to right, transparent, black 1%, black ${turnOffBottomMask ? 100 : 99}%, transparent)`
                 }}
             >

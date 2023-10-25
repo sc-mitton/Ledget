@@ -35,19 +35,6 @@ const getMaskImage = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
     }
 }
 
-const getBorderRadius = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
-    switch (string) {
-        case 'top':
-            return '0 0 var(--border-radius3) var(--border-radius3)'
-        case 'bottom':
-            return 'var(--border-radius3) var(--border-radius3) 0 0'
-        case 'bottom-top':
-            return '0 0 0 0'
-        default:
-            return 'var(--border-radius3)'
-    }
-}
-
 export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boolean }>
     = ({ children, skeleton, className, ...rest }) => {
         const containerRef = useRef<HTMLDivElement>(null)
@@ -96,10 +83,6 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boole
                 <div
                     className={`transactions--container ${className}`}
                     ref={containerRef}
-                    style={{
-                        '--table-border-radius': getBorderRadius(shadow),
-                        maskImage: getMaskImage(shadow),
-                    } as React.CSSProperties}
                 >
                     {skeleton
                         ?
@@ -114,6 +97,7 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boole
                         :
                         <div
                             ref={tableRef}
+                            style={{ maskImage: getMaskImage(shadow) }}
                             className={`transactions--table not-skeleton ${className}`}
                             {...rest}
                         >

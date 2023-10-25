@@ -140,18 +140,6 @@ const Header = () => {
         <>
             <div className='window-header'>
                 <h2>{getNavHeaderPhrase(currentPath)}</h2>
-                {isSuccessLoadingAccounts && accountsData?.accounts.length > 0 &&
-                    <div className='refresh-btn--container' >
-                        <RefreshButton
-                            loading={isSyncing}
-                            onClick={() => {
-                                const account = searchParams.get('account')
-                                if (account) {
-                                    syncTransactions(account)
-                                }
-                            }}
-                        />
-                    </div>}
             </div>
             <div id="accounts-header-nav">
                 <ul ref={ref}>
@@ -169,6 +157,16 @@ const Header = () => {
                     ))
                     }
                     <animated.span style={props} />
+                    {isSuccessLoadingAccounts && accountsData?.accounts.length > 0 &&
+                        <RefreshButton
+                            loading={isSyncing}
+                            onClick={() => {
+                                const account = searchParams.get('account')
+                                if (account) {
+                                    syncTransactions(account)
+                                }
+                            }}
+                        />}
                 </ul>
                 <Outlet />
             </div>

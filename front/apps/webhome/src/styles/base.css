@@ -60,7 +60,7 @@
 
     --wafer-drag-drop-shadow: rgba(255, 255, 255, .5) 0px 4px 10px;
     --wafer-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
-    --active-wafer-drop-shadow: var(--green-hlight) 0px 0px 2px 2px;
+    --active-wafer-drop-shadow: var(--green-hlight2) 0px 0px 4px 2px;
     --wafer-hover-drop-shadow: rgb(0, 0, 0, .2) 0px 0px 12px 2px;
 
     --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
@@ -108,6 +108,7 @@
     --border-radius25: 12px;
     --border-radius3: 16px;
     --border-radius4: 24px;
+    --inner-window-border-radius: var(--border-radius25);
 
     /* Padding */
     --padding1: 8px 0px;
@@ -297,7 +298,6 @@ div.body {
 .window {
     box-shadow: var(--window-drop-shadow);
     border-radius: var(--border-radius3);
-    border: 1px solid white;
     padding: .75em 1.75em 1.75em 1.75em;
     box-sizing: border-box;
 }
@@ -330,7 +330,7 @@ div.body {
 
 .inner-window {
     background-color: var(--inner-window);
-    border-radius: var(--border-radius25);
+    border-radius: var(--inner-window-border-radius);
     padding: .75em;
     margin: -.125em;
 }
@@ -355,7 +355,7 @@ div.body {
     .window {
         box-shadow: none;
         border: none;
-        padding: 16px;
+        padding: 16px 0;
         padding-top: 12px;
     }
 }

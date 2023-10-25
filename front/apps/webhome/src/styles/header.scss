@@ -18,10 +18,11 @@ header {
     max-width: 87.5rem;
     margin: 0 auto;
 
-    &>:first-child img {
-        height: 65%;
+    &>div:first-child {
         cursor: pointer;
-        margin-left: .375em;
+        margin-left: 0em;
+        display: flex;
+        align-items: center;
     }
 
     &>div:nth-child(2) {
@@ -151,7 +152,6 @@ header {
     margin-left: .25em;
 }
 
-/* Responsiveness */
 @media (max-width: 1079px) {
     .header-container {
         &>div:nth-child(3) {
@@ -163,6 +163,10 @@ header {
 @media (max-width: 700px) {
 
     .header-container {
+        &>div:first-child {
+            margin-left: -.5em;
+        }
+
         &>div:nth-child(2) {
             justify-content: center;
         }
