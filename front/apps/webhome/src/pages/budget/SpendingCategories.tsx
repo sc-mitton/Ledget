@@ -197,12 +197,8 @@ const TabView = () => {
         <Tab.Group as={Column} selectedIndex={selectedIndex} onChange={setSelectedIndex}>
             <Tab.List style={{ display: 'contents' }} className="row header">
                 <div>
-                    <Tab as={'span'}>
-                        MONTHLY SPENDING
-                    </Tab>
-                    <Tab as={'span'}>
-                        YEARLY SPENDING
-                    </Tab>
+                    <Tab as={'span'}>MONTHLY SPENDING</Tab>
+                    <Tab as={'span'}>YEARLY SPENDING</Tab>
                 </div>
                 <div>
                     <div>
