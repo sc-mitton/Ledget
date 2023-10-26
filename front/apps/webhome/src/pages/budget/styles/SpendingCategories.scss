@@ -25,9 +25,9 @@ $row-padding: .625em;
             grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
             mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
             overflow-y: auto;
-            // aprx 5.5 rows (.5em - row padding, 1em - row height, .625em - row gap, .25em - column padding)
+            // aprx 5 rows ($row padding, 1em - row height, .625em - row gap, 4em - headerheight)
             row-gap: .625em;
-            max-height: calc(5.5 * (.625em * 2 + 1em + .625em + .25em));
+            max-height: calc(5 * (.625em * 2 + 1em + $row-padding) + 4em);
             position: relative;
             background-color: inherit;
 
@@ -74,6 +74,13 @@ $row-padding: .625em;
                 box-shadow: 0px 4px 4px -2px var(--inner-window-solid);
             }
 
+            @media screen and (max-width: 800px) {
+                &.header>div h4 {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+
             // Name & emoji columns
             &>div:nth-child(5n+1) {
                 padding-left: .75em;
@@ -85,13 +92,23 @@ $row-padding: .625em;
 
             // Amount spent columns
             &>div:nth-child(5n+2):not(.spanned) {
+                display: flex;
+                align-items: center;
                 text-align: right;
+                justify-content: flex-end;
                 padding-right: .5em;
                 font-weight: 500;
             }
 
+            &>div:nth-child(5n+3):not(.spanned) {
+                display: flex;
+                align-items: center;
+            }
+
             // Limit amount columns
             &>div:nth-child(5n+4) {
+                display: flex;
+                align-items: center;
                 padding-left: .5em;
                 padding-right: .25em;
             }
