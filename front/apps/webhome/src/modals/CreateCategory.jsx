@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
 import { object, string, number } from "yup"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 import './styles/Forms.css'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
@@ -18,6 +18,7 @@ export const schema = object().shape({
 })
 
 const Form = (props) => {
+    const location = useLocation()
     const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation()
 
     const { register, watch, control, handleSubmit, formState: { errors } } = useForm({
@@ -77,7 +78,7 @@ const Form = (props) => {
                 </div>
                 <div className="extra-padded-row">
                     <div>
-                        <PeriodSelect labelPrefix={'Resets'} />
+                        <PeriodSelect labelPrefix={'Resets'} default={location.state?.period} />
                     </div>
                     <div>
                         <AddAlert limitAmount={watchLimitAmount} />

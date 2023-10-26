@@ -73,7 +73,7 @@
     --input-border: solid 1px rgb(0, 0, 0, .02);
 
     /* Text */
-    --input-focus: rgb(96, 140, 211);
+    /* --input-focus: rgb(96, 140, 211); */
     --input-focus: rgb(96, 211, 156);
     --m-text-gray: #292929;
     --sub-text: #3d3d3d;
@@ -121,6 +121,14 @@
         --input-placeholder: #2a2a2a;
         --m-text-gray: rgb(44, 44, 44);
     }
+
+    * {
+        scrollbar-width: thin;
+    }
+}
+
+*::-webkit-scrollbar {
+    width: .25em;
 }
 
 body {

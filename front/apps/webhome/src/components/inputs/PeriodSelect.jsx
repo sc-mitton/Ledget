@@ -1,23 +1,34 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 import ComboSelect from './ComboSelect'
 import { SlimInputButton, DropAnimation } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 
-const options = [
+const opts = [
     { id: 1, value: 'month', label: 'Monthly', default: true },
     { id: 2, value: 'year', label: 'Yearly' }
 ]
 
 const PeriodSelect = (props) => {
+    const { hasLabel, labelPrefix, value: propsValue, onChange, default: defaultValue } = props
+
     const [value, setValue] = useState()
     const buttonRef = useRef(null)
 
-    const localSetValue = props.onChange || setValue
-    const localValue = props.value || value
+    useEffect(() => {
+        if (defaultValue) {
+            const val = opts.find((option) => option.value === defaultValue).value
+            if (val) {
+                setValue(val)
+                return
+            }
+        }
+
+        setValue(opts.find((option) => option.default).value)
+    }, [])
 
     const Options = () => (
-        options.map((option) => (
+        opts.map((option) => (
             <ComboSelect.Option
                 key={option.id}
                 value={option.value}
@@ -40,14 +51,14 @@ const PeriodSelect = (props) => {
 
     return (
         <>
-            {props.hasLabel &&
+            {hasLabel &&
                 <label htmlFor="period">Refreshes</label>
             }
             <ComboSelect
                 name="period"
-                value={localValue}
-                onChange={localSetValue}
-                defaultValue={options.find((option) => option.default).value}
+                value={propsValue || value}
+                onChange={onChange || setValue}
+                defaultValue={opts.find((option) => option.default).value}
             >
                 {({ open }) => (
                     <>
@@ -56,14 +67,14 @@ const PeriodSelect = (props) => {
                             id="period-select-btn"
                             style={{
                                 color: 'var(--m-text-gray)',
-                                marginTop: props.hasLabel ? '6px' : '0px'
+                                marginTop: hasLabel ? '6px' : '0px'
                             }}
                             ref={buttonRef}
                         >
-                            {props.labelPrefix && `${props.labelPrefix} `}
-                            {props.labelPrefix
-                                ? `${options.find((option) => option.value === localValue)?.label.charAt(0).toLowerCase()}${options.find((option) => option.value === localValue)?.label.slice(1)}`
-                                : `${options.find((option) => option.value === localValue)?.label}`
+                            {labelPrefix && `${labelPrefix} `}
+                            {labelPrefix
+                                ? `${opts.find((option) => option.value === value)?.label.charAt(0).toLowerCase()}${opts.find((option) => option.value === value)?.label.slice(1)}`
+                                : `${opts.find((option) => option.value === value)?.label}`
                             }
                             {<ArrowIcon
                                 width={'.8em'}

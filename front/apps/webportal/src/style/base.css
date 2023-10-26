@@ -61,13 +61,12 @@
     --input-border: solid 1px rgb(0, 0, 0, .02);
 
     /* Text */
-    --input-focus: rgb(96, 140, 211);
+    /* --input-focus: rgb(96, 140, 211); */
     --input-focus: rgb(96, 211, 156);
     --m-text-gray: #292929;
     --sub-text: #3d3d3d;
     --input-placeholder: #848484;
     --input-placeholder2: #a6a6a6;
-    --input-focus: rgb(96, 140, 211);
     --white-text: #f8f8f8;
     --muted-text-gray: #848484;
     --faded-text: rgb(0, 0, 0, .3);

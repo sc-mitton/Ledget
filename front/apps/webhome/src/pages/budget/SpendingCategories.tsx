@@ -1,14 +1,50 @@
-import React, { FC, useMemo, memo } from 'react'
+import React, { FC, memo } from 'react'
 
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import Big from 'big.js'
 
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
 import { useGetCategoriesQuery } from '@features/categorySlice'
-import { useGetBillsQuery } from '@features/billSlice'
-import { DollarCents, StaticProgressCircle } from '@ledget/ui'
+import { DollarCents, StaticProgressCircle, GrnPrimaryButton, BluePrimaryButton } from '@ledget/ui'
+import { Plus } from '@ledget/media'
 
+
+const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) => {
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    return (
+        <>
+            {period === 'year'
+                ?
+                <BluePrimaryButton
+                    className={`add-new-category ${period}`}
+                    onClick={() => {
+                        navigate(
+                            `${location.pathname}/new-category/${location.search}`,
+                            { state: { period: period } }
+                        )
+                    }}
+                >
+                    <Plus stroke={'currentColor'} />
+                </BluePrimaryButton>
+                :
+                <GrnPrimaryButton
+                    className={`add-new-category ${period}`}
+                    onClick={() => {
+                        navigate(
+                            `${location.pathname}/new-category/${location.search}`,
+                            { state: { period: period } }
+                        )
+                    }}
+                >
+                    <Plus stroke={'currentColor'} />
+                </GrnPrimaryButton>
+            }
+        </>
+    )
+}
 
 const Column: FC<React.HTMLProps<HTMLDivElement>> = ({ children }) => {
     return (
@@ -25,82 +61,111 @@ const Row = ({ category }: { category: Category }) => {
                 <span>{category.emoji}</span>
                 <span>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</span>
             </div>
-            <div className="row-value">
-                <div>
-                    <DollarCents value={category.amount_spent ? Big(category.amount_spent).toFixed(2) : '0.00'} />
-                </div>
-                {category.limit_amount &&
-                    <>
-                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
-                        <div>
-                            <DollarCents
-                                value={category.limit_amount ? Big(category.limit_amount).div(100).toFixed(2) : '0.00'}
-                                hasCents={false}
-                            />
-                        </div>
+            {category.limit_amount ?
+                <>
+                    <div>
+                        <DollarCents
+                            value={category.amount_spent ? Big(category.amount_spent).toFixed(2) : '0.00'}
+                            hasCents={false}
+                        />
+                    </div>
+                    <div>/</div>
+                    <div>
+                        <DollarCents
+                            value={category.limit_amount ? Big(category.limit_amount).div(100).toFixed(2) : '0.00'}
+                            hasCents={false}
+                        />
+                    </div>
+                    <div>
                         <StaticProgressCircle value={
                             Math.round(Big(category.amount_spent || 0).div(category.limit_amount).times(100).toNumber()) / 100 || 0
                         } />
-                    </>
-                }
-            </div>
+                    </div>
+                </>
+                :
+                <>
+                    <div className="spanned">
+                        <DollarCents
+                            value={category.amount_spent ? Big(category.amount_spent).toFixed(2) : '0.00'}
+                            hasCents={false}
+                        />
+                    </div>
+                </>
+            }
         </div>
     )
 }
 
-const Rows = memo(({ categories }: { categories: Category[] }) => {
+const Rows = memo(({ categories, period }: { categories: Category[], period: 'month' | 'year' }) => {
+
+    const totalSpent = categories.reduce((acc: number, category) =>
+        Big(category.amount_spent || 0).times(100).add(acc).toNumber(), 0)
+
+    const totalLimit = categories.reduce((acc: number, category) =>
+        category.limit_amount + acc, 0)
+
     return (
         <div className="rows">
-            {categories.map(category => (
-                <Row category={category} />
-            ))}
+            <div className="row header">
+                <div>
+                    <h4>{`${period.toUpperCase()}LY`} SPENDING</h4>
+                </div>
+                <div>
+                    <DollarCents value={totalLimit ? totalSpent : '0.00'} />
+                </div>
+                <div>/</div>
+                <div>
+                    <DollarCents value={totalLimit ? totalLimit : '0.00'} hasCents={false} />
+                </div>
+                <div>
+                    <StaticProgressCircle value={
+                        Math.round(totalSpent / totalLimit * 100) / 100
+                    } />
+                </div>
+            </div>
+            {categories.length > 0
+                ?
+                <>
+                    {categories.map(category => (
+                        <Row category={category} />
+                    ))}
+                </>
+                :
+                <NewCategoryButton period={period} />
+            }
         </div>
     )
 })
 
 const SpendingCategories = () => {
     const [searchParams] = useSearchParams()
-    const { data: categoriesData, isSuccess: categoriesSuccess } = useGetCategoriesQuery({
+    const {
+        data: categoriesData,
+        isSuccess: categoriesSuccess,
+        isLoading: categoriesIsLoading
+    } = useGetCategoriesQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
-
-    const totalSpent = useMemo<number>(() => {
-        return categoriesData ? categoriesData.filter(category => category.period === 'month').reduce((acc: number, category) =>
-            Big(category.amount_spent || 0).times(100).add(acc).toNumber(), 0) : 0
-    }, [categoriesData])
-
-    const totalLimit = useMemo<number>(() => {
-        return categoriesData ? categoriesData.filter(category => category.period === 'month').reduce((acc: number, category) =>
-            category.limit_amount + acc, 0) : 0
-    }, [categoriesData])
 
     return (
         <div className="inner-window" id="spending-categories-window">
             {categoriesSuccess && (
                 <>
                     <Column id="month-category-rows">
-                        <div className="row header">
-                            <div className="row-label">
-                                <h4>MONTHLY SPENDING</h4>
-                            </div>
-                            <div className="row-value">
-                                <div><DollarCents value={totalLimit ? totalSpent : '0.00'} /></div>
-                                <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
-                                <div><DollarCents value={totalLimit ? totalLimit : '0.00'} hasCents={false} /></div>
-                                <StaticProgressCircle value={
-                                    Math.round(totalSpent / totalLimit * 100) / 100
-                                } />
-                            </div>
-                        </div>
-                        <Rows categories={categoriesData?.filter(category => category.period === 'month') || []} />
+                        <Rows
+                            categories={categoriesData?.filter(category => category.period === 'month') || []}
+                            period="month"
+                        />
                     </Column>
                     <Column id="year-category-rows">
-                        <Rows categories={categoriesData?.filter(category => category.period === 'year') || []} />
+                        <Rows
+                            categories={categoriesData?.filter(category => category.period === 'year') || []}
+                            period="year"
+                        />
                     </Column>
                 </>
             )}
-
         </div>
     )
 }
