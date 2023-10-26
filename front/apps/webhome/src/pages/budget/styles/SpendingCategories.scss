@@ -13,10 +13,9 @@ $row-padding: .625em;
         flex: 1;
         display: flex;
         flex-direction: column;
-        // background: radial-gradient(ellipse, rgba(14, 7, 7, .01) 1%, transparent 50%);
         background-color: inherit;
 
-        .rows {
+        &>div {
             width: calc(100% + .75em);
             box-sizing: border-box;
             padding: 0 .125em;

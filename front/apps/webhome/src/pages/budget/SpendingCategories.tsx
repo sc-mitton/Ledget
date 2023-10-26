@@ -50,7 +50,9 @@ const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) =
 const Column: FC<React.HTMLProps<HTMLDivElement>> = ({ children }) => {
     return (
         <div className="column">
-            {children}
+            <div>
+                {children}
+            </div>
         </div>
     )
 }
@@ -98,12 +100,6 @@ const Row = ({ category }: { category: Category }) => {
 }
 
 const Rows = memo(({ categories, period }: { categories: Category[], period: 'month' | 'year' }) => {
-
-    const totalSpent = categories.reduce((acc: number, category) =>
-        Big(category.amount_spent || 0).times(100).add(acc).toNumber(), 0)
-
-    const totalLimit = categories.reduce((acc: number, category) =>
-        category.limit_amount + acc, 0)
 
     return (
         <>
@@ -163,28 +159,24 @@ const ColumnView = () => {
     return (
         <>
             <Column>
-                <div className="rows">
-                    <RowHeader
-                        period='month'
-                        categories={categoriesData?.filter(category => category.period === 'month') || []}
-                    />
-                    <Rows
-                        categories={categoriesData?.filter(category => category.period === 'month') || []}
-                        period="month"
-                    />
-                </div>
+                <RowHeader
+                    period='month'
+                    categories={categoriesData?.filter(category => category.period === 'month') || []}
+                />
+                <Rows
+                    categories={categoriesData?.filter(category => category.period === 'month') || []}
+                    period="month"
+                />
             </Column>
             <Column>
-                <div className="rows">
-                    <RowHeader
-                        period='year'
-                        categories={categoriesData?.filter(category => category.period === 'year') || []}
-                    />
-                    <Rows
-                        categories={categoriesData?.filter(category => category.period === 'year') || []}
-                        period="year"
-                    />
-                </div>
+                <RowHeader
+                    period='year'
+                    categories={categoriesData?.filter(category => category.period === 'year') || []}
+                />
+                <Rows
+                    categories={categoriesData?.filter(category => category.period === 'year') || []}
+                    period="year"
+                />
             </Column>
         </>
     )
