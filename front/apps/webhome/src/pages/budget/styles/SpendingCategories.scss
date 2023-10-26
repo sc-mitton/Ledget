@@ -11,34 +11,30 @@ $row-padding: .625em;
 
     .column {
         flex: 1;
-        display: flex;
-        flex-direction: column;
+        align-self: flex-start;
+
+        width: calc(100% + .75em);
+        box-sizing: border-box;
+        padding: 0 .125em;
+        padding-right: .75em;
+        display: grid;
+        grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
+        mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
+        overflow-y: auto;
+        // aprx 5 rows ($row padding, 1em - row height, .625em - row gap, 4em - headerheight)
+        row-gap: .625em;
+        max-height: calc(5 * (.625em * 2 + 1em + $row-padding) + 4em);
+        position: relative;
         background-color: inherit;
 
-        &>div {
-            width: calc(100% + .75em);
-            box-sizing: border-box;
-            padding: 0 .125em;
-            padding-right: .75em;
-            display: grid;
-            grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
-            mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
-            overflow-y: auto;
-            // aprx 5 rows ($row padding, 1em - row height, .625em - row gap, 4em - headerheight)
-            row-gap: .625em;
-            max-height: calc(5 * (.625em * 2 + 1em + $row-padding) + 4em);
-            position: relative;
-            background-color: inherit;
+        button {
+            grid-column: 1 / span 5;
+            padding: calc($row-padding + .125em) 0;
+        }
 
-            button {
-                grid-column: 1 / span 5;
-                padding: calc($row-padding + .125em) 0;
-            }
-
-            &::after {
-                content: "";
-                height: .01em;
-            }
+        &::after {
+            content: "";
+            height: .01em;
         }
 
         .row {

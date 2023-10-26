@@ -50,9 +50,7 @@ const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) =
 const Column: FC<React.HTMLProps<HTMLDivElement>> = ({ children }) => {
     return (
         <div className="column">
-            <div>
-                {children}
-            </div>
+            {children}
         </div>
     )
 }
