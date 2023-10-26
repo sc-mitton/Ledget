@@ -1,4 +1,4 @@
-import React, { FC, memo, Fragment, useMemo, useState } from 'react'
+import React, { FC, memo, Fragment, useState, useRef, useEffect } from 'react'
 
 import { Tab } from '@headlessui/react'
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
@@ -50,7 +50,7 @@ const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) =
 const Column: FC<React.HTMLProps<HTMLDivElement>> = ({ children }) => {
     return (
         <div className="column">
-            {children}
+            <div>{children}</div>
         </div>
     )
 }
@@ -105,7 +105,7 @@ const Rows = memo(({ categories, period }: { categories: Category[], period: 'mo
                 ?
                 <>
                     {categories.map(category => (
-                        <Row category={category} />
+                        <Row key={category.id} category={category} />
                     ))}
                 </>
                 :
@@ -115,13 +115,15 @@ const Rows = memo(({ categories, period }: { categories: Category[], period: 'mo
     )
 })
 
-const RowHeader: FC<{ period: 'month' | 'year', categories: Category[] }> = memo(({ period, categories }) => {
+const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
+    const [searchParams] = useSearchParams()
+    const { data } = useGetCategoriesQuery({
+        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
+        year: searchParams.get('year') || `${new Date().getFullYear()}`,
+    })
 
-    const totalSpent = categories.reduce((acc: number, category) =>
-        Big(category.amount_spent || 0).times(100).add(acc).toNumber(), 0)
-
-    const totalLimit = categories.reduce((acc: number, category) =>
-        category.limit_amount + acc, 0)
+    const totalSpent = period === 'month' ? data?.monthly_spent : data?.yearly_spent
+    const totalLimit = period === 'month' ? data?.limit_amount_monthly : data?.limit_amount_yearly
 
     return (
         <div className="row header">
@@ -132,7 +134,9 @@ const RowHeader: FC<{ period: 'month' | 'year', categories: Category[] }> = memo
                 </h4>
             </div>
             <div>
-                <DollarCents value={totalLimit ? totalSpent : '0.00'} />
+                <div>
+                    <DollarCents value={totalSpent ? totalSpent : '0.00'} />
+                </div>
             </div>
             <div>/</div>
             <div>
@@ -140,16 +144,18 @@ const RowHeader: FC<{ period: 'month' | 'year', categories: Category[] }> = memo
             </div>
             <div>
                 <StaticProgressCircle value={
-                    Math.round(totalSpent / totalLimit * 100) / 100
+                    totalLimit && totalSpent
+                        ? Math.round(totalSpent / totalLimit * 100) / 100
+                        : 0
                 } />
             </div>
         </div>
     )
-})
+}
 
 const ColumnView = () => {
     const [searchParams] = useSearchParams()
-    const { data: categoriesData } = useGetCategoriesQuery({
+    const { data } = useGetCategoriesQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
@@ -157,22 +163,16 @@ const ColumnView = () => {
     return (
         <>
             <Column>
-                <RowHeader
-                    period='month'
-                    categories={categoriesData?.filter(category => category.period === 'month') || []}
-                />
+                <RowHeader period='month' />
                 <Rows
-                    categories={categoriesData?.filter(category => category.period === 'month') || []}
+                    categories={data?.categories.filter(category => category.period === 'month') || []}
                     period="month"
                 />
             </Column>
             <Column>
-                <RowHeader
-                    period='year'
-                    categories={categoriesData?.filter(category => category.period === 'year') || []}
-                />
+                <RowHeader period='year' />
                 <Rows
-                    categories={categoriesData?.filter(category => category.period === 'year') || []}
+                    categories={data?.categories.filter(category => category.period === 'year') || []}
                     period="year"
                 />
             </Column>
@@ -182,38 +182,70 @@ const ColumnView = () => {
 
 const TabView = () => {
     const [searchParams] = useSearchParams()
-    const [currentTab, setCurrentTab] = useState<'month' | 'year'>('month')
-    const { data: categoriesData } = useGetCategoriesQuery({
+    const [selectedIndex, setSelectedIndex] = useState(0)
+    const { data } = useGetCategoriesQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
 
+    const totalMonthlySpent = data?.monthly_spent
+    const totalMonthlyLimit = data?.limit_amount_monthly
+    const totalYearlySpent = data?.yearly_spent
+    const totalYearlyLimit = data?.limit_amount_yearly
+
     return (
-        <Tab.Group>
-            <Tab.List>
-                <Tab>
-                    <RowHeader
-                        period='month'
-                        categories={categoriesData?.filter(category => category.period === 'month') || []}
+        <Tab.Group as={Column} selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+            <Tab.List style={{ display: 'contents' }} className="row header">
+                <div>
+                    <Tab as={'span'}>
+                        MONTHLY SPENDING
+                    </Tab>
+                    <Tab as={'span'}>
+                        YEARLY SPENDING
+                    </Tab>
+                </div>
+                <div>
+                    <div>
+                        <DollarCents
+                            value={
+                                selectedIndex === 0
+                                    ? totalMonthlySpent ? totalMonthlySpent : '0.00'
+                                    : totalYearlySpent ? totalYearlySpent : '0.00'
+                            }
+                        />
+                    </div>
+                </div>
+                <div>/</div>
+                <div>
+                    <DollarCents
+                        value={
+                            selectedIndex === 0
+                                ? totalMonthlyLimit ? totalMonthlyLimit : '0.00'
+                                : totalYearlyLimit ? totalYearlyLimit : '0.00'
+                        }
+                        hasCents={false}
                     />
-                </Tab>
-                <Tab>
-                    <RowHeader
-                        period='month'
-                        categories={categoriesData?.filter(category => category.period === 'year') || []}
+                </div>
+                <div>
+                    <StaticProgressCircle
+                        value={
+                            selectedIndex === 0
+                                ? totalMonthlyLimit && totalMonthlySpent ? Math.round(totalMonthlySpent / totalMonthlyLimit * 100) / 100 : 0
+                                : totalYearlyLimit && totalYearlySpent ? Math.round(totalYearlySpent / totalYearlyLimit * 100) / 100 : 0
+                        }
                     />
-                </Tab>
+                </div>
             </Tab.List>
-            <Tab.Panels>
-                <Tab.Panel>
+            <Tab.Panels as={Fragment}>
+                <Tab.Panel as={Fragment}>
                     <Rows
-                        categories={categoriesData?.filter(category => category.period === 'month') || []}
+                        categories={data?.categories.filter(category => category.period === 'month') || []}
                         period="month"
                     />
                 </Tab.Panel>
-                <Tab.Panel>
+                <Tab.Panel as={Fragment}>
                     <Rows
-                        categories={categoriesData?.filter(category => category.period === 'year') || []}
+                        categories={data?.categories.filter(category => category.period === 'year') || []}
                         period="year"
                     />
                 </Tab.Panel>
@@ -231,14 +263,27 @@ const SpendingCategories = () => {
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
+    const [isTabView, setIsTabView] = useState(false)
+    const ref = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsTabView(ref.current ? ref.current.offsetWidth < 600 : false)
+        }
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [ref.current])
 
     return (
-        <div className="inner-window" id="spending-categories-window">
-            {categoriesSuccess && (
+        <div id="spending-categories-window" ref={ref}>
+            {categoriesSuccess &&
                 <>
-                    <ColumnView />
+                    {isTabView ? <TabView /> : <ColumnView />}
                 </>
-            )}
+            }
         </div>
     )
 }

@@ -1,151 +1,173 @@
+$window-padding: 1.5em;
 $row-padding: .625em;
+$column-gap: 1.25em;
+$row-gap: .625em;
+$background: var(--window);
 
 #spending-categories-window {
     width: 100%;
     margin: 1em 0;
     display: flex;
-    border-radius: var(--border-radius2);
-    background-color: var(--inner-window-solid);
-    padding: 1.25em;
-    gap: 1em;
+    // border-radius: var(--border-radius2);
+    // background-color: var(--inner-window-solid);
+    // padding: $window-padding;
+    background-color: $background;
+    gap: $column-gap;
 
     .column {
         flex: 1;
-        align-self: flex-start;
-
-        width: calc(100% + .75em);
-        box-sizing: border-box;
-        padding: 0 .125em;
-        padding-right: .75em;
-        display: grid;
-        grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
-        mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
-        overflow-y: auto;
-        // aprx 5 rows ($row padding, 1em - row height, .625em - row gap, 4em - headerheight)
-        row-gap: .625em;
-        max-height: calc(5 * (.625em * 2 + 1em + $row-padding) + 4em);
-        position: relative;
         background-color: inherit;
 
-        button {
-            grid-column: 1 / span 5;
-            padding: calc($row-padding + .125em) 0;
-        }
-
-        &::after {
-            content: "";
-            height: .01em;
-        }
-
-        .row {
-            display: contents;
-            cursor: pointer;
-            transition: all .2s ease-in-out;
+        &>div {
+            align-self: flex-start;
+            width: calc(100% + .75em);
+            box-sizing: border-box;
+            padding: 0 .125em;
+            padding-right: .75em;
+            display: grid;
+            grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
+            mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
+            overflow-y: auto;
+            // aprx 5 rows ($row-gap, 1em - row height, , 4em - headerheight)
+            row-gap: $row-gap;
+            max-height: calc(5 * ($row-gap * 2 + 1em + $row-padding) + 4em);
+            position: relative;
             background-color: inherit;
 
-            .row-label {
-                display: flex;
-                gap: .5em;
+            button {
+                grid-column: 1 / span 5;
+                padding: calc($row-padding + .125em) 0;
             }
 
-            &>div {
-                padding: $row-padding 0;
+            &::after {
+                content: "";
+                height: .01em;
             }
 
-            &>div.spanned {
-                // cover 2-5 columns
-                grid-column: 2 / span 4;
-                border-radius: 0 var(--border-radius2) var(--border-radius2) 0;
-                text-align: right;
-                padding-right: 1.25em;
-            }
-
-            &.header>div {
-                cursor: default;
-                padding-top: 0;
-                position: sticky;
-                top: 0;
+            .row {
+                display: contents;
+                cursor: pointer;
+                transition: all .2s ease-in-out;
                 background-color: inherit;
-                box-shadow: 0px 4px 4px -2px var(--inner-window-solid);
-            }
 
-            @media screen and (max-width: 800px) {
-                &.header>div h4 {
+                .row-label {
                     display: flex;
-                    flex-direction: column;
+                    gap: .5em;
                 }
-            }
 
-            // Name & emoji columns
-            &>div:nth-child(5n+1) {
-                padding-left: .75em;
-            }
+                &>div {
+                    padding: $row-padding 0;
+                }
 
-            &:not(.header)>div:nth-child(5n+1) {
-                border-radius: var(--border-radius2) 0 0 var(--border-radius2);
-            }
+                &>div.spanned {
+                    // cover 2-5 columns
+                    grid-column: 2 / span 4;
+                    border-radius: 0 var(--border-radius2) var(--border-radius2) 0;
+                    text-align: right;
+                    padding-right: 1.25em;
+                }
 
-            // Amount spent columns
-            &>div:nth-child(5n+2):not(.spanned) {
-                display: flex;
-                align-items: center;
-                text-align: right;
-                justify-content: flex-end;
-                padding-right: .5em;
-                font-weight: 500;
-            }
+                &.header>div {
+                    cursor: default;
+                    padding-top: 0;
+                    position: sticky;
+                    top: 0;
+                    background-color: inherit;
+                    box-shadow: 0px 4px 4px -2px $background;
+                    ;
+                    display: flex;
+                    gap: .75em;
+                    font-weight: 500;
+                    cursor: pointer;
 
-            &>div:nth-child(5n+3):not(.spanned) {
-                display: flex;
-                align-items: center;
-            }
+                    span:focus {
+                        outline: none;
+                    }
 
-            // Limit amount columns
-            &>div:nth-child(5n+4) {
-                display: flex;
-                align-items: center;
-                padding-left: .5em;
-                padding-right: .25em;
-            }
+                    span[aria-selected="false"] {
+                        opacity: .4;
+                    }
+                }
 
-            // Progress circle columns
-            &>div:nth-child(5n) {
-                padding-left: .5em;
-                padding-right: .75em;
-                display: flex;
-                align-items: center;
-            }
+                @media screen and (max-width: 800px) {
+                    &.header>div h4 {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
 
-            &:not(.header)>div:nth-child(5n) {
-                border-radius: 0 var(--border-radius2) var(--border-radius2) 0;
-            }
+                // Name & emoji columns
+                &>div:nth-child(5n+1) {
+                    padding-left: .75em;
+                }
 
-            // Coloring
-            &.month * {
-                color: var(--green-dark4);
-            }
+                &:not(.header)>div:nth-child(5n+1) {
+                    border-radius: var(--border-radius2) 0 0 var(--border-radius2);
+                }
 
-            &.month>div {
-                background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 5%);
-            }
+                // Amount spent columns
+                &>div:nth-child(5n+2):not(.spanned) {
+                    display: flex;
+                    align-items: center;
+                    text-align: right;
+                    justify-content: flex-end;
+                    padding-right: .5em;
+                    font-weight: 500;
+                }
 
-            &.month:hover>div {
-                background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 15%);
-                transition: all .2s ease-in-out;
-            }
+                // Forward slash columns
+                &>div:nth-child(5n+3):not(.spanned) {
+                    display: flex;
+                    align-items: center;
+                }
 
-            &.year * {
-                color: var(--blue-dark4);
-            }
+                // Limit amount columns
+                &>div:nth-child(5n+4) {
+                    display: flex;
+                    align-items: center;
+                    padding-left: .5em;
+                    padding-right: .25em;
+                }
 
-            &.year>div {
-                background-color: color-mix(in srgb, var(--blue-hlight2), var(--blue-dark4) 5%);
-            }
+                // Progress circle columns
+                &>div:nth-child(5n) {
+                    padding-left: .5em;
+                    padding-right: .75em;
+                    display: flex;
+                    align-items: center;
+                }
 
-            &.year:hover>div {
-                background-color: color-mix(in srgb, var(--blue-hlight2), var(--blue-dark4) 10%);
-                transition: all .2s ease-in-out;
+                &:not(.header)>div:nth-child(5n) {
+                    border-radius: 0 var(--border-radius2) var(--border-radius2) 0;
+                }
 
+                // Coloring
+                &.month * {
+                    color: var(--green-dark4);
+                }
+
+                &.month>div {
+                    background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 5%);
+                }
+
+                &.month:hover>div {
+                    background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 15%);
+                    transition: all .2s ease-in-out;
+                }
+
+                &.year * {
+                    color: var(--blue-dark4);
+                }
+
+                &.year>div {
+                    background-color: color-mix(in srgb, var(--blue-hlight2), var(--blue-dark4) 5%);
+                }
+
+                &.year:hover>div {
+                    background-color: color-mix(in srgb, var(--blue-hlight2), var(--blue-dark4) 10%);
+                    transition: all .2s ease-in-out;
+
+                }
             }
         }
     }

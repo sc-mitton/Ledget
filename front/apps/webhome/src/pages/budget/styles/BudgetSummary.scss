@@ -196,7 +196,7 @@ $header-gap: calc(.375em + .25vw);
         &:not(:first-child):focus-visible h4 {
             visibility: none;
             opacity: 0;
-            transition: opacity 0.2s ease-in-out, visibility 0.3s ease-in-out .3s;
+            transition: opacity 0.2s ease-in-out .3s, visibility 0.3s ease-in-out .3s;
         }
     }
 }
