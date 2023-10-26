@@ -103,7 +103,7 @@ export const StaticProgressCircle = ({
           fill="transparent"
           transform="rotate(-90 18 18)"
           strokeLinecap='round'
-          strokeDasharray={`${value ? parseFloat((value % 1).toFixed(2)) * 88 : 0}, 88`}
+          strokeDasharray={`${value ? parseFloat((Math.min(1, value)).toFixed(2)) * 88 : 0}, 88`}
         />
       </svg>
     </div>

@@ -1,12 +1,15 @@
 from rest_framework.serializers import ModelSerializer, ListSerializer as LS
 from rest_framework.serializers import SerializerMethodField
+from django.db import transaction
 
 from ledgetback.serializers import NestedCreateMixin
 from .models import (
     Category,
     Alert,
     Bill,
-    Reminder
+    Reminder,
+    UserBill,
+    UserCategory
 )
 
 
@@ -47,9 +50,15 @@ class CategorySerializer(NestedCreateMixin, ModelSerializer):
         required_fields = ['name', 'period', 'limit_amount']
         list_serializer_class = ListCreateSerializer
 
+    @transaction.atomic
     def create(self, validated_data, *args, **kwargs):
-        validated_data['user_id'] = self.context['request'].user.id
-        return super().create(validated_data, *args, **kwargs)
+        instance = super().create(validated_data, *args, **kwargs)
+        UserCategory.objects.create(
+            user_id=self.context['request'].user.id,
+            category_id=instance.id,
+            order=0
+        )
+        return instance
 
     def get_amount_spent(self, obj):
         return obj.amount_spent
@@ -65,6 +74,12 @@ class BillSerializer(NestedCreateMixin, ModelSerializer):
         required_fields = ['name', 'period', 'upper_amount']
         list_serializer_class = ListCreateSerializer
 
+    @transaction.atomic
     def create(self, validated_data, *args, **kwargs):
-        validated_data['user_id'] = self.context['request'].user.id
-        return super().create(validated_data, *args, **kwargs)
+        instance = super().create(validated_data, *args, **kwargs)
+        UserBill.objects.create(
+            user_id=self.context['request'].user.id,
+            bill_id=instance.id,
+            order=0
+        )
+        return instance

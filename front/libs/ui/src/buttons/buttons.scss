@@ -121,7 +121,7 @@
 
     &:hover {
         color: var(--green-dark4);
-        background-color: var(--green-hlight3);
+        background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 8%);
         transition: all .3s ease;
     }
 }
@@ -144,7 +144,7 @@
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--green-hlight3);
+        background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 8%);
         transition: all .3s ease;
     }
 }
@@ -155,7 +155,7 @@
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--blue-hlight3);
+        background-color: color-mix(in srgb, var(--blue-hlight2), var(--blue-dark4) 7%);
         transition: all .3s ease;
     }
 }

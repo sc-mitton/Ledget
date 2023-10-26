@@ -30,19 +30,19 @@ const Row = ({ category }: { category: Category }) => {
                     <DollarCents value={category.amount_spent ? Big(category.amount_spent).toFixed(2) : '0.00'} />
                 </div>
                 {category.limit_amount &&
-                    <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>}
-                {category.limit_amount &&
-                    <div>
-                        <DollarCents
-                            value={category.limit_amount ? Big(category.limit_amount).div(100).toFixed(2) : '0.00'}
-                        />
-                    </div>
+                    <>
+                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+                        <div>
+                            <DollarCents
+                                value={category.limit_amount ? Big(category.limit_amount).div(100).toFixed(2) : '0.00'}
+                                hasCents={false}
+                            />
+                        </div>
+                        <StaticProgressCircle value={
+                            Math.round(Big(category.amount_spent || 0).div(category.limit_amount).times(100).toNumber()) / 100 || 0
+                        } />
+                    </>
                 }
-                <StaticProgressCircle value={
-                    category.amount_spent
-                        ? .5
-                        : 0
-                } />
             </div>
         </div>
     )
@@ -65,15 +65,15 @@ const SpendingCategories = () => {
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
 
-    // const totalSpent = useMemo<number>(() => {
-    //     return categoriesData ? categoriesData.filter(category => category.period === 'month').reduce((acc: number, category) =>
-    //         Big(category.amount_spent).toNumber(), 0) : 0
-    // }, [categoriesData])
+    const totalSpent = useMemo<number>(() => {
+        return categoriesData ? categoriesData.filter(category => category.period === 'month').reduce((acc: number, category) =>
+            Big(category.amount_spent || 0).times(100).add(acc).toNumber(), 0) : 0
+    }, [categoriesData])
 
-    // const totalLimit = useMemo<number>(() => {
-    //     return categoriesData ? categoriesData.filter(category => category.period === 'month').reduce((acc: number, category) =>
-    //         Big(category.limit_amount).times(100).add(acc).toNumber(), 0) : 0
-    // }, [categoriesData])
+    const totalLimit = useMemo<number>(() => {
+        return categoriesData ? categoriesData.filter(category => category.period === 'month').reduce((acc: number, category) =>
+            category.limit_amount + acc, 0) : 0
+    }, [categoriesData])
 
     return (
         <div className="inner-window" id="spending-categories-window">
@@ -82,14 +82,15 @@ const SpendingCategories = () => {
                     <Column id="month-category-rows">
                         <div className="row header">
                             <div className="row-label">
-                                <h4>Monthly Spending</h4>
+                                <h4>MONTHLY SPENDING</h4>
                             </div>
                             <div className="row-value">
-                                <div><DollarCents value={'0.00'} /></div>
+                                <div><DollarCents value={totalLimit ? totalSpent : '0.00'} /></div>
                                 <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
-                                <div><DollarCents value={'0.00'} /></div>
-                                {/* <StaticProgressCircle value={totalSpent && totalLimit ? Math.round(totalSpent / totalLimit) : 0} /> */}
-                                <StaticProgressCircle value={.5} />
+                                <div><DollarCents value={totalLimit ? totalLimit : '0.00'} hasCents={false} /></div>
+                                <StaticProgressCircle value={
+                                    Math.round(totalSpent / totalLimit * 100) / 100
+                                } />
                             </div>
                         </div>
                         <Rows categories={categoriesData?.filter(category => category.period === 'month') || []} />

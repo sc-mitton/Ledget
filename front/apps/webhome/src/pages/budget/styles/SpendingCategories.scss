@@ -2,32 +2,36 @@
     width: 100%;
     margin: 1em 0;
     display: flex;
+    border-radius: var(--border-radius2);
 
     .column {
         flex: 1;
         padding: .5em;
         display: flex;
         flex-direction: column;
-        padding-right: 1em; // padding for scrollbar
+        // background: radial-gradient(ellipse, rgba(14, 7, 7, .01) 1%, transparent 50%);
 
         .rows {
-            padding: .75em 0;
+            padding: .75em .125em;
             display: flex;
             flex-direction: column;
             gap: .625em;
             mask-image: linear-gradient(to bottom, transparent, black 1em, black calc(100% - 1em), transparent);
             overflow-y: auto;
-            // aprx 6 rows (.5em - row padding, 1em - row height, .625em - row gap, .25em - column padding)
-            max-height: calc(6 * (.5em * 2 + 1em + .625em + .25em));
+            // aprx 5 rows (.5em - row padding, 1em - row height, .625em - row gap, .25em - column padding)
+            max-height: calc(5 * (.625em * 2 + 1em + .625em + .25em));
+            padding-right: 1em; // for scoll bar
         }
 
         .row.header {
-            margin-bottom: .25em;
+            padding-left: .5em;
+            margin-bottom: .5em;
+            padding-right: 1.75em; // for scoll bar
         }
 
         .row:not(.header) {
-            padding-top: .5em;
-            padding-bottom: .5em;
+            padding-top: .625em;
+            padding-bottom: .625em;
         }
 
         .row {
@@ -35,7 +39,9 @@
             padding-right: .75em;
             display: flex;
             justify-content: space-between;
-            border-radius: var(--border-radius1);
+            border-radius: var(--border-radius2);
+            cursor: pointer;
+            transition: all .2s ease-in-out;
 
             .row-label {
                 display: flex;
@@ -45,16 +51,25 @@
             .row-value {
                 display: flex;
 
-                &>div:last-child {
-                    margin-left: 1em;
+                &>div:only-child {
+                    margin-right: .5em;
+                }
+
+                &>div:last-child:not(:only-child) {
+                    margin-left: .5em;
                 }
             }
 
             &.month {
-                background-color: var(--green-hlight2);
+                background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 5%);
 
                 * {
                     color: var(--green-dark4);
+                }
+
+                &:hover {
+                    background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 12%);
+                    transition: all .2s ease-in-out;
                 }
             }
         }

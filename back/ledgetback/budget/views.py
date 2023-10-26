@@ -51,7 +51,9 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
             'transaction__amount',
             filter=Q(transaction__date__month=month, transaction__date__year=year)
         )
-        qset = Category.objects.filter(user=self.request.user).annotate(amount_spent=s)
+        qset = Category.objects.filter(usercategory__user=self.request.user) \
+                               .order_by('usercategory__order', 'name') \
+                               .annotate(amount_spent=s)
 
         return qset
 
@@ -61,7 +63,8 @@ class BillView(BulkCreateMixin, ListCreateAPIView):
     serializer_class = BillSerializer
 
     def get_queryset(self):
-        return Bill.objects.filter(user=self.request.user)
+        return Bill.objects.filter(userbill__user=self.request.user) \
+                           .order_by('userbill__order', 'name')
 
 
 class RecomendedBillsView(APIView):

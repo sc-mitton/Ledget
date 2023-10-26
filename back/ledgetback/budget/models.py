@@ -14,11 +14,17 @@ def validate_week_number(value):
 
 class Category(BudgetItem):
 
+    users = models.ManyToManyField(User,
+                                   through='UserCategory',
+                                   related_name='categories')
     limit_amount = models.IntegerField(null=True, blank=True)
 
 
 class Bill(BudgetItem):
 
+    users = models.ManyToManyField(User,
+                                   through='UserBill',
+                                   related_name='bills')
     lower_amount = models.IntegerField(null=True, blank=True)
     upper_amount = models.IntegerField(null=False, blank=False)
     day = models.IntegerField(
@@ -102,12 +108,8 @@ class UserCategory(models.Model):
         db_table = 'budget_user_category'
         unique_together = ('user', 'category')
 
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE,
-                             related_name='user_categories')
-    category = models.ForeignKey(Category,
-                                 on_delete=models.CASCADE,
-                                 related_name='user_categories')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     order = models.IntegerField(null=False, blank=False)
 
 
@@ -117,10 +119,6 @@ class UserBill(models.Model):
         db_table = 'budget_user_bill'
         unique_together = ('user', 'bill')
 
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE,
-                             related_name='user_bills')
-    bill = models.ForeignKey(Bill,
-                             on_delete=models.CASCADE,
-                             related_name='user_bills')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
     order = models.IntegerField(null=False, blank=False)

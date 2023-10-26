@@ -10,7 +10,7 @@
 
 #new-items {
     position: relative;
-    background: radial-gradient(ellipse, rgba(14, 7, 7, .03) 1%, var(--window) 50%)
+    background: radial-gradient(ellipse, rgba(14, 7, 7, .03) 1%, transparent 50%)
 }
 
 .new-item::after {

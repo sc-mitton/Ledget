@@ -57,7 +57,7 @@
 }
 
 .a-slct-item.s-slct-item {
-    background-color: var(--green-hlight3);
+    background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 8%);
     transition: background-color 0.3s ease-out;
 }
 
