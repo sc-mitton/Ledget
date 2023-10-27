@@ -1,8 +1,10 @@
+import { FC } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
 import './styles/BillsSummary.scss'
 import { useGetBillsQuery } from '@features/billSlice';
+import { DollarCents } from '@ledget/ui';
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -34,7 +36,7 @@ const Calendar = () => {
 
     return (
         <div id="calendar">
-            <div id="calendar--header">
+            <div id="calendar-header">
                 <h3>{selectedDate.toLocaleString('en-us', { month: 'long' })} {selectedDate.getFullYear()}</h3>
             </div>
             <div>
@@ -66,7 +68,7 @@ const Calendar = () => {
     )
 }
 
-const MonthlyBills = () => {
+const Column: FC<{ period: 'month' | 'year' }> = ({ period }) => {
     const [searchParams] = useSearchParams()
     const { data } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
@@ -75,27 +77,48 @@ const MonthlyBills = () => {
 
     return (
         <div className="column">
-            {data?.monthlyBills.map((bill, i) => {
-                return (
-                    <div key={i}>
-                        <div>
-                            <span>{bill.emoji}</span>
-                            <span>{bill.name}</span>
+            {period === 'month'
+                ?
+                data?.monthlyBills.map((bill, i) => {
+                    return (
+                        <div key={i} className="monthly-bill">
+                            <div>
+                                <span>{bill.emoji}</span>
+                                <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                            </div>
+                            <div><DollarCents value={bill.upper_amount} /></div>
                         </div>
-                        <div>{bill.upper_amount}</div>
-                    </div>
-                )
-            })}
+                    )
+                })
+                :
+                data?.yearlyBills.map((bill, i) => {
+                    return (
+                        <div key={i} className="yearly-bill">
+                            <div>
+                                <span>{bill.emoji}</span>
+                                <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                            </div>
+                            <div><DollarCents value={bill.upper_amount} /></div>
+                        </div>
+                    )
+                })
+            }
         </div>
     )
 }
 
 const Bills = () => {
+    const [searchParams] = useSearchParams()
+    const { data } = useGetBillsQuery({
+        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
+        year: searchParams.get('year') || `${new Date().getFullYear()}`,
+    })
+
     return (
         <div id="bills-summary-window">
-            <Calendar />
-            <div>hello</div>
-            <div>world</div>
+            <div><Calendar /></div>
+            <Column period='month' />
+            <Column period='year' />
         </div>
     )
 }

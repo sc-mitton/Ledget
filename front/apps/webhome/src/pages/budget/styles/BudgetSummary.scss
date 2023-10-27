@@ -33,7 +33,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             display: inline-block;
             padding-right: .25em;
             font-size: $base-stats-font-size;
-            transition: opacity 0.2s ease-in-out .3s, visibility 0.3s ease-in-out .3s;
+            transition: opacity 0.2s ease-in-out .2s, visibility 0.3s ease-in-out .3s;
 
             &:first-child {
                 width: 100%;

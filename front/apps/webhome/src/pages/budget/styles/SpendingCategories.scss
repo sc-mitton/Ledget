@@ -3,6 +3,8 @@ $row-padding: .625em;
 $column-gap: 1.25em;
 $row-gap: .625em;
 $background: var(--window);
+@import '../../../styles/greenblues.scss';
+
 
 #spending-categories-window {
     width: 100%;
@@ -163,11 +165,11 @@ $background: var(--window);
                 }
 
                 &.month>div {
-                    background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 5%);
+                    background-color: $green;
                 }
 
                 &.month:hover>div {
-                    background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 15%);
+                    background-color: $green-hover;
                     transition: all .2s ease-in-out;
                 }
 
@@ -176,11 +178,11 @@ $background: var(--window);
                 }
 
                 &.year>div {
-                    background-color: color-mix(in srgb, var(--blue-hlight2), var(--blue-dark4) 5%);
+                    background-color: $blue;
                 }
 
                 &.year:hover>div {
-                    background-color: color-mix(in srgb, var(--blue-hlight2), var(--blue-dark4) 10%);
+                    background-color: $blue-hover;
                     transition: all .2s ease-in-out;
 
                 }
