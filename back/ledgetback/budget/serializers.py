@@ -12,17 +12,6 @@ from .models import (
 )
 
 
-class ListCreateSerializer(NestedCreateMixin, LS):
-
-    def create(self, validated_data):
-        validated_data = [{
-            'user_id': self.context['request'].user.id,
-            **data
-        } for data in validated_data]
-
-        return super().create(validated_data)
-
-
 class AlertSerializer(ModelSerializer):
 
     class Meta:
@@ -37,17 +26,24 @@ class ReminderSerializer(ModelSerializer):
         exclude = ['bill']
 
 
+class CategoryListCreateSerializer(NestedCreateMixin, LS):
+
+    def create(self, validated_data):
+        instances = super().create(validated_data)
+        self.context['request'].user.categories.add(*instances)
+        return instances
+
+
 class CategorySerializer(NestedCreateMixin, ModelSerializer):
     alerts = AlertSerializer(many=True, required=False)
     amount_spent = SerializerMethodField(read_only=True)
 
     class Meta:
         model = Category
-        fields = [field.name for field in model._meta.fields
-                  if field.name != 'user'] + ['alerts', 'amount_spent']
+        fields = '__all__'
         extra_kwargs = {'limit_amount': {'required': True}}
         required_fields = ['name', 'period', 'limit_amount']
-        list_serializer_class = ListCreateSerializer
+        list_serializer_class = CategoryListCreateSerializer
 
     @transaction.atomic
     def create(self, validated_data, *args, **kwargs):
@@ -60,7 +56,16 @@ class CategorySerializer(NestedCreateMixin, ModelSerializer):
         return instance
 
     def get_amount_spent(self, obj):
-        return obj.amount_spent
+        if hasattr(obj, 'amount_spent'):
+            return obj.amount_spent
+
+
+class BillListCreateSerializer(NestedCreateMixin, LS):
+
+    def create(self, validated_data):
+        instances = super().create(validated_data)
+        self.context['request'].user.bills.add(*instances)
+        return instances
 
 
 class BillSerializer(NestedCreateMixin, ModelSerializer):
@@ -68,10 +73,9 @@ class BillSerializer(NestedCreateMixin, ModelSerializer):
 
     class Meta:
         model = Bill
-        fields = [field.name for field in model._meta.fields
-                  if field.name != 'user'] + ['reminders']
+        fields = '__all__'
         required_fields = ['name', 'period', 'upper_amount']
-        list_serializer_class = ListCreateSerializer
+        list_serializer_class = BillListCreateSerializer
 
     @transaction.atomic
     def create(self, validated_data, *args, **kwargs):

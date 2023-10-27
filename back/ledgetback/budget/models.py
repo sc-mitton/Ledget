@@ -131,7 +131,7 @@ class UserCategory(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    order = models.IntegerField(null=False, blank=False)
+    order = models.IntegerField(null=False, default=0)
 
 
 class UserBill(models.Model):
