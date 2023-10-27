@@ -14,6 +14,16 @@ def validate_week_number(value):
 
 class Category(BudgetItem):
 
+    class CategoryType(models.TextChoices):
+        YEAR = 'year', _('Yearly')
+        MONTH = 'month', _('Monthly')
+
+    period = models.CharField(
+        max_length=255,
+        choices=CategoryType.choices,
+        default=CategoryType.MONTH
+    )
+
     users = models.ManyToManyField(User,
                                    through='UserCategory',
                                    related_name='categories')
@@ -22,9 +32,19 @@ class Category(BudgetItem):
 
 class Bill(BudgetItem):
 
+    class CategoryType(models.TextChoices):
+        YEAR = 'year', _('Yearly')
+        MONTH = 'month', _('Monthly')
+        ONCE = 'once', _('Once')
+
     users = models.ManyToManyField(User,
                                    through='UserBill',
                                    related_name='bills')
+    period = models.CharField(
+        max_length=255,
+        choices=CategoryType.choices,
+        default=CategoryType.MONTH
+    )
     lower_amount = models.IntegerField(null=True, blank=True)
     upper_amount = models.IntegerField(null=False, blank=False)
     day = models.IntegerField(

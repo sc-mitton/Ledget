@@ -103,14 +103,19 @@ const Form = (props) => {
                     <label htmlFor="schedule">Schedule</label>
                     <div className="multi-input-row">
                         <div>
-                            <PeriodSelect value={billPeriod} onChange={setBillPeriod} />
-                        </div>
-                        <div>
-                            <BillScheduler
-                                billPeriod={billPeriod}
-                                error={scheduleMissing}
+                            <PeriodSelect
+                                value={billPeriod}
+                                onChange={setBillPeriod}
+                                enableAll={true}
                             />
                         </div>
+                        {billPeriod !== 'once' &&
+                            <div>
+                                <BillScheduler
+                                    billPeriod={billPeriod}
+                                    error={scheduleMissing}
+                                />
+                            </div>}
                         <AddReminder />
                     </div>
                 </div>

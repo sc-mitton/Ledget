@@ -13,7 +13,7 @@
 
 #schedule-dropdown {
     z-index: 1000;
-    padding: 1em 1em .75em 1em;
+    padding: .75em .75em .5em .75em;
     margin-top: .5em;
 
     label {
@@ -25,7 +25,6 @@
         margin: .25em;
     }
 }
-
 
 #schedule-dropdown.dropdown {
     border-radius: var(--border-radius3);

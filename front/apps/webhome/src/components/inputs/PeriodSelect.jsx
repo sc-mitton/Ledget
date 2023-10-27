@@ -6,11 +6,19 @@ import { ArrowIcon } from '@ledget/media'
 
 const opts = [
     { id: 1, value: 'month', label: 'Monthly', default: true },
-    { id: 2, value: 'year', label: 'Yearly' }
+    { id: 2, value: 'year', label: 'Yearly' },
+    { id: 3, value: 'once', label: 'Once', disabled: true }
 ]
 
 const PeriodSelect = (props) => {
-    const { hasLabel, labelPrefix, value: propsValue, onChange, default: defaultValue } = props
+    const {
+        hasLabel,
+        labelPrefix,
+        value: propsValue,
+        onChange,
+        enableAll,
+        default: defaultValue
+    } = props
 
     const [value, setValue] = useState()
     const buttonRef = useRef(null)
@@ -26,16 +34,15 @@ const PeriodSelect = (props) => {
                 return
             }
         }
-
         setValue(opts.find((option) => option.default).value)
     }, [])
 
     const Options = () => (
-        opts.map((option) => (
+        opts.filter(op => enableAll || !op.disabled).map((option) => (
             <ComboSelect.Option
                 key={option.id}
                 value={option.value}
-                disabled={option.disabled}
+                disabled={enableAll ? false : option.disabled}
                 isDefault={option.default}
             >
                 {({ active, selected }) => (

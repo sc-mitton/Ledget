@@ -1,6 +1,5 @@
 import uuid
 
-from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 
@@ -9,15 +8,6 @@ class BudgetItem(models.Model):
     class Meta:
         abstract = True
 
-    class CategoryType(models.TextChoices):
-        YEAR = 'year', _('Yearly')
-        MONTH = 'month', _('Monthly')
-
-    period = models.CharField(
-        max_length=255,
-        choices=CategoryType.choices,
-        default=CategoryType.MONTH
-    )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255, null=False, blank=False)
     emoji = models.CharField(max_length=10, null=True, blank=True)
