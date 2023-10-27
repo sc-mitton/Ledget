@@ -10,6 +10,7 @@ import { IconButton, DropAnimation } from '@ledget/ui'
 import MonthPicker from '@components/inputs/MonthPicker'
 import BudgetSummary from './BudgetSummary'
 import SpendingCategories from './SpendingCategories'
+import Bills from './Bills'
 
 
 const Wrapper = ({ onClick, children }) => (
@@ -125,6 +126,7 @@ function Window() {
                 </div>
                 <BudgetSummary />
                 <Budget />
+                <Bills />
             </div>
             <Outlet />
         </>
