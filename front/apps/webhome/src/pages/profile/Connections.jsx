@@ -258,7 +258,7 @@ const MainHeader = ({ onPlus }) => {
 
     return (
         <div className="header">
-            <h1>Connections</h1>
+            <h2>Connections</h2>
             <div className='header-btns'>
                 {!editing && plaidItems?.length > 0 &&
                     <IconButton

@@ -15,6 +15,9 @@ const PeriodSelect = (props) => {
     const [value, setValue] = useState()
     const buttonRef = useRef(null)
 
+    const localSetValue = onChange || setValue
+    const localValue = propsValue || value
+
     useEffect(() => {
         if (defaultValue) {
             const val = opts.find((option) => option.value === defaultValue).value
@@ -56,8 +59,8 @@ const PeriodSelect = (props) => {
             }
             <ComboSelect
                 name="period"
-                value={propsValue || value}
-                onChange={onChange || setValue}
+                value={localValue}
+                onChange={localSetValue}
                 defaultValue={opts.find((option) => option.default).value}
             >
                 {({ open }) => (
@@ -73,8 +76,9 @@ const PeriodSelect = (props) => {
                         >
                             {labelPrefix && `${labelPrefix} `}
                             {labelPrefix
-                                ? `${opts.find((option) => option.value === value)?.label.charAt(0).toLowerCase()}${opts.find((option) => option.value === value)?.label.slice(1)}`
-                                : `${opts.find((option) => option.value === value)?.label}`
+                                ? `${opts.find((option) => option.value === localValue)?.label.charAt(0).toLowerCase()}` +
+                                `${opts.find((option) => option.value === localValue)?.label.slice(1)}`
+                                : `${opts.find((option) => option.value === localValue)?.label}`
                             }
                             {<ArrowIcon
                                 width={'.8em'}

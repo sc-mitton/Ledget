@@ -765,7 +765,7 @@ export const BillScheduler = (props) => {
                     {error &&
                         <FormErrorTip errors={[{ type: 'required' }]} />}
                 </Scheduler.Button>
-                {billPeriod === 'monthly'
+                {billPeriod === 'month'
                     ? <Scheduler.DayWeekPicker />
                     : <Scheduler.MonthDayPicker />
                 }

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
@@ -34,10 +34,22 @@ const Calendar = () => {
 
     const days = getDaysInMonth(selectedDate.getFullYear(), selectedDate.getMonth() + 1)
 
+    const monthlyBillCountEachDay: number[] = useMemo(() => {
+        const counts: number[] = Array(31).fill(0)
+
+        return counts
+    }, [data])
+
+    const yearlyBillCountEachDay: number[] = useMemo(() => {
+        const counts: number[] = Array(31).fill(0)
+
+        return counts
+    }, [data])
+
     return (
         <div id="calendar">
             <div id="calendar-header">
-                <h3>{selectedDate.toLocaleString('en-us', { month: 'long' })} {selectedDate.getFullYear()}</h3>
+                <h3>Bills {selectedDate.toLocaleString('en-us', { month: 'short' })} {selectedDate.getFullYear()}</h3>
             </div>
             <div>
                 <div>Su</div>
@@ -58,8 +70,7 @@ const Calendar = () => {
                     return (
                         <div key={i}>
                             <div>{day.getDate()}</div>
-                            {data?.monthlyBills.some(bill => bill.day === day.getDate()) && <div className='has-bill-dot month' />}
-                            {data?.yearlyBills.some(bill => bill.day === day.getDate()) && <div className='has-bill-dot year' />}
+
                         </div>
                     )
                 })}
@@ -108,12 +119,6 @@ const Column: FC<{ period: 'month' | 'year' }> = ({ period }) => {
 }
 
 const Bills = () => {
-    const [searchParams] = useSearchParams()
-    const { data } = useGetBillsQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
-    })
-
     return (
         <div id="bills-summary-window">
             <div><Calendar /></div>

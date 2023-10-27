@@ -18,7 +18,6 @@ import {
 import { Checkbox } from '@ledget/ui'
 import { useAddnewBillMutation } from '@features/billSlice'
 
-
 export const billSchema = object().shape({
     name: string().required().lowercase(),
     range: boolean(),
@@ -65,7 +64,7 @@ export const extractBill = (e) => {
 
 const Form = (props) => {
     const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
-    const [billPeriod, setBillPeriod] = useState('monthly')
+    const [billPeriod, setBillPeriod] = useState('month')
     const [scheduleMissing, setScheduleMissing] = useState(false)
 
     const { register, watch, handleSubmit, formState: { errors }, control } = useForm({
@@ -103,7 +102,9 @@ const Form = (props) => {
                 <div className="padded-row">
                     <label htmlFor="schedule">Schedule</label>
                     <div className="multi-input-row">
-                        <div><PeriodSelect /></div>
+                        <div>
+                            <PeriodSelect value={billPeriod} onChange={setBillPeriod} />
+                        </div>
                         <div>
                             <BillScheduler
                                 billPeriod={billPeriod}

@@ -31,11 +31,6 @@
     border-radius: var(--border-radius3);
 }
 
-
-.day-picker {
-    padding: .25em;
-}
-
 .day.picker-item {
     cursor: pointer;
     display: flex;
@@ -108,7 +103,6 @@
 }
 
 #month-day-picker-container {
-    margin: .5em;
     padding: .25em;
 }
 
@@ -127,6 +121,7 @@
     &>div:last-child {
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
         flex-wrap: nowrap;
         width: 100%;
     }

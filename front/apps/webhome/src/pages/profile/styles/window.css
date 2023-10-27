@@ -79,6 +79,10 @@
     z-index: 1;
 }
 
+#gutter li[aria-current='page'] * {
+    color: var(--green-dark4);
+}
+
 #gutter li#profile {
     border-radius: var(--border-radius25);
 }

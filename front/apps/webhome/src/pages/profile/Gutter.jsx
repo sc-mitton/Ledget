@@ -46,7 +46,7 @@ const NavList = () => {
                     ariaLabel={route.charAt(0).toUpperCase() + route.slice(1)}
                     type="right"
                 >
-                    <Icon name={route} />
+                    <Icon name={route} fill={'currentColor'} />
                 </Tooltip>
                 <div>
                     {route.charAt(0).toUpperCase() + route.slice(1)}
@@ -82,12 +82,12 @@ const Profile = () => {
                     left: '120%'
                 }}
             >
-                <Profile1 width="1.6em" height="1.6em" />
+                <Profile1 width="1.6em" height="1.6em" fill={'currentColor'} />
             </Tooltip>
             <div>
                 <span>{`${user?.name.first}'s`} Ledget</span>
                 <br />
-                <span style={{ opacity: '.5' }}>{user?.email}</span>
+                <span>{user?.email}</span>
             </div>
         </li>
     )

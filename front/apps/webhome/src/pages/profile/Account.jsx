@@ -107,12 +107,10 @@ const ChangePlanMenu = () => {
         <Menu>
             {({ open }) => (
                 <div style={{ position: 'relative' }}>
-                    <Menu.Button
-                        as={BlueSlimArrowButton}
-                        submitting={isLoading}
-                        rotate={0}
-                    >
-                        change
+                    <Menu.Button as={'div'}>
+                        <BlueSlimArrowButton submitting={isLoading} rotate={0} >
+                            change
+                        </BlueSlimArrowButton>
                     </Menu.Button>
                     <DropAnimation visible={open} className="dropdown" id="change-plan--menu">
                         <Items />
@@ -231,7 +229,7 @@ const Account = () => {
             >
                 <div id="account-page" className="padded-content">
                     <div className="header">
-                        <h1>Account</h1>
+                        <h2>Account</h2>
                     </div>
                     <div id="avatar">
                         {user.name.first.charAt(0).toUpperCase() + user.name.last.charAt(0).toUpperCase()}
