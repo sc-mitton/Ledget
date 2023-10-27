@@ -53,7 +53,7 @@ export const EmojiComboText = (props) => {
                         formRef(e)
                         ref.current = e
                     }}
-                    style={{ marginLeft: '4px' }}
+                    style={{ marginLeft: '.25em' }}
                 />
                 <FormErrorTip errors={error} />
             </TextInputWrapper>
@@ -211,7 +211,7 @@ export const DollarRangeInput = ({ rangeMode, control, errors = {} }) => {
             <div className={`dollar-range-input--container ${rangeMode ? 'range-mode' : ''}`}>
                 {rangeMode &&
                     <DollarInput
-                        style={{ marginRight: '8px' }}
+                        style={{ marginRight: '.5em' }}
                         field={lowerField}
                         name={'lower_amount'}
                         error={errors.lower_amount}

@@ -149,7 +149,7 @@ const ModeSelector = ({ mode, setMode }) => {
                     key={option.value}
                     option={option}
                     style={{
-                        padding: '0px 12px',
+                        padding: '0 .75em',
                         cursor: 'pointer'
                     }}
                 >
@@ -713,7 +713,7 @@ const MonthDayPicker = () => {
                 visible={open}
                 className="dropdown"
                 id="schedule-dropdown"
-                style={{ marginTop: '4px' }}
+                style={{ marginTop: '.5em' }}
             >
                 <div
                     id="month-day-picker-container"
@@ -726,7 +726,7 @@ const MonthDayPicker = () => {
                     }}
                 >
                     <MonthPicker />
-                    <hr style={{ opacity: '.7', margin: '8px 0', width: '100%' }} />
+                    <hr style={{ opacity: '.7', margin: '.5em 0', width: '100%' }} />
                     <DayPicker />
                 </div>
             </DropAnimation>

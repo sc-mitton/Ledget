@@ -43,7 +43,7 @@ const Modal = withSmallModal((props) => {
 
     return (
         <div id="change-plan">
-            <div style={{ margin: '12px 0 16px 0' }}>
+            <div style={{ margin: '.75em 0 1em 0' }}>
                 <h3 className="spaced-header2">Change Your Subscription?</h3>
                 <div id="new-plan--container">
                     <span>New Plan:</span>&nbsp;&nbsp;

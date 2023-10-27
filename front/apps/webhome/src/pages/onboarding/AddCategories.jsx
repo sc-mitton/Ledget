@@ -319,8 +319,8 @@ const Form = () => {
                     style={{
                         display: 'inline-flex',
                         flexDirection: 'column',
-                        gap: '6px',
-                        marginTop: "8px"
+                        gap: '.375em',
+                        marginTop: ".5em"
                     }}
                 >
                     <div>

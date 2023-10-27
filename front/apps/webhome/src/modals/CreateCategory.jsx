@@ -102,8 +102,8 @@ export default (props) => {
         <Modal
             {...props}
             onClose={() => navigate(-1)}
-            maxWidth={props.maxWidth || '350px'}
-            minWidth={props.minWidth || '0px'}
+            maxWidth={props.maxWidth || '21.875rem'}
+            minWidth={props.minWidth || '0'}
             blur={2}
         />
 

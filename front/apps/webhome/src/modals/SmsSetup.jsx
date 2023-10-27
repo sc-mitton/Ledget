@@ -167,7 +167,7 @@ const SmsSetup = (props) => {
                     ?
                     <SlideMotionDiv first={loaded}>
                         <h2>Are you sure?</h2>
-                        <div style={{ margin: '12px 0' }}>
+                        <div style={{ margin: '.75em 0' }}>
                             Adding text message verification will
                             remove your authenticator app.
                         </div>

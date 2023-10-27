@@ -57,16 +57,16 @@ const ChangePassword = (props) => {
             <form onSubmit={handleSubmit((data, e) => submit(e))} id="change-password-form">
                 <div
                     style={{
-                        margin: '16px 0',
+                        margin: '1em 0',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '4px'
+                        gap: '.25em'
                     }}
                 >
                     <div>
                         {(isCompleteError || errorFetchingFlow) &&
                             <FormError msg={"Something went wrong, please try again later."} />}
-                        <h4 style={{ margin: '0 0 10px 2px' }}>Enter your new password</h4>
+                        <h4 style={{ margin: '0 0 .625em .125em' }}>Enter your new password</h4>
                         <PasswordInput
                             name="password"
                             placeholder="New password"

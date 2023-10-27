@@ -8,6 +8,7 @@ $gap: calc(.75em + 2vw);
     border-radius: var(--border-radius25);
     padding: calc($gap/2);
 
+
     &>div {
         display: inline-flex;
         flex-direction: column;
@@ -18,8 +19,12 @@ $gap: calc(.75em + 2vw);
         }
     }
 
-    #calendar {
+    // Calendar container
+    &>div:first-child {
         flex: 1 0 0;
+    }
+
+    #calendar {
         gap: .75em;
         display: flex;
         flex-direction: column;
@@ -35,9 +40,10 @@ $gap: calc(.75em + 2vw);
             padding: .125em;
             display: inline-grid;
             grid-template-columns: repeat(7, minmax(0, auto));
-            row-gap: .75em;
+            row-gap: .5em;
             column-gap: 1.25em;
 
+            // Days of week markers
             &>div:nth-child(-n+7) {
                 font-weight: 500;
             }
@@ -107,6 +113,7 @@ $gap: calc(.75em + 2vw);
 
         &>div {
             cursor: pointer;
+            box-sizing: border-box;
             padding: .25em .75em;
             border-radius: var(--border-radius1);
             width: 100%;

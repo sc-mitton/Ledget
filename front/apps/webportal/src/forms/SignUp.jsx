@@ -92,7 +92,7 @@ const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
                     </div>
                 }
                 <div
-                    style={{ marginTop: '16px' }}
+                    style={{ marginTop: '1em' }}
                 >
                     <GrnWideButton type='submit' aria-label="Submit form">
                         Continue

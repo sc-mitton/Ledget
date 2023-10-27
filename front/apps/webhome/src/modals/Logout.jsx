@@ -54,7 +54,7 @@ function Logout(props) {
             <div id="logout-countdown">
                 <span>Your session will end in {seconds} seconds.</span>
             </div>
-            <div style={{ display: 'flex', 'justifyContent': 'end', marginTop: '8px' }}>
+            <div style={{ display: 'flex', 'justifyContent': 'end', marginTop: '.5em' }}>
                 <SecondaryButton
                     onClick={() => props.closeModal()}
                     aria-label="Cancel"

@@ -12,7 +12,7 @@ const BakedSelect = ({ value, onChange, options, children }) => {
     const Check = () => (
         <div
             style={{
-                marginLeft: '8px',
+                marginLeft: '.5em',
                 display: 'flex',
                 alignItems: 'center',
             }}
@@ -24,7 +24,7 @@ const BakedSelect = ({ value, onChange, options, children }) => {
     const Arrow = () => (
         <div
             style={{
-                marginLeft: '8px',
+                marginLeft: '.5em',
                 display: 'flex',
                 alignItems: 'center',
             }}

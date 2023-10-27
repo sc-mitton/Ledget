@@ -169,7 +169,7 @@ function Header({ isNarrow }) {
                 )
             case "logout":
                 return (
-                    <Logout onClose={() => setModal('')} maxWidth={"300px"} hasExit={false} />
+                    <Logout onClose={() => setModal('')} maxWidth={"18.75rem"} hasExit={false} />
                 )
             default:
                 return null

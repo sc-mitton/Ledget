@@ -35,14 +35,14 @@ const AddReminder = ({ value, onChange }) => {
                     <div>
                         {value.offset}
                         {value.offset > 1 ? ` ${value.period}s` : ` ${value.period}`}
-                        <span style={{ opacity: active ? '.5' : '0', padding: '0 8px', fontWeight: '400' }}>before</span>
+                        <span style={{ opacity: active ? '.5' : '0', padding: '0 .5em', fontWeight: '400' }}>before</span>
                     </div>
                     {!selected
                         ? <Plus stroke={'var(--muted-text-gray)'} width={'.9em'} height={'.9em'} />
                         : <CheckMark stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`} />
                     }
                 </div>
-                <div style={{ padding: '0 8px' }}>
+                <div style={{ padding: '0 .5em' }}>
                     {nextOp && nextOp.value.period !== value.period && <hr />}
                 </div>
             </>

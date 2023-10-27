@@ -131,7 +131,7 @@ const SuccessWindow = (props) => {
     return (
         <div id="success-window--container">
             <h2>Success</h2>
-            <div className="body" style={{ margin: '16px 0 16px 0' }}>
+            <div className="body" style={{ margin: '1em 0 1em 0' }}>
                 If you change your mind, you can stop the
                 cancellation at any time before the end of
                 the current billing cycle. After that, your
@@ -180,7 +180,7 @@ export default function () {
     return (
         <CancelationModal
             onClose={() => navigate('/profile/details')}
-            maxWidth={'350px'}
+            maxWidth={'22em'}
             blur={2}
         />
     )

@@ -49,7 +49,7 @@ const Calendar = () => {
     return (
         <div id="calendar">
             <div id="calendar-header">
-                <h3>Bills {selectedDate.toLocaleString('en-us', { month: 'short' })} {selectedDate.getFullYear()}</h3>
+                <h3>{selectedDate.toLocaleString('en-us', { month: 'short' })} {selectedDate.getFullYear()} Bills</h3>
             </div>
             <div>
                 <div>Su</div>

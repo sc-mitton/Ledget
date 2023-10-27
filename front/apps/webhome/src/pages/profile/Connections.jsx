@@ -157,7 +157,7 @@ const PlaidItem = ({ item }) => {
                     <Base64Logo
                         data={item.institution.logo}
                         alt={item.institution.name}
-                        style={{ marginRight: '12px' }}
+                        style={{ marginRight: '.75em' }}
                     />
                     <h4>{item.institution.name}</h4>
                 </div>

@@ -43,7 +43,7 @@ const PeriodSelect = (props) => {
                         className={
                             `slct-item ${active && "a-slct-item"}
                             ${selected && "s-slct-item"}`}
-                        style={{ paddingRight: '34px' }}
+                        style={{ paddingRight: '2.125em' }}
                     >
                         {option.label}
                     </div>
@@ -70,7 +70,7 @@ const PeriodSelect = (props) => {
                             id="period-select-btn"
                             style={{
                                 color: 'var(--m-text-gray)',
-                                marginTop: hasLabel ? '6px' : '0px'
+                                marginTop: hasLabel ? '.375em' : '0'
                             }}
                             ref={buttonRef}
                         >

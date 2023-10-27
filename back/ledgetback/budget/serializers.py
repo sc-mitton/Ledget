@@ -8,7 +8,6 @@ from .models import (
     Alert,
     Bill,
     Reminder,
-    UserBill,
     UserCategory
 )
 
@@ -77,9 +76,6 @@ class BillSerializer(NestedCreateMixin, ModelSerializer):
     @transaction.atomic
     def create(self, validated_data, *args, **kwargs):
         instance = super().create(validated_data, *args, **kwargs)
-        UserBill.objects.create(
-            user_id=self.context['request'].user.id,
-            bill_id=instance.id,
-            order=0
-        )
+        instance.users.add(self.context['request'].user)
+
         return instance

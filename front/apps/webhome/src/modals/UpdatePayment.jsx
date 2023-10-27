@@ -144,8 +144,8 @@ const UpdatePayment = (props) => {
             <Modal
                 {...props}
                 onClose={() => navigate(-1)}
-                maxWidth={props.maxWidth || '375px'}
-                minWidth={props.minWidth || '0px'}
+                maxWidth={props.maxWidth || '23.5rem'}
+                minWidth={props.minWidth || '0'}
                 blur={2}
             />
         </Elements>

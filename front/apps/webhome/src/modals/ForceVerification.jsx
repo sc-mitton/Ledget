@@ -137,7 +137,7 @@ export default function (props) {
             hasExit={false}
             overLayExit={false}
             onClose={() => navigate(-1)}
-            maxWidth={props.maxWidth || '350px'}
+            maxWidth={props.maxWidth || '21.875rem'}
             blur={1}
         />
     )

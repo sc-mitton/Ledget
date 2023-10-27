@@ -153,7 +153,7 @@ export const Content = (props) => {
             </div>
             {searchParams.get('lookup_secret_regenerate') &&
                 !location.pathname.includes('authenticator-setup') &&
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1em' }}>
                     <SecondaryButton
                         type="button"
                         className="recovery-codes-button"

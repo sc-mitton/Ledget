@@ -63,8 +63,20 @@ class BillView(BulkCreateMixin, ListCreateAPIView):
     serializer_class = BillSerializer
 
     def get_queryset(self):
-        return Bill.objects.filter(userbill__user=self.request.user) \
-                           .order_by('userbill__order', 'name')
+        if self.request.query_params.get('month', None) is not None:
+            return self.get_specific_month_qset(
+                month=self.request.query_params.get('month', None),
+                year=self.request.query_params.get('year', None)
+            )
+
+        return Bill.objects.filter(userbill__user=self.request.user).order_by('name')
+
+    def get_specific_month_qset(self, month, year):
+        qset = Bill.objects.filter(userbill__user=self.request.user) \
+                            .filter(month=month) \
+                            .filter(month__isnull=True) \
+                            .order_by('name')
+        return qset
 
 
 class RecomendedBillsView(APIView):

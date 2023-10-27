@@ -108,7 +108,8 @@ class UserCategory(models.Model):
         db_table = 'budget_user_category'
         unique_together = ('user', 'category')
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     order = models.IntegerField(null=False, blank=False)
 
@@ -121,4 +122,3 @@ class UserBill(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
-    order = models.IntegerField(null=False, blank=False)

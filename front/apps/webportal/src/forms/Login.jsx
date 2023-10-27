@@ -111,7 +111,7 @@ const TotpMfa = ({ finished }) => {
                 <h4>Enter your authenticator code</h4>
                 <LookupSecretPrompt />
             </div>
-            <div style={{ margin: '20px 0' }}>
+            <div style={{ margin: '1.25em 0' }}>
                 <PlainTextInput
                     name='totp_code'
                     placeholder='Code'
@@ -133,7 +133,7 @@ const RecoveryMfa = ({ finished }) => {
                 <RecoveryCodeGraphic finished={finished} />
                 <h4>Enter your recovery code</h4>
             </div >
-            <div style={{ margin: '20px 0' }}>
+            <div style={{ margin: '1.25em 0' }}>
                 <PlainTextInput
                     name='lookup_secret'
                     placeholder='Code'
@@ -152,7 +152,7 @@ const OtpMfa = ({ finished }) => (
             <SmsVerifyStatus finished={finished} />
             <h4>Enter the code sent to your phone</h4>
             <LookupSecretPrompt />
-            <div style={{ margin: '12px 0' }}>
+            <div style={{ margin: '.75em 0' }}>
                 <Otc colorful={false} />
             </div>
         </div>
@@ -275,7 +275,7 @@ const Login = () => {
                 </BackButton>
             </div>
             {errMsg &&
-                <div style={{ marginBottom: '12px' }}>
+                <div style={{ marginBottom: '.75em' }}>
                     <FormError msg={errMsg} />
                 </div>
             }

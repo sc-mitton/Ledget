@@ -34,7 +34,7 @@ const SmsAuth = ({ user }) => {
                     <div id="sms-auth-not-set-up">
                         <SmsAuthIcon width={'1.5em'} height={'1.5em'} />
                         <span
-                            style={{ marginLeft: '-2px' }}
+                            style={{ marginLeft: '-.125em' }}
                         >
                             Text Verification
                         </span>

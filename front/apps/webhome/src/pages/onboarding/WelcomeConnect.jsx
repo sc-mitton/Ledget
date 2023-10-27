@@ -32,7 +32,7 @@ const InstitutionLogos = ({ plaidItems }) => {
                                 />
                             </div>
                         ))}
-                        <div style={{ marginLeft: '16px' }}>
+                        <div style={{ marginLeft: '1em' }}>
                             <LoadingRing visible={isLoading} color="dark" />
                         </div>
                     </div>

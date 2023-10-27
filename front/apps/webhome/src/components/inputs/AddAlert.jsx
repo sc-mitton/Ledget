@@ -93,7 +93,7 @@ const AddAlert = (props) => {
                                     value={parseInt(pct.replace(/[^0-9]/g, ''), 10)}
                                     style={{
                                         opacity: focused ? ".5" : "0",
-                                        marginRight: '8px'
+                                        marginRight: '.5em'
                                     }}
                                 />
                                 <div
@@ -163,15 +163,15 @@ const AddAlert = (props) => {
                             backgroundColor: 'var(--m-text-gray)',
                             color: 'var(--white-text)',
                             borderRadius: '50%',
-                            padding: '6px',
+                            padding: '.375em',
                             width: '.25em',
                             height: '.25em',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
                             fontWeight: '500',
-                            marginRight: '6px',
-                            fontSize: '12px'
+                            marginRight: '.375em',
+                            fontSize: '.75em'
                         }}
                     >
                         {`${selectedAlerts.length}`}

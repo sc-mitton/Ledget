@@ -20,7 +20,7 @@ const Dashboard = () => (
                 backgroundColor: 'var(--overlay2)',
                 display: 'flex',
                 position: 'fixed',
-                inset: '0px',
+                inset: '0',
             }}
         >
         </div>

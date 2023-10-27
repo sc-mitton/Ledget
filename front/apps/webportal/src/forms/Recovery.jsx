@@ -43,14 +43,14 @@ const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }) => {
     return (
         <>
             <div>
-                <div style={{ margin: '0 0 8px -4px' }}>
+                <div style={{ margin: '0 0 .5em -.25em' }}>
                     <BackButton
                         onClick={() => { navigate('/login') }}
                         style={{ float: 'none' }}
                     />
                 </div>
                 <h2>Forgot password?</h2>
-                <div style={{ margin: '8px 0' }}>
+                <div style={{ margin: '.5em 0' }}>
                     <span>
                         Enter the email connected to your account and we'll
                         send you a recovery code.
@@ -105,7 +105,7 @@ const RecoveryVerificationForm = ({ submit, flow, codeSuccess, isCompleteError, 
     return (
         <>
             <div>
-                <div style={{ margin: '0 0 8px -4px' }}>
+                <div style={{ margin: '0 0 .5em -.25em' }}>
                     <BackButton
                         onClick={() => {
                             searchParams.delete('step')
@@ -115,7 +115,7 @@ const RecoveryVerificationForm = ({ submit, flow, codeSuccess, isCompleteError, 
                     />
                 </div>
                 <h2>Recovery Code</h2>
-                <div style={{ margin: '4px 0' }}>
+                <div style={{ margin: '.25em 0' }}>
                     <span>Enter the code sent to your email </span>
                 </div>
                 {(isCompleteError || errMsg) && <Error msg={errMsg} />}
