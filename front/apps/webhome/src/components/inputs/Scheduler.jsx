@@ -57,7 +57,7 @@ const Button = ({ children, ...props }) => {
     }
     const monthMap = {
         1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
-        5: 'May', 6: 'June', 7: 'Jul', 8: 'Aug',
+        5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug',
         9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
     }
 
@@ -201,6 +201,10 @@ const DayPicker = () => {
             </div>
         </td>
     )
+
+    useEffect(() => {
+        setNumberOfDays(daysMap[month || 1])
+    }, [month])
 
     const Row = ({ number }) => (
         <tr>
@@ -587,7 +591,7 @@ const MonthPicker = () => {
         // Lookup table
         const months = {
             1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
-            5: 'May', 6: 'June', 7: 'Jul', 8: 'Aug',
+            5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug',
             9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
         }
         return months[monthNumber]
