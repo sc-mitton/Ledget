@@ -6,13 +6,17 @@ $background: var(--window);
 
 #spending-categories-window {
     width: 100%;
-    margin: 2em 0;
+    margin: 2.5em 0;
     display: flex;
     // border-radius: var(--border-radius2);
     // background-color: var(--inner-window-solid);
     // padding: $window-padding;
     background-color: $background;
     gap: $column-gap;
+
+    @media (max-width: 550px) {
+        margin: 1.5em 0;
+    }
 
     .column {
         flex: 1;
@@ -29,7 +33,7 @@ $background: var(--window);
             mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
             overflow-y: auto;
             // aprx 5 rows ($row-gap, 1em - row height, , 4em - headerheight)
-            max-height: calc(5 * ($row-gap * 2 + 1em + $row-padding) + 4em);
+            max-height: calc(5.5 * ($row-gap * 2 + 1em + $row-padding) + 4em);
             row-gap: $row-gap;
             position: relative;
             background-color: inherit;

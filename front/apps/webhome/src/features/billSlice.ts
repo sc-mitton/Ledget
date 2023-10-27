@@ -18,13 +18,24 @@ interface Bill {
     reminders: Reminder[],
 }
 
+interface GetBillsResponse {
+    monthlyBills: Bill[],
+    yearlyBills: Bill[],
+}
+
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getBills: builder.query<Bill[], void>({
+        getBills: builder.query<GetBillsResponse, { month: string, year: string }>({
             query: () => ({
                 url: 'bills',
                 method: 'GET',
             }),
+            transformResponse: (response: Bill[]) => {
+                return {
+                    monthlyBills: response ? response.filter((bill: Bill) => bill.period === 'month') : [],
+                    yearlyBills: response ? response.filter((bill: Bill) => bill.period === 'year') : []
+                }
+            }
         }),
         getBillRecommendations: builder.query<any, any>({
             query: () => ({

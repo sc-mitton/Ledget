@@ -1,6 +1,6 @@
-$header-padding: calc(.125em + .5vw) calc(.375em + .5vw);
+$header-padding: calc(.125em + .5vw) calc(.75em + .5vw);
 $base-stats-font-size: clamp(1rem, calc(.875rem + .25vw), 1.125rem);
-$teaser-stats-margin-top: .25em;
+$teaser-stats-margin-top: .125em;
 $header-font-size: clamp(.8125rem, calc(.75em + .25vw), 1rem);
 
 $header-gap: calc(.75em + .125vw);
@@ -107,7 +107,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         visibility: hidden;
         opacity: 0;
         top: 50%;
-        transform: translateY(-40%);
+        transform: translateY(-25%);
         left: 0;
         width: 100%;
         pointer-events: none;
@@ -179,6 +179,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
 }
 
 @media (max-width: 550px) {
+
     #budget-summary--container {
         padding-bottom: $responsive-summary-padding-bottom;
 

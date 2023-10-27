@@ -36,9 +36,6 @@ const BudgetSummary = () => {
                         ? Big(data.limit_amount_yearly || 0).minus(data.yearly_spent).toNumber()
                         : 0
 
-                console.log('limit_amount_monthly', data?.limit_amount_monthly)
-                console.log('period', period, amountLeft)
-
                 return (
                     <div
                         key={period}
@@ -54,7 +51,7 @@ const BudgetSummary = () => {
                         </div>
                         <div>
                             <span>
-                                {amountLeft >= 0 ? 'remaining' : 'overspent'}
+                                {amountLeft >= 0 ? 'left' : 'overspent'}
                             </span>
                             <ThumbUp
                                 fill={'currentColor'}

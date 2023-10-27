@@ -17,11 +17,6 @@ export interface Category {
     alerts: Alert[],
 }
 
-interface GetCategoriesParams {
-    month: string,
-    year: string,
-}
-
 interface GetCategoriesResponse {
     categories: Category[],
     monthly_spent: number,
@@ -32,7 +27,7 @@ interface GetCategoriesResponse {
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getCategories: builder.query<GetCategoriesResponse, GetCategoriesParams>({
+        getCategories: builder.query<GetCategoriesResponse, { month: string, year: string }>({
             query: (params) => ({
                 url: 'categories',
                 params: params,
