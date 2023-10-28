@@ -65,24 +65,26 @@ const AccountLogo = ({ account }) => {
 }
 
 // End TODO
-const translate = 15
-const expandedTranslate = 80
-const expandedHeight = 320
-const collapsedHeight = 120
+
+// Sizing (in ems)
+const translate = 1
+const expandedTranslate = 6
+const expandedHeight = 20
+const collapsedHeight = 7.5
 const scale = .1
 const stackMax = 2
 
 const getContainerHeight = (length, expanded) => {
     expanded
-        ? Math.min(length * expandedTranslate + 15, expandedHeight)
-        : (length > 0 ? collapsedHeight : 0)
+        ? `${Math.min(length * expandedTranslate + 1, expandedHeight)}em`
+        : (length > 0 ? `${collapsedHeight}em` : 0)
 
     if (expanded) {
-        return Math.min(length * expandedTranslate + 15, expandedHeight)
+        return `${Math.min(length * expandedTranslate + 1, expandedHeight)}em`
     } else if (length > stackMax) {
-        return collapsedHeight
+        return `${collapsedHeight}em`
     } else if (length > 0) {
-        return collapsedHeight - ((stackMax - length) * translate)
+        return `${collapsedHeight - ((stackMax - length) * translate)}em`
     } else {
         return 0
     }
@@ -115,16 +117,16 @@ const getScale = (index, expanded, loaded = true,) => {
 
 const getY = (index, expanded, loaded = true) => {
     if (!loaded) {
-        return (index ** 2) * 5 + 30
+        return `${(index ** 2) * .3125 + 1.875}em`
     }
 
     if (index === 0 || expanded) {
-        return index * expandedTranslate + 8
+        return `${index * expandedTranslate + .5}em`
     } else {
         if (index > stackMax) {
-            return stackMax * translate + 8
+            return `${stackMax * translate + .5}em`
         } else {
-            return index * translate + 8
+            return `${index * translate + .5}em`
         }
     }
 }
@@ -140,7 +142,7 @@ const useItemAnimations = (expanded, items) => {
         position: 'relative',
         left: '50%',
         transform: 'translateX(-50%)',
-        height: collapsedHeight,
+        height: `${collapsedHeight}em`,
         overflowX: "hidden",
         overflowY: "hidden",
     }))
