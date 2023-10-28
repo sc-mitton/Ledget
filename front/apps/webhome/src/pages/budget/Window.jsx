@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
 import { useNavigate, createSearchParams, useSearchParams } from 'react-router-dom'
 
-import './styles/Window.css'
+import './styles/Window.scss'
 import { Plus, Edit, Ellipsis2 } from '@ledget/media'
 import { IconButton, DropAnimation } from '@ledget/ui'
 import MonthPicker from '@components/inputs/MonthPicker'
@@ -108,9 +108,7 @@ const Budget = () => {
     }, [])
 
     return (
-        <div id="budget--container" style={{ display: 'flex' }}>
-            <SpendingCategories tabView={tabView} />
-        </div>
+        <SpendingCategories tabView={tabView} />
     )
 }
 
@@ -125,8 +123,10 @@ function Window() {
                     </div>
                 </div>
                 <BudgetSummary />
-                <Budget />
-                <Bills />
+                <div id="budget-items--container">
+                    <Budget />
+                    <Bills />
+                </div>
             </div>
             <Outlet />
         </>

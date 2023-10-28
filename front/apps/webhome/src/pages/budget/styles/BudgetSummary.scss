@@ -9,7 +9,6 @@ $summary-padding-bottom: calc(nth($header-padding, 1) * 2 + $base-stats-font-siz
 $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $base-stats-font-size + $header-gap) * 3);
 
 #budget-summary--container {
-    padding-top: .5em;
     padding-bottom: $summary-padding-bottom;
     position: relative;
 

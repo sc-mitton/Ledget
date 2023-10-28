@@ -178,12 +178,10 @@ function Header({ isNarrow }) {
 
     return (
         <>
-            <header style={{ zIndex: 1000 }}>
-                <div className={`header-container ${isNarrow ? 'narrow' : ''}`}>
-                    <div><LedgetLogoIcon /></div>
-                    <div><Navigation isNarrow={isNarrow} /></div>
-                    <DropDownMenu setModal={setModal} isNarrow={isNarrow} />
-                </div>
+            <header className={`${isNarrow ? 'narrow' : ''}`}>
+                <div><LedgetLogoIcon /></div>
+                <div><Navigation isNarrow={isNarrow} /></div>
+                <DropDownMenu setModal={setModal} isNarrow={isNarrow} />
             </header>
             <Modal selection={modal} />
         </>

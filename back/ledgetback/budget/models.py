@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 from core.models import User
 from budget.base_models import Notification, BudgetItem
@@ -75,6 +76,11 @@ class Bill(BudgetItem):
             MinValueValidator(1, message="Day must be between 1 and 12."),
             MaxValueValidator(12, message="Day must be between 1 and 12."),
         ]
+    )
+    year = models.IntegerField(
+        null=True,
+        blank=True,
+        default=timezone.now().year,
     )
 
     def clean(self):

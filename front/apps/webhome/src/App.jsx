@@ -103,10 +103,7 @@ const MainApp = () => {
             <AnimatePresence mode="wait">
                 <ZoomMotionDiv
                     key={location.pathname.split('/')[1]}
-                    style={{
-                        width: '100%',
-                        ...(!location.pathname.includes('budget') && { height: '100%', display: 'flex', }),
-                    }}
+                    style={{ flexGrow: '1', display: 'flex', flexDirection: 'column' }}
                 >
                     <div className="dashboard" ref={ref}>
                         <Routes location={location} key={location.pathname.split('/')[1]} >

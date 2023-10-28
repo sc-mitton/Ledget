@@ -22,7 +22,7 @@ function getDaysInMonth(year: number, month: number): Date[] {
 
 const Calendar = () => {
     const [searchParams] = useSearchParams()
-    const { data } = useGetBillsQuery({
+    const { data: billsData } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
@@ -36,15 +36,29 @@ const Calendar = () => {
 
     const monthlyBillCountEachDay: number[] = useMemo(() => {
         const counts: number[] = Array(31).fill(0)
-
+        const numBills = billsData?.length || 0
+        for (let i = 0; i < numBills; i++) {
+            if (billsData![i].period !== 'month') {
+                continue
+            }
+            const date = new Date(billsData![i].date!)
+            counts[date.getDate() - 1] += 1
+        }
         return counts
-    }, [data])
+    }, [billsData])
 
     const yearlyBillCountEachDay: number[] = useMemo(() => {
         const counts: number[] = Array(31).fill(0)
-
+        const numBills = billsData?.length || 0
+        for (let i = 0; i < numBills; i++) {
+            if (billsData![i].period !== 'year') {
+                continue
+            }
+            const date = new Date(billsData![i].date!)
+            counts[date.getDate() - 1] += 1
+        }
         return counts
-    }, [data])
+    }, [billsData])
 
     return (
         <div id="calendar">
@@ -68,62 +82,149 @@ const Calendar = () => {
                 })}
                 {days.map((day, i) => {
                     return (
-                        <div key={i}>
-                            <div>{day.getDate()}</div>
-
+                        // Cell
+                        <div
+                            key={i}
+                            className={`${monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1 ? 'hoverable' : ''}`}
+                        >
+                            {day.getDate()}
+                            {(monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1) &&
+                                <div role="tooltip">
+                                    {monthlyBillCountEachDay[i] > 0 &&
+                                        <>
+                                            <span className="has-bill-dot month" />
+                                            <span>{monthlyBillCountEachDay[i]}</span>
+                                        </>}
+                                    {yearlyBillCountEachDay[i] > 0 &&
+                                        <>
+                                            <span className="has-bill-dot year" />
+                                            <span>{yearlyBillCountEachDay[i]}</span>
+                                        </>}
+                                </div>
+                            }
+                            {/* Below cell */}
+                            {monthlyBillCountEachDay[i] > 0 && <span className="has-bill-dot month" />}
+                            {yearlyBillCountEachDay[i] > 0 && <span className="has-bill-dot year" />}
                         </div>
                     )
                 })}
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 
-const Column: FC<{ period: 'month' | 'year' }> = ({ period }) => {
+const Bills = () => {
     const [searchParams] = useSearchParams()
-    const { data } = useGetBillsQuery({
+    const { data: billsData } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
 
     return (
-        <div className="column">
-            {period === 'month'
-                ?
-                data?.monthlyBills.map((bill, i) => {
+        <div>
+            <div id="bills-summary-window">
+                <div><Calendar /></div>
+                {/* <div className="bills-box">
+                {billsData?.map((bill, i) => {
                     return (
                         <div key={i} className="monthly-bill">
                             <div>
                                 <span>{bill.emoji}</span>
                                 <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                                <span>
+                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                                </span>
                             </div>
                             <div><DollarCents value={bill.upper_amount} /></div>
                         </div>
                     )
-                })
-                :
-                data?.yearlyBills.map((bill, i) => {
+                })}
+                {billsData?.map((bill, i) => {
                     return (
-                        <div key={i} className="yearly-bill">
+                        <div key={i} className="monthly-bill">
                             <div>
                                 <span>{bill.emoji}</span>
                                 <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                                <span>
+                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                                </span>
                             </div>
                             <div><DollarCents value={bill.upper_amount} /></div>
                         </div>
                     )
-                })
-            }
-        </div>
-    )
-}
-
-const Bills = () => {
-    return (
-        <div id="bills-summary-window">
-            <div><Calendar /></div>
-            <Column period='month' />
-            <Column period='year' />
+                })}
+                {billsData?.map((bill, i) => {
+                    return (
+                        <div key={i} className="monthly-bill">
+                            <div>
+                                <span>{bill.emoji}</span>
+                                <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                                <span>
+                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                                </span>
+                            </div>
+                            <div><DollarCents value={bill.upper_amount} /></div>
+                        </div>
+                    )
+                })}
+                {billsData?.map((bill, i) => {
+                    return (
+                        <div key={i} className="monthly-bill">
+                            <div>
+                                <span>{bill.emoji}</span>
+                                <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                                <span>
+                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                                </span>
+                            </div>
+                            <div><DollarCents value={bill.upper_amount} /></div>
+                        </div>
+                    )
+                })}
+                {billsData?.map((bill, i) => {
+                    return (
+                        <div key={i} className="monthly-bill">
+                            <div>
+                                <span>{bill.emoji}</span>
+                                <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                                <span>
+                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                                </span>
+                            </div>
+                            <div><DollarCents value={bill.upper_amount} /></div>
+                        </div>
+                    )
+                })}
+                {billsData?.map((bill, i) => {
+                    return (
+                        <div key={i} className="monthly-bill">
+                            <div>
+                                <span>{bill.emoji}</span>
+                                <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                                <span>
+                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                                </span>
+                            </div>
+                            <div><DollarCents value={bill.upper_amount} /></div>
+                        </div>
+                    )
+                })}
+                {billsData?.map((bill, i) => {
+                    return (
+                        <div key={i} className="monthly-bill">
+                            <div>
+                                <span>{bill.emoji}</span>
+                                <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                                <span>
+                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                                </span>
+                            </div>
+                            <div><DollarCents value={bill.upper_amount} /></div>
+                        </div>
+                    )
+                })}
+            </div> */}
+            </div>
         </div>
     )
 }

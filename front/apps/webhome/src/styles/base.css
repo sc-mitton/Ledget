@@ -109,9 +109,6 @@
     --border-radius3: 16px;
     --border-radius4: 24px;
     --inner-window-border-radius: var(--border-radius25);
-
-    /* Padding */
-    --padding1: 8px 0px;
 }
 
 /* Override color values for Firefox */
@@ -145,12 +142,11 @@ body {
 
 main {
     height: 100%;
-    display: flex;
-    flex-direction: column;
     margin: 0;
     background-color: var(--window);
-    position: relative;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 div,
@@ -276,11 +272,11 @@ fieldset {
 }
 
 .dashboard {
-    width: 90%;
+    width: calc(100% - 3.5em);
+    height: 100%;
+    box-sizing: border-box;
     max-width: 87.5rem;
     margin: 1.75em auto;
-    margin-top: 3.75rem;
-    padding: 0 .75em;
     display: flex;
     justify-content: center;
     gap: 2em;
@@ -306,7 +302,7 @@ div.body {
 .window {
     box-shadow: var(--window-drop-shadow);
     border-radius: var(--border-radius3);
-    padding: .75em 1.75em 1.75em 1.75em;
+    padding: 1.75em;
     box-sizing: border-box;
 }
 
@@ -327,7 +323,8 @@ div.body {
 }
 
 .window-header {
-    padding: var(--padding1);
+    padding-bottom: 1em;
+    ;
     height: 1.875rem;
     display: flex;
     justify-content: space-between;
@@ -649,10 +646,6 @@ ul hr {
     border-bottom: 6px solid var(--window);
     border-left: 6px solid transparent;
     content: '';
-}
-
-#all-items-window {
-    flex-grow: 1;
 }
 
 /* ---------------------------------- Tabs ---------------------------------- */

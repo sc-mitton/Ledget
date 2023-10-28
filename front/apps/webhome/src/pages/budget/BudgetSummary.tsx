@@ -64,6 +64,7 @@ const BudgetSummary = () => {
             {Array.from(['total', 'month', 'year']).map((period, i) => {
                 return (
                     <div
+                        key={period}
                         className={`summary-stats
                             ${period}
                             ${period === 'month' && showMonthStats ? 'show' : ''}

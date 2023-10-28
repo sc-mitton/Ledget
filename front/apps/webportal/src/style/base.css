@@ -95,9 +95,6 @@
     --border-radius3: 16px;
     --border-radius4: 24px;
 
-    /* Padding */
-    --padding1: 8px 12px;
-
     /* Loading Shimmer */
     --shimmer-background: linear-gradient(115deg, var(--window) 30%, #f0f0f0 50%, var(--window) 70%);
 }

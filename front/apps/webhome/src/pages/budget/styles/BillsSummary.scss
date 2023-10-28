@@ -1,15 +1,17 @@
 $gap: calc(.75em + 2vw);
+$bill-flex-grid-gap: calc(.25em + .5vw);
 @import '../../../styles/greenblues.scss';
 
 #bills-summary-window {
     display: flex;
+    align-items: center;
     gap: $gap;
     background-color: var(--inner-window);
     border-radius: var(--border-radius25);
     padding: calc($gap/2);
+    max-height: 100%;
 
-
-    &>div {
+    &>div:first-child {
         display: inline-flex;
         flex-direction: column;
         align-items: center;
@@ -20,14 +22,12 @@ $gap: calc(.75em + 2vw);
     }
 
     // Calendar container
-    &>div:first-child {
-        flex: 1 0 0;
-    }
-
     #calendar {
+        flex: 1 0 0;
         gap: .75em;
         display: flex;
         flex-direction: column;
+        justify-content: center;
 
         #calendar-header {
             display: flex;
@@ -53,36 +53,76 @@ $gap: calc(.75em + 2vw);
                 position: relative;
                 align-self: center;
                 justify-self: center;
+
+                // Number of bills hover tip
+                &>div {
+                    padding: .125em .5em;
+                    border-radius: var(--border-radius1);
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    transform: translate(-50%, -100%);
+                    opacity: 0;
+                    display: flex;
+                    background-color: var(--m-text-gray);
+                    display: flex;
+                    gap: .125em;
+                    align-items: center;
+
+                    * {
+                        color: var(--white-text);
+                    }
+                }
+
+                &:hover>div {
+                    opacity: 1;
+                }
+
+                &:has(div) {
+                    cursor: pointer;
+                }
+
+                &.hoverable {
+                    cursor: pointer;
+                }
+            }
+
+            .has-bill-dot {
+                width: .375em;
+                height: .375em;
+                border-radius: 50%;
+            }
+
+            .month {
+                background-color: var(--green-dark3);
+            }
+
+            .year {
+                background-color: var(--blue-dark3);
             }
 
             // Indicators for bills on that day
-            &>div .has-bill-dot {
+            &>div>span.has-bill-dot {
                 position: absolute;
                 bottom: -.375em;
                 left: 50%;
                 transform: translateX(-50%);
-                width: .375em;
-                height: .375em;
-                border-radius: 50%;
-
-                &.month {
-                    background-color: var(--green-dark3);
-                }
-
-                &.year {
-                    background-color: var(--blue-dark3);
-                }
             }
         }
     }
 
     // Column of bills
-    .column {
-        flex: 1 1 0;
-        margin-top: 2em;
+    .bills-box {
+        flex: 2 1 0;
+        overflow-x: auto;
         display: flex;
         flex-direction: column;
-        gap: .5em;
+        flex-wrap: wrap;
+        gap: $bill-flex-grid-gap;
+        max-height: clamp(calc(3 * (1em + $bill-flex-grid-gap*2)),
+                calc(5 * (1em + $bill-flex-grid-gap*2 + 1vh)),
+                calc(100% - $bill-flex-grid-gap * 2),
+            );
 
         &>.monthly-bill {
             background-color: $green;
@@ -111,7 +151,9 @@ $gap: calc(.75em + 2vw);
             }
         }
 
+        // Flex item
         &>div {
+            max-width: calc(100%/2 - $bill-flex-grid-gap);
             cursor: pointer;
             box-sizing: border-box;
             padding: .25em .75em;
@@ -122,7 +164,11 @@ $gap: calc(.75em + 2vw);
 
             &>div:first-child {
                 display: inline-flex;
-                gap: .75em;
+                gap: .375em;
+
+                span:nth-child(3) {
+                    opacity: .7;
+                }
             }
         }
     }

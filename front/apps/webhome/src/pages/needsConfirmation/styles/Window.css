@@ -1,13 +1,3 @@
-#new-items-container {
-    width: 102%;
-    position: relative;
-    max-width: 27rem;
-    position: relative;
-    transform: translateX(-50%);
-    left: 50%;
-    z-index: 100;
-}
-
 #new-items {
     position: relative;
     background: radial-gradient(ellipse, rgba(14, 7, 7, .03) 1%, transparent 50%)
