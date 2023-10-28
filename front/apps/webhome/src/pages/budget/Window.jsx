@@ -123,10 +123,8 @@ function Window() {
                     </div>
                 </div>
                 <BudgetSummary />
-                <div id="budget-items--container">
-                    <Budget />
-                    <Bills />
-                </div>
+                <Budget />
+                <Bills />
             </div>
             <Outlet />
         </>
