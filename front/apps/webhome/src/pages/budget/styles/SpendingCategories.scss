@@ -11,13 +11,14 @@ $background: var(--window);
     display: flex;
     background-color: $background;
     gap: $column-gap;
-    // Arpx 5 rows
+    // Aprx. 5 rows
     min-height: calc(5 * (1em + 2 * $row-gap + 2 * $row-padding));
 
     .column {
         max-height: max-content;
         flex: 1;
         background-color: inherit;
+        max-height: max-content;
 
         &>div {
             overflow-y: auto;
