@@ -251,8 +251,7 @@ export const PillOptionButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { is
     return (
       <button
         aria-selected={isSelected}
-        className={`btn-small-pill btn ${isSelected ? '' : 'btn-gr2'}`}
-        style={isSelected ? { backgroundColor: 'rgb(0,0,0,.6)', color: 'var(--white-text)' } : {}}
+        className={`btn-small-pill btn btn-gr2 ${isSelected ? 'selected' : ''}`}
         {...rest}
       >
         {children}
