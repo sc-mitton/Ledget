@@ -63,7 +63,10 @@ const Calendar = () => {
     return (
         <div id="calendar">
             <div id="calendar-header">
-                <h3>{selectedDate.toLocaleString('en-us', { month: 'short' })} {selectedDate.getFullYear()} Bills</h3>
+                <h3>
+                    {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
+                    {selectedDate.getFullYear()} BILLS
+                </h3>
             </div>
             <div>
                 <div>Su</div>
@@ -125,62 +128,6 @@ const Bills = () => {
             <div>
                 <div><Calendar /></div>
                 <div className="bills-box">
-                    {billsData?.map((bill, i) => {
-                        return (
-                            <div key={i} className="monthly-bill">
-                                <div>
-                                    <span>{bill.emoji}</span>
-                                    <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
-                                    <span>
-                                        {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                    </span>
-                                </div>
-                                <div><DollarCents value={bill.upper_amount} /></div>
-                            </div>
-                        )
-                    })}
-                    {billsData?.map((bill, i) => {
-                        return (
-                            <div key={i} className="monthly-bill">
-                                <div>
-                                    <span>{bill.emoji}</span>
-                                    <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
-                                    <span>
-                                        {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                    </span>
-                                </div>
-                                <div><DollarCents value={bill.upper_amount} /></div>
-                            </div>
-                        )
-                    })}
-                    {billsData?.map((bill, i) => {
-                        return (
-                            <div key={i} className="monthly-bill">
-                                <div>
-                                    <span>{bill.emoji}</span>
-                                    <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
-                                    <span>
-                                        {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                    </span>
-                                </div>
-                                <div><DollarCents value={bill.upper_amount} /></div>
-                            </div>
-                        )
-                    })}
-                    {billsData?.map((bill, i) => {
-                        return (
-                            <div key={i} className="monthly-bill">
-                                <div>
-                                    <span>{bill.emoji}</span>
-                                    <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
-                                    <span>
-                                        {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                    </span>
-                                </div>
-                                <div><DollarCents value={bill.upper_amount} /></div>
-                            </div>
-                        )
-                    })}
                     {billsData?.map((bill, i) => {
                         return (
                             <div key={i} className="monthly-bill">

@@ -1,5 +1,6 @@
 $gap: calc(.75em + 2vw);
 $bill-flex-grid-gap: calc(.25em + .5vw);
+$number-of-bill-rows: 5;
 @import '../../../styles/greenblues.scss';
 
 #bills-summary-window {
@@ -119,8 +120,7 @@ $bill-flex-grid-gap: calc(.25em + .5vw);
 
         display: grid;
         grid-auto-flow: column;
-        grid-template-rows: repeat(5, minmax(0, auto));
-        // grid-auto-rows: minmax(0, auto);
+        grid-template-rows: repeat($number-of-bill-rows, minmax(0, auto));
         grid-auto-columns: 50%;
         gap: $bill-flex-grid-gap;
         padding: calc($bill-flex-grid-gap*1.5) 0;
