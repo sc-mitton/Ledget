@@ -11,12 +11,16 @@ $background: var(--window);
     display: flex;
     background-color: $background;
     gap: $column-gap;
+    // Arpx 5 rows
+    min-height: calc(5 * (1em + 2 * $row-gap + 2 * $row-padding));
 
     .column {
+        max-height: max-content;
         flex: 1;
         background-color: inherit;
 
         &>div {
+            overflow-y: auto;
             align-self: flex-start;
             width: calc(100% + .75em);
             box-sizing: border-box;
@@ -26,7 +30,6 @@ $background: var(--window);
             max-height: 100%;
             grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
             mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
-            overflow-y: auto;
             row-gap: $row-gap;
             position: relative;
             background-color: inherit;

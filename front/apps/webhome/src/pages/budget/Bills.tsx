@@ -121,10 +121,9 @@ const Bills = () => {
     })
 
     return (
-        <div>
-            <div id="bills-summary-window">
-                <div><Calendar /></div>
-                {/* <div className="bills-box">
+        <div id="bills-summary-window">
+            <div><Calendar /></div>
+            {/* <div className="bills-box">
                 {billsData?.map((bill, i) => {
                     return (
                         <div key={i} className="monthly-bill">
@@ -224,7 +223,6 @@ const Bills = () => {
                     )
                 })}
             </div> */}
-            </div>
         </div>
     )
 }
