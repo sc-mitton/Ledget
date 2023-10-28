@@ -67,7 +67,7 @@ const BudgetSummary = () => {
                         key={period}
                         className={`summary-stats
                             ${period}
-                            ${period === 'month' && showMonthStats ? 'show' : ''}
+                            ${period === 'month' && showMonthStats ? 'show' : 'show'}
                             ${period === 'year' && showYearStats ? 'show' : ''}`}
                         aria-hidden={
                             (period === 'month' && !showMonthStats) ||

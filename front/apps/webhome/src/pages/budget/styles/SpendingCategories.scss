@@ -1,10 +1,9 @@
 $window-padding: 1.5em;
 $row-padding: .625em;
 $column-gap: 1.25em;
-$row-gap: .625em;
 $background: var(--window);
 @import '../../../styles/greenblues.scss';
-
+@import './Variables.scss';
 
 #spending-categories-window {
     width: 100%;
@@ -15,7 +14,7 @@ $background: var(--window);
     background-color: $background;
     gap: $column-gap;
     // Aprx. 5 rows
-    min-height: calc(5 * (1em + 2 * $row-gap + 2 * $row-padding));
+    min-height: calc(5 * (1em + 2 * $item-row-gap + 2 * $row-padding));
 }
 
 .column {
@@ -32,8 +31,8 @@ $background: var(--window);
         display: grid;
         max-height: 100%;
         grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
-        mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
-        row-gap: $row-gap;
+        mask-image: $mask-image;
+        row-gap: $item-row-gap;
         position: relative;
         background-color: inherit;
 
@@ -194,5 +193,11 @@ $background: var(--window);
 @media screen and (max-width: 600px) {
     #spending-categories-window {
         grid-template-columns: 1fr;
+    }
+
+    .row.header>div:first-child {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .25em;
     }
 }

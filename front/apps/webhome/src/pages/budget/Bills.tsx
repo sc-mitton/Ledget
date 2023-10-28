@@ -1,10 +1,11 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useState, useRef, forwardRef } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
 import './styles/BillsSummary.scss'
 import { useGetBillsQuery } from '@features/billSlice';
-import { DollarCents, PillOptionButton } from '@ledget/ui';
+import { DollarCents, PillOptionButton, IconScaleButton, DropAnimation, useAccessEsc } from '@ledget/ui';
+import { Calendar as CalendarIcon } from '@ledget/media'
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -20,7 +21,8 @@ function getDaysInMonth(year: number, month: number): Date[] {
     return days;
 }
 
-const Calendar = () => {
+// const Calendar = (ref) => {
+const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((props, ref) => {
     const [searchParams] = useSearchParams()
     const { data: billsData } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
@@ -61,7 +63,7 @@ const Calendar = () => {
     }, [billsData])
 
     return (
-        <div id="calendar">
+        <div className="calendar" ref={ref}>
             <div>Su</div>
             <div>Mo</div>
             <div>Tu</div>
@@ -82,6 +84,7 @@ const Calendar = () => {
                     <div
                         key={i}
                         className={`${monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1 ? 'hoverable' : ''}`}
+                        tabIndex={monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1 ? 0 : -1}
                     >
                         {day.getDate()}
                         {(monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1) &&
@@ -106,9 +109,10 @@ const Calendar = () => {
             })}
         </div >
     )
-}
+})
 
 const Bills = () => {
+    const [showCalendar, setShowCalendar] = useState(false)
     const [searchParams, setSearchParams] = useSearchParams()
     const { data: billsData } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
@@ -119,20 +123,55 @@ const Bills = () => {
         parseInt(searchParams.get('year') || `${new Date().getFullYear()}`),
         parseInt(searchParams.get('month') || `${new Date().getMonth() + 1}`) - 1,
     )
+    const dropdownRef = useRef<HTMLDivElement>(null)
+    const calendarRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         searchParams.set('bill-sort', 'date')
         setSearchParams(searchParams)
     }, [])
 
+    useAccessEsc({
+        refs: [dropdownRef],
+        visible: showCalendar,
+        setVisible: () => setShowCalendar(false),
+    })
+
+    useEffect(() => {
+        if (showCalendar) {
+            calendarRef.current?.focus()
+        }
+    }, [showCalendar])
+
     const Header = () => (
         <div>
-            <h3>
-                {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
-                {selectedDate.getFullYear()} BILLS
-            </h3>
+            <div>
+                <h3>
+                    {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
+                    {selectedDate.getFullYear()} BILLS
+                </h3>
+            </div>
+            <div>
+                <IconScaleButton
+                    onFocus={() => setShowCalendar(true)}
+                    onBlur={() => setShowCalendar(false)}
+                    onClick={() => setShowCalendar(!showCalendar)}
+                    tabIndex={0}
+                    aria-label="Show calendar"
+                    aria-haspopup="true"
+                >
+                    <CalendarIcon size={'1.5em'} />
+                </IconScaleButton>
+                <DropAnimation
+                    visible={showCalendar}
+                    className="dropdown" ref={dropdownRef}
+                >
+                    <Calendar ref={calendarRef} />
+                </DropAnimation>
+            </div>
             <div>
                 <PillOptionButton
+                    aria-label="Sort bills by amount"
                     isSelected={searchParams.get('bill-sort') === 'a-z'}
                     onClick={() => {
                         searchParams.set('bill-sort', 'a-z')
@@ -142,6 +181,7 @@ const Bills = () => {
                     a-z
                 </PillOptionButton>
                 <PillOptionButton
+                    aria-label="Sort bills by date"
                     isSelected={searchParams.get('bill-sort') === 'date'}
                     onClick={() => {
                         searchParams.set('bill-sort', 'date')

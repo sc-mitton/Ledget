@@ -1,7 +1,9 @@
 $gap: calc(.25em + 2vw);
 $bill-flex-grid-gap: calc(.25em + .5vw);
+$bill-item-padding: .25em .75em;
 $number-of-bill-rows: 5;
 @import '../../../styles/greenblues.scss';
+@import './Variables.scss';
 
 #bills-summary-window {
     display: flex;
@@ -10,7 +12,7 @@ $number-of-bill-rows: 5;
         box-sizing: border-box;
         background-color: var(--inner-window);
         border-radius: var(--border-radius25);
-        padding: calc($gap/2);
+        padding: calc($gap/2 + $bill-flex-grid-gap);
         height: min-content;
         width: 100%;
         display: flex;
@@ -25,11 +27,30 @@ $number-of-bill-rows: 5;
         }
     }
 
-    // Sort options container
+    &>div:first-child>div:first-child {
+        gap: .25em;
+    }
+
+    // Container for calendar icon
+    &>div:first-child>div:first-child>div:nth-child(2) {
+        position: relative;
+        opacity: 0;
+        visibility: hidden;
+        flex-grow: 1;
+        padding-top: .125em;
+
+        // Calendar pop up
+        &>div:last-child {
+            margin-top: .25em;
+            padding: 1em;
+        }
+    }
+
+    // Sort buttons container
     &>div:first-child>div:first-child>div:last-child {
         display: flex;
         align-items: center;
-        gap: .375em;
+        gap: .325em;
 
         &>button {
             min-width: 6ch;
@@ -38,7 +59,7 @@ $number-of-bill-rows: 5;
 }
 
 // Calendar container
-#calendar {
+.calendar {
     flex: 1;
     display: inline-grid;
     grid-template-columns: repeat(7, minmax(0, auto));
@@ -127,7 +148,7 @@ $number-of-bill-rows: 5;
     grid-template-rows: repeat($number-of-bill-rows, minmax(0, auto));
     grid-auto-columns: 50%;
     gap: $bill-flex-grid-gap;
-    padding-bottom: calc($bill-flex-grid-gap);
+    padding-bottom: $bill-flex-grid-gap;
 
     &>.monthly-bill {
         background-color: $green;
@@ -160,7 +181,7 @@ $number-of-bill-rows: 5;
     &>div {
         cursor: pointer;
         box-sizing: border-box;
-        padding: .25em .75em;
+        padding: $bill-item-padding;
         border-radius: var(--border-radius1);
         width: calc(100% - $bill-flex-grid-gap);
         display: flex;
@@ -178,15 +199,49 @@ $number-of-bill-rows: 5;
 }
 
 @media (max-width: 1200px) {
-    #calendar {
-        max-width: 0;
-        visibility: collapse;
-        padding: 0;
-    }
+
 
     #bills-summary-window {
-        &>div>div {
+
+        // Container for bills and calendar
+        &>div>div:last-child {
             gap: 0;
+
+            .calendar {
+                max-width: 0;
+                visibility: collapse;
+                padding: 0;
+            }
         }
+
+        // Container for calendar icon
+        &>div:first-child>div:first-child>div:nth-child(2) {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+
+    #bills-summary-window {
+        &>div {
+            gap: 0em;
+            max-height: 100%;
+        }
+    }
+
+    .bills-box {
+        display: grid;
+        grid-auto-flow: unset;
+        grid-template-columns: 1fr;
+        grid-auto-rows: minmax(0, auto);
+        max-height: calc(7 * (1em + $bill-flex-grid-gap*2 + nth($bill-item-padding, 1)));
+
+        margin-top: 1em;
+        row-gap: $item-row-gap;
+        overflow-y: scroll;
+        mask-image: $mask-image;
+        padding-bottom: 0;
     }
 }

@@ -4,19 +4,20 @@ const Calendar
     = ({
         className = 'calendar-icon',
         fill = "#292929",
-        width = "1.8em",
-        height = "1.8em"
+        size = "1.8em",
     }) => {
 
         return (
             <svg
-                width={width}
-                height={height}
+                className={className}
+                width={size}
+                height={size}
                 viewBox="0 0 144 144"
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"
                 y="0px"
                 aria-label="Calendar icon"
+                transform="translate(0, -2)"
             >
                 <g>
                     <path stroke={fill} fill="none" strokeWidth="8px" d="M108.7,128.6H35.3c-9.3,0-16.8-7.5-16.8-16.8V43.3c0-9.3,7.5-16.8,16.8-16.8h73.4c9.3,0,16.8,7.5,16.8,16.8
