@@ -4,28 +4,13 @@ $bill-flex-grid-gap: calc(.25em + .5vw);
 
 #bills-summary-window {
     display: flex;
-    flex-direction: column;
-    height: max-content;
-
-    &>div {
-        display: flex;
-        align-items: center;
-        gap: $gap;
-        background-color: var(--inner-window);
-        border-radius: var(--border-radius25);
-        padding: calc($gap/2);
-        max-height: 100%;
-
-        &>div:first-child {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-
-            &:not(:first-child) {
-                align-items: center;
-            }
-        }
-    }
+    height: min-content;
+    align-items: center;
+    gap: $gap;
+    box-sizing: border-box;
+    background-color: var(--inner-window);
+    border-radius: var(--border-radius25);
+    padding: calc($gap/2);
 
     // Calendar container
     #calendar {
@@ -121,14 +106,16 @@ $bill-flex-grid-gap: calc(.25em + .5vw);
     .bills-box {
         flex: 2 1 0;
         overflow-x: auto;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        gap: $bill-flex-grid-gap;
+        overflow-y: hidden;
         max-height: clamp(calc(3 * (1em + $bill-flex-grid-gap*2)),
                 calc(5 * (1em + $bill-flex-grid-gap*2 + 1vh)),
                 calc(100% - $bill-flex-grid-gap * 2),
             );
+
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: $bill-flex-grid-gap;
 
         &>.monthly-bill {
             background-color: $green;
