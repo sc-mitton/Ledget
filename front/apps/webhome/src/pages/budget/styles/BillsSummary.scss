@@ -112,10 +112,13 @@ $bill-flex-grid-gap: calc(.25em + .5vw);
                 calc(100% - $bill-flex-grid-gap * 2),
             );
 
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-rows: repeat(5, minmax(0, auto));
+        // grid-auto-rows: minmax(0, auto);
+        grid-auto-columns: 50%;
         gap: $bill-flex-grid-gap;
+        padding: calc($bill-flex-grid-gap*1.5) 0;
 
         &>.monthly-bill {
             background-color: $green;
@@ -144,14 +147,13 @@ $bill-flex-grid-gap: calc(.25em + .5vw);
             }
         }
 
-        // Flex item
+        // Bill item (cell)
         &>div {
-            max-width: calc(100%/2 - $bill-flex-grid-gap);
             cursor: pointer;
             box-sizing: border-box;
             padding: .25em .75em;
             border-radius: var(--border-radius1);
-            width: 100%;
+            width: calc(100% - $bill-flex-grid-gap);
             display: flex;
             justify-content: space-between;
 
