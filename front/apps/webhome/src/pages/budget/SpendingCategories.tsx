@@ -260,21 +260,20 @@ const SpendingCategories = () => {
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
     const [isTabView, setIsTabView] = useState(false)
-    const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         const handleResize = () => {
-            setIsTabView(ref.current ? ref.current.offsetWidth < 600 : false)
+            setIsTabView(window.innerWidth < 600)
         }
         handleResize()
         window.addEventListener('resize', handleResize)
         return () => {
             window.removeEventListener('resize', handleResize)
         }
-    }, [ref.current])
+    }, [])
 
     return (
-        <div id="spending-categories-window" ref={ref}>
+        <div id="spending-categories-window">
             {categoriesSuccess &&
                 <>
                     {isTabView ? <TabView /> : <ColumnView />}

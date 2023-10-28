@@ -1,4 +1,4 @@
-import { useState, forwardRef, ReactNode, ButtonHTMLAttributes, useEffect } from 'react';
+import { FC, useState, forwardRef, ReactNode, ButtonHTMLAttributes, useEffect } from 'react';
 
 import './buttons.scss';
 import {
@@ -244,3 +244,18 @@ export const EdgeGlowPillButton
       <span />
     </button>
   )
+
+export const PillOptionButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { isSelected: boolean }> =
+  ({ isSelected, children, ...rest }) => {
+
+    return (
+      <button
+        aria-selected={isSelected}
+        className={`btn-small-pill btn ${isSelected ? '' : 'btn-gr2'}`}
+        style={isSelected ? { backgroundColor: 'rgb(0,0,0,.6)', color: 'var(--white-text)' } : {}}
+        {...rest}
+      >
+        {children}
+      </button>
+    )
+  }

@@ -1,4 +1,4 @@
-$gap: calc(.75em + 2vw);
+$gap: calc(.25em + 2vw);
 $bill-flex-grid-gap: calc(.25em + .5vw);
 $number-of-bill-rows: 5;
 @import '../../../styles/greenblues.scss';
@@ -7,169 +7,186 @@ $number-of-bill-rows: 5;
     display: flex;
 
     &>div {
-        width: 100%;
-        display: flex;
-        height: min-content;
-        align-items: center;
-        gap: $gap;
         box-sizing: border-box;
         background-color: var(--inner-window);
         border-radius: var(--border-radius25);
         padding: calc($gap/2);
-    }
-
-    // Calendar container
-    #calendar {
-        flex: 1 0 0;
-        gap: .75em;
+        height: min-content;
+        width: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        gap: .75em;
 
-        #calendar-header {
+        &>div {
             display: flex;
-            align-items: baseline;
-            gap: .5em;
-            padding-right: .125em;
-        }
-
-        &>div:last-child {
-            padding: .125em;
-            display: inline-grid;
-            grid-template-columns: repeat(7, minmax(0, auto));
-            row-gap: .5em;
-            column-gap: 1.25em;
-
-            // Days of week markers
-            &>div:nth-child(-n+7) {
-                font-weight: 500;
-            }
-
-            // Cells
-            &>div {
-                position: relative;
-                align-self: center;
-                justify-self: center;
-
-                // Number of bills hover tip
-                &>div {
-                    padding: .125em .5em;
-                    border-radius: var(--border-radius1);
-                    position: absolute;
-                    top: 0;
-                    left: 50%;
-                    transform: translate(-50%, -100%);
-                    opacity: 0;
-                    display: flex;
-                    background-color: var(--m-text-gray);
-                    display: flex;
-                    gap: .125em;
-                    align-items: center;
-
-                    * {
-                        color: var(--white-text);
-                    }
-                }
-
-                &:hover>div {
-                    opacity: 1;
-                }
-
-                &:has(div) {
-                    cursor: pointer;
-                }
-
-                &.hoverable {
-                    cursor: pointer;
-                }
-            }
-
-            .has-bill-dot {
-                width: .375em;
-                height: .375em;
-                border-radius: 50%;
-            }
-
-            .month {
-                background-color: var(--green-dark3);
-            }
-
-            .year {
-                background-color: var(--blue-dark3);
-            }
-
-            // Indicators for bills on that day
-            &>div>span.has-bill-dot {
-                position: absolute;
-                bottom: -.375em;
-                left: 50%;
-                transform: translateX(-50%);
-            }
+            align-items: center;
+            justify-content: space-between;
+            gap: $gap;
         }
     }
 
-    // Column of bills
-    .bills-box {
-        flex: 2 1 0;
-        overflow-x: auto;
-        overflow-y: hidden;
-        max-height: clamp(calc(3 * (1em + $bill-flex-grid-gap*2)),
-                calc(5 * (1em + $bill-flex-grid-gap*2 + 1vh)),
-                calc(100% - $bill-flex-grid-gap * 2),
-            );
+    // Sort options container
+    &>div:first-child>div:first-child>div:last-child {
+        display: flex;
+        align-items: center;
+        gap: .375em;
 
-        display: grid;
-        grid-auto-flow: column;
-        grid-template-rows: repeat($number-of-bill-rows, minmax(0, auto));
-        grid-auto-columns: 50%;
-        gap: $bill-flex-grid-gap;
-        padding: calc($bill-flex-grid-gap*1.5) 0;
-
-        &>.monthly-bill {
-            background-color: $green;
-            transition: all .2s ease-in-out;
-
-            &:hover {
-                background-color: $green-hover;
-                transition: all .2s ease-in-out;
-            }
-
-            * {
-                color: var(--green-dark4);
-            }
+        &>button {
+            min-width: 6ch;
         }
+    }
+}
 
-        &>.yearly-bill {
-            background-color: $blue;
+// Calendar container
+#calendar {
+    flex: 1;
+    display: inline-grid;
+    grid-template-columns: repeat(7, minmax(0, auto));
+    row-gap: .5em;
+    column-gap: 1.25em;
 
-            &:hover {
-                background-color: $blue-hover;
-                transition: all .2s ease-in-out;
-            }
+    // Days of week markers
+    &>div:nth-child(-n+7) {
+        font-weight: 500;
+    }
 
-            * {
-                color: var(--blue-dark4);
-            }
-        }
+    // Cells
+    &>div {
+        position: relative;
+        align-self: center;
+        justify-self: center;
 
-        // Bill item (cell)
+        // Number of bills hover tip
         &>div {
-            cursor: pointer;
-            box-sizing: border-box;
-            padding: .25em .75em;
+            padding: .125em .5em;
             border-radius: var(--border-radius1);
-            width: calc(100% - $bill-flex-grid-gap);
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -100%);
+            opacity: 0;
             display: flex;
-            justify-content: space-between;
+            background-color: var(--m-text-gray);
+            display: flex;
+            gap: .125em;
+            align-items: center;
 
-            &>div:first-child {
-                display: inline-flex;
-                gap: .375em;
-
-                span:nth-child(3) {
-                    opacity: .7;
-                }
+            * {
+                color: var(--white-text);
             }
+        }
+
+        &:hover>div {
+            opacity: 1;
+        }
+
+        &:has(div) {
+            cursor: pointer;
+        }
+
+        &.hoverable {
+            cursor: pointer;
+        }
+    }
+
+    .has-bill-dot {
+        width: .375em;
+        height: .375em;
+        border-radius: 50%;
+    }
+
+    .month {
+        background-color: var(--green-dark3);
+    }
+
+    .year {
+        background-color: var(--blue-dark3);
+    }
+
+    // Indicators for bills on that day
+    &>div>span.has-bill-dot {
+        position: absolute;
+        bottom: -.375em;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+// Column of bills
+.bills-box {
+    flex: 2;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-height: clamp(calc(3 * (1em + $bill-flex-grid-gap*2)),
+            calc(5 * (1em + $bill-flex-grid-gap*2 + 1vh)),
+            calc(100% - $bill-flex-grid-gap * 2),
+        );
+
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat($number-of-bill-rows, minmax(0, auto));
+    grid-auto-columns: 50%;
+    gap: $bill-flex-grid-gap;
+    padding-bottom: calc($bill-flex-grid-gap);
+
+    &>.monthly-bill {
+        background-color: $green;
+        transition: all .2s ease-in-out;
+
+        &:hover {
+            background-color: $green-hover;
+            transition: all .2s ease-in-out;
+        }
+
+        * {
+            color: var(--green-dark4);
+        }
+    }
+
+    &>.yearly-bill {
+        background-color: $blue;
+
+        &:hover {
+            background-color: $blue-hover;
+            transition: all .2s ease-in-out;
+        }
+
+        * {
+            color: var(--blue-dark4);
+        }
+    }
+
+    // Bill item (cell)
+    &>div {
+        cursor: pointer;
+        box-sizing: border-box;
+        padding: .25em .75em;
+        border-radius: var(--border-radius1);
+        width: calc(100% - $bill-flex-grid-gap);
+        display: flex;
+        justify-content: space-between;
+
+        &>div:first-child {
+            display: inline-flex;
+            gap: .375em;
+
+            span:nth-child(3) {
+                opacity: .7;
+            }
+        }
+    }
+}
+
+@media (max-width: 1200px) {
+    #calendar {
+        max-width: 0;
+        visibility: collapse;
+        padding: 0;
+    }
+
+    #bills-summary-window {
+        &>div>div {
+            gap: 0;
         }
     }
 }

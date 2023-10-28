@@ -4,11 +4,13 @@
     display: flex;
     flex-direction: column;
 
+    // Spending categories window
     &>div:nth-last-child(2) {
         margin: 1.75em 0;
         flex: 3 1 0;
     }
 
+    // Bills window
     &>div:last-child {
         flex: 2 1 0;
     }

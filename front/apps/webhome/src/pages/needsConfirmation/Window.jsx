@@ -68,7 +68,7 @@ const AccountLogo = ({ account }) => {
 
 // Sizing (in ems)
 const translate = 1
-const expandedTranslate = 6
+const expandedTranslate = 5.75
 const expandedHeight = 20
 const collapsedHeight = 7.5
 const scale = .1

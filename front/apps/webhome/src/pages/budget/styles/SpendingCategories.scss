@@ -16,173 +16,183 @@ $background: var(--window);
     gap: $column-gap;
     // Aprx. 5 rows
     min-height: calc(5 * (1em + 2 * $row-gap + 2 * $row-padding));
+}
 
-    .column {
+.column {
+    background-color: inherit;
+    max-height: max-content;
+
+    &>div {
+        overflow-y: auto;
+        align-self: flex-start;
+        width: calc(100% + .75em);
+        box-sizing: border-box;
+        padding: 0 .125em;
+        padding-right: .75em;
+        display: grid;
+        max-height: 100%;
+        grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
+        mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
+        row-gap: $row-gap;
+        position: relative;
         background-color: inherit;
-        max-height: max-content;
 
-        &>div {
-            overflow-y: auto;
-            align-self: flex-start;
-            width: calc(100% + .75em);
-            box-sizing: border-box;
-            padding: 0 .125em;
-            padding-right: .75em;
-            display: grid;
-            max-height: 100%;
-            grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
-            mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
-            row-gap: $row-gap;
-            position: relative;
-            background-color: inherit;
-
-            button {
-                grid-column: 1 / span 5;
-                padding: calc($row-padding + .125em) 0;
-            }
-
-            &::after {
-                content: "";
-                height: .01em;
-            }
-
-            .row {
-                display: contents;
-                cursor: pointer;
-                transition: all .2s ease-in-out;
-                background-color: inherit;
-
-                .row-label {
-                    display: flex;
-                    gap: .5em;
-                }
-
-                &>div {
-                    padding: $row-padding 0;
-                }
-
-                &>div.spanned {
-                    // cover 2-5 columns
-                    grid-column: 2 / span 4;
-                    border-radius: 0 var(--border-radius2) var(--border-radius2) 0;
-                    text-align: right;
-                    padding-right: 1.25em;
-                }
-
-                &.header>div {
-                    cursor: default;
-                    padding-top: 0;
-                    position: sticky;
-                    top: 0;
-                    background-color: inherit;
-                    box-shadow: 0px 4px 4px -2px $background;
-                    display: flex;
-                    gap: .75em;
-                    font-weight: 500;
-                    cursor: pointer;
-
-                    @media screen and (max-width: 550px) {
-                        gap: .125em;
-
-                        &:first-child {
-                            flex-direction: column;
-                            align-items: flex-start;
-                        }
-                    }
-
-                    span:focus {
-                        outline: none;
-                    }
-
-                    span[aria-selected="false"] {
-                        opacity: .4;
-                    }
-
-                    &:first-child {
-                        padding-left: .125em;
-                    }
-                }
-
-                @media screen and (max-width: 800px) {
-                    &.header>div h4 {
-                        display: flex;
-                        flex-direction: column;
-                    }
-                }
-
-                // Name & emoji columns
-                &>div:nth-child(5n+1) {
-                    padding-left: .75em;
-                }
-
-                &:not(.header)>div:nth-child(5n+1) {
-                    border-radius: var(--border-radius2) 0 0 var(--border-radius2);
-                }
-
-                // Amount spent columns
-                &>div:nth-child(5n+2):not(.spanned) {
-                    display: flex;
-                    align-items: center;
-                    text-align: right;
-                    justify-content: flex-end;
-                    padding-right: .5em;
-                    font-weight: 500;
-                }
-
-                // Forward slash columns
-                &>div:nth-child(5n+3):not(.spanned) {
-                    display: flex;
-                    align-items: center;
-                }
-
-                // Limit amount columns
-                &>div:nth-child(5n+4) {
-                    display: flex;
-                    align-items: center;
-                    padding-left: .5em;
-                    padding-right: .25em;
-                }
-
-                // Progress circle columns
-                &>div:nth-child(5n) {
-                    padding-left: .5em;
-                    padding-right: .75em;
-                    display: flex;
-                    align-items: center;
-                }
-
-                &:not(.header)>div:nth-child(5n) {
-                    border-radius: 0 var(--border-radius2) var(--border-radius2) 0;
-                }
-
-                // Coloring
-                &.month * {
-                    color: var(--green-dark4);
-                }
-
-                &.month>div {
-                    background-color: $green;
-                }
-
-                &.month:hover>div {
-                    background-color: $green-hover;
-                    transition: all .2s ease-in-out;
-                }
-
-                &.year * {
-                    color: var(--blue-dark4);
-                }
-
-                &.year>div {
-                    background-color: $blue;
-                }
-
-                &.year:hover>div {
-                    background-color: $blue-hover;
-                    transition: all .2s ease-in-out;
-
-                }
-            }
+        button {
+            grid-column: 1 / span 5;
+            padding: calc($row-padding + .125em) 0;
         }
+
+        &::after {
+            content: "";
+            height: .01em;
+        }
+    }
+}
+
+.row {
+    display: contents;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    background-color: inherit;
+
+    .row-label {
+        display: flex;
+        gap: .5em;
+    }
+
+    &>div {
+        padding: $row-padding 0;
+    }
+
+    &>div.spanned {
+        // cover 2-5 columns
+        grid-column: 2 / span 4;
+        border-radius: 0 var(--border-radius2) var(--border-radius2) 0;
+        text-align: right;
+        padding-right: 1.25em;
+    }
+
+    &.header>div {
+        cursor: default;
+        padding-top: 0;
+        position: sticky;
+        top: 0;
+        background-color: inherit;
+        box-shadow: 0px 4px 4px -2px $background;
+        display: flex;
+        gap: .75em;
+        font-weight: 500;
+        cursor: pointer;
+
+        span:focus {
+            outline: none;
+        }
+
+        span[aria-selected="false"] {
+            opacity: .4;
+        }
+
+        &:first-child {
+            padding-left: .125em;
+        }
+    }
+
+    // Name & emoji columns
+    &>div:nth-child(5n+1) {
+        padding-left: .75em;
+    }
+
+    &:not(.header)>div:nth-child(5n+1) {
+        border-radius: var(--border-radius2) 0 0 var(--border-radius2);
+    }
+
+    // Amount spent columns
+    &>div:nth-child(5n+2):not(.spanned) {
+        display: flex;
+        align-items: center;
+        text-align: right;
+        justify-content: flex-end;
+        padding-right: .5em;
+        font-weight: 500;
+    }
+
+    // Forward slash columns
+    &>div:nth-child(5n+3):not(.spanned) {
+        display: flex;
+        align-items: center;
+    }
+
+    // Limit amount columns
+    &>div:nth-child(5n+4) {
+        display: flex;
+        align-items: center;
+        padding-left: .5em;
+        padding-right: .25em;
+    }
+
+    // Progress circle columns
+    &>div:nth-child(5n) {
+        padding-left: .5em;
+        padding-right: .75em;
+        display: flex;
+        align-items: center;
+    }
+
+    &:not(.header)>div:nth-child(5n) {
+        border-radius: 0 var(--border-radius2) var(--border-radius2) 0;
+    }
+
+    // Coloring
+    &.month * {
+        color: var(--green-dark4);
+    }
+
+    &.month>div {
+        background-color: $green;
+    }
+
+    &.month:hover>div {
+        background-color: $green-hover;
+        transition: all .2s ease-in-out;
+    }
+
+    &.year * {
+        color: var(--blue-dark4);
+    }
+
+    &.year>div {
+        background-color: $blue;
+    }
+
+    &.year:hover>div {
+        background-color: $blue-hover;
+        transition: all .2s ease-in-out;
+
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .row {
+        gap: .125em;
+
+        &:first-child {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .row {
+        &.header>div h4 {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #spending-categories-window {
+        grid-template-columns: 1fr;
     }
 }

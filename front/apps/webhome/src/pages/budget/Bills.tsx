@@ -1,10 +1,10 @@
-import { FC, useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
 import './styles/BillsSummary.scss'
 import { useGetBillsQuery } from '@features/billSlice';
-import { DollarCents } from '@ledget/ui';
+import { DollarCents, PillOptionButton } from '@ledget/ui';
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -62,86 +62,167 @@ const Calendar = () => {
 
     return (
         <div id="calendar">
-            <div id="calendar-header">
-                <h3>
-                    {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
-                    {selectedDate.getFullYear()} BILLS
-                </h3>
-            </div>
-            <div>
-                <div>Su</div>
-                <div>M</div>
-                <div>Tu</div>
-                <div>W</div>
-                <div>Th</div>
-                <div>F</div>
-                <div>Sa</div>
-                {Array.from(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']).map((day, i) => {
-                    if (day !== days[0].toLocaleString('en-us', { weekday: 'long' })) {
-                        return <div key={i}></div>
-                    } else {
-                        return
-                    }
-                })}
-                {days.map((day, i) => {
-                    return (
-                        // Cell
-                        <div
-                            key={i}
-                            className={`${monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1 ? 'hoverable' : ''}`}
-                        >
-                            {day.getDate()}
-                            {(monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1) &&
-                                <div role="tooltip">
-                                    {monthlyBillCountEachDay[i] > 0 &&
-                                        <>
-                                            <span className="has-bill-dot month" />
-                                            <span>{monthlyBillCountEachDay[i]}</span>
-                                        </>}
-                                    {yearlyBillCountEachDay[i] > 0 &&
-                                        <>
-                                            <span className="has-bill-dot year" />
-                                            <span>{yearlyBillCountEachDay[i]}</span>
-                                        </>}
-                                </div>
-                            }
-                            {/* Below cell */}
-                            {monthlyBillCountEachDay[i] > 0 && <span className="has-bill-dot month" />}
-                            {yearlyBillCountEachDay[i] > 0 && <span className="has-bill-dot year" />}
-                        </div>
-                    )
-                })}
-            </div >
+            <div>Su</div>
+            <div>Mo</div>
+            <div>Tu</div>
+            <div>We</div>
+            <div>Th</div>
+            <div>Fr</div>
+            <div>Sa</div>
+            {Array.from(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']).map((day, i) => {
+                if (day !== days[0].toLocaleString('en-us', { weekday: 'long' })) {
+                    return <div key={i}></div>
+                } else {
+                    return
+                }
+            })}
+            {days.map((day, i) => {
+                return (
+                    // Cell
+                    <div
+                        key={i}
+                        className={`${monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1 ? 'hoverable' : ''}`}
+                    >
+                        {day.getDate()}
+                        {(monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1) &&
+                            <div role="tooltip">
+                                {monthlyBillCountEachDay[i] > 0 &&
+                                    <>
+                                        <span className="has-bill-dot month" />
+                                        <span>{monthlyBillCountEachDay[i]}</span>
+                                    </>}
+                                {yearlyBillCountEachDay[i] > 0 &&
+                                    <>
+                                        <span className="has-bill-dot year" />
+                                        <span>{yearlyBillCountEachDay[i]}</span>
+                                    </>}
+                            </div>
+                        }
+                        {/* Below cell */}
+                        {monthlyBillCountEachDay[i] > 0 && <span className="has-bill-dot month" />}
+                        {yearlyBillCountEachDay[i] > 0 && <span className="has-bill-dot year" />}
+                    </div>
+                )
+            })}
         </div >
     )
 }
 
 const Bills = () => {
-    const [searchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
     const { data: billsData } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
 
+    const selectedDate = new Date(
+        parseInt(searchParams.get('year') || `${new Date().getFullYear()}`),
+        parseInt(searchParams.get('month') || `${new Date().getMonth() + 1}`) - 1,
+    )
+
+    useEffect(() => {
+        searchParams.set('bill-sort', 'date')
+        setSearchParams(searchParams)
+    }, [])
+
+    const Header = () => (
+        <div>
+            <h3>
+                {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
+                {selectedDate.getFullYear()} BILLS
+            </h3>
+            <div>
+                <PillOptionButton
+                    isSelected={searchParams.get('bill-sort') === 'a-z'}
+                    onClick={() => {
+                        searchParams.set('bill-sort', 'a-z')
+                        setSearchParams(searchParams)
+                    }}
+                >
+                    a-z
+                </PillOptionButton>
+                <PillOptionButton
+                    isSelected={searchParams.get('bill-sort') === 'date'}
+                    onClick={() => {
+                        searchParams.set('bill-sort', 'date')
+                        setSearchParams(searchParams)
+                    }}
+                >
+                    date
+                </PillOptionButton>
+            </div>
+        </div>
+    )
+
+    const Bills = () => (
+
+        <div className="bills-box">
+            {billsData?.map((bill, i) => {
+                return (
+                    <div key={i} className="monthly-bill">
+                        <div>
+                            <span>{bill.emoji}</span>
+                            <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                            <span>
+                                {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                            </span>
+                        </div>
+                        <div><DollarCents value={bill.upper_amount} /></div>
+                    </div>
+                )
+            })}
+            {billsData?.map((bill, i) => {
+                return (
+                    <div key={i} className="monthly-bill">
+                        <div>
+                            <span>{bill.emoji}</span>
+                            <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                            <span>
+                                {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                            </span>
+                        </div>
+                        <div><DollarCents value={bill.upper_amount} /></div>
+                    </div>
+                )
+            })}
+            {billsData?.map((bill, i) => {
+                return (
+                    <div key={i} className="monthly-bill">
+                        <div>
+                            <span>{bill.emoji}</span>
+                            <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                            <span>
+                                {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                            </span>
+                        </div>
+                        <div><DollarCents value={bill.upper_amount} /></div>
+                    </div>
+                )
+            })}
+            {billsData?.map((bill, i) => {
+                return (
+                    <div key={i} className="monthly-bill">
+                        <div>
+                            <span>{bill.emoji}</span>
+                            <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                            <span>
+                                {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                            </span>
+                        </div>
+                        <div><DollarCents value={bill.upper_amount} /></div>
+                    </div>
+                )
+            })}
+        </div>
+    )
+
     return (
         <div id="bills-summary-window">
             <div>
-                <div><Calendar /></div>
-                <div className="bills-box">
-                    {billsData?.map((bill, i) => {
-                        return (
-                            <div key={i} className="monthly-bill">
-                                <div>
-                                    <span>{bill.emoji}</span>
-                                    <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
-                                    <span>
-                                        {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                    </span>
-                                </div>
-                                <div><DollarCents value={bill.upper_amount} /></div>
-                            </div>
-                        )
-                    })}
+                <Header />
+                <div>
+                    <Calendar />
+                    <Bills />
                 </div>
             </div>
         </div>

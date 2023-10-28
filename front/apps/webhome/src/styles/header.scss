@@ -160,12 +160,13 @@ header {
 
 @media (max-width: 700px) {
 
-    .header-container {
+    header {
         &>div:first-child {
             margin-left: -.5em;
         }
 
         &>div:nth-child(2) {
+            flex-grow: 0;
             justify-content: center;
         }
 
@@ -182,7 +183,7 @@ header {
         color: var(--m-text-gray);
     }
 
-    .header-container>div span {
+    header>div span {
         visibility: hidden;
     }
 }
