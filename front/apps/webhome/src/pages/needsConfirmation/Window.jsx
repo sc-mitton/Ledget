@@ -66,7 +66,7 @@ const AccountLogo = ({ account }) => {
 
 // End TODO
 const translate = 15
-const expandedTranslate = 87
+const expandedTranslate = 80
 const expandedHeight = 320
 const collapsedHeight = 120
 const scale = .1
