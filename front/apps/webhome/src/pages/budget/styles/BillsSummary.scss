@@ -5,7 +5,7 @@ $bill-flex-grid-gap: calc(.25em + .5vw);
 #bills-summary-window {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    height: max-content;
 
     &>div {
         display: flex;
