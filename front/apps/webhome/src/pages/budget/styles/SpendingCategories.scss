@@ -8,15 +8,16 @@ $background: var(--window);
 
 #spending-categories-window {
     width: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, max-content);
+    place-content: center;
     background-color: $background;
     gap: $column-gap;
     // Aprx. 5 rows
     min-height: calc(5 * (1em + 2 * $row-gap + 2 * $row-padding));
 
     .column {
-        max-height: max-content;
-        flex: 1;
         background-color: inherit;
         max-height: max-content;
 
