@@ -25,6 +25,10 @@ header {
         margin-right: 1em;
     }
 
+    &:not(.narrow)>div:nth-child(3) {
+        margin-right: 2em;
+    }
+
     // Profile dropdown
     &>div:nth-child(3) {
         border-radius: 50%;
@@ -36,13 +40,13 @@ header {
 
 .profile-dropdown.wide {
     top: 3em;
-    left: -1em;
+    left: -150%;
 }
 
 .profile-dropdown.wide::before {
     position: absolute;
     top: -.5em;
-    left: 1.625em;
+    left: 42%;
     display: inline-block;
     border-right: .375em solid transparent;
     border-bottom: .375em solid var(--subtle-border-color);
@@ -54,7 +58,7 @@ header {
     position: absolute;
     top: -.375em;
     /* left: 3em; */
-    left: 1.625em;
+    left: 42%;
     display: inline-block;
     border-right: .375em solid transparent;
     border-bottom: .375em solid var(--window);
