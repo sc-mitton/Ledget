@@ -5,7 +5,7 @@ $header-font-size: clamp(.8125rem, calc(.75em + .25vw), 1rem);
 
 $header-gap: calc(.75em + .125vw);
 
-$summary-padding-bottom: calc(nth($header-padding, 1) * 2 + $base-stats-font-size + $teaser-stats-margin-top + $header-font-size + 1em);
+$summary-padding-bottom: calc(nth($header-padding, 1) * 2 + $base-stats-font-size + $teaser-stats-margin-top + $header-font-size + 1.25em);
 $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $base-stats-font-size + $header-gap) * 3);
 
 #budget-summary--container {
@@ -20,7 +20,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         border-radius: var(--border-radius25);
         padding: $header-padding;
         transform: scale(1);
-        transition: transform .2s ease-in-out, left 0.3s ease-in-out, width 0.3s ease-in-out, z-index 0s linear .2s;
+        transition: transform .2s ease-in-out, left 0.3s ease-in-out, width 0.3s ease-in-out, z-index 0s linear .3s;
 
         h4 {
             font-size: $header-font-size;
@@ -106,7 +106,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
     position: absolute;
     visibility: hidden;
     opacity: 0;
-    top: 45%;
+    top: 40%;
     transform: translateY(-35%);
     left: 0;
     width: 100%;
@@ -214,14 +214,14 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             &:nth-child(2) {
                 left: 0;
                 height: calc($base-stats-font-size + nth($header-padding, 1) * 4);
-                top: calc(100% / 3 + $header-gap/4);
+                top: calc(100% / 3 + $header-gap/3);
                 width: 100%;
             }
 
             // Year header
             &:nth-child(3) {
                 left: 0;
-                top: calc(2/3 * 100% + $header-gap/2);
+                top: calc(2/3 * 100% + 2 * $header-gap/3);
                 height: calc($base-stats-font-size + nth($header-padding, 1) * 4);
                 width: 100%;
             }
@@ -243,14 +243,14 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
     }
 
     .summary-stats {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, auto) minmax(0, auto);
         grid-template-rows: 1fr 1fr;
         height: 100%;
-        transform: translateY(-45%);
+        transform: translateY(-40%);
         align-items: center;
+        justify-content: space-evenly;
 
         &>div {
-            margin-left: 1em;
             display: auto;
             justify-self: start;
         }

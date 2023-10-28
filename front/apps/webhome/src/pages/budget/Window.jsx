@@ -90,7 +90,7 @@ const DropDown = () => {
     )
 }
 
-const Budget = () => {
+const Spending = () => {
     const [tabView, setTabView] = useState(false)
 
     useEffect(() => {
@@ -123,7 +123,7 @@ function Window() {
                     </div>
                 </div>
                 <BudgetSummary />
-                <Budget />
+                <Spending />
                 <Bills />
             </div>
             <Outlet />
