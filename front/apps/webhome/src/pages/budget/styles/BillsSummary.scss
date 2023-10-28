@@ -181,6 +181,7 @@ $number-of-bill-rows: 5;
 
     // Bill item (cell)
     &>div {
+        justify-self: center;
         cursor: pointer;
         box-sizing: border-box;
         padding: $bill-item-padding;
@@ -212,6 +213,7 @@ $number-of-bill-rows: 5;
                 max-width: 0;
                 visibility: collapse;
                 padding: 0;
+                height: 0;
             }
         }
 
