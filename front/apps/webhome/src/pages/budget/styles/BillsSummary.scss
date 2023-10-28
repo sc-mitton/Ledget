@@ -7,6 +7,7 @@ $number-of-bill-rows: 5;
 
 #bills-summary-window {
     display: flex;
+    justify-content: space-between;
 
     &>div {
         box-sizing: border-box;
@@ -60,9 +61,9 @@ $number-of-bill-rows: 5;
 
 // Calendar container
 .calendar {
-    flex: 1;
     display: inline-grid;
-    grid-template-columns: repeat(7, minmax(0, auto));
+    grid-template-columns: repeat(7, minmax(0, 1.25em));
+    justify-self: center;
     row-gap: .5em;
     column-gap: 1.25em;
 
@@ -136,6 +137,7 @@ $number-of-bill-rows: 5;
 // Column of bills
 .bills-box {
     flex: 2;
+    flex-shrink: 0;
     overflow-x: auto;
     overflow-y: hidden;
     max-height: clamp(calc(3 * (1em + $bill-flex-grid-gap*2)),
@@ -198,8 +200,7 @@ $number-of-bill-rows: 5;
     }
 }
 
-@media (max-width: 1200px) {
-
+@media (max-width: 1300px) {
 
     #bills-summary-window {
 

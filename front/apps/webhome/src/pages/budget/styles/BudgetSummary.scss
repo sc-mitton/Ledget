@@ -229,7 +229,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             &:not(:first-child):hover,
             &:not(:first-child):focus-visible {
                 top: 0;
-                height: 100%;
+                height: 105%;
                 border-radius: var(--border-radius25);
                 transition: transform .2s ease-in-out .3s, top 0.3s ease-in-out .3s, height 0.3s ease-in-out .3s,
                     border-radius 0.3s ease-in-out .3s, z-index 0s linear .3s;
@@ -246,7 +246,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         grid-template-columns: minmax(0, auto) minmax(0, auto);
         grid-template-rows: 1fr 1fr;
         height: 100%;
-        transform: translateY(-40%);
+        transform: translateY(-37%);
         align-items: center;
         justify-content: space-evenly;
 

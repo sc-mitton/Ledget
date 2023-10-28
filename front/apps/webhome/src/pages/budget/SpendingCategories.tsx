@@ -276,7 +276,7 @@ const SpendingCategories = () => {
         <div id="spending-categories-window">
             {categoriesSuccess &&
                 <>
-                    {/* {isTabView ? <TabView /> : <ColumnView />} */}
+                    {isTabView ? <TabView /> : <ColumnView />}
                 </>
             }
         </div>
