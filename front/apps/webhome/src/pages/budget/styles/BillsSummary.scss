@@ -4,20 +4,26 @@ $bill-flex-grid-gap: calc(.25em + .5vw);
 
 #bills-summary-window {
     display: flex;
-    align-items: center;
-    gap: $gap;
-    background-color: var(--inner-window);
-    border-radius: var(--border-radius25);
-    padding: calc($gap/2);
-    max-height: 100%;
+    flex-direction: column;
+    justify-content: center;
 
-    &>div:first-child {
-        display: inline-flex;
-        flex-direction: column;
+    &>div {
+        display: flex;
         align-items: center;
+        gap: $gap;
+        background-color: var(--inner-window);
+        border-radius: var(--border-radius25);
+        padding: calc($gap/2);
+        max-height: 100%;
 
-        &:not(:first-child) {
+        &>div:first-child {
+            display: inline-flex;
+            flex-direction: column;
             align-items: center;
+
+            &:not(:first-child) {
+                align-items: center;
+            }
         }
     }
 
