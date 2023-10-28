@@ -5,18 +5,15 @@
     --window2: rgb(241, 241, 241);
     --window-values: 250, 250, 250;
     --window-transparent: rgba(252, 248, 247, 0.8);
-    --window-border-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.05);
     --window-background-color: #f0f0f0;
     --inner-window: rgba(0, 0, 0, .03);
     --inner-window-rgb: 244, 244, 244;
     --inner-window-solid: rgb(244, 244, 244);
-    --inner-window-lighter: rgba(0, 0, 0, .02);
 
     --background-color: #fcfcfc;
     --logo-dark: #242424;
     --overlay: rgba(49, 49, 49, 0.7);
     --overlay2: rgba(49, 49, 49, 0.5);
-    --skeleton: rgb(235, 235, 235);
 
     /* Palet */
     --mute-red: #fe8797;
@@ -64,8 +61,7 @@
     --wafer-hover-drop-shadow: rgb(0, 0, 0, .2) 0px 0px 12px 2px;
 
     --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
-    --window-drop-shadow: rgba(149, 157, 165, 0.15) 0px 8px 36px;
-    --window-drop-shadow2: rgba(0, 0, 0, 0.1) 0px 2px 12px;
+    --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 36px;
     --scroll-shadow: rgba(248, 248, 248), transparent;
 
     /* Input Colors */
