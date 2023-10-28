@@ -4,13 +4,18 @@ $bill-flex-grid-gap: calc(.25em + .5vw);
 
 #bills-summary-window {
     display: flex;
-    height: min-content;
-    align-items: center;
-    gap: $gap;
-    box-sizing: border-box;
-    background-color: var(--inner-window);
-    border-radius: var(--border-radius25);
-    padding: calc($gap/2);
+
+    &>div {
+        width: 100%;
+        display: flex;
+        height: min-content;
+        align-items: center;
+        gap: $gap;
+        box-sizing: border-box;
+        background-color: var(--inner-window);
+        border-radius: var(--border-radius25);
+        padding: calc($gap/2);
+    }
 
     // Calendar container
     #calendar {
