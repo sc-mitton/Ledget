@@ -11,32 +11,49 @@ $bill-item-padding: .25em .75em;
 
 #bills-summary-window {
     display: flex;
+}
 
-    &>div {
-        box-sizing: border-box;
-        background-color: var(--inner-window);
-        border-radius: var(--border-radius25);
-        padding: calc($gap/2 + $bill-flex-grid-gap);
-        height: min-content;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: .75em;
+.calendar-bills--container {
+    box-sizing: border-box;
+    background-color: var(--inner-window);
+    border-radius: var(--border-radius25);
+    padding: calc($gap/2 + $bill-flex-grid-gap);
+    height: min-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    max-height: 1000px;
+    gap: .75em;
 
-        &>div {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: $gap;
+    &.collapsed {
+        gap: 0;
+        transition: all .3s ease-in-out;
+
+        &>div:last-child {
+            max-height: 0;
+            padding: 0;
+            opacity: 0;
+            visibility: collapse;
+            transition: max-height .3s ease-in-out, padding .3s ease-in-out,
+                opacity .3s ease-in-out, visibility .3s ease-in-out .3s;
         }
     }
 
-    &>div:first-child>div:first-child {
+    &>div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: $gap;
+        transition: all .3s ease-in-out;
+        max-height: 1000px;
+    }
+
+    &>div:first-child {
         gap: .25em;
     }
 
     // Container for calendar icon
-    &>div:first-child>div:first-child>div:nth-child(2) {
+    &>div:first-child>div:nth-child(2) {
         position: relative;
         opacity: 0;
         visibility: hidden;
@@ -51,7 +68,7 @@ $bill-item-padding: .25em .75em;
     }
 
     // Sort buttons container
-    &>div:first-child>div:first-child>div:last-child {
+    &>div:first-child>div:last-child {
         display: flex;
         align-items: center;
         gap: .325em;
@@ -156,6 +173,7 @@ $number-of-bill-rows: 5;
     grid-auto-columns: 50%;
     gap: $bill-flex-grid-gap;
     padding-bottom: $bill-flex-grid-gap;
+    transition: all .3s ease-in-out;
 
     &>.monthly-bill {
         background-color: $green;

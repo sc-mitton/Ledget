@@ -2,22 +2,25 @@
 
 const Expand = ({
     className = '',
-    width = ".7em",
-    height = ".7em",
+    size = ".7em",
     stroke = "#FFFFFF",
     strokeWidth = "18",
+    rotate = 0,
+    ...rest
 }) => {
 
     return (
         <svg
-            width={width}
-            height={height}
+            transform={`rotate(${rotate})`}
+            width={size}
+            height={size}
             viewBox="0 0 144 144"
             xmlns="http://www.w3.org/2000/svg"
             x="72px"
             y="72px"
             aria-label="Expand or collapse"
             className={className}
+            {...rest}
         >
             <polyline
                 fill="none"

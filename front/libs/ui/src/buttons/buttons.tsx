@@ -245,7 +245,7 @@ export const EdgeGlowPillButton
     </button>
   )
 
-export const PillOptionButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { isSelected: boolean }> =
+export const PillOptionButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { isSelected?: boolean }> =
   ({ isSelected, children, ...rest }) => {
 
     return (

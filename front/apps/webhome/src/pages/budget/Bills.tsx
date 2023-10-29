@@ -2,10 +2,17 @@ import { useMemo, useEffect, useState, useRef, forwardRef } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
-import './styles/BillsSummary.scss'
+import './styles/Bills.scss'
 import { useGetBillsQuery } from '@features/billSlice';
-import { DollarCents, PillOptionButton, IconScaleButton, DropAnimation, useAccessEsc } from '@ledget/ui';
-import { Calendar as CalendarIcon } from '@ledget/media'
+import {
+    DollarCents,
+    PillOptionButton,
+    IconScaleButton,
+    IconButton,
+    DropAnimation,
+    useAccessEsc
+} from '@ledget/ui';
+import { Calendar as CalendarIcon, ExpandIcon } from '@ledget/media'
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -119,6 +126,7 @@ const Bills = () => {
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
     const [bills, setBills] = useState(billsData)
+    const [collapsed, setCollapsed] = useState(false)
 
     const selectedDate = new Date(
         parseInt(searchParams.get('year') || `${new Date().getFullYear()}`),
@@ -191,6 +199,18 @@ const Bills = () => {
                 >
                     date
                 </PillOptionButton>
+                <IconButton
+                    style={{ borderRadius: '12px' }}
+                    onClick={() => setCollapsed(!collapsed)}
+                    aria-label="Collapse bills"
+                >
+                    <ExpandIcon
+                        rotate={180}
+                        stroke={'currentColor'}
+                        size={'.95em'}
+                        style={{ opacity: .7 }}
+                    />
+                </IconButton>
             </div>
         </div>
     )
@@ -210,8 +230,9 @@ const Bills = () => {
     const Bills = () => (
 
         <div
-            className="bills-box"
+            className='bills-box'
             style={{ '--number-of-bills': billsData?.length! / 2 || 0 } as React.CSSProperties}
+            aria-expanded={!collapsed}
         >
             {bills?.map((bill, i) => {
                 return (
@@ -232,7 +253,7 @@ const Bills = () => {
 
     return (
         <div id="bills-summary-window">
-            <div>
+            <div className={`calendar-bills--container ${collapsed ? 'collapsed' : ''}`}>
                 <Header />
                 <div>
                     <Calendar />
