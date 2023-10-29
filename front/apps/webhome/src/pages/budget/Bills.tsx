@@ -196,7 +196,10 @@ const Bills = () => {
 
     const Bills = () => (
 
-        <div className="bills-box">
+        <div
+            className="bills-box"
+            style={{ '--number-of-bills': billsData?.length! / 2 || 0 } as React.CSSProperties}
+        >
             {billsData?.map((bill, i) => {
                 return (
                     <div key={i} className="monthly-bill">
