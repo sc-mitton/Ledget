@@ -84,6 +84,8 @@
     --btn-light-light-gray: #eeeeee;
     --btn-light-gray: #e6e4e4;
     --btn-hover-light-gray: #dad9d9;
+    --btn-inner-window: rgb(0, 0, 0, .05);
+    --btn-inner-window-hover: rgb(0, 0, 0, .08);
     --btn-gray: #3b3b3b;
     --btn-hover-gray: #292929;
     --btn-mid-gray: #848484;
