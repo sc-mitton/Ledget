@@ -113,6 +113,17 @@ const Spending = () => {
 }
 
 function Window() {
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    useEffect(() => {
+        // On mount set month and date to current date and month
+        searchParams.set('month', `${new Date().getMonth() + 1}`)
+        searchParams.set('year', `${new Date().getFullYear()}`)
+        // Set default sort to date
+        searchParams.set('bill-sort', 'date')
+        setSearchParams(searchParams)
+    }, [])
+
     return (
         <>
             <div className="window" id="budget-window">

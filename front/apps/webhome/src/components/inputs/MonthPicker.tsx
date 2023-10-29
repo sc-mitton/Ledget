@@ -35,9 +35,6 @@ const MonthPicker = () => {
 
     // Set date options based on when the user was created
     useEffect(() => {
-        searchParams.set('month', `${new Date().getMonth() + 1}`)
-        searchParams.set('year', `${new Date().getFullYear()}`)
-        setSearchParams(searchParams)
         if (userIsFetched && user) {
             const userCreatedOn = new Date(user.created_on)
             const currentDate = new Date()

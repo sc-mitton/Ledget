@@ -135,11 +135,6 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
         }
     }, [showCalendar])
 
-    useEffect(() => {
-        searchParams.set('bill-sort', 'date')
-        setSearchParams(searchParams)
-    }, [])
-
     useAccessEsc({
         refs: [dropdownRef],
         visible: showCalendar,
@@ -163,7 +158,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                     aria-label="Show calendar"
                     aria-haspopup="true"
                 >
-                    <CalendarIcon size={'1.5em'} />
+                    <CalendarIcon size={'1.4em'} />
                 </IconScaleButton>
                 <DropAnimation
                     visible={showCalendar}
