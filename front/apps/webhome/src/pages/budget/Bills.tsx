@@ -118,6 +118,7 @@ const Bills = () => {
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
+    const [bills, setBills] = useState(billsData)
 
     const selectedDate = new Date(
         parseInt(searchParams.get('year') || `${new Date().getFullYear()}`),
@@ -194,13 +195,25 @@ const Bills = () => {
         </div>
     )
 
+    useEffect(() => {
+        if (searchParams.get('bill-sort') === 'date') {
+            setBills(Array.from(billsData || []).sort((a, b) => {
+                return new Date(a.date!).getTime() - new Date(b.date!).getTime()
+            }))
+        } else if (searchParams.get('bill-sort') === 'a-z') {
+            setBills(Array.from(billsData || []).sort((a, b) => {
+                return a.name.localeCompare(b.name)
+            }))
+        }
+    }, [searchParams.get('bill-sort'), billsData])
+
     const Bills = () => (
 
         <div
             className="bills-box"
             style={{ '--number-of-bills': billsData?.length! / 2 || 0 } as React.CSSProperties}
         >
-            {billsData?.map((bill, i) => {
+            {bills?.map((bill, i) => {
                 return (
                     <div key={i} className="monthly-bill">
                         <div>

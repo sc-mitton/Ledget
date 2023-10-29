@@ -1,10 +1,8 @@
-import React from 'react'
-
 import { useNavigate } from 'react-router-dom'
 
 import './styles/Authentication.css'
 import { LockIcon } from '@ledget/media'
-import { GrayButton } from '@ledget/ui'
+import { BlueSlimButton } from '@ledget/ui'
 import { useGetMeQuery } from '@features/userSlice'
 
 const PasswordReset = () => {
@@ -36,12 +34,12 @@ const PasswordReset = () => {
                                 at {formatTime(user.password_last_changed)}</span>}
                     </div>
                     <div>
-                        <GrayButton
+                        <BlueSlimButton
                             onClick={() => navigate('/profile/security/change-password')}
                             aria-label="Change password"
                         >
                             change
-                        </GrayButton>
+                        </BlueSlimButton>
                     </div>
                 </div>
             </div>

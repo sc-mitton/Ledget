@@ -152,7 +152,7 @@ $number-of-bill-rows: 5;
 
     display: grid;
     grid-auto-flow: column;
-    grid-template-rows: repeat(min($number-of-bill-rows, var(--number-of-bills)), minmax(0, auto));
+    grid-template-rows: repeat($number-of-bill-rows, minmax(0, auto));
     grid-auto-columns: 50%;
     gap: $bill-flex-grid-gap;
     padding-bottom: $bill-flex-grid-gap;
@@ -207,6 +207,11 @@ $number-of-bill-rows: 5;
 
 @media (max-width: 1300px) {
 
+
+    .bills-box {
+        grid-template-rows: repeat(min($number-of-bill-rows, var(--number-of-bills)), minmax(0, auto));
+    }
+
     #bills-summary-window {
 
         // Container for bills and calendar
@@ -214,10 +219,11 @@ $number-of-bill-rows: 5;
             gap: 0;
 
             .calendar {
+                position: fixed;
                 max-width: 0;
+                max-height: 0;
                 visibility: collapse;
                 padding: 0;
-                height: 0;
             }
         }
 
