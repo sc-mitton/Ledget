@@ -28,7 +28,6 @@ function getDaysInMonth(year: number, month: number): Date[] {
     return days;
 }
 
-// const Calendar = (ref) => {
 const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((props, ref) => {
     const [searchParams] = useSearchParams()
     const { data: billsData } = useGetBillsQuery({
@@ -223,7 +222,6 @@ const Bills = () => {
     }, [searchParams.get('bill-sort'), billsData])
 
     const Bills = () => (
-
         <div
             className='bills-box'
             style={{ '--number-of-bills': billsData?.length! / 2 || 0 } as React.CSSProperties}
