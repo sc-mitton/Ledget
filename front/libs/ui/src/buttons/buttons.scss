@@ -505,8 +505,6 @@ button.disabled-hover:hover svg {
 
 .expand-button {
     margin: 0 auto;
-    margin-top: .25em;
-    margin-bottom: .5em;
     border-radius: var(--border-radius2);
     font-weight: 500;
     padding: .375em .625em;
@@ -516,7 +514,6 @@ button.disabled-hover:hover svg {
         align-items: center;
         justify-content: center;
     }
-
 }
 
 .expand-button--icon {

@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useContext, createContext } from 'react'
 
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 
-import "./styles/Window.css"
+import "./styles/Window.scss"
 import { Ellipsis, CheckMark } from "@ledget/media"
 import Wells from "@assets/logos/Wells"
 import Ally from "@assets/logos/Ally"

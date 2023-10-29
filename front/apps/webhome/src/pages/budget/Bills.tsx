@@ -8,11 +8,11 @@ import {
     DollarCents,
     PillOptionButton,
     IconScaleButton,
-    IconButton,
+    ExpandButton,
     DropAnimation,
     useAccessEsc
 } from '@ledget/ui';
-import { Calendar as CalendarIcon, ExpandIcon } from '@ledget/media'
+import { Calendar as CalendarIcon } from '@ledget/media'
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -118,22 +118,22 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
     )
 })
 
-const Bills = () => {
-    const [showCalendar, setShowCalendar] = useState(false)
-    const [searchParams, setSearchParams] = useSearchParams()
-    const { data: billsData } = useGetBillsQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
-    })
-    const [bills, setBills] = useState(billsData)
-    const [collapsed, setCollapsed] = useState(false)
 
+const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed: (a: boolean) => void }) => {
+    const [searchParams, setSearchParams] = useSearchParams()
     const selectedDate = new Date(
         parseInt(searchParams.get('year') || `${new Date().getFullYear()}`),
         parseInt(searchParams.get('month') || `${new Date().getMonth() + 1}`) - 1,
     )
-    const dropdownRef = useRef<HTMLDivElement>(null)
     const calendarRef = useRef<HTMLDivElement>(null)
+    const dropdownRef = useRef<HTMLDivElement>(null)
+    const [showCalendar, setShowCalendar] = useState(false)
+
+    useEffect(() => {
+        if (showCalendar) {
+            calendarRef.current?.focus()
+        }
+    }, [showCalendar])
 
     useEffect(() => {
         searchParams.set('bill-sort', 'date')
@@ -146,13 +146,7 @@ const Bills = () => {
         setVisible: () => setShowCalendar(false),
     })
 
-    useEffect(() => {
-        if (showCalendar) {
-            calendarRef.current?.focus()
-        }
-    }, [showCalendar])
-
-    const Header = () => (
+    return (
         <div>
             <div>
                 <h3>
@@ -199,21 +193,27 @@ const Bills = () => {
                 >
                     date
                 </PillOptionButton>
-                <IconButton
-                    style={{ borderRadius: '12px' }}
-                    onClick={() => setCollapsed(!collapsed)}
+                <ExpandButton
+                    flipped={collapsed}
+                    hasBackground={false}
+                    onClick={() => { setCollapsed(!collapsed) }}
                     aria-label="Collapse bills"
-                >
-                    <ExpandIcon
-                        rotate={180}
-                        stroke={'currentColor'}
-                        size={'.95em'}
-                        style={{ opacity: .7 }}
-                    />
-                </IconButton>
+                    size={'.95em'}
+                />
             </div>
         </div>
     )
+}
+
+const Bills = () => {
+    const [searchParams] = useSearchParams()
+    const { data: billsData } = useGetBillsQuery({
+        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
+        year: searchParams.get('year') || `${new Date().getFullYear()}`,
+    })
+    const [bills, setBills] = useState(billsData)
+    const [collapsed, setCollapsed] = useState(false)
+
 
     useEffect(() => {
         if (searchParams.get('bill-sort') === 'date') {
@@ -254,7 +254,10 @@ const Bills = () => {
     return (
         <div id="bills-summary-window">
             <div className={`calendar-bills--container ${collapsed ? 'collapsed' : ''}`}>
-                <Header />
+                <Header
+                    collapsed={collapsed}
+                    setCollapsed={() => setCollapsed(!collapsed)}
+                />
                 <div>
                     <Calendar />
                     <Bills />

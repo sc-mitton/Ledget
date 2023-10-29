@@ -69,16 +69,20 @@ export const SmallArrowButton = ({ type = '', ...rest }) => (
   </button>
 )
 
-export const ExpandButton = ({ flipped = false, ...rest }) => (
+export const ExpandButton = ({
+  flipped = false,
+  size = '.7em',
+  hasBackground = true,
+  ...rest
+}) => (
   <button
-    className={`btn-sp btn-discreet expand-button `}
-    id="expand-button"
+    className={`btn-sp ${hasBackground ? 'btn-discreet' : ''} expand-button `}
     tabIndex={0}
     aria-label="Expand"
     {...rest}
   >
     <div className={`expand-button--icon ${flipped ? 'flipped' : ''} `}>
-      <ExpandIcon stroke={"var(--faded-text)"} />
+      <ExpandIcon stroke={"var(--faded-text)"} size={size} />
     </div >
   </button>
 )

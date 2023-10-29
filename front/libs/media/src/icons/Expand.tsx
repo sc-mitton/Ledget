@@ -5,13 +5,11 @@ const Expand = ({
     size = ".7em",
     stroke = "#FFFFFF",
     strokeWidth = "18",
-    rotate = 0,
     ...rest
 }) => {
 
     return (
         <svg
-            transform={`rotate(${rotate})`}
             width={size}
             height={size}
             viewBox="0 0 144 144"
