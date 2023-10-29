@@ -81,10 +81,14 @@ $background: var(--window);
         display: flex;
         gap: .75em;
         font-weight: 500;
-        cursor: pointer;
 
         span:focus {
             outline: none;
+        }
+
+        span[aria-selected="false"],
+        span[aria-selected="true"] {
+            cursor: pointer;
         }
 
         span[aria-selected="false"] {
