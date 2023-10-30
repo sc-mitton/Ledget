@@ -1,7 +1,5 @@
-import React from 'react'
-
 import './styles/Window.css'
-import NeedsConfirmationWindow from '../needsConfirmation/Window'
+import NeedsConfirmationWindow from './needsConfirmation/Window'
 import { Plus, Funnel } from '@ledget/media'
 import { IconButton, Tooltip } from '@ledget/ui'
 
@@ -43,16 +41,13 @@ const HistoryHeader = () => {
     )
 }
 
-function Spending() {
-
-    return (
-        <div id="spending-window">
-            <NeedsConfirmationWindow />
-            <div className="window" id="all-items-window">
-                <HistoryHeader />
-            </div>
+const Spending = () => (
+    <div id="spending-window">
+        <NeedsConfirmationWindow />
+        <div className="window" id="all-items-window">
+            <HistoryHeader />
         </div>
-    )
-}
+    </div>
+)
 
 export default Spending
