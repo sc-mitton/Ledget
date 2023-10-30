@@ -124,5 +124,17 @@ class BudgetViewTests(ViewTestsMixin):
         self.assertNotEqual(response.data.__len__(), 0)
 
     @timeit
+    def test_get_timesliced_categories(self):
+        self.test_bulk_category_creation()
+        month = 10
+        year = 2023
+        response = self.client.get(
+            reverse('get_categories'),
+            {'month': month, 'year': year}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response.data.__len__(), 0)
+
+    @timeit
     def test_get_suggested_bills(self):
         pass

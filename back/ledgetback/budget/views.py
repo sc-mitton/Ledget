@@ -38,7 +38,9 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
         year = self.request.query_params.get('year', None)
 
         if month and year:
-            return self._get_queryset_with_sliced_amount_spent(month, year)
+            return self._get_queryset_with_sliced_amount_spent(
+                int(month), int(year)
+            )
         else:
             return self._get_categories_qset()
 
@@ -54,11 +56,10 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
         '''
         qset = Category.objects.filter(usercategory__user=self.request.user) \
                                .order_by('usercategory__order', 'name')
-        print(qset.query)
 
         return qset
 
-    def _get_queryset_with_sliced_amount_spent(self, month, year):
+    def _get_queryset_with_sliced_amount_spent(self, month: int, year: int):
         '''
         SELECT
             ...columns
@@ -77,11 +78,20 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
         time_slice_end = datetime(year=year, month=month, day=last_day_of_month)
 
         yearly_category_anchor = self.request.user.yearly_categories_anchor
+        if not yearly_category_anchor:
+            yearly_category_anchor = datetime(year=year, month=1, day=1)
 
         sum_month = Sum(
             'transaction__amount',
             filter=Q(transaction__date__month=month, transaction__date__year=year)
         )
+        monthly_qset = Category.objects \
+                               .filter(
+                                   usercategory__user=self.request.user,
+                                   usercategory__category__period='month'
+                                ) \
+                               .order_by('usercategory__order', 'name') \
+                               .annotate(amount_spent=sum_month)
         sum_year = Sum(
             'transaction__amount',
             filter=Q(
@@ -89,17 +99,10 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
                 transaction__date__lte=time_slice_end
             )
         )
-        monthly_qset = Category.objects \
-                               .filter(
-                                   usercategory__user=self.request.user,
-                                   usercategory__category_period='month'
-                                ) \
-                               .order_by('usercategory__order', 'name') \
-                               .annotate(amount_spent=sum_month)
         yearly_qset = Category.objects \
                               .filter(
                                  usercategory__user=self.request.user,
-                                 usercategory__category_period='year'
+                                 usercategory__category__period='year'
                                ) \
                               .order_by('usercategory__order', 'name') \
                               .annotate(amount_spent=sum_year)
