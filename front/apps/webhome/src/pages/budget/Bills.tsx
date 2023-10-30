@@ -10,7 +10,8 @@ import {
     IconScaleButton,
     ExpandButton,
     DropAnimation,
-    useAccessEsc
+    useAccessEsc,
+    ShimmerText
 } from '@ledget/ui';
 import { Calendar as CalendarIcon } from '@ledget/media'
 
@@ -201,7 +202,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
 
 const Bills = () => {
     const [searchParams] = useSearchParams()
-    const { data: billsData } = useGetBillsQuery({
+    const { data: billsData, isLoading } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
@@ -244,6 +245,19 @@ const Bills = () => {
         </div>
     )
 
+    const SkeletonBills = () => (
+        <div
+            className='bills-box'
+            style={{ '--number-of-bills': 4 } as React.CSSProperties}
+        >
+            <>
+                {Array.from(Array(8).keys()).map(i => (
+                    <ShimmerText key={i} shimmering={true} style={{ width: '100%', height: '2em' }} />
+                ))}
+            </>
+        </div>
+    )
+
     return (
         <div id="bills-summary-window">
             <div className={`calendar-bills--container ${collapsed ? 'collapsed' : ''}`}>
@@ -253,7 +267,7 @@ const Bills = () => {
                 />
                 <div>
                     <Calendar />
-                    <Bills />
+                    {isLoading ? <SkeletonBills /> : <Bills />}
                 </div>
             </div>
         </div>
