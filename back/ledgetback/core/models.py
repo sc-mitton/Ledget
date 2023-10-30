@@ -54,6 +54,7 @@ class User(models.Model):
         ],
     )
     is_onboarded = models.BooleanField(default=False)
+    is_co_owner = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
     password_last_changed = models.DateTimeField(null=True, default=None)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -65,6 +66,7 @@ class User(models.Model):
     last_otp_verification = models.DateTimeField(null=True, default=None)
     phone_number = models.CharField(max_length=20, null=True, default=None)
     phone_country_code = models.CharField(max_length=5, null=True, default=None)
+    yearly_categories_anchor = models.DateTimeField(null=True, default=None)
 
     objects = UserManager()
     USERNAME_FIELD = 'id'

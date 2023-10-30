@@ -1,3 +1,5 @@
+from datetime import datetime
+import calendar
 
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.views import APIView
@@ -31,6 +33,32 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
     serializer_class = CategorySerializer
 
     def get_queryset(self):
+
+        month = self.request.query_params.get('month', None)
+        year = self.request.query_params.get('year', None)
+
+        if month and year:
+            return self._get_queryset_with_sliced_amount_spent(month, year)
+        else:
+            return self._get_categories_qset()
+
+    def _get_categories_qset(self):
+        '''
+            SELECT
+               ...columns
+            FROM budget_category"
+            INNER JOIN budget_user_category"
+            ON (budget_category.id = budget_user_category"."category_id)
+            WHERE budget_user_category.user_id = 'user_id_here'
+            ORDER BY budget_user_category.order ASC, budget_category.name ASC
+        '''
+        qset = Category.objects.filter(usercategory__user=self.request.user) \
+                               .order_by('usercategory__order', 'name')
+        print(qset.query)
+
+        return qset
+
+    def _get_queryset_with_sliced_amount_spent(self, month, year):
         '''
         SELECT
             ...columns
@@ -45,17 +73,38 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
         GROUP BY budget_category.id
         '''
 
-        month = self.request.query_params.get('month', None)
-        year = self.request.query_params.get('year', None)
-        s = Sum(
+        last_day_of_month = calendar.monthrange(year, month)[1]
+        time_slice_end = datetime(year=year, month=month, day=last_day_of_month)
+
+        yearly_category_anchor = self.request.user.yearly_categories_anchor
+
+        sum_month = Sum(
             'transaction__amount',
             filter=Q(transaction__date__month=month, transaction__date__year=year)
         )
-        qset = Category.objects.filter(usercategory__user=self.request.user) \
+        sum_year = Sum(
+            'transaction__amount',
+            filter=Q(
+                transaction__date__gte=yearly_category_anchor,
+                transaction__date__lte=time_slice_end
+            )
+        )
+        monthly_qset = Category.objects \
+                               .filter(
+                                   usercategory__user=self.request.user,
+                                   usercategory__category_period='month'
+                                ) \
                                .order_by('usercategory__order', 'name') \
-                               .annotate(amount_spent=s)
+                               .annotate(amount_spent=sum_month)
+        yearly_qset = Category.objects \
+                              .filter(
+                                 usercategory__user=self.request.user,
+                                 usercategory__category_period='year'
+                               ) \
+                              .order_by('usercategory__order', 'name') \
+                              .annotate(amount_spent=sum_year)
 
-        return qset
+        return monthly_qset.union(yearly_qset)
 
 
 class BillView(BulkCreateMixin, ListCreateAPIView):
