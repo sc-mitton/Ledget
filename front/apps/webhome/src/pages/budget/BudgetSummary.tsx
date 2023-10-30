@@ -13,7 +13,7 @@ const BudgetSummary = () => {
     const [searchParams] = useSearchParams()
     const [showMonthStats, setShowMonthStats] = useState(false)
     const [showYearStats, setShowYearStats] = useState(false)
-    const { data } = useGetCategoriesQuery({
+    const { data, isLoading } = useGetCategoriesQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
@@ -24,7 +24,9 @@ const BudgetSummary = () => {
             <div>
                 <div><h4>Total</h4></div>
                 <div>
-                    <DollarCents value={641364} />
+                    <DollarCents
+                        value={isLoading ? 0 : (data!.yearly_spent + data!.monthly_spent)}
+                    />
                 </div>
                 <div>spent</div>
             </div>
@@ -36,7 +38,6 @@ const BudgetSummary = () => {
                     : (data?.limit_amount_yearly && data?.yearly_spent)
                         ? Big(data.limit_amount_yearly || 0).minus(data.yearly_spent).toNumber()
                         : 0
-
                 return (
                     <div
                         key={period}
@@ -79,16 +80,35 @@ const BudgetSummary = () => {
                     >
                         <div>
                             <div>
-                                <div><DollarCents value={641364} /></div>
+                                <div>
+                                    <DollarCents value={
+                                        period === 'month'
+                                            ? data?.monthly_spent || 0
+                                            : data?.yearly_spent || 0
+                                    } />
+                                </div>
                                 <div>spent</div>
                             </div>
                         </div>
                         <div>
                             <div>
-                                <div><DollarCents value={41364} /></div>
+                                <div>
+                                    <DollarCents value={
+                                        isLoading ? '0.00' : period === 'month'
+                                            ? Big(data?.limit_amount_monthly || 0).minus(data!.monthly_spent).toNumber() || 0
+                                            : Big(data?.limit_amount_yearly || 0).minus(data!.yearly_spent).toNumber() || 0
+                                    } />
+                                </div>
                                 <div>spending left</div>
                             </div>
-                            <StaticProgressCircle value={.5} size={'1.2em'} />
+                            <StaticProgressCircle
+                                value={
+                                    isLoading ? 0 : period === 'month'
+                                        ? Math.round((data!.monthly_spent / data!.limit_amount_monthly) * 100) / 100
+                                        : Math.round((data!.yearly_spent / data!.limit_amount_yearly) * 100) / 100
+                                }
+                                size={'1.2em'}
+                            />
                         </div>
                         <div>
                             <div>

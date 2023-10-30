@@ -144,25 +144,25 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
 
     const totalSpent = period === 'month' ? data?.monthly_spent : data?.yearly_spent
     const totalLimit = period === 'month' ? data?.limit_amount_monthly : data?.limit_amount_yearly
-    const yearly_category_start = data?.oldest_yearly_category_created
+    const yearly_start = data?.oldest_yearly_category_created
         ? new Date(new Date().getFullYear(), new Date(data.oldest_yearly_category_created).getMonth(), 1)
         : null
-    const yearly_category_end = yearly_category_start
-        ? new Date(yearly_category_start.getFullYear() + 1, yearly_category_start.getMonth(), 1)
+    const yearly_end = yearly_start
+        ? new Date(yearly_start.getFullYear() + 1, yearly_start.getMonth(), 1)
         : null
 
     return (
-        <div className={`row header ${yearly_category_end ? 'has-alternate-header' : ''}`}>
+        <div className={`row header ${yearly_end ? 'has-alternate-header' : ''}`}>
             <div>
                 <h4>
                     {`${period.toUpperCase()}LY`} <br /> SPENDING
                 </h4>
-                {period === 'year' && yearly_category_start && yearly_category_end &&
+                {period === 'year' && yearly_start && yearly_end &&
                     <h4>
-                        {yearly_category_start.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
+                        {yearly_start.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
                         <br />
                         -
-                        {yearly_category_end.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
+                        {yearly_end.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
                     </h4>}
             </div>
             <div>
