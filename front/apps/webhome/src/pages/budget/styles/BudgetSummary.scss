@@ -129,7 +129,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
     }
 
     // Each statistic cell
-    &>div {
+    &>div:nth-child(-n+4) {
         display: flex;
         justify-content: center;
         align-items: baseline;
@@ -158,7 +158,8 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         }
     }
 
-    &>div:last-child {
+    // Bills paid
+    &>div:nth-child(4) {
         gap: .125em;
 
         &>div:last-child {
@@ -174,6 +175,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         opacity: 1;
         transition: visibility 0s ease-in-out .3s, opacity 0.3s ease-in-out .3s;
     }
+
 }
 
 @media (max-width: 550px) {

@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react'
+import { useState } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
@@ -20,6 +20,7 @@ const BudgetSummary = () => {
 
     return (
         <div id="budget-summary--container">
+            {/* Summary Teasers */}
             <div>
                 <div><h4>Total</h4></div>
                 <div>
@@ -61,7 +62,8 @@ const BudgetSummary = () => {
                     </div>
                 )
             })}
-            {Array.from(['total', 'month', 'year']).map((period, i) => {
+            {/* Summary (they're transparent until use hovers over them) */}
+            {Array.from(['month', 'year']).map((period, i) => {
                 return (
                     <div
                         key={period}

@@ -1,6 +1,6 @@
 #spending-window {
     flex: 1;
-    min-width: 23.5rem;
+    min-width: 22.5rem;
     display: flex;
     flex-direction: column;
 }

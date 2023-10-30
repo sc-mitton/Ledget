@@ -23,6 +23,7 @@ interface GetCategoriesResponse {
     yearly_spent: number,
     limit_amount_monthly: number,
     limit_amount_yearly: number,
+    oldest_yearly_category_created: string | null,
 }
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
@@ -50,6 +51,12 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                         category.period === 'month' ? (acc += category.limit_amount) : acc, 0),
                     limit_amount_yearly: response.reduce((acc: number, category: Category) =>
                         category.period === 'year' ? (acc += category.limit_amount) : acc, 0),
+                    oldest_yearly_category_created: response.reduce((acc: string | null, category: Category) => {
+                        if (category.period === 'year') {
+                            return acc === null || new Date(acc) < new Date(category.created) ? category.created : acc
+                        }
+                        return acc
+                    }, null),
                 }
             }
         }),

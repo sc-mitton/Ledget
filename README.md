@@ -194,3 +194,9 @@ and has 3 days of leniancy baked into it unless it's 0 (default value). If the
 user has an expired payment method, and has not updated it, then service_provisioned_until
 will eventually be overrun and service will be lost and access will not be returned
 without a new payment method.
+
+
+## Notes on App functionality
+
+- The yearly budget will reset on the oldest yearly category created month. E.g. the oldest yearly
+category was created on Oct. 6, 2023 then the yearly budget will reset every Oct. 1, 2023
