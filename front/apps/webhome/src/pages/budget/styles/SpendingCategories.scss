@@ -185,11 +185,10 @@ $background: var(--window);
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (min-width: 800px) {
     .row {
-        &.header>div h4 {
-            display: flex;
-            flex-direction: column;
+        &.header>div h4 br {
+            display: none;
         }
     }
 }

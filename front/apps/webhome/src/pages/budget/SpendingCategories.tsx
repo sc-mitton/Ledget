@@ -128,10 +128,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
     return (
         <div className="row header">
             <div>
-                <h4>
-                    <span>{`${period.toUpperCase()}LY`} </span>
-                    <span>SPENDING</span>
-                </h4>
+                <h4>{`${period.toUpperCase()}LY`} <br /> SPENDING</h4>
             </div>
             <div>
                 <div>
