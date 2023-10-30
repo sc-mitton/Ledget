@@ -1,4 +1,4 @@
-import React, { FC, memo, Fragment, useState, useRef, useEffect } from 'react'
+import React, { FC, memo, Fragment, useState, useRef, useEffect, forwardRef } from 'react'
 
 import { Tab } from '@headlessui/react'
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
@@ -7,7 +7,13 @@ import Big from 'big.js'
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
 import { useGetCategoriesQuery } from '@features/categorySlice'
-import { DollarCents, StaticProgressCircle, GrnPrimaryButton, BluePrimaryButton } from '@ledget/ui'
+import {
+    DollarCents,
+    StaticProgressCircle,
+    GrnPrimaryButton,
+    BluePrimaryButton,
+    ColoredShimmer
+} from '@ledget/ui'
 import { Plus } from '@ledget/media'
 
 
@@ -97,8 +103,22 @@ const Row = ({ category }: { category: Category }) => {
     )
 }
 
-const Rows = memo(({ categories, period }: { categories: Category[], period: 'month' | 'year' }) => {
+const SkeletonRows = ({ numberOfRows }: { numberOfRows: number }) => (
+    <>
+        <div className="skeleton-column month">
+            {Array.from(Array(numberOfRows).keys()).map(i => (
+                <ColoredShimmer key={i} shimmering={true} color={'green'} />
+            ))}
+        </div>
+        <div className="skeleton-column year">
+            {Array.from(Array(numberOfRows).keys()).map(i => (
+                <ColoredShimmer key={i} shimmering={true} color={'blue'} />
+            ))}
+        </div>
+    </>
+)
 
+const Rows = memo(({ categories, period }: { categories: Category[], period: 'month' | 'year' }) => {
     return (
         <>
             {categories.length > 0
@@ -124,11 +144,26 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
 
     const totalSpent = period === 'month' ? data?.monthly_spent : data?.yearly_spent
     const totalLimit = period === 'month' ? data?.limit_amount_monthly : data?.limit_amount_yearly
+    const yearly_category_start = data?.oldest_yearly_category_created
+        ? new Date(new Date().getFullYear(), new Date(data.oldest_yearly_category_created).getMonth(), 1)
+        : null
+    const yearly_category_end = yearly_category_start
+        ? new Date(yearly_category_start.getFullYear() + 1, yearly_category_start.getMonth(), 1)
+        : null
 
     return (
-        <div className="row header">
+        <div className={`row header ${yearly_category_end ? 'has-alternate-header' : ''}`}>
             <div>
-                <h4>{`${period.toUpperCase()}LY`} <br /> SPENDING</h4>
+                <h4>
+                    {`${period.toUpperCase()}LY`} <br /> SPENDING
+                </h4>
+                {period === 'year' && yearly_category_start && yearly_category_end &&
+                    <h4>
+                        {yearly_category_start.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
+                        <br />
+                        -
+                        {yearly_category_end.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
+                    </h4>}
             </div>
             <div>
                 <div>
@@ -141,9 +176,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
             </div>
             <div>
                 <StaticProgressCircle value={
-                    totalLimit && totalSpent
-                        ? Math.round(totalSpent / totalLimit * 100) / 100
-                        : 0
+                    totalLimit && totalSpent ? Math.round(totalSpent / totalLimit * 100) / 100 : 0
                 } />
             </div>
         </div>
@@ -250,13 +283,14 @@ const TabView = () => {
 const SpendingCategories = () => {
     const [searchParams] = useSearchParams()
     const {
-        isSuccess: categoriesSuccess,
-        isLoading: categoriesIsLoading
+        isLoading
     } = useGetCategoriesQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
     const [isTabView, setIsTabView] = useState(false)
+    const [skeletonRowCount, setSkeletonRowCount] = useState(5)
+    const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         const handleResize = () => {
@@ -269,12 +303,28 @@ const SpendingCategories = () => {
         }
     }, [])
 
+    useEffect(() => {
+        if (ref.current) {
+            const computedFontSize = ref.current ? window.getComputedStyle(ref.current!).fontSize : '0';
+            const fontSizeInPixels = parseFloat(computedFontSize)
+            const handleResize = () => {
+                const columnHeight = ref.current?.clientHeight
+                const rowHeight = fontSizeInPixels * 3.5
+                setSkeletonRowCount(Math.floor(columnHeight! / rowHeight))
+            }
+            handleResize()
+            window.addEventListener('resize', handleResize)
+            return () => {
+                window.removeEventListener('resize', handleResize)
+            }
+        }
+    }, [ref.current])
+
     return (
-        <div id="spending-categories-window">
-            {categoriesSuccess &&
-                <>
-                    {isTabView ? <TabView /> : <ColumnView />}
-                </>
+        <div id="spending-categories-window" ref={ref}>
+            {isLoading
+                ? <SkeletonRows numberOfRows={skeletonRowCount} />
+                : isTabView ? <TabView /> : <ColumnView />
             }
         </div>
     )

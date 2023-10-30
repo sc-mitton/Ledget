@@ -4,7 +4,7 @@ import { useTransition, animated } from '@react-spring/web'
 import { TextInputWrapper } from '../../inputs/text/text'
 
 
-export const Shimmer = ({ shimmering = false, lightness = 90 }) => {
+export const Shimmer = ({ shimmering = false, lightness = 90, ...rest }) => {
   const transitions = useTransition(shimmering, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -18,6 +18,7 @@ export const Shimmer = ({ shimmering = false, lightness = 90 }) => {
           <animated.div
             style={styles}
             className="loading-shimmer"
+            {...rest}
           >
             <div
               className={`shimmer`}
@@ -29,7 +30,47 @@ export const Shimmer = ({ shimmering = false, lightness = 90 }) => {
   )
 }
 
-export const ShimmerText = ({ shimmering = false, length = 12, lightness = 90, ...rest }) => (
+export const ColoredShimmer = ({
+  shimmering = false,
+  length = 12,
+  color,
+  style = {} as React.CSSProperties,
+  ...rest
+}: {
+  color: 'blue' | 'green'
+  shimmering?: boolean,
+  length?: number,
+  lightness?: number,
+  style?: React.CSSProperties,
+}) => (
+  <>
+    <div
+      {...rest}
+      className={`colored-loading-shimmer ${color}`}
+      style={{
+        width: '100%',
+        height: '2.25em',
+        margin: '2px 0',
+        borderRadius: 'var(--border-radius1)',
+        position: 'relative',
+        ...style,
+      }}
+    >
+      <Shimmer
+        shimmering={shimmering}
+        lightness={0} // unused
+      />
+    </div>
+  </>
+)
+
+export const ShimmerText = ({
+  shimmering = false,
+  length = 12,
+  lightness = 90,
+  style = {} as React.CSSProperties,
+  ...rest
+}) => (
   <>
     <div
       {...rest}
@@ -39,7 +80,8 @@ export const ShimmerText = ({ shimmering = false, length = 12, lightness = 90, .
         margin: '2px 0',
         borderRadius: 'var(--border-radius1)',
         backgroundColor: 'var(--icon-light-gray)',
-        position: 'relative'
+        position: 'relative',
+        ...style,
       }}
     >
       <Shimmer shimmering={shimmering} lightness={lightness} />
@@ -75,7 +117,7 @@ export const ShimmerDiv: React.FC<ShimmerDivProps> = ({
   )
 }
 
-export const BlockShimmerDiv = ({ id, className }: { id?: string, className?: string }) => {
+export const InputShimmerDiv = ({ id, className }: { id?: string, className?: string }) => {
 
   return (
     <TextInputWrapper id={id} className={className}>

@@ -82,6 +82,11 @@ $background: var(--window);
         gap: .75em;
         font-weight: 500;
 
+        &:first-child {
+            padding-left: .125em;
+        }
+
+        // Styles for tab view
         span:focus {
             outline: none;
         }
@@ -94,9 +99,38 @@ $background: var(--window);
         span[aria-selected="false"] {
             opacity: .4;
         }
+    }
 
-        &:first-child {
-            padding-left: .125em;
+    // Styles for showing when yearly budget resets
+    &.has-alternate-header {
+
+        &>div {
+            cursor: pointer;
+            position: relative;
+
+            h4:first-child {
+                opacity: 1;
+                transition: opacity .2s ease-in-out;
+            }
+
+            h4:not(:first-child) {
+                position: absolute;
+                left: 0;
+                opacity: 0;
+                transition: opacity .2s ease-in-out;
+            }
+        }
+
+        &>div:hover {
+            h4:first-child {
+                opacity: 0;
+                transition: opacity .2s ease-in-out;
+            }
+
+            h4:not(:first-child) {
+                opacity: 1;
+                transition: opacity .2s ease-in-out;
+            }
         }
     }
 
@@ -171,6 +205,17 @@ $background: var(--window);
         background-color: $blue-hover;
         transition: all .2s ease-in-out;
 
+    }
+}
+
+.skeleton-column {
+    display: flex;
+    flex-direction: column;
+    gap: $item-row-gap;
+    padding: $item-row-gap;
+
+    &>div {
+        width: 100%;
     }
 }
 

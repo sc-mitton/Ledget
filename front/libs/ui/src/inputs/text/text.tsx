@@ -10,7 +10,7 @@ import './text.css'
 import './password-input.css'
 import { FormErrorTip, FormError } from '../../pieces/form-errors/form-errors'
 import { SelectProvence } from '../select-provence/select-provence'
-import { BlockShimmerDiv } from '../../pieces/shimmer/shimmer'
+import { InputShimmerDiv } from '../../pieces/shimmer/shimmer'
 
 
 export const TextInputWrapper = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((props, ref) => {
@@ -41,7 +41,7 @@ export const PlainTextInput = forwardRef<HTMLInputElement, PlainTextInputProps>(
     <>
       {loading
         ?
-        <BlockShimmerDiv />
+        <InputShimmerDiv />
         :
         <TextInputWrapper>
           <input
@@ -124,7 +124,7 @@ export const CardInput = ({ requiredError, onComplete, clearError, loading }: Ca
   return (
     <>
       {loading
-        ? <BlockShimmerDiv />
+        ? <InputShimmerDiv />
         : <div className={`card-container${cardFocus ? ' focused' : ''}`}>
           <CardElement
             onBlur={() => setCardFocus(false)}
@@ -235,18 +235,18 @@ export const CityStateZipInputs = ({ errors, register, field, loading }: CitySta
       <div id='location-inputs-container' >
         <div id="city-container">
           {loading
-            ? <BlockShimmerDiv />
+            ? <InputShimmerDiv />
             : <CityInput {...register('city')} errors={errors} />
           }
         </div>
         <div id="state-container">
           {loading
-            ? <BlockShimmerDiv />
+            ? <InputShimmerDiv />
             : <SelectProvence field={field} errors={errors} />}
         </div>
         <div id="zip-container">
           {loading
-            ? <BlockShimmerDiv />
+            ? <InputShimmerDiv />
             : <ZipInput {...register('zip')} errors={errors} />}
         </div>
       </div>
@@ -303,7 +303,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>((props,
     <>
       {props.loading
         ?
-        <BlockShimmerDiv />
+        <InputShimmerDiv />
         :
         <TextInputWrapper>
           <input
