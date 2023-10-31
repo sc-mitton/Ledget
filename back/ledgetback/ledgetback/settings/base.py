@@ -120,6 +120,10 @@ LOGGING = {
         'stripe': {
             'handlers': ['stripe', 'console'],
             'levels': LOG_LEVEL
+        },
+        'plaid': {
+            'handlers': ['file', 'console'],
+            'levels': LOG_LEVEL
         }
     }
 }

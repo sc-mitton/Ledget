@@ -22,6 +22,7 @@ from financials.views.transactions import sync_transactions
 stripe_logger = logging.getLogger('stripe')
 stripe.api_key = settings.STRIPE_API_KEY
 stripe_webhook_secret = settings.STRIPE_WEBHOOK_SECRET
+plaid_logger = logging.getLogger('plaid')
 
 
 class StripeHookView(APIView):
@@ -185,7 +186,8 @@ class PlaidItemHook:
         pass
 
     def handle_sync_updates_available(self, item, data):
-        pass
+        plaid_item = PlaidItem.objects.get(id=item.id)
+        sync_transactions(plaid_item)
 
 
 class PlaidItemHookView(APIView, PlaidItemHook):
@@ -198,8 +200,12 @@ class PlaidItemHookView(APIView, PlaidItemHook):
 
         if not handler or not item:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        else:
+
+        try:
             handler(item, request.data)
+        except Exception as e:
+            plaid_logger.error(e)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response(status=status.HTTP_200_OK)
 
