@@ -221,16 +221,34 @@ const Bills = () => {
 
 
     useEffect(() => {
-        if (searchParams.get('bill-sort') === 'date') {
-            setBills(Array.from(data?.bills || []).sort((a, b) => {
-                return new Date(a.date!).getTime() - new Date(b.date!).getTime()
-            }))
-        } else if (searchParams.get('bill-sort') === 'a-z') {
-            setBills(Array.from(data?.bills || []).sort((a, b) => {
-                return a.name.localeCompare(b.name)
-            }))
+        if (searchParams.get('day')) {
+            if (searchParams.get('bill-sort') === 'date') {
+                setBills(Array.from(data?.bills || []).filter(bill => {
+                    return new Date(bill.date!).getDate() === parseInt(searchParams.get('day')!)
+                }
+                ).sort((a, b) => {
+                    return new Date(a.date!).getTime() - new Date(b.date!).getTime()
+                }))
+            } else if (searchParams.get('bill-sort') === 'a-z') {
+                setBills(Array.from(data?.bills || []).filter(bill => {
+                    return new Date(bill.date!).getDate() === parseInt(searchParams.get('day')!)
+                }
+                ).sort((a, b) => {
+                    return a.name.localeCompare(b.name)
+                }))
+            }
+        } else {
+            if (searchParams.get('bill-sort') === 'date') {
+                setBills(Array.from(data?.bills || []).sort((a, b) => {
+                    return new Date(a.date!).getTime() - new Date(b.date!).getTime()
+                }))
+            } else if (searchParams.get('bill-sort') === 'a-z') {
+                setBills(Array.from(data?.bills || []).sort((a, b) => {
+                    return a.name.localeCompare(b.name)
+                }))
+            }
         }
-    }, [searchParams.get('bill-sort'), data?.bills])
+    }, [searchParams.get('bill-sort'), searchParams.get('day'), data?.bills])
 
     useEffect(() => {
         if (searchParams.get('day')) {
@@ -238,6 +256,8 @@ const Bills = () => {
                 return new Date(bill.date!).getDate() === parseInt(searchParams.get('day')!)
             }
             ))
+        } else {
+            setBills(data?.bills)
         }
     }, [searchParams.get('day'), data?.bills])
 
