@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from collections import OrderedDict
 
 from django.db import transaction, models
@@ -189,7 +190,30 @@ class TransactionsView(ListAPIView):
     pagination_class = TransactionsPagination
 
     def get_queryset(self):
+        params = self.request.query_params
+        if 'confirmed' in params:
+            return self._get_confirmed_transactions()
+        else:
+            return self._get_transactions()
 
+    def _get_confirmed_transactions(self):
+        month = datetime.now().month
+        confirmed_param = self.request.query_params.get('confirmed', None)
+        if confirmed_param == 'true':
+            confirmed = True
+        elif confirmed_param == 'false':
+            confirmed = False
+        else:
+            raise ValidationError('Invalid confirmed parameter')
+
+        print('confirmed: ', confirmed)
+        return Transaction.objects.filter(
+            date__month=month,
+            bill_confirmed=confirmed,
+            category_confirmed=confirmed,
+        ).select_related('category', 'bill')
+
+    def _get_transactions(self):
         type = self.request.query_params.get('type', None)
         account = self.request.query_params.get('account', None)
 
@@ -197,4 +221,4 @@ class TransactionsView(ListAPIView):
             account__plaid_item__user_id=self.request.user.id,
             account__type=type,
             account_id=account
-        )
+        ).select_related('category', 'bill')

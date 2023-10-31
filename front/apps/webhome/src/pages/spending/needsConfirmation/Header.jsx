@@ -1,6 +1,9 @@
+import { useState } from 'react'
+
 import './styles/Header.scss'
 import { CheckAll } from '@ledget/media'
 import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
+import { useGetUncomfirmedTransactionsQuery } from '@features/transactionsSlice'
 
 
 const CheckAllButton = () => {
@@ -22,12 +25,19 @@ const CheckAllButton = () => {
 }
 
 const NewItemsHeader = () => {
+    const [offset, setOffset] = useState(0)
+    const [limit, setLimit] = useState(10)
+    const { data: unconfirmedTransactions } = useGetUncomfirmedTransactionsQuery({
+        offset: offset,
+        limit: limit,
+    })
+
     return (
         <div id="needs-confirmation-header-container">
             <div id="needs-confirmation-header">
                 <div>
                     <div id="number-of-items">
-                        10
+                        <span>{unconfirmedTransactions?.results.length || 0}</span>
                     </div>
                     <span>Items to confirm</span>
                 </div>

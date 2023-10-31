@@ -107,8 +107,8 @@ class Transaction(models.Model):
                                  null=True, blank=True)
     bill = models.ForeignKey(Bill, on_delete=models.SET_NULL,
                              null=True, blank=True)
-    category_confirmed = models.BooleanField(null=True, blank=True)
-    bill_confirmed = models.BooleanField(null=True, blank=True)
+    category_confirmed = models.BooleanField(null=True, blank=True, default=False)
+    bill_confirmed = models.BooleanField(null=True, blank=True, default=False)
     wrong_predicted_category = models.ForeignKey(Category,
                                                  on_delete=models.SET_NULL,
                                                  null=True,
