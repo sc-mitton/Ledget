@@ -5,7 +5,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import Count, Min, Max, Sum, Q
+from django.db.models import Count, Min, Max, Sum, Q, Exists, OuterRef
 from django.db.models.functions import ExtractDay, ExtractMonth
 
 from core.permissions import IsAuthenticated
@@ -74,12 +74,14 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
         GROUP BY budget_category.id
         '''
 
-        last_day_of_month = calendar.monthrange(year, month)[1]
-        time_slice_end = datetime(year=year, month=month, day=last_day_of_month)
-
-        yearly_category_anchor = self.request.user.yearly_categories_anchor
+        time_slice_end = datetime(
+            year=year,
+            month=month,
+            day=calendar.monthrange(year, month)[1]
+        )
+        yearly_category_anchor = self.request.user.yearly_anchor
         if not yearly_category_anchor:
-            yearly_category_anchor = datetime(year=year, month=1, day=1)
+            yearly_category_anchor = datetime.now().replace(day=1)
 
         sum_month = Sum(
             'transaction__amount',
@@ -115,26 +117,65 @@ class BillView(BulkCreateMixin, ListCreateAPIView):
     serializer_class = BillSerializer
 
     def get_queryset(self):
-        if self.request.query_params.get('month', None) is not None:
-            return self.get_specific_month_qset(
-                month=self.request.query_params.get('month', None),
-                year=self.request.query_params.get('year', None)
+        '''
+        If month and year are provided, return the monthly and once bills
+        for that month and all yearly bills that fall between the yearly
+        anchor and date provided (with an annotation for whether they were paid)
+
+        Otherwise, return all the bills.
+        '''
+        month = self.request.query_params.get('month', None)
+        year = self.request.query_params.get('year', None)
+
+        if month and year:
+            return self._get_specific_month_qset(
+                int(month), int(year)
             )
+        else:
+            return Bill.objects.filter(userbill__user=self.request.user)
 
-        return Bill.objects.filter(userbill__user=self.request.user).order_by('name')
+    def _get_specific_month_qset(self, month, year):
+        '''
+        Return all of the monthly bills for that month, all the yearly bills,
+        and any once bills that are due in that month. Provide annotation
+        for each whether they were paid during that month (for monthly and once bills)
+        or during the user specific year window (year_)
 
-    def get_specific_month_qset(self, month, year):
+        month__isnull=True, year__isnull=True
+            -> selects monthly bills
+        month__gte=yearly_category_anchor.month, month__lte=time_slice_end.month
+            -> selects yearly bills for the month
+        month=month, year=year
+            -> selects once bills for the month
         '''
-        month__isnull=True, year__isnull=True -> selects monthly bills
-        month=month -> selects yearly bills for the month
-        month=month, year=year -> selects once bills for the month
-        '''
-        qset = Bill.objects.filter(userbill__user=self.request.user) \
-                           .filter(month=month) \
-                           .filter(month=month, year=year) \
+        time_slice_end = datetime(
+            year=year,
+            month=month,
+            day=calendar.monthrange(year, month)[1]
+        )
+        yearly_category_anchor = self.request.user.yearly_anchor
+        if not yearly_category_anchor:
+            yearly_category_anchor = datetime().now()
+
+        annotation = Exists(Transaction.objects.filter(bill=OuterRef('pk')))
+
+        monthly_qset = Bill.objects \
+                           .filter(userbill__user=self.request.user) \
                            .filter(month__isnull=True, year__isnull=True) \
-                           .order_by('name')
-        return qset
+                           .annotate(is_paid=annotation) \
+
+        yearly_qset = Bill.objects \
+                          .filter(userbill__user=self.request.user) \
+                          .filter(
+                              month__gte=yearly_category_anchor.month,
+                              month__lte=time_slice_end.month) \
+
+        once_qset = Bill.objects \
+                        .filter(userbill__user=self.request.user) \
+                        .filter(month=month, year=year) \
+                        .annotate(is_paid=annotation) \
+
+        return monthly_qset.union(yearly_qset, once_qset).order_by('name')
 
 
 class RecomendedBillsView(APIView):

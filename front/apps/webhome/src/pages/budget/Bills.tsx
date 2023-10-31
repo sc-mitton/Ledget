@@ -31,7 +31,7 @@ function getDaysInMonth(year: number, month: number): Date[] {
 
 const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((props, ref) => {
     const [searchParams] = useSearchParams()
-    const { data: billsData } = useGetBillsQuery({
+    const { data } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
@@ -45,29 +45,29 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
 
     const monthlyBillCountEachDay: number[] = useMemo(() => {
         const counts: number[] = Array(31).fill(0)
-        const numBills = billsData?.length || 0
+        const numBills = data?.bills?.length || 0
         for (let i = 0; i < numBills; i++) {
-            if (billsData![i].period !== 'month') {
+            if (data?.bills[i].period !== 'month') {
                 continue
             }
-            const date = new Date(billsData![i].date!)
+            const date = new Date(data?.bills[i].date!)
             counts[date.getDate() - 1] += 1
         }
         return counts
-    }, [billsData])
+    }, [data?.bills])
 
     const yearlyBillCountEachDay: number[] = useMemo(() => {
         const counts: number[] = Array(31).fill(0)
-        const numBills = billsData?.length || 0
+        const numBills = data?.bills.length || 0
         for (let i = 0; i < numBills; i++) {
-            if (billsData![i].period !== 'year') {
+            if (data?.bills[i].period !== 'year') {
                 continue
             }
-            const date = new Date(billsData![i].date!)
+            const date = new Date(data?.bills![i].date!)
             counts[date.getDate() - 1] += 1
         }
         return counts
-    }, [billsData])
+    }, [data?.bills])
 
     return (
         <div className="calendar" ref={ref}>
@@ -202,30 +202,30 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
 
 const Bills = () => {
     const [searchParams] = useSearchParams()
-    const { data: billsData, isLoading } = useGetBillsQuery({
+    const { data, isLoading } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
-    const [bills, setBills] = useState(billsData)
+    const [bills, setBills] = useState(data?.bills)
     const [collapsed, setCollapsed] = useState(false)
 
 
     useEffect(() => {
         if (searchParams.get('bill-sort') === 'date') {
-            setBills(Array.from(billsData || []).sort((a, b) => {
+            setBills(Array.from(data?.bills || []).sort((a, b) => {
                 return new Date(a.date!).getTime() - new Date(b.date!).getTime()
             }))
         } else if (searchParams.get('bill-sort') === 'a-z') {
-            setBills(Array.from(billsData || []).sort((a, b) => {
+            setBills(Array.from(data?.bills || []).sort((a, b) => {
                 return a.name.localeCompare(b.name)
             }))
         }
-    }, [searchParams.get('bill-sort'), billsData])
+    }, [searchParams.get('bill-sort'), data?.bills])
 
     const Bills = () => (
         <div
             className='bills-box'
-            style={{ '--number-of-bills': billsData?.length! / 2 || 0 } as React.CSSProperties}
+            style={{ '--number-of-bills': data?.bills?.length! / 2 || 0 } as React.CSSProperties}
             aria-expanded={!collapsed}
         >
             {bills?.map((bill, i) => {

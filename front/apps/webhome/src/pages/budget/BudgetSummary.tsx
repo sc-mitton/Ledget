@@ -7,36 +7,141 @@ import './styles/BudgetSummary.scss'
 import { DollarCents, StaticProgressCircle } from '@ledget/ui'
 import { ThumbUp, CheckMark2 } from '@ledget/media'
 import { useGetCategoriesQuery } from '@features/categorySlice'
+import { useGetBillsQuery } from '@features/billSlice'
 
-
-const BudgetSummary = () => {
+const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
     const [searchParams] = useSearchParams()
-    const [showMonthStats, setShowMonthStats] = useState(false)
-    const [showYearStats, setShowYearStats] = useState(false)
-    const { data, isLoading } = useGetCategoriesQuery({
+    const { data: categoriesData, isLoading: loadingCategories } = useGetCategoriesQuery({
+        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
+        year: searchParams.get('year') || `${new Date().getFullYear()}`,
+    })
+    const { data: billsData, isLoading: loadingBills } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
 
     return (
-        <div id="budget-summary--container">
+        <>
+            {/* Summary (they're transparent until use hovers over them) */}
+            {Array.from(['month', 'year']).map((period, i) => {
+                return (
+                    <div
+                        key={period}
+                        className={`summary-stats
+                        ${period}
+                        ${period === 'month' && showMonthStats ? 'show' : ''}
+                        ${period === 'year' && showYearStats ? 'show' : ''}`}
+                        aria-hidden={
+                            (period === 'month' && !showMonthStats) ||
+                            (period === 'year' && !showYearStats)
+                        }
+                        aria-label={`${period} stats`}
+                    >
+                        <div>
+                            <div>
+                                <div>
+                                    <DollarCents value={
+                                        period === 'month'
+                                            ? categoriesData?.monthly_spent || 0
+                                            : categoriesData?.yearly_spent || 0
+                                    } />
+                                </div>
+                                <div>spent</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <div>
+                                    <DollarCents value={
+                                        (loadingBills || loadingCategories) ? '0.00' : period === 'month'
+                                            ? Big(categoriesData?.limit_amount_monthly || 0)
+                                                .minus(categoriesData!.monthly_spent).toNumber() || 0
+                                            : Big(categoriesData?.limit_amount_yearly || 0)
+                                                .minus(categoriesData!.yearly_spent).toNumber() || 0
+                                    } />
+                                </div>
+                                <div>spending left</div>
+                            </div>
+                            <StaticProgressCircle
+                                value={
+                                    (loadingBills || loadingCategories) ? 0 : period === 'month'
+                                        ? Math.round((categoriesData!.monthly_spent / categoriesData!.limit_amount_monthly) * 100) / 100
+                                        : Math.round((categoriesData!.yearly_spent / categoriesData!.limit_amount_yearly) * 100) / 100
+                                }
+                                size={'1.2em'}
+                            />
+                        </div>
+                        <div>
+                            <div>
+                                <div><DollarCents value={
+                                    period === 'month'
+                                        ? billsData?.monthly_bills_amount_remaining || 0
+                                        : billsData?.yearly_bills_amount_remaining || 0
+                                } /></div>
+                                <div> in bills left</div>
+                            </div>
+                            <StaticProgressCircle value={
+                                period === 'year'
+                                    ? Math.round(billsData!.yearly_bills_amount_remaining / billsData!.total_yearly_bills_amount * 100) / 100 || 0
+                                    : Math.round(billsData!.monthly_bills_amount_remaining / billsData!.total_monthly_bills_amount * 100) / 100 || 0
+                            } size={'1.2em'} />
+                        </div>
+                        <div>
+                            <div>
+                                <span>
+                                    {period === 'month'
+                                        ? `${billsData?.monthly_bills_paid} of ${billsData?.number_of_monthly_bills}`
+                                        : `${billsData?.yearly_bills_paid} of ${billsData?.number_of_yearly_bills}`
+                                    }
+                                </span>
+                                <div>bills paid</div>
+                            </div>
+                            <div>
+                                <CheckMark2 fill={'currentColor'} />
+                            </div>
+                        </div>
+                    </div>
+                )
+            })}
+        </>
+    )
+}
+
+const SummaryStatsTeaser = ({
+    setShowMonthStats = (a: boolean) => { },
+    setShowYearStats = (a: boolean) => { },
+}) => {
+    const [searchParams] = useSearchParams()
+    const { data: categoriesData, isLoading: loadingCategories } = useGetCategoriesQuery({
+        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
+        year: searchParams.get('year') || `${new Date().getFullYear()}`,
+    })
+    const { isLoading: loadingBills } = useGetBillsQuery({
+        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
+        year: searchParams.get('year') || `${new Date().getFullYear()}`,
+    })
+
+    return (
+        <>
             {/* Summary Teasers */}
             <div>
                 <div><h4>Total</h4></div>
                 <div>
                     <DollarCents
-                        value={isLoading ? 0 : (data!.yearly_spent + data!.monthly_spent)}
+                        value={loadingCategories || loadingBills
+                            ? 0
+                            : (categoriesData!.yearly_spent + categoriesData!.monthly_spent)}
                     />
                 </div>
                 <div>spent</div>
             </div>
             {Array.from(['month', 'year']).map((period, i) => {
                 const amountLeft = period === 'month'
-                    ? (data?.limit_amount_monthly && data?.monthly_spent)
-                        ? Big(data.limit_amount_monthly || 0).minus(data.monthly_spent).toNumber()
+                    ? (categoriesData?.limit_amount_monthly && categoriesData?.monthly_spent)
+                        ? Big(categoriesData.limit_amount_monthly || 0).minus(categoriesData.monthly_spent).toNumber()
                         : 0
-                    : (data?.limit_amount_yearly && data?.yearly_spent)
-                        ? Big(data.limit_amount_yearly || 0).minus(data.yearly_spent).toNumber()
+                    : (categoriesData?.limit_amount_yearly && categoriesData?.yearly_spent)
+                        ? Big(categoriesData.limit_amount_yearly || 0).minus(categoriesData.yearly_spent).toNumber()
                         : 0
                 return (
                     <div
@@ -63,72 +168,18 @@ const BudgetSummary = () => {
                     </div>
                 )
             })}
-            {/* Summary (they're transparent until use hovers over them) */}
-            {Array.from(['month', 'year']).map((period, i) => {
-                return (
-                    <div
-                        key={period}
-                        className={`summary-stats
-                            ${period}
-                            ${period === 'month' && showMonthStats ? 'show' : ''}
-                            ${period === 'year' && showYearStats ? 'show' : ''}`}
-                        aria-hidden={
-                            (period === 'month' && !showMonthStats) ||
-                            (period === 'year' && !showYearStats)
-                        }
-                        aria-label={`${period} stats`}
-                    >
-                        <div>
-                            <div>
-                                <div>
-                                    <DollarCents value={
-                                        period === 'month'
-                                            ? data?.monthly_spent || 0
-                                            : data?.yearly_spent || 0
-                                    } />
-                                </div>
-                                <div>spent</div>
-                            </div>
-                        </div>
-                        <div>
-                            <div>
-                                <div>
-                                    <DollarCents value={
-                                        isLoading ? '0.00' : period === 'month'
-                                            ? Big(data?.limit_amount_monthly || 0).minus(data!.monthly_spent).toNumber() || 0
-                                            : Big(data?.limit_amount_yearly || 0).minus(data!.yearly_spent).toNumber() || 0
-                                    } />
-                                </div>
-                                <div>spending left</div>
-                            </div>
-                            <StaticProgressCircle
-                                value={
-                                    isLoading ? 0 : period === 'month'
-                                        ? Math.round((data!.monthly_spent / data!.limit_amount_monthly) * 100) / 100
-                                        : Math.round((data!.yearly_spent / data!.limit_amount_yearly) * 100) / 100
-                                }
-                                size={'1.2em'}
-                            />
-                        </div>
-                        <div>
-                            <div>
-                                <div><DollarCents value={41364} /></div>
-                                <div> in bills left</div>
-                            </div>
-                            <StaticProgressCircle value={.85} size={'1.2em'} />
-                        </div>
-                        <div>
-                            <div>
-                                <span>9 of 11</span>
-                                <div>bills paid</div>
-                            </div>
-                            <div>
-                                <CheckMark2 fill={'currentColor'} />
-                            </div>
-                        </div>
-                    </div>
-                )
-            })}
+        </>
+    )
+}
+
+const BudgetSummary = () => {
+    const [showMonthStats, setShowMonthStats] = useState(false)
+    const [showYearStats, setShowYearStats] = useState(false)
+
+    return (
+        <div id="budget-summary--container">
+            <SummaryStatsTeaser setShowMonthStats={setShowMonthStats} setShowYearStats={setShowYearStats} />
+            <SummaryState showMonthStats={showMonthStats} showYearStats={showYearStats} />
         </div>
     )
 }

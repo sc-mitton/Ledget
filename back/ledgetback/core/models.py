@@ -66,7 +66,7 @@ class User(models.Model):
     last_otp_verification = models.DateTimeField(null=True, default=None)
     phone_number = models.CharField(max_length=20, null=True, default=None)
     phone_country_code = models.CharField(max_length=5, null=True, default=None)
-    yearly_categories_anchor = models.DateTimeField(null=True, default=None)
+    yearly_anchor = models.DateTimeField(null=True, default=None)
 
     objects = UserManager()
     USERNAME_FIELD = 'id'
