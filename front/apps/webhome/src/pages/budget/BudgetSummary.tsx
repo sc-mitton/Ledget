@@ -96,7 +96,12 @@ const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
                                 </span>
                                 <div>bills paid</div>
                             </div>
-                            <div>
+                            <div style={{
+                                opacity: period === 'month'
+                                    ? (billsData?.monthly_bills_paid === 0 ? .25 : 1)
+                                    : (billsData?.yearly_bills_paid === 0 ? .25 : 1)
+                            }}
+                            >
                                 <CheckMark2 fill={'currentColor'} />
                             </div>
                         </div>
