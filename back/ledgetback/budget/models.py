@@ -131,6 +131,7 @@ class Reminder(Notification):
 class UserCategory(models.Model):
 
     class Meta:
+        ordering = ('order',)
         db_table = 'budget_user_category'
         unique_together = ('user', 'category')
 

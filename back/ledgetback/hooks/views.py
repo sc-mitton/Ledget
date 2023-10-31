@@ -17,6 +17,7 @@ import stripe
 from core.models import Customer
 from financials.models import PlaidItem
 from hooks.permissions import CameFromOry, CameFromPlaid
+from financials.views.transactions import sync_transactions
 
 stripe_logger = logging.getLogger('stripe')
 stripe.api_key = settings.STRIPE_API_KEY
@@ -160,7 +161,34 @@ class OryVerificationHook(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class PlaidItemHookView(APIView):
+class PlaidItemHook:
+
+    def handle_error(self, item, data):
+
+        if data.get('error', {}).get('error_code', None) == 'ITEM_LOGIN_REQUIRED':
+            item.login_required = True
+            item.save()
+
+    def handle_login_repared(self, item, data):
+        item.login_required = False
+        item.save()
+
+    def handle_new_account_available(self, item, data):
+        item.new_account_available = True
+        item.save()
+
+    def handle_permission_revoked(self, item, data):
+        item.permission_revoked = True
+        item.save()
+
+    def handle_update_acknolwedged(self, item, data):
+        pass
+
+    def handle_sync_updates_available(self, item, data):
+        pass
+
+
+class PlaidItemHookView(APIView, PlaidItemHook):
     """Plaid webhook"""
     permission_classes = [CameFromPlaid]
 
@@ -184,24 +212,3 @@ class PlaidItemHookView(APIView):
             return PlaidItem.objects.get(id=id)
         except ObjectDoesNotExist:
             return None
-
-    def handle_error(self, item, data):
-
-        if data.get('error', {}).get('error_code', None) == 'ITEM_LOGIN_REQUIRED':
-            item.login_required = True
-            item.save()
-
-    def handle_login_repared(self, item, data):
-        item.login_required = False
-        item.save()
-
-    def handle_new_account_available(self, item, data):
-        item.new_account_available = True
-        item.save()
-
-    def handle_permission_revoked(self, item, data):
-        item.permission_revoked = True
-        item.save()
-
-    def handle_update_acknolwedged(self, item, data):
-        pass

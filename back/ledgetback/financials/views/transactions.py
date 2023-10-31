@@ -39,67 +39,17 @@ filter_target_fields = [
 ]
 
 
-class TransactionsSyncView(GenericAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
+def sync_transactions(plaid_item: PlaidItem) -> dict:
+    added, modified, removed = [], [], []
     plaid_options = TransactionsSyncRequestOptions(
         include_personal_finance_category=True
     )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.added = []
-        self.modified = []
-        self.removed = []
-        self.first_sync = False
+    cursor = plaid_item.cursor or ''
+    has_more = True
+    response_data = {'added': 0, 'modified': 0, 'removed': 0}
 
-    def post(self, request, *args, **kwargs):
-        plaid_item = self.get_plaid_item(request)
-        if not plaid_item:
-            self.first_sync = True
-        cursor = plaid_item.cursor or ''
-        has_more = True
-        response_data = {'added': 0, 'modified': 0, 'removed': 0}
-
-        try:
-            while has_more:
-                response = plaid_client.transactions_sync(
-                    TransactionsSyncRequest(
-                        access_token=plaid_item.access_token,
-                        cursor=cursor,
-                        options=self.plaid_options
-                    )
-                ).to_dict()
-
-                has_more = response['has_more']
-                cursor = response['next_cursor']
-                self.extend_lists(response)
-
-            response_data['added'] += len(self.added)
-            response_data['modified'] += len(self.modified)
-            response_data['removed'] += len(self.removed)
-            self.flush_to_db(plaid_item, cursor)
-
-        except plaid.ApiException as e:
-            return Response(
-                {'error': {e}},
-                status=HTTP_400_BAD_REQUEST
-            )
-        except Exception as e:
-            logger.error(e)
-            return Response(
-                {'error': 'Internal server error'},
-                status=HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-        return Response(response_data, HTTP_200_OK)
-
-    def extend_lists(self, response):
-        for _ in ['added', 'modified', 'removed']:
-            for unfiltered in response[_]:
-                filtered = self.filter_transaction(unfiltered)
-                getattr(self, _).append(filtered)
-
-    def filter_transaction(self, unfiltered):
+    def _filter_transaction(unfiltered):
         filtered = {}
         for field in filter_target_fields:
             if unfiltered.get(field, False):
@@ -109,31 +59,94 @@ class TransactionsSyncView(GenericAPIView):
 
         return filtered
 
-    @transaction.atomic
-    def flush_to_db(self, plaid_item, cursor):
-        self.bulk_add_transactions()
-        self.bulk_modify_transactions()
-        self.bulk_remove_transactions()
-        plaid_item.cursor = cursor
-        plaid_item.save()
-
-        # reset buffers
-        self.added = []
-        self.modified = []
-        self.removed = []
+    def _extend_lists(response):
+        for _ in ['added', 'modified', 'removed']:
+            for unfiltered in response[_]:
+                filtered = _filter_transaction(unfiltered)
+                if _ == 'added':
+                    added.append(filtered)
+                elif _ == 'modified':
+                    modified.append(filtered)
+                elif _ == 'removed':
+                    removed.append(filtered)
 
     @transaction.atomic
-    def bulk_add_transactions(self):
-        objs = [Transaction(**added) for added in self.added]
+    def _bulk_add_transactions():
+        objs = [Transaction(**added) for added in added]
         Transaction.objects.bulk_create(objs)
 
     @transaction.atomic
-    def bulk_modify_transactions(self):
+    def _bulk_modify_transactions():
         pass
 
     @transaction.atomic
-    def bulk_remove_transactions(self):
+    def _bulk_remove_transactions():
         pass
+
+    @transaction.atomic
+    def _flush_to_db():
+        _bulk_add_transactions()
+        _bulk_modify_transactions()
+        _bulk_remove_transactions()
+        plaid_item.cursor = cursor
+        plaid_item.save()
+
+    assert (isinstance(plaid_item, PlaidItem))
+
+    try:
+        while has_more:
+            response = plaid_client.transactions_sync(
+                TransactionsSyncRequest(
+                    access_token=plaid_item.access_token,
+                    cursor=cursor,
+                    options=plaid_options
+                )
+            ).to_dict()
+
+            has_more = response['has_more']
+            cursor = response['next_cursor']
+            _extend_lists(response)
+
+            response_data['added'] += len(added)
+            response_data['modified'] += len(modified)
+            response_data['removed'] += len(removed)
+            _flush_to_db()
+
+            # reset buffers
+            added, modified, removed = [], [], []
+
+    except plaid.ApiException as e:
+        return Response(
+            {'error': {e}},
+            status=HTTP_400_BAD_REQUEST
+        )
+    except Exception as e:
+        logger.error(e)
+        return Response(
+            {'error': 'Internal server error'},
+            status=HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+    return response_data
+
+
+class TransactionsSyncView(GenericAPIView):
+    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
+
+    def post(self, request, *args, **kwargs):
+
+        plaid_item = self.get_plaid_item(request)
+
+        try:
+            sync_results = sync_transactions(plaid_item)
+        except Exception as e:
+            logger.error(e)
+            return Response(
+                {'error': 'Internal server error'},
+                status=HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        return Response(sync_results, HTTP_200_OK)
 
     def get_plaid_item(self, request):
 

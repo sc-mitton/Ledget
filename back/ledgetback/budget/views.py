@@ -5,7 +5,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import Count, Min, Max, Sum, Q, Exists, OuterRef
+from django.db.models import Count, Min, Max, Sum, Q, Exists, OuterRef, F
 from django.db.models.functions import ExtractDay, ExtractMonth
 
 from core.permissions import IsAuthenticated
@@ -92,8 +92,9 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
                                    usercategory__user=self.request.user,
                                    usercategory__category__period='month'
                                 ) \
-                               .order_by('usercategory__order', 'name') \
-                               .annotate(amount_spent=sum_month)
+                               .annotate(amount_spent=sum_month) \
+                               .annotate(order=F('usercategory__order')) \
+
         sum_year = Sum(
             'transaction__amount',
             filter=Q(
@@ -106,10 +107,12 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
                                  usercategory__user=self.request.user,
                                  usercategory__category__period='year'
                                ) \
-                              .order_by('usercategory__order', 'name') \
-                              .annotate(amount_spent=sum_year)
+                              .annotate(amount_spent=sum_year) \
+                              .annotate(order=F('usercategory__order')) \
 
-        return monthly_qset.union(yearly_qset)
+        union_qset = monthly_qset.union(yearly_qset).order_by('order', 'name')
+
+        return union_qset
 
 
 class BillView(BulkCreateMixin, ListCreateAPIView):

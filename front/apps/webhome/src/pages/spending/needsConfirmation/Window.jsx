@@ -70,7 +70,7 @@ const AccountLogo = ({ account }) => {
 const translate = 1
 const expandedTranslate = 5.75
 const expandedHeight = 20
-const collapsedHeight = 7.5
+const collapsedHeight = 8
 const scale = .1
 const stackMax = 2
 
