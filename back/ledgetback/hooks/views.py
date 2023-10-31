@@ -186,6 +186,12 @@ class PlaidItemHook:
         pass
 
     def handle_sync_updates_available(self, item, data):
+        '''
+        Handles syncing the transactions for a given plaid item.
+        This also takes care of making sure all transactions are synced
+        when new items are initially added (initial_update_complete is
+        passed in post).
+        '''
         plaid_item = PlaidItem.objects.get(id=item.id)
         sync_transactions(plaid_item)
 
