@@ -30,7 +30,7 @@ function getDaysInMonth(year: number, month: number): Date[] {
 }
 
 const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((props, ref) => {
-    const [searchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
     const { data } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
@@ -90,8 +90,19 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
                     // Cell
                     <div
                         key={i}
-                        className={`${monthlyBillCountEachDay[i] > 0 || yearlyBillCountEachDay[i] > 0 ? 'hoverable' : ''}`}
+                        className={`
+                            ${monthlyBillCountEachDay[i] > 0 || yearlyBillCountEachDay[i] > 0 ? 'hoverable' : ''}
+                            ${searchParams.get('day') && searchParams.get('day') === `${day.getDate()}` ? 'selected' : ''}
+                        `}
                         tabIndex={monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1 ? 0 : -1}
+                        role={monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1 ? 'button' : undefined}
+                        aria-label={`${day.toLocaleString('en-us', { month: 'long' })} ${day.getDate()} bills`}
+                        onClick={() => {
+                            searchParams.get('day') && searchParams.get('day') === `${day.getDate()}`
+                                ? searchParams.delete('day')
+                                : searchParams.set('day', `${day.getDate()}`)
+                            setSearchParams(searchParams)
+                        }}
                     >
                         {day.getDate()}
                         {(monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1) &&
@@ -117,7 +128,6 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
         </div >
     )
 })
-
 
 const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed: (a: boolean) => void }) => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -221,6 +231,15 @@ const Bills = () => {
             }))
         }
     }, [searchParams.get('bill-sort'), data?.bills])
+
+    useEffect(() => {
+        if (searchParams.get('day')) {
+            setBills(Array.from(data?.bills || []).filter(bill => {
+                return new Date(bill.date!).getDate() === parseInt(searchParams.get('day')!)
+            }
+            ))
+        }
+    }, [searchParams.get('day'), data?.bills])
 
     const Bills = () => (
         <div
