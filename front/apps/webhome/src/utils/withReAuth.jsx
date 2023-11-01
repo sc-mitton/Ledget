@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import './ReAuth.css'
 import { useSearchParams, useLocation } from 'react-router-dom'
@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { withSmallModal } from '@ledget/ui'
 import { useGetMeQuery } from '@features/userSlice'
-import { useCreateOtpMutation, useVerifyOtpMutation, seletSessionIsFreshAal1 } from '@features/authSlice'
+import { useCreateOtpMutation, useVerifyOtpMutation, selectSessionIsFreshAal1 } from '@features/authSlice'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory-sdk'
 import {
@@ -38,7 +38,7 @@ const PassWord = ({ onCancel }) => {
         useCompleteLoginFlowMutation,
         'login'
     )
-    const sessionIsFreshAal1 = useSelector(seletSessionIsFreshAal1)
+    const sessionIsFreshAal1 = useSelector(selectSessionIsFreshAal1)
 
     const {
         isGettingFlow,

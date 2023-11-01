@@ -18,17 +18,10 @@ from budget.models import (
     Bill
 )
 from financials.models import Transaction
+from ledgetback.view_mixins import BulkSerializerMixin
 
 
-class BulkCreateMixin:
-
-    def get_serializer(self, *args, **kwargs):
-        if isinstance(kwargs.get('data', {}), list):
-            kwargs['many'] = True
-        return super(BulkCreateMixin, self).get_serializer(*args, **kwargs)
-
-
-class CategoryView(BulkCreateMixin, ListCreateAPIView):
+class CategoryView(BulkSerializerMixin, ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = CategorySerializer
 
@@ -115,7 +108,7 @@ class CategoryView(BulkCreateMixin, ListCreateAPIView):
         return union_qset
 
 
-class BillView(BulkCreateMixin, ListCreateAPIView):
+class BillView(BulkSerializerMixin, ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = BillSerializer
 

@@ -2,6 +2,7 @@ import React, { FC, MouseEventHandler, useState, useEffect, useRef } from 'react
 
 import { useSearchParams } from 'react-router-dom'
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
+import { useDispatch, useSelector } from 'react-redux'
 
 import "./styles/Window.scss"
 import { Ellipsis, CheckMark } from "@ledget/media"
@@ -21,10 +22,15 @@ import {
     DollarCents
 } from "@ledget/ui"
 import { formatDateOrRelativeDate } from '@ledget/ui'
-import { useGetTransactionsQuery, useLazyGetTransactionsQuery, useUpdateTransactionMutation } from '@features/transactionsSlice'
+import { addTransaction2Cat, clearUnsyncedCategories } from '@features/categorySlice'
+import { addTransaction2Bill, clearUnSyncedBills } from '@features/billSlice'
+import {
+    useGetTransactionsQuery,
+    useLazyGetTransactionsQuery,
+    useUpdateTransactionsMutation,
+} from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
-
 
 // Sizing (in ems)
 const translate = 1
@@ -188,13 +194,17 @@ const NeedsConfirmationWindow = () => {
     const [showMenu, setShowMenu] = useState(false)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | null>(null)
     const [items, setItems] = useState<Transaction[] | undefined>()
+    const [confirmedItems, setConfirmedItems] = useState<Transaction[]>([] as Transaction[])
 
     const [fetchTransactions, { data: transactionsData, isSuccess }] = useLazyGetTransactionsQuery()
-    const [updateTransaction] = useUpdateTransactionMutation()
+    const [updateTransactions, { isSuccess: transactionsAreUpdated }] = useUpdateTransactionsMutation()
     const newItemsRef = useRef<HTMLDivElement>(null)
+    const dispatch = useDispatch()
 
     const [loaded, setLoaded] = useState(false)
     const itemsApi = useSpringRef()
+
+    useEffect(() => { setLoaded(true) }, [])
 
     // Initial, and subsequent fetches when query params change
     useEffect(() => {
@@ -207,12 +217,12 @@ const NeedsConfirmationWindow = () => {
         }, true)
     }, [searchParams.get('month'), offset, limit])
 
+    // When the data is fetched, set the items state variable
     useEffect(() => {
         isSuccess && setItems(transactionsData?.results)
     }, [isSuccess, transactionsData])
 
-    useEffect(() => { setLoaded(true) }, [])
-
+    // Animation hooks
     const [containerProps, containerApi] = useSpring(() => ({
         position: 'relative',
         left: '50%',
@@ -280,6 +290,7 @@ const NeedsConfirmationWindow = () => {
         !showMenu && setMenuPos(null)
     }, [showMenu])
 
+    // ie activate the options dropdown menu
     const handleEllipsis = (e: any) => {
         const buttonRect = e.target.closest('button').getBoundingClientRect()
         setMenuPos({
@@ -298,12 +309,37 @@ const NeedsConfirmationWindow = () => {
                     config: { duration: 130 },
                     onRest: () => {
                         setItems(items?.filter(item => item.transaction_id !== id))
-                        updateTransaction(item)
+                        if (item.category) {
+                            dispatch(addTransaction2Cat({
+                                categoryId: item.category.id,
+                                amount: item.amount,
+                            }))
+                        } else if (item.bill) {
+                            dispatch(addTransaction2Bill({
+                                billId: item.bill.id,
+                                amount: item.amount,
+                            }))
+                        }
+                        setConfirmedItems([...confirmedItems!, item])
                     },
                 }
             }
         })
     }
+
+    // When the mouse leaves the container, flush the confirmed items que
+    const flushConfirmedQue = () => {
+        updateTransactions(confirmedItems)
+    }
+
+    // When transaction items have been updated on the server
+    // then clear the unsynced categories and bills
+    useEffect(() => {
+        if (transactionsAreUpdated) {
+            dispatch(clearUnsyncedCategories())
+            dispatch(clearUnSyncedBills())
+        }
+    }, [transactionsAreUpdated])
 
     return (
         <div
@@ -314,6 +350,7 @@ const NeedsConfirmationWindow = () => {
                 <div
                     ref={newItemsRef}
                     id="new-items"
+                    onMouseLeave={() => flushConfirmedQue()}
                 >
                     <ShadowedContainer
                         onScroll={() => setShowMenu(false)}

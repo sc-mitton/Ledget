@@ -2,13 +2,13 @@ import { combineReducers } from 'redux'
 import { apiSlice } from '@api/apiSlice'
 import { authSlice } from '@features/authSlice'
 import { toastSlice } from '@features/toastSlice'
-import { confirmedTransactionBufferSlice } from '@features/confirmedTransactionBufferSlice'
+import { categorySlice } from './categorySlice'
 
 const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authSlice.reducer,
     toast: toastSlice.reducer,
-    confirmedBuffer: confirmedTransactionBufferSlice.reducer,
+    categories: categorySlice.reducer,
 })
 
 export default rootReducer

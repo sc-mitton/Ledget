@@ -23,7 +23,7 @@ from core.clients import create_plaid_client
 from financials.models import Transaction
 from financials.serializers.transactions import TransactionSerializer
 from financials.models import PlaidItem
-
+from ledgetback.view_mixins import BulkSerializerMixin
 
 plaid_client = create_plaid_client()
 logger = logging.getLogger('ledget')
@@ -231,7 +231,7 @@ class TransactionsView(ListAPIView):
         ).select_related('category', 'bill')
 
 
-class UpdateTransactioinView(UpdateAPIView):
+class UpdateTransactioinView(BulkSerializerMixin, UpdateAPIView):
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
 

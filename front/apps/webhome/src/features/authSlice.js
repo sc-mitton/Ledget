@@ -78,7 +78,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 export const { resetAuthedAt } = authSlice.actions
 export const authReducer = authSlice.reducer
 
-export const seletSessionIsFreshAal1 = (state) => {
+export const selectSessionIsFreshAal1 = (state) => {
     const isFresh = state.reAuthedAt && Date.now() - state.reAuthedAt < 1000 * 60 * 9
     const aalGood = state.reAuthedLevel && state.reAuthedLevel >= 1
     return isFresh && aalGood

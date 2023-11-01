@@ -1,5 +1,6 @@
 import { apiSlice } from '@api/apiSlice'
 import type { Category } from '@features/categorySlice'
+import type { Bill } from '@features/billSlice'
 
 export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 
@@ -9,7 +10,7 @@ export type Transaction = {
     transaction_code?: string
     transaction_type?: string
     category?: Category,
-    bill?: string
+    bill?: Bill,
     category_confirmed?: boolean
     bill_confirmed?: boolean
     wrong_predicted_category?: string
@@ -104,9 +105,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
             keepUnusedDataFor: 60 * 30, // 15 minutes
         }),
-        updateTransaction: builder.mutation<Transaction, Transaction>({
+        updateTransactions: builder.mutation<Transaction | Transaction[], Transaction | Transaction[]>({
             query: (data) => ({
-                url: 'transactions',
+                url: Array.isArray(data) ? 'transactions' : `transactions/${data.transaction_id}`,
                 method: 'PATCH',
                 body: data,
                 invalidatesTags: ['transactions']
@@ -119,7 +120,7 @@ export const {
     useTransactionsSyncMutation,
     useGetTransactionsQuery,
     useLazyGetTransactionsQuery,
-    useUpdateTransactionMutation
+    useUpdateTransactionsMutation
 } = extendedApiSlice
 
 export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransactions.useQueryState

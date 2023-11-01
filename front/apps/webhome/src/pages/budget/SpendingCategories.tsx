@@ -1,12 +1,13 @@
-import React, { FC, memo, Fragment, useState, useRef, useEffect, forwardRef } from 'react'
+import React, { FC, memo, Fragment, useState, useRef, useEffect } from 'react'
 
 import { Tab } from '@headlessui/react'
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import Big from 'big.js'
 
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
-import { useGetCategoriesQuery } from '@features/categorySlice'
+import { useGetCategoriesQuery, selectCategoryMetaData } from '@features/categorySlice'
 import {
     DollarCents,
     StaticProgressCircle,
@@ -141,11 +142,18 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
+    const {
+        monthly_spent,
+        yearly_spent,
+        limit_amount_monthly,
+        limit_amount_yearly,
+        oldest_yearly_category_created
+    } = useSelector(selectCategoryMetaData)
 
-    const totalSpent = period === 'month' ? data?.monthly_spent : data?.yearly_spent
-    const totalLimit = period === 'month' ? data?.limit_amount_monthly : data?.limit_amount_yearly
-    const yearly_start = data?.oldest_yearly_category_created
-        ? new Date(new Date().getFullYear(), new Date(data.oldest_yearly_category_created).getMonth(), 1)
+    const totalSpent = period === 'month' ? monthly_spent : yearly_spent
+    const totalLimit = period === 'month' ? limit_amount_monthly : limit_amount_yearly
+    const yearly_start = oldest_yearly_category_created
+        ? new Date(new Date().getFullYear(), new Date(oldest_yearly_category_created).getMonth(), 1)
         : null
     const yearly_end = yearly_start
         ? new Date(yearly_start.getFullYear() + 1, yearly_start.getMonth(), 1)
@@ -185,7 +193,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
 
 const ColumnView = () => {
     const [searchParams] = useSearchParams()
-    const { data } = useGetCategoriesQuery({
+    const { data: categories } = useGetCategoriesQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
@@ -195,14 +203,14 @@ const ColumnView = () => {
             <Column>
                 <RowHeader period='month' />
                 <Rows
-                    categories={data?.categories.filter(category => category.period === 'month') || []}
+                    categories={categories?.filter(category => category.period === 'month') || []}
                     period="month"
                 />
             </Column>
             <Column>
                 <RowHeader period='year' />
                 <Rows
-                    categories={data?.categories.filter(category => category.period === 'year') || []}
+                    categories={categories?.filter(category => category.period === 'year') || []}
                     period="year"
                 />
             </Column>
@@ -213,15 +221,16 @@ const ColumnView = () => {
 const TabView = () => {
     const [searchParams] = useSearchParams()
     const [selectedIndex, setSelectedIndex] = useState(0)
-    const { data } = useGetCategoriesQuery({
+    const { data: categories } = useGetCategoriesQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
-
-    const totalMonthlySpent = data?.monthly_spent
-    const totalMonthlyLimit = data?.limit_amount_monthly
-    const totalYearlySpent = data?.yearly_spent
-    const totalYearlyLimit = data?.limit_amount_yearly
+    const {
+        monthly_spent,
+        yearly_spent,
+        limit_amount_monthly,
+        limit_amount_yearly,
+    } = useSelector(selectCategoryMetaData)
 
     return (
         <Tab.Group as={Column} selectedIndex={selectedIndex} onChange={setSelectedIndex}>
@@ -235,8 +244,8 @@ const TabView = () => {
                         <DollarCents
                             value={
                                 selectedIndex === 0
-                                    ? totalMonthlySpent ? totalMonthlySpent : '0.00'
-                                    : totalYearlySpent ? totalYearlySpent : '0.00'
+                                    ? monthly_spent || '0.00'
+                                    : yearly_spent || '0.00'
                             }
                         />
                     </div>
@@ -246,8 +255,8 @@ const TabView = () => {
                     <DollarCents
                         value={
                             selectedIndex === 0
-                                ? totalMonthlyLimit ? totalMonthlyLimit : '0.00'
-                                : totalYearlyLimit ? totalYearlyLimit : '0.00'
+                                ? limit_amount_monthly ? limit_amount_monthly : '0.00'
+                                : limit_amount_yearly ? limit_amount_yearly : '0.00'
                         }
                         hasCents={false}
                     />
@@ -256,8 +265,8 @@ const TabView = () => {
                     <StaticProgressCircle
                         value={
                             selectedIndex === 0
-                                ? totalMonthlyLimit && totalMonthlySpent ? Math.round(totalMonthlySpent / totalMonthlyLimit * 100) / 100 : 0
-                                : totalYearlyLimit && totalYearlySpent ? Math.round(totalYearlySpent / totalYearlyLimit * 100) / 100 : 0
+                                ? (monthly_spent && limit_amount_monthly) ? Math.round(monthly_spent / limit_amount_monthly * 100) / 100 : 0
+                                : (yearly_spent && limit_amount_yearly) ? Math.round(yearly_spent / limit_amount_yearly * 100) / 100 : 0
                         }
                     />
                 </div>
@@ -265,13 +274,13 @@ const TabView = () => {
             <Tab.Panels as={Fragment}>
                 <Tab.Panel as={Fragment}>
                     <Rows
-                        categories={data?.categories.filter(category => category.period === 'month') || []}
+                        categories={categories?.filter(category => category.period === 'month') || []}
                         period="month"
                     />
                 </Tab.Panel>
                 <Tab.Panel as={Fragment}>
                     <Rows
-                        categories={data?.categories.filter(category => category.period === 'year') || []}
+                        categories={categories?.filter(category => category.period === 'year') || []}
                         period="year"
                     />
                 </Tab.Panel>
