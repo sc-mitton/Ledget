@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
+import { useSearchParams } from 'react-router-dom'
 
 import './styles/Header.scss'
 import { CheckAll } from '@ledget/media'
 import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
-import { useGetTransactionsQuery } from '@features/transactionsSlice'
+import { useLazyGetTransactionsQuery } from '@features/transactionsSlice'
 
 
 const CheckAllButton = () => (
@@ -22,14 +24,19 @@ const CheckAllButton = () => (
 )
 
 const NewItemsHeader = () => {
+    const [searchParams] = useSearchParams()
     const [offset, setOffset] = useState(0)
     const [limit, setLimit] = useState(10)
-    const { data: unconfirmedTransactions } = useGetTransactionsQuery({
-        month: new Date().getMonth() + 1,
-        confirmed: false,
-        offset: offset,
-        limit: limit,
-    })
+    const [fetchTransactions, { data: unconfirmedTransactions }] = useLazyGetTransactionsQuery()
+
+    useEffect(() => {
+        fetchTransactions({
+            month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
+            confirmed: false,
+            offset: offset,
+            limit: limit,
+        }, true)
+    }, [searchParams.get('month')])
 
     return (
         <div id="needs-confirmation-header-container">

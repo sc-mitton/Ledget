@@ -3,7 +3,6 @@ import type { Category } from '@features/categorySlice'
 
 export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 
-
 export type Transaction = {
     account: string
     transaction_id: string
@@ -41,7 +40,6 @@ export type Transaction = {
     store_number?: string
 }
 
-
 export interface GetTransactionsParams {
     type?: AccountType
     account?: string
@@ -76,7 +74,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         getTransactions: builder.query<GetTransactionsResponse, GetTransactionsParams>({
             query: (params) => ({
                 url: 'transactions',
-                params: { confirmed: false },
+                params: params,
                 providesTags: ['transactions'],
             }),
             // For merging in paginated responses to the cache
@@ -105,7 +103,15 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }
             },
             keepUnusedDataFor: 60 * 30, // 15 minutes
-        })
+        }),
+        updateTransaction: builder.mutation<Transaction, Transaction>({
+            query: (data) => ({
+                url: 'transactions',
+                method: 'PATCH',
+                body: data,
+                invalidatesTags: ['transactions']
+            }),
+        }),
     }),
 })
 
@@ -113,6 +119,7 @@ export const {
     useTransactionsSyncMutation,
     useGetTransactionsQuery,
     useLazyGetTransactionsQuery,
+    useUpdateTransactionMutation
 } = extendedApiSlice
 
 export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransactions.useQueryState

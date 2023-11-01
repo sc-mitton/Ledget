@@ -2,7 +2,7 @@ import logging
 from collections import OrderedDict
 
 from django.db import transaction, models
-from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView, UpdateAPIView
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
@@ -229,3 +229,18 @@ class TransactionsView(ListAPIView):
             account__type=type,
             account_id=account
         ).select_related('category', 'bill')
+
+
+class UpdateTransactioinView(UpdateAPIView):
+    serializer_class = TransactionSerializer
+    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
+
+    def get_object(self):
+        try:
+            id = self.request.query_params.get('id', None)
+            transaction = Transaction.objects.get(id=id)
+        except Transaction.DoesNotExist:
+            raise ValidationError('Invalid transaction id')
+
+        self.check_object_permissions(self.request, transaction)
+        return transaction

@@ -199,6 +199,14 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
+    id: 'transactions',
+    match: {
+      methods: ['PATCH'],
+      url: base_url + '/transactions/<[a-zA-Z0-9-]+>',
+    },
+  },
+  GenericAuthedBase
+  {
     id: 'setup_intent',
     match: {
       methods: ['GET'],

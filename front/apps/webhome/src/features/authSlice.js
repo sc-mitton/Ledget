@@ -44,10 +44,6 @@ export const authSlice = createSlice({
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getCsrfToken: builder.query({
-            query: () => '/csrf_token',
-            transformResponse: (response) => response.csrf_token,
-        }),
         addRememberedDevice: builder.mutation({
             query: () => ({
                 url: 'devices',

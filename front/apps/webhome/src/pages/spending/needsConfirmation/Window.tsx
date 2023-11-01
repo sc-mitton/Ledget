@@ -1,5 +1,6 @@
 import React, { FC, MouseEventHandler, useState, useEffect, useRef } from 'react'
 
+import { useSearchParams } from 'react-router-dom'
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 
 import "./styles/Window.scss"
@@ -20,9 +21,10 @@ import {
     DollarCents
 } from "@ledget/ui"
 import { formatDateOrRelativeDate } from '@ledget/ui'
-import { useGetTransactionsQuery } from '@features/transactionsSlice'
+import { useGetTransactionsQuery, useLazyGetTransactionsQuery, useUpdateTransactionMutation } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
+
 
 // Sizing (in ems)
 const translate = 1
@@ -179,6 +181,7 @@ const NewItem: FC<NewItemProps> = (props: NewItemProps) => {
 }
 
 const NeedsConfirmationWindow = () => {
+    const [searchParams] = useSearchParams()
     const [offset, setOffset] = useState(0)
     const [limit, setLimit] = useState(10)
     const [expanded, setExpanded] = useState(false)
@@ -186,20 +189,27 @@ const NeedsConfirmationWindow = () => {
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | null>(null)
     const [items, setItems] = useState<Transaction[] | undefined>()
 
-    const { data: transactionsData, isSuccess } = useGetTransactionsQuery({
-        month: new Date().getMonth() + 1,
-        confirmed: false,
-        offset: offset,
-        limit: limit,
-    })
+    const [fetchTransactions, { data: transactionsData, isSuccess }] = useLazyGetTransactionsQuery()
+    const [updateTransaction] = useUpdateTransactionMutation()
     const newItemsRef = useRef<HTMLDivElement>(null)
 
     const [loaded, setLoaded] = useState(false)
     const itemsApi = useSpringRef()
 
+    // Initial, and subsequent fetches when query params change
+    useEffect(() => {
+        console.log(searchParams.get('month'))
+        fetchTransactions({
+            month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
+            confirmed: false,
+            offset: offset,
+            limit: limit,
+        }, true)
+    }, [searchParams.get('month'), offset, limit])
+
     useEffect(() => {
         isSuccess && setItems(transactionsData?.results)
-    }, [isSuccess])
+    }, [isSuccess, transactionsData])
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -265,24 +275,10 @@ const NeedsConfirmationWindow = () => {
         })
     }, [expanded])
 
+    // Effect and handler for setting the options menu
     useEffect(() => {
         !showMenu && setMenuPos(null)
     }, [showMenu])
-
-    const handleConfirm = (id: string | undefined) => {
-        itemsApi.start((item: Transaction) => {
-            if (item.transaction_id === id) {
-                return {
-                    x: 100,
-                    opacity: 0,
-                    config: { duration: 130 },
-                    onRest: () => {
-                        // TODO
-                    },
-                }
-            }
-        })
-    }
 
     const handleEllipsis = (e: any) => {
         const buttonRect = e.target.closest('button').getBoundingClientRect()
@@ -292,11 +288,33 @@ const NeedsConfirmationWindow = () => {
         })
     }
 
+    // Handle when an item is confirmed
+    const handleConfirm = (id: string | undefined) => {
+        itemsApi.start((item: Transaction) => {
+            if (item.transaction_id === id) {
+                return {
+                    x: 100,
+                    opacity: 0,
+                    config: { duration: 130 },
+                    onRest: () => {
+                        setItems(items?.filter(item => item.transaction_id !== id))
+                        updateTransaction(item)
+                    },
+                }
+            }
+        })
+    }
+
     return (
-        <div id="new-items-container">
+        <div
+            id="new-items-container"
+        >
             <div>
                 <Header />
-                <div ref={newItemsRef} id="new-items">
+                <div
+                    ref={newItemsRef}
+                    id="new-items"
+                >
                     <ShadowedContainer
                         onScroll={() => setShowMenu(false)}
                         showShadow={expanded}
@@ -304,7 +322,7 @@ const NeedsConfirmationWindow = () => {
                         <animated.div style={containerProps}>
                             {(isSuccess && items) &&
                                 <>
-                                    {itemTransitions((style, item, index) => {
+                                    {itemTransitions((style, item, obj, index) => {
                                         if (!item) return null
                                         return (
                                             <NewItem
@@ -312,8 +330,7 @@ const NeedsConfirmationWindow = () => {
                                                 style={style}
                                                 onEllipsis={(e) => handleEllipsis(e)}
                                                 onConfirm={() => handleConfirm(item.transaction_id)}
-                                                // tabIndex={expanded || index === 0 ? 0 : -1} TODO
-                                                tabIndex={0}
+                                                tabIndex={expanded || index === 0 ? 0 : -1}
                                             />
                                         )
                                     }

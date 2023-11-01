@@ -44,18 +44,19 @@ const MonthPicker = () => {
             const userCreatedYear = userCreatedOn.getFullYear()
             const userCreatedMonth = userCreatedOn.getMonth() + 1
 
-            for (let i = 0; i++; i < (currentYear - userCreatedYear) * 12 + (currentMonth - userCreatedMonth)) {
+            let newDateOptions: { [year: number]: number[] } = {}
+            const numberOfMonths = (currentYear - userCreatedYear) * 12 + (currentMonth - userCreatedMonth) + 1
+            for (let i = 0; i < numberOfMonths; i++) {
                 const year = userCreatedYear + Math.floor(i / 12)
                 const month = userCreatedMonth + (i % 12)
 
-                let newDateOptions: { [year: number]: number[] } = {}
                 if (newDateOptions[year]) {
                     newDateOptions[year].push(month)
                 } else {
                     newDateOptions[year] = [month]
                 }
-                setDateOptions(newDateOptions)
             }
+            setDateOptions(newDateOptions)
         }
     }, [userIsFetched, user])
 
