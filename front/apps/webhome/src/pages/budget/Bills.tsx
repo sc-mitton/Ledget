@@ -1,9 +1,15 @@
 import { useMemo, useEffect, useState, useRef, forwardRef } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import './styles/Bills.scss'
-import { useGetBillsQuery } from '@features/billSlice';
+import {
+    useGetBillsQuery,
+    selectBills,
+    sortBillsByAlpha,
+    sortBillsByDate,
+} from '@features/billSlice';
 import {
     DollarCents,
     PillOptionButton,
@@ -31,10 +37,11 @@ function getDaysInMonth(year: number, month: number): Date[] {
 
 const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((props, ref) => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const { data } = useGetBillsQuery({
+    const { } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
+    const bills = useSelector(selectBills)
 
     const selectedDate = new Date(
         parseInt(searchParams.get('year') || `${new Date().getFullYear()}`),
@@ -45,29 +52,29 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
 
     const monthlyBillCountEachDay: number[] = useMemo(() => {
         const counts: number[] = Array(31).fill(0)
-        const numBills = data?.bills?.length || 0
+        const numBills = bills?.length || 0
         for (let i = 0; i < numBills; i++) {
-            if (data?.bills[i].period !== 'month') {
+            if (bills[i].period !== 'month') {
                 continue
             }
-            const date = new Date(data?.bills[i].date!)
+            const date = new Date(bills[i].date!)
             counts[date.getDate() - 1] += 1
         }
         return counts
-    }, [data?.bills])
+    }, [bills])
 
     const yearlyBillCountEachDay: number[] = useMemo(() => {
         const counts: number[] = Array(31).fill(0)
-        const numBills = data?.bills.length || 0
+        const numBills = bills.length || 0
         for (let i = 0; i < numBills; i++) {
-            if (data?.bills[i].period !== 'year') {
+            if (bills[i].period !== 'year') {
                 continue
             }
-            const date = new Date(data?.bills![i].date!)
+            const date = new Date(bills![i].date!)
             counts[date.getDate() - 1] += 1
         }
         return counts
-    }, [data?.bills])
+    }, [bills])
 
     return (
         <div className="calendar" ref={ref}>
@@ -212,75 +219,43 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
 
 const Bills = () => {
     const [searchParams] = useSearchParams()
-    const { data, isLoading } = useGetBillsQuery({
+    const { isLoading } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
-    const [bills, setBills] = useState(data?.bills)
+    const dispatch = useDispatch()
+    const bills = useSelector(selectBills)
     const [collapsed, setCollapsed] = useState(false)
 
-
     useEffect(() => {
-        if (searchParams.get('day')) {
-            if (searchParams.get('bill-sort') === 'date') {
-                setBills(Array.from(data?.bills || []).filter(bill => {
-                    return new Date(bill.date!).getDate() === parseInt(searchParams.get('day')!)
-                }
-                ).sort((a, b) => {
-                    return new Date(a.date!).getTime() - new Date(b.date!).getTime()
-                }))
-            } else if (searchParams.get('bill-sort') === 'a-z') {
-                setBills(Array.from(data?.bills || []).filter(bill => {
-                    return new Date(bill.date!).getDate() === parseInt(searchParams.get('day')!)
-                }
-                ).sort((a, b) => {
-                    return a.name.localeCompare(b.name)
-                }))
-            }
-        } else {
-            if (searchParams.get('bill-sort') === 'date') {
-                setBills(Array.from(data?.bills || []).sort((a, b) => {
-                    return new Date(a.date!).getTime() - new Date(b.date!).getTime()
-                }))
-            } else if (searchParams.get('bill-sort') === 'a-z') {
-                setBills(Array.from(data?.bills || []).sort((a, b) => {
-                    return a.name.localeCompare(b.name)
-                }))
-            }
+        if (searchParams.get('bill-sort') === 'a-z') {
+            dispatch(sortBillsByAlpha())
+        } else if (searchParams.get('bill-sort') === 'date') {
+            dispatch(sortBillsByDate())
         }
-    }, [searchParams.get('bill-sort'), searchParams.get('day'), data?.bills])
-
-    useEffect(() => {
-        if (searchParams.get('day')) {
-            setBills(Array.from(data?.bills || []).filter(bill => {
-                return new Date(bill.date!).getDate() === parseInt(searchParams.get('day')!)
-            }
-            ))
-        } else {
-            setBills(data?.bills)
-        }
-    }, [searchParams.get('day'), data?.bills])
+    }, [searchParams.get('bill-sort'), searchParams.get('day')])
 
     const Bills = () => (
         <div
             className='bills-box'
-            style={{ '--number-of-bills': data?.bills?.length! / 2 || 0 } as React.CSSProperties}
+            style={{ '--number-of-bills': bills?.length! / 2 || 0 } as React.CSSProperties}
             aria-expanded={!collapsed}
         >
-            {bills?.map((bill, i) => {
-                return (
-                    <div key={i} className="monthly-bill">
-                        <div>
-                            <span>{bill.emoji}</span>
-                            <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
-                            <span>
-                                {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                            </span>
+            {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
+                .map((bill, i) => {
+                    return (
+                        <div key={i} className="monthly-bill">
+                            <div>
+                                <span>{bill.emoji}</span>
+                                <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                                <span>
+                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
+                                </span>
+                            </div>
+                            <div><DollarCents value={bill.upper_amount} /></div>
                         </div>
-                        <div><DollarCents value={bill.upper_amount} /></div>
-                    </div>
-                )
-            })}
+                    )
+                })}
         </div>
     )
 

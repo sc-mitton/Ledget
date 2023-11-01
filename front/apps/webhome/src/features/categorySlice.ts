@@ -37,6 +37,16 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     }),
 })
 
+type initialState = {
+    categories: Category[],
+    unSyncedCategories: Category[],
+    monthly_spent: number,
+    yearly_spent: number,
+    limit_amount_monthly: number,
+    limit_amount_yearly: number,
+    oldest_yearly_category_created: string,
+}
+
 export const categorySlice = createSlice({
     name: 'categories',
     initialState: {
@@ -46,8 +56,8 @@ export const categorySlice = createSlice({
         yearly_spent: 0,
         limit_amount_monthly: 0,
         limit_amount_yearly: 0,
-        oldest_yearly_category_created: null,
-    },
+        oldest_yearly_category_created: new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+    } as initialState,
     reducers: {
         addTransaction2Cat: (state, action: PayloadAction<{ categoryId: string, amount: number }>) => {
             const foundCategory = state.categories.find(category => category.id === action.payload.categoryId);
@@ -87,22 +97,27 @@ export const categorySlice = createSlice({
                 let limitAmountYearly = 0
                 let oldestYearlyCategoryCreated = ''
 
-                state.categories.forEach(category => {
+                action.payload.forEach(category => {
                     if (category.period === 'month') {
-                        monthlySpent = monthlySpent.times(100).plus(category.amount_spent)
+                        if (category.amount_spent) {
+                            monthlySpent = monthlySpent.plus(Big(category.amount_spent).times(100))
+                        }
                         limitAmountMonthly += category.limit_amount
                     } else if (category.period === 'year') {
-                        yearlySpent = yearlySpent.times(100).plus(category.amount_spent)
+                        if (category.amount_spent) {
+                            yearlySpent = yearlySpent.plus(Big(category.amount_spent).times(100))
+                        }
                         limitAmountYearly += category.limit_amount
                         if (oldestYearlyCategoryCreated === '' || new Date(oldestYearlyCategoryCreated) > new Date(category.created)) {
                             oldestYearlyCategoryCreated = category.created
                         }
                     }
                 })
-                state.monthly_spent = monthlySpent.toNumber()
-                state.yearly_spent = yearlySpent.toNumber()
+                // state.monthly_spent = monthlySpent.toNumber()
+                // state.yearly_spent = yearlySpent.toNumber()
                 state.limit_amount_monthly = limitAmountMonthly
                 state.limit_amount_yearly = limitAmountYearly
+                state.oldest_yearly_category_created = oldestYearlyCategoryCreated
             }
         )
     }
@@ -114,7 +129,8 @@ export const {
 } = categorySlice.actions
 
 // selectors
-export const selectCategoryMetaData = (state: any) => ({
+export const selectCategories = (state: { categories: initialState }) => state.categories.categories
+export const selectCategoryMetaData = (state: { categories: initialState }) => ({
     monthly_spent: state.categories.monthly_spent,
     yearly_spent: state.categories.yearly_spent,
     limit_amount_monthly: state.categories.limit_amount_monthly,

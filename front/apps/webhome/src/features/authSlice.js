@@ -79,7 +79,7 @@ export const { resetAuthedAt } = authSlice.actions
 export const authReducer = authSlice.reducer
 
 export const selectSessionIsFreshAal1 = (state) => {
-    const isFresh = state.reAuthedAt && Date.now() - state.reAuthedAt < 1000 * 60 * 9
+    const isFresh = state.reAuthed.at && Date.now() - state.reAuthed.at < 1000 * 60 * 9
     const aalGood = state.reAuthedLevel && state.reAuthedLevel >= 1
     return isFresh && aalGood
 }

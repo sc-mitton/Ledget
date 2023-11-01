@@ -79,7 +79,6 @@
     --muted-text-gray: #848484;
     --faded-text: rgb(0, 0, 0, .3);
 
-
     /* Icons & Buttons */
     --btn-light-light-gray: #eeeeee;
     --btn-light-gray: #e6e4e4;
@@ -92,7 +91,7 @@
     --btn-black: #242424;
     --icon-light-gray: #ebebeb;
     --icon-hover-light-gray: #e0e0e0;
-    --icon-hover-gray: #c4c4c4;
+    --icon-hover-gray: rgb(196, 196, 196);
     --drop-down-hover-background: #dfdfdf;
 
     /* Borders */

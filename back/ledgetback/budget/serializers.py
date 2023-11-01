@@ -2,7 +2,7 @@ from rest_framework.serializers import ModelSerializer, ListSerializer as LS
 from rest_framework.serializers import SerializerMethodField
 from django.db import transaction
 
-from back.ledgetback.ledgetback.serializer_mixins import NestedCreateMixin
+from ledgetback.serializer_mixins import NestedCreateMixin
 from .models import (
     Category,
     Alert,

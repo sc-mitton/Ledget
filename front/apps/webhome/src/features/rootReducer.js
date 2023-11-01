@@ -3,12 +3,16 @@ import { apiSlice } from '@api/apiSlice'
 import { authSlice } from '@features/authSlice'
 import { toastSlice } from '@features/toastSlice'
 import { categorySlice } from './categorySlice'
+import { billSlice } from './billSlice'
+import { confirmedQueueSlice } from './transactionsSlice'
 
 const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authSlice.reducer,
     toast: toastSlice.reducer,
     categories: categorySlice.reducer,
+    bills: billSlice.reducer,
+    confirmedQueue: confirmedQueueSlice.reducer
 })
 
 export default rootReducer

@@ -100,6 +100,19 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     }),
 })
 
+type initialState = {
+    bills: TransformedBill[],
+    unSyncedBills: TransformedBill[],
+    monthly_bills_paid: number,
+    yearly_bills_paid: number,
+    number_of_monthly_bills: number,
+    number_of_yearly_bills: number,
+    monthly_bills_amount_remaining: number,
+    yearly_bills_amount_remaining: number,
+    total_monthly_bills_amount: number,
+    total_yearly_bills_amount: number,
+}
+
 export const billSlice = createSlice({
     name: 'bills',
     initialState: {
@@ -113,7 +126,7 @@ export const billSlice = createSlice({
         yearly_bills_amount_remaining: 0,
         total_monthly_bills_amount: 0,
         total_yearly_bills_amount: 0,
-    },
+    } as initialState,
     reducers: {
         addTransaction2Bill: (state, action: PayloadAction<{ billId: string, amount: number }>) => {
             const foundBill = state.bills.find(bill => bill.id === action.payload.billId);
@@ -136,6 +149,18 @@ export const billSlice = createSlice({
         },
         clearUnSyncedBills: (state) => {
             state.unSyncedBills = []
+        },
+        sortBillsByAlpha: (state) => {
+            state.bills.sort((a, b) => {
+                const nameA = a.name.toUpperCase()
+                const nameB = b.name.toUpperCase()
+                return nameA.localeCompare(nameB)
+            })
+        },
+        sortBillsByDate: (state) => {
+            state.bills.sort((a, b) => {
+                return new Date(a.date).getTime() - new Date(b.date).getTime()
+            })
         }
     },
     extraReducers: (builder) => {
@@ -161,20 +186,40 @@ export const billSlice = createSlice({
                             paidYearlyBills++
                             yearlyBillsAmountRemaining = yearlyBillsAmountRemaining.plus(bill.upper_amount)
                         }
+                    } else {
+                        if (bill.period === 'month') {
+                            monthlyBillsAmountRemaining = monthlyBillsAmountRemaining.plus(bill.upper_amount)
+                        } else if (bill.period === 'year') {
+                            yearlyBillsAmountRemaining = yearlyBillsAmountRemaining.plus(bill.upper_amount)
+                        }
                     }
                     bill.period === 'month' ? numberOfMonthlyBills++ : numberOfYearlyBills++
                     bill.period === 'month'
                         ? totalMonthlyBillsAmount = totalMonthlyBillsAmount.plus(bill.upper_amount)
                         : totalYearlyBillsAmount = totalYearlyBillsAmount.plus(bill.upper_amount)
                 })
+                state.monthly_bills_paid = paidMonthlyBills
+                state.yearly_bills_paid = paidYearlyBills
+                state.number_of_monthly_bills = numberOfMonthlyBills
+                state.number_of_yearly_bills = numberOfYearlyBills
+                state.monthly_bills_amount_remaining = monthlyBillsAmountRemaining.toNumber()
+                state.yearly_bills_amount_remaining = yearlyBillsAmountRemaining.toNumber()
+                state.total_monthly_bills_amount = totalMonthlyBillsAmount.toNumber()
+                state.total_yearly_bills_amount = totalYearlyBillsAmount.toNumber()
             }
         )
     }
 })
 
-export const { addTransaction2Bill, clearUnSyncedBills } = billSlice.actions
+export const {
+    addTransaction2Bill,
+    clearUnSyncedBills,
+    sortBillsByAlpha,
+    sortBillsByDate,
+} = billSlice.actions
 
-export const selectBillMetaData = (state: any) => ({
+export const selectBills = (state: { bills: initialState }) => state.bills.bills
+export const selectBillMetaData = (state: { bills: initialState }) => ({
     monthly_bills_paid: state.bills.monthly_bills_paid,
     yearly_bills_paid: state.bills.yearly_bills_paid,
     number_of_monthly_bills: state.bills.number_of_monthly_bills,

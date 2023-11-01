@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import './styles/Header.scss'
 import { CheckAll } from '@ledget/media'
 import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
-import { useLazyGetTransactionsQuery } from '@features/transactionsSlice'
+import { useLazyGetTransactionsQuery, selectConfirmedQueueLength } from '@features/transactionsSlice'
 
 
 const CheckAllButton = () => (
@@ -29,6 +29,7 @@ const NewItemsHeader = () => {
     const [offset, setOffset] = useState(0)
     const [limit, setLimit] = useState(10)
     const [fetchTransactions, { data: unconfirmedTransactions }] = useLazyGetTransactionsQuery()
+    const confirmedQueueLength = useSelector(selectConfirmedQueueLength)
 
     useEffect(() => {
         fetchTransactions({
@@ -39,18 +40,19 @@ const NewItemsHeader = () => {
         }, true)
     }, [searchParams.get('month')])
 
+
     return (
         <div id="needs-confirmation-header-container">
             <div id="needs-confirmation-header">
                 <div>
                     <div id="number-of-items">
-                        <span>{unconfirmedTransactions?.results.length || 0}</span>
+                        <span>{(unconfirmedTransactions?.results.length || 0) - confirmedQueueLength}</span>
                     </div>
                     <span>Items to confirm</span>
                 </div>
                 <div>
                     <RefreshButton hasBackground={false} />
-                    <CheckAllButton />
+                    {(unconfirmedTransactions?.results.length! > 0) && <CheckAllButton />}
                 </div>
             </div>
         </div>

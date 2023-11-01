@@ -34,6 +34,8 @@ interface PlaidItem {
     accounts: Account[]
 }
 
+
+
 export const extendedApiSlice = apiWithTags.injectEndpoints({
     endpoints: (builder) => ({
         getPlaidToken: builder.query<string, { isOnboarding: boolean, itemId: string }>({

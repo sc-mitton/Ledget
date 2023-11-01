@@ -10,7 +10,7 @@ interface Props {
   children: React.ReactNode
 }
 
-export const Tooltip = ({ msg, type = 'top', ariaLabel, style, children, ...rest }: Props) => {
+export const Tooltip = ({ msg, type = 'top', ariaLabel, children, ...rest }: Props) => {
 
   return (
     <div
@@ -20,7 +20,6 @@ export const Tooltip = ({ msg, type = 'top', ariaLabel, style, children, ...rest
     >
       {children}
       <span
-        style={style}
         className={`tooltiptext ${type}`}
         {...rest}
       >

@@ -164,13 +164,9 @@ const SummaryStatsTeaser = ({
                 <div>spent</div>
             </div>
             {Array.from(['month', 'year']).map((period, i) => {
-                const amountLeft = period === 'month'
-                    ? (limit_amount_monthly && monthly_spent)
-                        ? Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber()
-                        : 0
-                    : (limit_amount_yearly && yearly_spent)
-                        ? Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber()
-                        : 0
+                const amountLeft = (period === 'month')
+                    ? Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber()
+                    : Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber()
                 return (
                     <div
                         key={period}

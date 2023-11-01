@@ -47,7 +47,6 @@
     padding: .125rem .5rem;
     border-radius: var(--border-radius2);
     cursor: pointer;
-    font-weight: 600;
 }
 
 .month-picker-item-selected {

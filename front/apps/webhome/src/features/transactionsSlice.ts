@@ -1,6 +1,10 @@
+
+import { createSlice } from '@reduxjs/toolkit'
+
 import { apiSlice } from '@api/apiSlice'
 import type { Category } from '@features/categorySlice'
 import type { Bill } from '@features/billSlice'
+import { create } from 'domain'
 
 export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 
@@ -115,6 +119,27 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         }),
     }),
 })
+
+export const confirmedQueueSlice = createSlice({
+    name: 'confirmedQueue',
+    initialState: [] as Transaction[],
+    reducers: {
+        pushConfirmedTransaction: (state, action) => {
+            state.push(action.payload)
+        },
+        clearConfirmedQueue: (state) => {
+            state = []
+        }
+    }
+})
+
+export const {
+    pushConfirmedTransaction,
+    clearConfirmedQueue
+} = confirmedQueueSlice.actions
+
+export const selectConfirmedQueue = (state: { confirmedQueue: Transaction[] }) => state.confirmedQueue
+export const selectConfirmedQueueLength = (state: { confirmedQueue: Transaction[] }) => state.confirmedQueue.length
 
 export const {
     useTransactionsSyncMutation,

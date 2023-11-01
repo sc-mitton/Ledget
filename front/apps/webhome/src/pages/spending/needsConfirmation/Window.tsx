@@ -25,9 +25,12 @@ import { formatDateOrRelativeDate } from '@ledget/ui'
 import { addTransaction2Cat, clearUnsyncedCategories } from '@features/categorySlice'
 import { addTransaction2Bill, clearUnSyncedBills } from '@features/billSlice'
 import {
-    useGetTransactionsQuery,
     useLazyGetTransactionsQuery,
     useUpdateTransactionsMutation,
+    pushConfirmedTransaction,
+    selectConfirmedQueue,
+    selectConfirmedQueueLength,
+    clearConfirmedQueue
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
@@ -41,10 +44,6 @@ const scale = .1
 const stackMax = 2
 
 const _getContainerHeight = (length: number, expanded: boolean) => {
-    expanded
-        ? `${Math.min(length * expandedTranslate + 1, expandedHeight)}em`
-        : (length > 0 ? `${collapsedHeight}em` : 0)
-
     if (expanded) {
         return `${Math.min(length * expandedTranslate + 1, expandedHeight)}em`
     } else if (length > stackMax) {
@@ -52,7 +51,7 @@ const _getContainerHeight = (length: number, expanded: boolean) => {
     } else if (length > 0) {
         return `${collapsedHeight - ((stackMax - length) * translate)}em`
     } else {
-        return 0
+        return `0em`
     }
 }
 
@@ -101,7 +100,7 @@ interface NewItemProps {
     item: Transaction
     style: React.CSSProperties
     onEllipsis: MouseEventHandler<HTMLButtonElement>
-    onConfirm: () => void
+    handleConfirm: (transaction: Transaction) => void
     tabIndex: number
 }
 
@@ -110,16 +109,21 @@ const Logo = ({ accountId }: { accountId: string }) => {
 
     const item = data?.find(item => item.accounts.find(account => account.id === accountId))
 
+    const args = {
+        data: item?.institution.logo,
+        alt: item ? `${item.institution.name.charAt(0).toUpperCase()}` : ' ',
+        ...(!item ? { backgroundColor: '#e0e0e0' } : {})
+    }
+
     return (
-        <Base64Logo
-            data={item?.institution.logo}
-            alt={item?.institution.name}
-        />
+        <Base64Logo {...args} />
     )
 }
 
 const NewItem: FC<NewItemProps> = (props: NewItemProps) => {
-    const { item, style, onEllipsis, onConfirm, tabIndex } = props
+    const { item, style, onEllipsis, handleConfirm, tabIndex } = props
+    const [newCategory, setNewCategory] = useState<string | null>(null)
+    const [newBill, setNewBill] = useState<string | null>(null)
 
     return (
         <animated.div
@@ -129,7 +133,7 @@ const NewItem: FC<NewItemProps> = (props: NewItemProps) => {
         >
             <div className='new-item-data'>
                 <div>
-                    <Logo accountId={item.account!} />
+                    <Logo accountId={item.account} />
                 </div>
                 <div>
                     <div>
@@ -161,11 +165,16 @@ const NewItem: FC<NewItemProps> = (props: NewItemProps) => {
                 <Tooltip
                     msg="Confirm"
                     ariaLabel="Confirm"
-                    type="top"
                     style={{ left: '-1.1rem' }}
                 >
                     <IconScaleButton
-                        onClick={onConfirm}
+                        onClick={() => {
+                            handleConfirm({
+                                ...item,
+                                ...(newCategory && { category: newCategory, category_confirmed: true }),
+                                ...(newBill && { bill: newBill, bill_confirmed: true }),
+                            } as Transaction)
+                        }}
                         aria-label="Confirm"
                         tabIndex={tabIndex}
                         className="confirm-button"
@@ -193,13 +202,14 @@ const NeedsConfirmationWindow = () => {
     const [expanded, setExpanded] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | null>(null)
-    const [items, setItems] = useState<Transaction[] | undefined>()
-    const [confirmedItems, setConfirmedItems] = useState<Transaction[]>([] as Transaction[])
+    const [unconfirmedTransactions, setUnconfirmedTransactions] = useState<Transaction[] | undefined>()
 
     const [fetchTransactions, { data: transactionsData, isSuccess }] = useLazyGetTransactionsQuery()
     const [updateTransactions, { isSuccess: transactionsAreUpdated }] = useUpdateTransactionsMutation()
     const newItemsRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch()
+    const confirmedQueue = useSelector(selectConfirmedQueue)
+    const confirmedQueueLength = useSelector(selectConfirmedQueueLength)
 
     const [loaded, setLoaded] = useState(false)
     const itemsApi = useSpringRef()
@@ -208,7 +218,6 @@ const NeedsConfirmationWindow = () => {
 
     // Initial, and subsequent fetches when query params change
     useEffect(() => {
-        console.log(searchParams.get('month'))
         fetchTransactions({
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
             confirmed: false,
@@ -219,7 +228,7 @@ const NeedsConfirmationWindow = () => {
 
     // When the data is fetched, set the items state variable
     useEffect(() => {
-        isSuccess && setItems(transactionsData?.results)
+        isSuccess && setUnconfirmedTransactions(transactionsData?.results)
     }, [isSuccess, transactionsData])
 
     // Animation hooks
@@ -227,13 +236,13 @@ const NeedsConfirmationWindow = () => {
         position: 'relative',
         left: '50%',
         transform: 'translateX(-50%)',
-        height: `${collapsedHeight}em`,
+        height: _getContainerHeight(unconfirmedTransactions?.length || 0, expanded),
         overflowX: 'hidden',
         overflowY: 'hidden',
     } as React.CSSProperties))
 
     const itemTransitions = useTransition(
-        items,
+        unconfirmedTransactions,
         {
             from: (item, index) => ({
                 // top: getTop(index, false),
@@ -243,7 +252,7 @@ const NeedsConfirmationWindow = () => {
             enter: (item, index) => ({
                 y: _getY(index, expanded, true),
                 transform: `scale(${_getScale(index, expanded)})`,
-                zIndex: `${(items!.length - index)}`,
+                zIndex: `${(unconfirmedTransactions!.length - index)}`,
                 opacity: _getOpacity(index, expanded),
                 x: 0,
                 left: 0,
@@ -252,7 +261,7 @@ const NeedsConfirmationWindow = () => {
             update: (item, index) => ({
                 y: _getY(index, expanded),
                 transform: `scale(${_getScale(index, expanded)})`,
-                zIndex: `${(items!.length - index)}`,
+                zIndex: `${(unconfirmedTransactions!.length - index)}`,
                 opacity: _getOpacity(index, expanded),
             }),
             onRest: () => {
@@ -271,19 +280,21 @@ const NeedsConfirmationWindow = () => {
     )
 
     useEffect(() => {
-        if (items) {
-            itemsApi.start()
-            containerApi.start({
-                height: _getContainerHeight(items!.length, expanded)
-            } as any)
-        }
-    }, [expanded, items])
+        containerApi.start()
+    }, [])
 
     useEffect(() => {
-        containerApi.start({
-            overflowY: 'hidden',
-        })
+        containerApi.start({ overflowY: 'hidden' })
     }, [expanded])
+
+    useEffect(() => {
+        if (unconfirmedTransactions) {
+            itemsApi.start()
+            containerApi.start({
+                height: _getContainerHeight(unconfirmedTransactions.length, expanded)
+            } as any)
+        }
+    }, [expanded, unconfirmedTransactions])
 
     // Effect and handler for setting the options menu
     useEffect(() => {
@@ -299,28 +310,31 @@ const NeedsConfirmationWindow = () => {
         })
     }
 
-    // Handle when an item is confirmed
-    const handleConfirm = (id: string | undefined) => {
-        itemsApi.start((item: Transaction) => {
-            if (item.transaction_id === id) {
+    // Handle confirming an item
+    // 1. Animate the item out of the container
+    // 2. Remove the item from the items array
+    // 3. Add the item to the confirmed items array
+    const handleConfirm = (transaction: Transaction) => {
+        itemsApi.start((index: any, item: any) => {
+            if (item._item.transaction_id === transaction.transaction_id) {
                 return {
                     x: 100,
                     opacity: 0,
                     config: { duration: 130 },
                     onRest: () => {
-                        setItems(items?.filter(item => item.transaction_id !== id))
-                        if (item.category) {
+                        setUnconfirmedTransactions(unconfirmedTransactions?.filter(tr => tr.transaction_id !== transaction.transaction_id))
+                        if (transaction.category) {
                             dispatch(addTransaction2Cat({
-                                categoryId: item.category.id,
-                                amount: item.amount,
+                                categoryId: transaction.category.id,
+                                amount: transaction.amount,
                             }))
-                        } else if (item.bill) {
+                        } else if (transaction.bill) {
                             dispatch(addTransaction2Bill({
-                                billId: item.bill.id,
-                                amount: item.amount,
+                                billId: transaction.bill.id,
+                                amount: transaction.amount,
                             }))
                         }
-                        setConfirmedItems([...confirmedItems!, item])
+                        dispatch(pushConfirmedTransaction(transaction))
                     },
                 }
             }
@@ -329,7 +343,9 @@ const NeedsConfirmationWindow = () => {
 
     // When the mouse leaves the container, flush the confirmed items que
     const flushConfirmedQue = () => {
-        updateTransactions(confirmedItems)
+        if (confirmedQueueLength > 0) {
+            updateTransactions(confirmedQueue)
+        }
     }
 
     // When transaction items have been updated on the server
@@ -338,6 +354,7 @@ const NeedsConfirmationWindow = () => {
         if (transactionsAreUpdated) {
             dispatch(clearUnsyncedCategories())
             dispatch(clearUnSyncedBills())
+            dispatch(clearConfirmedQueue())
         }
     }, [transactionsAreUpdated])
 
@@ -357,7 +374,7 @@ const NeedsConfirmationWindow = () => {
                         showShadow={expanded}
                     >
                         <animated.div style={containerProps}>
-                            {(isSuccess && items) &&
+                            {(isSuccess && unconfirmedTransactions) &&
                                 <>
                                     {itemTransitions((style, item, obj, index) => {
                                         if (!item) return null
@@ -366,7 +383,7 @@ const NeedsConfirmationWindow = () => {
                                                 item={item}
                                                 style={style}
                                                 onEllipsis={(e) => handleEllipsis(e)}
-                                                onConfirm={() => handleConfirm(item.transaction_id)}
+                                                handleConfirm={handleConfirm}
                                                 tabIndex={expanded || index === 0 ? 0 : -1}
                                             />
                                         )

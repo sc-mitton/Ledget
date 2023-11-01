@@ -23,7 +23,7 @@ $new-item-padding: 1em 1em 1em .75em;
     grid-template-columns: minmax(0, 1fr) auto;
     margin: 0 .75em;
 
-    ::after {
+    &::after {
         content: '';
         display: block;
         opacity: 0;
@@ -44,10 +44,6 @@ $new-item-padding: 1em 1em 1em .75em;
         display: flex;
         align-items: center;
         margin-right: .25em;
-
-        img {
-            transform: scale(.9);
-        }
     }
 
     // Name, date, amount

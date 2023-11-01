@@ -7,7 +7,7 @@ import Big from 'big.js'
 
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
-import { useGetCategoriesQuery, selectCategoryMetaData } from '@features/categorySlice'
+import { useGetCategoriesQuery, selectCategoryMetaData, selectCategories } from '@features/categorySlice'
 import {
     DollarCents,
     StaticProgressCircle,
@@ -137,11 +137,6 @@ const Rows = memo(({ categories, period }: { categories: Category[], period: 'mo
 })
 
 const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
-    const [searchParams] = useSearchParams()
-    const { data } = useGetCategoriesQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
-    })
     const {
         monthly_spent,
         yearly_spent,
@@ -193,10 +188,11 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
 
 const ColumnView = () => {
     const [searchParams] = useSearchParams()
-    const { data: categories } = useGetCategoriesQuery({
+    const { } = useGetCategoriesQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
+    const categories = useSelector(selectCategories)
 
     return (
         <>
