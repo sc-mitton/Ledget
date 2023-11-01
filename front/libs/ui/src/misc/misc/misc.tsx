@@ -12,8 +12,8 @@ function getContrastColor(bgColor: string | undefined) {
 }
 
 interface Base64LogoProps {
-  data: string;
-  alt: string;
+  data: string | undefined;
+  alt: string | undefined;
   backgroundColor?: string;
   style?: React.CSSProperties;
 }

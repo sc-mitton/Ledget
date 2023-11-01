@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 from collections import OrderedDict
 
 from django.db import transaction, models
@@ -191,27 +190,35 @@ class TransactionsView(ListAPIView):
 
     def get_queryset(self):
         params = self.request.query_params
-        if 'confirmed' in params:
-            return self._get_confirmed_transactions()
+        month = params.get('month', None)
+        confirmed = params.get('confirmed', None)
+
+        if confirmed == 'true' and month:
+            return self._get_confirmed_transactions(month)
+        elif confirmed == 'false' and month:
+            return self._get_unconfirmed_transactions(month)
         else:
             return self._get_transactions()
 
-    def _get_confirmed_transactions(self):
-        month = datetime.now().month
-        confirmed_param = self.request.query_params.get('confirmed', None)
-        if confirmed_param == 'true':
-            confirmed = True
-        elif confirmed_param == 'false':
-            confirmed = False
-        else:
-            raise ValidationError('Invalid confirmed parameter')
+    def _get_confirmed_transactions(self, month):
 
-        print('confirmed: ', confirmed)
-        return Transaction.objects.filter(
+        qset = Transaction.objects.filter(
             date__month=month,
-            bill_confirmed=confirmed,
-            category_confirmed=confirmed,
+            bill_confirmed=True,
+            category_confirmed=True,
         ).select_related('category', 'bill')
+
+        return qset
+
+    def _get_unconfirmed_transactions(self, month):
+
+        qset = Transaction.objects.filter(
+            date__month=month,
+            bill_confirmed=False,
+            category_confirmed=False,
+        ).select_related('category', 'bill')
+
+        return qset
 
     def _get_transactions(self):
         type = self.request.query_params.get('type', None)

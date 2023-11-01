@@ -1,17 +1,15 @@
 import { apiSlice } from '@api/apiSlice'
-import { current } from '@reduxjs/toolkit'
+import type { Category } from '@features/categorySlice'
 
 export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 
 
 export type Transaction = {
-    account_id: string
+    account: string
     transaction_id: string
     transaction_code?: string
     transaction_type?: string
-    category?: {
-        name: string
-    },
+    category?: Category,
     bill?: string
     category_confirmed?: boolean
     bill_confirmed?: boolean
@@ -45,8 +43,10 @@ export type Transaction = {
 
 
 export interface GetTransactionsParams {
-    type: AccountType
-    account: string
+    type?: AccountType
+    account?: string
+    confirmed?: boolean
+    month?: number
     offset: number
     limit: number
 }
@@ -73,40 +73,10 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 invalidatesTags: ['transactions']
             }),
         }),
-        getUncomfirmedTransactions: builder.query<GetTransactionsResponse, { offset: number, limit: number }>({
-            query: () => ({
-                url: 'transactions',
-                params: { confirmed: false },
-                providesTags: ['transactions'],
-            }),
-            serializeQueryArgs: ({ queryArgs }) => {
-                const { offset, limit, ...cacheKeyArgs } = queryArgs
-                return cacheKeyArgs
-            },
-            merge: (currentCache, newItems) => {
-                if (currentCache.results) {
-                    const { results } = currentCache
-                    const { results: newResults, ...newRest } = newItems
-                    return {
-                        results: [...results, ...newResults],
-                        ...newRest
-                    }
-                }
-                return currentCache
-            },
-            transformResponse: (response: any) => {
-                // If response is a list
-                if (Array.isArray(response)) {
-                    return { results: response }
-                } else {
-                    return response
-                }
-            },
-        }),
         getTransactions: builder.query<GetTransactionsResponse, GetTransactionsParams>({
             query: (params) => ({
                 url: 'transactions',
-                params: params,
+                params: { confirmed: false },
                 providesTags: ['transactions'],
             }),
             // For merging in paginated responses to the cache
@@ -143,7 +113,6 @@ export const {
     useTransactionsSyncMutation,
     useGetTransactionsQuery,
     useLazyGetTransactionsQuery,
-    useGetUncomfirmedTransactionsQuery,
 } = extendedApiSlice
 
 export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransactions.useQueryState

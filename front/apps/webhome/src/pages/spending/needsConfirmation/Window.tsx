@@ -13,23 +13,22 @@ import {
     ExpandableContainer,
     ExpandButton,
     GrnSlimButton2,
+    BlueSlimButton2,
     IconScaleButton,
     Tooltip,
     Base64Logo,
     DollarCents
 } from "@ledget/ui"
 import { formatDateOrRelativeDate } from '@ledget/ui'
-import { useGetUncomfirmedTransactionsQuery } from '@features/transactionsSlice'
+import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
-
-
-// End TODO
+import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 
 // Sizing (in ems)
 const translate = 1
-const expandedTranslate = 6;
-const expandedHeight = 20
-const collapsedHeight = 8
+const expandedTranslate = 5.625;
+const expandedHeight = 29
+const collapsedHeight = 7.5
 const scale = .1
 const stackMax = 2
 
@@ -98,6 +97,19 @@ interface NewItemProps {
     tabIndex: number
 }
 
+const Logo = ({ accountId }: { accountId: string }) => {
+    const { data } = useGetPlaidItemsQuery()
+
+    const item = data?.find(item => item.accounts.find(account => account.id === accountId))
+
+    return (
+        <Base64Logo
+            data={item?.institution.logo}
+            alt={item?.institution.name}
+        />
+    )
+}
+
 const NewItem: FC<NewItemProps> = (props: NewItemProps) => {
     const { item, style, onEllipsis, onConfirm, tabIndex } = props
 
@@ -109,25 +121,35 @@ const NewItem: FC<NewItemProps> = (props: NewItemProps) => {
         >
             <div className='new-item-data'>
                 <div>
-                    {/* <Base64Logo src={item.logo} /> TODO */}
+                    <Logo accountId={item.account!} />
                 </div>
                 <div>
                     <div>
                         <span>{item.name}</span>
                     </div>
-                    <div>
-                        <div><DollarCents value={item.amount!} />&nbsp;&nbsp;&nbsp;</div>
-                        <span>{formatDateOrRelativeDate(new Date(item.date!).getTime())}</span>
+                    <div className={item.amount! < 0 ? 'is-debit' : ''}>
+                        <DollarCents value={item.amount!} />
+                        <span>{formatDateOrRelativeDate(new Date(item.datetime!).getTime())}</span>
                     </div>
                 </div>
             </div>
             <div className='new-item-icons' >
-                <GrnSlimButton2
-                    aria-label="Choose budget category"
-                    tabIndex={tabIndex}
-                >
-                    {item.category?.name}
-                </GrnSlimButton2>
+                {item.category!.period === 'month'
+                    ?
+                    <GrnSlimButton2
+                        aria-label="Choose budget category"
+                        tabIndex={tabIndex}
+                    >
+                        {item.category?.name}
+                    </GrnSlimButton2>
+                    :
+                    <BlueSlimButton2
+                        aria-label="Choose budget category"
+                        tabIndex={tabIndex}
+                    >
+                        {item.category?.name}
+                    </BlueSlimButton2>
+                }
                 <Tooltip
                     msg="Confirm"
                     ariaLabel="Confirm"
@@ -164,20 +186,19 @@ const NeedsConfirmationWindow = () => {
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | null>(null)
     const [items, setItems] = useState<Transaction[] | undefined>()
 
-    const { data: transactionsData, isSuccess } = useGetUncomfirmedTransactionsQuery({
+    const { data: transactionsData, isSuccess } = useGetTransactionsQuery({
+        month: new Date().getMonth() + 1,
+        confirmed: false,
         offset: offset,
         limit: limit,
     })
     const newItemsRef = useRef<HTMLDivElement>(null)
 
-
     const [loaded, setLoaded] = useState(false)
     const itemsApi = useSpringRef()
 
     useEffect(() => {
-        if (isSuccess) {
-            setItems(transactionsData?.results)
-        }
+        isSuccess && setItems(transactionsData?.results)
     }, [isSuccess])
 
     useEffect(() => { setLoaded(true) }, [])
@@ -281,7 +302,7 @@ const NeedsConfirmationWindow = () => {
                         showShadow={expanded}
                     >
                         <animated.div style={containerProps}>
-                            {isSuccess && items &&
+                            {(isSuccess && items) &&
                                 <>
                                     {itemTransitions((style, item, index) => {
                                         if (!item) return null
@@ -303,15 +324,15 @@ const NeedsConfirmationWindow = () => {
                         <Options show={showMenu} setShow={setShowMenu} pos={menuPos}>
                             <ItemOptions />
                         </Options>
-                    </ShadowedContainer>
-                </div>
+                    </ShadowedContainer >
+                </div >
                 <ExpandableContainer
                     expanded={transactionsData?.results ? transactionsData.results.length > 0 : false}
                 >
                     <ExpandButton onClick={() => setExpanded(!expanded)} flipped={expanded} />
                 </ExpandableContainer>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 

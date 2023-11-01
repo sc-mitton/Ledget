@@ -84,7 +84,7 @@ export function shuffleArray(array: any[]) {
 
 export const formatDateOrRelativeDate = (unixTimestamp: number) => {
     const currentDate = new Date();
-    const inputDate = new Date(unixTimestamp * 1000); // Convert Unix timestamp to milliseconds
+    const inputDate = new Date(unixTimestamp); // Convert Unix timestamp to milliseconds
 
     const timeDiffInDays = Math.floor((currentDate.getTime() - inputDate.getTime()) / (1000 * 60 * 60 * 24));
 
@@ -97,10 +97,7 @@ export const formatDateOrRelativeDate = (unixTimestamp: number) => {
     } else if (timeDiffInDays === 3) {
         return "3 days ago";
     } else {
-        const year = inputDate.getFullYear().toString().substr(-2); // Get last two digits of the year
-        const month = (inputDate.getMonth() + 1).toString(); // Month is zero-based, so we add 1
-        const day = inputDate.getDate().toString().padStart(2, "0");
-        return `${month}/${day}/${year}`;
+        return inputDate.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' });
     }
 }
 

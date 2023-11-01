@@ -3,31 +3,30 @@ import { useState } from 'react'
 import './styles/Header.scss'
 import { CheckAll } from '@ledget/media'
 import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
-import { useGetUncomfirmedTransactionsQuery } from '@features/transactionsSlice'
+import { useGetTransactionsQuery } from '@features/transactionsSlice'
 
 
-const CheckAllButton = () => {
-
-    return (
-        <Tooltip
-            msg={"Confirm all"}
-            ariaLabel={"Confirm all items"}
-            style={{ left: '-1.3rem' }}
+const CheckAllButton = () => (
+    <Tooltip
+        msg={"Confirm all"}
+        ariaLabel={"Confirm all items"}
+        style={{ left: '-1.3rem' }}
+    >
+        <IconButton
+            id="check-all-icon"
+            aria-label="Check all"
         >
-            <IconButton
-                id="check-all-icon"
-                aria-label="Check all"
-            >
-                <CheckAll />
-            </IconButton>
-        </Tooltip>
-    )
-}
+            <CheckAll />
+        </IconButton>
+    </Tooltip>
+)
 
 const NewItemsHeader = () => {
     const [offset, setOffset] = useState(0)
     const [limit, setLimit] = useState(10)
-    const { data: unconfirmedTransactions } = useGetUncomfirmedTransactionsQuery({
+    const { data: unconfirmedTransactions } = useGetTransactionsQuery({
+        month: new Date().getMonth() + 1,
+        confirmed: false,
         offset: offset,
         limit: limit,
     })
