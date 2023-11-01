@@ -14,8 +14,8 @@ import {
     NarrowButton,
     ExpandableContainer,
     ExpandButton,
-    GrnSlimButton2,
-    BlueSlimButton2,
+    GrnSlimButton,
+    BlueSlimButton,
     IconScaleButton,
     Tooltip,
     Base64Logo,
@@ -148,19 +148,19 @@ const NewItem: FC<NewItemProps> = (props: NewItemProps) => {
             <div className='new-item-icons' >
                 {item.category!.period === 'month'
                     ?
-                    <GrnSlimButton2
+                    <GrnSlimButton
                         aria-label="Choose budget category"
                         tabIndex={tabIndex}
                     >
                         {item.category?.name}
-                    </GrnSlimButton2>
+                    </GrnSlimButton>
                     :
-                    <BlueSlimButton2
+                    <BlueSlimButton
                         aria-label="Choose budget category"
                         tabIndex={tabIndex}
                     >
                         {item.category?.name}
-                    </BlueSlimButton2>
+                    </BlueSlimButton>
                 }
                 <Tooltip
                     msg="Confirm"

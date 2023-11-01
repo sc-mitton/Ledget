@@ -15,6 +15,7 @@ export interface Category {
     emoji: string | null,
     limit_amount: number,
     amount_spent: number,
+    category_confirmed: boolean,
     alerts: Alert[],
 }
 
@@ -36,6 +37,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         })
     }),
 })
+
 
 type initialState = {
     categories: Category[],
@@ -63,9 +65,17 @@ export const categorySlice = createSlice({
             const foundCategory = state.categories.find(category => category.id === action.payload.categoryId);
             if (foundCategory) {
                 const foundIndex = state.categories.findIndex(category => category.id === action.payload.categoryId);
+
+                // Add the category to the unsynced categories (if it's not already there)
+                // since it's now out of sync with the server
+                if (!state.unSyncedCategories.includes(foundCategory)) {
+                    state.unSyncedCategories.push(foundCategory)
+                }
+
                 state.categories[foundIndex] = {
                     ...foundCategory,
-                    amount_spent: foundCategory.amount_spent + action.payload.amount,
+                    amount_spent: Big(foundCategory.amount_spent || 0).plus(action.payload.amount).toNumber(),
+                    category_confirmed: true,
                 }
 
                 // Update the monthly or yearly spent amount
@@ -73,12 +83,6 @@ export const categorySlice = createSlice({
                     state.monthly_spent += action.payload.amount;
                 } else if (foundCategory.period === 'year') {
                     state.yearly_spent += action.payload.amount;
-                }
-
-                // Add the category to the unsynced categories (if it's not already there)
-                // since it's now out of sync with the server
-                if (state.unSyncedCategories.includes(foundCategory) === false) {
-                    state.unSyncedCategories.push(foundCategory)
                 }
             }
         },
@@ -98,6 +102,7 @@ export const categorySlice = createSlice({
                 let oldestYearlyCategoryCreated = ''
 
                 action.payload.forEach(category => {
+
                     if (category.period === 'month') {
                         if (category.amount_spent) {
                             monthlySpent = monthlySpent.plus(Big(category.amount_spent).times(100))
@@ -113,8 +118,8 @@ export const categorySlice = createSlice({
                         }
                     }
                 })
-                // state.monthly_spent = monthlySpent.toNumber()
-                // state.yearly_spent = yearlySpent.toNumber()
+                state.monthly_spent = monthlySpent.toNumber()
+                state.yearly_spent = yearlySpent.toNumber()
                 state.limit_amount_monthly = limitAmountMonthly
                 state.limit_amount_yearly = limitAmountYearly
                 state.oldest_yearly_category_created = oldestYearlyCategoryCreated

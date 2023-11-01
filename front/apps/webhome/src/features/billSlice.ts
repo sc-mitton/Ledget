@@ -15,6 +15,7 @@ interface BaseBill {
     emoji: string,
     lower_amount: number,
     upper_amount: number,
+    bill_confirmed: boolean,
     reminders: Reminder[],
 }
 
@@ -131,11 +132,9 @@ export const billSlice = createSlice({
         addTransaction2Bill: (state, action: PayloadAction<{ billId: string, amount: number }>) => {
             const foundBill = state.bills.find(bill => bill.id === action.payload.billId);
             if (foundBill) {
+
                 const foundIndex = state.bills.findIndex(bill => bill.id === action.payload.billId);
-                state.bills[foundIndex] = {
-                    ...foundBill,
-                    is_paid: true,
-                }
+                state.bills[foundIndex] = { ...foundBill, is_paid: true, bill_confirmed: true }
 
                 // Update the monthly or yearly spent amount
                 if (foundBill.period === 'month') {

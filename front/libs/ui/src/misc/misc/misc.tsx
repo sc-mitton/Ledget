@@ -23,7 +23,7 @@ export const Base64Logo = (props: Base64LogoProps) => {
 
   const config = {
     filter: 'grayscale(1)',
-    padding: '2px 2px',
+    padding: '1px',
     backgroundColor: backgroundColor,
     borderRadius: 'var(--border-radius4)',
     display: 'inline-flex',

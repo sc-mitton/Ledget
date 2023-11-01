@@ -99,8 +99,8 @@ const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
                             </div>
                             <StaticProgressCircle value={
                                 period === 'year'
-                                    ? Math.round(yearly_bills_amount_remaining! / total_yearly_bills_amount! * 100) / 100 || 0
-                                    : Math.round(monthly_bills_amount_remaining! / total_monthly_bills_amount! * 100) / 100 || 0
+                                    ? Math.round(yearly_bills_amount_remaining! / (total_yearly_bills_amount!)) / 100 || 0
+                                    : Math.round(monthly_bills_amount_remaining! / (total_monthly_bills_amount!)) / 100 || 0
                             } size={'1.2em'} />
                         </div>
                         <div>

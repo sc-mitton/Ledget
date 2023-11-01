@@ -117,10 +117,14 @@ function Window() {
 
     useEffect(() => {
         // On mount set month and date to current date and month
-        searchParams.set('month', `${new Date().getMonth() + 1}`)
-        searchParams.set('year', `${new Date().getFullYear()}`)
-        // Set default sort to date
-        searchParams.set('bill-sort', 'date')
+        if (!searchParams.get('month') || !searchParams.get('year')) {
+            searchParams.set('month', `${new Date().getMonth() + 1}`)
+            searchParams.set('year', `${new Date().getFullYear()}`)
+        }
+        if (!searchParams.get('bill-sort')) {
+            searchParams.set('bill-sort', 'date')
+        }
+
         setSearchParams(searchParams)
     }, [])
 

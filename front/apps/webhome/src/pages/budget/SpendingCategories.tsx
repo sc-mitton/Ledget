@@ -7,7 +7,7 @@ import Big from 'big.js'
 
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
-import { useGetCategoriesQuery, selectCategoryMetaData, selectCategories } from '@features/categorySlice'
+import { useLazyGetCategoriesQuery, selectCategoryMetaData, selectCategories } from '@features/categorySlice'
 import {
     DollarCents,
     StaticProgressCircle,
@@ -73,14 +73,14 @@ const Row = ({ category }: { category: Category }) => {
                 <>
                     <div>
                         <DollarCents
-                            value={category.amount_spent ? Big(category.amount_spent).toFixed(2) : '0.00'}
+                            value={category.amount_spent ? Big(category.amount_spent).times(100).toNumber() : '0'}
                             hasCents={false}
                         />
                     </div>
                     <div>/</div>
                     <div>
                         <DollarCents
-                            value={category.limit_amount ? Big(category.limit_amount).div(100).toFixed(2) : '0.00'}
+                            value={category.limit_amount ? Big(category.limit_amount).div(100).toFixed(2) : '0'}
                             hasCents={false}
                         />
                     </div>
@@ -91,14 +91,12 @@ const Row = ({ category }: { category: Category }) => {
                     </div>
                 </>
                 :
-                <>
-                    <div className="spanned">
-                        <DollarCents
-                            value={category.amount_spent ? Big(category.amount_spent).toFixed(2) : '0.00'}
-                            hasCents={false}
-                        />
-                    </div>
-                </>
+                <div className="spanned">
+                    <DollarCents
+                        value={category.amount_spent ? Big(category.amount_spent).times(100).toNumber() : '0.00'}
+                        hasCents={false}
+                    />
+                </div>
             }
         </div>
     )
@@ -187,11 +185,6 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
 }
 
 const ColumnView = () => {
-    const [searchParams] = useSearchParams()
-    const { } = useGetCategoriesQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
-    })
     const categories = useSelector(selectCategories)
 
     return (
@@ -215,12 +208,8 @@ const ColumnView = () => {
 }
 
 const TabView = () => {
-    const [searchParams] = useSearchParams()
     const [selectedIndex, setSelectedIndex] = useState(0)
-    const { data: categories } = useGetCategoriesQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
-    })
+    const categories = useSelector(selectCategories)
     const {
         monthly_spent,
         yearly_spent,
@@ -287,15 +276,17 @@ const TabView = () => {
 
 const SpendingCategories = () => {
     const [searchParams] = useSearchParams()
-    const {
-        isLoading
-    } = useGetCategoriesQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
-    })
+    const [fetchCategories, { isFetching }] = useLazyGetCategoriesQuery()
     const [isTabView, setIsTabView] = useState(false)
     const [skeletonRowCount, setSkeletonRowCount] = useState(5)
     const ref = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        fetchCategories({
+            month: searchParams.get('month')! || `${new Date().getMonth() + 1}`,
+            year: searchParams.get('year')! || `${new Date().getFullYear()}`,
+        }, true)
+    }, [searchParams.get('month'), searchParams.get('year')])
 
     useEffect(() => {
         const handleResize = () => {
@@ -327,7 +318,7 @@ const SpendingCategories = () => {
 
     return (
         <div id="spending-categories-window" ref={ref}>
-            {isLoading
+            {isFetching
                 ? <SkeletonRows numberOfRows={skeletonRowCount} />
                 : isTabView ? <TabView /> : <ColumnView />
             }

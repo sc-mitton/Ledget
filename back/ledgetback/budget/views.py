@@ -58,7 +58,10 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
             ...columns
             SUM(financials_transaction.amount)
                 FILTER
-                (WHERE EXTRACT(MONTH FROM financials_transaction.date) = date_here)
+                (WHERE EXTRACT(MONTH FROM financials_transaction.date) = date_here
+                    AND EXTRACT(YEAR FROM financials_transaction.date) = date_here
+                    AND financials_transaction.category_confirmed = False
+                    AND financials_transaction.bill_confirmed = False)
                 AS amount_spent
         FROM budget_category
         LEFT OUTER JOIN financials_transaction
@@ -78,7 +81,11 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
 
         sum_month = Sum(
             'transaction__amount',
-            filter=Q(transaction__date__month=month, transaction__date__year=year)
+            filter=Q(
+                transaction__date__month=month,
+                transaction__date__year=year,
+                transaction__category_confirmed=True,
+                transaction__bill_confirmed=True)
         )
         monthly_qset = Category.objects \
                                .filter(
@@ -92,8 +99,9 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
             'transaction__amount',
             filter=Q(
                 transaction__date__gte=yearly_category_anchor,
-                transaction__date__lte=time_slice_end
-            )
+                transaction__date__lte=time_slice_end,
+                transaction__category_confirmed=True,
+                transaction__bill_confirmed=True)
         )
         yearly_qset = Category.objects \
                               .filter(
