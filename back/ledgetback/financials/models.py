@@ -92,6 +92,16 @@ class Transaction(models.Model):
         'location'
     ]
 
+    rest_api_editable_fields = [
+        'preferred_name',
+        'category',
+        'bill',
+        'category_id',
+        'bill_id',
+        'category_confirmed',
+        'bill_confirmed'
+    ]
+
     class Meta:
         get_latest_by = ['date', 'datetime']
         ordering = ['-date', '-datetime']

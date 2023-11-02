@@ -109,9 +109,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
             keepUnusedDataFor: 60 * 30, // 15 minutes
         }),
-        updateTransactions: builder.mutation<Transaction | Transaction[], Transaction | Transaction[]>({
+        updateTransactions: builder.mutation<Transaction[], Transaction[]>({
             query: (data) => ({
-                url: Array.isArray(data) ? 'transactions' : `transactions/${data.transaction_id}`,
+                url: 'transactions',
                 method: 'PATCH',
                 body: data,
                 invalidatesTags: ['transactions']

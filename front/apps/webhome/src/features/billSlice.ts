@@ -1,6 +1,6 @@
 import { apiSlice } from '@api/apiSlice'
 import Big from 'big.js'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
 interface Reminder {
     period: 'week' | 'day',
@@ -217,17 +217,23 @@ export const {
     sortBillsByDate,
 } = billSlice.actions
 
-export const selectBills = (state: { bills: initialState }) => state.bills.bills
-export const selectBillMetaData = (state: { bills: initialState }) => ({
-    monthly_bills_paid: state.bills.monthly_bills_paid,
-    yearly_bills_paid: state.bills.yearly_bills_paid,
-    number_of_monthly_bills: state.bills.number_of_monthly_bills,
-    number_of_yearly_bills: state.bills.number_of_yearly_bills,
-    monthly_bills_amount_remaining: state.bills.monthly_bills_amount_remaining,
-    yearly_bills_amount_remaining: state.bills.yearly_bills_amount_remaining,
-    total_monthly_bills_amount: state.bills.total_monthly_bills_amount,
-    total_yearly_bills_amount: state.bills.total_yearly_bills_amount,
-})
+export const selectBills = createSelector(
+    (state: { bills: initialState }) => state.bills.bills,
+    (bills) => bills
+)
+export const selectBillMetaData = createSelector(
+    (state: { bills: initialState }) => ({
+        monthly_bills_paid: state.bills.monthly_bills_paid,
+        yearly_bills_paid: state.bills.yearly_bills_paid,
+        number_of_monthly_bills: state.bills.number_of_monthly_bills,
+        number_of_yearly_bills: state.bills.number_of_yearly_bills,
+        monthly_bills_amount_remaining: state.bills.monthly_bills_amount_remaining,
+        yearly_bills_amount_remaining: state.bills.yearly_bills_amount_remaining,
+        total_monthly_bills_amount: state.bills.total_monthly_bills_amount,
+        total_yearly_bills_amount: state.bills.total_yearly_bills_amount,
+    }),
+    (billMetaData) => billMetaData
+)
 
 export const {
     useAddnewBillMutation,

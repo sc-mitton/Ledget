@@ -1,5 +1,5 @@
 import { apiSlice } from '@api/apiSlice'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
 import Big from 'big.js'
 
@@ -133,15 +133,20 @@ export const {
     clearUnsyncedCategories,
 } = categorySlice.actions
 
-// selectors
-export const selectCategories = (state: { categories: initialState }) => state.categories.categories
-export const selectCategoryMetaData = (state: { categories: initialState }) => ({
-    monthly_spent: state.categories.monthly_spent,
-    yearly_spent: state.categories.yearly_spent,
-    limit_amount_monthly: state.categories.limit_amount_monthly,
-    limit_amount_yearly: state.categories.limit_amount_yearly,
-    oldest_yearly_category_created: state.categories.oldest_yearly_category_created,
-})
+export const selectCategories = createSelector(
+    (state: { categories: initialState }) => state.categories.categories,
+    (categories) => categories
+)
+export const selectCategoryMetaData = createSelector(
+    (state: { categories: initialState }) => ({
+        monthly_spent: state.categories.monthly_spent,
+        yearly_spent: state.categories.yearly_spent,
+        limit_amount_monthly: state.categories.limit_amount_monthly,
+        limit_amount_yearly: state.categories.limit_amount_yearly,
+        oldest_yearly_category_created: state.categories.oldest_yearly_category_created,
+    }),
+    (categoryMetaData) => categoryMetaData
+)
 
 export const {
     useAddNewCategoryMutation,

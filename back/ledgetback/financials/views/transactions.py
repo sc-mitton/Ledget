@@ -2,7 +2,8 @@ import logging
 from collections import OrderedDict
 
 from django.db import transaction, models
-from rest_framework.generics import GenericAPIView, ListAPIView, UpdateAPIView
+from rest_framework.generics import GenericAPIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
@@ -21,9 +22,11 @@ from plaid.model.transactions_sync_request_options import (
 from core.permissions import IsAuthedVerifiedSubscriber, IsObjectOwner
 from core.clients import create_plaid_client
 from financials.models import Transaction
-from financials.serializers.transactions import TransactionSerializer
+from financials.serializers.transactions import (
+    TransactionSerializer,
+    UpdateTransactionsSerializer
+)
 from financials.models import PlaidItem
-from ledgetback.view_mixins import BulkSerializerMixin
 
 plaid_client = create_plaid_client()
 logger = logging.getLogger('ledget')
@@ -183,10 +186,43 @@ class TransactionsPagination(LimitOffsetPagination):
         return self.offset - self.limit
 
 
-class TransactionsView(ListAPIView):
-    serializer_class = TransactionSerializer
+class TransactionViewSet(ModelViewSet):
+    serializer_classes = [UpdateTransactionsSerializer, TransactionSerializer]
     permission_classes = [IsAuthedVerifiedSubscriber]
     pagination_class = TransactionsPagination
+
+    def get_serializer_class(self):
+        if isinstance(self.request.data, list):
+            return UpdateTransactionsSerializer
+        return TransactionSerializer
+
+    def update(self, request, *args, **kwargs):
+        if not isinstance(request.data, list):
+            raise ValidationError('Invalid request data')
+
+        serializer = self.get_serializer(
+            self.get_queryset(),
+            data=request.data,
+            partial=True,
+            many=True
+        )
+
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
+
+    def get_object(self):
+        id = self.kwargs.get('pk', None)
+        account = self.request.query_params.get('account', None)
+        try:
+            return Transaction.objects.get(
+                account__plaid_item__user_id=self.request.user.id,
+                account__id=account,
+                id=id
+            )
+        except Transaction.DoesNotExist:
+            raise ValidationError('Invalid transaction id')
 
     def get_queryset(self):
         params = self.request.query_params
@@ -230,17 +266,11 @@ class TransactionsView(ListAPIView):
             account_id=account
         ).select_related('category', 'bill')
 
+    def perform_update(self, serializer):
+        serializer.save()
 
-class UpdateTransactioinView(BulkSerializerMixin, UpdateAPIView):
-    serializer_class = TransactionSerializer
-    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
+    def create(self, request, *args, **kwargs):
+        raise ValidationError('Transactions cannot be created')
 
-    def get_object(self):
-        try:
-            id = self.request.query_params.get('id', None)
-            transaction = Transaction.objects.get(id=id)
-        except Transaction.DoesNotExist:
-            raise ValidationError('Invalid transaction id')
-
-        self.check_object_permissions(self.request, transaction)
-        return transaction
+    def delete(self, request, *args, **kwargs):
+        raise ValidationError('Transactions cannot be deleted')
