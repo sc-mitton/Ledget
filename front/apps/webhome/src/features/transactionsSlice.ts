@@ -1,10 +1,10 @@
 
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { apiSlice } from '@api/apiSlice'
-import type { Category } from '@features/categorySlice'
+import { Category, extendedApiSlice as extendedCategoryApiSlice } from '@features/categorySlice'
 import type { Bill } from '@features/billSlice'
-import { create } from 'domain'
+import { extendedApiSlice as extendedBillApiSlice } from '@features/billSlice'
 
 export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 
@@ -15,10 +15,8 @@ export type Transaction = {
     transaction_type?: string
     category?: Category,
     bill?: Bill,
-    category_confirmed?: boolean
-    bill_confirmed?: boolean
-    wrong_predicted_category?: string
-    wrong_predicted_bill?: string
+    predicted_category?: Category,
+    predicted_bill?: Bill,
     name: string
     preferred_name?: string
     merchant_name?: string
@@ -73,14 +71,18 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 url: 'transactions/sync',
                 params: { item: itemId },
                 method: 'POST',
-                invalidatesTags: ['transactions']
+                invalidatesTags: ['Transactions']
             }),
         }),
         getTransactions: builder.query<GetTransactionsResponse, GetTransactionsParams>({
             query: (params) => ({
                 url: 'transactions',
                 params: params,
-                providesTags: ['transactions'],
+                providesTags: (result: GetTransactionsResponse) => {
+                    result
+                        ? [...result.results.map(transaction_id => ({ type: 'Transactions', id: transaction_id })), 'Transactions']
+                        : ['Transactions']
+                }
             }),
             // For merging in paginated responses to the cache
             // cache key needs to not include offset and limit
@@ -107,35 +109,57 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     return response
                 }
             },
-            keepUnusedDataFor: 60 * 30, // 15 minutes
+            keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
         updateTransactions: builder.mutation<Transaction[], Transaction[]>({
             query: (data) => ({
                 url: 'transactions',
-                method: 'PATCH',
+                method: 'POST',
                 body: data,
-                invalidatesTags: ['transactions']
+                invalidatesTags: [
+                    ...data.map(transaction => ({ type: 'Transactions', id: transaction.transaction_id })),
+                    'Categories',
+                    'Bills'
+                ]
             }),
         }),
     }),
 })
 
+interface ConfirmItem {
+    transaction_id: string
+    category?: string
+    bill?: string
+}
+
 export const confirmedQueueSlice = createSlice({
     name: 'confirmedQueue',
-    initialState: [] as Transaction[],
+    initialState: [] as ConfirmItem[],
     reducers: {
-        pushConfirmedTransaction: (state, action) => {
+        pushConfirmedTransaction: (
+            state,
+            action: PayloadAction<ConfirmItem>) => {
             state.push(action.payload)
-        },
-        clearConfirmedQueue: (state) => {
-            state = []
         }
+    },
+    extraReducers: (builder) => {
+        builder.addMatcher(
+            extendedCategoryApiSlice.endpoints.getCategories.matchFulfilled,
+            (state, action) => {
+                state.splice(0, state.length)
+            }
+        ),
+            builder.addMatcher(
+                extendedBillApiSlice.endpoints.getBills.matchFulfilled,
+                (state, action) => {
+                    state.splice(0, state.length)
+                }
+            )
     }
 })
 
 export const {
-    pushConfirmedTransaction,
-    clearConfirmedQueue
+    pushConfirmedTransaction
 } = confirmedQueueSlice.actions
 
 export const selectConfirmedQueue = (state: { confirmedQueue: Transaction[] }) => state.confirmedQueue

@@ -276,7 +276,7 @@ const TabView = () => {
 
 const SpendingCategories = () => {
     const [searchParams] = useSearchParams()
-    const [fetchCategories, { isFetching }] = useLazyGetCategoriesQuery()
+    const [fetchCategories, { isLoading }] = useLazyGetCategoriesQuery()
     const [isTabView, setIsTabView] = useState(false)
     const [skeletonRowCount, setSkeletonRowCount] = useState(5)
     const ref = useRef<HTMLDivElement>(null)
@@ -318,7 +318,7 @@ const SpendingCategories = () => {
 
     return (
         <div id="spending-categories-window" ref={ref}>
-            {isFetching
+            {isLoading
                 ? <SkeletonRows numberOfRows={skeletonRowCount} />
                 : isTabView ? <TabView /> : <ColumnView />
             }

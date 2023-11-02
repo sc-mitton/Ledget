@@ -502,7 +502,7 @@
       "match": {
          "methods": [
             "GET",
-            "PATCH"
+            "POST"
          ],
          "url": "https://localhost/api/v1/transactions"
       },

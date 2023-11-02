@@ -53,22 +53,6 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
         return qset
 
     def _get_queryset_with_sliced_amount_spent(self, month: int, year: int):
-        '''
-        SELECT
-            ...columns
-            SUM(financials_transaction.amount)
-                FILTER
-                (WHERE EXTRACT(MONTH FROM financials_transaction.date) = date_here
-                    AND EXTRACT(YEAR FROM financials_transaction.date) = date_here
-                    AND financials_transaction.category_confirmed = False
-                    AND financials_transaction.bill_confirmed = False)
-                AS amount_spent
-        FROM budget_category
-        LEFT OUTER JOIN financials_transaction
-        ON (budget_category.id = financials_transaction.category_id)
-        WHERE budget_category.user_id = 'user_id_here'
-        GROUP BY budget_category.id
-        '''
 
         time_slice_end = datetime(
             year=year,
@@ -84,8 +68,9 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
             filter=Q(
                 transaction__date__month=month,
                 transaction__date__year=year,
-                transaction__category_confirmed=True,
-                transaction__bill_confirmed=True)
+                transaction__category__isnull=False,
+                transaction__bill__isnull=False,
+            )
         )
         monthly_qset = Category.objects \
                                .filter(
@@ -100,8 +85,9 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
             filter=Q(
                 transaction__date__gte=yearly_category_anchor,
                 transaction__date__lte=time_slice_end,
-                transaction__category_confirmed=True,
-                transaction__bill_confirmed=True)
+                transaction__category__isnull=False,
+                transaction__bill__isnull=False,
+            )
         )
         yearly_qset = Category.objects \
                               .filter(

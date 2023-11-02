@@ -20,7 +20,7 @@ class CustomerTransactionsRouter(SimpleRouter):
     routes = [
         Route(
             url=r'^{prefix}$',
-            mapping={'get': 'list', 'patch': 'update'},
+            mapping={'get': 'list', 'post': 'partial_update'},
             name='{basename}-list',
             detail=False,
             initkwargs={'suffix': 'List'}

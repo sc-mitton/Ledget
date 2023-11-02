@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from core.models import User
 from budget.models import (
@@ -92,16 +93,6 @@ class Transaction(models.Model):
         'location'
     ]
 
-    rest_api_editable_fields = [
-        'preferred_name',
-        'category',
-        'bill',
-        'category_id',
-        'bill_id',
-        'category_confirmed',
-        'bill_confirmed'
-    ]
-
     class Meta:
         get_latest_by = ['date', 'datetime']
         ordering = ['-date', '-datetime']
@@ -117,19 +108,16 @@ class Transaction(models.Model):
                                  null=True, blank=True)
     bill = models.ForeignKey(Bill, on_delete=models.SET_NULL,
                              null=True, blank=True)
-    category_confirmed = models.BooleanField(null=True, blank=True, default=False)
-    bill_confirmed = models.BooleanField(null=True, blank=True, default=False)
-    wrong_predicted_category = models.ForeignKey(Category,
-                                                 on_delete=models.SET_NULL,
-                                                 null=True,
-                                                 blank=True,
-                                                 related_name='wrong_predicted_category'
-                                                 )
-    wrong_predicted_bill = models.ForeignKey(Bill,
-                                             on_delete=models.SET_NULL,
-                                             null=True,
-                                             blank=True,
-                                             related_name='wrong_predicted_bill')
+    predicted_category = models.ForeignKey(Category,
+                                           on_delete=models.SET_NULL,
+                                           null=True,
+                                           blank=True,
+                                           related_name='predicted_category')
+    predicted_bill = models.ForeignKey(Bill,
+                                       on_delete=models.SET_NULL,
+                                       null=True,
+                                       blank=True,
+                                       related_name='predicted_bill')
 
     # Transaction info
     name = models.CharField(max_length=100, null=False, blank=False)
@@ -208,3 +196,15 @@ class Transaction(models.Model):
                 data['predicted_category'] = predicted_category
 
         return super().bulk_create(validated_data)
+
+    def bulk_update(self, validated_data):
+
+        keys = ['category', 'category_id', 'bill', 'bill_id']
+
+        i = 0
+        for data in validated_data:
+            if any(key in data for key in keys):
+                validated_data[i]['confirmed_date'] = timezone.now().date()
+                validated_data[i]['confirmed_datetime'] = timezone.now()
+
+        return super().bulk_update(validated_data)

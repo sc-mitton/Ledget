@@ -1,4 +1,5 @@
 
+import './containers.css'
 
 export const ExpandableContainer = ({ expanded = true, className = '', children, ...rest }: {
   expanded?: boolean,

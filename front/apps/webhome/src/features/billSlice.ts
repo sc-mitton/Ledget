@@ -2,6 +2,11 @@ import { apiSlice } from '@api/apiSlice'
 import Big from 'big.js'
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
+const enhancedApiSlice = apiSlice.enhanceEndpoints({
+    addTagTypes: ['Bills'],
+})
+
+
 interface Reminder {
     period: 'week' | 'day',
     offset: number,
@@ -32,12 +37,13 @@ export interface TransformedBill extends BaseBill {
     date: string,
 }
 
-export const extendedApiSlice = apiSlice.injectEndpoints({
+export const extendedApiSlice = enhancedApiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getBills: builder.query<TransformedBill[], { month: string, year: string }>({
             query: () => ({
                 url: 'bills',
                 method: 'GET',
+                providesTags: ['Bills'],
             }),
             transformResponse: (response: Bill[]) => {
                 const today = new Date()
@@ -96,6 +102,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 url: 'bill',
                 method: 'POST',
                 body: data,
+                invalidatesTags: ['Bills'],
             }),
         })
     }),
@@ -103,7 +110,6 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
 type initialState = {
     bills: TransformedBill[],
-    unSyncedBills: TransformedBill[],
     monthly_bills_paid: number,
     yearly_bills_paid: number,
     number_of_monthly_bills: number,
@@ -129,7 +135,7 @@ export const billSlice = createSlice({
         total_yearly_bills_amount: 0,
     } as initialState,
     reducers: {
-        addTransaction2Bill: (state, action: PayloadAction<{ billId: string, amount: number }>) => {
+        addTransaction2Bill: (state, action: PayloadAction<{ billId: string | undefined, amount: number }>) => {
             const foundBill = state.bills.find(bill => bill.id === action.payload.billId);
             if (foundBill) {
 
@@ -145,9 +151,6 @@ export const billSlice = createSlice({
                     state.yearly_bills_amount_remaining = Big(state.yearly_bills_amount_remaining).minus(action.payload.amount).toNumber()
                 }
             }
-        },
-        clearUnSyncedBills: (state) => {
-            state.unSyncedBills = []
         },
         sortBillsByAlpha: (state) => {
             state.bills.sort((a, b) => {
@@ -212,7 +215,6 @@ export const billSlice = createSlice({
 
 export const {
     addTransaction2Bill,
-    clearUnSyncedBills,
     sortBillsByAlpha,
     sortBillsByDate,
 } = billSlice.actions

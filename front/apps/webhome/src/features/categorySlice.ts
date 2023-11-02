@@ -3,6 +3,10 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
 import Big from 'big.js'
 
+const enhancedApiSlice = apiSlice.enhanceEndpoints({
+    addTagTypes: ['Categories'],
+})
+
 interface Alert {
     percent_amount: number
 }
@@ -15,17 +19,17 @@ export interface Category {
     emoji: string | null,
     limit_amount: number,
     amount_spent: number,
-    category_confirmed: boolean,
     alerts: Alert[],
 }
 
-export const extendedApiSlice = apiSlice.injectEndpoints({
+export const extendedApiSlice = enhancedApiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getCategories: builder.query<Category[], { month: string, year: string }>({
             query: (params) => ({
                 url: 'categories',
                 params: params,
                 method: 'GET',
+                providesTags: ['Categories'],
             })
         }),
         addNewCategory: builder.mutation<any, Category[] | Category>({
@@ -33,6 +37,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 url: 'category',
                 method: 'POST',
                 body: data,
+                invalidatesTags: ['Categories']
             }),
         })
     }),
@@ -41,7 +46,6 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
 type initialState = {
     categories: Category[],
-    unSyncedCategories: Category[],
     monthly_spent: number,
     yearly_spent: number,
     limit_amount_monthly: number,
@@ -61,21 +65,14 @@ export const categorySlice = createSlice({
         oldest_yearly_category_created: new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }),
     } as initialState,
     reducers: {
-        addTransaction2Cat: (state, action: PayloadAction<{ categoryId: string, amount: number }>) => {
+        addTransaction2Cat: (state, action: PayloadAction<{ categoryId: string | undefined, amount: number }>) => {
             const foundCategory = state.categories.find(category => category.id === action.payload.categoryId);
             if (foundCategory) {
                 const foundIndex = state.categories.findIndex(category => category.id === action.payload.categoryId);
 
-                // Add the category to the unsynced categories (if it's not already there)
-                // since it's now out of sync with the server
-                if (!state.unSyncedCategories.includes(foundCategory)) {
-                    state.unSyncedCategories.push(foundCategory)
-                }
-
                 state.categories[foundIndex] = {
                     ...foundCategory,
                     amount_spent: Big(foundCategory.amount_spent || 0).plus(action.payload.amount).toNumber(),
-                    category_confirmed: true,
                 }
 
                 // Update the monthly or yearly spent amount
@@ -85,9 +82,6 @@ export const categorySlice = createSlice({
                     state.yearly_spent += action.payload.amount;
                 }
             }
-        },
-        clearUnsyncedCategories: (state) => {
-            state.unSyncedCategories = []
         }
     },
     extraReducers: (builder) => {
@@ -129,8 +123,7 @@ export const categorySlice = createSlice({
 })
 
 export const {
-    addTransaction2Cat,
-    clearUnsyncedCategories,
+    addTransaction2Cat
 } = categorySlice.actions
 
 export const selectCategories = createSelector(

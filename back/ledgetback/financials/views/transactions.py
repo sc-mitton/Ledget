@@ -196,15 +196,30 @@ class TransactionViewSet(ModelViewSet):
             return UpdateTransactionsSerializer
         return TransactionSerializer
 
-    def update(self, request, *args, **kwargs):
+    def get_instances(self, validated_data):
+        transaction_ids = [item['transaction_id'] for item in validated_data]
+
+        try:
+            instances = Transaction.objects.filter(
+                transaction_id__in=[id for id in transaction_ids if id is not None]
+            )
+        except Transaction.DoesNotExist:
+            raise ValidationError(
+                'One or more of the transactions does not exist.'
+            )
+
+        return instances
+
+    def partial_update(self, request, *args, **kwargs):
         if not isinstance(request.data, list):
             raise ValidationError('Invalid request data')
 
+        instances = self.get_instances(request.data)
         serializer = self.get_serializer(
-            self.get_queryset(),
+            instance=instances,
             data=request.data,
-            partial=True,
-            many=True
+            many=True,
+            partial=True
         )
 
         serializer.is_valid(raise_exception=True)
@@ -240,19 +255,18 @@ class TransactionViewSet(ModelViewSet):
 
         qset = Transaction.objects.filter(
             date__month=month,
-            bill_confirmed=True,
-            category_confirmed=True,
+            category__isnull=False,
+            bill__isnull=False,
         ).select_related('category', 'bill')
 
         return qset
 
     def _get_unconfirmed_transactions(self, month):
-
         qset = Transaction.objects.filter(
             date__month=month,
-            bill_confirmed=False,
-            category_confirmed=False,
-        ).select_related('category', 'bill')
+            category__isnull=True,
+            bill__isnull=True,
+        ).select_related('predicted_category', 'predicted_bill')
 
         return qset
 
@@ -268,9 +282,3 @@ class TransactionViewSet(ModelViewSet):
 
     def perform_update(self, serializer):
         serializer.save()
-
-    def create(self, request, *args, **kwargs):
-        raise ValidationError('Transactions cannot be created')
-
-    def delete(self, request, *args, **kwargs):
-        raise ValidationError('Transactions cannot be deleted')

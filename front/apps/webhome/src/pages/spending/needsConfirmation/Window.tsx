@@ -22,15 +22,14 @@ import {
     DollarCents
 } from "@ledget/ui"
 import { formatDateOrRelativeDate } from '@ledget/ui'
-import { addTransaction2Cat, clearUnsyncedCategories } from '@features/categorySlice'
-import { addTransaction2Bill, clearUnSyncedBills } from '@features/billSlice'
+import { addTransaction2Cat } from '@features/categorySlice'
+import { addTransaction2Bill } from '@features/billSlice'
 import {
     useLazyGetTransactionsQuery,
     useUpdateTransactionsMutation,
     pushConfirmedTransaction,
     selectConfirmedQueue,
-    selectConfirmedQueueLength,
-    clearConfirmedQueue
+    selectConfirmedQueueLength
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
@@ -146,20 +145,20 @@ const NewItem: FC<NewItemProps> = (props: NewItemProps) => {
                 </div>
             </div>
             <div className='new-item-icons' >
-                {item.category!.period === 'month'
+                {item.predicted_category?.period === 'month'
                     ?
                     <GrnSlimButton
                         aria-label="Choose budget category"
                         tabIndex={tabIndex}
                     >
-                        {item.category?.name}
+                        {item.predicted_category?.name}
                     </GrnSlimButton>
                     :
                     <BlueSlimButton
                         aria-label="Choose budget category"
                         tabIndex={tabIndex}
                     >
-                        {item.category?.name}
+                        {item.predicted_category?.name}
                     </BlueSlimButton>
                 }
                 <Tooltip
@@ -171,8 +170,8 @@ const NewItem: FC<NewItemProps> = (props: NewItemProps) => {
                         onClick={() => {
                             handleConfirm({
                                 ...item,
-                                ...(newCategory && { category: newCategory, category_confirmed: true }),
-                                ...(newBill && { bill: newBill, bill_confirmed: true }),
+                                ...(newCategory && { category: newCategory }),
+                                ...(newBill && { bill: newBill }),
                             } as Transaction)
                         }}
                         aria-label="Confirm"
@@ -201,18 +200,16 @@ const NeedsConfirmationWindow = () => {
     const [limit, setLimit] = useState(10)
     const [expanded, setExpanded] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
+    const [loaded, setLoaded] = useState(false)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | null>(null)
     const [unconfirmedTransactions, setUnconfirmedTransactions] = useState<Transaction[] | undefined>()
 
     const [fetchTransactions, { data: transactionsData, isSuccess }] = useLazyGetTransactionsQuery()
-    const [updateTransactions, { isSuccess: transactionsAreUpdated }] = useUpdateTransactionsMutation()
+    const [updateTransactions] = useUpdateTransactionsMutation()
     const newItemsRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch()
     const confirmedQueue = useSelector(selectConfirmedQueue)
     const confirmedQueueLength = useSelector(selectConfirmedQueueLength)
-
-    const [loaded, setLoaded] = useState(false)
-    const itemsApi = useSpringRef()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -232,6 +229,8 @@ const NeedsConfirmationWindow = () => {
     }, [isSuccess, transactionsData])
 
     // Animation hooks
+    const itemsApi = useSpringRef()
+
     const [containerProps, containerApi] = useSpring(() => ({
         position: 'relative',
         left: '50%',
@@ -323,18 +322,22 @@ const NeedsConfirmationWindow = () => {
                     config: { duration: 130 },
                     onRest: () => {
                         setUnconfirmedTransactions(unconfirmedTransactions?.filter(tr => tr.transaction_id !== transaction.transaction_id))
-                        if (transaction.category) {
+                        if (transaction.predicted_category) {
                             dispatch(addTransaction2Cat({
-                                categoryId: transaction.category.id,
+                                categoryId: transaction.predicted_category?.id,
                                 amount: transaction.amount,
                             }))
-                        } else if (transaction.bill) {
+                        } else if (transaction.predicted_bill) {
                             dispatch(addTransaction2Bill({
-                                billId: transaction.bill.id,
+                                billId: transaction.predicted_bill?.id,
                                 amount: transaction.amount,
                             }))
                         }
-                        dispatch(pushConfirmedTransaction(transaction))
+                        dispatch(pushConfirmedTransaction({
+                            transaction_id: transaction.transaction_id,
+                            category: transaction.predicted_category?.id,
+                            bill: transaction.bill?.id,
+                        }))
                     },
                 }
             }
@@ -347,16 +350,6 @@ const NeedsConfirmationWindow = () => {
             updateTransactions(confirmedQueue)
         }
     }
-
-    // When transaction items have been updated on the server
-    // then clear the unsynced categories and bills
-    useEffect(() => {
-        if (transactionsAreUpdated) {
-            dispatch(clearUnsyncedCategories())
-            dispatch(clearUnSyncedBills())
-            dispatch(clearConfirmedQueue())
-        }
-    }, [transactionsAreUpdated])
 
     return (
         <div
@@ -387,8 +380,7 @@ const NeedsConfirmationWindow = () => {
                                                 tabIndex={expanded || index === 0 ? 0 : -1}
                                             />
                                         )
-                                    }
-                                    )}
+                                    })}
                                 </>
                             }
                         </animated.div >
@@ -397,9 +389,7 @@ const NeedsConfirmationWindow = () => {
                         </Options>
                     </ShadowedContainer >
                 </div >
-                <ExpandableContainer
-                    expanded={transactionsData?.results ? transactionsData.results.length > 0 : false}
-                >
+                <ExpandableContainer expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 0 : false}>
                     <ExpandButton onClick={() => setExpanded(!expanded)} flipped={expanded} />
                 </ExpandableContainer>
             </div >
