@@ -168,8 +168,7 @@ class Transaction(models.Model):
                 user_id=self.context['request'].user.id,
                 category_name='miscellaneous',
                 period='month',
-                emoji='🪣'
-            )
+                emoji='🪣')
 
         return super().create(validated_data)
 
@@ -184,18 +183,14 @@ class Transaction(models.Model):
             period='month',
             emoji='🪣'
         )
+        new_data = []
 
         for data in validated_data:
-            add_predicted_category = True
-            for key in keys:
-                if key in data:
-                    add_predicted_category = False
-                    break
-
-            if add_predicted_category:
+            if not any(key in data for key in keys):
                 data['predicted_category'] = predicted_category
+            new_data.append(data)
 
-        return super().bulk_create(validated_data)
+        return super().bulk_create(new_data)
 
     def bulk_update(self, validated_data):
 

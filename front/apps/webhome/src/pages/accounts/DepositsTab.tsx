@@ -56,7 +56,7 @@ const Deposits = () => {
 
     // Fetch more transactions animation
     useEffect(() => {
-        if (getTransactionsParams.offset > 0 && isFetchingTransactions) {
+        if (getTransactionsParams.offset! > 0 && isFetchingTransactions) {
             setFetchMorePulse(true)
         }
         let timeout = setTimeout(() => {

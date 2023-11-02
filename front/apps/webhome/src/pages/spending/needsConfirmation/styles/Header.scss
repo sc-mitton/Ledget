@@ -16,10 +16,16 @@
     background-color: var(--window2);
     border-radius: var(--border-radius25);
     box-sizing: border-box;
+    position: relative;
 
     div {
         display: flex;
         align-items: center;
+    }
+
+    &>div:not(:first-child) {
+        position: relative;
+        z-index: 200;
     }
 
     div:first-child {

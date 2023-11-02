@@ -197,7 +197,6 @@ const NewItem: FC<NewItemProps> = (props: NewItemProps) => {
 const NeedsConfirmationWindow = () => {
     const [searchParams] = useSearchParams()
     const [offset, setOffset] = useState(0)
-    const [limit, setLimit] = useState(10)
     const [expanded, setExpanded] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
     const [loaded, setLoaded] = useState(false)
@@ -213,15 +212,25 @@ const NeedsConfirmationWindow = () => {
 
     useEffect(() => { setLoaded(true) }, [])
 
-    // Initial, and subsequent fetches when query params change
+    // Initial fetch when query params change
     useEffect(() => {
         fetchTransactions({
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
             confirmed: false,
-            offset: offset,
-            limit: limit,
+            offset: offset
         }, true)
-    }, [searchParams.get('month'), offset, limit])
+    }, [searchParams.get('month')])
+
+    // Paginated requests
+    useEffect(() => {
+        if (transactionsData?.next) {
+            fetchTransactions({
+                month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
+                confirmed: false,
+                offset: offset
+            })
+        }
+    }, [offset])
 
     // When the data is fetched, set the items state variable
     useEffect(() => {
@@ -344,6 +353,15 @@ const NeedsConfirmationWindow = () => {
         })
     }
 
+    // Handle scrolling
+    const handleScroll = (e: any) => {
+        // Once the bottom is reached, then fetch the next list of items
+        if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight) {
+            transactionsData?.next && setOffset(transactionsData.next)
+        }
+        setShowMenu(false)
+    }
+
     // When the mouse leaves the container, flush the confirmed items que
     const flushConfirmedQue = () => {
         if (confirmedQueueLength > 0) {
@@ -352,9 +370,7 @@ const NeedsConfirmationWindow = () => {
     }
 
     return (
-        <div
-            id="new-items-container"
-        >
+        <div id="new-items-container">
             <div>
                 <Header />
                 <div
@@ -363,7 +379,7 @@ const NeedsConfirmationWindow = () => {
                     onMouseLeave={() => flushConfirmedQue()}
                 >
                     <ShadowedContainer
-                        onScroll={() => setShowMenu(false)}
+                        onScroll={handleScroll}
                         showShadow={expanded}
                     >
                         <animated.div style={containerProps}>
@@ -389,7 +405,7 @@ const NeedsConfirmationWindow = () => {
                         </Options>
                     </ShadowedContainer >
                 </div >
-                <ExpandableContainer expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 0 : false}>
+                <ExpandableContainer expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
                     <ExpandButton onClick={() => setExpanded(!expanded)} flipped={expanded} />
                 </ExpandableContainer>
             </div >

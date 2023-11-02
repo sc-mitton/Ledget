@@ -48,8 +48,8 @@ export interface GetTransactionsParams {
     account?: string
     confirmed?: boolean
     month?: number
-    offset: number
-    limit: number
+    offset?: number
+    limit?: number
 }
 
 interface GetTransactionsResponse {
@@ -66,10 +66,10 @@ interface TransactionsSyncResponse {
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        transactionsSync: builder.mutation<TransactionsSyncResponse, string>({
-            query: (itemId) => ({
+        transactionsSync: builder.mutation<TransactionsSyncResponse, { account: string } | { item: string }>({
+            query: (params) => ({
                 url: 'transactions/sync',
-                params: { item: itemId },
+                params: params,
                 method: 'POST',
                 invalidatesTags: ['Transactions']
             }),

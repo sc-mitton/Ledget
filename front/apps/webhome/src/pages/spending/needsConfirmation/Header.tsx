@@ -6,7 +6,13 @@ import { useSelector } from 'react-redux'
 import './styles/Header.scss'
 import { CheckAll } from '@ledget/media'
 import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
-import { useLazyGetTransactionsQuery, selectConfirmedQueueLength } from '@features/transactionsSlice'
+import { useGetPlaidItemsQuery } from '@features/plaidSlice'
+import {
+    useLazyGetTransactionsQuery,
+    selectConfirmedQueueLength,
+    useTransactionsSyncMutation
+} from '@features/transactionsSlice'
+import { Shimmer } from '@ledget/ui'
 
 
 const CheckAllButton = () => (
@@ -15,10 +21,7 @@ const CheckAllButton = () => (
         ariaLabel={"Confirm all items"}
         style={{ left: '-1.3rem' }}
     >
-        <IconButton
-            id="check-all-icon"
-            aria-label="Check all"
-        >
+        <IconButton id="check-all-icon" aria-label="Check all">
             <CheckAll />
         </IconButton>
     </Tooltip>
@@ -26,32 +29,38 @@ const CheckAllButton = () => (
 
 const NewItemsHeader = () => {
     const [searchParams] = useSearchParams()
-    const [offset, setOffset] = useState(0)
-    const [limit, setLimit] = useState(10)
     const [fetchTransactions, { data: unconfirmedTransactions }] = useLazyGetTransactionsQuery()
+    const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
+    const { data: plaidItems } = useGetPlaidItemsQuery()
+
     const confirmedQueueLength = useSelector(selectConfirmedQueueLength)
 
     useEffect(() => {
         fetchTransactions({
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
             confirmed: false,
-            offset: offset,
-            limit: limit,
         }, true)
     }, [searchParams.get('month')])
 
+    const handleRefreshClick = () => {
+        // sync everything
+        for (const item of plaidItems || []) {
+            syncTransactions({ item: item.id })
+        }
+    }
 
     return (
         <div id="needs-confirmation-header-container">
             <div id="needs-confirmation-header">
+                <Shimmer shimmering={isSyncing} lightness={90} />
                 <div>
                     <div id="number-of-items">
                         <span>{(unconfirmedTransactions?.results.length || 0) - confirmedQueueLength}</span>
                     </div>
-                    <span>Items to confirm</span>
+                    <span>{`Item${(unconfirmedTransactions?.results.length || 0) > 1 ? 's' : ''}`} to confirm</span>
                 </div>
                 <div>
-                    <RefreshButton hasBackground={false} />
+                    <RefreshButton hasBackground={false} onClick={handleRefreshClick} />
                     {(unconfirmedTransactions?.results.length! > 0) && <CheckAllButton />}
                 </div>
             </div>

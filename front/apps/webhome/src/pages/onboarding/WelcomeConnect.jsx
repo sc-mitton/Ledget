@@ -105,7 +105,7 @@ const WelcomeConnect = () => {
     useEffect(() => {
         if (plaidItems?.length > 0 && loaded) {
             setTimeout(() => {
-                syncTransactions(plaidItems[plaidItems.length - 1].id)
+                syncTransactions({ item: plaidItems[plaidItems.length - 1].id })
             }, 4000)
         }
     }, [plaidItems])

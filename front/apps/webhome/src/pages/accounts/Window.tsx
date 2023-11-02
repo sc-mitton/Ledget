@@ -163,7 +163,7 @@ const Header = () => {
                             onClick={() => {
                                 const account = searchParams.get('account')
                                 if (account) {
-                                    syncTransactions(account)
+                                    syncTransactions({ account: account })
                                 }
                             }}
                         />}

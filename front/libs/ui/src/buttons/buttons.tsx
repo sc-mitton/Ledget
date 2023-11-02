@@ -221,8 +221,12 @@ export const RefreshButton = ({ fill = '#292929', hasBackground = true, loading 
         </IconButton2>
         :
         <IconButton
-          className="refresh-btn-clr"
+          className={`refresh-btn-clr ${active ? 'active' : ''} ${(!active && loading) ? 'loading' : ''}`}
           aria-label="Refresh"
+          onClick={() => {
+            setActive(true)
+            onClick()
+          }}
           {...rest}
         >
           <LoadingRing visible={loading} />

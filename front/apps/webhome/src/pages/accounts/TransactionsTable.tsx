@@ -121,9 +121,7 @@ export const Transactions = ({ queryParams }: { queryParams: GetTransactionsPara
     const location = useLocation()
 
     useEffect(() => {
-        getTransactions({
-            ...queryParams
-        }, queryParams.offset === 0)
+        getTransactions({ ...queryParams }, queryParams.offset === 0)
     }, [queryParams.offset, queryParams.account])
 
     return (

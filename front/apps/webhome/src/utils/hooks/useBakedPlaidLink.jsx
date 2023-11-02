@@ -28,7 +28,7 @@ export function useBakedPlaidLink(onBoarding) {
     }, [])
 
     useEffect(() => {
-        newItemAddSuccess && syncTransactions(newPlaidItem?.id)
+        newItemAddSuccess && syncTransactions({ item: newPlaidItem?.id })
     }, [newItemAddSuccess])
 
     const config = {

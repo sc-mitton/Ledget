@@ -152,12 +152,23 @@ class TransactionsSyncView(GenericAPIView):
         return Response(sync_results, HTTP_200_OK)
 
     def get_plaid_item(self, request):
+        item_id = self.request.query_params.get('item', None)
+        account_id = self.request.query_params.get('account', None)
+        print('item_id', item_id)
+        print('account_id', account_id)
 
-        try:
-            id = self.request.query_params.get('item', None)
-            plaid_item = PlaidItem.objects.get(accounts__id=id)
-        except PlaidItem.DoesNotExist:
-            raise ValidationError('Invalid account id')
+        if item_id:
+            try:
+                plaid_item = PlaidItem.objects.get(id=item_id)
+            except PlaidItem.DoesNotExist:
+                raise ValidationError('Invalid item id')
+        elif account_id:
+            try:
+                plaid_item = PlaidItem.objects.get(accounts__id=account_id)
+            except PlaidItem.DoesNotExist:
+                raise ValidationError('Invalid account id')
+        else:
+            raise ValidationError('Invalid request')
 
         self.check_object_permissions(request, plaid_item)
         return plaid_item
