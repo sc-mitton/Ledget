@@ -77,18 +77,27 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
 
   const [loaded, setLoaded] = useState(false)
   const [slots, setSlots] = useState<string[]>([])
-  const slotRefs = useRef<string[]>([])
+  const slotRefs = useRef<{ [key: string]: string }>({})
 
   const slotsApi = useSpringRef()
   const transitions = useTransition(slots, {
     from: { maxWidth: loaded ? '0ch' : '1ch' },
-    enter: (item, index) => ({
-      opacity: 1,
-      maxWidth: '1ch',
-      y: !isNaN(Number(slotRefs.current[index])) ? `-${100 - (Number(slotRefs.current[index]) + 1) * 10}%` : '0em',
-    }),
-    update: (item, index) => ({
-      y: !isNaN(Number(slotRefs.current[index])) ? `-${100 - (Number(slotRefs.current[index]) + 1) * 10}%` : '0em',
+    // enter: (item) => ({
+    //   opacity: 1,
+    //   maxWidth: '1ch',
+    //   y: !isNaN(Number(slotRefs.current[item])) ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%` : '0em',
+    // }),
+    enter: (item) => {
+      const y = !isNaN(Number(slotRefs.current[item])) ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%` : '0em'
+      return {
+        opacity: 1,
+        maxWidth: '1ch',
+        y: y,
+        config: { mass: 1, tension: 150, friction: 25 }
+      }
+    },
+    update: (item) => ({
+      y: !isNaN(Number(slotRefs.current[item])) ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%` : '0em',
     }),
     leave: { maxWidth: '0ch', opacity: 0 },
     config: { mass: 1, tension: 150, friction: 25 },
@@ -97,36 +106,47 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
 
   useEffect(() => {
     let currencyVal = formatCurrency(value).replace(/^\$/, '')
-    let timeout: NodeJS.Timeout
-    if (!hasCents) {
-      currencyVal = currencyVal.split('.')[0]
-    }
+    let newVal = hasCents ? currencyVal : currencyVal.split('.')[0]
 
-    // Only if updating vals or upsizing
-    if (slots.length <= currencyVal.length) {
-      slotRefs.current = currencyVal.split('')
-    }
+    // If updating slots or upsizing (setting new slotRef values)
+    if (newVal.length >= slots.length) {
+      const newChars = Object.fromEntries(
+        newVal.split('').slice(0, newVal.length - slots.length).map((char) =>
+          [Math.random().toString(36).slice(2, 9), char]
+        ))
+      const updatedChars = Object.fromEntries(
+        newVal.split('').slice(newVal.length - slots.length).map((char, index) =>
+          [slots[index], char]
+        ))
 
-    if (slots.length == 0) {
-      setSlots(Array.from({ length: currencyVal.length }, (_) => Math.random().toString(36).slice(2, 9)))
-    } else if (slots.length < currencyVal.length) {
-      // Upsizing
-      setSlots(prev => [
-        ...Array.from({ length: currencyVal.length - prev.length }, (_) => Math.random().toString(36).slice(2, 9)),
-        ...prev
-      ])
-    } else if (slots.length > currencyVal.length) {
-      // Downsizing, animate closed the slots to be removed,
-      // then on rest, update the slots and slot refs
-
-
+      slotRefs.current = {
+        ...newChars,
+        ...updatedChars
+      }
+    } else {
+      // Downsizing
       slotsApi.start((index: number, item: any) => {
-        if (index < (slots.length - currencyVal.length))
-          return ({ opacity: 0, maxWidth: '0ch' })
+        if (index < (slots.length - newVal.length)) {
+          return {
+            maxWidth: '0ch',
+            opacity: 0,
+            onRest: () => {
+              console.log('deleting: ', item._item)
+              delete slotRefs.current[item._item]
+              setSlots(prev => prev.filter((slot) => slot !== item._item))
+            }
+          }
+        }
       })
     }
 
   }, [value])
+
+  useEffect(() => {
+    if (slotRefs.current) {
+      setSlots([...Object.keys(slotRefs.current)])
+    }
+  }, [slotRefs.current])
 
   useEffect(() => {
     let timeout = setTimeout(() => {
@@ -137,7 +157,7 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
 
   // Start animations
   useEffect(() => {
-    if (slots.length == slotRefs.current.length) {
+    if (slots.length == Object.keys(slotRefs.current).length) {
       slotsApi.start()
     }
   }, [slots, slotRefs.current])
@@ -148,15 +168,15 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
         <div className='slot--container'>
           <span>$</span>
         </div>
-        {transitions((style, item, obj, index) => (
+        {transitions((style, item) => (
           <animated.div
             key={item}
             style={style}
             className='slot--container'
           >
-            {'$.,'.includes(slotRefs.current[index])
+            {'$.,'.includes(slotRefs.current[item])
               ?
-              <span>{slotRefs.current[index]}</span>
+              <span>{slotRefs.current[item]}</span>
               :
               <>
                 <span>9</span>

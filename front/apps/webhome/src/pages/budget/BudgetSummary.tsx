@@ -178,7 +178,7 @@ const SummaryStatsTeaser = ({
                     >
                         <div><h4>{period.charAt(0).toUpperCase() + period.slice(1)}</h4></div>
                         <div>
-                            <AnimatedDollarCents value={687500} hasCents={false} />
+                            <AnimatedDollarCents value={1617500} hasCents={false} />
                         </div>
                         <div>
                             <span>{amountLeft >= 0 ? 'left' : 'overspent'}</span>
