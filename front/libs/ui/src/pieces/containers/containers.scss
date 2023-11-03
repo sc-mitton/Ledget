@@ -13,10 +13,10 @@
     max-height: 62.5rem;
 }
 
-.infinite-scroll--container {
+.infinite-scroll--container.fetching-more {
     overflow: hidden;
 
-    &.fetching-more::after {
+    &::after {
         content: '';
         position: absolute;
         bottom: 0;

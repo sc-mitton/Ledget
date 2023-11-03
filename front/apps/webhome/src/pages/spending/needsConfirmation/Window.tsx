@@ -6,24 +6,23 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import "./styles/Window.scss"
 import { Ellipsis, CheckMark } from "@ledget/media"
-import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import Header from './Header'
+import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import Options from "@components/dropdowns/Options"
+import { SelectCategory } from '@components/dropdowns'
 import ItemOptions from "./ItemOptions"
 import {
     NarrowButton,
     ExpandableContainer,
     ExpandButton,
-    GrnSlimButton,
-    BlueSlimButton,
     IconScaleButton,
     Tooltip,
     Base64Logo,
     DollarCents
 } from "@ledget/ui"
 import { formatDateOrRelativeDate, InfiniteScrollDiv } from '@ledget/ui'
-import { addTransaction2Cat } from '@features/categorySlice'
-import { addTransaction2Bill } from '@features/billSlice'
+import { addTransaction2Cat, Category, isCategory } from '@features/categorySlice'
+import { addTransaction2Bill, Bill, isBill } from '@features/billSlice'
 import {
     useLazyGetTransactionsQuery,
     useUpdateTransactionsMutation,
@@ -119,8 +118,32 @@ const NewItem: FC<{
     tabIndex: number
 }> = (props) => {
     const { item, style, onEllipsis, handleConfirm, tabIndex } = props
-    const [newCategory, setNewCategory] = useState<string | null>(null)
-    const [newBill, setNewBill] = useState<string | null>(null)
+    const [newBillCat, setNewBillCat] = useState<Category | Bill>()
+    const dispatch = useDispatch()
+
+    const handleConfirmClick = () => {
+        if (item.predicted_category) {
+            dispatch(addTransaction2Cat({
+                categoryId: newBillCat?.id || item.predicted_category?.id,
+                amount: item.amount,
+            }))
+        } else if (item.predicted_bill) {
+            dispatch(addTransaction2Bill({
+                billId: newBillCat?.id || item.predicted_bill?.id,
+                amount: item.amount,
+            }))
+        }
+        dispatch(pushConfirmedTransaction({
+            transaction_id: item.transaction_id,
+            category: newBillCat?.id || item.predicted_category?.id,
+            bill: newBillCat?.id || item.bill?.id,
+        }))
+        handleConfirm({
+            ...item,
+            ...(isCategory(newBillCat) && { category: newBillCat }),
+            ...(isBill(newBillCat) && { bill: newBillCat }),
+        } as Transaction)
+    }
 
     return (
         <animated.div
@@ -143,35 +166,18 @@ const NewItem: FC<{
                 </div>
             </div>
             <div className='new-item-icons' >
-                {item.predicted_category?.period === 'month'
-                    ?
-                    <GrnSlimButton
-                        aria-label="Choose budget category"
-                        tabIndex={tabIndex}
-                    >
-                        {item.predicted_category?.name}
-                    </GrnSlimButton>
-                    :
-                    <BlueSlimButton
-                        aria-label="Choose budget category"
-                        tabIndex={tabIndex}
-                    >
-                        {item.predicted_category?.name}
-                    </BlueSlimButton>
-                }
+                <SelectCategory
+                    predicted={item.predicted_category || item.predicted_bill}
+                    value={newBillCat}
+                    onChange={setNewBillCat}
+                />
                 <Tooltip
                     msg="Confirm"
                     ariaLabel="Confirm"
                     style={{ left: '-1.1rem' }}
                 >
                     <IconScaleButton
-                        onClick={() => {
-                            handleConfirm({
-                                ...item,
-                                ...(newCategory && { category: newCategory }),
-                                ...(newBill && { bill: newBill }),
-                            } as Transaction)
-                        }}
+                        onClick={handleConfirmClick}
                         aria-label="Confirm"
                         tabIndex={tabIndex}
                         className="confirm-button"
@@ -207,7 +213,6 @@ const NeedsConfirmationWindow = () => {
     ] = useLazyGetTransactionsQuery()
     const [updateTransactions] = useUpdateTransactionsMutation()
     const newItemsRef = useRef<HTMLDivElement>(null)
-    const dispatch = useDispatch()
     const confirmedQueue = useSelector(selectConfirmedQueue)
     const confirmedQueueLength = useSelector(selectConfirmedQueueLength)
 
@@ -240,7 +245,7 @@ const NeedsConfirmationWindow = () => {
         isSuccess && setUnconfirmedTransactions(transactionsData?.results)
     }, [isSuccess, transactionsData])
 
-    // Animation hooks
+    // Animation hooks/effects
     const itemsApi = useSpringRef()
 
     const [containerProps, containerApi] = useSpring(() => ({
@@ -325,7 +330,7 @@ const NeedsConfirmationWindow = () => {
     // 1. Animate the item out of the container
     // 2. Remove the item from the items array
     // 3. Add the item to the confirmed items array
-    const handleConfirm = (transaction: Transaction) => {
+    const handleItemConfirm = (transaction: Transaction) => {
         itemsApi.start((index: any, item: any) => {
             if (item._item.transaction_id === transaction.transaction_id) {
                 return {
@@ -333,23 +338,9 @@ const NeedsConfirmationWindow = () => {
                     opacity: 0,
                     config: { duration: 130 },
                     onRest: () => {
-                        setUnconfirmedTransactions(unconfirmedTransactions?.filter(tr => tr.transaction_id !== transaction.transaction_id))
-                        if (transaction.predicted_category) {
-                            dispatch(addTransaction2Cat({
-                                categoryId: transaction.predicted_category?.id,
-                                amount: transaction.amount,
-                            }))
-                        } else if (transaction.predicted_bill) {
-                            dispatch(addTransaction2Bill({
-                                billId: transaction.predicted_bill?.id,
-                                amount: transaction.amount,
-                            }))
-                        }
-                        dispatch(pushConfirmedTransaction({
-                            transaction_id: transaction.transaction_id,
-                            category: transaction.predicted_category?.id,
-                            bill: transaction.bill?.id,
-                        }))
+                        setUnconfirmedTransactions(prev =>
+                            prev?.filter(t => t.transaction_id !== transaction.transaction_id)
+                        )
                     },
                 }
             }
@@ -396,7 +387,7 @@ const NeedsConfirmationWindow = () => {
                                                 item={item}
                                                 style={style}
                                                 onEllipsis={(e) => handleEllipsis(e)}
-                                                handleConfirm={handleConfirm}
+                                                handleConfirm={handleItemConfirm}
                                                 tabIndex={expanded || index === 0 ? 0 : -1}
                                             />
                                         )

@@ -42,6 +42,11 @@
         }
     }
 
+    &.with-cents .slot--container:nth-last-child(-n + 2) {
+        font-size: .75em;
+    }
+
+
     span {
         font-size: inherit;
     }

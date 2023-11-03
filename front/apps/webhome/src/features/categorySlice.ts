@@ -22,17 +22,29 @@ export interface Category {
     alerts: Alert[],
 }
 
+interface CategoryQueryParams {
+    month?: string;
+    year?: string;
+}
+
 export const extendedApiSlice = enhancedApiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getCategories: builder.query<Category[], { month: string, year: string }>({
-            query: (params) => ({
-                url: 'categories',
-                params: params,
-                method: 'GET',
-                providesTags: ['Categories'],
-            })
+        getCategories: builder.query<Category[], CategoryQueryParams | void>({
+            query: (params) => {
+                const queryObj = {
+                    url: 'categories',
+                    method: 'GET',
+                    providesTags: ['Categories'],
+                };
+
+                if (params) {
+                    return { ...queryObj, params };
+                }
+
+                return queryObj;
+            }
         }),
-        addNewCategory: builder.mutation<any, Category[] | Category>({
+        addNewCategory: builder.mutation<any, Category[]>({
             query: (data) => ({
                 url: 'category',
                 method: 'POST',
@@ -42,6 +54,10 @@ export const extendedApiSlice = enhancedApiSlice.injectEndpoints({
         })
     }),
 })
+
+export function isCategory(obj: any): obj is Category {
+    return 'period' in obj
+}
 
 
 type initialState = {

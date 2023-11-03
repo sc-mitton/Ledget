@@ -73,7 +73,7 @@ export const DollarCents = ({ value = 0, style = {}, hasCents = true, ...rest }:
 
 // Value is integer like 1000 (ie 1000 = $10.00)
 export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
-  { value: number, hasCents: boolean }) => {
+  { value: number, hasCents?: boolean }) => {
 
   const [loaded, setLoaded] = useState(false)
   const [slots, setSlots] = useState<string[]>([])
@@ -123,35 +123,24 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
         ...newChars,
         ...updatedChars
       }
+
+      setSlots([...Object.keys({ ...newChars, ...updatedChars })])
     } else {
       // Downsizing
-      slotsApi.start((index: number, item: any) => {
-        if (index < (slots.length - newVal.length)) {
-          return {
-            maxWidth: '0ch',
-            opacity: 0,
-            onRest: () => {
-              console.log('deleting: ', item._item)
-              delete slotRefs.current[item._item]
-              setSlots(prev => prev.filter((slot) => slot !== item._item))
-            }
-          }
-        }
-      })
+      const numberToRemove = slots.length - newVal.length
+      const newKeys = slots.slice(numberToRemove)
+      setSlots(prev => prev.slice(numberToRemove))
+      slotRefs.current = Object.fromEntries(
+        newVal.split('').map((char, index) =>
+          [newKeys[index], char]
+        ))
     }
-
   }, [value])
-
-  useEffect(() => {
-    if (slotRefs.current) {
-      setSlots([...Object.keys(slotRefs.current)])
-    }
-  }, [slotRefs.current])
 
   useEffect(() => {
     let timeout = setTimeout(() => {
       setLoaded(true)
-    }, 100)
+    }, 1000)
     return () => clearTimeout(timeout)
   }, [])
 
@@ -199,7 +188,7 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
       </span>
       {hasCents &&
         <span>
-          {`${formatCurrency(value).split('.')[1]}`}
+          {`.${formatCurrency(value).split('.')[1]}`}
         </span>
       }
     </div>

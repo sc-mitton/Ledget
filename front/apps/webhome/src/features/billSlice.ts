@@ -37,14 +37,25 @@ export interface TransformedBill extends BaseBill {
     date: string,
 }
 
+interface BillQueryParams {
+    month?: string;
+    year?: string;
+}
+
 export const extendedApiSlice = enhancedApiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getBills: builder.query<TransformedBill[], { month: string, year: string }>({
-            query: () => ({
-                url: 'bills',
-                method: 'GET',
-                providesTags: ['Bills'],
-            }),
+        getBills: builder.query<TransformedBill[], Bill | void>({
+            query: (params) => {
+                const queryObj = {
+                    url: 'bills',
+                    method: 'GET',
+                    providesTags: ['Bills'],
+                }
+                if (params) {
+                    return { ...queryObj, params };
+                }
+                return queryObj;
+            },
             transformResponse: (response: Bill[]) => {
                 const today = new Date()
                 const bills: TransformedBill[] = []
@@ -118,6 +129,10 @@ type initialState = {
     yearly_bills_amount_remaining: number,
     total_monthly_bills_amount: number,
     total_yearly_bills_amount: number,
+}
+
+export function isBill(arg: any): arg is Bill {
+    return arg && arg.name !== undefined;
 }
 
 export const billSlice = createSlice({

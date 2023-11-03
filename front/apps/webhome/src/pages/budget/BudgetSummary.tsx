@@ -155,7 +155,7 @@ const SummaryStatsTeaser = ({
             <div>
                 <div><h4>Total</h4></div>
                 <div>
-                    <DollarCents
+                    <AnimatedDollarCents
                         value={loadingCategories || loadingBills
                             ? 0
                             : (yearly_spent + monthly_spent)}
@@ -178,7 +178,7 @@ const SummaryStatsTeaser = ({
                     >
                         <div><h4>{period.charAt(0).toUpperCase() + period.slice(1)}</h4></div>
                         <div>
-                            <AnimatedDollarCents value={1617500} hasCents={false} />
+                            <AnimatedDollarCents value={amountLeft} hasCents={false} />
                         </div>
                         <div>
                             <span>{amountLeft >= 0 ? 'left' : 'overspent'}</span>
