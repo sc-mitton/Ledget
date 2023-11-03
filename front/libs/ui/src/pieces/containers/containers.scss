@@ -1,0 +1,54 @@
+/* --------------------------- Animated Container --------------------------- */
+.animated-container.collapsed {
+    transform: scale(.95);
+    opacity: 0;
+    transition: all .3s ease;
+    max-height: 0;
+}
+
+.animated-container.expanded {
+    transform: scale(1);
+    opacity: 1;
+    transition: all .3s ease;
+    max-height: 62.5rem;
+}
+
+.infinite-scroll--container {
+    overflow: hidden;
+
+    &.fetching-more::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        border-radius: 50%;
+        background-color: rgb(var(--m-green-values), .4);
+        animation: fetching-more .7s ease-out forwards;
+    }
+}
+
+@keyframes fetching-more {
+    0% {
+        opacity: 0;
+        width: 0%;
+        height: 0%;
+        min-height: 0em;
+        transform: translateY(calc(100% + 2em));
+        box-shadow: rgb(var(--m-green-values), .2) 0 0 0 2em;
+    }
+
+    50% {
+        opacity: .8;
+    }
+
+    100% {
+        opacity: 0;
+        width: 100%;
+        height: 30%;
+        min-height: 5em;
+        transform: translateY(60%);
+        box-shadow: rgb(var(--m-green-values), .2) 0 0 0 2em;
+    }
+}

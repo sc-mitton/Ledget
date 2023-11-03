@@ -38,6 +38,7 @@ const NewItemsHeader = () => {
     useEffect(() => {
         fetchTransactions({
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
+            year: parseInt(searchParams.get('year')!) || new Date().getFullYear(),
             confirmed: false,
         }, true)
     }, [searchParams.get('month')])
@@ -55,7 +56,11 @@ const NewItemsHeader = () => {
                 <Shimmer shimmering={isSyncing} lightness={90} />
                 <div>
                     <div id="number-of-items">
-                        <span>{(unconfirmedTransactions?.results.length || 0) - confirmedQueueLength}</span>
+                        <span>
+                            {(unconfirmedTransactions?.results.length || 0) - confirmedQueueLength > 99
+                                ? '99'
+                                : (unconfirmedTransactions?.results.length || 0) - confirmedQueueLength}
+                        </span>
                     </div>
                     <span>{`Item${(unconfirmedTransactions?.results.length || 0) > 1 ? 's' : ''}`} to confirm</span>
                 </div>

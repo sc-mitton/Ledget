@@ -1,5 +1,5 @@
-
-import './containers.css'
+import React, { HTMLProps, forwardRef } from 'react'
+import './containers.scss'
 
 export const ExpandableContainer = ({ expanded = true, className = '', children, ...rest }: {
   expanded?: boolean,
@@ -10,3 +10,15 @@ export const ExpandableContainer = ({ expanded = true, className = '', children,
     {children}
   </div>
 )
+
+
+export const InfiniteScrollDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & { animate: boolean }>(({
+  children,
+  className,
+  animate,
+  ...rest
+}, ref) => (
+  <div className={`infinite-scroll--container ${className ? className : ''} ${animate ? 'fetching-more' : ''}`} {...rest} ref={ref}>
+    {children}
+  </div>
+))

@@ -48,6 +48,7 @@ export interface GetTransactionsParams {
     account?: string
     confirmed?: boolean
     month?: number
+    year?: number
     offset?: number
     limit?: number
 }

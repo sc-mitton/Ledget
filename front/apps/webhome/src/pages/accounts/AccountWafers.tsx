@@ -68,7 +68,7 @@ const filterAccounts = (accounts: any[], location: Location) => {
     )
 }
 
-export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
+export const AccountWafers = () => {
     const { } = useGetAccountsQuery()
     const { data, isSuccess } = useGetAccountsQueryState()
     const [updateOrder] = useUpdateAccountsMutation()
@@ -98,6 +98,14 @@ export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
             }),
             ref: waferApi,
         })
+
+    // Set first account on get accounts success
+    useEffect(() => {
+        if (isSuccess && data?.accounts.length > 0) {
+            searchParams.set('account', data?.accounts[0].account_id)
+            setSearchParams(searchParams)
+        }
+    }, [isSuccess])
 
     // Start initial animation
     useEffect(() => { isSuccess && waferApi.start() }, [isSuccess])
@@ -131,7 +139,6 @@ export const AccountWafers = ({ onClick }: { onClick: () => void }) => {
     const handleClick = (id: string) => {
         searchParams.set('account', id)
         setSearchParams(searchParams)
-        onClick()
         waferApi.start((index: any, item: any) => {
             if (item._item.account_id === id) {
                 return ({

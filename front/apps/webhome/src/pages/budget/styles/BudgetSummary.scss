@@ -24,6 +24,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
 
         h4 {
             font-size: $header-font-size;
+            font-weight: 400;
         }
 
         // All statistic elements
@@ -271,4 +272,18 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         }
     }
 
+}
+
+
+.thumbs {
+
+    &.up {
+        transform: rotateX(0deg) rotateY(0deg) translateY(0%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    &.down {
+        transform: rotateX(180deg) rotateY(180deg) translateY(-25%);
+        transition: transform 0.3s ease-in-out;
+    }
 }

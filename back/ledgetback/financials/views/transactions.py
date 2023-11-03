@@ -253,28 +253,31 @@ class TransactionViewSet(ModelViewSet):
     def get_queryset(self):
         params = self.request.query_params
         month = params.get('month', None)
+        year = params.get('year', None)
         confirmed = params.get('confirmed', None)
 
         if confirmed == 'true' and month:
-            return self._get_confirmed_transactions(month)
+            return self._get_confirmed_transactions(month, year)
         elif confirmed == 'false' and month:
-            return self._get_unconfirmed_transactions(month)
+            return self._get_unconfirmed_transactions(month, year)
         else:
             return self._get_transactions()
 
-    def _get_confirmed_transactions(self, month):
+    def _get_confirmed_transactions(self, month, year):
 
         qset = Transaction.objects.filter(
             date__month=month,
+            date__year=year,
             category__isnull=False,
             bill__isnull=False,
         ).select_related('category', 'bill')
 
         return qset
 
-    def _get_unconfirmed_transactions(self, month):
+    def _get_unconfirmed_transactions(self, month, year):
         qset = Transaction.objects.filter(
             date__month=month,
+            date__year=year,
             category__isnull=True,
             bill__isnull=True,
         ).select_related('predicted_category', 'predicted_bill')

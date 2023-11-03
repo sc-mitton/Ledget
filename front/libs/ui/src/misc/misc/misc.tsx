@@ -1,3 +1,6 @@
+import { useEffect, useState, useRef } from 'react'
+
+import { useTransition, animated, useSpringRef } from '@react-spring/web';
 import Color from 'color';
 
 import './misc.scss'
@@ -59,11 +62,127 @@ export const DollarCents = ({ value = 0, style = {}, hasCents = true, ...rest }:
         {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
       </span>
       {hasCents &&
-        <span style={{ fontSize: '.7em' }}>
+        <span style={{ fontSize: '.75em' }}>
           {`.${str.split('.')[1]}`}
         </span>
       }
     </>
+  )
+}
+
+
+// Value is integer like 1000 (ie 1000 = $10.00)
+export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
+  { value: number, hasCents: boolean }) => {
+
+  const [loaded, setLoaded] = useState(false)
+  const [slots, setSlots] = useState<string[]>([])
+  const slotRefs = useRef<string[]>([])
+
+  const slotsApi = useSpringRef()
+  const transitions = useTransition(slots, {
+    from: { maxWidth: loaded ? '0ch' : '1ch' },
+    enter: (item, index) => ({
+      opacity: 1,
+      maxWidth: '1ch',
+      y: !isNaN(Number(slotRefs.current[index])) ? `-${100 - (Number(slotRefs.current[index]) + 1) * 10}%` : '0em',
+    }),
+    update: (item, index) => ({
+      y: !isNaN(Number(slotRefs.current[index])) ? `-${100 - (Number(slotRefs.current[index]) + 1) * 10}%` : '0em',
+    }),
+    leave: { maxWidth: '0ch', opacity: 0 },
+    config: { mass: 1, tension: 150, friction: 25 },
+    ref: slotsApi
+  })
+
+  useEffect(() => {
+    let currencyVal = formatCurrency(value).replace(/^\$/, '')
+    let timeout: NodeJS.Timeout
+    if (!hasCents) {
+      currencyVal = currencyVal.split('.')[0]
+    }
+
+    // Only if updating vals or upsizing
+    if (slots.length <= currencyVal.length) {
+      slotRefs.current = currencyVal.split('')
+    }
+
+    if (slots.length == 0) {
+      setSlots(Array.from({ length: currencyVal.length }, (_) => Math.random().toString(36).slice(2, 9)))
+    } else if (slots.length < currencyVal.length) {
+      // Upsizing
+      setSlots(prev => [
+        ...Array.from({ length: currencyVal.length - prev.length }, (_) => Math.random().toString(36).slice(2, 9)),
+        ...prev
+      ])
+    } else if (slots.length > currencyVal.length) {
+      // Downsizing, animate closed the slots to be removed,
+      // then on rest, update the slots and slot refs
+
+
+      slotsApi.start((index: number, item: any) => {
+        if (index < (slots.length - currencyVal.length))
+          return ({ opacity: 0, maxWidth: '0ch' })
+      })
+    }
+
+  }, [value])
+
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      setLoaded(true)
+    }, 100)
+    return () => clearTimeout(timeout)
+  }, [])
+
+  // Start animations
+  useEffect(() => {
+    if (slots.length == slotRefs.current.length) {
+      slotsApi.start()
+    }
+  }, [slots, slotRefs.current])
+
+  return (
+    <div className={`animated-dollar ${hasCents ? 'with-cents' : ''}`}>
+      <div className="slots">
+        <div className='slot--container'>
+          <span>$</span>
+        </div>
+        {transitions((style, item, obj, index) => (
+          <animated.div
+            key={item}
+            style={style}
+            className='slot--container'
+          >
+            {'$.,'.includes(slotRefs.current[index])
+              ?
+              <span>{slotRefs.current[index]}</span>
+              :
+              <>
+                <span>9</span>
+                <span>8</span>
+                <span>7</span>
+                <span>6</span>
+                <span>5</span>
+                <span>4</span>
+                <span>3</span>
+                <span>2</span>
+                <span>1</span>
+                <span>0</span>
+              </>
+            }
+          </animated.div>
+        ))}
+      </div>
+      <span>
+        {`${formatCurrency(value).split('.')[0]}`}
+      </span>
+      {hasCents &&
+        <span>
+          {`${formatCurrency(value).split('.')[1]}`}
+        </span>
+      }
+    </div>
   )
 }
 

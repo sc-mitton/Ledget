@@ -20,3 +20,39 @@
         stroke: currentColor;
     }
 }
+
+.animated-dollar {
+    font-size: inherit;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+
+    .slots {
+        position: absolute;
+        align-items: baseline;
+        inset: 0;
+        display: flex;
+        font-size: inherit;
+
+        .slot--container {
+            display: flex;
+            flex-direction: column;
+            font-size: inherit;
+        }
+    }
+
+    span {
+        font-size: inherit;
+    }
+
+    &.with-cents>span:last-child {
+        font-size: .75em;
+    }
+
+    &.with-cents>span:nth-last-child(2),
+    &>span:last-child {
+        opacity: 0;
+        visibility: hidden;
+    }
+}

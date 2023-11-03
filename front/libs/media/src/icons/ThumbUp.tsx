@@ -15,7 +15,6 @@ const ThumbUp = ({
             x="0px"
             y="0px"
             aria-label="thumb-up"
-            transform={`rotate(${rotate})`}
         >
             <path fill={fill} d="M26.4,60.7H14.7c-2.8,0-5.1,2.3-5.1,5.1v56.3c0,2.8,2.3,5.1,5.1,5.1h11.7c2.8,0,5.1-2.3,5.1-5.1V65.8
         	C31.4,63,29.2,60.7,26.4,60.7z"/>

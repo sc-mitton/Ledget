@@ -47,22 +47,24 @@
     --window-rgb: 252, 248, 247;
 
     /* Drop Shadows */
+    --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
+    --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 36px;
+    --scroll-shadow: rgba(248, 248, 248), transparent;
+
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-color);
     --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
     --low-elevation-drop-shadow: rgba(0, 0, 0, 0.02) 0px 1px 6px 0px;
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
     --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
-    --new-item-drop-shadow: rgba(0, 0, 0, .12) 0px 4px 12px;
+    --new-item-drop-shadow: rgba(0, 0, 0, .1) 0px 2px 12px;
 
     --wafer-drag-drop-shadow: rgba(255, 255, 255, .5) 0px 4px 10px;
     --wafer-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
     --active-wafer-drop-shadow: var(--green-hlight2) 0px 0px 4px 2px;
     --wafer-hover-drop-shadow: rgb(0, 0, 0, .2) 0px 0px 12px 2px;
 
-    --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
-    --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 36px;
-    --scroll-shadow: rgba(248, 248, 248), transparent;
+
 
     /* Input Colors */
     --input-background: rgba(218, 218, 218, 0.5);

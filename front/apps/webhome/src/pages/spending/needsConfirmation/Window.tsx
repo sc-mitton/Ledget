@@ -21,7 +21,7 @@ import {
     Base64Logo,
     DollarCents
 } from "@ledget/ui"
-import { formatDateOrRelativeDate } from '@ledget/ui'
+import { formatDateOrRelativeDate, InfiniteScrollDiv } from '@ledget/ui'
 import { addTransaction2Cat } from '@features/categorySlice'
 import { addTransaction2Bill } from '@features/billSlice'
 import {
@@ -95,14 +95,6 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
     }
 }
 
-interface NewItemProps {
-    item: Transaction
-    style: React.CSSProperties
-    onEllipsis: MouseEventHandler<HTMLButtonElement>
-    handleConfirm: (transaction: Transaction) => void
-    tabIndex: number
-}
-
 const Logo = ({ accountId }: { accountId: string }) => {
     const { data } = useGetPlaidItemsQuery()
 
@@ -119,7 +111,13 @@ const Logo = ({ accountId }: { accountId: string }) => {
     )
 }
 
-const NewItem: FC<NewItemProps> = (props: NewItemProps) => {
+const NewItem: FC<{
+    item: Transaction
+    style: React.CSSProperties
+    onEllipsis: MouseEventHandler<HTMLButtonElement>
+    handleConfirm: (transaction: Transaction) => void
+    tabIndex: number
+}> = (props) => {
     const { item, style, onEllipsis, handleConfirm, tabIndex } = props
     const [newCategory, setNewCategory] = useState<string | null>(null)
     const [newBill, setNewBill] = useState<string | null>(null)
@@ -203,7 +201,10 @@ const NeedsConfirmationWindow = () => {
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | null>(null)
     const [unconfirmedTransactions, setUnconfirmedTransactions] = useState<Transaction[] | undefined>()
 
-    const [fetchTransactions, { data: transactionsData, isSuccess }] = useLazyGetTransactionsQuery()
+    const [
+        fetchTransactions,
+        { data: transactionsData, isSuccess, isFetching: isFetchingTransactions }
+    ] = useLazyGetTransactionsQuery()
     const [updateTransactions] = useUpdateTransactionsMutation()
     const newItemsRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch()
@@ -216,6 +217,7 @@ const NeedsConfirmationWindow = () => {
     useEffect(() => {
         fetchTransactions({
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
+            year: parseInt(searchParams.get('year')!) || new Date().getFullYear(),
             confirmed: false,
             offset: offset
         }, true)
@@ -226,6 +228,7 @@ const NeedsConfirmationWindow = () => {
         if (transactionsData?.next) {
             fetchTransactions({
                 month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
+                year: parseInt(searchParams.get('year')!) || new Date().getFullYear(),
                 confirmed: false,
                 offset: offset
             })
@@ -373,7 +376,8 @@ const NeedsConfirmationWindow = () => {
         <div id="new-items-container">
             <div>
                 <Header />
-                <div
+                <InfiniteScrollDiv
+                    animate={isFetchingTransactions && offset > 0}
                     ref={newItemsRef}
                     id="new-items"
                     onMouseLeave={() => flushConfirmedQue()}
@@ -404,7 +408,7 @@ const NeedsConfirmationWindow = () => {
                             <ItemOptions />
                         </Options>
                     </ShadowedContainer >
-                </div >
+                </InfiniteScrollDiv >
                 <ExpandableContainer expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
                     <ExpandButton onClick={() => setExpanded(!expanded)} flipped={expanded} />
                 </ExpandableContainer>

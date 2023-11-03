@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import Big from 'big.js'
 
 import './styles/BudgetSummary.scss'
-import { DollarCents, StaticProgressCircle } from '@ledget/ui'
+import { DollarCents, AnimatedDollarCents, StaticProgressCircle } from '@ledget/ui'
 import { ThumbUp, CheckMark2 } from '@ledget/media'
 import { useGetCategoriesQuery, selectCategoryMetaData } from '@features/categorySlice'
 import { useGetBillsQuery, selectBillMetaData } from '@features/billSlice'
@@ -16,7 +16,7 @@ const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
-    const { data: billsData, isLoading: loadingBills } = useGetBillsQuery({
+    const { isLoading: loadingBills } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
@@ -178,15 +178,13 @@ const SummaryStatsTeaser = ({
                     >
                         <div><h4>{period.charAt(0).toUpperCase() + period.slice(1)}</h4></div>
                         <div>
-                            <DollarCents value={amountLeft} hasCents={false} />
+                            <AnimatedDollarCents value={687500} hasCents={false} />
                         </div>
                         <div>
-                            <span>
-                                {amountLeft >= 0 ? 'left' : 'overspent'}
-                            </span>
+                            <span>{amountLeft >= 0 ? 'left' : 'overspent'}</span>
                             <ThumbUp
+                                className={`thumbs ${amountLeft >= 0 ? 'up' : 'down'}`}
                                 fill={'currentColor'}
-                                rotate={amountLeft >= 0 ? 0 : 180}
                             />
                         </div>
                     </div>

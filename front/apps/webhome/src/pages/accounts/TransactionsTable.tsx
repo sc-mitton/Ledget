@@ -1,10 +1,11 @@
 import { Fragment, useEffect, useState, FC, HTMLProps, useRef } from 'react'
 
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
 
-import { useLazyGetTransactionsQuery, GetTransactionsParams } from '@features/transactionsSlice'
-import { ShimmerText, DollarCents } from '@ledget/ui'
+import { useLazyGetTransactionsQuery, useGetTransactionQueryState } from '@features/transactionsSlice'
+import { ShimmerText, DollarCents, InfiniteScrollDiv } from '@ledget/ui'
+import pathMappings from './path-mappings'
 
 
 export const TransactionShimmer = ({ shimmering = true }) => (
@@ -35,11 +36,40 @@ const getMaskImage = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
     }
 }
 
-export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boolean }>
-    = ({ children, skeleton, className, ...rest }) => {
+export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
+    = ({ children, ...rest }) => {
         const containerRef = useRef<HTMLDivElement>(null)
         const tableRef = useRef<HTMLDivElement>(null)
         const [shadow, setShadow] = useState<'top' | 'bottom' | 'bottom-top' | ''>('')
+        const [fetchMorePulse, setFetchMorePulse] = useState(false)
+        const [searchParams, setSearchParams] = useSearchParams()
+        const [skeleton, setSkeleton] = useState(true)
+        const location = useLocation()
+
+        const [getTransactions, {
+            data: transactionsData,
+            isFetching: isFetchingTransactions,
+            isLoading: isLoadingTransactions
+        }] = useLazyGetTransactionsQuery()
+
+        useEffect(() => {
+            getTransactions({
+                account: searchParams.get('account') || '',
+                type: pathMappings.getTransactionType(location),
+                limit: parseInt(searchParams.get('limit') || '25'),
+                offset: parseInt(searchParams.get('offset') || '0'),
+            }, searchParams.get('offset') === '0')
+        }, [searchParams.get('offset'), searchParams.get('account')])
+
+        useEffect(() => {
+            searchParams.set('offset', '0')
+            searchParams.set('limit', '25')
+            setSearchParams(searchParams)
+        }, [searchParams.get('account')])
+
+        useEffect(() => {
+            setSkeleton((isFetchingTransactions && searchParams.get('offset') === '0') && !searchParams.get('acount'))
+        }, [searchParams.get('offset'), searchParams.get('account'), isFetchingTransactions])
 
         useEffect(() => {
             let timeout = setTimeout(() => {
@@ -78,10 +108,35 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boole
             }
         }, [skeleton])
 
+        // Fetch more transactions animation
+        useEffect(() => {
+            if (isFetchingTransactions && searchParams.get('offset') !== '0') {
+                isFetchingTransactions && setFetchMorePulse(true)
+            }
+            let timeout = setTimeout(() => {
+                setFetchMorePulse(false)
+            }, 1500)
+            return () => { clearTimeout(timeout) }
+        }, [isFetchingTransactions, searchParams.get('offset')])
+
+        const handleScroll = (e: React.UIEvent<HTMLElement>) => {
+            const bottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight
+            // Update cursors to add new transactions node to the end
+            if (bottom && transactionsData?.next !== undefined) {
+                // Set offset to next cursor, unless there is no next cursor
+                // in which case there is no more data to be fetched, and we
+                // keep params as is
+                const offset = `${transactionsData?.next}` || searchParams.get('offset') || '0'
+                searchParams.set('offset', offset)
+                setSearchParams(searchParams)
+            }
+        }
+
         return (
             <>
-                <div
-                    className={`transactions--container ${className}`}
+                <InfiniteScrollDiv
+                    animate={fetchMorePulse}
+                    className={`transactions--container ${isLoadingTransactions ? 'loading' : ''}`}
                     ref={containerRef}
                 >
                     {skeleton
@@ -98,31 +153,35 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement> & { skeleton: boole
                         <div
                             ref={tableRef}
                             style={{ maskImage: getMaskImage(shadow) }}
-                            className={`transactions--table not-skeleton ${className}`}
+                            className='transactions--table not-skeleton'
+                            onScroll={handleScroll}
                             {...rest}
                         >
                             {children}
                         </div>
                     }
-                </div>
+                </InfiniteScrollDiv>
             </>
         )
     }
 
-export const Transactions = ({ queryParams }: { queryParams: GetTransactionsParams }) => {
-    const [getTransactions, {
-        data: transactionsData,
-        isSuccess: isTransactionsSuccess,
-    }] = useLazyGetTransactionsQuery()
+export const Transactions = () => {
+    const [searchParams] = useSearchParams()
 
     let previousMonth: number | null = null
     let previousYear: number | null = null
     const navigate = useNavigate()
     const location = useLocation()
 
-    useEffect(() => {
-        getTransactions({ ...queryParams }, queryParams.offset === 0)
-    }, [queryParams.offset, queryParams.account])
+    const {
+        data: transactionsData,
+        isSuccess: isTransactionsSuccess,
+    } = useGetTransactionQueryState({
+        account: searchParams.get('account') || '',
+        offset: parseInt(searchParams.get('offset') || '0'),
+        limit: parseInt(searchParams.get('limit') || '25'),
+        type: pathMappings.getTransactionType(location),
+    })
 
     return (
         <>
@@ -154,7 +213,7 @@ export const Transactions = ({ queryParams }: { queryParams: GetTransactionsPara
                                 onClick={() => {
                                     navigate(
                                         `${location.pathname}/transaction${location.search}`,
-                                        { state: { getTransactionsParams: queryParams, transactionId: transaction.transaction_id } }
+                                        { state: { getTransactionsParams: location.search, transactionId: transaction.transaction_id } }
                                     )
                                 }}
                             >
