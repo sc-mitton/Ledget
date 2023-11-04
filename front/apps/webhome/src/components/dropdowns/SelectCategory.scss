@@ -1,4 +1,6 @@
 .select-bill-category {
+    position: relative;
+
     span {
         color: inherit;
     }
@@ -6,5 +8,77 @@
 
 .category-select--container {
     position: absolute;
-    top: .25em;
+    bottom: -.5em;
+    left: 50%;
+    transform: translateX(-100%);
+    display: flex;
+    justify-content: center;
+
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625em;
+        max-height: 15em;
+        overflow-y: auto;
+        width: calc(auto + 1em);
+        padding: 0.5em 0;
+        mask-image: linear-gradient(to bottom, transparent, black .5em, black calc(100% - .5em), transparent);
+        margin-bottom: .5em;
+    }
+
+    input {
+        margin: 0.5em;
+    }
+
+    svg {
+        position: absolute;
+        left: 1.375em;
+        top: 1.5em;
+        opacity: .7;
+    }
+
+    input {
+        background-color: var(--input-background);
+        padding: .375em .75em;
+        padding-left: 2.25em;
+    }
+
+    .option,
+    input {
+        border-radius: var(--border-radius1);
+    }
+
+
+    .option {
+        cursor: pointer;
+        display: inline-flex;
+        gap: 0.5em;
+        border-radius: var(--border-radius1);
+        transition: all .3s ease;
+        font-weight: 400;
+        padding: .125em .75em;
+        margin: 0 .625em;
+
+        &.year {
+            background-color: var(--blue-hlight2);
+            color: var(--blue-dark4);
+
+            &:hover {
+                background-color: color-mix(in srgb, var(--blue-hlight2), var(--blue-dark4) 8%);
+                transition: all .3s ease;
+            }
+
+        }
+
+        &.month {
+            background-color: var(--green-hlight2);
+            color: var(--green-dark4);
+
+            &:hover {
+                background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 8%);
+                transition: all .3s ease;
+            }
+        }
+    }
+
 }

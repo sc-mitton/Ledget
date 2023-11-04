@@ -281,10 +281,9 @@ const NeedsConfirmationWindow = () => {
                 opacity: _getOpacity(index, expanded),
             }),
             onRest: () => {
-                expanded &&
-                    containerApi.start({
-                        overflowY: 'scroll',
-                    })
+                expanded
+                    ? containerApi.start({ overflowY: 'scroll', overflowX: 'hidden' })
+                    : containerApi.start({ overflowY: 'visible', overflowX: 'visible' })
             },
             config: {
                 tension: 180,
@@ -295,12 +294,10 @@ const NeedsConfirmationWindow = () => {
         }
     )
 
-    useEffect(() => {
-        containerApi.start()
-    }, [])
+    useEffect(() => { containerApi.start() }, [])
 
     useEffect(() => {
-        containerApi.start({ overflowY: 'hidden' })
+        containerApi.start({ overflowY: 'hidden', overflowX: 'hidden' })
     }, [expanded])
 
     useEffect(() => {
