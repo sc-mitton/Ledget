@@ -46,31 +46,13 @@
     --charcoal-rgb: 41, 41, 41;
     --window-rgb: 252, 248, 247;
 
-    /* Drop Shadows */
-    --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
-    --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 36px;
-    --scroll-shadow: rgba(248, 248, 248), transparent;
-
-    --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-color);
-    --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
-    --low-elevation-drop-shadow: rgba(0, 0, 0, 0.02) 0px 1px 6px 0px;
-    --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
-    --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
-    --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
-    --new-item-drop-shadow: rgba(0, 0, 0, .1) 0px 2px 12px;
-
-    --wafer-drag-drop-shadow: rgba(255, 255, 255, .5) 0px 4px 10px;
-    --wafer-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
-    --active-wafer-drop-shadow: var(--green-hlight2) 0px 0px 4px 2px;
-    --wafer-hover-drop-shadow: rgb(0, 0, 0, .2) 0px 0px 12px 2px;
-
     /* Input Colors */
     --input-background: rgba(218, 218, 218, 0.5);
     --input-border: solid 1px rgb(0, 0, 0, .02);
 
     /* Text */
     /* --input-focus: rgb(96, 140, 211); */
-    --input-focus: rgb(96, 211, 156);
+    --input-focus: rgb(85, 188, 138);
     --m-text-gray: #292929;
     --sub-text: #3d3d3d;
     --input-placeholder: #848484;
@@ -94,6 +76,24 @@
     --icon-hover-gray: rgb(196, 196, 196);
     --drop-down-hover-background: #dfdfdf;
 
+    /* Drop Shadows */
+    --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
+    --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 36px;
+    --scroll-shadow: rgba(248, 248, 248), transparent;
+
+    --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-color);
+    --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight);
+    --low-elevation-drop-shadow: rgba(0, 0, 0, 0.02) 0px 1px 6px 0px;
+    --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
+    --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
+    --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
+    --new-item-drop-shadow: rgba(0, 0, 0, .1) 0px 2px 12px;
+
+    --wafer-drag-drop-shadow: rgba(255, 255, 255, .5) 0px 4px 10px;
+    --wafer-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
+    --active-wafer-drop-shadow: var(--green-hlight2) 0px 0px 4px 2px;
+    --wafer-hover-drop-shadow: rgb(0, 0, 0, .2) 0px 0px 12px 2px;
+
     /* Borders */
     --subtle-border-color: rgb(0, 0, 0, .07);
     --subtle-border: .75px solid var(--subtle-border-color);
@@ -111,7 +111,7 @@
 /* Override color values for Firefox */
 @-moz-document url-prefix() {
     :root {
-        --input-focus: rgb(96, 211, 156);
+        --input-focus: rgb(85, 188, 138);
         --input-placeholder: #2a2a2a;
         --m-text-gray: rgb(44, 44, 44);
     }
