@@ -82,10 +82,7 @@ const PeriodSelect = (props) => {
                             ref={buttonRef}
                         >
                             {labelPrefix && `${labelPrefix} `}
-                            {labelPrefix
-                                ? `${opts.find((option) => option.value === localValue)?.label.charAt(0).toLowerCase()}` +
-                                `${opts.find((option) => option.value === localValue)?.label.slice(1)}`
-                                : `${opts.find((option) => option.value === localValue)?.label}`
+                            {`${opts.find((option) => option.value === localValue)?.label}`
                             }
                             {<ArrowIcon
                                 width={'.8em'}

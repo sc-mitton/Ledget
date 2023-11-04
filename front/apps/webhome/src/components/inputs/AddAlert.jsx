@@ -182,7 +182,7 @@ const AddAlert = (props) => {
                 </div>
             }
             {selectedAlerts.length === 0 &&
-                <span style={{ color: 'var(--input-placeholder2)' }}>
+                <span>
                     Add Alert
                 </span>}
             {selectedAlerts.length > 0
@@ -195,7 +195,6 @@ const AddAlert = (props) => {
                 />
                 :
                 <Plus
-                    stroke={'var(--input-placeholder2)'}
                     strokeWidth={'20'}
                     width={'.8em'}
                     height={'.8em'}

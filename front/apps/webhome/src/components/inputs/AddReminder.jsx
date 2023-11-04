@@ -81,7 +81,6 @@ const AddReminder = ({ value, onChange }) => {
                     <>
                         <ComboSelect.Button
                             as={SlimInputButton}
-                            className={`${selectedReminders.length > 0 ? '' : 'unset'}`}
                             id="add-reminder-btn"
                             style={{ fontWeight: '400' }}
                         >

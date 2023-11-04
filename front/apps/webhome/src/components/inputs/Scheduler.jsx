@@ -104,18 +104,13 @@ const Button = ({ children, ...props }) => {
                 {...props}
             >
                 <div>
-                    <span style={{ opacity: placeholder ? '1' : '.5' }}>
+                    <span>
                         {placeholder || 'Repeats on'}
                     </span>
                 </div>
                 <ArrowIcon
                     width={'.8em'}
                     height={'.8em'}
-                    stroke={
-                        placeholder
-                            ? 'var(--m-text-gray)'
-                            : 'var(--input-placeholder2)'
-                    }
                 />
                 {children}
             </SlimInputButton>
