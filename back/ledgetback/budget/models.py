@@ -77,11 +77,7 @@ class Bill(BudgetItem):
             MaxValueValidator(12, message="Day must be between 1 and 12."),
         ]
     )
-    year = models.IntegerField(
-        null=True,
-        blank=True,
-        default=timezone.now().year,
-    )
+    year = models.IntegerField(null=True, blank=True)
 
     def clean(self):
 

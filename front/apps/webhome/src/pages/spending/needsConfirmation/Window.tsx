@@ -126,21 +126,24 @@ const NewItem: FC<{
     const dispatch = useDispatch()
 
     const handleConfirmClick = () => {
-        if (item.predicted_category) {
+        const billId = (isBill(newBillCat) && !isCategory(newBillCat)) ? newBillCat.id : item?.predicted_bill?.id
+        const categoryId = (isCategory(newBillCat) && !isBill(newBillCat)) ? newBillCat.id : item?.predicted_category?.id
+
+        if (categoryId) {
             dispatch(addTransaction2Cat({
-                categoryId: newBillCat?.id || item.predicted_category?.id,
+                categoryId: categoryId,
                 amount: item.amount,
             }))
-        } else if (item.predicted_bill) {
+        } else if (billId) {
             dispatch(addTransaction2Bill({
-                billId: newBillCat?.id || item.predicted_bill?.id,
+                billId: billId,
                 amount: item.amount,
             }))
         }
         dispatch(pushConfirmedTransaction({
             transaction_id: item.transaction_id,
-            category: newBillCat?.id || item.predicted_category?.id,
-            bill: newBillCat?.id || item.bill?.id,
+            category: categoryId,
+            bill: billId,
         }))
         handleConfirm({
             ...item,
@@ -178,8 +181,8 @@ const NewItem: FC<{
                         onClick={(e) => { onBillCat(e, item) }}
                     >
                         {newBillCat
-                            ? newBillCat.name
-                            : item.predicted_category?.name}
+                            ? `${newBillCat.name.charAt(0).toUpperCase()}${newBillCat.name.slice(1)}`
+                            : `${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`}
                     </GrnSlimButton>
                     :
                     <BlueSlimButton
@@ -188,8 +191,8 @@ const NewItem: FC<{
                         onClick={(e) => { onBillCat(e, item) }}
                     >
                         {newBillCat
-                            ? newBillCat.name
-                            : item.predicted_category?.name}
+                            ? `${newBillCat.name.charAt(0).toUpperCase()}${newBillCat.name.slice(1)}`
+                            : `${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`}
                     </BlueSlimButton>
                 }
                 <Tooltip
@@ -230,7 +233,10 @@ const NeedsConfirmationWindow = () => {
     const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(undefined)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | undefined>()
     const [billCatSelectPos, setBillCatSelectPos] = useState<{ x: number, y: number } | undefined>()
-    const [updatedBillCats, setUpdatedBillCats] = useState<({ transactionId: string, category: Category | undefined, bill: Bill | undefined })[]>([])
+    const [updatedBillCats, setUpdatedBillCats] =
+        useState<({ transactionId: string, category: Category | undefined, bill: Bill | undefined })[]>(
+            sessionStorage.getItem('updatedBillCats') ? JSON.parse(sessionStorage.getItem('updatedBillCats')!) : []
+        )
     const [unconfirmedTransactions, setUnconfirmedTransactions] = useState<Transaction[] | undefined>()
 
     const [
@@ -335,10 +341,20 @@ const NeedsConfirmationWindow = () => {
         }
     }, [expanded, unconfirmedTransactions])
 
-    // Effect and handler for setting the options menu
+    // Menu closing effects
     useEffect(() => {
         !showMenu && setMenuPos(undefined)
-    }, [showMenu])
+        if (!showBillCatSelect) {
+            setBillCatSelectPos(undefined)
+            setFocusedItem(undefined)
+            setBillCatSelectVal(undefined)
+        }
+    }, [showMenu, showBillCatSelect])
+
+    // Set updatedBillCats in session storage for persistence over page refreshes
+    useEffect(() => {
+        sessionStorage.setItem('updatedBillCats', JSON.stringify(updatedBillCats))
+    }, [updatedBillCats])
 
     // When options are selected from the bill/category combo dropdown
     // update the list of updated bills/categories
@@ -370,6 +386,8 @@ const NeedsConfirmationWindow = () => {
                 return [...prev, newItem]
             }
         })
+        setShowBillCatSelect(false) // close the dropdown
+
     }, [billCatSelectVal])
 
     // ie activate the options dropdown menu
@@ -405,8 +423,8 @@ const NeedsConfirmationWindow = () => {
     const handleBillCatClick = (e: any, item: Transaction) => {
         const buttonRect = e.target.closest('button').getBoundingClientRect()
         setBillCatSelectPos({
-            x: buttonRect.left - newItemsRef.current!.getBoundingClientRect().left || 0,
-            y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 4 || 0,
+            x: buttonRect.left - newItemsRef.current!.getBoundingClientRect().left + 8 || 0,
+            y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 12 || 0,
         })
         setFocusedItem(item)
     }

@@ -56,9 +56,8 @@ export const extendedApiSlice = enhancedApiSlice.injectEndpoints({
 })
 
 export function isCategory(obj: any): obj is Category {
-    return 'period' in obj
+    return 'alerts' in obj
 }
-
 
 type initialState = {
     categories: Category[],
@@ -85,17 +84,18 @@ export const categorySlice = createSlice({
             const foundCategory = state.categories.find(category => category.id === action.payload.categoryId);
             if (foundCategory) {
                 const foundIndex = state.categories.findIndex(category => category.id === action.payload.categoryId);
+                const amount_spent_int = Big(action.payload.amount).times(100).toNumber()
 
                 state.categories[foundIndex] = {
                     ...foundCategory,
-                    amount_spent: Big(foundCategory.amount_spent || 0).plus(action.payload.amount).toNumber(),
+                    amount_spent: Big(foundCategory.amount_spent || 0).plus(amount_spent_int).toNumber(),
                 }
 
                 // Update the monthly or yearly spent amount
                 if (foundCategory.period === 'month') {
-                    state.monthly_spent += action.payload.amount;
+                    state.monthly_spent += amount_spent_int;
                 } else if (foundCategory.period === 'year') {
-                    state.yearly_spent += action.payload.amount;
+                    state.yearly_spent += amount_spent_int;
                 }
             }
         }

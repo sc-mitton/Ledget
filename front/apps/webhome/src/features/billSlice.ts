@@ -44,7 +44,7 @@ interface BillQueryParams {
 
 export const extendedApiSlice = enhancedApiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getBills: builder.query<TransformedBill[], Bill | void>({
+        getBills: builder.query<TransformedBill[], Bill | BillQueryParams>({
             query: (params) => {
                 const queryObj = {
                     url: 'bills',
@@ -131,8 +131,8 @@ type initialState = {
     total_yearly_bills_amount: number,
 }
 
-export function isBill(arg: any): arg is Bill {
-    return arg && arg.name !== undefined;
+export function isBill(obj: any): obj is Bill {
+    return 'reminders' in obj
 }
 
 export const billSlice = createSlice({
@@ -160,10 +160,12 @@ export const billSlice = createSlice({
                 // Update the monthly or yearly spent amount
                 if (foundBill.period === 'month') {
                     state.monthly_bills_paid++
-                    state.monthly_bills_amount_remaining = Big(state.monthly_bills_amount_remaining).minus(action.payload.amount).toNumber()
+                    state.monthly_bills_amount_remaining =
+                        Big(state.monthly_bills_amount_remaining).minus(Big(action.payload.amount).times(100)).toNumber()
                 } else if (foundBill.period === 'year') {
                     state.yearly_bills_paid++
-                    state.yearly_bills_amount_remaining = Big(state.yearly_bills_amount_remaining).minus(action.payload.amount).toNumber()
+                    state.yearly_bills_amount_remaining =
+                        Big(state.monthly_bills_amount_remaining).minus(Big(action.payload.amount).times(100)).toNumber()
                 }
             }
         },

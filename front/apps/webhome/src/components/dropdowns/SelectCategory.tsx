@@ -1,5 +1,5 @@
 
-import { useState, Fragment, useEffect } from 'react'
+import { useState, Fragment, useEffect, useRef } from 'react'
 
 import { Combobox } from "@headlessui/react"
 
@@ -19,6 +19,7 @@ const SelectCategory = ({ value, onChange }: I) => {
     const { data: categoryData, isSuccess: isFetchCategoriesSuccess } = useGetCategoriesQuery()
     const { data: billData, isSuccess: isFetchBillsSuccess } = useGetBillsQuery()
     const [options, setOptions] = useState<(Category | Bill)[]>([])
+    const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         if (isFetchCategoriesSuccess && isFetchBillsSuccess) {
@@ -31,11 +32,14 @@ const SelectCategory = ({ value, onChange }: I) => {
             ? options.sort((a, b) => a.name.localeCompare(b.name))
             : options.filter((category) => category.name.toLowerCase().includes(query.toLowerCase()))
 
+    useEffect(() => { inputRef.current?.focus() }, [])
+
     return (
         <Combobox value={value} onChange={onChange} as={'div'} className="select-bill-category">
             <div className="category-select--container">
                 <SearchIcon />
                 <Combobox.Input
+                    ref={inputRef}
                     className="input"
                     onChange={(event) => setQuery(event.target.value)}
                     size={options.reduce((acc, curr) => Math.max(acc, curr.name.length), 0)}

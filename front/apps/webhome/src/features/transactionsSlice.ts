@@ -159,9 +159,7 @@ export const confirmedQueueSlice = createSlice({
     }
 })
 
-export const {
-    pushConfirmedTransaction
-} = confirmedQueueSlice.actions
+export const { pushConfirmedTransaction } = confirmedQueueSlice.actions
 
 export const selectConfirmedQueue = (state: { confirmedQueue: Transaction[] }) => state.confirmedQueue
 export const selectConfirmedQueueLength = (state: { confirmedQueue: Transaction[] }) => state.confirmedQueue.length

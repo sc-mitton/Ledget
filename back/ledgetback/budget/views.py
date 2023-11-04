@@ -63,14 +63,15 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
         if not yearly_category_anchor:
             yearly_category_anchor = datetime.now().replace(day=1)
 
+        cat_or_bill_is_null = \
+            Q(transaction__category__isnull=False) | Q(transaction__bill__isnull=False)
+
         sum_month = Sum(
             'transaction__amount',
             filter=Q(
                 transaction__date__month=month,
                 transaction__date__year=year,
-                transaction__category__isnull=False,
-                transaction__bill__isnull=False,
-            )
+            ) & cat_or_bill_is_null
         )
         monthly_qset = Category.objects \
                                .filter(
@@ -85,9 +86,7 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
             filter=Q(
                 transaction__date__gte=yearly_category_anchor,
                 transaction__date__lte=time_slice_end,
-                transaction__category__isnull=False,
-                transaction__bill__isnull=False,
-            )
+            ) & cat_or_bill_is_null
         )
         yearly_qset = Category.objects \
                               .filter(
@@ -118,9 +117,7 @@ class BillView(BulkSerializerMixin, ListCreateAPIView):
         year = self.request.query_params.get('year', None)
 
         if month and year:
-            return self._get_specific_month_qset(
-                int(month), int(year)
-            )
+            return self._get_specific_month_qset(int(month), int(year))
         else:
             return Bill.objects.filter(userbill__user=self.request.user)
 
@@ -145,7 +142,7 @@ class BillView(BulkSerializerMixin, ListCreateAPIView):
         )
         yearly_category_anchor = self.request.user.yearly_anchor
         if not yearly_category_anchor:
-            yearly_category_anchor = datetime().now()
+            yearly_category_anchor = datetime.now()
 
         annotation = Exists(Transaction.objects.filter(bill=OuterRef('pk')))
 
@@ -159,6 +156,7 @@ class BillView(BulkSerializerMixin, ListCreateAPIView):
                           .filter(
                               month__gte=yearly_category_anchor.month,
                               month__lte=time_slice_end.month) \
+                          .annotate(is_paid=annotation) \
 
         once_qset = Bill.objects \
                         .filter(userbill__user=self.request.user) \

@@ -81,12 +81,14 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
 
   const slotsApi = useSpringRef()
   const transitions = useTransition(slots, {
-    from: { maxWidth: loaded ? '0ch' : '1ch' },
-    // enter: (item) => ({
-    //   opacity: 1,
-    //   maxWidth: '1ch',
-    //   y: !isNaN(Number(slotRefs.current[item])) ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%` : '0em',
-    // }),
+    from: (item) => {
+      const y = !isNaN(Number(slotRefs.current[item])) ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%` : '0em'
+      return {
+        maxWidth: loaded ? '0ch' : '1ch',
+        opacity: loaded ? 0 : 1,
+        y: y,
+      }
+    },
     enter: (item) => {
       const y = !isNaN(Number(slotRefs.current[item])) ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%` : '0em'
       return {

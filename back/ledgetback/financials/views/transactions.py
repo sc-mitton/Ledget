@@ -154,8 +154,6 @@ class TransactionsSyncView(GenericAPIView):
     def get_plaid_item(self, request):
         item_id = self.request.query_params.get('item', None)
         account_id = self.request.query_params.get('account', None)
-        print('item_id', item_id)
-        print('account_id', account_id)
 
         if item_id:
             try:
@@ -215,9 +213,7 @@ class TransactionViewSet(ModelViewSet):
                 transaction_id__in=[id for id in transaction_ids if id is not None]
             )
         except Transaction.DoesNotExist:
-            raise ValidationError(
-                'One or more of the transactions does not exist.'
-            )
+            raise ValidationError('One or more of the transactions does not exist.')
 
         return instances
 
