@@ -230,7 +230,7 @@ const NeedsConfirmationWindow = () => {
     const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(undefined)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | undefined>()
     const [billCatSelectPos, setBillCatSelectPos] = useState<{ x: number, y: number } | undefined>()
-    const [updatedBillCats, setUpdatedBillCats] = useState<({ transactionId: string, category: Category, bill: Bill })[]>([])
+    const [updatedBillCats, setUpdatedBillCats] = useState<({ transactionId: string, category: Category | undefined, bill: Bill | undefined })[]>([])
     const [unconfirmedTransactions, setUnconfirmedTransactions] = useState<Transaction[] | undefined>()
 
     const [
@@ -346,13 +346,10 @@ const NeedsConfirmationWindow = () => {
         if (!focusedItem) return
 
         setUpdatedBillCats(prev => {
-            const index = prev.findIndex(billCat => billCat.transactionId === focusedItem.transaction_id)
-            if (index === -1) {
-                return [...prev]
-            }
-
-            return prev.map((item, i) => {
-                if (i === index) {
+            let updated = false
+            const updatedList = prev.map((item) => {
+                if (item.transactionId === focusedItem.transaction_id) {
+                    updated = true
                     return {
                         transactionId: focusedItem.transaction_id,
                         category: isCategory(billCatSelectVal) ? billCatSelectVal : item.category,
@@ -362,6 +359,16 @@ const NeedsConfirmationWindow = () => {
                     return item
                 }
             })
+            if (updated) {
+                return updatedList
+            } else {
+                const newItem = {
+                    transactionId: focusedItem.transaction_id,
+                    category: isCategory(billCatSelectVal) ? billCatSelectVal : undefined,
+                    bill: isBill(billCatSelectVal) ? billCatSelectVal : undefined,
+                }
+                return [...prev, newItem]
+            }
         })
     }, [billCatSelectVal])
 
