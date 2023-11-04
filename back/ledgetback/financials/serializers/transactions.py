@@ -12,36 +12,36 @@ class TransactionListSerializer(serializers.ListSerializer):
         category_ids = []
         bill_ids = []
         for item in validated_data:
-            category_id = item.pop('category', None)
-            bill_id = item.pop('bill', None)
+            category_id = item.get('category', None)
+            bill_id = item.get('bill', None)
 
-            category_ids.append(category_id if category_id else None)
-            bill_ids.append(bill_id if bill_id else None)
+            if category_id:
+                category_ids.append(category_id)
+            elif bill_id:
+                bill_ids.append(bill_id)
 
+        categories = {}
+        bills = {}
         try:
-            categories = Category.objects.filter(
-                id__in=[id for id in category_ids if id is not None]
-            )
-            bills = Bill.objects.filter(
-                id__in=[id for id in bill_ids if id is not None])
+            categories_qset = Category.objects.filter(id__in=category_ids)
+            bills_qset = Bill.objects.filter(id__in=bill_ids)
+            categories = {str(cat.id): cat for cat in categories_qset}
+            bills = {str(bill.id): bill for bill in bills_qset}
         except (Category.DoesNotExist, Bill.DoesNotExist):
             raise serializers.ValidationError(
-                'One or more of the categories or bills does not exist.'
-            )
+                'One or more of the categories or bills does not exist.')
 
-        category_index = 0  # index on the category queryset
-        bill_index = 0  # index on the bill queryset
         updated = []
-        for i in range(0, len(instance)):
+        for i in range(0, len(validated_data)):
             transaction = instance[i]
-            if category_ids[i]:
-                transaction.category = categories[category_index]
-                category_index += 1
-            if bill_ids[i]:
-                transaction.bill = bills[bill_index]
-                bill_index += 1
-
-            updated.append(transaction)
+            category = validated_data[i].get('category', None)
+            bill = validated_data[i].get('bill', None)
+            if category and categories.get(category, None):
+                transaction.category = categories[category]
+                updated.append(transaction)
+            elif bill and bills.get(bill, None):
+                transaction.bill = bills[bill]
+                updated.append(transaction)
 
         Transaction.objects.bulk_update(updated, ['category', 'bill'])
         return updated

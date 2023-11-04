@@ -8,7 +8,7 @@ import { CheckAll } from '@ledget/media'
 import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import {
-    useLazyGetTransactionsQuery,
+    useLazyGetUnconfirmedTransactionsQuery,
     selectConfirmedQueueLength,
     useTransactionsSyncMutation
 } from '@features/transactionsSlice'
@@ -29,7 +29,7 @@ const CheckAllButton = () => (
 
 const NewItemsHeader = () => {
     const [searchParams] = useSearchParams()
-    const [fetchTransactions, { data: unconfirmedTransactions }] = useLazyGetTransactionsQuery()
+    const [fetchTransactions, { data: unconfirmedTransactions }] = useLazyGetUnconfirmedTransactionsQuery()
     const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
     const { data: plaidItems } = useGetPlaidItemsQuery()
 
@@ -39,7 +39,6 @@ const NewItemsHeader = () => {
         fetchTransactions({
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
             year: parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-            confirmed: false,
         }, true)
     }, [searchParams.get('month')])
 

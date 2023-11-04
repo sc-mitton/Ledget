@@ -26,7 +26,7 @@ import { formatDateOrRelativeDate, InfiniteScrollDiv } from '@ledget/ui'
 import { addTransaction2Cat, Category, isCategory } from '@features/categorySlice'
 import { addTransaction2Bill, Bill, isBill } from '@features/billSlice'
 import {
-    useLazyGetTransactionsQuery,
+    useLazyGetUnconfirmedTransactionsQuery,
     useUpdateTransactionsMutation,
     pushConfirmedTransaction,
     selectConfirmedQueue,
@@ -34,7 +34,6 @@ import {
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
-import { set } from 'react-hook-form'
 
 // Sizing (in ems)
 const translate = 1
@@ -235,14 +234,13 @@ const NeedsConfirmationWindow = () => {
     const [billCatSelectPos, setBillCatSelectPos] = useState<{ x: number, y: number } | undefined>()
     const [updatedBillCats, setUpdatedBillCats] =
         useState<({ transactionId: string, category: Category | undefined, bill: Bill | undefined })[]>(
-            sessionStorage.getItem('updatedBillCats') ? JSON.parse(sessionStorage.getItem('updatedBillCats')!) : []
-        )
+            sessionStorage.getItem('updatedBillCats') ? JSON.parse(sessionStorage.getItem('updatedBillCats')!) : [])
     const [unconfirmedTransactions, setUnconfirmedTransactions] = useState<Transaction[] | undefined>()
 
     const [
         fetchTransactions,
         { data: transactionsData, isSuccess, isFetching: isFetchingTransactions }
-    ] = useLazyGetTransactionsQuery()
+    ] = useLazyGetUnconfirmedTransactionsQuery()
     const [updateTransactions] = useUpdateTransactionsMutation()
     const newItemsRef = useRef<HTMLDivElement>(null)
     const confirmedQueue = useSelector(selectConfirmedQueue)
@@ -255,7 +253,6 @@ const NeedsConfirmationWindow = () => {
         fetchTransactions({
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
             year: parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-            confirmed: false,
             offset: offset
         }, true)
     }, [searchParams.get('month')])
@@ -442,6 +439,7 @@ const NeedsConfirmationWindow = () => {
     // When the mouse leaves the container, flush the confirmed items que
     const flushConfirmedQue = () => {
         if (confirmedQueueLength > 0) {
+            setUpdatedBillCats([])
             updateTransactions(confirmedQueue)
         }
     }

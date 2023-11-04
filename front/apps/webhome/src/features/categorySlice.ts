@@ -3,10 +3,6 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
 import Big from 'big.js'
 
-const enhancedApiSlice = apiSlice.enhanceEndpoints({
-    addTagTypes: ['Categories'],
-})
-
 interface Alert {
     percent_amount: number
 }
@@ -27,30 +23,29 @@ interface CategoryQueryParams {
     year?: string;
 }
 
-export const extendedApiSlice = enhancedApiSlice.injectEndpoints({
+export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getCategories: builder.query<Category[], CategoryQueryParams | void>({
             query: (params) => {
                 const queryObj = {
                     url: 'categories',
                     method: 'GET',
-                    providesTags: ['Categories'],
-                };
-
+                }
                 if (params) {
                     return { ...queryObj, params };
                 }
 
                 return queryObj;
-            }
+            },
+            providesTags: ['Category'],
         }),
         addNewCategory: builder.mutation<any, Category[]>({
             query: (data) => ({
                 url: 'category',
                 method: 'POST',
                 body: data,
-                invalidatesTags: ['Categories']
             }),
+            invalidatesTags: ['Category']
         })
     }),
 })
@@ -84,14 +79,14 @@ export const categorySlice = createSlice({
             const foundCategory = state.categories.find(category => category.id === action.payload.categoryId);
             if (foundCategory) {
                 const foundIndex = state.categories.findIndex(category => category.id === action.payload.categoryId);
-                const amount_spent_int = Big(action.payload.amount).times(100).toNumber()
 
                 state.categories[foundIndex] = {
                     ...foundCategory,
-                    amount_spent: Big(foundCategory.amount_spent || 0).plus(amount_spent_int).toNumber(),
+                    amount_spent: Big(foundCategory.amount_spent || 0).plus(action.payload.amount).toNumber(),
                 }
 
                 // Update the monthly or yearly spent amount
+                const amount_spent_int = Big(action.payload.amount).times(100).toNumber()
                 if (foundCategory.period === 'month') {
                     state.monthly_spent += amount_spent_int;
                 } else if (foundCategory.period === 'year') {
@@ -104,6 +99,13 @@ export const categorySlice = createSlice({
         builder.addMatcher(
             extendedApiSlice.endpoints.getCategories.matchFulfilled,
             (state, action) => {
+                // If the query was just fetching the categories, and not getting
+                // the amount spent, then skip updating the state
+                const originalArgs = action.meta.arg.originalArgs
+                if (!originalArgs?.month && !originalArgs?.year) {
+                    return
+                }
+
                 state.categories = action.payload
                 let monthlySpent = Big(0)
                 let yearlySpent = Big(0)

@@ -2,11 +2,6 @@ import { apiSlice } from '@api/apiSlice'
 import Big from 'big.js'
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
-const enhancedApiSlice = apiSlice.enhanceEndpoints({
-    addTagTypes: ['Bills'],
-})
-
-
 interface Reminder {
     period: 'week' | 'day',
     offset: number,
@@ -42,20 +37,20 @@ interface BillQueryParams {
     year?: string;
 }
 
-export const extendedApiSlice = enhancedApiSlice.injectEndpoints({
+export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getBills: builder.query<TransformedBill[], Bill | BillQueryParams>({
+        getBills: builder.query<TransformedBill[], BillQueryParams | void>({
             query: (params) => {
                 const queryObj = {
                     url: 'bills',
                     method: 'GET',
-                    providesTags: ['Bills'],
                 }
                 if (params) {
                     return { ...queryObj, params };
                 }
                 return queryObj;
             },
+            providesTags: ['Bill'],
             transformResponse: (response: Bill[]) => {
                 const today = new Date()
                 const bills: TransformedBill[] = []
@@ -113,8 +108,8 @@ export const extendedApiSlice = enhancedApiSlice.injectEndpoints({
                 url: 'bill',
                 method: 'POST',
                 body: data,
-                invalidatesTags: ['Bills'],
             }),
+            invalidatesTags: ['Bill'],
         })
     }),
 })
@@ -186,6 +181,13 @@ export const billSlice = createSlice({
         builder.addMatcher(
             extendedApiSlice.endpoints.getBills.matchFulfilled,
             (state, action) => {
+                // If the query was just fetching the categories, and not getting
+                // the amount spent, then skip updating the state
+                const originalArgs = action.meta.arg.originalArgs
+                if (!originalArgs?.month && !originalArgs?.year) {
+                    return
+                }
+
                 state.bills = action.payload
                 let paidMonthlyBills = 0
                 let paidYearlyBills = 0

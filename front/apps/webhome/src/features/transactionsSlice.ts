@@ -52,7 +52,6 @@ export interface GetTransactionsParams {
     offset?: number
     limit?: number
 }
-
 interface GetTransactionsResponse {
     results: Transaction[]
     next?: number
@@ -75,16 +74,45 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 invalidatesTags: ['Transactions']
             }),
         }),
+        getUnconfirmedTransactions: builder.query<GetTransactionsResponse, GetTransactionsParams>({
+            query: (params) => ({
+                url: 'transactions',
+                params: { ...params, confirmed: false },
+            }),
+            providesTags: ['UnconfirmedTransaction'],
+            // For merging in paginated responses to the cache
+            // cache key needs to not include offset and limit
+            serializeQueryArgs: ({ queryArgs }) => {
+                const { offset, limit, ...cacheKeyArgs } = queryArgs
+                return cacheKeyArgs
+            },
+            merge: (currentCache, newItems) => {
+                if (currentCache.results) {
+                    const { results } = currentCache
+                    const { results: newResults, ...newRest } = newItems
+                    return {
+                        results: [...results, ...newResults],
+                        ...newRest
+                    }
+                }
+                return currentCache
+            },
+            transformResponse: (response: any) => {
+                // If response is a list
+                if (Array.isArray(response)) {
+                    return { results: response }
+                } else {
+                    return response
+                }
+            },
+            keepUnusedDataFor: 60 * 30, // 30 minutes
+        }),
         getTransactions: builder.query<GetTransactionsResponse, GetTransactionsParams>({
             query: (params) => ({
                 url: 'transactions',
                 params: params,
-                providesTags: (result: GetTransactionsResponse) => {
-                    result
-                        ? [...result.results.map(transaction_id => ({ type: 'Transactions', id: transaction_id })), 'Transactions']
-                        : ['Transactions']
-                }
             }),
+            providesTags: ['Transaction'],
             // For merging in paginated responses to the cache
             // cache key needs to not include offset and limit
             serializeQueryArgs: ({ queryArgs }) => {
@@ -117,12 +145,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 url: 'transactions',
                 method: 'POST',
                 body: data,
-                invalidatesTags: [
-                    ...data.map(transaction => ({ type: 'Transactions', id: transaction.transaction_id })),
-                    'Categories',
-                    'Bills'
-                ]
             }),
+            invalidatesTags: ['UnconfirmedTransaction', 'Category', 'Bill']
         }),
     }),
 })
@@ -149,13 +173,12 @@ export const confirmedQueueSlice = createSlice({
             (state, action) => {
                 state.splice(0, state.length)
             }
-        ),
-            builder.addMatcher(
-                extendedBillApiSlice.endpoints.getBills.matchFulfilled,
-                (state, action) => {
-                    state.splice(0, state.length)
-                }
-            )
+        ).addMatcher(
+            extendedBillApiSlice.endpoints.getBills.matchFulfilled,
+            (state, action) => {
+                state.splice(0, state.length)
+            }
+        )
     }
 })
 
@@ -168,7 +191,8 @@ export const {
     useTransactionsSyncMutation,
     useGetTransactionsQuery,
     useLazyGetTransactionsQuery,
-    useUpdateTransactionsMutation
+    useUpdateTransactionsMutation,
+    useLazyGetUnconfirmedTransactionsQuery,
 } = extendedApiSlice
 
 export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransactions.useQueryState
