@@ -13,7 +13,7 @@
     flex: 1;
 }
 
-.options-dropdown::before {
+.options-dropdown.top-arrow::before {
     position: absolute;
     top: -.4375rem;
     left: 2.75rem;
@@ -24,7 +24,7 @@
     content: '';
 }
 
-.options-dropdown::after {
+.options-dropdown.top-arrow::after {
     position: absolute;
     top: -.375rem;
     left: 2.8125rem;

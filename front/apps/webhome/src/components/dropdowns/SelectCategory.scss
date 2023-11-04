@@ -7,12 +7,9 @@
 }
 
 .category-select--container {
-    position: absolute;
-    bottom: -.5em;
-    left: 50%;
-    transform: translateX(-100%);
     display: flex;
     justify-content: center;
+    flex-direction: column;
 
     .options {
         display: flex;
@@ -32,8 +29,8 @@
 
     svg {
         position: absolute;
-        left: 1.375em;
-        top: 1.5em;
+        left: 1.125em;
+        top: 1.2em;
         opacity: .7;
     }
 

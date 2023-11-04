@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 
-import { Edit, Split, Info as DetailsIcon, Snooze } from "@ledget/media"
+import { Split, Info as DetailsIcon, Snooze } from "@ledget/media"
 
 
 const ItemOptionsMenu = () => {
@@ -62,21 +62,6 @@ const ItemOptionsMenu = () => {
                     >
                         <Split className="dropdown-icon" />
                         Split
-                    </div>
-                </li>
-                <li
-                    className={`dropdown-item${activeIndex === 1 ? ' active' : ''}`}
-                    role="menuitem"
-                >
-                    <div
-                        ref={refs.current[1]}
-                        tabIndex={-1}
-                        onClick={() => console.log('Add Note')}
-                        aria-label="Add note"
-                        role="button"
-                    >
-                        <Edit className="dropdown-icon" />
-                        Note
                     </div>
                 </li>
                 <li

@@ -6,8 +6,15 @@ import { DropAnimation } from '@ledget/ui'
 import { useClickClose } from "@utils/hooks"
 import './Options.css'
 
-const OptionsMenu = ({ pos, show, setShow, children }) => {
-    const menuRef = useRef('')
+const OptionsMenu = ({ pos, show, setShow, topArrow = true, children }:
+    {
+        pos: { x: number, y: number } | undefined,
+        show: boolean,
+        setShow: (show: boolean) => void,
+        topArrow?: boolean,
+        children: React.ReactNode
+    }) => {
+    const menuRef = useRef<HTMLDivElement>(null)
 
     useClickClose({
         refs: [menuRef],
@@ -18,7 +25,7 @@ const OptionsMenu = ({ pos, show, setShow, children }) => {
     useEffect(() => {
         if (!menuRef.current && pos) { setShow(true) }
 
-        const handleKeyDown = (e) => {
+        const handleKeyDown = (e: any) => {
             if (e.key === 'Escape' || e.key === 'Tab') {
                 setShow(false)
             }
@@ -38,7 +45,7 @@ const OptionsMenu = ({ pos, show, setShow, children }) => {
     return (
         <DropAnimation
             visible={show}
-            className="dropdown options-dropdown"
+            className={`dropdown options-dropdown ${topArrow ? 'top-arrow' : ''}`}
             style={{
                 position: 'absolute',
                 top: pos ? pos.y + 40 : 0,

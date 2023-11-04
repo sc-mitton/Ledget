@@ -18,7 +18,9 @@ import {
     IconScaleButton,
     Tooltip,
     Base64Logo,
-    DollarCents
+    DollarCents,
+    BlueSlimButton,
+    GrnSlimButton,
 } from "@ledget/ui"
 import { formatDateOrRelativeDate, InfiniteScrollDiv } from '@ledget/ui'
 import { addTransaction2Cat, Category, isCategory } from '@features/categorySlice'
@@ -32,10 +34,11 @@ import {
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
+import { set } from 'react-hook-form'
 
 // Sizing (in ems)
 const translate = 1
-const expandedTranslate = 5.625;
+const expandedTranslate = 5.875;
 const expandedHeight = 29
 const collapsedHeight = 7.5
 const scale = .1
@@ -112,13 +115,14 @@ const Logo = ({ accountId }: { accountId: string }) => {
 
 const NewItem: FC<{
     item: Transaction
+    newBillCat: Category | Bill | undefined
     style: React.CSSProperties
     onEllipsis: MouseEventHandler<HTMLButtonElement>
+    onBillCat: (e: any, item: Transaction) => void
     handleConfirm: (transaction: Transaction) => void
     tabIndex: number
 }> = (props) => {
-    const { item, style, onEllipsis, handleConfirm, tabIndex } = props
-    const [newBillCat, setNewBillCat] = useState<Category | Bill>()
+    const { item, newBillCat, style, onEllipsis, onBillCat, handleConfirm, tabIndex } = props
     const dispatch = useDispatch()
 
     const handleConfirmClick = () => {
@@ -166,11 +170,28 @@ const NewItem: FC<{
                 </div>
             </div>
             <div className='new-item-icons' >
-                <SelectCategory
-                    predicted={item.predicted_category || item.predicted_bill}
-                    value={newBillCat}
-                    onChange={setNewBillCat}
-                />
+                {item.predicted_category?.period === 'month'
+                    ?
+                    <GrnSlimButton
+                        aria-label="Choose budget category"
+                        tabIndex={tabIndex}
+                        onClick={(e) => { onBillCat(e, item) }}
+                    >
+                        {newBillCat
+                            ? newBillCat.name
+                            : item.predicted_category?.name}
+                    </GrnSlimButton>
+                    :
+                    <BlueSlimButton
+                        aria-label="Choose budget category"
+                        tabIndex={tabIndex}
+                        onClick={(e) => { onBillCat(e, item) }}
+                    >
+                        {newBillCat
+                            ? newBillCat.name
+                            : item.predicted_category?.name}
+                    </BlueSlimButton>
+                }
                 <Tooltip
                     msg="Confirm"
                     ariaLabel="Confirm"
@@ -202,9 +223,14 @@ const NeedsConfirmationWindow = () => {
     const [searchParams] = useSearchParams()
     const [offset, setOffset] = useState(0)
     const [expanded, setExpanded] = useState(false)
-    const [showMenu, setShowMenu] = useState(false)
     const [loaded, setLoaded] = useState(false)
-    const [menuPos, setMenuPos] = useState<{ x: number, y: number } | null>(null)
+    const [showMenu, setShowMenu] = useState(false)
+    const [showBillCatSelect, setShowBillCatSelect] = useState(false)
+    const [billCatSelectVal, setBillCatSelectVal] = useState<Category | Bill | undefined>()
+    const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(undefined)
+    const [menuPos, setMenuPos] = useState<{ x: number, y: number } | undefined>()
+    const [billCatSelectPos, setBillCatSelectPos] = useState<{ x: number, y: number } | undefined>()
+    const [updatedBillCats, setUpdatedBillCats] = useState<({ transactionId: string, category: Category, bill: Bill })[]>([])
     const [unconfirmedTransactions, setUnconfirmedTransactions] = useState<Transaction[] | undefined>()
 
     const [
@@ -311,8 +337,33 @@ const NeedsConfirmationWindow = () => {
 
     // Effect and handler for setting the options menu
     useEffect(() => {
-        !showMenu && setMenuPos(null)
+        !showMenu && setMenuPos(undefined)
     }, [showMenu])
+
+    // When options are selected from the bill/category combo dropdown
+    // update the list of updated bills/categories
+    useEffect(() => {
+        if (!focusedItem) return
+
+        setUpdatedBillCats(prev => {
+            const index = prev.findIndex(billCat => billCat.transactionId === focusedItem.transaction_id)
+            if (index === -1) {
+                return [...prev]
+            }
+
+            return prev.map((item, i) => {
+                if (i === index) {
+                    return {
+                        transactionId: focusedItem.transaction_id,
+                        category: isCategory(billCatSelectVal) ? billCatSelectVal : item.category,
+                        bill: isBill(billCatSelectVal) ? billCatSelectVal : item.bill,
+                    }
+                } else {
+                    return item
+                }
+            })
+        })
+    }, [billCatSelectVal])
 
     // ie activate the options dropdown menu
     const handleEllipsis = (e: any) => {
@@ -344,6 +395,15 @@ const NeedsConfirmationWindow = () => {
         })
     }
 
+    const handleBillCatClick = (e: any, item: Transaction) => {
+        const buttonRect = e.target.closest('button').getBoundingClientRect()
+        setBillCatSelectPos({
+            x: buttonRect.left - newItemsRef.current!.getBoundingClientRect().left || 0,
+            y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 4 || 0,
+        })
+        setFocusedItem(item)
+    }
+
     // Handle scrolling
     const handleScroll = (e: any) => {
         // Once the bottom is reached, then fetch the next list of items
@@ -351,6 +411,7 @@ const NeedsConfirmationWindow = () => {
             transactionsData?.next && setOffset(transactionsData.next)
         }
         setShowMenu(false)
+        setShowBillCatSelect(false)
     }
 
     // When the mouse leaves the container, flush the confirmed items que
@@ -383,6 +444,11 @@ const NeedsConfirmationWindow = () => {
                                             <NewItem
                                                 item={item}
                                                 style={style}
+                                                onBillCat={(e, item) => handleBillCatClick(e, item)}
+                                                newBillCat={
+                                                    updatedBillCats.find(billCat => billCat.transactionId === item.transaction_id)?.category ||
+                                                    updatedBillCats.find(billCat => billCat.transactionId === item.transaction_id)?.bill
+                                                }
                                                 onEllipsis={(e) => handleEllipsis(e)}
                                                 handleConfirm={handleItemConfirm}
                                                 tabIndex={expanded || index === 0 ? 0 : -1}
@@ -394,6 +460,17 @@ const NeedsConfirmationWindow = () => {
                         </animated.div >
                         <Options show={showMenu} setShow={setShowMenu} pos={menuPos}>
                             <ItemOptions />
+                        </Options>
+                        <Options
+                            show={showBillCatSelect}
+                            setShow={setShowBillCatSelect}
+                            pos={billCatSelectPos}
+                            topArrow={false}
+                        >
+                            <SelectCategory
+                                value={billCatSelectVal}
+                                onChange={setBillCatSelectVal}
+                            />
                         </Options>
                     </ShadowedContainer >
                 </InfiniteScrollDiv >
