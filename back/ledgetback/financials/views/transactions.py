@@ -1,4 +1,5 @@
 import logging
+from dateutil import parser
 from collections import OrderedDict
 
 from django.db import transaction, models
@@ -248,32 +249,39 @@ class TransactionViewSet(ModelViewSet):
 
     def get_queryset(self):
         params = self.request.query_params
-        month = params.get('month', None)
-        year = params.get('year', None)
+        start = params.get('start', None)
+        end = params.get('end', None)
         confirmed = params.get('confirmed', None)
 
-        if confirmed == 'true' and month:
-            return self._get_confirmed_transactions(month, year)
-        elif confirmed == 'false' and month:
-            return self._get_unconfirmed_transactions(month, year)
+        if start and end:
+            try:
+                start = parser.parse(start)
+                end = parser.parse(end)
+            except ValueError:
+                raise ValidationError('Invalid date format')
+
+        if confirmed == 'true' and start and end:
+            return self._get_confirmed_transactions(start, end)
+        elif confirmed == 'false' and start and end:
+            return self._get_unconfirmed_transactions(start, end)
         else:
             return self._get_transactions()
 
-    def _get_confirmed_transactions(self, month, year):
+    def _get_confirmed_transactions(self, start, end):
 
         qset = Transaction.objects.filter(
-            date__month=month,
-            date__year=year,
+            datetime__gte=start,
+            datetime__lte=end,
             category__isnull=False,
             bill__isnull=False,
-        ).select_related('category', 'bill')
+        ).select_related('category', 'bill').order_by('-datetime')
 
         return qset
 
-    def _get_unconfirmed_transactions(self, month, year):
+    def _get_unconfirmed_transactions(self, start, end):
         qset = Transaction.objects.filter(
-            date__month=month,
-            date__year=year,
+            datetime__gte=start,
+            datetime__lte=end,
             category__isnull=True,
             bill__isnull=True,
         ).select_related('predicted_category', 'predicted_bill')
@@ -288,7 +296,7 @@ class TransactionViewSet(ModelViewSet):
             account__plaid_item__user_id=self.request.user.id,
             account__type=type,
             account_id=account
-        ).select_related('category', 'bill')
+        ).select_related('category', 'bill').order_by('-datetime')
 
     def perform_update(self, serializer):
         serializer.save()

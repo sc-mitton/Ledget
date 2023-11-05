@@ -19,8 +19,8 @@ export interface Category {
 }
 
 interface CategoryQueryParams {
-    month?: string;
-    year?: string;
+    start?: string;
+    end?: string;
 }
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
@@ -102,7 +102,7 @@ export const categorySlice = createSlice({
                 // If the query was just fetching the categories, and not getting
                 // the amount spent, then skip updating the state
                 const originalArgs = action.meta.arg.originalArgs
-                if (!originalArgs?.month && !originalArgs?.year) {
+                if (!originalArgs?.start && !originalArgs?.end) {
                     return
                 }
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { Outlet } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
-import { useNavigate, createSearchParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, createSearchParams, useSearchParams, useLocation } from 'react-router-dom'
 
 import './styles/Window.scss'
 import { Plus, Edit, Ellipsis2 } from '@ledget/media'
@@ -114,12 +114,16 @@ const Spending = () => {
 
 function Window() {
     const [searchParams, setSearchParams] = useSearchParams()
+    const location = useLocation()
 
     useEffect(() => {
         // On mount set month and date to current date and month
         if (!searchParams.get('month') || !searchParams.get('year')) {
-            searchParams.set('month', `${new Date().getMonth() + 1}`)
-            searchParams.set('year', `${new Date().getFullYear()}`)
+            const year = sessionStorage.getItem(`${location.pathname}-year`) || new Date().getFullYear()
+            const month = sessionStorage.getItem(`${location.pathname}-month`) || new Date().getMonth() + 1
+
+            searchParams.set('month', `${month}`)
+            searchParams.set('year', `${year}`)
         }
         if (!searchParams.get('bill-sort')) {
             searchParams.set('bill-sort', 'date')
@@ -127,6 +131,14 @@ function Window() {
 
         setSearchParams(searchParams)
     }, [])
+
+    // Update session store month and year when pathnames change
+    useEffect(() => {
+        const year = searchParams.get('year')
+        const month = searchParams.get('month')
+        sessionStorage.setItem(`${location.pathname}-month`, `${month}`)
+        sessionStorage.setItem(`${location.pathname}-year`, `${year}`)
+    }, [searchParams.get('year'), searchParams.get('month')])
 
     return (
         <>

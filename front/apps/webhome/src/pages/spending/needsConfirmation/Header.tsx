@@ -1,16 +1,13 @@
-import { useEffect, useState } from 'react'
-
-import { useSearchParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { useSearchParams } from 'react-router-dom'
 
 import './styles/Header.scss'
 import { CheckAll } from '@ledget/media'
 import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import {
-    useLazyGetUnconfirmedTransactionsQuery,
-    selectConfirmedQueueLength,
-    useTransactionsSyncMutation
+    useTransactionsSyncMutation,
+    selectUnconfirmedLength
 } from '@features/transactionsSlice'
 import { Shimmer } from '@ledget/ui'
 
@@ -29,18 +26,14 @@ const CheckAllButton = () => (
 
 const NewItemsHeader = () => {
     const [searchParams] = useSearchParams()
-    const [fetchTransactions, { data: unconfirmedTransactions }] = useLazyGetUnconfirmedTransactionsQuery()
-    const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
     const { data: plaidItems } = useGetPlaidItemsQuery()
-
-    const confirmedQueueLength = useSelector(selectConfirmedQueueLength)
-
-    useEffect(() => {
-        fetchTransactions({
+    const unconfirmedLength = useSelector(
+        state => selectUnconfirmedLength(state, {
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
-            year: parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-        }, true)
-    }, [searchParams.get('month')])
+            year: parseInt(searchParams.get('year')!) || new Date().getFullYear()
+        })
+    )
+    const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
 
     const handleRefreshClick = () => {
         // sync everything
@@ -56,16 +49,16 @@ const NewItemsHeader = () => {
                 <div>
                     <div id="number-of-items">
                         <span>
-                            {(unconfirmedTransactions?.results.length || 0) - confirmedQueueLength > 99
+                            {unconfirmedLength > 99
                                 ? '99'
-                                : (unconfirmedTransactions?.results.length || 0) - confirmedQueueLength}
+                                : `${unconfirmedLength}`}
                         </span>
                     </div>
-                    <span>{`Item${(unconfirmedTransactions?.results.length || 0) > 1 ? 's' : ''}`} to confirm</span>
+                    <span>{`Item${unconfirmedLength !== 1 ? 's' : ''}`} to confirm</span>
                 </div>
                 <div>
                     <RefreshButton hasBackground={false} onClick={handleRefreshClick} />
-                    {(unconfirmedTransactions?.results.length! > 0) && <CheckAllButton />}
+                    {(unconfirmedLength > 0) && <CheckAllButton />}
                 </div>
             </div>
         </div>

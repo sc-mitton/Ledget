@@ -62,9 +62,11 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
         }, [searchParams.get('offset'), searchParams.get('account')])
 
         useEffect(() => {
-            searchParams.set('offset', '0')
-            searchParams.set('limit', '25')
-            setSearchParams(searchParams)
+            if (searchParams.get('account')) {
+                searchParams.set('offset', '0')
+                searchParams.set('limit', '25')
+                setSearchParams(searchParams)
+            }
         }, [searchParams.get('account')])
 
         useEffect(() => {

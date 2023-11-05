@@ -1,10 +1,11 @@
 
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
 import { apiSlice } from '@api/apiSlice'
-import { Category, extendedApiSlice as extendedCategoryApiSlice } from '@features/categorySlice'
+import { Category, addTransaction2Cat } from '@features/categorySlice'
+import { addTransaction2Bill } from '@features/billSlice'
 import type { Bill } from '@features/billSlice'
-import { extendedApiSlice as extendedBillApiSlice } from '@features/billSlice'
+import type { RootState } from './store'
 
 export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 
@@ -28,7 +29,7 @@ export type Transaction = {
     unnoficial_currency_code?: string
     check_number?: string
     date: string
-    datetime?: string
+    datetime: string
     authorized_date?: string
     authorized_datetime?: string
     confirmed_date?: string
@@ -47,8 +48,8 @@ export interface GetTransactionsParams {
     type?: AccountType
     account?: string
     confirmed?: boolean
-    month?: number
-    year?: number
+    start?: string
+    end?: string
     offset?: number
     limit?: number
 }
@@ -62,6 +63,30 @@ interface TransactionsSyncResponse {
     added: number
     modified: number
     removed: number
+}
+
+
+interface TransactionQueItem {
+    transaction: Transaction
+    category?: string
+    bill?: string
+}
+
+interface QueueItemWithBill extends TransactionQueItem {
+    category?: never
+    bill: string
+}
+
+interface QueueItemWithCategory extends TransactionQueItem {
+    category: string
+    bill?: never
+}
+
+type ConfirmedQueue = (QueueItemWithBill | QueueItemWithCategory)[];
+
+interface ConfirmStackInitialState extends ConfirmedQueue {
+    unconfirmed: Transaction[];
+    confirmedQue: ConfirmedQueue;
 }
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
@@ -82,8 +107,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             providesTags: ['UnconfirmedTransaction'],
             // For merging in paginated responses to the cache
             // cache key needs to not include offset and limit
-            serializeQueryArgs: ({ endpointName }) => {
-                return endpointName
+            serializeQueryArgs: ({ queryArgs }) => {
+                const { offset, limit, ...cacheKeyArgs } = queryArgs
+                return cacheKeyArgs
             },
             merge: (currentCache, newItems) => {
                 if (currentCache.next) {
@@ -141,52 +167,120 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
             keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
-        updateTransactions: builder.mutation<Transaction[], Transaction[]>({
+        updateTransactions: builder.mutation<any, ConfirmedQueue>({
             query: (data) => ({
                 url: 'transactions',
                 method: 'POST',
-                body: data,
+                body: data.map(item => ({
+                    transaction_id: item.transaction.transaction_id,
+                    category: item.category,
+                    bill: item.bill
+                })),
             }),
             invalidatesTags: ['Category', 'Bill']
         }),
     }),
 })
 
-interface ConfirmItem {
-    transaction_id: string
-    category?: string
-    bill?: string
-}
-
-export const confirmedQueueSlice = createSlice({
-    name: 'confirmedQueue',
-    initialState: [] as ConfirmItem[],
+export const confirmStack = createSlice({
+    name: 'confirmStack',
+    initialState: {
+        unconfirmed: [] as Transaction[],
+        confirmedQue: [] as ConfirmedQueue,
+    } as ConfirmStackInitialState,
     reducers: {
-        pushConfirmedTransaction: (
+        confirmTransaction: (
             state,
-            action: PayloadAction<ConfirmItem>) => {
-            state.push(action.payload)
+            action: PayloadAction<{ transaction: Transaction, category?: string, bill?: string }>
+        ) => {
+            // const index = state.unconfirmed.findIndex(item => item.transaction_id === action.payload)
+            const index = state.unconfirmed.findIndex(
+                item => item.transaction_id === action.payload.transaction.transaction_id)
+
+            if (index > -1) {
+                if (action.payload.category) {
+                    state.confirmedQue.push({
+                        transaction: state.unconfirmed[index],
+                        category: action.payload.category
+                    })
+                } else if (action.payload.bill) {
+                    state.confirmedQue.push({
+                        transaction: state.unconfirmed[index],
+                        bill: action.payload.bill
+                    })
+                }
+                state.unconfirmed.splice(index, 1)
+            }
         }
     },
     extraReducers: (builder) => {
         builder.addMatcher(
-            extendedCategoryApiSlice.endpoints.getCategories.matchFulfilled,
+            extendedApiSlice.endpoints.getUnconfirmedTransactions.matchFulfilled,
             (state, action) => {
-                state.splice(0, state.length)
+                // Add the action payload (query response) to the state
+                // the query will only ever return items that are definitely not confirmed yet,
+                // but might already be in the store, so we need to dedupe
+                let currentIds: { [key: string]: boolean } = {}
+                state.unconfirmed.forEach(item => currentIds[item.transaction_id] = true)
+                state.unconfirmed = [
+                    ...state.unconfirmed,
+                    ...action.payload.results.filter(item => !currentIds[item.transaction_id])
+                ]
             }
         ).addMatcher(
-            extendedBillApiSlice.endpoints.getBills.matchFulfilled,
+            extendedApiSlice.endpoints.updateTransactions.matchFulfilled,
             (state, action) => {
-                state.splice(0, state.length)
+                // When updates are sent to the server we can clear the confirmed queue
+                state.confirmedQue.splice(0, state.confirmedQue.length)
             }
         )
     }
 })
 
-export const { pushConfirmedTransaction } = confirmedQueueSlice.actions
+export const confirmAndUpdateMetaData = createAsyncThunk(
+    'confirmStack/confirmAndDispatch',
+    async ({ transaction, category, bill }: { transaction: Transaction, category?: string, bill?: string }, { dispatch }) => {
+        dispatch(confirmStack.actions.confirmTransaction({ transaction, category, bill }));
+        if (category) {
+            dispatch(addTransaction2Cat({ categoryId: category, amount: transaction.amount }));
+        } else if (bill) {
+            dispatch(addTransaction2Bill({ billId: bill, amount: transaction.amount }));
+        }
+    }
+)
 
-export const selectConfirmedQueue = (state: { confirmedQueue: Transaction[] }) => state.confirmedQueue
-export const selectConfirmedQueueLength = (state: { confirmedQueue: Transaction[] }) => state.confirmedQueue.length
+export const { confirmTransaction } = confirmStack.actions
+
+const selectUnconfirmed = (state: RootState) => state.confirmStack.unconfirmed
+const selectConfirmedQue = (state: RootState) => state.confirmStack.confirmedQue
+const selectDateYear = (state: RootState, date: { year: number, month: number }) => date
+
+export const selectUnconfirmedTransactions = createSelector(
+    [selectUnconfirmed, selectDateYear],
+    (unconfirmed, date) => unconfirmed.filter(item => {
+        const itemDate = new Date(item.datetime)
+        return itemDate.getFullYear() === date.year && itemDate.getMonth() + 1 === date.month
+    })
+)
+
+export const selectConfirmedTransactions = createSelector(
+    [selectConfirmedQue, selectDateYear],
+    (confirmedQue, date) => confirmedQue.filter(item => {
+        const itemDate = new Date(item.transaction.datetime)
+        return itemDate.getFullYear() === date.year && itemDate.getMonth() + 1 === date.month
+    })
+)
+
+export const selectUnconfirmedLength = createSelector(
+    [selectUnconfirmed, selectDateYear],
+    (unconfirmed, date) => unconfirmed.reduce((acc, item) => {
+        const itemDate = new Date(item.datetime)
+        if (itemDate.getFullYear() === date.year && itemDate.getMonth() + 1 === date.month) {
+            return acc + 1
+        }
+        return acc
+    }, 0)
+)
 
 export const {
     useTransactionsSyncMutation,

@@ -13,8 +13,15 @@ import { useGetBillsQuery, selectBillMetaData } from '@features/billSlice'
 const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
     const [searchParams] = useSearchParams()
     const { isLoading: loadingCategories } = useGetCategoriesQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
+        start: new Date(
+            parseInt(searchParams.get('year')!) || new Date().getFullYear(),
+            parseInt(searchParams.get('month')!) - 1 || new Date().getMonth()
+        ).toISOString(),
+        end: new Date(
+            parseInt(searchParams.get('year')!) || new Date().getFullYear(),
+            parseInt(searchParams.get('month')!) || new Date().getMonth(),
+            0
+        ).toISOString(),
     })
     const { isLoading: loadingBills } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
@@ -135,8 +142,15 @@ const SummaryStatsTeaser = ({
 }) => {
     const [searchParams] = useSearchParams()
     const { isLoading: loadingCategories } = useGetCategoriesQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
+        start: new Date(
+            parseInt(searchParams.get('year')!) || new Date().getFullYear(),
+            parseInt(searchParams.get('month')!) - 1 || new Date().getMonth()
+        ).toISOString(),
+        end: new Date(
+            parseInt(searchParams.get('year')!) || new Date().getFullYear(),
+            parseInt(searchParams.get('month')!) || new Date().getMonth(),
+            0
+        ).toISOString(),
     })
     const { isLoading: loadingBills } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,

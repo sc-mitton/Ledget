@@ -2,7 +2,8 @@ import React, { FC, MouseEventHandler, useState, useEffect, useRef } from 'react
 
 import { useSearchParams } from 'react-router-dom'
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
-import { useDispatch, useSelector } from 'react-redux'
+import { shallowEqual } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '@hooks/store'
 
 import "./styles/Window.scss"
 import { Ellipsis, CheckMark } from "@ledget/media"
@@ -23,14 +24,14 @@ import {
     GrnSlimButton,
 } from "@ledget/ui"
 import { formatDateOrRelativeDate, InfiniteScrollDiv } from '@ledget/ui'
-import { addTransaction2Cat, Category, isCategory } from '@features/categorySlice'
-import { addTransaction2Bill, Bill, isBill } from '@features/billSlice'
+import { Category, isCategory } from '@features/categorySlice'
+import { Bill } from '@features/billSlice'
 import {
     useLazyGetUnconfirmedTransactionsQuery,
     useUpdateTransactionsMutation,
-    pushConfirmedTransaction,
-    selectConfirmedQueue,
-    selectConfirmedQueueLength
+    confirmAndUpdateMetaData,
+    selectUnconfirmedTransactions,
+    selectConfirmedTransactions,
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
@@ -114,41 +115,23 @@ const Logo = ({ accountId }: { accountId: string }) => {
 
 const NewItem: FC<{
     item: Transaction
-    newBillCat: Category | Bill | undefined
     style: React.CSSProperties
     onEllipsis: MouseEventHandler<HTMLButtonElement>
     onBillCat: (e: any, item: Transaction) => void
     handleConfirm: (transaction: Transaction) => void
+    updatedBillCat?: Category | Bill
     tabIndex: number
 }> = (props) => {
-    const { item, newBillCat, style, onEllipsis, onBillCat, handleConfirm, tabIndex } = props
-    const dispatch = useDispatch()
+    const { item, style, updatedBillCat, onEllipsis, onBillCat, handleConfirm, tabIndex } = props
+    const [name, setName] = useState<string>(
+        `${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`
+    )
 
-    const handleConfirmClick = () => {
-        const billId = (isBill(newBillCat) && !isCategory(newBillCat)) ? newBillCat.id : item?.predicted_bill?.id
-        const categoryId = (isCategory(newBillCat) && !isBill(newBillCat)) ? newBillCat.id : item?.predicted_category?.id
-        if (categoryId) {
-            dispatch(addTransaction2Cat({
-                categoryId: categoryId,
-                amount: item.amount,
-            }))
-        } else if (billId) {
-            dispatch(addTransaction2Bill({
-                billId: billId,
-                amount: item.amount,
-            }))
-        }
-        dispatch(pushConfirmedTransaction({
-            transaction_id: item.transaction_id,
-            category: categoryId,
-            bill: billId,
-        }))
-        handleConfirm({
-            ...item,
-            ...(isCategory(newBillCat) && { category: newBillCat }),
-            ...(isBill(newBillCat) && { bill: newBillCat }),
-        } as Transaction)
-    }
+    useEffect(() => {
+        updatedBillCat
+            ? setName(updatedBillCat.name.charAt(0).toUpperCase() + updatedBillCat.name.slice(1))
+            : setName(`${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`)
+    }, [updatedBillCat])
 
     return (
         <animated.div
@@ -171,16 +154,16 @@ const NewItem: FC<{
                 </div>
             </div>
             <div className='new-item-icons' >
-                {item.predicted_category?.period === 'month'
+                {updatedBillCat?.period === 'month' ||
+                    item.predicted_bill?.period === 'month' ||
+                    item.predicted_category?.period === 'month'
                     ?
                     <GrnSlimButton
                         aria-label="Choose budget category"
                         tabIndex={tabIndex}
                         onClick={(e) => { onBillCat(e, item) }}
                     >
-                        {newBillCat
-                            ? `${newBillCat.name.charAt(0).toUpperCase()}${newBillCat.name.slice(1)}`
-                            : `${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`}
+                        {`${name}`}
                     </GrnSlimButton>
                     :
                     <BlueSlimButton
@@ -188,9 +171,7 @@ const NewItem: FC<{
                         tabIndex={tabIndex}
                         onClick={(e) => { onBillCat(e, item) }}
                     >
-                        {newBillCat
-                            ? `${newBillCat.name.charAt(0).toUpperCase()}${newBillCat.name.slice(1)}`
-                            : `${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`}
+                        {`${name}`}
                     </BlueSlimButton>
                 }
                 <Tooltip
@@ -199,7 +180,7 @@ const NewItem: FC<{
                     style={{ left: '-1.1rem' }}
                 >
                     <IconScaleButton
-                        onClick={handleConfirmClick}
+                        onClick={() => { handleConfirm(item) }}
                         aria-label="Confirm"
                         tabIndex={tabIndex}
                         className="confirm-button"
@@ -231,10 +212,24 @@ const NeedsConfirmationWindow = () => {
     const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(undefined)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | undefined>()
     const [billCatSelectPos, setBillCatSelectPos] = useState<{ x: number, y: number } | undefined>()
-    const [updatedBillCats, setUpdatedBillCats] =
-        useState<({ transactionId: string, category: Category | undefined, bill: Bill | undefined })[]>(
-            sessionStorage.getItem('updatedBillCats') ? JSON.parse(sessionStorage.getItem('updatedBillCats')!) : [])
-    const [unconfirmedTransactions, setUnconfirmedTransactions] = useState<Transaction[] | undefined>()
+    const [transactionUpdates, setTransactionUpdates] =
+        useState<{ [key: string]: { category?: Category, bill?: Bill } }>(
+            JSON.parse(sessionStorage.getItem('transactionUpdates') || '{}')
+        )
+
+    const unconfirmedTransactions = useAppSelector(
+        state => selectUnconfirmedTransactions(state, {
+            month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
+            year: parseInt(searchParams.get('year')!) || new Date().getFullYear()
+        }), shallowEqual
+    )
+    const confirmedTransactions = useAppSelector(
+        state => selectConfirmedTransactions(state, {
+            month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
+            year: parseInt(searchParams.get('year')!) || new Date().getFullYear()
+        }), shallowEqual
+    )
+    const dispatch = useAppDispatch()
 
     const [
         fetchTransactions,
@@ -242,36 +237,42 @@ const NeedsConfirmationWindow = () => {
     ] = useLazyGetUnconfirmedTransactionsQuery()
     const [updateTransactions] = useUpdateTransactionsMutation()
     const newItemsRef = useRef<HTMLDivElement>(null)
-    const confirmedQueue = useSelector(selectConfirmedQueue)
-    const confirmedQueueLength = useSelector(selectConfirmedQueueLength)
 
     useEffect(() => { setLoaded(true) }, [])
 
     // Initial fetch when query params change
     useEffect(() => {
         fetchTransactions({
-            month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
-            year: parseInt(searchParams.get('year')!) || new Date().getFullYear(),
+            start: new Date(
+                parseInt(searchParams.get('year')!) || new Date().getFullYear(),
+                parseInt(searchParams.get('month')!) - 1 || new Date().getMonth()
+            ).toISOString(),
+            end: new Date(
+                parseInt(searchParams.get('year')!) || new Date().getFullYear(),
+                parseInt(searchParams.get('month')!) || new Date().getMonth(),
+                0
+            ).toISOString(),
             offset: offset
         }, true)
-    }, [searchParams.get('month')])
+    }, [searchParams.get('month'), searchParams.get('year')])
 
     // Paginated requests
     useEffect(() => {
         if (transactionsData?.next) {
             fetchTransactions({
-                month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
-                year: parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-                confirmed: false,
+                start: new Date(
+                    parseInt(searchParams.get('year')!) || new Date().getFullYear(),
+                    parseInt(searchParams.get('month')!) - 1 || new Date().getMonth()
+                ).toISOString(),
+                end: new Date(
+                    parseInt(searchParams.get('year')!) || new Date().getFullYear(),
+                    parseInt(searchParams.get('month')!) || new Date().getMonth(),
+                    0
+                ).toISOString(),
                 offset: offset
             })
         }
     }, [offset])
-
-    // When the data is fetched, set the items state variable
-    useEffect(() => {
-        isSuccess && setUnconfirmedTransactions(transactionsData?.results)
-    }, [isSuccess, transactionsData])
 
     // Animation hooks/effects
     const itemsApi = useSpringRef()
@@ -311,7 +312,7 @@ const NeedsConfirmationWindow = () => {
             onRest: () => {
                 expanded
                     ? containerApi.start({ overflowY: 'scroll', overflowX: 'hidden' })
-                    : containerApi.start({ overflowY: 'visible', overflowX: 'visible' })
+                    : containerApi.start({ overflowY: 'visible', overflowX: 'hidden' })
             },
             config: {
                 tension: 180,
@@ -329,7 +330,7 @@ const NeedsConfirmationWindow = () => {
     }, [expanded])
 
     useEffect(() => {
-        if (unconfirmedTransactions) {
+        if (unconfirmedTransactions.length > 0) {
             itemsApi.start()
             containerApi.start({
                 height: _getContainerHeight(unconfirmedTransactions.length, expanded)
@@ -337,53 +338,35 @@ const NeedsConfirmationWindow = () => {
         }
     }, [expanded, unconfirmedTransactions])
 
-    // Menu closing effects
+    // Menu closing effects, clear positions
     useEffect(() => {
         !showMenu && setMenuPos(undefined)
-        if (!showBillCatSelect) {
-            setBillCatSelectPos(undefined)
+        !showBillCatSelect && setBillCatSelectPos(undefined)
+    }, [showMenu, showBillCatSelect])
+
+    // When options are selected from the bill/category combo dropdown
+    // update the list of updated bills/categories, then clean up
+    // the focused item and selected value
+    useEffect(() => {
+        if (focusedItem && billCatSelectVal) {
+            setTransactionUpdates((prev) => ({
+                ...prev,
+                [focusedItem.transaction_id]: isCategory(billCatSelectVal)
+                    ? { category: billCatSelectVal }
+                    : { bill: billCatSelectVal },
+            }))
+            sessionStorage.setItem(
+                'transactionUpdates',
+                JSON.stringify({
+                    ...transactionUpdates,
+                    [focusedItem.transaction_id]: isCategory(billCatSelectVal)
+                        ? { category: billCatSelectVal }
+                        : { bill: billCatSelectVal },
+                })
+            )
             setFocusedItem(undefined)
             setBillCatSelectVal(undefined)
         }
-    }, [showMenu, showBillCatSelect])
-
-    // Set updatedBillCats in session storage for persistence over page refreshes
-    useEffect(() => {
-        sessionStorage.setItem('updatedBillCats', JSON.stringify(updatedBillCats))
-    }, [updatedBillCats])
-
-    // When options are selected from the bill/category combo dropdown
-    // update the list of updated bills/categories
-    useEffect(() => {
-        if (!focusedItem) return
-
-        setUpdatedBillCats(prev => {
-            let updated = false
-            const updatedList = prev.map((item) => {
-                if (item.transactionId === focusedItem.transaction_id) {
-                    updated = true
-                    return {
-                        transactionId: focusedItem.transaction_id,
-                        category: isCategory(billCatSelectVal) ? billCatSelectVal : item.category,
-                        bill: isBill(billCatSelectVal) ? billCatSelectVal : item.bill,
-                    }
-                } else {
-                    return item
-                }
-            })
-            if (updated) {
-                return updatedList
-            } else {
-                const newItem = {
-                    transactionId: focusedItem.transaction_id,
-                    category: isCategory(billCatSelectVal) ? billCatSelectVal : undefined,
-                    bill: isBill(billCatSelectVal) ? billCatSelectVal : undefined,
-                }
-                return [...prev, newItem]
-            }
-        })
-        setShowBillCatSelect(false) // close the dropdown
-
     }, [billCatSelectVal])
 
     // ie activate the options dropdown menu
@@ -407,9 +390,13 @@ const NeedsConfirmationWindow = () => {
                     opacity: 0,
                     config: { duration: 130 },
                     onRest: () => {
-                        setUnconfirmedTransactions(prev =>
-                            prev?.filter(t => t.transaction_id !== transaction.transaction_id)
-                        )
+                        dispatch(confirmAndUpdateMetaData({
+                            transaction: transaction,
+                            category: transactionUpdates[transaction.transaction_id]?.category?.id
+                                || transaction.predicted_category?.id,
+                            bill: transactionUpdates[transaction.transaction_id]?.bill?.id
+                                || transaction.predicted_bill?.id,
+                        }))
                     },
                 }
             }
@@ -435,11 +422,13 @@ const NeedsConfirmationWindow = () => {
         setShowBillCatSelect(false)
     }
 
-    // When the mouse leaves the container, flush the confirmed items que
+    // When the mouse leaves the container, send the RTK mutation
+    // to update the bills/categories. When the mutation is successful,
+    // the confirmed queue will be cleared in the extra reducer for the
+    // confirmStack slice
     const flushConfirmedQue = () => {
-        if (confirmedQueueLength > 0) {
-            setUpdatedBillCats([])
-            updateTransactions(confirmedQueue)
+        if (confirmedTransactions.length > 0) {
+            updateTransactions(confirmedTransactions)
         }
     }
 
@@ -467,9 +456,9 @@ const NeedsConfirmationWindow = () => {
                                                 item={item}
                                                 style={style}
                                                 onBillCat={(e, item) => handleBillCatClick(e, item)}
-                                                newBillCat={
-                                                    updatedBillCats.find(billCat => billCat.transactionId === item.transaction_id)?.category ||
-                                                    updatedBillCats.find(billCat => billCat.transactionId === item.transaction_id)?.bill
+                                                updatedBillCat={
+                                                    transactionUpdates[item.transaction_id]?.category
+                                                    || transactionUpdates[item.transaction_id]?.bill
                                                 }
                                                 onEllipsis={(e) => handleEllipsis(e)}
                                                 handleConfirm={handleItemConfirm}

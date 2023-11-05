@@ -6,7 +6,6 @@ import { Combobox } from "@headlessui/react"
 import './SelectCategory.scss'
 import { Category, useGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useGetBillsQuery } from '@features/billSlice'
-import { DropAnimation } from '@ledget/ui'
 import { SearchIcon } from '@ledget/media'
 
 interface I {

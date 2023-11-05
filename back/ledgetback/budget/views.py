@@ -1,4 +1,5 @@
 from datetime import datetime
+from dateutil import parser
 import calendar
 
 from rest_framework.generics import ListCreateAPIView
@@ -27,13 +28,19 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
 
     def get_queryset(self):
 
-        month = self.request.query_params.get('month', None)
-        year = self.request.query_params.get('year', None)
+        start = self.request.query_params.get('start', None)
+        end = self.request.query_params.get('end', None)
 
-        if month and year:
-            return self._get_queryset_with_sliced_amount_spent(
-                int(month), int(year)
-            )
+        if start and end:
+            try:
+                start = parser.parse(start)
+                end = parser.parse(end)
+            except ValueError:
+                return Response(
+                    data={'error': 'Invalid date format'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            return self._get_queryset_with_sliced_amount_spent(start, end)
         else:
             return self._get_categories_qset()
 
@@ -52,13 +59,8 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
 
         return qset
 
-    def _get_queryset_with_sliced_amount_spent(self, month: int, year: int):
+    def _get_queryset_with_sliced_amount_spent(self, start: datetime, end: datetime):
 
-        time_slice_end = datetime(
-            year=year,
-            month=month,
-            day=calendar.monthrange(year, month)[1]
-        )
         yearly_category_anchor = self.request.user.yearly_anchor
         if not yearly_category_anchor:
             yearly_category_anchor = datetime.now().replace(day=1)
@@ -69,8 +71,7 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
         sum_month = Sum(
             'transaction__amount',
             filter=Q(
-                transaction__date__month=month,
-                transaction__date__year=year,
+                transaction__datetime__range=(start, end),
             ) & cat_or_bill_is_null
         )
         monthly_qset = Category.objects \
@@ -84,8 +85,7 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
         sum_year = Sum(
             'transaction__amount',
             filter=Q(
-                transaction__date__gte=yearly_category_anchor,
-                transaction__date__lte=time_slice_end,
+                transaction__datetime__range=(start, end),
             ) & cat_or_bill_is_null
         )
         yearly_qset = Category.objects \
@@ -220,3 +220,85 @@ class RecomendedBillsView(APIView):
                           .order_by('name', 'day_of_month', 'month_of_year')
 
         return qset
+
+
+# (SELECT
+#     "budget_bill"."id" AS "col1",
+#     "budget_bill"."name" AS "col2",
+#     "budget_bill"."emoji" AS "col3",
+#     "budget_bill"."created" AS "col4",
+#     "budget_bill"."period" AS "col5",
+#     "budget_bill"."lower_amount" AS "col6",
+#     "budget_bill"."upper_amount" AS "col7",
+#     "budget_bill"."day" AS "col8",
+#     "budget_bill"."week" AS "col9",
+#     "budget_bill"."week_day" AS "col10",
+#     "budget_bill"."month" AS "col11",
+#     "budget_bill"."year" AS "col12",
+#     EXISTS(
+#         SELECT 1 AS "a" FROM "financials_transaction" U0
+#         WHERE U0."bill_id" = ("budget_bill"."id")
+#         LIMIT 1
+#     ) AS "is_paid"
+# FROM "budget_bill"
+# INNER JOIN "budget_user_bill"
+# ON ("budget_bill"."id" = "budget_user_bill"."bill_id")
+# WHERE (
+#     "budget_user_bill"."user_id" = 5ccddb2e-55e3-4874-9724-991b145fe6a3
+#     AND "budget_bill"."month" IS NULL AND
+#     "budget_bill"."year" IS NULL)
+# )
+# UNION
+# (SELECT
+#     "budget_bill"."id" AS "col1",
+#     "budget_bill"."name" AS "col2",
+#     "budget_bill"."emoji" AS "col3",
+#     "budget_bill"."created" AS "col4",
+#     "budget_bill"."period" AS "col5",
+#     "budget_bill"."lower_amount" AS "col6",
+#     "budget_bill"."upper_amount" AS "col7",
+#     "budget_bill"."day" AS "col8",
+#     "budget_bill"."week" AS "col9",
+#     "budget_bill"."week_day" AS "col10",
+#     "budget_bill"."month" AS "col11",
+#     "budget_bill"."year" AS "col12",
+#     EXISTS(
+#         SELECT 1 AS "a"
+#         FROM "financials_transaction" U0
+#         WHERE U0."bill_id" = ("budget_bill"."id")
+#         LIMIT 1
+#     ) AS "is_paid"
+# FROM "budget_bill"
+# INNER JOIN "budget_user_bill"
+# ON ("budget_bill"."id" = "budget_user_bill"."bill_id")
+# WHERE (
+#     "budget_user_bill"."user_id" = 5ccddb2e-55e3-4874-9724-991b145fe6a3
+#     AND "budget_bill"."month" >= 11
+#     AND "budget_bill"."month" <= 10))
+# UNION
+# (SELECT
+#     "budget_bill"."id" AS "col1",
+#     "budget_bill"."name" AS "col2",
+#     "budget_bill"."emoji" AS "col3",
+#     "budget_bill"."created" AS "col4",
+#     "budget_bill"."period" AS "col5",
+#     "budget_bill"."lower_amount" AS "col6",
+#     "budget_bill"."upper_amount" AS "col7",
+#     "budget_bill"."day" AS "col8",
+#     "budget_bill"."week" AS "col9",
+#     "budget_bill"."week_day" AS "col10",
+#     "budget_bill"."month" AS "col11",
+#     "budget_bill"."year" AS "col12",
+#     EXISTS(
+#         SELECT 1 AS "a" F
+#         ROM "financials_transaction" U0
+#         WHERE U0."bill_id" = ("budget_bill"."id")
+#         LIMIT 1) AS "is_paid"
+# FROM "budget_bill"
+# INNER JOIN "budget_user_bill"
+# ON ("budget_bill"."id" = "budget_user_bill"."bill_id")
+# WHERE (
+#     "budget_user_bill"."user_id" = 5ccddb2e-55e3-4874-9724-991b145fe6a3
+#     AND "budget_bill"."month" = 10
+#     AND "budget_bill"."year" = 2023)
+# ) ORDER BY "col2" ASC

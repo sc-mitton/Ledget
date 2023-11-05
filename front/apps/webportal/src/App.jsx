@@ -1,19 +1,9 @@
 import { BrowserRouter } from 'react-router-dom'
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
 
 import "./style/base.css"
 import "./style/portal.scss"
-import rootReducer from '@features/rootReducer';
-import { apiSlice } from '@api/apiSlice'
 import Routes from './Routes'
-
-
-const store = configureStore({
-    reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(apiSlice.middleware),
-})
+import store from '@features/store'
 
 function App() {
 

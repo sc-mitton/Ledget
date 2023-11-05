@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useState, useRef, forwardRef } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '@hooks/store';
 
 import './styles/Bills.scss'
 import {
@@ -41,7 +41,7 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
-    const bills = useSelector(selectBills)
+    const bills = useAppSelector(selectBills)
 
     const selectedDate = new Date(
         parseInt(searchParams.get('year') || `${new Date().getFullYear()}`),
@@ -223,8 +223,8 @@ const Bills = () => {
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
-    const dispatch = useDispatch()
-    const bills = useSelector(selectBills)
+    const dispatch = useAppDispatch()
+    const bills = useAppSelector(selectBills)
     const [collapsed, setCollapsed] = useState(false)
 
     useEffect(() => {

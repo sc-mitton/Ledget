@@ -101,7 +101,7 @@ export const AccountWafers = () => {
 
     // Set first account on get accounts success
     useEffect(() => {
-        if (isSuccess && data?.accounts.length > 0) {
+        if (data?.accounts.length > 0) {
             searchParams.set('account', data?.accounts[0].account_id)
             setSearchParams(searchParams)
         }
@@ -109,14 +109,6 @@ export const AccountWafers = () => {
 
     // Start initial animation
     useEffect(() => { isSuccess && waferApi.start() }, [isSuccess])
-
-    // Set first account on get accounts success
-    useEffect(() => {
-        if (isSuccess && data?.accounts.length > 0) {
-            searchParams.set('account', data?.accounts[0].account_id)
-            setSearchParams(searchParams)
-        }
-    }, [isSuccess])
 
     const order = useRef(filterAccounts(data?.accounts || [], location).map((item) => item.account_id))
     const bind = useSpringDrag({
