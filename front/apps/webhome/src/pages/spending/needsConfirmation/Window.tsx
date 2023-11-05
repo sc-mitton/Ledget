@@ -127,7 +127,6 @@ const NewItem: FC<{
     const handleConfirmClick = () => {
         const billId = (isBill(newBillCat) && !isCategory(newBillCat)) ? newBillCat.id : item?.predicted_bill?.id
         const categoryId = (isCategory(newBillCat) && !isBill(newBillCat)) ? newBillCat.id : item?.predicted_category?.id
-
         if (categoryId) {
             dispatch(addTransaction2Cat({
                 categoryId: categoryId,

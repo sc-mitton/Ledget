@@ -34,9 +34,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 if (params) {
                     return { ...queryObj, params };
                 }
-
                 return queryObj;
             },
+            keepUnusedDataFor: 15 * 60,
             providesTags: ['Category'],
         }),
         addNewCategory: builder.mutation<any, Category[]>({

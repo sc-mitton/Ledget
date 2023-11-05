@@ -50,6 +50,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }
                 return queryObj;
             },
+            keepUnusedDataFor: 15 * 60,
             providesTags: ['Bill'],
             transformResponse: (response: Bill[]) => {
                 const today = new Date()

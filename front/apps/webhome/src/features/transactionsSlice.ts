@@ -1,5 +1,5 @@
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
 
 import { apiSlice } from '@api/apiSlice'
 import { Category, extendedApiSlice as extendedCategoryApiSlice } from '@features/categorySlice'
@@ -82,18 +82,19 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             providesTags: ['UnconfirmedTransaction'],
             // For merging in paginated responses to the cache
             // cache key needs to not include offset and limit
-            serializeQueryArgs: ({ queryArgs }) => {
-                const { offset, limit, ...cacheKeyArgs } = queryArgs
-                return cacheKeyArgs
+            serializeQueryArgs: ({ endpointName }) => {
+                return endpointName
             },
             merge: (currentCache, newItems) => {
-                if (currentCache.results) {
+                if (currentCache.next) {
                     const { results } = currentCache
                     const { results: newResults, ...newRest } = newItems
                     return {
                         results: [...results, ...newResults],
                         ...newRest
                     }
+                } else if (currentCache.results) {
+                    return newItems
                 }
                 return currentCache
             },
@@ -146,7 +147,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
-            invalidatesTags: ['UnconfirmedTransaction', 'Category', 'Bill']
+            invalidatesTags: ['Category', 'Bill']
         }),
     }),
 })

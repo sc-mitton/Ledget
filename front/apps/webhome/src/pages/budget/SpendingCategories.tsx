@@ -10,6 +10,7 @@ import type { Category } from '@features/categorySlice'
 import { useLazyGetCategoriesQuery, selectCategoryMetaData, selectCategories } from '@features/categorySlice'
 import {
     DollarCents,
+    AnimatedDollarCents,
     StaticProgressCircle,
     GrnPrimaryButton,
     BluePrimaryButton,
@@ -168,7 +169,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
             </div>
             <div>
                 <div>
-                    <DollarCents value={totalSpent ? totalSpent : '0.00'} />
+                    <AnimatedDollarCents value={totalSpent ? totalSpent : 0} />
                 </div>
             </div>
             <div>/</div>
