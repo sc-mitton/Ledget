@@ -284,8 +284,15 @@ const SpendingCategories = () => {
 
     useEffect(() => {
         fetchCategories({
-            month: searchParams.get('month')! || `${new Date().getMonth() + 1}`,
-            year: searchParams.get('year')! || `${new Date().getFullYear()}`,
+            start: new Date(
+                parseInt(searchParams.get('year')!) || new Date().getFullYear(),
+                parseInt(searchParams.get('month')!) - 1 || new Date().getMonth()
+            ).toISOString(),
+            end: new Date(
+                parseInt(searchParams.get('year')!) || new Date().getFullYear(),
+                parseInt(searchParams.get('month')!) || new Date().getMonth(),
+                0
+            ).toISOString(),
         }, true)
     }, [searchParams.get('month'), searchParams.get('year')])
 
