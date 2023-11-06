@@ -18,6 +18,10 @@ export interface Category {
     alerts: Alert[],
 }
 
+export interface SplitCategory extends Category {
+    fraction: number
+}
+
 interface CategoryQueryParams {
     start?: string;
     end?: string;

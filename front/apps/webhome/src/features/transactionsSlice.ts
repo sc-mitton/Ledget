@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
 import { apiSlice } from '@api/apiSlice'
-import { Category, addTransaction2Cat } from '@features/categorySlice'
+import { Category, addTransaction2Cat, SplitCategory } from '@features/categorySlice'
 import { addTransaction2Bill } from '@features/billSlice'
 import type { Bill } from '@features/billSlice'
 import type { RootState } from './store'
@@ -65,20 +65,19 @@ interface TransactionsSyncResponse {
     removed: number
 }
 
-
-interface TransactionQueItem {
+interface SimpleTransaction {
     transaction: Transaction
-    category?: string
+    categories?: SplitCategory[]
     bill?: string
 }
 
-interface QueueItemWithBill extends TransactionQueItem {
-    category?: never
+interface QueueItemWithBill extends SimpleTransaction {
+    categories?: never
     bill: string
 }
 
-interface QueueItemWithCategory extends TransactionQueItem {
-    category: string
+interface QueueItemWithCategory extends SimpleTransaction {
+    categories?: SplitCategory[]
     bill?: never
 }
 
@@ -173,7 +172,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data.map(item => ({
                     transaction_id: item.transaction.transaction_id,
-                    category: item.category,
+                    categories: item.categories?.map(item => ({ id: item.id, fraction: item.fraction })),
                     bill: item.bill
                 })),
             }),
@@ -191,17 +190,17 @@ export const confirmStack = createSlice({
     reducers: {
         confirmTransaction: (
             state,
-            action: PayloadAction<{ transaction: Transaction, category?: string, bill?: string }>
+            action: PayloadAction<{ transaction: Transaction, categories?: SplitCategory[], bill?: string }>
         ) => {
             // const index = state.unconfirmed.findIndex(item => item.transaction_id === action.payload)
             const index = state.unconfirmed.findIndex(
                 item => item.transaction_id === action.payload.transaction.transaction_id)
 
             if (index > -1) {
-                if (action.payload.category) {
+                if (action.payload.categories) {
                     state.confirmedQue.push({
                         transaction: state.unconfirmed[index],
-                        category: action.payload.category
+                        categories: action.payload.categories
                     })
                 } else if (action.payload.bill) {
                     state.confirmedQue.push({
@@ -239,10 +238,12 @@ export const confirmStack = createSlice({
 
 export const confirmAndUpdateMetaData = createAsyncThunk(
     'confirmStack/confirmAndDispatch',
-    async ({ transaction, category, bill }: { transaction: Transaction, category?: string, bill?: string }, { dispatch }) => {
-        dispatch(confirmStack.actions.confirmTransaction({ transaction, category, bill }));
-        if (category) {
-            dispatch(addTransaction2Cat({ categoryId: category, amount: transaction.amount }));
+    async ({ transaction, categories, bill }: { transaction: Transaction, categories?: SplitCategory[] | undefined, bill?: string }, { dispatch }) => {
+        dispatch(confirmStack.actions.confirmTransaction({ transaction, categories, bill }));
+        if (categories && categories.length > 0) {
+            for (const { id, fraction } of categories) {
+                dispatch(addTransaction2Cat({ categoryId: id, amount: transaction.amount * fraction }));
+            }
         } else if (bill) {
             dispatch(addTransaction2Bill({ billId: bill, amount: transaction.amount }));
         }

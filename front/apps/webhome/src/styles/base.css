@@ -299,7 +299,7 @@ div.body {
 .window {
     box-shadow: var(--window-drop-shadow);
     border-radius: var(--border-radius3);
-    padding: 1.75em;
+    padding: 1.5em;
     box-sizing: border-box;
 }
 

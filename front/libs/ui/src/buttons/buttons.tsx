@@ -106,17 +106,14 @@ export const GoogleLoginButton = ({ ...props }) => (
   </GrayWideButton>
 )
 
-export const CloseButton = ({ className = '', ...rest }) => {
-
-  return (
-    <button
-      className={`btn-clr btn btn-icon close-btn ${className}`}
-      {...rest}
-    >
-      <CloseIcon />
-    </button>
-  )
-}
+export const CloseButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { size?: string }> = ({ size, className, ...rest }) => (
+  <button
+    className={`btn-clr btn btn-icon close-btn ${className ? className : ''}`}
+    {...rest}
+  >
+    <CloseIcon size={size} />
+  </button>
+)
 
 export const BackButton = ({ children, withText = true, ...rest }: { children: ReactNode, withText: boolean }) => (
   <div>

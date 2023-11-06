@@ -127,8 +127,8 @@ type initialState = {
     total_yearly_bills_amount: number,
 }
 
-export function isBill(obj: any): obj is Bill {
-    return 'reminders' in obj
+export function isBill(obj: any | undefined): obj is Bill {
+    return obj ? 'alerts' in obj : false
 }
 
 export const billSlice = createSlice({

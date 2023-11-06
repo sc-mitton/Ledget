@@ -11,6 +11,7 @@ import Header from './Header'
 import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import Options from "@components/dropdowns/Options"
 import { SelectCategory } from '@components/dropdowns'
+import Split from '@components/split/split'
 import ItemOptions from "./ItemOptions"
 import {
     NarrowButton,
@@ -24,8 +25,8 @@ import {
     GrnSlimButton,
 } from "@ledget/ui"
 import { formatDateOrRelativeDate, InfiniteScrollDiv } from '@ledget/ui'
-import { Category, isCategory } from '@features/categorySlice'
-import { Bill } from '@features/billSlice'
+import { Category, isCategory, SplitCategory } from '@features/categorySlice'
+import { Bill, isBill } from '@features/billSlice'
 import {
     useLazyGetUnconfirmedTransactionsQuery,
     useUpdateTransactionsMutation,
@@ -40,7 +41,7 @@ import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 const translate = 1
 const expandedTranslate = 5.875;
 const expandedHeight = 29
-const collapsedHeight = 7.5
+const collapsedHeight = 8
 const scale = .1
 const stackMax = 2
 
@@ -116,21 +117,38 @@ const Logo = ({ accountId }: { accountId: string }) => {
 const NewItem: FC<{
     item: Transaction
     style: React.CSSProperties
-    onEllipsis: MouseEventHandler<HTMLButtonElement>
+    onEllipsis: (e: any, item: Transaction) => void
     onBillCat: (e: any, item: Transaction) => void
     handleConfirm: (transaction: Transaction) => void
-    updatedBillCat?: Category | Bill
+    updatedBillCat?: SplitCategory[] | Bill
     tabIndex: number
 }> = (props) => {
     const { item, style, updatedBillCat, onEllipsis, onBillCat, handleConfirm, tabIndex } = props
     const [name, setName] = useState<string>(
         `${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`
     )
+    const [color, setColor] = useState<'blue' | 'green' | 'green-split' | 'blue-split' | 'green-blue-split'>(
+        item.predicted_category?.period === 'month' ? 'green' : 'blue'
+    )
 
     useEffect(() => {
-        updatedBillCat
-            ? setName(updatedBillCat.name.charAt(0).toUpperCase() + updatedBillCat.name.slice(1))
-            : setName(`${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`)
+        if (isBill(updatedBillCat)) {
+            updatedBillCat.period === 'month' ? setColor('green') : setColor('blue')
+            updatedBillCat
+                ? setName(updatedBillCat.name.charAt(0).toUpperCase() + updatedBillCat.name.slice(1))
+                : setName(`${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`)
+        } else if (typeof updatedBillCat !== 'undefined') {
+            // If all the categories are the 'month' period, then color can be set
+            if (updatedBillCat.every(cat => cat.period === 'month')) {
+                setColor('green-split')
+            } else if (updatedBillCat.every(cat => ['once', 'year'].includes(cat.period))) {
+                setColor('blue-split')
+            } else {
+                setColor('green-blue-split')
+            }
+
+            setName(`${updatedBillCat[0].name.charAt(0).toUpperCase()}${updatedBillCat[0].name.slice(1)}`)
+        }
     }, [updatedBillCat])
 
     return (
@@ -154,9 +172,7 @@ const NewItem: FC<{
                 </div>
             </div>
             <div className='new-item-icons' >
-                {updatedBillCat?.period === 'month' ||
-                    item.predicted_bill?.period === 'month' ||
-                    item.predicted_category?.period === 'month'
+                {color === 'green' || color === 'green-split'
                     ?
                     <GrnSlimButton
                         aria-label="Choose budget category"
@@ -190,7 +206,7 @@ const NewItem: FC<{
                 </Tooltip>
                 <NarrowButton
                     tabIndex={tabIndex}
-                    onClick={onEllipsis}
+                    onClick={(e) => { onEllipsis(e, item) }}
                     aria-label="More options"
                     aria-haspopup="menu"
                 >
@@ -208,12 +224,14 @@ const NeedsConfirmationWindow = () => {
     const [loaded, setLoaded] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
     const [showBillCatSelect, setShowBillCatSelect] = useState(false)
+    const [splittingMode, setSplittingMode] = useState(false)
+    const [showSplitter, setShowSplitter] = useState(false)
     const [billCatSelectVal, setBillCatSelectVal] = useState<Category | Bill | undefined>()
     const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(undefined)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | undefined>()
     const [billCatSelectPos, setBillCatSelectPos] = useState<{ x: number, y: number } | undefined>()
     const [transactionUpdates, setTransactionUpdates] =
-        useState<{ [key: string]: { category?: Category, bill?: Bill } }>(
+        useState<{ [key: string]: { categories?: SplitCategory[], bill?: Bill } }>(
             JSON.parse(sessionStorage.getItem('transactionUpdates') || '{}')
         )
 
@@ -313,6 +331,7 @@ const NeedsConfirmationWindow = () => {
                 expanded
                     ? containerApi.start({ overflowY: 'scroll', overflowX: 'hidden' })
                     : containerApi.start({ overflowY: 'visible', overflowX: 'hidden' })
+                splittingMode && setShowSplitter(true)
             },
             config: {
                 tension: 180,
@@ -352,7 +371,7 @@ const NeedsConfirmationWindow = () => {
             setTransactionUpdates((prev) => ({
                 ...prev,
                 [focusedItem.transaction_id]: isCategory(billCatSelectVal)
-                    ? { category: billCatSelectVal }
+                    ? { categories: [{ ...billCatSelectVal, fraction: 1 }] }
                     : { bill: billCatSelectVal },
             }))
             sessionStorage.setItem(
@@ -360,7 +379,14 @@ const NeedsConfirmationWindow = () => {
                 JSON.stringify({
                     ...transactionUpdates,
                     [focusedItem.transaction_id]: isCategory(billCatSelectVal)
-                        ? { category: billCatSelectVal }
+                        ? {
+                            categories: [{
+                                id: billCatSelectVal.id,
+                                name: billCatSelectVal.name,
+                                period: billCatSelectVal.period,
+                                fraction: 1
+                            }]
+                        }
                         : { bill: billCatSelectVal },
                 })
             )
@@ -370,12 +396,13 @@ const NeedsConfirmationWindow = () => {
     }, [billCatSelectVal])
 
     // ie activate the options dropdown menu
-    const handleEllipsis = (e: any) => {
+    const handleEllipsis = (e: any, item: Transaction) => {
         const buttonRect = e.target.closest('button').getBoundingClientRect()
         setMenuPos({
             x: buttonRect.left - newItemsRef.current!.getBoundingClientRect().left || 0,
             y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 4 || 0,
         })
+        setFocusedItem(item)
     }
 
     // Handle confirming an item
@@ -392,8 +419,8 @@ const NeedsConfirmationWindow = () => {
                     onRest: () => {
                         dispatch(confirmAndUpdateMetaData({
                             transaction: transaction,
-                            category: transactionUpdates[transaction.transaction_id]?.category?.id
-                                || transaction.predicted_category?.id,
+                            categories: transactionUpdates[transaction.transaction_id]?.categories
+                                || [{ ...transaction.predicted_category!, fraction: 1 }],
                             bill: transactionUpdates[transaction.transaction_id]?.bill?.id
                                 || transaction.predicted_bill?.id,
                         }))
@@ -432,6 +459,13 @@ const NeedsConfirmationWindow = () => {
         }
     }
 
+    const handleSplit = () => {
+        setExpanded(false)
+        setSplittingMode(true)
+        setShowMenu(false)
+        !expanded && setShowSplitter(true)
+    }
+
     return (
         <div id="new-items-container">
             <div>
@@ -455,12 +489,12 @@ const NeedsConfirmationWindow = () => {
                                             <NewItem
                                                 item={item}
                                                 style={style}
-                                                onBillCat={(e, item) => handleBillCatClick(e, item)}
                                                 updatedBillCat={
-                                                    transactionUpdates[item.transaction_id]?.category
+                                                    transactionUpdates[item.transaction_id]?.categories
                                                     || transactionUpdates[item.transaction_id]?.bill
                                                 }
-                                                onEllipsis={(e) => handleEllipsis(e)}
+                                                onBillCat={(e, item) => handleBillCatClick(e, item)}
+                                                onEllipsis={(e, item) => handleEllipsis(e, item)}
                                                 handleConfirm={handleItemConfirm}
                                                 tabIndex={expanded || index === 0 ? 0 : -1}
                                             />
@@ -469,9 +503,6 @@ const NeedsConfirmationWindow = () => {
                                 </>
                             }
                         </animated.div >
-                        <Options show={showMenu} setShow={setShowMenu} pos={menuPos}>
-                            <ItemOptions />
-                        </Options>
                         <Options
                             show={showBillCatSelect}
                             setShow={setShowBillCatSelect}
@@ -484,8 +515,27 @@ const NeedsConfirmationWindow = () => {
                             />
                         </Options>
                     </ShadowedContainer >
+                    <Options show={showMenu} setShow={setShowMenu} pos={menuPos}>
+                        <ItemOptions handlers={[handleSplit]} />
+                    </Options>
+                    {showSplitter &&
+                        <Split
+                            title={focusedItem?.name || ''}
+                            amount={focusedItem?.amount || 0}
+                            defaultCategory={
+                                isCategory(transactionUpdates[focusedItem!.transaction_id]) ?
+                                    transactionUpdates[focusedItem!.transaction_id].categories![0]
+                                    : focusedItem?.predicted_category
+                            }
+                            onClose={() => {
+                                setShowSplitter(false)
+                                setSplittingMode(false)
+                            }}
+                        />
+                    }
                 </InfiniteScrollDiv >
-                <ExpandableContainer expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
+                <ExpandableContainer
+                    expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
                     <ExpandButton onClick={() => setExpanded(!expanded)} flipped={expanded} />
                 </ExpandableContainer>
             </div >

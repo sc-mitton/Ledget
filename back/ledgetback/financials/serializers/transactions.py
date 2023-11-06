@@ -11,28 +11,30 @@ class UpdateTransactionListSerializer(serializers.ListSerializer):
         bill_ids = [item['bill'] for item in validated_data if item.get('bill', None)]
         category_ids = []
         for item in validated_data:
-            if item['categories']:
+            if item.get('categories', False):
                 category_ids.extend([cat['id'] for cat in item['categories']])
 
-        bills = self._get_bill_objects(bill_ids)
-        categories = self._get_category_objects(category_ids)
+        bill_objs = self._get_bill_objects(bill_ids)
+        category_objs = self._get_category_objects(category_ids)
 
         updated_transactions = []
         created_transaction_categories = []
         for i, data in enumerate(validated_data):
-            bill = data.get('bill', False)
-            categories = data.get('categories', False)
+            bill_id = data.get('bill', False)
+            category_data = data.get('categories', False)
             instance = instances[i]
 
-            if bill:
-                instance.bill = bills[bill]
+            if bill_id:
+                instance.bill = bill_objs[bill_id]
                 updated_transactions.append(instance)
-            elif categories:
-                for category in categories:
+            elif category_data:
+                for i, category in enumerate(category_data):
+                    id = category['id']
+                    fraction = category['fraction']
                     transaction_category = TransactionCategory(
                         transaction=instance,
-                        category=categories[category],
-                        fraction=category['fraction']
+                        category=category_objs[id],
+                        fraction=fraction
                     )
                     created_transaction_categories.append(transaction_category)
 
@@ -64,13 +66,16 @@ class UpdateTransactionListSerializer(serializers.ListSerializer):
 
 
 class SimpleCategorySerializer(serializers.Serializer):
-    id = serializers.IntegerField(required=True)
+    id = serializers.CharField(required=True)
     fraction = serializers.DecimalField(
         required=True,
         max_digits=3,
         max_value=1,
         decimal_places=2,
         min_value=0)
+
+    def to_representation(self, instance):
+        return {'id': instance.id, 'name': instance.name}
 
 
 class UpdateTransactionsSerializer(serializers.Serializer):
@@ -83,7 +88,7 @@ class UpdateTransactionsSerializer(serializers.Serializer):
 
     def validate_categories(self, value):
 
-        percent_sum = sum([cat['fraction'] for cat in value])
+        percent_sum = sum([category['fraction'] for category in value])
         if percent_sum != 1:
             raise serializers.ValidationError('Fractions must sum to 1')
         return value

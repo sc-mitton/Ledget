@@ -1,0 +1,21 @@
+#split-item--container {
+    position: absolute;
+    z-index: 100;
+    border-radius: inherit;
+    margin: .25em 0 .5em 0;
+    border-radius: var(--border-radius3);
+    padding: 1em 1.25em;
+    inset: 0;
+    background-color: var(--window);
+    box-shadow: var(--window-drop-shadow);
+
+    .header {
+        display: flex;
+        justify-content: flex-start;
+        gap: .5em;
+    }
+
+    .splitter {
+        width: 100%;
+    }
+}

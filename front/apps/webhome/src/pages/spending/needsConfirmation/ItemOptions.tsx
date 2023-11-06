@@ -2,28 +2,34 @@ import { useRef, useEffect, useState } from 'react'
 
 import { Split, Info as DetailsIcon, Snooze } from "@ledget/media"
 
+interface ItemOptionsMenuProps {
+    handlers: (() => void)[]
+}
 
-const ItemOptionsMenu = () => {
-    const ref = useRef()
-    const refs = useRef([])
-    const [activeIndex, setActiveIndex] = useState(null)
+const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
+    // const ref = useRef()
+    // const refs = useRef([])
+    const ref = useRef<any>(null)
+    const refs = useRef<any[]>(null)
+    const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
     for (let i = 0; i < 4; i++) {
-        refs.current[i] = useRef()
+        if (refs.current && refs.current[i]) {
+            refs.current[i] = useRef()
+        }
     }
 
     useEffect(() => {
-        ref.current.focus()
-
-        ref.current.addEventListener('focus', () => {
+        ref.current?.focus()
+        ref.current?.addEventListener('focus', () => {
             setActiveIndex(0)
         })
     }, [])
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLUListElement>) => {
         switch (e.key) {
             case 'ArrowUp':
-                activeIndex > 0 && setActiveIndex(activeIndex - 1)
+                activeIndex! > 0 && setActiveIndex(activeIndex! - 1)
                 break
             case 'ArrowDown':
                 if (activeIndex === null) {
@@ -33,7 +39,7 @@ const ItemOptionsMenu = () => {
                 }
                 break
             case 'Enter':
-                refs.current[activeIndex].click()
+                (refs.current && activeIndex) ? refs.current[activeIndex].click() : null
                 break
             default:
                 break
@@ -54,9 +60,9 @@ const ItemOptionsMenu = () => {
                     role="menuitem"
                 >
                     <div
-                        ref={refs.current[0]}
+                        ref={refs.current && refs.current[0]}
                         tabIndex={-1}
-                        onClick={() => console.log('split')}
+                        onClick={() => { props.handlers[0]() }}
                         aria-label="Split"
                         role="button"
                     >
@@ -65,13 +71,12 @@ const ItemOptionsMenu = () => {
                     </div>
                 </li>
                 <li
-                    className={`dropdown-item${activeIndex === 2 ? ' active' : ''}`}
+                    className={`dropdown-item${activeIndex === 1 ? ' active' : ''}`}
                     role="menuitem"
                 >
                     <div
-                        ref={refs.current[2]}
+                        onClick={() => { props.handlers[1]() }}
                         tabIndex={-1}
-                        onClick={() => console.log('Snooze')}
                         aria-label="Snooze"
                         role="button"
                     >
@@ -80,13 +85,12 @@ const ItemOptionsMenu = () => {
                     </div>
                 </li>
                 <li
-                    className={`dropdown-item${activeIndex === 3 ? ' active' : ''}`}
+                    className={`dropdown-item${activeIndex === 2 ? ' active' : ''}`}
                     role="menuitem"
                 >
                     <div
-                        ref={refs.current[3]}
+                        onClick={() => { props.handlers[3]() }}
                         tabIndex={-1}
-                        onClick={() => console.log('Checkout details')}
                         aria-label="Details"
                         role="button"
                     >
