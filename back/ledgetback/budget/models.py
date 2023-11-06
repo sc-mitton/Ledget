@@ -143,6 +143,21 @@ class UserCategory(models.Model):
         return super().create()
 
 
+class TransactionCategory(models.Model):
+
+    class Meta:
+        db_table = 'budget_transaction_category'
+        unique_together = ('transaction', 'category')
+
+    transaction = models.ForeignKey('financials.Transaction',
+                                    on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    fraction = models.DecimalField(
+        max_digits=3,
+        decimal_places=2,
+        validators=[MinValueValidator(0.0), MaxValueValidator(1.0)])
+
+
 class UserBill(models.Model):
 
     class Meta:

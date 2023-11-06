@@ -235,18 +235,6 @@ class TransactionViewSet(ModelViewSet):
 
         return Response(serializer.data)
 
-    def get_object(self):
-        id = self.kwargs.get('pk', None)
-        account = self.request.query_params.get('account', None)
-        try:
-            return Transaction.objects.get(
-                account__plaid_item__user_id=self.request.user.id,
-                account__id=account,
-                id=id
-            )
-        except Transaction.DoesNotExist:
-            raise ValidationError('Invalid transaction id')
-
     def get_queryset(self):
         params = self.request.query_params
         start = params.get('start', None)
@@ -272,9 +260,9 @@ class TransactionViewSet(ModelViewSet):
         qset = Transaction.objects.filter(
             datetime__gte=start,
             datetime__lte=end,
-            category__isnull=False,
+            categories=None,
             bill__isnull=False,
-        ).select_related('category', 'bill').order_by('-datetime')
+        ).select_related('bill').prefetch_related('categories').order_by('-datetime')
 
         return qset
 
@@ -282,7 +270,7 @@ class TransactionViewSet(ModelViewSet):
         qset = Transaction.objects.filter(
             datetime__gte=start,
             datetime__lte=end,
-            category__isnull=True,
+            categories=None,
             bill__isnull=True,
         ).select_related('predicted_category', 'predicted_bill')
 
@@ -296,7 +284,7 @@ class TransactionViewSet(ModelViewSet):
             account__plaid_item__user_id=self.request.user.id,
             account__type=type,
             account_id=account
-        ).select_related('category', 'bill').order_by('-datetime')
+        ).select_related('bill').prefetch_related('categories').order_by('-datetime')
 
     def perform_update(self, serializer):
         serializer.save()

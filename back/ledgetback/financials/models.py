@@ -4,7 +4,8 @@ from django.utils import timezone
 from core.models import User
 from budget.models import (
     Category,
-    Bill
+    Bill,
+    TransactionCategory
 )
 
 
@@ -104,8 +105,11 @@ class Transaction(models.Model):
     transaction_type = models.CharField(max_length=100, null=True, blank=True)
 
     # Budget Info
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL,
-                                 null=True, blank=True)
+    categories = models.ManyToManyField(
+        Category,
+        blank=True,
+        related_name='transactions',
+        through=TransactionCategory)
     bill = models.ForeignKey(Bill, on_delete=models.SET_NULL,
                              null=True, blank=True)
     predicted_category = models.ForeignKey(Category,

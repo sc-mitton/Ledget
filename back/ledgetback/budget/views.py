@@ -65,35 +65,35 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
         if not yearly_category_anchor:
             yearly_category_anchor = datetime.now().replace(day=1)
 
-        cat_or_bill_is_null = \
-            Q(transaction__category__isnull=False) | Q(transaction__bill__isnull=False)
-
-        sum_month = Sum(
-            'transaction__amount',
-            filter=Q(
-                transaction__datetime__range=(start, end),
-            ) & cat_or_bill_is_null
+        monthly_amount_spent = Sum(
+            F('transactioncategory__transaction__amount') *
+            F('transactioncategory__fraction'),
+            filter=Q(transactioncategory__transaction__datetime__range=(start, end))
         )
-        monthly_qset = Category.objects \
-                               .filter(
+
+        monthly_qset = Category.objects.filter(
                                    usercategory__user=self.request.user,
                                    usercategory__category__period='month'
                                 ) \
-                               .annotate(amount_spent=sum_month) \
+                               .annotate(amount_spent=monthly_amount_spent) \
                                .annotate(order=F('usercategory__order')) \
 
-        sum_year = Sum(
-            'transaction__amount',
+        yearly_amount_spent = Sum(
+            F('transactioncategory__transaction__amount') *
+            F('transactioncategory__fraction'),
             filter=Q(
-                transaction__datetime__range=(start, end),
-            ) & cat_or_bill_is_null
+                transactioncategory__transaction__datetime__range=(
+                    yearly_category_anchor,
+                    end),
+            )
         )
+
         yearly_qset = Category.objects \
                               .filter(
                                  usercategory__user=self.request.user,
                                  usercategory__category__period='year'
                                ) \
-                              .annotate(amount_spent=sum_year) \
+                              .annotate(amount_spent=yearly_amount_spent) \
                               .annotate(order=F('usercategory__order')) \
 
         union_qset = monthly_qset.union(yearly_qset).order_by('order', 'name')
@@ -220,85 +220,3 @@ class RecomendedBillsView(APIView):
                           .order_by('name', 'day_of_month', 'month_of_year')
 
         return qset
-
-
-# (SELECT
-#     "budget_bill"."id" AS "col1",
-#     "budget_bill"."name" AS "col2",
-#     "budget_bill"."emoji" AS "col3",
-#     "budget_bill"."created" AS "col4",
-#     "budget_bill"."period" AS "col5",
-#     "budget_bill"."lower_amount" AS "col6",
-#     "budget_bill"."upper_amount" AS "col7",
-#     "budget_bill"."day" AS "col8",
-#     "budget_bill"."week" AS "col9",
-#     "budget_bill"."week_day" AS "col10",
-#     "budget_bill"."month" AS "col11",
-#     "budget_bill"."year" AS "col12",
-#     EXISTS(
-#         SELECT 1 AS "a" FROM "financials_transaction" U0
-#         WHERE U0."bill_id" = ("budget_bill"."id")
-#         LIMIT 1
-#     ) AS "is_paid"
-# FROM "budget_bill"
-# INNER JOIN "budget_user_bill"
-# ON ("budget_bill"."id" = "budget_user_bill"."bill_id")
-# WHERE (
-#     "budget_user_bill"."user_id" = 5ccddb2e-55e3-4874-9724-991b145fe6a3
-#     AND "budget_bill"."month" IS NULL AND
-#     "budget_bill"."year" IS NULL)
-# )
-# UNION
-# (SELECT
-#     "budget_bill"."id" AS "col1",
-#     "budget_bill"."name" AS "col2",
-#     "budget_bill"."emoji" AS "col3",
-#     "budget_bill"."created" AS "col4",
-#     "budget_bill"."period" AS "col5",
-#     "budget_bill"."lower_amount" AS "col6",
-#     "budget_bill"."upper_amount" AS "col7",
-#     "budget_bill"."day" AS "col8",
-#     "budget_bill"."week" AS "col9",
-#     "budget_bill"."week_day" AS "col10",
-#     "budget_bill"."month" AS "col11",
-#     "budget_bill"."year" AS "col12",
-#     EXISTS(
-#         SELECT 1 AS "a"
-#         FROM "financials_transaction" U0
-#         WHERE U0."bill_id" = ("budget_bill"."id")
-#         LIMIT 1
-#     ) AS "is_paid"
-# FROM "budget_bill"
-# INNER JOIN "budget_user_bill"
-# ON ("budget_bill"."id" = "budget_user_bill"."bill_id")
-# WHERE (
-#     "budget_user_bill"."user_id" = 5ccddb2e-55e3-4874-9724-991b145fe6a3
-#     AND "budget_bill"."month" >= 11
-#     AND "budget_bill"."month" <= 10))
-# UNION
-# (SELECT
-#     "budget_bill"."id" AS "col1",
-#     "budget_bill"."name" AS "col2",
-#     "budget_bill"."emoji" AS "col3",
-#     "budget_bill"."created" AS "col4",
-#     "budget_bill"."period" AS "col5",
-#     "budget_bill"."lower_amount" AS "col6",
-#     "budget_bill"."upper_amount" AS "col7",
-#     "budget_bill"."day" AS "col8",
-#     "budget_bill"."week" AS "col9",
-#     "budget_bill"."week_day" AS "col10",
-#     "budget_bill"."month" AS "col11",
-#     "budget_bill"."year" AS "col12",
-#     EXISTS(
-#         SELECT 1 AS "a" F
-#         ROM "financials_transaction" U0
-#         WHERE U0."bill_id" = ("budget_bill"."id")
-#         LIMIT 1) AS "is_paid"
-# FROM "budget_bill"
-# INNER JOIN "budget_user_bill"
-# ON ("budget_bill"."id" = "budget_user_bill"."bill_id")
-# WHERE (
-#     "budget_user_bill"."user_id" = 5ccddb2e-55e3-4874-9724-991b145fe6a3
-#     AND "budget_bill"."month" = 10
-#     AND "budget_bill"."year" = 2023)
-# ) ORDER BY "col2" ASC
