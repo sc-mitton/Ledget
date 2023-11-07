@@ -3,6 +3,7 @@ from dateutil import parser
 from collections import OrderedDict
 
 from django.db import transaction, models
+from django.db.models import Q
 from rest_framework.generics import GenericAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
@@ -257,12 +258,11 @@ class TransactionViewSet(ModelViewSet):
             return self._get_transactions()
 
     def _get_confirmed_transactions(self, start, end):
-
         qset = Transaction.objects.filter(
             datetime__gte=start,
-            datetime__lte=end,
-            categories=None,
-            bill__isnull=False,
+            datetime__lte=end
+        ).filter(
+            Q(bill__isnull=False) | Q(transactioncategory__isnull=False)
         ).select_related('bill').prefetch_related('categories').order_by('-datetime')
 
         return qset

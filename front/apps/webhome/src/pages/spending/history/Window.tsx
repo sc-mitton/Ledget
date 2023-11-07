@@ -1,11 +1,13 @@
 
 import '../styles/History.scss'
 import HistoryHeader from "./Header"
+import TransactionsTable from './TransactionsTable'
 
 const Window = () => {
     return (
         <div className="window" id="all-items-window">
             <HistoryHeader />
+            <TransactionsTable />
         </div>
     )
 }

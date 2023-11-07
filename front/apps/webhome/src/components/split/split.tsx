@@ -153,6 +153,7 @@ export function Split(props: SplitProps) {
         const addedSplit = { end: 1, start: parseFloat((1 - (1 / (prev.length + 1))).toFixed(2)) }
         return [...newSplits, addedSplit]
       })
+      setShowCategorySelect(false)
       setSelectedCategory(undefined)
     }
   }, [selectedCategory])
