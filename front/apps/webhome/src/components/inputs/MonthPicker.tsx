@@ -171,6 +171,7 @@ const MonthPicker = () => {
                 </IconButton>
             </div>
             <DropAnimation
+                placement="right"
                 visible={showPicker}
                 className="dropdown"
                 id="picker-container"

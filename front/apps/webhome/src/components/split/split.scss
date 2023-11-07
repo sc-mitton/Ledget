@@ -14,8 +14,9 @@
     .header {
         display: flex;
         justify-content: flex-start;
+        white-space: nowrap;
         gap: .5em;
-        width: 90%;
+        width: 70%;
         overflow: hidden;
 
         h4 {
@@ -71,5 +72,31 @@
         flex-grow: 1;
         position: relative;
 
+        .handle {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 1.5em;
+            height: 1.5em;
+            padding: .125em;
+            display: flex;
+            place-content: center;
+            transform: translate(-50%, -50%);
+            background-color: var(--green-hlight3);
+            border-radius: 50%;
+            cursor: ew-resize;
+
+            * {
+                cursor: ew-resize;
+            }
+        }
+
+        .amount {
+            position: absolute;
+            left: 50%;
+            top: 150%;
+            transform: translateX(-50%);
+            font-size: 1em;
+        }
     }
 }
