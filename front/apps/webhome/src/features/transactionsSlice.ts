@@ -53,6 +53,7 @@ export interface GetTransactionsParams {
     offset?: number
     limit?: number
 }
+
 interface GetTransactionsResponse {
     results: Transaction[]
     next?: number

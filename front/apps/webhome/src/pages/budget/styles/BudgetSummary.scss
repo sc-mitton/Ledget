@@ -49,7 +49,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         // Total header
         &:nth-child(1) {
             width: calc(100% / 3 - $header-gap);
-            background-color: var(--btn-light-gray);
+            background-color: color-mix(in srgb, var(--inner-window), var(--logo-dark) 2%);
             margin-right: $header-gap;
 
             &>div:last-of-type {
@@ -204,6 +204,8 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             &>div:nth-child(2) {
                 flex-grow: 1;
                 text-align: right;
+                display: inline-flex;
+                justify-content: flex-end;
             }
 
             // Total header

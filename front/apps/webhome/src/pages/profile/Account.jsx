@@ -112,7 +112,11 @@ const ChangePlanMenu = () => {
                             change
                         </BlueSlimArrowButton>
                     </Menu.Button>
-                    <DropAnimation visible={open} className="dropdown" id="change-plan--menu">
+                    <DropAnimation
+                        visible={open}
+                        className="dropdown" id="change-plan--menu"
+                        placement='right'
+                    >
                         <Items />
                     </DropAnimation>
                 </div>

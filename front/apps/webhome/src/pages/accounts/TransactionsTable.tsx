@@ -44,6 +44,7 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
         const [fetchMorePulse, setFetchMorePulse] = useState(false)
         const [searchParams, setSearchParams] = useSearchParams()
         const [skeleton, setSkeleton] = useState(true)
+        const [loaded, setLoaded] = useState(false)
         const location = useLocation()
 
         const [getTransactions, {
@@ -53,13 +54,16 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
         }] = useLazyGetTransactionsQuery()
 
         useEffect(() => {
-            getTransactions({
-                account: searchParams.get('account') || '',
-                type: pathMappings.getTransactionType(location),
-                limit: parseInt(searchParams.get('limit') || '25'),
-                offset: parseInt(searchParams.get('offset') || '0'),
-            }, searchParams.get('offset') === '0')
-        }, [searchParams.get('offset'), searchParams.get('account')])
+            if (searchParams.get('offset')) {
+                getTransactions({
+                    account: searchParams.get('account') || '',
+                    type: pathMappings.getTransactionType(location),
+                    limit: parseInt(searchParams.get('limit') || '25'),
+                    offset: parseInt(searchParams.get('offset') || '0'),
+                }, searchParams.get('offset') !== `${transactionsData?.next}`)
+                setLoaded(true)
+            }
+        }, [searchParams.get('offset')])
 
         useEffect(() => {
             if (searchParams.get('account')) {
@@ -137,7 +141,7 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
         return (
             <>
                 <InfiniteScrollDiv
-                    animate={fetchMorePulse}
+                    animate={loaded && fetchMorePulse}
                     className={`transactions--container ${isLoadingTransactions ? 'loading' : ''}`}
                     ref={containerRef}
                 >
