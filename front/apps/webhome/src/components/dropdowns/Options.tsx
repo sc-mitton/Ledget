@@ -44,12 +44,13 @@ const OptionsMenu = ({ pos, show, setShow, topArrow = true, children }:
 
     return (
         <DropAnimation
+            placement={'middle'}
             visible={show}
             className={`dropdown options-dropdown ${topArrow ? 'top-arrow' : ''}`}
             style={{
                 position: 'absolute',
                 top: pos ? pos.y + 40 : 0,
-                left: pos ? pos.x - 43 : 0,
+                left: pos ? pos.x + 8 : 0,
                 zIndex: 10,
             }}
             ref={menuRef}

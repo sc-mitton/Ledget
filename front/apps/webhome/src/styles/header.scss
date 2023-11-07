@@ -38,44 +38,16 @@ header {
 
 /* ------------------------------ Dropdown Menu ----------------------------- */
 
-.profile-dropdown.wide {
-    top: 3em;
-    left: -150%;
-}
-
-.profile-dropdown.wide::before {
-    position: absolute;
-    top: -.5em;
-    left: 42%;
-    display: inline-block;
-    border-right: .375em solid transparent;
-    border-bottom: .375em solid var(--subtle-border-color);
-    border-left: .375em solid transparent;
-    content: '';
-}
-
-.profile-dropdown.wide::after {
-    position: absolute;
-    top: -.375em;
-    /* left: 3em; */
-    left: 42%;
-    display: inline-block;
-    border-right: .375em solid transparent;
-    border-bottom: .375em solid var(--window);
-    border-left: .375em solid transparent;
-    content: '';
-}
-
-.profile-dropdown.narrow {
+.profile-dropdown {
     position: absolute;
     flex-direction: column;
     display: flex;
     text-align: left;
-    top: 3em;
-    right: -1.5em;
+    top: 2.75em;
+    left: -50%;
 }
 
-.profile-dropdown.narrow::before {
+.profile-dropdown::before {
     position: absolute;
     top: -.5em;
     /* left: 3em; */
@@ -87,7 +59,7 @@ header {
     content: '';
 }
 
-.profile-dropdown.narrow::after {
+.profile-dropdown::after {
     position: absolute;
     top: -.375em;
     right: 1.875em;

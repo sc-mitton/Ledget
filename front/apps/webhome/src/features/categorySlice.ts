@@ -152,7 +152,7 @@ export const selectCategories = createSelector(
     (state: { categories: initialState }) => state.categories.categories,
     (categories) => categories
 )
-export const selectCategoryMetaData = createSelector(
+export const SelectCategoryBillMetaData = createSelector(
     (state: { categories: initialState }) => ({
         monthly_spent: state.categories.monthly_spent,
         yearly_spent: state.categories.yearly_spent,

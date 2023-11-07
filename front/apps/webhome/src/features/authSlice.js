@@ -2,7 +2,7 @@ import { apiSlice } from '@api/apiSlice'
 import { createSlice } from "@reduxjs/toolkit";
 
 export const authSlice = createSlice({
-    name: 'user',
+    name: 'auth',
     initialState: {
         reAuthed: {
             level: 'none',
@@ -79,8 +79,8 @@ export const { resetAuthedAt } = authSlice.actions
 export const authReducer = authSlice.reducer
 
 export const selectSessionIsFreshAal1 = (state) => {
-    const isFresh = state.reAuthed.at && Date.now() - state.reAuthed.at < 1000 * 60 * 9
-    const aalGood = state.reAuthedLevel && state.reAuthedLevel >= 1
+    const isFresh = state.auth.reAuthed.at && Date.now() - state.auth.reAuthed.at < 1000 * 60 * 9
+    const aalGood = state.auth.reAuthedLevel && state.reAuthedLevel >= 1
     return isFresh && aalGood
 }
 

@@ -43,8 +43,14 @@
 }
 
 .btn-circle {
-    padding: .125em;
+    padding: .25em;
     border-radius: 50%;
+    height: 1.375em;
+    width: 1.375em;
+
+    svg {
+        max-height: 90%
+    }
 }
 
 .btn3 {

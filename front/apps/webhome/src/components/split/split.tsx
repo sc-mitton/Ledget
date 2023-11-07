@@ -4,10 +4,9 @@ import { useTransition, animated } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
 
 import './split.scss';
-import { useGetCategoriesQuery } from '@features/categorySlice';
-import { CloseButton } from '@ledget/ui';
-import { DollarCents } from '@ledget/ui';
-import { Category } from '@features/categorySlice';
+import { CloseButton, PlusPill, CheckCircleButton, DollarCents, DropAnimation } from '@ledget/ui';
+import { Category, isCategory } from '@features/categorySlice';
+import { SelectCategoryBill as SelectCategory } from '@components/dropdowns'
 
 
 export interface SplitProps {
@@ -17,10 +16,13 @@ export interface SplitProps {
   defaultCategory?: Category;
 }
 
+
 export function Split(props: SplitProps) {
   const { title, amount, defaultCategory, onClose } = props;
   const [splits, setSplits] = useState<({ start: number, end: number })[]>([{ start: 0, end: 100 }]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [showCategorySelect, setShowCategorySelect] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category>();
 
   useEffect(() => {
     if (defaultCategory) {
@@ -28,15 +30,29 @@ export function Split(props: SplitProps) {
     }
   }, [defaultCategory]);
 
-  const transitions = useTransition(splits, {
-    from: { opacity: 0, height: '.5em', width: 0 },
+  const transitions = useTransition(categories, {
+    from: (item, index) => ({
+      opacity: 0,
+      height: '1em',
+      top: '0%',
+      transform: 'translateY(-50%)',
+      left: '0%',
+      right: '100%',
+      borderRadius: '0.5em',
+      position: 'absolute',
+      backgroundColor: item.period === 'month' ? 'var(--green-hlight2)' : 'var(--blue-hlight3)',
+    }),
     enter: (item, index) => ({
       opacity: 1,
-      height: '.5em',
-      width: `${item.end - item.start}%`,
-      transform: `translateX(${item.start}%)`,
+      left: `${splits[index].start}%`,
+      right: `${100 - splits[index].end}%`,
     }),
-    leave: { opacity: 0, height: '.5em' },
+    leave: (item, index) => ({
+      opacity: 0,
+      left: `${splits[index].start}%`,
+      right: `${100 - splits[index].end}%`,
+    }),
+    config: { mass: 1.1, tension: 240, friction: 19 },
   });
 
   return (
@@ -46,10 +62,33 @@ export function Split(props: SplitProps) {
         <h4>{`${title}`}</h4>
         <div><DollarCents value={amount} /></div>
       </div>
-      <div className="splitter">
-        {transitions((style, item, t, index) => (
-          <animated.div style={style} className="section" key={index} />
-        ))}
+      <div className="splitter--container">
+        <div className="splitter">
+          {transitions((style, item, t, index) => (
+            <animated.div style={style} className="section" key={index} />
+          ))}
+        </div>
+        <div>
+          <PlusPill
+            styled={'green'}
+            onClick={() => { setShowCategorySelect(!showCategorySelect) }}
+          />
+          <DropAnimation
+            placement={'middle'}
+            visible={showCategorySelect}
+            className='select-category--dropdown'
+          >
+            <SelectCategory
+              includeBills={false}
+              value={selectedCategory}
+              onChange={(value) => { isCategory(value) && setSelectedCategory(value) }}
+            />
+          </DropAnimation>
+        </div>
+        <CheckCircleButton
+          styled={'green'}
+          onClick={() => { console.log('check') }}
+        />
       </div>
     </div>
   );

@@ -3,33 +3,43 @@ import { useState, Fragment, useEffect, useRef } from 'react'
 
 import { Combobox } from "@headlessui/react"
 
-import './SelectCategory.scss'
+import './SelectCategoryBill.scss'
 import { Category, useGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useGetBillsQuery } from '@features/billSlice'
 import { SearchIcon } from '@ledget/media'
 
 interface I {
     value: (Category | Bill | undefined)
-    onChange: (value: (Category | Bill)) => void
+    includeBills?: boolean
+    onChange: (value: (Category | Bill | undefined)) => void
 }
 
-const SelectCategory = ({ value, onChange }: I) => {
+function SelectCategoryBill({ value, onChange, includeBills = true }: I) {
     const [query, setQuery] = useState('')
     const { data: categoryData, isSuccess: isFetchCategoriesSuccess } = useGetCategoriesQuery()
     const { data: billData, isSuccess: isFetchBillsSuccess } = useGetBillsQuery()
-    const [options, setOptions] = useState<(Category | Bill)[]>([])
+    const [filteredBillCats, setFilteredBillCats] = useState<(Category | Bill)[]>([])
     const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        if (isFetchCategoriesSuccess && isFetchBillsSuccess) {
-            setOptions([...categoryData, ...billData])
+        if (categoryData && billData) {
+            includeBills
+                ? setFilteredBillCats([...categoryData, ...billData])
+                : setFilteredBillCats(categoryData)
         }
     }, [isFetchCategoriesSuccess, isFetchBillsSuccess])
 
-    const filteredBillCats =
-        query === ''
-            ? options.sort((a, b) => a.name.localeCompare(b.name))
-            : options.filter((category) => category.name.toLowerCase().includes(query.toLowerCase()))
+    useEffect(() => {
+        if (query) {
+            setFilteredBillCats(
+                filteredBillCats.filter((billcat) => {
+                    const name = billcat.name.toLowerCase()
+                    const queryLower = query.toLowerCase()
+                    return name.includes(queryLower)
+                })
+            )
+        }
+    }, [query])
 
     useEffect(() => { inputRef.current?.focus() }, [])
 
@@ -41,7 +51,7 @@ const SelectCategory = ({ value, onChange }: I) => {
                     ref={inputRef}
                     className="input"
                     onChange={(event) => setQuery(event.target.value)}
-                    size={options.reduce((acc, curr) => Math.max(acc, curr.name.length), 0)}
+                    size={filteredBillCats.reduce((acc, curr) => Math.max(acc, curr.name.length), 0)}
                 />
                 <Combobox.Options className="options" static>
                     {filteredBillCats.map((billcat) => (
@@ -64,4 +74,4 @@ const SelectCategory = ({ value, onChange }: I) => {
     )
 }
 
-export default SelectCategory
+export default SelectCategoryBill

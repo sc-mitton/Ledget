@@ -5,13 +5,26 @@ import { motion } from 'framer-motion'
 
 
 
-export const DropAnimation = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & { visible: boolean }>((props, ref) => {
-  const { visible, children, style = {}, ...rest } = props
+export const DropAnimation = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & { visible: boolean, placement: 'middle' | 'left' | 'right' }>((props, ref) => {
+  const { visible, children, placement = 'middle', style = {}, ...rest } = props
 
   const transitions = useTransition(visible, {
-    from: { opacity: 0, transform: 'scale(0.85)', transformOrigin: 'top' },
-    enter: { opacity: 1, transform: 'scale(1)', transformOrigin: 'top', ...style },
-    leave: { opacity: 0, transform: 'scale(0.85)', transformOrigin: 'top' },
+    from: {
+      opacity: 0,
+      y: 0,
+      x: `-${placement === 'middle' ? '50%' : placement === 'left' ? '100%' : '0%'}`,
+      transform: 'scale(0.85)',
+      transformOrigin: `top ${placement === 'middle' ? 'center' : placement === 'left' ? 'right' : 'left'}`
+    },
+    enter: {
+      opacity: 1,
+      transform: 'scale(1)',
+      ...style
+    },
+    leave: {
+      transform: 'scale(0.85)',
+      opacity: 0,
+    },
     config: {
       tension: 500,
       friction: 28,

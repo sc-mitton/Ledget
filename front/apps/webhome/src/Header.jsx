@@ -122,11 +122,7 @@ const DropDownMenu = ({ isNarrow, setModal }) => {
                         <Profile1 />
                     </Menu.Button>
                     <DropAnimation
-                        className={
-                            `dropdown profile-dropdown
-                            ${isNarrow || location.pathname === '/profile'
-                                ? "narrow" : "wide"}`
-                        }
+                        className='dropdown profile-dropdown'
                         visible={open}
                     >
                         <Menu.Items static>

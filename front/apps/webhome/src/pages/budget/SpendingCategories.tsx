@@ -7,7 +7,7 @@ import Big from 'big.js'
 
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
-import { useLazyGetCategoriesQuery, selectCategoryMetaData, selectCategories } from '@features/categorySlice'
+import { useLazyGetCategoriesQuery, SelectCategoryBillMetaData, selectCategories } from '@features/categorySlice'
 import {
     DollarCents,
     AnimatedDollarCents,
@@ -142,7 +142,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
         limit_amount_monthly,
         limit_amount_yearly,
         oldest_yearly_category_created
-    } = useSelector(selectCategoryMetaData)
+    } = useSelector(SelectCategoryBillMetaData)
 
     const totalSpent = period === 'month' ? monthly_spent : yearly_spent
     const totalLimit = period === 'month' ? limit_amount_monthly : limit_amount_yearly
@@ -216,7 +216,7 @@ const TabView = () => {
         yearly_spent,
         limit_amount_monthly,
         limit_amount_yearly,
-    } = useSelector(selectCategoryMetaData)
+    } = useSelector(SelectCategoryBillMetaData)
 
     return (
         <Tab.Group as={Column} selectedIndex={selectedIndex} onChange={setSelectedIndex}>

@@ -7,7 +7,7 @@ import Big from 'big.js'
 import './styles/BudgetSummary.scss'
 import { DollarCents, AnimatedDollarCents, StaticProgressCircle } from '@ledget/ui'
 import { ThumbUp, CheckMark2 } from '@ledget/media'
-import { useGetCategoriesQuery, selectCategoryMetaData } from '@features/categorySlice'
+import { useGetCategoriesQuery, SelectCategoryBillMetaData } from '@features/categorySlice'
 import { useGetBillsQuery, selectBillMetaData } from '@features/billSlice'
 
 const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
@@ -32,7 +32,7 @@ const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
         yearly_spent,
         limit_amount_monthly,
         limit_amount_yearly,
-    } = useSelector(selectCategoryMetaData)
+    } = useSelector(SelectCategoryBillMetaData)
     const {
         monthly_bills_paid,
         yearly_bills_paid,
@@ -161,7 +161,7 @@ const SummaryStatsTeaser = ({
         yearly_spent,
         limit_amount_monthly,
         limit_amount_yearly,
-    } = useSelector(selectCategoryMetaData)
+    } = useSelector(SelectCategoryBillMetaData)
 
     return (
         <>

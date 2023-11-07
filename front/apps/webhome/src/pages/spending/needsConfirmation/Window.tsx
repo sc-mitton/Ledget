@@ -10,7 +10,7 @@ import { Ellipsis, CheckMark } from "@ledget/media"
 import Header from './Header'
 import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import Options from "@components/dropdowns/Options"
-import { SelectCategory } from '@components/dropdowns'
+import { SelectCategoryBill } from '@components/dropdowns'
 import Split from '@components/split/split'
 import ItemOptions from "./ItemOptions"
 import {
@@ -509,7 +509,7 @@ const NeedsConfirmationWindow = () => {
                             pos={billCatSelectPos}
                             topArrow={false}
                         >
-                            <SelectCategory
+                            <SelectCategoryBill
                                 value={billCatSelectVal}
                                 onChange={setBillCatSelectVal}
                             />
@@ -523,8 +523,8 @@ const NeedsConfirmationWindow = () => {
                             title={focusedItem?.name || ''}
                             amount={focusedItem?.amount || 0}
                             defaultCategory={
-                                isCategory(transactionUpdates[focusedItem!.transaction_id]) ?
-                                    transactionUpdates[focusedItem!.transaction_id].categories![0]
+                                (focusedItem && transactionUpdates[focusedItem.transaction_id]?.categories!.length > 0) ?
+                                    transactionUpdates[focusedItem.transaction_id].categories![0]
                                     : focusedItem?.predicted_category
                             }
                             onClose={() => {

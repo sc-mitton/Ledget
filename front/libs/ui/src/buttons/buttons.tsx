@@ -134,18 +134,27 @@ export const BackButton = ({ children, withText = true, ...rest }: { children: R
   </div>
 )
 
-export const CopyButton = ({ withText = true, ...rest }) => (
-  <SlimInputButton className="copy-btn" {...rest}>
-    <CopyIcon />
-    {withText && 'Copy'}
-  </SlimInputButton>
-)
+export const CopyButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText?: boolean }>
+  = ({ withText = true, ...rest }) => (
+    <SlimInputButton className="copy-btn" {...rest}>
+      <CopyIcon />
+      {withText && 'Copy'}
+    </SlimInputButton>
+  )
 
-export const PlusPill = ({ ...props }) => (
-  <button className="btn-chcl btn-circle btn-scale2" {...props}>
-    <Plus stroke={'var(--window)'} width={'.9em'} height={'.9em'} />
-  </button>
-)
+export const PlusPill: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled: 'black' | 'green' }>
+  = ({ styled = 'black', ...rest }: { styled: 'black' | 'green' }) => (
+    <button className={`btn-circle ${styled === 'black' ? 'btn-chcl' : 'btn-grn'}`} {...rest}>
+      <Plus stroke={'currentColor'} width={'.9em'} height={'.9em'} />
+    </button>
+  )
+
+export const CheckCircleButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled: 'black' | 'green' }>
+  = ({ styled = 'black', ...rest }: { styled: 'black' | 'green' }) => (
+    <button className={`btn-circle ${styled === 'black' ? 'btn-chcl' : 'btn-grn'}`} {...rest}>
+      <CheckMark stroke={'currentColor'} width={'.9em'} height={'.9em'} />
+    </button>
+  )
 
 export const DeleteButton = ({ className, ...rest }: { className: string }) => (
   <button className={`btn delete-button ${className}`} {...rest}>
