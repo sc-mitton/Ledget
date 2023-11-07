@@ -58,6 +58,7 @@ interface GetTransactionsResponse {
     results: Transaction[]
     next?: number
     previous?: number
+    limit?: number
 }
 
 interface TransactionsSyncResponse {

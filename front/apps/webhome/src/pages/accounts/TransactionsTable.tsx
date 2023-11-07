@@ -42,7 +42,7 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
         const tableRef = useRef<HTMLDivElement>(null)
         const [shadow, setShadow] = useState<'top' | 'bottom' | 'bottom-top' | ''>('')
         const [fetchMorePulse, setFetchMorePulse] = useState(false)
-        const [searchParams, setSearchParams] = useSearchParams()
+        const [searchParams] = useSearchParams()
         const [skeleton, setSkeleton] = useState(true)
         const [loaded, setLoaded] = useState(false)
         const location = useLocation()
@@ -53,30 +53,25 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
             isLoading: isLoadingTransactions
         }] = useLazyGetTransactionsQuery()
 
+        // Initial fetch
         useEffect(() => {
-            if (searchParams.get('offset')) {
+            if (searchParams.get('account')) {
                 getTransactions({
                     account: searchParams.get('account') || '',
                     type: pathMappings.getTransactionType(location),
-                    limit: parseInt(searchParams.get('limit') || '25'),
-                    offset: parseInt(searchParams.get('offset') || '0'),
-                }, searchParams.get('offset') !== `${transactionsData?.next}`)
+                    limit: 25,
+                    offset: 0,
+                }, true)
                 setLoaded(true)
-            }
-        }, [searchParams.get('offset')])
-
-        useEffect(() => {
-            if (searchParams.get('account')) {
-                searchParams.set('offset', '0')
-                searchParams.set('limit', '25')
-                setSearchParams(searchParams)
             }
         }, [searchParams.get('account')])
 
+        // Setting the skeleton view
         useEffect(() => {
-            setSkeleton((isFetchingTransactions && searchParams.get('offset') === '0') && !searchParams.get('acount'))
-        }, [searchParams.get('offset'), searchParams.get('account'), isFetchingTransactions])
+            setSkeleton((isLoadingTransactions) && !searchParams.get('acount'))
+        }, [searchParams.get('account'), isLoadingTransactions])
 
+        // Scroll shadow effects
         useEffect(() => {
             let timeout = setTimeout(() => {
                 if (tableRef.current && tableRef.current) {
@@ -116,25 +111,26 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
 
         // Fetch more transactions animation
         useEffect(() => {
-            if (isFetchingTransactions && searchParams.get('offset') !== '0') {
-                isFetchingTransactions && setFetchMorePulse(true)
+            if (isFetchingTransactions && !isLoadingTransactions) {
+                setFetchMorePulse(true)
             }
             let timeout = setTimeout(() => {
                 setFetchMorePulse(false)
             }, 1500)
             return () => { clearTimeout(timeout) }
-        }, [isFetchingTransactions, searchParams.get('offset')])
+        }, [isFetchingTransactions])
 
+        // Fetch more transactions
         const handleScroll = (e: React.UIEvent<HTMLElement>) => {
             const bottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight
             // Update cursors to add new transactions node to the end
-            if (bottom && transactionsData?.next !== undefined) {
-                // Set offset to next cursor, unless there is no next cursor
-                // in which case there is no more data to be fetched, and we
-                // keep params as is
-                const offset = `${transactionsData?.next}` || searchParams.get('offset') || '0'
-                searchParams.set('offset', offset)
-                setSearchParams(searchParams)
+            if (bottom && transactionsData?.next !== null && transactionsData) {
+                getTransactions({
+                    account: searchParams.get('account')!,
+                    type: pathMappings.getTransactionType(location),
+                    offset: transactionsData.next,
+                    limit: transactionsData.limit,
+                })
             }
         }
 

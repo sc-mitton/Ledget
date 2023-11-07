@@ -181,6 +181,7 @@ class TransactionsPagination(LimitOffsetPagination):
         return Response(OrderedDict([
             ('next', self.get_next_offset()),
             ('previous', self.get_previous_offset()),
+            ('limit', self.limit),
             ('results', data)
         ]))
 
