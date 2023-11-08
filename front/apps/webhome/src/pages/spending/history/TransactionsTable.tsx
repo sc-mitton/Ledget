@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom"
 import './styles/TransactionsTable.scss'
 import { useGetTransactionsQuery } from "@features/transactionsSlice"
 import { Logo } from '@components/pieces'
-import { DollarCents } from '@ledget/ui'
+import { DollarCents, ShadowScrollDiv } from '@ledget/ui'
 
 export default function Table() {
   const [searchParams] = useSearchParams()
@@ -22,8 +22,8 @@ export default function Table() {
   })
 
   return (
-    <div className="transactions-history--table">
-      <>
+    <div className="transactions-history-table--container">
+      <ShadowScrollDiv className="transactions-history--table">
         {transactionsData?.results.map((transaction) => (
           <div>
             <div>
@@ -49,7 +49,7 @@ export default function Table() {
             </div>
           </div>
         ))}
-      </>
+      </ShadowScrollDiv>
     </div>
   )
 }

@@ -2,8 +2,7 @@
 
 const Plus = ({
     className = '',
-    width = "1.2em",
-    height = "1.2em",
+    size = "1.2em",
     stroke = "#292929",
     strokeWidth = "20"
 }) => {
@@ -11,8 +10,8 @@ const Plus = ({
     return (
         <svg
             className={className}
-            width={width}
-            height={height}
+            width={size}
+            height={size}
             viewBox="0 0 144 144"
             xmlns="http://www.w3.org/2000/svg"
             x="0px"

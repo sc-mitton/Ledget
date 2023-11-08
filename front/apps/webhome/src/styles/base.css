@@ -458,11 +458,7 @@ button.pulse:hover {
 .header-btns {
     display: flex;
     align-items: center;
-}
-
-.header-btns>button,
-.header-btns>.tooltip {
-    margin: 0 .125em;
+    gap: .125em;
 }
 
 .budget-item-name {

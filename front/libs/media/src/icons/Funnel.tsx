@@ -2,15 +2,14 @@
 
 const CashFlow = ({
     className = '',
-    width = "1.2em",
-    height = "1.2em",
+    size = '1em',
     fill = "#292929",
 }) => {
     return (
         <svg
             className={className}
-            width={width}
-            height={height}
+            width={size}
+            height={size}
             viewBox="0 0 144 144"
             xmlns="http://www.w3.org/2000/svg"
             x="0px"

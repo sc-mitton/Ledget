@@ -31,7 +31,7 @@ const HistoryHeader = () => {
                         id="add-icon"
                         aria-label="Manually add item"
                     >
-                        <Plus />
+                        <Plus size={'1em'} />
                     </IconButton>
                 </Tooltip>
             </div>

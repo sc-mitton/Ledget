@@ -10,7 +10,3 @@
     display: flex;
     flex-direction: column;
 }
-
-#all-items-window>div:first-child>div:last-child {
-    margin-right: -.75em;
-}
