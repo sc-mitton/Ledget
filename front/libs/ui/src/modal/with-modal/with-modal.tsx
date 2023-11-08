@@ -15,15 +15,13 @@ export function useAccessEsc({ refs, visible, setVisible }: I) {
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       event.stopPropagation()
-      let shouldClose = false
+      let shouldClose = true
       for (const ref of refs) {
-        if (ref.current && !ref.current.contains(event.target as Node)) {
-          shouldClose = true
+        if (ref.current && ref.current.contains(event.target as Node)) {
+          shouldClose = false
         }
       }
-      if (shouldClose) {
-        setVisible(false)
-      }
+      shouldClose && setVisible(false)
     }
 
     const handleEscape = (event: KeyboardEvent) => {

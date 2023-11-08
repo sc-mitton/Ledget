@@ -35,6 +35,7 @@ import {
     selectConfirmedTransactions,
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
+import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
 
 // Sizing (in ems)
 const translate = 1
@@ -217,6 +218,7 @@ const NeedsConfirmationWindow = () => {
         useState<{ [key: string]: { categories?: SplitCategory[], bill?: Bill } }>(
             JSON.parse(sessionStorage.getItem('transactionUpdates') || '{}')
         )
+    const { start, end } = useGetStartEndFromSearchParams()
 
     const unconfirmedTransactions = useAppSelector(
         state => selectUnconfirmedTransactions(state, {
@@ -243,35 +245,13 @@ const NeedsConfirmationWindow = () => {
 
     // Initial fetch when query params change
     useEffect(() => {
-        fetchTransactions({
-            start: new Date(
-                parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-                parseInt(searchParams.get('month')!) - 1 || new Date().getMonth()
-            ).toISOString(),
-            end: new Date(
-                parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-                parseInt(searchParams.get('month')!) || new Date().getMonth(),
-                0
-            ).toISOString(),
-            offset: offset
-        }, true)
+        fetchTransactions({ start: start, end: end, offset: offset }, true)
     }, [searchParams.get('month'), searchParams.get('year')])
 
     // Paginated requests
     useEffect(() => {
         if (transactionsData?.next) {
-            fetchTransactions({
-                start: new Date(
-                    parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-                    parseInt(searchParams.get('month')!) - 1 || new Date().getMonth()
-                ).toISOString(),
-                end: new Date(
-                    parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-                    parseInt(searchParams.get('month')!) || new Date().getMonth(),
-                    0
-                ).toISOString(),
-                offset: offset
-            })
+            fetchTransactions({ start: start, end: end, offset: offset })
         }
     }, [offset])
 

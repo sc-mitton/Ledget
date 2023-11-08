@@ -9,20 +9,13 @@ import { DollarCents, AnimatedDollarCents, StaticProgressCircle } from '@ledget/
 import { ThumbUp, CheckMark2 } from '@ledget/media'
 import { useGetCategoriesQuery, SelectCategoryBillMetaData } from '@features/categorySlice'
 import { useGetBillsQuery, selectBillMetaData } from '@features/billSlice'
+import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
 
 const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
     const [searchParams] = useSearchParams()
-    const { isLoading: loadingCategories } = useGetCategoriesQuery({
-        start: new Date(
-            parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-            parseInt(searchParams.get('month')!) - 1 || new Date().getMonth()
-        ).toISOString(),
-        end: new Date(
-            parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-            parseInt(searchParams.get('month')!) || new Date().getMonth(),
-            0
-        ).toISOString(),
-    })
+    const { start, end } = useGetStartEndFromSearchParams()
+
+    const { isLoading: loadingCategories } = useGetCategoriesQuery({ start: start, end: end, })
     const { isLoading: loadingBills } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
@@ -141,17 +134,9 @@ const SummaryStatsTeaser = ({
     setShowYearStats = (a: boolean) => { },
 }) => {
     const [searchParams] = useSearchParams()
-    const { isLoading: loadingCategories } = useGetCategoriesQuery({
-        start: new Date(
-            parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-            parseInt(searchParams.get('month')!) - 1 || new Date().getMonth()
-        ).toISOString(),
-        end: new Date(
-            parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-            parseInt(searchParams.get('month')!) || new Date().getMonth(),
-            0
-        ).toISOString(),
-    })
+    const { start, end } = useGetStartEndFromSearchParams()
+
+    const { isLoading: loadingCategories } = useGetCategoriesQuery({ start: start, end: end })
     const { isLoading: loadingBills } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,

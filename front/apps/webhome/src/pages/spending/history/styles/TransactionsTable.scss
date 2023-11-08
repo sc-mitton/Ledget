@@ -11,7 +11,7 @@ $charcoal: var(--charcoal-rgb);
     .left-info {
         overflow: hidden;
         white-space: nowrap;
-        mask-image: linear-gradient(to right, black, black 90%, transparent 100%);
+        mask-image: linear-gradient(to right, black, black 80%, transparent 100%);
 
         &>div:last-child {
             opacity: .7;
@@ -58,9 +58,20 @@ $charcoal: var(--charcoal-rgb);
     overflow-y: scroll;
     overflow-x: hidden;
     display: grid;
-    grid-template-columns: minmax(0, 70%) 1fr;
+    grid-template-columns: minmax(0, 80%) 1fr;
     row-gap: 1em;
     grid-auto-rows: min-content;
+
+    &.skeleton {
+        grid-template-columns: 1fr;
+
+
+        &>div>div:last-child {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
 
     &>div {
         display: contents;
@@ -114,4 +125,13 @@ $charcoal: var(--charcoal-rgb);
             }
         }
     }
+}
+
+
+#empty-list-icon--container img {
+    height: 5em;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

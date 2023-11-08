@@ -89,6 +89,20 @@ export const ShimmerText = ({
   </>
 )
 
+export const TransactionShimmer: React.FC<React.HTMLProps<HTMLDivElement> & { shimmering?: boolean }> = ({ shimmering = true, ...rest }) => (
+  <>
+    <div {...rest}>
+      <div>
+        <ShimmerText lightness={90} shimmering={shimmering} length={25} />
+        <ShimmerText lightness={90} shimmering={shimmering} length={10} />
+      </div>
+      <div>
+        <ShimmerText lightness={90} shimmering={shimmering} length={10} />
+      </div>
+    </div>
+  </>
+)
+
 type ShimmerDivProps = React.HTMLProps<HTMLDivElement> & {
   shimmering: boolean;
   background?: string;

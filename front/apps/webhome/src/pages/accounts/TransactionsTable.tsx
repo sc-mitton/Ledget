@@ -4,24 +4,8 @@ import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
 
 import { useLazyGetTransactionsQuery, useGetTransactionQueryState } from '@features/transactionsSlice'
-import { ShimmerText, DollarCents, InfiniteScrollDiv, ShadowScrollDiv } from '@ledget/ui'
+import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv } from '@ledget/ui'
 import pathMappings from './path-mappings'
-
-
-export const TransactionShimmer = ({ shimmering = true }) => (
-    <>
-        <div />
-        <div className="transaction-shimmer">
-            <div>
-                <ShimmerText lightness={90} shimmering={shimmering} length={25} />
-                <ShimmerText lightness={90} shimmering={shimmering} length={10} />
-            </div>
-            <div>
-                <ShimmerText lightness={90} shimmering={shimmering} length={10} />
-            </div>
-        </div>
-    </>
-)
 
 
 export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
@@ -99,7 +83,10 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
                         >
                             {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
                                 .fill(0)
-                                .map((_, index) => <TransactionShimmer key={index} shimmering={true} />)}
+                                .map((_, index) =>
+                                    <><div /><TransactionShimmer key={index} shimmering={true} /></>
+                                )
+                            }
                         </div>
                         :
                         <ShadowScrollDiv

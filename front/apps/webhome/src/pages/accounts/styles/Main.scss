@@ -421,6 +421,13 @@ $charcoal: var(--charcoal-rgb);
     .debit * {
         color: $greenDark3;
     }
+
+    // Spacer
+    &>div:last-child::after {
+        content: '';
+        height: .25em;
+        bottom: -.25em;
+    }
 }
 
 /* ------------------------------- Responsive ------------------------------- */
@@ -461,6 +468,8 @@ $charcoal: var(--charcoal-rgb);
             margin-left: .25em;
             margin-bottom: 1em;
             order: 2;
+
+
         }
 
         // All accounts balance */

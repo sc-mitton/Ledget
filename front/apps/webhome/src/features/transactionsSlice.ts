@@ -48,8 +48,8 @@ export interface GetTransactionsParams {
     type?: AccountType
     account?: string
     confirmed?: boolean
-    start?: string
-    end?: string
+    start?: number
+    end?: number
     offset?: number
     limit?: number
 }
@@ -289,8 +289,8 @@ export const {
     useTransactionsSyncMutation,
     useGetTransactionsQuery,
     useLazyGetTransactionsQuery,
-    useUpdateTransactionsMutation,
     useLazyGetUnconfirmedTransactionsQuery,
+    useUpdateTransactionsMutation,
 } = extendedApiSlice
 
 export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransactions.useQueryState

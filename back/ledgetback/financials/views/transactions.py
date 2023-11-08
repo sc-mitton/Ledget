@@ -1,5 +1,5 @@
 import logging
-from dateutil import parser
+from datetime import datetime
 from collections import OrderedDict
 
 from django.db import transaction, models
@@ -245,8 +245,8 @@ class TransactionViewSet(ModelViewSet):
 
         if start and end:
             try:
-                start = parser.parse(start)
-                end = parser.parse(end)
+                start = datetime.fromtimestamp(int(start))
+                end = datetime.fromtimestamp(int(end))
             except ValueError:
                 raise ValidationError('Invalid date format')
 

@@ -23,8 +23,8 @@ export interface SplitCategory extends Category {
 }
 
 interface CategoryQueryParams {
-    start?: string;
-    end?: string;
+    start?: number;
+    end?: number;
 }
 
 export const extendedApiSlice = apiSlice.injectEndpoints({

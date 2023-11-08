@@ -17,7 +17,6 @@ export interface SplitProps {
   defaultCategory?: Category;
 }
 
-
 export function Split(props: SplitProps) {
   const { title, amount, defaultCategory, onClose } = props
   const [loaded, setLoaded] = useState(false)

@@ -17,6 +17,7 @@ import {
     ColoredShimmer
 } from '@ledget/ui'
 import { Plus } from '@ledget/media'
+import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
 
 
 const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) => {
@@ -281,19 +282,10 @@ const SpendingCategories = () => {
     const [isTabView, setIsTabView] = useState(false)
     const [skeletonRowCount, setSkeletonRowCount] = useState(5)
     const ref = useRef<HTMLDivElement>(null)
+    const { start, end } = useGetStartEndFromSearchParams()
 
     useEffect(() => {
-        fetchCategories({
-            start: new Date(
-                parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-                parseInt(searchParams.get('month')!) - 1 || new Date().getMonth()
-            ).toISOString(),
-            end: new Date(
-                parseInt(searchParams.get('year')!) || new Date().getFullYear(),
-                parseInt(searchParams.get('month')!) || new Date().getMonth(),
-                0
-            ).toISOString(),
-        }, true)
+        fetchCategories({ start: start, end: end }, true)
     }, [searchParams.get('month'), searchParams.get('year')])
 
     useEffect(() => {

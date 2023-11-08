@@ -1,5 +1,4 @@
 from datetime import datetime
-from dateutil import parser
 import calendar
 
 from rest_framework.generics import ListCreateAPIView
@@ -33,8 +32,8 @@ class CategoryView(BulkSerializerMixin, ListCreateAPIView):
 
         if start and end:
             try:
-                start = parser.parse(start)
-                end = parser.parse(end)
+                start = datetime.fromtimestamp(int(start))
+                end = datetime.fromtimestamp(int(end))
             except ValueError:
                 return Response(
                     data={'error': 'Invalid date format'},

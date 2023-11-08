@@ -144,6 +144,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
     )
     const calendarRef = useRef<HTMLDivElement>(null)
     const dropdownRef = useRef<HTMLDivElement>(null)
+    const buttonRef = useRef<HTMLButtonElement>(null)
     const [showCalendar, setShowCalendar] = useState(false)
 
     useEffect(() => {
@@ -153,7 +154,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
     }, [showCalendar])
 
     useAccessEsc({
-        refs: [dropdownRef],
+        refs: [dropdownRef, buttonRef],
         visible: showCalendar,
         setVisible: () => setShowCalendar(false),
     })
@@ -168,6 +169,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
             </div>
             <div>
                 <IconScaleButton
+                    ref={buttonRef}
                     onFocus={() => setShowCalendar(true)}
                     onBlur={() => setShowCalendar(false)}
                     onClick={() => setShowCalendar(!showCalendar)}
@@ -178,6 +180,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                     <CalendarIcon size={'1.4em'} />
                 </IconScaleButton>
                 <DropAnimation
+                    placement='middle'
                     visible={showCalendar}
                     className="dropdown" ref={dropdownRef}
                 >

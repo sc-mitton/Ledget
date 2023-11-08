@@ -105,6 +105,7 @@ $bill-item-padding: .25em .75em;
         position: relative;
         align-self: center;
         justify-self: center;
+        font-weight: 400;
 
         // Number of bills hover tip
         &>div {
@@ -136,8 +137,8 @@ $bill-item-padding: .25em .75em;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 1.5em;
-            height: 1.5em;
+            width: 1.375em;
+            height: 1.375em;
             border-radius: 50%;
             background-color: transparent;
             transition: background-color .2s ease-in-out;
@@ -180,7 +181,7 @@ $bill-item-padding: .25em .75em;
     // Indicators for bills on that day
     &>div>span.has-bill-dot {
         position: absolute;
-        bottom: -.375em;
+        bottom: -.4em;
         left: 50%;
         transform: translateX(-50%);
     }
