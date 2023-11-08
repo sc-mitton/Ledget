@@ -1,9 +1,12 @@
 
 import { useSearchParams } from "react-router-dom"
 
+import './styles/TransactionsTable.scss'
 import { useGetTransactionsQuery } from "@features/transactionsSlice"
+import { Logo } from '@components/pieces'
+import { DollarCents } from '@ledget/ui'
 
-const TransactionsTable = () => {
+export default function Table() {
   const [searchParams] = useSearchParams()
   const { data: transactionsData, isLoading, isError } = useGetTransactionsQuery({
     confirmed: true,
@@ -19,8 +22,34 @@ const TransactionsTable = () => {
   })
 
   return (
-    <div>TransactionsTable</div>
+    <div className="transactions-history--table">
+      <>
+        {transactionsData?.results.map((transaction) => (
+          <div>
+            <div>
+              <Logo accountId={transaction.account} />
+              <div className="left-info">
+                <div>{transaction.preferred_name || transaction.name}</div>
+                <div>
+                  <span>
+                    {new Date(transaction.date).toLocaleDateString(
+                      'en-us',
+                      { year: 'numeric', month: 'numeric', day: 'numeric' })}
+                  </span>
+                  {transaction.categories?.map((category) => (
+                    <span className={`emoji ${category.period}`}>
+                      {category.emoji}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div>
+              <DollarCents value={transaction.amount} />
+            </div>
+          </div>
+        ))}
+      </>
+    </div>
   )
 }
-
-export default TransactionsTable

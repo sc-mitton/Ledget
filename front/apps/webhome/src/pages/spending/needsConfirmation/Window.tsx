@@ -12,6 +12,7 @@ import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import Options from "@components/dropdowns/Options"
 import { SelectCategoryBill } from '@components/dropdowns'
 import Split from '@components/split/split'
+import { Logo } from '@components/pieces'
 import ItemOptions from "./ItemOptions"
 import {
     NarrowButton,
@@ -19,7 +20,6 @@ import {
     ExpandButton,
     IconScaleButton,
     Tooltip,
-    Base64Logo,
     DollarCents,
     BlueSlimButton,
     GrnSlimButton,
@@ -35,7 +35,6 @@ import {
     selectConfirmedTransactions,
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
-import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 
 // Sizing (in ems)
 const translate = 1
@@ -96,22 +95,6 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
             return `${index * translate + .5}em`
         }
     }
-}
-
-const Logo = ({ accountId }: { accountId: string }) => {
-    const { data } = useGetPlaidItemsQuery()
-
-    const item = data?.find(item => item.accounts.find(account => account.id === accountId))
-
-    const args = {
-        data: item?.institution.logo,
-        alt: item ? `${item.institution.name.charAt(0).toUpperCase()}` : ' ',
-        ...(!item ? { backgroundColor: '#e0e0e0' } : {})
-    }
-
-    return (
-        <Base64Logo {...args} />
-    )
 }
 
 const NewItem: FC<{

@@ -171,7 +171,7 @@ export function Split(props: SplitProps) {
     <div id="split-item--container">
       <CloseButton onClick={() => { onClose() }} size={'.8em'} />
       <div className="header">
-        <h4>{`${title}`}</h4>
+        <h2>{`${title}`}</h2>
       </div>
       <div className="splitter--container">
         <div className="splitter" ref={splitterRef} >

@@ -1,0 +1,76 @@
+.transactions-history--table {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-row-gap: 1em;
+    grid-column: .75rem;
+    grid-auto-rows: min-content;
+
+    &>div {
+        display: contents;
+
+        &>div {
+            align-self: stretch;
+        }
+
+        // Logo, name, date
+        &>div:first-child {
+            display: flex;
+            align-items: center;
+            gap: .75em;
+            flex-wrap: nowrap;
+        }
+
+        &>div:last-child {
+            display: flex;
+            align-items: center;
+        }
+
+        &:not(:last-child)>div {
+            padding: 1em 0;
+            border-bottom: 1.5px solid var(--subtle-border-color);
+        }
+    }
+
+    .left-info {
+        overflow: hidden;
+        max-width: 75%;
+        white-space: nowrap;
+        mask-image: linear-gradient(to right, black, black 90%, transparent 100%);
+
+        &>div:last-child {
+            opacity: .7;
+            display: flex;
+            gap: .5em;
+
+            &>span:first-child {
+                font-size: .75rem;
+            }
+        }
+    }
+
+    .emoji {
+        position: relative;
+
+        &.month::after,
+        &.year::after {
+            position: absolute;
+            content: '';
+            width: .875em;
+            height: .875em;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        &.month::after {
+            background-color: color-mix(in srgb, var(--blue-hlight2), blue 15%);
+        }
+
+        &.year::after {
+            background-color: var(--blue-hlight2);
+        }
+    }
+}
