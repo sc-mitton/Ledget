@@ -111,7 +111,23 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
             invalidatesTags: ['Bill'],
-        })
+        }),
+        updateBills: builder.mutation<any, Bill[]>({
+            query: (data) => ({
+                url: 'bills',
+                method: 'PUT',
+                body: data,
+            }),
+            invalidatesTags: ['Bill'],
+        }),
+        deleteBills: builder.mutation<any, string[]>({
+            query: (data) => ({
+                url: 'bills',
+                method: 'DELETE',
+                body: data,
+            }),
+            invalidatesTags: ['Bill'],
+        }),
     }),
 })
 
@@ -262,4 +278,6 @@ export const {
     useGetBillsQuery,
     useLazyGetBillsQuery,
     useGetBillRecommendationsQuery,
+    useUpdateBillsMutation,
+    useDeleteBillsMutation,
 } = extendedApiSlice

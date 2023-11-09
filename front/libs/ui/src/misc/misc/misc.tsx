@@ -76,7 +76,7 @@ export const DollarCents = ({ value = 0, style = {}, hasCents = true, ...rest }:
 export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
   { value: number, hasCents?: boolean }) => {
 
-  const loaded = useLoaded(1000)
+  const loaded = useLoaded(2000)
   const [slots, setSlots] = useState<string[]>([])
   const slotRefs = useRef<{ [key: string]: string }>({})
 
@@ -104,7 +104,8 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
     }),
     leave: { maxWidth: '0ch', opacity: 0 },
     config: { mass: 1, tension: 150, friction: 25 },
-    ref: slotsApi
+    ref: slotsApi,
+    immediate: !loaded
   })
 
   useEffect(() => {

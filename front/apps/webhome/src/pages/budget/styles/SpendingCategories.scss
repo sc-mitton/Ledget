@@ -165,7 +165,6 @@ $background: var(--inner-window-solid);
         text-align: right;
         justify-content: flex-end;
         padding-right: .5em;
-        font-weight: 500;
     }
 
     // Forward slash columns
@@ -255,6 +254,10 @@ $background: var(--inner-window-solid);
 
 @media screen and (max-width: 600px) {
     #spending-categories-window {
+        grid-template-columns: 1fr;
+    }
+
+    #spending-categories-window>div {
         grid-template-columns: 1fr;
     }
 

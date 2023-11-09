@@ -171,6 +171,7 @@ class Transaction(models.Model):
             validated_data['predicted_category'] = Category.objects.get_or_create(
                 user_id=self.context['request'].user.id,
                 category_name='miscellaneous',
+                is_default=True,
                 period='month',
                 emoji='🪣')
 
@@ -185,6 +186,7 @@ class Transaction(models.Model):
             user_id=self.context['request'].user.id,
             category_name='miscellaneous',
             period='month',
+            is_default=True,
             emoji='🪣'
         )
         new_data = []

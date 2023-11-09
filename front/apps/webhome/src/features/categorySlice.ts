@@ -16,6 +16,7 @@ export interface Category {
     limit_amount: number,
     amount_spent: number,
     alerts: Alert[],
+    is_default: boolean,
 }
 
 export interface SplitCategory extends Category {
@@ -59,7 +60,15 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Category']
         }),
-        deleteCategories: builder.mutation<any, Category[]>({
+        reorderCategories: builder.mutation<any, string[]>({
+            query: (data) => ({
+                url: 'categories/order',
+                method: 'POST',
+                body: data,
+            }),
+            invalidatesTags: ['Category']
+        }),
+        deleteCategories: builder.mutation<any, string[]>({
             query: (data) => ({
                 url: 'categories',
                 method: 'DELETE',
@@ -185,4 +194,5 @@ export const {
     useGetCategoriesQuery,
     useLazyGetCategoriesQuery,
     useUpdateCategoriesMutation,
+    useReorderCategoriesMutation,
 } = extendedApiSlice

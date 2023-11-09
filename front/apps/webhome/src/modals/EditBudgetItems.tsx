@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useTransition, useSpringRef, useSpring, animated, useChain } from '@react-spring/web'
+import { useTransition, useSpringRef, useSpring, animated } from '@react-spring/web'
 
 import './styles/EditBudgetItems.scss'
 import { withModal } from '@ledget/ui'
-import { useGetCategoriesQuery, useUpdateCategoriesMutation, useDeleteCategoriesMutation } from '@features/categorySlice'
-import { useGetBillsQuery } from '@features/billSlice'
+import { useGetCategoriesQuery, useReorderCategoriesMutation, useDeleteCategoriesMutation } from '@features/categorySlice'
+import { useGetBillsQuery, Bill, useDeleteBillsMutation, useUpdateBillsMutation } from '@features/billSlice'
 import { GripButton } from '@components/buttons'
 import { BellOff, Bell } from '@ledget/media'
 import { useSpringDrag, DeleteButton, useLoaded } from '@ledget/ui'
@@ -54,34 +54,13 @@ const useAnimations = (
         ref: itemsApi
     })
 
-
-    const bind = useSpringDrag({
-        order: order,
-        api: itemsApi,
-        onRest: (newOrder) => {
-            setItems((prev) => {
-                const newItems = prev ? [...prev] : []
-                newItems.sort((a, b) =>
-                    newOrder.findIndex((item) => item === a.id)
-                    - newOrder.findIndex((item) => item === b.id)
-                )
-                return newItems
-            })
-        },
-        style: {
-            padding: itemPadding,
-            size: itemHeight,
-            axis: 'y',
-        }
-    })
-
     // Initial animation
     useEffect(() => {
         itemsApi.start()
     }, [items])
 
     return {
-        bind,
+        itemsApi,
         containerProps,
         transitions,
     }
@@ -111,7 +90,7 @@ const useItems = (
     }
 }
 
-const deleteHandler = (
+const deleteButtonHandler = (
     item: Item | undefined,
     setItems: React.Dispatch<React.SetStateAction<Item[] | undefined>>,
     setDeletedItems: React.Dispatch<React.SetStateAction<Item[] | undefined>>,
@@ -124,80 +103,184 @@ const deleteHandler = (
     }
 }
 
-const EditCategories = () => {
+const EditCategoriesModal = withModal((props) => {
     const { data: categories } = useGetCategoriesQuery()
     const { items, setItems, deletedItems, setDeletedItems, order } = useItems(categories)
-    const { bind, containerProps, transitions } = useAnimations(items, setItems, order)
+    const { itemsApi, containerProps, transitions } = useAnimations(items, setItems, order)
+    const [deleteCategories, { isSuccess: categoriesAreDeleted, isLoading: submittingDeleteMutation }] = useDeleteCategoriesMutation()
+    const [reorderCategories] = useReorderCategoriesMutation()
+
+    useEffect(() => {
+        let timeout: NodeJS.Timeout
+        if (categoriesAreDeleted) {
+            timeout = setTimeout(() => {
+                props.closeModal()
+            }, 1000)
+        }
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [categoriesAreDeleted])
+
+    const bind = useSpringDrag({
+        order: order,
+        api: itemsApi,
+        onRest: (newOrder) => {
+            setItems((prev) => {
+                const newItems = prev ? [...prev] : []
+                newItems.sort((a, b) =>
+                    newOrder.findIndex((item) => item === a.id)
+                    - newOrder.findIndex((item) => item === b.id)
+                )
+                return newItems
+            })
+            reorderCategories(newOrder)
+        },
+        style: {
+            padding: itemPadding,
+            size: itemHeight,
+            axis: 'y',
+        }
+    })
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (deletedItems?.length) {
+            deleteCategories(deletedItems.map((item) => item.id))
+        }
+    }
 
     return (
-        <div className="edit-budget-items--container">
-            <h2>Edit Categories</h2>
-            <animated.div className="inner-window" style={containerProps}>
-                <>
-                    {transitions((style, item) => (
-                        <animated.div className="item" style={style} {...bind(item?.id)}>
-                            <GripButton />
-                            <div>
-                                <div className={`${item?.period}`}>
-                                    <span>{item?.emoji}</span>
-                                    <span>{`${item?.name.charAt(0).toUpperCase()}${item?.name.slice(1)}`}</span>
+        <form onSubmit={handleSubmit}>
+            <div className="edit-budget-items--container">
+                <h2>Edit Categories</h2>
+                <animated.div className="inner-window" style={containerProps}>
+                    <>
+                        {transitions((style, item) => (
+                            <animated.div className="item" style={style} {...bind(item?.id)}>
+                                <GripButton />
+                                <div>
+                                    <div className={`${item?.period}`}>
+                                        <span>{item?.emoji}</span>
+                                        <span>{`${item?.name.charAt(0).toUpperCase()}${item?.name.slice(1)}`}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className={`${item?.alerts && item.alerts.length > 0 ? 'on' : 'off'}`}>
-                                {(item?.alerts && item.alerts.length < 0) &&
-                                    <span>{item.alerts.length}</span>}
-                                {(item?.alerts && item.alerts.length < 0)
-                                    ? <Bell size={'1.5em'} />
-                                    : <BellOff size={'1.5em'} />}
-                            </div>
-                            <div>
-                                <DeleteButton
-                                    className="show"
-                                    stroke={'var(--inner-window-solid)'}
-                                    onClick={() => {
-                                        deleteHandler(item, setItems, setDeletedItems, order)
-                                    }}
-                                />
-                            </div>
-                        </animated.div>
-                    ))}
-                </>
-            </animated.div>
-        </div>
-    )
-}
-
-const EditBills = () => {
-    return (
-        <div>
-            <h2>Edit Bills</h2>
-        </div>
-    )
-}
-
-const EditBudgetItems = withModal((props) => {
-    const location = useLocation()
-
-    return (
-        <>
-            {location.pathname.includes('categories') && <EditCategories />}
-            {location.pathname.includes('bills') && <EditBills />}
-            <SubmitForm
-                submitting={false}
-                success={false}
-                onCancel={() => { props.closeModal() }}
-            />
-        </>
+                                <div>
+                                    {!item?.is_default &&
+                                        <DeleteButton
+                                            className="show"
+                                            stroke={'var(--inner-window-solid)'}
+                                            onClick={() => {
+                                                deleteButtonHandler(item, setItems, setDeletedItems, order)
+                                            }}
+                                        />
+                                    }
+                                </div>
+                            </animated.div>
+                        ))}
+                    </>
+                </animated.div>
+            </div>
+            {deletedItems?.length &&
+                <SubmitForm
+                    submitting={submittingDeleteMutation}
+                    success={categoriesAreDeleted}
+                    onCancel={() => { props.closeModal() }}
+                />
+            }
+        </form>
     )
 })
 
-export default function () {
-    const navigate = useNavigate()
+const EditBillsModal = withModal((props) => {
+    const { data: billsData } = useGetBillsQuery()
+    const { items, setItems, deletedItems, setDeletedItems, order } = useItems(billsData)
+    const { containerProps, transitions } = useAnimations(items, setItems, order)
+    const [deleteBills, { isSuccess: billsAreDeleted, isLoading: submittingDeleteMutation }] = useDeleteBillsMutation()
+    const [updateBills, { isSuccess: billsAreUpdated, isLoading: submittingUpdateMutation }] = useUpdateBillsMutation()
+
+    useEffect(() => {
+        let timeout: NodeJS.Timeout
+        if (billsAreDeleted && billsAreUpdated) {
+            timeout = setTimeout(() => {
+                props.closeModal()
+            }, 1000)
+        }
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [billsAreDeleted, billsAreUpdated])
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        deletedItems && deleteBills(deletedItems.map((item) => item.id))
+        items && updateBills(items as Bill[])
+    }
 
     return (
-        <EditBudgetItems
-            maxWidth="25em"
-            onClose={() => { navigate(-1) }}
-        />
+        <form onSubmit={handleSubmit}>
+
+            <div className="edit-budget-items--container">
+                <h2>Edit Bills</h2>
+                <animated.div className="inner-window" style={containerProps}>
+                    <>
+                        {transitions((style, item) => (
+                            <animated.div className="item" style={style}>
+                                <div>
+                                    <div className={`${item?.period}`}>
+                                        <span>{item?.emoji}</span>
+                                        <span>{`${item?.name.charAt(0).toUpperCase()}${item?.name.slice(1)}`}</span>
+                                    </div>
+                                </div>
+                                <div className={`${item?.reminders && item.reminders.length > 0 ? 'on' : 'off'}`}>
+                                    {(item?.reminders && item.reminders.length < 0) &&
+                                        <span>{item.reminders.length}</span>}
+                                    {(item?.reminders && item.reminders.length < 0)
+                                        ? <Bell size={'1.5em'} />
+                                        : <BellOff size={'1.5em'} />}
+                                </div>
+                                <div>
+                                    <DeleteButton
+                                        className="show"
+                                        stroke={'var(--inner-window-solid)'}
+                                        onClick={() => {
+                                            deleteButtonHandler(item, setItems, setDeletedItems, order)
+                                        }}
+                                    />
+                                </div>
+                            </animated.div>
+                        ))}
+                    </>
+                </animated.div>
+                <SubmitForm
+                    submitting={submittingDeleteMutation || submittingUpdateMutation}
+                    success={billsAreDeleted || billsAreUpdated}
+                    onCancel={() => { props.closeModal() }}
+                />
+            </div>
+        </form>
+    )
+})
+
+const EditBudgetItemsModal = () => {
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    const props = {
+        maxWidth: "25em",
+        onClose: () => { navigate(-1) }
+    }
+
+    return (
+        <>
+            {location.pathname.includes('categories') &&
+                <EditCategoriesModal {...props} />
+            }
+            {location.pathname.includes('bills') &&
+                <EditBillsModal {...props} />
+            }
+        </>
     )
 }
+
+export default EditBudgetItemsModal

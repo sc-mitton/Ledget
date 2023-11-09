@@ -8,8 +8,8 @@
         right: 1rem;
     }
 
-    &>div {
-        margin: 1.5em 0 2em 0;
+    &>div:first-of-type {
+        margin-top: 1.5em;
         display: flex;
         flex-direction: column;
         position: relative;
@@ -19,29 +19,8 @@
             align-items: center;
             gap: .5rem;
 
-
             &>div:nth-child(2) {
                 flex-grow: 1;
-            }
-
-            // Bell
-            &>div:nth-last-child(2) {
-                justify-self: end;
-                margin-right: .75rem;
-                position: relative;
-
-                span {
-                    color: var(--white-text);
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    z-index: 1;
-                }
-
-                &.off {
-                    opacity: .5;
-                }
             }
 
             // Delete button

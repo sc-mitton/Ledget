@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 from collections import OrderedDict
+import pytz
 
 from django.db import transaction, models
 from django.db.models import Q
@@ -245,8 +246,8 @@ class TransactionViewSet(ModelViewSet):
 
         if start and end:
             try:
-                start = datetime.fromtimestamp(int(start))
-                end = datetime.fromtimestamp(int(end))
+                start = datetime.fromtimestamp(int(start), tz=pytz.utc)
+                end = datetime.fromtimestamp(int(end), tz=pytz.utc)
             except ValueError:
                 raise ValidationError('Invalid date format')
 

@@ -29,6 +29,7 @@ class Category(BudgetItem):
                                    through='UserCategory',
                                    related_name='categories')
     limit_amount = models.IntegerField(null=True, blank=True)
+    is_default = models.BooleanField(default=False)
 
 
 class Bill(BudgetItem):

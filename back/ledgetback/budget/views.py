@@ -1,12 +1,15 @@
 from datetime import datetime
 import calendar
+import logging
+import pytz
 
-from rest_framework.generics import ListCreateAPIView
-from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import Count, Min, Max, Sum, Q, Exists, OuterRef, F
-from django.db.models.functions import ExtractDay, ExtractMonth
+from rest_framework.decorators import action
+from django.db.models import Sum, Q, Exists, OuterRef, F
+from django.db.transaction import atomic
 
 from core.permissions import IsAuthenticated
 from budget.serializers import (
@@ -15,92 +18,17 @@ from budget.serializers import (
 )
 from budget.models import (
     Category,
-    Bill
+    Bill,
+    UserCategory,
+    TransactionCategory
 )
 from financials.models import Transaction
 from ledgetback.view_mixins import BulkSerializerMixin
 
-
-class CategoryView(BulkSerializerMixin, ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = CategorySerializer
-
-    def get_queryset(self):
-
-        start = self.request.query_params.get('start', None)
-        end = self.request.query_params.get('end', None)
-
-        if start and end:
-            try:
-                start = datetime.fromtimestamp(int(start))
-                end = datetime.fromtimestamp(int(end))
-            except ValueError:
-                return Response(
-                    data={'error': 'Invalid date format'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            return self._get_queryset_with_sliced_amount_spent(start, end)
-        else:
-            return self._get_categories_qset()
-
-    def _get_categories_qset(self):
-        '''
-            SELECT
-               ...columns
-            FROM budget_category"
-            INNER JOIN budget_user_category"
-            ON (budget_category.id = budget_user_category"."category_id)
-            WHERE budget_user_category.user_id = 'user_id_here'
-            ORDER BY budget_user_category.order ASC, budget_category.name ASC
-        '''
-        qset = Category.objects.filter(usercategory__user=self.request.user) \
-                               .order_by('usercategory__order', 'name')
-
-        return qset
-
-    def _get_queryset_with_sliced_amount_spent(self, start: datetime, end: datetime):
-
-        yearly_category_anchor = self.request.user.yearly_anchor
-        if not yearly_category_anchor:
-            yearly_category_anchor = datetime.now().replace(day=1)
-
-        monthly_amount_spent = Sum(
-            F('transactioncategory__transaction__amount') *
-            F('transactioncategory__fraction'),
-            filter=Q(transactioncategory__transaction__datetime__range=(start, end))
-        )
-
-        monthly_qset = Category.objects.filter(
-                                   usercategory__user=self.request.user,
-                                   usercategory__category__period='month'
-                                ) \
-                               .annotate(amount_spent=monthly_amount_spent) \
-                               .annotate(order=F('usercategory__order')) \
-
-        yearly_amount_spent = Sum(
-            F('transactioncategory__transaction__amount') *
-            F('transactioncategory__fraction'),
-            filter=Q(
-                transactioncategory__transaction__datetime__range=(
-                    yearly_category_anchor,
-                    end),
-            )
-        )
-
-        yearly_qset = Category.objects \
-                              .filter(
-                                 usercategory__user=self.request.user,
-                                 usercategory__category__period='year'
-                               ) \
-                              .annotate(amount_spent=yearly_amount_spent) \
-                              .annotate(order=F('usercategory__order')) \
-
-        union_qset = monthly_qset.union(yearly_qset).order_by('order', 'name')
-
-        return union_qset
+logger = logging.getLogger('ledget')
 
 
-class BillView(BulkSerializerMixin, ListCreateAPIView):
+class BillViewSet(BulkSerializerMixin, ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = BillSerializer
 
@@ -165,57 +93,171 @@ class BillView(BulkSerializerMixin, ListCreateAPIView):
         return monthly_qset.union(yearly_qset, once_qset).order_by('name')
 
 
-class RecomendedBillsView(APIView):
+class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
     permission_classes = [IsAuthenticated]
+    serializer_class = CategorySerializer
 
-    def get(self, request, *args, **kwargs):
-        data = {
-            'monthly': self.get_monthly_suggested_bills_qset(request),
-            'yearly': self.get_yearly_suggested_bills_qset(request),
-        }
+    def get_queryset(self):
 
-        return Response(data=data, status=status.HTTP_200_OK)
+        start = self.request.query_params.get('start', None)
+        end = self.request.query_params.get('end', None)
 
-    def get_monthly_suggested_bills_qset(self, request, *args, **kwargs):
+        if start and end:
+            try:
+                start = datetime.fromtimestamp(int(start), tz=pytz.utc)
+                end = datetime.fromtimestamp(int(end), tz=pytz.utc)
+            except ValueError:
+                return Response(
+                    data={'error': 'Invalid date format'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            return self._get_queryset_with_sliced_amount_spent(start, end)
+        else:
+            return self._get_categories_qset()
+
+    @action(detail=False, methods=['POST'], url_path='order')
+    def reorder(self, request):
+        ids = self.request.data
+        try:
+            self._reorder(ids)
+        except Exception as e:
+            logger.warning(e)
+            return Response(
+                data={'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def _reorder(self, ids):
+        qset = UserCategory.objects \
+                           .filter(category__id__in=ids, user=self.request.user) \
+                           .prefetch_related('category')
+        map = {str(item.category.id): item for item in qset}
+        updated = []
+
+        for i, id in enumerate(ids):
+            if id in map:
+                map[id].order = i
+                updated.append(map[id])
+            else:
+                raise Exception(f'Invalid category id {id}')
+
+        UserCategory.objects.bulk_update(updated, ['order'])
+
+    @action(detail=False, methods=['POST'], url_path='remove')
+    def remove(self, request):
+
+        try:
+            ids = request.data
+            qset = self._get_categories_qset(ids)
+            if any(item.is_default for item in qset):
+                raise ValidationError('Cannot delete default category')
+        except Exception as e:
+            logger.warning(e)
+            return Response(
+                data={'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @atomic
+    def _remove_items(self, ids):
+        qset = self._get_categories_qset(ids)
+        self._deactivate_categories(qset)
+        self._update_affected_transactions(qset)
+
+    @atomic
+    def _deactivate_categories(self, qset):
+        updated = []
+        for item in qset:
+            item.is_active = False
+            updated.append(item)
+        Category.objects.bulk_update(updated, ['is_active'])
+
+    @atomic
+    def _update_affected_transactions(self, stale_categories):
         '''
-        This method will return a queryset of all transactions that are
-        likely to be monthly bills that repeat on the same day of the month.
+        For all items in the current month and year,
+        set the category to the default category. Past transactions
+        will be unaffected.
         '''
-        qset = Transaction.objects \
-                          .filter(
-                              account__plaid_item__user_id=request.user.id
-                           ) \
-                          .annotate(
-                              day_of_month=ExtractDay('date'),
-                              min_amount=Min('amount'),
-                              max_amount=Max('amount'),
-                           ) \
-                          .values('name', 'day_of_month') \
-                          .annotate(count=Count('*')) \
-                          .filter(count__gt=4) \
-                          .order_by('name', 'day_of_month')
+
+        default_category = Category.objects.filter(
+            usercategory__user=self.request.user,
+            is_default=True
+        ).first()
+
+        if not default_category:
+            raise Exception('Default category not found')
+
+        transactions_to_update = TransactionCategory.objects.filter(
+            category__in=stale_categories
+        )
+
+        updated = []
+        for item in transactions_to_update:
+            item.category = default_category
+            updated.append(item)
+        Transaction.objects.bulk_update(updated, ['category'])
+
+    def _get_categories_qset(self, ids=None):
+        '''
+            SELECT
+               ...columns
+            FROM budget_category"
+            INNER JOIN budget_user_category"
+            ON (budget_category.id = budget_user_category"."category_id)
+            WHERE budget_user_category.user_id = 'user_id_here'
+            ORDER BY budget_user_category.order ASC, budget_category.name ASC
+        '''
+        if ids:
+            qset = Category.objects.filter(
+                usercategory__user=self.request.user,
+                id__in=ids
+            ).order_by('usercategory__order', 'name')
+        else:
+            qset = Category.objects.filter(usercategory__user=self.request.user) \
+                                   .order_by('usercategory__order', 'name')
 
         return qset
 
-    def get_yearly_suggested_bills_qset(self, request, *args, **kwargs):
-        '''
-        This method will return a queryset of all transactions that are
-        likely to be yearly bills that repeat on the same day of each year.
-        '''
+    def _get_queryset_with_sliced_amount_spent(self, start: datetime, end: datetime):
 
-        qset = Transaction.objects \
-                          .filter(
-                              account__plaid_item__user_id=request.user.id
-                           ) \
-                          .annotate(
-                              day_of_month=ExtractDay('date'),
-                              month_of_year=ExtractMonth('date'),
-                              min_amount=Min('amount'),
-                              max_amount=Max('amount'),
-                           ) \
-                          .values('name', 'day_of_month', 'month_of_year') \
-                          .annotate(count=Count('*')) \
-                          .filter(count__gt=1) \
-                          .order_by('name', 'day_of_month', 'month_of_year')
+        yearly_category_anchor = self.request.user.yearly_anchor
+        if not yearly_category_anchor:
+            yearly_category_anchor = datetime.utcnow().replace(day=1)
 
-        return qset
+        monthly_amount_spent = Sum(
+            F('transactioncategory__transaction__amount') *
+            F('transactioncategory__fraction'),
+            filter=Q(transactioncategory__transaction__datetime__range=(start, end))
+        )
+
+        monthly_qset = Category.objects.filter(
+                                   usercategory__user=self.request.user,
+                                   usercategory__category__period='month'
+                                ) \
+                               .annotate(amount_spent=monthly_amount_spent) \
+                               .annotate(order=F('usercategory__order')) \
+
+        yearly_amount_spent = Sum(
+            F('transactioncategory__transaction__amount') *
+            F('transactioncategory__fraction'),
+            filter=Q(
+                transactioncategory__transaction__datetime__range=(
+                    yearly_category_anchor,
+                    end),
+            )
+        )
+
+        yearly_qset = Category.objects \
+                              .filter(
+                                 usercategory__user=self.request.user,
+                                 usercategory__category__period='year'
+                               ) \
+                              .annotate(amount_spent=yearly_amount_spent) \
+                              .annotate(order=F('usercategory__order')) \
+
+        union_qset = monthly_qset.union(yearly_qset).order_by('order', 'name')
+
+        return union_qset

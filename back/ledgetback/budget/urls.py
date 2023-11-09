@@ -1,18 +1,41 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import SimpleRouter, Route, DynamicRoute
 
 from budget.views import (
-    CategoryView,
-    BillView,
-    RecomendedBillsView
+    CategoryViewSet,
+    BillViewSet
 )
 
+
+class CustomRouter(SimpleRouter):
+    routes = [
+        Route(
+            url=r'^{prefix}$',
+            mapping={
+                'get': 'list',
+                'post': 'create',
+                'put': 'update',
+                'delete': 'destroy'
+            },
+            name='{basename}-list',
+            detail=False,
+            initkwargs={'suffix': 'List'}
+        ),
+        DynamicRoute(
+            url=r'^{prefix}/{url_path}$',
+            name='{basename}-{url_name}',
+            detail=False,
+            initkwargs={}
+        ),
+    ]
+
+
+router = CustomRouter(trailing_slash=False)
+router.register('categories', CategoryViewSet, basename='categories')
+router.register('bills', BillViewSet, basename='bills')
+
+print(router.urls)
+
 urlpatterns = [
-    path('category',
-         CategoryView.as_view(),
-         name='create_category'),
-    path('bill', BillView.as_view(), name='create_bill'),
-    path('categories', CategoryView.as_view(), name='get_categories'),
-    path('bills', BillView.as_view(), name='get_bills'),
-    path('bills/recommendations', RecomendedBillsView.as_view(),
-         name='get_recomended_bills'),
+    path('', include(router.urls)),
 ]

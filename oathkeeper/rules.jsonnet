@@ -169,15 +169,23 @@ local GenericAuthedBase = {
   {
     id: 'categories',
     match: {
-      methods: ['POST', 'GET'],
+      methods: ['POST', 'GET', 'PATCH', 'DELETE'],
       url: base_url + '/<(categories|category)>',
+    }
+  },
+    GenericAuthedBase
+  {
+    id: 'order',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/categories/order',
     }
   },
   GenericAuthedBase
   {
-    id: 'bill',
+    id: 'bills',
     match: {
-      methods: ['GET', 'POST'],
+      methods: ['GET', 'POST', 'PATCH', 'DELETE'],
       url: base_url + '/<(bills|bill)>',
     },
   },

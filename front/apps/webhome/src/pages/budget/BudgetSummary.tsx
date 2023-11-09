@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -7,19 +7,16 @@ import Big from 'big.js'
 import './styles/BudgetSummary.scss'
 import { DollarCents, AnimatedDollarCents, StaticProgressCircle } from '@ledget/ui'
 import { ThumbUp, CheckMark2 } from '@ledget/media'
-import { useGetCategoriesQuery, SelectCategoryBillMetaData } from '@features/categorySlice'
-import { useGetBillsQuery, selectBillMetaData } from '@features/billSlice'
+import { SelectCategoryBillMetaData, useLazyGetCategoriesQuery } from '@features/categorySlice'
+import { selectBillMetaData, useLazyGetBillsQuery } from '@features/billSlice'
 import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
 
 const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
     const [searchParams] = useSearchParams()
     const { start, end } = useGetStartEndFromSearchParams()
 
-    const { isLoading: loadingCategories } = useGetCategoriesQuery({ start: start, end: end, })
-    const { isLoading: loadingBills } = useGetBillsQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
-    })
+    const [getCategories, { isLoading: loadingCategories }] = useLazyGetCategoriesQuery()
+    const [getBills, { isLoading: loadingBills }] = useLazyGetBillsQuery()
     const {
         monthly_spent,
         yearly_spent,
@@ -36,6 +33,16 @@ const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
         total_monthly_bills_amount,
         total_yearly_bills_amount
     } = useSelector(selectBillMetaData)
+
+    useEffect(() => {
+        if (start && end) {
+            getCategories({ start, end })
+            getBills({
+                month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
+                year: searchParams.get('year') || `${new Date().getFullYear()}`,
+            })
+        }
+    }, [start, end])
 
     return (
         <>
@@ -136,17 +143,24 @@ const SummaryStatsTeaser = ({
     const [searchParams] = useSearchParams()
     const { start, end } = useGetStartEndFromSearchParams()
 
-    const { isLoading: loadingCategories } = useGetCategoriesQuery({ start: start, end: end })
-    const { isLoading: loadingBills } = useGetBillsQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
-    })
+    const [getCategories, { isLoading: loadingCategories }] = useLazyGetCategoriesQuery()
+    const [getBills, { isLoading: loadingBills }] = useLazyGetBillsQuery()
     const {
         monthly_spent,
         yearly_spent,
         limit_amount_monthly,
         limit_amount_yearly,
     } = useSelector(SelectCategoryBillMetaData)
+
+    useEffect(() => {
+        if (start && end) {
+            getCategories({ start, end })
+            getBills({
+                month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
+                year: searchParams.get('year') || `${new Date().getFullYear()}`,
+            })
+        }
+    }, [start, end])
 
     return (
         <>
