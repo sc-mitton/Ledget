@@ -1,6 +1,8 @@
 $scroll-bar-padding: 1em;
 $charcoal: var(--charcoal-rgb);
 
+@import '@styles/text';
+
 .transactions-history-table--container {
     flex-grow: 1;
     display: flex;
@@ -14,12 +16,12 @@ $charcoal: var(--charcoal-rgb);
         mask-image: linear-gradient(to right, black, black 80%, transparent 100%);
 
         &>div:last-child {
-            opacity: .7;
             display: flex;
             gap: .5em;
 
             &>span:first-child {
                 font-size: .75rem;
+                color: $secondary-text-color;
             }
         }
     }
@@ -59,7 +61,7 @@ $charcoal: var(--charcoal-rgb);
     overflow-x: hidden;
     display: grid;
     grid-template-columns: minmax(0, 80%) 1fr;
-    row-gap: 1em;
+    row-gap: .75em;
     grid-auto-rows: min-content;
 
     &.skeleton {
@@ -76,6 +78,17 @@ $charcoal: var(--charcoal-rgb);
     &>div {
         display: contents;
 
+        .month-header {
+            grid-column: 1 / span 2;
+            justify-self: left;
+            padding: 0;
+            // padding-top: .75em;
+            padding-left: .125em;
+            margin: 0;
+            cursor: default;
+            color: $secondary-text-color;
+        }
+
         &>div {
             align-self: stretch;
             padding: .5em;
@@ -90,7 +103,7 @@ $charcoal: var(--charcoal-rgb);
             }
         }
 
-        &:hover>div {
+        &:hover>div:not(.month-header) {
             transition: background-color .2s ease-in-out;
             background-color: rgb($charcoal, 0.05);
             cursor: pointer;
@@ -104,16 +117,18 @@ $charcoal: var(--charcoal-rgb);
             flex-wrap: nowrap;
         }
 
+        // Amount
         &>div:last-child {
             display: flex;
             align-items: center;
             justify-content: right;
+            padding-right: .75em;
         }
 
         &:not(:last-child)>div {
             position: relative;
 
-            &::after {
+            &:not(.month-header)::after {
                 // border-bottom: 1.5px solid var(--subtle-border-color);
                 content: '';
                 position: absolute;

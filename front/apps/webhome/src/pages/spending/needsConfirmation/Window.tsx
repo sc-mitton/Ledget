@@ -408,6 +408,7 @@ const NeedsConfirmationWindow = () => {
         if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight) {
             transactionsData?.next && setOffset(transactionsData.next)
         }
+        console.log('e', e)
         setShowMenu(false)
         setShowBillCatSelect(false)
     }
@@ -434,9 +435,9 @@ const NeedsConfirmationWindow = () => {
             <div>
                 <Header />
                 <InfiniteScrollDiv
+                    id="new-items"
                     animate={isFetchingTransactions && offset > 0}
                     ref={newItemsRef}
-                    id="new-items"
                     onMouseLeave={() => flushConfirmedQue()}
                 >
                     <ShadowedContainer
@@ -466,18 +467,18 @@ const NeedsConfirmationWindow = () => {
                                 </>
                             }
                         </animated.div >
-                        <Options
-                            show={showBillCatSelect}
-                            setShow={setShowBillCatSelect}
-                            pos={billCatSelectPos}
-                            topArrow={false}
-                        >
-                            <SelectCategoryBill
-                                value={billCatSelectVal}
-                                onChange={setBillCatSelectVal}
-                            />
-                        </Options>
-                    </ShadowedContainer >
+                    </ShadowedContainer>
+                    <Options
+                        show={showBillCatSelect}
+                        setShow={setShowBillCatSelect}
+                        pos={billCatSelectPos}
+                        topArrow={false}
+                    >
+                        <SelectCategoryBill
+                            value={billCatSelectVal}
+                            onChange={setBillCatSelectVal}
+                        />
+                    </Options>
                     <Options show={showMenu} setShow={setShowMenu} pos={menuPos}>
                         <ItemOptions handlers={[handleSplit]} />
                     </Options>

@@ -51,6 +51,7 @@ export default defineConfig({
       '@pages': path.resolve(__dirname, './src/pages'),
       '@modals': path.resolve(__dirname, './src/modals'),
       '@hooks': path.resolve(__dirname, './src/hooks'),
+      '@styles': path.resolve(__dirname, './src/styles'),
     }
   },
 

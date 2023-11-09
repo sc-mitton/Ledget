@@ -1,6 +1,8 @@
 $window-max-width: 27rem;
 $new-item-padding: 1.125em 1.125em 1.125em .875em;
 
+@import '@styles/text';
+
 #new-items-container {
     display: flex;
     flex-direction: column;
@@ -73,7 +75,7 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
 
             // date
             &>span:last-child {
-                opacity: .6;
+                color: $secondary-text-color;
                 font-size: .75rem;
                 font-weight: 400;
 

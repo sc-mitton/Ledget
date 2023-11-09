@@ -41,7 +41,7 @@ const DropDown = () => {
                     <DropAnimation visible={open}>
                         <Menu.Items static as={React.static}>
                             <div className="dropdown dropdown-right">
-                                <Wrapper>
+                                <Wrapper onClick={() => { navigate('budget/edit-categories') }}>
                                     <Edit className="dropdown-icon" />
                                     Monthly budget
                                 </Wrapper>

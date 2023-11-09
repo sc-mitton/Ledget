@@ -1,4 +1,4 @@
-import React, { FC, HTMLProps, useEffect, forwardRef } from 'react'
+import React, { FC, useRef, HTMLProps, useEffect, forwardRef } from 'react'
 import './containers.scss'
 
 export const ExpandableContainer = ({ expanded = true, className = '', children, ...rest }: {
@@ -36,59 +36,58 @@ const getMaskImage = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
   }
 }
 
-// export const ScrollDiv = <HTMLDivElement, HTMLProps<HTMLDivElement> & { animate: boolean }>(({
-export const ShadowScrollDiv: FC<HTMLProps<HTMLDivElement>> = ({
-  children,
-  ...rest
-}) => {
-  const [shadow, setShadow] = React.useState<'top' | 'bottom' | 'bottom-top' | ''>('')
-  const ref = React.useRef<HTMLDivElement>(null)
+export const ShadowScrollDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
+  ({ children, ...rest }, parentRef) => {
+    const [shadow, setShadow] = React.useState<'top' | 'bottom' | 'bottom-top' | ''>('')
+    const localRef = useRef<HTMLDivElement | null>(null);
 
-  // Scroll shadow effects
-  useEffect(() => {
-    let timeout = setTimeout(() => {
-      if (ref.current && ref.current) {
-        const { scrollTop, scrollHeight, offsetHeight } = ref.current
-        if (scrollTop === 0 && scrollHeight === offsetHeight) {
-          setShadow('')
-        } else if (scrollTop === 0 && scrollHeight > offsetHeight) {
-          setShadow('bottom')
-        } else if (scrollTop > 0 && scrollTop + offsetHeight < scrollHeight) {
-          setShadow('bottom-top')
-        } else if (scrollTop + offsetHeight === scrollHeight) {
-          setShadow('top')
+    useEffect(() => {
+      const handleScroll = (e: Event) => {
+        if (localRef.current) {
+          const { scrollTop, scrollHeight, offsetHeight } = e.target as HTMLDivElement;
+          // Update shadow based on scroll position
+          if (scrollTop === 0 && scrollHeight === offsetHeight) {
+            setShadow('')
+          } else if (scrollTop === 0 && scrollHeight > offsetHeight) {
+            setShadow('bottom')
+          } else if (scrollTop > 0 && scrollTop + offsetHeight < scrollHeight) {
+            setShadow('bottom-top')
+          } else if (scrollTop + offsetHeight === scrollHeight) {
+            setShadow('top')
+          }
         }
       }
-    }, 50)
 
-    const handleScroll = (e: Event) => {
-      if (ref.current && ref.current) {
-        const { scrollTop, scrollHeight, offsetHeight } = e.target as HTMLDivElement
-        if (scrollTop === 0 && scrollHeight === offsetHeight) {
-          setShadow('')
-        } else if (scrollTop === 0 && scrollHeight > offsetHeight) {
-          setShadow('bottom')
-        } else if (scrollTop > 0 && scrollTop + offsetHeight < scrollHeight) {
-          setShadow('bottom-top')
-        } else if (scrollTop + offsetHeight === scrollHeight) {
-          setShadow('top')
+      if (localRef.current) {
+        localRef.current.addEventListener('scroll', handleScroll);
+      }
+
+      return () => {
+        if (localRef.current) {
+          localRef.current.removeEventListener('scroll', handleScroll);
+        }
+      }
+    }, [])
+
+    const handleParentRef = (el: HTMLDivElement | null) => {
+      if (el) {
+        localRef.current = el
+        if (typeof parentRef === 'function') {
+          parentRef(el)
+        } else if (parentRef && 'current' in parentRef) {
+          (parentRef as React.MutableRefObject<HTMLDivElement | null>).current = el
         }
       }
     }
-    ref.current?.addEventListener('scroll', handleScroll)
-    return () => {
-      ref.current?.removeEventListener('scroll', handleScroll)
-      clearTimeout(timeout)
-    }
-  }, [])
 
-  return (
-    <div
-      {...rest}
-      style={{ maskImage: getMaskImage(shadow) }}
-      ref={ref}
-    >
-      {children}
-    </div>
-  )
-}
+    return (
+      <div
+        {...rest}
+        style={{ maskImage: getMaskImage(shadow) }}
+        ref={handleParentRef}
+      >
+        {children}
+      </div>
+    )
+  }
+)
