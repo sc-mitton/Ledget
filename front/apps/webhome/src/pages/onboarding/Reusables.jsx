@@ -70,6 +70,7 @@ export const TabView = ({ children }) => {
 
 export const BottomButtons = () => {
     const navigate = useNavigate()
+    const { data: user } = useGetMeQuery()
     const { itemsEmpty } = useContext(ItemsContext)
     const location = useLocation()
     const [addNewBill, { isLoading: isBillLoading, isSuccess: isBillSuccess }] = useAddnewBillMutation()

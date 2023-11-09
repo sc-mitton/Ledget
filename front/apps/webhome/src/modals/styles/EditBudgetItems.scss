@@ -2,14 +2,33 @@
 
 .edit-budget-items--container {
 
+    .item {
+        position: absolute;
+        left: 1rem;
+        right: 1rem;
+    }
+
     &>div {
-        margin: 1em 0;
-        display: grid;
-        grid-template-columns: auto 1fr;
-        row-gap: .5rem;
+        margin-top: 1em;
+        display: flex;
+        flex-direction: column;
+        position: relative;
 
         &>div {
-            display: contents;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+
+
+            &>div:nth-child(2) {
+                flex-grow: 1;
+            }
+
+            // Delete button
+            &>div:last-child {
+
+                justify-self: end;
+            }
         }
     }
 

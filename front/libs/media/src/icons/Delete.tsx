@@ -1,8 +1,7 @@
 const Delete = ({
     className = '',
     fill = "#292929",
-    width = "1em",
-    height = "1em",
+    size = "1em",
     stroke = "#FFFFFF",
     strokeWidth = "19"
 }) => {
@@ -11,8 +10,8 @@ const Delete = ({
         <>
             <svg
                 className={className}
-                width={width}
-                height={height}
+                width={size}
+                height={size}
                 viewBox="0 0 144 144"
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"

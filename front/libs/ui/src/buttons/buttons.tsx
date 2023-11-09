@@ -156,11 +156,12 @@ export const CheckCircleButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { s
     </button>
   )
 
-export const DeleteButton = ({ className, ...rest }: { className: string }) => (
-  <button className={`btn delete-button ${className}`} {...rest}>
-    <Delete width={'1.3em'} height={'1.3em'} />
-  </button>
-)
+export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { fill?: string, stroke?: string }>
+  = ({ className, fill, stroke, ...rest }) => (
+    <button className={`btn delete-button ${className}`} {...rest}>
+      <Delete fill={fill} stroke={stroke} size={'1.2em'} />
+    </button>
+  )
 
 export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { success: boolean }>(
   (props, ref) => {

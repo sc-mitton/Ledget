@@ -8,10 +8,10 @@ import { withModal } from '@ledget/ui'
 import { useGetCategoriesQuery, Category } from '@features/categorySlice'
 import { useGetBillsQuery, Bill } from '@features/billSlice'
 import { GripButton } from '@components/buttons'
-import { useSpringDrag } from '@ledget/ui'
+import { useSpringDrag, DeleteButton } from '@ledget/ui'
 
 const itemHeight = 25
-const itemPadding = 8
+const itemPadding = 12
 
 const EditBills = () => {
     return (
@@ -23,7 +23,7 @@ const EditBills = () => {
 
 const EditCategories = () => {
     const { data: categories, isSuccess } = useGetCategoriesQuery()
-    const [items, setItems] = useState<Category[]>()
+    const [items, setItems] = useState<Category[]>([])
     let order = useRef<string[]>([])
 
     useEffect(() => {
@@ -48,25 +48,44 @@ const EditCategories = () => {
     })
 
     const transitions = useTransition(items, {
-        from: { opacity: 0, height: 0 },
-        enter: { opacity: 1, height: itemHeight },
-        leave: { opacity: 0, height: 0 },
-        update: { height: itemHeight },
+        from: () => ({ opacity: 1, zIndex: 0, scale: 1 }),
+        enter: (item, index) => ({ opacity: 1, y: index * (itemHeight + itemPadding) }),
+        update: (item, index) => ({ y: index * (itemHeight + itemPadding) }),
+        leave: () => ({ opacity: 0 }),
+        config: { duration: 100 },
+        ref: api
     })
 
     return (
         <div className="edit-budget-items--container">
             <h2>Edit Categories</h2>
-            <div className="inner-window">
+            <div
+                className="inner-window"
+                style={{
+                    height: items?.length
+                        ? (items.length - .25) * (itemHeight + itemPadding)
+                        : 0,
+                    maxHeight: items?.length
+                        ? (items.length - .25) * (itemHeight + itemPadding)
+                        : 0
+                }}
+            >
                 <>
                     {transitions((style, item) => (
-                        <animated.div style={style} {...bind(item?.id)} >
+                        <animated.div
+                            className="item"
+                            style={style}
+                            {...bind(item?.id)}
+                        >
                             <GripButton />
                             <div>
                                 <div className={`${item?.period}`}>
                                     <span>{item?.emoji}</span>
                                     <span>{`${item?.name.charAt(0).toUpperCase()}${item?.name.slice(1)}`}</span>
                                 </div>
+                            </div>
+                            <div>
+                                <DeleteButton className="show" stroke={'var(--inner-window-solid)'} />
                             </div>
                         </animated.div>
                     ))}
