@@ -1,8 +1,7 @@
 'react'
 
 const Bell = ({
-    width = "1.5em",
-    height = "1.5em",
+    size = "1.5em",
     className = '',
     fill = "#292929",
     numberOfAlerts = 0,
@@ -28,8 +27,8 @@ const Bell = ({
                 {numberOfAlerts > 0 && (`${numberOfAlerts}`)}
             </span>
             <svg
-                width={width}
-                height={height}
+                width={size}
+                height={size}
                 viewBox={`0 0 144 144`}
                 className={className}
                 aria-label="Bell"

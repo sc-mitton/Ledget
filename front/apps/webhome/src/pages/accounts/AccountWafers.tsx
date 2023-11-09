@@ -197,7 +197,7 @@ export const AccountWafers = () => {
                                         {account.mask}
                                     </div>
                                     <div className="wafer-balance--container">
-                                        <DollarCents value={String(account.balances.current * 100)} />
+                                        <DollarCents value={Big(account.balances.current).times(100).toNumber()} />
                                     </div>
                                 </div>
                             </div>

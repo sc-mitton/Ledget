@@ -1,4 +1,4 @@
-import { FC, useRef, useState, useEffect } from 'react'
+import { FC, useRef, HTMLProps, useState, useEffect } from 'react'
 
 import './styles/ShadowedContainer.css'
 
@@ -15,13 +15,12 @@ const getMaskImage = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
     }
 }
 
-interface I {
-    showShadow?: boolean
-    onScroll?: (e: React.UIEvent<HTMLDivElement>) => void
+type ShadowedContainerProps = HTMLProps<HTMLDivElement> & {
+    showShadow?: boolean;
 }
 
-const ShadowedContainer: FC<React.HTMLAttributes<HTMLDivElement & I>> = ({ children, ...rest }) => {
-    const [shadow, setShadow] = useState<'top' | 'bottom' | 'bottom-top' | ''>('')
+const ShadowedContainer: FC<ShadowedContainerProps> = ({ children, showShadow = true, ...rest }) => {
+    const [shadow, setShadow] = useState<'top' | 'bottom' | 'bottom-top' | ''>('');
     const ref = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -30,16 +29,16 @@ const ShadowedContainer: FC<React.HTMLAttributes<HTMLDivElement & I>> = ({ child
                 const { scrollTop, scrollHeight, offsetHeight } = e.target as HTMLDivElement;
                 // Update shadow based on scroll position
                 if (scrollTop === 0 && scrollHeight === offsetHeight) {
-                    setShadow('')
+                    setShadow('');
                 } else if (scrollTop === 0 && scrollHeight > offsetHeight) {
-                    setShadow('bottom')
+                    setShadow('bottom');
                 } else if (scrollTop > 0 && scrollTop + offsetHeight < scrollHeight) {
-                    setShadow('bottom-top')
+                    setShadow('bottom-top');
                 } else if (scrollTop + offsetHeight === scrollHeight) {
-                    setShadow('top')
+                    setShadow('top');
                 }
             }
-        }
+        };
 
         if (ref.current?.firstChild) {
             ref.current?.firstChild.addEventListener('scroll', handleScroll);
@@ -49,19 +48,19 @@ const ShadowedContainer: FC<React.HTMLAttributes<HTMLDivElement & I>> = ({ child
             if (ref.current?.firstChild) {
                 ref.current?.firstChild.removeEventListener('scroll', handleScroll);
             }
-        }
-    }, [])
+        };
+    }, []);
 
     return (
         <div
             className="scroll-shadows--container"
             {...rest}
-            style={{ maskImage: getMaskImage(shadow) }}
+            style={{ maskImage: showShadow ? getMaskImage(shadow) : '' }}
             ref={ref}
         >
             {children}
         </div>
-    )
-}
+    );
+};
 
 export default ShadowedContainer

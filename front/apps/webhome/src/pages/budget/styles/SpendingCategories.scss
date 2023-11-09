@@ -1,20 +1,35 @@
-$window-padding: 1.5em;
-$row-padding: .625em;
-$column-gap: 1.25em;
-$background: var(--window);
 @import '../../../styles/greenblues.scss';
 @import './Variables.scss';
 
+$bill-flex-grid-gap: calc(.25em + .5vw);
+$window-padding: calc(.25em + $bill-flex-grid-gap);
+
+$row-padding: .375em;
+$column-gap: 1.25em;
+$background: var(--inner-window-solid);
+
 #spending-categories-window {
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: minmax(0, max-content);
-    place-content: center;
-    background-color: $background;
-    gap: $column-gap;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     // Aprx. 5 rows
     min-height: calc(5 * (1em + 2 * $item-row-gap + 2 * $row-padding));
+
+    &>div {
+        background-color: $background;
+        gap: $column-gap;
+        border-radius: var(--border-radius25);
+        padding: $window-padding;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: minmax(0, max-content);
+        place-content: center;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
 }
 
 .column {

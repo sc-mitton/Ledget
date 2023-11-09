@@ -3,7 +3,7 @@ const Delete = ({
     fill = "#292929",
     size = "1em",
     stroke = "#FFFFFF",
-    strokeWidth = "19"
+    strokeWidth = "12"
 }) => {
 
     return (

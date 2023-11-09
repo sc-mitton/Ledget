@@ -86,7 +86,7 @@ function fn(
 
 const useSpringDrag: UseItemsDrag = ({ order, indexCol = 'id', api, style, onRest }) => {
     return useDrag(({ args: [itemId], active, movement: [x, y] }) => {
-        if (!document.activeElement || !document.activeElement.getAttribute('draggable-item')) {
+        if (document.activeElement?.getAttribute('draggable-item') === null || !document.activeElement) {
             return
         }
         const curIndex = order.current.indexOf(itemId)

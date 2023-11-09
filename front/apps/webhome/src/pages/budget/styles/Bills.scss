@@ -1,6 +1,7 @@
 $gap: calc(.25em + 2vw);
 $bill-flex-grid-gap: calc(.25em + .5vw);
 $bill-item-padding: .25em .75em;
+$window-padding: calc(.25em + $bill-flex-grid-gap);
 
 :root {
     --number-of-bill-rows: 5;
@@ -17,7 +18,7 @@ $bill-item-padding: .25em .75em;
     box-sizing: border-box;
     background-color: var(--inner-window);
     border-radius: var(--border-radius25);
-    padding: calc($gap/2 + $bill-flex-grid-gap);
+    padding: $window-paddding;
     height: min-content;
     width: 100%;
     display: flex;

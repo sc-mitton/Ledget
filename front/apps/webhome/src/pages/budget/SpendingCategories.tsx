@@ -318,10 +318,12 @@ const SpendingCategories = () => {
 
     return (
         <div id="spending-categories-window" ref={ref}>
-            {isLoading
-                ? <SkeletonRows numberOfRows={skeletonRowCount} />
-                : isTabView ? <TabView /> : <ColumnView />
-            }
+            <div>
+                {isLoading
+                    ? <SkeletonRows numberOfRows={skeletonRowCount} />
+                    : isTabView ? <TabView /> : <ColumnView />
+                }
+            </div>
         </div>
     )
 }
