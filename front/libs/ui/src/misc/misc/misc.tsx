@@ -5,6 +5,7 @@ import Color from 'color';
 
 import './misc.scss'
 import { formatCurrency } from '../../utils/funcs'
+import { useLoaded } from '../../utils/hooks';
 
 function getContrastColor(bgColor: string | undefined) {
   const color = Color(bgColor);
@@ -75,7 +76,7 @@ export const DollarCents = ({ value = 0, style = {}, hasCents = true, ...rest }:
 export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
   { value: number, hasCents?: boolean }) => {
 
-  const [loaded, setLoaded] = useState(false)
+  const loaded = useLoaded(1000)
   const [slots, setSlots] = useState<string[]>([])
   const slotRefs = useRef<{ [key: string]: string }>({})
 
@@ -138,13 +139,6 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
         ))
     }
   }, [value])
-
-  useEffect(() => {
-    let timeout = setTimeout(() => {
-      setLoaded(true)
-    }, 1000)
-    return () => clearTimeout(timeout)
-  }, [])
 
   // Start animations
   useEffect(() => {

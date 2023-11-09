@@ -24,8 +24,10 @@ import {
     JiggleDiv,
     ZoomMotionDiv,
     SlideMotionDiv,
-    TotpAppGraphic
+    TotpAppGraphic,
+    useLoaded
 } from '@ledget/ui'
+
 
 const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
     const [qrNode, setQrNode] = useState(null)
@@ -96,7 +98,7 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
 const Authenticator = (props) => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [codeMode, setCodeMode] = useState(false)
-    const [loaded, setLoaded] = useState(false)
+    const loaded = useLoaded(100)
 
     const [updateUser] = useUpdateUserMutation()
     const [addRememberedDevice] = useAddRememberedDeviceMutation()
@@ -149,14 +151,6 @@ const Authenticator = (props) => {
         }
         return () => clearTimeout(timeout)
     }, [isCompleteSuccess])
-
-    // Set loaded state after 100ms (for animation divs)
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setLoaded(true)
-        }, 100)
-        return () => clearTimeout(timeout)
-    }, [])
 
     return (
         <div id="authenticator-page">

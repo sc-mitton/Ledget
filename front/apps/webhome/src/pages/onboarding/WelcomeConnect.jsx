@@ -8,7 +8,7 @@ import { Plus, CheckMark3 } from '@ledget/media'
 import { useBakedPlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
-import { GrnPrimaryButton, ExpandableContainer, LoadingRing, BlackPrimaryButtonWithArrow, Base64Logo } from '@ledget/ui'
+import { GrnPrimaryButton, ExpandableContainer, LoadingRing, BlackPrimaryButtonWithArrow, Base64Logo, useLoaded } from '@ledget/ui'
 
 const InstitutionLogos = ({ plaidItems }) => {
     const { isLoading } = useGetPlaidItemsQuery()
@@ -98,7 +98,7 @@ const WelcomeConnect = () => {
         isSuccess: fetchedPlaidItemsSuccess
     } = useGetPlaidItemsQuery()
     const [continueDisabled, setContinueDisabled] = useState(true)
-    const [loaded, setLoaded] = useState(false)
+    const loaded = useLoaded(0, fetchedPlaidItemsSuccess)
 
     // We should only sync when there's been a new plaid item added
     // after the initial load
@@ -115,12 +115,6 @@ const WelcomeConnect = () => {
             setContinueDisabled(false)
         }
     }, [plaidItems])
-
-    useEffect(() => {
-        if (fetchedPlaidItemsSuccess) {
-            setLoaded(true)
-        }
-    }, [fetchedPlaidItemsSuccess])
 
     return (
         <div className="window3">

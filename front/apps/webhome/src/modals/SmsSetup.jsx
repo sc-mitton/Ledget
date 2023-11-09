@@ -23,9 +23,9 @@ import {
     SlideMotionDiv,
     KeyPadGraphic,
     SmsVerifyStatus,
-    Otc
+    Otc,
+    useLoaded
 } from '@ledget/ui'
-
 
 const schema = object().shape({
     phone: string().required('required').transform((value) =>
@@ -148,7 +148,7 @@ const SmsVerify = (props) => {
 
 const SmsSetup = (props) => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const [loaded, setLoaded] = useState(false)
+    const loaded = useLoaded()
     const { data: user } = useGetMeQuery()
 
     useEffect(() => {
@@ -156,7 +156,6 @@ const SmsSetup = (props) => {
             searchParams.set('continue', true)
             setSearchParams(searchParams)
         }
-        setLoaded(true)
     }, [])
 
     return (

@@ -18,7 +18,7 @@ $window-padding: calc(.25em + $bill-flex-grid-gap);
     box-sizing: border-box;
     background-color: var(--inner-window);
     border-radius: var(--border-radius25);
-    padding: $window-paddding;
+    padding: $window-padding;
     height: min-content;
     width: 100%;
     display: flex;

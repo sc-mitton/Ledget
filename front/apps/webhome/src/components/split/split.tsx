@@ -5,10 +5,9 @@ import { useDrag } from '@use-gesture/react';
 import Big from 'big.js';
 
 import './split.scss';
-import { CloseButton, PlusPill, CheckCircleButton, DollarCents, DropAnimation, Tooltip, clamp } from '@ledget/ui';
+import { CloseButton, PlusPill, CheckCircleButton, DollarCents, DropAnimation, Tooltip, clamp, useLoaded } from '@ledget/ui';
 import { Category, isCategory } from '@features/categorySlice';
 import { SelectCategoryBill as SelectCategory } from '@components/dropdowns'
-
 
 export interface SplitProps {
   title: string;
@@ -19,7 +18,7 @@ export interface SplitProps {
 
 export function Split(props: SplitProps) {
   const { title, amount, defaultCategory, onClose } = props
-  const [loaded, setLoaded] = useState(false)
+  const loaded = useLoaded(1000)
   const [categories, setCategories] = useState<Category[]>([])
   const [showCategorySelect, setShowCategorySelect] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<Category>()
@@ -113,13 +112,6 @@ export function Split(props: SplitProps) {
       }))
     }
   })
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLoaded(true)
-    }, 1000)
-    return () => clearTimeout(timeout)
-  }, [])
 
   useEffect(() => {
     if (defaultCategory && categories.length === 0) {

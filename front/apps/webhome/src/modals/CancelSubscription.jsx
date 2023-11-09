@@ -7,10 +7,9 @@ import { AnimatePresence } from 'framer-motion'
 import './styles/CancelSubscription.css'
 import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
-import { RedButton, GrnPrimaryButton, SlideMotionDiv } from '@ledget/ui'
+import { RedButton, GrnPrimaryButton, SlideMotionDiv, useLoaded } from '@ledget/ui'
 import { useUpdateSubscriptionMutation, useGetSubscriptionQuery } from '@features/userSlice'
 import { BakedSelect } from '@components/dropdowns'
-
 
 export const CancelationWindow = (props) => {
     const [feedback, setFeedback] = useState('')
@@ -154,9 +153,7 @@ const SuccessWindow = (props) => {
 
 const CancelationModal = withReAuth(withModal((props) => {
     const [{ isSuccess }] = useUpdateSubscriptionMutation()
-    const [loaded, setLoaded] = useState(false)
-
-    useEffect(() => { setLoaded(true) }, [])
+    const loaded = useLoaded()
 
     return (
         <AnimatePresence mode="wait">

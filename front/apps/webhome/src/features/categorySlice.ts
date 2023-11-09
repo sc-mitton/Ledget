@@ -50,7 +50,23 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
             invalidatesTags: ['Category']
-        })
+        }),
+        updateCategories: builder.mutation<any, Category[]>({
+            query: (data) => ({
+                url: 'categories',
+                method: 'PUT',
+                body: data,
+            }),
+            invalidatesTags: ['Category']
+        }),
+        deleteCategories: builder.mutation<any, Category[]>({
+            query: (data) => ({
+                url: 'categories',
+                method: 'DELETE',
+                body: data,
+            }),
+            invalidatesTags: ['Category']
+        }),
     }),
 })
 
@@ -165,6 +181,8 @@ export const SelectCategoryBillMetaData = createSelector(
 
 export const {
     useAddNewCategoryMutation,
+    useDeleteCategoriesMutation,
     useGetCategoriesQuery,
     useLazyGetCategoriesQuery,
+    useUpdateCategoriesMutation,
 } = extendedApiSlice

@@ -4,9 +4,8 @@ import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
 
 import { useLazyGetTransactionsQuery, useGetTransactionQueryState } from '@features/transactionsSlice'
-import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv } from '@ledget/ui'
+import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv, useLoaded } from '@ledget/ui'
 import pathMappings from './path-mappings'
-
 
 export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
     = ({ children, ...rest }) => {
@@ -14,7 +13,7 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
         const [fetchMorePulse, setFetchMorePulse] = useState(false)
         const [searchParams] = useSearchParams()
         const [skeleton, setSkeleton] = useState(true)
-        const [loaded, setLoaded] = useState(false)
+        const loaded = useLoaded(0)
         const location = useLocation()
 
         const [getTransactions, {
@@ -32,7 +31,6 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
                     limit: 25,
                     offset: 0,
                 }, true)
-                setLoaded(true)
             }
         }, [searchParams.get('account')])
 

@@ -24,7 +24,7 @@ import {
     BlueSlimButton,
     GrnSlimButton,
 } from "@ledget/ui"
-import { formatDateOrRelativeDate, InfiniteScrollDiv } from '@ledget/ui'
+import { formatDateOrRelativeDate, InfiniteScrollDiv, useLoaded } from '@ledget/ui'
 import { Category, isCategory, SplitCategory } from '@features/categorySlice'
 import { Bill, isBill } from '@features/billSlice'
 import {
@@ -205,7 +205,7 @@ const NeedsConfirmationWindow = () => {
     const [searchParams] = useSearchParams()
     const [offset, setOffset] = useState(0)
     const [expanded, setExpanded] = useState(false)
-    const [loaded, setLoaded] = useState(false)
+    const loaded = useLoaded()
     const [showMenu, setShowMenu] = useState(false)
     const [showBillCatSelect, setShowBillCatSelect] = useState(false)
     const [splittingMode, setSplittingMode] = useState(false)
@@ -240,8 +240,6 @@ const NeedsConfirmationWindow = () => {
     ] = useLazyGetUnconfirmedTransactionsQuery()
     const [updateTransactions] = useUpdateTransactionsMutation()
     const newItemsRef = useRef<HTMLDivElement>(null)
-
-    useEffect(() => { setLoaded(true) }, [])
 
     // Initial fetch when query params change
     useEffect(() => {
