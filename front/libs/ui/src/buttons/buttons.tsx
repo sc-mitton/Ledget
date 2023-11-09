@@ -145,7 +145,7 @@ export const CopyButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText
 export const PlusPill: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled: 'black' | 'green' }>
   = ({ styled = 'black', ...rest }: { styled: 'black' | 'green' }) => (
     <button className={`btn-circle ${styled === 'black' ? 'btn-chcl' : 'btn-grn'}`} {...rest}>
-      <Plus stroke={'currentColor'} width={'.9em'} height={'.9em'} />
+      <Plus stroke={'currentColor'} size={'.9em'} />
     </button>
   )
 
@@ -253,7 +253,7 @@ export const EdgeGlowPillButton
     >
       <div>
         {children}
-        <Plus width={'.9em'} height={'.9em'} stroke={'currentColor'} />
+        <Plus size={'.9em'} stroke={'currentColor'} />
       </div>
       <span />
       <span />

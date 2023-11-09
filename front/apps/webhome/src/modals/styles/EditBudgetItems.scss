@@ -1,0 +1,23 @@
+@import '@styles/base.scss';
+
+.edit-budget-items--container {
+
+    &>div {
+        margin: 1em 0;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        row-gap: .5rem;
+
+        &>div {
+            display: contents;
+        }
+    }
+
+    .month {
+        @include month-category;
+    }
+
+    .year {
+        @include year-category;
+    }
+}

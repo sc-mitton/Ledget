@@ -38,7 +38,7 @@ const AddReminder = ({ value, onChange }) => {
                         <span style={{ opacity: active ? '.5' : '0', padding: '0 .5em', fontWeight: '400' }}>before</span>
                     </div>
                     {!selected
-                        ? <Plus stroke={'var(--muted-text-gray)'} width={'.9em'} height={'.9em'} />
+                        ? <Plus stroke={'var(--muted-text-gray)'} size={'.9em'} />
                         : <CheckMark stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`} />
                     }
                 </div>
@@ -95,12 +95,15 @@ const AddReminder = ({ value, onChange }) => {
                                 <Plus
                                     stroke={'currentColor'}
                                     strokeWidth={'20'}
-                                    width={'.8em'}
-                                    height={'.8em'}
+                                    size={".8em"}
                                 />}
                         </ComboSelect.Button>
                         <ComboSelect.Options className="select-container" static>
-                            <DropAnimation visible={open} className="dropdown select">
+                            <DropAnimation
+                                placement='right'
+                                visible={open}
+                                className="dropdown select"
+                            >
                                 <Options />
                             </DropAnimation>
                         </ComboSelect.Options>

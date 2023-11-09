@@ -194,11 +194,7 @@ const AddAlert = (props) => {
                     height={'.8em'}
                 />
                 :
-                <Plus
-                    strokeWidth={'20'}
-                    width={'.8em'}
-                    height={'.8em'}
-                />
+                <Plus strokeWidth={'20'} size={'.8em'} />
             }
         </>
     )

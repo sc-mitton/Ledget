@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 import { Routes, Outlet, Navigate, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
-import "./styles/base.css";
+import "./styles/base.scss";
 import Header from './Header'
 import Budget from '@pages/budget/Window'
 import Spending from '@pages/spending/Window'

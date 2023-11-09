@@ -416,6 +416,53 @@ input:focus {
     outline: none;
 }
 
+/* ----------------------------- Category Styles ---------------------------- */
+
+@mixin category-label {
+    display: inline-flex;
+    gap: .5em;
+    align-items: center;
+    border-radius: var(--border-radius2);
+    padding: .125em .75em;
+}
+
+@mixin month-category {
+    @include category-label;
+    background-color: var(--green-hlight2);
+    transition: all .3s ease;
+
+    * {
+        color: var(--green-dark4);
+    }
+}
+
+@mixin month-category-hover-effects {
+
+    &:hover {
+        background-color: var(--green-hlight3);
+        transition: all .3s ease;
+
+        * {
+            color: color-mix(in srgb, var(--green-dark4), black 10%);
+        }
+    }
+}
+
+@mixin year-category {
+    @include category-label;
+    background-color: var(--blue-hlight2);
+    color: var(--blue-dark4);
+    transition: all .3s ease;
+}
+
+@mixin year-category-hover-effects {
+    &:hover {
+        color: color-mix(in srgb, var(--blue-dark4), black 10%);
+        background-color: var(--blue-hlight3);
+        transition: all .3s ease;
+    }
+}
+
 /* ---------------------------- New Button Styles --------------------------- */
 
 button {

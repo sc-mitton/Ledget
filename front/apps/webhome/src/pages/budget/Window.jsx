@@ -41,13 +41,21 @@ const DropDown = () => {
                     <DropAnimation visible={open}>
                         <Menu.Items static as={React.static}>
                             <div className="dropdown dropdown-right">
-                                <Wrapper onClick={() => { navigate('budget/edit-categories') }}>
+                                <Wrapper
+                                    onClick={() => navigate({
+                                        pathname: '/budget/edit-categories',
+                                        search: createSearchParams({
+                                            month: searchParams.get('month'),
+                                            year: searchParams.get('year')
+                                        }).toString()
+                                    })}
+                                >
                                     <Edit className="dropdown-icon" />
-                                    Monthly budget
+                                    Categories
                                 </Wrapper>
                                 <Wrapper>
                                     <Edit className="dropdown-icon" />
-                                    Yearly budget
+                                    Bills
                                 </Wrapper>
                                 <Wrapper
                                     onClick={() => navigate({
@@ -58,11 +66,7 @@ const DropDown = () => {
                                         }).toString()
                                     })}
                                 >
-                                    <Plus
-                                        width={'1em'}
-                                        height={'1em'}
-                                        className="dropdown-icon"
-                                    />
+                                    <Plus size={'1em'} className="dropdown-icon" />
                                     New category
                                 </Wrapper>
                                 <Wrapper
@@ -74,11 +78,7 @@ const DropDown = () => {
                                         }).toString()
                                     })}
                                 >
-                                    <Plus
-                                        width={'1em'}
-                                        height={'1em'}
-                                        className="dropdown-icon"
-                                    />
+                                    <Plus size={'1em'} className="dropdown-icon" />
                                     New bill
                                 </Wrapper>
                             </div>
