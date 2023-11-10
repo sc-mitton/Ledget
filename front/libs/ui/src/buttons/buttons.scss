@@ -150,7 +150,7 @@
 
     &:hover {
         background-color: var(--green-hlight2);
-        color: var(--green-dark2);
+        color: var(--green-dark4);
         transition: all .3s ease;
     }
 }
@@ -479,7 +479,7 @@ button {
 }
 
 .btn-scale2:active,
-.copy-btn {
+.copy-btn:active {
     transform: scale(.9);
     transition: transform .3s ease;
 }

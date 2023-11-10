@@ -62,11 +62,11 @@ export const GreenSlimArrowSubmit = withLoading(GrnSlimArrowButton)
 export const RedButton = withLoading(ButtonWithClassName('btn-red btn-2slim'))
 export const GrnTextButton = ButtonWithClassName('btn-grn-text btn-2slim')
 export const IconButtonSubmit = withLoading(IconButton)
-export const LinkArrowButton = withArrow(ButtonWithClassName('btn-icon2'))
+export const LinkArrowButton = withArrow(ButtonWithClassName('btn-i con2'))
 
 export const SmallArrowButton = ({ type = '', ...rest }) => (
   <button className="arrow-nav btn-scale2" {...rest}>
-    <ArrowIcon stroke='var(--m-text-gray)' scale={.8} rotation={type === "back" ? 90 : -90} />
+    <ArrowIcon stroke='var(--m-text-gray)' scale={.7} rotation={type === "back" ? 90 : -90} />
   </button>
 )
 
@@ -136,10 +136,10 @@ export const BackButton = ({ children, withText = true, ...rest }: { children: R
 
 export const CopyButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText?: boolean }>
   = ({ withText = true, ...rest }) => (
-    <SlimInputButton className="copy-btn" {...rest}>
+    <button className="copy-btn" {...rest}>
       <CopyIcon />
       {withText && 'Copy'}
-    </SlimInputButton>
+    </button>
   )
 
 export const PlusPill: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled: 'black' | 'green' }>

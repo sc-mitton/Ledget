@@ -11,13 +11,13 @@ const Deposits = () => {
 
     const {
         data: accountsData,
-        isLoading: isLoadingAccounts,
+        isFetching: isFetchingAccounts,
         isError: isErrorLoadingAccounts,
     } = useGetAccountsQuery()
 
     return (
         <>
-            {(isLoadingAccounts || isErrorLoadingAccounts)
+            {(isFetchingAccounts || isErrorLoadingAccounts)
                 ? <SkeletonWafers />
                 : <AccountWafers />
             }

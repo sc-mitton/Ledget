@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import './styles/Authenticator.css'
+import './styles/Authenticator.scss'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 import { useUpdateUserMutation } from '@features/userSlice'
 import { useAddRememberedDeviceMutation } from '@features/authSlice'
@@ -237,7 +237,7 @@ export default function () {
         <EnrichedModal
             onClose={() => navigate('/profile/security')}
             blur={1}
-            maxWidth={400}
+            maxWidth={350}
         />
     )
 }

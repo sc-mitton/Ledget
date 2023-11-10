@@ -11,7 +11,7 @@
 }
 
 #authenticator-setup-form .content {
-    height: 18.75rem;
+    height: 16rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,17 +28,17 @@
     margin: 0 auto;
     width: 100%;
     height: 100%;
-    border-radius: var(--border-radius4);
     display: inline-block;
-    padding: 1rem;
-
-    background-color: var(--white);
-    box-shadow: 0 0 .0625rem .75rem var(--green-hlight2);
+    border-radius: var(--border-radius25);
+    padding: .5rem;
+    filter: grayscale(0.5);
+    mix-blend-mode: multiply;
+    border: 2px solid var(--m-text-gray);
 }
 
 #qr-setup--container>img+button {
     margin: 0 auto;
-    margin-top: 1rem;
+    margin-top: .5rem;
 }
 
 #code-setup--container {
@@ -48,9 +48,9 @@
 }
 
 #code-setup--container>span:first-child {
-    font-weight: 500;
-    font-size: 1.1em;
+    font-size: 1em;
     margin-bottom: .75rem;
+    font-weight: 500;
 }
 
 #code-setup--container>div {
@@ -58,12 +58,11 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: .525rem;
-    box-shadow: 0 0 .0625rem .375rem var(--green-hlight2);
-    background-color: var(--window);
-    border-radius: var(--border-radius4);
-    padding: .5rem .875rem;
+    gap: 1.25em;
     font-weight: 500;
+    padding: .5rem .75rem;
+    border-radius: var(--border-radius4);
+    border: 1.5px solid var(--m-text-gray);
 }
 
 #code-setup--container button svg {

@@ -111,7 +111,7 @@
 /* Override color values for Firefox */
 @-moz-document url-prefix() {
     :root {
-        --input-focus: rgb(85, 188, 138);
+        --input-focus: #55bc8a;
         --input-placeholder: #2a2a2a;
         --m-text-gray: rgb(44, 44, 44);
     }

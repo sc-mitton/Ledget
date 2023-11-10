@@ -106,6 +106,7 @@ export const TransactionShimmer: React.FC<React.HTMLProps<HTMLDivElement> & { sh
 type ShimmerDivProps = React.HTMLProps<HTMLDivElement> & {
   shimmering: boolean;
   background?: string;
+  lightness?: number;
 }
 
 export const ShimmerDiv: React.FC<ShimmerDivProps> = ({
@@ -113,6 +114,7 @@ export const ShimmerDiv: React.FC<ShimmerDivProps> = ({
   background,
   children,
   style = {},
+  lightness = 90,
   ...rest
 }) => {
   return (
@@ -125,7 +127,7 @@ export const ShimmerDiv: React.FC<ShimmerDivProps> = ({
       }}
       {...rest}
     >
-      <Shimmer shimmering={shimmering} />
+      <Shimmer shimmering={shimmering} lightness={lightness} />
       {!shimmering && children}
     </div>
   )
@@ -137,7 +139,7 @@ export const InputShimmerDiv = ({ id, className }: { id?: string, className?: st
     <TextInputWrapper id={id} className={className}>
       <span style={{ color: 'transparent' }}>Shimmering</span>
       <div className='block-shimmer--container'>
-        <ShimmerDiv shimmering={true} />
+        <ShimmerDiv shimmering={true} lightness={88} />
       </div>
     </TextInputWrapper>
   )

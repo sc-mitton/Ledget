@@ -82,10 +82,6 @@
     background-color: var(--input-background);
 }
 
-.block-shimmer--container .shimmer {
-    background: var(--block-shimmer-background);
-}
-
 .translucent-shimmer--container {
     opacity: .1;
 }

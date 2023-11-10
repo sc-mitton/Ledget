@@ -4,6 +4,7 @@
     display: flex;
     justify-content: center;
     position: relative;
+    margin-bottom: 1em;
 }
 
 .auth-factor-status-graphic img {
