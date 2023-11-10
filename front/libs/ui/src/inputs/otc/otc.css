@@ -38,7 +38,7 @@
 
 .otc input[type="text"]:focus {
     border: 1.5px solid var(--green-hlight3);
-    background-color: var(--window);
+    /* background-color: var(--window); */
 }
 
 .otc input::-webkit-outer-spin-button,

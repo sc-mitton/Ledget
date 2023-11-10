@@ -159,7 +159,7 @@ const Authenticator = (props) => {
                 <AnimatePresence mode="wait">
                     {/* Page 1: Setup App */}
                     {searchParams.get('step') === 'setup' &&
-                        <SlideMotionDiv key='setup-app' first={loaded}>
+                        <SlideMotionDiv key='setup-app' position={loaded ? 'first' : 'fixed'}>
                             <h2>Authenticator App</h2>
                             <SetupApp
                                 flow={flow}
@@ -174,8 +174,9 @@ const Authenticator = (props) => {
                     {searchParams.get('step') === 'confirm' &&
                         <SlideMotionDiv
                             key="confirm-code"
-                            first={!searchParams.get('step')}
-                            last={searchParams.get('step') === 'confirm'}
+                            position={!searchParams.get('step')
+                                ? 'first'
+                                : searchParams.get('step') === 'confirm' ? 'last' : 'fixed'}
                         >
                             <JiggleDiv jiggle={isCompleteError} className="content">
                                 <div>
@@ -192,7 +193,7 @@ const Authenticator = (props) => {
                     {/* Page 3: Recovery Codes */}
                     {!searchParams.get('step') &&
                         searchParams.get('lookup_secret_regenerate') &&
-                        <SlideMotionDiv key="lookup-secrets" last>
+                        <SlideMotionDiv key="lookup-secrets" position={'last'}>
                             <RecoveryCodes closeModal={() => props.closeModal()} />
                         </SlideMotionDiv>
                     }

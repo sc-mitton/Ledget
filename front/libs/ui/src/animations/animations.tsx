@@ -54,8 +54,8 @@ export const ZoomMotionDiv = ({ children, ...rest }: { children: React.ReactNode
 )
 
 export const SlideMotionDiv = (
-  { children, first, last, fixed, style, ...rest }:
-    { children: React.ReactNode, first: boolean, last: boolean, fixed: boolean, style?: React.CSSProperties }
+  { children, position, style, ...rest }:
+    { children: React.ReactNode, position: 'first' | 'last' | 'fixed', style?: React.CSSProperties }
 ) => {
   const initialMap = {
     first: { opacity: 0, x: -50 },
@@ -73,9 +73,9 @@ export const SlideMotionDiv = (
 
   return (
     <motion.div
-      initial={initialMap[fixed ? 'fixed' : first ? 'first' : last ? 'last' : 'default']}
+      initial={initialMap[position ? position : 'default']}
       animate={{ opacity: 1, x: 0 }}
-      exit={exitMap[fixed ? 'fixed' : first ? 'first' : last ? 'last' : 'default']}
+      exit={exitMap[position ? position : 'default']}
       transition={{ duration: 0.15 }}
       style={style}
       {...rest}

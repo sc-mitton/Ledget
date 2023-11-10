@@ -159,11 +159,11 @@ const CancelationModal = withReAuth(withModal((props) => {
         <AnimatePresence mode="wait">
             {isSuccess
                 ?
-                <SlideMotionDiv first={loaded}>
+                <SlideMotionDiv position={loaded ? 'first' : 'last'}>
                     <SuccessWindow {...props} />
                 </SlideMotionDiv>
                 :
-                <SlideMotionDiv last>
+                <SlideMotionDiv position={'last'}>
                     <CancelationWindow {...props} />
                 </SlideMotionDiv>
             }

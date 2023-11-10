@@ -1,20 +1,19 @@
-import { useRef, Fragment, useEffect } from 'react'
+import { useRef, Fragment, useEffect, useState } from 'react'
 
 import './styles/TransactionsTable.scss'
 import { useGetMeQuery } from '@features/userSlice'
-import { useLazyGetTransactionsQuery, useGetTransactionQueryState } from "@features/transactionsSlice"
+import { useLazyGetTransactionsQuery, useGetTransactionsQuery } from "@features/transactionsSlice"
 import { Logo } from '@components/pieces'
 import { DollarCents, InfiniteScrollDiv, TransactionShimmer } from '@ledget/ui'
 import { ShadowedContainer } from '@components/pieces'
 import { EmptyListImage } from '@ledget/media'
-
 
 const List = () => {
   const { data: user } = useGetMeQuery()
   const user_create_on = new Date(user?.created_on!)
   let end = new Date()
 
-  const { data: transactionsData, isError } = useGetTransactionQueryState({
+  const { data: transactionsData, isError } = useGetTransactionsQuery({
     confirmed: true,
     start: Math.floor(user_create_on.setFullYear(user_create_on.getFullYear() - 2) / 1000),
     end: Math.floor(end.setHours(24, 0, 0, 0) / 1000)
@@ -55,6 +54,10 @@ const List = () => {
                           {category.emoji}
                         </span>
                       ))}
+                      {transaction.bill &&
+                        <span className={`emoji ${transaction.bill.period}`}>
+                          {transaction.bill.emoji}
+                        </span>}
                     </div>
                   </div>
                 </div>
@@ -78,9 +81,10 @@ export default function Table() {
   const { data: user } = useGetMeQuery()
   const user_create_on = new Date(user?.created_on!)
   let end = new Date()
+  const [isFetchingMore, setFetchingMore] = useState(false)
 
   const ref = useRef<HTMLDivElement>(null)
-  const [getTransactions, { data: transactionsData, isLoading, isFetching }] = useLazyGetTransactionsQuery()
+  const [getTransactions, { data: transactionsData, isLoading }] = useLazyGetTransactionsQuery()
 
   // Initial transaction fetch
   useEffect(() => {
@@ -93,10 +97,10 @@ export default function Table() {
 
   // Refetches for pagination
   const handleScroll = (e: any) => {
+    setFetchingMore(true)
     const bottom = e.target.scrollTop === e.target.scrollTopMax
     // Update cursors to add new transactions node to the end
     if (bottom && transactionsData?.next) {
-      console.log('transactionsData?.next !== null', transactionsData?.next)
       getTransactions({
         confirmed: true,
         start: Math.floor(user_create_on.setFullYear(user_create_on.getFullYear() - 2) / 1000),
@@ -105,13 +109,14 @@ export default function Table() {
         limit: transactionsData.limit,
       })
     }
+    setFetchingMore(false)
   }
 
   return (
     <ShadowedContainer className="transactions-history-table--container" >
       <InfiniteScrollDiv
         ref={ref}
-        animate={isFetching && !isLoading}
+        animate={isFetchingMore}
         className={`transactions-history--table ${isLoading ? 'skeleton' : ''}`}
         onScroll={handleScroll}
       >

@@ -225,9 +225,9 @@
     height: 1.2em;
     color: var(--white-text);
     border-radius: 50%;
-    font-size: .6875rem;
+    font-size: .875rem;
     font-weight: 400;
-    padding: .3125em;
+    padding: .25em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -263,7 +263,7 @@
 }
 
 .keypad-graphic-status.unfinished>div {
-    animation: vary-background 3s ease-out infinite;
+    /* animation: vary-background 3s ease-out infinite; */
     animation-delay: calc(var(--key-animation-delay));
 }
 
@@ -282,15 +282,15 @@
 
 @keyframes vary-background {
     0% {
-        background-color: rgba(var(--charcoal-rgb), 1);
+        background-color: rgba(var(--charcoal-rgb), .2);
     }
 
     50% {
-        background-color: rgba(var(--charcoal-rgb), .8);
+        background-color: rgba(var(--charcoal-rgb), .1);
     }
 
     100% {
-        background-color: rgba(var(--charcoal-rgb), 1);
+        background-color: rgba(var(--charcoal-rgb), .2);
     }
 }
 

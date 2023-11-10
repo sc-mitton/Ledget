@@ -64,3 +64,4 @@ export { default as EmptyListImage } from './images/EmptyList';
 export { default as CornerGrip } from './icons/CornerGrip';
 export { default as ThumbUp } from './icons/ThumbUp';
 export { default as SearchIcon } from './icons/SearchIcon';
+export { default as SmsAuthIcon2 } from './icons/SmsAuth2';

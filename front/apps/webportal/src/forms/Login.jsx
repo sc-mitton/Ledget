@@ -288,7 +288,7 @@ const Login = () => {
         <AnimatePresence mode="wait">
             {!email && !searchParams.get('mfa')
                 ?
-                <SlideMotionDiv className='window' key="initial" first={Boolean(flow)}>
+                <SlideMotionDiv className='window' key="initial" position={flow ? 'first' : 'last'}>
                     <EmailForm setEmail={setEmail} flow={flow} socialSubmit={submit} />
                     <div className="below-login--container">
                         <LinkArrowButton
@@ -307,8 +307,7 @@ const Login = () => {
                         <SlideMotionDiv
                             className='nested-window'
                             key="aal1-step"
-                            last={!searchParams.get('mfa')}
-                            first={searchParams.get('mfa')}
+                            position={searchParams.get('mfa') ? 'first' : 'fixed'}
                         >
                             <OryFormWrapper>
                                 <Password />
@@ -318,7 +317,7 @@ const Login = () => {
                     }
                     {/* Totp 2nd Factor */}
                     {['totp', 'lookup_secret'].includes(searchParams.get('mfa')) &&
-                        <SlideMotionDiv className='nested-window' key="aal2-step" last>
+                        <SlideMotionDiv className='nested-window' key="aal2-step" position={'last'}>
                             <OryFormWrapper>
                                 <TotpMfa finished={devicesRefreshedSuccess} />
                             </OryFormWrapper>
@@ -326,13 +325,13 @@ const Login = () => {
                     }
                     {/* Otp 2nd Factor */}
                     {searchParams.get('mfa') === 'otp' &&
-                        <SlideMotionDiv className='nested-window' key="aal2-step" last>
+                        <SlideMotionDiv className='nested-window' key="aal2-step" position={'last'}>
                             <OtpMfa finished={devicesRefreshedSuccess} />
                         </SlideMotionDiv>
                     }
                     {/* Recovery Code 2nd Factor */}
                     {searchParams.get('mfa') === 'lookup_secret' &&
-                        <SlideMotionDiv className='nested-window' key="aal2-step" last>
+                        <SlideMotionDiv className='nested-window' key="aal2-step" position={'last'}>
                             <OryFormWrapper>
                                 <RecoveryMfa finished={devicesRefreshedSuccess} />
                             </OryFormWrapper>

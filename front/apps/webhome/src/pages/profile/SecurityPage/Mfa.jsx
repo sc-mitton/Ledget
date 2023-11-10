@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useNavigate, createSearchParams } from 'react-router-dom'
 
 import './styles/Mfa.css'
@@ -43,7 +41,7 @@ const SmsAuth = ({ user }) => {
                         <Tooltip
                             msg={"Add SMS Verification"}
                             ariaLabel={"Add SMS Verification"}
-                            style={{ left: '-205%' }}
+                            style={{ left: '-180%' }}
                         >
                             <PlusPill
                                 onClick={() => navigate('/profile/security/otp-setup')}

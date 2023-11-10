@@ -22,7 +22,6 @@ import {
     JiggleDiv,
     SlideMotionDiv,
     KeyPadGraphic,
-    SmsVerifyStatus,
     Otc,
     useLoaded
 } from '@ledget/ui'
@@ -131,13 +130,13 @@ const SmsVerify = (props) => {
                 onSubmit={onSubmit}
             >
                 <div >
-                    <div>
-                        <SmsVerifyStatus finished={isSucess} />
-                    </div>
                     <Otc colorful={false} />
                 </div>
                 <div>
-                    <LightGrnWideButton submitting={isLoading}>
+                    <LightGrnWideButton
+                        submitting={isLoading}
+                        success={isSucess}
+                    >
                         Verify
                     </LightGrnWideButton>
                 </div>
@@ -148,7 +147,7 @@ const SmsVerify = (props) => {
 
 const SmsSetup = (props) => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const loaded = useLoaded()
+    const loaded = useLoaded(1000)
     const { data: user } = useGetMeQuery()
 
     useEffect(() => {
@@ -164,7 +163,7 @@ const SmsSetup = (props) => {
                 {/* Step 1: Confirm Step in case user has authenticator app */}
                 {!searchParams.get('continue')
                     ?
-                    <SlideMotionDiv first={loaded}>
+                    <SlideMotionDiv position={loaded ? 'first' : 'fixed'}>
                         <h2>Are you sure?</h2>
                         <div style={{ margin: '.75em 0' }}>
                             Adding text message verification will
@@ -192,15 +191,12 @@ const SmsSetup = (props) => {
                         {!searchParams.get('id')
                             ?
                             // Step 2: Add Phone Number
-                            <SlideMotionDiv
-                                first={Boolean(searchParams.get('id'))}
-                                last={!Boolean(searchParams.get('id'))}
-                            >
+                            <SlideMotionDiv position={'fixed'}>
                                 <SmsAdd {...props} />
                             </SlideMotionDiv>
                             :
                             // Step 3: Confirm Code
-                            <SlideMotionDiv last>
+                            <SlideMotionDiv position={'last'}>
                                 <SmsVerify {...props} />
                             </SlideMotionDiv>
                         }

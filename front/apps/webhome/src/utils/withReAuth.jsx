@@ -252,7 +252,7 @@ const ReAuthModals = withSmallModal((props) => {
                 &&
                 <SlideMotionDiv
                     key='aal1'
-                    {...(loaded ? { first: true } : { fixed: true })}
+                    position={loaded ? 'first' : 'fixed'}
                 >
                     <PassWord onCancel={() => props.closeModal()} />
                 </SlideMotionDiv>
@@ -260,8 +260,7 @@ const ReAuthModals = withSmallModal((props) => {
             {searchParams.get('aal') === 'aal2' &&
                 <SlideMotionDiv
                     key='aal2'
-                    first={false}
-                    last
+                    position={'last'}
                 >
                     <Totp />
                 </SlideMotionDiv>
@@ -269,8 +268,7 @@ const ReAuthModals = withSmallModal((props) => {
             {searchParams.get('aal') === 'aal15' &&
                 <SlideMotionDiv
                     key='aal15'
-                    first={false}
-                    last
+                    position={'last'}
                 >
                     <Otp />
                 </SlideMotionDiv>

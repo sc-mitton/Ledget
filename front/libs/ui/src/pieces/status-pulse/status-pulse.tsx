@@ -1,6 +1,6 @@
 
 import './status-pulse.css'
-import { CheckMark, SmsAuthIcon, VerifyEmail, AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
+import { CheckMark, SmsAuthIcon, SmsAuthIcon2, VerifyEmail, AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
 import { shuffleArray } from '../../utils/funcs'
 
 
@@ -68,7 +68,7 @@ export const KeyPadGraphic = ({ finished = false }) => {
 
 }
 
-export const SmsVerifyStatus = ({ finished = false }) => (
+export const SmsVerifyStatus = ({ finished = false, }) => (
   <div className="sms-verify-status">
     {finished &&
       <div id="success-checkmark">
@@ -77,7 +77,7 @@ export const SmsVerifyStatus = ({ finished = false }) => (
         />
       </div>
     }
-    <SmsAuthIcon
+    <SmsAuthIcon2
       width={'3.5em'}
       height={'3.5em'}
     />

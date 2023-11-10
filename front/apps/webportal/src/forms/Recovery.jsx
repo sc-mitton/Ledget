@@ -223,7 +223,7 @@ const RecoverAccount = () => {
                         className="recovery-form"
                         id="recovery-verification-form-container"
                         key="recovery-verification-form-container"
-                        last
+                        position={'last'}
                     >
                         <RecoveryVerificationForm
                             flow={result}
@@ -238,7 +238,7 @@ const RecoverAccount = () => {
                     <SlideMotionDiv
                         id="recovery-code-form-container"
                         key="recovery-code-form-container"
-                        first={Boolean(flow)}
+                        position={flow ? 'last' : 'fixed'}
                     >
                         <RecoveryForm
                             flow={flow}

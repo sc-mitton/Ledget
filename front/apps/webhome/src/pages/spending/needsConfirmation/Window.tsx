@@ -213,7 +213,6 @@ const NeedsConfirmationWindow = () => {
     const [showMenu, setShowMenu] = useState(false)
     const [showBillCatSelect, setShowBillCatSelect] = useState(false)
     const [splittingMode, setSplittingMode] = useState(false)
-    const [showSplitter, setShowSplitter] = useState(false)
     const [billCatSelectVal, setBillCatSelectVal] = useState<Category | Bill | undefined>()
     const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(undefined)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | undefined>()
@@ -296,7 +295,6 @@ const NeedsConfirmationWindow = () => {
                 expanded
                     ? containerApi.start({ overflowY: 'scroll', overflowX: 'hidden' })
                     : containerApi.start({ overflowY: 'visible', overflowX: 'hidden' })
-                splittingMode && setShowSplitter(true)
             },
             config: {
                 tension: 180,
@@ -471,13 +469,6 @@ const NeedsConfirmationWindow = () => {
         setShowBillCatSelect(false)
     }
 
-    const handleSplit = () => {
-        setExpanded(false)
-        setSplittingMode(true)
-        setShowMenu(false)
-        !expanded && setShowSplitter(true)
-    }
-
     const flushConfirmedQue = () => {
         if (confirmedTransactions.length > 0) {
             updateTransactions(confirmedTransactions)
@@ -534,23 +525,8 @@ const NeedsConfirmationWindow = () => {
                         />
                     </Options>
                     <Options show={showMenu} setShow={setShowMenu} pos={menuPos}>
-                        <ItemOptions handlers={[handleSplit]} />
+                        <ItemOptions handlers={[() => { console.log('hello') }]} />
                     </Options>
-                    {showSplitter &&
-                        <Split
-                            title={focusedItem?.name || ''}
-                            amount={focusedItem?.amount || 0}
-                            defaultCategory={
-                                (focusedItem && transactionUpdates[focusedItem.transaction_id]?.categories!.length > 0) ?
-                                    transactionUpdates[focusedItem.transaction_id].categories![0]
-                                    : focusedItem?.predicted_category
-                            }
-                            onClose={() => {
-                                setShowSplitter(false)
-                                setSplittingMode(false)
-                            }}
-                        />
-                    }
                 </InfiniteScrollDiv >
                 <ExpandableContainer
                     expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
