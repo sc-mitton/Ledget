@@ -214,6 +214,7 @@ const NeedsConfirmationWindow = () => {
     const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(undefined)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | undefined>()
     const [billCatSelectPos, setBillCatSelectPos] = useState<{ x: number, y: number } | undefined>()
+    const [confirmingAll, setConfirmingAll] = useState(false)
     const [transactionUpdates, setTransactionUpdates] =
         useState<{ [key: string]: { categories?: SplitCategory[], bill?: Bill } }>(
             JSON.parse(sessionStorage.getItem('transactionUpdates') || '{}')
@@ -401,6 +402,7 @@ const NeedsConfirmationWindow = () => {
     }
 
     const handleConfirmAll = () => {
+        setConfirmingAll(true)
         itemsApi.start((index: any, item: any) => ({
             x: 100,
             opacity: 0,
@@ -428,7 +430,19 @@ const NeedsConfirmationWindow = () => {
                         : !updatedCategories ? predictedBillId : undefined,
                 }))
             }
+            updateTransactions(confirmedTransactions)
+            setConfirmingAll(false)
         }, 130 + unconfirmedTransactions.length * 50)
+    }
+
+    // When the mouse leaves the container, send the RTK mutation
+    // to update the bills/categories. When the mutation is successful,
+    // the confirmed queue will be cleared in the extra reducer for the
+    // confirmStack slice
+    const flushConfirmedQue = () => {
+        if (confirmedTransactions.length > 0 && !confirmingAll) {
+            updateTransactions(confirmedTransactions)
+        }
     }
 
     const handleBillCatClick = (e: any, item: Transaction) => {
@@ -450,16 +464,6 @@ const NeedsConfirmationWindow = () => {
         setShowBillCatSelect(false)
     }
 
-    // When the mouse leaves the container, send the RTK mutation
-    // to update the bills/categories. When the mutation is successful,
-    // the confirmed queue will be cleared in the extra reducer for the
-    // confirmStack slice
-    const flushConfirmedQue = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        if (confirmedTransactions.length > 0) {
-            updateTransactions(confirmedTransactions)
-        }
-    }
-
     const handleSplit = () => {
         setExpanded(false)
         setSplittingMode(true)
@@ -468,16 +472,14 @@ const NeedsConfirmationWindow = () => {
     }
 
     return (
-        <div
-            id="new-items-container"
-            onMouseLeave={(e) => flushConfirmedQue(e)}
-        >
+        <div id="new-items-container">
             <div>
                 <Header onConfirmAll={handleConfirmAll} />
                 <InfiniteScrollDiv
                     id="new-items"
                     animate={isFetchingTransactions && offset > 0}
                     ref={newItemsRef}
+                    onMouseLeave={(e) => flushConfirmedQue()}
                 >
                     <ShadowedContainer
                         onScroll={handleScroll}

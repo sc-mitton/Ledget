@@ -80,7 +80,7 @@ export default function Table() {
   let end = new Date()
 
   const ref = useRef<HTMLDivElement>(null)
-  const [getTransactions, { isLoading, isFetching }] = useLazyGetTransactionsQuery()
+  const [getTransactions, { data: transactionsData, isLoading, isFetching }] = useLazyGetTransactionsQuery()
 
   // Initial transaction fetch
   useEffect(() => {
@@ -91,12 +91,28 @@ export default function Table() {
     }, true)
   }, [])
 
+  // Refetches for pagination
+  const handleScroll = (e: any) => {
+    const bottom = e.target.scrollTop === e.target.scrollTopMax
+    // Update cursors to add new transactions node to the end
+    if (bottom && transactionsData?.next !== null && transactionsData) {
+      getTransactions({
+        confirmed: true,
+        start: Math.floor(user_create_on.setFullYear(user_create_on.getFullYear() - 2) / 1000),
+        end: Math.floor(end.setHours(24, 0, 0, 0) / 1000),
+        offset: transactionsData.next,
+        limit: transactionsData.limit,
+      })
+    }
+  }
+
   return (
     <ShadowedContainer className="transactions-history-table--container" >
       <InfiniteScrollDiv
         ref={ref}
         animate={isFetching && !isLoading}
         className={`transactions-history--table ${isLoading ? 'skeleton' : ''}`}
+        onScroll={handleScroll}
       >
         {!isLoading
           ? <><List /></>
