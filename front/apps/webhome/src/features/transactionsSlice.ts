@@ -140,7 +140,10 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 url: 'transactions',
                 params: params,
             }),
-            providesTags: ['Transaction'],
+            providesTags: (result, error, arg) =>
+                result
+                    ? [...result.results?.map(({ transaction_id }) => ({ type: 'Transaction' as const, id: transaction_id }))]
+                    : ['Transaction'],
             // For merging in paginated responses to the cache
             // cache key needs to not include offset and limit
             serializeQueryArgs: ({ queryArgs }) => {
@@ -178,7 +181,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     bill: item.bill
                 })),
             }),
-            invalidatesTags: ['Category', 'Bill']
+            invalidatesTags: (result, error, arg) =>
+                [...arg.map(item => ({ type: 'Transaction' as const, id: item.transaction.transaction_id })), 'Category', 'Bill']
         }),
     }),
 })

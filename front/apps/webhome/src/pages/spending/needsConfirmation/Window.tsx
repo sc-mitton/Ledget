@@ -303,12 +303,14 @@ const NeedsConfirmationWindow = () => {
         }
     )
 
+    // Animate container expanding
     useEffect(() => { containerApi.start() }, [])
 
     useEffect(() => {
         containerApi.start({ overflowY: 'hidden', overflowX: 'hidden' })
     }, [expanded])
 
+    // Animate the container shrinking when list gets smaller
     useEffect(() => {
         if (unconfirmedTransactions.length > 0) {
             itemsApi.start()
@@ -378,9 +380,6 @@ const NeedsConfirmationWindow = () => {
                 const predictedCategories = [{ ...transaction.predicted_category, fraction: 1 }]
                 const predictedBillId = transaction.predicted_bill?.id
 
-                console.log('updatedBillId', updatedBillId)
-                console.log('updatedCategories', updatedCategories)
-
                 return {
                     x: 100,
                     opacity: 0,
@@ -388,8 +387,6 @@ const NeedsConfirmationWindow = () => {
                     onRest: () => {
                         dispatch(confirmAndUpdateMetaData({
                             transaction: transaction,
-                            // categories: (categories.length && !billId) ? categories : undefined,
-                            // bill: (billId && categories.length <= 0) ? billId : undefined,
                             categories: (updatedCategories && !updatedBillId)
                                 ? updatedCategories
                                 : !updatedBillId ? predictedCategories as SplitCategory[] : undefined,
@@ -401,6 +398,37 @@ const NeedsConfirmationWindow = () => {
                 }
             }
         })
+    }
+
+    const handleConfirmAll = () => {
+        itemsApi.start((index: any, item: any) => ({
+            x: 100,
+            opacity: 0,
+            delay: index * 50,
+            config: { duration: 130 },
+        }))
+        containerApi.start({
+            height: '0em',
+            delay: unconfirmedTransactions.length * 50,
+        })
+        // Dispatch confirm for all items
+        setTimeout(() => {
+            for (const transaction of unconfirmedTransactions) {
+                const updatedCategories = transactionUpdates[transaction.transaction_id]?.categories
+                const updatedBillId = transactionUpdates[transaction.transaction_id]?.bill?.id
+                const predictedCategories = [{ ...transaction.predicted_category, fraction: 1 }]
+                const predictedBillId = transaction.predicted_bill?.id
+                dispatch(confirmAndUpdateMetaData({
+                    transaction: transaction,
+                    categories: (updatedCategories && !updatedBillId)
+                        ? updatedCategories
+                        : !updatedBillId ? predictedCategories as SplitCategory[] : undefined,
+                    bill: (updatedBillId && !updatedCategories)
+                        ? updatedBillId
+                        : !updatedCategories ? predictedBillId : undefined,
+                }))
+            }
+        }, 130 + unconfirmedTransactions.length * 50)
     }
 
     const handleBillCatClick = (e: any, item: Transaction) => {
@@ -418,7 +446,6 @@ const NeedsConfirmationWindow = () => {
         if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight) {
             transactionsData?.next && setOffset(transactionsData.next)
         }
-        console.log('e', e)
         setShowMenu(false)
         setShowBillCatSelect(false)
     }
@@ -427,7 +454,7 @@ const NeedsConfirmationWindow = () => {
     // to update the bills/categories. When the mutation is successful,
     // the confirmed queue will be cleared in the extra reducer for the
     // confirmStack slice
-    const flushConfirmedQue = () => {
+    const flushConfirmedQue = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (confirmedTransactions.length > 0) {
             updateTransactions(confirmedTransactions)
         }
@@ -441,14 +468,16 @@ const NeedsConfirmationWindow = () => {
     }
 
     return (
-        <div id="new-items-container">
+        <div
+            id="new-items-container"
+            onMouseLeave={(e) => flushConfirmedQue(e)}
+        >
             <div>
-                <Header />
+                <Header onConfirmAll={handleConfirmAll} />
                 <InfiniteScrollDiv
                     id="new-items"
                     animate={isFetchingTransactions && offset > 0}
                     ref={newItemsRef}
-                    onMouseLeave={() => flushConfirmedQue()}
                 >
                     <ShadowedContainer
                         onScroll={handleScroll}

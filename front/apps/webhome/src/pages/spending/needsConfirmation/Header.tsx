@@ -1,3 +1,4 @@
+import { FC, ButtonHTMLAttributes } from 'react'
 import { useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 
@@ -9,26 +10,29 @@ import {
     useTransactionsSyncMutation,
     selectUnconfirmedLength
 } from '@features/transactionsSlice'
+import { RootState } from '@features/store'
 import { Shimmer } from '@ledget/ui'
 
 
-const CheckAllButton = () => (
+const CheckAllButton: FC<ButtonHTMLAttributes<HTMLButtonElement>> = (props) => (
     <Tooltip
         msg={"Confirm all"}
         ariaLabel={"Confirm all items"}
         style={{ left: '-1.3rem' }}
     >
-        <IconButton id="check-all-icon" aria-label="Check all">
+        <IconButton id="check-all-icon" aria-label="Check all" {...props}>
             <CheckAll />
         </IconButton>
     </Tooltip>
 )
 
-const NewItemsHeader = () => {
+const NewItemsHeader = (
+    { onConfirmAll }: { onConfirmAll: () => void }
+) => {
     const [searchParams] = useSearchParams()
     const { data: plaidItems } = useGetPlaidItemsQuery()
-    const unconfirmedLength = useSelector(
-        state => selectUnconfirmedLength(state, {
+    const unconfirmedLength = useSelector((state: RootState) =>
+        selectUnconfirmedLength(state, {
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
             year: parseInt(searchParams.get('year')!) || new Date().getFullYear()
         })
@@ -58,7 +62,9 @@ const NewItemsHeader = () => {
                 </div>
                 <div>
                     <RefreshButton hasBackground={false} onClick={handleRefreshClick} />
-                    {(unconfirmedLength > 0) && <CheckAllButton />}
+                    {(unconfirmedLength > 0) &&
+                        <CheckAllButton onClick={onConfirmAll} />
+                    }
                 </div>
             </div>
         </div>
