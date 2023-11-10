@@ -144,7 +144,7 @@ type initialState = {
 }
 
 export function isBill(obj: any | undefined): obj is Bill {
-    return obj ? 'alerts' in obj : false
+    return obj ? 'reminders' in obj : false
 }
 
 export const billSlice = createSlice({
@@ -219,10 +219,8 @@ export const billSlice = createSlice({
                     if (bill.is_paid) {
                         if (bill.period === 'month') {
                             paidMonthlyBills++
-                            monthlyBillsAmountRemaining = monthlyBillsAmountRemaining.plus(bill.upper_amount)
                         } else if (bill.period === 'year') {
                             paidYearlyBills++
-                            yearlyBillsAmountRemaining = yearlyBillsAmountRemaining.plus(bill.upper_amount)
                         }
                     } else {
                         if (bill.period === 'month') {

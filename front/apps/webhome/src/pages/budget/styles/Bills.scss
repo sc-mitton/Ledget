@@ -32,6 +32,7 @@ $window-padding: calc(.25em + $bill-flex-grid-gap);
         align-items: center;
         justify-content: space-between;
         gap: .25em;
+        margin-left: .5em;
     }
 
     // Div around the calendar and bill items
@@ -95,6 +96,7 @@ $window-padding: calc(.25em + $bill-flex-grid-gap);
     justify-self: center;
     row-gap: .5em;
     column-gap: 1.25em;
+    margin-left: .5em;
 
     // Days of week markers
     &>div:nth-child(-n+7) {
@@ -245,6 +247,7 @@ $number-of-bill-rows: 5;
         width: calc(100% - $bill-flex-grid-gap);
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         &>div:first-child {
             display: inline-flex;
@@ -253,6 +256,12 @@ $number-of-bill-rows: 5;
             span:nth-child(3) {
                 opacity: .7;
             }
+        }
+
+        &>div:last-of-type {
+            flex-grow: 1;
+            text-align: right;
+            margin-right: .75em;
         }
     }
 }

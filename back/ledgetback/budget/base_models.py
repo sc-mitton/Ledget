@@ -12,7 +12,7 @@ class BudgetItem(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
     emoji = models.CharField(max_length=10, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
-    is_active = models.BooleanField(default=True)
+    removed_on = models.DateTimeField(null=True, blank=True)
 
 
 class Notification(models.Model):

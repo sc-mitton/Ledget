@@ -10,6 +10,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from django.db.models import Sum, Q, Exists, OuterRef, F
 from django.db.transaction import atomic
+from django.utils import timezone as dbtz
 
 from core.permissions import IsAuthenticated
 from budget.serializers import (
@@ -21,7 +22,7 @@ from budget.models import (
     Bill,
     UserCategory
 )
-from financials.models import Transaction
+from financials.models import Transaction, TransactionCategory
 from ledgetback.view_mixins import BulkSerializerMixin
 
 logger = logging.getLogger('ledget')
@@ -145,14 +146,14 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
 
     @action(detail=False, methods=['POST'], url_path='remove')
     def remove(self, request):
-        ids = request.data.get('ids', None)
+        category_ids = request.data.get('categories', None)
         tz_offset = request.data.get('tz_offset', None)
-        if not ids or not tz_offset:
+        if not category_ids or not tz_offset:
             raise ValidationError('Invalid request')
 
         try:
             default_category = self._get_default_category()
-            categories = self._get_categories_qset(ids)
+            categories = self._get_categories_qset(category_ids)
             self._remove(categories, default_category, tz_offset)
         except Exception as e:
             logger.warning(e)
@@ -166,20 +167,20 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         Set the categories to inactive, and set all of the connected transactions
         for the current month to the default category
         '''
-        tz_offset = timedelta(minutes=420)
+        tz_offset = timedelta(minutes=tz_offset)
         tz = timezone(tz_offset)
         start = datetime.utcnow().replace(tzinfo=tz).replace(
             day=1, hour=0, minute=0, second=0, microsecond=0)
         end = datetime.now().replace(tzinfo=tz).replace(
             minute=0, second=0, microsecond=0)
 
-        categories.update(is_active=False)
+        categories.update(removed_on=dbtz.now())
 
-        transactions = Transaction.objects.filter(
-            transactioncategory__category__in=categories,
-            transactioncategory__category__datetime__range=(start, end)
+        objs = TransactionCategory.objects.filter(
+            category__in=categories,
+            transaction__datetime__range=(start, end)
         )
-        transactions.update(category=default_category)
+        objs.update(category=default_category)
 
     def _get_default_category(self):
         default_category = Category.objects.filter(
@@ -199,8 +200,11 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
                 id__in=ids
             ).order_by('usercategory__order', 'name')
         else:
-            qset = Category.objects.filter(usercategory__user=self.request.user) \
-                                   .order_by('usercategory__order', 'name')
+            # Else get the active categories
+            qset = Category.objects.filter(
+                usercategory__user=self.request.user,
+                usercategory__category__removed_on__isnull=True
+            ).order_by('usercategory__order', 'name')
 
         return qset
 
@@ -216,12 +220,14 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             filter=Q(transactioncategory__transaction__datetime__range=(start, end))
         )
 
+        print('end.month', end.month)
         monthly_qset = Category.objects.filter(
-                                   usercategory__user=self.request.user,
-                                   usercategory__category__period='month'
-                                ) \
-                               .annotate(amount_spent=monthly_amount_spent) \
-                               .annotate(order=F('usercategory__order')) \
+            Q(usercategory__category__removed_on__gt=end) |
+            Q(usercategory__category__removed_on__isnull=True),
+            usercategory__user=self.request.user,
+            usercategory__category__period='month'
+        ).annotate(amount_spent=monthly_amount_spent) \
+         .annotate(order=F('usercategory__order'))
 
         yearly_amount_spent = Sum(
             F('transactioncategory__transaction__amount') *
@@ -233,13 +239,13 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             )
         )
 
-        yearly_qset = Category.objects \
-                              .filter(
-                                 usercategory__user=self.request.user,
-                                 usercategory__category__period='year'
-                               ) \
-                              .annotate(amount_spent=yearly_amount_spent) \
-                              .annotate(order=F('usercategory__order')) \
+        yearly_qset = Category.objects.filter(
+            Q(usercategory__category__removed_on__year__gt=end.year) |
+            Q(usercategory__category__removed_on__isnull=True),
+            usercategory__user=self.request.user,
+            usercategory__category__period='year',
+        ).annotate(amount_spent=yearly_amount_spent) \
+         .annotate(order=F('usercategory__order')) \
 
         union_qset = monthly_qset.union(yearly_qset).order_by('order', 'name')
 

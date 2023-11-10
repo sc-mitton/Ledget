@@ -19,7 +19,7 @@ import {
     useAccessEsc,
     ShimmerText
 } from '@ledget/ui';
-import { Calendar as CalendarIcon } from '@ledget/media'
+import { Calendar as CalendarIcon, CheckMark } from '@ledget/media'
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -247,7 +247,7 @@ const Bills = () => {
             {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
                 .map((bill, i) => {
                     return (
-                        <div key={i} className="monthly-bill">
+                        <div key={i} className={`${bill.period}ly-bill`}>
                             <div>
                                 <span>{bill.emoji}</span>
                                 <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
@@ -256,6 +256,7 @@ const Bills = () => {
                                 </span>
                             </div>
                             <div><DollarCents value={bill.upper_amount} /></div>
+                            {bill.is_paid && <CheckMark />}
                         </div>
                     )
                 })}

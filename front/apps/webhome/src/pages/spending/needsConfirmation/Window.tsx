@@ -373,6 +373,14 @@ const NeedsConfirmationWindow = () => {
     const handleItemConfirm = (transaction: Transaction) => {
         itemsApi.start((index: any, item: any) => {
             if (item._item.transaction_id === transaction.transaction_id) {
+                const updatedCategories = transactionUpdates[transaction.transaction_id]?.categories
+                const updatedBillId = transactionUpdates[transaction.transaction_id]?.bill?.id
+                const predictedCategories = [{ ...transaction.predicted_category, fraction: 1 }]
+                const predictedBillId = transaction.predicted_bill?.id
+
+                console.log('updatedBillId', updatedBillId)
+                console.log('updatedCategories', updatedCategories)
+
                 return {
                     x: 100,
                     opacity: 0,
@@ -380,10 +388,14 @@ const NeedsConfirmationWindow = () => {
                     onRest: () => {
                         dispatch(confirmAndUpdateMetaData({
                             transaction: transaction,
-                            categories: transactionUpdates[transaction.transaction_id]?.categories
-                                || [{ ...transaction.predicted_category!, fraction: 1 }],
-                            bill: transactionUpdates[transaction.transaction_id]?.bill?.id
-                                || transaction.predicted_bill?.id,
+                            // categories: (categories.length && !billId) ? categories : undefined,
+                            // bill: (billId && categories.length <= 0) ? billId : undefined,
+                            categories: (updatedCategories && !updatedBillId)
+                                ? updatedCategories
+                                : !updatedBillId ? predictedCategories as SplitCategory[] : undefined,
+                            bill: (updatedBillId && !updatedCategories)
+                                ? updatedBillId
+                                : !updatedCategories ? predictedBillId : undefined,
                         }))
                     },
                 }

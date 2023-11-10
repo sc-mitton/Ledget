@@ -240,8 +240,10 @@ export const confirmStack = createSlice({
 
 export const confirmAndUpdateMetaData = createAsyncThunk(
     'confirmStack/confirmAndDispatch',
-    async ({ transaction, categories, bill }: { transaction: Transaction, categories?: SplitCategory[] | undefined, bill?: string }, { dispatch }) => {
+    async ({ transaction, categories, bill }:
+        { transaction: Transaction, categories?: SplitCategory[] | undefined, bill?: string }, { dispatch }) => {
         dispatch(confirmStack.actions.confirmTransaction({ transaction, categories, bill }));
+
         if (categories && categories.length > 0) {
             for (const { id, fraction } of categories) {
                 dispatch(addTransaction2Cat({ categoryId: id, amount: transaction.amount * fraction }));

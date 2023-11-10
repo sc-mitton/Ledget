@@ -2,6 +2,7 @@ import { apiSlice } from '@api/apiSlice'
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
 import Big from 'big.js'
+import { RootState } from './store'
 
 interface Alert {
     percent_amount: number
@@ -177,13 +178,21 @@ export const {
 } = categorySlice.actions
 
 export const selectCategories = createSelector(
-    (state: { categories: initialState }) => state.categories.categories,
+    (state: { categories: RootState }) => state.categories.categories,
     (categories) => categories
 )
 export const SelectCategoryBillMetaData = createSelector(
-    (state: { categories: initialState }) => ({
+    (state: RootState) => ({
         monthly_spent: state.categories.monthly_spent,
         yearly_spent: state.categories.yearly_spent,
+        total_monthly_spent: Big(state.categories.monthly_spent)
+            .plus(state.bills.total_monthly_bills_amount)
+            .minus(state.bills.monthly_bills_amount_remaining)
+            .toNumber(),
+        total_yearly_spent: Big(state.categories.yearly_spent)
+            .plus(state.bills.total_yearly_bills_amount)
+            .minus(state.bills.yearly_bills_amount_remaining)
+            .toNumber(),
         limit_amount_monthly: state.categories.limit_amount_monthly,
         limit_amount_yearly: state.categories.limit_amount_yearly,
         oldest_yearly_category_created: state.categories.oldest_yearly_category_created,

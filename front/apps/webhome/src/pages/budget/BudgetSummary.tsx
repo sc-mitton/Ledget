@@ -20,6 +20,8 @@ const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
     const {
         monthly_spent,
         yearly_spent,
+        total_monthly_spent,
+        total_yearly_spent,
         limit_amount_monthly,
         limit_amount_yearly,
     } = useSelector(SelectCategoryBillMetaData)
@@ -66,8 +68,8 @@ const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
                                 <div>
                                     <DollarCents value={
                                         period === 'month'
-                                            ? monthly_spent || 0
-                                            : yearly_spent || 0
+                                            ? total_monthly_spent || 0
+                                            : total_yearly_spent || 0
                                     } />
                                 </div>
                                 <div>spent</div>
@@ -148,6 +150,8 @@ const SummaryStatsTeaser = ({
     const {
         monthly_spent,
         yearly_spent,
+        total_monthly_spent,
+        total_yearly_spent,
         limit_amount_monthly,
         limit_amount_yearly,
     } = useSelector(SelectCategoryBillMetaData)
@@ -171,7 +175,7 @@ const SummaryStatsTeaser = ({
                     <AnimatedDollarCents
                         value={loadingCategories || loadingBills
                             ? 0
-                            : (yearly_spent + monthly_spent)}
+                            : (total_yearly_spent + total_monthly_spent)}
                     />
                 </div>
                 <div>spent</div>
