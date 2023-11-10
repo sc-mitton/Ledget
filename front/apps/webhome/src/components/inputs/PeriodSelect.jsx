@@ -92,6 +92,7 @@ const PeriodSelect = (props) => {
                         </ComboSelect.Button>
                         <ComboSelect.Options className="select-container" static>
                             <DropAnimation
+                                placement='left'
                                 className="dropdown select"
                                 visible={open}
                                 style={{

@@ -73,17 +73,17 @@ interface SimpleTransaction {
     bill?: string
 }
 
-interface QueueItemWithBill extends SimpleTransaction {
+export interface QueueItemWithBill extends SimpleTransaction {
     categories?: never
     bill: string
 }
 
-interface QueueItemWithCategory extends SimpleTransaction {
+export interface QueueItemWithCategory extends SimpleTransaction {
     categories?: SplitCategory[]
     bill?: never
 }
 
-type ConfirmedQueue = (QueueItemWithBill | QueueItemWithCategory)[];
+export type ConfirmedQueue = (QueueItemWithBill | QueueItemWithCategory)[];
 
 interface ConfirmStackInitialState extends ConfirmedQueue {
     unconfirmed: Transaction[];
@@ -216,6 +216,12 @@ export const confirmStack = createSlice({
                 }
                 state.unconfirmed.splice(index, 1)
             }
+        },
+        removeUnconfirmedTransaction: (state, action: PayloadAction<string>) => {
+            const index = state.unconfirmed.findIndex(item => item.transaction_id === action.payload)
+            if (index > -1) {
+                state.unconfirmed.splice(index, 1)
+            }
         }
     },
     extraReducers: (builder) => {
@@ -242,6 +248,9 @@ export const confirmStack = createSlice({
     }
 })
 
+// Confirm a single transaction and update the metadata
+// for the bills and categories. The argument is an object
+// with the transaction id and the confirmed categories/bills
 export const confirmAndUpdateMetaData = createAsyncThunk(
     'confirmStack/confirmAndDispatch',
     async ({ transaction, categories, bill }:
@@ -258,7 +267,7 @@ export const confirmAndUpdateMetaData = createAsyncThunk(
     }
 )
 
-export const { confirmTransaction } = confirmStack.actions
+export const { confirmTransaction, removeUnconfirmedTransaction } = confirmStack.actions
 
 const selectUnconfirmed = (state: RootState) => state.confirmStack.unconfirmed
 const selectConfirmedQue = (state: RootState) => state.confirmStack.confirmedQue

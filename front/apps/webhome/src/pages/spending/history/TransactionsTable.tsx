@@ -95,7 +95,8 @@ export default function Table() {
   const handleScroll = (e: any) => {
     const bottom = e.target.scrollTop === e.target.scrollTopMax
     // Update cursors to add new transactions node to the end
-    if (bottom && transactionsData?.next !== null && transactionsData) {
+    if (bottom && transactionsData?.next) {
+      console.log('transactionsData?.next !== null', transactionsData?.next)
       getTransactions({
         confirmed: true,
         start: Math.floor(user_create_on.setFullYear(user_create_on.getFullYear() - 2) / 1000),

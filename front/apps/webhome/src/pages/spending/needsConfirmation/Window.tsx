@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler, useState, useEffect, useRef } from 'react'
+import React, { FC, useCallback, useState, useEffect, useRef } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
@@ -25,14 +25,18 @@ import {
     GrnSlimButton,
 } from "@ledget/ui"
 import { formatDateOrRelativeDate, InfiniteScrollDiv, useLoaded } from '@ledget/ui'
-import { Category, isCategory, SplitCategory } from '@features/categorySlice'
-import { Bill, isBill } from '@features/billSlice'
+import { Category, isCategory, SplitCategory, addTransaction2Cat } from '@features/categorySlice'
+import { Bill, isBill, addTransaction2Bill } from '@features/billSlice'
 import {
     useLazyGetUnconfirmedTransactionsQuery,
-    useUpdateTransactionsMutation,
     confirmAndUpdateMetaData,
     selectUnconfirmedTransactions,
     selectConfirmedTransactions,
+    useUpdateTransactionsMutation,
+    ConfirmedQueue,
+    QueueItemWithCategory,
+    QueueItemWithBill,
+    removeUnconfirmedTransaction
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
@@ -214,13 +218,13 @@ const NeedsConfirmationWindow = () => {
     const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(undefined)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | undefined>()
     const [billCatSelectPos, setBillCatSelectPos] = useState<{ x: number, y: number } | undefined>()
-    const [confirmingAll, setConfirmingAll] = useState(false)
     const [transactionUpdates, setTransactionUpdates] =
         useState<{ [key: string]: { categories?: SplitCategory[], bill?: Bill } }>(
             JSON.parse(sessionStorage.getItem('transactionUpdates') || '{}')
         )
     const { start, end } = useGetStartEndFromSearchParams()
 
+    const [updateTransactions] = useUpdateTransactionsMutation()
     const unconfirmedTransactions = useAppSelector(
         state => selectUnconfirmedTransactions(state, {
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
@@ -239,7 +243,6 @@ const NeedsConfirmationWindow = () => {
         fetchTransactions,
         { data: transactionsData, isSuccess, isFetching: isFetchingTransactions }
     ] = useLazyGetUnconfirmedTransactionsQuery()
-    const [updateTransactions] = useUpdateTransactionsMutation()
     const newItemsRef = useRef<HTMLDivElement>(null)
 
     // Initial fetch when query params change
@@ -313,7 +316,7 @@ const NeedsConfirmationWindow = () => {
 
     // Animate the container shrinking when list gets smaller
     useEffect(() => {
-        if (unconfirmedTransactions.length > 0) {
+        if (unconfirmedTransactions.length >= 0) {
             itemsApi.start()
             containerApi.start({
                 height: _getContainerHeight(unconfirmedTransactions.length, expanded)
@@ -359,15 +362,16 @@ const NeedsConfirmationWindow = () => {
         }
     }, [billCatSelectVal])
 
-    // ie activate the options dropdown menu
-    const handleEllipsis = (e: any, item: Transaction) => {
+
+    const handleEllipsis = useCallback((e: any, item: Transaction) => {
         const buttonRect = e.target.closest('button').getBoundingClientRect()
         setMenuPos({
             x: buttonRect.left - newItemsRef.current!.getBoundingClientRect().left || 0,
             y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 4 || 0,
         })
         setFocusedItem(item)
-    }
+        setShowMenu(true)
+    }, [])
 
     // Handle confirming an item
     // 1. Animate the item out of the container
@@ -401,58 +405,61 @@ const NeedsConfirmationWindow = () => {
         })
     }
 
+    // Send the updates to the backend whist updating the category
+    // and bill metadata in the store.
     const handleConfirmAll = () => {
-        setConfirmingAll(true)
         itemsApi.start((index: any, item: any) => ({
             x: 100,
             opacity: 0,
             delay: index * 50,
             config: { duration: 130 },
         }))
-        containerApi.start({
-            height: '0em',
-            delay: unconfirmedTransactions.length * 50,
-        })
+
         // Dispatch confirm for all items
         setTimeout(() => {
-            for (const transaction of unconfirmedTransactions) {
+            const confirmed: ConfirmedQueue = []
+            for (let transaction of unconfirmedTransactions) {
                 const updatedCategories = transactionUpdates[transaction.transaction_id]?.categories
                 const updatedBillId = transactionUpdates[transaction.transaction_id]?.bill?.id
                 const predictedCategories = [{ ...transaction.predicted_category, fraction: 1 }]
                 const predictedBillId = transaction.predicted_bill?.id
-                dispatch(confirmAndUpdateMetaData({
-                    transaction: transaction,
-                    categories: (updatedCategories && !updatedBillId)
-                        ? updatedCategories
-                        : !updatedBillId ? predictedCategories as SplitCategory[] : undefined,
-                    bill: (updatedBillId && !updatedCategories)
-                        ? updatedBillId
-                        : !updatedCategories ? predictedBillId : undefined,
-                }))
+
+                let ready2ConfirmItem: QueueItemWithCategory | QueueItemWithBill
+                if ((updatedCategories && !updatedBillId) || predictedCategories) {
+                    ready2ConfirmItem = {
+                        transaction: transaction,
+                        categories: updatedCategories || predictedCategories as SplitCategory[],
+                    }
+                } else {
+                    ready2ConfirmItem = {
+                        transaction: transaction,
+                        bill: updatedBillId || predictedBillId,
+                    }
+                }
+
+                if (ready2ConfirmItem.bill) {
+                    dispatch(addTransaction2Bill({ billId: ready2ConfirmItem.bill, amount: ready2ConfirmItem.transaction.amount }))
+                } else if (ready2ConfirmItem.categories) {
+                    for (let category of ready2ConfirmItem.categories) {
+                        dispatch(addTransaction2Cat({ categoryId: category.id, amount: ready2ConfirmItem.transaction.amount }))
+                    }
+                }
+                dispatch(removeUnconfirmedTransaction(transaction.transaction_id))
+                confirmed.push(ready2ConfirmItem)
             }
-            updateTransactions(confirmedTransactions)
-            setConfirmingAll(false)
+            updateTransactions(confirmed)
         }, 130 + unconfirmedTransactions.length * 50)
     }
 
-    // When the mouse leaves the container, send the RTK mutation
-    // to update the bills/categories. When the mutation is successful,
-    // the confirmed queue will be cleared in the extra reducer for the
-    // confirmStack slice
-    const flushConfirmedQue = () => {
-        if (confirmedTransactions.length > 0 && !confirmingAll) {
-            updateTransactions(confirmedTransactions)
-        }
-    }
-
-    const handleBillCatClick = (e: any, item: Transaction) => {
+    const handleBillCatClick = useCallback((e: any, item: Transaction) => {
         const buttonRect = e.target.closest('button').getBoundingClientRect()
         setBillCatSelectPos({
             x: buttonRect.left - newItemsRef.current!.getBoundingClientRect().left + 8 || 0,
             y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 12 || 0,
         })
         setFocusedItem(item)
-    }
+        setShowBillCatSelect(true)
+    }, [])
 
     // Handle scrolling
     const handleScroll = (e: any) => {
@@ -471,6 +478,12 @@ const NeedsConfirmationWindow = () => {
         !expanded && setShowSplitter(true)
     }
 
+    const flushConfirmedQue = () => {
+        if (confirmedTransactions.length > 0) {
+            updateTransactions(confirmedTransactions)
+        }
+    }
+
     return (
         <div id="new-items-container">
             <div>
@@ -479,7 +492,7 @@ const NeedsConfirmationWindow = () => {
                     id="new-items"
                     animate={isFetchingTransactions && offset > 0}
                     ref={newItemsRef}
-                    onMouseLeave={(e) => flushConfirmedQue()}
+                    onMouseLeave={() => flushConfirmedQue()}
                 >
                     <ShadowedContainer
                         onScroll={handleScroll}

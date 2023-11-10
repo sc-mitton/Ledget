@@ -222,6 +222,7 @@ const AddAlert = (props) => {
                         static
                     >
                         <DropAnimation
+                            placement='left'
                             className="dropdown select"
                             visible={open}
                             style={{

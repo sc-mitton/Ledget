@@ -76,6 +76,12 @@ $charcoal: var(--charcoal-rgb);
         }
     }
 
+    &:not(.skeleton)>div:hover>div:not(.month-header) {
+        transition: background-color .2s ease-in-out;
+        background-color: rgb($charcoal, 0.05);
+        cursor: pointer;
+    }
+
     &>div {
         display: contents;
 
@@ -102,12 +108,6 @@ $charcoal: var(--charcoal-rgb);
             &:first-child {
                 border-radius: var(--border-radius2) 0 0 var(--border-radius2);
             }
-        }
-
-        &:hover>div:not(.month-header) {
-            transition: background-color .2s ease-in-out;
-            background-color: rgb($charcoal, 0.05);
-            cursor: pointer;
         }
 
         // Logo, name, date

@@ -23,9 +23,9 @@ import {
     RecoveryCodeGraphic,
     Otc,
     BackButton,
-    LightGrnWideButton
+    LightGrnWideButton,
+    useLoaded
 } from '@ledget/ui'
-
 
 const ErrorFetchingFlow = () => (<FormError msg={"Something went wrong, please try again later."} />)
 
@@ -244,6 +244,7 @@ const Otp = () => {
 
 const ReAuthModals = withSmallModal((props) => {
     const [searchParams] = useSearchParams()
+    const loaded = useLoaded(100)
 
     return (
         <AnimatePresence mode="wait">
@@ -251,7 +252,7 @@ const ReAuthModals = withSmallModal((props) => {
                 &&
                 <SlideMotionDiv
                     key='aal1'
-                    first={Boolean(searchParams.get('flow'))}
+                    {...(loaded ? { first: true } : { fixed: true })}
                 >
                     <PassWord onCancel={() => props.closeModal()} />
                 </SlideMotionDiv>
@@ -334,17 +335,17 @@ export default function withReAuth(Component) {
 
         return (
             <>
+                <ReAuthModals
+                    hideAll={continueToComponent}
+                    onClose={() => !continueToComponent && props.onClose()}
+                    hasOverlay={false}
+                    blur={1}
+                    zIndex={300}
+                />
                 <Component
                     {...props}
                     hideModal={!continueToComponent}
-                />
-                <ReAuthModals
-                    hideAll={continueToComponent}
-                    onClose={() =>
-                        !continueToComponent && props.onClose()
-                    }
-                    hasOverlay={props.reAuthOverlay ?? false}
-                    blur={1}
+                    zIndex={200}
                 />
             </>
         )

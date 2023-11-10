@@ -221,8 +221,8 @@
 }
 
 .keypad-graphic-status div {
-    width: .8em;
-    height: .8em;
+    width: 1.2em;
+    height: 1.2em;
     color: var(--white-text);
     border-radius: 50%;
     font-size: .6875rem;

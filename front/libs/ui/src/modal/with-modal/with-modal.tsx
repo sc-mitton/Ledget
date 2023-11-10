@@ -15,13 +15,15 @@ export function useAccessEsc({ refs, visible, setVisible }: I) {
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       event.stopPropagation()
-      let shouldClose = true
-      for (const ref of refs) {
-        if (ref.current && ref.current.contains(event.target as Node)) {
-          shouldClose = false
-        }
+
+      // const shouldClose = refs.some(ref => ref.current === event.target && ref.current?.contains(event.target as Node))
+      const shouldClose = refs.some(ref => {
+        const contains = ref.current?.contains(event.target as Node)
+        return !contains && contains !== undefined
+      })
+      if (shouldClose) {
+        setVisible(false)
       }
-      shouldClose && setVisible(false)
     }
 
     const handleEscape = (event: KeyboardEvent) => {
@@ -42,7 +44,7 @@ export function useAccessEsc({ refs, visible, setVisible }: I) {
 }
 
 
-export interface IWithModal {
+export interface WithModalI {
   onClose?: () => void
   hideAll?: boolean
   hideModal?: boolean
@@ -59,7 +61,7 @@ export interface IWithModal {
 }
 
 export function withModal(WrappedComponent: React.FC<any>) {
-  return (props: IWithModal) => {
+  return (props: WithModalI) => {
     const {
       onClose = () => { },
       hideAll = false,
@@ -71,7 +73,7 @@ export function withModal(WrappedComponent: React.FC<any>) {
       width = '70%',
       minWidth = '300px',
       maxWidth = '450px',
-      zIndex = 1000,
+      zIndex = 200,
       blur = 2,
       style,
       ...rest
