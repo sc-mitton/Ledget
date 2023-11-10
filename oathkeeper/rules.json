@@ -445,12 +445,12 @@
       "authorizer": {
          "handler": "allow"
       },
-      "id": "reorder",
+      "id": "order",
       "match": {
          "methods": [
             "POST"
          ],
-         "url": "https://localhost/api/v1/categories/order"
+         "url": "https://localhost/api/v1/categories/<(order|remove)>"
       },
       "mutators": [
          {

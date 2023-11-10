@@ -5,11 +5,11 @@ import { useTransition, useSpringRef, useSpring, animated } from '@react-spring/
 
 import './styles/EditBudgetItems.scss'
 import { withModal } from '@ledget/ui'
-import { useGetCategoriesQuery, useReorderCategoriesMutation, useDeleteCategoriesMutation } from '@features/categorySlice'
+import { useGetCategoriesQuery, useReorderCategoriesMutation, useRemoveCategoriresMutation } from '@features/categorySlice'
 import { useGetBillsQuery, Bill, useDeleteBillsMutation, useUpdateBillsMutation } from '@features/billSlice'
 import { GripButton } from '@components/buttons'
 import { BellOff, Bell } from '@ledget/media'
-import { useSpringDrag, DeleteButton, useLoaded } from '@ledget/ui'
+import { useSpringDrag, DeleteButton, useLoaded, ExpandableContainer } from '@ledget/ui'
 import { SubmitForm } from '@components/pieces'
 
 const itemHeight = 25
@@ -20,11 +20,7 @@ interface Item {
     [key: string]: any
 }
 
-const useAnimations = (
-    items: Item[] | undefined,
-    setItems: React.Dispatch<React.SetStateAction<Item[] | undefined>>,
-    order: React.MutableRefObject<string[]>,
-) => {
+const useAnimations = (items: Item[] | undefined) => {
 
     const loaded = useLoaded(1000)
     const itemsApi = useSpringRef()
@@ -106,9 +102,25 @@ const deleteButtonHandler = (
 const EditCategoriesModal = withModal((props) => {
     const { data: categories } = useGetCategoriesQuery()
     const { items, setItems, deletedItems, setDeletedItems, order } = useItems(categories)
-    const { itemsApi, containerProps, transitions } = useAnimations(items, setItems, order)
-    const [deleteCategories, { isSuccess: categoriesAreDeleted, isLoading: submittingDeleteMutation }] = useDeleteCategoriesMutation()
+    const { itemsApi, containerProps, transitions } = useAnimations(items)
+    const [showSubmit, setShowSubmit] = useState(false)
+    const [
+        removeCategories,
+        { isSuccess: categoriesAreDeleted, isLoading: submittingDeleteMutation }
+    ] = useRemoveCategoriresMutation()
     const [reorderCategories] = useReorderCategoriesMutation()
+
+    useEffect(() => {
+        let timeout: NodeJS.Timeout
+        if (deletedItems?.length) {
+            timeout = setTimeout(() => {
+                setShowSubmit(true)
+            }, 500)
+        }
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [deletedItems])
 
     useEffect(() => {
         let timeout: NodeJS.Timeout
@@ -146,7 +158,7 @@ const EditCategoriesModal = withModal((props) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (deletedItems?.length) {
-            deleteCategories(deletedItems.map((item) => item.id))
+            removeCategories(deletedItems.map((item) => item.id))
         }
     }
 
@@ -181,21 +193,24 @@ const EditCategoriesModal = withModal((props) => {
                     </>
                 </animated.div>
             </div>
-            {deletedItems?.length &&
+            <ExpandableContainer
+                expanded={showSubmit}
+                style={{ marginTop: '1em' }}
+            >
                 <SubmitForm
                     submitting={submittingDeleteMutation}
                     success={categoriesAreDeleted}
                     onCancel={() => { props.closeModal() }}
                 />
-            }
+            </ExpandableContainer>
         </form>
     )
 })
 
 const EditBillsModal = withModal((props) => {
     const { data: billsData } = useGetBillsQuery()
-    const { items, setItems, deletedItems, setDeletedItems, order } = useItems(billsData)
-    const { containerProps, transitions } = useAnimations(items, setItems, order)
+    const { items, setItems, deletedItems, setDeletedItems } = useItems(billsData)
+    const { containerProps, transitions } = useAnimations(items)
     const [deleteBills, { isSuccess: billsAreDeleted, isLoading: submittingDeleteMutation }] = useDeleteBillsMutation()
     const [updateBills, { isSuccess: billsAreUpdated, isLoading: submittingUpdateMutation }] = useUpdateBillsMutation()
 
@@ -244,7 +259,7 @@ const EditBillsModal = withModal((props) => {
                                         className="show"
                                         stroke={'var(--inner-window-solid)'}
                                         onClick={() => {
-                                            deleteButtonHandler(item, setItems, setDeletedItems, order)
+                                            deleteButtonHandler(item, setItems, setDeletedItems)
                                         }}
                                     />
                                 </div>

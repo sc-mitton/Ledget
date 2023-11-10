@@ -178,7 +178,7 @@ local GenericAuthedBase = {
     id: 'order',
     match: {
       methods: ['POST'],
-      url: base_url + '/categories/order',
+      url: base_url + '/categories/<(order|remove)>',
     }
   },
   GenericAuthedBase

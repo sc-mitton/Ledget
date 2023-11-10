@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import calendar
 import logging
 import pytz
@@ -19,8 +19,7 @@ from budget.serializers import (
 from budget.models import (
     Category,
     Bill,
-    UserCategory,
-    TransactionCategory
+    UserCategory
 )
 from financials.models import Transaction
 from ledgetback.view_mixins import BulkSerializerMixin
@@ -146,42 +145,43 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
 
     @action(detail=False, methods=['POST'], url_path='remove')
     def remove(self, request):
+        ids = request.data.get('ids', None)
+        tz_offset = request.data.get('tz_offset', None)
+        if not ids or not tz_offset:
+            raise ValidationError('Invalid request')
 
         try:
-            ids = request.data
-            qset = self._get_categories_qset(ids)
-            if any(item.is_default for item in qset):
-                raise ValidationError('Cannot delete default category')
+            default_category = self._get_default_category()
+            categories = self._get_categories_qset(ids)
+            self._remove(categories, default_category, tz_offset)
         except Exception as e:
             logger.warning(e)
-            return Response(
-                data={'error': str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response(data={'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @atomic
-    def _remove_items(self, ids):
-        qset = self._get_categories_qset(ids)
-        self._deactivate_categories(qset)
-        self._update_affected_transactions(qset)
-
-    @atomic
-    def _deactivate_categories(self, qset):
-        updated = []
-        for item in qset:
-            item.is_active = False
-            updated.append(item)
-        Category.objects.bulk_update(updated, ['is_active'])
-
-    @atomic
-    def _update_affected_transactions(self, stale_categories):
+    def _remove(self, categories, default_category, tz_offset):
         '''
-        For all items in the current month and year,
-        set the category to the default category. Past transactions
-        will be unaffected.
+        Set the categories to inactive, and set all of the connected transactions
+        for the current month to the default category
         '''
+        tz_offset = timedelta(minutes=420)
+        tz = timezone(tz_offset)
+        start = datetime.utcnow().replace(tzinfo=tz).replace(
+            day=1, hour=0, minute=0, second=0, microsecond=0)
+        end = datetime.now().replace(tzinfo=tz).replace(
+            minute=0, second=0, microsecond=0)
 
+        categories.update(is_active=False)
+
+        transactions = Transaction.objects.filter(
+            transactioncategory__category__in=categories,
+            transactioncategory__category__datetime__range=(start, end)
+        )
+        transactions.update(category=default_category)
+
+    def _get_default_category(self):
         default_category = Category.objects.filter(
             usercategory__user=self.request.user,
             is_default=True
@@ -190,26 +190,9 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         if not default_category:
             raise Exception('Default category not found')
 
-        transactions_to_update = TransactionCategory.objects.filter(
-            category__in=stale_categories
-        )
-
-        updated = []
-        for item in transactions_to_update:
-            item.category = default_category
-            updated.append(item)
-        Transaction.objects.bulk_update(updated, ['category'])
+        return default_category
 
     def _get_categories_qset(self, ids=None):
-        '''
-            SELECT
-               ...columns
-            FROM budget_category"
-            INNER JOIN budget_user_category"
-            ON (budget_category.id = budget_user_category"."category_id)
-            WHERE budget_user_category.user_id = 'user_id_here'
-            ORDER BY budget_user_category.order ASC, budget_category.name ASC
-        '''
         if ids:
             qset = Category.objects.filter(
                 usercategory__user=self.request.user,
