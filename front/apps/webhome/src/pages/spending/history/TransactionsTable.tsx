@@ -28,7 +28,7 @@ const List = () => {
       {(transactionsData && transactionsData.results?.length > 0 && !isError)
         ?
         transactionsData?.results.map((transaction) => {
-          const date = new Date(transaction.date)
+          const date = new Date(transaction.datetime)
           date.getMonth() !== monthholder ? newMonth = true : newMonth = false
           monthholder = date.getMonth()
 
@@ -36,7 +36,7 @@ const List = () => {
             <Fragment key={transaction.transaction_id}>
               <div>
                 {newMonth && <div className="month-header">
-                  {date.toLocaleString('default', { month: 'long' })}
+                  {date.toLocaleString('default', { month: 'short', year: 'numeric' })}
                 </div>}
               </div>
               <div>
@@ -46,7 +46,7 @@ const List = () => {
                     <div>{transaction.preferred_name || transaction.name}</div>
                     <div>
                       <span>
-                        {new Date(transaction.date).toLocaleDateString(
+                        {new Date(transaction.datetime).toLocaleDateString(
                           'en-us',
                           { year: 'numeric', month: 'numeric', day: 'numeric' })}
                       </span>

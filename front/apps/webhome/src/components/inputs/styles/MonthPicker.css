@@ -45,7 +45,7 @@
 .month-picker-item,
 .month-picker-item-selected {
     padding: .125rem .5rem;
-    border-radius: var(--border-radius2);
+    border-radius: var(--border-radius1);
     cursor: pointer;
 }
 

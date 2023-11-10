@@ -56,7 +56,7 @@ const PassWord = ({ onCancel }) => {
 
     useEffect(() => {
         if (isCompleteSuccess) {
-            dispatch({ type: 'user/aal1ReAuthed' })
+            dispatch({ type: 'auth/aal1ReAuthed' })
         }
     }, [isCompleteSuccess])
 
@@ -120,7 +120,7 @@ const Totp = () => {
         let timeout
         if (isCompleteSuccess) {
             timeout = setTimeout(() => {
-                dispatch({ type: 'user/aal2ReAuthed' })
+                dispatch({ type: 'auth/aal2ReAuthed' })
             }, 1000)
         }
         return () => clearTimeout(timeout)
@@ -202,7 +202,7 @@ const Otp = () => {
         let timeout
         if (otpVerified) {
             timeout = setTimeout(() => {
-                dispatch({ type: 'user/aal15ReAuthed' })
+                dispatch({ type: 'auth/aal15ReAuthed' })
             }, 1000)
         }
         return () => clearTimeout(timeout)

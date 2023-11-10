@@ -8,7 +8,7 @@ import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv, us
 import pathMappings from './path-mappings'
 
 export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
-    = ({ children, ...rest }) => {
+    = ({ children }) => {
         const containerRef = useRef<HTMLDivElement>(null)
         const [fetchMorePulse, setFetchMorePulse] = useState(false)
         const [searchParams] = useSearchParams()
@@ -39,8 +39,6 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
             setSkeleton((isLoadingTransactions) && !searchParams.get('acount'))
         }, [searchParams.get('account'), isLoadingTransactions])
 
-
-
         // Fetch more transactions animation
         useEffect(() => {
             if (isFetchingTransactions && !isLoadingTransactions) {
@@ -53,8 +51,8 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
         }, [isFetchingTransactions])
 
         // Fetch more transactions
-        const handleScroll = (e: React.UIEvent<HTMLElement>) => {
-            const bottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight
+        const handleScroll = (e: any) => {
+            const bottom = e.target.scrollTop === e.target.scrollTopMax
             // Update cursors to add new transactions node to the end
             if (bottom && transactionsData?.next !== null && transactionsData) {
                 getTransactions({
@@ -75,10 +73,7 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
                 >
                     {skeleton
                         ?
-                        <div
-                            className='transactions--table'
-                            {...rest}
-                        >
+                        <div className='transactions--table'>
                             {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
                                 .fill(0)
                                 .map((_, index) =>
@@ -90,7 +85,6 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
                         <ShadowScrollDiv
                             className='transactions--table not-skeleton'
                             onScroll={handleScroll}
-                            {...rest}
                         >
                             {children}
                         </ShadowScrollDiv>

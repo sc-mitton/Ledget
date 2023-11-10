@@ -2,7 +2,7 @@
 
 const CopyIcon = ({
     className = '',
-    fill = "#292929",
+    fill = "currentColor",
     width = "1em",
     height = "1em",
 }) => {
