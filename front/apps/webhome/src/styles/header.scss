@@ -50,8 +50,7 @@ header {
 .profile-dropdown::before {
     position: absolute;
     top: -.5em;
-    /* left: 3em; */
-    right: 1.875em;
+    right: 1.75em;
     display: inline-block;
     border-right: .375em solid transparent;
     border-bottom: .375em solid var(--subtle-border-color);
@@ -62,7 +61,7 @@ header {
 .profile-dropdown::after {
     position: absolute;
     top: -.375em;
-    right: 1.875em;
+    right: 1.75em;
     display: inline-block;
     border-right: .375em solid transparent;
     border-bottom: .375em solid var(--window);
