@@ -164,13 +164,13 @@ const AddAlert = (props) => {
                             color: 'var(--white-text)',
                             borderRadius: '50%',
                             padding: '.375em',
-                            width: '.25em',
-                            height: '.25em',
+                            width: '.5em',
+                            height: '.5em',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
                             fontWeight: '500',
-                            marginRight: '.375em',
+                            marginRight: '.5em',
                             fontSize: '.75em'
                         }}
                     >

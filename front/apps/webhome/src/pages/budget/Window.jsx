@@ -53,10 +53,6 @@ const DropDown = () => {
                                     <Edit className="dropdown-icon" />
                                     Categories
                                 </Wrapper>
-                                <Wrapper>
-                                    <Edit className="dropdown-icon" />
-                                    Bills
-                                </Wrapper>
                                 <Wrapper
                                     onClick={() => navigate({
                                         pathname: `/budget/new-category`,
