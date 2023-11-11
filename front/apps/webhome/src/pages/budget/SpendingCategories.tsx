@@ -2,9 +2,9 @@ import React, { FC, memo, Fragment, useState, useRef, useEffect } from 'react'
 
 import { Tab } from '@headlessui/react'
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import Big from 'big.js'
 
+import { useAppSelector } from '@hooks/store'
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
 import { useLazyGetCategoriesQuery, SelectCategoryBillMetaData, selectCategories } from '@features/categorySlice'
@@ -143,7 +143,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
         limit_amount_monthly,
         limit_amount_yearly,
         oldest_yearly_category_created
-    } = useSelector(SelectCategoryBillMetaData)
+    } = useAppSelector(SelectCategoryBillMetaData)
 
     const totalSpent = period === 'month' ? monthly_spent : yearly_spent
     const totalLimit = period === 'month' ? limit_amount_monthly : limit_amount_yearly
@@ -187,7 +187,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
 }
 
 const ColumnView = () => {
-    const categories = useSelector(selectCategories)
+    const categories = useAppSelector(selectCategories)
 
     return (
         <>
@@ -211,13 +211,13 @@ const ColumnView = () => {
 
 const TabView = () => {
     const [selectedIndex, setSelectedIndex] = useState(0)
-    const categories = useSelector(selectCategories)
+    const categories = useAppSelector(selectCategories)
     const {
         monthly_spent,
         yearly_spent,
         limit_amount_monthly,
         limit_amount_yearly,
-    } = useSelector(SelectCategoryBillMetaData)
+    } = useAppSelector(SelectCategoryBillMetaData)
 
     return (
         <Tab.Group as={Column} selectedIndex={selectedIndex} onChange={setSelectedIndex}>

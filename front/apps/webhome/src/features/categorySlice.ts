@@ -178,10 +178,8 @@ export const {
     addTransaction2Cat
 } = categorySlice.actions
 
-export const selectCategories = createSelector(
-    (state: { categories: RootState }) => state.categories.categories,
-    (categories) => categories
-)
+
+export const selectCategories = (state: RootState) => state.categories.categories
 export const SelectCategoryBillMetaData = createSelector(
     (state: RootState) => ({
         monthly_spent: state.categories.monthly_spent,
