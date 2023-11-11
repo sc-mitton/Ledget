@@ -359,17 +359,6 @@ const NeedsConfirmationWindow = () => {
         }
     }, [billCatSelectVal])
 
-
-    const handleEllipsis = useCallback((e: any, item: Transaction) => {
-        const buttonRect = e.target.closest('button').getBoundingClientRect()
-        setMenuPos({
-            x: buttonRect.left - newItemsRef.current!.getBoundingClientRect().left || 0,
-            y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 4 || 0,
-        })
-        setFocusedItem(item)
-        setShowMenu(true)
-    }, [])
-
     // Handle confirming an item
     // 1. Animate the item out of the container
     // 2. Remove the item from the items array
@@ -448,14 +437,24 @@ const NeedsConfirmationWindow = () => {
         }, 130 + unconfirmedTransactions.length * 50)
     }
 
+    const handleEllipsis = useCallback((e: any, item: Transaction) => {
+        const buttonRect = e.target.closest('button').getBoundingClientRect()
+        setMenuPos({
+            x: buttonRect.left - newItemsRef.current!.getBoundingClientRect().left || 0,
+            y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 4 || 0,
+        })
+        setFocusedItem(item)
+        setShowBillCatSelect(false)
+    }, [])
+
     const handleBillCatClick = useCallback((e: any, item: Transaction) => {
         const buttonRect = e.target.closest('button').getBoundingClientRect()
         setBillCatSelectPos({
-            x: buttonRect.left - newItemsRef.current!.getBoundingClientRect().left + 8 || 0,
+            x: ((buttonRect.left + buttonRect.right) / 2) - newItemsRef.current!.getBoundingClientRect().left || 0,
             y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 12 || 0,
         })
         setFocusedItem(item)
-        setShowBillCatSelect(true)
+        setShowBillCatSelect(false)
     }, [])
 
     // Handle scrolling
@@ -484,11 +483,8 @@ const NeedsConfirmationWindow = () => {
                     ref={newItemsRef}
                     onMouseLeave={() => flushConfirmedQue()}
                 >
-                    <ShadowedContainer
-                        onScroll={handleScroll}
-                        showShadow={expanded}
-                    >
-                        <animated.div style={containerProps}>
+                    <ShadowedContainer showShadow={expanded}>
+                        <animated.div style={containerProps} onScroll={handleScroll}>
                             {(isSuccess && unconfirmedTransactions) &&
                                 <>
                                     {itemTransitions((style, item, obj, index) => {
@@ -523,7 +519,11 @@ const NeedsConfirmationWindow = () => {
                             onChange={setBillCatSelectVal}
                         />
                     </Options>
-                    <Options show={showMenu} setShow={setShowMenu} pos={menuPos}>
+                    <Options
+                        show={showMenu}
+                        setShow={setShowMenu}
+                        pos={menuPos}
+                    >
                         <ItemOptions handlers={[() => { console.log('hello') }]} />
                     </Options>
                 </InfiniteScrollDiv >

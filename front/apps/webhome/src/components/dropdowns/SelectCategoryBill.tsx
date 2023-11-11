@@ -30,14 +30,22 @@ function SelectCategoryBill({ value, onChange, includeBills = true }: I) {
     }, [isFetchCategoriesSuccess, isFetchBillsSuccess])
 
     useEffect(() => {
-        if (query) {
+        let data: (Category | Bill)[] | undefined
+        if (categoryData && billData) {
+            data = includeBills
+                ? [...categoryData, ...billData]
+                : categoryData
+        }
+        if (query && data) {
             setFilteredBillCats(
-                filteredBillCats.filter((billcat) => {
+                data?.filter((billcat) => {
                     const name = billcat.name.toLowerCase()
                     const queryLower = query.toLowerCase()
                     return name.includes(queryLower)
                 })
             )
+        } else {
+            setFilteredBillCats(data || [])
         }
     }, [query])
 

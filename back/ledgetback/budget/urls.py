@@ -34,8 +34,6 @@ router = CustomRouter(trailing_slash=False)
 router.register('categories', CategoryViewSet, basename='categories')
 router.register('bills', BillViewSet, basename='bills')
 
-print(router.urls)
-
 urlpatterns = [
     path('', include(router.urls)),
 ]

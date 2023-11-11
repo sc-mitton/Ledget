@@ -195,10 +195,10 @@ const SummaryStatsTeaser = ({
                     >
                         <div><h4>{period.charAt(0).toUpperCase() + period.slice(1)}</h4></div>
                         <div>
-                            <AnimatedDollarCents value={amountLeft} hasCents={false} />
+                            <AnimatedDollarCents value={Math.abs(amountLeft)} hasCents={false} />
                         </div>
                         <div>
-                            <span>{amountLeft >= 0 ? 'left' : 'overspent'}</span>
+                            <span>{amountLeft >= 0 ? 'left' : 'over'}</span>
                             <ThumbUp
                                 className={`thumbs ${amountLeft >= 0 ? 'up' : 'down'}`}
                                 fill={'currentColor'}

@@ -224,6 +224,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             filter=Q(transactioncategory__transaction__datetime__range=(start, end))
         )
 
+        print('start', start)
         monthly_qset = Category.objects.filter(
             Q(usercategory__category__removed_on__gt=end) |
             Q(usercategory__category__removed_on__isnull=True),
@@ -257,7 +258,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
              amount_spent__isnull=True,
              amount_spent=0,
              usercategory__category__removed_on__isnull=False)
-
+        print('yearly_qset', yearly_qset)
         union_qset = monthly_qset.union(yearly_qset).order_by('order', 'name')
 
         return union_qset
