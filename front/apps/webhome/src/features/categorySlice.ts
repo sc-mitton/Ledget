@@ -18,6 +18,7 @@ export interface Category {
     amount_spent: number,
     alerts: Alert[],
     is_default: boolean,
+    has_transactions: boolean,
 }
 
 export interface SplitCategory extends Category {

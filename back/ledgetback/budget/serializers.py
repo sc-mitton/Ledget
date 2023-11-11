@@ -37,6 +37,7 @@ class CategoryListCreateSerializer(NestedCreateMixin, LS):
 class CategorySerializer(NestedCreateMixin, ModelSerializer):
     alerts = AlertSerializer(many=True, required=False)
     amount_spent = SerializerMethodField(read_only=True)
+    has_transactions = SerializerMethodField(read_only=True)
 
     class Meta:
         model = Category
@@ -58,6 +59,10 @@ class CategorySerializer(NestedCreateMixin, ModelSerializer):
     def get_amount_spent(self, obj):
         if hasattr(obj, 'amount_spent'):
             return obj.amount_spent
+
+    def get_has_transactions(self, obj):
+        if hasattr(obj, 'has_transactions'):
+            return obj.has_transactions
 
 
 class BillListCreateSerializer(NestedCreateMixin, LS):

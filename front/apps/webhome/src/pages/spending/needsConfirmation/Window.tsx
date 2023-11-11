@@ -212,7 +212,6 @@ const NeedsConfirmationWindow = () => {
     const loaded = useLoaded()
     const [showMenu, setShowMenu] = useState(false)
     const [showBillCatSelect, setShowBillCatSelect] = useState(false)
-    const [splittingMode, setSplittingMode] = useState(false)
     const [billCatSelectVal, setBillCatSelectVal] = useState<Category | Bill | undefined>()
     const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(undefined)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | undefined>()

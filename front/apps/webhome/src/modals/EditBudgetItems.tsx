@@ -197,9 +197,6 @@ const EditCategoriesModal = withModal((props) => {
                 expanded={showSubmit}
                 style={{ marginTop: '1em' }}
             >
-                <div id="delete-msg">
-                    &#42;&nbsp;Removing a category will take effect starting this month.
-                </div>
                 <SubmitForm
                     submitting={submittingDeleteMutation}
                     success={categoriesAreDeleted}

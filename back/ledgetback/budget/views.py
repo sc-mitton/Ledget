@@ -204,7 +204,11 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             qset = Category.objects.filter(
                 usercategory__user=self.request.user,
                 usercategory__category__removed_on__isnull=True
-            ).order_by('usercategory__order', 'name')
+            ).order_by('usercategory__order', 'name') \
+             .annotate(has_transactions=Exists(
+                TransactionCategory.objects.filter(
+                    category=OuterRef('pk')
+                )))
 
         return qset
 
@@ -220,14 +224,17 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             filter=Q(transactioncategory__transaction__datetime__range=(start, end))
         )
 
-        print('end.month', end.month)
         monthly_qset = Category.objects.filter(
             Q(usercategory__category__removed_on__gt=end) |
             Q(usercategory__category__removed_on__isnull=True),
             usercategory__user=self.request.user,
             usercategory__category__period='month'
         ).annotate(amount_spent=monthly_amount_spent) \
-         .annotate(order=F('usercategory__order'))
+         .annotate(order=F('usercategory__order')) \
+         .exclude(
+             amount_spent__isnull=True,
+             amount_spent=0,
+             usercategory__category__removed_on__isnull=False)
 
         yearly_amount_spent = Sum(
             F('transactioncategory__transaction__amount') *
@@ -246,6 +253,10 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             usercategory__category__period='year',
         ).annotate(amount_spent=yearly_amount_spent) \
          .annotate(order=F('usercategory__order')) \
+         .exclude(
+             amount_spent__isnull=True,
+             amount_spent=0,
+             usercategory__category__removed_on__isnull=False)
 
         union_qset = monthly_qset.union(yearly_qset).order_by('order', 'name')
 
