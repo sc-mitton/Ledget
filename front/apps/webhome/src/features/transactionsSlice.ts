@@ -151,9 +151,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 if (currentCache.results) {
                     const { results } = currentCache
                     const { results: newResults, ...newRest } = newItems
+                    // dedupe
                     return {
-                        results: [...results, ...newResults],
-                        ...newRest
+                        results: [
+                            ...results,
+                            ...newResults.filter(item =>
+                                !results.find(i => i.transaction_id === item.transaction_id))
+                        ],
                     }
                 }
                 return currentCache

@@ -220,6 +220,8 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
     )
 }
 
+
+
 const Bills = () => {
     const [searchParams] = useSearchParams()
     const { isLoading } = useGetBillsQuery({
@@ -247,7 +249,10 @@ const Bills = () => {
             {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
                 .map((bill, i) => {
                     return (
-                        <div key={i} className={`${bill.period}ly-bill`}>
+                        <div
+                            key={i} className={`${bill.period}ly-bill`}
+                            role="button"
+                        >
                             <div>
                                 <span>{bill.emoji}</span>
                                 <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>

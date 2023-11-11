@@ -100,7 +100,7 @@ const AddReminder = ({ value, onChange }) => {
                         </ComboSelect.Button>
                         <ComboSelect.Options className="select-container" static>
                             <DropAnimation
-                                placement='right'
+                                placement='left'
                                 visible={open}
                                 className="dropdown select"
                             >

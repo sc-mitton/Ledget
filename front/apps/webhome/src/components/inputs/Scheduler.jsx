@@ -554,6 +554,7 @@ const DayWeekPicker = () => {
                 (week && <input type="hidden" name="week" value={week} />)
             }
             <DropAnimation
+                placement='left'
                 visible={open}
                 className="dropdown"
                 id="schedule-dropdown"
@@ -709,6 +710,7 @@ const MonthDayPicker = () => {
             {month && <input type="hidden" name="month" value={month} />}
             {day && <input type="hidden" name="day" value={day} />}
             <DropAnimation
+                placement='left'
                 visible={open}
                 className="dropdown"
                 id="schedule-dropdown"
