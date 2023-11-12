@@ -28,14 +28,16 @@ find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')' -exec mv 
 
 # Create secrets
 cd ..
-mkdir secrets
+if [ ! -d "./secrets" ]; then
+    mkdir ./secrets
+fi
 get_random_secret_key > ./secrets/django_dev_secret_key
 echo dev_user > ./secrets/postgres_user && echo dev_user_password > ./secrets/postgres_password
 brew install stripe
 
 # Create jwks for oathkeeper
 brew install oathkeeper
-oathkeeper credentials generate --alg RS256 > ./secrets/jwks.json
+oathkeeper credentials generate --alg RS256 > ./secrets/dev_jwks.json
 
 # Make the log files
 mkdir back/ledgetback/logs
@@ -48,3 +50,19 @@ brew install ory/tap/cli
 # Install pm2
 npm install pm2@latest -g
 npm install nx@latest -g
+
+# Create the api key for the ory web hook
+if [ -f "./secrets/ory_hook_api_key" ]; then
+    api_key=$(cat ./secrets/ory_hook_api_key)
+else
+    api_key=$(openssl rand -base64 32)
+    echo "$api_key" > ./secrets/ory_hook_api_key
+fi
+
+# Fetch identity config and replace the Api-Key using sed
+ory get identity-config reverent-lewin-bqqp1o2zws --format yaml > project-configuration.yaml
+sed -i '' -e 's|Api-Key.*|Api-Key '$api_key'|g' project-configuration.yaml
+
+# Update identity config
+ory update identity-config "$(ory list projects | grep "ledget" | cut -f1)" -f project-configuration.yaml
+
