@@ -119,7 +119,7 @@ $background: var(--inner-window-solid);
     // Styles for showing when yearly budget resets
     &.has-alternate-header {
 
-        &>div {
+        &>div.yearly {
             cursor: pointer;
             position: relative;
 
@@ -136,7 +136,7 @@ $background: var(--inner-window-solid);
             }
         }
 
-        &>div:hover {
+        &>div.yearly:hover {
             h4:first-child {
                 opacity: 0;
                 transition: opacity .2s ease-in-out;

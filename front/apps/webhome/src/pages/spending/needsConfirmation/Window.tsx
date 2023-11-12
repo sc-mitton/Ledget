@@ -113,7 +113,9 @@ const NewItem: FC<{
 }> = (props) => {
     const { item, style, updatedBillCat, onEllipsis, onBillCat, handleConfirm, tabIndex } = props
     const [name, setName] = useState<string>(
-        `${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`
+        item.predicted_category
+            ? `${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`
+            : ''
     )
     const [color, setColor] = useState<'blue' | 'green' | 'green-split' | 'blue-split' | 'green-blue-split'>(
         item.predicted_category?.period === 'month' ? 'green' : 'blue'

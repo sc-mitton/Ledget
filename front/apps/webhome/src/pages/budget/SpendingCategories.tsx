@@ -156,7 +156,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
 
     return (
         <div className={`row header ${yearly_end ? 'has-alternate-header' : ''}`}>
-            <div>
+            <div className={`${period === 'year' ? 'yearly' : 'monthly'}`}>
                 <h4>
                     {`${period.toUpperCase()}LY`} <br /> SPENDING
                 </h4>

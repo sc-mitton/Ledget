@@ -169,11 +169,8 @@ class Transaction(models.Model):
 
         if add_predicted_category:
             validated_data['predicted_category'] = Category.objects.get_or_create(
-                user_id=self.context['request'].user.id,
-                category_name='miscellaneous',
-                is_default=True,
-                period='month',
-                emoji='🪣')
+                usercategory__user=self.context['request'].user,
+                is_default=True)
 
         return super().create(validated_data)
 
@@ -183,12 +180,9 @@ class Transaction(models.Model):
                 'predicted_category_id', 'predicted_bill', 'predicted_bill_id']
 
         predicted_category = Category.objects.get_or_create(
-            user_id=self.context['request'].user.id,
-            category_name='miscellaneous',
-            period='month',
-            is_default=True,
-            emoji='🪣'
-        )
+                usercategory__user=self.context['request'].user,
+                is_default=True)
+
         new_data = []
 
         for data in validated_data:
