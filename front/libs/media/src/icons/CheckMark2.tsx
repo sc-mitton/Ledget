@@ -2,7 +2,7 @@
 
 const CheckMark2 = ({
     className = 'checkmark3',
-    fill = "var(--green-hlight3)",
+    fill = "var(--main-hlight3)",
     width = "1em",
     height = "1em"
 }) => {

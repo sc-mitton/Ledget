@@ -50,8 +50,8 @@
 }
 
 .month-picker-item-selected {
-    background-color: var(--green-hlight2);
-    color: var(--green-dark4);
+    background-color: var(--main-hlight2);
+    color: var(--main-dark4);
 }
 
 .month-picker-item:hover,

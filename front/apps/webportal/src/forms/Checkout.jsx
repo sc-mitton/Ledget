@@ -9,7 +9,6 @@ import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
 import './style/Checkout.css'
-import logoLight from '@assets/images/logoLight.svg'
 import stripelogo from '@assets/images/stripelogo.svg'
 import ledgetapi from '@api/axios'
 import { useGetPricesQuery } from '@features/pricesSlice'
@@ -23,6 +22,7 @@ import {
     CityStateZipInputs,
     baseBillingSchema
 } from '@ledget/ui'
+import { LogoIcon2 } from '@ledget/media'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
@@ -46,7 +46,7 @@ const PriceRadios = ({ register }) => {
             {prices &&
                 <div id="prices-container">
                     <div id="prices-container-header">
-                        <img src={logoLight} alt="Ledget" />
+                        <LogoIcon2 />
                     </div>
                     <div id="subscription-radios--container">
                         {prices.map((p, i) =>
@@ -65,7 +65,7 @@ const PriceRadios = ({ register }) => {
                                 <div className="subscription-radio--container">
                                     {p.nickname.toLowerCase() == 'year' &&
                                         <div className="dog-ear">
-                                            <Star fill={'var(--green-hlight)'} />
+                                            <Star fill={'var(--main-hlight)'} />
                                         </div>
                                     }
                                     <span className="nickname">{p.nickname}</span>

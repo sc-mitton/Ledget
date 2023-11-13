@@ -17,8 +17,8 @@ import { BlueSlimButton, BlueSlimArrowButton, ShimmerDiv, DropAnimation } from '
 
 const getStatusColor = (subscription) => {
     const statusColorMap = {
-        active: 'var(--green-dark2)',
-        trialing: 'var(--green-dark2)',
+        active: 'var(--main-dark2)',
+        trialing: 'var(--main-dark2)',
         paused: 'var(--yellow)',
         default: 'var(--red)'
     }

@@ -39,7 +39,7 @@ const AddReminder = ({ value, onChange }) => {
                     </div>
                     {!selected
                         ? <Plus stroke={'var(--muted-text-gray)'} size={'.9em'} />
-                        : <CheckMark stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`} />
+                        : <CheckMark stroke={`${selected ? 'var(--main-dark)' : 'transparent'}`} />
                     }
                 </div>
                 <div style={{ padding: '0 .5em' }}>

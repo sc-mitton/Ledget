@@ -40,7 +40,7 @@ export function Split(props: SplitProps) {
       position: 'absolute',
       marginLeft: index > 0 ? '0.25em' : '0',
       marginRight: '0.25em',
-      backgroundColor: item.period === 'month' ? 'var(--green-hlight2)' : 'var(--blue-hlight2)',
+      backgroundColor: item.period === 'month' ? 'var(--main-hlight2)' : 'var(--secondary-hlight2)',
     }),
     enter: (item, index) => ({
       opacity: 1,

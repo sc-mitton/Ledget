@@ -7,7 +7,7 @@
 
 #force-verification-form--container button {
     margin-top: .75em;
-    color: var(--green-dark3);
+    color: var(--main-dark3);
 }
 
 #force-verification-form--container #resend-btn-container {

@@ -19,7 +19,7 @@
 #verification-form-container button:first-child {
     margin: 0 auto;
     margin-top: .75em;
-    color: var(--green-dark3);
+    color: var(--main-dark3);
 }
 
 #verification-form-container span {

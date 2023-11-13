@@ -9,7 +9,7 @@
     z-index: 1000;
     overflow: hidden;
     background-color: rgba(248, 248, 248, .4);
-    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent);
 }
 
 .loading-bar {
@@ -19,7 +19,7 @@
     right: 0;
     margin: 0 auto;
     width: 97%;
-    height: 2.5px;
+    height: 3.5px;
     overflow: hidden;
 }
 
@@ -29,7 +29,7 @@
     margin: 0 auto;
     height: 100%;
     width: 97%;
-    background-color: var(--blue-hlight3);
+    background-color: var(--main-dark);
     animation: load .7s linear infinite;
     z-index: 1002;
 }

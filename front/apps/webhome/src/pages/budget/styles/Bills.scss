@@ -174,7 +174,7 @@ $window-padding: calc(.25em + $bill-flex-grid-gap);
     }
 
     .month {
-        background-color: var(--green-dark3);
+        background-color: var(--main-dark3);
     }
 
     .year {
@@ -221,7 +221,7 @@ $number-of-bill-rows: 5;
         }
 
         * {
-            color: var(--green-dark4);
+            color: var(--main-dark4);
         }
     }
 
@@ -234,7 +234,7 @@ $number-of-bill-rows: 5;
         }
 
         * {
-            color: var(--blue-dark4);
+            color: var(--secondary-dark4);
         }
     }
 

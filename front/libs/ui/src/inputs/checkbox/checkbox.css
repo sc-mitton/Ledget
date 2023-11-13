@@ -73,8 +73,8 @@
 }
 
 .checkbox-input:checked+.checkbox span:first-child {
-    background: var(--m-green);
-    border-color: var(--m-green);
+    background: var(--main-dark3);
+    border-color: var(--main-dark3);
     animation: zoom-in-out 0.2s ease;
 }
 

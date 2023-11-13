@@ -257,7 +257,7 @@
 }
 
 .keypad-graphic-status.finished>div {
-    color: var(--green-hlight2);
+    color: var(--main-hlight2);
     transition: color .3s ease;
     transition-delay: .4s;
 }

@@ -85,7 +85,7 @@
 
 .btn-wide.btn-grn,
 .btn-wide.btn-grn:hover {
-    color: var(--green-dark4);
+    color: var(--main-dark4);
 }
 
 .btn-wide {
@@ -132,48 +132,48 @@
 }
 
 .btn-grn {
-    color: var(--green-dark4);
-    background-color: var(--green-hlight2);
+    color: var(--main-dark4);
+    background-color: var(--main-hlight2);
     transition: all .3s ease;
     font-weight: 500;
 
     &:hover {
-        color: var(--green-dark4);
-        background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 8%);
+        color: var(--main-dark4);
+        background-color: color-mix(in srgb, var(--main-hlight2), var(--main-dark4) 8%);
         transition: all .3s ease;
     }
 }
 
 .btn-grn-text {
-    color: var(--green-dark);
+    color: var(--main-dark);
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--green-hlight2);
-        color: var(--green-dark4);
+        background-color: var(--main-hlight2);
+        color: var(--main-dark4);
         transition: all .3s ease;
     }
 }
 
 
 .btn-grn2 {
-    background-color: var(--green-hlight2);
-    color: var(--green-dark4);
+    background-color: var(--main-hlight2);
+    color: var(--main-dark4);
     transition: all .3s ease;
 
     &:hover {
-        background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 8%);
+        background-color: color-mix(in srgb, var(--main-hlight2), var(--main-dark4) 8%);
         transition: all .3s ease;
     }
 }
 
 .btn-blue {
-    background-color: var(--blue-hlight2);
-    color: var(--blue-dark4);
+    background-color: var(--secondary-hlight2);
+    color: var(--secondary-dark4);
     transition: all .3s ease;
 
     &:hover {
-        background-color: color-mix(in srgb, var(--blue-hlight2), var(--blue-dark4) 7%);
+        background-color: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-dark4) 7%);
         transition: all .3s ease;
     }
 }
@@ -216,8 +216,8 @@
     font-weight: 400;
 
     &:hover {
-        background-color: var(--green-hlight2);
-        color: var(--green-dark4);
+        background-color: var(--main-hlight2);
+        color: var(--main-dark4);
         transition: all .3s ease;
     }
 }
@@ -588,7 +588,7 @@ button.disabled-hover:hover svg {
 .resend-btn {
     display: flex;
     align-items: center;
-    color: var(--m-green-hover);
+    color: var(--main-color-hover);
     padding: .25em .5em;
     margin: .25em 0;
     gap: .25em;
@@ -769,7 +769,7 @@ button.disabled-hover:hover svg {
         width: 200%;
         height: 500%;
         position: absolute;
-        background-image: conic-gradient(rgba(var(--m-green-values), .5), rgb(var(--m-green-values), .7), rgba(var(--m-green-values), .5));
+        background-image: conic-gradient(rgba(var(--main-color-values), .5), rgb(var(--main-color-values), .7), rgba(var(--main-color-values), .5));
         animation: travel 3s linear infinite;
         z-index: 1;
         opacity: 1;

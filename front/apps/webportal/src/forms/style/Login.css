@@ -55,7 +55,7 @@
     margin: 0 auto;
     left: 0;
     right: 0;
-    top: 2.75em;
+    top: 3.25em;
     font-size: .875rem;
     font-weight: 500;
 }
@@ -76,7 +76,7 @@
 }
 
 .mfa-prompt--container button {
-    color: var(--green-dark2);
+    color: var(--main-dark2);
     position: relative;
 }
 
@@ -88,7 +88,7 @@
     height: 2px;
     bottom: -1px;
     left: 0;
-    background-color: var(--green-dark2);
+    background-color: var(--main-dark2);
 }
 
 .mfa-prompt--container button:hover:before {

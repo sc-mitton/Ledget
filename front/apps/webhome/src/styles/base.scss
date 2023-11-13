@@ -4,11 +4,12 @@
     --window-rgb: 250, 250, 250;
     --window2: rgb(241, 241, 241);
     --window-values: 250, 250, 250;
+    --window-border: white;
     --window-transparent: rgba(252, 248, 247, 0.8);
     --window-background-color: #f0f0f0;
     --inner-window: rgba(0, 0, 0, .03);
     --inner-window-rgb: 245, 245, 245;
-    --inner-window-solid: rgb(244, 244, 244);
+    --inner-window-solid: rgb(242, 242, 242);
 
     --background-color: #fcfcfc;
     --logo-dark: #242424;
@@ -22,26 +23,24 @@
     --red-rgb: 243, 80, 80;
     --dark-red: #8b2424;
 
-    --green-hlight: rgb(112, 226, 162);
-    --green-hlight2: rgb(194, 255, 220);
-    --green-hlight3: rgb(136, 236, 188);
-    --lighter-green: rgb(179, 226, 200);
-    --m-green: rgb(81, 237, 151);
-    --m-green-values: 81, 237, 151;
-    --m-green-hover: rgb(59, 222, 132);
-    --green-dark: rgb(67, 199, 126);
-    --green-dark2: rgb(71, 209, 133);
-    --green-dark3: rgb(61, 174, 112);
-    --green-dark4: rgb(51, 144, 93);
-    --accessible-color: rgb(81, 237, 151);
-    --green-input-focus: rgb(96, 211, 156);
+    --main-hlight: #b2b7d9;
+    --main-hlight2: #e2e3ee;
+    --main-hlight3: #b0b5de;
+    --main-color: hwb(234 36% 47%);
+    --main-color-values: 81, 237, 151;
+    --main-color: hsl(234, 23%, 36%);
+    --main-dark: hsl(240, 17%, 35%);
+    --main-dark2: hsl(240, 17%, 30%);
+    --main-dark3: #35354b;
+    --main-dark4: #242433;
+    --accessible-color: #9999ac;
     --yellow: rgb(175, 175, 51);
 
-    --blue-hlight: rgb(143, 182, 255);
-    --blue-hlight2: rgb(223, 234, 253);
-    --blue-hlight3: rgb(170, 195, 238);
-    --m-blue: rgb(81, 99, 237);
-    --blue-dark4: rgb(68, 97, 160);
+    --secondary-hlight: #8dd6c4;
+    --secondary-hlight2: #daeee9;
+    --secondary-hlight3: #d3e7e2;
+    --secondary-color: #5aaf9a;
+    --secondary-dark4: #424948;
 
     --charcoal-rgb: 41, 41, 41;
     --window-rgb: 252, 248, 247;
@@ -52,7 +51,7 @@
 
     /* Text */
     /* --input-focus: rgb(96, 140, 211); */
-    --input-focus: rgb(85, 188, 138);
+    --input-focus: hsl(235, 16%, 56%);
     --m-text-gray: #292929;
     --sub-text: #3d3d3d;
     --input-placeholder: #848484;
@@ -82,7 +81,7 @@
     --scroll-shadow: rgba(248, 248, 248), transparent;
 
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-color);
-    --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight);
+    --input-focus-drop-shadow: 0 0 0px 1.5px var(--main-hlight);
     --low-elevation-drop-shadow: rgba(0, 0, 0, 0.02) 0px 1px 6px 0px;
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
@@ -91,7 +90,7 @@
 
     --wafer-drag-drop-shadow: rgba(255, 255, 255, .5) 0px 4px 10px;
     --wafer-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
-    --active-wafer-drop-shadow: var(--green-hlight2) 0px 0px 4px 2px;
+    --active-wafer-drop-shadow: var(--main-hlight2) 0px 0px 4px 2px;
     --wafer-hover-drop-shadow: rgb(0, 0, 0, .2) 0px 0px 12px 2px;
 
     /* Borders */
@@ -111,7 +110,7 @@
 /* Override color values for Firefox */
 @-moz-document url-prefix() {
     :root {
-        --input-focus: #55bc8a;
+        --input-focus: hsl(235, 16%, 56%);
         --input-placeholder: #2a2a2a;
         --m-text-gray: rgb(44, 44, 44);
     }
@@ -301,6 +300,7 @@ div.body {
     border-radius: var(--border-radius3);
     padding: 1.5em;
     box-sizing: border-box;
+    border: 1.5px solid var(--window-border);
 }
 
 .window2 {
@@ -428,37 +428,37 @@ input:focus {
 
 @mixin month-category {
     @include category-label;
-    background-color: var(--green-hlight2);
+    background-color: var(--main-hlight2);
     transition: all .3s ease;
 
     * {
-        color: var(--green-dark4);
+        color: var(--main-dark4);
     }
 }
 
 @mixin month-category-hover-effects {
 
     &:hover {
-        background-color: var(--green-hlight3);
+        background-color: var(--main-hlight3);
         transition: all .3s ease;
 
         * {
-            color: color-mix(in srgb, var(--green-dark4), black 10%);
+            color: color-mix(in srgb, var(--main-dark4), black 10%);
         }
     }
 }
 
 @mixin year-category {
     @include category-label;
-    background-color: var(--blue-hlight2);
-    color: var(--blue-dark4);
+    background-color: var(--secondary-hlight2);
+    color: var(--secondary-dark4);
     transition: all .3s ease;
 }
 
 @mixin year-category-hover-effects {
     &:hover {
-        color: color-mix(in srgb, var(--blue-dark4), black 10%);
-        background-color: var(--blue-hlight3);
+        color: color-mix(in srgb, var(--secondary-dark4), black 10%);
+        background-color: var(--secondary-hlight3);
         transition: all .3s ease;
     }
 }
@@ -494,10 +494,10 @@ button.pulse {
 }
 
 button.pulse:hover {
-    background-color: var(--green-hlight2);
+    background-color: var(--main-hlight2);
     border-radius: var(--border-radius1);
     animation: none;
-    background-color: var(--green-hlight2);
+    background-color: var(--main-hlight2);
     transition: all .3s ease;
 }
 
@@ -511,7 +511,7 @@ button.pulse:hover {
 .budget-item-name {
     padding: .125em .75em;
     border-radius: var(--border-radius2);
-    background-color: var(--green-hlight2);
+    background-color: var(--main-hlight2);
     display: inline-block;
     white-space: nowrap;
     transition: background-color .3s ease;
@@ -522,16 +522,16 @@ button.pulse:hover {
 
 .budget-item-name[role="button"] {
     cursor: pointer;
-    color: var(--green-dark4);
+    color: var(--main-dark4);
 }
 
 .budget-item-name[role="button"]:hover {
-    background-color: var(--m-green);
+    background-color: var(--main-color);
     transition: background-color .3s ease;
 }
 
 .budget-item-name * {
-    color: var(--green-dark4);
+    color: var(--main-dark4);
 }
 
 .budget-item-name span:first-child {
@@ -632,11 +632,11 @@ ul hr {
 }
 
 .dropdown-item.selected {
-    background-color: var(--green-hlight2);
+    background-color: var(--main-hlight2);
 }
 
 .dropdown-item.selected.active {
-    background-color: var(--green-hlight2);
+    background-color: var(--main-hlight2);
 }
 
 .dropdown-item:focus-visible {
@@ -784,15 +784,15 @@ ul hr {
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0px 0px var(--green-hlight2);
+        box-shadow: 0 0 0px 0px var(--main-hlight2);
     }
 
     50% {
-        box-shadow: 0 0 0px 4px var(--green-hlight2);
+        box-shadow: 0 0 0px 4px var(--main-hlight2);
     }
 
     100% {
-        box-shadow: 0 0 0px 0px var(--green-hlight2);
+        box-shadow: 0 0 0px 0px var(--main-hlight2);
     }
 
 }

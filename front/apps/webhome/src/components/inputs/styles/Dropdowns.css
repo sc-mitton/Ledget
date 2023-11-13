@@ -52,12 +52,12 @@
 }
 
 .s-slct-item {
-    background-color: var(--green-hlight2);
+    background-color: var(--main-hlight2);
     transition: background-color 0.3s ease-out;
 }
 
 .a-slct-item.s-slct-item {
-    background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 8%);
+    background-color: color-mix(in srgb, var(--main-hlight2), var(--main-dark4) 8%);
     transition: background-color 0.3s ease-out;
 }
 

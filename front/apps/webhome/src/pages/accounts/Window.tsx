@@ -19,7 +19,7 @@ import { useAppDispatch } from '@hooks/store'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
 
 const getNavIcon = (key = '', isCurrent: boolean) => {
-    const fill = isCurrent ? 'var(--green-dark4)' : 'currentColor'
+    const fill = isCurrent ? 'var(--main-dark4)' : 'currentColor'
 
     switch (key) {
         case 'deposits':
@@ -92,7 +92,7 @@ const Header = () => {
         querySelectall: '[role=link]',
         find: (element) => element.getAttribute('aria-current') === 'true',
         styles: {
-            backgroundColor: 'var(--green-hlight2)',
+            backgroundColor: 'var(--main-hlight2)',
             borderRadius: 'var(--border-radius3)',
         }
     })

@@ -72,7 +72,7 @@ const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }) => {
                 />
                 <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
                 <GrnWideButton
-                    style={{ color: 'var(--green-dark4)' }}
+                    style={{ color: 'var(--main-dark4)' }}
                     name='method'
                     type="submit"
                     value="code"
@@ -133,7 +133,7 @@ const RecoveryVerificationForm = ({ submit, flow, codeSuccess, isCompleteError, 
                         name="method"
                         type="submit"
                         value="code"
-                        style={{ color: 'var(--green-dark4)' }}
+                        style={{ color: 'var(--main-dark4)' }}
                     >
                         Verify Code
                     </GrnWideButton>

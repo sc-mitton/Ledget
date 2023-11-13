@@ -49,7 +49,6 @@ export { default as QrIcon } from './icons/QrIcon';
 export { default as CopyIcon } from './icons/CopyIcon';
 export { default as DownloadIcon } from './icons/DownloadIcon';
 export { default as LocationIcon } from './icons/LocationIcon';
-export { default as LedgetLogoIcon } from './brand/LogoIcon'
 export { default as LockIcon } from './icons/LockIcon';
 export { default as VerifyEmail } from './icons/VerifyEmail';
 export { default as ShowIcon } from './icons/Show';
@@ -65,3 +64,6 @@ export { default as CornerGrip } from './icons/CornerGrip';
 export { default as ThumbUp } from './icons/ThumbUp';
 export { default as SearchIcon } from './icons/SearchIcon';
 export { default as SmsAuthIcon2 } from './icons/SmsAuth2';
+export { default as LedgetLogo } from './brand/Logo'
+export { default as LedgetLogoIcon } from './brand/LogoIcon'
+export { default as LogoIcon2 } from './brand/LogoIcon2'

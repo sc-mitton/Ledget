@@ -57,22 +57,22 @@
         margin: 0 .625em;
 
         &.year {
-            background-color: var(--blue-hlight2);
-            color: var(--blue-dark4);
+            background-color: var(--secondary-hlight2);
+            color: var(--secondary-dark4);
 
             &:hover {
-                background-color: color-mix(in srgb, var(--blue-hlight2), var(--blue-dark4) 8%);
+                background-color: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-dark4) 8%);
                 transition: all .3s ease;
             }
 
         }
 
         &.month {
-            background-color: var(--green-hlight2);
-            color: var(--green-dark4);
+            background-color: var(--main-hlight2);
+            color: var(--main-dark4);
 
             &:hover {
-                background-color: color-mix(in srgb, var(--green-hlight2), var(--green-dark4) 8%);
+                background-color: color-mix(in srgb, var(--main-hlight2), var(--main-dark4) 8%);
                 transition: all .3s ease;
             }
         }

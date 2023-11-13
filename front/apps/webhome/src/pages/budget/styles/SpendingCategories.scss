@@ -195,7 +195,7 @@ $background: var(--inner-window-solid);
 
     // Coloring
     &.month * {
-        color: var(--green-dark4);
+        color: var(--main-dark4);
     }
 
     &.month>div {
@@ -208,7 +208,7 @@ $background: var(--inner-window-solid);
     }
 
     &.year * {
-        color: var(--blue-dark4);
+        color: var(--secondary-dark4);
     }
 
     &.year>div {

@@ -57,6 +57,7 @@ export const SelectProvence = ({ field, errors }) => {
           </TextInputWrapper>
           <div className="provence-options--container">
             <DropAnimation
+              placement="left"
               visible={open}
               className="provence-options"
               style={{ minWidth: `${inputRef.current?.offsetWidth}px` }}

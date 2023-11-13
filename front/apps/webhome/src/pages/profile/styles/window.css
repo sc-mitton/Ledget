@@ -80,7 +80,7 @@
 }
 
 #gutter li[aria-current='page'] * {
-    color: var(--green-dark4);
+    color: var(--main-dark4);
 }
 
 #gutter li#profile {

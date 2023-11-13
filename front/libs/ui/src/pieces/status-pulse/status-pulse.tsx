@@ -30,7 +30,7 @@ export const TotpAppGraphic = ({ finished = false }) => {
       {finished &&
         <div id="success-checkmark">
           <CheckMark
-            stroke={'var(--green-dark'}
+            stroke={'var(--main-dark'}
           />
         </div>
       }
@@ -73,7 +73,7 @@ export const SmsVerifyStatus = ({ finished = false, }) => (
     {finished &&
       <div id="success-checkmark">
         <CheckMark
-          stroke={'var(--green-hlight'}
+          stroke={'var(--main-hlight'}
         />
       </div>
     }

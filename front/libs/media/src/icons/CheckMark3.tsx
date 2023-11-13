@@ -2,8 +2,8 @@
 
 const CheckMark3 = ({
     className = 'checkmark3',
-    fill = "var(--green-hlight3)",
-    stroke = "var(--green-dark4)",
+    fill = "var(--main-hlight3)",
+    stroke = "var(--main-dark4)",
     strokeWidth = "17",
     width = "1.1em",
     height = "1.1em"

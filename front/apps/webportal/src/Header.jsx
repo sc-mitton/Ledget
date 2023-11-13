@@ -1,9 +1,6 @@
-import React from 'react'
-
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { BlackPillButtonWithArrow } from '@ledget/ui'
-
-import logo from "@assets/images/logo.svg"
+import { LedgetLogo } from '@ledget/media'
 
 const Header = () => {
     const location = useLocation()
@@ -19,7 +16,7 @@ const Header = () => {
     return (
         <header id="top-header">
             <div>
-                <img src={logo} alt="Ledget" />
+                <LedgetLogo />
             </div>
             <div>
                 {splitPath[splitPath.length - 1] === 'register'

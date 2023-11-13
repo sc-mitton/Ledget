@@ -12,7 +12,7 @@
 }
 
 .switch-crib.enabled {
-    background-color: var(--m-green);
+    background-color: var(--main-color);
     transition: background-color 0.2s ease-in-out;
 }
 
@@ -35,6 +35,6 @@
 
 .switch-pill.enabled {
     transform: translateX(.75rem);
-    background-color: var(--green-dark3);
+    background-color: var(--main-dark3);
     transition: all 0.2s ease-in-out;
 }

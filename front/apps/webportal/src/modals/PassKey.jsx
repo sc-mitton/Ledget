@@ -10,7 +10,7 @@ const Modal = withModal((props) => {
     return (
         <div id='passkey-modal-content'>
             <div>
-                <PasskeyIcon fill={'var(--m-green)'} />
+                <PasskeyIcon fill={'var(--main-color)'} />
             </div>
             <h2>Say goodby to passwords</h2>
             <div id="passkey-modal-text">

@@ -17,34 +17,33 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --green-hlight: rgb(143, 255, 191);
-    --green-hlight2: rgb(194, 255, 220);
-    --green-hlight3: rgb(136, 236, 188);
-    --lighter-green: rgb(179, 226, 200);
-    --m-green: rgb(81, 237, 151);
-    --m-green-values: 81, 237, 151;
-    --m-green-hover: rgb(59, 222, 132);
-    --green-dark: rgb(67, 199, 126);
-    --green-dark1: rgb(49, 175, 105);
-    --green-dark2: rgb(71, 209, 133);
-    --green-dark3: rgb(61, 174, 112);
-    --green-dark4: rgb(51, 144, 93);
+    --main-hlight: #b2b7d9;
+    --main-hlight2: #e2e3ee;
+    --main-hlight3: hsl(234, 43%, 78%);
+    --main-color: hsl(234, 19%, 44%);
+    --main-color-values: 81, 237, 151;
+    --main-color: hsl(234, 23%, 36%);
+    --main-dark: hsl(240, 17%, 35%);
+    --main-dark2: hsl(240, 17%, 30%);
+    --main-dark3: hsl(240, 17%, 25%);
+    --main-dark4: #242433;
+    --accessible-color: #242433;
+    --yellow: rgb(175, 175, 51);
 
-    --blue-hlight: rgb(143, 182, 255);
-    --blue-hlight2: rgb(223, 234, 253);
-    --blue-hlight3: rgb(170, 195, 238);
-    --m-blue: rgb(94, 108, 215);
-    --blue-dark4: rgb(68, 97, 160);
+    --secondary-hlight: #8dd6c4;
+    --secondary-hlight2: #bdece0;
+    --secondary-hlight3: #d3e7e2;
+    --secondary-color: #5aaf9a;
+    --secondary-dark4: #424948;
 
-    --accessible-color: rgb(81, 146, 237);
-    --accessible-color: rgb(81, 237, 151);
+    --accessible-color: #9999ac;
 
     --charcoal-rgb: 41, 41, 41;
     --window-rgb: 252, 248, 247;
 
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-color);
-    --input-focus-drop-shadow: 0 0 0px 1.5px var(--green-hlight3);
+    --input-focus-drop-shadow: 0 0 0px 1.5px var(--main-hlight3);
     --low-elevation-drop-shadow: rgba(0, 0, 0, 0.02) 0px 1px 6px 0px;
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
@@ -59,14 +58,14 @@
 
     /* Text */
     /* --input-focus: rgb(96, 140, 211); */
-    --input-focus: rgb(96, 211, 156);
+    --input-focus: hsl(235, 16%, 56%);
     --m-text-gray: #292929;
     --sub-text: #3d3d3d;
     --input-placeholder: #848484;
     --input-placeholder2: #a6a6a6;
     --white-text: #f8f8f8;
     --muted-text-gray: #848484;
-    --faded-text: rgb(0, 0, 0, .3);
+    --faded-text: rgb(0, 0, 0, .4);
 
     /* Icons & Buttons */
     --btn-light-gray: var(--input-background);
@@ -99,11 +98,16 @@
 /* Override color values for Firefox */
 @-moz-document url-prefix() {
     :root {
-        --input-focus: rgb(96, 211, 156);
+        --input-focus: hsl(235, 16%, 56%);
         --input-placeholder: #2a2a2a;
         --m-text-gray: rgb(44, 44, 44);
     }
+
+    * {
+        scrollbar-width: thin;
+    }
 }
+
 
 
 #root {
@@ -203,7 +207,7 @@ a:focus-visible::before,
 a:hover::before {
     transform: scaleX(1);
     transform-origin: bottom left;
-    background-color: var(--m-green-hover);
+    background-color: var(--main-color-hover);
     transition: transform .2s ease-in-out;
     transition-delay: .2s;
 }

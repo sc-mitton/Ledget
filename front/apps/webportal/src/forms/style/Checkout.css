@@ -27,8 +27,8 @@
 }
 
 #prices-container {
-    background-color: var(--green-hlight);
-    box-shadow: 0 1px 1px 0 var(--green-hlight);
+    background-color: var(--main-hlight);
+    box-shadow: 0 1px 1px 0 var(--main-hlight);
     border-top-left-radius: var(--border-radius3);
     border-top-right-radius: var(--border-radius3);
     position: relative;
@@ -41,7 +41,7 @@
     justify-content: start;
 }
 
-#prices-container-header img {
+#prices-container-header svg {
     height: 0em;
 }
 
@@ -98,23 +98,19 @@
     cursor: pointer;
 }
 
-.subscription-radio--container span {
-    color: var(--green-dark1);
-}
-
 input[type="radio"]:checked+.subscription-radio--container {
-    box-shadow: inset 0 0 1px 2px var(--green-dark1);
+    box-shadow: inset 0 0 1px 2px var(--main-dark);
 }
 
 input[type="radio"]:not(:checked)+.subscription-radio--container {
-    box-shadow: inset 0 0 3px 1px var(--m-green);
+    box-shadow: inset 0 0 3px 1px var(--main-hlight2);
 }
 
 .dog-ear {
     position: absolute;
     top: -1px;
     right: -1px;
-    background-color: var(--green-dark1);
+    background-color: var(--main-dark);
     width: 2.875rem;
     height: 2.875rem;
     transform: translate(50%, -50%) rotate(45deg);
@@ -125,7 +121,7 @@ input[type="radio"]:checked+.subscription-radio--container .dog-ear {
 }
 
 input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
-    opacity: .3;
+    background-color: var(--main-hlight2);
 }
 
 .dog-ear svg {
@@ -136,7 +132,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
 }
 
 .nickname {
-    margin-right: 1em;
+    margin-right: .5em;
     font-size: 1.1em;
 }
 
@@ -228,6 +224,11 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
     font-weight: 500;
 }
 
+.stripe-logo-container a {
+    border: none;
+}
+
+
 .stripe-logo-container a:hover {
     border: none;
 }
@@ -289,8 +290,15 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
         border-radius: 0;
     }
 
-    #prices-container-header img {
-        height: 2em;
+    #prices-container-header {
+        height: 1.5em;
+    }
+
+    #prices-container-header svg {
+        height: 2.25em;
+        position: absolute;
+        top: 1em;
+        left: 1em;
     }
 
 }

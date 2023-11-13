@@ -126,7 +126,7 @@ const AddAlert = (props) => {
                     }
                 </span>
                 <CheckMark
-                    stroke={`${selected ? 'var(--green-dark)' : 'transparent'}`}
+                    stroke={`${selected ? 'var(--main-dark)' : 'transparent'}`}
                 />
             </div>
         </div>

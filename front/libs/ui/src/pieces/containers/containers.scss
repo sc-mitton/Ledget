@@ -24,7 +24,7 @@
         right: 0;
         margin: 0 auto;
         border-radius: 50%;
-        background-color: rgb(var(--m-green-values), .4);
+        background-color: rgb(var(--main-color-values), .4);
         animation: fetching-more .7s ease-out forwards;
     }
 }
@@ -36,7 +36,7 @@
         height: 0%;
         min-height: 0em;
         transform: translateY(calc(100% + 2em));
-        box-shadow: rgb(var(--m-green-values), .2) 0 0 0 2em;
+        box-shadow: rgb(var(--main-color-values), .2) 0 0 0 2em;
     }
 
     50% {
@@ -49,6 +49,6 @@
         height: 30%;
         min-height: 5em;
         transform: translateY(60%);
-        box-shadow: rgb(var(--m-green-values), .2) 0 0 0 2em;
+        box-shadow: rgb(var(--main-color-values), .2) 0 0 0 2em;
     }
 }
