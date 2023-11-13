@@ -18,7 +18,7 @@ import {
     PlainTextInput,
     LoadingRingDiv,
     NodeImage,
-    GrnTextButton,
+    PrimaryTextButton,
     CopyButton,
     FormError,
     JiggleDiv,
@@ -77,12 +77,12 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
                                 {(qrNode && !isError) &&
                                     <>
                                         <NodeImage node={qrNode} attributes={qrNode.attributes} />
-                                        <GrnTextButton
+                                        <PrimaryTextButton
                                             type='button'
                                             onClick={() => setCodeMode(true)}
                                         >
                                             Can't scan it?
-                                        </GrnTextButton>
+                                        </PrimaryTextButton>
                                     </>
                                 }
                             </ZoomMotionDiv>

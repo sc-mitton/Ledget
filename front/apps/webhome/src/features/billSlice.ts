@@ -10,6 +10,7 @@ interface Reminder {
 interface BaseBill {
     id: string,
     is_paid: boolean,
+    last_paid?: string,
     period: 'year' | 'month' | 'once',
     name: string,
     emoji: string,
@@ -58,39 +59,35 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
                 // Set date for each bill
                 response.forEach((bill) => {
-                    const { day, week, week_day, month, year, ...rest } = bill
+                    const { day, week, week_day, month, year } = bill
 
                     if (bill.period === 'month' && (bill.week && bill.week_day)) {
                         // monthly bills with week and week_day
-
                         let date = new Date(today.getFullYear(), today.getMonth())
                         date.setDate(1 + (week! - 1) * 7)
                         // subtract one because backend models indexes at 1
                         date.setDate(date.getDate() + (week_day! - 1 - date.getDay() + 7) % 7)
 
                         bills.push({
-                            ...rest,
+                            ...bill,
                             date: new Date(new Date().getFullYear(), new Date().getMonth(), day || 1).toISOString(),
                         })
                     } else if (bill.period === 'month' && bill.day) {
                         // monthly bills with day
-
                         bills.push({
-                            ...rest,
+                            ...bill,
                             date: new Date(new Date().getFullYear(), new Date().getMonth(), day || 1).toISOString(),
                         })
                     } else if (bill.period === 'once' && bill.month && bill.day && bill.year) {
                         // once bills
-
                         bills.push({
-                            ...rest,
+                            ...bill,
                             date: new Date(year!, month! - 1, day!).toISOString(),
                         })
                     } else if (bill.period === 'year' && bill.month && bill.day) {
                         // yearly bills
-
                         bills.push({
-                            ...rest,
+                            ...bill,
                             date: new Date(today.getFullYear(), month! - 1, day!).toISOString(),
                         })
                     }

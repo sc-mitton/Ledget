@@ -7,13 +7,36 @@
         gap: .25em;
 
         &>div {
-            font-size: 1.25em;
+            display: flex;
+            align-items: center;
+            gap: .5em;
+
+            &>div {
+                font-size: 1.25em;
+            }
         }
     }
 
     .content {
         display: flex;
         flex-direction: column;
-        margin-top: 1em;
+
+        &>div:not(:last-child) {
+            margin: 1em 0;
+            display: grid;
+            column-gap: 1.5em;
+            row-gap: .5em;
+            grid-template-columns: minmax(0, min-content) 1fr;
+
+            &>div:nth-child(2n+1) {
+                font-weight: 500;
+            }
+        }
+
+        // Div around delete button
+        &>div:last-child {
+            display: flex;
+            justify-content: flex-start;
+        }
     }
 }

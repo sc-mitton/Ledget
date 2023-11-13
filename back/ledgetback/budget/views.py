@@ -62,6 +62,16 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         month=month, year=year
             -> selects once bills for the month
         '''
+        is_paid_annotation = Exists(Transaction.objects.filter(bill=OuterRef('pk')))
+        # last_paid_annotation = Max(
+        #     Transaction.objects.filter(bill=OuterRef('pk')).values('datetime')
+        # )
+
+        monthly_qset = Bill.objects \
+                           .filter(userbill__user=self.request.user) \
+                           .filter(month__isnull=True, year__isnull=True) \
+                           .annotate(is_paid=is_paid_annotation)
+
         time_slice_end = datetime(
             year=year,
             month=month,
@@ -71,24 +81,17 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         if not yearly_category_anchor:
             yearly_category_anchor = datetime.now()
 
-        annotation = Exists(Transaction.objects.filter(bill=OuterRef('pk')))
-
-        monthly_qset = Bill.objects \
-                           .filter(userbill__user=self.request.user) \
-                           .filter(month__isnull=True, year__isnull=True) \
-                           .annotate(is_paid=annotation) \
-
         yearly_qset = Bill.objects \
                           .filter(userbill__user=self.request.user) \
                           .filter(
                               month__gte=yearly_category_anchor.month,
                               month__lte=time_slice_end.month) \
-                          .annotate(is_paid=annotation) \
+                          .annotate(is_paid=is_paid_annotation)
 
         once_qset = Bill.objects \
                         .filter(userbill__user=self.request.user) \
                         .filter(month=month, year=year) \
-                        .annotate(is_paid=annotation) \
+                        .annotate(is_paid=is_paid_annotation) \
 
         return monthly_qset.union(yearly_qset, once_qset).order_by('name')
 
@@ -224,7 +227,6 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             filter=Q(transactioncategory__transaction__datetime__range=(start, end))
         )
 
-        print('start', start)
         monthly_qset = Category.objects.filter(
             Q(usercategory__category__removed_on__gt=end) |
             Q(usercategory__category__removed_on__isnull=True),
@@ -258,7 +260,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
              amount_spent__isnull=True,
              amount_spent=0,
              usercategory__category__removed_on__isnull=False)
-        print('yearly_qset', yearly_qset)
+
         union_qset = monthly_qset.union(yearly_qset).order_by('order', 'name')
 
         return union_qset

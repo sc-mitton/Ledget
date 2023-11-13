@@ -11,7 +11,7 @@ import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { GreenCheckSubmitButton, GreenSubmitWithArrow, GrnTextButton } from '@ledget/ui'
+import { GreenCheckSubmitButton, GreenSubmitWithArrow, PrimaryTextButton } from '@ledget/ui'
 
 
 export const TabView = ({ children }) => {
@@ -158,14 +158,14 @@ export const RecommendationsButton = () => {
 
     return (
         <div>
-            <GrnTextButton
+            <PrimaryTextButton
                 id="recommendations-btn"
 
                 onClick={() => setRecommendationsMode(true)}
                 aria-label="Recommendations"
             >
                 Recommendations <RecommendationsIcon fill={'currentColor'} />
-            </GrnTextButton>
+            </PrimaryTextButton>
         </div>
     )
 }

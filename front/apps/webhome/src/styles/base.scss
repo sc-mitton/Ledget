@@ -432,7 +432,7 @@ input:focus {
 
 @mixin month-category {
     @include category-label;
-    background-color: var(--main-hlight2);
+    background-color: color-mix(in srgb, var(--main-hlight2), var(--main-hlight) 10%);
     transition: all .3s ease;
 
     * {
@@ -454,7 +454,7 @@ input:focus {
 
 @mixin year-category {
     @include category-label;
-    background-color: var(--secondary-hlight2);
+    background-color: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-hlight) 15%);
     color: var(--secondary-dark4);
     transition: all .3s ease;
 }

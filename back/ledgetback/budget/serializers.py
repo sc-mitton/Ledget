@@ -76,6 +76,7 @@ class BillListCreateSerializer(NestedCreateMixin, LS):
 class BillSerializer(NestedCreateMixin, ModelSerializer):
     reminders = ReminderSerializer(many=True, required=False)
     is_paid = SerializerMethodField(read_only=True)
+    last_paid = SerializerMethodField(read_only=True)
 
     class Meta:
         model = Bill
@@ -93,3 +94,7 @@ class BillSerializer(NestedCreateMixin, ModelSerializer):
     def get_is_paid(self, obj):
         if hasattr(obj, 'is_paid'):
             return obj.is_paid
+
+    def get_last_paid(self, obj):
+        if hasattr(obj, 'last_paid'):
+            return obj.last_paid

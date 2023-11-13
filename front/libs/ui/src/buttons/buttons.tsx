@@ -60,7 +60,7 @@ export const GrnSlimArrowButton = withArrow(ButtonWithClassName('btn-grn2 btn-sl
 export const BlueSlimArrowButton = withArrow(ButtonWithClassName('btn-blue btn-slim'))
 export const GreenSlimArrowSubmit = withLoading(GrnSlimArrowButton)
 export const RedButton = withLoading(ButtonWithClassName('btn-red btn-2slim'))
-export const GrnTextButton = ButtonWithClassName('btn-grn-text btn-2slim')
+export const PrimaryTextButton = ButtonWithClassName('btn-grn-text btn-2slim')
 export const IconButtonSubmit = withLoading(IconButton)
 export const LinkArrowButton = withArrow(ButtonWithClassName('btn-i con2'))
 
@@ -189,10 +189,9 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
           )}
         </div>
       </button>
-    );
+    )
   }
-);
-
+)
 
 export const RefreshButton = ({ fill = '#292929', hasBackground = true, loading = false, onClick = () => { }, ...rest }) => {
   const [active, setActive] = useState(false)
