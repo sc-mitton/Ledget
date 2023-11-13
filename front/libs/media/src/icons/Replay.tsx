@@ -2,15 +2,14 @@
 
 const Refresh = ({
     className = '',
-    width = "1.3em",
-    height = "1.3em",
+    size = "1.3em",
     fill = "#292929",
 }) => {
     return (
         <svg
             className={className}
-            width={width}
-            height={height}
+            width={size}
+            height={size}
             viewBox="0 0 144 144"
             xmlns="http://www.w3.org/2000/svg"
             x="0px"

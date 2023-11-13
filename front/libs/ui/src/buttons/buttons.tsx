@@ -28,7 +28,7 @@ export const GrayArrowButton = withArrow(GrayButton)
 export const BlackWideButton = ButtonWithClassName('btn-chcl btn-wide')
 export const GrnWideButton = ButtonWithClassName('btn-grn btn-wide')
 export const GrayWideButton = ButtonWithClassName('btn-gr btn-wide')
-export const LightGrnWideButton = withLoading(ButtonWithClassName('btn-grn2 btn-wide2'))
+export const LightGrnWideButton = withLoading(ButtonWithClassName('btn-grn btn-wide2'))
 
 export const BlackSlimButton = ButtonWithClassName('btn-chcl btn-slim')
 export const BlackSlimButton2 = ButtonWithClassName('btn-chcl btn-2slim')
@@ -172,7 +172,7 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
       <button
         ref={ref}
         onClick={() => setRotation(rotation + 360)}
-        className="resend-btn"
+        className="resend-btn btn3"
         {...rest}
       >
         Resend
@@ -185,7 +185,7 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
               width={'.8em'}
             />
           ) : (
-            <ReplayIcon fill={'currentColor'} />
+            <ReplayIcon fill={'currentColor'} size={'1.1em'} />
           )}
         </div>
       </button>
