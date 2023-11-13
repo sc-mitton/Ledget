@@ -140,10 +140,15 @@ export const Transactions = () => {
                                 key={transaction.id}
                                 role="button"
                                 onClick={() => {
-                                    navigate(
-                                        `${location.pathname}/transaction${location.search}`,
-                                        { state: { getTransactionsParams: location.search, transactionId: transaction.transaction_id } }
-                                    )
+                                    navigate(`${location.pathname}/transaction${location.search}`, {
+                                        state: {
+                                            getTransactionsParams: {
+                                                account: searchParams.get('account') || '',
+                                                type: pathMappings.getTransactionType(location),
+                                            },
+                                            transactionId: transaction.transaction_id
+                                        }
+                                    })
                                 }}
                             >
                                 <div>

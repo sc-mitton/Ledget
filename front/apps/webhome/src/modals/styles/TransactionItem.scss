@@ -1,3 +1,5 @@
+@import '@styles/text.scss';
+
 /* Header */
 .transaction-info--header {
     display: flex;
@@ -9,28 +11,28 @@
     font-size: 2rem;
 }
 
-.transaction-info--header :last-child {
+.transaction-info--header>div:last-child {
     width: 70%;
     white-space: wrap;
     text-align: center;
-    font-size: 1.125rem;
-    font-weight: 500;
+    font-size: 1rem;
+    color: $secondary-text-color;
 }
-
 
 /* All Info */
 .transaction-info--container {
     display: flex;
     flex-direction: column;
-    gap: .75em;
-    margin-top: 1em;
+    gap: 1em;
+    margin-top: 2em;
 }
 
 .transaction-info--container a {
     text-decoration: underline;
 }
 
-.transaction-info--container .inner-window>div {
+.transaction-info--container .inner-window>div,
+.transaction-info--container .inner-window>div a {
     display: flex;
     align-items: center;
 }
@@ -41,7 +43,7 @@
 
 .transaction-info--container .inner-window:first-child {
     display: flex;
-    gap: .75em;
+    gap: .5em;
 }
 
 .transaction-info--container .inner-window:not(:first-child)>div {
@@ -53,6 +55,8 @@
 
 .transaction-info--container .inner-window:not(:first-child)>div .merchant-cell {
     grid-column: span 2;
+    margin-bottom: .5em;
+    font-weight: 500;
 }
 
 .transaction-info--container .inner-window:not(:first-child)>div>div {
@@ -65,6 +69,6 @@
     padding-top: .1875em;
 }
 
-.transaction-info--container .inner-window:not(:first-child)>div>div:nth-child(2n+1) {
+.transaction-info--container .inner-window:not(:first-child)>div>div:nth-child(2n) {
     font-weight: 500;
 }

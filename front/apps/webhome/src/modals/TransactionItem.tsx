@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Big from 'big.js'
 
-import './styles/TransactionItem.css'
+import './styles/TransactionItem.scss'
 import { LocationIcon } from '@ledget/media'
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import { useGetAccountsQuery } from "@features/accountsSlice"
@@ -38,6 +38,7 @@ const TransactionModal = withModal((props) => {
         }
     }, [accountsFetched, item])
 
+
     return (
         <>
             <div className='transaction-info--header'>
@@ -49,15 +50,11 @@ const TransactionModal = withModal((props) => {
             <div className='transaction-info--container'>
                 <div className='inner-window'>
                     <div >
-                        <Base64Logo
-                            data={institution?.logo}
-                            alt={institution?.name?.charAt(0).toUpperCase()}
-                        />
-                        <a
-                            style={{ color: institution?.primary_color }}
-                            href={institution?.url} target="_blank" rel="noreferrer"
-                        >
-                            {institution?.name}
+                        <a href={institution?.url} target="_blank" rel="noreferrer">
+                            <Base64Logo
+                                data={institution?.logo}
+                                alt={institution?.name?.charAt(0).toUpperCase()}
+                            />
                         </a>
                     </div>
                     <div>
@@ -69,9 +66,13 @@ const TransactionModal = withModal((props) => {
                     <div>
                         {item?.merchant_name &&
                             <>
-                                <div className="merchant-cell">{item?.merchant_name}</div>
+                                <div className="merchant-cell">
+                                    <h3>{item?.merchant_name}</h3>
+                                </div>
                             </>
                         }
+                        <div>Date </div>
+                        <div>{new Date(item?.datetime).toLocaleDateString('en-US', { 'month': 'short', 'day': 'numeric', 'year': 'numeric' })}</div>
                         {(item?.address || item?.city || item?.region) &&
                             <>
                                 <div>Location </div>
@@ -82,8 +83,7 @@ const TransactionModal = withModal((props) => {
                                 </div>
                             </>
                         }
-                        <div>Date </div>
-                        <div>{new Date(item?.datetime).toLocaleDateString('en-US')}</div>
+
                     </div>
                 </div>
             </div>
