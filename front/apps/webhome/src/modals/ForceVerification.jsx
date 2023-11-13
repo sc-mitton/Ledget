@@ -7,8 +7,7 @@ import { withModal } from '@ledget/ui'
 import {
     FormError,
     JiggleDiv,
-    VerificationForm,
-    VerificationStatusGraphic
+    VerificationForm
 } from "@ledget/ui"
 import { useFlow } from '@ledget/ory-sdk'
 import { useGetMeQuery } from '@features/userSlice'
@@ -96,7 +95,6 @@ const ForceVerification = withModal((props) => {
                 <h2>Verify Your Email Address</h2>
             </div>
             <div id="force-verification-form--container">
-                <VerificationStatusGraphic finished={codeIsCorrect} />
                 {errMsg
                     ?
                     <div id="verification-form-error-container">
@@ -137,6 +135,7 @@ export default function (props) {
             hasExit={false}
             overLayExit={false}
             onClose={() => navigate(-1)}
+            disableClose={true}
             maxWidth={props.maxWidth || '21.875rem'}
             blur={1}
         />
