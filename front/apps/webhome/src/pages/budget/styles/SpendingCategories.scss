@@ -199,11 +199,11 @@ $background: var(--inner-window-solid);
     }
 
     &.month>div {
-        background-color: $green;
+        background-color: $blue;
     }
 
     &.month:hover>div {
-        background-color: $green-hover;
+        background-color: $blue-hover;
         transition: all .2s ease-in-out;
     }
 
@@ -212,11 +212,11 @@ $background: var(--inner-window-solid);
     }
 
     &.year>div {
-        background-color: $blue;
+        background-color: $green;
     }
 
     &.year:hover>div {
-        background-color: $blue-hover;
+        background-color: $green-hover;
         transition: all .2s ease-in-out;
 
     }

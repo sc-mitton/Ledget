@@ -5,6 +5,7 @@ const LogoIcon = () => {
         <img
             src={whiteLogoIcon}
             alt="Logo"
+            style={{ 'width': '2.25em', 'height': '2.25em' }}
         />
     )
 }

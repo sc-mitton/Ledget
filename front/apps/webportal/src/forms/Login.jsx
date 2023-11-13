@@ -307,7 +307,7 @@ const Login = () => {
                         <SlideMotionDiv
                             className='nested-window'
                             key="aal1-step"
-                            position={searchParams.get('mfa') ? 'first' : 'fixed'}
+                            position={searchParams.get('mfa') ? 'first' : 'last'}
                         >
                             <OryFormWrapper>
                                 <Password />
