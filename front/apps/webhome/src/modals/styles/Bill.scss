@@ -1,0 +1,19 @@
+#bill-modal--content {
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .25em;
+
+        &>div {
+            font-size: 1.25em;
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        margin-top: 1em;
+    }
+}

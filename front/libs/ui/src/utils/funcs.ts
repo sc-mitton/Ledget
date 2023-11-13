@@ -124,3 +124,36 @@ export const addDaySuffix = (day: string) => {
 export const clamp = (num: number, min: number, max: number) => {
     return Math.min(Math.max(num, min), max)
 }
+
+export const getDaySuffix = (day: number) => {
+    if (day > 10 && day < 20) return 'th'
+    switch (day % 10) {
+        case 1:
+            return 'st'
+        case 2:
+            return 'nd'
+        case 3:
+            return 'rd'
+        default:
+            return 'th'
+    }
+}
+
+export const mapWeekDayNumberToName = (day: number) => {
+    switch (day) {
+        case 0:
+            return 'Sunday'
+        case 1:
+            return 'Monday'
+        case 2:
+            return 'Tuesday'
+        case 3:
+            return 'Wednesday'
+        case 4:
+            return 'Thursday'
+        case 5:
+            return 'Friday'
+        case 6:
+            return 'Saturday'
+    }
+}

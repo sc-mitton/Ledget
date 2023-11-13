@@ -5,7 +5,7 @@ import './styles/Scheduler.scss'
 import Radios from './Radios'
 import { useClickClose } from '@utils'
 import { ArrowIcon } from '@ledget/media'
-import { SlimInputButton, FormErrorTip, DropAnimation } from '@ledget/ui'
+import { SlimInputButton, FormErrorTip, DropAnimation, getDaySuffix } from '@ledget/ui'
 
 const pickerContext = React.createContext()
 
@@ -38,19 +38,6 @@ const Scheduler = (props) => {
 }
 
 const Button = ({ children, ...props }) => {
-    const getSuffix = (day) => {
-        if (day > 10 && day < 20) return 'th'
-        switch (day % 10) {
-            case 1:
-                return 'st'
-            case 2:
-                return 'nd'
-            case 3:
-                return 'rd'
-            default:
-                return 'th'
-        }
-    }
     const dayMap = {
         1: 'Sunday', 2: 'Monday', 3: 'Tuesday', 4: 'Wednesday',
         5: 'Thursday', 6: 'Friday', 7: 'Saturday',
@@ -74,11 +61,11 @@ const Button = ({ children, ...props }) => {
 
     useEffect(() => {
         if (month && day) {
-            setPlaceholder(`${monthMap[month]} ${day}${getSuffix(day)}`)
+            setPlaceholder(`${monthMap[month]} ${day}${getDaySuffix(day)}`)
         } else if (week && weekDay) {
-            setPlaceholder(`${week}${getSuffix(week)} ${dayMap[weekDay]}`)
+            setPlaceholder(`${week}${getDaySuffix(week)} ${dayMap[weekDay]}`)
         } else if (day) {
-            setPlaceholder(`The ${day}${getSuffix(day)}`)
+            setPlaceholder(`The ${day}${getDaySuffix(day)}`)
         }
     }, [day, month, week, weekDay])
 

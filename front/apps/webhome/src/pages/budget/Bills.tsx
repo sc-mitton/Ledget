@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useState, useRef, forwardRef } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '@hooks/store';
 
 import './styles/Bills.scss'
@@ -223,10 +223,9 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
     )
 }
 
-
-
 const Bills = () => {
     const [searchParams] = useSearchParams()
+    const navigate = useNavigate()
     const { isLoading } = useGetBillsQuery({
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
@@ -255,6 +254,11 @@ const Bills = () => {
                         <div
                             key={i} className={`${bill.period}ly-bill`}
                             role="button"
+                            onClick={() => {
+                                navigate(`${location.pathname}/bill${location.search}`, {
+                                    state: { billId: bill.id }
+                                })
+                            }}
                         >
                             <div>
                                 <span>{bill.emoji}</span>

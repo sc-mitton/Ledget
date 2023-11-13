@@ -28,7 +28,7 @@ export interface Bill extends BaseBill {
     reminders: Reminder[],
 }
 
-export interface TransformedBill extends BaseBill {
+export interface TransformedBill extends Bill {
     date: string,
 }
 

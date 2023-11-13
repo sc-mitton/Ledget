@@ -13,7 +13,13 @@ import NotFound from '@pages/notFound/NotFound'
 import { SlideMotionDiv, ZoomMotionDiv, Toast } from '@ledget/ui'
 import { WelcomeConnect, AddCategories, AddBills } from '@pages/onboarding'
 import { Background } from '@pages/onboarding'
-import { CreateCategory, CreateBill, ForceVerification, EditBudgetItems } from '@modals'
+import {
+    CreateCategory,
+    CreateBill,
+    ForceVerification,
+    EditBudgetItems,
+    BillModal
+} from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
@@ -115,6 +121,7 @@ const MainApp = () => {
                                 <Route path="edit-categories" element={<EditBudgetItems />} />
                                 <Route path="edit" element={<div>edit</div>} />
                                 <Route path="verify-email" element={<ForceVerification />} />
+                                <Route path="bill" element={<BillModal />} />
                             </Route>
                             <Route path="spending" element={
                                 isNarrow ? <Spending /> : <Navigate to="/budget" />

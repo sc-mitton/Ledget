@@ -140,8 +140,8 @@ $window-padding: calc(.25em + $bill-flex-grid-gap);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 1.375em;
-            height: 1.375em;
+            width: 1.5em;
+            height: 1.5em;
             border-radius: 50%;
             background-color: transparent;
             transition: background-color .2s ease-in-out;
@@ -170,7 +170,7 @@ $window-padding: calc(.25em + $bill-flex-grid-gap);
     // Indicators for bills on that day
     .has-bill-dot {
         position: absolute;
-        bottom: -.25em;
+        bottom: -.375em;
         left: 50%;
         transform: translateX(-50%);
         display: inline-flex;
