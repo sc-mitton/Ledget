@@ -44,11 +44,11 @@ $charcoal: var(--charcoal-rgb);
         }
 
         &.month::after {
-            background-color: color-mix(in srgb, var(--main-hlight2), green 15%);
+            background-color: var(--main-hlight5);
         }
 
         &.year::after {
-            background-color: var(--secondary-hlight2);
+            background-color: var(--secondary-hlight5);
         }
     }
 }
