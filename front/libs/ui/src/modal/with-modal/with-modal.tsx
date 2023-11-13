@@ -50,6 +50,7 @@ export interface WithModalI {
   hideModal?: boolean
   hasOverlay?: boolean
   hasExit?: boolean
+  disableClose?: boolean
   overLayExit?: boolean
   focusOnMount?: boolean
   width?: string
@@ -68,6 +69,7 @@ export function withModal(WrappedComponent: React.FC<any>) {
       hideModal = false,
       hasOverlay = true,
       hasExit = true,
+      disableClose = false,
       overLayExit = true,
       focusOnMount = true,
       width = '70%',
@@ -85,7 +87,7 @@ export function withModal(WrappedComponent: React.FC<any>) {
     useAccessEsc({
       refs: overLayExit ? [modalRef] : [],
       visible: closeAll,
-      setVisible: () => setCloseAll(true),
+      setVisible: () => !disableClose && setCloseAll(true),
     })
 
     const backgroundConfig = {
