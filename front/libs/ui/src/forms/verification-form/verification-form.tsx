@@ -3,7 +3,7 @@ import './verification-form.css';
 import { useState, useEffect, useRef } from 'react'
 
 import './verification-form.css'
-import { GreenSubmitButton, ResendButton } from '../../buttons/buttons'
+import { LightGrnWideButton, ResendButton } from '../../buttons/buttons'
 import { Otc } from '../../inputs/otc/otc'
 
 interface VerificationFormProps {
@@ -49,7 +49,7 @@ export const VerificationForm = (props: VerificationFormProps) => {
           <Otc codeLength={6} />
           <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
           <input type="hidden" name="email" value={identifier} />
-          <GreenSubmitButton
+          <LightGrnWideButton
             type="submit"
             name="method"
             value="code"
@@ -58,7 +58,7 @@ export const VerificationForm = (props: VerificationFormProps) => {
             submitting={hasInitialSent && submitting}
           >
             Submit
-          </GreenSubmitButton>
+          </LightGrnWideButton>
         </form>
         <form
           action={flow?.ui.action}
