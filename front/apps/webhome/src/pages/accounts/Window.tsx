@@ -92,7 +92,7 @@ const Header = () => {
         querySelectall: '[role=link]',
         find: (element) => element.getAttribute('aria-current') === 'true',
         styles: {
-            backgroundColor: 'var(--main-hlight2)',
+            backgroundColor: 'var(--main-hlight4)',
             borderRadius: 'var(--border-radius3)',
         }
     })

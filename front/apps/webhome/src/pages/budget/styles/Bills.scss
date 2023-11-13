@@ -111,7 +111,7 @@ $window-padding: calc(.25em + $bill-flex-grid-gap);
         font-weight: 400;
 
         // Number of bills hover tip
-        &>div {
+        &>div:not(.has-bill-dot) {
             padding: .125em .5em;
             border-radius: var(--border-radius1);
             position: absolute;
@@ -167,27 +167,31 @@ $window-padding: calc(.25em + $bill-flex-grid-gap);
         }
     }
 
-    .has-bill-dot {
-        width: .375em;
-        height: .375em;
-        border-radius: 50%;
-    }
-
-    .month {
-        background-color: var(--main-dark3);
-    }
-
-    .year {
-        background-color: var(--blue-dark3);
-    }
-
     // Indicators for bills on that day
-    &>div>span.has-bill-dot {
+    .has-bill-dot {
         position: absolute;
-        bottom: -.4em;
+        bottom: -.25em;
         left: 50%;
         transform: translateX(-50%);
+        display: inline-flex;
+        gap: .125em;
+
+        span {
+            display: inline-block;
+            width: .3em;
+            height: .3em;
+            border-radius: 50%;
+
+            &.month {
+                background-color: var(--main-color);
+            }
+
+            &.year {
+                background-color: var(--secondary-color);
+            }
+        }
     }
+
 }
 
 $number-of-bill-rows: 5;
@@ -212,11 +216,11 @@ $number-of-bill-rows: 5;
     transition: all .3s ease-in-out;
 
     &>.monthly-bill {
-        background-color: $green;
+        background-color: $blue;
         transition: all .2s ease-in-out;
 
         &:hover {
-            background-color: $green-hover;
+            background-color: $blue-hover;
             transition: all .2s ease-in-out;
         }
 
@@ -226,10 +230,10 @@ $number-of-bill-rows: 5;
     }
 
     &>.yearly-bill {
-        background-color: $blue;
+        background-color: $green;
 
         &:hover {
-            background-color: $blue-hover;
+            background-color: $green-hover;
             transition: all .2s ease-in-out;
         }
 

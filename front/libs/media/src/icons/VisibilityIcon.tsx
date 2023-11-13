@@ -16,7 +16,6 @@ const VisibilityIcon = (props: { mode: boolean, onClick: (e: React.MouseEvent<HT
                 setShowIcon(!showIcon)
                 props.onClick(e)
             }}
-            style={{ borderRadius: '8px', padding: '14px 4px' }}
             aria-label={showIcon ? 'hide' : 'show'}
         >
             <img

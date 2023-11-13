@@ -1,4 +1,4 @@
-$blue: color-mix(in srgb, var(--main-hlight2), var(--main-dark4) 5%);
-$blue-hover: color-mix(in srgb, var(--main-hlight2), var(--main-dark4) 15%);
-$green: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-dark4) 5%);
-$green-hover: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-dark4) 10%);
+$blue: var(--main-hlight2);
+$blue-hover: color-mix(in srgb, var(--main-hlight2), var(--main-hlight) 20%);
+$green: var(--secondary-hlight2);
+$green-hover: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-hlight) 20%);

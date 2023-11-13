@@ -127,8 +127,11 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
                             </div>
                         }
                         {/* Below cell */}
-                        {monthlyBillCountEachDay[i] > 0 && <span className="has-bill-dot month" />}
-                        {yearlyBillCountEachDay[i] > 0 && <span className="has-bill-dot year" />}
+                        {(monthlyBillCountEachDay[i] > 0 || yearlyBillCountEachDay[i] > 0) &&
+                            <div className="has-bill-dot">
+                                {monthlyBillCountEachDay[i] > 0 && <span className="month" />}
+                                {yearlyBillCountEachDay[i] > 0 && <span className="year" />}
+                            </div>}
                     </div>
                 )
             })}

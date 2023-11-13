@@ -17,23 +17,25 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
-    --main-hlight: #b2b7d9;
+    --main-hlight: #a9afdb;
     --main-hlight2: #e2e3ee;
-    --main-hlight3: hsl(234, 43%, 78%);
-    --main-color: hsl(234, 19%, 44%);
+    --main-hlight3: #b0b5de;
+    --main-hlight4: #ebecff;
+    --main-color: hwb(234 36% 47%);
     --main-color-values: 81, 237, 151;
     --main-color: hsl(234, 23%, 36%);
     --main-dark: hsl(240, 17%, 35%);
     --main-dark2: hsl(240, 17%, 30%);
-    --main-dark3: hsl(240, 17%, 25%);
+    --main-dark3: #35354b;
     --main-dark4: #242433;
-    --accessible-color: #242433;
+    --accessible-color: #ababff;
     --yellow: rgb(175, 175, 51);
 
     --secondary-hlight: #8dd6c4;
-    --secondary-hlight2: #bdece0;
+    --secondary-hlight2: #daeee9;
     --secondary-hlight3: #d3e7e2;
     --secondary-color: #5aaf9a;
+    --secondary-dark: hsl(164, 17%, 35%);
     --secondary-dark4: #424948;
 
     --accessible-color: #9999ac;
@@ -43,7 +45,7 @@
 
     /* Drop Shadows */
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-color);
-    --input-focus-drop-shadow: 0 0 0px 1.5px var(--main-hlight3);
+    --input-focus-drop-shadow: 0 0 0px 2px rgb(255, 255, 255, 1);
     --low-elevation-drop-shadow: rgba(0, 0, 0, 0.02) 0px 1px 6px 0px;
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
@@ -57,8 +59,7 @@
     --input-border: solid 1px rgb(0, 0, 0, .02);
 
     /* Text */
-    /* --input-focus: rgb(96, 140, 211); */
-    --input-focus: hsl(235, 16%, 56%);
+    --input-focus: hsl(236, 41%, 68%);
     --m-text-gray: #292929;
     --sub-text: #3d3d3d;
     --input-placeholder: #848484;
@@ -98,7 +99,7 @@
 /* Override color values for Firefox */
 @-moz-document url-prefix() {
     :root {
-        --input-focus: hsl(235, 16%, 56%);
+        --input-focus: hsl(236, 41%, 68%);
         --input-placeholder: #2a2a2a;
         --m-text-gray: rgb(44, 44, 44);
     }
@@ -207,7 +208,7 @@ a:focus-visible::before,
 a:hover::before {
     transform: scaleX(1);
     transform-origin: bottom left;
-    background-color: var(--main-color-hover);
+    background-color: var(--main-hlight);
     transition: transform .2s ease-in-out;
     transition-delay: .2s;
 }
