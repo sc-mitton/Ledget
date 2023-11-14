@@ -3,9 +3,9 @@
 Ledget simplifies financial lives.
 
 
-<div style="text-align:center">
+<!-- <div style="text-align:center">
   <img src="media/logoIcon.png" alt="Logo" width="100" height="100">
-</div>
+</div> -->
 
 
 
