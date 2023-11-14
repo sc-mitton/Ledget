@@ -78,7 +78,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                             className={`dropdown-item ${active && "active-dropdown-item"}`}
                                             onClick={() => setAction('edit')}
                                         >
-                                            <Edit />
+                                            <Edit size={'1em'} />
                                             <span>Edit Bill</span>
                                         </button>
                                     )}
@@ -113,18 +113,25 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                         {bill.emoji}&nbsp;&nbsp;
                         {`${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`}
                     </h2>}
-                {bill &&
-                    <div>
-                        <CheckMark2 style={{ ...(!bill.is_paid && { opacity: .2 }) }} />
-                        <div>
-                            {bill.lower_amount && <><DollarCents value={bill.lower_amount} /> <span>&nbsp;-&nbsp;</span></>}
-                            {bill.upper_amount && <DollarCents value={bill.upper_amount} />}
-                        </div>
-                    </div>
-                }
             </div>
             <div className="inner-window">
-                <div>Schedule: </div>
+                {bill &&
+                    <>
+                        <div>Amount</div>
+                        <div>
+                            <CheckMark2
+                                size={'.9em'}
+                                fill={'var(--main-dark'}
+                                style={{ ...(!bill.is_paid && { opacity: .2 }) }}
+                            />
+                            <div>
+                                {bill.lower_amount && <><DollarCents value={bill.lower_amount} /> <span>&nbsp;-&nbsp;</span></>}
+                                {bill.upper_amount && <DollarCents value={bill.upper_amount} />}
+                            </div>
+                        </div>
+                    </>
+                }
+                <div>Schedule</div>
                 <div>{getRepeatsDescription({
                     day: bill?.day,
                     week: bill?.week,
@@ -132,7 +139,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                     month: bill?.month,
                     year: bill?.year
                 })}</div>
-                <div>Next: </div>
+                <div>Next</div>
                 <div>
                     {bill &&
                         <>
@@ -177,12 +184,8 @@ const DeleteBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () =>
     return (
         <form id="delete-bill" onSubmit={onSubmit}>
             <RadioGroup id="radios" value={value} onChange={setValue}>
-                <RadioGroup.Label>
-                    <h2>Delete Bill</h2>
-                    <h4>
-                        {bill.emoji}&nbsp;&nbsp;
-                        {`${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`}
-                    </h4>
+                <RadioGroup.Label className={bill.period}>
+                    <h3>Delete {`${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`} Bill</h3>
                 </RadioGroup.Label>
                 <RadioGroup.Option value="single">
                     {({ checked }) => (
@@ -191,7 +194,7 @@ const DeleteBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () =>
                 </RadioGroup.Option>
                 <RadioGroup.Option value="complement">
                     {({ checked }) => (
-                        <span className={checked ? 'checked' : ''}>All future bulls</span>
+                        <span className={checked ? 'checked' : ''}>All future bills</span>
                     )}
                 </RadioGroup.Option>
                 <RadioGroup.Option value="all">

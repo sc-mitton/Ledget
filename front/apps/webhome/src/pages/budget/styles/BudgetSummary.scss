@@ -90,7 +90,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             z-index: 2;
             left: 0;
             width: 100%;
-            transform: scale(1.02);
+            transform: scale(1);
             transition: transform .2s ease-in-out .3s, left 0.3s ease-in-out .3s, width 0.3s ease-in-out .3s;
         }
 

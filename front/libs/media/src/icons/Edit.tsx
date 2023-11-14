@@ -1,15 +1,14 @@
 'react'
 
 const Edit = ({
-    width = "1.1em",
-    height = "1.1em",
+    size = '1.1em',
     className = '',
     fill = "#292929",
 }) => {
     return (
         <svg
-            width={width}
-            height={height}
+            width={size}
+            height={size}
             viewBox="0 0 144 144"
             xmlns="http://www.w3.org/2000/svg"
             x="0px"

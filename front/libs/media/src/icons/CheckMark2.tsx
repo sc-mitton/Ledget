@@ -2,23 +2,21 @@ import React, { HTMLAttributes } from 'react'
 
 interface I {
     fill?: string,
-    width?: string,
-    height?: string
+    size?: string,
 }
 
 const CheckMark2: React.FC<HTMLAttributes<SVGElement> & I> = ({
     className = 'checkmark3',
     fill = "#292929",
-    width = "1em",
-    height = "1em",
+    size = '1em',
     ...rest
 }) => {
 
     return (
         <svg
             className={className}
-            width={width}
-            height={height}
+            width={size}
+            height={size}
             viewBox="0 0 144 144"
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
