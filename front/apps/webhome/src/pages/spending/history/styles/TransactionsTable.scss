@@ -130,7 +130,6 @@ $charcoal: var(--charcoal-rgb);
             position: relative;
 
             &:not(.month-header)::after {
-                // border-bottom: 1.5px solid var(--subtle-border-color);
                 content: '';
                 position: absolute;
                 bottom: -.5em;

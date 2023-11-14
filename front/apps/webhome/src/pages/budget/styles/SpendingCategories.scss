@@ -2,11 +2,11 @@
 @import './Variables.scss';
 
 $bill-flex-grid-gap: calc(.25em + .5vw);
-$window-padding: calc(.25em + $bill-flex-grid-gap);
+$window-padding: $bill-flex-grid-gap;
 
 $row-padding: .375em;
 $column-gap: 1.25em;
-$background: var(--inner-window-solid);
+$background: var(--window);
 
 #spending-categories-window {
     width: 100%;
@@ -18,11 +18,9 @@ $background: var(--inner-window-solid);
     min-height: calc(5 * (1em + 2 * $item-row-gap + 2 * $row-padding));
 
     &>div {
-        background-color: $background;
         gap: $column-gap;
         border-radius: var(--border-radius25);
-        padding: $window-padding;
-
+        padding: $window-padding 0;
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: minmax(0, max-content);
@@ -45,7 +43,7 @@ $background: var(--inner-window-solid);
         padding-right: .75em;
         display: grid;
         max-height: 100%;
-        grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
+        grid-template-columns: minmax(0, auto) 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto);
         mask-image: $mask-image;
         row-gap: $item-row-gap;
         position: relative;
@@ -74,21 +72,17 @@ $background: var(--inner-window-solid);
         gap: .5em;
     }
 
-    &>div {
-        padding: $row-padding 0;
-    }
-
     &>div.spanned {
         // cover 2-5 columns
         grid-column: 2 / span 4;
-        border-radius: 0 var(--border-radius2) var(--border-radius2) 0;
         text-align: right;
-        padding-right: 1.25em;
+        padding-right: 1em;
     }
 
     &.header>div {
         cursor: default;
         padding-top: 0;
+        padding-bottom: .5em;
         position: sticky;
         top: 0;
         background-color: inherit;
@@ -96,6 +90,7 @@ $background: var(--inner-window-solid);
         display: flex;
         gap: .75em;
         font-weight: 500;
+        z-index: 1;
 
         &:first-child {
             padding-left: .125em;
@@ -149,15 +144,6 @@ $background: var(--inner-window-solid);
         }
     }
 
-    // Name & emoji columns
-    &>div:nth-child(5n+1) {
-        padding-left: .75em;
-    }
-
-    &:not(.header)>div:nth-child(5n+1) {
-        border-radius: var(--border-radius2) 0 0 var(--border-radius2);
-    }
-
     // Amount spent columns
     &>div:nth-child(5n+2):not(.spanned) {
         display: flex;
@@ -189,20 +175,24 @@ $background: var(--inner-window-solid);
         align-items: center;
     }
 
-    &:not(.header)>div:nth-child(5n) {
-        border-radius: 0 var(--border-radius2) var(--border-radius2) 0;
-    }
-
     // Coloring
     &.month * {
         color: var(--main-dark4);
     }
 
-    &.month>div {
+    &.month>div:first-child>div,
+    &.year>div:first-child>div {
+        padding: calc($row-padding/2) .75em;
+        border-radius: var(--border-radius2);
+        display: flex;
+        gap: .5em;
+    }
+
+    &.month>div:first-child>div {
         background-color: $blue;
     }
 
-    &.month:hover>div {
+    &.month:hover>div:first-child>div {
         background-color: $blue-hover;
         transition: all .2s ease-in-out;
     }
@@ -211,14 +201,31 @@ $background: var(--inner-window-solid);
         color: var(--secondary-dark4);
     }
 
-    &.year>div {
+    &.year>div:first-child>div {
         background-color: $green;
     }
 
-    &.year:hover>div {
+    &.year:hover>div:first-child>div {
         background-color: $green-hover;
         transition: all .2s ease-in-out;
 
+    }
+
+    // Borders in between rows
+    &:not(:first-child):not(:last-child)>div {
+        position: relative;
+        padding-bottom: $row-padding;
+        z-index: 0;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -.25em;
+            left: 0;
+            width: 100%;
+            height: 1.25px;
+            background-color: var(--subtle-border-color);
+        }
     }
 }
 

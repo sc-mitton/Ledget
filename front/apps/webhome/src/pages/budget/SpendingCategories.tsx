@@ -68,8 +68,10 @@ const Row = ({ category }: { category: Category }) => {
     return (
         <div className={`row ${category.period}`}>
             <div className="row-label">
-                <span>{category.emoji}</span>
-                <span>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</span>
+                <div>
+                    <span>{category.emoji}</span>
+                    <span>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</span>
+                </div>
             </div>
             {category.limit_amount ?
                 <>
@@ -317,7 +319,7 @@ const SpendingCategories = () => {
     }, [ref.current])
 
     return (
-        <div id="spending-categories-window" ref={ref}>
+        <div id="spending-categories-window" className="window" ref={ref}>
             <div>
                 {isLoading
                     ? <SkeletonRows numberOfRows={skeletonRowCount} />

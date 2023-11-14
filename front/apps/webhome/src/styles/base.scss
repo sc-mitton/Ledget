@@ -28,8 +28,8 @@
     --main-hlight3: #a7acd3;
     --main-hlight4: #e3e5f5;
     --main-hlight5: #c7ccf2;
-    --main-color: hwb(234 36% 47%);
-    --main-color-values: 81, 237, 151;
+    --main-color: rgb(92, 96, 135);
+    --main-color-values: 92, 96, 135;
     --main-color: hsl(234, 23%, 36%);
     --main-dark: hsl(240, 17%, 35%);
     --main-dark2: hsl(240, 17%, 30%);
@@ -81,7 +81,7 @@
 
     /* Drop Shadows */
     --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
-    --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 36px;
+    --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 4px 16px;
     --scroll-shadow: rgba(248, 248, 248), transparent;
 
     --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-color);
@@ -90,7 +90,7 @@
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
     --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
-    --new-item-drop-shadow: rgba(0, 0, 0, .1) 0px 2px 12px;
+    --new-item-drop-shadow: rgba(0, 0, 0, .08) 0px 2px 12px;
 
     --wafer-drag-drop-shadow: rgba(255, 255, 255, .5) 0px 4px 10px;
     --wafer-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
@@ -305,7 +305,7 @@ div.body {
     border-radius: var(--border-radius3);
     padding: 1.5em;
     box-sizing: border-box;
-    border: 1.5px solid var(--window-border);
+    border: 1.25px solid var(--window-border);
 }
 
 .window2 {

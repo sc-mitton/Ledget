@@ -43,7 +43,7 @@ import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
 
 // Sizing (in ems)
 const translate = 1
-const expandedTranslate = 5.875;
+const expandedTranslate = 6.125;
 const expandedHeight = 29
 const collapsedHeight = 8
 const scale = .1

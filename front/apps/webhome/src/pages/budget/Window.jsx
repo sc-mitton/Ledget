@@ -138,14 +138,16 @@ function Window() {
 
     return (
         <>
-            <div className="window" id="budget-window">
-                <div className="window-header">
-                    <MonthPicker />
-                    <div className="header-btns">
-                        <DropDown />
+            <div id="budget-window">
+                <div className="window">
+                    <div className="window-header">
+                        <MonthPicker />
+                        <div className="header-btns">
+                            <DropDown />
+                        </div>
                     </div>
+                    <BudgetSummary />
                 </div>
-                <BudgetSummary />
                 <Spending />
                 <Bills />
             </div>

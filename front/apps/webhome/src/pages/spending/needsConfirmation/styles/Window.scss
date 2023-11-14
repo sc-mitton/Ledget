@@ -10,7 +10,7 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
 
 #new-items {
     position: relative;
-    background: radial-gradient(ellipse, rgba(14, 7, 7, .03) 1%, transparent 50%);
+    background: radial-gradient(ellipse, rgba(14, 7, 7, .02) 1%, transparent 50%);
     max-width: $window-max-width;
     margin: 0 auto;
     z-index: 100;
@@ -22,7 +22,7 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
     box-shadow: var(--new-item-drop-shadow);
     background: var(--window);
     padding: $new-item-padding;
-    border: 1.5px solid var(--window-border);
+    border: 1.25px solid var(--window-border);
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     margin: 0 .75em;
