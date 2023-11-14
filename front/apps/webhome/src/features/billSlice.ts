@@ -119,9 +119,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         }),
         deleteBill: builder.mutation<any, { billId: string, data: { instances: 'all' | 'single' | 'complement' } }>({
             query: (data) => ({
-                url: `bills/${data.billId}`,
+                url: `bills/${data.billId}/remove`,
                 method: 'POST',
-                body: data,
+                body: data.data,
             }),
             invalidatesTags: ['Bill'],
         }),

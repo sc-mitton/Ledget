@@ -505,7 +505,7 @@
          "methods": [
             "POST"
          ],
-         "url": "https://localhost/api/v1/bills/<[a-zA-Z0-9-]+>"
+         "url": "https://localhost/api/v1/bills/<[a-zA-Z0-9-]+>/remove"
       },
       "mutators": [
          {

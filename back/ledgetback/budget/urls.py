@@ -7,7 +7,7 @@ from budget.views import (
 )
 
 
-class CustomRouter(SimpleRouter):
+class CustomCategoriesRouter(SimpleRouter):
     routes = [
         Route(
             url=r'^{prefix}$',
@@ -29,10 +29,36 @@ class CustomRouter(SimpleRouter):
     ]
 
 
-router = CustomRouter(trailing_slash=False)
-router.register('categories', CategoryViewSet, basename='categories')
-router.register('bills', BillViewSet, basename='bills')
+categories_router = CustomCategoriesRouter(trailing_slash=False)
+categories_router.register('categories', CategoryViewSet, basename='categories')
+
+
+class CustomBillsRouter(SimpleRouter):
+    routes = [
+        Route(
+            url=r'^{prefix}$',
+            mapping={
+                'get': 'list',
+                'post': 'create',
+                'put': 'update',
+            },
+            name='{basename}-list',
+            detail=False,
+            initkwargs={'suffix': 'List'}
+        ),
+        DynamicRoute(
+            url=r'^{prefix}/{lookup}/{url_path}$',
+            name='{basename}-{url_name}',
+            detail=True,
+            initkwargs={}
+        ),
+    ]
+
+
+bills_router = CustomBillsRouter(trailing_slash=False)
+bills_router.register('bills', BillViewSet, basename='bills')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', include(categories_router.urls)),
+    path('', include(bills_router.urls)),
 ]

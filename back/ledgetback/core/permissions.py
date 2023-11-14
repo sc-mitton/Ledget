@@ -57,7 +57,10 @@ class IsObjectOwner(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         try:
-            return request.user.id == obj.id or request.user.id == obj.user_id
+            if hasattr(obj, 'users'):
+                return request.user.id in obj.users.all().values_list('id', flat=True)
+            else:
+                return request.user.id == obj.id or request.user.id == obj.user_id
         except AttributeError:
             return False
 

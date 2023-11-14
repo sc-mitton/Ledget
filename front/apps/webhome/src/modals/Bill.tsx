@@ -187,19 +187,28 @@ const DeleteBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () =>
                 <RadioGroup.Label className={bill.period}>
                     <h3>Delete {`${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`} Bill</h3>
                 </RadioGroup.Label>
-                <RadioGroup.Option value="single">
+                <RadioGroup.Option value="single" className="radio-option">
                     {({ checked }) => (
-                        <span className={checked ? 'checked' : ''}>Just this month's bill</span>
+                        <>
+                            <span className={`button ${checked ? 'checked' : ''}`} />
+                            <span>Just this month's bill</span>
+                        </>
                     )}
                 </RadioGroup.Option>
-                <RadioGroup.Option value="complement">
+                <RadioGroup.Option value="complement" className="radio-option">
                     {({ checked }) => (
-                        <span className={checked ? 'checked' : ''}>All future bills</span>
+                        <>
+                            <span className={`button ${checked ? 'checked' : ''}`} />
+                            <span>All future bills</span>
+                        </>
                     )}
                 </RadioGroup.Option>
-                <RadioGroup.Option value="all">
+                <RadioGroup.Option value="all" className="radio-option">
                     {({ checked }) => (
-                        <span className={checked ? 'checked' : ''}>All including this month</span>
+                        <>
+                            <span className={`button ${checked ? 'checked' : ''}`} />
+                            <span>All including this month</span>
+                        </>
                     )}
                 </RadioGroup.Option>
             </RadioGroup>

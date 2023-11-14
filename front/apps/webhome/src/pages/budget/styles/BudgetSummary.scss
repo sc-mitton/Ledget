@@ -233,8 +233,8 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
 
             &:not(:first-child):hover,
             &:not(:first-child):focus-visible {
-                top: 0;
-                height: 105%;
+                top: -3%;
+                height: 112%;
                 border-radius: var(--border-radius25);
                 transition: transform .2s ease-in-out .3s, top 0.3s ease-in-out .3s, height 0.3s ease-in-out .3s,
                     border-radius 0.3s ease-in-out .3s, z-index 0s linear .3s;

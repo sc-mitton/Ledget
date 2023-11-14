@@ -103,27 +103,31 @@
             cursor: pointer;
             position: relative;
 
-            &::before {
-                content: '';
-                display: inline-block;
-                width: .75em;
-                height: .75em;
-                border-radius: 50%;
-                border: 1.5px solid var(--m-text-gray);
-            }
+            &.radio-option {
 
-            &[aria-checked='true']::before {
-                border: 1.5px solid var(--main-color);
-            }
+                &:hover>span.button:not(.checked) {
+                    box-shadow: 0 0 0 3px var(--main-hlight2);
+                }
 
-            &[aria-checked='true']::after {
-                content: '';
-                background-color: var(--main-color);
-                position: absolute;
-                border-radius: 50%;
-                width: .375em;
-                height: .375em;
-                left: .3em;
+                span.button {
+                    border: 1.5px solid var(--main-color);
+                    border-radius: 50%;
+                    width: .75rem;
+                    height: .75rem;
+                    position: relative;
+
+                    &.checked::after {
+                        width: .325rem;
+                        height: .325rem;
+                        background-color: var(--main-color);
+                        border-radius: 50%;
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
             }
         }
     }

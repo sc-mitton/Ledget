@@ -20,16 +20,17 @@ from budget.serializers import (
 from budget.models import (
     Category,
     Bill,
-    UserCategory
+    UserCategory,
 )
 from financials.models import Transaction, TransactionCategory
 from ledgetback.view_mixins import BulkSerializerMixin
+from core.permissions import IsObjectOwner
 
 logger = logging.getLogger('ledget')
 
 
 class BillViewSet(BulkSerializerMixin, ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsObjectOwner]
     serializer_class = BillSerializer
 
     def get_queryset(self):
@@ -46,17 +47,25 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         if month and year:
             return self._get_specific_month_qset(int(month), int(year))
         else:
-            return Bill.objects.filter(userbill__user=self.request.user)
+            return Bill.objects.filter(
+                removed_on__isnull=True,
+                userbill__user=self.request.user
+            )
+
+    def get_object(self):
+        bill = Bill.objects.prefetch_related('users').get(pk=self.kwargs['pk'])
+        self.check_object_permissions(self.request, bill)
+        return bill
 
     @action(detail=True, methods=['POST'], url_path='remove')
-    def remove(self, request):
+    def remove(self, request, pk=None):
 
-        instances = request.data.get('instances', None)
-        if not instances or instances not in ['all', 'single', 'composit']:
+        which_instances = request.data.get('instances', None)
+        if not which_instances or which_instances not in ['all', 'single', 'composit']:
             raise ValidationError('Invalid request')
 
         try:
-            self._update_db(request, instances)
+            self._update_db(which_instances)
         except Exception as e:
             logger.warning(e)
             return Response(data={'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -64,29 +73,29 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @atomic
-    def _update_db(self, request, instances):
+    def _update_db(self, which_instances):
         '''
         Set the bill to inactive, and set all of the connected transactions
         for the current month to the default category
         '''
         now = dbtz.now()
-        bill = Bill.objects.get(pk=self.kwargs['pk'])
-        self.unlink_transactions(bill, instances)
+        bill = self.get_object()
+        self._unlink_transactions(bill, which_instances)
 
-        if instances == 'all':
+        if which_instances == 'all':
             bill.removed_on = dbtz.now()
-        elif instances == 'composit':
+        elif which_instances == 'composit':
             bill.removed_on = now.replace(month=now.month + 1).replace(day=0)
         else:
             bill.skipped = True
 
         bill.save()
 
-    def _unlink_transactions(self, bill, instances):
+    def _unlink_transactions(self, bill, which_instances):
 
         start = datetime.utcnow().replace(day=1, hour=0,
                                           minute=0, second=0, microsecond=0)
-        if instances == 'composit':
+        if which_instances == 'composit':
             start.replace(month=start.month + 1).replace(day=0)
 
         transactions = Transaction.objects.filter(bill=bill, datetime__gte=start)
@@ -109,8 +118,13 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         is_paid_annotation = Exists(Transaction.objects.filter(bill=OuterRef('pk')))
 
         monthly_qset = Bill.objects \
-                           .filter(userbill__user=self.request.user) \
-                           .filter(month__isnull=True, year__isnull=True) \
+                           .filter(
+                               Q(removed_on__month__gt=month) |
+                               Q(removed_on__isnull=True),
+                               userbill__user=self.request.user,
+                               month__isnull=True,
+                               year__isnull=True
+                            ) \
                            .annotate(is_paid=is_paid_annotation) \
 
         time_slice_end = datetime(
@@ -123,15 +137,21 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
             yearly_category_anchor = datetime.now()
 
         yearly_qset = Bill.objects \
-                          .filter(userbill__user=self.request.user) \
                           .filter(
+                              Q(removed_on__year__gt=year) |
+                              Q(removed_on__isnull=True),
+                              userbill__user=self.request.user,
                               month__gte=yearly_category_anchor.month,
                               month__lte=time_slice_end.month) \
                           .annotate(is_paid=is_paid_annotation) \
 
         once_qset = Bill.objects \
-                        .filter(userbill__user=self.request.user) \
-                        .filter(month=month, year=year) \
+                        .filter(
+                            userbill__user=self.request.user,
+                            removed_on__isnull=True,
+                            month=month,
+                            year=year
+                         ) \
                         .annotate(is_paid=is_paid_annotation) \
 
         return monthly_qset.union(yearly_qset, once_qset).order_by('name')
@@ -238,6 +258,13 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         return default_category
 
     def _get_categories_qset(self, ids=None):
+        ''''
+        When querying the generic list of categories, the list of
+        removed, ie deactivated, categories is excluded. When categories are removed,
+        all their transactions for that month are set to the default category, so it's
+        no longer needed for categorization or anything else.
+        '''
+
         if ids:
             qset = Category.objects.filter(
                 usercategory__user=self.request.user,
@@ -269,16 +296,16 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         )
 
         monthly_qset = Category.objects.filter(
-            Q(usercategory__category__removed_on__gt=end) |
-            Q(usercategory__category__removed_on__isnull=True),
+            Q(removed_on__gt=end) |
+            Q(removed_on__isnull=True),
             usercategory__user=self.request.user,
-            usercategory__category__period='month'
+            period='month'
         ).annotate(amount_spent=monthly_amount_spent) \
          .annotate(order=F('usercategory__order')) \
          .exclude(
              amount_spent__isnull=True,
              amount_spent=0,
-             usercategory__category__removed_on__isnull=False)
+             removed_on__isnull=False)
 
         yearly_amount_spent = Sum(
             F('transactioncategory__transaction__amount') *
@@ -291,8 +318,8 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         )
 
         yearly_qset = Category.objects.filter(
-            Q(usercategory__category__removed_on__year__gt=end.year) |
-            Q(usercategory__category__removed_on__isnull=True),
+            Q(removed_on__year__gt=end.year) |
+            Q(removed_on__isnull=True),
             usercategory__user=self.request.user,
             usercategory__category__period='year',
         ).annotate(amount_spent=yearly_amount_spent) \
@@ -300,7 +327,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
          .exclude(
              amount_spent__isnull=True,
              amount_spent=0,
-             usercategory__category__removed_on__isnull=False)
+             removed_on__isnull=False)
 
         union_qset = monthly_qset.union(yearly_qset).order_by('order', 'name')
 

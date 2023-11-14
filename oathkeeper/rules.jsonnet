@@ -194,7 +194,7 @@ local GenericAuthedBase = {
     id: 'modify_bills',
     match: {
       methods: ['POST'],
-      url: base_url + '/bills/<[a-zA-Z0-9-]+>',
+      url: base_url + '/bills/<[a-zA-Z0-9-]+>/remove',
     },
   },
   GenericAuthedBase
