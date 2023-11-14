@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Big from 'big.js'
 
 import './styles/TransactionItem.scss'
-import { LocationIcon } from '@ledget/media'
 import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { withModal, Base64Logo, DollarCents } from '@ledget/ui'
@@ -77,7 +76,6 @@ const TransactionModal = withModal((props) => {
                             <>
                                 <div>Location </div>
                                 <div>
-                                    <LocationIcon />
                                     <span>{item?.address}</span>
                                     <span>{`${item?.city}${item?.region ? ', ' + item.region : ''}`}</span>
                                 </div>

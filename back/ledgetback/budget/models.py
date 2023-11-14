@@ -78,6 +78,7 @@ class Bill(BudgetItem):
             MaxValueValidator(12, message="Day must be between 1 and 12."),
         ]
     )
+    skipped = models.BooleanField(default=False)
     year = models.IntegerField(null=True, blank=True)
 
     def clean(self):

@@ -1,7 +1,7 @@
-import React, { forwardRef, useEffect, useState, useId } from 'react'
+import React, { ReactNode, forwardRef, useEffect, useState, useId } from 'react'
 
 import { useTransition, animated, useSpring } from '@react-spring/web'
-import { motion } from 'framer-motion'
+import { motion, HTMLMotionProps } from 'framer-motion'
 
 
 
@@ -12,7 +12,7 @@ export const DropAnimation = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivE
     from: {
       opacity: 0,
       y: 0,
-      x: `-${placement === 'middle' ? '50%' : placement === 'left' ? '0%' : '0%'}`,
+      x: `-${placement === 'middle' ? '50%' : placement === 'left' ? '0%' : '100%'}`,
       transform: 'scale(0.85)',
       transformOrigin: `top ${placement === 'middle' ? 'center' : placement === 'left' ? 'left' : 'right'}`
     },
@@ -41,7 +41,7 @@ export const DropAnimation = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivE
   )
 })
 
-export const ZoomMotionDiv = ({ children, ...rest }: { children: React.ReactNode }) => (
+export const ZoomMotionDiv = ({ children, ...rest }: { children: ReactNode }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.95 }}
     animate={{ opacity: 1, scale: 1 }}
@@ -53,10 +53,8 @@ export const ZoomMotionDiv = ({ children, ...rest }: { children: React.ReactNode
   </motion.div>
 )
 
-export const SlideMotionDiv = (
-  { children, position, style, ...rest }:
-    { children: React.ReactNode, position: 'first' | 'last' | 'fixed', style?: React.CSSProperties }
-) => {
+export const SlideMotionDiv = ({ children, position, style, ...rest }
+  : { children: ReactNode, position?: 'first' | 'last' | 'default' | 'fixed' } & HTMLMotionProps<'div'>) => {
   const initialMap = {
     first: { opacity: 0, x: -50 },
     last: { opacity: 0, x: 50 },
@@ -77,7 +75,6 @@ export const SlideMotionDiv = (
       animate={{ opacity: 1, x: 0 }}
       exit={exitMap[position ? position : 'default']}
       transition={{ duration: 0.15 }}
-      style={style}
       {...rest}
     >
       {children}

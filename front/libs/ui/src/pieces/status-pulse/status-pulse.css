@@ -84,7 +84,7 @@
 }
 
 #inner-circle.positive {
-    background-color: rgba(69, 81, 255, 0.7);
+    background-color: rgba(69, 81, 255, 0.3);
     transition: all .5s ease-out;
 }
 
@@ -105,7 +105,7 @@
 
 #outer-circle.positive,
 #outer-circle.color-default-positive {
-    background-color: rgb(212, 255, 231, 1);
+    background-color: rgb(212, 212, 255);
     transition: all .5s ease-out;
 }
 

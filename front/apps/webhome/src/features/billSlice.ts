@@ -103,7 +103,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         }),
         addnewBill: builder.mutation<any, Bill | Bill[]>({
             query: (data) => ({
-                url: 'bill',
+                url: 'bills',
                 method: 'POST',
                 body: data,
             }),
@@ -117,10 +117,10 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Bill'],
         }),
-        deleteBills: builder.mutation<any, string[]>({
+        deleteBill: builder.mutation<any, { billId: string, data: { instances: 'all' | 'single' | 'complement' } }>({
             query: (data) => ({
-                url: 'bills',
-                method: 'DELETE',
+                url: `bills/${data.billId}`,
+                method: 'POST',
                 body: data,
             }),
             invalidatesTags: ['Bill'],
@@ -274,5 +274,5 @@ export const {
     useLazyGetBillsQuery,
     useGetBillRecommendationsQuery,
     useUpdateBillsMutation,
-    useDeleteBillsMutation,
+    useDeleteBillMutation,
 } = extendedApiSlice

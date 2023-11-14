@@ -1,14 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useTransition, useSpringRef, useSpring, animated } from '@react-spring/web'
 
 import './styles/EditBudgetItems.scss'
 import { withModal } from '@ledget/ui'
 import { useGetCategoriesQuery, useReorderCategoriesMutation, useRemoveCategoriresMutation } from '@features/categorySlice'
-import { useGetBillsQuery, Bill, useDeleteBillsMutation, useUpdateBillsMutation } from '@features/billSlice'
 import { GripButton } from '@components/buttons'
-import { BellOff, Bell } from '@ledget/media'
 import { useSpringDrag, DeleteButton, useLoaded, ExpandableContainer } from '@ledget/ui'
 import { SubmitForm } from '@components/pieces'
 

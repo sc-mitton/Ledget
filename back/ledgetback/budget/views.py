@@ -48,6 +48,50 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         else:
             return Bill.objects.filter(userbill__user=self.request.user)
 
+    @action(detail=True, methods=['POST'], url_path='remove')
+    def remove(self, request):
+
+        instances = request.data.get('instances', None)
+        if not instances or instances not in ['all', 'single', 'composit']:
+            raise ValidationError('Invalid request')
+
+        try:
+            self._update_db(request, instances)
+        except Exception as e:
+            logger.warning(e)
+            return Response(data={'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @atomic
+    def _update_db(self, request, instances):
+        '''
+        Set the bill to inactive, and set all of the connected transactions
+        for the current month to the default category
+        '''
+        now = dbtz.now()
+        bill = Bill.objects.get(pk=self.kwargs['pk'])
+        self.unlink_transactions(bill, instances)
+
+        if instances == 'all':
+            bill.removed_on = dbtz.now()
+        elif instances == 'composit':
+            bill.removed_on = now.replace(month=now.month + 1).replace(day=0)
+        else:
+            bill.skipped = True
+
+        bill.save()
+
+    def _unlink_transactions(self, bill, instances):
+
+        start = datetime.utcnow().replace(day=1, hour=0,
+                                          minute=0, second=0, microsecond=0)
+        if instances == 'composit':
+            start.replace(month=start.month + 1).replace(day=0)
+
+        transactions = Transaction.objects.filter(bill=bill, datetime__gte=start)
+        transactions.update(bill=None)
+
     def _get_specific_month_qset(self, month, year):
         '''
         Return all of the monthly bills for that month, all the yearly bills,
@@ -63,14 +107,11 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
             -> selects once bills for the month
         '''
         is_paid_annotation = Exists(Transaction.objects.filter(bill=OuterRef('pk')))
-        # last_paid_annotation = Max(
-        #     Transaction.objects.filter(bill=OuterRef('pk')).values('datetime')
-        # )
 
         monthly_qset = Bill.objects \
                            .filter(userbill__user=self.request.user) \
                            .filter(month__isnull=True, year__isnull=True) \
-                           .annotate(is_paid=is_paid_annotation)
+                           .annotate(is_paid=is_paid_annotation) \
 
         time_slice_end = datetime(
             year=year,
@@ -86,7 +127,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
                           .filter(
                               month__gte=yearly_category_anchor.month,
                               month__lte=time_slice_end.month) \
-                          .annotate(is_paid=is_paid_annotation)
+                          .annotate(is_paid=is_paid_annotation) \
 
         once_qset = Bill.objects \
                         .filter(userbill__user=self.request.user) \
@@ -157,7 +198,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         try:
             default_category = self._get_default_category()
             categories = self._get_categories_qset(category_ids)
-            self._remove(categories, default_category, tz_offset)
+            self._update_db(categories, default_category, tz_offset)
         except Exception as e:
             logger.warning(e)
             return Response(data={'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -165,7 +206,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @atomic
-    def _remove(self, categories, default_category, tz_offset):
+    def _update_db(self, categories, default_category, tz_offset):
         '''
         Set the categories to inactive, and set all of the connected transactions
         for the current month to the default category

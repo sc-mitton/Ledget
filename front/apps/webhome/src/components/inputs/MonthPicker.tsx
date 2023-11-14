@@ -56,7 +56,7 @@ const MonthPicker = () => {
                     newDateOptions[year] = [month]
                 }
             }
-            setDateOptions(newDateOptions)
+
         }
     }, [userIsFetched, user])
 
@@ -171,7 +171,7 @@ const MonthPicker = () => {
                 </IconButton>
             </div>
             <DropAnimation
-                placement="right"
+                placement="left"
                 visible={showPicker}
                 className="dropdown"
                 id="picker-container"

@@ -30,22 +30,24 @@
     border-radius: var(--border-radius3);
 }
 
+.day-picker {
+    margin-top: 1em;
+}
+
 .day.picker-item {
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: .125em;
     width: 2em;
     height: 2em;
-    border-radius: var(--border-radius1);
+    border-radius: 50%;
 }
 
 .picker-item {
     cursor: pointer;
     display: flex;
     justify-content: center;
-    padding: .125em;
     border-radius: var(--border-radius1);
 
     &.selected {

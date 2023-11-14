@@ -15,7 +15,6 @@ class CustomRouter(SimpleRouter):
                 'get': 'list',
                 'post': 'create',
                 'put': 'update',
-                'delete': 'destroy'
             },
             name='{basename}-list',
             detail=False,

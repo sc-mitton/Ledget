@@ -1,11 +1,15 @@
+import { useId, useState, useEffect } from 'react'
 
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
+import { Menu, RadioGroup } from '@headlessui/react'
 
 import './styles/Bill.scss'
 import { withModal } from '@ledget/ui'
-import { useGetBillsQuery } from '@features/billSlice'
-import { DollarCents, getDaySuffix, mapWeekDayNumberToName, PrimaryTextButton } from '@ledget/ui'
-import { CheckMark2 } from '@ledget/media'
+import { useGetBillsQuery, TransformedBill, useDeleteBillMutation } from '@features/billSlice'
+import { SubmitForm } from '@components/pieces'
+import { DollarCents, getDaySuffix, mapWeekDayNumberToName, DropAnimation, SlideMotionDiv, useLoaded } from '@ledget/ui'
+import { CheckMark2, Ellipsis, TrashIcon, Bell, BellOff, Edit } from '@ledget/media'
 
 
 const getRepeatsDescription = ({ day, week, week_day, month, year }:
@@ -49,18 +53,60 @@ const getNextBillDate = ({ day, week, week_day, month, year }:
     }
 }
 
-const BillModal = withModal((props) => {
-    const location = useLocation()
-    const [searchParams] = useSearchParams()
-    const { data: bills } = useGetBillsQuery({
-        month: searchParams.get('month') || undefined,
-        year: searchParams.get('year') || undefined
-    })
-    const bill = bills?.find(bill => bill.id === location.state?.billId)
+type Action = 'delete' | 'edit' | 'none'
 
-    console.log('bill', bill)
+const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction<Action>> }) => {
+    const [openEllipsis, setOpenEllipsis] = useState(false)
+
     return (
-        <div id="bill-modal--content">
+        <Menu as="div" className="dropdown-wrapper">
+            {({ open }) => (
+                <>
+                    <Menu.Button onClick={() => setOpenEllipsis(!openEllipsis)}>
+                        <Ellipsis rotate={90} size={'1.375em'} />
+                    </Menu.Button>
+                    <div>
+                        <DropAnimation
+                            placement='right'
+                            className='dropdown'
+                            visible={open}
+                        >
+                            <Menu.Items static>
+                                <Menu.Item>
+                                    {({ active }) => (
+                                        <button
+                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                            onClick={() => setAction('edit')}
+                                        >
+                                            <Edit />
+                                            <span>Edit Bill</span>
+                                        </button>
+                                    )}
+                                </Menu.Item>
+                                <hr />
+                                <Menu.Item>
+                                    {({ active }) => (
+                                        <button
+                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                            onClick={() => setAction('delete')}
+                                        >
+                                            <TrashIcon />
+                                            <span>Delete Bill</span>
+                                        </button>
+                                    )}
+                                </Menu.Item>
+                            </Menu.Items>
+                        </DropAnimation>
+                    </div>
+                </>
+            )}
+        </Menu>
+    )
+}
+
+const BillInfo = ({ bill }: { bill: TransformedBill }) => {
+    return (
+        <div id="bill-info">
             <div className="header">
                 {bill &&
                     <h2>
@@ -77,56 +123,141 @@ const BillModal = withModal((props) => {
                     </div>
                 }
             </div>
-            <div className="content">
-                <div className="inner-window">
-                    <div>Schedule</div>
-                    <div>{getRepeatsDescription({
-                        day: bill?.day,
-                        week: bill?.week,
-                        week_day: bill?.week_day,
-                        month: bill?.month,
-                        year: bill?.year
-                    })}</div>
-                    <div>Last Paid</div>
-                    <div>
-
-                    </div>
-                    <div>Next</div>
-                    <div>
-                        {bill &&
-                            <>
-                                {bill?.is_paid
-                                    ? `${getNextBillDate({
-                                        day: bill?.day,
-                                        week: bill?.week,
-                                        week_day: bill?.week_day,
-                                        month: bill?.month,
-                                        year: bill?.year
-                                    })}`
-                                    : `${new Date(bill.date).toLocaleDateString(
-                                        'en-US',
-                                        { month: 'short', day: 'numeric', year: 'numeric' })}`
-                                }
-                            </>
-                        }
-                    </div>
-                </div>
+            <div className="inner-window">
+                <div>Schedule: </div>
+                <div>{getRepeatsDescription({
+                    day: bill?.day,
+                    week: bill?.week,
+                    week_day: bill?.week_day,
+                    month: bill?.month,
+                    year: bill?.year
+                })}</div>
+                <div>Next: </div>
                 <div>
-                    <PrimaryTextButton>
-                        Delete Bill
-                    </PrimaryTextButton>
+                    {bill &&
+                        <>
+                            {bill?.is_paid
+                                ? `${getNextBillDate({
+                                    day: bill?.day,
+                                    week: bill?.week,
+                                    week_day: bill?.week_day,
+                                    month: bill?.month,
+                                    year: bill?.year
+                                })}`
+                                : `${new Date(bill.date).toLocaleDateString(
+                                    'en-US',
+                                    { month: 'short', day: 'numeric', year: 'numeric' })}`
+                            }
+                        </>
+                    }
                 </div>
             </div>
         </div>
     )
+}
+
+const DeleteBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () => void }) => {
+    const [deleteBill, { isLoading: isDeleting, isSuccess: isDeleteSuccess }] = useDeleteBillMutation()
+    const [value, setValue] = useState('all' as 'all' | 'single' | 'complement')
+
+    const onSubmit = (e: any) => {
+        e.preventDefault()
+        deleteBill({
+            billId: bill.id,
+            data: { instances: value }
+        })
+    }
+
+    useEffect(() => {
+        if (isDeleteSuccess) {
+            onCancel()
+        }
+    }, [isDeleteSuccess])
+
+    return (
+        <form id="delete-bill" onSubmit={onSubmit}>
+            <RadioGroup id="radios" value={value} onChange={setValue}>
+                <RadioGroup.Label>
+                    <h2>Delete Bill</h2>
+                    <h4>
+                        {bill.emoji}&nbsp;&nbsp;
+                        {`${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`}
+                    </h4>
+                </RadioGroup.Label>
+                <RadioGroup.Option value="single">
+                    {({ checked }) => (
+                        <span className={checked ? 'checked' : ''}>Just this month's bill</span>
+                    )}
+                </RadioGroup.Option>
+                <RadioGroup.Option value="complement">
+                    {({ checked }) => (
+                        <span className={checked ? 'checked' : ''}>All future bulls</span>
+                    )}
+                </RadioGroup.Option>
+                <RadioGroup.Option value="all">
+                    {({ checked }) => (
+                        <span className={checked ? 'checked' : ''}>All including this month</span>
+                    )}
+                </RadioGroup.Option>
+            </RadioGroup>
+            <SubmitForm
+                text="OK"
+                submitting={isDeleting}
+                success={isDeleteSuccess}
+                onCancel={onCancel}
+            />
+        </form>
+    )
+}
+
+const EditBill = ({ bill }: { bill: TransformedBill }) => {
+
+    return (
+        <div></div>
+    )
+}
+
+const BillModal = withModal((props) => {
+    const id = useId()
+    const loaded = useLoaded(100)
+    const location = useLocation()
+    const [action, setAction] = useState<Action>('none')
+    const [searchParams] = useSearchParams()
+    const { data: bills } = useGetBillsQuery({
+        month: searchParams.get('month') || undefined,
+        year: searchParams.get('year') || undefined
+    })
+    const bill = bills?.find(bill => bill.id === location.state?.billId)
+
+    return (
+        <div id="bill-modal--content">
+            <Actions setAction={setAction} />
+            <AnimatePresence mode="wait">
+                {action === 'none' &&
+                    <SlideMotionDiv position={loaded ? 'first' : 'fixed'} key={id}>
+                        <BillInfo bill={bill!} />
+                    </SlideMotionDiv>}
+                {action === 'edit' &&
+                    <SlideMotionDiv position={'last'} key={`${id}1`}>
+                        <EditBill bill={bill!} />
+                    </SlideMotionDiv>
+                }
+                {action === 'delete' &&
+                    <SlideMotionDiv position={'last'} key={`${id}2`}>
+                        <DeleteBill bill={bill!} onCancel={() => { setAction('none') }} />
+                    </SlideMotionDiv>
+                }
+            </AnimatePresence>
+        </div>
+    )
 })
 
-export default function Bill() {
+export default function EnhancedBillModal() {
     const navigate = useNavigate()
 
     return (
         <BillModal
-            maxWidth={'24rem'}
+            maxWidth={'20rem'}
             onClose={() => navigate(-1)}
         />
     )

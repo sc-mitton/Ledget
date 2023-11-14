@@ -3,15 +3,17 @@
 const Ellipsis = ({
     className = '',
     fill = "#292929",
-    width = "1.2em",
-    height = "1.2em"
+    size = "1.2em",
+    rotate = 0
 }) => {
 
     return (
 
         <svg
-            width={width}
-            height={height}
+            transform={`rotate(${rotate})`}
+            width={size}
+            height={size}
+            fill={fill}
             viewBox="0 0 144 144"
             xmlns="http://www.w3.org/2000/svg"
             x="0px"

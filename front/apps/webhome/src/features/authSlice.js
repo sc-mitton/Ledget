@@ -52,7 +52,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         }),
         deleteRememberedDevice: builder.mutation({
             query: ({ deviceId }) => ({
-                url: `devices/${deviceId}`,
+                url: `device/${deviceId}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['devices'],
@@ -71,8 +71,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
                 body: data,
             }),
-        }),
-    }),
+        })
+    })
 })
 
 export const { resetAuthedAt } = authSlice.actions
