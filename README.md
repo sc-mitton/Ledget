@@ -1,7 +1,5 @@
 # Ledget
 
-Ledget simplifies financial lives.
-
 
 <!-- <div style="text-align:center">
   <img src="media/logoIcon.png" alt="Logo" width="100" height="100">
@@ -15,7 +13,7 @@ https://github.com/sc-mitton/Ledget/assets/72230794/800ed662-7829-4505-96bd-94cf
 
 ## Introduction
 
-Ledget was started from frustration with the choice of personal budgeting apps. Almost all had cluttered and confusing user interfaces, only a portion would automatically import data from financial institutions, and many wouldn't offer the simplicity that should come with a great user experience. So, ledget was born to do the job right.
+Ledget was started from frustration with the choice of personal budgeting apps. Almost all had cluttered and confusing user interfaces, only a portion would automatically import data from financial institutions, and many wouldn't offer the simplicity that should come with a great user experience.
 
 ## Tech Stack
 
