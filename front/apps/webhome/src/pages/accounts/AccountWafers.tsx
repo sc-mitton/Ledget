@@ -9,8 +9,6 @@ import { Base64Logo, DollarCents, ShimmerDiv, useSpringDrag } from '@ledget/ui'
 import {
     useGetAccountsQuery,
     useUpdateAccountsMutation,
-    Account,
-    Institution
 } from "@features/accountsSlice"
 import pathMappings from './path-mappings'
 
@@ -73,12 +71,13 @@ const filterAccounts = (accounts: any[], location: Location) => {
 }
 
 export const FilledWafers = () => {
-    const [updateOrder] = useUpdateAccountsMutation()
+    const [updateOrder, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useUpdateAccountsMutation()
     const { data, isSuccess: isSuccessLoadingAccounts } = useGetAccountsQuery()
 
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
     const [turnOffBottomMask, setTurnOffBottomMask] = useState(false)
+    const [freezeWaerAnimation, setFreezeWaerAnimation] = useState(false)
 
     const waferApi = useSpringRef()
     const transitions = useTransition(
@@ -95,12 +94,23 @@ export const FilledWafers = () => {
                 x: index * (waferWidth + waferPadding),
                 opacity: 1,
             }),
-            update: (item: any, index: number) => ({
-                x: index * (waferWidth + waferPadding),
-                opacity: 1,
-            }),
-            ref: waferApi,
+            immediate: freezeWaerAnimation,
+            ref: waferApi
         })
+
+    // Freeze Wafer Animation when updating order
+    useEffect(() => {
+        if (isUpdating) {
+            setFreezeWaerAnimation(true)
+        }
+        let timeout: NodeJS.Timeout
+        if (isUpdateSuccess) {
+            timeout = setTimeout(() => {
+                setFreezeWaerAnimation(false)
+            }, 2000)
+        }
+        return () => { clearTimeout(timeout) }
+    }, [isUpdateSuccess, isUpdating])
 
     // Set first account on get accounts success
     useEffect(() => {
@@ -111,7 +121,9 @@ export const FilledWafers = () => {
     }, [isSuccessLoadingAccounts, location.pathname])
 
     // Start initial animation
-    useEffect(() => { isSuccessLoadingAccounts && waferApi.start() }, [location.pathname, isSuccessLoadingAccounts])
+    useEffect(() => {
+        isSuccessLoadingAccounts && waferApi.start()
+    }, [location.pathname, isSuccessLoadingAccounts, data])
 
     const order = useRef(filterAccounts(data?.accounts || [], location).map((item) => item.account_id))
     const bind = useSpringDrag({
@@ -214,13 +226,13 @@ export const FilledWafers = () => {
 }
 
 export function AccountWafers() {
-    const { isSuccess } = useGetAccountsQuery()
+    const { isLoading } = useGetAccountsQuery()
 
     return (
         <>
-            {(isSuccess)
-                ? <FilledWafers />
-                : <SkeletonWafers />
+            {(isLoading)
+                ? <SkeletonWafers />
+                : <FilledWafers />
             }
         </>
     )

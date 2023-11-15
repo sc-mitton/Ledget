@@ -47,8 +47,7 @@ export const accountsSlice = apiWithTag.injectEndpoints({
                 url: `/accounts`,
                 method: 'PATCH',
                 body: data,
-            }),
-            invalidatesTags: ['Account'],
+            })
         }),
     }),
 })
