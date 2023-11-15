@@ -20,8 +20,8 @@ import { usePillAnimation } from '@utils/hooks'
 
 const Navigation = ({ isNarrow }) => {
     let tabs = [
-        { name: "budget", path: "/budget" },
-        { name: "accounts", path: "/accounts" }
+        { name: "budget", path: "budget" },
+        { name: "accounts", path: "accounts/deposits" }
     ]
 
     const location = useLocation()
@@ -40,7 +40,9 @@ const Navigation = ({ isNarrow }) => {
 
     const handleTabClick = (e) => {
         e.preventDefault()
-        navigate(`/${e.target.name || e.target.firstChild.name}`)
+        navigate(
+            tabs.find((tab) => tab.name === e.target.name).path
+        )
     }
 
     useEffect(() => {

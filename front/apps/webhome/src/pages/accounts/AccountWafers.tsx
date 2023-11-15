@@ -6,7 +6,12 @@ import Big from 'big.js'
 
 import { CornerGripButton } from '@components/buttons'
 import { Base64Logo, DollarCents, ShimmerDiv, useSpringDrag } from '@ledget/ui'
-import { useGetAccountsQuery, useGetAccountsQueryState, useUpdateAccountsMutation } from "@features/accountsSlice"
+import {
+    useGetAccountsQuery,
+    useUpdateAccountsMutation,
+    Account,
+    Institution
+} from "@features/accountsSlice"
 import pathMappings from './path-mappings'
 
 const waferWidth = 165
@@ -41,7 +46,7 @@ export const SkeletonWafers = () => (
 
 const WafersHeader = () => {
     const location = useLocation()
-    const { data, isSuccess } = useGetAccountsQueryState()
+    const { data, isSuccess } = useGetAccountsQuery()
 
     return (
         <div>
@@ -49,11 +54,10 @@ const WafersHeader = () => {
             <div>
                 <DollarCents
                     value={
-                        isSuccess
-                            ? data?.accounts.filter((account: any) => account.type === pathMappings.getAccountType(location))
-                                .reduce((acc: number, account: any) => Big(acc).add(account.balances.current), 0)
-                                .times(100)
-                                .toNumber()
+                        (isSuccess && data)
+                            ? data?.accounts.filter(account => account.type === pathMappings.getAccountType(location))
+                                .reduce((acc, account) => acc.plus(account.balances.current), Big(0))
+                                .times(100).toNumber()
                             : '0.00'
                     }
                 />
@@ -68,10 +72,9 @@ const filterAccounts = (accounts: any[], location: Location) => {
     )
 }
 
-export const AccountWafers = () => {
-    const { } = useGetAccountsQuery()
-    const { data, isSuccess } = useGetAccountsQueryState()
+export const FilledWafers = () => {
     const [updateOrder] = useUpdateAccountsMutation()
+    const { data, isSuccess: isSuccessLoadingAccounts } = useGetAccountsQuery()
 
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -79,7 +82,7 @@ export const AccountWafers = () => {
 
     const waferApi = useSpringRef()
     const transitions = useTransition(
-        data?.accounts.filter((account: any) => account.type === pathMappings.getAccountType(location)),
+        data?.accounts.filter((account: any) => account.type === pathMappings.getAccountType(location)) || [],
         {
             from: (item: any, index: number) => ({
                 x: index * (waferWidth + waferPadding) + (15 * (index + 1) ** 2),
@@ -101,14 +104,14 @@ export const AccountWafers = () => {
 
     // Set first account on get accounts success
     useEffect(() => {
-        if (data?.accounts.length > 0) {
+        if (data?.accounts && data?.accounts.length > 0) {
             searchParams.set('account', data?.accounts[0].account_id)
             setSearchParams(searchParams)
         }
-    }, [isSuccess])
+    }, [isSuccessLoadingAccounts, location.pathname])
 
     // Start initial animation
-    useEffect(() => { isSuccess && waferApi.start() }, [isSuccess])
+    useEffect(() => { isSuccessLoadingAccounts && waferApi.start() }, [location.pathname, isSuccessLoadingAccounts])
 
     const order = useRef(filterAccounts(data?.accounts || [], location).map((item) => item.account_id))
     const bind = useSpringDrag({
@@ -158,8 +161,9 @@ export const AccountWafers = () => {
                 }}
             >
                 {transitions((style, account) => {
-                    const institution = data.institutions.find((item: any) => item.id === account.institution_id)
+                    const institution = data?.institutions.find((item: any) => item.id === account.institution_id)
                     const nameIsLong = account.official_name.length > 18
+
                     return (
                         <animated.div
                             style={style}
@@ -176,8 +180,8 @@ export const AccountWafers = () => {
                                     tabIndex={-1}
                                 />
                                 <Base64Logo
-                                    data={institution.logo}
-                                    alt={institution.name.charAt(0).toUpperCase()}
+                                    data={institution?.logo}
+                                    alt={institution?.name.charAt(0).toUpperCase() || 'A'}
                                 />
                                 <div
                                     role="button"
@@ -206,5 +210,18 @@ export const AccountWafers = () => {
                 })}
             </div>
         </div>
+    )
+}
+
+export function AccountWafers() {
+    const { isSuccess } = useGetAccountsQuery()
+
+    return (
+        <>
+            {(isSuccess)
+                ? <FilledWafers />
+                : <SkeletonWafers />
+            }
+        </>
     )
 }

@@ -19,7 +19,8 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
         const [getTransactions, {
             data: transactionsData,
             isFetching: isFetchingTransactions,
-            isLoading: isLoadingTransactions
+            isLoading: isLoadingTransactions,
+            isSuccess: isTransactionsSuccess,
         }] = useLazyGetTransactionsQuery()
 
         // Initial fetch
@@ -36,8 +37,12 @@ export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
 
         // Setting the skeleton view
         useEffect(() => {
-            setSkeleton((isLoadingTransactions) && !searchParams.get('acount'))
-        }, [searchParams.get('account'), isLoadingTransactions])
+            if (isTransactionsSuccess) {
+                setSkeleton(false)
+            } else {
+                setSkeleton(true)
+            }
+        }, [isTransactionsSuccess])
 
         // Fetch more transactions animation
         useEffect(() => {

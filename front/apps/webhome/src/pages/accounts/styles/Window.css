@@ -3,6 +3,7 @@
     max-width: 62.5rem;
     display: flex;
     flex-direction: column;
+    gap: 1em;
 }
 
 #accounts-window ul {

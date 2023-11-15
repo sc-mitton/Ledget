@@ -1,3 +1,5 @@
+@import '@styles/text.scss';
+
 .account-wafers--container,
 .skeleton-account-wafers--container {
     display: grid;
@@ -5,7 +7,7 @@
     gap: 1.5em;
     animation: delay-auto-width .5s ease-in-out forwards;
     animation-delay: 1s;
-    margin: 1.5em 0;
+    margin-top: 1.5em;
     padding-top: 0;
     padding-bottom: 0;
 }
@@ -299,15 +301,6 @@
     position: relative;
     overflow: hidden;
 
-    &::before {
-        content: '';
-        background-color: var(--inner-window-solid);
-        inset: 0;
-        position: absolute;
-        height: 100%;
-        border-radius: var(--inner-window-border-radius);
-    }
-
     &.loading {
         border-radius: var(--border-radius3);
     }
@@ -323,8 +316,8 @@
     span {
         padding: 0 .75em 0 .25em;
         color: rgb(var(--charcoal-rgb), .5);
-        background-color: var(--inner-window-solid);
-        box-shadow: var(--inner-window-solid) 0 0 .25em .125em;
+        background-color: var(--window);
+        box-shadow: var(--window) 0 0 .25em .125em;
 
         &:first-child {
             position: relative;
@@ -343,8 +336,6 @@
 /* Border bottom for all cells except last child */
 $subtleBorderColor: var(--subtle-border-color);
 $borderRadius2: var(--border-radius2);
-$greenDark3: var(--main-dark3);
-$charcoal: var(--charcoal-rgb);
 
 .transactions--table {
     position: absolute;
@@ -419,7 +410,7 @@ $charcoal: var(--charcoal-rgb);
     }
 
     .debit * {
-        color: $greenDark3;
+        color: $debit-text
     }
 
     // Spacer

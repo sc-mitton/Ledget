@@ -17,6 +17,7 @@ import { useGetAccountsQuery } from "@features/accountsSlice"
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
+import { AccountWafers } from './AccountWafers'
 
 const getNavIcon = (key = '', isCurrent: boolean) => {
     const fill = isCurrent ? 'var(--main-dark4)' : 'currentColor'
@@ -175,18 +176,17 @@ const Header = () => {
 }
 
 function Window() {
-    const navigate = useNavigate()
     const location = useLocation()
 
-    useEffect(() => {
-        navigate('/accounts/deposits')
-    }, [])
-
     return (
-        <div className="window" id="accounts-window">
-            <Header />
+        <div id="accounts-window">
+            <div className="window">
+                <Header />
+                <AccountWafers />
+            </div>
             <AnimatePresence mode="wait">
                 <motion.div
+                    className="window"
                     key={location.pathname.split('/')[2]}
                     initial={{
                         opacity: 0,
