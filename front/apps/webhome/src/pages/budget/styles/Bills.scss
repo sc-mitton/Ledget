@@ -207,10 +207,9 @@ $number-of-bill-rows: 5;
             calc(5 * (1em + $bill-flex-grid-gap*2 + 1vh)),
             calc(100% - $bill-flex-grid-gap * 2),
         );
-
     display: grid;
     grid-auto-flow: column;
-    grid-template-rows: repeat($number-of-bill-rows, minmax(0, auto));
+    grid-template-rows: repeat($number-of-bill-rows, minmax(0, min-content));
     grid-auto-columns: 50%;
     gap: $bill-flex-grid-gap;
     padding-bottom: $bill-flex-grid-gap;

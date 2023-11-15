@@ -115,22 +115,20 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                     </h2>}
             </div>
             <div className="inner-window">
-                {bill &&
-                    <>
-                        <div>Amount</div>
-                        <div>
-                            <CheckMark2
-                                size={'.9em'}
-                                fill={'var(--main-dark'}
-                                style={{ ...(!bill.is_paid && { opacity: .2 }) }}
-                            />
-                            <div>
-                                {bill.lower_amount && <><DollarCents value={bill.lower_amount} /> <span>&nbsp;-&nbsp;</span></>}
-                                {bill.upper_amount && <DollarCents value={bill.upper_amount} />}
-                            </div>
-                        </div>
-                    </>
-                }
+                <div>Amount</div>
+                <div>
+                    <CheckMark2
+                        size={'.9em'}
+                        style={{
+                            marginLeft: '.125em',
+                            ...(!bill.is_paid && { opacity: .2 })
+                        }}
+                    />
+                    <div>
+                        {bill.lower_amount && <><DollarCents value={bill.lower_amount} /> <span>&nbsp;-&nbsp;</span></>}
+                        {bill.upper_amount && <DollarCents value={bill.upper_amount} />}
+                    </div>
+                </div>
                 <div>Schedule</div>
                 <div>{getRepeatsDescription({
                     day: bill?.day,
@@ -141,21 +139,34 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                 })}</div>
                 <div>Next</div>
                 <div>
-                    {bill &&
+                    {bill?.is_paid
+                        ? `${getNextBillDate({
+                            day: bill?.day,
+                            week: bill?.week,
+                            week_day: bill?.week_day,
+                            month: bill?.month,
+                            year: bill?.year
+                        })}`
+                        : `${new Date(bill.date).toLocaleDateString(
+                            'en-US',
+                            { month: 'short', day: 'numeric', year: 'numeric' })}`
+                    }
+                </div>
+                <div>
+                    Reminders
+                </div>
+                <div>
+                    {bill.reminders?.length > 0
+                        ?
                         <>
-                            {bill?.is_paid
-                                ? `${getNextBillDate({
-                                    day: bill?.day,
-                                    week: bill?.week,
-                                    week_day: bill?.week_day,
-                                    month: bill?.month,
-                                    year: bill?.year
-                                })}`
-                                : `${new Date(bill.date).toLocaleDateString(
-                                    'en-US',
-                                    { month: 'short', day: 'numeric', year: 'numeric' })}`
-                            }
+                            {bill.reminders.map((reminder, i) => (
+                                <span>
+                                    {`${reminder.offset} `}
+                                    {`${reminder.period}${reminder.offset > 1 ? 's' : ''} before`}
+                                </span>
+                            ))}
                         </>
+                        : <BellOff size={'1.1em'} />
                     }
                 </div>
             </div>
