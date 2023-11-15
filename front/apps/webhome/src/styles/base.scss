@@ -23,29 +23,28 @@
     --red-rgb: 243, 80, 80;
     --dark-red: #8b2424;
 
+    --main-color: rgb(92, 96, 135);
+    --main-color-values: 92, 96, 135;
     --main-hlight: #a9afdb;
     --main-hlight2: #dddee9;
     --main-hlight3: #a7acd3;
     --main-hlight4: #e3e5f5;
     --main-hlight5: #c7ccf2;
-    --main-color: rgb(92, 96, 135);
-    --main-color-values: 92, 96, 135;
-    --main-color: hsl(234, 23%, 36%);
-    --main-dark: hsl(240, 17%, 35%);
-    --main-dark2: hsl(240, 17%, 30%);
-    --main-dark3: #35354b;
-    --main-dark4: #242433;
+    --main-dark: hsl(232, 17%, 35%);
+    --main-dark2: hsl(232, 17%, 30%);
+    --main-dark3: hsl(232, 17%, 25%);
+    --main-dark4: hsl(232, 17%, 17%);
     --accessible-color: #ababff;
     --yellow: rgb(175, 175, 51);
 
-    --secondary-hlight: #8dd6c4;
-    --secondary-hlight2: #cfe1dc;
-    --secondary-hlight3: #d3e7e2;
+    --secondary-color: hsl(153, 100%, 91%);
+    --secondary-hlight: hsl(165, 47%, 70%);
+    --secondary-hlight2: hsl(162, 31%, 89%);
+    --secondary-hlight3: hsl(165, 29%, 87%);
     --secondary-hlight5: rgb(181, 235, 221);
-    --secondary-color: #cfffe9;
-    --secondary-color-alt: #7fbba3;
+    --secondary-color-alt: hsl(156, 31%, 62%);
     --secondary-dark: hsl(164, 17%, 35%);
-    --secondary-dark4: #424948;
+    --secondary-dark4: hsl(164, 5%, 27%);
 
     --charcoal-rgb: 41, 41, 41;
     --window-rgb: 252, 248, 247;

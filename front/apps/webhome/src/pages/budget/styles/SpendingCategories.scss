@@ -130,6 +130,7 @@ $background: var(--window);
         &>div.yearly {
             cursor: pointer;
             position: relative;
+            white-space: nowrap;
 
             h4:first-child {
                 opacity: 1;

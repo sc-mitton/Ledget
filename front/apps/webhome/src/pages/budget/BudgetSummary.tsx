@@ -216,7 +216,7 @@ const BudgetSummary = () => {
     const [showYearStats, setShowYearStats] = useState(false)
 
     return (
-        <div id="budget-summary--container">
+        <div className={`budget-summary--container ${showMonthStats || showYearStats ? 'expanded' : ''}`}>
             <SummaryStatsTeaser setShowMonthStats={setShowMonthStats} setShowYearStats={setShowYearStats} />
             <SummaryState showMonthStats={showMonthStats} showYearStats={showYearStats} />
         </div>

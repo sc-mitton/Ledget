@@ -1,16 +1,73 @@
-$header-padding: calc(.125em + .5vw) calc(.75em + .5vw);
-$base-stats-font-size: clamp(1rem, calc(.875rem + .25vw), 1.125rem);
+$header-padding: .5vw calc(.75em + .5vw);
+$base-stats-font-size: clamp(1rem, calc(.25rem + .25vw), 1.125rem);
 $teaser-stats-margin-top: .125em;
 $header-font-size: clamp(.8125rem, calc(.75em + .25vw), 1rem);
 
 $header-gap: calc(.75em + .125vw);
 
-$summary-padding-bottom: calc(nth($header-padding, 1) * 2 + $base-stats-font-size + $teaser-stats-margin-top + $header-font-size + 1.25em);
+$summary-padding-bottom: calc(nth($header-padding, 1) + $teaser-stats-margin-top + $header-font-size + 1.25em);
+$summary-padding-bottom-expanded: calc(nth($header-padding, 1) * 2 + $base-stats-font-size + $teaser-stats-margin-top + $header-font-size + 1.25em);
 $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $base-stats-font-size + $header-gap) * 3);
 
-#budget-summary--container {
+@mixin header-transitions($direction) {
+    @if $direction ==in {
+        transition:
+            transform .2s ease-in-out .3s,
+            top .2s ease-in-out .3s,
+            left .2s ease-in-out .3s,
+            height .2s ease-in-out .3s,
+            width .2s ease-in-out .3s,
+            border-radius 0.2s ease-in-out .3s,
+            z-index 0s linear .3s;
+    }
+
+    @else {
+        transition:
+            transform .2s ease-in-out,
+            top .2s ease-in-out,
+            left .2s ease-in-out,
+            height .2s ease-in-out,
+            width .2s ease-in-out,
+            border-radius .2s ease-in-out,
+            z-index 0s linear;
+    }
+}
+
+@mixin header-contents-transitions($direction) {
+    @if $direction ==in {
+        transition: opacity 0.2s ease-in-out .3s, visibility 0s;
+    }
+
+    @else {
+        transition: opacity 0.2s ease-in-out, visibility 0s;
+    }
+}
+
+@mixin stats-transitions($direction) {
+    @if $direction ==in {
+        transition:
+            visibility 0s linear .3s,
+            opacity 0.2s ease-in-out .3s,
+            z-index 0s linear .3s;
+    }
+
+    @else {
+        transition:
+            visibility 0s linear .1s,
+            opacity 0.2s ease-in-out,
+            z-index 0s linear;
+    }
+}
+
+.budget-summary--container {
     padding-bottom: $summary-padding-bottom;
+    transition: padding-bottom 0.3s ease-in-out;
     position: relative;
+
+    &.expanded {
+        padding-bottom: $summary-padding-bottom-expanded;
+        transition: padding-bottom 0.3s ease-in-out;
+    }
 
     // Headers
     &>div:nth-child(-n+3) {
@@ -20,11 +77,12 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         border-radius: var(--border-radius25);
         padding: $header-padding;
         transform: scale(1);
-        transition: transform .2s ease-in-out, left 0.3s ease-in-out, width 0.3s ease-in-out, z-index 0s linear .3s;
+        display: flex;
+        align-items: baseline;
+        @include header-transitions(out);
 
         h4 {
             font-size: $header-font-size;
-            font-weight: 500;
         }
 
         // All statistic elements
@@ -33,10 +91,10 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             display: inline-block;
             padding-right: .25em;
             font-size: $base-stats-font-size;
-            transition: opacity 0.2s ease-in-out .2s, visibility 0.3s ease-in-out .3s;
+            @include header-contents-transitions(out);
 
             &:first-child {
-                width: 100%;
+                flex: 1;
             }
 
             svg {
@@ -90,15 +148,16 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             z-index: 2;
             left: 0;
             width: 100%;
+            height: 100%;
             transform: scale(1);
-            transition: transform .2s ease-in-out .3s, left 0.3s ease-in-out .3s, width 0.3s ease-in-out .3s;
+            @include header-transitions(in);
         }
 
         &:not(:first-child):hover>div,
         &:not(:first-child):focus-visible>div {
             visibility: none;
             opacity: 0;
-            transition: opacity 0.2s ease-in-out .3s, visibility 0.3s ease-in-out .2s;
+            @include header-contents-transitions(in);
         }
     }
 }
@@ -115,7 +174,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     z-index: 1;
-    transition: visibility 0s ease-in-out .3s, opacity 0.3s ease-in-out, z-index 0s linear .3s;
+    @include stats-transitions(out);
 
     &.month * {
         color: var(--main-dark4);
@@ -174,7 +233,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         z-index: 3;
         visibility: visible;
         opacity: 1;
-        transition: visibility 0s ease-in-out .3s, opacity 0.3s ease-in-out .3s;
+        @include stats-transitions(in);
     }
 
 }
@@ -189,9 +248,8 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             overflow-x: auto;
             display: flex;
             align-items: baseline;
-            transition: transform .2s ease-in-out .3s, top 0.3s ease-in-out .3s, height 0.3s ease-in-out .3s,
-                border-radius 0.3s ease-in-out .3s, z-index 0s linear .3s;
             border-radius: var(--border-radius1);
+            @include header-transitions(out);
 
             &>div {
                 margin-top: 0;
@@ -236,8 +294,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
                 top: -3%;
                 height: 112%;
                 border-radius: var(--border-radius25);
-                transition: transform .2s ease-in-out .3s, top 0.3s ease-in-out .3s, height 0.3s ease-in-out .3s,
-                    border-radius 0.3s ease-in-out .3s, z-index 0s linear .3s;
+                @include header-transitions(in);
             }
         }
     }
@@ -276,9 +333,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
 
 }
 
-
 .thumbs {
-
     &.up {
         transform: rotateX(0deg) rotateY(0deg) translateY(0%);
         transition: transform 0.3s ease-in-out;

@@ -274,10 +274,6 @@ $number-of-bill-rows: 5;
         &>div:first-child {
             display: inline-flex;
             gap: .375em;
-
-            span:nth-child(3) {
-                opacity: .7;
-            }
         }
 
         &>div:last-of-type {
