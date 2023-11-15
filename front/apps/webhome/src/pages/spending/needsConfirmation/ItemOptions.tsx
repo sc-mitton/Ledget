@@ -71,20 +71,6 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                     </div>
                 </li>
                 <li
-                    className={`dropdown-item${activeIndex === 1 ? ' active' : ''}`}
-                    role="menuitem"
-                >
-                    <div
-                        onClick={() => { props.handlers[1]() }}
-                        tabIndex={-1}
-                        aria-label="Snooze"
-                        role="button"
-                    >
-                        <Snooze className="dropdown-icon" />
-                        Snooze
-                    </div>
-                </li>
-                <li
                     className={`dropdown-item${activeIndex === 2 ? ' active' : ''}`}
                     role="menuitem"
                 >

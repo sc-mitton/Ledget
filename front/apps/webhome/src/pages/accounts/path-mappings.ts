@@ -36,7 +36,7 @@ const pathMappings = {
             case 'deposits':
                 return 'Total Deposits'
             case 'credit':
-                return 'Total Card Balance'
+                return 'Total Balance'
             case 'loans':
                 return 'All Loans'
             case 'investments':

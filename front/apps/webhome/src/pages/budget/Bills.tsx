@@ -19,7 +19,7 @@ import {
     useAccessEsc,
     ShimmerText
 } from '@ledget/ui';
-import { Calendar as CalendarIcon, CheckMark } from '@ledget/media'
+import { Calendar as CalendarIcon, CheckMark2 } from '@ledget/media'
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -268,7 +268,7 @@ const Bills = () => {
                                 </span>
                             </div>
                             <div><DollarCents value={bill.upper_amount} /></div>
-                            {bill.is_paid && <CheckMark />}
+                            <CheckMark2 style={{ opacity: bill?.is_paid ? 1 : .3 }} />
                         </div>
                     )
                 })}

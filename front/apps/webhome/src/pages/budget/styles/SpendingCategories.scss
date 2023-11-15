@@ -5,8 +5,21 @@ $bill-flex-grid-gap: calc(.25em + .5vw);
 $window-padding: $bill-flex-grid-gap;
 
 $row-padding: .375em;
+$label-padding: calc($row-padding/3) .75em;
 $column-gap: 1.25em;
 $background: var(--window);
+
+@mixin in-between-border {
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -.25em;
+        left: 0;
+        width: 100%;
+        height: 1.5px;
+        background-color: var(--subtle-border-color);
+    }
+}
 
 #spending-categories-window {
     width: 100%;
@@ -182,7 +195,7 @@ $background: var(--window);
 
     &.month>div:first-child>div,
     &.year>div:first-child>div {
-        padding: calc($row-padding/2) .75em;
+        padding: $label-padding;
         border-radius: var(--border-radius2);
         display: flex;
         gap: .5em;
@@ -212,20 +225,12 @@ $background: var(--window);
     }
 
     // Borders in between rows
-    &:not(:first-child):not(:last-child)>div {
+    &:not(:first-child):not(:last-of-type)>div {
         position: relative;
         padding-bottom: $row-padding;
         z-index: 0;
 
-        &::after {
-            content: '';
-            position: absolute;
-            bottom: -.25em;
-            left: 0;
-            width: 100%;
-            height: 1.25px;
-            background-color: var(--subtle-border-color);
-        }
+        @include in-between-border;
     }
 }
 

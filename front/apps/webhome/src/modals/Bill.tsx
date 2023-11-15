@@ -163,7 +163,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
     )
 }
 
-const DeleteBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () => void }) => {
+const DeleteBill = ({ bill, onCancel, onDelete }: { bill: TransformedBill, onCancel: () => void, onDelete: () => void }) => {
     const [deleteBill, { isLoading: isDeleting, isSuccess: isDeleteSuccess }] = useDeleteBillMutation()
     const [value, setValue] = useState('all' as 'all' | 'single' | 'complement')
 
@@ -177,7 +177,7 @@ const DeleteBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () =>
 
     useEffect(() => {
         if (isDeleteSuccess) {
-            onCancel()
+            onDelete()
         }
     }, [isDeleteSuccess])
 
@@ -256,7 +256,11 @@ const BillModal = withModal((props) => {
                 }
                 {action === 'delete' &&
                     <SlideMotionDiv position={'last'} key={`${id}2`}>
-                        <DeleteBill bill={bill!} onCancel={() => { setAction('none') }} />
+                        <DeleteBill
+                            bill={bill!}
+                            onCancel={() => { setAction('none') }}
+                            onDelete={() => { props.closeModal() }}
+                        />
                     </SlideMotionDiv>
                 }
             </AnimatePresence>

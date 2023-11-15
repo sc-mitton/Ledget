@@ -106,20 +106,22 @@ const ChangePlanMenu = () => {
     return (
         <Menu>
             {({ open }) => (
-                <div style={{ position: 'relative' }}>
+                <>
                     <Menu.Button as={'div'}>
                         <BlueSlimArrowButton submitting={isLoading} rotate={0} >
                             change
                         </BlueSlimArrowButton>
                     </Menu.Button>
-                    <DropAnimation
-                        visible={open}
-                        className="dropdown" id="change-plan--menu"
-                        placement='right'
-                    >
-                        <Items />
-                    </DropAnimation>
-                </div>
+                    <div style={{ position: 'relative' }}>
+                        <DropAnimation
+                            visible={open}
+                            className="dropdown" id="change-plan--menu"
+                            placement='right'
+                        >
+                            <Items />
+                        </DropAnimation>
+                    </div>
+                </>
             )}
         </Menu>
     )

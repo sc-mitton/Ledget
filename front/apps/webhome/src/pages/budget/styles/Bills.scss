@@ -9,6 +9,7 @@ $window-padding: $bill-flex-grid-gap;
 
 @import '../../../styles/greenblues.scss';
 @import './Variables.scss';
+@import './SpendingCategories.scss';
 
 #bills-summary-window {
     display: flex;
@@ -38,7 +39,7 @@ $window-padding: $bill-flex-grid-gap;
     // Div around the calendar and bill items
     &>div:last-child {
         display: flex;
-        align-items: center;
+
         justify-content: space-between;
         gap: $gap;
         max-height: 350px;
@@ -199,7 +200,7 @@ $number-of-bill-rows: 5;
 // Column of bills
 .bills-box {
     flex: 2;
-    flex-shrink: 0;
+    flex-shrink: 1;
     overflow-y: hidden;
     overflow-x: auto;
     max-height: clamp(calc(3 * (1em + $bill-flex-grid-gap*2)),
@@ -216,10 +217,15 @@ $number-of-bill-rows: 5;
     transition: all .3s ease-in-out;
 
     &>.monthly-bill {
-        background-color: $blue;
-        transition: all .2s ease-in-out;
 
-        &:hover {
+        &>div:first-child {
+            background-color: $blue;
+            transition: all .2s ease-in-out;
+            padding: $label-padding;
+            border-radius: var(--border-radius2);
+        }
+
+        &:hover>div:first-child {
             background-color: $blue-hover;
             transition: all .2s ease-in-out;
         }
@@ -232,7 +238,14 @@ $number-of-bill-rows: 5;
     &>.yearly-bill {
         background-color: $green;
 
-        &:hover {
+        &>div:first-child {
+            background-color: $green;
+            transition: all .2s ease-in-out;
+            padding: $label-padding;
+            border-radius: var(--border-radius2);
+        }
+
+        &:hover>div:first-child {
             background-color: $green-hover;
             transition: all .2s ease-in-out;
         }
@@ -246,12 +259,17 @@ $number-of-bill-rows: 5;
     &>div {
         cursor: pointer;
         box-sizing: border-box;
-        padding: $bill-item-padding;
         border-radius: var(--border-radius1);
         width: calc(100% - $bill-flex-grid-gap);
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative;
+        padding-bottom: .5em;
+
+        &:not(:last-child) {
+            @include in-between-border;
+        }
 
         &>div:first-child {
             display: inline-flex;

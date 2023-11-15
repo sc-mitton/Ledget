@@ -21,19 +21,6 @@ const HistoryHeader = () => {
                         <Funnel />
                     </IconButton>
                 </Tooltip>
-                <Tooltip
-                    msg="Manually add item"
-                    ariaLabel="Manually add item"
-                    type="top"
-                    style={{ left: '-2.5rem' }}
-                >
-                    <IconButton
-                        id="add-icon"
-                        aria-label="Manually add item"
-                    >
-                        <Plus size={'1em'} />
-                    </IconButton>
-                </Tooltip>
             </div>
         </div>
     )
