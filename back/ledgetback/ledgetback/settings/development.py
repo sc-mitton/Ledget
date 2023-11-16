@@ -1,4 +1,5 @@
 from .base import *
+from pathlib import Path
 from .debugging import *
 import os
 import requests
@@ -117,6 +118,10 @@ CACHES = {
 }
 
 # ---------------------------------- Testing --------------------------------- #
+
+FIXTURE_DIRS = [
+    Path(BASE_DIR, 'ledgetback', 'fixtures').as_posix(),
+]
 
 # When running tests, we don't want tons of logs being printed out
 TEST = {

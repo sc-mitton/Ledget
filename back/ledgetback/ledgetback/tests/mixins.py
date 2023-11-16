@@ -11,6 +11,7 @@ import uuid
 import jwt
 from core.models import Customer
 
+
 public_key = settings.OATHKEEPER_PUBLIC_KEY
 private_key = settings.OATHKEEPER_PRIVATE_KEY
 current_time = datetime.utcnow().isoformat(timespec='milliseconds') + 'Z'
@@ -87,6 +88,7 @@ class ViewTestsMixin(TestCase):
             subscription_status='active',
             period_end=1794475549,
         )
+
         self.aal2_user = get_user_model().objects.create_user(
             id=self.aal2_payload['session']['identity']['id']
         )

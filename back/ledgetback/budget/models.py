@@ -43,6 +43,9 @@ class Bill(BudgetItem):
     users = models.ManyToManyField(User,
                                    through='UserBill',
                                    related_name='bills')
+    reminders = models.ManyToManyField('Reminder',
+                                       related_name='bills',
+                                       blank=True)
     period = models.CharField(
         max_length=255,
         choices=CategoryType.choices,
@@ -115,9 +118,6 @@ class Reminder(Notification):
         WEEK = 'week', _('Week')
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    bill = models.ManyToManyRel(Bill,
-                                to='budget.Bill',
-                                related_name='reminders')
     period = models.CharField(
         max_length=40,
         choices=Period.choices,

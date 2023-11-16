@@ -49,6 +49,7 @@ export const EmojiComboText = (props) => {
                         </>
                     )}
                 </Emoji>
+                <input type="hidden" name="emoji" value={emoji} />
                 <input
                     type="text"
                     {...rest}

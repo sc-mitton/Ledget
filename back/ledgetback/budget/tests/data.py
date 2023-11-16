@@ -1,3 +1,4 @@
+from budget.models import Reminder
 
 # 1 category
 single_category_creation_payload = {
@@ -26,6 +27,9 @@ multiple_category_creation_payload = [
 ]
 
 
+reminders = Reminder.objects.all()
+number_of_reminders = reminders.count()
+
 single_bill_creation_payload = {
     'name': 'Test Bill',
     'emoji': '🤑',
@@ -34,8 +38,8 @@ single_bill_creation_payload = {
     'lower_amount': 1000,
     'upper_amount': 10000,
     'reminders': [
-        {'period': 'week', 'offset': 1},
-        {'period': 'day', 'offset': 2}
+        {'id': str(reminder.id)
+         for reminder in reminders[:number_of_reminders // 2]}
     ]
 }
 
@@ -49,8 +53,8 @@ multiple_bill_creation_payload = [
         'lower_amount': 1000,
         'upper_amount': 10000,
         'reminders': [
-            {'period': 'week', 'offset': 1},
-            {'period': 'day', 'offset': 2}
+            {'id': str(reminder.id)
+             for reminder in reminders[:number_of_reminders // 2]}
         ]
     }
     for i in range(1, 20)

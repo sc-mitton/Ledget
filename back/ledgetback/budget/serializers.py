@@ -1,5 +1,5 @@
-from rest_framework.serializers import ModelSerializer, ListSerializer as LS
-from rest_framework.serializers import SerializerMethodField
+
+from rest_framework import serializers
 from django.db import transaction
 
 from ledgetback.serializer_mixins import NestedCreateMixin
@@ -12,21 +12,23 @@ from .models import (
 )
 
 
-class AlertSerializer(ModelSerializer):
+class AlertSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Alert
         exclude = ['category']
 
 
-class ReminderSerializer(ModelSerializer):
+class ReminderSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(required=False)
 
     class Meta:
         model = Reminder
         fields = '__all__'
+        read_only_fields = ['offset', 'period', 'active']
 
 
-class CategoryListCreateSerializer(NestedCreateMixin, LS):
+class CategoryListCreateSerializer(NestedCreateMixin, serializers.ListSerializer):
 
     def create(self, validated_data):
         instances = super().create(validated_data)
@@ -34,10 +36,10 @@ class CategoryListCreateSerializer(NestedCreateMixin, LS):
         return instances
 
 
-class CategorySerializer(NestedCreateMixin, ModelSerializer):
+class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
     alerts = AlertSerializer(many=True, required=False)
-    amount_spent = SerializerMethodField(read_only=True)
-    has_transactions = SerializerMethodField(read_only=True)
+    amount_spent = serializers.SerializerMethodField(read_only=True)
+    has_transactions = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Category
@@ -65,18 +67,48 @@ class CategorySerializer(NestedCreateMixin, ModelSerializer):
             return obj.has_transactions
 
 
-class BillListCreateSerializer(NestedCreateMixin, LS):
+class BillListCreateSerializer(serializers.ListSerializer):
 
     def create(self, validated_data):
-        instances = super().create(validated_data)
+        instances = self._create_bills(validated_data)
         self.context['request'].user.bills.add(*instances)
+
         return instances
 
+    def _create_bills(self, validated_data):
+        reminders = self._get_reminder_objects(validated_data)
 
-class BillSerializer(NestedCreateMixin, ModelSerializer):
+        bills_reminder_map = {reminder_id: [] for reminder_id in reminders}
+        new_bill_instances = []
+
+        for data in validated_data:
+            reminder_ids = [reminder.get('id', None)
+                            for reminder in data.pop('reminders', [])]
+            new_bill_instances.append(Bill(**data))
+
+            # Add the bill to all of the reminders in the map
+            for id in reminder_ids:
+                bills_reminder_map[id].append(new_bill_instances[-1])
+
+        Bill.objects.bulk_create(new_bill_instances)
+        for reminder_id, bills in bills_reminder_map.items():
+            reminders[reminder_id].bills.add(*bills)
+
+        return new_bill_instances
+
+    def _get_reminder_objects(self, validated_data) -> dict:
+        reminder_ids = []
+        for data in validated_data:
+            for reminder in data.get('reminders', []):
+                reminder_ids.append(reminder.get('id', None))
+        instances = Reminder.objects.filter(id__in=reminder_ids)
+        return {str(instance.id): instance for instance in instances}
+
+
+class BillSerializer(NestedCreateMixin, serializers.ModelSerializer):
     reminders = ReminderSerializer(many=True, required=False)
-    is_paid = SerializerMethodField(read_only=True)
-    last_paid = SerializerMethodField(read_only=True)
+    is_paid = serializers.SerializerMethodField(read_only=True)
+    last_paid = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Bill
@@ -86,7 +118,14 @@ class BillSerializer(NestedCreateMixin, ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data, *args, **kwargs):
+        reminders = validated_data.pop('reminders', [])
+        reminder_ids = [reminder.get('id', None)
+                        for reminder in reminders
+                        if reminder.get('id', None)]
         instance = super().create(validated_data, *args, **kwargs)
+
+        reminders = Reminder.objects.filter(id__in=reminder_ids)
+        instance.reminders.add(*reminders)
         instance.users.add(self.context['request'].user)
 
         return instance

@@ -8,6 +8,7 @@ from ..models import (
     Category,
     Bill
 )
+from financials.models import Account
 from .data import (
     single_category_creation_payload,
     multiple_category_creation_payload,
@@ -16,14 +17,15 @@ from .data import (
 )
 
 
-class BudgetViewTests(ViewTestsMixin):
+class BudgetViewTestObjectCreations(ViewTestsMixin):
+    fixtures = ['reminders_fixture.json']
 
     @timeit
     def test_category_creation(self):
         payload = single_category_creation_payload
 
         response = self.client.post(
-            reverse('create_category'),
+            reverse('categories-list'),
             data=json.dumps(payload),
             content_type='application/json'
         )
@@ -46,7 +48,7 @@ class BudgetViewTests(ViewTestsMixin):
         payload = multiple_category_creation_payload
 
         response = self.client.post(
-            reverse('create_category'),
+            reverse('categories-list'),
             data=json.dumps(payload),
             content_type='application/json'
         )
@@ -66,9 +68,8 @@ class BudgetViewTests(ViewTestsMixin):
     @timeit
     def test_bill_creation(self):
         payload = single_bill_creation_payload
-
         response = self.client.post(
-            reverse('create_bill'),
+            reverse('bills-list'),
             data=json.dumps(payload),
             content_type='application/json'
         )
@@ -92,7 +93,7 @@ class BudgetViewTests(ViewTestsMixin):
         payload = multiple_bill_creation_payload
 
         response = self.client.post(
-            reverse('create_bill'),
+            reverse('bills-list'),
             data=json.dumps(payload),
             content_type='application/json'
         )
@@ -109,32 +110,51 @@ class BudgetViewTests(ViewTestsMixin):
             )
             i += 1
 
+
+class BudgetViewTestRetreval(ViewTestsMixin):
+    fixtures = [
+        'transaction_fixture.json',
+        'categorie_fixture.json',
+        'bill_fixture.json',
+        'reminder_fixture.json',
+        'plaid_item_fixture.json',
+        'account_fixture.json',
+        'institution_fixture.json',
+        'user_fixture.json'
+    ]
+
+    def setUp(self):
+        '''
+        Add self.user to all categories, bills, and accounts
+        '''
+        super().setUp()
+
+        accounts = Account.objects.all()
+        categories = Category.objects.all()
+        bills = Bill.objects.all()
+        self.user.accounts.add(*accounts)
+        self.user.bills.add(*bills)
+        self.user.categories.add(*categories)
+
     @timeit
     def test_get_bills(self):
-        self.test_bulk_bill_creation()
-        response = self.client.get(reverse('get_bills'))
+        response = self.client.get(reverse('bills-list'))
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data.__len__(), 0)
 
     @timeit
     def test_get_categories(self):
-        self.test_bulk_category_creation()
-        response = self.client.get(reverse('get_categories'))
+        response = self.client.get(reverse('categories-list'))
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data.__len__(), 0)
 
     @timeit
     def test_get_timesliced_categories(self):
-        self.test_bulk_category_creation()
         month = 10
         year = 2023
         response = self.client.get(
-            reverse('get_categories'),
+            reverse('categories-list'),
             {'month': month, 'year': year}
         )
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data.__len__(), 0)
-
-    @timeit
-    def test_get_suggested_bills(self):
-        pass

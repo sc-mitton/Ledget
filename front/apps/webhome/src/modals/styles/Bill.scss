@@ -3,6 +3,7 @@
 
 
 #bill-info {
+
     .header {
         display: flex;
         flex-direction: column;
@@ -64,8 +65,20 @@
     justify-content: flex-start;
     margin: 1em 0 1.5em 0;
 
+    label {
+        font-weight: 500;
+    }
+
     &>hr {
         margin-bottom: 1em;
+    }
+
+    &>div {
+        margin: .25em 0;
+    }
+
+    .checkbox-container {
+        margin-top: -.25em;
     }
 
     &>div:last-child {

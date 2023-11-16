@@ -260,6 +260,12 @@ const EditBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () => v
     const [emoji, setEmoji] = useState<string>()
 
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        // parse form data
+        const data = new FormData(e.currentTarget)
+        const body = Object.fromEntries(data as any)
+
+
         // const body = extractBill(e)
         // if (body.errors) {
         //     body.errors.schedule && setScheduleMissing(true)

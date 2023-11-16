@@ -48,3 +48,4 @@ testem.log
 ngrok.log
 sketch.ipynb
 **/token.json
+**/fixtures
