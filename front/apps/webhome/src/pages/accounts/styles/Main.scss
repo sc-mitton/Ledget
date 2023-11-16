@@ -126,7 +126,7 @@
 
 .skeleton-account-wafer,
 .account-wafer {
-    background-color: var(--main-dark4);
+    background-color: var(--main-dark5);
     border-radius: var(--border-radius4);
     position: absolute;
     inset: 0;
@@ -152,7 +152,7 @@
 }
 
 .account-wafer.active {
-    background-color: color-mix(in srgb, var(--main-dark4), white 12%);
+    background-color: color-mix(in srgb, var(--main-dark5), white 12%);
     border-radius: var(--border-radius4);
 }
 

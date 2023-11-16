@@ -11,7 +11,7 @@ import { SelectCategoryBillMetaData, useLazyGetCategoriesQuery } from '@features
 import { selectBillMetaData, useLazyGetBillsQuery } from '@features/billSlice'
 import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
 
-const SummaryState = ({ showMonthStats = false, showYearStats = false }) => {
+const SummaryStats = ({ showMonthStats = false, showYearStats = false }) => {
     const [searchParams] = useSearchParams()
     const { start, end } = useGetStartEndFromSearchParams()
 
@@ -177,8 +177,8 @@ const SummaryStatsTeaser = ({
                             ? 0
                             : (total_yearly_spent + total_monthly_spent)}
                     />
+                    <span>spent</span>
                 </div>
-                <div>spent</div>
             </div>
             {Array.from(['month', 'year']).map((period, i) => {
                 const amountLeft = (period === 'month')
@@ -196,13 +196,13 @@ const SummaryStatsTeaser = ({
                         <div><h4>{period.charAt(0).toUpperCase() + period.slice(1)}</h4></div>
                         <div>
                             <AnimatedDollarCents value={Math.abs(amountLeft)} hasCents={false} />
-                        </div>
-                        <div>
-                            <span>{amountLeft >= 0 ? 'left' : 'over'}</span>
-                            <ThumbUp
-                                className={`thumbs ${amountLeft >= 0 ? 'up' : 'down'}`}
-                                fill={'currentColor'}
-                            />
+                            <div>
+                                <span>{amountLeft >= 0 ? 'left' : 'over'}</span>
+                                <div><ThumbUp
+                                    className={`thumbs ${amountLeft >= 0 ? 'up' : 'down'}`}
+                                    fill={'currentColor'}
+                                /></div>
+                            </div>
                         </div>
                     </div>
                 )
@@ -218,7 +218,7 @@ const BudgetSummary = () => {
     return (
         <div className={`budget-summary--container ${showMonthStats || showYearStats ? 'expanded' : ''}`}>
             <SummaryStatsTeaser setShowMonthStats={setShowMonthStats} setShowYearStats={setShowYearStats} />
-            <SummaryState showMonthStats={showMonthStats} showYearStats={showYearStats} />
+            <SummaryStats showMonthStats={showMonthStats} showYearStats={showYearStats} />
         </div>
     )
 }

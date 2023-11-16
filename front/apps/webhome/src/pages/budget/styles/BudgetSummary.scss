@@ -1,13 +1,32 @@
-$header-padding: .5vw calc(.75em + .5vw);
 $base-stats-font-size: clamp(1rem, calc(.25rem + .25vw), 1.125rem);
 $teaser-stats-margin-top: .125em;
 $header-font-size: clamp(.8125rem, calc(.75em + .25vw), 1rem);
-
+$header-padding-light: calc(.25em + .25vw) calc(.75em + .5vw);
+$header-padding-heavier: calc(.25em + .25vw) calc(.75em + .75vw);
 $header-gap: calc(.75em + .125vw);
 
-$summary-padding-bottom: calc(nth($header-padding, 1) + $teaser-stats-margin-top + $header-font-size + 1.25em);
-$summary-padding-bottom-expanded: calc(nth($header-padding, 1) * 2 + $base-stats-font-size + $teaser-stats-margin-top + $header-font-size + 1.25em);
-$responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $base-stats-font-size + $header-gap) * 3);
+@mixin summary-padding-bottom($isExpanded, $isResponsive: false) {
+    $summary-padding-bottom: calc(nth($header-padding-light, 1) + $teaser-stats-margin-top + $header-font-size + 1.25em);
+    $summary-padding-bottom-expanded: calc(nth($header-padding-heavier, 1) * 2 + $base-stats-font-size + $teaser-stats-margin-top + $header-font-size + 1.25em);
+    $responsive-summary-padding-bottom: calc(nth($header-padding-light, 1) + $teaser-stats-margin-top + $header-font-size * 4 + 1.75em);
+    $responsive-summary-padding-bottom-expanded: calc(nth($header-padding-light, 1) + $teaser-stats-margin-top + $header-font-size * 7 + 1.75em);
+
+    @if $isResponsive and $isExpanded {
+        padding-bottom: $responsive-summary-padding-bottom-expanded;
+    }
+
+    @else if $isResponsive {
+        padding-bottom: $responsive-summary-padding-bottom;
+    }
+
+    @else if $isExpanded {
+        padding-bottom: $summary-padding-bottom-expanded;
+    }
+
+    @else {
+        padding-bottom: $summary-padding-bottom;
+    }
+}
 
 @mixin header-transitions($direction) {
     @if $direction ==in {
@@ -17,8 +36,8 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             left .2s ease-in-out .3s,
             height .2s ease-in-out .3s,
             width .2s ease-in-out .3s,
-            border-radius 0.2s ease-in-out .3s,
-            z-index 0s linear .3s;
+            border-radius .2s ease-in-out .3s,
+            z-index 0s linear 0s;
     }
 
     @else {
@@ -29,17 +48,17 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             height .2s ease-in-out,
             width .2s ease-in-out,
             border-radius .2s ease-in-out,
-            z-index 0s linear;
+            z-index 0s linear .2s;
     }
 }
 
 @mixin header-contents-transitions($direction) {
     @if $direction ==in {
-        transition: opacity 0.2s ease-in-out .3s, visibility 0s;
+        transition: opacity .2s ease-in-out .3s, visibility 0s;
     }
 
     @else {
-        transition: opacity 0.2s ease-in-out, visibility 0s;
+        transition: opacity .2s ease-in-out, visibility 0s;
     }
 }
 
@@ -47,15 +66,15 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
     @if $direction ==in {
         transition:
             visibility 0s linear .3s,
-            opacity 0.2s ease-in-out .3s,
-            z-index 0s linear .3s;
+            opacity .2s ease-in-out .3s,
+            z-index 0s linear;
     }
 
     @else {
         transition:
             visibility 0s linear .1s,
-            opacity 0.2s ease-in-out,
-            z-index 0s linear;
+            opacity .2s ease-in-out,
+            z-index 0s linear .2s;
     }
 }
 
@@ -69,14 +88,25 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
     }
 }
 
+@mixin header-padding($layout) {
+
+    @if $layout ==light {
+        padding: $header-padding-light;
+    }
+
+    @else if $layout ==heavy {
+        padding: $header-padding-heavier;
+    }
+}
+
 .budget-summary--container {
-    padding-bottom: $summary-padding-bottom;
+    @include summary-padding-bottom(false);
+    @include padding-transition(out);
     transition: padding-bottom 0.3s ease-in-out;
     position: relative;
-    @include padding-transition(out);
 
     &.expanded {
-        padding-bottom: $summary-padding-bottom-expanded;
+        @include summary-padding-bottom(true);
         @include padding-transition(in);
     }
 
@@ -86,7 +116,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         z-index: 0;
         box-sizing: border-box;
         border-radius: var(--border-radius25);
-        padding: $header-padding;
+        @include header-padding(light);
         transform: scale(1);
         display: flex;
         align-items: baseline;
@@ -100,8 +130,9 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         // All statistic elements
         &>div {
             margin-top: $teaser-stats-margin-top;
-            display: inline-block;
-            padding-right: .25em;
+            display: flex;
+            align-items: baseline;
+            gap: .125em;
             font-size: $base-stats-font-size;
             @include header-contents-transitions(out);
 
@@ -109,10 +140,16 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
                 flex: 1;
             }
 
-            svg {
-                vertical-align: middle;
-                margin-bottom: .25em;
-                margin-left: .25em;
+            // Thumbs container
+            &>div {
+                display: flex;
+                align-items: baseline;
+                gap: .25em;
+
+                svg {
+                    vertical-align: middle;
+                    margin-bottom: .25em;
+                }
             }
         }
 
@@ -120,9 +157,8 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         &:nth-child(1) {
             width: calc(100% / 3 - $header-gap);
             background-color: color-mix(in srgb, var(--inner-window), var(--logo-dark) 2%);
-            margin-right: $header-gap;
 
-            &>div:last-of-type {
+            &>span:last-of-type {
                 font-size: calc($base-stats-font-size - .25rem);
             }
         }
@@ -133,7 +169,6 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             left: calc(100% / 3 + $header-gap/2);
             width: calc(100% / 3 - $header-gap);
             background-color: var(--main-hlight2);
-            margin-right: $header-gap;
 
             * {
                 color: var(--main-dark4);
@@ -167,7 +202,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
 
         &:not(:first-child):hover>div,
         &:not(:first-child):focus-visible>div {
-            visibility: none;
+            // visibility: none;
             opacity: 0;
             @include header-contents-transitions(in);
         }
@@ -250,62 +285,42 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
 
 }
 
+.thumbs {
+    &.up {
+        transform: rotateX(0deg) rotateY(0deg) translateY(0%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    &.down {
+        transform: rotateX(180deg) rotateY(180deg) translateY(-25%);
+        transition: transform 0.3s ease-in-out;
+    }
+}
+
+@media (max-width: 1100px) {
+
+    .budget-summary--container {
+        @include summary-padding-bottom(true);
+    }
+
+    .budget-summary--container>div:nth-child(-n+3) {
+        flex-direction: column;
+    }
+}
+
+
 @media (max-width: 550px) {
+    .budget-summary--container {
+        @include summary-padding-bottom(false, true);
 
-    #budget-summary--container {
-        padding-bottom: $responsive-summary-padding-bottom;
+        &.expanded {
+            @include summary-padding-bottom(true, true);
+        }
 
-        // Headers
-        &>div:nth-child(-n+3) {
-            overflow-x: auto;
-            display: flex;
-            align-items: baseline;
-            border-radius: var(--border-radius1);
-
-            &>div {
-                margin-top: 0;
-            }
-
-            &>div:first-child {
-                width: auto;
-            }
-
-            &>div:nth-child(2) {
-                flex-grow: 1;
-                text-align: right;
-                display: inline-flex;
-                justify-content: flex-end;
-            }
-
-            // Total header
-            &:nth-child(1) {
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-
-            // Month header
-            &:nth-child(2) {
-                left: 0;
-                height: calc($base-stats-font-size + nth($header-padding, 1) * 4);
-                top: calc(100% / 3 + $header-gap/3);
-                width: 100%;
-            }
-
-            // Year header
-            &:nth-child(3) {
-                left: 0;
-                top: calc(2/3 * 100% + 2 * $header-gap/3);
-                height: calc($base-stats-font-size + nth($header-padding, 1) * 4);
-                width: 100%;
-            }
-
-            &:not(:first-child):hover,
-            &:not(:first-child):focus-visible {
-                top: -3%;
-                height: 112%;
-                border-radius: var(--border-radius25);
-            }
+        &>div:nth-child(-n+3)>div:last-child {
+            flex-direction: column;
+            gap: 0em;
+            margin-top: .5em;
         }
     }
 
@@ -339,18 +354,5 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         &>div:last-child {
             order: 1;
         }
-    }
-
-}
-
-.thumbs {
-    &.up {
-        transform: rotateX(0deg) rotateY(0deg) translateY(0%);
-        transition: transform 0.3s ease-in-out;
-    }
-
-    &.down {
-        transform: rotateX(180deg) rotateY(180deg) translateY(-25%);
-        transition: transform 0.3s ease-in-out;
     }
 }
