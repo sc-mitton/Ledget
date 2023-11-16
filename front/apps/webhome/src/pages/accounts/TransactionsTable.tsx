@@ -145,30 +145,30 @@ export const Transactions = () => {
                                 key={transaction.id}
                                 role="button"
                                 onClick={() => {
-                                    navigate(`${location.pathname}/transaction${location.search}`, {``
+                                    navigate(`${location.pathname}/transaction${location.search}`, {
                                         state: {
-                                getTransactionsParams: {
-                                account: searchParams.get('account') || '',
-                            type: pathMappings.getTransactionType(location),
+                                            getTransactionsParams: {
+                                                account: searchParams.get('account') || '',
+                                                type: pathMappings.getTransactionType(location),
                                             },
-                            transactionId: transaction.transaction_id
+                                            transactionId: transaction.transaction_id
                                         }
                                     })
                                 }}
                             >
-                            <div>
-                                <span>{'foobar'}</span>
-                                <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
-                            </div>
-                            <div>
-                                <div className={transaction.amount < 0 ? 'debit' : 'credit'}>
-                                    <DollarCents
-                                        value={Big(transaction.amount).times(100).toNumber()}
-                                    />
+                                <div>
+                                    <span>{transaction.preferred_name || transaction.name}</span>
+                                    <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
+                                </div>
+                                <div>
+                                    <div className={transaction.amount < 0 ? 'debit' : 'credit'}>
+                                        <DollarCents
+                                            value={Big(transaction.amount).times(100).toNumber()}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        </Fragment >
+                        </Fragment>
                     )
                 })
             }

@@ -52,11 +52,11 @@ const WafersHeader = () => {
             <div>
                 <DollarCents
                     value={
-                        (false)
+                        (isSuccess && data)
                             ? data?.accounts.filter(account => account.type === pathMappings.getAccountType(location))
                                 .reduce((acc, account) => acc.plus(account.balances.current), Big(0))
                                 .times(100).toNumber()
-                            : '300.00'
+                            : '0.00'
                     }
                 />
             </div>
@@ -210,11 +210,10 @@ export const FilledWafers = () => {
                                     <div className='wafer-meta--container'>
                                         {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}
                                         &nbsp;&bull;&nbsp;&bull;&nbsp;
-                                        {1111}
+                                        {account.mask}
                                     </div>
                                     <div className="wafer-balance--container">
-                                        {/* <DollarCents value={Big(account.balances.current).times(100).toNumber()} /> */}
-                                        <DollarCents value={Big(100).times(100).toNumber()} />
+                                        <DollarCents value={Big(account.balances.current).times(100).toNumber()} />
                                     </div>
                                 </div>
                             </div>
