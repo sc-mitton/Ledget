@@ -59,14 +59,25 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
     }
 }
 
+@mixin padding-transition($direction) {
+    @if $direction ==in {
+        transition: padding-bottom 0.3s ease-in-out .3s;
+    }
+
+    @else {
+        transition: padding-bottom 0.3s ease-in-out;
+    }
+}
+
 .budget-summary--container {
     padding-bottom: $summary-padding-bottom;
     transition: padding-bottom 0.3s ease-in-out;
     position: relative;
+    @include padding-transition(out);
 
     &.expanded {
         padding-bottom: $summary-padding-bottom-expanded;
-        transition: padding-bottom 0.3s ease-in-out;
+        @include padding-transition(in);
     }
 
     // Headers
@@ -79,6 +90,7 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
         transform: scale(1);
         display: flex;
         align-items: baseline;
+        height: 100%;
         @include header-transitions(out);
 
         h4 {
@@ -249,7 +261,6 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
             display: flex;
             align-items: baseline;
             border-radius: var(--border-radius1);
-            @include header-transitions(out);
 
             &>div {
                 margin-top: 0;
@@ -294,7 +305,6 @@ $responsive-summary-padding-bottom: calc(calc(nth($header-padding, 1) * 2 + $bas
                 top: -3%;
                 height: 112%;
                 border-radius: var(--border-radius25);
-                @include header-transitions(in);
             }
         }
     }

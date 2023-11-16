@@ -1,5 +1,6 @@
-from django.db import models
+import uuid
 
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
@@ -109,17 +110,18 @@ class Reminder(Notification):
     class Meta:
         db_table = 'budget_reminder'
 
-    class Perdiod(models.TextChoices):
+    class Period(models.TextChoices):
         DAY = 'day', _('Day')
         WEEK = 'week', _('Week')
 
-    bill = models.ForeignKey(Bill,
-                             on_delete=models.CASCADE,
-                             related_name='reminders')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    bill = models.ManyToManyRel(Bill,
+                                to='budget.Bill',
+                                related_name='reminders')
     period = models.CharField(
         max_length=40,
-        choices=Perdiod.choices,
-        default=Perdiod.WEEK,
+        choices=Period.choices,
+        default=Period.WEEK,
         blank=False,
         null=False
     )

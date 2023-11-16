@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 
-import ComboSelect from './ComboSelect'
+import { Listbox } from '@headlessui/react'
 import { SlimInputButton, DropAnimation } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 
@@ -39,7 +39,7 @@ const PeriodSelect = (props) => {
 
     const Options = () => (
         opts.filter(op => enableAll || !op.disabled).map((option) => (
-            <ComboSelect.Option
+            <Listbox.Option
                 key={option.id}
                 value={option.value}
                 disabled={enableAll ? false : option.disabled}
@@ -55,7 +55,7 @@ const PeriodSelect = (props) => {
                         {option.label}
                     </div>
                 )}
-            </ComboSelect.Option>
+            </Listbox.Option>
         ))
     )
 
@@ -64,7 +64,7 @@ const PeriodSelect = (props) => {
             {hasLabel &&
                 <label htmlFor="period">Refreshes</label>
             }
-            <ComboSelect
+            <Listbox
                 name="period"
                 value={localValue}
                 onChange={localSetValue}
@@ -72,7 +72,7 @@ const PeriodSelect = (props) => {
             >
                 {({ open }) => (
                     <>
-                        <ComboSelect.Button
+                        <Listbox.Button
                             as={SlimInputButton}
                             id="period-select-btn"
                             style={{
@@ -89,8 +89,8 @@ const PeriodSelect = (props) => {
                                 height={'.8em'}
                                 stroke={`var(--m-text-gray)`}
                             />}
-                        </ComboSelect.Button>
-                        <ComboSelect.Options className="select-container" static>
+                        </Listbox.Button>
+                        <Listbox.Options className="select-container" static>
                             <DropAnimation
                                 placement='left'
                                 className="dropdown select"
@@ -101,10 +101,10 @@ const PeriodSelect = (props) => {
                             >
                                 <Options />
                             </DropAnimation>
-                        </ComboSelect.Options>
+                        </Listbox.Options>
                     </>
                 )}
-            </ComboSelect>
+            </Listbox>
         </>
     )
 }

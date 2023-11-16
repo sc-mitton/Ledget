@@ -1,30 +1,27 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import './styles/Dropdowns.css'
-import ComboSelect from './ComboSelect'
+import { Listbox } from '@headlessui/react'
 import { Plus, CheckMark } from '@ledget/media'
 import { SlimInputButton, DropAnimation } from '@ledget/ui'
+import { useGetRemindersQuery, Reminder } from '@features/remindersSlice'
 
-const defaultOptions = [
-    { id: 1, value: { offset: 1, period: 'day' }, disabled: false },
-    { id: 2, value: { offset: 2, period: 'day' }, disabled: false },
-    { id: 3, value: { offset: 3, period: 'day' }, disabled: false },
-    { id: 4, value: { offset: 4, period: 'day' }, disabled: false },
-    { id: 5, value: { offset: 5, period: 'day' }, disabled: false },
-    { id: 6, value: { offset: 1, period: 'week' }, disabled: false },
-    { id: 7, value: { offset: 2, period: 'week' }, disabled: false },
-    { id: 8, value: { offset: 3, period: 'week' }, disabled: false }
-]
 
-const AddReminder = ({ value, onChange }) => {
-    const [localSelectedReminders, localSetReminders] = useState([])
-    const [reminderOptions, setReminderOptions] = useState(defaultOptions)
+const AddReminder = ({ value, onChange, defaultSelected }:
+    { value?: Reminder[], defaultSelected?: string[], onChange?: React.Dispatch<React.SetStateAction<Reminder[]>> }) => {
+    const [localSelectedReminders, localSetReminders] = useState<Reminder[]>([])
+    const [reminderOptions, setReminderOptions] = useState<Reminder[]>([])
+    const { data: reminders, isSuccess } = useGetRemindersQuery()
+
+    useEffect(() => {
+        isSuccess && setReminderOptions(reminders)
+    }, [isSuccess])
 
     const selectedReminders = value || localSelectedReminders
     const setSelectedReminders = onChange || localSetReminders
 
-    const Option = ({ value, active, selected }) => {
-        const opIndex = reminderOptions.findIndex((op) => op.value === value)
+    const Option = ({ value, active, selected }: { value: Reminder, active: boolean, selected: boolean }) => {
+        const opIndex = reminderOptions.findIndex((op) => op === value)
         const nextOp = reminderOptions[opIndex + 1]
 
         return (
@@ -38,12 +35,12 @@ const AddReminder = ({ value, onChange }) => {
                         <span style={{ opacity: active ? '.5' : '0', padding: '0 .5em', fontWeight: '400' }}>before</span>
                     </div>
                     {!selected
-                        ? <Plus stroke={'var(--muted-text-gray)'} size={'.9em'} />
+                        ? <Plus stroke={'var(--muted-text-gray)'} size={'.8em'} />
                         : <CheckMark stroke={`${selected ? 'var(--main-dark)' : 'transparent'}`} />
                     }
                 </div>
                 <div style={{ padding: '0 .5em' }}>
-                    {nextOp && nextOp.value.period !== value.period && <hr />}
+                    {nextOp && nextOp.period !== value.period && <hr />}
                 </div>
             </>
         )
@@ -52,34 +49,34 @@ const AddReminder = ({ value, onChange }) => {
     const Options = () => {
         return (
             reminderOptions.map((option) => (
-                <ComboSelect.Option
-                    value={option.value}
-                    disabled={option.disabled}
+                <Listbox.Option
+                    value={option}
+                    disabled={!option.active}
                     key={option.id}
                 >
                     {({ active, selected }) => (
                         <Option
-                            value={option.value}
+                            value={option}
                             active={active}
                             selected={selected}
                         />
                     )}
-                </ComboSelect.Option>
+                </Listbox.Option>
             ))
         )
     }
 
     return (
         <div>
-            <ComboSelect
+            <Listbox
                 name="reminders"
                 value={selectedReminders}
-                onChange={setSelectedReminders}
+                onChange={setSelectedReminders as React.Dispatch<React.SetStateAction<Reminder[]>>}
                 multiple
             >
                 {({ open }) => (
                     <>
-                        <ComboSelect.Button
+                        <Listbox.Button
                             as={SlimInputButton}
                             id="add-reminder-btn"
                             style={{ fontWeight: '400' }}
@@ -97,8 +94,8 @@ const AddReminder = ({ value, onChange }) => {
                                     strokeWidth={'20'}
                                     size={".8em"}
                                 />}
-                        </ComboSelect.Button>
-                        <ComboSelect.Options className="select-container" static>
+                        </Listbox.Button>
+                        <Listbox.Options className="select-container" static>
                             <DropAnimation
                                 placement='left'
                                 visible={open}
@@ -106,10 +103,10 @@ const AddReminder = ({ value, onChange }) => {
                             >
                                 <Options />
                             </DropAnimation>
-                        </ComboSelect.Options>
+                        </Listbox.Options>
                     </>
                 )}
-            </ComboSelect>
+            </Listbox>
         </div>
     )
 }

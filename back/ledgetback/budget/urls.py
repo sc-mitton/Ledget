@@ -3,7 +3,8 @@ from rest_framework.routers import SimpleRouter, Route, DynamicRoute
 
 from budget.views import (
     CategoryViewSet,
-    BillViewSet
+    BillViewSet,
+    ReminderView
 )
 
 
@@ -61,4 +62,5 @@ bills_router.register('bills', BillViewSet, basename='bills')
 urlpatterns = [
     path('', include(categories_router.urls)),
     path('', include(bills_router.urls)),
+    path('reminders', ReminderView.as_view(), name='reminders')
 ]

@@ -4,6 +4,7 @@ import logging
 import pytz
 
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import ListAPIView
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import status
@@ -15,18 +16,27 @@ from django.utils import timezone as dbtz
 from core.permissions import IsAuthenticated
 from budget.serializers import (
     CategorySerializer,
-    BillSerializer
+    BillSerializer,
+    ReminderSerializer,
 )
 from budget.models import (
     Category,
     Bill,
     UserCategory,
+    Reminder
 )
 from financials.models import Transaction, TransactionCategory
 from ledgetback.view_mixins import BulkSerializerMixin
 from core.permissions import IsObjectOwner
 
 logger = logging.getLogger('ledget')
+
+
+class ReminderView(ListAPIView):
+    serializer_class = ReminderSerializer
+
+    def get_queryset(self):
+        return Reminder.objects.all()
 
 
 class BillViewSet(BulkSerializerMixin, ModelViewSet):

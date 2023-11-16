@@ -15,10 +15,14 @@ export const EmojiComboText = (props) => {
         error,
         emoji: propsEmoji,
         setEmoji: propsSetEmoji,
+        nameValue: propsNameValue,
+        hasLabel = true,
         ...rest
     } = props
+
     const { ref: formRef, ...registerRest } = register('name')
     const ref = useRef(null)
+
     const [em, setEm] = useState(undefined)
     const emoji = propsEmoji || em
     const setEmoji = propsSetEmoji || setEm
@@ -29,7 +33,7 @@ export const EmojiComboText = (props) => {
 
     return (
         <>
-            <label htmlFor="name">Name</label>
+            {hasLabel && <label htmlFor="name">Name</label>}
             <TextInputWrapper>
                 <Emoji emoji={emoji} setEmoji={setEmoji}>
                     {({ emoji }) => (
@@ -154,8 +158,8 @@ export const LimitAmountInput = ({ control, children }) => {
     )
 }
 
-const DollarInput = ({ field, name, error, ...rest }) => {
-    const [val, setVal] = useState(undefined)
+const DollarInput = ({ field, name, defaultValue, error, ...rest }) => {
+    const [val, setVal] = useState(defaultValue)
 
     return (
         <TextInputWrapper className="limit-amount--container" {...rest}>
@@ -190,7 +194,9 @@ const DollarInput = ({ field, name, error, ...rest }) => {
     )
 }
 
-export const DollarRangeInput = ({ rangeMode, control, errors = {} }) => {
+export const DollarRangeInput = ({
+    rangeMode, control, defaultLowerValue, defaultUpperValue, errors = {}, hasLabel = true
+}) => {
 
     const {
         field: lowerField,
@@ -207,10 +213,11 @@ export const DollarRangeInput = ({ rangeMode, control, errors = {} }) => {
 
     return (
         <>
-            <label htmlFor="upper_amount">Amount</label>
+            {hasLabel && <label htmlFor="upper_amount">Amount</label>}
             <div className={`dollar-range-input--container ${rangeMode ? 'range-mode' : ''}`}>
                 {rangeMode &&
                     <DollarInput
+                        defaultValue={defaultLowerValue}
                         style={{ marginRight: '.5em' }}
                         field={lowerField}
                         name={'lower_amount'}
@@ -218,6 +225,7 @@ export const DollarRangeInput = ({ rangeMode, control, errors = {} }) => {
                     />
                 }
                 <DollarInput
+                    defaultValue={defaultUpperValue}
                     field={upperField}
                     name={'upper_amount'}
                     error={errors.upper_amount}

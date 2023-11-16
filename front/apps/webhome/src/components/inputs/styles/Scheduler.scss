@@ -1,3 +1,12 @@
+.scheduler--container {
+    position: 'relative';
+
+    &>div {
+        position: 'absolute';
+        top: 0;
+    }
+}
+
 #schedule-dropdown-button {
     justify-content: space-between;
     position: relative;

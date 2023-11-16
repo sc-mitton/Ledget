@@ -92,7 +92,7 @@ const Form = (props) => {
 
     return (
         <>
-            <h2>New Bill</h2>
+            <h3>New Bill</h3>
             <hr />
             <form
                 className="create-form"

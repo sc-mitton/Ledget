@@ -102,8 +102,8 @@ input.emoji {
 #emoji-picker-ledget--button-container {
     display: flex;
     align-items: center;
-    margin-left: -.75em;
-    margin-right: .125em;
+    margin-left: -.25em;
+    margin-right: .25em;
 }
 
 /* ---------------------------- Create Bill Form ---------------------------- */

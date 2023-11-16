@@ -37,7 +37,6 @@ const TransactionModal = withModal((props) => {
         }
     }, [accountsFetched, item])
 
-
     return (
         <>
             <div className='transaction-info--header'>

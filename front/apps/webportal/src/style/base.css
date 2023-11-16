@@ -17,26 +17,28 @@
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
 
+    --main-color: rgb(92, 96, 135);
+    --main-color-values: 92, 96, 135;
     --main-hlight: #a9afdb;
-    --main-hlight2: #e2e3ee;
-    --main-hlight3: #b0b5de;
-    --main-hlight4: #ebecff;
-    --main-color: hwb(234 36% 47%);
-    --main-color-values: 81, 237, 151;
-    --main-color: hsl(234, 23%, 36%);
-    --main-dark: hsl(240, 17%, 35%);
-    --main-dark2: hsl(240, 17%, 30%);
-    --main-dark3: #35354b;
-    --main-dark4: #242433;
+    --main-hlight2: #dddee9;
+    --main-hlight3: #a7acd3;
+    --main-hlight4: #e3e5f5;
+    --main-hlight5: #c7ccf2;
+    --main-dark: hsl(232, 17%, 35%);
+    --main-dark2: hsl(232, 17%, 30%);
+    --main-dark3: hsl(232, 17%, 25%);
+    --main-dark4: hsl(229, 23%, 18%);
     --accessible-color: #ababff;
     --yellow: rgb(175, 175, 51);
 
-    --secondary-hlight: #8dd6c4;
-    --secondary-hlight2: #daeee9;
-    --secondary-hlight3: #d3e7e2;
-    --secondary-color: #5aaf9a;
+    --secondary-color: hsl(153, 100%, 91%);
+    --secondary-hlight: hsl(165, 47%, 70%);
+    --secondary-hlight2: hsl(162, 31%, 89%);
+    --secondary-hlight3: hsl(165, 29%, 87%);
+    --secondary-hlight5: rgb(181, 235, 221);
+    --secondary-color-alt: hsl(156, 31%, 62%);
     --secondary-dark: hsl(164, 17%, 35%);
-    --secondary-dark4: #424948;
+    --secondary-dark4: hsl(164, 5%, 27%);
 
     --accessible-color: #9999ac;
 
@@ -59,7 +61,7 @@
     --input-border: solid 1px rgb(0, 0, 0, .02);
 
     /* Text */
-    --input-focus: hsl(236, 41%, 68%);
+    --input-focus: hsl(233, 56%, 73%);
     --m-text-gray: #292929;
     --sub-text: #3d3d3d;
     --input-placeholder: #848484;
@@ -99,7 +101,7 @@
 /* Override color values for Firefox */
 @-moz-document url-prefix() {
     :root {
-        --input-focus: hsl(236, 41%, 68%);
+        --input-focus: hsl(233, 56%, 73%);
         --input-placeholder: #2a2a2a;
         --m-text-gray: rgb(44, 44, 44);
     }

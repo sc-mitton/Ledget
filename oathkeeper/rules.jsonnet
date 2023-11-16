@@ -260,5 +260,13 @@ local GenericAuthedBase = {
       methods: ['GET', 'PATCH'],
       url: base_url + '/accounts',
     }
+  },
+  GenericAuthedBase
+  {
+    id: 'reminders',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/reminders',
+    }
   }
 ]

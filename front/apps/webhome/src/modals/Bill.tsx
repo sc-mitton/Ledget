@@ -3,14 +3,31 @@ import { useId, useState, useEffect } from 'react'
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Menu, RadioGroup } from '@headlessui/react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
 
 import './styles/Bill.scss'
+import { billSchema } from './CreateBill'
 import { withModal } from '@ledget/ui'
 import { useGetBillsQuery, TransformedBill, useDeleteBillMutation } from '@features/billSlice'
 import { SubmitForm } from '@components/pieces'
-import { DollarCents, getDaySuffix, mapWeekDayNumberToName, DropAnimation, SlideMotionDiv, useLoaded } from '@ledget/ui'
-import { CheckMark2, Ellipsis, TrashIcon, Bell, BellOff, Edit } from '@ledget/media'
-
+import {
+    DollarCents,
+    getDaySuffix,
+    mapWeekDayNumberToName,
+    DropAnimation,
+    SlideMotionDiv,
+    useLoaded,
+    Checkbox,
+    formatCurrency
+} from '@ledget/ui'
+import { CheckMark2, Ellipsis, TrashIcon, BellOff, Edit } from '@ledget/media'
+import {
+    EmojiComboText,
+    DollarRangeInput,
+    BillScheduler,
+    AddReminder
+} from '@components/inputs'
 
 const getRepeatsDescription = ({ day, week, week_day, month, year }:
     { day: number | undefined, week: number | undefined, week_day: number | undefined, month: number | undefined, year: number | undefined }) => {
@@ -156,7 +173,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                     Reminders
                 </div>
                 <div>
-                    {bill.reminders?.length > 0
+                    {bill.reminders && bill.reminders?.length > 0
                         ?
                         <>
                             {bill.reminders.map((reminder, i) => (
@@ -233,10 +250,87 @@ const DeleteBill = ({ bill, onCancel, onDelete }: { bill: TransformedBill, onCan
     )
 }
 
-const EditBill = ({ bill }: { bill: TransformedBill }) => {
+const EditBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () => void }) => {
+    const [updateBill, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useDeleteBillMutation()
+    const { register, handleSubmit, formState: { errors }, watch, control, setValue } = useForm({
+        resolver: yupResolver(billSchema),
+    })
+    const watchRange = watch('range', false)
+    const [scheduleMissing, setScheduleMissing] = useState(false)
+    const [emoji, setEmoji] = useState<string>()
+
+    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+        // const body = extractBill(e)
+        // if (body.errors) {
+        //     body.errors.schedule && setScheduleMissing(true)
+        // }
+
+        // handleSubmit((data) => {
+        //     if (body.errors) { return }
+        //     addNewBill({ ...body, ...data })
+        // })(e)
+    }
+
+    // Set values on load
+    useEffect(() => {
+        setValue('name', `${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`)
+        setValue('range', bill.lower_amount ? true : false)
+        setEmoji(bill.emoji)
+    }, [])
 
     return (
-        <div></div>
+        <form onSubmit={submitForm}>
+            <div id="bill-edit">
+                <h3>Edit Bill</h3>
+                <hr />
+                <div>
+                    <EmojiComboText
+                        emoji={emoji}
+                        setEmoji={setEmoji}
+                        name="name"
+                        placeholder="Name"
+                        register={register}
+                        error={[errors.name]}
+                    />
+                </div>
+                <div>
+                    <DollarRangeInput
+                        defaultLowerValue={formatCurrency(bill.lower_amount)}
+                        defaultUpperValue={formatCurrency(bill.upper_amount)}
+                        rangeMode={watchRange}
+                        control={control}
+                        errors={errors}
+                    />
+                    <Checkbox
+                        label='Range'
+                        id="range"
+                        aria-label='Change bill amount to a range.'
+                        {...register('range')}
+                    />
+                </div>
+                <div>
+                    <BillScheduler
+                        defaultValue={{
+                            day: bill.day,
+                            week: bill.week,
+                            week_day: bill.week_day,
+                            month: bill.month
+                        }}
+                        billPeriod={bill.period}
+                        error={scheduleMissing}
+                    />
+                    <AddReminder defaultSelected={
+                        bill.reminders && bill.reminders.map((reminder) => reminder.id)
+                    } />
+                </div>
+            </div>
+            <SubmitForm
+                text="Save"
+                submitting={isUpdateSuccess}
+                success={isUpdating}
+                onCancel={onCancel}
+            />
+        </form>
     )
 }
 
@@ -262,7 +356,10 @@ const BillModal = withModal((props) => {
                     </SlideMotionDiv>}
                 {action === 'edit' &&
                     <SlideMotionDiv position={'last'} key={`${id}1`}>
-                        <EditBill bill={bill!} />
+                        <EditBill
+                            bill={bill!}
+                            onCancel={() => { setAction('none') }}
+                        />
                     </SlideMotionDiv>
                 }
                 {action === 'delete' &&

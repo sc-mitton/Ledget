@@ -1,11 +1,8 @@
 import { apiSlice } from '@api/apiSlice'
 import Big from 'big.js'
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
+import { Reminder } from './remindersSlice'
 
-interface Reminder {
-    period: 'week' | 'day',
-    offset: number,
-}
 
 interface BaseBill {
     id: string,
@@ -17,7 +14,7 @@ interface BaseBill {
     lower_amount: number,
     upper_amount: number,
     bill_confirmed: boolean,
-    reminders: Reminder[],
+    reminders?: Reminder[],
 }
 
 export interface Bill extends BaseBill {
@@ -26,7 +23,6 @@ export interface Bill extends BaseBill {
     week_day?: number,
     month?: number,
     year?: number,
-    reminders: Reminder[],
 }
 
 export interface TransformedBill extends Bill {

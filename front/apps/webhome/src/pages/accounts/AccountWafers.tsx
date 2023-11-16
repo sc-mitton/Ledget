@@ -118,7 +118,7 @@ export const FilledWafers = () => {
             searchParams.set('account', data?.accounts[0].account_id)
             setSearchParams(searchParams)
         }
-    }, [isSuccessLoadingAccounts, location.pathname])
+    }, [isSuccessLoadingAccounts, location.pathname.split('/')[2]])
 
     // Start initial animation
     useEffect(() => {

@@ -12,7 +12,7 @@ const Emoji = (props) => {
     const [picker, setPicker] = useState(false)
 
     return (
-        <EmojiContext.Provider value={{ setEmoji, picker, setPicker }}>
+        <EmojiContext.Provider value={{ emoji, setEmoji, picker, setPicker }}>
             <div id="emoji-picker-ledget">
                 {children({ emoji })}
             </div>
@@ -93,8 +93,8 @@ const EmojiPicker = () => {
     )
 }
 
-const EmojiButton = ({ emoji, ...rest }) => {
-    const { picker, setPicker } = useContext(EmojiContext)
+const EmojiButton = ({ ...rest }) => {
+    const { emoji, picker, setPicker } = useContext(EmojiContext)
 
     return (
         <IconScaleButton
@@ -117,7 +117,7 @@ const EmojiButton = ({ emoji, ...rest }) => {
             style={{ color: !emoji && "rgb(0, 0, 0, .4)" }}
             {...rest}
         >
-            {emoji ? emoji.native : '☺'}
+            {emoji ? (emoji.native || emoji) : '☺'}
         </IconScaleButton>
     )
 }

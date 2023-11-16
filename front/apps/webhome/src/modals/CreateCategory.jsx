@@ -53,7 +53,7 @@ const Form = (props) => {
 
     return (
         <>
-            <h2>New Category</h2>
+            <h3>New Category</h3>
             <hr />
             <form
                 onSubmit={handleSubmit((data, e) => submit(data, e))}

@@ -1,7 +1,8 @@
 @import '@styles/header.scss';
 @import '@styles/text.scss';
 
-#bill-modal--content {
+
+#bill-info {
     .header {
         display: flex;
         flex-direction: column;
@@ -19,9 +20,6 @@
         }
     }
 
-}
-
-#bill-info {
     &>div {
         display: flex;
         flex-direction: column;
@@ -60,6 +58,23 @@
     }
 }
 
+#bill-edit {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 1em 0 1.5em 0;
+
+    &>hr {
+        margin-bottom: 1em;
+    }
+
+    &>div:last-child {
+        margin-top: .5em;
+        display: flex;
+        gap: .5em;
+    }
+}
+
 // Container for bottom butons
 .dropdown-wrapper {
     display: inline-flex;
@@ -68,7 +83,7 @@
     padding: .75em;
     position: absolute;
     top: .125em;
-    right: 3em;
+    right: 2.5em;
     z-index: 10;
 
     &>div {

@@ -723,12 +723,12 @@ const MonthDayPicker = () => {
 }
 
 export const BillScheduler = (props) => {
-    const [day, setDay] = useState('')
-    const [month, setMonth] = useState('')
-    const [week, setWeek] = useState('')
-    const [weekDay, setWeekDay] = useState('')
+    const { billPeriod, error, defaultValue } = props
 
-    const { billPeriod, error } = props
+    const [day, setDay] = useState(defaultValue?.day || '')
+    const [month, setMonth] = useState(defaultValue?.month || '')
+    const [week, setWeek] = useState(defaultValue?.week || '')
+    const [weekDay, setWeekDay] = useState(defaultValue?.weekDay || '')
 
     useEffect(() => {
         if (day || month || (week && weekDay))
@@ -749,14 +749,18 @@ export const BillScheduler = (props) => {
                 weekDay={weekDay}
                 setWeekDay={setWeekDay}
             >
-                <Scheduler.Button>
-                    {error &&
-                        <FormErrorTip errors={[{ type: 'required' }]} />}
-                </Scheduler.Button>
-                {billPeriod === 'month'
-                    ? <Scheduler.DayWeekPicker />
-                    : <Scheduler.MonthDayPicker />
-                }
+                <div id="scheduler--container">
+                    <Scheduler.Button>
+                        {error &&
+                            <FormErrorTip errors={[{ type: 'required' }]} />}
+                    </Scheduler.Button>
+                    <div>
+                        {billPeriod === 'month'
+                            ? <Scheduler.DayWeekPicker />
+                            : <Scheduler.MonthDayPicker />
+                        }
+                    </div>
+                </div>
             </Scheduler>
         </>
     )

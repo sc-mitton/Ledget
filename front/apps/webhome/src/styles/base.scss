@@ -33,7 +33,7 @@
     --main-dark: hsl(232, 17%, 35%);
     --main-dark2: hsl(232, 17%, 30%);
     --main-dark3: hsl(232, 17%, 25%);
-    --main-dark4: hsl(232, 17%, 17%);
+    --main-dark4: hsl(229, 23%, 18%);
     --accessible-color: #ababff;
     --yellow: rgb(175, 175, 51);
 
@@ -54,7 +54,7 @@
     --input-border: solid 1px rgb(0, 0, 0, .02);
 
     /* Text */
-    --input-focus: hsl(236, 41%, 68%);
+    --input-focus: hsl(233, 56%, 73%);
     --m-text-gray: #292929;
     --sub-text: #3d3d3d;
     --input-placeholder: #848484;
@@ -113,7 +113,7 @@
 /* Override color values for Firefox */
 @-moz-document url-prefix() {
     :root {
-        --input-focus: hsl(236, 41%, 68%);
+        --input-focus: hsl(233, 56%, 73%);
         --input-placeholder: #2a2a2a;
         --m-text-gray: rgb(44, 44, 44);
     }
@@ -635,7 +635,7 @@ ul hr {
 }
 
 .dropdown-item.selected {
-    background-color: var(--main-hlight2);
+    background-color: var(--main-hlight5);
 }
 
 .dropdown-item.selected.active {
