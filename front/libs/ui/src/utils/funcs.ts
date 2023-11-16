@@ -24,7 +24,9 @@ export const formatRoundedCurrency = (val: number | string) => {
 
 // Takes in a string or int currency and returns a formatted string
 // ex: 100000 -> $1,000.00, 25000 -> $250.00
-export const formatCurrency = (val: number | string) => {
+export const formatCurrency = (val: number | string | undefined) => {
+    if (val === undefined) return ''
+
     let str = ''
     typeof val === 'string'
         ? str = val.replace(/[^0-9]/g, '').replace(/^0+/, '')

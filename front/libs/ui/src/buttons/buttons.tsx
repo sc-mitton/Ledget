@@ -106,14 +106,20 @@ export const GoogleLoginButton = ({ ...props }) => (
   </GrayWideButton>
 )
 
-export const CloseButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { size?: string }> = ({ size, className, ...rest }) => (
-  <button
-    className={`btn-clr btn btn-icon close-btn ${className ? className : ''}`}
-    {...rest}
-  >
-    <CloseIcon size={size} />
-  </button>
-)
+export const CloseButton =
+  forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { size?: string }>((props, ref) => {
+    const { size, className, ...rest } = props
+
+    return (
+      <button
+        ref={ref}
+        className={`btn-clr btn btn-icon close-btn ${className ? className : ''}`}
+        {...rest}
+      >
+        <CloseIcon size={size} />
+      </button>
+    )
+  })
 
 export const BackButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText?: boolean }>
   = ({ children, withText = true, ...rest }) => (

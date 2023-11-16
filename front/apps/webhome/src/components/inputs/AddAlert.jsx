@@ -211,6 +211,7 @@ const AddAlert = (props) => {
             {({ open }) => (
                 <>
                     <ComboSelect.Button
+                        tabIndex={0}
                         as={SlimInputButton}
                         id="add-alert-btn"
                         ref={buttonRef}

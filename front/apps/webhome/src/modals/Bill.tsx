@@ -290,6 +290,24 @@ const EditBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () => v
                 <h3>Edit Bill</h3>
                 <hr />
                 <div>
+                    <label htmlFor="schedule">Schedule</label>
+                    <div>
+                        <BillScheduler
+                            defaultValue={{
+                                day: bill.day,
+                                week: bill.week,
+                                week_day: bill.week_day,
+                                month: bill.month
+                            }}
+                            billPeriod={bill.period}
+                            error={scheduleMissing}
+                        />
+                        <AddReminder defaultSelected={
+                            bill.reminders && bill.reminders.map((reminder) => reminder.id)
+                        } />
+                    </div>
+                </div>
+                <div>
                     <EmojiComboText
                         emoji={emoji}
                         setEmoji={setEmoji}
@@ -313,21 +331,6 @@ const EditBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () => v
                         aria-label='Change bill amount to a range.'
                         {...register('range')}
                     />
-                </div>
-                <div>
-                    <BillScheduler
-                        defaultValue={{
-                            day: bill.day,
-                            week: bill.week,
-                            week_day: bill.week_day,
-                            month: bill.month
-                        }}
-                        billPeriod={bill.period}
-                        error={scheduleMissing}
-                    />
-                    <AddReminder defaultSelected={
-                        bill.reminders && bill.reminders.map((reminder) => reminder.id)
-                    } />
                 </div>
             </div>
             <SubmitForm

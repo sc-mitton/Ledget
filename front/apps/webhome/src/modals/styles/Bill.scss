@@ -67,6 +67,7 @@
 
     label {
         font-weight: 500;
+        margin-left: .25em;
     }
 
     &>hr {
@@ -81,10 +82,14 @@
         margin-top: -.25em;
     }
 
-    &>div:last-child {
-        margin-top: .5em;
-        display: flex;
-        gap: .5em;
+    &>div:first-of-type {
+        margin-bottom: .625em;
+
+        &>div {
+            margin-top: .5em;
+            display: flex;
+            gap: .5em;
+        }
     }
 }
 

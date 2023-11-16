@@ -82,13 +82,18 @@ export function withModal(WrappedComponent: React.FC<any>) {
     } = props
 
     const [closeAll, setCloseAll] = useState(false)
-    const modalRef = useRef(null)
+    const modalRef = useRef<HTMLDivElement>(null)
 
     useAccessEsc({
       refs: overLayExit ? [modalRef] : [],
       visible: closeAll,
       setVisible: () => !disableClose && setCloseAll(true),
     })
+
+    // Focus on mount
+    useEffect(() => {
+      modalRef.current?.focus()
+    }, [focusOnMount])
 
     const backgroundConfig = {
       inset: 0,
