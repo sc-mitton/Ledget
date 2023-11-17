@@ -5,7 +5,7 @@
     --logo-dark: rgb(36, 36, 36);
 
     /* Text */
-    --m-text-gray: rgb(36, 36, 36);
+    --m-text: rgb(36, 36, 36);
 
     --mute-blue: rgb(122, 166, 248);
     --main-blue: rgb(107, 155, 246);
@@ -46,7 +46,7 @@ select,
 option {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-size: .875rem;
-    color: var(--m-text-gray);
+    color: var(--m-text);
 }
 
 h1,

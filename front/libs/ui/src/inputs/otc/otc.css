@@ -33,7 +33,7 @@
 .otc.gray input[type="text"] {
     background-color: var(--input-background);
     border: solid 1px rgb(0, 0, 0, .02);
-    color: var(--m-text-gray);
+    color: var(--m-text);
 }
 
 .otc input[type="text"]:focus {

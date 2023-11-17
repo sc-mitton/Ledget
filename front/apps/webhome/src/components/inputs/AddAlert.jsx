@@ -160,7 +160,7 @@ const AddAlert = (props) => {
                 }}>
                     <span
                         style={{
-                            backgroundColor: 'var(--m-text-gray)',
+                            backgroundColor: 'var(--m-text)',
                             color: 'var(--white-text)',
                             borderRadius: '50%',
                             padding: '.375em',
@@ -176,7 +176,7 @@ const AddAlert = (props) => {
                     >
                         {`${selectedAlerts.length}`}
                     </span>
-                    <span style={{ color: 'var(--m-text-gray)' }}>
+                    <span style={{ color: 'var(--m-text)' }}>
                         {`${selectedAlerts.length == 1 ? 'Alert' : 'Alerts'}`}
                     </span>
                 </div>
@@ -188,7 +188,7 @@ const AddAlert = (props) => {
             {selectedAlerts.length > 0
                 ?
                 <ArrowIcon
-                    stroke={'var(--m-text-gray)'}
+                    stroke={'var(--m-text)'}
                     strokeWidth={'20'}
                     width={'.8em'}
                     height={'.8em'}

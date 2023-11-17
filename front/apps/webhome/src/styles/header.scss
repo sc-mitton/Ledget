@@ -100,6 +100,10 @@ header {
     z-index: 1;
 }
 
+.nav-item a {
+    color: var(--main-dark4)
+}
+
 .nav-item a,
 .current-nav-item a {
     border-radius: var(--border-radius3);
@@ -154,7 +158,7 @@ header {
     }
 
     .current-nav-item * {
-        color: var(--m-text-gray);
+        color: var(--m-text);
     }
 
     header>div span {

@@ -76,7 +76,7 @@ const PeriodSelect = (props) => {
                             as={SlimInputButton}
                             id="period-select-btn"
                             style={{
-                                color: 'var(--m-text-gray)',
+                                color: 'var(--m-text)',
                                 marginTop: hasLabel ? '.375em' : '0'
                             }}
                             ref={buttonRef}
@@ -87,7 +87,7 @@ const PeriodSelect = (props) => {
                             {<ArrowIcon
                                 width={'.8em'}
                                 height={'.8em'}
-                                stroke={`var(--m-text-gray)`}
+                                stroke={`var(--m-text)`}
                             />}
                         </Listbox.Button>
                         <Listbox.Options className="select-container" static>

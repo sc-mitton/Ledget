@@ -119,16 +119,16 @@ export const JiggleDiv = ({ jiggle, children, ...rest }: { jiggle: boolean, chil
   )
 }
 
-export const FadeInOutDiv = ({ children, className, ...rest }: HTMLMotionProps<'div'>) => {
+export const FadeInOutDiv = ({ immediate = false, children, className, ...rest }: { immediate?: boolean } & HTMLMotionProps<'div'>) => {
   const id = useId()
 
   return (
     <motion.div
       key={id}
-      initial={{ opacity: 0 }}
+      initial={{ opacity: immediate ? 1 : 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 1 }}
+      transition={{ duration: .1 }}
       className={className}
       {...rest}
     >

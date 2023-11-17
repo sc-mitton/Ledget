@@ -42,7 +42,7 @@
     margin: 0 -.25em;
     background-color: transparent;
     box-shadow: none;
-    color: var(--m-text-gray);
+    color: var(--m-text);
     border-radius: var(--border-radius2);
     box-sizing: border-box;
     display: flex;

@@ -33,7 +33,7 @@ const Navigation = ({ isNarrow }) => {
         refresh: [isNarrow],
         querySelectall: '[role=link]',
         find: (element) => element.firstChild.name === location.pathname.split("/")[1],
-        styles: { borderRadius: 'var(--border-radius3)' },
+        styles: { borderRadius: 'var(--border-radius3)', backgroundColor: 'var(--main-dark4)' },
     })
 
     const [showPill, setShowPill] = useState()
@@ -120,7 +120,7 @@ const DropDownMenu = ({ isNarrow, setModal }) => {
             {({ open }) => (
                 <div style={{ position: 'relative' }}>
                     <Menu.Button className="profile-button">
-                        <Profile1 />
+                        <Profile1 fill={'var(--main-dark4'} />
                     </Menu.Button>
                     <DropAnimation
                         className='dropdown profile-dropdown'
@@ -128,19 +128,19 @@ const DropDownMenu = ({ isNarrow, setModal }) => {
                     >
                         <Menu.Items static>
                             <Wrapper onClick={() => navigate("/profile/details")}>
-                                <Profile2 className="dropdown-icon" />
+                                <Profile2 className="dropdown-icon" fill={'var(--main-dark4'} />
                                 Profile
                             </Wrapper>
                             <Wrapper onClick={() => navigate('/profile/settings')}>
-                                <SettingsIcon className="dropdown-icon" />
+                                <SettingsIcon className="dropdown-icon" fill={'var(--main-dark4'} />
                                 Settings
                             </Wrapper>
                             <Wrapper onClick={() => setModal("help")}>
-                                <HelpIcon className="dropdown-icon" />
+                                <HelpIcon className="dropdown-icon" fill={'var(--main-dark4'} />
                                 Help
                             </Wrapper>
                             <Wrapper onClick={() => setModal("logout")}>
-                                <LogoutIcon className="dropdown-icon" id="logout-icon" />
+                                <LogoutIcon className="dropdown-icon" id="logout-icon" fill={'var(--main-dark4'} />
                                 Log out
                             </Wrapper>
                         </Menu.Items>

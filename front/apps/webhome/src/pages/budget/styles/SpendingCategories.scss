@@ -22,6 +22,7 @@ $background: var(--window);
 }
 
 #spending-categories-window {
+    position: relative;
     width: 100%;
     max-height: 100%;
     display: flex;
@@ -30,7 +31,8 @@ $background: var(--window);
     // Aprx. 5 rows
     min-height: calc(5.25 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em); // the 2em comes from the bottom buttons space
 
-    &>div:last-of-type {
+    // Div surrounding the bottom buttons
+    #category-filters--container {
         display: flex;
         width: 100%;
         justify-content: flex-end;
@@ -57,6 +59,7 @@ $background: var(--window);
         }
     }
 
+    // Div surrounding the columns/tabs
     &>div:first-of-type {
         gap: $column-gap;
         border-radius: var(--border-radius25);
@@ -67,204 +70,205 @@ $background: var(--window);
         overflow: hidden;
         box-sizing: border-box;
     }
-}
 
-.column {
-    max-height: max-content;
+    .column {
+        max-height: max-content;
 
-    &>div {
-        overflow-y: auto;
-        align-self: flex-start;
-        width: calc(100% + .75em);
-        box-sizing: border-box;
-        padding: 0 .125em;
-        padding-right: .75em;
-        display: grid;
-        max-height: 100%;
-        grid-template-columns: minmax(0, auto) 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto);
-        mask-image: $mask-image;
-        row-gap: $item-row-gap;
-        position: relative;
-
-        button {
-            grid-column: 1 / span 5;
-            padding: calc($row-padding + .125em) 0;
-        }
-
-        &::after {
-            content: "";
-            height: .01em;
-        }
-    }
-}
-
-.row {
-    display: contents;
-    cursor: pointer;
-    transition: all .2s ease-in-out;
-
-    .row-label {
-        display: flex;
-        gap: .5em;
-    }
-
-    &>div.spanned {
-        // cover 2-5 columns
-        grid-column: 2 / span 4;
-        text-align: right;
-        padding-right: 1em;
-    }
-
-    &.header>div {
-        cursor: default;
-        padding-top: 0;
-        padding-bottom: .5em;
-        position: sticky;
-        top: 0;
-        background-color: $background;
-        box-shadow: 0px 4px 4px -2px $background;
-        display: flex;
-        gap: .75em;
-        font-weight: 500;
-        z-index: 1;
-
-        &:first-child {
-            padding-left: .125em;
-        }
-
-        // Styles for tab view
-        span:focus {
-            outline: none;
-        }
-
-        span[aria-selected="false"],
-        span[aria-selected="true"] {
-            cursor: pointer;
-        }
-
-        span[aria-selected="false"] {
-            opacity: .4;
-        }
-    }
-
-    // Styles for showing when yearly budget resets
-    &.has-alternate-header {
-
-        &>div.yearly {
-            cursor: pointer;
+        &>div {
+            overflow-y: auto;
+            align-self: flex-start;
+            width: calc(100% + .75em);
+            box-sizing: border-box;
+            padding: 0 .125em;
+            padding-right: .75em;
+            display: grid;
+            max-height: 100%;
+            grid-template-columns: minmax(0, auto) 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto);
+            mask-image: $mask-image;
+            row-gap: $item-row-gap;
             position: relative;
-            white-space: nowrap;
 
-            h4:first-child {
-                opacity: 1;
-                transition: opacity .2s ease-in-out;
+            button {
+                grid-column: 1 / span 5;
+                padding: calc($row-padding + .125em) 0;
             }
 
-            h4:not(:first-child) {
-                position: absolute;
-                left: 0;
-                opacity: 0;
-                transition: opacity .2s ease-in-out;
-            }
-        }
-
-        &>div.yearly:hover {
-            h4:first-child {
-                opacity: 0;
-                transition: opacity .2s ease-in-out;
-            }
-
-            h4:not(:first-child) {
-                opacity: 1;
-                transition: opacity .2s ease-in-out;
+            &::after {
+                content: "";
+                height: .01em;
             }
         }
     }
 
-    // Amount spent columns
-    &>div:nth-child(5n+2):not(.spanned) {
-        display: flex;
-        align-items: center;
-        text-align: right;
-        justify-content: flex-end;
-        padding-right: .5em;
-    }
-
-    // Forward slash columns
-    &>div:nth-child(5n+3):not(.spanned) {
-        display: flex;
-        align-items: center;
-    }
-
-    // Limit amount columns
-    &>div:nth-child(5n+4) {
-        display: flex;
-        align-items: center;
-        padding-left: .5em;
-        padding-right: .25em;
-    }
-
-    // Progress circle columns
-    &>div:nth-child(5n) {
-        padding-left: .5em;
-        padding-right: .75em;
-        display: flex;
-        align-items: center;
-    }
-
-    // Coloring
-    &.month * {
-        color: var(--main-dark4);
-    }
-
-    &.month>div:first-child>div,
-    &.year>div:first-child>div {
-        padding: $label-padding;
-        border-radius: var(--border-radius2);
-        display: flex;
-        gap: .5em;
-    }
-
-    &.month>div:first-child>div {
-        background-color: $blue;
-    }
-
-    &.month:hover>div:first-child>div {
-        background-color: $blue-hover;
-        transition: all .2s ease-in-out;
-    }
-
-    &.year * {
-        color: var(--secondary-dark4);
-    }
-
-    &.year>div:first-child>div {
-        background-color: $green;
-    }
-
-    &.year:hover>div:first-child>div {
-        background-color: $green-hover;
+    .row {
+        display: contents;
+        cursor: pointer;
         transition: all .2s ease-in-out;
 
+        .row-label {
+            display: flex;
+            gap: .5em;
+        }
+
+        &>div.spanned {
+            // cover 2-5 columns
+            grid-column: 2 / span 4;
+            text-align: right;
+            padding-right: 1em;
+        }
+
+        &.header>div {
+            cursor: default;
+            padding-top: 0;
+            padding-bottom: .5em;
+            position: sticky;
+            top: 0;
+            background-color: $background;
+            box-shadow: 0px 4px 4px -2px $background;
+            display: flex;
+            gap: .75em;
+            font-weight: 500;
+            z-index: 1;
+
+            &:first-child {
+                padding-left: .125em;
+            }
+
+            // Styles for tab view
+            span:focus {
+                outline: none;
+            }
+
+            span[aria-selected="false"],
+            span[aria-selected="true"] {
+                cursor: pointer;
+            }
+
+            span[aria-selected="false"] {
+                opacity: .4;
+            }
+        }
+
+        // Styles for showing when yearly budget resets
+        &.has-alternate-header {
+
+            &>div.yearly {
+                cursor: pointer;
+                position: relative;
+                white-space: nowrap;
+
+                h4:first-child {
+                    opacity: 1;
+                    transition: opacity .2s ease-in-out;
+                }
+
+                h4:not(:first-child) {
+                    position: absolute;
+                    left: 0;
+                    opacity: 0;
+                    transition: opacity .2s ease-in-out;
+                }
+            }
+
+            &>div.yearly:hover {
+                h4:first-child {
+                    opacity: 0;
+                    transition: opacity .2s ease-in-out;
+                }
+
+                h4:not(:first-child) {
+                    opacity: 1;
+                    transition: opacity .2s ease-in-out;
+                }
+            }
+        }
+
+        // Amount spent columns
+        &>div:nth-child(5n+2):not(.spanned) {
+            display: flex;
+            align-items: center;
+            text-align: right;
+            justify-content: flex-end;
+            padding-right: .5em;
+        }
+
+        // Forward slash columns
+        &>div:nth-child(5n+3):not(.spanned) {
+            display: flex;
+            align-items: center;
+        }
+
+        // Limit amount columns
+        &>div:nth-child(5n+4) {
+            display: flex;
+            align-items: center;
+            padding-left: .5em;
+            padding-right: .25em;
+        }
+
+        // Progress circle columns
+        &>div:nth-child(5n) {
+            padding-left: .5em;
+            padding-right: .75em;
+            display: flex;
+            align-items: center;
+        }
+
+        // Coloring
+        &.month * {
+            color: var(--main-dark4);
+        }
+
+        &.month>div:first-child>div,
+        &.year>div:first-child>div {
+            padding: $label-padding;
+            border-radius: var(--border-radius2);
+            display: flex;
+            gap: .5em;
+        }
+
+        &.month>div:first-child>div {
+            background-color: $blue;
+        }
+
+        &.month:hover>div:first-child>div {
+            background-color: $blue-hover;
+            transition: all .2s ease-in-out;
+        }
+
+        &.year * {
+            color: var(--secondary-dark4);
+        }
+
+        &.year>div:first-child>div {
+            background-color: $green;
+        }
+
+        &.year:hover>div:first-child>div {
+            background-color: $green-hover;
+            transition: all .2s ease-in-out;
+
+        }
+
+        // Borders in between rows
+        &:not(:first-child):not(:last-of-type)>div {
+            position: relative;
+            z-index: 0;
+        }
     }
 
-    // Borders in between rows
-    &:not(:first-child):not(:last-of-type)>div {
-        position: relative;
-        z-index: 0;
+    .skeleton-column {
+        display: flex;
+        flex-direction: column;
+        gap: $item-row-gap;
+        padding: $item-row-gap;
+
+        &>div {
+            width: 100%;
+        }
     }
 }
 
-.skeleton-column {
-    display: flex;
-    flex-direction: column;
-    gap: $item-row-gap;
-    padding: $item-row-gap;
-
-    &>div {
-        width: 100%;
-    }
-}
 
 @media screen and (max-width: 550px) {
     .row {

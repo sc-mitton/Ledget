@@ -8,6 +8,7 @@ const Settings = ({
 }) => {
     return (
         <svg
+            fill={fill}
             className={className}
             width={width}
             height={height}

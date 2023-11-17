@@ -3,6 +3,7 @@ import React, { FC, memo, Fragment, useState, useRef, useEffect } from 'react'
 import { Tab } from '@headlessui/react'
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import Big from 'big.js'
+import { AnimatePresence } from 'framer-motion'
 
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import './styles/SpendingCategories.scss'
@@ -14,7 +15,7 @@ import {
     sortCategoriesAlpha,
     sortCategoriesAmountAsc,
     sortCategoriesAmountDesc,
-    sortCategoriesDefault
+    sortCategoriesDefault,
 } from '@features/categorySlice'
 import {
     DollarCents,
@@ -23,7 +24,10 @@ import {
     GrnPrimaryButton,
     BluePrimaryButton,
     ColoredShimmer,
-    PillOptionButton
+    PillOptionButton,
+    FadeInOutDiv,
+    useLoaded,
+    CloseButton
 } from '@ledget/ui'
 import { Plus, BackArrow } from '@ledget/media'
 import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
@@ -74,9 +78,19 @@ const Column: FC<React.HTMLProps<HTMLDivElement>> = ({ children }) => {
 }
 
 const Row = ({ category }: { category: Category }) => {
+    const [searchParams, setSearchParams] = useSearchParams()
+
     return (
         <div className={`row ${category.period}`}>
-            <div className="row-label">
+            <div
+                className="row-label"
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                    searchParams.set('category', category.id)
+                    setSearchParams(searchParams)
+                }}
+            >
                 <div>
                     <span>{category.emoji}</span>
                     <span>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</span>
@@ -197,8 +211,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
     )
 }
 
-const ColumnView = () => {
-    const categories = useAppSelector(selectCategories)
+const ColumnView = ({ categories }: { categories: Category[] }) => {
 
     return (
         <>
@@ -220,9 +233,8 @@ const ColumnView = () => {
     )
 }
 
-const TabView = () => {
+const TabView = ({ categories }: { categories: Category[] }) => {
     const [selectedIndex, setSelectedIndex] = useState(0)
-    const categories = useAppSelector(selectCategories)
     const {
         monthly_spent,
         yearly_spent,
@@ -293,63 +305,73 @@ const Footer = () => {
 
     return (
         <div>
-            <div>
-                <PillOptionButton
-                    isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('cat-sort') || '')}
-                    onClick={() => {
-                        // desc -> asc -> default
-                        if (!['amount-desc', 'amount-asc'].includes(searchParams.get('cat-sort') || '')) {
-                            dispatch(sortCategoriesAmountDesc())
-                            searchParams.set('cat-sort', 'amount-desc')
-                            setSearchParams(searchParams)
-                        } else if (searchParams.get('cat-sort') === 'amount-desc') {
-                            dispatch(sortCategoriesAmountAsc())
-                            searchParams.set('cat-sort', 'amount-asc')
-                            setSearchParams(searchParams)
-                        } else {
-                            dispatch(sortCategoriesDefault())
-                            searchParams.delete('cat-sort')
-                            setSearchParams(searchParams)
-                        }
-                    }}
-                >
-                    <span>$</span>
-                    <BackArrow
-                        stroke={'currentColor'}
-                        rotate={searchParams.get('cat-sort') === 'amount-asc' ? '90' : '-90'}
-                        size={'.75em'}
-                        strokeWidth={'16'}
-                    />
-                </PillOptionButton>
-                <PillOptionButton
-                    isSelected={searchParams.get('cat-sort') === 'alpha'}
-                    onClick={() => {
-                        if (searchParams.get('cat-sort') === 'alpha') {
-                            dispatch(sortCategoriesDefault())
-                            searchParams.delete('cat-sort')
-                            setSearchParams(searchParams)
-                            return
-                        } else {
-                            dispatch(sortCategoriesAlpha())
-                            searchParams.set('cat-sort', 'alpha')
-                            setSearchParams(searchParams)
-                        }
-                    }}
-                >
-                    a-z
-                </PillOptionButton>
-            </div>
+            <PillOptionButton
+                isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('cat-sort') || '')}
+                onClick={() => {
+                    // desc -> asc -> default
+                    if (!['amount-desc', 'amount-asc'].includes(searchParams.get('cat-sort') || '')) {
+                        dispatch(sortCategoriesAmountDesc())
+                        searchParams.set('cat-sort', 'amount-desc')
+                        setSearchParams(searchParams)
+                    } else if (searchParams.get('cat-sort') === 'amount-desc') {
+                        dispatch(sortCategoriesAmountAsc())
+                        searchParams.set('cat-sort', 'amount-asc')
+                        setSearchParams(searchParams)
+                    } else {
+                        dispatch(sortCategoriesDefault())
+                        searchParams.delete('cat-sort')
+                        setSearchParams(searchParams)
+                    }
+                }}
+            >
+                <span>$</span>
+                <BackArrow
+                    stroke={'currentColor'}
+                    rotate={searchParams.get('cat-sort') === 'amount-asc' ? '90' : '-90'}
+                    size={'.75em'}
+                    strokeWidth={'16'}
+                />
+            </PillOptionButton>
+            <PillOptionButton
+                isSelected={searchParams.get('cat-sort') === 'alpha'}
+                onClick={() => {
+                    if (searchParams.get('cat-sort') === 'alpha') {
+                        dispatch(sortCategoriesDefault())
+                        searchParams.delete('cat-sort')
+                        setSearchParams(searchParams)
+                        return
+                    } else {
+                        dispatch(sortCategoriesAlpha())
+                        searchParams.set('cat-sort', 'alpha')
+                        setSearchParams(searchParams)
+                    }
+                }}
+            >
+                a-z
+            </PillOptionButton>
+        </div>
+
+    )
+}
+
+const CategoryDetail = ({ category }: { category: Category }) => {
+
+    return (
+        <div>
+            <h2>{`${category.emoji} ${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
         </div>
     )
 }
 
 const SpendingCategories = () => {
-    const [searchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
     const [fetchCategories, { isLoading }] = useLazyGetCategoriesQuery()
     const [isTabView, setIsTabView] = useState(false)
     const [skeletonRowCount, setSkeletonRowCount] = useState(5)
     const ref = useRef<HTMLDivElement>(null)
     const { start, end } = useGetStartEndFromSearchParams()
+    const loaded = useLoaded(1000)
+    const categories = useAppSelector(selectCategories)
 
     useEffect(() => {
         fetchCategories({ start: start, end: end }, true)
@@ -385,13 +407,38 @@ const SpendingCategories = () => {
 
     return (
         <div id="spending-categories-window" className="window" ref={ref}>
-            <div>
-                {isLoading
-                    ? <SkeletonRows numberOfRows={skeletonRowCount} />
-                    : isTabView ? <TabView /> : <ColumnView />
+            <AnimatePresence mode='wait'>
+                {!searchParams.get('category')
+                    ?
+                    <FadeInOutDiv immediate={!loaded} key="all-categories">
+                        {isLoading
+                            ? <SkeletonRows numberOfRows={skeletonRowCount} />
+                            : isTabView ? <TabView categories={categories} /> : <ColumnView categories={categories} />
+                        }
+                    </FadeInOutDiv>
+                    :
+                    <FadeInOutDiv key="category-detail">
+                        <CategoryDetail
+                            category={categories.find(category => category.id === searchParams.get('category'))!}
+                        />
+                    </FadeInOutDiv>
                 }
-            </div>
-            <Footer />
+            </AnimatePresence>
+            <AnimatePresence mode='wait'>
+                {!searchParams.get('category')
+                    ? <FadeInOutDiv id="category-filters--container" key="all-categories">
+                        <Footer />
+                    </FadeInOutDiv>
+                    : <FadeInOutDiv key="category-detail">
+                        <CloseButton
+                            onClick={() => {
+                                searchParams.delete('category')
+                                setSearchParams(searchParams)
+                            }}
+                        />
+                    </FadeInOutDiv>
+                }
+            </AnimatePresence>
         </div>
     )
 }

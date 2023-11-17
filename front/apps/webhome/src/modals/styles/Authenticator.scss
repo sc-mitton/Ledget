@@ -33,7 +33,7 @@
     padding: .5rem;
     filter: grayscale(0.5);
     mix-blend-mode: multiply;
-    border: 2px solid var(--m-text-gray);
+    border: 2px solid var(--m-text);
 }
 
 #qr-setup--container>img+button {
@@ -62,7 +62,7 @@
     font-weight: 500;
     padding: .5rem .75rem;
     border-radius: var(--border-radius4);
-    border: 1.5px solid var(--m-text-gray);
+    border: 1.5px solid var(--m-text);
 }
 
 #code-setup--container button svg {

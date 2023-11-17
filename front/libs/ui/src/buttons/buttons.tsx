@@ -66,7 +66,7 @@ export const LinkArrowButton = withArrow(ButtonWithClassName('btn-i con2'))
 
 export const SmallArrowButton = ({ type = '', ...rest }) => (
   <button className="arrow-nav btn-scale2" {...rest}>
-    <ArrowIcon stroke='var(--m-text-gray)' scale={.7} rotation={type === "back" ? 90 : -90} />
+    <ArrowIcon stroke='var(--m-text)' scale={.7} rotation={type === "back" ? 90 : -90} />
   </button>
 )
 

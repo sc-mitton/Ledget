@@ -1,7 +1,7 @@
 'react'
 
 const Face = ({
-    fill = 'var(--m-text-gray)',
+    fill = 'var(--m-text)',
     width = "1em",
     height = "1em",
     className = ''

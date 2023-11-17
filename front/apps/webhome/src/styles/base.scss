@@ -56,7 +56,7 @@
 
     /* Text */
     --input-focus: hsl(233, 56%, 73%);
-    --m-text-gray: #292929;
+    --m-text: #292929;
     --sub-text: #3d3d3d;
     --input-placeholder: #848484;
     --input-placeholder2: #a6a6a6;
@@ -116,7 +116,7 @@
     :root {
         --input-focus: hsl(233, 56%, 73%);
         --input-placeholder: #2a2a2a;
-        --m-text-gray: rgb(44, 44, 44);
+        --m-text: rgb(44, 44, 44);
     }
 
     * {
@@ -161,7 +161,7 @@ span {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-size: .875rem;
     letter-spacing: 0.2px;
-    color: var(--m-text-gray);
+    color: var(--m-text);
 }
 
 p,
@@ -169,7 +169,7 @@ textarea {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-weight: 400;
     font-size: .875rem;
-    color: var(--m-text-gray);
+    color: var(--m-text);
     opacity: .8
 }
 
@@ -580,7 +580,7 @@ button.pulse:hover {
     border-radius: var(--border-radius2);
     transform-origin: top;
     padding: .375em .375em;
-    color: var(--m-text-gray);
+    color: var(--m-text);
     font-weight: 500;
     border: var(--subtle-border);
     white-space: nowrap;

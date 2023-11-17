@@ -8,6 +8,7 @@ const Profile = ({
 }) => {
     return (
         <svg
+            fill={fill}
             className={className}
             width={width}
             height={height}

@@ -1,7 +1,7 @@
 'react'
 
 const Download = ({
-    stroke = 'var(--m-text-gray)',
+    stroke = 'var(--m-text)',
     strokeWidth = "16",
     width = "1em",
     height = "1em",

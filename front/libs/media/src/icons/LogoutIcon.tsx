@@ -9,6 +9,7 @@ const Logout = ({
 }) => {
     return (
         <svg
+            fill={fill}
             className={className}
             id={id}
             width={width}
