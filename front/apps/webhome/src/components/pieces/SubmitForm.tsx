@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes } from 'react'
 
-import { SecondaryButton, GreenSubmitButton } from '@ledget/ui'
+import { SecondaryButton, BlueSubmitButton } from '@ledget/ui'
 
 interface I {
     submitting: boolean
@@ -37,9 +37,9 @@ const SubmitForm: React.FC<I & HTMLAttributes<HTMLButtonElement>>
                 >
                     Cancel
                 </SecondaryButton>
-                <GreenSubmitButton success={success} submitting={submitting} {...submitProps}>
+                <BlueSubmitButton success={success} submitting={submitting} {...submitProps}>
                     {text ? `${text}` : 'Save'}
-                </GreenSubmitButton>
+                </BlueSubmitButton>
             </div >
         )
     }

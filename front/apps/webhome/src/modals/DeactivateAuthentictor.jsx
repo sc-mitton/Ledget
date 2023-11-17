@@ -6,7 +6,7 @@ import './styles/DeactivateAuthenticator.css'
 import { useUpdateUserMutation } from '@features/userSlice'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 import { withSmallModal } from '@ledget/ui'
-import { GreenSubmitButton, SecondaryButton, FormError } from '@ledget/ui'
+import { BlueSubmitButton, SecondaryButton, FormError } from '@ledget/ui'
 import { withReAuth } from '@utils'
 import { useFlow } from '@ledget/ory-sdk'
 
@@ -79,14 +79,14 @@ const DeactivateAuthenticator = (props) => {
                             <SecondaryButton onClick={() => props.closeModal()}>
                                 Cancel
                             </SecondaryButton>
-                            <GreenSubmitButton
+                            <BlueSubmitButton
                                 name="method"
                                 value="totp"
                                 success={isCompleteSuccess}
                                 submitting={isCompletingFlow || isDeletingCodes}
                             >
                                 Yes
-                            </GreenSubmitButton>
+                            </BlueSubmitButton>
                         </div>
                     </div>
                     <input type="hidden" name="totp_unlink" value="true" />

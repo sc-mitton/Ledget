@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import './styles/ChangeBillCycle.css'
 import { withSmallModal } from '@ledget/ui'
 import { useNavigate } from 'react-router-dom'
-import { GreenSubmitButton, LoadingRing } from '@ledget/ui'
+import { BlueSubmitButton, LoadingRing } from '@ledget/ui'
 import {
     useGetPricesQuery,
     useUpdateSubscriptionItemsMutation,
@@ -61,13 +61,13 @@ const Modal = withSmallModal((props) => {
                 </span>
             </div>
             <div style={{ float: 'right' }}>
-                <GreenSubmitButton
+                <BlueSubmitButton
                     submitting={updating}
                     success={updated}
                     onClick={handleClick}
                 >
                     Confirm
-                </GreenSubmitButton>
+                </BlueSubmitButton>
             </div>
         </div >
     )

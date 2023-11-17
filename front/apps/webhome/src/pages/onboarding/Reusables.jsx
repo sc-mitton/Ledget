@@ -11,7 +11,7 @@ import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { GreenCheckSubmitButton, GreenSubmitWithArrow, PrimaryTextButton } from '@ledget/ui'
+import { GreenCheckSubmitButton, BlueSubmitWithArrow, PrimaryTextButton } from '@ledget/ui'
 
 
 export const TabView = ({ children }) => {
@@ -140,7 +140,7 @@ export const BottomButtons = () => {
             >
                 Add
             </GreenCheckSubmitButton>
-            <GreenSubmitWithArrow
+            <BlueSubmitWithArrow
                 aria-label="Next"
                 onClick={handleClick}
                 disabled={itemsEmpty}
@@ -148,7 +148,7 @@ export const BottomButtons = () => {
                 type="button"
             >
                 Next
-            </GreenSubmitWithArrow>
+            </BlueSubmitWithArrow>
         </div>
     )
 }

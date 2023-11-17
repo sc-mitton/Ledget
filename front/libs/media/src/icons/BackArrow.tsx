@@ -2,17 +2,18 @@
 
 const BackArrow = ({
     className = '',
-    width = "1em",
-    height = "1em",
+    size = '1em',
     stroke = "#363636",
-    strokeWidth = "24"
+    strokeWidth = "24",
+    rotate = "0"
 }) => {
 
     return (
         <svg
+            style={{ transform: `rotate(${rotate}deg)` }}
             className={className}
-            width={width}
-            height={height}
+            width={size}
+            height={size}
             viewBox="0 0 144 144"
             xmlns="http://www.w3.org/2000/svg"
             x="0px"

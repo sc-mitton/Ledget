@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 
 import './styles/RecoveryCodes.css'
-import { GreenSubmitButton, BlackSubmitButton, SecondaryButton } from '@ledget/ui'
+import { BlueSubmitButton, BlackSubmitButton, SecondaryButton } from '@ledget/ui'
 import { withSmallModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
 import { useFlow } from '@ledget/ory-sdk'
@@ -132,7 +132,7 @@ export const Content = (props) => {
                     ...(location.pathname.includes('authenticator-setup') ? { marginBottom: '0' } : {})
                 }}
             >
-                <GreenSubmitButton
+                <BlueSubmitButton
                     type="button"
                     loading={isGettingFlow || isFetchingSecrets}
                     className="recovery-codes-button"
@@ -140,8 +140,8 @@ export const Content = (props) => {
                 >
                     Download
                     <DownloadIcon stroke={'currentColor'} />
-                </GreenSubmitButton>
-                <GreenSubmitButton
+                </BlueSubmitButton>
+                <BlueSubmitButton
                     type="button"
                     loading={isGettingFlow || isFetchingSecrets}
                     className="recovery-codes-button"
@@ -149,7 +149,7 @@ export const Content = (props) => {
                 >
                     Copy
                     <CopyIcon fill={'currentColor'} />
-                </GreenSubmitButton>
+                </BlueSubmitButton>
             </div>
             {searchParams.get('lookup_secret_regenerate') &&
                 !location.pathname.includes('authenticator-setup') &&

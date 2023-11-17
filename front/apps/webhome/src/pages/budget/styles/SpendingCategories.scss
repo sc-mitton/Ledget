@@ -30,7 +30,27 @@ $background: var(--window);
     // Aprx. 5 rows
     min-height: calc(5 * (1em + 2 * $item-row-gap + 2 * $row-padding));
 
-    &>div {
+    // &>div:first-of-type {
+    //     display: flex;
+    //     width: 100%;
+    //     justify-content: flex-end;
+    //     margin-bottom: 1em;
+    //     gap: .325em;
+
+    //     button {
+    //         display: flex;
+    //         align-items: center;
+    //         gap: .125em;
+    //         min-width: 6ch;
+
+    //         span {
+    //             font-size: .925em;
+    //             color: inherit;
+    //         }
+    //     }
+    // }
+
+    &>div:last-of-type {
         gap: $column-gap;
         border-radius: var(--border-radius25);
         display: grid;

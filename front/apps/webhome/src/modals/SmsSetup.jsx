@@ -14,7 +14,7 @@ import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/authSlice'
 import { useGetMeQuery } from '@features/userSlice'
 import {
     BackButton,
-    GreenSubmitWithArrow,
+    BlueSubmitWithArrow,
     LightGrnWideButton,
     SecondaryButton,
     PhoneInput,
@@ -83,9 +83,9 @@ const SmsAdd = (props) => {
                     >
                         Cancel
                     </SecondaryButton>
-                    <GreenSubmitWithArrow submitting={isLoading}>
+                    <BlueSubmitWithArrow submitting={isLoading}>
                         Next
-                    </GreenSubmitWithArrow>
+                    </BlueSubmitWithArrow>
                 </div>
             </form>
         </div>
@@ -176,14 +176,14 @@ const SmsSetup = (props) => {
                             >
                                 Cancel
                             </SecondaryButton>
-                            <GreenSubmitWithArrow
+                            <BlueSubmitWithArrow
                                 onClick={() => {
                                     searchParams.set('continue', true)
                                     setSearchParams(searchParams)
                                 }}
                             >
                                 Continue
-                            </GreenSubmitWithArrow>
+                            </BlueSubmitWithArrow>
                         </div>
                     </SlideMotionDiv>
                     :

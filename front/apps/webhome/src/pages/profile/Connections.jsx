@@ -16,7 +16,7 @@ import { RelinkIcon } from '@ledget/media'
 import { ShadowedContainer } from '@components/pieces'
 import {
     SecondaryButton,
-    GreenSubmitButton,
+    BlueSubmitButton,
     IconButton,
     ShimmerDiv,
     DeleteButton,
@@ -231,14 +231,14 @@ const ConfirmModal = withReAuth(withSmallModal((props) => {
                 >
                     Cancel
                 </SecondaryButton>
-                <GreenSubmitButton
+                <BlueSubmitButton
                     onClick={finalSubmit}
                     submitting={isLoading}
                     success={isSuccess}
                     aria-label="Confirm"
                 >
                     Confirm
-                </GreenSubmitButton>
+                </BlueSubmitButton>
             </div>
         </div>
     )

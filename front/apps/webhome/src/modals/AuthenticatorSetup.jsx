@@ -13,8 +13,8 @@ import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
 import {
     BackButton,
-    GreenSubmitWithArrow,
-    GreenSubmitButton,
+    BlueSubmitWithArrow,
+    BlueSubmitButton,
     PlainTextInput,
     LoadingRingDiv,
     NodeImage,
@@ -204,15 +204,15 @@ const Authenticator = (props) => {
                         <BackButton onClick={handleBack} type="button" />
                         {searchParams.get('step') === 'confirm'
                             ?
-                            <GreenSubmitButton
+                            <BlueSubmitButton
                                 name="method"
                                 value="totp"
                                 submitting={isCompletingFlow}
                             >
                                 Confirm
-                            </GreenSubmitButton>
+                            </BlueSubmitButton>
                             :
-                            <GreenSubmitWithArrow
+                            <BlueSubmitWithArrow
                                 type="button"
                                 onClick={() => {
                                     searchParams.set('step', 'confirm')
@@ -220,7 +220,7 @@ const Authenticator = (props) => {
                                 }}
                             >
                                 Next
-                            </GreenSubmitWithArrow>
+                            </BlueSubmitWithArrow>
                         }
                     </div>
                 }

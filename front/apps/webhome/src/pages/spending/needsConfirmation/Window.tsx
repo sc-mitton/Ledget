@@ -118,21 +118,21 @@ const NewItem: FC<{
             : ''
     )
     const [color, setColor] = useState<'blue' | 'green' | 'green-split' | 'blue-split' | 'green-blue-split'>(
-        item.predicted_category?.period === 'month' ? 'green' : 'blue'
+        item.predicted_category?.period === 'month' ? 'blue' : 'green'
     )
 
     useEffect(() => {
         if (isBill(updatedBillCat)) {
-            updatedBillCat.period === 'month' ? setColor('green') : setColor('blue')
+            updatedBillCat.period === 'month' ? setColor('blue') : setColor('green')
             updatedBillCat
                 ? setName(updatedBillCat.name.charAt(0).toUpperCase() + updatedBillCat.name.slice(1))
                 : setName(`${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`)
         } else if (typeof updatedBillCat !== 'undefined') {
             // If all the categories are the 'month' period, then color can be set
             if (updatedBillCat.every(cat => cat.period === 'month')) {
-                setColor('green-split')
-            } else if (updatedBillCat.every(cat => ['once', 'year'].includes(cat.period))) {
                 setColor('blue-split')
+            } else if (updatedBillCat.every(cat => ['once', 'year'].includes(cat.period))) {
+                setColor('green-split')
             } else {
                 setColor('green-blue-split')
             }

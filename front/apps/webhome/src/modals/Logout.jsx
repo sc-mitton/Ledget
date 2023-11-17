@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import "./styles/Logout.css"
 import { withSmallModal } from '@ledget/ui'
-import { SecondaryButton, GreenSubmitButton } from '@ledget/ui'
+import { SecondaryButton, BlueSubmitButton } from '@ledget/ui'
 import { useGetLogoutFlowQuery, useLazyGetUpdatedLogoutFlowQuery } from '@features/orySlice'
 
 function Logout(props) {
@@ -61,13 +61,13 @@ function Logout(props) {
                 >
                     Cancel
                 </SecondaryButton>
-                <GreenSubmitButton
+                <BlueSubmitButton
                     onClick={() => { setQuedLogout(true) }}
                     submitting={(fetchingFlow && quedLogout) || loggingOut}
                     aria-label="Sign out"
                 >
                     Logout
-                </GreenSubmitButton>
+                </BlueSubmitButton>
             </div>
         </div>
     )

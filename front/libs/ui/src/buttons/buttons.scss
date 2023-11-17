@@ -157,12 +157,12 @@
 
 
 .btn-grn2 {
-    background-color: var(--main-hlight4);
-    color: var(--main-dark4);
+    background-color: var(--secondary-hlight2);
+    color: var(--secondary-dark4);
     transition: all .3s ease;
 
     &:hover {
-        background-color: color-mix(in srgb, var(--main-hlight4), var(--main-dark4) 7%);
+        background-color: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-dark4) 7%);
         transition: all .3s ease;
     }
 }

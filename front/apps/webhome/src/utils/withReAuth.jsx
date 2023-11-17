@@ -11,7 +11,7 @@ import { useCreateOtpMutation, useVerifyOtpMutation, selectSessionIsFreshAal1 } 
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory-sdk'
 import {
-    GreenSubmitWithArrow,
+    BlueSubmitWithArrow,
     SecondaryButton,
     PasswordInput,
     PlainTextInput,
@@ -81,13 +81,13 @@ const PassWord = ({ onCancel }) => {
                 >
                     Cancel
                 </SecondaryButton>
-                <GreenSubmitWithArrow
+                <BlueSubmitWithArrow
                     submitting={isCompletingFlow}
                     name="method"
                     value="password"
                 >
                     Continue
-                </GreenSubmitWithArrow>
+                </BlueSubmitWithArrow>
             </div>
             <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
             <input type="hidden" name="identifier" value={user?.email || ''} />
@@ -169,13 +169,13 @@ const Totp = () => {
                 {isGetFlowError && <ErrorFetchingFlow />}
             </div>
             <div>
-                <GreenSubmitWithArrow
+                <BlueSubmitWithArrow
                     submitting={isCompletingFlow}
                     name="method"
                     value={`${useLookupSecret ? 'lookup_secret' : 'totp'}`}
                 >
                     Confirm
-                </GreenSubmitWithArrow>
+                </BlueSubmitWithArrow>
             </div>
             <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
         </form>

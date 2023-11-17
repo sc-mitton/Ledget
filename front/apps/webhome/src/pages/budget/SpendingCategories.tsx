@@ -14,9 +14,10 @@ import {
     StaticProgressCircle,
     GrnPrimaryButton,
     BluePrimaryButton,
-    ColoredShimmer
+    ColoredShimmer,
+    PillOptionButton
 } from '@ledget/ui'
-import { Plus } from '@ledget/media'
+import { Plus, BackArrow } from '@ledget/media'
 import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
 
 
@@ -28,18 +29,6 @@ const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) =
         <>
             {period === 'year'
                 ?
-                <BluePrimaryButton
-                    className={`add-new-category ${period}`}
-                    onClick={() => {
-                        navigate(
-                            `${location.pathname}/new-category/${location.search}`,
-                            { state: { period: period } }
-                        )
-                    }}
-                >
-                    <Plus stroke={'currentColor'} />
-                </BluePrimaryButton>
-                :
                 <GrnPrimaryButton
                     className={`add-new-category ${period}`}
                     onClick={() => {
@@ -51,6 +40,18 @@ const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) =
                 >
                     <Plus stroke={'currentColor'} />
                 </GrnPrimaryButton>
+                :
+                <BluePrimaryButton
+                    className={`add-new-category ${period}`}
+                    onClick={() => {
+                        navigate(
+                            `${location.pathname}/new-category/${location.search}`,
+                            { state: { period: period } }
+                        )
+                    }}
+                >
+                    <Plus stroke={'currentColor'} />
+                </BluePrimaryButton>
             }
         </>
     )
@@ -124,7 +125,7 @@ const SkeletonRows = ({ numberOfRows }: { numberOfRows: number }) => (
 const Rows = memo(({ categories, period }: { categories: Category[], period: 'month' | 'year' }) => {
     return (
         <>
-            {categories.length > 0
+            {(categories.length > 0)
                 ?
                 <>
                     {categories.map(category => (
