@@ -4,10 +4,18 @@ import { Tab } from '@headlessui/react'
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import Big from 'big.js'
 
-import { useAppSelector } from '@hooks/store'
+import { useAppSelector, useAppDispatch } from '@hooks/store'
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
-import { useLazyGetCategoriesQuery, SelectCategoryBillMetaData, selectCategories } from '@features/categorySlice'
+import {
+    useLazyGetCategoriesQuery,
+    SelectCategoryBillMetaData,
+    selectCategories,
+    sortCategoriesAlpha,
+    sortCategoriesAmountAsc,
+    sortCategoriesAmountDesc,
+    sortCategoriesDefault
+} from '@features/categorySlice'
 import {
     DollarCents,
     AnimatedDollarCents,
@@ -279,6 +287,62 @@ const TabView = () => {
     )
 }
 
+const Footer = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    const dispatch = useAppDispatch()
+
+    return (
+        <div>
+            <div>
+                <PillOptionButton
+                    isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('cat-sort') || '')}
+                    onClick={() => {
+                        // desc -> asc -> default
+                        if (!['amount-desc', 'amount-asc'].includes(searchParams.get('cat-sort') || '')) {
+                            dispatch(sortCategoriesAmountDesc())
+                            searchParams.set('cat-sort', 'amount-desc')
+                            setSearchParams(searchParams)
+                        } else if (searchParams.get('cat-sort') === 'amount-desc') {
+                            dispatch(sortCategoriesAmountAsc())
+                            searchParams.set('cat-sort', 'amount-asc')
+                            setSearchParams(searchParams)
+                        } else {
+                            dispatch(sortCategoriesDefault())
+                            searchParams.delete('cat-sort')
+                            setSearchParams(searchParams)
+                        }
+                    }}
+                >
+                    <span>$</span>
+                    <BackArrow
+                        stroke={'currentColor'}
+                        rotate={searchParams.get('cat-sort') === 'amount-asc' ? '90' : '-90'}
+                        size={'.75em'}
+                        strokeWidth={'16'}
+                    />
+                </PillOptionButton>
+                <PillOptionButton
+                    isSelected={searchParams.get('cat-sort') === 'alpha'}
+                    onClick={() => {
+                        if (searchParams.get('cat-sort') === 'alpha') {
+                            dispatch(sortCategoriesDefault())
+                            searchParams.delete('cat-sort')
+                            setSearchParams(searchParams)
+                            return
+                        } else {
+                            dispatch(sortCategoriesAlpha())
+                            searchParams.set('cat-sort', 'alpha')
+                            setSearchParams(searchParams)
+                        }
+                    }}
+                >
+                    a-z
+                </PillOptionButton>
+            </div>
+        </div>
+    )
+}
+
 const SpendingCategories = () => {
     const [searchParams] = useSearchParams()
     const [fetchCategories, { isLoading }] = useLazyGetCategoriesQuery()
@@ -327,6 +391,7 @@ const SpendingCategories = () => {
                     : isTabView ? <TabView /> : <ColumnView />
                 }
             </div>
+            <Footer />
         </div>
     )
 }

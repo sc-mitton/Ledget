@@ -43,6 +43,7 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
     alerts = AlertSerializer(many=True, required=False)
     amount_spent = serializers.SerializerMethodField(read_only=True)
     has_transactions = serializers.SerializerMethodField(read_only=True)
+    order = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Category

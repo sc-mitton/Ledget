@@ -8,7 +8,7 @@ import { Plus, CheckMark3 } from '@ledget/media'
 import { useBakedPlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
-import { BluePrimaryButtonButton, ExpandableContainer, LoadingRing, BlackPrimaryButtonWithArrow, Base64Logo, useLoaded } from '@ledget/ui'
+import { BluePrimaryButton, ExpandableContainer, LoadingRing, BlackPrimaryButtonWithArrow, Base64Logo, useLoaded } from '@ledget/ui'
 
 const InstitutionLogos = ({ plaidItems }) => {
     const { isLoading } = useGetPlaidItemsQuery()
@@ -48,13 +48,13 @@ const BottomButtons = ({ continueDisabled }) => {
 
     return (
         <div className="btn-container-enabled">
-            <BluePrimaryButtonButton
+            <BluePrimaryButton
                 onClick={open}
                 aria-label="Link Account"
             >
                 Add Account
                 <Plus size={'.9em'} stroke={'currentColor'} />
-            </BluePrimaryButtonButton>
+            </BluePrimaryButton>
             <ExpandableContainer expanded={!continueDisabled}>
                 <BlackPrimaryButtonWithArrow
                     aria-label="Next"

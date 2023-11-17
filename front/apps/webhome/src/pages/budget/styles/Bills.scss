@@ -50,6 +50,11 @@ $number-of-bill-rows: 5;
     &.collapsed {
         gap: 0;
         transition: gap .2s ease-out .2s;
+
+        // All buttons but the expand button
+        button:not(:last-child) {
+            opacity: 0;
+        }
     }
 
     &.collapsed>div:last-child {

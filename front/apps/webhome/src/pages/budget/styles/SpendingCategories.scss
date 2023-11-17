@@ -28,29 +28,36 @@ $background: var(--window);
     flex-direction: column;
     justify-content: flex-start;
     // Aprx. 5 rows
-    min-height: calc(5 * (1em + 2 * $item-row-gap + 2 * $row-padding));
-
-    // &>div:first-of-type {
-    //     display: flex;
-    //     width: 100%;
-    //     justify-content: flex-end;
-    //     margin-bottom: 1em;
-    //     gap: .325em;
-
-    //     button {
-    //         display: flex;
-    //         align-items: center;
-    //         gap: .125em;
-    //         min-width: 6ch;
-
-    //         span {
-    //             font-size: .925em;
-    //             color: inherit;
-    //         }
-    //     }
-    // }
+    min-height: calc(5.25 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em); // the 2em comes from the bottom buttons space
 
     &>div:last-of-type {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+        align-items: flex-end;
+        margin-top: 1em;
+        flex-grow: 1;
+
+        &>div {
+            height: min-content;
+            display: flex;
+            gap: .325em;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            gap: .125em;
+            min-width: 6ch;
+
+            span {
+                font-size: .925em;
+                color: inherit;
+            }
+        }
+    }
+
+    &>div:first-of-type {
         gap: $column-gap;
         border-radius: var(--border-radius25);
         display: grid;

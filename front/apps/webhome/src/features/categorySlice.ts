@@ -19,6 +19,7 @@ export interface Category {
     alerts: Alert[],
     is_default: boolean,
     has_transactions: boolean,
+    order?: number,
 }
 
 export interface SplitCategory extends Category {
@@ -127,6 +128,18 @@ export const categorySlice = createSlice({
                     state.yearly_spent += amount_spent_int;
                 }
             }
+        },
+        sortCategoriesAlpha: (state) => {
+            state.categories.sort((a, b) => a.name.localeCompare(b.name))
+        },
+        sortCategoriesAmountAsc: (state) => {
+            state.categories.sort((a, b) => (a.limit_amount || 0) - (b.limit_amount || 0))
+        },
+        sortCategoriesAmountDesc: (state) => {
+            state.categories.sort((a, b) => (b.limit_amount || 0) - (a.limit_amount || 0))
+        },
+        sortCategoriesDefault: (state) => {
+            state.categories.sort((a, b) => (a.order || 0) - (b.order || 0))
         }
     },
     extraReducers: (builder) => {
@@ -175,7 +188,11 @@ export const categorySlice = createSlice({
 })
 
 export const {
-    addTransaction2Cat
+    addTransaction2Cat,
+    sortCategoriesAlpha,
+    sortCategoriesAmountAsc,
+    sortCategoriesAmountDesc,
+    sortCategoriesDefault
 } = categorySlice.actions
 
 

@@ -280,17 +280,16 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             qset = Category.objects.filter(
                 usercategory__user=self.request.user,
                 id__in=ids
-            ).order_by('usercategory__order', 'name')
+            ).annotate(order=F('usercategory__order')).order_by('order', 'name')
         else:
             # Else get the active categories
             qset = Category.objects.filter(
                 usercategory__user=self.request.user,
                 usercategory__category__removed_on__isnull=True
-            ).order_by('usercategory__order', 'name') \
-             .annotate(has_transactions=Exists(
+            ).annotate(has_transactions=Exists(
                 TransactionCategory.objects.filter(
                     category=OuterRef('pk')
-                )))
+                ))).annotate(order=F('usercategory__order')).order_by('order', 'name')
 
         return qset
 

@@ -205,7 +205,8 @@
     }
 
     &.selected {
-        border: 1.25px solid var(--btn-inner-window-hover);
+        box-shadow: inset 0 0 0 1.5px var(--btn-inner-window-hover);
+        transition: none;
     }
 }
 
