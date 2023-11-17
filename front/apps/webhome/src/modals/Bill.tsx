@@ -9,7 +9,8 @@ import { useForm } from 'react-hook-form'
 import './styles/Bill.scss'
 import { billSchema } from './CreateBill'
 import { withModal } from '@ledget/ui'
-import { useGetBillsQuery, TransformedBill, useDeleteBillMutation } from '@features/billSlice'
+import { useGetBillsQuery, TransformedBill, useDeleteBillMutation, useUpdateBillsMutation, Bill } from '@features/billSlice'
+import { Reminder } from '@features/remindersSlice'
 import { SubmitForm } from '@components/pieces'
 import {
     DollarCents,
@@ -28,6 +29,7 @@ import {
     BillScheduler,
     AddReminder
 } from '@components/inputs'
+import { update } from '@react-spring/web'
 
 const getRepeatsDescription = ({ day, week, week_day, month, year }:
     { day: number | undefined, week: number | undefined, week_day: number | undefined, month: number | undefined, year: number | undefined }) => {
@@ -250,31 +252,34 @@ const DeleteBill = ({ bill, onCancel, onDelete }: { bill: TransformedBill, onCan
     )
 }
 
-const EditBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () => void }) => {
-    const [updateBill, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useDeleteBillMutation()
+const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, onCancel: () => void, onUpdateSuccess: () => void }) => {
+    const [updateBill, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useUpdateBillsMutation()
     const { register, handleSubmit, formState: { errors }, watch, control, setValue } = useForm({
         resolver: yupResolver(billSchema),
     })
     const watchRange = watch('range', false)
     const [scheduleMissing, setScheduleMissing] = useState(false)
     const [emoji, setEmoji] = useState<string>()
+    const [reminders, setReminders] = useState<Reminder[]>()
 
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         // parse form data
         const data = new FormData(e.currentTarget)
         const body = Object.fromEntries(data as any)
+        if (body.errors) {
+            body.errors.schedule && setScheduleMissing(true)
+        }
 
-
-        // const body = extractBill(e)
-        // if (body.errors) {
-        //     body.errors.schedule && setScheduleMissing(true)
-        // }
-
-        // handleSubmit((data) => {
-        //     if (body.errors) { return }
-        //     addNewBill({ ...body, ...data })
-        // })(e)
+        handleSubmit((data) => {
+            if (body.errors) { return }
+            updateBill({
+                id: bill.id,
+                reminders: reminders,
+                ...body,
+                ...data,
+            } as Bill)
+        })(e)
     }
 
     // Set values on load
@@ -283,6 +288,17 @@ const EditBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () => v
         setValue('range', bill.lower_amount ? true : false)
         setEmoji(bill.emoji)
     }, [])
+
+    // Update success
+    useEffect(() => {
+        let timeout: NodeJS.Timeout
+        if (isUpdateSuccess) {
+            timeout = setTimeout(() => {
+                onUpdateSuccess()
+            }, 1000)
+        }
+        return () => clearTimeout(timeout)
+    }, [isUpdateSuccess])
 
     return (
         <form onSubmit={submitForm}>
@@ -302,9 +318,13 @@ const EditBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () => v
                             billPeriod={bill.period}
                             error={scheduleMissing}
                         />
-                        <AddReminder defaultSelected={
-                            bill.reminders && bill.reminders.map((reminder) => reminder.id)
-                        } />
+                        <AddReminder
+                            value={reminders}
+                            onChange={setReminders}
+                            defaultSelected={
+                                bill.reminders && bill.reminders.map((reminder) => reminder.id)
+                            }
+                        />
                     </div>
                 </div>
                 <div>
@@ -335,8 +355,8 @@ const EditBill = ({ bill, onCancel }: { bill: TransformedBill, onCancel: () => v
             </div>
             <SubmitForm
                 text="Save"
-                submitting={isUpdateSuccess}
-                success={isUpdating}
+                submitting={isUpdating}
+                success={isUpdateSuccess}
                 onCancel={onCancel}
             />
         </form>
@@ -368,6 +388,7 @@ const BillModal = withModal((props) => {
                         <EditBill
                             bill={bill!}
                             onCancel={() => { setAction('none') }}
+                            onUpdateSuccess={() => { props.closeModal() }}
                         />
                     </SlideMotionDiv>
                 }

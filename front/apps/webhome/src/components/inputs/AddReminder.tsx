@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, Dispatch, SetStateAction, useEffect } from 'react'
 
 import './styles/Dropdowns.css'
 import { Listbox } from '@headlessui/react'
@@ -8,7 +8,7 @@ import { useGetRemindersQuery, Reminder } from '@features/remindersSlice'
 
 
 const AddReminder = ({ value, onChange, defaultSelected }:
-    { value?: Reminder[], defaultSelected?: string[], onChange?: React.Dispatch<React.SetStateAction<Reminder[]>> }) => {
+    { value?: Reminder[], defaultSelected?: string[], onChange?: Dispatch<SetStateAction<Reminder[] | undefined>> }) => {
     const [localSelectedReminders, localSetReminders] = useState<Reminder[]>([])
     const [reminderOptions, setReminderOptions] = useState<Reminder[]>([])
     const { data: reminders, isSuccess } = useGetRemindersQuery()

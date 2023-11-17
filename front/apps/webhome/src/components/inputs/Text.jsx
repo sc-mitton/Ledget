@@ -162,6 +162,14 @@ export const LimitAmountInput = ({ control, children }) => {
 const DollarInput = ({ field, name, defaultValue, error, ...rest }) => {
     const [val, setVal] = useState(defaultValue)
 
+    // set field value to default if present
+    useEffect(() => {
+        if (defaultValue) {
+            field.onChange(makeIntCurrencyFromStr(defaultValue))
+            setVal(formatCurrency(defaultValue))
+        }
+    }, [defaultValue])
+
     return (
         <TextInputWrapper className="limit-amount--container" {...rest}>
             <input
@@ -231,9 +239,9 @@ export const DollarRangeInput = ({
                     name={'upper_amount'}
                     error={errors.upper_amount}
                 />
-                {(errors.lower_amount?.type !== 'required' && errors.lower_amount?.message !== 'required')
-                    && <FormError msg={errors.lower_amount?.message} />}
             </div>
+            {(errors.lower_amount?.type !== 'required' && errors.lower_amount?.message !== 'required')
+                && <FormError msg={errors.lower_amount?.message} />}
             {(errors.lower_amount?.type !== 'required'
                 && errors.lower_amount?.type !== 'typeError'
                 && errors.lower_amount?.message !== 'required')

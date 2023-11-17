@@ -1,6 +1,7 @@
 
 from rest_framework import serializers
 from django.db import transaction
+import logging
 
 from ledgetback.serializer_mixins import NestedCreateMixin
 from .models import (
@@ -10,6 +11,8 @@ from .models import (
     Reminder,
     UserCategory
 )
+
+logger = logging.getLogger('ledget')
 
 
 class AlertSerializer(serializers.ModelSerializer):
@@ -104,6 +107,9 @@ class BillListCreateSerializer(serializers.ListSerializer):
         instances = Reminder.objects.filter(id__in=reminder_ids)
         return {str(instance.id): instance for instance in instances}
 
+    def update(self, validated_data):
+        raise NotImplementedError('Update not implemented for lists of bills')
+
 
 class BillSerializer(NestedCreateMixin, serializers.ModelSerializer):
     reminders = ReminderSerializer(many=True, required=False)
@@ -115,6 +121,24 @@ class BillSerializer(NestedCreateMixin, serializers.ModelSerializer):
         fields = '__all__'
         required_fields = ['name', 'period', 'upper_amount']
         list_serializer_class = BillListCreateSerializer
+
+    def update(self, instance, validated_data, *args, **kwargs):
+        reminders = validated_data.pop('reminders', [])
+        reminder_ids = [reminder.get('id', None)
+                        for reminder in reminders
+                        if reminder.get('id', None)]
+        reminders = Reminder.objects.filter(id__in=reminder_ids)
+
+        try:
+            for field, value in validated_data.items():
+                setattr(instance, field, value)
+            instance.reminders.set(reminders)
+            instance.save()
+        except Exception as e:
+            logger.error(e)
+            raise serializers.ValidationError(e)
+
+        return instance
 
     @transaction.atomic
     def create(self, validated_data, *args, **kwargs):

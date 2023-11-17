@@ -189,6 +189,14 @@ local GenericAuthedBase = {
       url: base_url + '/<(bills|bill)>',
     },
   },
+  GenericAuthedBase
+    {
+    id: 'update_bills',
+    match: {
+      methods: ['PUT'],
+      url: base_url + '/bills/<[a-zA-Z0-9-]+>',
+    },
+  },
     GenericAuthedBase
   {
     id: 'modify_bills',

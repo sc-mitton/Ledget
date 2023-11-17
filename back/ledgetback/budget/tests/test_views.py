@@ -6,7 +6,8 @@ from ledgetback.tests.utils import timeit # noqa
 from django.urls import reverse
 from ..models import (
     Category,
-    Bill
+    Bill,
+    Reminder
 )
 from financials.models import Account
 from .data import (
@@ -18,7 +19,7 @@ from .data import (
 
 
 class BudgetViewTestObjectCreations(ViewTestsMixin):
-    fixtures = ['reminders_fixture.json']
+    fixtures = ['reminder_fixture.json']
 
     @timeit
     def test_category_creation(self):
@@ -111,7 +112,7 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
             i += 1
 
 
-class BudgetViewTestRetreval(ViewTestsMixin):
+class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
     fixtures = [
         'transaction_fixture.json',
         'categorie_fixture.json',
@@ -158,3 +159,29 @@ class BudgetViewTestRetreval(ViewTestsMixin):
         )
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data.__len__(), 0)
+
+    def test_update_bill(self):
+        '''
+        Test updating a view values and adding some reminders for a bill
+        '''
+
+        bill = Bill.objects.prefetch_related('reminders') \
+                           .filter(removed_on__isnull=True).first()
+        reminders = Reminder.objects.all()[:2]
+
+        payload = {
+            'name': 'New Name',
+            'upper_amount': bill.upper_amount + 100,
+            'reminders': [{'id': str(reminder.id)} for reminder in reminders]
+        }
+        response = self.client.put(
+            reverse('bills-detail', kwargs={'pk': bill.id}),
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response.data['name'], bill.name)
+        self.assertNotEqual(response.data['upper_amount'], bill.upper_amount)
+        bill.refresh_from_db()
+        self.assertEqual(bill.reminders.count(), 2)

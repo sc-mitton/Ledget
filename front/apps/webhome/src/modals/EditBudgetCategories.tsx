@@ -164,7 +164,7 @@ const EditCategoriesModal = withModal((props) => {
         <form onSubmit={handleSubmit}>
             <div className="edit-budget-items--container">
                 <h2>Edit Categories</h2>
-                <animated.div className="inner-window" style={containerProps}>
+                <animated.div style={containerProps}>
                     <>
                         {transitions((style, item) => (
                             <animated.div className="item" style={style} {...bind(item?.id)}>

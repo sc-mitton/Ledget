@@ -15,7 +15,7 @@ from financials.views.transactions import (
 from financials.views.account import AccountsView
 
 
-class CustomerTransactionsRouter(SimpleRouter):
+class TransactionsCategoriesRouter(SimpleRouter):
 
     routes = [
         Route(
@@ -34,7 +34,7 @@ class CustomerTransactionsRouter(SimpleRouter):
     ]
 
 
-router = CustomerTransactionsRouter(trailing_slash=False)
+router = TransactionsCategoriesRouter(trailing_slash=False)
 router.register('transactions', TransactionViewSet, basename='transactions')
 
 urlpatterns = [

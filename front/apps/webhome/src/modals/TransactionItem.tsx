@@ -61,14 +61,14 @@ const TransactionModal = withModal((props) => {
                     </div>
                 </div>
                 <div className='inner-window'>
+                    {item?.merchant_name &&
+                        <>
+                            <div className="merchant-cell">
+                                <h3>{item?.merchant_name}</h3>
+                            </div>
+                        </>
+                    }
                     <div>
-                        {item?.merchant_name &&
-                            <>
-                                <div className="merchant-cell">
-                                    <h3>{item?.merchant_name}</h3>
-                                </div>
-                            </>
-                        }
                         <div>Date </div>
                         <div>{new Date(item?.datetime).toLocaleDateString('en-US', { 'month': 'short', 'day': 'numeric', 'year': 'numeric' })}</div>
                         {(item?.address || item?.city || item?.region) &&

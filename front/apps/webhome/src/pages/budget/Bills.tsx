@@ -247,6 +247,9 @@ const Bills = () => {
             className='bills-box'
             style={{ '--number-of-bills': bills?.length! / 2 || 0 } as React.CSSProperties}
             aria-expanded={!collapsed}
+            style={{
+                ...(bills?.length <= 10 ? { overflowX: 'hidden' } : {})
+            }}
         >
             {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
                 .map((bill, i) => {

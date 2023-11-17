@@ -21,13 +21,14 @@ import { useAddnewBillMutation } from '@features/billSlice'
 export const billSchema = object().shape({
     name: string().required().lowercase(),
     range: boolean(),
-    lower_amount: number('Enter an amount').when('range', {
-        is: true,
-        then: () => number('Enter an amount').required('required')
-            .test('lower_amount', 'First value must be smaller', (value, { parent }) => {
-                return value < parent.upper_amount
-            })
-    }),
+    lower_amount: number('Enter an amount').transform((value) => (isNaN(value) ? undefined : value)).nullable()
+        .when('range', {
+            is: true,
+            then: () => number('Enter an amount')
+                .test('lower_amount', 'First value must be smaller', (value, { parent }) => {
+                    return value == null ? true : value < parent.upper_amount
+                })
+        }),
     upper_amount: number('Enter an amount').required('required')
 })
 

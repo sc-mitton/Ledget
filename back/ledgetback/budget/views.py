@@ -64,6 +64,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
 
     def get_object(self):
         bill = Bill.objects.prefetch_related('users').get(pk=self.kwargs['pk'])
+        print('bill', bill)
         self.check_object_permissions(self.request, bill)
         return bill
 

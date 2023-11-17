@@ -79,7 +79,7 @@ const Navigation = ({ isNarrow }) => {
                         className={`${location.pathname === "/spending" ? "current-" : ""}nav-item`}
                         role="link"
                         tabIndex={0}
-                        onClick={handleTabClick}
+                        onClick={() => navigate("/spending")}
                         onKeyDown={(e) => e.key === "Enter" && handleTabClick(e)}
                     >
                         <a
@@ -98,7 +98,6 @@ const Navigation = ({ isNarrow }) => {
 
 const DropDownMenu = ({ isNarrow, setModal }) => {
     const navigate = useNavigate()
-    const location = useLocation()
 
     const Wrapper = ({ onClick, children }) => {
 

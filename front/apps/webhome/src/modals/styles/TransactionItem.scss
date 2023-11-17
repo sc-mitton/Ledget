@@ -53,9 +53,9 @@
     grid-template-columns: minmax(0, auto) 1fr;
 }
 
-.transaction-info--container .inner-window:not(:first-child)>div .merchant-cell {
+.transaction-info--container .merchant-cell {
     grid-column: span 2;
-    margin-bottom: .5em;
+    margin-bottom: .25em;
     font-weight: 500;
 }
 
@@ -69,6 +69,6 @@
     padding-top: .1875em;
 }
 
-.transaction-info--container .inner-window:not(:first-child)>div>div:nth-child(2n) {
+.transaction-info--container .inner-window:not(:first-child)>div>div:nth-child(2n+1) {
     font-weight: 500;
 }

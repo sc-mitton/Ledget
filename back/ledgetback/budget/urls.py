@@ -15,7 +15,6 @@ class CustomCategoriesRouter(SimpleRouter):
             mapping={
                 'get': 'list',
                 'post': 'create',
-                'put': 'update',
             },
             name='{basename}-list',
             detail=False,
@@ -46,6 +45,15 @@ class CustomBillsRouter(SimpleRouter):
             name='{basename}-list',
             detail=False,
             initkwargs={'suffix': 'List'}
+        ),
+        Route(
+            url=r'^{prefix}/{lookup}$',
+            mapping={
+                'put': 'update',
+            },
+            name='{basename}-detail',
+            detail=True,
+            initkwargs={'suffix': 'Detail'}
         ),
         DynamicRoute(
             url=r'^{prefix}/{lookup}/{url_path}$',
