@@ -1,4 +1,4 @@
-import React, { ReactNode, forwardRef, useEffect, useState, useId } from 'react'
+import React, { ReactNode, FC, forwardRef, useEffect, useState, useId } from 'react'
 
 import { useTransition, animated, useSpring } from '@react-spring/web'
 import { motion, HTMLMotionProps } from 'framer-motion'
@@ -119,21 +119,20 @@ export const JiggleDiv = ({ jiggle, children, ...rest }: { jiggle: boolean, chil
   )
 }
 
-export const FadeInOutDiv
-  = ({ children, className, ...rest }: { children: React.ReactNode, className: string }) => {
-    const id = useId()
+export const FadeInOutDiv = ({ children, className, ...rest }: HTMLMotionProps<'div'>) => {
+  const id = useId()
 
-    return (
-      <motion.div
-        key={id}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 1 }}
-        className={className}
-        {...rest}
-      >
-        {children}
-      </motion.div>
-    )
-  }
+  return (
+    <motion.div
+      key={id}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      className={className}
+      {...rest}
+    >
+      {children}
+    </motion.div>
+  )
+}
