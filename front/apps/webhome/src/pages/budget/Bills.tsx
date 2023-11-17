@@ -245,11 +245,11 @@ const Bills = () => {
     const Bills = () => (
         <div
             className='bills-box'
-            style={{ '--number-of-bills': bills?.length! / 2 || 0 } as React.CSSProperties}
             aria-expanded={!collapsed}
             style={{
+                '--number-of-bills': bills?.length! / 2 || 0,
                 ...(bills?.length <= 10 ? { overflowX: 'hidden' } : {})
-            }}
+            } as React.CSSProperties}
         >
             {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
                 .map((bill, i) => {
