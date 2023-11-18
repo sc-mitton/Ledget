@@ -35,7 +35,7 @@
     --main-dark3: hsl(232, 17%, 25%);
     --main-dark4: hsl(229, 23%, 18%);
     --main-dark5: hsl(229, 18%, 16%);
-    --accessible-color: #ababff;
+    --main-sat: rgb(171, 171, 255);
     --yellow: rgb(175, 175, 51);
 
     --secondary-color: hsl(153, 100%, 91%);
@@ -56,7 +56,8 @@
 
     /* Text */
     --input-focus: hsl(233, 56%, 73%);
-    --m-text: #292929;
+    --m-text: var(--main-dark4);
+    --m-secondary: color-mix(in srgb, var(--main-dark4), white 50%);
     --sub-text: #3d3d3d;
     --input-placeholder: #848484;
     --input-placeholder2: #a6a6a6;
@@ -84,7 +85,7 @@
     --window-drop-shadow: rgba(149, 157, 165, 0.22) 0px 4px 16px;
     --scroll-shadow: rgba(248, 248, 248), transparent;
 
-    --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--accessible-color);
+    --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--main-sat);
     --input-focus-drop-shadow: 0 0 0px 1.5px rgb(255, 255, 255, 1);
     --low-elevation-drop-shadow: rgba(0, 0, 0, 0.02) 0px 1px 6px 0px;
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
@@ -116,7 +117,7 @@
     :root {
         --input-focus: hsl(233, 56%, 73%);
         --input-placeholder: #2a2a2a;
-        --m-text: rgb(44, 44, 44);
+        --m-text: var(--main-dark4);
     }
 
     * {
@@ -176,7 +177,7 @@ textarea {
 h1,
 h2,
 h3 {
-    color: var(--logo-dark);
+    color: var(--m-text);
     white-space: nowrap;
 }
 

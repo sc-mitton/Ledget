@@ -185,6 +185,16 @@ export const billSlice = createSlice({
             state.bills.sort((a, b) => {
                 return new Date(a.date).getTime() - new Date(b.date).getTime()
             })
+        },
+        sortBillsByAmountAsc: (state) => {
+            state.bills.sort((a, b) => {
+                return (a.upper_amount || 0) - (b.upper_amount || 0)
+            })
+        },
+        sortBillsByAmountDesc: (state) => {
+            state.bills.sort((a, b) => {
+                return (b.upper_amount || 0) - (a.upper_amount || 0)
+            })
         }
     },
     extraReducers: (builder) => {
@@ -244,6 +254,8 @@ export const {
     addTransaction2Bill,
     sortBillsByAlpha,
     sortBillsByDate,
+    sortBillsByAmountAsc,
+    sortBillsByAmountDesc
 } = billSlice.actions
 
 export const selectBills = createSelector(

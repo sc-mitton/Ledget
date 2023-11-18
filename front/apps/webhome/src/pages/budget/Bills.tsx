@@ -9,6 +9,8 @@ import {
     selectBills,
     sortBillsByAlpha,
     sortBillsByDate,
+    sortBillsByAmountAsc,
+    sortBillsByAmountDesc
 } from '@features/billSlice';
 import {
     DollarCents,
@@ -19,7 +21,7 @@ import {
     useAccessEsc,
     ShimmerText
 } from '@ledget/ui';
-import { Calendar as CalendarIcon, CheckMark2 } from '@ledget/media'
+import { Calendar as CalendarIcon, CheckMark2, BackArrow } from '@ledget/media'
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -149,6 +151,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
     const dropdownRef = useRef<HTMLDivElement>(null)
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [showCalendar, setShowCalendar] = useState(false)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (showCalendar) {
@@ -192,24 +195,48 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
             </div>
             <div>
                 <PillOptionButton
+                    isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('bill-sort') || '')}
+                    onClick={() => {
+                        // desc -> asc -> default
+                        if (!['amount-desc', 'amount-asc'].includes(searchParams.get('bill-sort') || '')) {
+                            dispatch(sortBillsByAmountDesc())
+                            searchParams.set('bill-sort', 'amount-desc')
+                            setSearchParams(searchParams)
+                        } else if (searchParams.get('bill-sort') === 'amount-desc') {
+                            dispatch(sortBillsByAmountAsc())
+                            searchParams.set('bill-sort', 'amount-asc')
+                            setSearchParams(searchParams)
+                        } else {
+                            dispatch(sortBillsByDate())
+                            searchParams.delete('bill-sort')
+                            setSearchParams(searchParams)
+                        }
+                    }}
+                >
+                    <span>$</span>
+                    <BackArrow
+                        stroke={'currentColor'}
+                        rotate={searchParams.get('bill-sort') === 'amount-asc' ? '90' : '-90'}
+                        size={'.75em'}
+                        strokeWidth={'16'}
+                    />
+                </PillOptionButton>
+                <PillOptionButton
                     aria-label="Sort bills by amount"
                     isSelected={searchParams.get('bill-sort') === 'a-z'}
                     onClick={() => {
-                        searchParams.set('bill-sort', 'a-z')
-                        setSearchParams(searchParams)
+                        if (searchParams.get('bill-sort') === 'a-z') {
+                            dispatch(sortBillsByDate())
+                            searchParams.delete('bill-sort')
+                            setSearchParams(searchParams)
+                        } else {
+                            dispatch(sortBillsByDate())
+                            searchParams.set('bill-sort', 'a-z')
+                            setSearchParams(searchParams)
+                        }
                     }}
                 >
                     a-z
-                </PillOptionButton>
-                <PillOptionButton
-                    aria-label="Sort bills by date"
-                    isSelected={searchParams.get('bill-sort') === 'date'}
-                    onClick={() => {
-                        searchParams.set('bill-sort', 'date')
-                        setSearchParams(searchParams)
-                    }}
-                >
-                    date
                 </PillOptionButton>
                 <ExpandButton
                     flipped={collapsed}
@@ -230,17 +257,8 @@ const Bills = () => {
         month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
         year: searchParams.get('year') || `${new Date().getFullYear()}`,
     })
-    const dispatch = useAppDispatch()
     const bills = useAppSelector(selectBills)
     const [collapsed, setCollapsed] = useState(false)
-
-    useEffect(() => {
-        if (searchParams.get('bill-sort') === 'a-z') {
-            dispatch(sortBillsByAlpha())
-        } else if (searchParams.get('bill-sort') === 'date') {
-            dispatch(sortBillsByDate())
-        }
-    }, [searchParams.get('bill-sort'), searchParams.get('day')])
 
     const Bills = () => (
         <div

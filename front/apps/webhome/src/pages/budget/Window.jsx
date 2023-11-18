@@ -62,7 +62,7 @@ const DropDown = () => {
                                         }).toString()
                                     })}
                                 >
-                                    <Plus size={'1em'} className="dropdown-icon" />
+                                    <Plus size={'.9em'} className="dropdown-icon" />
                                     New category
                                 </Wrapper>
                                 <Wrapper
@@ -74,7 +74,7 @@ const DropDown = () => {
                                         }).toString()
                                     })}
                                 >
-                                    <Plus size={'1em'} className="dropdown-icon" />
+                                    <Plus size={'.9em'} className="dropdown-icon" />
                                     New bill
                                 </Wrapper>
                             </div>
@@ -120,9 +120,6 @@ function Window() {
 
             searchParams.set('month', `${month}`)
             searchParams.set('year', `${year}`)
-        }
-        if (!searchParams.get('bill-sort')) {
-            searchParams.set('bill-sort', 'date')
         }
 
         setSearchParams(searchParams)

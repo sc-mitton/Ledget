@@ -86,6 +86,11 @@ $number-of-bill-rows: 5;
         align-items: center;
         gap: .325em;
 
+        span {
+            color: inherit;
+            margin-right: .125em;
+        }
+
         // All except expand button
         &>button:not(:last-child) {
             min-width: 6ch;

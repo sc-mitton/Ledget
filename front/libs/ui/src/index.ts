@@ -18,5 +18,6 @@ export * from './inputs/switch/switch';
 export * from './inputs/checkbox/checkbox';
 export * from './buttons/buttons';
 export * from './inputs/select-provence/select-provence';
-export * from './utils/funcs'
-export * from './utils/hooks'
+export * from './utils/funcs';
+export * from './utils/hooks';
+export * from './pieces/containers/ResponsiveLine';

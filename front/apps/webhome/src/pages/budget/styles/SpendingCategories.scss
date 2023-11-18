@@ -21,55 +21,15 @@ $background: var(--window);
     }
 }
 
-#spending-categories-window {
-    position: relative;
-    width: 100%;
-    max-height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    // Aprx. 5 rows
-    min-height: calc(5.25 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em); // the 2em comes from the bottom buttons space
-
-    // Div surrounding the bottom buttons
-    #category-filters--container {
-        display: flex;
-        width: 100%;
-        justify-content: flex-end;
-        align-items: flex-end;
-        margin-top: 1em;
-        flex-grow: 1;
-
-        &>div {
-            height: min-content;
-            display: flex;
-            gap: .325em;
-        }
-
-        button {
-            display: flex;
-            align-items: center;
-            gap: .125em;
-            min-width: 6ch;
-
-            span {
-                font-size: .925em;
-                color: inherit;
-            }
-        }
-    }
-
-    // Div surrounding the columns/tabs
-    &>div:first-of-type {
-        gap: $column-gap;
-        border-radius: var(--border-radius25);
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: minmax(0, max-content);
-        place-content: center;
-        overflow: hidden;
-        box-sizing: border-box;
-    }
+#all-categorires-table {
+    gap: $column-gap;
+    border-radius: var(--border-radius25);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, max-content);
+    place-content: center;
+    overflow: hidden;
+    box-sizing: border-box;
 
     .column {
         max-height: max-content;
@@ -269,6 +229,67 @@ $background: var(--window);
     }
 }
 
+#spending-categories-window {
+    position: relative;
+    width: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    // Aprx. 5 rows
+    min-height: calc(5.25 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em); // the 2em comes from the bottom buttons space
+}
+
+// Div surrounding the bottom buttons
+#category-filters--container {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: 1em;
+    flex-grow: 1;
+
+    &>div {
+        height: min-content;
+        display: flex;
+        gap: .325em;
+    }
+
+    button {
+        display: flex;
+        align-items: center;
+        gap: .125em;
+        min-width: 6ch;
+
+        span {
+            font-size: .925em;
+            color: inherit;
+        }
+    }
+}
+
+.category-detail--container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    inset: 0;
+    padding: inherit;
+
+    // Graph container
+    .grid {
+        flex-grow: 1;
+        display: grid;
+        grid-template-columns: 2fr 3fr;
+        color: var(--main-hlight4);
+
+        &>div {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+}
 
 @media screen and (max-width: 550px) {
     .row {
