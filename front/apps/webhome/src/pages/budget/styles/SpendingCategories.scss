@@ -285,7 +285,27 @@ $background: var(--window);
         &>div {
             position: relative;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .chart-window-selectors {
+                z-index: 10;
+                position: absolute;
+                width: 100%;
+                transform: translateY(100%);
+
+                .chart-window-select--container {
+                    position: absolute;
+                    left: 50%;
+                    bottom: -.5em;
+                }
+
+                button {
+                    margin: 0 auto;
+                    gap: .25em;
+                    min-width: 6ch;
+                }
+            }
         }
     }
 

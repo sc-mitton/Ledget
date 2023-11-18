@@ -3,8 +3,7 @@ const Arrow = ({
     scale = 1,
     rotation = 0,
     strokeWidth = "23",
-    width = "1.1em",
-    height = "1.1em",
+    size = '1.1em',
     syle = {}
 }) => {
     const centerX = 144 / 2
@@ -12,8 +11,8 @@ const Arrow = ({
 
     return (
         <svg
-            width={width}
-            height={height}
+            width={size}
+            height={size}
             viewBox={`0 0 ${144} ${144}`}
             aria-label="Arrow"
             style={syle}

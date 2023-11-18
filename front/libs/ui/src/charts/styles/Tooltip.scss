@@ -1,0 +1,14 @@
+.chart-tip {
+    background-color: var(--window);
+    border-radius: var(--border-radius1);
+    box-shadow: var(--low-elevation-drop-shadow);
+    padding: .125em .5em;
+    font-size: 1em;
+    display: flex;
+    align-items: baseline;
+    background-color: var(--main-dark4);
+
+    * {
+        color: var(--white-text);
+    }
+}

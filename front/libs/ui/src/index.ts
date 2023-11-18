@@ -21,3 +21,5 @@ export * from './inputs/select-provence/select-provence';
 export * from './utils/funcs';
 export * from './utils/hooks';
 export * from './pieces/containers/ResponsiveLine';
+export * from './charts/themes';
+export * from './charts/Tooltip'

@@ -100,7 +100,7 @@ const IncrementDecrementButton = ({ val, setVal, field }) => (
             aria-label="increment"
             tabIndex={'-1'}
         >
-            <ArrowIcon width={'.75em'} height={'.75em'} rotation={-180} />
+            <ArrowIcon size={'.75em'} rotation={-180} />
         </IconButton2>
         <IconButton2
             type="button"
@@ -108,7 +108,7 @@ const IncrementDecrementButton = ({ val, setVal, field }) => (
             aria-label="decrement"
             tabIndex={'-1'}
         >
-            <ArrowIcon width={'.75em'} height={'.75em'} />
+            <ArrowIcon size={'.75em'} />
         </IconButton2>
     </div>
 )

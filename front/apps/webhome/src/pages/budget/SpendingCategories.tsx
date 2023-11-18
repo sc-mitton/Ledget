@@ -6,6 +6,7 @@ import Big from 'big.js'
 import { AnimatePresence } from 'framer-motion'
 import { ResponsiveLine } from '@nivo/line'
 import type { Datum } from '@nivo/line'
+import { Listbox } from '@headlessui/react'
 
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import './styles/SpendingCategories.scss'
@@ -31,9 +32,13 @@ import {
     useLoaded,
     CloseButton,
     ResponsiveLineContainer,
-    formatCurrency
+    formatCurrency,
+    nivoResponsiveLineBaseProps,
+    nivoResponsiveLineTheme,
+    ChartTip,
+    DropAnimation
 } from '@ledget/ui'
-import { Plus, BackArrow } from '@ledget/media'
+import { Plus, BackArrow, ArrowIcon } from '@ledget/media'
 import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
 
 
@@ -367,13 +372,11 @@ const AmountSpentChart = ({ data }: { data: Datum[] }) => {
     // The magnitude of the difference between the min and max values
     // e.g. maxY = 1120 and minY = 871, magnitude = 100
     const magnitude = Math.pow(10, Math.floor(Math.log10(Math.abs(maxY - minY))))
-
     const yScaleMin = Math.round(Math.floor(minY / magnitude) * magnitude)
-    const yScaleMax = Math.round(Math.floor(maxY / magnitude) * magnitude) + magnitude / 10
 
     const chartMargin = useMemo<{ top: number, right: number, bottom: number, left: number }>(() => {
         const margin = { top: 0, right: 16, bottom: 0, left: 0 }
-        const largestYAxisLabel = formatCurrency(yScaleMax).split('.')[0]
+        const largestYAxisLabel = formatCurrency(maxY).split('.')[0]
 
         const rootElement = document.documentElement;
         const computedStyle = getComputedStyle(rootElement);
@@ -398,106 +401,137 @@ const AmountSpentChart = ({ data }: { data: Datum[] }) => {
         // Compute bottom margin
         const rootFontSize = computedStyle.fontSize;
         margin.bottom = rootFontSize ? parseFloat(rootFontSize) * 2 : 16
+        margin.top = rootFontSize ? parseFloat(rootFontSize) * 2 : 16
 
         return margin
     }, [])
 
     return (
-        <ResponsiveLineContainer>
-            <ResponsiveLine
-                data={[{ id: 'amount-spent', data }]}
-                curve={'monotoneX'}
-                enablePoints={true}
-                enableArea={true}
-                enableGridX={false}
-                enableGridY={false}
-                colors={['var(--main-color']}
-                lineWidth={1}
-                margin={chartMargin}
-                axisBottom={{
-                    format: (value: number) => {
-                        return new Date(value).toLocaleString('default', { month: 'short' })
-                    },
-                }}
-                axisLeft={{
-                    tickValues: 4,
-                    tickPadding: xaxisPadding,
-                    format: (value: number) => formatCurrency(value).split('.')[0]
-                }}
-                tooltip={({ point }) => (
-                    <div className="tooltip">
-                        <span>{point.data.y.toString()}</span>
-                    </div>
-                )}
-                yScale={{ type: 'linear', min: yScaleMin, max: yScaleMax }}
-                theme={{
-                    crosshair: {
-                        line: {
-                            stroke: 'var(--main-hlight5)',
-                            strokeWidth: 1.5,
-                            strokeDasharray: 'solid',
-                        },
-                    },
-                    axis: {
-                        ticks: {
-                            line: { strokeWidth: 0 },
-                            text: {
-                                fontSize: 12,
-                                fontFamily: 'inherit',
-                                fontWeight: 400,
-                                fill: 'var(--m-secondary)',
-                            },
-                        },
-                    },
-                }}
-                crosshairType="bottom"
-                useMesh={true}
-                defs={[
-                    {
-                        id: 'gradientC',
-                        type: 'linearGradient',
-                        colors: [
-                            { offset: 0, color: 'var(--main-sat)' },
-                            { offset: 50, color: 'var(--window)' },
-                        ],
-                    },
-                ]}
-                fill={[{ match: '*', id: 'gradientC' }]}
-            />
-        </ResponsiveLineContainer>
+        <ResponsiveLine
+            data={[{ id: 'amount-spent', data }]}
+            margin={chartMargin}
+            axisBottom={{
+                format: (value: number) => {
+                    return new Date(value).toLocaleString('default', { month: 'short' })
+                },
+            }}
+            axisLeft={{
+                tickValues: 4,
+                tickPadding: xaxisPadding,
+                format: (value: number) => formatCurrency(value).split('.')[0]
+            }}
+            tooltip={({ point }) => (
+                <ChartTip>
+                    <span>{new Date(point.data.x).toLocaleString('default', { month: 'short' })}</span>
+                    &nbsp;&nbsp;
+                    <DollarCents value={formatCurrency(point.data.y.toString())} />
+                </ChartTip>
+            )}
+            yScale={{ type: 'linear', min: yScaleMin, max: 'auto' }}
+            crosshairType="bottom"
+            theme={nivoResponsiveLineTheme}
+            {...nivoResponsiveLineBaseProps}
+        />
     )
 }
 
 const amountData = [
-    { x: new Date().setMonth(0), y: 30000 },
-    { x: new Date().setMonth(1), y: 22500 },
-    { x: new Date().setMonth(2), y: 22800 },
-    { x: new Date().setMonth(3), y: 32500 },
-    { x: new Date().setMonth(4), y: 32000 },
-    { x: new Date().setMonth(5), y: 22900 },
-    { x: new Date().setMonth(6), y: 32200 },
-    { x: new Date().setMonth(7), y: 32800 },
-    { x: new Date().setMonth(8), y: 32500 },
-    { x: new Date().setMonth(9), y: 40000 }
+    { x: new Date().setMonth(1), y: 30000 },
+    { x: new Date().setMonth(2), y: 22500 },
+    { x: new Date().setMonth(3), y: 22800 },
+    { x: new Date().setMonth(4), y: 32500 },
+    { x: new Date().setMonth(5), y: 32000 },
+    { x: new Date().setMonth(6), y: 22900 },
+    { x: new Date().setMonth(7), y: 32200 },
+    { x: new Date().setMonth(8), y: 32800 },
+    { x: new Date().setMonth(9), y: 32500 },
+    { x: new Date().setMonth(10), y: 40000 }
 ]
 
 const CategoryDetail = ({ category }: { category: Category }) => {
+    const [data, setData] = useState<Datum[]>([])
+    const [window, setWindow] = useState<'4 months' | '1 year' | 'max'>('4 months')
+    const options = ['4 months', '1 year', 'max']
+    const buttonRef = useRef<HTMLButtonElement>(null)
 
     // Information to include:
+    // List of items for the month in this category
     // 1. amount spent, limit amount, progress circle
     // 2. Amount spent compared to this time last month
     // 3. Edit button
     // 4. Alerts on or off
+
+    useEffect(() => {
+        const endOfWindow = new Date().setMonth(new Date().getMonth() - 1)
+
+        switch (window) {
+            case '4 months':
+                setData(amountData.filter(d =>
+                    new Date(d.x).getMonth() > new Date(endOfWindow).getMonth() - 3
+                ))
+                break;
+            case '1 year':
+                setData(amountData.filter(d =>
+                    new Date(d.x).getMonth() > new Date(endOfWindow).getMonth() - 12
+                ))
+                break;
+            case 'max':
+            default:
+                setData(amountData)
+                break;
+        }
+    }, [window])
 
     return (
         <>
             <h2>{`${category.emoji} ${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
             <div className="grid">
                 <div>
-                    <AmountSpentChart data={amountData} />
+                    <Listbox value={window} onChange={setWindow} as='div' className='chart-window-selectors'>
+                        {({ open }) => (
+                            <>
+                                <Listbox.Button as={PillOptionButton} ref={buttonRef}>
+                                    {window}
+                                    <ArrowIcon
+                                        stroke={'currentColor'}
+                                        size={'.85em'}
+                                        strokeWidth={'18'}
+                                    />
+                                </Listbox.Button>
+                                <div className="chart-window-select--container">
+                                    <DropAnimation
+                                        placement='middle'
+                                        visible={open}
+                                        className="dropdown"
+                                        style={{
+                                            minWidth: `${buttonRef?.current?.offsetWidth}px`,
+                                        }}
+                                    >
+                                        <Listbox.Options className="chart-window-selector-options" static>
+                                            {options.map(option => (
+                                                <Listbox.Option key={option} value={option}>
+                                                    {({ active, selected }) => (
+                                                        <div className={`dropdown-item
+                                                        ${active && "active"}
+                                                        ${selected && "selected"}`}
+                                                        >
+                                                            {option}
+                                                        </div>
+                                                    )}
+                                                </Listbox.Option>
+                                            ))}
+                                        </Listbox.Options>
+                                    </DropAnimation>
+                                </div>
+                            </>
+                        )}
+                    </Listbox>
+                    <ResponsiveLineContainer height={'100%'}>
+                        <AmountSpentChart data={data} />
+                    </ResponsiveLineContainer>
                 </div>
                 <div>
-                    <span>World</span>
+                    <span></span>
                 </div>
             </div>
         </>

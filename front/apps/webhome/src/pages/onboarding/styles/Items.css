@@ -42,7 +42,6 @@
     display: flex;
     flex-direction: column;
     background-color: var(--window-transparent);
-    box-shadow: var(--low-elevation-drop-shadow);
     border-radius: var(--border-radius3);
     max-height: 10rem;
     opacity: 1;
