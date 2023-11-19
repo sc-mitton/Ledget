@@ -9,6 +9,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
+from django.db.models.functions import ExtractMonth, ExtractYear
 from django.db.models import Sum, Q, Exists, OuterRef, F
 from django.db.transaction import atomic
 from django.utils import timezone as dbtz
@@ -18,12 +19,13 @@ from budget.serializers import (
     CategorySerializer,
     BillSerializer,
     ReminderSerializer,
+    SpendingHistorySerializer
 )
 from budget.models import (
     Category,
     Bill,
     UserCategory,
-    Reminder
+    Reminder,
 )
 from financials.models import Transaction, TransactionCategory
 from ledgetback.view_mixins import BulkSerializerMixin
@@ -180,6 +182,21 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             return self._get_queryset_with_sliced_amount_spent(start, end)
         else:
             return self._get_categories_qset()
+
+    @action(detail=True, methods=['GET'], url_path='spending_history')
+    def spending_history(self, request, pk=None):
+        monthly_amounts_spent = Transaction.objects.filter(
+                transactioncategory__category__id=pk,
+                transactioncategory__category__usercategory__user=self.request.user.id
+            ).annotate(
+                month=ExtractMonth('datetime'),
+                year=ExtractYear('datetime')
+            ).values('month', 'year').annotate(
+                amount_spent=Sum('transactioncategory__transaction__amount')
+            ).order_by('year', 'month')
+
+        serializer = SpendingHistorySerializer(monthly_amounts_spent, many=True)
+        return Response(serializer.data)
 
     @action(detail=False, methods=['POST'], url_path='order')
     def reorder(self, request):

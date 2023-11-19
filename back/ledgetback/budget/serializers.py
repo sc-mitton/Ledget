@@ -71,6 +71,12 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
             return obj.has_transactions
 
 
+class SpendingHistorySerializer(serializers.Serializer):
+    month = serializers.IntegerField()
+    year = serializers.IntegerField()
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+
 class BillListCreateSerializer(serializers.ListSerializer):
 
     def create(self, validated_data):

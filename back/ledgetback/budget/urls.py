@@ -26,6 +26,12 @@ class CustomCategoriesRouter(SimpleRouter):
             detail=False,
             initkwargs={}
         ),
+        DynamicRoute(
+            url=r'^{prefix}/{lookup}/{url_path}$',
+            name='{basename}-{url_name}',
+            detail=True,
+            initkwargs={}
+        ),
     ]
 
 

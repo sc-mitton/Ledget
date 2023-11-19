@@ -185,3 +185,16 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
         self.assertNotEqual(response.data['upper_amount'], bill.upper_amount)
         bill.refresh_from_db()
         self.assertEqual(bill.reminders.count(), 2)
+
+    def test_get_spending_history(self):
+        '''
+        Test the category endpoint that returns the spending summary for each
+        month until the user started
+        '''
+
+        category = Category.objects.filter(usercategory__user=self.user)
+
+        response = self.client.get(
+            reverse('categories-spending-history', kwargs={'pk': category.id})
+        )
+        self.assertEqual(response.status_code, 200)
