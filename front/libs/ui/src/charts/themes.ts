@@ -32,7 +32,7 @@ export const nivoResponsiveLineBaseProps: NivoResponsiveLineBaseProps = {
         },
     },
     curve: 'monotoneX',
-    colors: ['var(--main-color'],
+    colors: ['var(--main-color-hover)'],
     useMesh: true,
     defs: [
         {
@@ -40,7 +40,7 @@ export const nivoResponsiveLineBaseProps: NivoResponsiveLineBaseProps = {
             type: 'linearGradient',
             colors: [
                 { offset: 0, color: 'var(--main-sat)' },
-                { offset: 50, color: 'var(--window)' },
+                { offset: 100, color: 'var(--window)' },
             ],
         },
     ],

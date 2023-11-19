@@ -1,8 +1,8 @@
 import React, { FC, memo, Fragment, useMemo, useState, useRef, useEffect } from 'react'
 
+import Big from 'big.js'
 import { Tab } from '@headlessui/react'
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
-import Big from 'big.js'
 import { AnimatePresence } from 'framer-motion'
 import { ResponsiveLine } from '@nivo/line'
 import type { Datum } from '@nivo/line'
@@ -11,6 +11,7 @@ import { Listbox } from '@headlessui/react'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
+import { useGetTransactionsQuery } from '@features/transactionsSlice'
 import {
     useLazyGetCategoriesQuery,
     SelectCategoryBillMetaData,
@@ -19,6 +20,7 @@ import {
     sortCategoriesAmountAsc,
     sortCategoriesAmountDesc,
     sortCategoriesDefault,
+    useGetCategorySpendingHistoryQuery
 } from '@features/categorySlice'
 import {
     DollarCents,
@@ -366,8 +368,8 @@ const Footer = () => {
 const AmountSpentChart = ({ data }: { data: Datum[] }) => {
     const xaxisPadding = 8
 
-    const minY = Math.min(...amountData.map(d => d.y))
-    const maxY = Math.max(...amountData.map(d => d.y))
+    const maxY = Math.max(...data.map(d => d.y as number))
+    const minY = Math.min(...data.map(d => d.y as number))
 
     // The magnitude of the difference between the min and max values
     // e.g. maxY = 1120 and minY = 871, magnitude = 100
@@ -411,15 +413,17 @@ const AmountSpentChart = ({ data }: { data: Datum[] }) => {
             data={[{ id: 'amount-spent', data }]}
             margin={chartMargin}
             axisBottom={{
-                format: (value: number) => {
-                    return new Date(value).toLocaleString('default', { month: 'short' })
-                },
+                format: (value: number) =>
+                    new Date(value).toLocaleString('default', { month: 'short' })
             }}
             axisLeft={{
                 tickValues: 4,
                 tickPadding: xaxisPadding,
-                format: (value: number) => formatCurrency(value).split('.')[0]
+                format: (value: number) => formatCurrency(
+                    Big(value).times(100).toNumber()
+                ).split('.')[0]
             }}
+            areaBaselineValue={minY}
             tooltip={({ point }) => (
                 <ChartTip>
                     <span>{new Date(point.data.x).toLocaleString('default', { month: 'short' })}</span>
@@ -435,20 +439,18 @@ const AmountSpentChart = ({ data }: { data: Datum[] }) => {
     )
 }
 
-const amountData = [
-    { x: new Date().setMonth(1), y: 30000 },
-    { x: new Date().setMonth(2), y: 22500 },
-    { x: new Date().setMonth(3), y: 22800 },
-    { x: new Date().setMonth(4), y: 32500 },
-    { x: new Date().setMonth(5), y: 32000 },
-    { x: new Date().setMonth(6), y: 22900 },
-    { x: new Date().setMonth(7), y: 32200 },
-    { x: new Date().setMonth(8), y: 32800 },
-    { x: new Date().setMonth(9), y: 32500 },
-    { x: new Date().setMonth(10), y: 40000 }
-]
-
 const CategoryDetail = ({ category }: { category: Category }) => {
+    const {
+        data: spendingSummaryData,
+        isSuccess: spendingSummaryDataIsFetched
+    } = useGetCategorySpendingHistoryQuery({
+        categoryId: category.id,
+    })
+    const {
+        data: transactionsData,
+        isSuccess: transactionsDataIsFetched
+    } = useGetTransactionsQuery({ category: category.id })
+
     const [data, setData] = useState<Datum[]>([])
     const [window, setWindow] = useState<'4 months' | '1 year' | 'max'>('4 months')
     const options = ['4 months', '1 year', 'max']
@@ -464,71 +466,83 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     useEffect(() => {
         const endOfWindow = new Date().setMonth(new Date().getMonth() - 1)
 
-        switch (window) {
-            case '4 months':
-                setData(amountData.filter(d =>
-                    new Date(d.x).getMonth() > new Date(endOfWindow).getMonth() - 3
-                ))
-                break;
-            case '1 year':
-                setData(amountData.filter(d =>
-                    new Date(d.x).getMonth() > new Date(endOfWindow).getMonth() - 12
-                ))
-                break;
-            case 'max':
-            default:
-                setData(amountData)
-                break;
+        if (spendingSummaryDataIsFetched) {
+            switch (window) {
+                case '4 months':
+                    setData(spendingSummaryData.filter(d =>
+                        new Date(d.year, d.month).getMonth() > new Date(endOfWindow).getMonth() - 3
+                    ).map(d => ({
+                        x: new Date(d.year, d.month).getTime(),
+                        y: d.amount_spent
+                    })))
+                    break;
+                case '1 year':
+                    setData(spendingSummaryData.filter(d =>
+                        new Date(d.year, d.month).getMonth() > new Date(endOfWindow).getMonth() - 12
+                    ).map(d => ({
+                        x: new Date(d.year, d.month).getTime(),
+                        y: d.amount_spent
+                    })))
+                    break;
+                case 'max':
+                default:
+                    setData(spendingSummaryData.map(d => ({
+                        x: new Date(d.year, d.month).getTime(),
+                        y: d.amount_spent
+                    })))
+                    break;
+            }
         }
-    }, [window])
+    }, [spendingSummaryDataIsFetched, window])
 
     return (
         <>
             <h2>{`${category.emoji} ${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
             <div className="grid">
                 <div>
-                    <ResponsiveLineContainer height={'90%'}>
-                        <Listbox value={window} onChange={setWindow} as='div' className='chart-window-selectors'>
-                            {({ open }) => (
-                                <>
-                                    <Listbox.Button as={PillOptionButton} ref={buttonRef}>
-                                        {window}
-                                        <ArrowIcon
-                                            stroke={'currentColor'}
-                                            size={'.85em'}
-                                            strokeWidth={'18'}
-                                        />
-                                    </Listbox.Button>
-                                    <div className="chart-window-select--container">
-                                        <DropAnimation
-                                            placement='middle'
-                                            visible={open}
-                                            className="dropdown"
-                                            style={{
-                                                minWidth: `${buttonRef?.current?.offsetWidth}px`,
-                                            }}
-                                        >
-                                            <Listbox.Options className="chart-window-selector-options" static>
-                                                {options.map(option => (
-                                                    <Listbox.Option key={option} value={option}>
-                                                        {({ active, selected }) => (
-                                                            <div className={`dropdown-item
+                    {(data && data.length > 0) &&
+                        <ResponsiveLineContainer height={'90%'}>
+                            <Listbox value={window} onChange={setWindow} as='div' className='chart-window-selectors'>
+                                {({ open }) => (
+                                    <>
+                                        <Listbox.Button as={PillOptionButton} ref={buttonRef}>
+                                            {window}
+                                            <ArrowIcon
+                                                stroke={'currentColor'}
+                                                size={'.85em'}
+                                                strokeWidth={'18'}
+                                            />
+                                        </Listbox.Button>
+                                        <div className="chart-window-select--container">
+                                            <DropAnimation
+                                                placement='middle'
+                                                visible={open}
+                                                className="dropdown"
+                                                style={{
+                                                    minWidth: `${buttonRef?.current?.offsetWidth}px`,
+                                                }}
+                                            >
+                                                <Listbox.Options className="chart-window-selector-options" static>
+                                                    {options.map(option => (
+                                                        <Listbox.Option key={option} value={option}>
+                                                            {({ active, selected }) => (
+                                                                <div className={`dropdown-item
                                                         ${active && "active"}
                                                         ${selected && "selected"}`}
-                                                            >
-                                                                {option}
-                                                            </div>
-                                                        )}
-                                                    </Listbox.Option>
-                                                ))}
-                                            </Listbox.Options>
-                                        </DropAnimation>
-                                    </div>
-                                </>
-                            )}
-                        </Listbox>
-                        <AmountSpentChart data={data} />
-                    </ResponsiveLineContainer>
+                                                                >
+                                                                    {option}
+                                                                </div>
+                                                            )}
+                                                        </Listbox.Option>
+                                                    ))}
+                                                </Listbox.Options>
+                                            </DropAnimation>
+                                        </div>
+                                    </>
+                                )}
+                            </Listbox>
+                            <AmountSpentChart data={data} />
+                        </ResponsiveLineContainer>}
                 </div>
                 <div>
                     <span></span>

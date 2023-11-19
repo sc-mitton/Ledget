@@ -242,41 +242,43 @@ class TransactionViewSet(ModelViewSet):
         params = self.request.query_params
         start = params.get('start', None)
         end = params.get('end', None)
-        confirmed = params.get('confirmed', None)
 
         if start and end:
-            try:
-                start = datetime.fromtimestamp(int(start), tz=pytz.utc)
-                end = datetime.fromtimestamp(int(end), tz=pytz.utc)
-            except ValueError:
-                raise ValidationError('Invalid date format')
-
-        if confirmed == 'true' and start and end:
-            return self._get_confirmed_transactions(start, end)
-        elif confirmed == 'false' and start and end:
-            return self._get_unconfirmed_transactions(start, end)
+            return self._get_timeslice_of_transactions(start, end)
         else:
             return self._get_transactions()
 
-    def _get_confirmed_transactions(self, start, end):
-        qset = Transaction.objects.filter(
-            datetime__gte=start,
-            datetime__lte=end
-        ).filter(
-            Q(bill__isnull=False) | Q(transactioncategory__isnull=False)
-        ).select_related('bill').prefetch_related('categories').order_by('-datetime')
+    def _get_timeslice_of_transactions(self, start, end):
+        try:
+            start = datetime.fromtimestamp(int(start), tz=pytz.utc)
+            end = datetime.fromtimestamp(int(end), tz=pytz.utc)
+        except ValueError:
+            raise ValidationError('Invalid date format')
 
-        return qset
+        extra_args = {}
+        if self.request.query_params.get('category'):
+            extra_args['categories__id'] = self.request.query_params.get('category')
 
-    def _get_unconfirmed_transactions(self, start, end):
-        qset = Transaction.objects.filter(
-            datetime__gte=start,
-            datetime__lte=end,
-            categories=None,
-            bill__isnull=True,
-        ).select_related('predicted_category', 'predicted_bill')
-
-        return qset
+        # Get confirmed transactions
+        if self.request.query_params.get('confirmed'):
+            return Transaction.objects.filter(
+                datetime__gte=start,
+                datetime__lte=end,
+                **extra_args
+            ).filter(
+                Q(bill__isnull=False) | Q(transactioncategory__isnull=False)
+            ).select_related('bill') \
+             .prefetch_related('categories') \
+             .order_by('-datetime')
+        # Get unconfirmed transactions
+        else:
+            return Transaction.objects.filter(
+                datetime__gte=start,
+                datetime__lte=end,
+                categories=None,
+                bill__isnull=True,
+            ).select_related('predicted_category', 'predicted_bill') \
+             .order_by('-datetime')
 
     def _get_transactions(self):
         type = self.request.query_params.get('type', None)

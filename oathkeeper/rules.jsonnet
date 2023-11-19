@@ -178,7 +178,7 @@ local GenericAuthedBase = {
     id: 'spending_history',
     match: {
       methods: ['GET'],
-      url: base_url + '/categories/<[a-zA-Z0-9-]+>/spending_history',
+      url: base_url + '/categories/<[a-zA-Z0-9-]+>/spending-history',
     }
   },
     GenericAuthedBase

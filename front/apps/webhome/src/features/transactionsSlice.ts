@@ -52,6 +52,7 @@ export interface GetTransactionsParams {
     end?: number
     offset?: number
     limit?: number
+    category?: string
 }
 
 interface GetTransactionsResponse {

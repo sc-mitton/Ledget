@@ -183,7 +183,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         else:
             return self._get_categories_qset()
 
-    @action(detail=True, methods=['GET'], url_path='spending_history')
+    @action(detail=True, methods=['GET'], url_path='spending-history')
     def spending_history(self, request, pk=None):
         monthly_amounts_spent = Transaction.objects.filter(
                 transactioncategory__category__id=pk,
@@ -195,6 +195,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
                 amount_spent=Sum('transactioncategory__transaction__amount')
             ).order_by('year', 'month')
 
+        print('monthly_amounts_spent', monthly_amounts_spent)
         serializer = SpendingHistorySerializer(monthly_amounts_spent, many=True)
         return Response(serializer.data)
 

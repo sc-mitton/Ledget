@@ -31,6 +31,12 @@ interface CategoryQueryParams {
     end?: number;
 }
 
+interface CategorySpendingHistory {
+    month: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12,
+    year: number,
+    amount_spent: number,
+}
+
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getCategories: builder.query<Category[], CategoryQueryParams | void>({
@@ -47,8 +53,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             keepUnusedDataFor: 15 * 60,
             providesTags: ['Category'],
         }),
-        getCategorySpendingHistory: builder.query<{}, { categoryId: string }>({
-            query: (categoryId) => ({
+        getCategorySpendingHistory: builder.query<CategorySpendingHistory[], { categoryId: string }>({
+            query: ({ categoryId }) => ({
                 url: `categories/${categoryId}/spending-history`,
                 method: 'GET',
             }),
@@ -237,4 +243,5 @@ export const {
     useLazyGetCategoriesQuery,
     useUpdateCategoriesMutation,
     useReorderCategoriesMutation,
+    useGetCategorySpendingHistoryQuery,
 } = extendedApiSlice

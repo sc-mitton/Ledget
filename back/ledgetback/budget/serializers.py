@@ -74,7 +74,7 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
 class SpendingHistorySerializer(serializers.Serializer):
     month = serializers.IntegerField()
     year = serializers.IntegerField()
-    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+    amount_spent = serializers.DecimalField(max_digits=10, decimal_places=2)
 
 
 class BillListCreateSerializer(serializers.ListSerializer):
