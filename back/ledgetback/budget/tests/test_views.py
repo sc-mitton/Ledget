@@ -189,10 +189,12 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
     def test_get_spending_history(self):
         '''
         Test the category endpoint that returns the spending summary for each
-        month until the user started
+        month until the user started. The response will probably return nothing
+        since the db is empty, but we still want to test the endpoint to make sure
+        nothing breaks.
         '''
 
-        category = Category.objects.filter(usercategory__user=self.user)
+        category = Category.objects.filter(usercategory__user=self.user).first()
 
         response = self.client.get(
             reverse('categories-spending-history', kwargs={'pk': category.id})

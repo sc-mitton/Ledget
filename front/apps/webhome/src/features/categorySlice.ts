@@ -47,6 +47,15 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             keepUnusedDataFor: 15 * 60,
             providesTags: ['Category'],
         }),
+        getCategorySpendingHistory: builder.query<{}, { categoryId: string }>({
+            query: (categoryId) => ({
+                url: `categories/${categoryId}/spending-history`,
+                method: 'GET',
+            }),
+            keepUnusedDataFor: 15 * 60,
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'SpendingHistory', id: arg.categoryId }] : ['SpendingHistory'],
+        }),
         addNewCategory: builder.mutation<any, Category[]>({
             query: (data) => ({
                 url: 'categories',
@@ -61,7 +70,12 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: data,
             }),
-            invalidatesTags: ['Category']
+            invalidatesTags: (result, error, arg) => {
+                const spendingHistoryTags = arg.map(category => ({ type: 'SpendingHistory', id: category.id } as const))
+                return result
+                    ? [{ type: 'Category', id: 'LIST' }, ...spendingHistoryTags]
+                    : [{ type: 'Category', id: 'LIST' }]
+            }
         }),
         reorderCategories: builder.mutation<any, string[]>({
             query: (data) => ({

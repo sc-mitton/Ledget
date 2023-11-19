@@ -182,7 +182,25 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     bill: item.bill
                 })),
             }),
-            invalidatesTags: ['Transaction', 'Category', 'Bill']
+            invalidatesTags: (result, error, arg) => {
+                const spendingHistoryTags: { readonly type: 'SpendingHistory', readonly id: string }[] = []
+                arg.forEach(item => {
+                    if (item.categories) {
+                        item.categories.forEach(category => {
+                            spendingHistoryTags.push({ type: 'SpendingHistory', id: category.id })
+                        })
+                    }
+                })
+
+                const otherTags = [
+                    { type: 'Transaction', id: 'LIST' } as const,
+                    { type: 'Category', id: 'LIST' } as const,
+                    { type: 'Bill', id: 'LIST' } as const,
+                ]
+                return result
+                    ? [...otherTags, ...spendingHistoryTags]
+                    : otherTags
+            }
         }),
     }),
 })
