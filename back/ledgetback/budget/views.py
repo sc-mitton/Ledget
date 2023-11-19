@@ -64,7 +64,6 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
 
     def get_object(self):
         bill = Bill.objects.prefetch_related('users').get(pk=self.kwargs['pk'])
-        print('bill', bill)
         self.check_object_permissions(self.request, bill)
         return bill
 
@@ -169,7 +168,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
 
 
 class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsObjectOwner]
     serializer_class = CategorySerializer
 
     def get_queryset(self):
@@ -178,14 +177,6 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         end = self.request.query_params.get('end', None)
 
         if start and end:
-            try:
-                start = datetime.fromtimestamp(int(start), tz=pytz.utc)
-                end = datetime.fromtimestamp(int(end), tz=pytz.utc)
-            except ValueError:
-                return Response(
-                    data={'error': 'Invalid date format'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
             return self._get_queryset_with_sliced_amount_spent(start, end)
         else:
             return self._get_categories_qset()
@@ -293,7 +284,16 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
 
         return qset
 
-    def _get_queryset_with_sliced_amount_spent(self, start: datetime, end: datetime):
+    def _get_queryset_with_sliced_amount_spent(self, start: str, end: str):
+
+        try:
+            start = datetime.fromtimestamp(int(start), tz=pytz.utc)
+            end = datetime.fromtimestamp(int(end), tz=pytz.utc)
+        except ValueError:
+            return Response(
+                data={'error': 'Invalid date format'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         yearly_category_anchor = self.request.user.yearly_anchor
         if not yearly_category_anchor:

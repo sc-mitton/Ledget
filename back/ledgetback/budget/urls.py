@@ -48,9 +48,7 @@ class CustomBillsRouter(SimpleRouter):
         ),
         Route(
             url=r'^{prefix}/{lookup}$',
-            mapping={
-                'put': 'update',
-            },
+            mapping={'put': 'update'},
             name='{basename}-detail',
             detail=True,
             initkwargs={'suffix': 'Detail'}

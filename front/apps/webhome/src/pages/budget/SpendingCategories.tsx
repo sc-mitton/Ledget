@@ -455,11 +455,11 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     const buttonRef = useRef<HTMLButtonElement>(null)
 
     // Information to include:
-    // List of items for the month in this category
-    // 1. amount spent, limit amount, progress circle
-    // 2. Amount spent compared to this time last month
-    // 3. Edit button
-    // 4. Alerts on or off
+
+    // amount spent, limit amount, progress circle
+    // list of items for the month in this category
+
+    //  alerts on or off, edit button
 
     useEffect(() => {
         const endOfWindow = new Date().setMonth(new Date().getMonth() - 1)
@@ -487,46 +487,46 @@ const CategoryDetail = ({ category }: { category: Category }) => {
             <h2>{`${category.emoji} ${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
             <div className="grid">
                 <div>
-                    <Listbox value={window} onChange={setWindow} as='div' className='chart-window-selectors'>
-                        {({ open }) => (
-                            <>
-                                <Listbox.Button as={PillOptionButton} ref={buttonRef}>
-                                    {window}
-                                    <ArrowIcon
-                                        stroke={'currentColor'}
-                                        size={'.85em'}
-                                        strokeWidth={'18'}
-                                    />
-                                </Listbox.Button>
-                                <div className="chart-window-select--container">
-                                    <DropAnimation
-                                        placement='middle'
-                                        visible={open}
-                                        className="dropdown"
-                                        style={{
-                                            minWidth: `${buttonRef?.current?.offsetWidth}px`,
-                                        }}
-                                    >
-                                        <Listbox.Options className="chart-window-selector-options" static>
-                                            {options.map(option => (
-                                                <Listbox.Option key={option} value={option}>
-                                                    {({ active, selected }) => (
-                                                        <div className={`dropdown-item
+                    <ResponsiveLineContainer height={'90%'}>
+                        <Listbox value={window} onChange={setWindow} as='div' className='chart-window-selectors'>
+                            {({ open }) => (
+                                <>
+                                    <Listbox.Button as={PillOptionButton} ref={buttonRef}>
+                                        {window}
+                                        <ArrowIcon
+                                            stroke={'currentColor'}
+                                            size={'.85em'}
+                                            strokeWidth={'18'}
+                                        />
+                                    </Listbox.Button>
+                                    <div className="chart-window-select--container">
+                                        <DropAnimation
+                                            placement='middle'
+                                            visible={open}
+                                            className="dropdown"
+                                            style={{
+                                                minWidth: `${buttonRef?.current?.offsetWidth}px`,
+                                            }}
+                                        >
+                                            <Listbox.Options className="chart-window-selector-options" static>
+                                                {options.map(option => (
+                                                    <Listbox.Option key={option} value={option}>
+                                                        {({ active, selected }) => (
+                                                            <div className={`dropdown-item
                                                         ${active && "active"}
                                                         ${selected && "selected"}`}
-                                                        >
-                                                            {option}
-                                                        </div>
-                                                    )}
-                                                </Listbox.Option>
-                                            ))}
-                                        </Listbox.Options>
-                                    </DropAnimation>
-                                </div>
-                            </>
-                        )}
-                    </Listbox>
-                    <ResponsiveLineContainer height={'100%'}>
+                                                            >
+                                                                {option}
+                                                            </div>
+                                                        )}
+                                                    </Listbox.Option>
+                                                ))}
+                                            </Listbox.Options>
+                                        </DropAnimation>
+                                    </div>
+                                </>
+                            )}
+                        </Listbox>
                         <AmountSpentChart data={data} />
                     </ResponsiveLineContainer>
                 </div>

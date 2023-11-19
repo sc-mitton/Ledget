@@ -639,11 +639,11 @@ ul hr {
 }
 
 .dropdown-item.selected {
-    background-color: var(--main-hlight5);
+    background-color: var(--main-hlight2);
 }
 
 .dropdown-item.selected.active {
-    background-color: var(--main-hlight2);
+    background-color: var(--main-hlight5);
 }
 
 .dropdown-item:focus-visible {
