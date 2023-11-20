@@ -365,7 +365,7 @@ const Footer = () => {
     )
 }
 
-const AmountSpentChart = ({ data }: { data: Datum[] }) => {
+const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?: boolean }) => {
     const xaxisPadding = 8
 
     const maxY = Math.max(...data.map(d => d.y as number))
@@ -378,6 +378,7 @@ const AmountSpentChart = ({ data }: { data: Datum[] }) => {
 
     const chartMargin = useMemo<{ top: number, right: number, bottom: number, left: number }>(() => {
         const margin = { top: 0, right: 16, bottom: 0, left: 0 }
+        console.log('maxY', maxY)
         const largestYAxisLabel = formatCurrency(maxY).split('.')[0]
 
         const rootElement = document.documentElement;
@@ -404,9 +405,8 @@ const AmountSpentChart = ({ data }: { data: Datum[] }) => {
         const rootFontSize = computedStyle.fontSize;
         margin.bottom = rootFontSize ? parseFloat(rootFontSize) * 2 : 16
         margin.top = rootFontSize ? parseFloat(rootFontSize) * 2 : 16
-
         return margin
-    }, [])
+    }, [data])
 
     return (
         <ResponsiveLine
@@ -419,9 +419,7 @@ const AmountSpentChart = ({ data }: { data: Datum[] }) => {
             axisLeft={{
                 tickValues: 4,
                 tickPadding: xaxisPadding,
-                format: (value: number) => formatCurrency(
-                    Big(value).times(100).toNumber()
-                ).split('.')[0]
+                format: (value: number) => formatCurrency(value).split('.')[0]
             }}
             areaBaselineValue={minY}
             tooltip={({ point }) => (
@@ -431,13 +429,37 @@ const AmountSpentChart = ({ data }: { data: Datum[] }) => {
                     <DollarCents value={formatCurrency(point.data.y.toString())} />
                 </ChartTip>
             )}
-            yScale={{ type: 'linear', min: yScaleMin, max: 'auto' }}
+            yScale={{ type: 'linear', min: yScaleMin, max: data.length > 0 ? 'auto' : maxY / 100 }}
             crosshairType="bottom"
             theme={nivoResponsiveLineTheme}
             {...nivoResponsiveLineBaseProps}
         />
     )
 }
+
+const today = new Date()
+const fakeChartData = [
+    {
+        month: new Date(today.getFullYear(), today.getMonth() - 4).getMonth(),
+        year: new Date(today.getFullYear(), today.getMonth() - 4).getFullYear(),
+        amount_spent: 2000
+    },
+    {
+        month: new Date(today.getFullYear(), today.getMonth() - 3).getMonth(),
+        year: new Date(today.getFullYear(), today.getMonth() - 3).getFullYear(),
+        amount_spent: 2400
+    },
+    {
+        month: new Date(today.getFullYear(), today.getMonth() - 2).getMonth(),
+        year: new Date(today.getFullYear(), today.getMonth() - 2).getFullYear(),
+        amount_spent: 2200
+    },
+    {
+        month: new Date(today.getFullYear(), today.getMonth() - 1).getMonth(),
+        year: new Date(today.getFullYear(), today.getMonth() - 1).getFullYear(),
+        amount_spent: 2600
+    },
+]
 
 const CategoryDetail = ({ category }: { category: Category }) => {
     const { start, end } = useGetStartEndFromSearchParams()
@@ -472,7 +494,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     useEffect(() => {
         const endOfWindow = new Date().setMonth(new Date().getMonth() - 1)
 
-        if (spendingSummaryDataIsFetched) {
+        if (spendingSummaryDataIsFetched && spendingSummaryData.length > 0) {
             switch (window) {
                 case '4 months':
                     setChartData(spendingSummaryData.filter(d =>
@@ -498,6 +520,11 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                     })))
                     break;
             }
+        } else {
+            setChartData(fakeChartData.map(d => ({
+                x: new Date(d.year, d.month).getTime(),
+                y: d.amount_spent
+            })))
         }
     }, [spendingSummaryDataIsFetched, window])
 
@@ -542,6 +569,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
             )}
         </Listbox>
     )
+
     return (
         <>
             <h2>{`${category.emoji} ${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
@@ -549,7 +577,11 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                 <div>
                     <ResponsiveLineContainer height={'90%'}>
                         <WindowSelection />
-                        <AmountSpentChart data={chartData} />
+                        {(spendingSummaryData && spendingSummaryDataIsFetched) &&
+                            <AmountSpentChart
+                                data={chartData}
+                                disabled={spendingSummaryData?.length <= 0} />
+                        }
                     </ResponsiveLineContainer>
                 </div>
                 <div>

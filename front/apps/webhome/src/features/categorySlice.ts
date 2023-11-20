@@ -59,6 +59,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
             keepUnusedDataFor: 15 * 60,
+            transformResponse: (response: CategorySpendingHistory[]) => {
+                const spendingHistory = response.map(history => ({
+                    ...history,
+                    amount_spent: Big(history.amount_spent).times(100).toNumber(),
+                }))
+                return spendingHistory
+            },
             providesTags: (result, error, arg) =>
                 result ? [{ type: 'SpendingHistory', id: arg.categoryId }] : ['SpendingHistory'],
         }),
