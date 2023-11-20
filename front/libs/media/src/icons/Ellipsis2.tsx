@@ -2,7 +2,7 @@
 
 const Ellipsis = ({
     className = '',
-    fill = "#292929",
+    fill = "var(--icon-dark)",
     width = "1.3em",
     height = "1.3em"
 }) => {

@@ -3,7 +3,7 @@
 const Refresh = ({
     className = '',
     size = "1.3em",
-    fill = "#292929",
+    fill = "var(--icon-dark)",
 }) => {
     return (
         <svg

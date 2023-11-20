@@ -2,7 +2,7 @@ const ThumbUp = ({
     className = '',
     width = "1em",
     height = "1em",
-    fill = "#292929",
+    fill = "var(--icon-dark)",
     rotate = 0,
 }) => {
     return (

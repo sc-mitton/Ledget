@@ -457,7 +457,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
         confirmed: true
     })
 
-    const [data, setData] = useState<Datum[]>([])
+    const [chartData, setChartData] = useState<Datum[]>([])
     const [window, setWindow] = useState<'4 months' | '1 year' | 'max'>('4 months')
     const options = ['4 months', '1 year', 'max']
     const buttonRef = useRef<HTMLButtonElement>(null)
@@ -475,7 +475,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
         if (spendingSummaryDataIsFetched) {
             switch (window) {
                 case '4 months':
-                    setData(spendingSummaryData.filter(d =>
+                    setChartData(spendingSummaryData.filter(d =>
                         new Date(d.year, d.month).getMonth() > new Date(endOfWindow).getMonth() - 3
                     ).map(d => ({
                         x: new Date(d.year, d.month).getTime(),
@@ -483,7 +483,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                     })))
                     break;
                 case '1 year':
-                    setData(spendingSummaryData.filter(d =>
+                    setChartData(spendingSummaryData.filter(d =>
                         new Date(d.year, d.month).getMonth() > new Date(endOfWindow).getMonth() - 12
                     ).map(d => ({
                         x: new Date(d.year, d.month).getTime(),
@@ -492,7 +492,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                     break;
                 case 'max':
                 default:
-                    setData(spendingSummaryData.map(d => ({
+                    setChartData(spendingSummaryData.map(d => ({
                         x: new Date(d.year, d.month).getTime(),
                         y: d.amount_spent
                     })))
@@ -547,11 +547,10 @@ const CategoryDetail = ({ category }: { category: Category }) => {
             <h2>{`${category.emoji} ${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
             <div className="grid">
                 <div>
-                    {(data && data.length > 0) &&
-                        <ResponsiveLineContainer height={'90%'}>
-                            <WindowSelection />
-                            <AmountSpentChart data={data} />
-                        </ResponsiveLineContainer>}
+                    <ResponsiveLineContainer height={'90%'}>
+                        <WindowSelection />
+                        <AmountSpentChart data={chartData} />
+                    </ResponsiveLineContainer>
                 </div>
                 <div>
                     <span></span>

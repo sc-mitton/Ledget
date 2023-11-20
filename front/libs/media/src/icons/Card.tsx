@@ -2,7 +2,7 @@
 
 const Card = ({
     className = 'card',
-    fill = "#292929",
+    fill = "var(--icon-dark)",
     width = "1.2em",
     height = "1.2em"
 }) => {

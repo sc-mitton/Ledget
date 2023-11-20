@@ -1,7 +1,7 @@
 'react'
 
 const Return = ({
-    stroke = '#292929',
+    stroke = 'var(--icon-dark)',
     strokeWidth = "20",
     width = "1.1em",
     height = "1.1em",

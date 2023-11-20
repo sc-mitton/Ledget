@@ -5,7 +5,7 @@ const Lock = ({
     id = "lock-icon",
     width = "1.4em",
     height = "1.4em",
-    fill = "#292929",
+    fill = "var(--icon-dark)",
 }) => {
     return (
         <svg

@@ -1,6 +1,6 @@
 const Delete = ({
     className = '',
-    fill = "#292929",
+    fill = "var(--icon-dark)",
     size = "1em",
     stroke = "#FFFFFF",
     strokeWidth = "12"

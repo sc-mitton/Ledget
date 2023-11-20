@@ -2,7 +2,7 @@
 
 const Ellipsis = ({
     className = '',
-    fill = "#292929",
+    fill = "var(--icon-dark)",
     size = "1.2em",
     rotate = 0
 }) => {

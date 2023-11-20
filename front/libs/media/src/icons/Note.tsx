@@ -4,7 +4,7 @@ const Split = ({
     width = "1.8em",
     height = "1.8em",
     className = '',
-    fill = "#292929"
+    fill = "var(--icon-dark)"
 }) => {
 
     return (

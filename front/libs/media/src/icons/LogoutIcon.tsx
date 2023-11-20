@@ -5,7 +5,7 @@ const Logout = ({
     id = "logout-icon",
     width = "1.1em",
     height = "1.1em",
-    fill = "#292929",
+    fill = "var(--icon-dark)",
 }) => {
     return (
         <svg

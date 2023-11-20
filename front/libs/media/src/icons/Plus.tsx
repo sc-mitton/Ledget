@@ -3,7 +3,7 @@
 const Plus = ({
     className = '',
     size = "1.2em",
-    stroke = "#292929",
+    stroke = "var(--icon-dark)",
     strokeWidth = "20"
 }) => {
 

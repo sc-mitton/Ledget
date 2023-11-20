@@ -3,7 +3,7 @@
 const Bell = ({
     size = "1.5em",
     className = '',
-    fill = "#292929",
+    fill = "var(--icon-dark)",
     numberOfAlerts = 0,
     color = "var(--white-text)"
 }) => {

@@ -1,6 +1,6 @@
 
 const SearchIcon = ({
-    stroke = '#292929',
+    stroke = 'var(--icon-dark)',
     strokeWidth = "20",
     width = "1em",
     height = "1em",

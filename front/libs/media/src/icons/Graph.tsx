@@ -4,7 +4,7 @@ const Graph = ({
     className = '',
     width = "1.3em",
     height = "1.3em",
-    fill = "#292929",
+    fill = "var(--icon-dark)",
 }) => {
     return (
         <svg

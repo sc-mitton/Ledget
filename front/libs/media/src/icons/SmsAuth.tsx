@@ -4,7 +4,7 @@ const SmsAuth = ({
     width = "1em",
     height = "1em",
     className = '',
-    fill = "#292929"
+    fill = "var(--icon-dark)"
 }) => {
 
     return (

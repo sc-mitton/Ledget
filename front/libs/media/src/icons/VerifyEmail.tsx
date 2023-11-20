@@ -4,7 +4,7 @@ const VerifyEmail = ({
     className = '',
     width = "4em",
     height = "4em",
-    fill = "#292929",
+    fill = "var(--icon-dark)",
     stroke = "#fafafa"
 }) => {
     return (

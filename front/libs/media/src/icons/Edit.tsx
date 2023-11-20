@@ -3,7 +3,7 @@
 const Edit = ({
     size = '1.1em',
     className = '',
-    fill = "#292929",
+    fill = "var(--icon-dark)",
 }) => {
     return (
         <svg
