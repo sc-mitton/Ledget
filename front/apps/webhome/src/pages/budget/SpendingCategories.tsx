@@ -365,7 +365,7 @@ const Footer = () => {
     )
 }
 
-const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?: boolean }) => {
+const AmountSpentChart = ({ data }: { data: Datum[] }) => {
     const xaxisPadding = 8
 
     const maxY = Math.max(...data.map(d => d.y as number))
@@ -378,7 +378,6 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
 
     const chartMargin = useMemo<{ top: number, right: number, bottom: number, left: number }>(() => {
         const margin = { top: 0, right: 16, bottom: 0, left: 0 }
-        console.log('maxY', maxY)
         const largestYAxisLabel = formatCurrency(maxY).split('.')[0]
 
         const rootElement = document.documentElement;
@@ -480,8 +479,11 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     })
 
     const [chartData, setChartData] = useState<Datum[]>([])
-    const [window, setWindow] = useState<'4 months' | '1 year' | 'max'>('4 months')
-    const options = ['4 months', '1 year', 'max']
+
+    const windowOptions = ['4 months', '1 year', '2 year', 'max'] as const
+    const [disabledOptions, setDisabledOptions] = useState<(typeof windowOptions[number])[]>()
+    const [window, setWindow] = useState<typeof windowOptions[number]>()
+
     const buttonRef = useRef<HTMLButtonElement>(null)
 
     // Information to include:
@@ -493,40 +495,51 @@ const CategoryDetail = ({ category }: { category: Category }) => {
 
     useEffect(() => {
         const endOfWindow = new Date().setMonth(new Date().getMonth() - 1)
+        if (!spendingSummaryData)
+            return
 
-        if (spendingSummaryDataIsFetched && spendingSummaryData.length > 0) {
-            switch (window) {
-                case '4 months':
-                    setChartData(spendingSummaryData.filter(d =>
-                        new Date(d.year, d.month).getMonth() > new Date(endOfWindow).getMonth() - 3
-                    ).map(d => ({
-                        x: new Date(d.year, d.month).getTime(),
-                        y: d.amount_spent
-                    })))
-                    break;
-                case '1 year':
-                    setChartData(spendingSummaryData.filter(d =>
-                        new Date(d.year, d.month).getMonth() > new Date(endOfWindow).getMonth() - 12
-                    ).map(d => ({
-                        x: new Date(d.year, d.month).getTime(),
-                        y: d.amount_spent
-                    })))
-                    break;
-                case 'max':
-                default:
-                    setChartData(spendingSummaryData.map(d => ({
-                        x: new Date(d.year, d.month).getTime(),
-                        y: d.amount_spent
-                    })))
-                    break;
-            }
+        let windowEnd = new Date().setMonth(new Date().getMonth() - 4) // 4 months default end
+        switch (window) {
+            case '1 year':
+                windowEnd = new Date().setMonth(new Date().getMonth() - 12)
+                break;
+            case '2 year':
+                windowEnd = new Date().setMonth(new Date().getMonth() - 24)
+                break;
+            case 'max':
+                windowEnd = 0
+                break;
+        }
+
+        if (spendingSummaryData.length > 0) {
+            setChartData(spendingSummaryData.filter(d =>
+                new Date(d.year, d.month) > new Date(windowEnd)
+            ).map(d => ({
+                x: new Date(d.year, d.month).getTime(),
+                y: d.amount_spent
+            })))
         } else {
             setChartData(fakeChartData.map(d => ({
                 x: new Date(d.year, d.month).getTime(),
                 y: d.amount_spent
             })))
         }
-    }, [spendingSummaryDataIsFetched, window])
+
+    }, [window, spendingSummaryDataIsFetched])
+
+    useEffect(() => {
+        if (!spendingSummaryData)
+            return
+
+        if (spendingSummaryData.length < 4) {
+            setDisabledOptions([...windowOptions])
+        } else if (spendingSummaryData.length < 12) {
+            setDisabledOptions(['1 year', '2 year'])
+        } else if (spendingSummaryData.length < 24) {
+            setDisabledOptions(['2 year'])
+        }
+
+    }, [spendingSummaryDataIsFetched])
 
     const WindowSelection = () => (
         <Listbox value={window} onChange={setWindow} as='div' className='chart-window-selectors'>
@@ -550,18 +563,19 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                             }}
                         >
                             <Listbox.Options className="chart-window-selector-options" static>
-                                {options.map(option => (
-                                    <Listbox.Option key={option} value={option}>
-                                        {({ active, selected }) => (
-                                            <div className={`dropdown-item
+                                {windowOptions.filter(option => !disabledOptions?.includes(option))
+                                    .map(option => (
+                                        <Listbox.Option key={option} value={option}>
+                                            {({ active, selected }) => (
+                                                <div className={`dropdown-item
                                 ${active && "active"}
                                 ${selected && "selected"}`}
-                                            >
-                                                {option}
-                                            </div>
-                                        )}
-                                    </Listbox.Option>
-                                ))}
+                                                >
+                                                    {option}
+                                                </div>
+                                            )}
+                                        </Listbox.Option>
+                                    ))}
                             </Listbox.Options>
                         </DropAnimation>
                     </div>
@@ -576,12 +590,8 @@ const CategoryDetail = ({ category }: { category: Category }) => {
             <div className="grid">
                 <div>
                     <ResponsiveLineContainer height={'90%'}>
-                        <WindowSelection />
-                        {(spendingSummaryData && spendingSummaryDataIsFetched) &&
-                            <AmountSpentChart
-                                data={chartData}
-                                disabled={spendingSummaryData?.length <= 0} />
-                        }
+                        {window && <WindowSelection />}
+                        {spendingSummaryData && <AmountSpentChart data={chartData} />}
                     </ResponsiveLineContainer>
                 </div>
                 <div>

@@ -50,7 +50,10 @@ const DropDown = () => {
                                         }).toString()
                                     })}
                                 >
-                                    <Edit className="dropdown-icon" />
+                                    <Edit
+                                        size={'.9em'}
+                                        className="dropdown-icon"
+                                    />
                                     Categories
                                 </Wrapper>
                                 <Wrapper

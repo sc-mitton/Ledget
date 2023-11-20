@@ -31,7 +31,7 @@ export const nivoResponsiveLineBaseProps: NivoResponsiveLineBaseProps = {
             },
         },
     },
-    curve: 'monotoneX',
+    curve: 'catmullRom',
     colors: ['var(--main-color-hover)'],
     useMesh: true,
     defs: [
@@ -46,6 +46,8 @@ export const nivoResponsiveLineBaseProps: NivoResponsiveLineBaseProps = {
     ],
     fill: [{ match: '*', id: 'gradientC' }],
 }
+
+
 
 export const nivoResponsiveLineTheme: Theme = {
     crosshair: {
