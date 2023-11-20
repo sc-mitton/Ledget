@@ -35,7 +35,7 @@
     --main-dark2: hsl(232, 17%, 30%);
     --main-dark3: hsl(232, 17%, 25%);
     --main-dark4: hsl(229, 23%, 18%);
-    --main-dark5: hsl(229, 18%, 16%);
+    --main-dark5: hsl(230, 14%, 17%);
     --main-sat: rgb(171, 171, 255);
     --yellow: rgb(175, 175, 51);
 
@@ -76,6 +76,7 @@
     --btn-hover-gray: #292929;
     --btn-mid-gray: #848484;
     --btn-black: #242424;
+    --icon-dark: var(var(--main-dark5));
     --icon-light-gray: #ebebeb;
     --icon-hover-light-gray: #e0e0e0;
     --icon-hover-gray: rgb(196, 196, 196);
