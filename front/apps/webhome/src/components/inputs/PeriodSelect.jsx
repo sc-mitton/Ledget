@@ -84,11 +84,7 @@ const PeriodSelect = (props) => {
                             {labelPrefix && `${labelPrefix} `}
                             {`${opts.find((option) => option.value === localValue)?.label}`
                             }
-                            {<ArrowIcon
-                                width={'.8em'}
-                                height={'.8em'}
-                                stroke={`var(--m-text)`}
-                            />}
+                            {<ArrowIcon size={'.8em'} stroke={`var(--m-text)`} />}
                         </Listbox.Button>
                         <Listbox.Options className="select-container" static>
                             <DropAnimation

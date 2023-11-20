@@ -11,7 +11,6 @@ import Header from './Header'
 import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import Options from "@components/dropdowns/Options"
 import { SelectCategoryBill } from '@components/dropdowns'
-import Split from '@components/split/split'
 import { Logo } from '@components/pieces'
 import ItemOptions from "./ItemOptions"
 import {

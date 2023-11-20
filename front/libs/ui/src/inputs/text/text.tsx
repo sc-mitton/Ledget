@@ -105,9 +105,9 @@ export const CardInput = ({ requiredError, onComplete, clearError, loading }: Ca
         fontSmoothing: 'antialiased',
         fontSize: '16px',
         '::placeholder': {
-          color: cardFocus ? '#7d80a1' : '#767676',
+          color: cardFocus ? '#949de0' : '#767676',
         },
-        iconColor: cardFocus ? '#36364a' : '#292929',
+        iconColor: cardFocus ? '#3a59c9' : '#292929',
         ':disabled': {
           color: '#767676',
           iconColor: '#767676'

@@ -440,6 +440,7 @@ const AmountSpentChart = ({ data }: { data: Datum[] }) => {
 }
 
 const CategoryDetail = ({ category }: { category: Category }) => {
+    const { start, end } = useGetStartEndFromSearchParams()
     const {
         data: spendingSummaryData,
         isSuccess: spendingSummaryDataIsFetched
@@ -449,7 +450,12 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     const {
         data: transactionsData,
         isSuccess: transactionsDataIsFetched
-    } = useGetTransactionsQuery({ category: category.id })
+    } = useGetTransactionsQuery({
+        category: category.id,
+        start: start,
+        end: end,
+        confirmed: true
+    })
 
     const [data, setData] = useState<Datum[]>([])
     const [window, setWindow] = useState<'4 months' | '1 year' | 'max'>('4 months')
@@ -495,6 +501,47 @@ const CategoryDetail = ({ category }: { category: Category }) => {
         }
     }, [spendingSummaryDataIsFetched, window])
 
+    const WindowSelection = () => (
+        <Listbox value={window} onChange={setWindow} as='div' className='chart-window-selectors'>
+            {({ open }) => (
+                <>
+                    <Listbox.Button as={PillOptionButton} ref={buttonRef}>
+                        {window}
+                        <ArrowIcon
+                            stroke={'currentColor'}
+                            size={'.85em'}
+                            strokeWidth={'18'}
+                        />
+                    </Listbox.Button>
+                    <div className="chart-window-select--container">
+                        <DropAnimation
+                            placement='middle'
+                            visible={open}
+                            className="dropdown"
+                            style={{
+                                minWidth: `${buttonRef?.current?.offsetWidth}px`,
+                            }}
+                        >
+                            <Listbox.Options className="chart-window-selector-options" static>
+                                {options.map(option => (
+                                    <Listbox.Option key={option} value={option}>
+                                        {({ active, selected }) => (
+                                            <div className={`dropdown-item
+                                ${active && "active"}
+                                ${selected && "selected"}`}
+                                            >
+                                                {option}
+                                            </div>
+                                        )}
+                                    </Listbox.Option>
+                                ))}
+                            </Listbox.Options>
+                        </DropAnimation>
+                    </div>
+                </>
+            )}
+        </Listbox>
+    )
     return (
         <>
             <h2>{`${category.emoji} ${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
@@ -502,45 +549,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                 <div>
                     {(data && data.length > 0) &&
                         <ResponsiveLineContainer height={'90%'}>
-                            <Listbox value={window} onChange={setWindow} as='div' className='chart-window-selectors'>
-                                {({ open }) => (
-                                    <>
-                                        <Listbox.Button as={PillOptionButton} ref={buttonRef}>
-                                            {window}
-                                            <ArrowIcon
-                                                stroke={'currentColor'}
-                                                size={'.85em'}
-                                                strokeWidth={'18'}
-                                            />
-                                        </Listbox.Button>
-                                        <div className="chart-window-select--container">
-                                            <DropAnimation
-                                                placement='middle'
-                                                visible={open}
-                                                className="dropdown"
-                                                style={{
-                                                    minWidth: `${buttonRef?.current?.offsetWidth}px`,
-                                                }}
-                                            >
-                                                <Listbox.Options className="chart-window-selector-options" static>
-                                                    {options.map(option => (
-                                                        <Listbox.Option key={option} value={option}>
-                                                            {({ active, selected }) => (
-                                                                <div className={`dropdown-item
-                                                        ${active && "active"}
-                                                        ${selected && "selected"}`}
-                                                                >
-                                                                    {option}
-                                                                </div>
-                                                            )}
-                                                        </Listbox.Option>
-                                                    ))}
-                                                </Listbox.Options>
-                                            </DropAnimation>
-                                        </div>
-                                    </>
-                                )}
-                            </Listbox>
+                            <WindowSelection />
                             <AmountSpentChart data={data} />
                         </ResponsiveLineContainer>}
                 </div>

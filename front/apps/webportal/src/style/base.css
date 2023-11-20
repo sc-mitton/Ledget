@@ -20,7 +20,7 @@
     --main-color: rgb(92, 96, 135);
     --main-color-values: 92, 96, 135;
     --main-hlight: #a9afdb;
-    --main-hlight2: #dddee9;
+    --main-hlight2: #dde1f0;
     --main-hlight3: #a7acd3;
     --main-hlight4: #e3e5f5;
     --main-hlight5: #c7ccf2;
@@ -101,7 +101,7 @@
 /* Override color values for Firefox */
 @-moz-document url-prefix() {
     :root {
-        --input-focus: hsl(233, 56%, 73%);
+        --input-focus: hwb(233 58% 12%);
         --input-placeholder: #2a2a2a;
         --m-text: rgb(44, 44, 44);
     }

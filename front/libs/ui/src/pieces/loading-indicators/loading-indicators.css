@@ -32,7 +32,7 @@
     height: .875em;
     color: inherit;
     animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border: 2px solid currentColor;
+    border: 1.5px solid currentColor;
     border-radius: 50%;
     border-color: currentColor transparent transparent transparent;
 }

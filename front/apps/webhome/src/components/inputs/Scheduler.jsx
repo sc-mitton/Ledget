@@ -95,10 +95,7 @@ const Button = ({ children, ...props }) => {
                         {placeholder || 'Repeats on'}
                     </span>
                 </div>
-                <ArrowIcon
-                    width={'.8em'}
-                    height={'.8em'}
-                />
+                <ArrowIcon size={'.8em'} />
                 {children}
             </SlimInputButton>
         </>

@@ -124,7 +124,6 @@ button {
 
 /* --------------------------------- Inputs --------------------------------- */
 label {
-    font-weight: 500;
     margin-bottom: .25rem;
     margin-left: 0;
     display: block;
@@ -168,7 +167,6 @@ input:focus {
     margin-bottom: .75rem;
     display: flex;
     flex-direction: row;
-    font-weight: 500;
 }
 
 #social-login-header:before,

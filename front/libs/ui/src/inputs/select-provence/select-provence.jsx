@@ -48,8 +48,7 @@ export const SelectProvence = ({ field, errors }) => {
               }}
             >
               <ArrowIcon
-                width={'.9em'}
-                height={'.9em'}
+                size={'.9em'}
                 stroke={(focused && !provence) ? 'var(--input-focus)' : 'var(--m-text)'}
               />
             </Combobox.Button>

@@ -82,8 +82,7 @@ export const withArrow = (Component: FC<any>) => {
             >
                 {children}
                 <ArrowIcon
-                    width={'.8em'}
-                    height={'.8em'}
+                    size={'.8em'}
                     rotation={rotate}
                     stroke={'currentColor' || stroke}
                 />

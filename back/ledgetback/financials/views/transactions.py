@@ -260,7 +260,7 @@ class TransactionViewSet(ModelViewSet):
             extra_args['categories__id'] = self.request.query_params.get('category')
 
         # Get confirmed transactions
-        if self.request.query_params.get('confirmed'):
+        if self.request.query_params.get('confirmed') == 'true':
             return Transaction.objects.filter(
                 datetime__gte=start,
                 datetime__lte=end,
@@ -272,13 +272,14 @@ class TransactionViewSet(ModelViewSet):
              .order_by('-datetime')
         # Get unconfirmed transactions
         else:
+            print('start', start)
+            print('end', end)
             return Transaction.objects.filter(
                 datetime__gte=start,
                 datetime__lte=end,
                 categories=None,
-                bill__isnull=True,
-            ).select_related('predicted_category', 'predicted_bill') \
-             .order_by('-datetime')
+                bill__isnull=True
+            ).select_related('predicted_category', 'predicted_bill')
 
     def _get_transactions(self):
         type = self.request.query_params.get('type', None)
