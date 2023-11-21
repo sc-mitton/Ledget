@@ -29,7 +29,6 @@ import {
     BillScheduler,
     AddReminder
 } from '@components/inputs'
-import { update } from '@react-spring/web'
 
 const getRepeatsDescription = ({ day, week, week_day, month, year }:
     { day: number | undefined, week: number | undefined, week_day: number | undefined, month: number | undefined, year: number | undefined }) => {

@@ -77,14 +77,25 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Category']
         }),
-        updateCategories: builder.mutation<any, Category[]>({
-            query: (data) => ({
-                url: 'categories',
-                method: 'PUT',
-                body: data,
-            }),
+        updateCategories: builder.mutation<any, Category[] | Category>({
+            query: (data) => {
+                if (Array.isArray(data)) {
+                    return {
+                        url: 'categories',
+                        method: 'PUT',
+                        body: data,
+                    }
+                } else {
+                    return {
+                        url: `categories/${data.id}`,
+                        method: 'PUT',
+                        body: data,
+                    }
+                }
+            },
             invalidatesTags: (result, error, arg) => {
-                const spendingHistoryTags = arg.map(category => ({ type: 'SpendingHistory', id: category.id } as const))
+                const categoryIds = Array.isArray(arg) ? arg.map(category => category.id) : [arg.id]
+                const spendingHistoryTags = categoryIds.map(categoryId => ({ type: 'SpendingHistory', id: categoryId } as const))
                 return result
                     ? [{ type: 'Category', id: 'LIST' }, ...spendingHistoryTags]
                     : [{ type: 'Category', id: 'LIST' }]

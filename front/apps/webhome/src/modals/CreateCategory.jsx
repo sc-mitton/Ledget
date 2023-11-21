@@ -26,7 +26,7 @@ const Form = (props) => {
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
-    const watchLimitAmount = watch('limit_amount', '')
+    const watchLimitAmount = watch('limit_amount')
 
     const submit = (data, e) => {
         e.preventDefault()

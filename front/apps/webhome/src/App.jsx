@@ -18,7 +18,8 @@ import {
     CreateBill,
     ForceVerification,
     EditBudgetItems,
-    BillModal
+    BillModal,
+    EditCategory
 } from '@modals'
 import { useGetMeQuery } from '@features/userSlice'
 import { toastStackSelector, tossToast } from '@features/toastSlice'
@@ -119,7 +120,7 @@ const MainApp = () => {
                                 <Route path="new-category" element={<CreateCategory />} />
                                 <Route path="new-bill" element={<CreateBill />} />
                                 <Route path="edit-categories" element={<EditBudgetItems />} />
-                                <Route path="edit" element={<div>edit</div>} />
+                                <Route path="edit-category" element={<EditCategory />} />
                                 <Route path="verify-email" element={<ForceVerification />} />
                                 <Route path="bill" element={<BillModal />} />
                             </Route>

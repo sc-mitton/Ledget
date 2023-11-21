@@ -9,10 +9,10 @@ interface Error {
   type?: 'required' | string
 }
 
-export const FormErrorTip = ({ errors }: { errors: Error[] }) => (
+export const FormErrorTip = ({ errors }: { errors: Error[] | undefined }) => (
   <>
     {
-      errors.some((error: any) => error?.type === 'required' || error?.message === 'required') &&
+      errors?.some((error: any) => error?.type === 'required' || error?.message === 'required') &&
       <div className='error-tip'>
         <Alert2 />
       </div>

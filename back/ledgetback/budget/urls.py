@@ -20,6 +20,13 @@ class CustomCategoriesRouter(SimpleRouter):
             detail=False,
             initkwargs={'suffix': 'List'}
         ),
+        Route(
+            url=r'^{prefix}/{lookup}$',
+            mapping={'put': 'update'},
+            name='{basename}-detail',
+            detail=True,
+            initkwargs={'suffix': 'Detail'}
+        ),
         DynamicRoute(
             url=r'^{prefix}/{url_path}$',
             name='{basename}-{url_name}',

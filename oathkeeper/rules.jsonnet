@@ -173,6 +173,14 @@ local GenericAuthedBase = {
       url: base_url + '/<(categories|category)>',
     }
   },
+  GenericAuthedBase
+    {
+    id: 'update_category',
+    match: {
+      methods: ['PUT'],
+      url: base_url + '/categories/<[a-zA-Z0-9-]+>',
+    },
+  },
     GenericAuthedBase
   {
     id: 'spending_history',
@@ -199,7 +207,7 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
     {
-    id: 'update_bills',
+    id: 'update_bill',
     match: {
       methods: ['PUT'],
       url: base_url + '/bills/<[a-zA-Z0-9-]+>',

@@ -609,7 +609,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                     <button
                                         className={`dropdown-item ${active && "active-dropdown-item"}`}
                                         onClick={() => {
-                                            navigate(`${location.pathname}/category${location.search}`, {
+                                            navigate(`${location.pathname}/edit-category${location.search}`, {
                                                 state: { categoryId: category.id }
                                             })
                                         }}

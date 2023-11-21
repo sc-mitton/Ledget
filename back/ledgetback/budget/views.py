@@ -183,6 +183,15 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         else:
             return self._get_categories_qset()
 
+    def get_object(self):
+        category = Category.objects \
+                           .prefetch_related('users') \
+                           .prefetch_related('alerts') \
+                           .get(pk=self.kwargs['pk'])
+
+        self.check_object_permissions(self.request, category)
+        return category
+
     @action(detail=True, methods=['GET'], url_path='spending-history')
     def spending_history(self, request, pk=None):
         monthly_amounts_spent = Transaction.objects.filter(

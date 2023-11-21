@@ -184,7 +184,33 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
         self.assertNotEqual(response.data['name'], bill.name)
         self.assertNotEqual(response.data['upper_amount'], bill.upper_amount)
         bill.refresh_from_db()
-        self.assertEqual(bill.reminders.count(), 2)
+        self.assertEqual(bill.reminders.count(), len(reminders))
+
+    def test_update_category(self):
+        '''
+        Test updating a view values and adding some alerts for a category
+        '''
+
+        category = Category.objects.prefetch_related('alerts') \
+                                   .filter(removed_on__isnull=True).first()
+        alerts = category.alerts.all()[:2]
+
+        payload = {
+            'name': 'New Name',
+            'limit_amount': category.limit_amount + 100,
+            'alerts': [{'id': str(alert.id)} for alert in alerts]
+        }
+        response = self.client.put(
+            reverse('categories-detail', kwargs={'pk': category.id}),
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response.data['name'], category.name)
+        self.assertNotEqual(response.data['limit_amount'], category.limit_amount)
+        category.refresh_from_db()
+        self.assertEqual(category.alerts.count(), len(alerts))
 
     def test_get_spending_history(self):
         '''

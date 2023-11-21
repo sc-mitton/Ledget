@@ -9,8 +9,6 @@ export const DropAnimation = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivE
 { visible: boolean, placement?: 'middle' | 'left' | 'right', transformOrigin?: 'center' | 'left' | 'right' }>((props, ref) => {
   const { visible, children, placement = 'middle', transformOrigin, style = {}, ...rest } = props
 
-  console.log('transformOrigin', transformOrigin)
-
   const transitions = useTransition(visible, {
     from: {
       opacity: 0,

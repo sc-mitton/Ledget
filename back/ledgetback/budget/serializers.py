@@ -62,6 +62,24 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
         )
         return instance
 
+    def update(self, instance, validated_data, *args, **kwargs):
+        alerts = validated_data.pop('alerts', [])
+        alert_ids = [alert.get('id', None)
+                     for alert in alerts
+                     if alert.get('id', False)]
+        reminders = Alert.objects.filter(id__in=alert_ids)
+
+        try:
+            for field, value in validated_data.items():
+                setattr(instance, field, value)
+            instance.reminders.set(reminders)
+            instance.save()
+        except Exception as e:
+            logger.error(e)
+            raise serializers.ValidationError(e)
+
+        return instance
+
     def get_amount_spent(self, obj):
         if hasattr(obj, 'amount_spent'):
             return obj.amount_spent
@@ -152,7 +170,7 @@ class BillSerializer(NestedCreateMixin, serializers.ModelSerializer):
         reminders = validated_data.pop('reminders', [])
         reminder_ids = [reminder.get('id', None)
                         for reminder in reminders
-                        if reminder.get('id', None)]
+                        if reminder.get('id', False)]
         instance = super().create(validated_data, *args, **kwargs)
 
         reminders = Reminder.objects.filter(id__in=reminder_ids)

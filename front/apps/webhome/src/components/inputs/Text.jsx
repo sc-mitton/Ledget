@@ -113,7 +113,7 @@ const IncrementDecrementButton = ({ val, setVal, field }) => (
     </div>
 )
 
-export const LimitAmountInput = ({ control, children }) => {
+export const LimitAmountInput = ({ control, defaultValue, children }) => {
     const [val, setVal] = useState(undefined)
     const {
         field,
@@ -121,6 +121,14 @@ export const LimitAmountInput = ({ control, children }) => {
         control,
         name: 'limit_amount'
     })
+
+    // set field value to default if present
+    useEffect(() => {
+        if (defaultValue) {
+            field.onChange(makeIntCurrencyFromStr(defaultValue))
+            setVal(defaultValue)
+        }
+    }, [defaultValue])
 
     return (
         <>
