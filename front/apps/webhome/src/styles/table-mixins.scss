@@ -1,0 +1,11 @@
+@mixin table-dividers($bottom: -0.5em) {
+    &:not(.month-header)::after {
+        content: '';
+        position: absolute;
+        bottom: $bottom;
+        left: 0;
+        right: 0;
+        height: 1.5px;
+        background-color: var(--subtle-border-color);
+    }
+}

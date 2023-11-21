@@ -592,7 +592,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
             <h2>{`${category.emoji} ${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
             <div className="grid">
                 <div>
-                    <ResponsiveLineContainer height={'90%'}>
+                    <ResponsiveLineContainer>
                         {window && <WindowSelection />}
                         {spendingSummaryData?.length === 0 &&
                             <span id="not-enough-data-message">
@@ -607,6 +607,16 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                     </ResponsiveLineContainer>
                 </div>
                 <div>
+                    {transactionsData?.results?.map(transaction => (
+                        <Fragment key={transaction.transaction_id}>
+                            <div>{transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}</div>
+                            <div>
+                                {new Date(transaction.date).toLocaleDateString(
+                                    'en-US', { month: 'numeric', day: 'numeric' })}
+                            </div>
+                            <div><DollarCents value={transaction.amount} /></div>
+                        </Fragment>
+                    ))}
                     {transactionsData?.results?.map(transaction => (
                         <Fragment key={transaction.transaction_id}>
                             <div>{transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}</div>

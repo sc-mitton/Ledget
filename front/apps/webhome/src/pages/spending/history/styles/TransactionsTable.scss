@@ -2,6 +2,7 @@ $scroll-bar-padding: 1em;
 $charcoal: var(--charcoal-rgb);
 
 @import '@styles/text';
+@import '@styles/table-mixins.scss';
 
 .transactions-history-table--container {
     flex-grow: 1;
@@ -52,7 +53,6 @@ $charcoal: var(--charcoal-rgb);
         }
     }
 }
-
 
 .transactions-history--table {
     padding-right: $scroll-bar-padding;
@@ -128,16 +128,7 @@ $charcoal: var(--charcoal-rgb);
 
         &:not(:last-child)>div {
             position: relative;
-
-            &:not(.month-header)::after {
-                content: '';
-                position: absolute;
-                bottom: -.5em;
-                left: 0;
-                right: 0;
-                height: 1.5px;
-                background-color: var(--subtle-border-color);
-            }
+            @include table-dividers();
         }
     }
 }
