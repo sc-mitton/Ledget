@@ -1,5 +1,6 @@
 @import '../../../styles/greenblues.scss';
 @import './Variables.scss';
+@import '@styles/text.scss';
 
 $bill-flex-grid-gap: calc(.25em + .5vw);
 $window-padding: $bill-flex-grid-gap;
@@ -26,13 +27,14 @@ $background: var(--window);
     border-radius: var(--border-radius25);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: minmax(0, max-content);
-    place-content: center;
+    grid-template-rows: minmax(0, 1fr);
+    place-content: start;
     overflow: hidden;
     box-sizing: border-box;
+    flex-grow: 1;
 
     .column {
-        max-height: max-content;
+        max-height: 100%;
 
         &>div {
             overflow-y: auto;
@@ -247,7 +249,6 @@ $background: var(--window);
     justify-content: flex-end;
     align-items: flex-end;
     margin-top: 1em;
-    flex-grow: 1;
 
     &>div {
         height: min-content;
@@ -274,6 +275,19 @@ $background: var(--window);
     position: absolute;
     inset: 0;
     padding: inherit;
+
+    #not-enough-data-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(var(--window-rgb), .75);
+        box-shadow: 0px 0px 20px 30px rgb(var(--window-rgb), .75);
+        z-index: 100;
+        color: $tirtiary-text-color;
+
+        text-align: center;
+    }
 
     // Graph container
     .grid {

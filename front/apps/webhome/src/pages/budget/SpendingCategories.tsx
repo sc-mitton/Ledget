@@ -365,7 +365,7 @@ const Footer = () => {
     )
 }
 
-const AmountSpentChart = ({ data }: { data: Datum[] }) => {
+const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?: boolean }) => {
     const xaxisPadding = 8
 
     const maxY = Math.max(...data.map(d => d.y as number))
@@ -429,9 +429,10 @@ const AmountSpentChart = ({ data }: { data: Datum[] }) => {
                 </ChartTip>
             )}
             yScale={{ type: 'linear', min: yScaleMin, max: data.length > 0 ? 'auto' : maxY / 100 }}
+            gridYValues={4}
             crosshairType="bottom"
             theme={nivoResponsiveLineTheme}
-            {...nivoResponsiveLineBaseProps}
+            {...nivoResponsiveLineBaseProps({ disabled: disabled })}
         />
     )
 }
@@ -591,7 +592,16 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                 <div>
                     <ResponsiveLineContainer height={'90%'}>
                         {window && <WindowSelection />}
-                        {spendingSummaryData && <AmountSpentChart data={chartData} />}
+                        {spendingSummaryData?.length === 0 &&
+                            <span id="not-enough-data-message">
+                                Not enough data to display yet
+                            </span>
+                        }
+                        {spendingSummaryData &&
+                            <AmountSpentChart
+                                data={chartData}
+                                disabled={spendingSummaryData.length === 0}
+                            />}
                     </ResponsiveLineContainer>
                 </div>
                 <div>
