@@ -11,7 +11,7 @@ import { Listbox } from '@headlessui/react'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
-import { useGetTransactionsQuery } from '@features/transactionsSlice'
+import { useLazyGetTransactionsQuery } from '@features/transactionsSlice'
 import {
     useLazyGetCategoriesQuery,
     SelectCategoryBillMetaData,
@@ -461,6 +461,11 @@ const fakeChartData = [
     },
 ]
 
+// Information to include:
+
+// amount spent, limit amount, progress circle
+//  alerts on or off, edit button
+
 const CategoryDetail = ({ category }: { category: Category }) => {
     const { start, end } = useGetStartEndFromSearchParams()
     const {
@@ -469,30 +474,27 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     } = useGetCategorySpendingHistoryQuery({
         categoryId: category.id,
     })
-    const {
+    const [getTransaction, {
         data: transactionsData,
         isSuccess: transactionsDataIsFetched
-    } = useGetTransactionsQuery({
-        category: category.id,
-        start: start,
-        end: end,
-        confirmed: true
-    })
+    }] = useLazyGetTransactionsQuery()
 
     const [chartData, setChartData] = useState<Datum[]>([])
 
     const windowOptions = ['4 months', '1 year', '2 year', 'max'] as const
     const [disabledOptions, setDisabledOptions] = useState<(typeof windowOptions[number])[]>()
     const [window, setWindow] = useState<typeof windowOptions[number]>()
-
     const buttonRef = useRef<HTMLButtonElement>(null)
 
-    // Information to include:
-
-    // amount spent, limit amount, progress circle
-    // list of items for the month in this category
-
-    //  alerts on or off, edit button
+    // Fetching Transactions
+    useEffect(() => {
+        getTransaction({
+            confirmed: true,
+            start: start,
+            end: end,
+            category: category.id,
+        })
+    }, [])
 
     useEffect(() => {
         const endOfWindow = new Date().setMonth(new Date().getMonth() - 1)
@@ -605,7 +607,16 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                     </ResponsiveLineContainer>
                 </div>
                 <div>
-                    <span></span>
+                    {transactionsData?.results?.map(transaction => (
+                        <Fragment key={transaction.transaction_id}>
+                            <div>{transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}</div>
+                            <div>
+                                {new Date(transaction.date).toLocaleDateString(
+                                    'en-US', { month: 'numeric', day: 'numeric' })}
+                            </div>
+                            <div><DollarCents value={transaction.amount} /></div>
+                        </Fragment>
+                    ))}
                 </div>
             </div>
         </>

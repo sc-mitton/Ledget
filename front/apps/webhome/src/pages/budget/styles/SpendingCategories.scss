@@ -292,11 +292,18 @@ $background: var(--window);
     // Graph container
     .grid {
         flex-grow: 1;
-        display: grid;
-        grid-template-columns: 2fr 3fr;
+        display: flex;
+        justify-content: space-evenly;
+        gap: 3em;
         color: var(--main-hlight4);
 
         &>div {
+            flex: 1;
+            max-width: 30em;
+        }
+
+        // Chart
+        &>div:first-child {
             position: relative;
             display: flex;
             flex-direction: column;
@@ -319,6 +326,20 @@ $background: var(--window);
                     gap: .25em;
                     min-width: 6ch;
                 }
+            }
+        }
+
+        // List of transactions
+        &>div:last-child {
+            place-content: center;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1em;
+            grid-template-rows: minmax(0, 2em);
+
+            // Date column
+            &>div:nth-child(3n + 2) {
+                color: $tirtiary-text-color;
             }
         }
     }
