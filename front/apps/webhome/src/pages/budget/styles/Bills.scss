@@ -2,10 +2,10 @@ $gap: calc(.25em + 2vw);
 $bill-flex-grid-gap: calc(.25em + .5vw);
 $bill-item-padding: .25em .75em;
 $window-padding: $bill-flex-grid-gap;
-$number-of-bill-rows: 5;
+$number-of-bill-rows: 4;
 
 :root {
-    --number-of-bill-rows: 5;
+    --number-of-bill-rows: 4;
 }
 
 @import '../../../styles/greenblues.scss';
@@ -211,6 +211,7 @@ $number-of-bill-rows: 5;
     flex-shrink: 1;
     overflow-y: hidden;
     overflow-x: auto;
+    margin-top: .5em;
     max-height: clamp(calc(3 * (1em + $bill-flex-grid-gap*2)),
             calc(5 * (1em + $bill-flex-grid-gap*2 + 1vh)),
             calc(100% - $bill-flex-grid-gap * 2),

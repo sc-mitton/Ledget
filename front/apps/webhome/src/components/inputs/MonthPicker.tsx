@@ -56,7 +56,7 @@ const MonthPicker = () => {
                     newDateOptions[year] = [month]
                 }
             }
-
+            setDateOptions(newDateOptions)
         }
     }, [userIsFetched, user])
 
