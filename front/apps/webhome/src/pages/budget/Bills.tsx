@@ -162,7 +162,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
     useAccessEsc({
         refs: [dropdownRef, buttonRef],
         visible: showCalendar,
-        setVisible: () => setShowCalendar(false),
+        setVisible: () => showCalendar && setShowCalendar(false),
     })
 
     return (
@@ -176,8 +176,6 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
             <div>
                 <IconScaleButton
                     ref={buttonRef}
-                    onFocus={() => setShowCalendar(true)}
-                    onBlur={() => setShowCalendar(false)}
                     onClick={() => setShowCalendar(!showCalendar)}
                     tabIndex={0}
                     aria-label="Show calendar"
@@ -186,9 +184,10 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                     <CalendarIcon size={'1.4em'} />
                 </IconScaleButton>
                 <DropAnimation
-                    placement='middle'
+                    placement='left'
                     visible={showCalendar}
                     className="dropdown" ref={dropdownRef}
+                    style={{ borderRadius: 'var(--border-radius25)' }}
                 >
                     <Calendar ref={calendarRef} />
                 </DropAnimation>
@@ -230,7 +229,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                             searchParams.delete('bill-sort')
                             setSearchParams(searchParams)
                         } else {
-                            dispatch(sortBillsByDate())
+                            dispatch(sortBillsByAlpha())
                             searchParams.set('bill-sort', 'a-z')
                             setSearchParams(searchParams)
                         }

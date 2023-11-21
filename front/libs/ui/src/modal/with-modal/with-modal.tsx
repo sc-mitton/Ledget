@@ -3,6 +3,7 @@ import { useTransition, animated } from '@react-spring/web'
 
 import './with-modal.css'
 import { CloseButton } from '../../buttons/buttons'
+import { should } from 'vitest'
 
 
 interface I {
@@ -16,14 +17,20 @@ export function useAccessEsc({ refs, visible, setVisible }: I) {
     const handleClick = (event: MouseEvent) => {
       event.stopPropagation()
 
-      // const shouldClose = refs.some(ref => ref.current === event.target && ref.current?.contains(event.target as Node))
-      const shouldClose = refs.some(ref => {
-        const contains = ref.current?.contains(event.target as Node)
-        return !contains && contains !== undefined
-      })
-      if (shouldClose) {
-        setVisible(false)
+
+      let shouldClose = true
+      for (const ref of refs) {
+        if (ref.current === null) {
+          shouldClose = false
+          break
+        }
+        if (ref.current && ref.current.contains(event.target as Node)) {
+          shouldClose = false
+          break
+        }
       }
+
+      shouldClose && setVisible(false)
     }
 
     const handleEscape = (event: KeyboardEvent) => {
