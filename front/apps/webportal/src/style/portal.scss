@@ -40,7 +40,7 @@ body {
     border-radius: var(--border-radius3);
     border: 1.5px solid var(--window-border);
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    box-shadow: rgba(149, 157, 165, 0.7) 0px 0px 2px;
+    box-shadow: var(--window-drop-shadow);
     padding: 2rem 2.25rem;
     margin: 1rem 0;
     position: relative;

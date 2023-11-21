@@ -7,7 +7,7 @@ $bill-flex-grid-gap: calc(.25em + .5vw);
 $window-padding: $bill-flex-grid-gap;
 
 $row-padding: .375em;
-$label-padding: calc($row-padding/3) .75em;
+$label-padding: calc($row-padding/2) .75em;
 $column-gap: 1.25em;
 $background: var(--window);
 

@@ -39,7 +39,8 @@ import {
     nivoResponsiveLineBaseProps,
     nivoResponsiveLineTheme,
     ChartTip,
-    DropAnimation
+    DropAnimation,
+    LoadingRing
 } from '@ledget/ui'
 import { Plus, BackArrow, ArrowIcon, Edit } from '@ledget/media'
 import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
@@ -562,9 +563,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                             placement='middle'
                             visible={open}
                             className="dropdown"
-                            style={{
-                                minWidth: `${buttonRef?.current?.offsetWidth}px`,
-                            }}
+                            style={{ minWidth: `${buttonRef?.current?.offsetWidth}px` }}
                         >
                             <Listbox.Options className="chart-window-selector-options" static>
                                 {windowOptions.filter(option => !disabledOptions?.includes(option))
@@ -600,11 +599,14 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                 Not enough data to display yet
                             </span>
                         }
-                        {spendingSummaryData &&
+                        {spendingSummaryData
+                            ?
                             <AmountSpentChart
                                 data={chartData}
                                 disabled={spendingSummaryData.length === 0}
-                            />}
+                            />
+                            : <LoadingRing visible={true} />
+                        }
                     </ResponsiveLineContainer>
                 </div>
                 <div>

@@ -53,7 +53,7 @@
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
     --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
     --new-item-drop-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px;
-    --window-drop-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    --window-drop-shadow: rgba(149, 157, 165, 0.7) 0px 0px 2px;
     --scroll-shadow: rgba(248, 248, 248), transparent;
 
     /* Input Colors */

@@ -160,6 +160,7 @@ const Header = () => {
                     <animated.span style={props} />
                     {isSuccessLoadingAccounts && accountsData?.accounts.length > 0 &&
                         <RefreshButton
+                            fill={'var(--m-text)'}
                             loading={isSyncing}
                             onClick={() => {
                                 const account = searchParams.get('account')
