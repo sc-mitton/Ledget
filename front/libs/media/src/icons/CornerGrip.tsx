@@ -1,6 +1,6 @@
 const CornerGripIcon = ({
     className = '',
-    fill = "#fafafa",
+    fill = "currentColor",
     width = ".9em",
     height = ".9em",
 }) => {

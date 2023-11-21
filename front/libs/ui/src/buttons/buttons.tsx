@@ -200,7 +200,7 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
   }
 )
 
-export const RefreshButton = ({ fill = '#292929', hasBackground = true, loading = false, onClick = () => { }, ...rest }) => {
+export const RefreshButton = ({ fill = 'currentColor', hasBackground = true, loading = false, onClick = () => { }, ...rest }) => {
   const [active, setActive] = useState(false)
 
   useEffect(() => {

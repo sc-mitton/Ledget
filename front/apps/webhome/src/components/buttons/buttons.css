@@ -7,6 +7,7 @@
 }
 
 .corner-grip-btn {
+    color: inherit;
     opacity: .3;
     position: absolute;
     top: .5rem;

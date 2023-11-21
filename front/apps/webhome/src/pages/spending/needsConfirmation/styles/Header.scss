@@ -37,19 +37,19 @@
         font-weight: 400;
         margin-right: .625em;
         position: relative;
-        color: var(--faded-text);
         padding: 0 .25em;
         border-radius: var(--border-radius1);
+
+        button,
+        span,
+        &+span {
+            color: var(--faded-text);
+        }
 
         &>span {
             position: relative;
             z-index: 1;
             font-weight: 400;
-            color: var(--faded-text);
-        }
-
-        &+span {
-            color: var(--faded-text);
         }
 
         &::after {
@@ -61,7 +61,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: var(--icon-hover-light-gray);
+            background-color: rgb(0, 0, 0, .09);
             border-radius: 50%;
         }
     }

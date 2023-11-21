@@ -235,10 +235,6 @@ $number-of-bill-rows: 5;
             background-color: $blue-hover;
             transition: all .2s ease-in-out;
         }
-
-        * {
-            color: var(--main-dark4);
-        }
     }
 
     &>.yearly-bill {
