@@ -9,3 +9,7 @@
         background-color: var(--subtle-border-color);
     }
 }
+
+@mixin table-header-mask-image {
+    mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
+}

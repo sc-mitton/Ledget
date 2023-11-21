@@ -11,35 +11,36 @@ $label-padding: calc($row-padding/3) .75em;
 $column-gap: 1.25em;
 $background: var(--window);
 
-@mixin in-between-border {
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -.25em;
-        left: 0;
-        width: 100%;
-        height: 1.5px;
-        background-color: var(--subtle-border-color);
-    }
+@mixin header-styles {
+    padding-top: 0;
+    padding-bottom: .5em;
+    position: sticky;
+    top: 0;
+    background-color: $background;
+    box-shadow: 0px 4px 4px -2px $background;
+    z-index: 1;
+}
+
+@mixin outermost-div-placement-styling {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, 1fr);
+    box-sizing: border-box;
+    flex-grow: 1;
 }
 
 #all-categorires-table {
     gap: $column-gap;
     border-radius: var(--border-radius25);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: minmax(0, 1fr);
-    place-content: start;
+    @include outermost-div-placement-styling;
     overflow: hidden;
-    box-sizing: border-box;
-    flex-grow: 1;
+    place-content: start;
 
     .column {
         max-height: 100%;
 
         &>div {
             overflow-y: auto;
-            align-self: flex-start;
             width: calc(100% + .75em);
             box-sizing: border-box;
             padding: 0 .125em;
@@ -47,7 +48,7 @@ $background: var(--window);
             display: grid;
             max-height: 100%;
             grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
-            mask-image: $mask-image;
+            @include table-header-mask-image;
             row-gap: $item-row-gap;
             position: relative;
 
@@ -82,16 +83,11 @@ $background: var(--window);
 
         &.header>div {
             cursor: default;
-            padding-top: 0;
-            padding-bottom: .5em;
-            position: sticky;
-            top: 0;
-            background-color: $background;
-            box-shadow: 0px 4px 4px -2px $background;
             display: flex;
             gap: .75em;
             font-weight: 500;
             z-index: 1;
+            @include header-styles;
 
             &:first-child {
                 padding-left: .125em;
@@ -286,22 +282,19 @@ $background: var(--window);
         box-shadow: 0px 0px 20px 30px rgb(var(--window-rgb), .75);
         z-index: 100;
         color: $tirtiary-text-color;
-
         text-align: center;
     }
 
-    // Graph container
-    .grid {
-        flex-grow: 1;
+    // Graph and list of transactions container
+    &>div {
+        @include outermost-div-placement-styling;
+        padding: .5em;
         padding-top: .5em;
-        display: flex;
-        justify-content: space-evenly;
         gap: 2em;
         color: var(--main-hlight4);
 
         &>div {
             max-width: 30em;
-            flex: 1;
         }
 
         // Chart
@@ -338,29 +331,76 @@ $background: var(--window);
 
         // List of transactions
         &>div:last-child {
-            place-content: center;
             display: grid;
-            grid-template-columns: auto 1fr auto;
-            row-gap: .625em;
-            grid-auto-rows: minmax(0, 2em);
+            grid-template-columns: auto auto 1fr;
+            grid-auto-rows: minmax(2.5em, 3.5em);
             position: relative;
+            overflow-y: auto;
 
-            // Name cell
-            &>div:nth-child(3n + 1) {
-                padding-right: 1em;
-            }
-
-            // Date column
-            &>div:nth-child(3n + 2) {
-                color: $tirtiary-text-color;
-            }
-
-            &>div:not(:nth-last-child(-n+3)) {
+            &>div {
+                display: contents;
                 position: relative;
 
-                @include table-dividers(0);
-            }
+                &>div {
+                    align-self: center;
+                    height: 100%;
+                }
 
+                // Header row
+                &:first-child {
+                    font-weight: 500;
+                    @include table-header-mask-image;
+
+                    &>div {
+                        @include header-styles;
+                        background-color: var(--window);
+                    }
+
+                    &>div,
+                    &>div>div {
+                        font-size: 1.125em;
+                    }
+
+                    &>div:first-child,
+                    &>div:last-child {
+                        display: flex;
+                        align-items: baseline;
+                        gap: .25em;
+                    }
+                }
+
+                &:not(:first-child)>div {
+                    z-index: 0;
+                }
+
+                // Name cell
+                &:not(:first-child)>div:nth-child(3n + 1):not(:last-child) {
+                    padding-right: 1em;
+                    display: flex;
+                    align-items: center;
+                    gap: .5em;
+                }
+
+                // Date column
+                &>div:nth-child(3n + 2) {
+                    color: $tirtiary-text-color;
+                    display: flex;
+                    align-items: center;
+                }
+
+                // Amount column
+                &>div:nth-child(3n + 3) {
+                    text-align: right;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                }
+
+                &:not(:last-child):not(:first-child)>div {
+                    position: relative;
+                    @include table-dividers(0);
+                }
+            }
         }
     }
 

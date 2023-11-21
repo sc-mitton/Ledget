@@ -11,6 +11,7 @@ $number-of-bill-rows: 5;
 @import '../../../styles/greenblues.scss';
 @import './Variables.scss';
 @import './SpendingCategories.scss';
+@import '@styles/table-mixins';
 
 #bills-summary-window {
     display: flex;
@@ -284,7 +285,9 @@ $number-of-bill-rows: 5;
     }
 }
 
-@media (max-width: 1300px) {
+// Collapse callendar
+@media only screen and (max-width: 1300px) and (min-width: 1050px),
+only screen and (max-width: 900px) {
 
     .bills-box {
         grid-template-rows: repeat(min($number-of-bill-rows, var(--number-of-bills)), minmax(0, min-content));
@@ -339,6 +342,6 @@ $number-of-bill-rows: 5;
         row-gap: $item-row-gap;
         overflow-y: scroll;
         overflow-x: hidden;
-        mask-image: $mask-image;
+        @include table-header-mask-image;
     }
 }

@@ -8,6 +8,7 @@ import { ResponsiveLine } from '@nivo/line'
 import type { Datum } from '@nivo/line'
 import { Listbox } from '@headlessui/react'
 
+import { Logo } from '@components/pieces'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
@@ -403,7 +404,7 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
         // Compute bottom margin
         const rootFontSize = computedStyle.fontSize;
         margin.bottom = rootFontSize ? parseFloat(rootFontSize) * 2 : 16
-        margin.top = rootFontSize ? parseFloat(rootFontSize) * 2 : 16
+        margin.top = rootFontSize ? parseFloat(rootFontSize) : 16
         return margin
     }, [data])
 
@@ -607,25 +608,66 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                     </ResponsiveLineContainer>
                 </div>
                 <div>
+                    <div>
+                        <div>TOTAL</div>
+                        <div />
+                        <div>
+                            <div>
+                                <AnimatedDollarCents
+                                    value={category.amount_spent
+                                        ? Big(category.amount_spent).times(100).toNumber()
+                                        : 0}
+                                />
+                            </div>
+                            <div>/</div>
+                            <div>
+                                <DollarCents
+                                    value={category.limit_amount
+                                        ? Big(category.limit_amount).div(100).toFixed(2)
+                                        : 0}
+                                    hasCents={false}
+                                />
+                            </div>
+                        </div>
+                    </div>
                     {transactionsData?.results?.map(transaction => (
-                        <Fragment key={transaction.transaction_id}>
-                            <div>{transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}</div>
+                        <div key={transaction.transaction_id}>
+                            <div>
+                                <Logo accountId={transaction.account} />
+                                {transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}
+                            </div>
                             <div>
                                 {new Date(transaction.date).toLocaleDateString(
                                     'en-US', { month: 'numeric', day: 'numeric' })}
                             </div>
-                            <div><DollarCents value={transaction.amount} /></div>
-                        </Fragment>
+                            <div><div><DollarCents value={transaction.amount} /></div></div>
+                        </div>
                     ))}
                     {transactionsData?.results?.map(transaction => (
-                        <Fragment key={transaction.transaction_id}>
-                            <div>{transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}</div>
+                        <div key={transaction.transaction_id}>
+                            <div>
+                                <Logo accountId={transaction.account} />
+                                {transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}
+                            </div>
                             <div>
                                 {new Date(transaction.date).toLocaleDateString(
                                     'en-US', { month: 'numeric', day: 'numeric' })}
                             </div>
-                            <div><DollarCents value={transaction.amount} /></div>
-                        </Fragment>
+                            <div><div><DollarCents value={transaction.amount} /></div></div>
+                        </div>
+                    ))}
+                    {transactionsData?.results?.map(transaction => (
+                        <div key={transaction.transaction_id}>
+                            <div>
+                                <Logo accountId={transaction.account} />
+                                {transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}
+                            </div>
+                            <div>
+                                {new Date(transaction.date).toLocaleDateString(
+                                    'en-US', { month: 'numeric', day: 'numeric' })}
+                            </div>
+                            <div><div><DollarCents value={transaction.amount} /></div></div>
+                        </div>
                     ))}
                 </div>
             </div>
