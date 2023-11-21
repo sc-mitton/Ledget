@@ -6,7 +6,7 @@ import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { ResponsiveLine } from '@nivo/line'
 import type { Datum } from '@nivo/line'
-import { Listbox } from '@headlessui/react'
+import { Listbox, Menu } from '@headlessui/react'
 
 import { Logo } from '@components/pieces'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
@@ -40,9 +40,11 @@ import {
     nivoResponsiveLineTheme,
     ChartTip,
     DropAnimation,
-    LoadingRing
+    LoadingRing,
+    ShimmerDiv,
+    IconButton
 } from '@ledget/ui'
-import { Plus, BackArrow, ArrowIcon, Edit } from '@ledget/media'
+import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
 import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
 
 
@@ -470,6 +472,7 @@ const fakeChartData = [
 
 const CategoryDetail = ({ category }: { category: Category }) => {
     const { start, end } = useGetStartEndFromSearchParams()
+    const navigate = useNavigate()
     const {
         data: spendingSummaryData,
         isSuccess: spendingSummaryDataIsFetched
@@ -499,7 +502,6 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     }, [])
 
     useEffect(() => {
-        const endOfWindow = new Date().setMonth(new Date().getMonth() - 1)
         if (!spendingSummaryData)
             return
 
@@ -587,9 +589,47 @@ const CategoryDetail = ({ category }: { category: Category }) => {
         </Listbox>
     )
 
+    const OptionsMenu = () => (
+        <Menu>
+            {({ open }) => (
+                <div style={{ position: 'absolute', top: '.5em', right: '3em' }}>
+                    <Menu.Button as={IconButton}>
+                        <Ellipsis rotate={90} />
+                    </Menu.Button>
+                    <DropAnimation
+                        transformOrigin='right'
+                        placement='left'
+                        visible={open}
+                        className="dropdown dropdown-right"
+                        style={{ marginTop: '1em' }}
+                    >
+                        <Menu.Items static>
+                            <Menu.Item as={Fragment}>
+                                {({ active }) => (
+                                    <button
+                                        className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                        onClick={() => {
+                                            navigate(`${location.pathname}/category${location.search}`, {
+                                                state: { categoryId: category.id }
+                                            })
+                                        }}
+                                    >
+                                        <Edit size={'1em'} /> Edit
+                                    </button>
+                                )}
+                            </Menu.Item>
+                        </Menu.Items>
+                    </DropAnimation>
+                </div>
+            )
+            }
+        </Menu >
+    )
+
     return (
         <>
-            <h2>{`${category.emoji} ${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
+            <OptionsMenu />
+            <h2>{`${category.emoji}`}&nbsp;&nbsp;{`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
             <div className="grid">
                 <div>
                     <ResponsiveLineContainer>
@@ -610,43 +650,64 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                     </ResponsiveLineContainer>
                 </div>
                 <div>
-                    <div className="transactions-for-category">
-                        <div>
-                            <div>TOTAL</div>
-                            <div />
+                    {transactionsDataIsFetched
+                        ?
+                        <div
+                            className={`transactions-for-category
+                        ${transactionsData?.results?.length === 0 ? 'no-transactions' : ''}`}
+                        >
                             <div>
+                                <div>TOTAL</div>
+                                <div />
                                 <div>
-                                    <AnimatedDollarCents
-                                        value={category.amount_spent
-                                            ? Big(category.amount_spent).times(100).toNumber()
-                                            : 0}
-                                    />
-                                </div>
-                                <div>/</div>
-                                <div>
-                                    <DollarCents
-                                        value={category.limit_amount
-                                            ? Big(category.limit_amount).div(100).toFixed(2)
-                                            : 0}
-                                        hasCents={false}
-                                    />
+                                    <div>
+                                        <AnimatedDollarCents
+                                            value={category.amount_spent
+                                                ? Big(category.amount_spent).times(100).toNumber()
+                                                : 0}
+                                        />
+                                    </div>
+                                    <div>/</div>
+                                    <div>
+                                        <DollarCents
+                                            value={category.limit_amount
+                                                ? Big(category.limit_amount).div(100).toFixed(2)
+                                                : 0}
+                                            hasCents={false}
+                                        />
+                                    </div>
                                 </div>
                             </div>
+                            {transactionsData?.results?.length === 0
+                                ?
+                                <div>
+                                    <div className="no-transactions-message">No spending yet</div>
+                                </div>
+                                :
+                                <>
+                                    {transactionsData?.results?.map(transaction => (
+                                        <div key={transaction.transaction_id}>
+                                            <div>
+                                                <Logo accountId={transaction.account} />
+                                                {transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}
+                                            </div>
+                                            <div>
+                                                {new Date(transaction.date).toLocaleDateString(
+                                                    'en-US', { month: 'numeric', day: 'numeric' })}
+                                            </div>
+                                            <div><div><DollarCents value={transaction.amount} /></div></div>
+                                        </div>
+                                    ))}
+                                </>
+                            }
                         </div>
-                        {transactionsData?.results?.map(transaction => (
-                            <div key={transaction.transaction_id}>
-                                <div>
-                                    <Logo accountId={transaction.account} />
-                                    {transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}
-                                </div>
-                                <div>
-                                    {new Date(transaction.date).toLocaleDateString(
-                                        'en-US', { month: 'numeric', day: 'numeric' })}
-                                </div>
-                                <div><div><DollarCents value={transaction.amount} /></div></div>
-                            </div>
-                        ))}
-                    </div>
+                        :
+                        <div className="shimmer-div--container">
+                            <ShimmerDiv shimmering={true} background={'var(--inner-window)'} />
+                            <ShimmerDiv shimmering={true} background={'var(--inner-window)'} />
+                            <ShimmerDiv shimmering={true} background={'var(--inner-window)'} />
+                        </div>
+                    }
                 </div>
             </div>
         </>

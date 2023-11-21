@@ -13,7 +13,6 @@ $background: var(--window);
 
 @mixin header-styles {
     padding-top: 0;
-    padding-bottom: .5em;
     position: sticky;
     top: 0;
     background-color: $background;
@@ -88,6 +87,7 @@ $background: var(--window);
             font-weight: 500;
             z-index: 1;
             @include header-styles;
+            padding-bottom: .5em;
 
             &:first-child {
                 padding-left: .125em;
@@ -286,7 +286,7 @@ $background: var(--window);
     }
 
     // Graph and list of transactions container
-    &>div {
+    &>div:last-of-type {
         @include outermost-div-placement-styling;
         padding: .5em;
         padding-top: 1.75em;
@@ -336,19 +336,55 @@ $background: var(--window);
         }
     }
 
+    .shimmer-div--container {
+        border-radius: var(--border-radius2);
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
 
-    // List of transactions
+        &>div {
+            height: 2em;
+
+            &:first-child {
+                width: 50%;
+            }
+        }
+    }
+
+    // List of transactions (table)
     .transactions-for-category {
         display: grid;
         grid-template-columns: auto 1fr auto;
-        grid-auto-rows: minmax(2.5em, 3.5em);
         position: relative;
         overflow-y: auto;
         padding-right: 1em;
 
+        &.no-transactions {
+            width: 60%;
+            overflow: hidden;
+            margin: 0 auto;
+            grid-auto-rows: minmax(1.5em, 1.5em);
+        }
+
+        &:not(.no-transactions) {
+            grid-auto-rows: minmax(2.5em, 3.5em);
+        }
+
         &>div {
             display: contents;
             position: relative;
+
+            .no-transactions-message {
+                grid-column: 1 / span 3;
+                display: flex;
+                align-items: center;
+                opacity: .5;
+                margin-top: .5em;
+
+                &>div {
+                    height: auto;
+                }
+            }
 
             &>div {
                 align-self: center;

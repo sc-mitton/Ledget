@@ -35,11 +35,9 @@ const DropDown = () => {
         <Menu>
             {({ open }) => (
                 <>
-                    <Menu.Button as={React.Fragment}>
-                        <IconButton><Ellipsis2 /></IconButton>
-                    </Menu.Button>
+                    <Menu.Button as={IconButton}><Ellipsis2 /></Menu.Button>
                     <DropAnimation visible={open}>
-                        <Menu.Items static as={React.static}>
+                        <Menu.Items static>
                             <div className="dropdown dropdown-right">
                                 <Wrapper
                                     onClick={() => navigate({
@@ -50,10 +48,7 @@ const DropDown = () => {
                                         }).toString()
                                     })}
                                 >
-                                    <Edit
-                                        size={'.9em'}
-                                        className="dropdown-icon"
-                                    />
+                                    <Edit size={'.9em'} />
                                     Categories
                                 </Wrapper>
                                 <Wrapper
@@ -65,7 +60,7 @@ const DropDown = () => {
                                         }).toString()
                                     })}
                                 >
-                                    <Plus size={'.9em'} className="dropdown-icon" />
+                                    <Plus size={'.9em'} />
                                     New category
                                 </Wrapper>
                                 <Wrapper
@@ -77,7 +72,7 @@ const DropDown = () => {
                                         }).toString()
                                     })}
                                 >
-                                    <Plus size={'.9em'} className="dropdown-icon" />
+                                    <Plus size={'.9em'} />
                                     New bill
                                 </Wrapper>
                             </div>

@@ -616,14 +616,11 @@ ul hr {
     border-top: 1.5px solid var(--subtle-border-color);
 }
 
-.dropdown-icon {
-    margin-right: .875em;
-}
-
 .dropdown-item {
     font-weight: 400;
     display: flex;
     align-items: center;
+    gap: .875em;
     width: auto;
     padding: .25em .75em;
     margin: .125em 0;

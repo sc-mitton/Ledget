@@ -66,7 +66,7 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                         aria-label="Split"
                         role="button"
                     >
-                        <Split className="dropdown-icon" />
+                        <Split />
                         Split
                     </div>
                 </li>
@@ -80,7 +80,7 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                         aria-label="Details"
                         role="button"
                     >
-                        <DetailsIcon className="dropdown-icon" />
+                        <DetailsIcon />
                         Details
                     </div>
                 </li>

@@ -128,19 +128,19 @@ const DropDownMenu = ({ isNarrow, setModal }) => {
                     >
                         <Menu.Items static>
                             <Wrapper onClick={() => navigate("/profile/details")}>
-                                <Profile2 className="dropdown-icon" fill={'var(--main-dark4'} />
+                                <Profile2 fill={'var(--main-dark4'} />
                                 Profile
                             </Wrapper>
                             <Wrapper onClick={() => navigate('/profile/settings')}>
-                                <SettingsIcon className="dropdown-icon" fill={'var(--main-dark4'} />
+                                <SettingsIcon fill={'var(--main-dark4'} />
                                 Settings
                             </Wrapper>
                             <Wrapper onClick={() => setModal("help")}>
-                                <HelpIcon className="dropdown-icon" fill={'var(--main-dark4'} />
+                                <HelpIcon fill={'var(--main-dark4'} />
                                 Help
                             </Wrapper>
                             <Wrapper onClick={() => setModal("logout")}>
-                                <LogoutIcon className="dropdown-icon" id="logout-icon" fill={'var(--main-dark4'} />
+                                <LogoutIcon id="logout-icon" fill={'var(--main-dark4'} />
                                 Log out
                             </Wrapper>
                         </Menu.Items>
