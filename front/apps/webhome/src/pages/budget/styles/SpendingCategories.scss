@@ -329,77 +329,84 @@ $background: var(--window);
             }
         }
 
-        // List of transactions
         &>div:last-child {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            grid-auto-rows: minmax(2.5em, 3.5em);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
+
+
+    // List of transactions
+    .transactions-for-category {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-auto-rows: minmax(2.5em, 3.5em);
+        position: relative;
+        overflow-y: auto;
+        padding-right: 1em;
+
+        &>div {
+            display: contents;
             position: relative;
-            overflow-y: auto;
-            padding-right: 1em;
 
             &>div {
-                display: contents;
-                position: relative;
+                align-self: center;
+                height: 100%;
+            }
+
+            // Header row
+            &:first-child {
+                font-weight: 500;
+                @include table-header-mask-image;
 
                 &>div {
-                    align-self: center;
-                    height: 100%;
+                    @include header-styles;
+                    background-color: var(--window);
                 }
 
-                // Header row
-                &:first-child {
-                    font-weight: 500;
-                    @include table-header-mask-image;
-
-                    &>div {
-                        @include header-styles;
-                        background-color: var(--window);
-                    }
-
-                    &>div,
-                    &>div>div {
-                        font-size: 1.125em;
-                    }
-
-                    &>div:last-child {
-                        display: flex;
-                        align-items: center;
-                        gap: .25em;
-                        justify-self: flex-end;
-                    }
+                &>div,
+                &>div>div {
+                    font-size: 1.125em;
                 }
 
-                &:not(:first-child)>div {
-                    z-index: 0;
-                }
-
-                // Name cell
-                &>div:nth-child(3n + 1):not(:last-child) {
-                    padding-right: 1em;
+                &>div:last-child {
                     display: flex;
                     align-items: center;
-                    gap: .5em;
+                    gap: .25em;
+                    justify-self: flex-end;
                 }
+            }
 
-                // Date column
-                &>div:nth-child(3n + 2) {
-                    color: $tirtiary-text-color;
-                    display: flex;
-                    align-items: center;
-                }
+            &:not(:first-child)>div {
+                z-index: 0;
+            }
 
-                // Amount column
-                &>div:nth-child(3n + 3) {
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-end;
-                }
+            // Name cell
+            &>div:nth-child(3n + 1):not(:last-child) {
+                padding-right: 1em;
+                display: flex;
+                align-items: center;
+                gap: .5em;
+            }
 
-                &:not(:last-child):not(:first-child)>div {
-                    position: relative;
-                    @include table-dividers(0);
-                }
+            // Date column
+            &>div:nth-child(3n + 2) {
+                color: $tirtiary-text-color;
+                display: flex;
+                align-items: center;
+            }
+
+            // Amount column
+            &>div:nth-child(3n + 3) {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+
+            &:not(:last-child):not(:first-child)>div {
+                position: relative;
+                @include table-dividers(0);
             }
         }
     }
