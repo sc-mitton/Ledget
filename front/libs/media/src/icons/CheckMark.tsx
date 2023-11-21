@@ -2,7 +2,7 @@
 
 const CheckMark = ({
     className = 'checkmark',
-    stroke = "currentColor",
+    stroke = "var(--icon-dark)",
     width = ".9em",
     height = ".9em",
     ...rest

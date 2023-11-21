@@ -3,7 +3,7 @@
 const Close = ({
     className = '',
     size = "1em",
-    stroke = "#242424",
+    stroke = "var(--icon-dark)",
     strokeWidth = "20"
 }) => {
 

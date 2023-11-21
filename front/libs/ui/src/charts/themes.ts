@@ -27,6 +27,11 @@ export function nivoResponsiveLineBaseProps({ disabled = false }: { disabled?: b
 
         ],
         fill: [{ match: '*', id: 'gradientC' }],
+        motionConfig: {
+            mass: 1,
+            friction: 70,
+            tension: 400,
+        }
     })
 }
 

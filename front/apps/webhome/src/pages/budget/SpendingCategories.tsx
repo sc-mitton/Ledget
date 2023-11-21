@@ -41,7 +41,7 @@ import {
     ChartTip,
     DropAnimation
 } from '@ledget/ui'
-import { Plus, BackArrow, ArrowIcon } from '@ledget/media'
+import { Plus, BackArrow, ArrowIcon, Edit } from '@ledget/media'
 import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
 
 
@@ -608,41 +608,43 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                     </ResponsiveLineContainer>
                 </div>
                 <div>
-                    <div>
-                        <div>TOTAL</div>
-                        <div />
+                    <div className="transactions-for-category">
                         <div>
+                            <div>TOTAL</div>
+                            <div />
                             <div>
-                                <AnimatedDollarCents
-                                    value={category.amount_spent
-                                        ? Big(category.amount_spent).times(100).toNumber()
-                                        : 0}
-                                />
-                            </div>
-                            <div>/</div>
-                            <div>
-                                <DollarCents
-                                    value={category.limit_amount
-                                        ? Big(category.limit_amount).div(100).toFixed(2)
-                                        : 0}
-                                    hasCents={false}
-                                />
+                                <div>
+                                    <AnimatedDollarCents
+                                        value={category.amount_spent
+                                            ? Big(category.amount_spent).times(100).toNumber()
+                                            : 0}
+                                    />
+                                </div>
+                                <div>/</div>
+                                <div>
+                                    <DollarCents
+                                        value={category.limit_amount
+                                            ? Big(category.limit_amount).div(100).toFixed(2)
+                                            : 0}
+                                        hasCents={false}
+                                    />
+                                </div>
                             </div>
                         </div>
+                        {transactionsData?.results?.map(transaction => (
+                            <div key={transaction.transaction_id}>
+                                <div>
+                                    <Logo accountId={transaction.account} />
+                                    {transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}
+                                </div>
+                                <div>
+                                    {new Date(transaction.date).toLocaleDateString(
+                                        'en-US', { month: 'numeric', day: 'numeric' })}
+                                </div>
+                                <div><div><DollarCents value={transaction.amount} /></div></div>
+                            </div>
+                        ))}
                     </div>
-                    {transactionsData?.results?.map(transaction => (
-                        <div key={transaction.transaction_id}>
-                            <div>
-                                <Logo accountId={transaction.account} />
-                                {transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}
-                            </div>
-                            <div>
-                                {new Date(transaction.date).toLocaleDateString(
-                                    'en-US', { month: 'numeric', day: 'numeric' })}
-                            </div>
-                            <div><div><DollarCents value={transaction.amount} /></div></div>
-                        </div>
-                    ))}
                 </div>
             </div>
         </>
