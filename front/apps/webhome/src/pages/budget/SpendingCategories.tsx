@@ -643,32 +643,6 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                             <div><div><DollarCents value={transaction.amount} /></div></div>
                         </div>
                     ))}
-                    {transactionsData?.results?.map(transaction => (
-                        <div key={transaction.transaction_id}>
-                            <div>
-                                <Logo accountId={transaction.account} />
-                                {transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}
-                            </div>
-                            <div>
-                                {new Date(transaction.date).toLocaleDateString(
-                                    'en-US', { month: 'numeric', day: 'numeric' })}
-                            </div>
-                            <div><div><DollarCents value={transaction.amount} /></div></div>
-                        </div>
-                    ))}
-                    {transactionsData?.results?.map(transaction => (
-                        <div key={transaction.transaction_id}>
-                            <div>
-                                <Logo accountId={transaction.account} />
-                                {transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}
-                            </div>
-                            <div>
-                                {new Date(transaction.date).toLocaleDateString(
-                                    'en-US', { month: 'numeric', day: 'numeric' })}
-                            </div>
-                            <div><div><DollarCents value={transaction.amount} /></div></div>
-                        </div>
-                    ))}
                 </div>
             </div>
         </>
