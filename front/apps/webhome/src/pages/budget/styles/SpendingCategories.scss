@@ -175,7 +175,7 @@ $background: var(--window);
 
         // Coloring
         &.month * {
-            color: var(--main-dark4);
+            color: var(--main-dark);
         }
 
         &.month>div:first-child>div,
@@ -196,7 +196,7 @@ $background: var(--window);
         }
 
         &.year * {
-            color: var(--secondary-dark4);
+            color: var(--secondary-dark);
         }
 
         &.year>div:first-child>div {

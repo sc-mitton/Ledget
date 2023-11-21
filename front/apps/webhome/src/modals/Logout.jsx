@@ -52,7 +52,7 @@ function Logout(props) {
         <div>
             <h2>Sign out of your account?</h2>
             <div id="logout-countdown">
-                <span>Your session will end in {seconds} seconds.</span>
+                <span>Your session will end in {seconds} seconds</span>
             </div>
             <div style={{ display: 'flex', 'justifyContent': 'end', marginTop: '.5em' }}>
                 <SecondaryButton

@@ -229,6 +229,10 @@ $number-of-bill-rows: 5;
             transition: all .2s ease-in-out;
             padding: $label-padding;
             border-radius: var(--border-radius2);
+
+            * {
+                color: var(--main-dark);
+            }
         }
 
         &:hover>div:first-child {
@@ -245,6 +249,10 @@ $number-of-bill-rows: 5;
             transition: all .2s ease-in-out;
             padding: $label-padding;
             border-radius: var(--border-radius2);
+
+            * {
+                color: var(--secondary-dark);
+            }
         }
 
         &:hover>div:first-child {
