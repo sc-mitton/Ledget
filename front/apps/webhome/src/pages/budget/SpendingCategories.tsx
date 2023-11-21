@@ -145,12 +145,12 @@ const SkeletonRows = ({ numberOfRows }: { numberOfRows: number }) => (
     <>
         <div className="skeleton-column month">
             {Array.from(Array(numberOfRows).keys()).map(i => (
-                <ColoredShimmer key={i} shimmering={true} color={'green'} />
+                <ColoredShimmer key={i} shimmering={true} color={'blue'} />
             ))}
         </div>
         <div className="skeleton-column year">
             {Array.from(Array(numberOfRows).keys()).map(i => (
-                <ColoredShimmer key={i} shimmering={true} color={'blue'} />
+                <ColoredShimmer key={i} shimmering={true} color={'green'} />
             ))}
         </div>
     </>

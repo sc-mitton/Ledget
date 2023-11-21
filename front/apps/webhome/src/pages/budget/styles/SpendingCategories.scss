@@ -289,7 +289,7 @@ $background: var(--window);
     &>div {
         @include outermost-div-placement-styling;
         padding: .5em;
-        padding-top: .5em;
+        padding-top: 1.75em;
         gap: 1.5em;
         color: var(--main-hlight4);
 
@@ -336,6 +336,7 @@ $background: var(--window);
             grid-auto-rows: minmax(2.5em, 3.5em);
             position: relative;
             overflow-y: auto;
+            padding-right: 1em;
 
             &>div {
                 display: contents;
@@ -402,7 +403,6 @@ $background: var(--window);
             }
         }
     }
-
 }
 
 @media screen and (max-width: 550px) {
