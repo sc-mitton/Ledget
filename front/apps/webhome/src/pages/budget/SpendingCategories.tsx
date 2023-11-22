@@ -8,11 +8,12 @@ import { ResponsiveLine } from '@nivo/line'
 import type { Datum } from '@nivo/line'
 import { Listbox, Menu } from '@headlessui/react'
 
+import TransactionModal from '@modals/TransactionItem'
 import { Logo } from '@components/pieces'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
-import { useLazyGetTransactionsQuery } from '@features/transactionsSlice'
+import { useLazyGetTransactionsQuery, Transaction } from '@features/transactionsSlice'
 import {
     useLazyGetCategoriesQuery,
     SelectCategoryBillMetaData,
@@ -21,7 +22,7 @@ import {
     sortCategoriesAmountAsc,
     sortCategoriesAmountDesc,
     sortCategoriesDefault,
-    useGetCategorySpendingHistoryQuery
+    useGetCategorySpendingHistoryQuery,
 } from '@features/categorySlice'
 import {
     DollarCents,
@@ -42,7 +43,8 @@ import {
     DropAnimation,
     LoadingRing,
     ShimmerDiv,
-    IconButton
+    IconButton,
+    ShadowScrollDiv
 } from '@ledget/ui'
 import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
 import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
@@ -426,12 +428,15 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
             }}
             areaBaselineValue={minY}
             tooltip={({ point }) => (
-                <ChartTip>
+                <ChartTip
+                    position={point.index >= data.length / 2 ? 'left' : 'right'}
+                >
                     <span>{new Date(point.data.x).toLocaleString('default', { month: 'short' })}</span>
                     &nbsp;&nbsp;
                     <DollarCents value={formatCurrency(point.data.y.toString())} />
                 </ChartTip>
-            )}
+            )
+            }
             yScale={{ type: 'linear', min: yScaleMin, max: data.length > 0 ? 'auto' : maxY / 100 }}
             gridYValues={4}
             crosshairType="bottom"
@@ -465,11 +470,6 @@ const fakeChartData = [
     },
 ]
 
-// Information to include:
-
-// amount spent, limit amount, progress circle
-//  alerts on or off, edit button
-
 const CategoryDetail = ({ category }: { category: Category }) => {
     const { start, end } = useGetStartEndFromSearchParams()
     const navigate = useNavigate()
@@ -479,13 +479,13 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     } = useGetCategorySpendingHistoryQuery({
         categoryId: category.id,
     })
-    const [getTransaction, {
+    const [getTransactions, {
         data: transactionsData,
         isSuccess: transactionsDataIsFetched
     }] = useLazyGetTransactionsQuery()
+    const [transactionModalItem, setTransactionModalItem] = useState<Transaction>()
 
     const [chartData, setChartData] = useState<Datum[]>([])
-
     const windowOptions = ['4 months', '1 year', '2 year', 'max'] as const
     const [disabledOptions, setDisabledOptions] = useState<(typeof windowOptions[number])[]>()
     const [window, setWindow] = useState<typeof windowOptions[number]>()
@@ -493,7 +493,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
 
     // Fetching Transactions
     useEffect(() => {
-        getTransaction({
+        getTransactions({
             confirmed: true,
             start: start,
             end: end,
@@ -626,8 +626,29 @@ const CategoryDetail = ({ category }: { category: Category }) => {
         </Menu >
     )
 
+    const handleScroll = (e: any) => {
+        const bottom = e.target.scrollTop === e.target.scrollTopMax
+        // Update cursors to add new transactions node to the end
+        if (bottom && transactionsData?.next) {
+            getTransactions({
+                confirmed: true,
+                start: start,
+                end: end,
+                category: category.id,
+                offset: transactionsData.next,
+                limit: transactionsData.limit,
+            })
+        }
+    }
+
     return (
         <>
+            {transactionModalItem &&
+                <TransactionModal
+                    item={transactionModalItem}
+                    onClose={() => setTransactionModalItem(undefined)}
+                />
+            }
             <OptionsMenu />
             <h2>{`${category.emoji}`}&nbsp;&nbsp;{`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
             <div className="grid">
@@ -649,7 +670,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                         }
                     </ResponsiveLineContainer>
                 </div>
-                <div>
+                <ShadowScrollDiv onScroll={handleScroll}>
                     {transactionsDataIsFetched
                         ?
                         <div
@@ -688,7 +709,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                     {transactionsData?.results?.map(transaction => (
                                         <div
                                             key={transaction.transaction_id}
-
+                                            onClick={() => setTransactionModalItem(transaction)}
                                         >
                                             <div>
                                                 <Logo accountId={transaction.account} />
@@ -714,7 +735,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                             <ShimmerDiv shimmering={true} background={'var(--inner-window)'} />
                         </div>
                     }
-                </div>
+                </ShadowScrollDiv>
             </div>
         </>
     )

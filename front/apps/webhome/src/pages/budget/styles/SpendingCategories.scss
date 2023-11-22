@@ -485,6 +485,16 @@ $background: var(--window);
 }
 
 @media screen and (max-width: 600px) {
+
+    .category-detail--container>div:last-of-type {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+
+        &>div {
+            max-width: 100%;
+        }
+    }
+
     #spending-categories-window {
         grid-template-columns: 1fr;
     }

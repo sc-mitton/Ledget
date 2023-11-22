@@ -10,7 +10,6 @@ import Deposits from './DepositsTab'
 
 import NotFound from '@pages/notFound/NotFound'
 import { usePillAnimation } from '@utils/hooks'
-import TransactionItem from '@modals/TransactionItem'
 import { RefreshButton } from '@ledget/ui'
 import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/media'
 import { useGetAccountsQuery } from "@features/accountsSlice"
@@ -202,9 +201,7 @@ function Window() {
                         location={location}
                         key={location.pathname.split('/')[2]}
                     >
-                        <Route path="deposits" element={<Deposits />} >
-                            <Route path="transaction" element={<TransactionItem />} />
-                        </Route>
+                        <Route path="deposits" element={<Deposits />} />
                         <Route path="investments" element={<div>Investments</div>} />
                         <Route path="credit" element={<div>Credit</div>} />
                         <Route path="loans" element={<div>Loans</div>} />

@@ -1,110 +1,151 @@
-import { Fragment, useEffect, useState, FC, HTMLProps, useRef } from 'react'
+import { Fragment, useEffect, useState, FC, HTMLProps, useRef, createContext, useContext } from 'react'
 
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
 
-import { useLazyGetTransactionsQuery, useGetTransactionQueryState } from '@features/transactionsSlice'
+import TransactionModal from '@modals/TransactionItem'
+import { useLazyGetTransactionsQuery, useGetTransactionQueryState, Transaction } from '@features/transactionsSlice'
 import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv, useLoaded } from '@ledget/ui'
 import pathMappings from './path-mappings'
 
+const TransactionModalContent = createContext<{
+    item: Transaction | undefined,
+    setItem: (item: Transaction | undefined) => void,
+}>({
+    item: undefined,
+    setItem: () => { },
+})
+
+const TransactionModalProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [transactionModalItem, setTransactionModalItem] = useState<Transaction>()
+
+    const value = {
+        item: transactionModalItem,
+        setItem: setTransactionModalItem,
+    }
+
+    return (
+        <TransactionModalContent.Provider value={value}>
+            {children}
+        </TransactionModalContent.Provider>
+    )
+}
+
+const UnenrichedTable: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
+    const { item: transactionModalItem, setItem: setTransactionModalItem } = useContext(TransactionModalContent)
+
+    const containerRef = useRef<HTMLDivElement>(null)
+    const [fetchMorePulse, setFetchMorePulse] = useState(false)
+    const [searchParams] = useSearchParams()
+    const [skeleton, setSkeleton] = useState(true)
+    const loaded = useLoaded(0)
+    const location = useLocation()
+
+    const [getTransactions, {
+        data: transactionsData,
+        isFetching: isFetchingTransactions,
+        isLoading: isLoadingTransactions,
+        isSuccess: isTransactionsSuccess,
+    }] = useLazyGetTransactionsQuery()
+
+    // Initial fetch
+    useEffect(() => {
+        if (searchParams.get('account')) {
+            getTransactions({
+                account: searchParams.get('account') || '',
+                type: pathMappings.getTransactionType(location),
+                limit: 25,
+                offset: 0,
+            }, true)
+        }
+    }, [searchParams.get('account')])
+
+    // Setting the skeleton view
+    useEffect(() => {
+        if (isTransactionsSuccess) {
+            setSkeleton(false)
+        } else {
+            setSkeleton(true)
+        }
+    }, [isTransactionsSuccess])
+
+    // Fetch more transactions animation
+    useEffect(() => {
+        if (isFetchingTransactions && !isLoadingTransactions) {
+            setFetchMorePulse(true)
+        }
+        let timeout = setTimeout(() => {
+            setFetchMorePulse(false)
+        }, 1500)
+        return () => { clearTimeout(timeout) }
+    }, [isFetchingTransactions])
+
+    // Fetch more transactions
+    const handleScroll = (e: any) => {
+        const bottom = e.target.scrollTop === e.target.scrollTopMax
+        // Update cursors to add new transactions node to the end
+        if (bottom && transactionsData?.next !== null && transactionsData) {
+            getTransactions({
+                account: searchParams.get('account')!,
+                type: pathMappings.getTransactionType(location),
+                offset: transactionsData.next,
+                limit: transactionsData.limit,
+            })
+        }
+    }
+
+    return (
+        <>
+            <InfiniteScrollDiv
+                animate={loaded && fetchMorePulse}
+                className={`transactions--container ${isLoadingTransactions ? 'loading' : ''}`}
+                ref={containerRef}
+            >
+                {skeleton
+                    ?
+                    <div className='transactions--table'>
+                        {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
+                            .fill(0)
+                            .map((_, index) =>
+                                <><div /><TransactionShimmer key={index} shimmering={true} /></>
+                            )
+                        }
+                    </div>
+                    :
+                    <ShadowScrollDiv
+                        className='transactions--table not-skeleton'
+                        onScroll={handleScroll}
+                    >
+                        {children}
+                    </ShadowScrollDiv>
+                }
+            </InfiniteScrollDiv>
+            {transactionModalItem &&
+                <TransactionModal
+                    item={transactionModalItem}
+                    onClose={() => setTransactionModalItem(undefined)}
+                />}
+        </>
+    )
+}
+
 export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
     = ({ children }) => {
-        const containerRef = useRef<HTMLDivElement>(null)
-        const [fetchMorePulse, setFetchMorePulse] = useState(false)
-        const [searchParams] = useSearchParams()
-        const [skeleton, setSkeleton] = useState(true)
-        const loaded = useLoaded(0)
-        const location = useLocation()
-
-        const [getTransactions, {
-            data: transactionsData,
-            isFetching: isFetchingTransactions,
-            isLoading: isLoadingTransactions,
-            isSuccess: isTransactionsSuccess,
-        }] = useLazyGetTransactionsQuery()
-
-        // Initial fetch
-        useEffect(() => {
-            if (searchParams.get('account')) {
-                getTransactions({
-                    account: searchParams.get('account') || '',
-                    type: pathMappings.getTransactionType(location),
-                    limit: 25,
-                    offset: 0,
-                }, true)
-            }
-        }, [searchParams.get('account')])
-
-        // Setting the skeleton view
-        useEffect(() => {
-            if (isTransactionsSuccess) {
-                setSkeleton(false)
-            } else {
-                setSkeleton(true)
-            }
-        }, [isTransactionsSuccess])
-
-        // Fetch more transactions animation
-        useEffect(() => {
-            if (isFetchingTransactions && !isLoadingTransactions) {
-                setFetchMorePulse(true)
-            }
-            let timeout = setTimeout(() => {
-                setFetchMorePulse(false)
-            }, 1500)
-            return () => { clearTimeout(timeout) }
-        }, [isFetchingTransactions])
-
-        // Fetch more transactions
-        const handleScroll = (e: any) => {
-            const bottom = e.target.scrollTop === e.target.scrollTopMax
-            // Update cursors to add new transactions node to the end
-            if (bottom && transactionsData?.next !== null && transactionsData) {
-                getTransactions({
-                    account: searchParams.get('account')!,
-                    type: pathMappings.getTransactionType(location),
-                    offset: transactionsData.next,
-                    limit: transactionsData.limit,
-                })
-            }
-        }
-
         return (
-            <>
-                <InfiniteScrollDiv
-                    animate={loaded && fetchMorePulse}
-                    className={`transactions--container ${isLoadingTransactions ? 'loading' : ''}`}
-                    ref={containerRef}
-                >
-                    {skeleton
-                        ?
-                        <div className='transactions--table'>
-                            {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
-                                .fill(0)
-                                .map((_, index) =>
-                                    <><div /><TransactionShimmer key={index} shimmering={true} /></>
-                                )
-                            }
-                        </div>
-                        :
-                        <ShadowScrollDiv
-                            className='transactions--table not-skeleton'
-                            onScroll={handleScroll}
-                        >
-                            {children}
-                        </ShadowScrollDiv>
-                    }
-                </InfiniteScrollDiv>
-            </>
+            <TransactionModalProvider>
+                <UnenrichedTable>
+                    {children}
+                </UnenrichedTable>
+            </TransactionModalProvider>
         )
     }
 
 export const Transactions = () => {
     const [searchParams] = useSearchParams()
+    const { setItem: setTransactionModalItem } = useContext(TransactionModalContent)
 
     let previousMonth: number | null = null
     let previousYear: number | null = null
-    const navigate = useNavigate()
     const location = useLocation()
 
     const {
@@ -144,17 +185,7 @@ export const Transactions = () => {
                             <div
                                 key={transaction.id}
                                 role="button"
-                                onClick={() => {
-                                    navigate(`${location.pathname}/transaction${location.search}`, {
-                                        state: {
-                                            getTransactionsParams: {
-                                                account: searchParams.get('account') || '',
-                                                type: pathMappings.getTransactionType(location),
-                                            },
-                                            transactionId: transaction.transaction_id
-                                        }
-                                    })
-                                }}
+                                onClick={() => setTransactionModalItem(transaction)}
                             >
                                 <div>
                                     <span>{transaction.preferred_name || transaction.name}</span>

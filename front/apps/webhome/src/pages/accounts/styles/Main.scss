@@ -339,7 +339,7 @@ $borderRadius2: var(--border-radius2);
 
 .transactions--table {
     position: absolute;
-    z-index: 0;
+    z-index: 100;
     inset: 0;
     overflow: auto;
     scrollbar-gutter: stable;

@@ -68,8 +68,8 @@ export interface WithModalI {
   style?: React.CSSProperties
 }
 
-export function withModal(WrappedComponent: React.FC<any>) {
-  return (props: WithModalI) => {
+export function withModal<P>(WrappedComponent: React.FC<P & WithModalI>) {
+  return (props: WithModalI & P) => {
     const {
       onClose = () => { },
       hideAll = false,
@@ -175,7 +175,7 @@ export function withModal(WrappedComponent: React.FC<any>) {
                       />
                     }
                     <WrappedComponent
-                      {...rest}
+                      {...rest as P}
                       closeModal={() => setCloseAll(true)}
                     />
                   </animated.div>

@@ -1,41 +1,29 @@
 import { useState, useEffect } from 'react'
 
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Big from 'big.js'
 
 import './styles/TransactionItem.scss'
-import { useGetTransactionsQuery } from '@features/transactionsSlice'
+import { Transaction } from '@features/transactionsSlice'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { withModal, Base64Logo, DollarCents } from '@ledget/ui'
 
+const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
 
-const TransactionModal = withModal((props) => {
-    const location = useLocation()
-
-    const [item, setItem] = useState<any>({})
     const [institution, setInstitution] = useState<any>({})
     const [account, setAccount] = useState<any>({})
 
-    const {
-        data: transactionsData,
-        isSuccess: transactionsFetched
-    } = useGetTransactionsQuery(location.state.getTransactionsParams)
     const { data: accountsData, isSuccess: accountsFetched } = useGetAccountsQuery()
 
     useEffect(() => {
-        transactionsFetched &&
-            setItem(transactionsData.results.find(item => item.transaction_id === location.state.transactionId))
-    }, [transactionsFetched])
-
-    useEffect(() => {
-        if (accountsFetched && item) {
+        if (accountsFetched) {
             const account = accountsData.accounts.find((acnt: any) => acnt.account_id === item?.account)
             setInstitution(
                 accountsData.institutions.find((inst: any) => inst.id === account?.institution_id)
             )
             setAccount(account)
         }
-    }, [accountsFetched, item])
+    }, [accountsFetched])
 
     return (
         <>
@@ -88,10 +76,4 @@ const TransactionModal = withModal((props) => {
     )
 })
 
-export default function () {
-    const navigate = useNavigate()
-
-    return (
-        <TransactionModal onClose={() => navigate(-1)} />
-    )
-}
+export default TransactionModal
