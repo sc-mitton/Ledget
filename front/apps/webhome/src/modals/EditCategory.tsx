@@ -30,7 +30,7 @@ const EditCategory = withModal((props) => {
 
     const submit = (data: FieldValues, e: React.BaseSyntheticEvent | undefined) => {
         e?.preventDefault()
-        const formData = new FormData(e?.currentTarget)
+        const formData = new FormData(e?.target)
         let body = Object.fromEntries(formData as any)
 
         let alerts = []
@@ -43,8 +43,7 @@ const EditCategory = withModal((props) => {
         if (alerts.length > 0) {
             body.alerts = alerts
         }
-
-        updateCategory({ id: category?.id, ...body } as Category)
+        updateCategory({ id: category?.id, ...body, ...data } as Category)
     }
 
     // Set values on load
@@ -102,7 +101,10 @@ const EditCategory = withModal((props) => {
                         <PeriodSelect labelPrefix={'Resets'} default={category?.period} />
                     </div>
                     <div>
-                        <AddAlert limitAmount={watchLimitAmount} />
+                        <AddAlert
+                            limitAmount={watchLimitAmount}
+                            defaultValues={category?.alerts}
+                        />
                     </div>
                 </div>
                 <SubmitForm

@@ -15,7 +15,7 @@ const formatDollar = (value, percentage) => {
 }
 
 const AddAlert = (props) => {
-    const { limitAmount, placeholder, style = {}, ...rest } = props
+    const { limitAmount, defaultValues } = props
     const [selectedAlerts, setSelectedAlerts] = useState([])
     const buttonRef = useRef(null)
 
@@ -25,6 +25,20 @@ const AddAlert = (props) => {
         { id: 3, value: 75, disabled: false },
         { id: 4, value: 100, disabled: false },
     ])
+
+    // Set Default Values
+    useEffect(() => {
+        if (defaultValues) {
+            setSelectedAlerts((prev) => ({
+                ...prev,
+                ...defaultValues.map((value) => ({
+                    id: value.id,
+                    value: value.value,
+                    disabled: false
+                }))
+            }))
+        }
+    }, [])
 
     const CustomOption = () => {
         const ref = useRef('')
@@ -190,8 +204,7 @@ const AddAlert = (props) => {
                 <ArrowIcon
                     stroke={'var(--m-text)'}
                     strokeWidth={'20'}
-                    width={'.8em'}
-                    height={'.8em'}
+                    size={'.9em'}
                 />
                 :
                 <Plus strokeWidth={'20'} size={'.8em'} />

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
-import { object, string, number } from "yup"
+import { object, string } from "yup"
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import './styles/Forms.css'
@@ -14,7 +14,7 @@ import { FormErrorTip } from '@ledget/ui'
 
 export const schema = object().shape({
     name: string().required().lowercase(),
-    limit_amount: number().required('required')
+    limit_amount: string().required().transform((value) => value.replace(/[^0-9]/g, '')),
 })
 
 const Form = (props) => {

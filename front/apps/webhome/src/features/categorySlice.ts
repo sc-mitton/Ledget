@@ -51,7 +51,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 return queryObj;
             },
             keepUnusedDataFor: 15 * 60,
-            providesTags: ['Category'],
+            providesTags: (result, error, arg) => result
+                ? [...result.map(({ id }) => ({ type: 'Category', id } as const)), { type: 'Category', id: 'LIST' }]
+                : [{ type: 'Category', id: 'LIST' }]
         }),
         getCategorySpendingHistory: builder.query<CategorySpendingHistory[], { categoryId: string }>({
             query: ({ categoryId }) => ({
@@ -66,8 +68,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }))
                 return spendingHistory
             },
-            providesTags: (result, error, arg) =>
-                result ? [{ type: 'SpendingHistory', id: arg.categoryId }] : ['SpendingHistory'],
+            providesTags: (result, error, arg) => result
+                ? [{ type: 'SpendingHistory', id: arg.categoryId }, { type: 'SpendingHistory', id: 'LIST' }]
+                : [{ type: 'SpendingHistory', id: 'LIST' }]
         }),
         addNewCategory: builder.mutation<any, Category[]>({
             query: (data) => ({
@@ -75,7 +78,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
-            invalidatesTags: ['Category']
+            invalidatesTags: [{ type: 'Category', id: 'LIST' }]
         }),
         updateCategories: builder.mutation<any, Category[] | Category>({
             query: (data) => {
@@ -107,7 +110,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
-            invalidatesTags: ['Category']
+            invalidatesTags: [{ type: 'Category', id: 'LIST' }]
         }),
         removeCategorires: builder.mutation<any, string[]>({
             query: (data) => ({
@@ -118,7 +121,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     tz_offset: new Date().getTimezoneOffset(),
                 },
             }),
-            invalidatesTags: ['Category']
+            invalidatesTags: [{ type: 'Category', id: 'LIST' }]
         }),
     }),
 })
