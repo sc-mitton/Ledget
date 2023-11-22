@@ -374,6 +374,22 @@ $background: var(--window);
             display: contents;
             position: relative;
 
+            &:not(:first-child)>div svg {
+                scale: 0;
+                margin-left: 0;
+                transition: all .2s ease-in-out;
+            }
+
+            &:hover:not(:first-child)>div {
+                cursor: pointer;
+
+                svg {
+                    scale: 1;
+                    margin-left: .5em;
+                    transition: all .2s ease-in-out;
+                }
+            }
+
             .no-transactions-message {
                 grid-column: 1 / span 3;
                 display: flex;
@@ -424,6 +440,7 @@ $background: var(--window);
                 display: flex;
                 align-items: center;
                 gap: .5em;
+                white-space: nowrap;
             }
 
             // Date column

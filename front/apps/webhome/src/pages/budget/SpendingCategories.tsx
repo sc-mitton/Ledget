@@ -686,7 +686,10 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                 :
                                 <>
                                     {transactionsData?.results?.map(transaction => (
-                                        <div key={transaction.transaction_id}>
+                                        <div
+                                            key={transaction.transaction_id}
+
+                                        >
                                             <div>
                                                 <Logo accountId={transaction.account} />
                                                 {transaction.name.slice(0, 15)}{transaction.name.length > 15 ? '...' : ''}
@@ -695,7 +698,10 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                                 {new Date(transaction.date).toLocaleDateString(
                                                     'en-US', { month: 'numeric', day: 'numeric' })}
                                             </div>
-                                            <div><div><DollarCents value={transaction.amount} /></div></div>
+                                            <div>
+                                                <div><DollarCents value={transaction.amount} /></div>
+                                                <ArrowIcon rotation={-90} size={'.875em'} />
+                                            </div>
                                         </div>
                                     ))}
                                 </>

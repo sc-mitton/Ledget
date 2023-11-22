@@ -29,16 +29,9 @@ const AddAlert = (props) => {
     // Set Default Values
     useEffect(() => {
         if (defaultValues) {
-            setSelectedAlerts((prev) => ({
-                ...prev,
-                ...defaultValues.map((value) => ({
-                    id: value.id,
-                    value: value.value,
-                    disabled: false
-                }))
-            }))
+            setSelectedAlerts([...defaultValues.map((op) => op.percent_amount)])
         }
-    }, [])
+    }, [defaultValues])
 
     const CustomOption = () => {
         const ref = useRef('')
@@ -50,7 +43,6 @@ const AddAlert = (props) => {
         }, [pct])
 
         const handleChange = (e) => {
-
             const newValue = e.target.value.replace(/[^0-9]/g, '').slice(0, 2)
             setPct(`${newValue}%`)
         }
@@ -74,7 +66,6 @@ const AddAlert = (props) => {
                             &#40;{formatDollar(limitAmount, value)}&#41;
                         </span>}
                 </>
-
             )
         }
 
