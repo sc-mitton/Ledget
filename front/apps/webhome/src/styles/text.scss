@@ -1,5 +1,6 @@
 $primary-text-color: #292929;
 $secondary-text-color: var(--m-secondary);
+$secondary-text-color-darker: color-mix(in srgb, $secondary-text-color, $primary-text-color 60%);
 $tirtiary-text-color: hsl(0, 0%, 56%);
 $debit-text: #3aae83;
 $charcoal: var(--charcoal-rgb);

@@ -5,10 +5,10 @@ import './styles/Tooltip.scss'
 export const ChartTip: FC<HTMLProps<HTMLDivElement> & { position?: 'left' | 'right' }> = ({ children, position }) => {
     const styles = {
         left: {
-            transform: 'translate(-75%, 100%)'
+            transform: 'translate(-65%, 100%)'
         },
         right: {
-            transform: 'translate(75%, 100%)'
+            transform: 'translate(65%, 100%)'
         }
     }
 

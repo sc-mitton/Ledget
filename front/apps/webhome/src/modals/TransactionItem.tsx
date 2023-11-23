@@ -68,7 +68,6 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
                                 </div>
                             </>
                         }
-
                     </div>
                 </div>
             </div>
