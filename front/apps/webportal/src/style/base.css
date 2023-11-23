@@ -18,6 +18,7 @@
     --alert-red: #f35050;
 
     --main-color: rgb(92, 96, 135);
+    --main-color-hover: hsl(235, 24%, 53%);
     --main-color-values: 92, 96, 135;
     --main-hlight: #a9afdb;
     --main-hlight2: #dde1f0;
@@ -28,7 +29,8 @@
     --main-dark2: hsl(232, 17%, 30%);
     --main-dark3: hsl(232, 17%, 25%);
     --main-dark4: hsl(229, 23%, 18%);
-    --accessible-color: #ababff;
+    --main-dark5: hsl(240, 6%, 17%);
+    --main-sat: rgb(171, 171, 255);
     --yellow: rgb(175, 175, 51);
 
     --secondary-color: hsl(153, 100%, 91%);

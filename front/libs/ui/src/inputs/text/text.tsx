@@ -107,7 +107,7 @@ export const CardInput = ({ requiredError, onComplete, clearError, loading }: Ca
         '::placeholder': {
           color: cardFocus ? '#949de0' : '#767676',
         },
-        iconColor: cardFocus ? '#3a59c9' : '#292929',
+        iconColor: cardFocus ? '#0000ff' : '#292929',
         ':disabled': {
           color: '#767676',
           iconColor: '#767676'

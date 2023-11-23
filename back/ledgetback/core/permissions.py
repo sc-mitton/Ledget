@@ -28,7 +28,7 @@ class IsAuthenticated(BasePermission):
 
         device_aal = getattr(request.user.device, 'aal', None)
 
-        # in reality the device_aal should be at least as high as the session aal
+        # in reality the device_aal should be at least as high as the sessio    n aal
         session_aal = getattr(request.user, 'session_aal', None)
 
         if request.user.mfa_method == 'totp':
@@ -144,7 +144,7 @@ def highest_aal_freshness(func):
     return wrapper
 
 
-def _has_no_active_subscription(self, customer_id):
+def _has_no_active_subscription(customer_id):
     '''
     Check if the customer has an active subscription, or
     if they have a subscription that will be canceled at
@@ -164,7 +164,7 @@ def can_create_stripe_subscription(func):
     def wrapper(*args, **kwargs):
         request = args[1]
         user = request.user
-        if not user.is_customer or _has_no_active_subscription(user.customer.id):
+        if user.is_customer and not _has_no_active_subscription(user.customer.id):
             return Response(
                 {'error': 'You already have an active subscription'},
                 status=HTTP_401_UNAUTHORIZED

@@ -604,16 +604,21 @@ button.disabled-hover:hover svg {
         }
     }
 
-    &:hover svg {
-        transform: scale(1.1);
-        transition: all 0.2s ease-in-out;
-    }
-
-    &:active svg {
+    &.active svg {
         display: flex;
         align-items: center;
         color: inherit;
         animation: pop-fade-in, rotate 0.3s ease-in-out,
+    }
+
+    .resend-icon {
+        display: flex;
+        align-items: center;
+    }
+
+    &:hover svg {
+        transform: scale(1.1);
+        transition: all 0.2s ease-in-out;
     }
 }
 

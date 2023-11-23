@@ -172,14 +172,27 @@ export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { fill?:
 
 export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { success: boolean }>(
   (props, ref) => {
-    const [rotation, setRotation] = useState(0);
-    const { success, ...rest } = props
+    const { success, onClick, ...rest } = props
+
+    const [active, setActive] = useState(false)
+
+    useEffect(() => {
+      let timeout = setTimeout(() => {
+        setActive(false)
+      }, 700)
+      return () => {
+        clearTimeout(timeout)
+      }
+    }, [active])
 
     return (
       <button
         ref={ref}
-        onClick={() => setRotation(rotation + 360)}
-        className="resend-btn btn3"
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          setActive(true)
+          onClick && onClick(e)
+        }}
+        className={`resend-btn btn3 ${active ? 'active' : ''}`}
         {...rest}
       >
         Resend

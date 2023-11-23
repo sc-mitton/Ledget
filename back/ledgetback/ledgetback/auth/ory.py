@@ -1,5 +1,4 @@
 import logging
-import json
 
 from rest_framework.authentication import SessionAuthentication
 from django.contrib.auth import get_user_model
@@ -37,9 +36,6 @@ class OryBackend(SessionAuthentication):
         """Return the user from the decoded token."""
         device_token = request.COOKIES.get('ledget_device')
         identity = decoded_token['session']['identity']
-
-        with open('token.json', 'w') as f:
-            f.write(json.dumps(decoded_token, indent=4))
 
         User = get_user_model()
         user = User.objects \

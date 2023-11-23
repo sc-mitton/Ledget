@@ -42,6 +42,6 @@
 }
 
 .provence.active.selected {
-    background-color: var(--main-hlight3);
+    background-color: var(--main-hlight5);
     transition: all .2s eas-in-out;
 }

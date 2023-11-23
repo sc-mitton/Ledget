@@ -51,9 +51,10 @@ const BottomButtons = ({ continueDisabled }) => {
             <BluePrimaryButton
                 onClick={open}
                 aria-label="Link Account"
+                style={{ gap: '.5em' }}
             >
                 Add Account
-                <Plus size={'.9em'} stroke={'currentColor'} />
+                <Plus size={'.8em'} stroke={'currentColor'} />
             </BluePrimaryButton>
             <ExpandableContainer expanded={!continueDisabled}>
                 <BlackPrimaryButtonWithArrow

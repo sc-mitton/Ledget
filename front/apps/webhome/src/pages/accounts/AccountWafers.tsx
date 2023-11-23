@@ -51,13 +51,14 @@ const WafersHeader = () => {
             <h3>{pathMappings.getWaferTitle(location)}</h3>
             <div>
                 <DollarCents
-                    value={
-                        (isSuccess && data)
-                            ? data?.accounts.filter(account => account.type === pathMappings.getAccountType(location))
-                                .reduce((acc, account) => acc.plus(account.balances.current), Big(0))
-                                .times(100).toNumber()
-                            : '0.00'
-                    }
+                    // value={
+                    //     (isSuccess && data)
+                    //         ? data?.accounts.filter(account => account.type === pathMappings.getAccountType(location))
+                    //             .reduce((acc, account) => acc.plus(account.balances.current), Big(0))
+                    //             .times(100).toNumber()
+                    //         : '0.00'
+                    // }
+                    value={'0.00'}
                 />
             </div>
         </div>
