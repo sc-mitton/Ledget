@@ -122,15 +122,16 @@ def sync_transactions(plaid_item: PlaidItem) -> dict:
             added, modified, removed = [], [], []
 
     except plaid.ApiException as e:
-        return Response(
-            {'error': {e}},
-            status=HTTP_400_BAD_REQUEST
+        logger.error(e)
+        raise ValidationError(
+            {'plaid': 'error syncing transactions'},
+            code=HTTP_400_BAD_REQUEST
         )
     except Exception as e:
         logger.error(e)
-        return Response(
+        raise ValidationError(
             {'error': 'Internal server error'},
-            status=HTTP_500_INTERNAL_SERVER_ERROR
+            code=HTTP_500_INTERNAL_SERVER_ERROR
         )
 
     return response_data
@@ -142,15 +143,7 @@ class TransactionsSyncView(GenericAPIView):
     def post(self, request, *args, **kwargs):
 
         plaid_item = self.get_plaid_item(request)
-
-        try:
-            sync_results = sync_transactions(plaid_item)
-        except Exception as e:
-            logger.error(e)
-            return Response(
-                {'error': 'Internal server error'},
-                status=HTTP_500_INTERNAL_SERVER_ERROR
-            )
+        sync_results = sync_transactions(plaid_item)
 
         return Response(sync_results, HTTP_200_OK)
 

@@ -4,11 +4,18 @@ import { useNavigate } from 'react-router-dom'
 
 import './styles/Welcome.css'
 import './styles/Main.css'
-import { Plus, CheckMark3 } from '@ledget/media'
+import { Plus, CheckMark } from '@ledget/media'
 import { useBakedPlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
-import { BluePrimaryButton, ExpandableContainer, LoadingRing, BlackPrimaryButtonWithArrow, Base64Logo, useLoaded } from '@ledget/ui'
+import {
+    BluePrimaryButton,
+    ExpandableContainer,
+    LoadingRing,
+    BlackPrimaryButtonWithArrow,
+    Base64Logo,
+    useLoaded
+} from '@ledget/ui'
 
 const InstitutionLogos = ({ plaidItems }) => {
     const { isLoading } = useGetPlaidItemsQuery()
@@ -26,6 +33,7 @@ const InstitutionLogos = ({ plaidItems }) => {
                                 style={{ marginLeft: index === 0 ? '0' : '-.5rem' }}
                             >
                                 <Base64Logo
+                                    size="1.5em"
                                     data={item.institution.logo}
                                     alt={item.institution.name.charAt(0).toUpperCase()}
                                     backgroundColor={item.institution.primary_color}
@@ -72,19 +80,19 @@ const BottomButtons = ({ continueDisabled }) => {
 const SecurityMessage = () => (
     <div className="checklist">
         <div>
-            <div><CheckMark3 /></div>
+            <div><CheckMark /></div>
             <div>
                 Ledget doesn't store your credentials
             </div>
         </div>
         <div>
-            <div><CheckMark3 /></div>
+            <div><CheckMark /></div>
             <div>
                 We use Plaid to connect to your financial institutions
             </div>
         </div>
         <div>
-            <div><CheckMark3 /></div>
+            <div><CheckMark /></div>
             <div>
                 Disconnect your account and your financial data at any time
             </div>

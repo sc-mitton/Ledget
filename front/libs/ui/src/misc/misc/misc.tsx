@@ -19,11 +19,12 @@ interface Base64LogoProps {
   data: string | undefined;
   alt: string | undefined;
   backgroundColor?: string;
+  size?: string;
   style?: React.CSSProperties;
 }
 
 export const Base64Logo = (props: Base64LogoProps) => {
-  const { data, backgroundColor, alt, style, ...rest } = props
+  const { data, backgroundColor, alt, style, size = '1em', ...rest } = props
 
   const config = {
     filter: 'grayscale(1)',
@@ -44,6 +45,10 @@ export const Base64Logo = (props: Base64LogoProps) => {
       {...rest}
     >
       <img
+        style={{
+          height: size,
+          width: size
+        }}
         src={`data:image/png;base64,${data}`}
         alt={alt}
       />

@@ -100,7 +100,6 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
         institution_id = validated_data['institution']['id']
         new_accounts = [
             Account(
-                user=self.context['request'].user,
                 plaid_item=plaid_item,
                 institution_id=institution_id,
                 **account
