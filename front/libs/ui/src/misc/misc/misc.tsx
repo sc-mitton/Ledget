@@ -197,7 +197,7 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
   )
 }
 
-export const DollarCentsRange = ({ lower = 0, upper = 0 }) => (
+export const DollarCentsRange = ({ lower, upper }: { lower?: number | undefined, upper: number }) => (
   <>
     {lower && <div><DollarCents value={lower} /></div>}
     {lower && <span>&nbsp;&nbsp;&ndash;&nbsp;&nbsp;</span>}

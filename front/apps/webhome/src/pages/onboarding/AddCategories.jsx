@@ -16,12 +16,12 @@ import { schema as categorySchema } from '@modals/CreateCategory'
 import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
 import {
     formatName,
-    formatRoundedCurrency,
     getLongestLength,
     shuffleArray,
     useSpringDrag,
     CloseButton,
-    FormErrorTip
+    FormErrorTip,
+    DollarCents
 } from '@ledget/ui'
 import { itemHeight, itemPadding } from './constants'
 
@@ -78,7 +78,7 @@ const CategoriesColumn = ({ period }) => {
                             </div>
                             <div >
                                 <div className="budget-dollar--container">
-                                    {`${formatRoundedCurrency(item.limit_amount)}`}
+                                    <DollarCents value={item.limit_amount} />
                                 </div>
                             </div >
                             <DeleteButton onClick={() => handleDelete(item)} />
@@ -230,7 +230,7 @@ const CategoriesList = () => {
     return (
         <div
             id="budget-items--container"
-            className={`${!emptyYearItems && !emptyMonthItems ? '' : 'expand'}`}
+            className={`inner-window ${!emptyYearItems && !emptyMonthItems ? '' : 'expand'}`}
         >
             {!recommendationsMode && (emptyYearItems && emptyMonthItems)
                 ?

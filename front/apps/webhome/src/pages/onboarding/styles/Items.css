@@ -10,7 +10,7 @@
 }
 
 #onboarding-app form>div>div {
-    margin-top: .5em;
+    margin-top: .75em;
 }
 
 #onboarding-app form>div>div>label {
@@ -41,15 +41,13 @@
 #onboarding-app #budget-items--container {
     display: flex;
     flex-direction: column;
-    background-color: var(--window-transparent);
     border-radius: var(--border-radius3);
     max-height: 10rem;
     opacity: 1;
     width: auto;
     margin: 0 auto;
 
-    margin-bottom: .5em;
-    margin-top: 1.3em;
+    margin: 1.5em 0;
     padding: 1em;
 }
 
@@ -71,20 +69,11 @@
 }
 
 #onboarding-app form>div:first-child {
-    margin: 0 0 1.25em 0;
+    margin: 0 0 1.5em 0;
 }
 
 #recommendations-btn {
-    color: var(--main-dark4);
-    font-weight: 400;
-    background-color: var(--main-hlight2);
-    transition: background-color .2s ease-out;
     gap: .375rem;
-}
-
-#recommendations-btn:hover {
-    background-color: var(--main-hlight3);
-    transition: background-color .2s ease-out;
 }
 
 #onboarding-app .tab-list button:focus {
@@ -148,7 +137,7 @@
 #onboarding-app .padded-input-row {
     display: flex;
     gap: .5em;
-    padding-top: .25em;
+    margin-top: .325em;
 }
 
 /* ------------------------- Individual Rows Styling ------------------------ */

@@ -55,7 +55,7 @@ const OnboardingApp = () => {
             <Background />
             <AnimatePresence mode="wait">
                 <SlideMotionDiv
-                    position={location.pathname === '/welcome/connect' ? 'fixed' : 'first'}
+                    position={location.pathname === '/welcome/connect' ? 'first' : 'last'}
                     key={location.pathname}
                     id="onboarding-app"
                 >

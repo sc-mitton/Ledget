@@ -41,6 +41,7 @@ const BillsColumn = ({ period }) => {
         setItems(items.filter((category) => category !== toDelete))
     }
 
+    console.log('items', items)
     return (
         <ShadowedContainer style={{ height: 'auto' }}>
             <animated.div style={containerProps} >
@@ -151,7 +152,7 @@ const BillsList = () => {
     return (
         <div
             id="budget-items--container"
-            className={`${!emptyYearItems && !emptyMonthItems ? '' : 'expand'}`}
+            className={`inner-window ${!emptyYearItems && !emptyMonthItems ? '' : 'expand'}`}
         >
             {!recommendationsMode && (emptyYearItems && emptyMonthItems)
                 ?
@@ -188,6 +189,7 @@ const Form = () => {
             if (!hasSchedule || body.errors) { return }
 
             const item = { ...body, ...data }
+            console.log(item)
             if (body.period === 'month') {
                 setMonthItems([...monthItems, item])
             } else {
@@ -212,20 +214,22 @@ const Form = () => {
             key={`create-bill-form-${monthItems.length}-${yearItems.length}}`}
         >
             <div>
-                <label>Schedule</label>
-                <div className="padded-input-row">
-                    <div>
-                        <PeriodSelect
-                            value={period}
-                            onChange={setPeriod}
-                        />
-                    </div>
-                    <div >
-                        <BillScheduler
-                            billPeriod={`${period}ly`}
-                            error={scheduleMissing}
-                            setHasSchedule={setHasSchedule}
-                        />
+                <div>
+                    <label>Schedule</label>
+                    <div className="padded-input-row">
+                        <div>
+                            <PeriodSelect
+                                value={period}
+                                onChange={setPeriod}
+                            />
+                        </div>
+                        <div >
+                            <BillScheduler
+                                billPeriod={`${period}ly`}
+                                error={scheduleMissing}
+                                setHasSchedule={setHasSchedule}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div>
