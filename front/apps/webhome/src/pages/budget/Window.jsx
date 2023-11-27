@@ -36,9 +36,12 @@ const DropDown = () => {
             {({ open }) => (
                 <>
                     <Menu.Button as={IconButton}><Ellipsis2 /></Menu.Button>
-                    <DropAnimation visible={open}>
-                        <Menu.Items static>
-                            <div className="dropdown dropdown-right">
+                    <div style={{ position: 'relative' }}>
+                        <DropAnimation
+                            placement='right'
+                            visible={open} className="dropdown dropdown-right"
+                        >
+                            <Menu.Items static>
                                 <Wrapper
                                     onClick={() => navigate({
                                         pathname: '/budget/edit-categories',
@@ -75,9 +78,9 @@ const DropDown = () => {
                                     <Plus size={'.9em'} />
                                     New bill
                                 </Wrapper>
-                            </div>
-                        </Menu.Items>
-                    </DropAnimation>
+                            </Menu.Items>
+                        </DropAnimation>
+                    </div>
                 </>
             )}
         </Menu >

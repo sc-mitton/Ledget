@@ -105,13 +105,9 @@
 
     &>div {
         position: absolute;
-        bottom: 0;
-        right: -25%;
-        transform: translateX(50%);
-
-        &>.dropdown {
-            @include dropdown-arrow;
-        }
+        right: .375em;
+        // bottom: 0;
+        // transform: translateX(50%);
     }
 
     hr {

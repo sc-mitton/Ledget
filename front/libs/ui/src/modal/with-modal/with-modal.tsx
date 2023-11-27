@@ -1,9 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { FC, useRef, useState, useEffect } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
 import './with-modal.css'
 import { CloseButton } from '../../buttons/buttons'
-import { should } from 'vitest'
 
 
 interface I {
@@ -68,8 +67,8 @@ export interface WithModalI {
   style?: React.CSSProperties
 }
 
-export function withModal<P>(WrappedComponent: React.FC<P & WithModalI>) {
-  return (props: WithModalI & P) => {
+export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }>) {
+  return (props: (WithModalI & P)) => {
     const {
       onClose = () => { },
       hideAll = false,

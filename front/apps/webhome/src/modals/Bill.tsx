@@ -86,7 +86,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                     <div>
                         <DropAnimation
                             placement='right'
-                            className='dropdown'
+                            className='dropdown dropdown-right'
                             visible={open}
                         >
                             <Menu.Items static>
