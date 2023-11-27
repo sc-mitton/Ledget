@@ -33,7 +33,7 @@ const Navigation = ({ isNarrow }) => {
         refresh: [isNarrow],
         querySelectall: '[role=link]',
         find: (element) => element.firstChild.name === location.pathname.split("/")[1],
-        styles: { borderRadius: 'var(--border-radius3)', backgroundColor: 'var(--main-dark4)' },
+        styles: { borderRadius: 'var(--border-radius3)', backgroundColor: 'var(--m-text)' },
     })
 
     const [showPill, setShowPill] = useState()

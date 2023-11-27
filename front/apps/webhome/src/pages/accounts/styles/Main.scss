@@ -192,11 +192,7 @@
 }
 
 .account-wafer>div:nth-child(2) img {
-    filter: grayscale(1) contrast(130%);
-}
-
-.account-wafer.active>div:nth-child(2) img {
-    filter: grayscale(1) contrast(90%);
+    filter: grayscale(1) contrast(120%);
 }
 
 .wafer-name--container {

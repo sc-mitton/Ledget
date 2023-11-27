@@ -6,6 +6,7 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
 #new-items-container {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 #new-items {
@@ -90,7 +91,6 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
 
 }
 
-
 .new-item-icons {
     display: flex;
     flex-direction: row;
@@ -116,5 +116,4 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
 
 #new-items-container>div>div:last-child button {
     margin-top: .25em;
-    margin-bottom: .75em;
 }

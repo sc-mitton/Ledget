@@ -123,11 +123,6 @@ header {
     color: var(--white-text);
 }
 
-.dropdown-item #logout-icon {
-    margin-right: .75em;
-    margin-left: .25em;
-}
-
 @media (max-width: 1079px) {
     .header-container {
         &>div:nth-child(3) {
