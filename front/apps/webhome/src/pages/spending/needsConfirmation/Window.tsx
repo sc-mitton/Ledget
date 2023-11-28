@@ -21,7 +21,7 @@ import {
     Tooltip,
     DollarCents,
     BlueSlimButton,
-    GrnSlimButton,
+    GrnSlimButton
 } from "@ledget/ui"
 import { formatDateOrRelativeDate, InfiniteScrollDiv, useLoaded } from '@ledget/ui'
 import { Category, isCategory, SplitCategory, addTransaction2Cat } from '@features/categorySlice'
