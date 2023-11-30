@@ -1,10 +1,10 @@
-
+import { FC, HTMLAttributes } from 'react'
 import './loading-indicators.css'
 import { useTransition, animated } from '@react-spring/web'
 
 
 
-export const LoadingRing = ({ visible = false, className = '' }) => {
+export const LoadingRing = ({ visible = false, style, className = '' }: { visible?: boolean, style?: React.CSSProperties, className?: string }) => {
   return (
     <div
       style={{
@@ -13,7 +13,8 @@ export const LoadingRing = ({ visible = false, className = '' }) => {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         display: visible ? 'block' : 'none',
-        color: 'inherit'
+        color: 'inherit',
+        ...style
       }}
     >
       <div className={`lds-ring ${className}`}>
@@ -26,26 +27,26 @@ export const LoadingRing = ({ visible = false, className = '' }) => {
   )
 }
 
-export const LoadingRingDiv = ({ loading = false, style = {}, children, ...rest }:
-  { loading: boolean, style: React.CSSProperties, children: React.ReactNode }) => {
-  const transition = useTransition(!loading, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 }
-  })
+export const LoadingRingDiv: FC<HTMLAttributes<HTMLDivElement> & { loading: boolean, style?: React.CSSProperties, }>
+  = ({ loading = false, style = {}, children, ...rest }) => {
+    const transition = useTransition(!loading, {
+      from: { opacity: 0 },
+      enter: { opacity: 1 },
+      leave: { opacity: 0 }
+    })
 
-  return (
-    <div
-      style={{ position: 'relative', ...style }}
-      {...rest}
-    >
-      <LoadingRing visible={loading} />
-      {transition((style, item) =>
-        item &&
-        <animated.div style={style}>
-          {children}
-        </animated.div>
-      )}
-    </div>
-  )
-}
+    return (
+      <div
+        style={{ position: 'relative', ...style }}
+        {...rest}
+      >
+        <LoadingRing visible={loading} />
+        {transition((style, item) =>
+          item &&
+          <animated.div style={style}>
+            {children}
+          </animated.div>
+        )}
+      </div>
+    )
+  }

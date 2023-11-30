@@ -78,7 +78,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
     const [openEllipsis, setOpenEllipsis] = useState(false)
 
     return (
-        <Menu as="div" className="dropdown-wrapper">
+        <Menu as="div" className="corner-dropdown">
             {({ open }) => (
                 <>
                     <Menu.Button as={IconButton} onClick={() => setOpenEllipsis(!openEllipsis)}>

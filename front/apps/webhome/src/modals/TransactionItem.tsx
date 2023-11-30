@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 
 import Big from 'big.js'
+import { Menu } from '@headlessui/react'
 
 import './styles/TransactionItem.scss'
 import { Transaction } from '@features/transactionsSlice'
@@ -10,7 +11,58 @@ import { SelectCategoryBill } from '@components/dropdowns'
 import { useUpdateTransactionsMutation } from '@features/transactionsSlice'
 import { Bill } from "@features/billSlice";
 import { Category, isCategory } from "@features/categorySlice";
-import { DropAnimation, BillCatButton, useAccessEsc } from '@ledget/ui'
+import { Ellipsis, Plus, Split } from '@ledget/media'
+import { DropAnimation, BillCatButton, useAccessEsc, IconButton } from '@ledget/ui'
+
+type Action = 'split' | 'note'
+
+const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction<Action>> }) => {
+    const [openEllipsis, setOpenEllipsis] = useState(false)
+
+    return (
+        <Menu as="div" className="corner-dropdown">
+            {({ open }) => (
+                <>
+                    <Menu.Button as={IconButton} onClick={() => setOpenEllipsis(!openEllipsis)}>
+                        <Ellipsis rotate={90} size={'1.375em'} />
+                    </Menu.Button>
+                    <div>
+                        <DropAnimation
+                            placement='right'
+                            className='dropdown arrow-right right'
+                            visible={open}
+                        >
+                            <Menu.Items static>
+                                <Menu.Item>
+                                    {({ active }) => (
+                                        <button
+                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                            onClick={() => setAction('note')}
+                                        >
+                                            <Plus size={'.875em'} />
+                                            <span>Add note</span>
+                                        </button>
+                                    )}
+                                </Menu.Item>
+                                <Menu.Item>
+                                    {({ active }) => (
+                                        <button
+                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                            onClick={() => setAction('split')}
+                                        >
+                                            <Split />
+                                            <span>Split</span>
+                                        </button>
+                                    )}
+                                </Menu.Item>
+                            </Menu.Items>
+                        </DropAnimation>
+                    </div>
+                </>
+            )}
+        </Menu>
+    )
+}
 
 function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
     const [changeAble, setChangeAble] = useState(false)
@@ -94,6 +146,7 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
 
     const [institution, setInstitution] = useState<any>({})
     const [account, setAccount] = useState<any>({})
+    const [action, setAction] = useState<Action>('note')
 
     const { data: accountsData, isSuccess: accountsFetched } = useGetAccountsQuery()
 
@@ -109,6 +162,7 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
 
     return (
         <>
+            <Actions setAction={setAction} />
             <div className='transaction-info--header'>
                 <div style={{ textAlign: 'center' }}>
                     <DollarCents value={item?.amount && new Big(item.amount).times(100).toNumber()} />

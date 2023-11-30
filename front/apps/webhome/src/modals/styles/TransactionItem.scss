@@ -1,4 +1,5 @@
 @import '@styles/text.scss';
+@import '@styles/base.scss';
 
 /* Header */
 .transaction-info--header {
@@ -32,6 +33,10 @@
         img {
             filter: invert(1) contrast(2.5);
         }
+    }
+
+    .corner-dropdown {
+        @include window-corner-dropdown;
     }
 
     .inner-window {

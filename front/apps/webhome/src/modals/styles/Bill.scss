@@ -1,5 +1,6 @@
 @import '@styles/header.scss';
 @import '@styles/text.scss';
+@import '@styles/base.scss';
 
 #bill-info {
 
@@ -92,31 +93,8 @@
     }
 }
 
-// Container for bottom butons
-.dropdown-wrapper {
-    display: inline-flex;
-    align-items: center;
-    border-radius: .25em;
-    position: absolute;
-    top: .5em;
-    right: 2.5em;
-    z-index: 10;
-
-    &>div {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        // transform: translateX(50%);
-    }
-
-    hr {
-        margin: .375em 0;
-    }
-
-    button {
-        display: flex;
-        gap: .75em;
-    }
+.corner-dropdown {
+    @include window-corner-dropdown;
 }
 
 #delete-bill {

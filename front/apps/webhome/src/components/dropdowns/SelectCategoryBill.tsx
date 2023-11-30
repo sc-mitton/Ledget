@@ -7,6 +7,7 @@ import './SelectCategoryBill.scss'
 import { Category, useGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useGetBillsQuery } from '@features/billSlice'
 import { SearchIcon } from '@ledget/media'
+import { LoadingRingDiv } from '@ledget/ui'
 
 interface I {
     value: (Category | Bill | undefined)
@@ -16,7 +17,7 @@ interface I {
 
 function SelectCategoryBill({ value, onChange, includeBills = true }: I) {
     const [query, setQuery] = useState('')
-    const { data: categoryData, isSuccess: isFetchCategoriesSuccess } = useGetCategoriesQuery()
+    const { data: categoryData, isLoading: isFetchingCategories, isSuccess: isFetchCategoriesSuccess } = useGetCategoriesQuery()
     const { data: billData, isSuccess: isFetchBillsSuccess } = useGetBillsQuery()
     const [filteredBillCats, setFilteredBillCats] = useState<(Category | Bill)[]>([])
     const inputRef = useRef<HTMLInputElement>(null)
@@ -61,22 +62,25 @@ function SelectCategoryBill({ value, onChange, includeBills = true }: I) {
                     onChange={(event) => setQuery(event.target.value)}
                     size={filteredBillCats.reduce((acc, curr) => Math.max(acc, curr.name.length), 0)}
                 />
-                <Combobox.Options className="options" static>
-                    {filteredBillCats.map((billcat) => (
-                        <Combobox.Option key={billcat.id} value={billcat} as={Fragment}>
-                            {({ active, selected }) => (
-                                <li
-                                    className={`option
-                                        ${active ? 'active' : ''} ${selected ? 'selected' : ''}
-                                        ${billcat.period === 'year' ? 'year' : 'month'}`}
-                                >
-                                    <span>{billcat.emoji}</span>
-                                    <span>{billcat.name.charAt(0).toUpperCase()}{billcat.name.slice(1)}</span>
-                                </li>
-                            )}
-                        </Combobox.Option>
-                    ))}
-                </Combobox.Options>
+                {isFetchingCategories || !isFetchBillsSuccess
+                    ? <LoadingRingDiv loading={true} style={{ height: '2em' }} />
+                    : <Combobox.Options className="options" static>
+                        {filteredBillCats.map((billcat) => (
+                            <Combobox.Option key={billcat.id} value={billcat} as={Fragment}>
+                                {({ active, selected }) => (
+                                    <li
+                                        className={`option
+                                    ${active ? 'active' : ''} ${selected ? 'selected' : ''}
+                                    ${billcat.period === 'year' ? 'year' : 'month'}`}
+                                    >
+                                        <span>{billcat.emoji}</span>
+                                        <span>{billcat.name.charAt(0).toUpperCase()}{billcat.name.slice(1)}</span>
+                                    </li>
+                                )}
+                            </Combobox.Option>
+                        ))}
+                    </Combobox.Options>
+                }
             </div>
         </Combobox>
     )

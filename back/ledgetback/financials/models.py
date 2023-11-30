@@ -203,3 +203,12 @@ class Transaction(models.Model):
                 validated_data[i]['confirmed_datetime'] = timezone.now()
 
         return super().bulk_update(validated_data)
+
+
+class Note(models.Model):
+
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    text = models.TextField(null=False, blank=False)
+    datetime = models.DateTimeField(null=False, blank=False, auto_now_add=True)

@@ -1,8 +1,14 @@
 from rest_framework import serializers
 
-from financials.models import Transaction
+from financials.models import Transaction, Note
 from budget.serializers import CategorySerializer, BillSerializer
 from budget.models import Category, Bill, TransactionCategory
+
+
+class NoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Note
+        fields = '__all__'
 
 
 class UpdateTransactionListSerializer(serializers.ListSerializer):
@@ -82,6 +88,7 @@ class UpdateTransactionsSerializer(serializers.Serializer):
     categories = SimpleCategorySerializer(many=True, required=False)
     bill = serializers.CharField(required=False)
     transaction_id = serializers.CharField(required=True)
+    notes = NoteSerializer(required=False, many=True)
 
     class Meta:
         list_serializer_class = UpdateTransactionListSerializer
