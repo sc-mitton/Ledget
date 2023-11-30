@@ -20,7 +20,8 @@ import {
     SlideMotionDiv,
     useLoaded,
     Checkbox,
-    formatCurrency
+    formatCurrency,
+    IconButton
 } from '@ledget/ui'
 import { CheckMark2, Ellipsis, TrashIcon, BellOff, Edit } from '@ledget/media'
 import {
@@ -80,13 +81,13 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
         <Menu as="div" className="dropdown-wrapper">
             {({ open }) => (
                 <>
-                    <Menu.Button onClick={() => setOpenEllipsis(!openEllipsis)}>
+                    <Menu.Button as={IconButton} onClick={() => setOpenEllipsis(!openEllipsis)}>
                         <Ellipsis rotate={90} size={'1.375em'} />
                     </Menu.Button>
                     <div>
                         <DropAnimation
                             placement='right'
-                            className='dropdown dropdown-right'
+                            className='dropdown arrow-right right'
                             visible={open}
                         >
                             <Menu.Items static>

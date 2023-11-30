@@ -596,30 +596,30 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                     <Menu.Button as={IconButton}>
                         <Ellipsis rotate={90} />
                     </Menu.Button>
-                    <DropAnimation
-                        transformOrigin='right'
-                        placement='left'
-                        visible={open}
-                        className="dropdown dropdown-right"
-                        style={{ marginTop: '1em' }}
-                    >
-                        <Menu.Items static>
-                            <Menu.Item as={Fragment}>
-                                {({ active }) => (
-                                    <button
-                                        className={`dropdown-item ${active && "active-dropdown-item"}`}
-                                        onClick={() => {
-                                            navigate(`${location.pathname}/edit-category${location.search}`, {
-                                                state: { categoryId: category.id }
-                                            })
-                                        }}
-                                    >
-                                        <Edit size={'1em'} /> Edit
-                                    </button>
-                                )}
-                            </Menu.Item>
-                        </Menu.Items>
-                    </DropAnimation>
+                    <div style={{ position: 'absolute', right: '0' }}>
+                        <DropAnimation
+                            placement='right'
+                            visible={open}
+                            className='dropdown arrow-right right'
+                        >
+                            <Menu.Items static>
+                                <Menu.Item as={Fragment}>
+                                    {({ active }) => (
+                                        <button
+                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                            onClick={() => {
+                                                navigate(`${location.pathname}/edit-category${location.search}`, {
+                                                    state: { categoryId: category.id }
+                                                })
+                                            }}
+                                        >
+                                            <Edit size={'1em'} /> Edit
+                                        </button>
+                                    )}
+                                </Menu.Item>
+                            </Menu.Items>
+                        </DropAnimation>
+                    </div>
                 </div>
             )
             }

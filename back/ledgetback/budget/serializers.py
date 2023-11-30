@@ -47,7 +47,7 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = '__all__'
+        exclude = ['is_default']
         extra_kwargs = {'limit_amount': {'required': True}}
         required_fields = ['name', 'period', 'limit_amount']
         list_serializer_class = CategoryListCreateSerializer

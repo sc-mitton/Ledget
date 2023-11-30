@@ -72,7 +72,7 @@
     border-radius: var(--border-radius2);
     border: var(--input-border);
     z-index: 0;
-    padding: 1em 1em;
+    padding: .75em 1em;
     margin: .25em 0;
     box-sizing: border-box;
     position: relative;

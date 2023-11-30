@@ -265,8 +265,6 @@ class TransactionViewSet(ModelViewSet):
              .order_by('-datetime')
         # Get unconfirmed transactions
         else:
-            print('start', start)
-            print('end', end)
             return Transaction.objects.filter(
                 datetime__gte=start,
                 datetime__lte=end,

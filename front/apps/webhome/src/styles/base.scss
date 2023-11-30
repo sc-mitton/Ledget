@@ -665,12 +665,17 @@ ul hr {
     box-shadow: none;
 }
 
-.dropdown-right {
+.dropdown.right {
+    top: .375em;
+    margin-left: .5em;
+}
+
+.dropdown.right2 {
     top: 1.5em;
     margin-left: .5em;
 }
 
-.dropdown-right::before {
+.dropdown.arrow-right::before {
     position: absolute;
     top: -.5em;
     right: 1.125em;
@@ -681,7 +686,7 @@ ul hr {
     content: '';
 }
 
-.dropdown-right::after {
+.dropdown.arrow-right::after {
     position: absolute;
     top: -.375em;
     right: 1.125em;

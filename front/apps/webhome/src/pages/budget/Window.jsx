@@ -5,7 +5,7 @@ import { Menu } from '@headlessui/react'
 import { useNavigate, createSearchParams, useSearchParams, useLocation } from 'react-router-dom'
 
 import './styles/Window.scss'
-import { Plus, Edit, Ellipsis2 } from '@ledget/media'
+import { Plus, Edit, Ellipsis } from '@ledget/media'
 import { IconButton, DropAnimation } from '@ledget/ui'
 import MonthPicker from '@components/inputs/MonthPicker'
 import BudgetSummary from './BudgetSummary'
@@ -35,11 +35,11 @@ const DropDown = () => {
         <Menu>
             {({ open }) => (
                 <>
-                    <Menu.Button as={IconButton}><Ellipsis2 /></Menu.Button>
+                    <Menu.Button as={IconButton}><Ellipsis rotate={90} size={'1.25em'} /></Menu.Button>
                     <div style={{ position: 'relative' }}>
                         <DropAnimation
                             placement='right'
-                            visible={open} className="dropdown dropdown-right"
+                            visible={open} className="dropdown arrow-right right2"
                         >
                             <Menu.Items static>
                                 <Wrapper

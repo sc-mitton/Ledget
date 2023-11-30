@@ -168,9 +168,9 @@ class Transaction(models.Model):
                 break
 
         if add_predicted_category:
-            validated_data['predicted_category'] = Category.objects.get_or_create(
+            validated_data['predicted_category'] = Category.objects.filter(
                 usercategory__user=self.context['request'].user,
-                is_default=True)
+                is_default=True).first()
 
         return super().create(validated_data)
 
@@ -179,9 +179,9 @@ class Transaction(models.Model):
         keys = ['category', 'category_id', 'bill', 'bill_id', 'predicted_category',
                 'predicted_category_id', 'predicted_bill', 'predicted_bill_id']
 
-        predicted_category = Category.objects.get_or_create(
+        predicted_category = Category.objects.filter(
                 usercategory__user=self.context['request'].user,
-                is_default=True)
+                is_default=True).first()
 
         new_data = []
 

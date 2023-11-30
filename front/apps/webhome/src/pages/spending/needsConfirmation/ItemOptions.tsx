@@ -58,31 +58,23 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                 <li
                     className={`dropdown-item${activeIndex === 0 ? ' active' : ''}`}
                     role="menuitem"
+                    ref={refs.current && refs.current[0]}
+                    tabIndex={-1}
+                    onClick={() => { props.handlers[0]() }}
+                    aria-label="Split"
                 >
-                    <div
-                        ref={refs.current && refs.current[0]}
-                        tabIndex={-1}
-                        onClick={() => { props.handlers[0]() }}
-                        aria-label="Split"
-                        role="button"
-                    >
-                        <Split />
-                        Split
-                    </div>
+                    <Split />
+                    Split
                 </li>
                 <li
                     className={`dropdown-item${activeIndex === 2 ? ' active' : ''}`}
                     role="menuitem"
+                    onClick={() => { props.handlers[3]() }}
+                    tabIndex={-1}
+                    aria-label="Details"
                 >
-                    <div
-                        onClick={() => { props.handlers[3]() }}
-                        tabIndex={-1}
-                        aria-label="Details"
-                        role="button"
-                    >
-                        <DetailsIcon />
-                        Details
-                    </div>
+                    <DetailsIcon />
+                    Details
                 </li>
             </ul>
         </div>

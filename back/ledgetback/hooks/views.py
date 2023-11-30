@@ -12,12 +12,14 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 import stripe
 
 from core.models import Customer
 from financials.models import PlaidItem
 from hooks.permissions import CameFromOry, CameFromPlaid
 from financials.views.transactions import sync_transactions
+from budget.models import Category
 
 stripe_logger = logging.getLogger('stripe')
 stripe.api_key = settings.STRIPE_API_KEY
@@ -120,15 +122,23 @@ class OryRegistrationHook(APIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            new_user = {'id': request.data['user_id']}
-            if request.data.get('is_verified', False):
-                new_user['is_verified'] = True
-            get_user_model().objects.create_user(**new_user)
+            self.create_objects(request)
         except Exception as e:
             return Response(data={'error': str(e)},
                             status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)
+
+    @transaction.atomic
+    def create_objects(self, request):
+        new_user = {'id': request.data['user_id']}
+        if request.data.get('is_verified', False):
+            new_user['is_verified'] = True
+        user = get_user_model().objects.create_user(**new_user)
+        default_category = Category.objects.create(
+            name='miscellaneous',
+            is_default=True)
+        default_category.users.add(user)
 
 
 class OrySettingsPasswordHook(APIView):
