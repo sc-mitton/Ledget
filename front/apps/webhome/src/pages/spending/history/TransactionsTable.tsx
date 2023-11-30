@@ -7,17 +7,14 @@ import { Logo } from '@components/pieces'
 import { DollarCents, InfiniteScrollDiv, TransactionShimmer } from '@ledget/ui'
 import { ShadowedContainer } from '@components/pieces'
 import { EmptyListImage } from '@ledget/media'
+import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
 
 const List = () => {
   const { data: user } = useGetMeQuery()
   const user_create_on = new Date(user?.created_on!)
-  let end = new Date()
+  const { start, end } = useGetStartEndFromSearchParams()
 
-  const { data: transactionsData, isError } = useGetTransactionsQuery({
-    confirmed: true,
-    start: Math.floor(user_create_on.setFullYear(user_create_on.getFullYear() - 2) / 1000),
-    end: Math.floor(end.setHours(24, 0, 0, 0) / 1000)
-  })
+  const { data: transactionsData, isError } = useGetTransactionsQuery({ confirmed: true, start, end })
 
   let monthholder: number | undefined
   let newMonth = false
@@ -80,19 +77,15 @@ const List = () => {
 export default function Table() {
   const { data: user } = useGetMeQuery()
   const user_create_on = new Date(user?.created_on!)
-  let end = new Date()
   const [isFetchingMore, setFetchingMore] = useState(false)
+  const { start, end } = useGetStartEndFromSearchParams()
 
   const ref = useRef<HTMLDivElement>(null)
   const [getTransactions, { data: transactionsData, isLoading }] = useLazyGetTransactionsQuery()
 
   // Initial transaction fetch
   useEffect(() => {
-    getTransactions({
-      confirmed: true,
-      start: Math.floor(user_create_on.setFullYear(user_create_on.getFullYear() - 2) / 1000),
-      end: Math.floor(end.setHours(24, 0, 0, 0) / 1000)
-    }, true)
+    getTransactions({ confirmed: true, start, end }, true)
   }, [])
 
   // Refetches for pagination
@@ -103,10 +96,10 @@ export default function Table() {
     if (bottom && transactionsData?.next) {
       getTransactions({
         confirmed: true,
-        start: Math.floor(user_create_on.setFullYear(user_create_on.getFullYear() - 2) / 1000),
-        end: Math.floor(end.setHours(24, 0, 0, 0) / 1000),
         offset: transactionsData.next,
         limit: transactionsData.limit,
+        start,
+        end,
       })
     }
     setFetchingMore(false)

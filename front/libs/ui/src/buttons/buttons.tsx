@@ -36,6 +36,7 @@ export const GrnSlimButton = ButtonWithClassName('btn-grn2 btn-slim')
 export const GrnSlimButton2 = ButtonWithClassName('btn-grn2 btn-2slim')
 export const BlueSlimButton2 = ButtonWithClassName('btn-blue btn-2slim')
 export const BlueSlimButton = ButtonWithClassName('btn-blue btn-slim')
+export const GreenSlimButton = ButtonWithClassName('btn-grn btn-slim')
 export const SlimButton = ButtonWithClassName('btn-clr btn-2slim')
 export const NarrowButton = ButtonWithClassName('btn-clr btn-narrow')
 export const IconButton = ButtonWithClassName('btn-clr btn-icon')
@@ -120,6 +121,18 @@ export const CloseButton =
       </button>
     )
   })
+
+interface BillCatButtonProps {
+  color: 'green' | 'blue'
+  slimLevel?: 1 | 2
+}
+
+export const BillCatButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & BillCatButtonProps> =
+  ({ color, children, className, slimLevel, ...rest }) => (
+    <button className={`${className} ${slimLevel === 1 ? 'btn-slim' : 'btn-2slim'} ${color === 'blue' ? 'btn-blue' : 'btn-grn'} `} {...rest}>
+      {children}
+    </button>
+  )
 
 export const BackButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText?: boolean }>
   = ({ children, withText = true, ...rest }) => (

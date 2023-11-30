@@ -20,11 +20,10 @@
         width: calc(auto + 1em);
         padding: 0.5em 0;
         mask-image: linear-gradient(to bottom, transparent, black .5em, black calc(100% - .5em), transparent);
-        margin-bottom: .5em;
     }
 
     input {
-        margin: 0.5em;
+        margin: 0.5em .25em;
     }
 
     svg {
@@ -36,7 +35,7 @@
 
     input {
         background-color: var(--input-background);
-        padding: .25em .75em;
+        padding: .25em 0em;
         padding-left: 2.25em;
     }
 
@@ -54,7 +53,7 @@
         transition: all .3s ease;
         font-weight: 400;
         padding: .125em .75em;
-        margin: 0 .625em;
+        margin: 0 .25em;
 
         &.year {
             background-color: var(--secondary-hlight2);

@@ -11,7 +11,7 @@ import { SearchIcon } from '@ledget/media'
 interface I {
     value: (Category | Bill | undefined)
     includeBills?: boolean
-    onChange: (value: (Category | Bill | undefined)) => void
+    onChange: React.Dispatch<React.SetStateAction<Category | Bill | undefined>>
 }
 
 function SelectCategoryBill({ value, onChange, includeBills = true }: I) {

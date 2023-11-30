@@ -5,70 +5,91 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-}
 
-.transaction-info--header>div:first-child {
-    font-size: 2rem;
-}
+    &>div:first-child {
+        font-size: 2rem;
+    }
 
-.transaction-info--header>div:last-child {
-    width: 70%;
-    white-space: wrap;
-    text-align: center;
-    font-size: 1rem;
-    color: $secondary-text-color-darker;
+    &>div:last-child {
+        width: 70%;
+        white-space: wrap;
+        text-align: center;
+        font-size: 1rem;
+        color: $secondary-text-color-darker;
+    }
 }
 
 /* All Info */
 .transaction-info--container {
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 1.25em;
     margin-top: 2em;
-}
 
-.transaction-info--container a {
-    text-decoration: underline;
-}
+    a {
+        text-decoration: underline;
 
-.transaction-info--container .inner-window>div,
-.transaction-info--container .inner-window>div a {
-    display: flex;
-    align-items: center;
-}
+        img {
+            filter: invert(1) contrast(2.5);
+        }
+    }
 
-.transaction-info--container .inner-window>div {
-    gap: .375em;
-}
+    .inner-window {
 
-.transaction-info--container .inner-window:first-child {
-    display: flex;
-    gap: .5em;
-}
+        &:not(:nth-child(2))>div,
+        &>div a {
+            display: flex;
+            align-items: center;
+        }
 
-.transaction-info--container .inner-window:not(:first-child)>div {
-    display: grid;
-    column-gap: 1em;
-    row-gap: 0;
-    grid-template-columns: minmax(0, auto) 1fr;
-}
+        &>div {
+            gap: .375em;
+        }
 
-.transaction-info--container .merchant-cell {
-    grid-column: span 2;
-    margin-bottom: .25em;
-    font-weight: 500;
-}
+        &:first-child {
+            display: flex;
+            gap: .5em;
+        }
 
-.transaction-info--container .inner-window:not(:first-child)>div>div {
-    display: flex;
-    align-items: center;
-    gap: .125em;
-}
+        // Inner window for bills and categories list
+        &:nth-child(2) {
+            display: flex;
+            flex-wrap: wrap;
 
-.transaction-info--container .inner-window:not(:first-child)>div span {
-    padding-top: .1875em;
-}
+            &>div {
+                position: relative;
 
-.transaction-info--container .inner-window:not(:first-child)>div>div:nth-child(2n+1) {
-    font-weight: 500;
+                &>div {
+                    top: 2.25em;
+                }
+            }
+        }
+
+        &:last-child>div {
+            display: grid;
+            column-gap: 1em;
+            row-gap: 0;
+            grid-template-columns: minmax(0, auto) 1fr;
+
+            &>div {
+                display: flex;
+                align-items: center;
+                gap: .125em;
+
+                span {
+                    padding-top: .1875em;
+                }
+            }
+
+            &>div:nth-child(2n+1) {
+                font-weight: 500;
+            }
+        }
+    }
+
+    .merchant-cell {
+        grid-column: span 2;
+        margin-bottom: .25em;
+        font-weight: 500;
+    }
 }

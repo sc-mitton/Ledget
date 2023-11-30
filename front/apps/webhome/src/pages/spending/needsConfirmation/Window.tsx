@@ -246,13 +246,13 @@ const NeedsConfirmationWindow = () => {
 
     // Initial fetch when query params change
     useEffect(() => {
-        fetchTransactions({ start: start, end: end, offset: offset }, true)
+        fetchTransactions({ start, end, offset }, true)
     }, [searchParams.get('month'), searchParams.get('year')])
 
     // Paginated requests
     useEffect(() => {
         if (transactionsData?.next) {
-            fetchTransactions({ start: start, end: end, offset: offset })
+            fetchTransactions({ start, end, offset })
         }
     }, [offset])
 

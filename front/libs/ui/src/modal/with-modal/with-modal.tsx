@@ -16,7 +16,6 @@ export function useAccessEsc({ refs, visible, setVisible }: I) {
     const handleClick = (event: MouseEvent) => {
       event.stopPropagation()
 
-
       let shouldClose = true
       for (const ref of refs) {
         if (ref.current === null) {

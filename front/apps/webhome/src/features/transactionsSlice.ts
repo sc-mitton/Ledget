@@ -195,8 +195,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
                 const otherTags = [
                     { type: 'Transaction', id: 'LIST' } as const,
-                    { type: 'Category', id: 'LIST' } as const,
-                    { type: 'Bill', id: 'LIST' } as const,
+                    ...(arg.some(item => item.categories) ? [{ type: 'Category', id: 'LIST' } as const] : []),
+                    ...(arg.some(item => item.bill) ? [{ type: 'Bill', id: 'LIST' } as const] : [])
                 ]
                 return result
                     ? [...otherTags, ...spendingHistoryTags]

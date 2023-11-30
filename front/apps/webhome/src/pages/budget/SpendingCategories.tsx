@@ -491,14 +491,13 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     const [window, setWindow] = useState<typeof windowOptions[number]>()
     const buttonRef = useRef<HTMLButtonElement>(null)
 
-    // Fetching Transactions
+    // Initial fetching Transactions
     useEffect(() => {
         getTransactions({
             confirmed: true,
-            start: start,
-            end: end,
+            start, end,
             category: category.id,
-        })
+        }, true)
     }, [])
 
     useEffect(() => {

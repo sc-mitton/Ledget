@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useRef } from 'react'
 
 import { DropAnimation } from '@ledget/ui'

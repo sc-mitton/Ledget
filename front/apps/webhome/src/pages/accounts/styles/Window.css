@@ -6,7 +6,7 @@
     gap: 1em;
 }
 
-#accounts-window ul {
+#accounts-header-nav ul {
     display: flex;
     justify-content: flex-start;
     margin: .25em 0 .25em 0;
@@ -14,7 +14,7 @@
     gap: .5em;
 }
 
-#accounts-window ul li {
+#accounts-header-nav ul li {
     padding: .125em 1em;
     font-weight: 400;
     background-color: var(--icon-light-gray);
@@ -27,13 +27,13 @@
     gap: .5em;
 }
 
-#accounts-window ul li[aria-current="true"] {
+#accounts-header-nav ul li[aria-current="true"] {
     background-color: transparent;
     transition: background-color 0.5s ease-in-out;
     color: var(--main-dark2);
 }
 
-#accounts-window ul li:not([aria-current="true"]):hover {
+#accounts-header-nav ul li:not([aria-current="true"]):hover {
     background-color: var(--icon-hover-light-gray);
     transition: background-color 0.5s ease-in-out;
 }
@@ -45,7 +45,7 @@
         margin: 0;
     }
 
-    #accounts-window ul li {
+    #accounts-header-nav ul li {
         gap: 0;
     }
 }

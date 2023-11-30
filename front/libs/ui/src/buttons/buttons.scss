@@ -70,6 +70,7 @@
     padding: .125em .75em;
     border-radius: var(--border-radius2);
     font-weight: 400;
+    gap: .25em;
 }
 
 .btn-3slim {
@@ -718,6 +719,8 @@ button.disabled-hover:hover svg {
     position: absolute;
     top: .625em;
     right: .625em;
+    border-radius: 50%;
+    padding: .375em;
 }
 
 /* Zipper Button */
