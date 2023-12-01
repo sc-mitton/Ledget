@@ -88,3 +88,15 @@ export const ShadowScrollDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivEleme
     )
   }
 )
+
+export const GrowOnDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>
+  & { immediate: boolean }>(({
+    children,
+    immediate = false,
+    className,
+    ...rest
+  }, ref) => (
+    <div className={`${className} grow-on--container${immediate ? '-immediate' : ''}`} {...rest} ref={ref}>
+      {children}
+    </div>
+  ))

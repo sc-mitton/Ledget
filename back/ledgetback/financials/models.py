@@ -207,7 +207,10 @@ class Transaction(models.Model):
 
 class Note(models.Model):
 
-    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
+    transaction = models.ForeignKey(
+        Transaction,
+        on_delete=models.CASCADE,
+        related_name='notes')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     text = models.TextField(null=False, blank=False)

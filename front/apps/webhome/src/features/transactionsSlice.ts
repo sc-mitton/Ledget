@@ -9,6 +9,11 @@ import type { RootState } from './store'
 
 export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 
+export type Note = {
+    datetime: string
+    text: string
+}
+
 export type Transaction = {
     account: string
     transaction_id: string
@@ -42,6 +47,7 @@ export type Transaction = {
     lat?: number
     lon?: number
     store_number?: string
+    notes: Note[]
 }
 
 export interface GetTransactionsParams {

@@ -51,28 +51,30 @@
             gap: .375em;
         }
 
+        // Inner window for account info
         &:first-child {
             display: flex;
             gap: .5em;
         }
 
         // Inner window for bills and categories list
-        &:nth-child(2) {
-            display: flex;
-            flex-wrap: wrap;
+        // &:nth-child(2) {
+        //     display: flex;
+        //     flex-wrap: wrap;
 
-            &>div {
-                position: relative;
+        //     &>div {
+        //         position: relative;
 
-                &>div {
-                    top: 2.25em;
-                }
-            }
-        }
+        //         &>div {
+        //             top: 2.25em;
+        //         }
+        //     }
+        // }
 
-        &:last-child>div {
+        // Merchant, date, etc. info
+        &:nth-child(2)>div {
             display: grid;
-            column-gap: 1em;
+            column-gap: 2em;
             row-gap: 0;
             grid-template-columns: minmax(0, auto) 1fr;
 
@@ -90,11 +92,18 @@
                 font-weight: 500;
             }
         }
+
+        // Add a note container
+        &:nth-child(3) {
+
+            input {
+                width: 100%;
+            }
+        }
     }
 
-    .merchant-cell {
+    h4 {
         grid-column: span 2;
         margin-bottom: .25em;
-        font-weight: 500;
     }
 }

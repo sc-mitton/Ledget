@@ -8,7 +8,7 @@ from budget.models import Category, Bill, TransactionCategory
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = '__all__'
+        exclude = ('user',)
 
 
 class UpdateTransactionListSerializer(serializers.ListSerializer):
@@ -86,9 +86,9 @@ class SimpleCategorySerializer(serializers.Serializer):
 
 class UpdateTransactionsSerializer(serializers.Serializer):
     categories = SimpleCategorySerializer(many=True, required=False)
+    notes = NoteSerializer(required=False, many=True)
     bill = serializers.CharField(required=False)
     transaction_id = serializers.CharField(required=True)
-    notes = NoteSerializer(required=False, many=True)
 
     class Meta:
         list_serializer_class = UpdateTransactionListSerializer
@@ -106,6 +106,7 @@ class TransactionSerializer(serializers.ModelSerializer):
     bill = BillSerializer()
     predicted_category = CategorySerializer()
     predicted_bill = BillSerializer()
+    notes = NoteSerializer(many=True)
 
     class Meta:
         model = Transaction

@@ -262,6 +262,7 @@ class TransactionViewSet(ModelViewSet):
                 Q(bill__isnull=False) | Q(transactioncategory__isnull=False)
             ).select_related('bill') \
              .prefetch_related('categories') \
+             .prefetch_related('notes') \
              .order_by('-datetime')
         # Get unconfirmed transactions
         else:
@@ -270,7 +271,8 @@ class TransactionViewSet(ModelViewSet):
                 datetime__lte=end,
                 categories=None,
                 bill__isnull=True
-            ).select_related('predicted_category', 'predicted_bill')
+            ).select_related('predicted_category', 'predicted_bill') \
+             .prefetch_related('notes')
 
     def _get_transactions(self):
         type = self.request.query_params.get('type', None)
@@ -280,7 +282,10 @@ class TransactionViewSet(ModelViewSet):
             account__plaid_item__user_id=self.request.user.id,
             account__type=type,
             account_id=account
-        ).select_related('bill').prefetch_related('categories').order_by('-datetime')
+        ).select_related('bill') \
+         .prefetch_related('categories') \
+         .prefetch_related('notes') \
+         .order_by('-datetime')
 
     def perform_update(self, serializer):
         serializer.save()

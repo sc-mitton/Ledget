@@ -12,11 +12,18 @@ import { useUpdateTransactionsMutation } from '@features/transactionsSlice'
 import { Bill } from "@features/billSlice";
 import { Category, isCategory } from "@features/categorySlice";
 import { Ellipsis, Plus, Split } from '@ledget/media'
-import { DropAnimation, BillCatButton, useAccessEsc, IconButton } from '@ledget/ui'
+import {
+    DropAnimation,
+    BillCatButton,
+    useAccessEsc,
+    IconButton,
+    useLoaded,
+    GrowOnDiv
+} from '@ledget/ui'
 
-type Action = 'split' | 'note'
+type Action = 'split'
 
-const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction<Action>> }) => {
+const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction<Action | undefined>> }) => {
     const [openEllipsis, setOpenEllipsis] = useState(false)
 
     return (
@@ -33,17 +40,6 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                             visible={open}
                         >
                             <Menu.Items static>
-                                <Menu.Item>
-                                    {({ active }) => (
-                                        <button
-                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
-                                            onClick={() => setAction('note')}
-                                        >
-                                            <Plus size={'.875em'} />
-                                            <span>Add note</span>
-                                        </button>
-                                    )}
-                                </Menu.Item>
                                 <Menu.Item>
                                     {({ active }) => (
                                         <button
@@ -141,14 +137,36 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
     )
 }
 
+const InfoTableInnerWindow = ({ item }: { item: Transaction }) => (
+    <div className='inner-window'>
+        {item?.merchant_name &&
+            <>
+                <div className="merchant-cell">
+                    <h4>{item?.merchant_name}</h4>
+                </div>
+            </>}
+        <div>
+            <div>Date </div>
+            <div>
+                {new Date(item?.datetime).toLocaleDateString('en-US', { 'month': 'short', 'day': 'numeric', 'year': 'numeric' })}
+            </div>
+            {(item?.address || item?.city || item?.region) &&
+                <>
+                    <div>Location </div>
+                    <div>
+                        <span>{item?.address}</span>
+                        <span>{`${item?.city}${item?.region ? ', ' + item.region : ''}`}</span>
+                    </div>
+                </>
+            }
+        </div>
+    </div>
+)
 
-const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
-
+const InstitutionInfoInnerWindow = ({ item }: { item: Transaction }) => {
+    const { data: accountsData, isSuccess: accountsFetched } = useGetAccountsQuery()
     const [institution, setInstitution] = useState<any>({})
     const [account, setAccount] = useState<any>({})
-    const [action, setAction] = useState<Action>('note')
-
-    const { data: accountsData, isSuccess: accountsFetched } = useGetAccountsQuery()
 
     useEffect(() => {
         if (accountsFetched) {
@@ -161,6 +179,30 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
     }, [accountsFetched])
 
     return (
+        <div className='inner-window'>
+            <div >
+                <a href={institution?.url} target="_blank" rel="noreferrer">
+                    <Base64Logo
+                        data={institution?.logo}
+                        alt={institution?.name?.charAt(0).toUpperCase()}
+                    />
+                </a>
+            </div>
+            <div>
+                <span>{account?.official_name}</span>
+                <span>&nbsp;&bull;&nbsp;&bull;&nbsp;{account?.mask}</span>
+            </div>
+        </div>
+    )
+}
+
+
+
+const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
+    const [action, setAction] = useState<Action>()
+    const loaded = useLoaded(100)
+
+    return (
         <>
             <Actions setAction={setAction} />
             <div className='transaction-info--header'>
@@ -170,43 +212,10 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
                 <div>{item?.preferred_name || item?.name}</div>
             </div>
             <div className='transaction-info--container'>
+                <InstitutionInfoInnerWindow item={item} />
+                <InfoTableInnerWindow item={item} />
                 <div className='inner-window'>
-                    <div >
-                        <a href={institution?.url} target="_blank" rel="noreferrer">
-                            <Base64Logo
-                                data={institution?.logo}
-                                alt={institution?.name?.charAt(0).toUpperCase()}
-                            />
-                        </a>
-                    </div>
-                    <div>
-                        <span>{account?.official_name}</span>
-                        <span>&nbsp;&bull;&nbsp;&bull;&nbsp;{account?.mask}</span>
-                    </div>
-                </div>
-                <CategoriesBillInnerWindow item={item} />
-                <div className='inner-window'>
-                    {item?.merchant_name &&
-                        <>
-                            <div className="merchant-cell">
-                                <h4>{item?.merchant_name}</h4>
-                            </div>
-                        </>}
-                    <div>
-                        <div>Date </div>
-                        <div>
-                            {new Date(item?.datetime).toLocaleDateString('en-US', { 'month': 'short', 'day': 'numeric', 'year': 'numeric' })}
-                        </div>
-                        {(item?.address || item?.city || item?.region) &&
-                            <>
-                                <div>Location </div>
-                                <div>
-                                    <span>{item?.address}</span>
-                                    <span>{`${item?.city}${item?.region ? ', ' + item.region : ''}`}</span>
-                                </div>
-                            </>
-                        }
-                    </div>
+                    <input type="text" placeholder="Add a note..." autoFocus />
                 </div>
             </div>
         </>
