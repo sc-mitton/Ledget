@@ -13,9 +13,11 @@ interface I {
     value: (Category | Bill | undefined)
     includeBills?: boolean
     onChange: React.Dispatch<React.SetStateAction<Category | Bill | undefined>>
+    month?: number
+    year?: number
 }
 
-function SelectCategoryBill({ value, onChange, includeBills = true }: I) {
+function SelectCategoryBill({ value, onChange, includeBills = true, month, year }: I) {
     const [query, setQuery] = useState('')
     const { data: categoryData, isLoading: isFetchingCategories, isSuccess: isFetchCategoriesSuccess } = useGetCategoriesQuery()
     const { data: billData, isSuccess: isFetchBillsSuccess } = useGetBillsQuery()
