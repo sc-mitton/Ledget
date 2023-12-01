@@ -9,9 +9,11 @@ import { useGetAccountsQuery } from "@features/accountsSlice"
 import { withModal, Base64Logo, DollarCents } from '@ledget/ui'
 import { SelectCategoryBill } from '@components/dropdowns'
 import {
-    useUpdateTransactionsMutation,
+    useConfirmTransactionsMutation,
     useAddNoteMutation,
-    useUpdateDeleteNoteMutation
+    useUpdateDeleteNoteMutation,
+    useUpdateTransactionMutation,
+    Note
 } from '@features/transactionsSlice'
 import { Bill } from "@features/billSlice";
 import { Category, isCategory } from "@features/categorySlice";
@@ -82,7 +84,7 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
     const [changeAble, setChangeAble] = useState(false)
     const [billCat, setBillCat] = useState<Bill | Category | undefined>()
     const [showBillCatSelect, setShowBillCatSelect] = useState(false)
-    const [updateTransactions] = useUpdateTransactionsMutation()
+    const [confirmTransactions] = useConfirmTransactionsMutation()
     const buttonContainerRef = useRef<HTMLDivElement>(null)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -111,13 +113,12 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
 
     useEffect(() => {
         if (showBillCatSelect && billCat) {
-            updateTransactions([{
+            confirmTransactions([{
                 transaction: item,
                 ...(isCategory(billCat) ? { categories: [{ ...billCat, fraction: 1 }] } : { bill: billCat.id })
             }])
             setShowBillCatSelect(false)
         }
-
     }, [billCat])
 
     return (
@@ -210,39 +211,62 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
 
 const NoteInnerWindow = ({ item }: { item: Transaction }) => {
     const [addNote] = useAddNoteMutation()
-
     const [updateDeleteNote] = useUpdateDeleteNoteMutation()
+    const [showHeader, setShowHeader] = useState(false)
+    const [isDirty, setIsDirty] = useState(false)
+
+    const handleAddSubmit = (text: string) => {
+        if (text) {
+            setShowHeader(true)
+            addNote({ transactionId: item.transaction_id, text })
+        }
+
+    }
+
+    const handleModifySubmit = (note: Note, text: string) => {
+        if (text) {
+            isDirty && updateDeleteNote({
+                transactionId: item.transaction_id,
+                noteId: note.id,
+                text
+            })
+        }
+    }
 
     return (
         <div className='inner-window'>
-            {item.notes.map((note) => (
-                <input
-                    type="text"
-                    key={note.id}
-                    defaultValue={note.text}
-                    onBlur={(e) => {
-                        if (e.target.value) {
-                            updateDeleteNote({
-                                transactionId: item.transaction_id,
-                                noteId: note.id,
-                                note: e.target.value
-                            })
-                        }
-                    }}
-                />
+            {(item.notes.length > 0 || showHeader) &&
+                <h4>{`Note${item.notes.length > 1 ? 's' : ''}`}</h4>}
+            {item.notes.filter(note => !note.is_current_users).map((note) => (
+                <div key={note.id}>
+                    <span>{'avatar'}</span>
+                    <span>{note.text}</span>
+                </div>
             ))}
-            <input
-                onBlur={(e) => {
-                    if (e.target.value) {
-                        addNote({
-                            transactionId: item.transaction_id,
-                            note: e.target.value
-                        })
-                    }
-                }}
-                type="text"
-                placeholder="Add a note..."
-            />
+            {item.notes.filter(note => note.is_current_users).length > 0
+                ?
+                <div>
+                    {item.notes.filter(note => !note.is_current_users).length > 0 &&
+                        <span>{'avatar'}</span>}
+                    {item.notes.filter(note => note.is_current_users).map((note) => (
+                        <input
+                            onChange={() => setIsDirty(true)}
+                            type="text"
+                            key={note.id}
+                            defaultValue={note.text}
+                            onBlur={(e) => handleModifySubmit(note, e.target.value)}
+                        />
+                    ))}
+                </div>
+                :
+                <div>
+                    <input
+                        onBlur={(e) => handleAddSubmit(e.target.value)}
+                        type="text"
+                        placeholder="Add a note..."
+                    />
+                </div>
+            }
         </div>
     )
 }
@@ -260,7 +284,8 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
                 <div>{item?.preferred_name || item?.name}</div>
             </div>
             <div className='transaction-info--container'>
-                <CategoriesBillInnerWindow item={item} />
+                {(item.predicted_bill || item.predicted_category || item.bill || item.categories?.length)
+                    && <CategoriesBillInnerWindow item={item} />}
                 <InfoTableInnerWindow item={item} />
                 <NoteInnerWindow item={item} />
             </div>

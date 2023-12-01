@@ -638,8 +638,7 @@
       "id": "transactions",
       "match": {
          "methods": [
-            "GET",
-            "POST"
+            "GET"
          ],
          "url": "https://localhost/api/v1/transactions"
       },
@@ -663,12 +662,39 @@
       "authorizer": {
          "handler": "allow"
       },
-      "id": "transactions",
+      "id": "update_transaction",
       "match": {
          "methods": [
             "PATCH"
          ],
          "url": "https://localhost/api/v1/transactions/<[a-zA-Z0-9-]+>"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "confirm_transactions",
+      "match": {
+         "methods": [
+            "POST"
+         ],
+         "url": "https://localhost/api/v1/transactions/confirmation"
       },
       "mutators": [
          {

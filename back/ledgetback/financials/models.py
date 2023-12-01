@@ -212,7 +212,7 @@ class Note(models.Model):
         Transaction,
         on_delete=models.CASCADE,
         related_name='notes')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     text = models.TextField(null=False, blank=False)

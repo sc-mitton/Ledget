@@ -233,16 +233,24 @@ local GenericAuthedBase = {
   {
     id: 'transactions',
     match: {
-      methods: ['GET', 'POST'],
+      methods: ['GET'],
       url: base_url + '/transactions',
+    },
+  },
+    GenericAuthedBase
+  {
+    id: 'update_transaction',
+    match: {
+      methods: ['PATCH'],
+      url: base_url + '/transactions/<[a-zA-Z0-9-]+>',
     },
   },
   GenericAuthedBase
   {
-    id: 'transactions',
+    id: 'confirm_transactions',
     match: {
-      methods: ['PATCH'],
-      url: base_url + '/transactions/<[a-zA-Z0-9-]+>',
+      methods: ['POST'],
+      url: base_url + '/transactions/confirmation',
     },
   },
   GenericAuthedBase

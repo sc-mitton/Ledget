@@ -31,7 +31,7 @@ import {
     confirmAndUpdateMetaData,
     selectUnconfirmedTransactions,
     selectConfirmedTransactions,
-    useUpdateTransactionsMutation,
+    useConfirmTransactionsMutation,
     ConfirmedQueue,
     QueueItemWithCategory,
     QueueItemWithBill,
@@ -223,7 +223,7 @@ const NeedsConfirmationWindow = () => {
         )
     const { start, end } = useGetStartEndFromSearchParams()
 
-    const [updateTransactions] = useUpdateTransactionsMutation()
+    const [confirmTransactions] = useConfirmTransactionsMutation()
     const unconfirmedTransactions = useAppSelector(
         state => selectUnconfirmedTransactions(state, {
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
@@ -434,8 +434,14 @@ const NeedsConfirmationWindow = () => {
                 dispatch(removeUnconfirmedTransaction(transaction.transaction_id))
                 confirmed.push(ready2ConfirmItem)
             }
-            updateTransactions(confirmed)
+            confirmTransactions(confirmed)
         }, 130 + unconfirmedTransactions.length * 50)
+    }
+
+    const flushConfirmedQue = () => {
+        if (confirmedTransactions.length > 0) {
+            confirmTransactions(confirmedTransactions)
+        }
     }
 
     const handleEllipsis = useCallback((e: any, item: Transaction) => {
@@ -466,12 +472,6 @@ const NeedsConfirmationWindow = () => {
         }
         setShowMenu(false)
         setShowBillCatSelect(false)
-    }
-
-    const flushConfirmedQue = () => {
-        if (confirmedTransactions.length > 0) {
-            updateTransactions(confirmedTransactions)
-        }
     }
 
     return (

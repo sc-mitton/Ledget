@@ -26,10 +26,17 @@ class TransactionsCategoriesRouter(SimpleRouter):
             detail=False,
             initkwargs={'suffix': 'List'}
         ),
-        DynamicRoute(
-            url=r'^{prefix}/{lookup}/{url_path}$',
-            name='{basename}-{url_name}',
+        Route(
+            url=r'^{prefix}/{lookup}$',
+            mapping={'patch': 'partial_update'},
+            name='{basename}-detail',
             detail=True,
+            initkwargs={'suffix': 'Detail'}
+        ),
+        DynamicRoute(
+            url=r'^{prefix}/{url_path}$',
+            name='{basename}-{url_name}',
+            detail=False,
             initkwargs={}
         )
     ]

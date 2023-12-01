@@ -10,6 +10,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.decorators import action
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_500_INTERNAL_SERVER_ERROR,
@@ -27,7 +28,7 @@ from core.clients import create_plaid_client
 from financials.models import Transaction
 from financials.serializers.transactions import (
     TransactionSerializer,
-    UpdateTransactionsSerializer,
+    UpdateTransactionsConfirmationSerializer,
     NoteSerializer
 )
 from financials.models import PlaidItem, Note
@@ -194,33 +195,17 @@ class TransactionsPagination(LimitOffsetPagination):
 
 
 class TransactionViewSet(ModelViewSet):
-    serializer_classes = [UpdateTransactionsSerializer, TransactionSerializer]
+    serializer_class = TransactionSerializer
     permission_classes = [IsAuthedVerifiedSubscriber]
     pagination_class = TransactionsPagination
 
-    def get_serializer_class(self):
-        if isinstance(self.request.data, list):
-            return UpdateTransactionsSerializer
-        return TransactionSerializer
-
-    def get_instances(self, validated_data):
-        transaction_ids = [item['transaction_id'] for item in validated_data]
-
-        try:
-            instances = Transaction.objects.filter(
-                transaction_id__in=[id for id in transaction_ids if id is not None]
-            )
-        except Transaction.DoesNotExist:
-            raise ValidationError('One or more of the transactions does not exist.')
-
-        return instances
-
-    def partial_update(self, request, *args, **kwargs):
+    @action(detail=False, methods=['post'], url_path='confirmation')
+    def confirm_transactions(self, request, *args, **kwargs):
         if not isinstance(request.data, list):
             raise ValidationError('Invalid request data')
 
         instances = self.get_instances(request.data)
-        serializer = self.get_serializer(
+        serializer = UpdateTransactionsConfirmationSerializer(
             instance=instances,
             data=request.data,
             many=True,
@@ -231,6 +216,29 @@ class TransactionViewSet(ModelViewSet):
         self.perform_update(serializer)
 
         return Response(serializer.data)
+
+    def get_object(self):
+        try:
+            obj = Transaction.objects.get(
+                transaction_id=self.kwargs['pk'],
+                account__useraccount__user=self.request.user)
+        except Transaction.DoesNotExist:
+            raise ValidationError('Transaction does not exist')
+
+        return obj
+
+    def get_instances(self, validated_data):
+        transaction_ids = [item['transaction_id'] for item in validated_data]
+
+        try:
+            instances = Transaction.objects.filter(
+                transaction_id__in=[id for id in transaction_ids if id is not None],
+                account__useraccount__user=self.request.user
+            )
+        except Transaction.DoesNotExist:
+            raise ValidationError('One or more of the transactions does not exist.')
+
+        return instances
 
     def get_queryset(self):
         params = self.request.query_params
@@ -287,9 +295,6 @@ class TransactionViewSet(ModelViewSet):
          .prefetch_related('categories') \
          .prefetch_related('notes') \
          .order_by('-datetime')
-
-    def perform_update(self, serializer):
-        serializer.save()
 
 
 class NoteViewSet(ModelViewSet):

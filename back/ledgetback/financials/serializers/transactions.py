@@ -6,9 +6,14 @@ from budget.models import Category, Bill, TransactionCategory
 
 
 class NoteSerializer(serializers.ModelSerializer):
+    is_current_users = serializers.SerializerMethodField()
+
     class Meta:
         model = Note
-        exclude = ('user', 'transaction')
+        exclude = ('transaction',)
+
+    def get_is_current_users(self, obj):
+        return obj.user == self.context['request'].user
 
 
 class UpdateTransactionListSerializer(serializers.ListSerializer):
@@ -84,7 +89,7 @@ class SimpleCategorySerializer(serializers.Serializer):
         return {'id': instance.id, 'name': instance.name}
 
 
-class UpdateTransactionsSerializer(serializers.Serializer):
+class UpdateTransactionsConfirmationSerializer(serializers.Serializer):
     categories = SimpleCategorySerializer(many=True, required=False)
     notes = NoteSerializer(required=False, many=True)
     bill = serializers.CharField(required=False)

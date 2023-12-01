@@ -60,3 +60,20 @@ class FinancialViewTestObjectCreations(ViewTestsMixin):
         self.assertEqual(response.status_code, 200)
         note.refresh_from_db()
         self.assertEqual(note.text, edited_note)
+
+    def test_updating_transaction_preferred_name(self):
+        """Test adding a preferred name to a transaction."""
+
+        transaction = Transaction.objects \
+                                 .filter(account__useraccount__user=self.user) \
+                                 .first()
+
+        preferred_name = 'Preferred Name'
+        response = self.client.patch(
+            reverse('transactions-detail', kwargs={'pk': transaction.pk}),
+            {'preferred_name': preferred_name}
+        )
+
+        self.assertEqual(response.status_code, 200)
+        transaction.refresh_from_db()
+        self.assertEqual(transaction.preferred_name, preferred_name)

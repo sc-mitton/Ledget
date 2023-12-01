@@ -13,6 +13,7 @@ export type Note = {
     id: string
     datetime: string
     text: string
+    is_current_users: boolean
 }
 
 export type Transaction = {
@@ -180,7 +181,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
             keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
-        updateTransactions: builder.mutation<any, ConfirmedQueue>({
+        confirmTransactions: builder.mutation<any, ConfirmedQueue>({
             query: (data) => ({
                 url: 'transactions',
                 method: 'POST',
@@ -209,19 +210,27 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     : otherTags
             }
         }),
-        addNote: builder.mutation<any, { transactionId: string, note: string }>({
-            query: ({ transactionId, note }) => ({
-                url: `transactions/${transactionId}/note`,
-                method: 'POST',
-                body: { text: note },
+        updateTransaction: builder.mutation<any, { transactionId: string, data: Partial<Transaction> }>({
+            query: ({ transactionId, data }) => ({
+                url: `transactions/${transactionId}`,
+                method: 'PATCH',
+                body: data,
             }),
             invalidatesTags: (result, error, arg) => ([{ type: 'Transaction', id: arg.transactionId } as const])
         }),
-        updateDeleteNote: builder.mutation<any, { transactionId: string, noteId: string, note: string }>({
-            query: ({ transactionId, noteId, note }) => ({
+        addNote: builder.mutation<any, { transactionId: string, text: string }>({
+            query: ({ transactionId, text }) => ({
+                url: `transactions/${transactionId}/note`,
+                method: 'POST',
+                body: { text },
+            }),
+            invalidatesTags: (result, error, arg) => ([{ type: 'Transaction', id: arg.transactionId } as const])
+        }),
+        updateDeleteNote: builder.mutation<any, { transactionId: string, noteId: string, text?: string }>({
+            query: ({ transactionId, noteId, text }) => ({
                 url: `transactions/${transactionId}/note/${noteId}`,
-                method: note ? 'PUT' : 'DELETE',
-                body: { text: note },
+                method: text ? 'PUT' : 'DELETE',
+                body: { text },
             }),
             invalidatesTags: (result, error, arg) => ([{ type: 'Transaction', id: arg.transactionId } as const])
         }),
@@ -280,7 +289,7 @@ export const confirmStack = createSlice({
                 ]
             }
         ).addMatcher(
-            extendedApiSlice.endpoints.updateTransactions.matchFulfilled,
+            extendedApiSlice.endpoints.confirmTransactions.matchFulfilled,
             (state, action) => {
                 // When updates are sent to the server we can clear the confirmed queue
                 state.confirmedQue.splice(0, state.confirmedQue.length)
@@ -346,7 +355,8 @@ export const {
     useGetTransactionsQuery,
     useLazyGetTransactionsQuery,
     useLazyGetUnconfirmedTransactionsQuery,
-    useUpdateTransactionsMutation,
+    useConfirmTransactionsMutation,
+    useUpdateTransactionMutation,
     useAddNoteMutation,
     useUpdateDeleteNoteMutation,
 } = extendedApiSlice

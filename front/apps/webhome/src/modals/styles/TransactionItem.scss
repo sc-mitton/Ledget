@@ -49,8 +49,8 @@
 
         // Account and instittution info
         // accunt, merchant, date, etc. info
-        &:nth-child(1),
-        &:nth-child(2) {
+        &:nth-last-child(3),
+        &:nth-last-child(2) {
             display: grid;
             column-gap: 1.5em;
             row-gap: .5em;
@@ -87,8 +87,20 @@
 
         // Add a note container
         &:last-child {
+            h4 {
+                margin-bottom: .25em;
+            }
+
+            &>div {
+                display: flex;
+                align-items: center;
+                gap: .5em;
+            }
+
             input {
+                color: $secondary-text-color-darker;
                 width: 100%;
+                padding: 0;
             }
         }
     }
