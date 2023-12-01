@@ -690,6 +690,61 @@
       "authorizer": {
          "handler": "allow"
       },
+      "id": "add_note",
+      "match": {
+         "methods": [
+            "POST"
+         ],
+         "url": "https://localhost/api/v1/transactions/<[a-zA-Z0-9-]+>/note"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "update_delete_note",
+      "match": {
+         "methods": [
+            "PUT",
+            "DELETE"
+         ],
+         "url": "https://localhost/api/v1/transactions/<[a-zA-Z0-9-]+>/note/<[a-zA-Z0-9-]+>"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
       "id": "setup_intent",
       "match": {
          "methods": [

@@ -8,17 +8,19 @@ import { Transaction } from '@features/transactionsSlice'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { withModal, Base64Logo, DollarCents } from '@ledget/ui'
 import { SelectCategoryBill } from '@components/dropdowns'
-import { useUpdateTransactionsMutation } from '@features/transactionsSlice'
+import {
+    useUpdateTransactionsMutation,
+    useAddNoteMutation,
+    useUpdateDeleteNoteMutation
+} from '@features/transactionsSlice'
 import { Bill } from "@features/billSlice";
 import { Category, isCategory } from "@features/categorySlice";
-import { Ellipsis, Plus, Split } from '@ledget/media'
+import { Ellipsis, Split } from '@ledget/media'
 import {
     DropAnimation,
     BillCatButton,
     useAccessEsc,
-    IconButton,
-    useLoaded,
-    GrowOnDiv
+    IconButton
 } from '@ledget/ui'
 
 type Action = 'split'
@@ -58,6 +60,22 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
             )}
         </Menu>
     )
+}
+
+const getBillCategoryLabel = (item: Transaction) => {
+    if (item?.categories?.length && item?.categories?.length > 1) {
+        return 'Categories'
+    } else if (item?.categories?.length && item?.categories?.length === 1) {
+        return 'Category'
+    } else if (item?.bill) {
+        return 'Bill'
+    } else if (item?.predicted_category) {
+        return 'Category'
+    } else if (item?.predicted_bill) {
+        return 'Bill'
+    } else {
+        return ''
+    }
 }
 
 function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
@@ -104,6 +122,7 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
 
     return (
         <div className='inner-window'>
+            <div>{getBillCategoryLabel(item)}</div>
             {changeAble
                 ?
                 <div ref={buttonContainerRef}>
@@ -141,25 +160,24 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => (
     <div className='inner-window'>
         {item?.merchant_name &&
             <>
+                <div>Merchant </div>
                 <div className="merchant-cell">
-                    <h4>{item?.merchant_name}</h4>
+                    {item?.merchant_name}
                 </div>
             </>}
+        <div>Date </div>
         <div>
-            <div>Date </div>
-            <div>
-                {new Date(item?.datetime).toLocaleDateString('en-US', { 'month': 'short', 'day': 'numeric', 'year': 'numeric' })}
-            </div>
-            {(item?.address || item?.city || item?.region) &&
-                <>
-                    <div>Location </div>
-                    <div>
-                        <span>{item?.address}</span>
-                        <span>{`${item?.city}${item?.region ? ', ' + item.region : ''}`}</span>
-                    </div>
-                </>
-            }
+            {new Date(item?.datetime).toLocaleDateString('en-US', { 'month': 'short', 'day': 'numeric', 'year': 'numeric' })}
         </div>
+        {(item?.address || item?.city || item?.region) &&
+            <>
+                <div>Location </div>
+                <div>
+                    <span>{item?.address}</span>
+                    <span>{`${item?.city}${item?.region ? ', ' + item.region : ''}`}</span>
+                </div>
+            </>
+        }
     </div>
 )
 
@@ -180,15 +198,14 @@ const InstitutionInfoInnerWindow = ({ item }: { item: Transaction }) => {
 
     return (
         <div className='inner-window'>
-            <div >
+            <div>Account</div>
+            <div id="account-info-cell">
                 <a href={institution?.url} target="_blank" rel="noreferrer">
                     <Base64Logo
                         data={institution?.logo}
                         alt={institution?.name?.charAt(0).toUpperCase()}
                     />
                 </a>
-            </div>
-            <div>
                 <span>{account?.official_name}</span>
                 <span>&nbsp;&bull;&nbsp;&bull;&nbsp;{account?.mask}</span>
             </div>
@@ -196,11 +213,46 @@ const InstitutionInfoInnerWindow = ({ item }: { item: Transaction }) => {
     )
 }
 
+const NoteInnerWindow = ({ item }: { item: Transaction }) => {
+    const [addNote] = useAddNoteMutation()
+    const [updateDeleteNote] = useUpdateDeleteNoteMutation()
 
+    return (
+        <div className='inner-window'>
+            {item.notes.map((note) => (
+                <input
+                    type="text"
+                    key={note.id}
+                    defaultValue={note.text}
+                    onBlur={(e) => {
+                        if (e.target.value) {
+                            updateDeleteNote({
+                                transactionId: item.transaction_id,
+                                noteId: note.id,
+                                note: e.target.value
+                            })
+                        }
+                    }}
+                />
+            ))}
+            <input
+                onBlur={(e) => {
+                    if (e.target.value) {
+                        addNote({
+                            transactionId: item.transaction_id,
+                            note: e.target.value
+                        })
+                    }
+                }}
+                type="text"
+                placeholder="Add a note..."
+            />
+        </div>
+    )
+}
 
 const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
     const [action, setAction] = useState<Action>()
-    const loaded = useLoaded(100)
 
     return (
         <>
@@ -212,11 +264,10 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
                 <div>{item?.preferred_name || item?.name}</div>
             </div>
             <div className='transaction-info--container'>
+                <CategoriesBillInnerWindow item={item} />
                 <InstitutionInfoInnerWindow item={item} />
                 <InfoTableInnerWindow item={item} />
-                <div className='inner-window'>
-                    <input type="text" placeholder="Add a note..." autoFocus />
-                </div>
+                <NoteInnerWindow item={item} />
             </div>
         </>
     )

@@ -41,61 +41,54 @@
 
     .inner-window {
 
-        &:not(:nth-child(2))>div,
+        &:not(:nth-child(3))>div,
         &>div a {
             display: flex;
             align-items: center;
         }
 
-        &>div {
-            gap: .375em;
-        }
-
-        // Inner window for account info
-        &:first-child {
-            display: flex;
-            gap: .5em;
-        }
-
-        // Inner window for bills and categories list
-        // &:nth-child(2) {
-        //     display: flex;
-        //     flex-wrap: wrap;
-
-        //     &>div {
-        //         position: relative;
-
-        //         &>div {
-        //             top: 2.25em;
-        //         }
-        //     }
-        // }
-
-        // Merchant, date, etc. info
-        &:nth-child(2)>div {
+        // Account and instittution info
+        // accunt, merchant, date, etc. info
+        &:nth-child(1),
+        &:nth-child(2),
+        &:nth-child(3) {
             display: grid;
-            column-gap: 2em;
-            row-gap: 0;
+            column-gap: 1.5em;
+            row-gap: .25em;
             grid-template-columns: minmax(0, auto) 1fr;
+
+            #account-info-cell {
+                display: flex;
+                gap: .5em;
+                margin-left: .5em;
+            }
 
             &>div {
                 display: flex;
                 align-items: center;
                 gap: .125em;
-
-                span {
-                    padding-top: .1875em;
-                }
             }
 
             &>div:nth-child(2n+1) {
                 font-weight: 500;
             }
+
+            &>div:nth-child(2n),
+            &>div:nth-child(2n) * {
+                color: $secondary-text-color-darker;
+            }
+        }
+
+        &:nth-child(1)>div {
+            position: relative;
+
+            &>div {
+                top: 2.25em;
+            }
         }
 
         // Add a note container
-        &:nth-child(3) {
-
+        &:last-child {
             input {
                 width: 100%;
             }

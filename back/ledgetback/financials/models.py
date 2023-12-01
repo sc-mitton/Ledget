@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+import uuid
 
 from core.models import User
 from budget.models import (
@@ -212,6 +213,7 @@ class Note(models.Model):
         on_delete=models.CASCADE,
         related_name='notes')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     text = models.TextField(null=False, blank=False)
     datetime = models.DateTimeField(null=False, blank=False, auto_now_add=True)

@@ -10,7 +10,8 @@ from financials.views.items import (
 )
 from financials.views.transactions import (
     TransactionsSyncView,
-    TransactionViewSet
+    TransactionViewSet,
+    NoteViewSet
 )
 from financials.views.account import AccountsView
 
@@ -37,6 +38,9 @@ class TransactionsCategoriesRouter(SimpleRouter):
 router = TransactionsCategoriesRouter(trailing_slash=False)
 router.register('transactions', TransactionViewSet, basename='transactions')
 
+note_router = SimpleRouter(trailing_slash=False)
+note_router.register('note', NoteViewSet, basename='note')
+
 urlpatterns = [
     path('plaid_items', PlaidItemsListView.as_view(), name='plaid_item'),
     path('plaid_item/<str:id>', PlaidItemView.as_view(), name='destroy_plaid_item'), # noqa
@@ -46,4 +50,5 @@ urlpatterns = [
     path('transactions/sync', TransactionsSyncView.as_view(), name='transactions_sync'),
     path('accounts', AccountsView.as_view(), name='account'),
     path('', include(router.urls)),
+    path('', include(note_router.urls))
 ]

@@ -27,9 +27,10 @@ from core.clients import create_plaid_client
 from financials.models import Transaction
 from financials.serializers.transactions import (
     TransactionSerializer,
-    UpdateTransactionsSerializer
+    UpdateTransactionsSerializer,
+    NoteSerializer
 )
-from financials.models import PlaidItem
+from financials.models import PlaidItem, Note
 
 plaid_client = create_plaid_client()
 logger = logging.getLogger('ledget')
@@ -289,3 +290,14 @@ class TransactionViewSet(ModelViewSet):
 
     def perform_update(self, serializer):
         serializer.save()
+
+
+class NoteViewSet(ModelViewSet):
+    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
+    serializer_class = NoteSerializer
+
+    def get_queryset(self):
+        return Note.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

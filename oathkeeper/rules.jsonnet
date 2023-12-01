@@ -247,6 +247,22 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
+    id: 'add_note',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/transactions/<[a-zA-Z0-9-]+>/note',
+    },
+  },
+  GenericAuthedBase
+  {
+    id: 'update_delete_note',
+    match: {
+      methods: ['PUT', 'DELETE'],
+      url: base_url + '/transactions/<[a-zA-Z0-9-]+>/note/<[a-zA-Z0-9-]+>',
+    },
+  },
+  GenericAuthedBase
+  {
     id: 'setup_intent',
     match: {
       methods: ['GET'],

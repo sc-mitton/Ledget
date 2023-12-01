@@ -10,6 +10,7 @@ import type { RootState } from './store'
 export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 
 export type Note = {
+    id: string
     datetime: string
     text: string
 }
@@ -209,6 +210,20 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     : otherTags
             }
         }),
+        addNote: builder.mutation<any, { transactionId: string, note: string }>({
+            query: ({ transactionId, note }) => ({
+                url: `transactions/${transactionId}/note`,
+                method: 'POST',
+                body: { text: note },
+            }),
+        }),
+        updateDeleteNote: builder.mutation<any, { transactionId: string, noteId: string, note: string }>({
+            query: ({ transactionId, noteId, note }) => ({
+                url: `transactions/${transactionId}/note/${noteId}`,
+                method: note ? 'PUT' : 'DELETE',
+                body: { text: note },
+            }),
+        }),
     }),
 })
 
@@ -331,6 +346,8 @@ export const {
     useLazyGetTransactionsQuery,
     useLazyGetUnconfirmedTransactionsQuery,
     useUpdateTransactionsMutation,
+    useAddNoteMutation,
+    useUpdateDeleteNoteMutation,
 } = extendedApiSlice
 
 export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransactions.useQueryState
