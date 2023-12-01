@@ -687,15 +687,14 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                                 : 0}
                                         />
                                     </div>
-                                    <div>/</div>
-                                    <div>
-                                        <DollarCents
-                                            value={category.limit_amount
-                                                ? Big(category.limit_amount).div(100).toFixed(2)
-                                                : 0}
-                                            hasCents={false}
-                                        />
-                                    </div>
+                                    {category.limit_amount &&
+                                        <><div>/</div>
+                                            <div>
+                                                <DollarCents
+                                                    value={Big(category.limit_amount).div(100).toFixed(2)}
+                                                    hasCents={false}
+                                                />
+                                            </div></>}
                                 </div>
                             </div>
                             {transactionsData?.results?.length === 0

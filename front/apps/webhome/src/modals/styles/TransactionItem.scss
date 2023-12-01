@@ -11,12 +11,43 @@
         font-size: 2rem;
     }
 
-    &>div:last-child {
-        width: 70%;
-        white-space: wrap;
-        text-align: center;
+
+    &>div:last-child,
+    &>button:last-child {
         font-size: 1rem;
         color: $secondary-text-color-darker;
+    }
+
+    &>div:last-child {
+        width: 70%;
+
+        input {
+            text-align: center;
+            width: 100%;
+            padding: 0;
+            mask-image: linear-gradient(to right, transparent, black 1.25em, black 100%);
+        }
+    }
+
+    &>button:last-child {
+        max-width: 70%;
+        white-space: normal;
+        text-align: center;
+        position: relative;
+
+        svg {
+            position: absolute;
+            right: -1.25em;
+            top: 50%;
+            transform: scale(0) translateY(-50%);
+            transition: transform .2s ease-in-out;
+        }
+
+        &:not(:focus-within):hover svg {
+            top: 50%;
+            transform: scale(1) translateY(-50%);
+            transition: transform .2s ease-in-out;
+        }
     }
 }
 

@@ -69,28 +69,22 @@ const UnenrichedTable: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
         }
     }, [isTransactionsSuccess])
 
-    // Fetch more transactions animation
-    useEffect(() => {
-        if (isFetchingTransactions && !isLoadingTransactions) {
-            setFetchMorePulse(true)
-        }
-        let timeout = setTimeout(() => {
-            setFetchMorePulse(false)
-        }, 1500)
-        return () => { clearTimeout(timeout) }
-    }, [isFetchingTransactions])
-
     // Fetch more transactions
     const handleScroll = (e: any) => {
         const bottom = e.target.scrollTop === e.target.scrollTopMax
         // Update cursors to add new transactions node to the end
         if (bottom && transactionsData?.next !== null && transactionsData) {
+            setFetchMorePulse(true)
             getTransactions({
                 account: searchParams.get('account')!,
                 type: pathMappings.getTransactionType(location),
                 offset: transactionsData.next,
                 limit: transactionsData.limit,
             })
+
+            setTimeout(() => {
+                setFetchMorePulse(false)
+            }, 1500)
         }
     }
 

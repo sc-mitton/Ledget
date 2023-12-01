@@ -17,7 +17,7 @@ import {
 } from '@features/transactionsSlice'
 import { Bill } from "@features/billSlice";
 import { Category, isCategory } from "@features/categorySlice";
-import { Ellipsis, Split } from '@ledget/media'
+import { Ellipsis, Split, Edit } from '@ledget/media'
 import {
     DropAnimation,
     BillCatButton,
@@ -273,6 +273,10 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
 
 const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
     const [action, setAction] = useState<Action>()
+    const [edit, setEdit] = useState(false)
+    const [preferredName, setPreferredName] = useState<string | undefined>()
+    const [updateTransaction] = useUpdateTransactionMutation()
+    const [nameIsDirty, setNameIsDirty] = useState(false)
 
     return (
         <>
@@ -281,7 +285,29 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
                 <div style={{ textAlign: 'center' }}>
                     <DollarCents value={item?.amount && new Big(item.amount).times(100).toNumber()} />
                 </div>
-                <div>{item?.preferred_name || item?.name}</div>
+                {edit
+                    ? <div>
+                        <input
+                            autoFocus
+                            defaultValue={item?.preferred_name || item?.name}
+                            onChange={(e) => {
+                                setNameIsDirty(true)
+                                setPreferredName(e.target.value)
+                            }}
+                            onBlur={(e) => {
+                                nameIsDirty && updateTransaction({
+                                    transactionId: item.transaction_id,
+                                    data: { preferred_name: e.target.value }
+                                })
+                                setEdit(false)
+                            }}
+                        />
+                    </div>
+                    : <button onClick={() => setEdit(true)}>
+                        {preferredName || item?.preferred_name || item?.name}
+                        <Edit size={'.9em'} />
+                    </button>
+                }
             </div>
             <div className='transaction-info--container'>
                 {(item.predicted_bill || item.predicted_category || item.bill || item.categories?.length)

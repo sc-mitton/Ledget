@@ -149,7 +149,11 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 url: 'transactions',
                 params: params,
             }),
-            providesTags: ['Transaction'],
+            providesTags: (result, error, arg) => {
+                return result
+                    ? result.results.map(item => ({ type: 'Transaction', id: item.transaction_id }))
+                    : [{ type: 'Transaction', id: 'LIST' } as const]
+            },
             // For merging in paginated responses to the cache
             // cache key needs to not include offset and limit
             serializeQueryArgs: ({ queryArgs }) => {
@@ -159,13 +163,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             merge: (currentCache, newItems) => {
                 if (currentCache.results) {
                     const { results } = currentCache
-                    const { results: newResults, ...newRest } = newItems
+                    const { results: newResults } = newItems
                     // dedupe
                     return {
                         results: [
-                            ...results,
-                            ...newResults.filter(item =>
-                                !results.find(i => i.transaction_id === item.transaction_id))
+                            ...results.filter(item =>
+                                !newResults.find(i => i.transaction_id === item.transaction_id)),
+                            ...newResults
                         ],
                     }
                 }
@@ -200,8 +204,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                         })
                     }
                 })
+
                 const otherTags = [
-                    { type: 'Transaction', id: 'LIST' } as const,
+                    ...(arg.map(item => ({ type: 'Transaction', id: item.transaction.transaction_id } as const))),
                     ...(arg.some(item => item.categories) ? [{ type: 'Category', id: 'LIST' } as const] : []),
                     ...(arg.some(item => item.bill) ? [{ type: 'Bill', id: 'LIST' } as const] : [])
                 ]
