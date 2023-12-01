@@ -9,11 +9,11 @@ import { DollarCents, AnimatedDollarCents, StaticProgressCircle } from '@ledget/
 import { ThumbUp, CheckMark2 } from '@ledget/media'
 import { SelectCategoryBillMetaData, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { selectBillMetaData, useLazyGetBillsQuery } from '@features/billSlice'
-import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
+import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 const SummaryStats = ({ showMonthStats = false, showYearStats = false }) => {
     const [searchParams] = useSearchParams()
-    const { start, end } = useGetStartEndFromSearchParams()
+    const { start, end } = useGetStartEndQueryParams()
 
     const [getCategories, { isLoading: loadingCategories }] = useLazyGetCategoriesQuery()
     const [getBills, { isLoading: loadingBills }] = useLazyGetBillsQuery()
@@ -143,7 +143,7 @@ const SummaryStatsTeaser = ({
     setShowYearStats = (a: boolean) => { },
 }) => {
     const [searchParams] = useSearchParams()
-    const { start, end } = useGetStartEndFromSearchParams()
+    const { start, end } = useGetStartEndQueryParams()
 
     const [getCategories, { isLoading: loadingCategories }] = useLazyGetCategoriesQuery()
     const [getBills, { isLoading: loadingBills }] = useLazyGetBillsQuery()

@@ -47,7 +47,7 @@ import {
     ShadowScrollDiv
 } from '@ledget/ui'
 import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
-import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
+import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 
 const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) => {
@@ -471,7 +471,7 @@ const fakeChartData = [
 ]
 
 const CategoryDetail = ({ category }: { category: Category }) => {
-    const { start, end } = useGetStartEndFromSearchParams()
+    const { start, end } = useGetStartEndQueryParams()
     const navigate = useNavigate()
     const {
         data: spendingSummaryData,
@@ -745,7 +745,7 @@ const SpendingCategories = () => {
     const [isTabView, setIsTabView] = useState(false)
     const [skeletonRowCount, setSkeletonRowCount] = useState(5)
     const ref = useRef<HTMLDivElement>(null)
-    const { start, end } = useGetStartEndFromSearchParams()
+    const { start, end } = useGetStartEndQueryParams()
     const loaded = useLoaded(1000)
     const categories = useAppSelector(selectCategories)
 

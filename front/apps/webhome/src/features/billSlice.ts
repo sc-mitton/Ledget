@@ -5,24 +5,24 @@ import { Reminder } from './remindersSlice'
 
 
 interface BaseBill {
-    id: string,
-    is_paid: boolean,
-    last_paid?: string,
-    period: 'year' | 'month' | 'once',
-    name: string,
-    emoji: string,
-    lower_amount: number,
-    upper_amount: number,
-    bill_confirmed: boolean,
-    reminders?: Reminder[],
+    id: string
+    is_paid: boolean
+    last_paid?: string
+    period: 'year' | 'month' | 'once'
+    name: string
+    emoji: string
+    lower_amount: number
+    upper_amount: number
+    bill_confirmed: boolean
+    reminders?: Reminder[]
 }
 
 export interface Bill extends BaseBill {
-    day?: number,
-    week?: number,
-    week_day?: number,
-    month?: number,
-    year?: number,
+    day?: number
+    week?: number
+    week_day?: number
+    month?: number
+    year?: number
 }
 
 export interface TransformedBill extends Bill {
@@ -30,8 +30,8 @@ export interface TransformedBill extends Bill {
 }
 
 interface BillQueryParams {
-    month?: string;
-    year?: string;
+    month?: string | number
+    year?: string | number
 }
 
 export const extendedApiSlice = apiSlice.injectEndpoints({

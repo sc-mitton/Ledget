@@ -38,7 +38,7 @@ import {
     removeUnconfirmedTransaction
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
-import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
+import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 // Sizing (in ems)
 const translate = 1
@@ -221,7 +221,7 @@ const NeedsConfirmationWindow = () => {
         useState<{ [key: string]: { categories?: SplitCategory[], bill?: Bill } }>(
             JSON.parse(sessionStorage.getItem('transactionUpdates') || '{}')
         )
-    const { start, end } = useGetStartEndFromSearchParams()
+    const { start, end } = useGetStartEndQueryParams()
 
     const [confirmTransactions] = useConfirmTransactionsMutation()
     const unconfirmedTransactions = useAppSelector(

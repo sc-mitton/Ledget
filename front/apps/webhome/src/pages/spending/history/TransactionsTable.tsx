@@ -7,12 +7,12 @@ import { Logo } from '@components/pieces'
 import { DollarCents, InfiniteScrollDiv, TransactionShimmer } from '@ledget/ui'
 import { ShadowedContainer } from '@components/pieces'
 import { EmptyListImage } from '@ledget/media'
-import { useGetStartEndFromSearchParams } from '@hooks/utilHooks'
+import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 const List = () => {
   const { data: user } = useGetMeQuery()
   const user_create_on = new Date(user?.created_on!)
-  const { start, end } = useGetStartEndFromSearchParams()
+  const { start, end } = useGetStartEndQueryParams()
 
   const { data: transactionsData, isError } = useGetTransactionsQuery({ confirmed: true, start, end })
 
@@ -78,7 +78,7 @@ export default function Table() {
   const { data: user } = useGetMeQuery()
   const user_create_on = new Date(user?.created_on!)
   const [isFetchingMore, setFetchingMore] = useState(false)
-  const { start, end } = useGetStartEndFromSearchParams()
+  const { start, end } = useGetStartEndQueryParams()
 
   const ref = useRef<HTMLDivElement>(null)
   const [getTransactions, { data: transactionsData, isLoading }] = useLazyGetTransactionsQuery()

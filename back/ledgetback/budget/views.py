@@ -179,7 +179,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         end = self.request.query_params.get('end', None)
 
         if start and end:
-            return self._get_queryset_with_sliced_amount_spent(start, end)
+            return self._get_timesliced_categories_qset(start, end)
         else:
             return self._get_categories_qset()
 
@@ -310,7 +310,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
 
         return qset
 
-    def _get_queryset_with_sliced_amount_spent(self, start: str, end: str):
+    def _get_timesliced_categories_qset(self, start: str, end: str):
 
         try:
             start = datetime.fromtimestamp(int(start), tz=pytz.utc)
@@ -321,9 +321,24 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        yearly_category_anchor = self.request.user.yearly_anchor
-        if not yearly_category_anchor:
-            yearly_category_anchor = datetime.utcnow().replace(day=1)
+        include_spending = self.request.query_params.get('spending', False)
+        yearly_category_anchor = datetime.utcnow().replace(day=1) \
+            if not self.request.user.yearly_anchor else self.request.user.yearly_anchor
+
+        monthly_qset = Category.objects.filter(
+            Q(removed_on__gt=end) | Q(removed_on__isnull=True),
+            usercategory__user=self.request.user,
+            period='month'
+        ).annotate(order=F('usercategory__order'))
+
+        yearly_qset = Category.objects.filter(
+            Q(removed_on__year__gt=end.year) | Q(removed_on__isnull=True),
+            usercategory__user=self.request.user,
+            usercategory__category__period='year',
+        ).annotate(order=F('usercategory__order'))
+
+        if not include_spending:
+            return monthly_qset.union(yearly_qset).order_by('order', 'name')
 
         monthly_amount_spent = Sum(
             F('transactioncategory__transaction__amount') *
@@ -331,40 +346,23 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             filter=Q(transactioncategory__transaction__datetime__range=(start, end))
         )
 
-        monthly_qset = Category.objects.filter(
-            Q(removed_on__gt=end) |
-            Q(removed_on__isnull=True),
-            usercategory__user=self.request.user,
-            period='month'
-        ).annotate(amount_spent=monthly_amount_spent) \
-         .annotate(order=F('usercategory__order')) \
-         .exclude(
-             amount_spent__isnull=True,
-             amount_spent=0,
-             removed_on__isnull=False)
-
         yearly_amount_spent = Sum(
             F('transactioncategory__transaction__amount') *
             F('transactioncategory__fraction'),
-            filter=Q(
-                transactioncategory__transaction__datetime__range=(
-                    yearly_category_anchor,
-                    end),
-            )
+            filter=Q(transactioncategory__transaction__datetime__range=(
+                yearly_category_anchor, end
+            ))
         )
 
-        yearly_qset = Category.objects.filter(
-            Q(removed_on__year__gt=end.year) |
-            Q(removed_on__isnull=True),
-            usercategory__user=self.request.user,
-            usercategory__category__period='year',
-        ).annotate(amount_spent=yearly_amount_spent) \
-         .annotate(order=F('usercategory__order')) \
-         .exclude(
-             amount_spent__isnull=True,
-             amount_spent=0,
-             removed_on__isnull=False)
+        monthly_qset = monthly_qset \
+            .annotate(amount_spent=monthly_amount_spent) \
+            .exclude(
+                Q(amount_spent__isnull=True) | Q(amount_spent=0),
+                removed_on__isnull=False)
+        yearly_qset = yearly_qset \
+            .annotate(amount_spent=yearly_amount_spent) \
+            .exclude(
+                Q(amount_spent__isnull=True) | Q(amount_spent=0),
+                removed_on__isnull=False)
 
-        union_qset = monthly_qset.union(yearly_qset).order_by('order', 'name')
-
-        return union_qset
+        return monthly_qset.union(yearly_qset).order_by('order', 'name')

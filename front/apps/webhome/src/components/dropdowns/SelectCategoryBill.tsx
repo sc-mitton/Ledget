@@ -8,6 +8,7 @@ import { Category, useGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useGetBillsQuery } from '@features/billSlice'
 import { SearchIcon } from '@ledget/media'
 import { LoadingRingDiv } from '@ledget/ui'
+import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 interface I {
     value: (Category | Bill | undefined)
@@ -18,9 +19,18 @@ interface I {
 }
 
 function SelectCategoryBill({ value, onChange, includeBills = true, month, year }: I) {
+    const { start, end } = useGetStartEndQueryParams(month, year)
     const [query, setQuery] = useState('')
-    const { data: categoryData, isLoading: isFetchingCategories, isSuccess: isFetchCategoriesSuccess } = useGetCategoriesQuery()
-    const { data: billData, isSuccess: isFetchBillsSuccess } = useGetBillsQuery()
+    const {
+        data: categoryData,
+        isLoading:
+        isFetchingCategories,
+        isSuccess: isFetchCategoriesSuccess
+    } = useGetCategoriesQuery({ start, end, spending: false })
+    const {
+        data: billData,
+        isSuccess: isFetchBillsSuccess
+    } = useGetBillsQuery({ month, year })
     const [filteredBillCats, setFilteredBillCats] = useState<(Category | Bill)[]>([])
     const inputRef = useRef<HTMLInputElement>(null)
 

@@ -29,6 +29,7 @@ export interface SplitCategory extends Category {
 interface CategoryQueryParams {
     start?: number;
     end?: number;
+    spending: boolean;
 }
 
 interface CategorySpendingHistory {
@@ -45,10 +46,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     url: 'categories',
                     method: 'GET',
                 }
-                if (params) {
-                    return { ...queryObj, params };
-                }
-                return queryObj;
+                return params ? { ...queryObj, params } : queryObj
             },
             keepUnusedDataFor: 15 * 60,
             providesTags: (result, error, arg) => result
@@ -190,7 +188,7 @@ export const categorySlice = createSlice({
                 // If the query was just fetching the categories, and not getting
                 // the amount spent, then skip updating the state
                 const originalArgs = action.meta.arg.originalArgs
-                if (!originalArgs?.start && !originalArgs?.end) {
+                if ((!originalArgs?.start && !originalArgs?.end) || originalArgs?.spending === false) {
                     return
                 }
 
