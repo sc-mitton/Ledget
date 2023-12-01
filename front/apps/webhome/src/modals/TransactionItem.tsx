@@ -215,6 +215,7 @@ const InstitutionInfoInnerWindow = ({ item }: { item: Transaction }) => {
 
 const NoteInnerWindow = ({ item }: { item: Transaction }) => {
     const [addNote] = useAddNoteMutation()
+
     const [updateDeleteNote] = useUpdateDeleteNoteMutation()
 
     return (

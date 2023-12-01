@@ -8,7 +8,7 @@ from budget.models import Category, Bill, TransactionCategory
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        exclude = ('user',)
+        exclude = ('user', 'transaction')
 
 
 class UpdateTransactionListSerializer(serializers.ListSerializer):

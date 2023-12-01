@@ -199,7 +199,6 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                         })
                     }
                 })
-
                 const otherTags = [
                     { type: 'Transaction', id: 'LIST' } as const,
                     ...(arg.some(item => item.categories) ? [{ type: 'Category', id: 'LIST' } as const] : []),
@@ -216,6 +215,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: { text: note },
             }),
+            invalidatesTags: (result, error, arg) => ([{ type: 'Transaction', id: arg.transactionId } as const])
         }),
         updateDeleteNote: builder.mutation<any, { transactionId: string, noteId: string, note: string }>({
             query: ({ transactionId, noteId, note }) => ({
@@ -223,6 +223,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: note ? 'PUT' : 'DELETE',
                 body: { text: note },
             }),
+            invalidatesTags: (result, error, arg) => ([{ type: 'Transaction', id: arg.transactionId } as const])
         }),
     }),
 })

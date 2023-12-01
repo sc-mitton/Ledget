@@ -115,7 +115,7 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
 class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
     fixtures = [
         'transaction_fixture.json',
-        'categorie_fixture.json',
+        'category_fixture.json',
         'bill_fixture.json',
         'reminder_fixture.json',
         'plaid_item_fixture.json',

@@ -35,8 +35,9 @@ class TransactionsCategoriesRouter(SimpleRouter):
     ]
 
 
-router = TransactionsCategoriesRouter(trailing_slash=False)
-router.register('transactions', TransactionViewSet, basename='transactions')
+transactions_router = TransactionsCategoriesRouter(trailing_slash=False)
+transactions_router.register(
+    'transactions', TransactionViewSet, basename='transactions')
 
 note_router = SimpleRouter(trailing_slash=False)
 note_router.register('note', NoteViewSet, basename='note')
@@ -47,8 +48,8 @@ urlpatterns = [
     path('plaid_link_token', PlaidLinkTokenView.as_view(), name='plaid_link_token'),
     path('plaid_link_token/<str:id>', PlaidLinkTokenView.as_view(), name='plaid_update_link_token'), # noqa
     path('plaid_token_exchange', PlaidTokenExchangeView.as_view(), name='plaid_token_exchange'), # noqa
-    path('transactions/sync', TransactionsSyncView.as_view(), name='transactions_sync'),
     path('accounts', AccountsView.as_view(), name='account'),
-    path('', include(router.urls)),
-    path('', include(note_router.urls))
+    path('', include(transactions_router.urls)),
+    path('transactions/sync', TransactionsSyncView.as_view(), name='transactions_sync'),
+    path('transactions/<str:id>/', include(note_router.urls)),
 ]

@@ -296,8 +296,44 @@ class NoteViewSet(ModelViewSet):
     permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
     serializer_class = NoteSerializer
 
+    def get_object(self):
+        transaction_id = self.kwargs['id']
+        note_id = self.kwargs['pk']
+        try:
+            obj = Note.objects.get(
+                transaction_id=transaction_id,
+                id=note_id)
+            self.check_object_permissions(self.request, obj)
+        except Note.DoesNotExist:
+            raise ValidationError('Note does not exist')
+
+        return obj
+
+    def get_transaction(self):
+        transaction_id = self.kwargs['id']
+        try:
+
+            # object permissions are unneaded since
+            # the query filter will return none if the user
+            # is not an owner of the transaction
+            transaction = Transaction.objects.get(
+                    transaction_id=transaction_id,
+                    account__useraccount__user=self.request.user)
+
+        except Transaction.DoesNotExist:
+            raise ValidationError('Transaction does not exist')
+
+        return transaction
+
     def get_queryset(self):
         return Note.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save(
+            transaction=self.get_transaction(),
+            user=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(
+            transaction=self.get_transaction(),
+            user=self.request.user)
