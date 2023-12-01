@@ -50,17 +50,15 @@
         // Account and instittution info
         // accunt, merchant, date, etc. info
         &:nth-child(1),
-        &:nth-child(2),
-        &:nth-child(3) {
+        &:nth-child(2) {
             display: grid;
             column-gap: 1.5em;
-            row-gap: .25em;
+            row-gap: .5em;
             grid-template-columns: minmax(0, auto) 1fr;
 
             #account-info-cell {
                 display: flex;
                 gap: .5em;
-                margin-left: .5em;
             }
 
             &>div {
@@ -79,7 +77,7 @@
             }
         }
 
-        &:nth-child(1)>div {
+        &:first-child>div {
             position: relative;
 
             &>div {

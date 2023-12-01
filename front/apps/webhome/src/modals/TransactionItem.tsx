@@ -156,32 +156,7 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
     )
 }
 
-const InfoTableInnerWindow = ({ item }: { item: Transaction }) => (
-    <div className='inner-window'>
-        {item?.merchant_name &&
-            <>
-                <div>Merchant </div>
-                <div className="merchant-cell">
-                    {item?.merchant_name}
-                </div>
-            </>}
-        <div>Date </div>
-        <div>
-            {new Date(item?.datetime).toLocaleDateString('en-US', { 'month': 'short', 'day': 'numeric', 'year': 'numeric' })}
-        </div>
-        {(item?.address || item?.city || item?.region) &&
-            <>
-                <div>Location </div>
-                <div>
-                    <span>{item?.address}</span>
-                    <span>{`${item?.city}${item?.region ? ', ' + item.region : ''}`}</span>
-                </div>
-            </>
-        }
-    </div>
-)
-
-const InstitutionInfoInnerWindow = ({ item }: { item: Transaction }) => {
+const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
     const { data: accountsData, isSuccess: accountsFetched } = useGetAccountsQuery()
     const [institution, setInstitution] = useState<any>({})
     const [account, setAccount] = useState<any>({})
@@ -209,6 +184,26 @@ const InstitutionInfoInnerWindow = ({ item }: { item: Transaction }) => {
                 <span>{account?.official_name}</span>
                 <span>&nbsp;&bull;&nbsp;&bull;&nbsp;{account?.mask}</span>
             </div>
+            {item?.merchant_name &&
+                <>
+                    <div>Merchant </div>
+                    <div className="merchant-cell">
+                        {item?.merchant_name}
+                    </div>
+                </>}
+            <div>Date </div>
+            <div>
+                {new Date(item?.datetime).toLocaleDateString('en-US', { 'month': 'short', 'day': 'numeric', 'year': 'numeric' })}
+            </div>
+            {(item?.address || item?.city || item?.region) &&
+                <>
+                    <div>Location </div>
+                    <div>
+                        <span>{item?.address}</span>
+                        <span>{`${item?.city}${item?.region ? ', ' + item.region : ''}`}</span>
+                    </div>
+                </>
+            }
         </div>
     )
 }
@@ -266,7 +261,6 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
             </div>
             <div className='transaction-info--container'>
                 <CategoriesBillInnerWindow item={item} />
-                <InstitutionInfoInnerWindow item={item} />
                 <InfoTableInnerWindow item={item} />
                 <NoteInnerWindow item={item} />
             </div>

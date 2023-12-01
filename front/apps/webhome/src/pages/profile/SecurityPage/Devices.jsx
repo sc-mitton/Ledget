@@ -71,9 +71,9 @@ const Device = (props) => {
                             {info.map((session) =>
                                 <div key={session.id} className="device-session">
                                     <div className="device-session-info">
-                                        <div>Browser:</div>
+                                        <div>Browser</div>
                                         <div>{session.browser_family}</div>
-                                        <div>Last Login: </div>
+                                        <div>Last Login </div>
                                         <div>{formatDateTime(session.last_login)}</div>
                                     </div>
                                     <div className={`${session.current_device ? '' : 'logout-device'}`}>
