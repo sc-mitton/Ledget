@@ -518,6 +518,8 @@ const NeedsConfirmationWindow = () => {
                         <SelectCategoryBill
                             value={billCatSelectVal}
                             onChange={setBillCatSelectVal}
+                            month={new Date(start).getMonth() + 1}
+                            year={new Date(start).getFullYear()}
                         />
                     </Options>
                     <Options

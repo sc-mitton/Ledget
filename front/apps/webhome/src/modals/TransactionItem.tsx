@@ -145,6 +145,8 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
                             includeBills={true}
                             value={billCat}
                             onChange={setBillCat}
+                            month={new Date(item.datetime).getMonth() + 1}
+                            year={new Date(item.datetime).getFullYear()}
                         />
                     </DropAnimation>
                 </div>
