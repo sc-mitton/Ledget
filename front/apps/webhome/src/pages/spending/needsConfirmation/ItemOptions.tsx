@@ -63,8 +63,7 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                     onClick={() => { props.handlers[0]() }}
                     aria-label="Split"
                 >
-                    <Split />
-                    Split
+                    <Split /> Split
                 </li>
                 <li
                     className={`dropdown-item${activeIndex === 2 ? ' active' : ''}`}

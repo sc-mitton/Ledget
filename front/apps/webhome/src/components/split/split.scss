@@ -1,102 +1,11 @@
-#split-item--container {
-    position: absolute;
-    z-index: 100;
-    border-radius: inherit;
-    margin: .25em 0 .5em 0;
-    border-radius: var(--border-radius3);
-    padding: 1em 1.25em;
-    inset: 0;
-    background-color: var(--window);
-    box-shadow: var(--window-drop-shadow);
-    display: flex;
-    flex-direction: column;
+#split-transaction--form {
 
-    .header {
-        display: flex;
-        justify-content: flex-start;
-        white-space: nowrap;
-        gap: .5em;
-        width: 70%;
-        overflow: hidden;
+    &>div:first-of-type {
+        margin: 1em 0;
 
-        h4 {
-            max-width: 50%;
-        }
-    }
-
-    .select-category--dropdown {
-        position: absolute;
-        top: calc(100% + 1em);
-        background-color: var(--window);
-        box-shadow: var(--mid-elevation-drop-shadow);
-        border-radius: var(--border-radius2);
-        padding: .5em .25em;
-
-        &::before {
-            position: absolute;
-            top: -.4375rem;
-            left: 52%;
-            display: inline-block;
-            border-right: .4375rem solid transparent;
-            border-bottom: .4375rem solid var(--subtle-border-color);
-            border-left: .4375rem solid transparent;
-            content: '';
-        }
-
-        &::after {
-            position: absolute;
-            top: -.375rem;
-            left: 52%;
-            display: inline-block;
-            border-right: .375rem solid transparent;
-            border-bottom: .375rem solid var(--window);
-            border-left: .375rem solid transparent;
-            content: '';
-        }
-    }
-
-    .splitter--container {
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-        gap: .75em;
-
-        &>div:last-of-type {
-            position: relative;
+        .row {
             display: flex;
-            align-items: center;
-        }
-    }
-
-    .splitter {
-        flex-grow: 1;
-        position: relative;
-
-        .handle {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 1.5em;
-            height: 1.5em;
-            padding: .125em;
-            display: flex;
-            place-content: center;
-            transform: translate(-50%, -50%);
-            background-color: var(--main-hlight3);
-            border-radius: 50%;
-            cursor: ew-resize;
-
-            * {
-                cursor: ew-resize;
-            }
-        }
-
-        .amount {
-            position: absolute;
-            left: 50%;
-            top: 150%;
-            transform: translateX(-50%);
-            font-size: 1em;
+            gap: .5em;
         }
     }
 }

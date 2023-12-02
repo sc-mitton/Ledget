@@ -21,7 +21,7 @@ export type Transaction = {
     transaction_id: string
     transaction_code?: string
     transaction_type?: string
-    categories?: Category[],
+    categories?: SplitCategory[],
     bill?: Bill,
     predicted_category?: Category,
     predicted_bill?: Bill,

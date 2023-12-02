@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 
 import Big from 'big.js'
 import { Menu } from '@headlessui/react'
+import { AnimatePresence } from 'framer-motion'
 
 import './styles/TransactionItem.scss'
 import { Transaction } from '@features/transactionsSlice'
@@ -18,12 +19,15 @@ import {
 import { Bill } from "@features/billSlice";
 import { Category, isCategory } from "@features/categorySlice";
 import { Ellipsis, Split, Edit } from '@ledget/media'
+import { SplitTransactionInput } from '@components/split'
 import {
     DropAnimation,
     BillCatButton,
     useAccessEsc,
-    IconButton
+    IconButton,
+    SlideMotionDiv
 } from '@ledget/ui'
+
 
 type Action = 'split'
 
@@ -281,43 +285,54 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
     const [nameIsDirty, setNameIsDirty] = useState(false)
 
     return (
-        <>
-            <Actions setAction={setAction} />
-            <div className='transaction-info--header'>
-                <div style={{ textAlign: 'center' }}>
-                    <DollarCents value={item?.amount && new Big(item.amount).times(100).toNumber()} />
-                </div>
-                {edit
-                    ? <div>
-                        <input
-                            autoFocus
-                            defaultValue={item?.preferred_name || item?.name}
-                            onChange={(e) => {
-                                setNameIsDirty(true)
-                                setPreferredName(e.target.value)
-                            }}
-                            onBlur={(e) => {
-                                nameIsDirty && updateTransaction({
-                                    transactionId: item.transaction_id,
-                                    data: { preferred_name: e.target.value }
-                                })
-                                setEdit(false)
-                            }}
-                        />
+        <AnimatePresence mode='wait'>
+            {action === 'split' &&
+                <SlideMotionDiv key={'split-item'} position='last'>
+                    <SplitTransactionInput
+                        item={item}
+                        onCancel={() => { setAction(undefined) }}
+                    />
+                </SlideMotionDiv>
+            }
+            {action === undefined &&
+                <SlideMotionDiv key={'default-view'} position='first'>
+                    <Actions setAction={setAction} />
+                    <div className='transaction-info--header'>
+                        <div style={{ textAlign: 'center' }}>
+                            <DollarCents value={item?.amount && new Big(item.amount).times(100).toNumber()} />
+                        </div>
+                        {edit
+                            ? <div>
+                                <input
+                                    autoFocus
+                                    defaultValue={item?.preferred_name || item?.name}
+                                    onChange={(e) => {
+                                        setNameIsDirty(true)
+                                        setPreferredName(e.target.value)
+                                    }}
+                                    onBlur={(e) => {
+                                        nameIsDirty && updateTransaction({
+                                            transactionId: item.transaction_id,
+                                            data: { preferred_name: e.target.value }
+                                        })
+                                        setEdit(false)
+                                    }}
+                                />
+                            </div>
+                            : <button onClick={() => setEdit(true)}>
+                                {preferredName || item?.preferred_name || item?.name}
+                                <Edit size={'.9em'} />
+                            </button>}
                     </div>
-                    : <button onClick={() => setEdit(true)}>
-                        {preferredName || item?.preferred_name || item?.name}
-                        <Edit size={'.9em'} />
-                    </button>
-                }
-            </div>
-            <div className='transaction-info--container'>
-                {(item.predicted_bill || item.predicted_category || item.bill || item.categories?.length)
-                    && <CategoriesBillInnerWindow item={item} />}
-                <InfoTableInnerWindow item={item} />
-                <NoteInnerWindow item={item} />
-            </div>
-        </>
+                    <div className='transaction-info--container'>
+                        {(item.predicted_bill || item.predicted_category || item.bill || item.categories?.length)
+                            && <CategoriesBillInnerWindow item={item} />}
+                        <InfoTableInnerWindow item={item} />
+                        <NoteInnerWindow item={item} />
+                    </div>
+                </SlideMotionDiv>
+            }
+        </AnimatePresence>
     )
 })
 

@@ -4,11 +4,7 @@ import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { TranslucentShimmerDiv } from '../pieces/shimmer/shimmer'
 import { ArrowIcon, CheckMark } from '@ledget/media'
 
-interface BaseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    children: React.ReactNode;
-}
-
-interface LoadingButtonProps extends BaseButtonProps {
+interface LoadingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     loading?: boolean;
     submitting?: boolean;
     success?: boolean;
@@ -17,7 +13,7 @@ interface LoadingButtonProps extends BaseButtonProps {
     rotate?: number;
 }
 
-const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>((props, ref) => {
+const BaseButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>((props, ref) => {
     const { className, children, ...rest } = props;
     const [clicked, setClicked] = useState(false);
 
@@ -47,19 +43,20 @@ const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>((props, ref) =
     )
 })
 
-export const ButtonWithClassName = (className: string) => forwardRef<HTMLButtonElement, BaseButtonProps>((props, ref) => {
-    const { children, className: classNameInner, ...rest } = props
+export const ButtonWithClassName = (className: string) =>
+    forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>((props, ref) => {
+        const { children, className: classNameInner, ...rest } = props
 
-    return (
-        <BaseButton
-            ref={ref}
-            className={`${className} ${classNameInner ? classNameInner : ''}`}
-            {...rest}
-        >
-            {children}
-        </BaseButton>
-    )
-})
+        return (
+            <BaseButton
+                ref={ref}
+                className={`${className} ${classNameInner ? classNameInner : ''}`}
+                {...rest}
+            >
+                {children}
+            </BaseButton>
+        )
+    })
 
 export const withArrow = (Component: FC<any>) => {
 

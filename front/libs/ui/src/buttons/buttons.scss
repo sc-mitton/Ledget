@@ -427,6 +427,7 @@ button {
     color: var(--input-placeholder2);
     background-color: var(--input-background);
     border: var(--input-border);
+    gap: .25em;
 }
 
 .btn-input2 {
@@ -438,7 +439,7 @@ button {
 }
 
 .btn-input-full {
-    padding: .92em .92em;
+    padding: .5em;
     margin: .375em 0;
     border-radius: var(--border-radius2);
     width: 100%;

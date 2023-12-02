@@ -1,5 +1,14 @@
 
-import { useState, Fragment, useEffect, useRef } from 'react'
+import {
+    FC,
+    ForwardRefExoticComponent,
+    RefAttributes,
+    ButtonHTMLAttributes,
+    useState,
+    Fragment,
+    useEffect,
+    useRef
+} from 'react'
 
 import { Combobox } from "@headlessui/react"
 
@@ -7,18 +16,18 @@ import './SelectCategoryBill.scss'
 import { Category, useGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useGetBillsQuery } from '@features/billSlice'
 import { SearchIcon } from '@ledget/media'
-import { LoadingRingDiv } from '@ledget/ui'
+import { LoadingRingDiv, DropAnimation, useAccessEsc } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 interface I {
-    value: (Category | Bill | undefined)
+    value?: (Category | Bill | undefined)
     includeBills?: boolean
-    onChange: React.Dispatch<React.SetStateAction<Category | Bill | undefined>>
+    onChange?: React.Dispatch<React.SetStateAction<Category | Bill | undefined>>
     month?: number
     year?: number
 }
 
-function SelectCategoryBill({ value, onChange, includeBills = true, month, year }: I) {
+function StaticSelectCategoryBill({ value, onChange, includeBills = true, month, year }: I) {
     const { start, end } = useGetStartEndQueryParams(month, year)
     const [query, setQuery] = useState('')
     const {
@@ -98,4 +107,52 @@ function SelectCategoryBill({ value, onChange, includeBills = true, month, year 
     )
 }
 
-export default SelectCategoryBill
+interface Selector extends Omit<I, 'value' | 'onChange'> {
+    SelectorComponent: ForwardRefExoticComponent<ButtonHTMLAttributes<HTMLButtonElement>
+        & RefAttributes<HTMLButtonElement>>
+    defaultValue: (Category | Bill | undefined)
+}
+
+export const FullSelectCategoryBill: FC<Selector>
+    = ({ SelectorComponent, defaultValue, ...rest }) => {
+
+        const [showBillCatSelect, setShowBillCatSelect] = useState(false)
+        const [value, onChange] = useState(defaultValue)
+        const dropdownRef = useRef<HTMLDivElement>(null)
+        const buttonRef = useRef<HTMLButtonElement>(null)
+
+        useAccessEsc({
+            refs: [dropdownRef, buttonRef],
+            visible: showBillCatSelect,
+            setVisible: setShowBillCatSelect
+        })
+
+        return (
+            <div>
+                {value && <input type='hidden' name='bill-category' value={value.id} />}
+                <SelectorComponent
+                    type='button'
+                    onClick={() => setShowBillCatSelect(!showBillCatSelect)}
+                    ref={buttonRef}
+                >
+                    <span>{value?.emoji}</span>
+                    <span>{value?.name.charAt(0).toUpperCase()}{value?.name.slice(1)}</span>
+                </SelectorComponent>
+                <DropAnimation
+                    placement='left'
+                    visible={showBillCatSelect}
+                    className="dropdown"
+                    ref={dropdownRef}
+                >
+                    <StaticSelectCategoryBill
+                        includeBills={true}
+                        value={value}
+                        onChange={onChange}
+                        {...rest}
+                    />
+                </DropAnimation>
+            </div>
+        )
+    }
+
+export default StaticSelectCategoryBill
