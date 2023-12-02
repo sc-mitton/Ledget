@@ -44,9 +44,11 @@
 
 .month-picker-item,
 .month-picker-item-selected {
-    padding: .125rem .5rem;
+    padding: 0rem .125rem;
     border-radius: var(--border-radius1);
     cursor: pointer;
+    display: flex;
+    place-content: center;
 }
 
 .month-picker-item-selected {
