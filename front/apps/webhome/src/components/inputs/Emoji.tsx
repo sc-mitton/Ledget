@@ -1,20 +1,37 @@
-import React, { createContext, useContext, useState } from 'react'
+import { ReactNode, createContext, useContext, useState } from 'react'
 import Picker from '@emoji-mart/react'
 
 import './styles/EmojiPicker.css'
-import { FaceIcon } from '@ledget/media'
 import { IconScaleButton, DropAnimation } from '@ledget/ui'
 
-const EmojiContext = createContext()
+export type emoji = string | { native: string, [key: string]: any }
 
-const Emoji = (props) => {
-    const { emoji, setEmoji, children } = props
+interface EmojiContextType {
+    emoji?: emoji
+    setEmoji: React.Dispatch<React.SetStateAction<emoji | undefined>>
+    picker: boolean
+    setPicker: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export interface EmojiProps extends Partial<Pick<EmojiContextType, 'emoji' | 'setEmoji'>> {
+    children?: (props: { emoji: EmojiContextType['emoji'] }) => ReactNode
+}
+
+const EmojiContext = createContext<EmojiContextType | null>(null)
+
+const Emoji = (props: EmojiProps) => {
+    const { emoji: propsEmoji, setEmoji: propsSetEmoji, children } = props
     const [picker, setPicker] = useState(false)
+
+    const [em, setEm] = useState<emoji>()
+
+    const emoji = propsEmoji || em
+    const setEmoji = propsSetEmoji || setEm
 
     return (
         <EmojiContext.Provider value={{ emoji, setEmoji, picker, setPicker }}>
             <div id="emoji-picker-ledget">
-                {children({ emoji })}
+                {children && children({ emoji })}
             </div>
         </EmojiContext.Provider>
     )
@@ -51,7 +68,7 @@ const categoryIcons = {
 }
 
 const EmojiPicker = () => {
-    const { setEmoji, picker, setPicker } = useContext(EmojiContext)
+    const { setEmoji, picker, setPicker } = useContext(EmojiContext) as EmojiContextType
 
     const categories = [
         'frequent',
@@ -65,7 +82,7 @@ const EmojiPicker = () => {
         'symbols',
     ]
 
-    const handleEmojiSelect = (emoji) => {
+    const handleEmojiSelect = (emoji: emoji) => {
         setEmoji(emoji)
         setPicker(false)
     }
@@ -94,7 +111,7 @@ const EmojiPicker = () => {
 }
 
 const EmojiButton = ({ ...rest }) => {
-    const { emoji, picker, setPicker } = useContext(EmojiContext)
+    const { emoji, picker, setPicker } = useContext(EmojiContext) as EmojiContextType
 
     return (
         <IconScaleButton
@@ -114,10 +131,12 @@ const EmojiButton = ({ ...rest }) => {
             aria-expanded={picker}
             aria-controls="emoji-picker-ledget--container"
             tabIndex={0}
-            style={{ color: !emoji && "rgb(0, 0, 0, .4)" }}
+            style={{ color: !emoji && "rgb(0, 0, 0, .4)" } as React.CSSProperties}
             {...rest}
         >
-            {emoji ? (emoji.native || emoji) : '☺'}
+            {emoji
+                ? typeof emoji === 'string' ? emoji : emoji.native
+                : '☺'}
         </IconScaleButton>
     )
 }

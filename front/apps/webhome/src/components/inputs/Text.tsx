@@ -1,34 +1,34 @@
 import React, { useRef, useEffect, useState } from 'react'
 
 import { useController } from 'react-hook-form'
+import { Control } from 'react-hook-form'
 
 import './styles/Text.scss'
 import Emoji from './Emoji'
+import { EmojiProps, emoji } from './Emoji'
 import { formatCurrency, formatRoundedCurrency, makeIntCurrencyFromStr } from '@ledget/ui'
 import { IconButton2, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 
-export const EmojiComboText = (props) => {
+export const EmojiComboText = (props: { register: any, error: any, hasLabel?: boolean } & EmojiProps) => {
     const {
-        children,
         register,
         error,
         emoji: propsEmoji,
         setEmoji: propsSetEmoji,
-        nameValue: propsNameValue,
         hasLabel = true,
         ...rest
     } = props
 
     const { ref: formRef, ...registerRest } = register('name')
-    const ref = useRef(null)
+    const ref = useRef<HTMLInputElement>()
 
-    const [em, setEm] = useState(undefined)
+    const [em, setEm] = useState<emoji>()
     const emoji = propsEmoji || em
     const setEmoji = propsSetEmoji || setEm
 
     useEffect(() => {
-        emoji && ref.current.focus()
+        emoji && ref.current?.focus()
     }, [emoji])
 
     return (
@@ -45,18 +45,22 @@ export const EmojiComboText = (props) => {
                                 />
                             </div>
                             <Emoji.Picker />
-                            {emoji && <input type="hidden" name="emoji" value={emoji.native} />}
+                            <input
+                                type="hidden"
+                                name="emoji"
+                                value={typeof emoji === 'string' ? emoji : emoji?.native}
+                            />
                         </>
                     )}
                 </Emoji>
-                <input type="hidden" name="emoji" value={emoji?.native || emoji} />
                 <input
                     type="text"
                     {...rest}
                     {...registerRest}
                     ref={(e) => {
                         formRef(e)
-                        ref.current = e
+                        if (e)
+                            ref.current = e
                     }}
                     style={{ marginLeft: '.25em' }}
                 />
@@ -66,8 +70,21 @@ export const EmojiComboText = (props) => {
     )
 }
 
-const increment = (val, setVal, field) => {
-    let newVal
+interface IncrementDecrement {
+    val: string;
+    setVal: React.Dispatch<React.SetStateAction<string>>;
+    field: {
+        onChange: (newVal: number) => void;
+    }
+}
+
+type IncrementFunction = (
+    ...args: [IncrementDecrement['val'], IncrementDecrement['setVal'], IncrementDecrement['field']]
+) => void;
+
+
+const increment: IncrementFunction = (val, setVal, field) => {
+    let newVal: number
     if (!val || val === '') {
         newVal = 1000
     } else {
@@ -79,7 +96,7 @@ const increment = (val, setVal, field) => {
     setVal(formatRoundedCurrency(newVal))
 }
 
-const decrement = (val, setVal, field) => {
+const decrement: IncrementFunction = (val, setVal, field) => {
     let newVal
     if (!val) {
         newVal = 0
@@ -92,13 +109,13 @@ const decrement = (val, setVal, field) => {
     setVal(formatRoundedCurrency(newVal))
 }
 
-const IncrementDecrementButton = ({ val, setVal, field }) => (
+const IncrementDecrementButton = ({ val, setVal, field }: IncrementDecrement) => (
     <div className="increment-arrows--container">
         <IconButton2
             type="button"
             onClick={() => increment(val, setVal, field)}
             aria-label="increment"
-            tabIndex={'-1'}
+            tabIndex={-1}
         >
             <ArrowIcon size={'.75em'} rotation={-180} />
         </IconButton2>
@@ -106,20 +123,32 @@ const IncrementDecrementButton = ({ val, setVal, field }) => (
             type="button"
             onClick={() => decrement(val, setVal, field)}
             aria-label="decrement"
-            tabIndex={'-1'}
+            tabIndex={-1}
         >
             <ArrowIcon size={'.75em'} />
         </IconButton2>
     </div>
 )
 
-export const LimitAmountInput = ({ control, defaultValue, children }) => {
-    const [val, setVal] = useState(undefined)
+export const LimitAmountInput = (
+    { control, defaultValue, value, onChange, children, ...rest }: {
+        control: Control,
+        defaultValue?: string,
+        value?: string,
+        onChange?: React.Dispatch<React.SetStateAction<string>>,
+        children?: React.ReactNode
+        name?: string
+    }
+) => {
+    const [sVal, sSetVal] = useState<string>('')
+    const val = value || sVal
+    const setVal = onChange || sSetVal
+
     const {
         field,
     } = useController({
         control,
-        name: 'limit_amount'
+        name: rest.name || 'limit_amount'
     })
 
     // set field value to default if present
@@ -135,8 +164,8 @@ export const LimitAmountInput = ({ control, defaultValue, children }) => {
             <label htmlFor="limit">Limit</label>
             <TextInputWrapper className="limit-amount--container">
                 <input
-                    name='limit_amount'
                     type="text"
+                    name='limit_amount'
                     id="limit_amount"
                     placeholder="$0"
                     value={val}
@@ -156,9 +185,10 @@ export const LimitAmountInput = ({ control, defaultValue, children }) => {
                     }}
                     onBlur={(e) => {
                         (e.target.value.length <= 1 || val === '$0') && setVal('')
-                        field.onBlur(e)
+                        field.onBlur()
                     }}
-                    size="14"
+                    size={14}
+                    {...rest}
                 />
                 <IncrementDecrementButton val={val} setVal={setVal} field={field} />
                 {children}
@@ -167,8 +197,11 @@ export const LimitAmountInput = ({ control, defaultValue, children }) => {
     )
 }
 
-const DollarInput = ({ field, name, defaultValue, error, ...rest }) => {
-    const [val, setVal] = useState(defaultValue)
+const DollarInput = (
+    { field, name, defaultValue, error, style }:
+        { field: any, name: string, defaultValue?: string, error?: any, style?: React.CSSProperties }
+) => {
+    const [val, setVal] = useState(defaultValue || '')
 
     // set field value to default if present
     useEffect(() => {
@@ -179,7 +212,7 @@ const DollarInput = ({ field, name, defaultValue, error, ...rest }) => {
     }, [defaultValue])
 
     return (
-        <TextInputWrapper className="limit-amount--container" {...rest}>
+        <TextInputWrapper className="limit-amount--container" style={style}>
             <input
                 name={name}
                 type="text"
@@ -203,7 +236,7 @@ const DollarInput = ({ field, name, defaultValue, error, ...rest }) => {
                     field.onBlur(e)
                     e.target.value === '$0.00' && setVal('')
                 }}
-                size="14"
+                size={14}
             />
             <IncrementDecrementButton val={val} setVal={setVal} field={field} />
             <FormErrorTip errors={[error]} />
@@ -211,9 +244,10 @@ const DollarInput = ({ field, name, defaultValue, error, ...rest }) => {
     )
 }
 
-export const DollarRangeInput = ({
-    rangeMode, control, defaultLowerValue, defaultUpperValue, errors = {}, hasLabel = true
-}) => {
+export const DollarRangeInput = (
+    { control, defaultLowerValue, defaultUpperValue, errors, hasLabel = true, rangeMode = false }:
+        { control: Control, defaultLowerValue: string, defaultUpperValue: string, errors: any, hasLabel?: boolean, rangeMode?: boolean }
+) => {
 
     const {
         field: lowerField,
@@ -235,7 +269,7 @@ export const DollarRangeInput = ({
                 {rangeMode &&
                     <DollarInput
                         defaultValue={defaultLowerValue}
-                        style={{ marginRight: '.5em' }}
+                        style={{ marginRight: '.5em' } as React.CSSProperties}
                         field={lowerField}
                         name={'lower_amount'}
                         error={errors.lower_amount}
