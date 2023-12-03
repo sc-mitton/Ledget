@@ -194,11 +194,11 @@ const AddAlert = (props) => {
                 ?
                 <ArrowIcon
                     stroke={'var(--m-text)'}
-                    strokeWidth={'20'}
+                    strokeWidth={'18'}
                     size={'.9em'}
                 />
                 :
-                <Plus strokeWidth={'20'} size={'.8em'} />
+                <Plus strokeWidth={'18'} size={'.8em'} />
             }
         </>
     )

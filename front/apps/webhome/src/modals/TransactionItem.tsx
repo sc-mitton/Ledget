@@ -25,7 +25,8 @@ import {
     BillCatButton,
     useAccessEsc,
     IconButton,
-    SlideMotionDiv
+    SlideMotionDiv,
+    useLoaded
 } from '@ledget/ui'
 
 
@@ -278,6 +279,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
 }
 
 const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
+    const loaded = useLoaded(1000)
     const [action, setAction] = useState<Action>()
     const [edit, setEdit] = useState(false)
     const [preferredName, setPreferredName] = useState<string | undefined>()
@@ -285,54 +287,56 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
     const [nameIsDirty, setNameIsDirty] = useState(false)
 
     return (
-        <AnimatePresence mode='wait'>
-            {action === 'split' &&
-                <SlideMotionDiv key={'split-item'} position='last'>
-                    <SplitTransactionInput
-                        item={item}
-                        onCancel={() => { setAction(undefined) }}
-                    />
-                </SlideMotionDiv>
-            }
-            {action === undefined &&
-                <SlideMotionDiv key={'default-view'} position='first'>
-                    <Actions setAction={setAction} />
-                    <div className='transaction-info--header'>
-                        <div style={{ textAlign: 'center' }}>
-                            <DollarCents value={item?.amount && new Big(item.amount).times(100).toNumber()} />
+        <>
+            <div className='transaction-info--header'>
+                <div style={{ textAlign: 'center' }}>
+                    <DollarCents value={item?.amount && new Big(item.amount).times(100).toNumber()} />
+                </div>
+                {edit
+                    ? <div>
+                        <input
+                            autoFocus
+                            defaultValue={item?.preferred_name || item?.name}
+                            onChange={(e) => {
+                                setNameIsDirty(true)
+                                setPreferredName(e.target.value)
+                            }}
+                            onBlur={(e) => {
+                                nameIsDirty && updateTransaction({
+                                    transactionId: item.transaction_id,
+                                    data: { preferred_name: e.target.value }
+                                })
+                                setEdit(false)
+                            }}
+                        />
+                    </div>
+                    : <button onClick={() => setEdit(true)}>
+                        {preferredName || item?.preferred_name || item?.name}
+                        <Edit size={'.9em'} />
+                    </button>}
+            </div>
+            <AnimatePresence mode='wait'>
+                {action === 'split' &&
+                    <SlideMotionDiv key={'split-item'} position='last'>
+                        <SplitTransactionInput
+                            item={item}
+                            onCancel={() => { setAction(undefined) }}
+                        />
+                    </SlideMotionDiv>
+                }
+                {action === undefined &&
+                    <SlideMotionDiv key={'default-view'} position={loaded ? 'first' : 'fixed'}>
+                        <Actions setAction={setAction} />
+                        <div className='transaction-info--container'>
+                            {(item.predicted_bill || item.predicted_category || item.bill || item.categories?.length)
+                                && <CategoriesBillInnerWindow item={item} />}
+                            <InfoTableInnerWindow item={item} />
+                            <NoteInnerWindow item={item} />
                         </div>
-                        {edit
-                            ? <div>
-                                <input
-                                    autoFocus
-                                    defaultValue={item?.preferred_name || item?.name}
-                                    onChange={(e) => {
-                                        setNameIsDirty(true)
-                                        setPreferredName(e.target.value)
-                                    }}
-                                    onBlur={(e) => {
-                                        nameIsDirty && updateTransaction({
-                                            transactionId: item.transaction_id,
-                                            data: { preferred_name: e.target.value }
-                                        })
-                                        setEdit(false)
-                                    }}
-                                />
-                            </div>
-                            : <button onClick={() => setEdit(true)}>
-                                {preferredName || item?.preferred_name || item?.name}
-                                <Edit size={'.9em'} />
-                            </button>}
-                    </div>
-                    <div className='transaction-info--container'>
-                        {(item.predicted_bill || item.predicted_category || item.bill || item.categories?.length)
-                            && <CategoriesBillInnerWindow item={item} />}
-                        <InfoTableInnerWindow item={item} />
-                        <NoteInnerWindow item={item} />
-                    </div>
-                </SlideMotionDiv>
-            }
-        </AnimatePresence>
+                    </SlideMotionDiv>
+                }
+            </AnimatePresence>
+        </>
     )
 })
 

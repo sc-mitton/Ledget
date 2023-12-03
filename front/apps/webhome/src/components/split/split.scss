@@ -1,11 +1,40 @@
 #split-transaction--form {
 
     &>div:first-of-type {
-        margin: 1em 0;
+        margin: 1.25em 0;
 
         .row {
-            display: flex;
-            gap: .5em;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            column-gap: .5em;
+            row-gap: .125em;
+
+            &>div {
+                flex: 1;
+
+                button {
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+        }
+
+        .remove-split--button {
+            opacity: 0;
+            transition: opacity .25s ease-in-out;
+
+            &:hover {
+                opacity: 1;
+                transition: opacity .25s ease-in-out;
+            }
+        }
+
+        .remove-split--button,
+        .add-split--button {
+            padding-left: .375em;
+            padding-right: .375em;
         }
     }
 }

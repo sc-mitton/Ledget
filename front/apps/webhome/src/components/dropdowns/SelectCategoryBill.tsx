@@ -15,7 +15,7 @@ import { Combobox } from "@headlessui/react"
 import './SelectCategoryBill.scss'
 import { Category, useGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useGetBillsQuery } from '@features/billSlice'
-import { SearchIcon } from '@ledget/media'
+import { SearchIcon, ArrowIcon } from '@ledget/media'
 import { LoadingRingDiv, DropAnimation, useAccessEsc } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
@@ -108,13 +108,14 @@ function StaticSelectCategoryBill({ value, onChange, includeBills = true, month,
 }
 
 interface Selector extends Omit<I, 'value' | 'onChange'> {
+    name?: string
     SelectorComponent: ForwardRefExoticComponent<ButtonHTMLAttributes<HTMLButtonElement>
         & RefAttributes<HTMLButtonElement>>
-    defaultValue: (Category | Bill | undefined)
+    defaultValue?: (Category | Bill | undefined)
 }
 
 export const FullSelectCategoryBill: FC<Selector>
-    = ({ SelectorComponent, defaultValue, ...rest }) => {
+    = ({ SelectorComponent, defaultValue, name, month, year, ...rest }) => {
 
         const [showBillCatSelect, setShowBillCatSelect] = useState(false)
         const [value, onChange] = useState(defaultValue)
@@ -129,14 +130,30 @@ export const FullSelectCategoryBill: FC<Selector>
 
         return (
             <div>
-                {value && <input type='hidden' name='bill-category' value={value.id} />}
+                {value && name &&
+                    <input
+                        name={name}
+                        type='hidden'
+                        value={value.id}
+                        {...rest}
+                    />}
                 <SelectorComponent
+                    className="bill-category-selector--button"
                     type='button'
                     onClick={() => setShowBillCatSelect(!showBillCatSelect)}
                     ref={buttonRef}
                 >
-                    <span>{value?.emoji}</span>
-                    <span>{value?.name.charAt(0).toUpperCase()}{value?.name.slice(1)}</span>
+                    <div className="selector-current-label">
+                        {value ?
+                            <>
+                                <span>{value?.emoji}</span>
+                                <span>{value?.name.charAt(0).toUpperCase()}{value?.name.slice(1)}</span>
+                            </>
+                            : <span style={{ opacity: 0, visibility: 'hidden' }}>None</span>
+                        }
+                    </div>
+
+                    <ArrowIcon size={'.8em'} />
                 </SelectorComponent>
                 <DropAnimation
                     placement='left'
@@ -148,7 +165,8 @@ export const FullSelectCategoryBill: FC<Selector>
                         includeBills={true}
                         value={value}
                         onChange={onChange}
-                        {...rest}
+                        month={month}
+                        year={year}
                     />
                 </DropAnimation>
             </div>

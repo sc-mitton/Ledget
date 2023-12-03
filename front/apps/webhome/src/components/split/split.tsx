@@ -1,15 +1,12 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import Big from 'big.js';
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from "react-hook-form"
-import { object, string } from "yup"
 
 import { SubmitForm } from '@components/pieces';
-import { Category } from '@features/categorySlice';
 import { Transaction } from '@features/transactionsSlice';
 import { InputButton } from '@ledget/ui';
-import { LimitAmountInput } from '@components/inputs'
+import { ControlledDollarInput } from '@components/inputs'
+import { Plus, TrashIcon } from '@ledget/media'
 import { FullSelectCategoryBill } from '@components/dropdowns'
 import { FormErrorTip } from '@ledget/ui'
 import './split.scss';
@@ -19,45 +16,60 @@ interface I {
   onCancel: () => void
 }
 
-export function SplitTransactionInput({ item, onCancel }: I) {
-  const [categories, setCategories] = useState<(Category)[]>([])
-  const [fractions, setFractions] = useState<{ [key: string]: number }>({})
+const SplitAmount = ({ name }: { name: string }) => {
+  const [amount, setAmount] = useState<string>('')
 
-  useEffect(() => {
-    if (item.categories?.length) {
-      setCategories(item.categories)
-      setFractions(
-        item.categories.reduce((acc, cat) => {
-          return {
-            ...acc,
-            [cat.id]: cat.fraction
-          }
-        }, {})
-      )
-    }
-  }, [item])
+  return <ControlledDollarInput
+    value={amount}
+    setValue={setAmount}
+    hasLabel={false}
+  />
+}
+
+export function SplitTransactionInput({ item, onCancel }: I) {
+  const [numberOfSplits, setNumberOfSplits] = useState<number>(item.categories ? item.categories.length : 1)
+  const [formError, setFormError] = useState<string | undefined>(undefined)
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log(e)
+  }
 
   return (
     <div>
-      <form id="split-transaction--form">
+      <form id="split-transaction--form" onSubmit={handleSubmit}>
         <div>
           <div className="row">
-            {categories.map((cat, index) => (
+            {Array.from({ length: numberOfSplits }).map((_, index) => (
               <>
                 <FullSelectCategoryBill
-                  key={cat.id}
-                  defaultValue={cat}
+                  name={`category[${index}]`}
                   includeBills={false}
                   SelectorComponent={InputButton}
                   month={new Date(item.datetime).getMonth() + 1}
                   year={new Date(item.datetime).getFullYear()}
+                  {...(index === numberOfSplits - 1
+                    ? { defaultValue: item.categories ? item.categories[index] : undefined }
+                    : {})}
                 />
-                <div>
-                  <LimitAmountInput
-                    defaultValue={Big(item.amount).times(100).times(fractions[index]).toNumber()}
-
-                  />
-                </div>
+                <SplitAmount name={`amount[${index}]`} />
+                {index === numberOfSplits - 1
+                  ?
+                  <InputButton
+                    type='button'
+                    className="add-split--button"
+                    onClick={() => setNumberOfSplits(numberOfSplits + 1)}
+                  >
+                    <Plus size={'1em'} />
+                  </InputButton>
+                  :
+                  <InputButton
+                    type='button'
+                    className="remove-split--button"
+                    onClick={() => setNumberOfSplits(numberOfSplits - 1)}
+                  >
+                    <TrashIcon />
+                  </InputButton>
+                }
               </>
             ))}
           </div>

@@ -9,7 +9,9 @@ export { default as PeriodSelect } from './PeriodSelect';
 export {
     EmojiComboText,
     LimitAmountInput,
-    DollarRangeInput
+    DollarRangeInput,
+    ControlledDollarInput,
 } from './Text';
 
 export { default as Emoji } from './Emoji';
+export * from './Emoji'

@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import './styles/Forms.css'
 import { withModal } from '@ledget/ui'
 import { useGetCategoriesQuery, Category, useUpdateCategoriesMutation } from '@features/categorySlice'
-import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect } from '@components/inputs'
+import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect, emoji } from '@components/inputs'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip, formatCurrency } from '@ledget/ui'
 import { schema as categoryFormSchema } from './CreateCategory'
@@ -15,8 +15,7 @@ import { schema as categoryFormSchema } from './CreateCategory'
 const EditCategory = withModal((props) => {
     const [searchParams] = useSearchParams()
     const { data: categories, isSuccess: categoriesAreFetched } = useGetCategoriesQuery()
-    const [emoji, setEmoji] = useState<string>()
-    const [defaultLimit, setDefaultLimit] = useState<number>()
+    const [emoji, setEmoji] = useState<emoji>()
     const [category, setCategory] = useState<Category>()
     const [updateCategory, { isSuccess: categoryIsUpdated, isLoading: isUpdatingCategory }] = useUpdateCategoriesMutation()
 

@@ -2,11 +2,10 @@ import { Fragment } from 'react';
 import './form-errors.css';
 
 import { Alert2 } from '@ledget/media'
-import { type } from 'os';
 
 interface Error {
   message?: string,
-  type?: 'required' | string
+  type?: string
 }
 
 export const FormErrorTip = ({ errors }: { errors: Error[] | undefined }) => (
