@@ -36,7 +36,7 @@
     --main-dark3: hsl(232, 17%, 25%);
     --main-dark4: hsl(229, 23%, 18%);
     --main-dark5: hsl(240, 6%, 17%);
-    --main-sat: rgb(171, 171, 255);
+    --main-sat: rgb(182, 182, 250);
     --yellow: rgb(175, 175, 51);
 
     --secondary-color: hsl(153, 100%, 91%);
@@ -89,8 +89,9 @@
     --new-item-drop-shadow: rgba(0, 0, 0, .07) 0px 2px 12px;
     --scroll-shadow: rgba(248, 248, 248), transparent;
 
-    --accessible-focus-drop-shadow: 0 0 1.5px 1.2px var(--main-sat);
-    --input-focus-drop-shadow: 0 0 0px 1.5px rgb(197, 203, 233);
+    --input-focus-dropshadow-color: rgb(197, 203, 233);
+    --accessible-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
+    --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
     --low-elevation-drop-shadow: rgba(0, 0, 0, 0.1) 0px 1px 6px 0px;
     --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
     --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;

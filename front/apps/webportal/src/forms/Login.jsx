@@ -288,7 +288,7 @@ const Login = () => {
         <AnimatePresence mode="wait">
             {!email && !searchParams.get('mfa')
                 ?
-                <SlideMotionDiv className='window' key="initial" position={flow ? 'first' : 'last'}>
+                <SlideMotionDiv className='window' key="initial" position={flow ? 'first' : 'fixed'}>
                     <EmailForm setEmail={setEmail} flow={flow} socialSubmit={submit} />
                     <div className="below-login--container">
                         <LinkArrowButton
