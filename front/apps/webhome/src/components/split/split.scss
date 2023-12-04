@@ -1,13 +1,13 @@
 #split-transaction--form {
 
     &>div:first-of-type {
-        margin: 1.25em 0;
+        margin: 1.5em 0;
 
         .row {
             margin: 0 auto;
             width: 100%;
             display: grid;
-            grid-template-columns: 1fr 1fr auto;
+            grid-template-columns: 1fr .85fr auto;
             column-gap: .5em;
             row-gap: .125em;
 

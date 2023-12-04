@@ -312,7 +312,7 @@ const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
                     </div>
                     : <button onClick={() => setEdit(true)}>
                         {preferredName || item?.preferred_name || item?.name}
-                        <Edit size={'.9em'} />
+                        <Edit size={'.8em'} fill={'currentColor'} />
                     </button>}
             </div>
             <AnimatePresence mode='wait'>

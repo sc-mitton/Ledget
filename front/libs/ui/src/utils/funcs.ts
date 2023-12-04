@@ -6,6 +6,26 @@ export const formatName = (name: string) => (
     }).join(' ')
 )
 
+
+export const formatCurrency2String = ({ val, withDecimals = true }: { val: number | string | undefined, withDecimals: boolean }) => {
+    if (val === undefined || val === null) return ''
+
+    // First get val in integer form
+    let value: string
+    typeof val === 'string'
+        ? val.includes('.') ? value = val : value = `${val}00`
+        : value = val.toString()
+
+    const currencyAmount = parseInt(value.replace(/[^0-9]/g, '').replace(/^0+/, ''))
+
+    const regex = /(\d)(?=(\d{3})+(?!\d))/g
+    if (withDecimals) {
+        return `$${currencyAmount}`.replace(regex, ",")
+    } else {
+        return `$${currencyAmount / 100}`.replace(regex, ",")
+    }
+}
+
 // Takes in the dollar value for a currency and returns a formatted string
 // ex: 1000 -> $1,000, 25000000 -> $25,000,000
 export const formatDollar = (str: string) =>

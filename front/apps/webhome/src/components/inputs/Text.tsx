@@ -256,7 +256,6 @@ export const DollarRangeInput = (
                     <LimitAmountInput
                         hasLabel={false}
                         defaultValue={defaultLowerValue}
-                        style={{ marginRight: '.5em' } as React.CSSProperties}
                         control={control}
                         name={'lower_amount'}
                     >

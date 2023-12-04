@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import Big from 'big.js';
-
 import { SubmitForm } from '@components/pieces';
 import { Transaction } from '@features/transactionsSlice';
 import { InputButton } from '@ledget/ui';
@@ -27,7 +25,10 @@ const SplitAmount = ({ name }: { name: string }) => {
 }
 
 export function SplitTransactionInput({ item, onCancel }: I) {
-  const [numberOfSplits, setNumberOfSplits] = useState<number>(item.categories ? item.categories.length : 1)
+  const [numberOfSplits, setNumberOfSplits] = useState<number>(
+    item.categories
+      ? item.categories.length === 1 ? 2 : item.categories.length
+      : 2)
   const [formError, setFormError] = useState<string | undefined>(undefined)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,7 +49,7 @@ export function SplitTransactionInput({ item, onCancel }: I) {
                   month={new Date(item.datetime).getMonth() + 1}
                   year={new Date(item.datetime).getFullYear()}
                   {...(index === numberOfSplits - 1
-                    ? { defaultValue: item.categories ? item.categories[index] : undefined }
+                    ? { defaultValue: item.categories ? item.categories[item.categories.length - index] : undefined }
                     : {})}
                 />
                 <SplitAmount name={`amount[${index}]`} />
