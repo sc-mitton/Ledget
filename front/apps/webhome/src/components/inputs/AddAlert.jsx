@@ -1,17 +1,18 @@
 import { useState, useRef, useEffect } from 'react'
 
+import Big from 'big.js'
 
 import './styles/Dropdowns.css'
 import { Plus, Return, ArrowIcon, CheckMark } from '@ledget/media'
 import ComboSelect from './ComboSelect'
-import { formatRoundedCurrency } from '@ledget/ui'
+import { formatCurrency } from '@ledget/ui'
 import { SlimInputButton, MenuTextInput, DropAnimation } from '@ledget/ui'
 
 const formatDollar = (value, percentage) => {
     if (!value) return ''
     !percentage && (percentage = 0)
 
-    return formatRoundedCurrency(value * percentage / 100)
+    return formatCurrency({ val: Big(value).times(percetnage).times(100).toNumber() })
 }
 
 const AddAlert = (props) => {

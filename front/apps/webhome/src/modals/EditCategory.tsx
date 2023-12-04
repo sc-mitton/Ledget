@@ -87,7 +87,7 @@ const EditCategory = withModal((props) => {
                     </div>
                     <div>
                         <LimitAmountInput
-                            defaultValue={formatCurrency(category?.limit_amount || 0).split('.')[0]}
+                            defaultValue={formatCurrency({ val: category?.limit_amount || 0, withCents: false })}
                             control={control}
                         >
                             < FormErrorTip errors={errors.limit_amount && [errors.limit_amount]} />

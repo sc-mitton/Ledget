@@ -6,7 +6,7 @@ import { Control } from 'react-hook-form'
 import './styles/Text.scss'
 import Emoji from './Emoji'
 import { EmojiProps, emoji } from './Emoji'
-import { formatRoundedCurrency, makeIntCurrencyFromStr } from '@ledget/ui'
+import { formatCurrency, makeIntCurrencyFromStr } from '@ledget/ui'
 import { IconButton2, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 
@@ -91,7 +91,7 @@ const increment: IncrementFunction = ({ val, setVal, field }) => {
     }
 
     field?.onChange(newVal)
-    setVal(formatRoundedCurrency(newVal))
+    setVal(formatCurrency({ val: newVal }))
 }
 
 const decrement: IncrementFunction = ({ val, setVal, field }) => {
@@ -104,7 +104,7 @@ const decrement: IncrementFunction = ({ val, setVal, field }) => {
 
     newVal = newVal > 1000 ? newVal - 1000 : 0
     field?.onChange(newVal)
-    setVal(formatRoundedCurrency(newVal))
+    setVal(formatCurrency({ val: newVal }))
 }
 
 const IncrementDecrementButton = ({ val, setVal, field }: IncrementDecrement) => (
@@ -129,12 +129,13 @@ const IncrementDecrementButton = ({ val, setVal, field }: IncrementDecrement) =>
 )
 
 export const LimitAmountInput = (
-    { control, defaultValue, children, hasLabel = true, ...rest }: {
+    { control, defaultValue, children, hasLabel = true, withCents = true, ...rest }: {
         control?: Control,
         defaultValue?: string,
         children?: React.ReactNode
         name?: string
         hasLabel?: boolean
+        withCents?: boolean
         style?: React.CSSProperties
     }
 ) => {
@@ -163,7 +164,7 @@ export const LimitAmountInput = (
                     type="text"
                     name='limit_amount'
                     id="limit_amount"
-                    placeholder="$0"
+                    placeholder={withCents ? '$0.00' : '$0'}
                     value={val}
                     ref={field.ref}
                     onKeyDown={(e) => {
@@ -177,10 +178,16 @@ export const LimitAmountInput = (
                     }}
                     onChange={(e) => {
                         field.onChange(makeIntCurrencyFromStr(e.target.value))
-                        setVal(formatRoundedCurrency(e.target.value))
+                        setVal(formatCurrency({ val: e.target.value, withCents }))
+                    }}
+                    onFocus={(e) => {
+                        if (e.target.value.length <= 1 || val === '$0') {
+                            withCents ? setVal('$0.00') : setVal('$0')
+                            field.onChange(0)
+                        }
                     }}
                     onBlur={(e) => {
-                        (e.target.value.length <= 1 || val === '$0') && setVal('')
+                        (e.target.value.length <= 1 || val === '$0' || val === '$0.00') && setVal('')
                         field.onBlur()
                     }}
                     size={14}
@@ -194,11 +201,11 @@ export const LimitAmountInput = (
 }
 
 export const ControlledDollarInput = ({
-    value, setValue, hasLabel = true, hasCents = true, ...rest
+    value, setValue, hasLabel = true, withCents = true, ...rest
 }: {
     value: string,
     setValue: React.Dispatch<React.SetStateAction<string>>,
-    hasCents?: boolean
+    withCents?: boolean
     hasLabel?: boolean
 } & HTMLProps<HTMLInputElement>
 ) => {
@@ -212,7 +219,7 @@ export const ControlledDollarInput = ({
                     name='limit_amount'
                     id="limit_amount"
                     placeholder="$0"
-                    value={formatRoundedCurrency(value)}
+                    value={formatCurrency({ val: value, withCents })}
                     onKeyDown={(e) => {
                         if (e.key === 'Right' || e.key === 'ArrowRight') {
                             e.preventDefault()
@@ -229,7 +236,7 @@ export const ControlledDollarInput = ({
                     {...rest}
                 />
                 <IncrementDecrementButton
-                    val={formatRoundedCurrency(value)}
+                    val={formatCurrency({ val: value, withCents })}
                     setVal={setValue}
                 />
             </TextInputWrapper>

@@ -6,58 +6,27 @@ export const formatName = (name: string) => (
     }).join(' ')
 )
 
-
-export const formatCurrency2String = ({ val, withDecimals = true }: { val: number | string | undefined, withDecimals: boolean }) => {
+export const formatCurrency = ({ val, withCents = true }: { val: number | string | undefined, withCents?: boolean }) => {
     if (val === undefined || val === null) return ''
 
     // First get val in integer form
     let value: string
     typeof val === 'string'
-        ? val.includes('.') ? value = val : value = `${val}00`
-        : value = val.toString()
+        ? val.includes('.') ? value = val : value = `${val}.00`
+        : value = `${val}`
 
-    const currencyAmount = parseInt(value.replace(/[^0-9]/g, '').replace(/^0+/, ''))
+    const replaceNonNumeric = /[^0-9]/g
+    const replaceLeadingZeros = /^0+(?=\d)/
+    const currencyAmount = /^0+$/.test(value)
+        ? 0
+        : parseInt(value.replace(replaceNonNumeric, '').replace(replaceLeadingZeros, ''))
 
-    const regex = /(\d)(?=(\d{3})+(?!\d))/g
-    if (withDecimals) {
-        return `$${currencyAmount}`.replace(regex, ",")
-    } else {
-        return `$${currencyAmount / 100}`.replace(regex, ",")
-    }
-}
-
-// Takes in the dollar value for a currency and returns a formatted string
-// ex: 1000 -> $1,000, 25000000 -> $25,000,000
-export const formatDollar = (str: string) =>
-    `$${str}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-
-// Takes in a string currency and returns a formatted string
-// ex: 100000 -> $1,000, 25000 -> $250
-export const formatRoundedCurrency = (val: number | string) => {
-    let str = ''
-    typeof val === 'string'
-        ? str = val.replace(/[^0-9]/g, '')
-        : str = (val / 100).toString()
-
-    return formatDollar(str)
-}
-
-// Takes in a string or int currency and returns a formatted string
-// ex: 100000 -> $1,000.00, 25000 -> $250.00
-export const formatCurrency = (val: number | string | undefined) => {
-    if (val === undefined || val === null) return ''
-
-    let str = ''
-    typeof val === 'string'
-        ? str = val.replace(/[^0-9]/g, '').replace(/^0+/, '')
-        : str = val.toString()
-
-    const dollar = str.slice(0, str.length - 2) || '0'
-    let cents = str.slice(str.length - 2)
-    if (cents.length === 0) cents = '00'
-    if (cents.length === 1) cents = `0${cents}`
-
-    return `${formatDollar(dollar)}.${cents}`
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: withCents ? 2 : 0
+    })
+    return formatter.format(currencyAmount / 100)
 }
 
 // Takes in a string currency and returns an integer

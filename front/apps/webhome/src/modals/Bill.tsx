@@ -28,7 +28,8 @@ import {
     EmojiComboText,
     DollarRangeInput,
     BillScheduler,
-    AddReminder
+    AddReminder,
+    emoji
 } from '@components/inputs'
 
 const getRepeatsDescription = ({ day, week, week_day, month, year }:
@@ -259,7 +260,7 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
     })
     const watchRange = watch('range', false)
     const [scheduleMissing, setScheduleMissing] = useState(false)
-    const [emoji, setEmoji] = useState<string>()
+    const [emoji, setEmoji] = useState<emoji>()
     const [reminders, setReminders] = useState<Reminder[]>()
 
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -339,8 +340,8 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                 </div>
                 <div>
                     <DollarRangeInput
-                        defaultLowerValue={formatCurrency(bill.lower_amount)}
-                        defaultUpperValue={formatCurrency(bill.upper_amount)}
+                        defaultLowerValue={formatCurrency({ val: bill.lower_amount })}
+                        defaultUpperValue={formatCurrency({ val: bill.upper_amount })}
                         rangeMode={watchRange}
                         control={control}
                         errors={errors}

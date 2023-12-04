@@ -70,7 +70,7 @@ const Form = (props) => {
                         />
                     </div>
                     <div>
-                        <LimitAmountInput control={control}>
+                        <LimitAmountInput withCents={false} control={control}>
                             < FormErrorTip errors={[errors.limit_amount]} />
                         </LimitAmountInput>
                     </div>

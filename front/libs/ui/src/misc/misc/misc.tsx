@@ -56,10 +56,12 @@ export const Base64Logo = (props: Base64LogoProps) => {
   )
 }
 
-export const DollarCents = ({ value = 0, style = {}, hasCents = true, ...rest }:
+export const DollarCents = ({ value = 0, style = {}, withCents = true, ...rest }:
   { value: string | number, isDebit?: boolean, style?: React.CSSProperties, [key: string]: any }
 ) => {
-  const str = typeof value === 'string' ? formatCurrency(value.replace(/^-/, '')) : formatCurrency(Math.abs(value));
+  const str = formatCurrency({
+    val: typeof value === 'string' ? value.replace(/^-/, '') : Math.abs(value),
+  })
   const isDebit = Number(value) < 0
 
   return (
@@ -67,7 +69,7 @@ export const DollarCents = ({ value = 0, style = {}, hasCents = true, ...rest }:
       <span style={{ fontSize: 'inherit' }}>
         {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
       </span>
-      {hasCents &&
+      {withCents &&
         <span style={{ fontSize: '.75em' }}>
           {`.${str.split('.')[1]}`}
         </span>
@@ -78,8 +80,8 @@ export const DollarCents = ({ value = 0, style = {}, hasCents = true, ...rest }:
 
 
 // Value is integer like 1000 (ie 1000 = $10.00)
-export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
-  { value: number, hasCents?: boolean }) => {
+export const AnimatedDollarCents = ({ value = 0, withCents = true, ...rest }:
+  { value: number, withCents?: boolean }) => {
 
   const loaded = useLoaded(2000)
   const [slots, setSlots] = useState<string[]>([])
@@ -114,8 +116,7 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
   })
 
   useEffect(() => {
-    let currencyVal = formatCurrency(value).replace(/^\$/, '')
-    let newVal = hasCents ? currencyVal : currencyVal.split('.')[0]
+    let newVal = formatCurrency({ val: value, withCents }).replace(/^\$/, '')
 
     // If updating slots or upsizing (setting new slotRef values)
     if (newVal.length >= slots.length) {
@@ -154,7 +155,7 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
   }, [slots, slotRefs.current])
 
   return (
-    <div className={`animated-dollar ${hasCents ? 'with-cents' : ''}`}>
+    <div className={`animated-dollar ${withCents ? 'with-cents' : ''}`}>
       <div className="slots">
         <div className='slot--container'>
           <span>$</span>
@@ -186,11 +187,11 @@ export const AnimatedDollarCents = ({ value = 0, hasCents = true, ...rest }:
         ))}
       </div>
       <span>
-        {`${formatCurrency(value).split('.')[0]}`}
+        {`${formatCurrency({ val: value }).split('.')[0]}`}
       </span>
-      {hasCents &&
+      {withCents &&
         <span>
-          {`.${formatCurrency(value).split('.')[1]}`}
+          {`.${formatCurrency({ val: value }).split('.')[1]}`}
         </span>
       }
     </div>

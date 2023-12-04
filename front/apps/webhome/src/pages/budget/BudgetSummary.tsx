@@ -195,7 +195,7 @@ const SummaryStatsTeaser = ({
                     >
                         <div><h4>{period.charAt(0).toUpperCase() + period.slice(1)}</h4></div>
                         <div>
-                            <AnimatedDollarCents value={Math.abs(amountLeft)} hasCents={false} />
+                            <AnimatedDollarCents value={Math.abs(amountLeft)} withCents={false} />
                             <div>
                                 <span>{amountLeft >= 0 ? 'left' : 'over'}</span>
                                 <div><ThumbUp

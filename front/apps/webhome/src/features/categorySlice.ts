@@ -29,7 +29,7 @@ export interface SplitCategory extends Category {
 interface CategoryQueryParams {
     start?: number;
     end?: number;
-    spending: boolean;
+    spending?: boolean;
 }
 
 interface CategorySpendingHistory {

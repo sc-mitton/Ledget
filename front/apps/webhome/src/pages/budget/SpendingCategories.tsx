@@ -118,14 +118,14 @@ const Row = ({ category }: { category: Category }) => {
                     <div>
                         <DollarCents
                             value={category.amount_spent ? Big(category.amount_spent).times(100).toNumber() : '0'}
-                            hasCents={false}
+                            withCents={false}
                         />
                     </div>
                     <div>/</div>
                     <div>
                         <DollarCents
                             value={category.limit_amount ? Big(category.limit_amount).div(100).toFixed(2) : '0'}
-                            hasCents={false}
+                            withCents={false}
                         />
                     </div>
                     <div>
@@ -138,7 +138,7 @@ const Row = ({ category }: { category: Category }) => {
                 <div className="spanned">
                     <DollarCents
                         value={category.amount_spent ? Big(category.amount_spent).times(100).toNumber() : '0.00'}
-                        hasCents={false}
+                        withCents={false}
                     />
                 </div>
             }
@@ -217,7 +217,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
             </div>
             <div>/</div>
             <div>
-                <DollarCents value={totalLimit ? totalLimit : '0.00'} hasCents={false} />
+                <DollarCents value={totalLimit ? totalLimit : '0.00'} withCents={false} />
             </div>
             <div>
                 <StaticProgressCircle value={
@@ -285,7 +285,7 @@ const TabView = ({ categories }: { categories: Category[] }) => {
                                 ? limit_amount_monthly ? limit_amount_monthly : '0.00'
                                 : limit_amount_yearly ? limit_amount_yearly : '0.00'
                         }
-                        hasCents={false}
+                        withCents={false}
                     />
                 </div>
                 <div>
@@ -384,7 +384,7 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
 
     const chartMargin = useMemo<{ top: number, right: number, bottom: number, left: number }>(() => {
         const margin = { top: 0, right: 16, bottom: 0, left: 0 }
-        const largestYAxisLabel = formatCurrency(maxY).split('.')[0]
+        const largestYAxisLabel = formatCurrency({ val: maxY, withCents: false })
 
         const rootElement = document.documentElement;
         const computedStyle = getComputedStyle(rootElement);
@@ -424,7 +424,7 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
             axisLeft={{
                 tickValues: 4,
                 tickPadding: xaxisPadding,
-                format: (value: number) => formatCurrency(value).split('.')[0]
+                format: (value: number) => formatCurrency({ val: value, withCents: false })
             }}
             areaBaselineValue={minY}
             tooltip={({ point }) => (
@@ -433,7 +433,7 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
                 >
                     <span>{new Date(point.data.x).toLocaleString('default', { month: 'short' })}</span>
                     &nbsp;&nbsp;
-                    <DollarCents value={formatCurrency(point.data.y.toString())} />
+                    <DollarCents value={formatCurrency({ val: point.data.y.toString() })} />
                 </ChartTip>
             )
             }
@@ -692,7 +692,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                             <div>
                                                 <DollarCents
                                                     value={Big(category.limit_amount).div(100).toFixed(2)}
-                                                    hasCents={false}
+                                                    withCents={false}
                                                 />
                                             </div></>}
                                 </div>
