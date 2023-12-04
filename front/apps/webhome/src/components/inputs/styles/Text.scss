@@ -1,11 +1,15 @@
-.limit-amount--container button svg {
-    opacity: .4;
-    transition: opacity .2s ease;
-}
+.limit-amount--container {
 
-.limit-amount--container:focus-within button svg {
-    opacity: 1;
-    transition: opacity .2s ease;
+    &:focus-within>div>button,
+    &.valid>div>button {
+        color: var(--m-text);
+        transition: color .2s ease;
+    }
+
+    &:not(.valid):not(:focus-within)>div>button {
+        color: var(--input-placeholder2);
+        transition: color .2s ease;
+    }
 }
 
 .increment-arrows--container {
@@ -18,22 +22,22 @@
     right: .5em;
     border-radius: var(--border-radius1);
     padding: .125em;
-}
 
-.increment-arrows--container button svg {
-    margin: .125em;
-}
+    button {
+        margin: 0;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius);
 
-.increment-arrows--container button {
-    margin: 0;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    outline: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--border-radius);
+        svg {
+            margin: .125em;
+        }
+    }
 }
 
 .dollar-range-input--container {
@@ -43,30 +47,20 @@
     align-items: center;
     width: 100%;
     position: relative;
-}
 
-.dollar-range-input--container>div {
-    flex: 1;
+    &>div {
+        flex: 1;
+    }
 }
 
 #emoji-picker-ledget--button {
     transform: scale(1.2);
     margin: 0 .25em;
-}
 
-#emoji-picker-ledget--button:hover,
-#emoji-picker-ledget--button:focus {
-    transform: scale(1.5);
-}
-
-.dollar-range-input--container.range-mode>div:first-child {
-    transform: scaleX(1);
-    animation: split-left .3s ease-out;
-}
-
-.dollar-range-input--container.range-mode>div:last-child {
-    transform: scaleX(1);
-    animation: split-right .3s ease-out;
+    &:hover,
+    &:focus {
+        transform: scale(1.5);
+    }
 }
 
 @function calculate_scale($keyframe) {
@@ -97,12 +91,15 @@
     }
 }
 
-.dollar-range-input--container.range-mode>div:first-child {
-    transform: scaleX(1);
-    animation: split-left .7s ease-out;
-}
+.dollar-range-input--container.range-mode {
 
-.dollar-range-input--container.range-mode>div:last-child {
-    transform: scaleX(1);
-    animation: split-right .7s ease-out;
+    &>div:first-child {
+        transform: scaleX(1);
+        animation: split-left .7s ease-out;
+    }
+
+    &>div:last-child {
+        transform: scaleX(1);
+        animation: split-right .7s ease-out;
+    }
 }

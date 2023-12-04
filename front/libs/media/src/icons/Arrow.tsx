@@ -1,5 +1,5 @@
 const Arrow = ({
-    stroke = 'rgb(36, 36, 36)',
+    stroke = 'var(--m-text)',
     scale = 1,
     rotation = 0,
     strokeWidth = "23",

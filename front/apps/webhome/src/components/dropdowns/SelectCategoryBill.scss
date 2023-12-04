@@ -2,7 +2,17 @@
 
     .selector-current-label {
         display: flex;
-        gap: .25em;
+        gap: .375em;
+    }
+
+    &:not(.valid),
+    &:not(.active) {
+        color: var(--input-placeholder2);
+    }
+
+    &.valid,
+    &.active {
+        color: var(--m-text);
     }
 }
 

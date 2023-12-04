@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { z, ZodType } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form'
 
 import { SubmitForm } from '@components/pieces';
 import { Transaction } from '@features/transactionsSlice';
@@ -24,12 +28,37 @@ const SplitAmount = ({ name }: { name: string }) => {
   />
 }
 
+
+interface Splits {
+  [key: `category[${number}]`]: string
+  [key: `amount[${number}]`]: string
+}
+
+type SplitZodFields = {
+  [key in keyof Splits]: ZodType<Splits[key]>
+}
+
+function createZodSchema(index: number) {
+  const fields: SplitZodFields = {} as SplitZodFields
+
+  for (let i = 0; i < index; i++) {
+    fields[`category[${i}]`] = z.string()
+    fields[`amount[${i}]`] = z.string()
+  }
+
+  return z.object(fields)
+}
+
 export function SplitTransactionInput({ item, onCancel }: I) {
-  const [numberOfSplits, setNumberOfSplits] = useState<number>(
-    item.categories
-      ? item.categories.length === 1 ? 2 : item.categories.length
-      : 2)
-  const [formError, setFormError] = useState<string | undefined>(undefined)
+  const [schema, setSchema] = useState<ZodType<Splits>>()
+
+  const [numberOfSplits, setNumberOfSplits] = useState<number>(item.categories ? item.categories.length : 1)
+
+  // Setting schema
+  useEffect(() => {
+    const schema = createZodSchema(numberOfSplits)
+    setSchema(schema)
+  }, [numberOfSplits])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     console.log(e)
@@ -49,21 +78,18 @@ export function SplitTransactionInput({ item, onCancel }: I) {
                   month={new Date(item.datetime).getMonth() + 1}
                   year={new Date(item.datetime).getFullYear()}
                   {...(index === numberOfSplits - 1
-                    ? { defaultValue: item.categories ? item.categories[item.categories.length - index] : undefined }
+                    ? { defaultValue: item.categories ? item.categories[index] : undefined }
                     : {})}
                 />
                 <SplitAmount name={`amount[${index}]`} />
                 {index === numberOfSplits - 1
-                  ?
-                  <InputButton
-                    type='button'
+                  ? <InputButton type='button'
                     className="add-split--button"
                     onClick={() => setNumberOfSplits(numberOfSplits + 1)}
                   >
                     <Plus size={'1em'} />
                   </InputButton>
-                  :
-                  <InputButton
+                  : <InputButton
                     type='button'
                     className="remove-split--button"
                     onClick={() => setNumberOfSplits(numberOfSplits - 1)}
@@ -83,7 +109,6 @@ export function SplitTransactionInput({ item, onCancel }: I) {
       </form>
     </div>
   )
-
 }
 
 export default SplitTransactionInput;

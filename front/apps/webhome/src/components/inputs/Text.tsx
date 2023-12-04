@@ -115,7 +115,7 @@ const IncrementDecrementButton = ({ val, setVal, field }: IncrementDecrement) =>
             aria-label="increment"
             tabIndex={-1}
         >
-            <ArrowIcon size={'.75em'} rotation={-180} />
+            <ArrowIcon size={'.75em'} rotation={-180} stroke={'currentColor'} />
         </IconButton2>
         <IconButton2
             type="button"
@@ -123,7 +123,7 @@ const IncrementDecrementButton = ({ val, setVal, field }: IncrementDecrement) =>
             aria-label="decrement"
             tabIndex={-1}
         >
-            <ArrowIcon size={'.75em'} />
+            <ArrowIcon size={'.75em'} stroke={'currentColor'} />
         </IconButton2>
     </div>
 )
@@ -213,13 +213,12 @@ export const ControlledDollarInput = ({
     return (
         <>
             {hasLabel && <label htmlFor="limit">Limit</label>}
-            <TextInputWrapper>
+            <TextInputWrapper className={`limit-amount--container${value ? ' valid' : ''}`}>
                 <input
-                    type="text"
+                    type='text'
                     name='limit_amount'
-                    id="limit_amount"
-                    placeholder="$0"
-                    value={formatCurrency({ val: value, withCents })}
+                    placeholder={withCents ? '$0.00' : '$0'}
+                    value={value}
                     onKeyDown={(e) => {
                         if (e.key === 'Right' || e.key === 'ArrowRight') {
                             e.preventDefault()
@@ -230,7 +229,15 @@ export const ControlledDollarInput = ({
                         }
                     }}
                     onChange={(e) => {
-                        setValue(`${makeIntCurrencyFromStr(e.target.value)}`)
+                        setValue(formatCurrency({ val: e.target.value, withCents }))
+                    }}
+                    onFocus={(e) => {
+                        if (e.target.value.length <= 1 || value === '$0') {
+                            withCents ? setValue('$0.00') : setValue('$0')
+                        }
+                    }}
+                    onBlur={(e) => {
+                        (e.target.value.length <= 1 || value === '$0' || value === '$0.00') && setValue('')
                     }}
                     size={14}
                     {...rest}

@@ -222,6 +222,9 @@ importers:
       yup:
         specifier: ^1.2.0
         version: 1.2.0
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@nx/eslint-plugin':
         specifier: 16.7.4
@@ -370,6 +373,9 @@ importers:
       yup:
         specifier: ^1.0.2
         version: 1.2.0
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@nx/eslint-plugin':
         specifier: 16.7.4
@@ -2964,7 +2970,7 @@ packages:
       ejs: 3.1.9
       enquirer: 2.3.6
       ignore: 5.2.4
-      nx: 16.7.4(@swc/core@1.3.91)
+      nx: 16.7.4(@swc/core@1.3.82)
       semver: 7.5.3
       tmp: 0.2.1
       tslib: 2.6.2
@@ -3866,7 +3872,7 @@ packages:
         optional: true
     dependencies:
       '@mole-inc/bin-wrapper': 8.0.1
-      '@swc/core': 1.3.82(@swc/helpers@0.5.2)
+      '@swc/core': 1.3.82(@swc/helpers@0.5.1)
       commander: 7.2.0
       fast-glob: 3.3.1
       semver: 7.5.4
@@ -6877,7 +6883,7 @@ packages:
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.3.0
-      webpack: 5.88.2(@swc/core@1.3.91)
+      webpack: 5.88.2(@swc/core@1.3.82)
     dev: true
 
   /file-type@17.1.6:
@@ -8440,7 +8446,7 @@ packages:
     dependencies:
       '@nrwl/tao': 16.7.4(@swc/core@1.3.82)
       '@parcel/watcher': 2.0.4
-      '@swc/core': 1.3.82(@swc/helpers@0.5.2)
+      '@swc/core': 1.3.82(@swc/helpers@0.5.1)
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.0-rc.46
       '@zkochan/js-yaml': 0.0.6
@@ -9823,7 +9829,7 @@ packages:
       readable-stream: 3.6.2
     dev: true
 
-  /terser-webpack-plugin@5.3.9(@swc/core@1.3.91)(webpack@5.88.2):
+  /terser-webpack-plugin@5.3.9(@swc/core@1.3.82)(webpack@5.88.2):
     resolution: {integrity: sha512-ZuXsqE07EcggTWQjXUj+Aot/OMcD0bMKGgF63f7UxYcu5/AJF53aIpK1YoP5xR9l6s/Hy2b+t1AM0bLNPRuhwA==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
@@ -9840,12 +9846,12 @@ packages:
         optional: true
     dependencies:
       '@jridgewell/trace-mapping': 0.3.19
-      '@swc/core': 1.3.91(@swc/helpers@0.5.2)
+      '@swc/core': 1.3.82(@swc/helpers@0.5.1)
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.1
       terser: 5.20.0
-      webpack: 5.88.2(@swc/core@1.3.91)
+      webpack: 5.88.2(@swc/core@1.3.82)
     dev: true
 
   /terser@5.20.0:
@@ -10000,7 +10006,7 @@ packages:
         optional: true
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
-      '@swc/core': 1.3.82(@swc/helpers@0.5.2)
+      '@swc/core': 1.3.82(@swc/helpers@0.5.1)
       '@tsconfig/node10': 1.0.9
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
@@ -10479,7 +10485,7 @@ packages:
     engines: {node: '>=10.13.0'}
     dev: true
 
-  /webpack@5.88.2(@swc/core@1.3.91):
+  /webpack@5.88.2(@swc/core@1.3.82):
     resolution: {integrity: sha512-JmcgNZ1iKj+aiR0OvTYtWQqJwq37Pf683dY9bVORwVbUrDhLhdn/PlO2sHsFHPkj7sHNQF3JwaAkp49V+Sq1tQ==}
     engines: {node: '>=10.13.0'}
     hasBin: true
@@ -10510,7 +10516,7 @@ packages:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.9(@swc/core@1.3.91)(webpack@5.88.2)
+      terser-webpack-plugin: 5.3.9(@swc/core@1.3.82)(webpack@5.88.2)
       watchpack: 2.4.0
       webpack-sources: 3.2.3
     transitivePeerDependencies:
@@ -10748,4 +10754,8 @@ packages:
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+    dev: false
+
+  /zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
     dev: false

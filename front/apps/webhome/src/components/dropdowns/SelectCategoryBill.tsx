@@ -138,7 +138,7 @@ export const FullSelectCategoryBill: FC<Selector>
                         {...rest}
                     />}
                 <SelectorComponent
-                    className="bill-category-selector--button"
+                    className={`bill-category-selector--button ${value ? 'valid' : ''} ${showBillCatSelect ? 'active' : ''}`}
                     type='button'
                     onClick={() => setShowBillCatSelect(!showBillCatSelect)}
                     ref={buttonRef}
@@ -152,8 +152,7 @@ export const FullSelectCategoryBill: FC<Selector>
                             : <span style={{ opacity: 0, visibility: 'hidden' }}>None</span>
                         }
                     </div>
-
-                    <ArrowIcon size={'.8em'} />
+                    <ArrowIcon size={'.8em'} stroke={'currentColor'} />
                 </SelectorComponent>
                 <DropAnimation
                     placement='left'
