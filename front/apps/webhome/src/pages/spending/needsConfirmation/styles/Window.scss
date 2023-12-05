@@ -96,7 +96,15 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: .5em;
+    gap: .25em;
+
+    button {
+        margin: 0;
+    }
+
+    .confirm-button {
+        margin-left: .25em;
+    }
 }
 
 /* Category Icon */

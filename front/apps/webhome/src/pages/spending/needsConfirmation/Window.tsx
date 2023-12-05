@@ -17,7 +17,7 @@ import {
     NarrowButton,
     ExpandableContainer,
     ExpandButton,
-    IconScaleButton,
+    IconButton,
     Tooltip,
     DollarCents,
     BlueSlimButton,
@@ -184,14 +184,14 @@ const NewItem: FC<{
                     ariaLabel="Confirm"
                     style={{ left: '-1.1rem' }}
                 >
-                    <IconScaleButton
+                    <IconButton
                         onClick={() => { handleConfirm(item) }}
                         aria-label="Confirm"
                         tabIndex={tabIndex}
                         className="confirm-button"
                     >
                         <CheckMark />
-                    </IconScaleButton>
+                    </IconButton>
                 </Tooltip>
                 <NarrowButton
                     tabIndex={tabIndex}
