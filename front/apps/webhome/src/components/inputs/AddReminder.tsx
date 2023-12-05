@@ -35,7 +35,7 @@ const AddReminder = ({ value, onChange, defaultSelected }:
                         <span style={{ opacity: active ? '.5' : '0', padding: '0 .5em', fontWeight: '400' }}>before</span>
                     </div>
                     {!selected
-                        ? <Plus stroke={'var(--muted-text-gray)'} size={'.8em'} />
+                        ? <Plus stroke={'currentColor'} size={'.8em'} />
                         : <CheckMark stroke={`${selected ? 'var(--main-dark)' : 'transparent'}`} />
                     }
                 </div>

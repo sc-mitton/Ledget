@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useRef } from 'react'
 
-import { useClickClose } from '@utils'
+import { useClickClose } from '@utils/hooks'
 
 const DataContext = createContext()
 

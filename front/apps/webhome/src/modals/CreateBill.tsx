@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form"
-import { object, string, boolean, number } from "yup"
+import { z } from 'zod'
 
 import './styles/Forms.css'
 import SubmitForm from '@components/pieces/SubmitForm'
@@ -16,26 +16,23 @@ import {
     PeriodSelect
 } from '@components/inputs'
 import { Checkbox } from '@ledget/ui'
-import { useAddnewBillMutation } from '@features/billSlice'
+import { useAddnewBillMutation, Bill } from '@features/billSlice'
+import { Reminder } from '@features/remindersSlice'
 
-export const billSchema = object().shape({
-    name: string().required().lowercase(),
-    range: boolean(),
-    lower_amount: number('Enter an amount').transform((value) => (isNaN(value) ? undefined : value)).nullable()
-        .when('range', {
-            is: true,
-            then: () => number('Enter an amount')
-                .test('lower_amount', 'First value must be smaller', (value, { parent }) => {
-                    return value == null ? true : value < parent.upper_amount
-                })
-        }),
-    upper_amount: number('Enter an amount').required('required')
+export const billSchema = z.object({
+    name: z.string().toLowerCase().min(1, { message: 'Name is required.' }).max(50, { message: 'Name is too long.' }),
+    lower_amount: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
+    upper_amount: z.number().transform((value) => (isNaN(value) ? undefined : value))
+}).refine((data) => {
+    return data.lower_amount && data.upper_amount
+        ? data.lower_amount < data.upper_amount
+        : true
 })
 
-export const extractBill = (e) => {
+export const extractBill = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const formData = new FormData(e.target)
-    let body = Object.fromEntries(formData)
+    const formData = new FormData(e.target as any)
+    let body = Object.fromEntries(formData as any)
 
     // Check if schedule is missing
     if (!body.day && !(body.week && body.weekDay) && !(body.month && body.day)) {
@@ -43,43 +40,47 @@ export const extractBill = (e) => {
     }
 
     // Extract reminder objects
-    let reminders = []
+    let reminders: Reminder[] = []
     for (const [key, value] of Object.entries(body)) {
         if (key.includes('reminder')) {
-            const values = key.match(/\[(\w+)\]/g).map((match) => /[\w]+/.exec(match)[0])
-            if (reminders.length < values[0] - 1) {
-                reminders.push({})
-            }
-            reminders[values[0]] = { ...reminders[values[0]], [values[1]]: value }
+            const values = key.match(/\[(\w+)\]/g)?.map((match) => {
+                const matches = /[\w]+/.exec(match)
+                return matches ? matches[0] : ''
+            })
+
+            if (!values) { continue }
+
+            const index = parseInt(values[0]);
+            reminders[index] = { ...reminders[index], [values[1]]: value };
+
             delete body[key]
         }
     }
 
-    if (reminders.length > 0) {
+    if (reminders.length > 0)
         body.reminders = reminders
-    }
-    delete body.range
 
+    delete body.range
     return body
 }
 
-const Form = (props) => {
+const Form = withModal((props) => {
     const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
-    const [billPeriod, setBillPeriod] = useState('month')
+    const [billPeriod, setBillPeriod] = useState<Bill['period']>('month')
     const [scheduleMissing, setScheduleMissing] = useState(false)
+    const [rangeMode, setRangeMode] = useState(false)
 
-    const { register, watch, handleSubmit, formState: { errors }, control } = useForm({
-        resolver: yupResolver(billSchema),
+    const { register, handleSubmit, formState: { errors }, control } = useForm<Bill>({
+        resolver: zodResolver(billSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
-    const watchRange = watch('range', false)
 
     useEffect(() => {
         isSuccess && props.closeModal()
     }, [isSuccess])
 
-    const submitForm = (e) => {
+    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         const body = extractBill(e)
         if (body.errors) {
             body.errors.schedule && setScheduleMissing(true)
@@ -115,6 +116,7 @@ const Form = (props) => {
                                 <BillScheduler
                                     billPeriod={billPeriod}
                                     error={scheduleMissing}
+                                    register={register}
                                 />
                             </div>}
                         <AddReminder />
@@ -130,17 +132,17 @@ const Form = (props) => {
                 </div>
                 <div className="padded-row">
                     <DollarRangeInput
-                        rangeMode={watchRange}
+                        rangeMode={rangeMode}
                         control={control}
                         errors={errors}
                     />
                     <div id="range-checkbox--container">
                         <Checkbox
+                            checked={rangeMode}
+                            setChecked={setRangeMode}
                             label='Range'
-                            name='range'
                             id="range"
                             aria-label='Change bill amount to a range.'
-                            {...register('range')}
                         />
                     </div>
                 </div>
@@ -151,19 +153,17 @@ const Form = (props) => {
             </form>
         </>
     )
-}
+})
 
-const Modal = withModal(Form)
+export default function () {
 
-export default (props) => {
     const navigate = useNavigate()
 
     return (
-        <Modal
-            {...props}
+        <Form
             onClose={() => navigate(-1)}
-            maxWidth={props.maxWidth || '21.875rem'}
-            minWidth={props.minWidth || '0'}
+            maxWidth={'21.875rem'}
+            minWidth={'0'}
             blur={2}
         />
     )

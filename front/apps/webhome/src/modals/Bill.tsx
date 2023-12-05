@@ -1,9 +1,9 @@
-import { useId, useState, useEffect } from 'react'
+import { useId, useState, useEffect, useRef } from 'react'
 
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Menu, RadioGroup } from '@headlessui/react'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
 import './styles/Bill.scss'
@@ -255,13 +255,14 @@ const DeleteBill = ({ bill, onCancel, onDelete }: { bill: TransformedBill, onCan
 
 const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, onCancel: () => void, onUpdateSuccess: () => void }) => {
     const [updateBill, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useUpdateBillsMutation()
-    const { register, handleSubmit, formState: { errors }, watch, control, setValue } = useForm({
-        resolver: yupResolver(billSchema),
+    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<Bill>({
+        resolver: zodResolver(billSchema)
     })
-    const watchRange = watch('range', false)
+
     const [scheduleMissing, setScheduleMissing] = useState(false)
     const [emoji, setEmoji] = useState<emoji>()
     const [reminders, setReminders] = useState<Reminder[]>()
+    const [rangeMode, setRangeMode] = useState(Boolean(bill.lower_amount))
 
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -272,10 +273,10 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
             body.errors.schedule && setScheduleMissing(true)
         }
 
+        console.log('data', data)
         handleSubmit((data) => {
             if (body.errors) { return }
             updateBill({
-                id: bill.id,
                 reminders: reminders,
                 ...body,
                 ...data,
@@ -286,7 +287,6 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
     // Set values on load
     useEffect(() => {
         setValue('name', `${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`)
-        setValue('range', bill.lower_amount ? true : false)
         setEmoji(bill.emoji)
     }, [])
 
@@ -303,6 +303,7 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
 
     return (
         <form onSubmit={submitForm}>
+            <input type="hidden" value={bill.id} {...register('id')} />
             <div id="bill-edit">
                 <h3>Edit Bill</h3>
                 <hr />
@@ -313,11 +314,12 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                             defaultValue={{
                                 day: bill.day,
                                 week: bill.week,
-                                week_day: bill.week_day,
+                                weekDay: bill.week_day,
                                 month: bill.month
                             }}
                             billPeriod={bill.period}
                             error={scheduleMissing}
+                            register={register}
                         />
                         <AddReminder
                             value={reminders}
@@ -342,7 +344,7 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                     <DollarRangeInput
                         defaultLowerValue={formatCurrency({ val: bill.lower_amount })}
                         defaultUpperValue={formatCurrency({ val: bill.upper_amount })}
-                        rangeMode={watchRange}
+                        rangeMode={rangeMode}
                         control={control}
                         errors={errors}
                     />
@@ -350,7 +352,8 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                         label='Range'
                         id="range"
                         aria-label='Change bill amount to a range.'
-                        {...register('range')}
+                        checked={rangeMode}
+                        setChecked={setRangeMode}
                     />
                 </div>
             </div>

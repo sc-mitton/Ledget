@@ -1,12 +1,18 @@
 import { useEffect } from 'react'
 
-function useClickClose({ refs, visible, setVisible }) {
+interface Props {
+    refs: React.RefObject<HTMLElement>[]
+    visible: boolean
+    setVisible: (visible: boolean) => void
+}
+
+export const useClickClose = ({ refs, visible, setVisible }: Props) => {
     useEffect(() => {
-        const handleClick = (event) => {
+        const handleClick = (event: MouseEvent) => {
             event.stopPropagation()
             let flag = false
             for (const ref of refs) {
-                if (ref.current && !ref.current.contains(event.target)) {
+                if (ref.current && !ref.current.contains(event.target as Node)) {
                     continue
                 } else {
                     flag = true
@@ -24,5 +30,3 @@ function useClickClose({ refs, visible, setVisible }) {
         }
     }, [refs, visible, setVisible])
 }
-
-export default useClickClose

@@ -38,7 +38,7 @@ class ReminderView(ListAPIView):
     serializer_class = ReminderSerializer
 
     def get_queryset(self):
-        return Reminder.objects.all()
+        return Reminder.objects.all().order_by('period', 'offset')
 
 
 class BillViewSet(BulkSerializerMixin, ModelViewSet):

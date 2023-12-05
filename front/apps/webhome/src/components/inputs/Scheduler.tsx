@@ -1,19 +1,41 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { FC, useState, useEffect, useRef, useContext, createContext } from 'react'
+
+import { UseFormRegister } from 'react-hook-form'
 
 import './styles/Dropdowns.css'
 import './styles/Scheduler.scss'
 import Radios from './Radios'
-import { useClickClose } from '@utils'
+import type { Bill } from '@features/billSlice'
+import { useClickClose } from '@utils/hooks'
 import { ArrowIcon } from '@ledget/media'
 import { SlimInputButton, FormErrorTip, DropAnimation, getDaySuffix } from '@ledget/ui'
 
-const pickerContext = React.createContext()
+interface Context extends Pick<Bill, 'day' | 'week' | 'month'> {
+    open: boolean,
+    weekDay: Bill['week_day'],
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    setDay: React.Dispatch<React.SetStateAction<Bill['day']>>,
+    setWeek: React.Dispatch<React.SetStateAction<Bill['week']>>,
+    setWeekDay: React.Dispatch<React.SetStateAction<Bill['week_day']>>,
+    setMonth: React.Dispatch<React.SetStateAction<Bill['month']>>,
+    buttonRef: React.RefObject<HTMLButtonElement>
+}
 
-const Scheduler = (props) => {
+const pickerContext = createContext<Context | null>(null)
+
+const usePickerContext = () => {
+    const context = useContext(pickerContext)
+    if (!context) {
+        throw new Error('usePickerContext must be used within a Scheduler')
+    }
+    return context
+}
+
+const Scheduler = (props: Omit<Context, 'open' | 'setOpen' | 'buttonRef'> & { children: React.ReactNode }) => {
     const {
         day, setDay, month, setMonth, week, setWeek, weekDay, setWeekDay, children
     } = props
-    const [open, setOpen] = useState('')
+    const [open, setOpen] = useState(false)
     const buttonRef = useRef(null)
 
     const data = {
@@ -37,7 +59,7 @@ const Scheduler = (props) => {
     )
 }
 
-const Button = ({ children, ...props }) => {
+const Button: FC<React.HTMLAttributes<HTMLButtonElement>> = ({ children, ...props }) => {
     const dayMap = {
         1: 'Sunday', 2: 'Monday', 3: 'Tuesday', 4: 'Wednesday',
         5: 'Thursday', 6: 'Friday', 7: 'Saturday',
@@ -57,7 +79,7 @@ const Button = ({ children, ...props }) => {
         week,
         weekDay,
         month,
-    } = useContext(pickerContext)
+    } = usePickerContext()
 
     useEffect(() => {
         if (month && day) {
@@ -103,11 +125,15 @@ const Button = ({ children, ...props }) => {
     )
 }
 
-const ModeSelector = ({ mode, setMode }) => {
-    const options = [
-        { label: 'Day', value: 'day', default: true },
-        { label: 'Week', value: 'week', default: false },
-    ]
+const options = [
+    { label: 'Day', value: 'day', default: true },
+    { label: 'Week', value: 'week', default: false },
+]
+
+const ModeSelector = ({ mode, setMode }: {
+    mode: typeof options[number]['value'],
+    setMode: React.Dispatch<React.SetStateAction<typeof options[number]['value']>>
+}) => {
 
     return (
         <Radios
@@ -132,7 +158,7 @@ const ModeSelector = ({ mode, setMode }) => {
                         cursor: 'pointer'
                     }}
                 >
-                    {({ selected }) => (
+                    {({ selected }: { selected: any }) => (
                         <span
                             style={{
                                 color: selected
@@ -150,19 +176,20 @@ const ModeSelector = ({ mode, setMode }) => {
     )
 }
 
+const daysMap = {
+    1: 31, 2: 28, 3: 31, 4: 30,
+    5: 31, 6: 30, 7: 31, 8: 31,
+    9: 30, 10: 31, 11: 30, 12: 31,
+} as const // How many days are in each month
+
 const DayPicker = () => {
-    const daysMap = {
-        1: 31, 2: 28, 3: 31, 4: 30,
-        5: 31, 6: 30, 7: 31, 8: 31,
-        9: 30, 10: 31, 11: 30, 12: 31,
-    } // How many days are in each month
 
-    const { setOpen, day, setDay, month } = useContext(pickerContext)
-    const [numberOfDays, setNumberOfDays] = useState(daysMap[month || 1])
-    const [activeDay, setActiveDay] = useState(null)
-    const ref = useRef(null)
+    const { setOpen, day, setDay, month } = usePickerContext()
+    const [numberOfDays, setNumberOfDays] = useState<typeof daysMap[keyof typeof daysMap]>(daysMap[month || 1])
+    const [activeDay, setActiveDay] = useState<typeof day>()
+    const ref = useRef<HTMLDivElement>(null)
 
-    const Day = ({ dayNumber }) => (
+    const Day = ({ dayNumber }: { dayNumber: NonNullable<typeof day> }) => (
         <td key={dayNumber}>
             <div
                 className={`day picker-item
@@ -171,7 +198,7 @@ const DayPicker = () => {
                     `}
                 onClick={() => setDay(dayNumber)}
                 role="button"
-                aria-label={`Select day ${dayNumber + 1}`}
+                aria-label={`Select day ${dayNumber ? dayNumber + 1 : ''}`}
                 aria-pressed={`${day === dayNumber}`}
                 aria-selected={`${day === dayNumber}`}
                 tabIndex={-1}
@@ -185,11 +212,11 @@ const DayPicker = () => {
         setNumberOfDays(daysMap[month || 1])
     }, [month])
 
-    const Row = ({ number }) => (
+    const Row = ({ number }: { number: number }) => (
         <tr>
             {
                 Array.from({ length: 7 }, (_, i) =>
-                    <Day key={i} dayNumber={i + 1 + (7 * number)} />
+                    <Day key={i} dayNumber={i + 1 + (7 * number) as NonNullable<typeof day>} />
                 )
             }
         </tr>
@@ -199,39 +226,43 @@ const DayPicker = () => {
         <tr>
             {
                 Array.from({ length: numberOfDays - 28 }, (_, i) =>
-                    <Day key={i + 29} dayNumber={i + 29} />
+                    <Day key={i + 29} dayNumber={i + 29 as NonNullable<typeof day>} />
                 )
             }
         </tr>
     )
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: React.KeyboardEvent) => {
         if (event.shiftKey || event.altKey || event.ctrlKey) {
             return
         }
+        if (!activeDay) {
+            return
+        }
+
         switch (event.key) {
             case 'ArrowRight':
-                setActiveDay(activeDay < numberOfDays ? activeDay + 1 : 1)
+                setActiveDay(activeDay < numberOfDays ? activeDay + 1 as typeof activeDay : 1)
                 break
             case 'ArrowLeft':
-                setActiveDay(activeDay > 1 ? activeDay - 1 : numberOfDays)
+                setActiveDay(activeDay > 1 ? activeDay - 1 as typeof activeDay : numberOfDays)
                 break
             case 'ArrowUp':
                 if (activeDay <= (numberOfDays - 28)) {
-                    setActiveDay(activeDay + 28)
+                    setActiveDay(activeDay + 28 as typeof activeDay)
                 } else if (activeDay >= (numberOfDays - 28) && activeDay <= 7) {
-                    setActiveDay(activeDay + 21)
+                    setActiveDay(activeDay + 21 as typeof activeDay)
                 } else {
-                    setActiveDay(activeDay ? activeDay - 7 : numberOfDays)
+                    setActiveDay(activeDay ? activeDay - 7 as typeof activeDay : numberOfDays)
                 }
                 break
             case 'ArrowDown':
                 if (activeDay > 28) {
-                    setActiveDay(activeDay - 28)
+                    setActiveDay(activeDay - 28 as typeof activeDay)
                 } else if (activeDay > (numberOfDays - 7)) {
-                    setActiveDay(activeDay - 21)
+                    setActiveDay(activeDay - 21 as typeof activeDay)
                 } else {
-                    setActiveDay(activeDay ? activeDay + 7 : 1)
+                    setActiveDay(activeDay ? activeDay + 7 as typeof activeDay : 1)
                 }
                 break
             case 'Tab':
@@ -254,9 +285,9 @@ const DayPicker = () => {
             className="day-picker"
             ref={ref}
             onBlur={() => {
-                setActiveDay(null)
+                setActiveDay(undefined)
             }}
-            onMouseEnter={() => setActiveDay(null)}
+            onMouseEnter={() => setActiveDay(undefined)}
             onKeyDown={(event) => handleKeyDown(event)}
             tabIndex={0}
         >
@@ -280,17 +311,17 @@ const WeekPicker = () => {
         weekDay,
         setWeekDay,
         setOpen
-    } = useContext(pickerContext)
+    } = usePickerContext()
 
-    const [activeWeekNumber, setActiveWeekNumber] = useState(null)
-    const [activeWeekDay, setActiveWeekDay] = useState(null)
-    const ref = useRef(null)
+    const [activeWeekNumber, setActiveWeekNumber] = useState<typeof weekNumber>()
+    const [activeWeekDay, setActiveWeekDay] = useState<typeof weekDay>()
+    const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         ref.current?.focus()
     }, [])
 
-    const formatWeek = (weekNumber) => {
+    const formatWeek = (weekNumber: number) => {
         switch (weekNumber) {
             case 1:
                 return 'st'
@@ -305,7 +336,7 @@ const WeekPicker = () => {
         }
     }
 
-    const formatWeekDay = (weekDayNumber) => {
+    const formatWeekDay = (weekDayNumber: number) => {
         switch (weekDayNumber) {
             case 1:
                 return 'Sun'
@@ -326,7 +357,7 @@ const WeekPicker = () => {
         }
     }
 
-    const WeekNumber = ({ week }) => (
+    const WeekNumber = ({ week }: { week: NonNullable<typeof weekNumber> }) => (
         <li>
             <div
                 className={`picker-item
@@ -353,7 +384,7 @@ const WeekPicker = () => {
         </li>
     )
 
-    const WeekDay = ({ dayNumber }) => (
+    const WeekDay = ({ dayNumber }: { dayNumber: NonNullable<typeof weekDay> }) => (
         <li>
             <div
                 className={`picker-item
@@ -374,36 +405,36 @@ const WeekPicker = () => {
         </li>
     )
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: React.KeyboardEvent) => {
         switch (event.key) {
             case 'ArrowRight':
                 if (activeWeekNumber) {
-                    setActiveWeekNumber(activeWeekNumber < 5 ? activeWeekNumber + 1 : 1)
+                    setActiveWeekNumber(activeWeekNumber < 5 ? activeWeekNumber + 1 as typeof activeWeekNumber : 1)
                 } else if (activeWeekDay) {
-                    setActiveWeekDay(activeWeekDay < 7 ? activeWeekDay + 1 : 1)
+                    setActiveWeekDay(activeWeekDay < 7 ? activeWeekDay + 1 as typeof activeWeekDay : 1)
                 } else {
                     setActiveWeekNumber(1)
                 }
                 break
             case 'ArrowLeft':
                 if (activeWeekNumber) {
-                    setActiveWeekNumber(activeWeekNumber > 1 ? activeWeekNumber - 1 : 5)
+                    setActiveWeekNumber(activeWeekNumber > 1 ? activeWeekNumber - 1 as typeof activeWeekNumber : 5)
                 } else if (activeWeekDay) {
-                    setActiveWeekDay(activeWeekDay > 1 ? activeWeekDay - 1 : 7)
+                    setActiveWeekDay(activeWeekDay > 1 ? activeWeekDay - 1 as typeof activeWeekDay : 7)
                 } else {
 
                 }
                 break
             case 'ArrowUp':
                 if (activeWeekDay) {
-                    setActiveWeekNumber(Math.min(5, activeWeekDay))
-                    setActiveWeekDay(null)
+                    setActiveWeekNumber(Math.min(5, activeWeekDay) as typeof activeWeekNumber)
+                    setActiveWeekDay(undefined)
                 }
                 break
             case 'ArrowDown':
                 if (activeWeekNumber) {
                     setActiveWeekDay(activeWeekNumber)
-                    setActiveWeekNumber(null)
+                    setActiveWeekNumber(undefined)
                 }
                 break
             case 'Tab':
@@ -427,12 +458,12 @@ const WeekPicker = () => {
             className="week-picker-container"
             ref={ref}
             onBlur={() => {
-                setActiveWeekDay(null)
-                setActiveWeekNumber(null)
+                setActiveWeekDay(undefined)
+                setActiveWeekNumber(undefined)
             }}
             onMouseEnter={() => {
-                setActiveWeekDay(null)
-                setActiveWeekNumber(null)
+                setActiveWeekDay(undefined)
+                setActiveWeekNumber(undefined)
             }}
             onKeyDown={(event) => handleKeyDown(event)}
             tabIndex={0}
@@ -448,7 +479,7 @@ const WeekPicker = () => {
             >
                 {
                     Array.from({ length: 5 }, (_, i) =>
-                        <WeekNumber key={i + 1} week={i + 1} />
+                        <WeekNumber key={i + 1} week={i + 1 as NonNullable<typeof weekNumber>} />
                     )
                 }
             </ul>
@@ -468,7 +499,7 @@ const WeekPicker = () => {
             >
                 {
                     Array.from({ length: 7 }, (_, i) =>
-                        <WeekDay key={i + 1} dayNumber={i + 1} />
+                        <WeekDay key={i + 1} dayNumber={i + 1 as NonNullable<typeof weekDay>} />
                     )
                 }
             </ul>
@@ -488,10 +519,10 @@ const DayWeekPicker = () => {
         weekDay,
         setWeekDay,
         setDay
-    } = useContext(pickerContext)
+    } = usePickerContext()
 
-    const ref = useRef(null)
-    const [mode, setMode] = useState('day')
+    const ref = useRef<HTMLDivElement>(null)
+    const [mode, setMode] = useState<typeof options[number]['value']>('day')
 
     useEffect(() => {
         open
@@ -509,8 +540,8 @@ const DayWeekPicker = () => {
     // mode's inputs are entered
     useEffect(() => {
         if (day) {
-            setWeek('')
-            setWeekDay('')
+            setWeek(undefined)
+            setWeekDay(undefined)
             setOpen(false)
         }
     }, [day])
@@ -519,7 +550,7 @@ const DayWeekPicker = () => {
     // inputs are entered
     useEffect(() => {
         if (week || weekDay) {
-            setDay('')
+            setDay(undefined)
         }
         if (week && weekDay) {
             setOpen(false)
@@ -528,15 +559,6 @@ const DayWeekPicker = () => {
 
     return (
         <>
-            {mode === 'day' &&
-                (day && <input type="hidden" name="day" value={day} />)
-            }
-            {mode === 'week' &&
-                (weekDay && <input type="hidden" name="weekDay" value={weekDay} />)
-            }
-            {mode === 'week' &&
-                (week && <input type="hidden" name="week" value={week} />)
-            }
             <DropAnimation
                 placement='left'
                 visible={open}
@@ -562,22 +584,22 @@ const DayWeekPicker = () => {
 }
 
 const MonthPicker = () => {
-    const { month, setMonth, setOpen } = useContext(pickerContext)
+    const { month, setMonth, setOpen } = usePickerContext()
 
-    const [activeMonth, setActiveMonth] = useState(null)
-    const ref = useRef(null)
+    const [activeMonth, setActiveMonth] = useState<typeof month>()
+    const ref = useRef<HTMLDivElement>(null)
 
-    const translateMonthNumber = (monthNumber) => {
+    const translateMonthNumber = (monthNumber: typeof month) => {
         // Lookup table
         const months = {
             1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
             5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug',
             9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
         }
-        return months[monthNumber]
+        return monthNumber ? months[monthNumber] : months[1]
     }
 
-    const Month = ({ monthNumber }) => (
+    const Month = ({ monthNumber }: { monthNumber: typeof month }) => (
         <li>
             <div
                 className={`picker-item
@@ -596,33 +618,37 @@ const MonthPicker = () => {
         </li>
     )
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        if (!activeMonth)
+            return
+
         const key = event.key
         const actions = {
             ArrowRight: () => {
-                setActiveMonth(activeMonth < 12 ? activeMonth + 1 : 1)
+                setActiveMonth(activeMonth < 12 ? activeMonth + 1 as typeof month : 1)
             },
             ArrowLeft: () => {
-                setActiveMonth(activeMonth > 1 ? activeMonth - 1 : 12)
+                setActiveMonth(activeMonth > 1 ? activeMonth - 1 as typeof month : 12)
             },
             ArrowUp: () => {
-                setActiveMonth(activeMonth > 6 ? activeMonth - 6 : activeMonth)
+                setActiveMonth(activeMonth > 6 ? activeMonth - 6 as typeof month : activeMonth)
             },
             ArrowDown: () => {
-                setActiveMonth(activeMonth < 6 ? activeMonth + 6 : activeMonth)
+                setActiveMonth(activeMonth < 6 ? activeMonth + 6 as typeof month : activeMonth)
             },
             Enter: () => {
                 setMonth(activeMonth)
             },
             Tab: () => {
-                setActiveMonth(null)
+                setActiveMonth(undefined)
             },
             Escape: () => {
                 setOpen(false)
             },
             default: () => { }
         }
-        return (actions[key] || actions['default'])()
+        const action = actions[key as keyof typeof actions] || actions['default']
+        action()
     }
 
     useEffect(() => {
@@ -634,10 +660,10 @@ const MonthPicker = () => {
             id="month-picker2-container"
             ref={ref}
             onBlur={() => {
-                setActiveMonth(null)
+                setActiveMonth(undefined)
             }}
             onMouseEnter={() => {
-                setActiveMonth(null)
+                setActiveMonth(undefined)
             }}
             onKeyDown={(event) => handleKeyDown(event)}
             tabIndex={0}
@@ -653,12 +679,12 @@ const MonthPicker = () => {
             >
                 <div>
                     {Array.from({ length: 6 }, (_, i) =>
-                        <Month key={i + 1} monthNumber={i + 1} />
+                        <Month key={i + 1} monthNumber={i + 1 as typeof month} />
                     )}
                 </div>
                 <div>
                     {Array.from({ length: 6 }, (_, i) =>
-                        <Month key={i + 7} monthNumber={i + 7} />
+                        <Month key={i + 7} monthNumber={i + 7 as typeof month} />
                     )}
                 </div>
             </ul>
@@ -667,9 +693,9 @@ const MonthPicker = () => {
 }
 
 const MonthDayPicker = () => {
-    const { open, setOpen, buttonRef, month, day } = useContext(pickerContext)
+    const { open, setOpen, buttonRef, month, day } = usePickerContext()
 
-    const ref = useRef(null)
+    const ref = useRef<HTMLDivElement>(null)
 
     useClickClose({
         refs: [ref, buttonRef],
@@ -691,8 +717,6 @@ const MonthDayPicker = () => {
 
     return (
         <>
-            {month && <input type="hidden" name="month" value={month} />}
-            {day && <input type="hidden" name="day" value={day} />}
             <DropAnimation
                 placement='left'
                 visible={open}
@@ -719,13 +743,23 @@ const MonthDayPicker = () => {
     )
 }
 
-export const BillScheduler = (props) => {
-    const { billPeriod, error, defaultValue } = props
+type defaultValue = Pick<Bill, 'day' | 'month' | 'week'> & { weekDay: Bill['week_day'] }
 
-    const [day, setDay] = useState(defaultValue?.day || '')
-    const [month, setMonth] = useState(defaultValue?.month || '')
-    const [week, setWeek] = useState(defaultValue?.week || '')
-    const [weekDay, setWeekDay] = useState(defaultValue?.weekDay || '')
+interface BSP {
+    billPeriod: Bill['period'],
+    defaultValue?: defaultValue,
+    setHasSchedule?: React.Dispatch<React.SetStateAction<boolean>>,
+    error: any
+    register: UseFormRegister<Bill>
+}
+
+export const BillScheduler = (props: BSP) => {
+    const { billPeriod, error, defaultValue, register } = props
+
+    const [day, setDay] = useState(defaultValue?.day)
+    const [month, setMonth] = useState(defaultValue?.month)
+    const [week, setWeek] = useState(defaultValue?.week)
+    const [weekDay, setWeekDay] = useState(defaultValue?.weekDay)
 
     useEffect(() => {
         if (day || month || (week && weekDay))
@@ -736,6 +770,14 @@ export const BillScheduler = (props) => {
 
     return (
         <>
+            {month &&
+                <input type="hidden" value={month} {...register('month')} />}
+            {day &&
+                <input type="hidden" value={day} {...register('day')} />}
+            {weekDay &&
+                <input type="hidden" value={weekDay} {...register('week_day')} />}
+            {week &&
+                <input type="hidden" value={week} {...register('week')} />}
             <Scheduler
                 day={day}
                 setDay={setDay}

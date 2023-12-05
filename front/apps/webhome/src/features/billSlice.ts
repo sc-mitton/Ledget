@@ -4,6 +4,14 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 import { Reminder } from './remindersSlice'
 
 
+type NumericRange<
+    START_ARR extends number[],
+    END extends number,
+    ACC extends number = never>
+    = START_ARR['length'] extends END
+    ? ACC | END
+    : NumericRange<[...START_ARR, 1], END, ACC | START_ARR['length']>
+
 interface BaseBill {
     id: string
     is_paid: boolean
@@ -18,10 +26,10 @@ interface BaseBill {
 }
 
 export interface Bill extends BaseBill {
-    day?: number
-    week?: number
-    week_day?: number
-    month?: number
+    day?: NumericRange<[1], 31>
+    week?: NumericRange<[1], 5>
+    week_day?: NumericRange<[1], 7>
+    month?: NumericRange<[1], 12>
     year?: number
 }
 

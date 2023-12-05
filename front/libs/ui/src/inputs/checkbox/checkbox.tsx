@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, useState } from 'react'
 
 import './checkbox.css'
 
@@ -7,10 +7,10 @@ interface CheckboxProps {
   id: string
   label: string
   checked?: boolean
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  setChecked?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref) => {
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({ checked, setChecked, ...rest }, ref) => {
 
   const handleLabelKeyDown = (event: React.KeyboardEvent<HTMLLabelElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -32,14 +32,16 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref)
         </symbol>
       </svg>
       <input
+        value={checked ? 'on' : 'off'}
+        onChange={() => setChecked && setChecked(!checked)}
         className="checkbox-input"
         type="checkbox"
         ref={ref}
-        {...props}
+        {...rest}
       />
       <label
         className="checkbox"
-        htmlFor={props.id}
+        htmlFor={rest.id}
         onKeyDown={handleLabelKeyDown}
         tabIndex={0}
         role="checkbox"
@@ -49,7 +51,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref)
             <use xlinkHref="#check"></use>
           </svg>
         </span>
-        <span>{props.label}</span>
+        <span>{rest.label}</span>
       </label>
     </ div >
   )

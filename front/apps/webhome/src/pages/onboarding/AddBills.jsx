@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form"
@@ -41,7 +41,6 @@ const BillsColumn = ({ period }) => {
         setItems(items.filter((category) => category !== toDelete))
     }
 
-    console.log('items', items)
     return (
         <ShadowedContainer style={{ height: 'auto' }}>
             <animated.div style={containerProps} >

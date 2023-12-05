@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState, HTMLProps } from 'react'
 
-import { useController } from 'react-hook-form'
-import { Control } from 'react-hook-form'
+import { useController, Control } from 'react-hook-form'
 
 import './styles/Text.scss'
 import Emoji from './Emoji'
@@ -9,6 +8,7 @@ import { EmojiProps, emoji } from './Emoji'
 import { formatCurrency, makeIntCurrencyFromStr } from '@ledget/ui'
 import { IconButton2, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
+
 
 export const EmojiComboText = (props:
     { register: any, error: any, hasLabel?: boolean } & EmojiProps & HTMLProps<HTMLInputElement>) => {
@@ -130,7 +130,7 @@ const IncrementDecrementButton = ({ val, setVal, field }: IncrementDecrement) =>
 
 export const LimitAmountInput = (
     { control, defaultValue, children, hasLabel = true, withCents = true, ...rest }: {
-        control?: Control,
+        control?: Control<any>,
         defaultValue?: string,
         children?: React.ReactNode
         name?: string
@@ -253,10 +253,10 @@ export const ControlledDollarInput = ({
 
 export const DollarRangeInput = (
     { control, defaultLowerValue, defaultUpperValue, errors, hasLabel = true, rangeMode = false }: {
-        control: Control,
-        defaultLowerValue: string,
-        defaultUpperValue: string,
-        errors: any,
+        control: Control<any>,
+        errors?: any,
+        defaultLowerValue?: string,
+        defaultUpperValue?: string,
         hasLabel?: boolean,
         rangeMode?: boolean
     }
