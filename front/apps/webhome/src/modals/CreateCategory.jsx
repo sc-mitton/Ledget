@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { useForm } from "react-hook-form"
-import { object, string } from "yup"
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import './styles/Forms.css'
@@ -12,9 +12,9 @@ import { withModal } from '@ledget/ui'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@ledget/ui'
 
-export const schema = object().shape({
-    name: string().required().lowercase(),
-    limit_amount: string().required().transform((value) => value.replace(/[^0-9]/g, '')),
+export const schema = z.object({
+    name: z.string().min(1, { message: 'required' }).toLowerCase(),
+    limit_amount: z.string().min(1, { message: 'required' }).transform((value) => value.replace(/[^0-9]/g, '')),
 })
 
 const Form = (props) => {
@@ -22,11 +22,15 @@ const Form = (props) => {
     const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation()
 
     const { register, watch, control, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema),
+        resolver: zodResolver(schema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
     const watchLimitAmount = watch('limit_amount')
+
+    useEffect(() => {
+        console.log('errors', errors.limit_amount)
+    }, [errors])
 
     const submit = (data, e) => {
         e.preventDefault()
@@ -71,7 +75,7 @@ const Form = (props) => {
                     </div>
                     <div>
                         <LimitAmountInput withCents={false} control={control}>
-                            < FormErrorTip errors={[errors.limit_amount]} />
+                            <FormErrorTip errors={[errors.limit_amount]} />
                         </LimitAmountInput>
                     </div>
 

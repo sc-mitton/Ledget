@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { useForm, useController } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
@@ -38,7 +38,7 @@ const Modal = withModal((props) => {
     const elements = useElements()
 
     const { register, handleSubmit, formState: { errors }, control, clearErrors } =
-        useForm({ resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
+        useForm({ resolver: zodResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
     const { field: stateField } = useController({ name: 'state', control })
 
     // Force fetch setup intent on mount

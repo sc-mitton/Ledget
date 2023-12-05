@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect, useRef } from 'react'
 
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form"
 import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
@@ -258,7 +258,7 @@ const Form = () => {
     const [period, setPeriod] = useState('month')
 
     const { register, handleSubmit, reset, setValue, formState: { errors }, control } = useForm({
-        resolver: yupResolver(categorySchema),
+        resolver: zodResolver(categorySchema),
         mode: 'onSubmit',
         reValidateMode: 'onChange',
     })

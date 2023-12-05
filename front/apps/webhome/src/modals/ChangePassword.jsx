@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form"
-import { object, string } from "yup"
+import { z } from 'zod'
 import { useNavigate } from 'react-router-dom'
 
 import { } from '@features/orySlice'
@@ -13,12 +13,14 @@ import { withReAuth } from '@utils'
 import { useFlow } from '@ledget/ory-sdk'
 import { useLazyGetSettingsFlowQuery, useCompleteSettingsFlowMutation } from '@features/orySlice'
 
-const schema = object().shape({
-    password: string().required('Password is required').min(10, 'Minimum 10 characters'),
-    confirmPassword: string().required().test('passwords-match', 'Passwords must match', function (value) {
-        return value === this.parent.password;
-    })
+const schema = z.object({
+    password: z.string().min(1, { message: 'required' }).min(10, { message: 'Password must be at least 10 characters' }),
+    confirmPassword: z.string().min(1, { message: 'required' })
+}).refine(data => data.password === data.confirmPassword, {
+    message: 'Passwords must match',
+    path: ['confirmPassword']
 })
+
 
 const ChangePassword = (props) => {
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
@@ -47,7 +49,7 @@ const ChangePassword = (props) => {
     }, [isCompleteSuccess])
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur'
+        resolver: zodResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur'
     })
     const [pwdVisible, setPwdVisible] = useState(false)
 

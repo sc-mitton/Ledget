@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 import { useState, useRef } from 'react'
 
 import { useForm, useController } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
-import { string } from 'yup'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
-import './style/Checkout.css'
+import './style/Checkout.scss'
 import stripelogo from '@assets/images/stripelogo.svg'
 import ledgetapi from '@api/axios'
 import { useGetPricesQuery } from '@features/pricesSlice'
@@ -26,16 +26,10 @@ import { LogoIcon2 } from '@ledget/media'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
-const schema = baseBillingSchema.shape({
-    name: string()
-        .required()
-        .test('two-words', 'Missing last name', (value) => {
-            if (value) {
-                const words = value.trim().split(' ')
-                return words.length === 2
-            }
-            return true
-        })
+const schema = baseBillingSchema.extend({
+    name: z.string().min(1, { message: 'required' })
+}).refine((data) => data.name.split(' ').length > 1, {
+    message: 'Please enter your full name'
 })
 
 const PriceRadios = ({ register }) => {
@@ -155,7 +149,7 @@ const Form = (props) => {
     const [errMsg, setErrMsg] = useState(null)
 
     const { register, watch, handleSubmit, formState: { errors }, control, clearErrors } =
-        useForm({ resolver: yupResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
+        useForm({ resolver: zodResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
     const { field: stateField } = useController({ name: 'state', control })
 
     useEffect(() => { stateField.value && clearErrors('state') }, [stateField.value])

@@ -2,8 +2,8 @@ import { useState, useEffect } from "react"
 
 import { useNavigate } from "react-router-dom"
 import { AnimatePresence } from "framer-motion"
-import { object, string, boolean } from "yup"
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
 
@@ -33,14 +33,15 @@ import { useRefreshDevicesMutation } from '@features/deviceSlice'
 import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/otpSlice'
 
 
-const schema = object().shape({
-    email: string().email("Invalid email address"),
-    remember: boolean()
+const schema = z.object({
+    email: z.string().min(1, { message: 'required' }).email({ message: 'invalid email' }),
+    remember: z.boolean()
 })
+
 
 const EmailForm = ({ flow, setEmail, socialSubmit }) => {
     const { register, handleSubmit, formState: { errors }, setFocus } =
-        useForm({ resolver: yupResolver(schema), mode: 'onBlur' })
+        useForm({ resolver: zodResolver(schema), mode: 'onBlur' })
 
     const submit = (data) => {
         if (data.remember) {

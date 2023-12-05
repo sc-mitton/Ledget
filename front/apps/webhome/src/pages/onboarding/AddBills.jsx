@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form"
 import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
@@ -174,7 +174,7 @@ const Form = () => {
     const [hasSchedule, setHasSchedule] = useState(false)
 
     const { register, watch, handleSubmit, reset, formState: { errors }, control } = useForm({
-        resolver: yupResolver(billSchema),
+        resolver: zodResolver(billSchema),
         mode: 'onSubmit', reValidateMode: 'onChange'
     })
 

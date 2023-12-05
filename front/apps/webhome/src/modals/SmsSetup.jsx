@@ -4,8 +4,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { object, string } from 'yup'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 
 import './styles/SmsSetup.css'
 import { withModal } from '@ledget/ui'
@@ -26,19 +26,19 @@ import {
     useLoaded
 } from '@ledget/ui'
 
-const schema = object().shape({
-    phone: string().required('required').transform((value) =>
-        value.replace(/[^0-9]/g, '')
-    ),
-    country_code: string().required('required')
+
+const schema = z.object({
+    phone: z.string().transform((value) => value.replace(/[^0-9]/g, '')),
+    country_code: z.string(),
 })
+
 
 const SmsAdd = (props) => {
     const [createOtp, { data: result, isLoading, isSuccess, isError }] = useCreateOtpMutation()
     const [searchParams, setSearchParams] = useSearchParams()
 
     const { handleSubmit, register } = useForm({
-        resolver: yupResolver(schema), mode: 'onSubmit', revalidateMode: 'onBlur'
+        resolver: zodResolver(schema), mode: 'onSubmit', revalidateMode: 'onBlur'
     })
     const { onChange: formChange, ...rest } = register('phone')
 

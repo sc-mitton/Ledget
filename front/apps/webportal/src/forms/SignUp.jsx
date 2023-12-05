@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 
 import { useSearchParams, useNavigate } from "react-router-dom"
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { useForm } from "react-hook-form"
 import { AnimatePresence } from "framer-motion"
 
@@ -28,19 +28,17 @@ import {
 } from '@features/orySlice'
 
 
-// Schema for yup form validation
-const schema = yup.object().shape({
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
-    email: yup.string()
-        .required()
-        .email('Email is invalid'),
-})
+const schema = z.object({
+    firstName: z.string().min(1, { message: 'required' }),
+    lastName: z.string().min(1, { message: 'required' }),
+    email: z.string().min(1, { message: 'required' }).email({ message: 'invalid email' })
+}).required()
+
 
 const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
     // Form window for entering user info (name, email), or signing in with social auth
     const { register, handleSubmit, formState: { errors } }
-        = useForm({ resolver: yupResolver(schema), mode: 'onSubmt', reValidateMode: 'onBlur' })
+        = useForm({ resolver: zodResolver(schema), mode: 'onSubmt', reValidateMode: 'onBlur' })
 
     return (
         <>
@@ -104,14 +102,15 @@ const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
     )
 }
 
-const passwordSchema = yup.object().shape({
-    password: yup.string().required().min(10, 'Minimum 10 characters'),
+
+const passwordSchema = z.object({
+    password: z.string().min(10, { message: 'Minimum 10 characters' })
 })
 
 const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }) => {
     const { register, handleSubmit, formState: { errors } } = useForm({
         mode: 'onBlur', reValidateMode: 'onBlur',
-        resolver: yupResolver(passwordSchema)
+        resolver: zodResolver(passwordSchema)
     })
 
     return (

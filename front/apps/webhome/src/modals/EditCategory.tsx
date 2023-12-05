@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm, FieldValues } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import './styles/Forms.css'
 import { withModal } from '@ledget/ui'
@@ -21,7 +21,7 @@ const EditCategory = withModal((props) => {
 
 
     const { register, handleSubmit, watch, formState: { errors }, control, setValue } = useForm({
-        resolver: yupResolver(categoryFormSchema) as any,
+        resolver: zodResolver(categoryFormSchema) as any,
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
