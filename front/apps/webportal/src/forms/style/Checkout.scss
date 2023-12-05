@@ -9,15 +9,15 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-}
 
-#checkout-container {
-    flex-grow: 1;
-    margin: 2.75em 3.25em;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: auto;
+
+    h4 {
+        font-weight: 600;
+        font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+        color: var(--logo-dark);
+        margin: .5em 0;
+        margin-left: .25em;
+    }
 }
 
 #verification-window {
@@ -45,13 +45,6 @@
     height: 0em;
 }
 
-#checkout-container h4 {
-    font-weight: 600;
-    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    color: var(--logo-dark);
-    margin: .375em 0;
-    margin-left: .25em;
-}
 
 #billing-form {
     padding-bottom: 0;
@@ -162,51 +155,55 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
     padding: .75em .5em;
     margin-bottom: .5em;
     border-top: .125em solid rgba(0, 0, 0, 0.07);
+
+    table {
+        border-collapse: collapse;
+    }
+
+    * {
+        font-size: 1em
+    }
+
+    tr {
+        line-height: 1.5;
+
+        td {
+            text-align: right;
+
+            &:first-child {
+                padding-right: 1em;
+            }
+
+            &:last-child {
+                font-weight: 500;
+            }
+
+            &:last-child span {
+                font-size: .65em;
+            }
+        }
+    }
+
 }
 
-.order-summary-container table {
-    border-collapse: collapse;
-}
 
-.order-summary-container tr td {
-    text-align: right;
-}
-
-.order-summary-container * {
-    font-size: 1em
-}
-
-.order-summary-container tr {
-    line-height: 1.5;
-}
-
-.order-summary-container tr td:first-child {
-    padding-right: 1em;
-}
-
-.order-summary-container tr td:last-child {
-    font-weight: 500;
-}
-
-.order-summary-container tr td:last-child span {
-    font-size: .65em;
-}
 
 /* --------------------------------- Errors --------------------------------- */
 .general-error {
     margin-bottom: 1.5em;
     text-align: center;
     font-weight: 500;
+
+    img {
+        height: 1em;
+        margin-right: .5em;
+        position: relative;
+        top: .125em;
+        text-align: left;
+        animation: pop .22s ease;
+    }
 }
 
-.general-error img {
-    height: 1em;
-    margin-right: .5em;
-    position: relative;
-    top: .125em;
-    text-align: left;
-    animation: pop .22s ease;
-}
 
 /* ------------------------------- Stripe Logo ------------------------------ */
 .stripe-logo-container {
@@ -218,20 +215,18 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
     position: relative;
     bottom: -1.5em;
     height: 0;
-}
-
-.stripe-logo-container {
     font-weight: 500;
+
+    a {
+        border: none;
+    }
+
+
+    a:hover {
+        border: none;
+    }
 }
 
-.stripe-logo-container a {
-    border: none;
-}
-
-
-.stripe-logo-container a:hover {
-    border: none;
-}
 
 .stripe-logo {
     position: relative;

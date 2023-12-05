@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 import { VisibilityIcon } from "@ledget/media"
 import { CardElement } from '@stripe/react-stripe-js'
-import { object, string } from 'yup'
+import { z } from 'zod'
 
 
 import './text.css'
@@ -143,11 +143,11 @@ export const CardInput = ({ requiredError, onComplete, clearError, loading }: Ca
   )
 }
 
-interface YupValidatedInputProps extends React.HTMLProps<HTMLInputElement> {
+interface ZodValidatedInputProps extends React.HTMLProps<HTMLInputElement> {
   errors: any;
 }
 
-export const CityInput = forwardRef<HTMLInputElement, YupValidatedInputProps>((props, ref) => {
+export const CityInput = forwardRef<HTMLInputElement, ZodValidatedInputProps>((props, ref) => {
   const { errors, ...rest } = props
 
   return (
@@ -165,7 +165,7 @@ export const CityInput = forwardRef<HTMLInputElement, YupValidatedInputProps>((p
   )
 })
 
-export const NameOnCardInput = forwardRef<HTMLInputElement, YupValidatedInputProps>((props, ref) => {
+export const NameOnCardInput = forwardRef<HTMLInputElement, ZodValidatedInputProps>((props, ref) => {
   const { errors, ...rest } = props
 
   return (
@@ -189,7 +189,7 @@ export const NameOnCardInput = forwardRef<HTMLInputElement, YupValidatedInputPro
   )
 })
 
-export const ZipInput = forwardRef<HTMLInputElement, YupValidatedInputProps>((props, ref) => {
+export const ZipInput = forwardRef<HTMLInputElement, ZodValidatedInputProps>((props, ref) => {
   const { errors, ...rest } = props
 
   return (
@@ -207,14 +207,14 @@ export const ZipInput = forwardRef<HTMLInputElement, YupValidatedInputProps>((pr
   )
 })
 
-export const baseBillingSchema = object({
-  city: string()
-    .required()
-    .matches(/^[a-zA-Z ]+$/, 'Invalid city'),
-  state: string().required('required'),
-  zip: string()
-    .required()
-    .matches(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
+export const baseBillingSchema = z.object({
+  city: z.string()
+    .min(1, 'required')
+    .max(50, 'City is too long'),
+  state: z.string().min(1, 'required'),
+  zip: z.string()
+    .min(1, 'required')
+    .regex(/^\d{5}(?:[-\s]\d{4})?$/, 'Invalid zip'),
 })
 
 interface CityStateZipInputsProps {
@@ -256,7 +256,6 @@ export const CityStateZipInputs = ({ errors, register, field, loading }: CitySta
             <FormError msg={errors.city?.message} />
           </div>
           <div id="state-error">
-            <FormError msg={errors.state?.message} />
           </div>
           <div id="zip-error">
             <FormError msg={errors.zip?.message} />

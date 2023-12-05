@@ -28,7 +28,6 @@ const SplitAmount = ({ name }: { name: string }) => {
   />
 }
 
-
 interface Splits {
   [key: `category[${number}]`]: string
   [key: `amount[${number}]`]: string
