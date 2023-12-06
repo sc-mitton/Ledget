@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 
 import { useSearchParams, useNavigate } from "react-router-dom"
+import { endpointNames } from './ory-sdk'
 
-const formatErrorMessages = (errorMessages) => {
+const formatErrorMessages = (errorMessages: { id: number, [key: string]: any }[]) => {
     const filteredMessages = []
     console.log(errorMessages)
     for (const message of errorMessages) {
@@ -23,11 +24,10 @@ const formatErrorMessages = (errorMessages) => {
     return filteredMessages
 }
 
-const extractData = (event) => {
+const extractData: React.FormEventHandler<HTMLFormElement> = (event) => {
     // map the entire form data to JSON for the request body
-    const form = event.target
-    const formData = new FormData(form)
-    let body = Object.fromEntries(formData)
+    const formData = new FormData(event.target as any)
+    let body = Object.fromEntries(formData as any)
 
     // remove empty values
     body = Object.fromEntries(Object.entries(body).filter(([_, v]) => v !== ""))
@@ -37,7 +37,7 @@ const extractData = (event) => {
     // We need the method specified from the name and value of the submit button.
     // when multiple submit buttons are present, the clicked one's value is used.
     if ("submitter" in event.nativeEvent) {
-        const method = (event.nativeEvent).submitter
+        const method = (event.nativeEvent).submitter as HTMLButtonElement
         body = {
             ...body,
             ...{ [method.name]: method.value },
@@ -46,8 +46,9 @@ const extractData = (event) => {
     return body
 }
 
-export function useFlow(query, mutation, flowType) {
-    const [errMsg, setErrMsg] = useState('')
+
+export const useFlow = (query: any, mutation: any, flowType: typeof endpointNames[number]) => {
+    const [errMsg, setErrMsg] = useState<string[]>()
     const [errId, setErrId] = useState('')
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
@@ -72,13 +73,13 @@ export function useFlow(query, mutation, flowType) {
             isSuccess: isCompleteSuccess
         }
     ] = mutation({
-        fixedCacheKey: `${searchParams.get('flow') + searchParams.get('aal')}`
+        fixedCacheKey: `${searchParams.get('flow') || '' + searchParams.get('aal') || ''}`
     })
     // Fixed cache key because sometimes we reauth before going to a
     // target component, and we don't want the mutation results to carry
     // overy in between
 
-    const fetchFlow = (args) => {
+    const fetchFlow = (args: { aal: string, refresh: boolean }) => {
         // If the aal param is different, this means a new flow is needed
         // and the search param flow id can't be used
         let aal, refresh
@@ -96,17 +97,18 @@ export function useFlow(query, mutation, flowType) {
         }
         setSearchParams(searchParams)
 
-        const params = {}
-        refresh && (params.refresh = refresh)
-        aal && (params.aal = aal)
-        flowId && (params.id = flowId)
+        const params = {
+            refresh: refresh,
+            aal: aal,
+            id: flowId
+        }
 
         getFlow({ params: params })
     }
 
-    const submit = (event) => {
+    const submit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault()
-        setErrMsg('')
+        setErrMsg(undefined)
         const data = extractData(event)
         const flowId = searchParams.get('flow')
         completeFlow({ data: data, params: { flow: flowId } })
@@ -180,12 +182,12 @@ export function useFlow(query, mutation, flowType) {
             case 410:
                 searchParams.delete('flow')
                 setSearchParams(searchParams)
-                let params = {}
+                let params: any = {}
                 for (const key of searchParams.keys()) {
                     params[key] = searchParams.get(key)
                 }
                 getFlow({ params: params })
-                setErrMsg("Please try again.")
+                setErrMsg(["Please try again."])
                 break
             default:
                 console.error(error)

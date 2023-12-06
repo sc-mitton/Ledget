@@ -8,7 +8,7 @@ import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@f
 import { withSmallModal } from '@ledget/ui'
 import { BlueSubmitButton, SecondaryButton, FormError } from '@ledget/ui'
 import { withReAuth } from '@utils'
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from '@ledget/ory'
 
 const DeactivateAuthenticator = (props) => {
     const [updateUser] = useUpdateUserMutation()

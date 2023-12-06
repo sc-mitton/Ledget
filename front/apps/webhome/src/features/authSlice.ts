@@ -1,12 +1,14 @@
 import { apiSlice } from '@api/apiSlice'
 import { createSlice } from "@reduxjs/toolkit";
+import { User, extendedApiSlice as userExtendedApiSlice } from '@features/userSlice'
+import { RootState } from '@hooks/store';
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         reAuthed: {
-            level: 'none',
-            at: null,
+            level: 'none' as User['session_aal'],
+            at: null as number | null
         }
     },
     reducers: {
@@ -31,7 +33,7 @@ export const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addMatcher(
-            apiSlice.endpoints.getMe.matchFulfilled,
+            userExtendedApiSlice.endpoints.getMe.matchFulfilled,
             (state, action) => {
                 if (Date.now() - Date.parse(action.payload?.last_login) < 1000 * 60 * 9) {
                     state.reAuthed.level = action.payload?.session_aal
@@ -41,6 +43,7 @@ export const authSlice = createSlice({
         )
     }
 })
+
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -55,15 +58,14 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 url: `device/${deviceId}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['devices'],
+            invalidatesTags: ['Device'],
         }),
-        createOtp: builder.mutation({
-            query: ({ data }) => ({
+        createOtp: builder.mutation<{ id: string }, { phone?: string }>({
+            query: (data) => ({
                 url: 'otp',
                 method: 'POST',
-                ...(data ? { body: data } : {})
+                body: data,
             }),
-            transformResponse: response => response.data
         }),
         verifyOtp: builder.mutation({
             query: ({ data, id }) => ({
@@ -75,18 +77,17 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const { resetAuthedAt } = authSlice.actions
+export const { aal1ReAuthed, aal15ReAuthed, aal2ReAuthed } = authSlice.actions
 export const authReducer = authSlice.reducer
 
-export const selectSessionIsFreshAal1 = (state) => {
+export const selectSessionIsFreshAal1 = (state: RootState) => {
     const isFresh = state.auth.reAuthed.at && Date.now() - state.auth.reAuthed.at < 1000 * 60 * 9
-    const aalGood = state.auth.reAuthedLevel && state.reAuthedLevel >= 1
+    const aalGood = ['aal1', 'aal15', 'aal2'].includes(state.auth.reAuthed.level)
     return isFresh && aalGood
 }
 
 export const {
     useAddRememberedDeviceMutation,
-    useGetDevicesQuery,
     useDeleteRememberedDeviceMutation,
     useCreateOtpMutation,
     useVerifyOtpMutation

@@ -1,7 +1,7 @@
 {
-  "name": "ory-sdk",
+  "name": "ory",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/ory-sdk/src",
+  "sourceRoot": "libs/ory/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -9,7 +9,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/ory-sdk/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/ory/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "build": {
@@ -17,7 +17,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/libs/ory-sdk"
+        "outputPath": "dist/libs/ory"
       },
       "configurations": {
         "development": {
@@ -33,7 +33,7 @@
       "outputs": ["{options.reportsDirectory}"],
       "options": {
         "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/libs/ory-sdk"
+        "reportsDirectory": "../../coverage/libs/ory"
       }
     }
   }

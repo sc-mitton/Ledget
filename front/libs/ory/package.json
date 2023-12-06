@@ -1,5 +1,5 @@
 {
-  "name": "@ledget/ory-sdk",
+  "name": "@ledget/ory",
   "version": "0.0.1",
   "main": "./index.js",
   "types": "./index.d.ts",
@@ -10,6 +10,7 @@
     }
   },
   "dependencies": {
-    "axios": "^1.5.1"
+    "@reduxjs/toolkit": "^1.9.5",
+    "axios": "^1.6.2"
   }
 }

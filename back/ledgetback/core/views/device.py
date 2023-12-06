@@ -117,7 +117,7 @@ class OtpView(GenericAPIView):
                 status=HTTP_400_BAD_REQUEST
             )
 
-        return Response({'data': {'id': verify.id}}, HTTP_200_OK)
+        return Response({'id': verify.id}, HTTP_200_OK)
 
     def get(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

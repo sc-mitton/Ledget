@@ -1,15 +1,22 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 
 import './ReAuth.css'
 import { useSearchParams, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import { useSelector, useDispatch } from 'react-redux'
 
 import { withSmallModal } from '@ledget/ui'
-import { useGetMeQuery } from '@features/userSlice'
-import { useCreateOtpMutation, useVerifyOtpMutation, selectSessionIsFreshAal1 } from '@features/authSlice'
+import { useGetMeQuery, User } from '@features/userSlice'
+import { useAppSelector, useAppDispatch } from '@hooks/store'
+import {
+    useCreateOtpMutation,
+    useVerifyOtpMutation,
+    selectSessionIsFreshAal1,
+    aal1ReAuthed,
+    aal15ReAuthed,
+    aal2ReAuthed
+} from '@features/authSlice'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from '@ledget/ory'
 import {
     BlueSubmitWithArrow,
     SecondaryButton,
@@ -29,16 +36,16 @@ import {
 
 const ErrorFetchingFlow = () => (<FormError msg={"Something went wrong, please try again later."} />)
 
-const PassWord = ({ onCancel }) => {
+const PassWord = ({ onCancel }: { onCancel: () => void }) => {
     const location = useLocation()
     const { data: user } = useGetMeQuery()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
         useCompleteLoginFlowMutation,
         'login'
     )
-    const sessionIsFreshAal1 = useSelector(selectSessionIsFreshAal1)
+    const sessionIsFreshAal1 = useAppSelector(selectSessionIsFreshAal1)
 
     const {
         isGettingFlow,
@@ -56,7 +63,7 @@ const PassWord = ({ onCancel }) => {
 
     useEffect(() => {
         if (isCompleteSuccess) {
-            dispatch({ type: 'auth/aal1ReAuthed' })
+            dispatch({ type: aal1ReAuthed })
         }
     }, [isCompleteSuccess])
 
@@ -70,7 +77,7 @@ const PassWord = ({ onCancel }) => {
             </div>
             <div>
                 <JiggleDiv jiggle={isCompleteError}>
-                    <PasswordInput loading={isGettingFlow} required autoFocus />
+                    <PasswordInput loading={isGettingFlow} required={true} autoFocus={true} />
                 </JiggleDiv>
                 {isGetFlowError && <ErrorFetchingFlow />}
             </div>
@@ -96,7 +103,7 @@ const PassWord = ({ onCancel }) => {
 }
 
 const Totp = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const [useLookupSecret, setUseLookupSecret] = useState(false)
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
@@ -117,10 +124,10 @@ const Totp = () => {
     }, [])
 
     useEffect(() => {
-        let timeout
+        let timeout: NodeJS.Timeout
         if (isCompleteSuccess) {
             timeout = setTimeout(() => {
-                dispatch({ type: 'auth/aal2ReAuthed' })
+                dispatch({ type: aal2ReAuthed })
             }, 1000)
         }
         return () => clearTimeout(timeout)
@@ -162,8 +169,8 @@ const Totp = () => {
                         loading={isGettingFlow}
                         name={`${useLookupSecret ? 'lookup_secret' : 'totp_code'}`}
                         placeholder='Code'
-                        autoFocus
-                        required
+                        autoFocus={true}
+                        required={true}
                     />
                 </JiggleDiv>
                 {isGetFlowError && <ErrorFetchingFlow />}
@@ -183,33 +190,35 @@ const Totp = () => {
 }
 
 const Otp = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const [searchParams, setSearchParams] = useSearchParams()
     const { data: user } = useGetMeQuery()
     const [createOtp, { data: otp, isLoading: creatingOtp, isSuccess: createdOtp, isError: isCreateOtpError }] = useCreateOtpMutation()
     const [verifyOtp, { isSuccess: otpVerified, isLoading: verifyingOtp, isError: isOtpVerifyError }] = useVerifyOtpMutation()
 
     useEffect(() => {
-        createOtp({ data: user.phone_number })
+        user && createOtp({ phone: user.phone_number || undefined })
     }, [])
 
     useEffect(() => {
-        searchParams.set('id', otp?.id)
-        setSearchParams(searchParams)
+        if (otp?.id) {
+            searchParams.set('id', otp.id)
+            setSearchParams(searchParams)
+        }
     }, [createdOtp])
 
     useEffect(() => {
-        let timeout
+        let timeout: NodeJS.Timeout
         if (otpVerified) {
             timeout = setTimeout(() => {
-                dispatch({ type: 'auth/aal15ReAuthed' })
+                dispatch({ type: aal15ReAuthed })
             }, 1000)
         }
         return () => clearTimeout(timeout)
     }, [otpVerified])
 
-    const handleSubmit = (e) => {
-        const data = Object.fromEntries(new FormData(e.target))
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        const data = Object.fromEntries(new FormData(e.target as any) as any)
         verifyOtp({
             data: { 'code': data.code },
             id: searchParams.get('id')
@@ -284,19 +293,26 @@ export const ReAuthModal = withSmallModal((props) => {
 // needs a recent seesion that is newer than the max age in the
 // ory settings.
 
-const useReauthCheck = ({ requiredAal }) => {
+interface WithReAuthI {
+    hideModal?: boolean,
+    zIndex?: number,
+    requiredAal?: User['highest_aal']
+    onClose?: () => void
+}
+
+const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal' | 'onClose'>) => {
     const { data: user } = useGetMeQuery()
     const [searchParams, setSearchParams] = useSearchParams()
-    const reAuthed = useSelector(state => state.auth.reAuthed)
+    const reAuthed = useAppSelector(state => state.auth.reAuthed)
     const [continueToComponent, setContinueToComponent] = useState(false)
 
     // Controller for checking if the user has reached the required
     // authentication level. It reacts to changes in the reAuthed
     // object in the redux store
     useEffect(() => {
-        const sessionIsFresh = Date.now() - reAuthed.at < 1000 * 60 * 9
-        const aalGood = reAuthed.level === (requiredAal ?? user.highest_aal)
-        let interval
+        const sessionIsFresh = Date.now() - (reAuthed.at || 0) < 1000 * 60 * 9
+        const aalGood = reAuthed.level === (requiredAal ?? user?.highest_aal)
+        let interval: NodeJS.Timeout
 
         // If requirements are met, start the poller to check freshness
         // We use a poller since the modal might be opened and closed multiple times
@@ -310,13 +326,13 @@ const useReauthCheck = ({ requiredAal }) => {
             setSearchParams(searchParams)
 
             interval = setInterval(() => {
-                const isFreshCheck = Date.now() - reAuthed.at < 1000 * 60 * 9
-                !isFreshCheck && props.onClose()
-            }, [1000])
+                const isFreshCheck = Date.now() - (reAuthed.at || 0) < 1000 * 60 * 9
+                !isFreshCheck && onClose && onClose()
+            }, 1000 * 60 * 9)
 
         } else if (sessionIsFresh && !aalGood) {
             // Needs to increase aal
-            const neededAal = requiredAal ?? user.highest_aal
+            const neededAal = (requiredAal ?? user?.highest_aal) || ''
             if (neededAal === 'aal2') {
                 searchParams.set('aal', 'aal2')
                 setSearchParams(searchParams)
@@ -331,14 +347,24 @@ const useReauthCheck = ({ requiredAal }) => {
     return continueToComponent
 }
 
-export const ReAuthProtected = ({ children, requiredAal }) => {
-    const reauthed = useReauthCheck({ requiredAal })
+export const ReAuthProtected = ({ children, requiredAal }:
+    {
+        children: React.FC<{
+            onReAuth: React.Dispatch<React.SetStateAction<{
+                fn: (...args: any[]) => void;
+                args: any;
+            } | undefined>>
+        }>
+        requiredAal?: User['highest_aal']
+    }) => {
+
+    const reauthed = useReauthCheck({ requiredAal, onClose: () => { } })
     const [showReAuthModal, setShowReAuthModal] = useState(false)
-    const [onReAuth, setOnReAuth] = useState()
+    const [onReAuth, setOnReAuth] = useState<{ fn: (...args: any) => void, args: any[] }>()
 
     useEffect(() => {
-        if (reauthed) {
-            onReAuth()
+        if (reauthed && onReAuth) {
+            onReAuth.fn(...onReAuth.args)
         }
     }, [reauthed])
 
@@ -348,23 +374,25 @@ export const ReAuthProtected = ({ children, requiredAal }) => {
 
     return (
         <>
-            {showReAuthModal && <ReAuthModal onClose={() => setShowReAuthModal(false)} />}
-            {children(setOnReAuth)}
+            {showReAuthModal &&
+                <ReAuthModal onClose={() => setShowReAuthModal(false)} />}
+            {children({ onReAuth: setOnReAuth })}
         </>
     )
 }
 
-export default function withReAuth(Component) {
+export default function withReAuth<P>(Component: React.FC<P & WithReAuthI>) {
 
-    return (props) => {
+    return (props: (WithReAuthI & P)) => {
         const { requiredAal } = props
         const continueToComponent = useReauthCheck({ requiredAal })
+        const { onClose } = props
 
         return (
             <>
                 <ReAuthModal
                     hideAll={continueToComponent}
-                    onClose={() => !continueToComponent && props.onClose()}
+                    onClose={() => !continueToComponent && onClose && onClose()}
                     hasOverlay={false}
                     blur={1}
                     zIndex={300}

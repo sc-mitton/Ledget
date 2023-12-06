@@ -6,7 +6,7 @@ import './styles/RecoveryCodes.css'
 import { BlueSubmitButton, BlackSubmitButton, SecondaryButton } from '@ledget/ui'
 import { withSmallModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from '@ledget/ory'
 import { DownloadIcon, CopyIcon } from '@ledget/media'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 

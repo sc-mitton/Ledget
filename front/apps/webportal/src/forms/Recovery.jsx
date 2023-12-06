@@ -9,7 +9,7 @@ import { ledgetapi } from "@api"
 import { FormError, GrnWideButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc } from '@ledget/ui'
 import forgotPassword from '@assets/images/forgotPassword.svg'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from '@ledget/ory'
 
 const Error = ({ msg }) => (
     <div className="recovery-error--container">

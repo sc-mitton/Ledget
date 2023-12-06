@@ -9,7 +9,7 @@ import {
     JiggleDiv,
     VerificationForm
 } from "@ledget/ui"
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from '@ledget/ory'
 import { useGetMeQuery } from '@features/userSlice'
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
 

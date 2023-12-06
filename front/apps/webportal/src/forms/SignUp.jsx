@@ -21,7 +21,7 @@ import {
     PlainTextInput,
     BackButton
 } from "@ledget/ui"
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from '@ledget/ory'
 import {
     useLazyGetRegistrationFlowQuery,
     useCompleteRegistrationFlowMutation

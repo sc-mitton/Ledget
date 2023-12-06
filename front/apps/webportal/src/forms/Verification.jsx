@@ -10,7 +10,7 @@ import {
     VerificationForm,
     VerificationStatusGraphic
 } from "@ledget/ui"
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from '@ledget/ory'
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
 
 const Verification = () => {

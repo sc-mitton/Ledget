@@ -5,31 +5,40 @@ import _ from 'lodash.groupby'
 import './styles/Devices.scss'
 import { Disclosure } from '@headlessui/react'
 import { useDeleteRememberedDeviceMutation, } from '@features/authSlice'
+import { Device as DeviceType, User } from '@features/userSlice'
 import { IconButtonSubmit, Tooltip } from '@ledget/ui'
 import { ArrowIcon, LogoutIcon, LocationIcon, ComputerIcon, PhoneIcon } from '@ledget/media'
 import { ReAuthProtected } from '@utils/withReAuth'
 
-const formatDateTime = (date) => {
+const formatDateTime = (date: string | number) => {
     const d = new Date(date)
-    const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' }
-    return d.toLocaleDateString('en-US', options)
+    return d.toLocaleDateString(
+        'en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric'
+    })
 }
 
-const Device = (props) => {
-    const { device, info, deleteDevice, processingDelete } = props
-    const buttonRef = useRef(null)
-    const panelRef = useRef(null)
+const Device = (props: { device: string, info: DeviceType[] }) => {
+    const [deleteDevice, { isLoading: processingDelete }] = useDeleteRememberedDeviceMutation()
+
+    const { device, info } = props
+    const buttonRef = useRef<HTMLButtonElement>(null)
+    const panelRef = useRef<HTMLDivElement>(null)
     const iconKey = Object.keys(info[0]).find(
         (key) => key.includes('is_') && info[0][key]
     )
 
     useEffect(() => {
-        const handleClickOutside = (e) => {
+        const handleClickOutside = (e: MouseEvent) => {
             if (
                 buttonRef.current
                 && buttonRef.current.getAttribute('data-headlessui-state') === 'open'
-                && !buttonRef.current.contains(e.target)
-                && !panelRef.current.contains(e.target)
+                && !buttonRef.current.contains(e.target as Node)
+                && !panelRef.current?.contains(e.target as Node)
             ) {
                 buttonRef.current.click()
             }
@@ -92,7 +101,12 @@ const Device = (props) => {
                                                     {({ onReAuth }) => (
                                                         <IconButtonSubmit
                                                             submitting={processingDelete}
-                                                            onClick={() => { onReAuth(deleteDevice({ deviceId: session.id })) }}
+                                                            onClick={() => {
+                                                                onReAuth({
+                                                                    fn: deleteDevice,
+                                                                    args: { deviceId: session.id }
+                                                                })
+                                                            }}
                                                         >
                                                             <LogoutIcon />
                                                         </IconButtonSubmit>
@@ -110,8 +124,7 @@ const Device = (props) => {
     )
 }
 
-const Devices = ({ devices }) => {
-    const [deleteDevice, { isLoading: processingDelete }] = useDeleteRememberedDeviceMutation()
+const Devices = ({ devices }: { devices: DeviceType[] }) => {
 
     // Group by deviceFamily and location
     const groupedDevices = Object.entries(_(devices, (device) => [device.device_family, device.location]))
@@ -125,8 +138,6 @@ const Devices = ({ devices }) => {
                         key={device}
                         device={device}
                         info={info}
-                        processingDelete={processingDelete}
-                        deleteDevice={deleteDevice}
                     />)}
             </div>
         </>

@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 
 import './styles/Main.css'
-import { useGetDevicesQuery } from '@features/authSlice'
+import { useGetDevicesQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@ledget/ui'
 import Devices from './Devices'
 import Mfa from './Mfa'

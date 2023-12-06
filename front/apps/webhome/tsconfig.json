@@ -37,7 +37,10 @@
       ],
       "@ledget/media": [
         "../../libs/media/src"
-      ]
+      ],
+      "@ledget/ory": [
+        "../../libs/ory/src"
+      ],
     }
   },
   "files": [],

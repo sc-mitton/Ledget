@@ -1,19 +1,39 @@
-import axios from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
+import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
 
-export const axiosBaseQuery = async ({ url, method, data, params, transformResponse }) => {
-  const oryBaseUrl = import.meta.env.VITE_ORY_API_URI
+interface AxiosBaseQueryParams {
+  url: string;
+  method: string;
+  data?: any;
+  params?: any;
+  transformResponse?: any;
+}
+
+interface AxiosBaseQueryResult<T> {
+  data?: T;
+  error?: {
+    status?: number;
+    data?: any;
+  }
+}
+
+export const axiosBaseQuery = async <T>({ url, method, data, params, transformResponse }: AxiosBaseQueryParams): Promise<AxiosBaseQueryResult<T>> => {
+  const oryBaseUrl = import.meta.env.VITE_ORY_API_URI;
+
   try {
-    const result = await axios({
+    const result: AxiosResponse<T> = await axios({
       url: oryBaseUrl + url,
-      method: method,
-      data: data,
-      params: params,
       withCredentials: true,
-      transformResponse: transformResponse
+      method,
+      data,
+      params,
+      transformResponse,
     })
+
     return { data: result.data }
   } catch (axiosError) {
-    let err = axiosError
+    let err = axiosError as AxiosError
+
     return {
       error: {
         status: err.response?.status,
@@ -23,17 +43,18 @@ export const axiosBaseQuery = async ({ url, method, data, params, transformRespo
   }
 }
 
-const createFlow = async ({ url, params, transformResponse }) => {
+const createFlow = async ({ url, params, transformResponse }: Omit<AxiosBaseQueryParams, 'method'>) => {
   const result = await axiosBaseQuery({
     url: `${url}/browser`,
     method: 'GET',
     params: params,
-    transformResponse: transformResponse
+    transformResponse: transformResponse,
+    data: null
   })
   return result.data ? { data: result.data } : { error: result.error }
 }
 
-const getFlow = async ({ url, params = {}, transformResponse }) => {
+const getFlow = async ({ url, params = {}, transformResponse }: Omit<AxiosBaseQueryParams, 'method'>) => {
   let result
   const { id, ...rest } = params
   if (id) {
@@ -41,49 +62,53 @@ const getFlow = async ({ url, params = {}, transformResponse }) => {
       url: `${url}/flows`,
       method: 'GET',
       params: params,
-      transformResponse: transformResponse
+      transformResponse: transformResponse,
+      data: null
     })
   }
-  if (!id || result.error?.status === 410) {
+  if (!id || result?.error?.status === 410) {
     result = await createFlow({
       url,
       transformResponse,
       params: { ...rest }
     })
   }
-  return result.data ? { data: result.data } : { error: result.error }
+  return result?.data ? { data: result.data } : { error: result?.error }
 }
 
-const completeFlow = async ({ url, data, params }) => {
+const completeFlow = async ({ url, data, params }: Omit<AxiosBaseQueryParams, 'method'>) => {
   const result = await axiosBaseQuery({
     url: `${url}`,
     method: 'POST',
     data: data,
     params: params,
+    transformResponse: () => { },
   })
   return result.data ? { data: result.data } : { error: result.error }
 }
 
-const endpointNames = [
+export const endpointNames = [
   'settings', 'login', 'registration', 'logout', 'verification', 'recovery'
-]
+] as const
 
-const generateOryEndpoints = (builder) => {
 
-  let endpoints = {}
+
+const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>) => {
+
+  let endpoints: any = {}
   endpointNames.forEach((endpoint) => {
-    const { nane, ...rest } = endpoint
+
     const baseName = `${endpoint.charAt(0).toUpperCase()}${endpoint.slice(1)}`
 
     endpoints[`get${baseName}Flow`] = builder.query({
-      queryFn: (arg) => getFlow({
+      queryFn: (arg: any) => getFlow({
         url: `/self-service/${endpoint}`,
         params: arg?.params,
-        transformResponse: (data) => {
+        transformResponse: (data: any) => {
           const json = JSON.parse(data)
-          let filteredData = {}
+          let filteredData: any = {}
 
-          const csrf_token = json.ui?.nodes.find((node) => node.attributes.name === 'csrf_token')?.attributes.value
+          const csrf_token = json.ui?.nodes.find((node: any) => node.attributes.name === 'csrf_token')?.attributes.value
           const keys = ['logout_token', 'ui', 'id', 'expires_at']
 
           keys.forEach((key) => {
@@ -93,33 +118,27 @@ const generateOryEndpoints = (builder) => {
           if (csrf_token) filteredData['csrf_token'] = csrf_token
 
           return json.error ? json.error : filteredData
-        },
-        keepUnusedDataFor: 60 * 3
-      }),
-      cacheKey: `get${baseName}Flow`,
-      ...rest
+        }
+      })
     })
 
     if (endpoint === 'logout') return
 
     endpoints[`complete${baseName}Flow`] = builder.mutation({
-      queryFn: (arg) => completeFlow({
+      queryFn: (arg: any) => completeFlow({
         url: `/self-service/${endpoint}`,
         params: arg?.params,
         data: arg?.data,
       }),
-      cacheKey: `complete${baseName}Flow`,
-      ...rest
     })
   })
 
   endpoints['getUpdatedLogoutFlow'] = builder.query({
-    queryFn: (arg) => axiosBaseQuery({
+    queryFn: (arg: any) => axiosBaseQuery({
       url: '/self-service/logout',
       method: 'GET',
       params: { token: arg.token },
-    }),
-    cacheKey: 'getUpdatedLogoutFlow',
+    }) as Promise<any>
   })
 
   return endpoints

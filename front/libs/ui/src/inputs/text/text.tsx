@@ -34,7 +34,7 @@ interface PlainTextInputProps extends React.HTMLProps<HTMLInputElement> {
   name: string
 }
 
-export const PlainTextInput = forwardRef<HTMLInputElement, PlainTextInputProps>((props, ref) => {
+export const PlainTextInput = forwardRef<HTMLInputElement, Partial<PlainTextInputProps>>((props, ref) => {
   const { errors, loading, name, ...rest } = props
 
   return (
@@ -50,7 +50,7 @@ export const PlainTextInput = forwardRef<HTMLInputElement, PlainTextInputProps>(
             ref={ref}
             {...rest}
           />
-          {errors && <FormErrorTip errors={[errors[name]]} />}
+          {errors && <FormErrorTip errors={[errors?.[name || '']]} />}
         </TextInputWrapper>
       }
     </>
@@ -268,21 +268,22 @@ export const CityStateZipInputs = ({ errors, register, field, loading }: CitySta
 
 
 interface PasswordProps extends React.HTMLProps<HTMLInputElement> {
-  name: string,
-  inputType: 'password' | 'confirm-password',
-  placeholder: string,
-  loading: boolean,
-  visible: boolean,
-  setVisible: (visible: boolean) => void,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  error: any
+  name?: string,
+  inputType?: 'password' | 'confirm-password',
+  placeholder?: string,
+  loading?: boolean,
+  visible?: boolean,
+  setVisible?: (visible: boolean) => void,
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  error?: any
 }
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>((props, ref) => {
   const {
-    name,
-    inputType,
-    loading,
+    name = 'password',
+    inputType = 'password',
+    placeholder = 'Password',
+    loading = false,
     visible: propsVisible,
     setVisible: propsSetVisible,
     onChange,

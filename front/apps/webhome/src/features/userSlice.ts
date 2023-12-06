@@ -7,7 +7,7 @@ const apiWithTags = apiSlice.enhanceEndpoints({
 
 type SubscriptionStatus = 'active' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'past_due' | 'trialing' | 'deleted'
 
-interface User {
+export interface User {
     password_last_changed: string,
     last_login: string,
     created_on: string,
@@ -30,7 +30,7 @@ interface User {
     [key: string]: any,
 }
 
-interface Device {
+export interface Device {
     id: string,
     location: string,
     aal: string,
@@ -168,6 +168,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
 
 export const {
     useGetMeQuery,
+    useGetDevicesQuery,
     useGetSubscriptionQuery,
     useGetPaymentMethodQuery,
     useGetNextInvoiceQuery,

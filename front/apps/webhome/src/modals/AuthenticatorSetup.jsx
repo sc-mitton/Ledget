@@ -8,7 +8,7 @@ import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@f
 import { useUpdateUserMutation } from '@features/userSlice'
 import { useAddRememberedDeviceMutation } from '@features/authSlice'
 import { Content as RecoveryCodes } from '@modals/RecoveryCodes'
-import { useFlow } from '@ledget/ory-sdk'
+import { useFlow } from '@ledget/ory'
 import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
 import {
