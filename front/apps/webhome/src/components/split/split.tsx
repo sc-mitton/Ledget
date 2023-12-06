@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useForm, useFieldArray, Control, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -9,9 +9,8 @@ import { SubmitForm } from '@components/pieces'
 import { Transaction, useConfirmTransactionsMutation } from '@features/transactionsSlice'
 import { InputButton } from '@ledget/ui'
 import { LimitAmountInput } from '@components/inputs'
-import { Plus, TrashIcon } from '@ledget/media'
 import { FullSelectCategoryBill } from '@components/dropdowns'
-import { FormErrorTip, formatCurrency, AnimatedDollarCents } from '@ledget/ui'
+import { FormErrorTip, AnimatedDollarCents, DeleteButton, PlusPill } from '@ledget/ui'
 import './split.scss';
 
 
@@ -31,8 +30,8 @@ function getTotal(splits: SplitsSchema['splits']) {
     acc.add(`${split.amount}`.replace(/\D+/g, '')), Big(0)).toNumber()
 }
 
-const TotalLeft = ({ control, amount }: { control: Control<SplitsSchema>, amount: number }) => {
-  const splitValues = useWatch({ control, name: 'splits' });
+const TotalLeft = ({ control, amount, error }: { control: Control<SplitsSchema>, amount: number, error: boolean }) => {
+  const splitValues = useWatch({ control, name: 'splits' })
 
   const total = getTotal(splitValues)
   const remaining = Big(amount).minus(total).toNumber()
@@ -40,7 +39,10 @@ const TotalLeft = ({ control, amount }: { control: Control<SplitsSchema>, amount
   return (
     <>
       {remaining !== 0 &&
-        <div className={`total-left--container ${remaining > 0 ? 'has-remaining' : remaining === 0 ? 'is-even' : 'is-over'}`}>
+        <div className={`total-left--container
+            ${error ? 'has-error' : ''}
+             ${remaining > 0 ? 'has-remaining' : remaining === 0 ? 'is-even' : 'is-over'}`}
+        >
           <AnimatedDollarCents value={remaining} />
           <span>{remaining > 0 ? 'left' : remaining === 0 ? '' : 'over'}</span>
         </div>}
@@ -54,7 +56,7 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
     resolver: zodResolver(schema.refine((data) => {
       const totalAmount = data.splits.reduce((acc, split) => acc + parseFloat(split.amount), 0);
       return Math.abs(totalAmount - item.amount * 100) === 0
-    }, { message: 'All of the dollar amounts must add up to the total' })),
+    }, { message: 'All of the dollar amounts must add up to the total', path: ['totalSum'] })),
     reValidateMode: 'onBlur',
     defaultValues: {
       splits: item.categories
@@ -64,16 +66,6 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
   })
   const { fields, append, remove } = useFieldArray({ control, name: 'splits' })
   const [confirmTransactions, { isSuccess: isUpdateSuccess, isLoading: isUpdating }] = useConfirmTransactionsMutation()
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout
-    if (isUpdateSuccess) {
-      timeout = setTimeout(() => {
-        onCancel()
-      }, 1000)
-    }
-    return () => clearTimeout(timeout)
-  }, [isUpdateSuccess])
 
   const onSubmit = (data: SplitsSchema) => {
     confirmTransactions([{
@@ -86,16 +78,27 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
   }
 
   useEffect(() => {
-    console.log(control._formState)
-  }, [control._formState])
+    console.log(errors)
+    console.log(control._fields)
+  }, [errors])
+
+  useEffect(() => {
+    if (isUpdateSuccess) {
+      onCancel()
+    }
+  }, [isUpdateSuccess])
 
   return (
     <div>
       <form id="split-transaction--form" onSubmit={handleSubmit(onSubmit)}>
-        <TotalLeft control={control} amount={Big(item.amount).times(100).toNumber()} />
+        <TotalLeft
+          control={control}
+          amount={Big(item.amount).times(100).toNumber()}
+          error={!!(errors as any).totalSum}
+        />
         <div>
           {fields.map((field, index) => (
-            <section key={field.id} className="row">
+            <section key={field.id}>
               <FullSelectCategoryBill
                 includeBills={false}
                 SelectorComponent={InputButton}
@@ -117,21 +120,23 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
               >
                 <FormErrorTip errors={[(errors as any).splits?.[index]?.amount]} />
               </LimitAmountInput>
-              {index === fields.length - 1
-                ? <InputButton type='button'
-                  className="add-split--button"
-                  onClick={() => append({ category: '', amount: '0' })}
-                >
-                  <Plus size={'1em'} />
-                </InputButton>
-                : <InputButton
-                  type='button'
-                  className="remove-split--button"
-                  onClick={() => remove(index)}
-                >
-                  <TrashIcon />
-                </InputButton>
-              }
+              <div>
+                {fields.length > 1 &&
+                  <DeleteButton
+                    fill={'var(--input-background)'}
+                    stroke={'var(--m-text)'}
+                    styled='input'
+                    show={true}
+                    type='button'
+                    onClick={() => remove(index)}
+                  />}
+                {index === fields.length - 1 &&
+                  <PlusPill
+                    styled='input'
+                    type='button'
+                    onClick={() => append({ category: '', amount: '0' })}
+                  />}
+              </div>
             </section>
           ))}
         </div>

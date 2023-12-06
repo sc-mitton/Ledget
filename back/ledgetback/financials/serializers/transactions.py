@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db import transaction
 
 from financials.models import Transaction, Note
 from budget.serializers import CategorySerializer, BillSerializer
@@ -18,6 +19,7 @@ class NoteSerializer(serializers.ModelSerializer):
 
 class UpdateTransactionListSerializer(serializers.ListSerializer):
 
+    @transaction.atomic
     def update(self, instances, validated_data):
         bill_ids = [item['bill'] for item in validated_data if item.get('bill', None)]
         bill_objs = self._get_bill_objects(bill_ids)
@@ -40,13 +42,12 @@ class UpdateTransactionListSerializer(serializers.ListSerializer):
                     ) for split in split_data
                 ]
 
-        Transaction.objects.bulk_update(updated_transactions, ['bill'])
-        TransactionCategory.objects.bulk_create(
-            created_transaction_categories,
-            update_conflicts=True,
-            update_fields=['category', 'fraction'],
-            unique_fields=['transaction', 'category']
-        )
+        TransactionCategory.objects.filter(
+            transaction__in=[str(t.pk) for t in instances]).delete()
+        TransactionCategory.objects.bulk_create(created_transaction_categories)
+
+        if updated_transactions:
+            Transaction.objects.bulk_update(updated_transactions, ['bill'])
 
         return instances
 

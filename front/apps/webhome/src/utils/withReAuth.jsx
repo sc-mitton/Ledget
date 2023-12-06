@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 
 import './ReAuth.css'
 import { useSearchParams, useLocation } from 'react-router-dom'
@@ -284,52 +284,81 @@ export const ReAuthModal = withSmallModal((props) => {
 // needs a recent seesion that is newer than the max age in the
 // ory settings.
 
+const useReauthCheck = ({ requiredAal }) => {
+    const { data: user } = useGetMeQuery()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const reAuthed = useSelector(state => state.auth.reAuthed)
+    const [continueToComponent, setContinueToComponent] = useState(false)
+
+    // Controller for checking if the user has reached the required
+    // authentication level. It reacts to changes in the reAuthed
+    // object in the redux store
+    useEffect(() => {
+        const sessionIsFresh = Date.now() - reAuthed.at < 1000 * 60 * 9
+        const aalGood = reAuthed.level === (requiredAal ?? user.highest_aal)
+        let interval
+
+        // If requirements are met, start the poller to check freshness
+        // We use a poller since the modal might be opened and closed multiple times
+        if (sessionIsFresh && aalGood) {
+
+            setContinueToComponent(true)
+            if (searchParams.get('aal')) {
+                searchParams.delete('flow')
+            }
+            searchParams.delete('aal')
+            setSearchParams(searchParams)
+
+            interval = setInterval(() => {
+                const isFreshCheck = Date.now() - reAuthed.at < 1000 * 60 * 9
+                !isFreshCheck && props.onClose()
+            }, [1000])
+
+        } else if (sessionIsFresh && !aalGood) {
+            // Needs to increase aal
+            const neededAal = requiredAal ?? user.highest_aal
+            if (neededAal === 'aal2') {
+                searchParams.set('aal', 'aal2')
+                setSearchParams(searchParams)
+            } else {
+                setSearchParams({ aal: 'aal15' })
+            }
+        }
+
+        return () => clearInterval(interval)
+    }, [reAuthed.at])
+
+    return continueToComponent
+}
+
+export const ReAuthProtected = ({ children, requiredAal }) => {
+    const reauthed = useReauthCheck({ requiredAal })
+    const [showReAuthModal, setShowReAuthModal] = useState(false)
+    const [onReAuth, setOnReAuth] = useState()
+
+    useEffect(() => {
+        if (reauthed) {
+            onReAuth()
+        }
+    }, [reauthed])
+
+    useEffect(() => {
+        onReAuth && setShowReAuthModal(true)
+    }, [onReAuth])
+
+    return (
+        <>
+            {showReAuthModal && <ReAuthModal onClose={() => setShowReAuthModal(false)} />}
+            {children(setOnReAuth)}
+        </>
+    )
+}
+
 export default function withReAuth(Component) {
 
     return (props) => {
-        const { data: user } = useGetMeQuery()
-        const [searchParams, setSearchParams] = useSearchParams()
-        const [continueToComponent, setContinueToComponent] = useState(false)
-        const reAuthed = useSelector(state => state.auth.reAuthed)
         const { requiredAal } = props
-
-        // Controller for checking if the user has reached the required
-        // authentication level. It reacts to changes in the reAuthed
-        // object in the redux store
-        useEffect(() => {
-            const sessionIsFresh = Date.now() - reAuthed.at < 1000 * 60 * 9
-            const aalGood = reAuthed.level === (requiredAal ?? user.highest_aal)
-            let interval
-
-            // If requirements are met, start the poller to check freshness
-            // We use a poller since the modal might be opened and closed multiple times
-            if (sessionIsFresh && aalGood) {
-
-                setContinueToComponent(true)
-                if (searchParams.get('aal')) {
-                    searchParams.delete('flow')
-                }
-                searchParams.delete('aal')
-                setSearchParams(searchParams)
-
-                interval = setInterval(() => {
-                    const isFreshCheck = Date.now() - reAuthed.at < 1000 * 60 * 9
-                    !isFreshCheck && props.onClose()
-                }, [1000])
-
-            } else if (sessionIsFresh && !aalGood) {
-                // Needs to increase aal
-                const neededAal = requiredAal ?? user.highest_aal
-                if (neededAal === 'aal2') {
-                    searchParams.set('aal', 'aal2')
-                    setSearchParams(searchParams)
-                } else {
-                    setSearchParams({ aal: 'aal15' })
-                }
-            }
-
-            return () => clearInterval(interval)
-        }, [reAuthed.at])
+        const continueToComponent = useReauthCheck({ requiredAal })
 
         return (
             <>

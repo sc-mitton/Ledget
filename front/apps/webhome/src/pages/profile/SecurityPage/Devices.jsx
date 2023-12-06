@@ -7,7 +7,7 @@ import { Disclosure } from '@headlessui/react'
 import { useDeleteRememberedDeviceMutation, } from '@features/authSlice'
 import { IconButtonSubmit, Tooltip } from '@ledget/ui'
 import { ArrowIcon, LogoutIcon, LocationIcon, ComputerIcon, PhoneIcon } from '@ledget/media'
-
+import { ReAuthProtected } from '@utils/withReAuth'
 
 const formatDateTime = (date) => {
     const d = new Date(date)
@@ -88,14 +88,17 @@ const Device = (props) => {
                                                 ariaLabel={"Refresh list"}
                                                 style={{ left: '-30%' }}
                                             >
-                                                <IconButtonSubmit
-                                                    submitting={processingDelete}
-                                                    onClick={() => { deleteDevice({ deviceId: session.id }) }}
-                                                >
-                                                    <LogoutIcon />
-                                                </IconButtonSubmit>
-                                            </Tooltip>
-                                        }
+                                                <ReAuthProtected requiredAal={'aal1'}>
+                                                    {({ onReAuth }) => (
+                                                        <IconButtonSubmit
+                                                            submitting={processingDelete}
+                                                            onClick={() => { onReAuth(deleteDevice({ deviceId: session.id })) }}
+                                                        >
+                                                            <LogoutIcon />
+                                                        </IconButtonSubmit>
+                                                    )}
+                                                </ReAuthProtected>
+                                            </Tooltip>}
                                     </div>
                                 </div>
                             )}

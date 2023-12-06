@@ -162,24 +162,17 @@ export const CopyButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText
     </button>
   )
 
-export const PlusPill: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled: 'black' | 'green' }>
-  = ({ styled = 'black', ...rest }: { styled: 'black' | 'green' }) => (
-    <button className={`btn-circle ${styled === 'black' ? 'btn-chcl' : 'btn-grn'}`} {...rest}>
-      <Plus stroke={'currentColor'} size={'.9em'} />
+export const PlusPill: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled?: 'chcl' | 'grn' | 'gr' | 'input' }>
+  = ({ styled = 'chcl', ...rest }) => (
+    <button className={`btn-circle  btn-${styled}`} {...rest}>
+      <Plus stroke={'currentColor'} />
     </button>
   )
 
-export const CheckCircleButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled: 'black' | 'green' }>
-  = ({ styled = 'black', ...rest }: { styled: 'black' | 'green' }) => (
-    <button className={`btn-circle ${styled === 'black' ? 'btn-chcl' : 'btn-grn'}`} {...rest}>
-      <CheckMark stroke={'currentColor'} width={'.9em'} height={'.9em'} />
-    </button>
-  )
-
-export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { fill?: string, stroke?: string }>
-  = ({ className, fill, stroke, ...rest }) => (
-    <button className={`btn delete-button ${className}`} {...rest}>
-      <Delete fill={fill} stroke={stroke} size={'1.2em'} />
+export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { fill?: string, stroke?: string, show?: boolean, styled?: 'input' }>
+  = ({ className, show, fill, stroke, styled, ...rest }) => (
+    <button className={`btn delete-button${show ? '-show' : ''} ${className}`} {...rest}>
+      <Delete fill={fill} stroke={stroke} size={'1.2em'} border={styled === 'input' ? 'var(--input-border-color)' : ''} />
     </button>
   )
 

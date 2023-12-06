@@ -4,7 +4,7 @@ const Plus = ({
     className = '',
     size = "1.2em",
     stroke = "var(--icon-dark)",
-    strokeWidth = "16"
+    strokeWidth = "18"
 }) => {
 
     return (

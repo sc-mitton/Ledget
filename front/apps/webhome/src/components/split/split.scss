@@ -11,52 +11,60 @@
         gap: .25em;
         font-size: 1.125rem;
 
-
-        &.is-over * {
-            color: var(--mute-red);
+        &.pulse {
+            animation: pulse-error .1s ease-in-out forwards;
         }
 
         &.is-even *,
         &.has-remaining * {
             color: $secondary-text-color-darker;
         }
+
+        &.is-over *,
+        &.has-error * {
+            color: var(--mute-red);
+        }
     }
 
     &>div:nth-last-child(2) {
         margin: 1.25em 0;
 
-        .row {
+        section {
             margin: 0 auto;
             width: 100%;
             display: grid;
             grid-template-columns: 1fr .85fr auto;
-            column-gap: .5em;
+            column-gap: .75em;
             row-gap: .125em;
+
+            &:not(:last-child)>div:last-child {
+                opacity: 0;
+                transition: opacity .25s ease-in-out;
+
+                &:hover {
+                    opacity: 1;
+                    transition: opacity .25s ease-in-out;
+                }
+            }
 
             &>div {
                 flex: 1;
 
-                button {
+                &:first-child {
+                    button {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
+
+                &:last-child {
                     display: flex;
-                    justify-content: space-between;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: .25em;
                 }
             }
-        }
-
-        .remove-split--button {
-            opacity: 0;
-            transition: opacity .25s ease-in-out;
-
-            &:hover {
-                opacity: 1;
-                transition: opacity .25s ease-in-out;
-            }
-        }
-
-        .remove-split--button,
-        .add-split--button {
-            padding-left: .375em;
-            padding-right: .375em;
         }
     }
 }
