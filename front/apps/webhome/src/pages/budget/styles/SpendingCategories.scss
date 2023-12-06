@@ -237,6 +237,10 @@ $background: var(--window);
     justify-content: flex-start;
     // Aprx. 5 rows
     min-height: calc(5.25 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em); // the 2em comes from the bottom buttons space
+
+    h2 {
+        margin-left: .25em;
+    }
 }
 
 // Div surrounding the bottom buttons

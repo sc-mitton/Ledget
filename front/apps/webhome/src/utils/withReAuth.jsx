@@ -242,7 +242,7 @@ const Otp = () => {
     )
 }
 
-const ReAuthModals = withSmallModal((props) => {
+export const ReAuthModal = withSmallModal((props) => {
     const [searchParams] = useSearchParams()
     const loaded = useLoaded(100)
 
@@ -333,7 +333,7 @@ export default function withReAuth(Component) {
 
         return (
             <>
-                <ReAuthModals
+                <ReAuthModal
                     hideAll={continueToComponent}
                     onClose={() => !continueToComponent && props.onClose()}
                     hasOverlay={false}

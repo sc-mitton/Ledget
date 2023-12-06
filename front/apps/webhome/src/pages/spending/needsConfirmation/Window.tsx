@@ -543,6 +543,7 @@ const NeedsConfirmationWindow = () => {
                     </Options>
                 </InfiniteScrollDiv >
                 <ExpandableContainer
+                    className="expand-button--container"
                     expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
                     <ExpandButton onClick={() => setExpanded(!expanded)} flipped={expanded} />
                 </ExpandableContainer>

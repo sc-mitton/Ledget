@@ -7,6 +7,16 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
     display: flex;
     flex-direction: column;
     position: relative;
+
+    .expand-button--container {
+        opacity: 0;
+        transition: opacity .2s ease-out;
+
+        &:hover {
+            opacity: 1;
+            transition: opacity .2s ease-out;
+        }
+    }
 }
 
 #new-items {
@@ -87,8 +97,6 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
             }
         }
     }
-
-
 }
 
 .new-item-icons {

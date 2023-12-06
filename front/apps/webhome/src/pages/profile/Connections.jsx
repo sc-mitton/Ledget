@@ -4,7 +4,7 @@ import { Plus, Edit } from '@ledget/media'
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
-import './styles/Connections.css'
+import './styles/Connections.scss'
 import {
     useGetPlaidItemsQuery,
     useDeletePlaidItemMutation,

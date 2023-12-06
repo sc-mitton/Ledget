@@ -27,7 +27,7 @@
 
 #profile-window .content {
     flex: 2;
-    border-radius: 0;
+    border-radius: inherit;
 }
 
 #profile-window .padded-content {

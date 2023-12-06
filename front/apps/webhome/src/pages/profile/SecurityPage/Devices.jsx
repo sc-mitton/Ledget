@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 
 import _ from 'lodash.groupby'
 
-import './styles/Devices.css'
+import './styles/Devices.scss'
 import { Disclosure } from '@headlessui/react'
 import { useDeleteRememberedDeviceMutation, } from '@features/authSlice'
 import { IconButtonSubmit, Tooltip } from '@ledget/ui'

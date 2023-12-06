@@ -265,7 +265,7 @@ class TransactionViewSet(ModelViewSet):
 
         # Get confirmed transactions
         if self.request.query_params.get('confirmed') == 'true':
-            return Transaction.objects.filter(
+            confirmed = Transaction.objects.filter(
                 datetime__gte=start,
                 datetime__lte=end,
                 **extra_args
@@ -277,7 +277,11 @@ class TransactionViewSet(ModelViewSet):
                  queryset=Category.objects.all().annotate(
                      fraction=F('transactioncategory__fraction')))) \
              .prefetch_related('notes') \
-             .order_by('-datetime')
+             .order_by('-datetime') \
+             .distinct()
+
+            return confirmed
+
         # Get unconfirmed transactions
         else:
             return Transaction.objects.filter(
@@ -302,7 +306,8 @@ class TransactionViewSet(ModelViewSet):
              queryset=Category.objects.all().annotate(
                  fraction=F('transactioncategory__fraction')))) \
          .prefetch_related('notes') \
-         .order_by('-datetime')
+         .order_by('-datetime') \
+         .distinct()
 
 
 class NoteViewSet(ModelViewSet):

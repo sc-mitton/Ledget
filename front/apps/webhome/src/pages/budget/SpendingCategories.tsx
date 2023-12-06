@@ -517,7 +517,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                 break;
         }
 
-        if (spendingSummaryData.length > 0) {
+        if (spendingSummaryData.length > 2) {
             setChartData(spendingSummaryData.filter(d =>
                 new Date(d.year, d.month) > new Date(windowEnd)
             ).map(d => ({
@@ -654,7 +654,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                 <div>
                     <ResponsiveLineContainer>
                         {window && <WindowSelection />}
-                        {spendingSummaryData?.length === 0 &&
+                        {spendingSummaryData?.length && spendingSummaryData?.length < 2 &&
                             <span id="not-enough-data-message">
                                 Not enough data to display yet
                             </span>
@@ -663,7 +663,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                             ?
                             <AmountSpentChart
                                 data={chartData}
-                                disabled={spendingSummaryData.length === 0}
+                                disabled={spendingSummaryData.length < 2}
                             />
                             : <LoadingRing visible={true} />
                         }

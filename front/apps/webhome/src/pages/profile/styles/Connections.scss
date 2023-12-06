@@ -1,3 +1,5 @@
+@import '@styles/text.scss';
+
 #connections-page {
     display: flex;
     flex-direction: column;
@@ -65,8 +67,6 @@
 
 /* -------------------------- Account Rows Styling -------------------------- */
 
-
-
 #connections-page .accounts {
     display: grid;
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
@@ -84,7 +84,7 @@
 }
 
 #connections-page .accounts>div {
-    padding: .25em 0;
+    align-self: center;
 }
 
 /* Alternate Row Styling */
@@ -94,6 +94,12 @@
     background-color: var(--inner-window);
 }
 
+#connections-page .accounts>div:nth-child(3n + 2),
+#connections-page .accounts>div:nth-child(3n + 3) {
+    color: $secondary-text-color;
+    padding: .375em 0;
+    font-size: .75rem;
+}
 
 #connections-page .accounts>div:nth-child(3n) {
     padding-right: 1em;
@@ -102,6 +108,7 @@
 }
 
 #connections-page .accounts>div:nth-child(3n + 1) {
+    padding: .25em 0;
     padding-left: .525em;
     border-top-left-radius: var(--border-radius1);
     border-bottom-left-radius: var(--border-radius1);
@@ -115,11 +122,6 @@
     text-align: right;
 }
 
-#connections-page .accounts>div:nth-child(3n + 2),
-#connections-page .accounts>div:nth-child(3n + 3) {
-    opacity: .8;
-    font-size: .75rem;
-}
 
 /* ------------------------------ Misc ----------------------------- */
 
@@ -130,7 +132,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    opacity: .7;
+    color: $secondary-text-color;
 }
 
 #no-connections-message h2 {
