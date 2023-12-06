@@ -129,7 +129,7 @@ interface BillCatButtonProps {
 
 export const BillCatButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & BillCatButtonProps> =
   ({ color, children, className, slimLevel, ...rest }) => (
-    <button className={`${className} ${slimLevel === 1 ? 'btn-slim' : 'btn-2slim'} ${color === 'blue' ? 'btn-blue' : 'btn-grn'} `} {...rest}>
+    <button className={`${className} ${slimLevel === 1 ? 'btn-slim' : 'btn-2slim'} ${color === 'blue' ? 'btn-blue2' : 'btn-grn3'} `} {...rest}>
       {children}
     </button>
   )

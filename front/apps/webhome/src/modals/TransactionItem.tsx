@@ -119,8 +119,10 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
     useEffect(() => {
         if (showBillCatSelect && billCat) {
             confirmTransactions([{
-                transaction: item,
-                ...(isCategory(billCat) ? { categories: [{ ...billCat, fraction: 1 }] } : { bill: billCat.id })
+                transaction_id: item.transaction_id,
+                ...(isCategory(billCat)
+                    ? { splits: [{ category: billCat.id, fraction: 1 }] }
+                    : { bill: billCat.id })
             }])
             setShowBillCatSelect(false)
         }
@@ -157,6 +159,13 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
                 </div>
                 : item.categories?.map((cat) => (
                     <div key={cat.id}>
+                        <BillCatButton
+                            color={cat.period === 'month' ? 'blue' : 'green'}
+                            slimLevel={2}
+                        >
+                            <span>{cat.emoji}</span>
+                            <span>{cat.name.charAt(0).toUpperCase()}{cat.name.slice(1)}</span>
+                        </BillCatButton>
                     </div>
                 ))
             }

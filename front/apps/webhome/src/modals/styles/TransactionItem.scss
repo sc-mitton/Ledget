@@ -78,12 +78,13 @@
         &>div a {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
         }
 
-        // Account and instittution info
+        // Account and institution info
         // accunt, merchant, date, etc. info
-        &:nth-last-child(3),
-        &:nth-last-child(2) {
+        &:nth-last-child(2),
+        &:nth-last-child(1) {
             display: grid;
             column-gap: 1.5em;
             row-gap: .5em;
@@ -110,19 +111,23 @@
             }
         }
 
-        &:first-child>div {
-            position: relative;
+        &:first-child {
+            display: flex;
+            align-items: center;
+            gap: .25em;
 
             &>div {
-                top: 2.25em;
+                position: relative;
+                margin-right: .5em;
+
+                &>div {
+                    top: 2.25em;
+                }
             }
         }
 
         // Add a note container
         &:last-child {
-            h4 {
-                margin-bottom: .25em;
-            }
 
             &>div {
                 display: flex;
@@ -140,6 +145,5 @@
 
     h4 {
         grid-column: span 2;
-        margin-bottom: .25em;
     }
 }

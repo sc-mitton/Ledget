@@ -11,7 +11,7 @@ import { InputButton } from '@ledget/ui'
 import { LimitAmountInput } from '@components/inputs'
 import { Plus, TrashIcon } from '@ledget/media'
 import { FullSelectCategoryBill } from '@components/dropdowns'
-import { FormErrorTip, formatCurrency } from '@ledget/ui'
+import { FormErrorTip, formatCurrency, AnimatedDollarCents } from '@ledget/ui'
 import './split.scss';
 
 
@@ -41,7 +41,7 @@ const TotalLeft = ({ control, amount }: { control: Control<SplitsSchema>, amount
     <>
       {remaining !== 0 &&
         <div className={`total-left--container ${remaining > 0 ? 'has-remaining' : remaining === 0 ? 'is-even' : 'is-over'}`}>
-          <span>{formatCurrency({ val: remaining })}</span>
+          <AnimatedDollarCents value={remaining} />
           <span>{remaining > 0 ? 'left' : remaining === 0 ? '' : 'over'}</span>
         </div>}
     </>

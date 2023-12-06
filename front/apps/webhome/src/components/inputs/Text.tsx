@@ -83,11 +83,11 @@ type IncrementFunction = (args: IncrementDecrement) => void;
 
 const increment: IncrementFunction = ({ val, setVal, field }) => {
     let newVal: number
-    if (!val || val === '') {
-        newVal = 1000
+    if (!val || val === '' || val === '$0' || val === '$0.00') {
+        newVal = 100
     } else {
         newVal = makeIntCurrencyFromStr(val)
-        newVal += 1000
+        newVal += Math.pow(10, Math.floor(Math.log10(newVal)))
     }
 
     field?.onChange(newVal)
@@ -102,7 +102,10 @@ const decrement: IncrementFunction = ({ val, setVal, field }) => {
         newVal = makeIntCurrencyFromStr(val)
     }
 
-    newVal = newVal > 1000 ? newVal - 1000 : 0
+    newVal -= Math.pow(10, Math.floor(Math.log10(newVal)))
+    if (newVal < 0) {
+        newVal = 0
+    }
     field?.onChange(newVal)
     setVal(formatCurrency({ val: newVal }))
 }

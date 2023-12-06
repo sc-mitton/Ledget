@@ -168,6 +168,17 @@
     }
 }
 
+.btn-grn2 {
+    background-color: var(--secondary-hlight3);
+    color: var(--secondary-dark4);
+    transition: all .3s ease;
+
+    &:hover {
+        background-color: color-mix(in srgb, var(--secondary-hlight3), var(--secondary-dark4) 7%);
+        transition: all .3s ease;
+    }
+}
+
 .btn-blue {
     background-color: var(--main-hlight4);
     color: var(--main-dark);
@@ -175,6 +186,17 @@
 
     &:hover {
         background-color: color-mix(in srgb, var(--main-hlight4), var(--main-dark4) 7%);
+        transition: all .3s ease;
+    }
+}
+
+.btn-blue2 {
+    background-color: var(--main-hlight5);
+    color: var(--main-dark);
+    transition: all .3s ease;
+
+    &:hover {
+        background-color: color-mix(in srgb, var(--main-hlight5), var(--main-dark3) 7%);
         transition: all .3s ease;
     }
 }
