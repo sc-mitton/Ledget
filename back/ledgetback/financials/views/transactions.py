@@ -4,7 +4,7 @@ from collections import OrderedDict
 import pytz
 
 from django.db import transaction, models
-from django.db.models import Q
+from django.db.models import Q, Prefetch, F
 from rest_framework.generics import GenericAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
@@ -32,6 +32,8 @@ from financials.serializers.transactions import (
     NoteSerializer
 )
 from financials.models import PlaidItem, Note
+from budget.models import Category
+
 
 plaid_client = create_plaid_client()
 logger = logging.getLogger('ledget')
@@ -270,7 +272,10 @@ class TransactionViewSet(ModelViewSet):
             ).filter(
                 Q(bill__isnull=False) | Q(transactioncategory__isnull=False)
             ).select_related('bill') \
-             .prefetch_related('categories') \
+             .prefetch_related(Prefetch(
+                 'categories',
+                 queryset=Category.objects.all().annotate(
+                     fraction=F('transactioncategory__fraction')))) \
              .prefetch_related('notes') \
              .order_by('-datetime')
         # Get unconfirmed transactions
@@ -292,7 +297,10 @@ class TransactionViewSet(ModelViewSet):
             account__type=type,
             account_id=account
         ).select_related('bill') \
-         .prefetch_related('categories') \
+         .prefetch_related(Prefetch(
+             'categories',
+             queryset=Category.objects.all().annotate(
+                 fraction=F('transactioncategory__fraction')))) \
          .prefetch_related('notes') \
          .order_by('-datetime')
 
