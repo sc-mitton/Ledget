@@ -1,6 +1,5 @@
 
 import {
-    FC,
     ForwardRefExoticComponent,
     RefAttributes,
     ButtonHTMLAttributes,
@@ -11,6 +10,7 @@ import {
 } from 'react'
 
 import { Combobox } from "@headlessui/react"
+import { useController, Control } from 'react-hook-form'
 
 import './SelectCategoryBill.scss'
 import { Category, useGetCategoriesQuery } from '@features/categorySlice'
@@ -28,21 +28,22 @@ interface I {
 }
 
 function StaticSelectCategoryBill({ value, onChange, includeBills = true, month, year }: I) {
-    const { start, end } = useGetStartEndQueryParams(month, year)
     const [query, setQuery] = useState('')
+    const { start, end } = useGetStartEndQueryParams(month, year)
     const {
         data: categoryData,
-        isLoading:
-        isFetchingCategories,
+        isLoading: isFetchingCategories,
         isSuccess: isFetchCategoriesSuccess
     } = useGetCategoriesQuery({ start, end, spending: false })
     const {
         data: billData,
         isSuccess: isFetchBillsSuccess
     } = useGetBillsQuery({ month, year })
+
     const [filteredBillCats, setFilteredBillCats] = useState<(Category | Bill)[]>([])
     const inputRef = useRef<HTMLInputElement>(null)
 
+    // Set billcats
     useEffect(() => {
         if (categoryData && billData) {
             includeBills
@@ -51,6 +52,7 @@ function StaticSelectCategoryBill({ value, onChange, includeBills = true, month,
         }
     }, [isFetchCategoriesSuccess, isFetchBillsSuccess])
 
+    // Filter billcats
     useEffect(() => {
         let data: (Category | Bill)[] | undefined
         if (categoryData && billData) {
@@ -80,6 +82,7 @@ function StaticSelectCategoryBill({ value, onChange, includeBills = true, month,
                 <Combobox.Input
                     ref={inputRef}
                     className="input"
+                    value={query}
                     onChange={(event) => setQuery(event.target.value)}
                     size={filteredBillCats.reduce((acc, curr) => Math.max(acc, curr.name.length), 0)}
                 />
@@ -108,19 +111,37 @@ function StaticSelectCategoryBill({ value, onChange, includeBills = true, month,
 }
 
 interface Selector extends Omit<I, 'value' | 'onChange'> {
-    name?: string
     SelectorComponent: ForwardRefExoticComponent<ButtonHTMLAttributes<HTMLButtonElement>
         & RefAttributes<HTMLButtonElement>>
-    defaultValue?: (Category | Bill | undefined)
+    children?: React.ReactNode
+    defaultBillCat?: string
+    control?: Control<any>
+    name?: string
 }
 
-export const FullSelectCategoryBill: FC<Selector>
-    = ({ SelectorComponent, defaultValue, name, month, year, ...rest }) => {
+export const FullSelectCategoryBill =
+    ({ SelectorComponent, defaultBillCat, includeBills, month, year, name, children, control }: Selector) => {
 
+        const [value, onChange] = useState<Category | Bill | undefined>()
         const [showBillCatSelect, setShowBillCatSelect] = useState(false)
-        const [value, onChange] = useState(defaultValue)
         const dropdownRef = useRef<HTMLDivElement>(null)
         const buttonRef = useRef<HTMLButtonElement>(null)
+
+        const { start, end } = useGetStartEndQueryParams(month, year)
+        const {
+            data: categoryData,
+            isSuccess: isFetchCategoriesSuccess
+        } = useGetCategoriesQuery({ start, end, spending: false })
+        const {
+            data: billData,
+            isSuccess: isFetchBillsSuccess
+        } = useGetBillsQuery({ month, year })
+
+        const { field } = useController({
+            name: name || 'category',
+            control,
+            defaultValue: value
+        })
 
         useAccessEsc({
             refs: [dropdownRef, buttonRef],
@@ -128,15 +149,28 @@ export const FullSelectCategoryBill: FC<Selector>
             setVisible: setShowBillCatSelect
         })
 
+        // Set default billcat
+        useEffect(() => {
+            if (defaultBillCat && isFetchCategoriesSuccess && isFetchBillsSuccess) {
+                const billcat = [...categoryData, ...billData].find((bc) => bc.id === defaultBillCat)
+                if (billcat) {
+                    onChange && onChange(billcat)
+                }
+            }
+        }, [isFetchCategoriesSuccess, isFetchBillsSuccess])
+
+        // Update field as value changes
+        useEffect(() => {
+            field.onChange(value?.id)
+        }, [value])
+
         return (
             <div>
-                {value && name &&
-                    <input
-                        name={name}
-                        type='hidden'
-                        value={value.id}
-                        {...rest}
-                    />}
+                <input
+                    type='hidden'
+                    value={value ? value.id : ''}
+                    ref={field.ref}
+                />
                 <SelectorComponent
                     className={`bill-category-selector--button ${value ? 'valid' : ''} ${showBillCatSelect ? 'active' : ''}`}
                     type='button'
@@ -153,6 +187,7 @@ export const FullSelectCategoryBill: FC<Selector>
                         }
                     </div>
                     <ArrowIcon size={'.8em'} stroke={'currentColor'} />
+                    {children}
                 </SelectorComponent>
                 <DropAnimation
                     placement='left'
@@ -161,7 +196,7 @@ export const FullSelectCategoryBill: FC<Selector>
                     ref={dropdownRef}
                 >
                     <StaticSelectCategoryBill
-                        includeBills={true}
+                        includeBills={includeBills}
                         value={value}
                         onChange={onChange}
                         month={month}

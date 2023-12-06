@@ -188,7 +188,7 @@ const Form = () => {
             if (!hasSchedule || body.errors) { return }
 
             const item = { ...body, ...data }
-            console.log(item)
+
             if (body.period === 'month') {
                 setMonthItems([...monthItems, item])
             } else {

@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useState, HTMLProps } from 'react'
+import React, { FC, useRef, useEffect, useState, HTMLProps } from 'react'
 
-import { useController, Control } from 'react-hook-form'
+import { useController, Control, Controller } from 'react-hook-form'
 
 import './styles/Text.scss'
 import Emoji from './Emoji'
@@ -128,135 +128,92 @@ const IncrementDecrementButton = ({ val, setVal, field }: IncrementDecrement) =>
     </div>
 )
 
-export const LimitAmountInput = (
-    { control, defaultValue, children, hasLabel = true, withCents = true, ...rest }: {
-        control?: Control<any>,
-        defaultValue?: string,
-        children?: React.ReactNode
-        name?: string
-        hasLabel?: boolean
-        withCents?: boolean
-        style?: React.CSSProperties
-    }
-) => {
-    const [val, setVal] = useState<string>('')
-
-    const {
-        field,
-    } = useController({
-        control,
-        name: rest.name || 'limit_amount'
-    })
-
-    // set field value to default if present
-    useEffect(() => {
-        if (defaultValue) {
-            field.onChange(makeIntCurrencyFromStr(defaultValue))
-            setVal(defaultValue)
-        }
-    }, [defaultValue])
-
-    return (
-        <>
-            {hasLabel && <label htmlFor="limit">Limit</label>}
-            <TextInputWrapper className="limit-amount--container">
-                <input
-                    type="text"
-                    name='limit_amount'
-                    id="limit_amount"
-                    placeholder={withCents ? '$0.00' : '$0'}
-                    value={val}
-                    ref={field.ref}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Right' || e.key === 'ArrowRight') {
-                            e.preventDefault()
-                            increment({ val, setVal, field })
-                        } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-                            e.preventDefault()
-                            decrement({ val, setVal, field })
-                        }
-                    }}
-                    onChange={(e) => {
-                        field.onChange(makeIntCurrencyFromStr(e.target.value))
-                        setVal(formatCurrency({ val: e.target.value, withCents }))
-                    }}
-                    onFocus={(e) => {
-                        if (e.target.value.length <= 1 || val === '$0') {
-                            withCents ? setVal('$0.00') : setVal('$0')
-                            field.onChange(0)
-                        }
-                    }}
-                    onBlur={(e) => {
-                        (e.target.value.length <= 1 || val === '$0' || val === '$0.00') && setVal('')
-                        field.onBlur()
-                    }}
-                    size={14}
-                    {...rest}
-                />
-                <IncrementDecrementButton val={val} setVal={setVal} field={field} />
-                {children}
-            </TextInputWrapper>
-        </>
-    )
-}
-
-export const ControlledDollarInput = ({
-    value, setValue, hasLabel = true, withCents = true, ...rest
-}: {
-    value: string,
-    setValue: React.Dispatch<React.SetStateAction<string>>,
-    withCents?: boolean
+export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
+    control?: Control<any>,
+    defaultValue?: number,
     hasLabel?: boolean
-} & HTMLProps<HTMLInputElement>
-) => {
+    withCents?: boolean
+}> = ({
+    control,
+    defaultValue,
+    children,
+    hasLabel = true,
+    withCents = true,
+    required = true,
+    ...rest
+}) => {
+        const [val, setVal] = useState<string>('')
 
-    return (
-        <>
-            {hasLabel && <label htmlFor="limit">Limit</label>}
-            <TextInputWrapper className={`limit-amount--container${value ? ' valid' : ''}`}>
-                <input
-                    type='text'
-                    name='limit_amount'
-                    placeholder={withCents ? '$0.00' : '$0'}
-                    value={value}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Right' || e.key === 'ArrowRight') {
-                            e.preventDefault()
-                            increment({ val: value, setVal: setValue })
-                        } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-                            e.preventDefault()
-                            decrement({ val: value, setVal: setValue })
-                        }
-                    }}
-                    onChange={(e) => {
-                        setValue(formatCurrency({ val: e.target.value, withCents }))
-                    }}
-                    onFocus={(e) => {
-                        if (e.target.value.length <= 1 || value === '$0') {
-                            withCents ? setValue('$0.00') : setValue('$0')
-                        }
-                    }}
-                    onBlur={(e) => {
-                        (e.target.value.length <= 1 || value === '$0' || value === '$0.00') && setValue('')
-                    }}
-                    size={14}
-                    {...rest}
+        const { field } = useController({
+            control,
+            name: rest.name || 'limit_amount',
+            rules: { required }
+        })
+
+        // set field value to default if present
+        useEffect(() => {
+            if (defaultValue) {
+                field.onChange(formatCurrency({ val: defaultValue }))
+                setVal(formatCurrency({ val: defaultValue }))
+            }
+        }, [defaultValue])
+
+        return (
+            <>
+                {hasLabel && <label htmlFor="limit">Limit</label>}
+                <Controller
+                    control={control}
+                    name={rest.name || 'limit_amount'}
+                    render={({ field: { onChange, onBlur, ref } }) => (
+                        <TextInputWrapper className={`limit-amount--container ${val ? 'valid' : ''}`}>
+                            <input
+                                type="text"
+                                name='limit_amount'
+                                id="limit_amount"
+                                placeholder={withCents ? '$0.00' : '$0'}
+                                value={val}
+                                ref={ref}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Right' || e.key === 'ArrowRight') {
+                                        e.preventDefault()
+                                        increment({ val, setVal, field })
+                                    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+                                        e.preventDefault()
+                                        decrement({ val, setVal, field })
+                                    }
+                                }}
+                                onChange={(e) => {
+                                    onChange(formatCurrency({ val: e.target.value, withCents }))
+                                    setVal(formatCurrency({ val: e.target.value, withCents }))
+                                }}
+                                onFocus={(e) => {
+                                    if (e.target.value.length <= 1 || val === '$0') {
+                                        withCents ? setVal('$0.00') : setVal('$0')
+                                        onChange(0)
+                                    }
+                                }}
+                                onBlur={(e) => {
+                                    (e.target.value.length <= 1 || val === '$0' || val === '$0.00') && setVal('')
+                                    onBlur()
+                                }}
+                                size={14}
+                                {...rest}
+                            />
+                            <IncrementDecrementButton val={val} setVal={setVal} field={field} />
+                            {children}
+                        </TextInputWrapper>
+                    )}
                 />
-                <IncrementDecrementButton
-                    val={formatCurrency({ val: value, withCents })}
-                    setVal={setValue}
-                />
-            </TextInputWrapper>
-        </>
-    )
-}
+            </>
+        )
+    }
 
 export const DollarRangeInput = (
     { control, defaultLowerValue, defaultUpperValue, errors, hasLabel = true, rangeMode = false }: {
         control: Control<any>,
         errors?: any,
-        defaultLowerValue?: string,
-        defaultUpperValue?: string,
+        defaultLowerValue?: number,
+        defaultUpperValue?: number,
         hasLabel?: boolean,
         rangeMode?: boolean
     }
@@ -285,11 +242,11 @@ export const DollarRangeInput = (
                     <FormErrorTip errors={errors.upper_amount && [errors.upper_amount]} />
                 </LimitAmountInput>
             </div>
-            {(errors.lower_amount?.type !== 'required' && errors.lower_amount?.message !== 'required')
+            {(errors.lower_amount?.type !== 'required' && errors.lower_amount?.message.toLowerCase() !== 'required')
                 && <FormError msg={errors.lower_amount?.message} />}
             {(errors.lower_amount?.type !== 'required'
                 && errors.lower_amount?.type !== 'typeError'
-                && errors.lower_amount?.message !== 'required')
+                && errors.lower_amount?.message.toLowerCase() !== 'required')
                 && <FormError msg={errors.lower_amount?.message} />}
         </>
     )

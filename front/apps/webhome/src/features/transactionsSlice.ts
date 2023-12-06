@@ -6,6 +6,7 @@ import { Category, addTransaction2Cat, SplitCategory } from '@features/categoryS
 import { addTransaction2Bill } from '@features/billSlice'
 import type { Bill } from '@features/billSlice'
 import type { RootState } from './store'
+import type { DeepPartial } from '@utils/types'
 
 export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 
@@ -99,6 +100,12 @@ interface ConfirmStackInitialState extends ConfirmedQueue {
     confirmedQue: ConfirmedQueue;
 }
 
+type ConfirmTransactionParams = {
+    transaction_id: Transaction['transaction_id']
+    splits?: { category: SplitCategory['id'], fraction: SplitCategory['fraction'] }[]
+    bill?: Bill['id']
+}[]
+
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         transactionsSync: builder.mutation<TransactionsSyncResponse, { account: string } | { item: string }>({
@@ -185,29 +192,25 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
             keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
-        confirmTransactions: builder.mutation<any, ConfirmedQueue>({
+        confirmTransactions: builder.mutation<any, ConfirmTransactionParams>({
             query: (data) => ({
-                url: 'transactions',
+                url: 'transactions/confirmation',
                 method: 'POST',
-                body: data.map(item => ({
-                    transaction_id: item.transaction.transaction_id,
-                    categories: item.categories?.map(item => ({ id: item.id, fraction: item.fraction })),
-                    bill: item.bill
-                })),
+                body: data
             }),
             invalidatesTags: (result, error, arg) => {
                 const spendingHistoryTags: { readonly type: 'SpendingHistory', readonly id: string }[] = []
                 arg.forEach(item => {
-                    if (item.categories) {
-                        item.categories.forEach(category => {
-                            spendingHistoryTags.push({ type: 'SpendingHistory', id: category.id })
+                    if (item.splits) {
+                        item.splits.forEach(split => {
+                            spendingHistoryTags.push({ type: 'SpendingHistory', id: split.category })
                         })
                     }
                 })
 
                 const otherTags = [
-                    ...(arg.map(item => ({ type: 'Transaction', id: item.transaction.transaction_id } as const))),
-                    ...(arg.some(item => item.categories) ? [{ type: 'Category', id: 'LIST' } as const] : []),
+                    ...(arg.map(item => ({ type: 'Transaction', id: item.transaction_id } as const))),
+                    ...(arg.some(item => item.splits) ? [{ type: 'Category', id: 'LIST' } as const] : []),
                     ...(arg.some(item => item.bill) ? [{ type: 'Bill', id: 'LIST' } as const] : [])
                 ]
                 return result
@@ -215,7 +218,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     : otherTags
             }
         }),
-        updateTransaction: builder.mutation<any, { transactionId: string, data: Partial<Transaction> }>({
+        updateTransaction: builder.mutation<any, { transactionId: string, data: DeepPartial<Transaction> }>({
             query: ({ transactionId, data }) => ({
                 url: `transactions/${transactionId}`,
                 method: 'PATCH',

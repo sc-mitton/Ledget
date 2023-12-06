@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from financials.models import Transaction, Note
 from budget.serializers import CategorySerializer, BillSerializer
-from budget.models import Category, Bill, TransactionCategory
+from budget.models import Bill, TransactionCategory
 
 
 class NoteSerializer(serializers.ModelSerializer):
@@ -20,37 +20,33 @@ class UpdateTransactionListSerializer(serializers.ListSerializer):
 
     def update(self, instances, validated_data):
         bill_ids = [item['bill'] for item in validated_data if item.get('bill', None)]
-        category_ids = []
-        for item in validated_data:
-            if item.get('categories', False):
-                category_ids.extend([cat['id'] for cat in item['categories']])
-
         bill_objs = self._get_bill_objects(bill_ids)
-        category_objs = self._get_category_objects(category_ids)
 
         updated_transactions = []
         created_transaction_categories = []
         for i, data in enumerate(validated_data):
             bill_id = data.get('bill', False)
-            category_data = data.get('categories', False)
+            split_data = data.get('splits', False)
             instance = instances[i]
 
             if bill_id:
                 instance.bill = bill_objs[bill_id]
                 updated_transactions.append(instance)
-            elif category_data:
-                for i, category in enumerate(category_data):
-                    id = category['id']
-                    fraction = category['fraction']
-                    transaction_category = TransactionCategory(
+            elif split_data:
+                created_transaction_categories = [
+                    TransactionCategory(
                         transaction=instance,
-                        category=category_objs[id],
-                        fraction=fraction
-                    )
-                    created_transaction_categories.append(transaction_category)
+                        **split
+                    ) for split in split_data
+                ]
 
         Transaction.objects.bulk_update(updated_transactions, ['bill'])
-        TransactionCategory.objects.bulk_create(created_transaction_categories)
+        TransactionCategory.objects.bulk_create(
+            created_transaction_categories,
+            update_conflicts=True,
+            update_fields=['category', 'fraction'],
+            unique_fields=['transaction', 'category']
+        )
 
         return instances
 
@@ -63,35 +59,19 @@ class UpdateTransactionListSerializer(serializers.ListSerializer):
                 'One or more of the bills does not exist.')
         return bills
 
-    def _get_category_objects(self, category_ids):
-        try:
-            categories_qset = Category.objects.filter(id__in=category_ids)
-            categories = {str(cat.id): cat for cat in categories_qset}
-        except Category.DoesNotExist:
-            raise serializers.ValidationError(
-                'One or more of the categories does not exist.')
-        return categories
-
     def save(self, **kwargs):
         self.update(self.instance, self.validated_data)
 
 
-class SimpleCategorySerializer(serializers.Serializer):
-    id = serializers.CharField(required=True)
-    fraction = serializers.DecimalField(
-        required=True,
-        max_digits=3,
-        max_value=1,
-        decimal_places=2,
-        min_value=0)
+class TransactionCategorySerializer(serializers.ModelSerializer):
 
-    def to_representation(self, instance):
-        return {'id': instance.id, 'name': instance.name}
+    class Meta:
+        model = TransactionCategory
+        fields = ('category', 'fraction',)
 
 
 class UpdateTransactionsConfirmationSerializer(serializers.Serializer):
-    categories = SimpleCategorySerializer(many=True, required=False)
-    notes = NoteSerializer(required=False, many=True)
+    splits = TransactionCategorySerializer(many=True, required=False)
     bill = serializers.CharField(required=False)
     transaction_id = serializers.CharField(required=True)
 

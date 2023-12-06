@@ -273,7 +273,6 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
             body.errors.schedule && setScheduleMissing(true)
         }
 
-        console.log('data', data)
         handleSubmit((data) => {
             if (body.errors) { return }
             updateBill({
@@ -342,8 +341,8 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                 </div>
                 <div>
                     <DollarRangeInput
-                        defaultLowerValue={formatCurrency({ val: bill.lower_amount })}
-                        defaultUpperValue={formatCurrency({ val: bill.upper_amount })}
+                        defaultLowerValue={bill.lower_amount}
+                        defaultUpperValue={bill.upper_amount}
                         rangeMode={rangeMode}
                         control={control}
                         errors={errors}

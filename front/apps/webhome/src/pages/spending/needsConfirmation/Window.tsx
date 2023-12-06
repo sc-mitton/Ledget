@@ -434,13 +434,25 @@ const NeedsConfirmationWindow = () => {
                 dispatch(removeUnconfirmedTransaction(transaction.transaction_id))
                 confirmed.push(ready2ConfirmItem)
             }
-            confirmTransactions(confirmed)
+            confirmTransactions(confirmed.map((item) => ({
+                transaction_id: item.transaction.transaction_id,
+                splits: item.categories
+                    ? item.categories.map((cat) => ({ category: cat.id, fraction: cat.fraction }))
+                    : undefined,
+                bill: item.bill
+            })))
         }, 130 + unconfirmedTransactions.length * 50)
     }
 
     const flushConfirmedQue = () => {
         if (confirmedTransactions.length > 0) {
-            confirmTransactions(confirmedTransactions)
+            confirmTransactions(confirmedTransactions.map((item) => ({
+                transaction_id: item.transaction.transaction_id,
+                splits: item.categories
+                    ? item.categories.map((cat) => ({ category: cat.id, fraction: cat.fraction }))
+                    : undefined,
+                bill: item.bill
+            })))
         }
     }
 

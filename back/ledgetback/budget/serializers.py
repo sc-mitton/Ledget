@@ -44,6 +44,8 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
     amount_spent = serializers.SerializerMethodField(read_only=True)
     has_transactions = serializers.SerializerMethodField(read_only=True)
     order = serializers.IntegerField(read_only=True)
+    fraction = serializers.DecimalField(
+        max_digits=10, decimal_places=2, read_only=True)
 
     class Meta:
         model = Category

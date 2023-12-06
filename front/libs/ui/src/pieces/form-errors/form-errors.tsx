@@ -5,7 +5,7 @@ import { Alert2 } from '@ledget/media'
 
 interface Error {
   message?: string,
-  type?: string
+  type: string
 }
 
 export const FormErrorTip = ({ errors }: { errors: Error[] | undefined }) => (

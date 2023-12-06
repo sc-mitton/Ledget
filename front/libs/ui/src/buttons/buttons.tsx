@@ -1,4 +1,4 @@
-import { FC, useState, forwardRef, ReactNode, ButtonHTMLAttributes, useEffect } from 'react';
+import { FC, useState, forwardRef, ButtonHTMLAttributes, useEffect } from 'react';
 
 import './buttons.scss';
 import {

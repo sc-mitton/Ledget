@@ -35,14 +35,14 @@ class TransactionsCategoriesRouter(SimpleRouter):
         ),
         DynamicRoute(
             url=r'^{prefix}/{url_path}$',
-            name='{basename}-{url_name}',
+            name='{basename}-confirmation',
             detail=False,
             initkwargs={}
         )
     ]
 
 
-transactions_router = TransactionsCategoriesRouter(trailing_slash=False)
+transactions_router = SimpleRouter(trailing_slash=False)
 transactions_router.register(
     'transactions', TransactionViewSet, basename='transactions')
 

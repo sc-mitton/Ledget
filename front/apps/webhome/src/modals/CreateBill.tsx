@@ -20,7 +20,7 @@ import { useAddnewBillMutation, Bill } from '@features/billSlice'
 import { Reminder } from '@features/remindersSlice'
 
 export const billSchema = z.object({
-    name: z.string().toLowerCase().min(1, { message: 'Name is required.' }).max(50, { message: 'Name is too long.' }),
+    name: z.string().toLowerCase().min(1, { message: 'required' }).max(50, { message: 'Name is too long.' }),
     lower_amount: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
     upper_amount: z.number().transform((value) => (isNaN(value) ? undefined : value))
 }).refine((data) => {

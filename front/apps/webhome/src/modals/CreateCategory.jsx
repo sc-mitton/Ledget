@@ -14,7 +14,7 @@ import { FormErrorTip } from '@ledget/ui'
 
 export const schema = z.object({
     name: z.string().min(1, { message: 'required' }).toLowerCase(),
-    limit_amount: z.string().min(1, { message: 'required' }).transform((value) => value.replace(/[^0-9]/g, '')),
+    limit_amount: z.string().min(1, { message: 'required' }).transform((value) => value.replace(/\D+/g, '')),
 })
 
 const Form = (props) => {
@@ -28,10 +28,6 @@ const Form = (props) => {
     })
     const watchLimitAmount = watch('limit_amount')
 
-    useEffect(() => {
-        console.log('errors', errors.limit_amount)
-    }, [errors])
-
     const submit = (data, e) => {
         e.preventDefault()
         const formData = new FormData(e.target)
@@ -40,7 +36,7 @@ const Form = (props) => {
         let alerts = []
         for (const [key, value] of Object.entries(body)) {
             if (key.includes('alert')) {
-                alerts.push({ percent_amount: Number(value.replace(/[^0-9]/g, '')) })
+                alerts.push({ percent_amount: Number(value.replace(/\D+/g, '')) })
                 delete body[key]
             }
         }
