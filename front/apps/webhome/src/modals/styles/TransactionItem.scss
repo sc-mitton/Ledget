@@ -114,14 +114,14 @@
         &:first-child {
             display: flex;
             align-items: center;
-            gap: .25em;
+            gap: .75em;
+            position: relative;
 
             &>div {
-                position: relative;
-                margin-right: .5em;
 
-                &>div {
-                    top: 2.25em;
+                &:first-child {
+                    font-weight: 500;
+                    margin-right: .25em;
                 }
             }
         }

@@ -7,21 +7,38 @@
     }
 }
 
+$padding: 1.5em;
+
 .filter-window {
     position: absolute;
     z-index: 0;
     top: 0;
-    left: 0;
+    right: 0;
     width: 0;
     height: 0;
     transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: $padding;
+
+    button {
+        opacity: 0;
+        transition: all 0.3s ease-in-out;
+        float: right;
+    }
 
     &.expanded {
-        width: 100%;
-        height: 100%;
+        width: calc(100% - 2 * $padding);
+        height: calc(100% - 2 * $padding);
         z-index: 1;
         transition: all 0.3s ease-in-out;
         background-color: var(--inner-window-solid);
         border-radius: var(--border-radius3);
+
+        &>div>button {
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out .3s, background-color 0.2s ease-in-out;
+        }
     }
 }

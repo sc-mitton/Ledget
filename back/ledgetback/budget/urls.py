@@ -7,42 +7,7 @@ from budget.views import (
     ReminderView
 )
 
-
-class CustomCategoriesRouter(SimpleRouter):
-    routes = [
-        Route(
-            url=r'^{prefix}$',
-            mapping={
-                'get': 'list',
-                'post': 'create',
-            },
-            name='{basename}-list',
-            detail=False,
-            initkwargs={'suffix': 'List'}
-        ),
-        Route(
-            url=r'^{prefix}/{lookup}$',
-            mapping={'put': 'update'},
-            name='{basename}-detail',
-            detail=True,
-            initkwargs={'suffix': 'Detail'}
-        ),
-        DynamicRoute(
-            url=r'^{prefix}/{url_path}$',
-            name='{basename}-{url_name}',
-            detail=False,
-            initkwargs={}
-        ),
-        DynamicRoute(
-            url=r'^{prefix}/{lookup}/{url_path}$',
-            name='{basename}-{url_name}',
-            detail=True,
-            initkwargs={}
-        ),
-    ]
-
-
-categories_router = CustomCategoriesRouter(trailing_slash=False)
+categories_router = SimpleRouter(trailing_slash=False)
 categories_router.register('categories', CategoryViewSet, basename='categories')
 
 

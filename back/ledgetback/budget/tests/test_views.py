@@ -19,7 +19,7 @@ from .data import (
 
 
 class BudgetViewTestObjectCreations(ViewTestsMixin):
-    fixtures = ['reminder_fixture.json']
+    fixtures = ['reminder_fixture.json', 'category_fixture.json']
 
     @timeit
     def test_category_creation(self):
@@ -110,6 +110,26 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
                 len(payload[i]['reminders'])
             )
             i += 1
+
+    def test_reordering_categories(self):
+        categories = Category.objects.all()
+        self.user.categories.add(*categories)
+
+        payload = [str(c.id) for c in categories[::-1]]
+        response = self.client.post(
+            reverse('categories-order'),
+            json.dumps(payload),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 204)
+        reordered_categories = Category.objects \
+                                       .filter(usercategory__user=self.user) \
+                                       .order_by('usercategory__order')
+
+        self.assertEqual(
+            categories[len(categories) - 1] == reordered_categories[0],
+            True)
 
 
 class BudgetViewTestRetrevalUpdate(ViewTestsMixin):

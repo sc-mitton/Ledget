@@ -2,14 +2,16 @@ import { useRef, Fragment, useEffect, useState } from 'react'
 
 import './styles/TransactionsTable.scss'
 import { useGetMeQuery } from '@features/userSlice'
-import { useLazyGetTransactionsQuery, useGetTransactionsQuery } from "@features/transactionsSlice"
+import TransactionModal from '@modals/TransactionItem'
+import { useLazyGetTransactionsQuery, useGetTransactionsQuery, Transaction } from "@features/transactionsSlice"
 import { Logo } from '@components/pieces'
 import { DollarCents, InfiniteScrollDiv, TransactionShimmer } from '@ledget/ui'
 import { ShadowedContainer } from '@components/pieces'
 import { EmptyListImage, ArrowIcon } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
-const List = () => {
+const List = ({ setFocusedTransaction }:
+  { setFocusedTransaction: React.Dispatch<React.SetStateAction<Transaction | undefined>> }) => {
   const { start, end } = useGetStartEndQueryParams()
 
   const { data: transactionsData, isError } = useGetTransactionsQuery({ confirmed: true, start, end })
@@ -33,7 +35,10 @@ const List = () => {
                   {date.toLocaleString('default', { month: 'short', year: 'numeric' })}
                 </div>}
               </div>
-              <div>
+              <div
+                role="button"
+                onClick={() => setFocusedTransaction(transaction)}
+              >
                 <div>
                   <Logo accountId={transaction.account} />
                   <div className="left-info">
@@ -79,10 +84,9 @@ const List = () => {
 }
 
 export default function Table() {
-  const { data: user } = useGetMeQuery()
-  const user_create_on = new Date(user?.created_on!)
   const [isFetchingMore, setFetchingMore] = useState(false)
   const { start, end } = useGetStartEndQueryParams()
+  const [focusedTransaction, setFocusedTransaction] = useState<Transaction>()
 
   const ref = useRef<HTMLDivElement>(null)
   const [getTransactions, { data: transactionsData, isLoading }] = useLazyGetTransactionsQuery()
@@ -110,24 +114,33 @@ export default function Table() {
   }
 
   return (
-    <ShadowedContainer className="transactions-history-table--container" >
-      <InfiniteScrollDiv
-        ref={ref}
-        animate={isFetchingMore}
-        className={`transactions-history--table ${isLoading ? 'skeleton' : ''}`}
-        onScroll={handleScroll}
-      >
-        {!isLoading
-          ? <><List /></>
-          : Array.from({ length: (ref.current ? ref.current.clientHeight : 0) / 65 }, (_, i) =>
-            <Fragment key={i}>
-              <div>
-                <TransactionShimmer />
-              </div>
-            </Fragment>
-          )
-        }
-      </InfiniteScrollDiv>
-    </ShadowedContainer >
+    <>
+      <ShadowedContainer className="transactions-history-table--container" >
+        <InfiniteScrollDiv
+          ref={ref}
+          animate={isFetchingMore}
+          className={`transactions-history--table ${isLoading ? 'skeleton' : ''}`}
+          onScroll={handleScroll}
+        >
+          {!isLoading
+            ? <>
+              <List setFocusedTransaction={setFocusedTransaction} />
+            </>
+            : Array.from({ length: (ref.current ? ref.current.clientHeight : 0) / 65 }, (_, i) =>
+              <Fragment key={i}>
+                <div>
+                  <TransactionShimmer />
+                </div>
+              </Fragment>
+            )
+          }
+        </InfiniteScrollDiv>
+      </ShadowedContainer >
+      {focusedTransaction &&
+        <TransactionModal
+          item={focusedTransaction}
+          onClose={() => setFocusedTransaction(undefined)}
+        />}
+    </>
   )
 }

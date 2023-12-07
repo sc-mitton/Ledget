@@ -69,7 +69,8 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         self.check_object_permissions(self.request, bill)
         return bill
 
-    @action(detail=True, methods=['POST'], url_path='remove')
+    @action(detail=True, methods=['POST'], url_path='remove',
+            permission_classes=[IsAuthenticated])
     def remove(self, request, pk=None):
 
         which_instances = request.data.get('instances', None)
@@ -192,7 +193,8 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         self.check_object_permissions(self.request, category)
         return category
 
-    @action(detail=True, methods=['GET'], url_path='spending-history')
+    @action(methods=['get'], detail=True, url_name='spending-history',
+            permission_classes=[IsAuthenticated])
     def spending_history(self, request, pk=None):
         monthly_amounts_spent = Transaction.objects.filter(
                 transactioncategory__category__id=pk,
@@ -207,17 +209,16 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         serializer = SpendingHistorySerializer(monthly_amounts_spent, many=True)
         return Response(serializer.data)
 
-    @action(detail=False, methods=['POST'], url_path='order')
+    @action(methods=['post'], detail=False, url_name='order', url_path='order',
+            permission_classes=[IsAuthenticated])
     def reorder(self, request):
-        ids = self.request.data
         try:
-            self._reorder(ids)
+            self._reorder(request.data)
         except Exception as e:
             logger.warning(e)
             return Response(
                 data={'error': str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+                status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def _reorder(self, ids):
@@ -236,7 +237,8 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
 
         UserCategory.objects.bulk_update(updated, ['order'])
 
-    @action(detail=False, methods=['POST'], url_path='remove')
+    @action(detail=False, methods=['post'], url_path='remove',
+            permission_classes=[IsAuthenticated])
     def remove(self, request):
         category_ids = request.data.get('categories', None)
         tz_offset = request.data.get('tz_offset', None)
