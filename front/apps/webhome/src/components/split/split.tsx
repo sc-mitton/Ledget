@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useForm, useFieldArray, Control, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -7,10 +7,12 @@ import Big from 'big.js'
 
 import { SubmitForm } from '@components/pieces'
 import { Transaction, useConfirmTransactionsMutation } from '@features/transactionsSlice'
+import { useGetCategoriesQuery } from '@features/categorySlice';
 import { InputButton } from '@ledget/ui'
 import { LimitAmountInput } from '@components/inputs'
 import { FullSelectCategoryBill } from '@components/dropdowns'
 import { FormErrorTip, AnimatedDollarCents, DeleteButton, PlusPill } from '@ledget/ui'
+import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import './split.scss';
 
 
@@ -34,7 +36,7 @@ const TotalLeft = ({ control, amount, error }: { control: Control<SplitsSchema>,
   const splitValues = useWatch({ control, name: 'splits' })
 
   const total = getTotal(splitValues)
-  const remaining = Big(amount).minus(total).toNumber()
+  const remaining = Big(Math.abs(amount)).minus(total).toNumber()
 
   return (
     <>
@@ -51,6 +53,13 @@ const TotalLeft = ({ control, amount, error }: { control: Control<SplitsSchema>,
 }
 
 export function SplitTransactionInput({ item, onCancel }: { item: Transaction, onCancel: () => void }) {
+  const [confirmTransactions, { isSuccess: isUpdateSuccess, isLoading: isUpdating }] = useConfirmTransactionsMutation()
+  const { start, end } = useGetStartEndQueryParams(
+    new Date(item.datetime).getMonth() + 1,
+    new Date(item.datetime).getFullYear()
+  )
+  const { data: categoriesData } = useGetCategoriesQuery({ start, end, spending: false })
+
   const { handleSubmit, formState: { errors }, control } = useForm<SplitsSchema>({
     mode: 'onSubmit',
     resolver: zodResolver(schema.refine((data) => {
@@ -59,13 +68,15 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
     }, { message: 'All of the dollar amounts must add up to the total', path: ['totalSum'] })),
     reValidateMode: 'onBlur',
     defaultValues: {
-      splits: item.categories
+      splits: item.categories?.length
         ? item.categories.map((c) => ({ category: c.id, amount: Big(item.amount).times(c.fraction || 1).toFixed(2) }))
-        : [{ category: item.predicted_category?.id || '', amount: `${item.amount}` }]
+        : [{
+          category: item.predicted_category?.id || (categoriesData ? categoriesData.find(c => c.is_default)?.id || '' : ''),
+          amount: `${item.amount}`
+        }]
     },
   })
   const { fields, append, remove } = useFieldArray({ control, name: 'splits' })
-  const [confirmTransactions, { isSuccess: isUpdateSuccess, isLoading: isUpdating }] = useConfirmTransactionsMutation()
 
   const onSubmit = (data: SplitsSchema) => {
     confirmTransactions([{
@@ -78,14 +89,7 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
   }
 
   useEffect(() => {
-    console.log(errors)
-    console.log(control._fields)
-  }, [errors])
-
-  useEffect(() => {
-    if (isUpdateSuccess) {
-      onCancel()
-    }
+    isUpdateSuccess && onCancel()
   }, [isUpdateSuccess])
 
   return (

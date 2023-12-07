@@ -6,6 +6,7 @@ import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 
 import "./styles/Window.scss"
+import TransactionModal from '@modals/TransactionItem'
 import { Ellipsis, CheckMark } from "@ledget/media"
 import Header from './Header'
 import ShadowedContainer from '@components/pieces/ShadowedContainer'
@@ -213,6 +214,7 @@ const NeedsConfirmationWindow = () => {
     const loaded = useLoaded()
     const [showMenu, setShowMenu] = useState(false)
     const [showBillCatSelect, setShowBillCatSelect] = useState(false)
+    const [showTransactionModal, setShowTransactionModal] = useState<{ split: boolean }>()
     const [billCatSelectVal, setBillCatSelectVal] = useState<Category | Bill | undefined>()
     const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(undefined)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | undefined>()
@@ -539,7 +541,10 @@ const NeedsConfirmationWindow = () => {
                         setShow={setShowMenu}
                         pos={menuPos}
                     >
-                        <ItemOptions handlers={[() => { console.log('hello') }]} />
+                        <ItemOptions handlers={[
+                            () => { setShowTransactionModal({ split: true }) },
+                            () => { setShowTransactionModal({ split: false }) },
+                        ]} />
                     </Options>
                 </InfiniteScrollDiv >
                 <ExpandableContainer
@@ -547,6 +552,11 @@ const NeedsConfirmationWindow = () => {
                     expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
                     <ExpandButton onClick={() => setExpanded(!expanded)} flipped={expanded} />
                 </ExpandableContainer>
+                {showTransactionModal && focusedItem &&
+                    <TransactionModal
+                        item={focusedItem}
+                        action={showTransactionModal.split ? 'split' : undefined}
+                        onClose={() => setShowTransactionModal(undefined)} />}
             </div >
         </div >
     )

@@ -68,7 +68,7 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                 <li
                     className={`dropdown-item${activeIndex === 2 ? ' active' : ''}`}
                     role="menuitem"
-                    onClick={() => { props.handlers[3]() }}
+                    onClick={() => { props.handlers[1]() }}
                     tabIndex={-1}
                     aria-label="Details"
                 >

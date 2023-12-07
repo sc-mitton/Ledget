@@ -10,8 +10,6 @@ import { EmptyListImage, ArrowIcon } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 const List = () => {
-  const { data: user } = useGetMeQuery()
-  const user_create_on = new Date(user?.created_on!)
   const { start, end } = useGetStartEndQueryParams()
 
   const { data: transactionsData, isError } = useGetTransactionsQuery({ confirmed: true, start, end })

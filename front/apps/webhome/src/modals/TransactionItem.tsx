@@ -287,9 +287,9 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
     )
 }
 
-const TransactionModal = withModal<{ item: Transaction }>(({ item }) => {
+const TransactionModal = withModal<{ item: Transaction, action?: Action }>(({ item, action: propsAction }) => {
     const loaded = useLoaded(1000)
-    const [action, setAction] = useState<Action>()
+    const [action, setAction] = useState<Action | undefined>(propsAction)
     const [edit, setEdit] = useState(false)
     const [preferredName, setPreferredName] = useState<string | undefined>()
     const [updateTransaction] = useUpdateTransactionMutation()
