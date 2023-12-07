@@ -193,7 +193,15 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                 </DropAnimation>
             </div>
             <div>
+                <ExpandButton
+                    flipped={collapsed}
+                    hasBackground={false}
+                    onClick={() => { setCollapsed(!collapsed) }}
+                    aria-label="Collapse bills"
+                    size={'.95em'}
+                />
                 <PillOptionButton
+                    disabled={collapsed}
                     isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('bill-sort') || '')}
                     onClick={() => {
                         // desc -> asc -> default
@@ -221,6 +229,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                     />
                 </PillOptionButton>
                 <PillOptionButton
+                    disabled={collapsed}
                     aria-label="Sort bills by amount"
                     isSelected={searchParams.get('bill-sort') === 'a-z'}
                     onClick={() => {
@@ -237,13 +246,6 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                 >
                     a-z
                 </PillOptionButton>
-                <ExpandButton
-                    flipped={collapsed}
-                    hasBackground={false}
-                    onClick={() => { setCollapsed(!collapsed) }}
-                    aria-label="Collapse bills"
-                    size={'.95em'}
-                />
             </div>
         </div>
     )

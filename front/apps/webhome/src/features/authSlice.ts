@@ -51,7 +51,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query: () => ({
                 url: 'devices',
                 method: 'POST',
-            })
+            }),
+            invalidatesTags: ['Device'],
         }),
         deleteRememberedDevice: builder.mutation({
             query: ({ deviceId }) => ({

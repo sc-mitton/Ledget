@@ -95,7 +95,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
     endpoints: (builder) => ({
         getDevices: builder.query<Device, void>({
             query: () => 'devices',
-            providesTags: ['devices'],
+            providesTags: ['Device'],
         }),
         getMe: builder.query<User, void>({
             query: () => 'user/me',

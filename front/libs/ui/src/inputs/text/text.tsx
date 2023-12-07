@@ -309,6 +309,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>((props,
           <input
             name={name}
             type={visible ? 'text' : 'password'}
+            placeholder={placeholder}
             ref={r}
             onChange={(e) => {
               e.target.value.length > 0 ? setPwdInput(true) : setPwdInput(false)
@@ -316,24 +317,15 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>((props,
             }}
             {...rest}
           />
-          {pwdInput && inputType != 'confirm-password' &&
-            <VisibilityIcon mode={visible} onClick={() => { setVisible(!visible) }} />}
+          {pwdInput && inputType != 'confirm-password'
+            && <VisibilityIcon mode={visible} onClick={() => { setVisible(!visible) }} />}
           {error && (error.type === 'required' || error.msg?.includes('required'))
-            && <FormErrorTip errors={[{ type: 'required' }]} />
-          }
+            && <FormErrorTip errors={[{ type: 'required' }]} />}
         </TextInputWrapper>
       }
     </>
   )
 })
-
-PasswordInput.defaultProps = {
-  inputType: 'password',
-  name: 'password',
-  placeholder: 'Password',
-  setVisible: (visible: boolean) => { },
-  visible: false,
-}
 
 export const PhoneInput = forwardRef<HTMLInputElement, React.HTMLProps<HTMLInputElement>>((props, ref) => {
   const [value, setValue] = useState('')

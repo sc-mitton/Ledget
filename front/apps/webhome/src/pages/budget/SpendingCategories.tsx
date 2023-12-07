@@ -782,7 +782,11 @@ const SpendingCategories = () => {
     }, [ref.current])
 
     return (
-        <div id="spending-categories-window" className="window" ref={ref}>
+        <div
+            id="spending-categories-window"
+            className="window"
+            ref={ref}
+        >
             <AnimatePresence mode='wait'>
                 {!searchParams.get('category')
                     ?

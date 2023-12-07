@@ -92,27 +92,26 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
                                                 This Device
                                             </span>
                                             :
-                                            <Tooltip
-                                                msg={"Logout"}
-                                                ariaLabel={"Refresh list"}
-                                                style={{ left: '-30%' }}
+                                            <ReAuthProtected
+                                                requiredAal={'aal1'}
+                                                onReAuth={() => deleteDevice({ deviceId: session.id })}
                                             >
-                                                <ReAuthProtected requiredAal={'aal1'}>
-                                                    {({ onReAuth }) => (
+                                                {({ reAuth, current }) => (
+                                                    <Tooltip
+                                                        msg={"Logout"}
+                                                        ariaLabel={"Refresh list"}
+                                                        style={{ left: '-30%' }}
+                                                    >
                                                         <IconButtonSubmit
-                                                            submitting={processingDelete}
-                                                            onClick={() => {
-                                                                onReAuth({
-                                                                    fn: deleteDevice,
-                                                                    args: { deviceId: session.id }
-                                                                })
-                                                            }}
+                                                            submitting={processingDelete && current}
+                                                            onClick={() => reAuth()}
                                                         >
                                                             <LogoutIcon />
                                                         </IconButtonSubmit>
-                                                    )}
-                                                </ReAuthProtected>
-                                            </Tooltip>}
+                                                    </Tooltip>
+                                                )}
+                                            </ReAuthProtected>
+                                        }
                                     </div>
                                 </div>
                             )}

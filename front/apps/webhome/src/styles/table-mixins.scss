@@ -13,3 +13,11 @@
 @mixin table-header-mask-image {
     mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
 }
+
+@mixin invert-image {
+    img {
+        filter: invert(1) contrast(2.8);
+        opacity: .7;
+        transform: scale(1.2);
+    }
+}

@@ -6,7 +6,7 @@ import { useLazyGetTransactionsQuery, useGetTransactionsQuery } from "@features/
 import { Logo } from '@components/pieces'
 import { DollarCents, InfiniteScrollDiv, TransactionShimmer } from '@ledget/ui'
 import { ShadowedContainer } from '@components/pieces'
-import { EmptyListImage } from '@ledget/media'
+import { EmptyListImage, ArrowIcon } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 const List = () => {
@@ -44,7 +44,7 @@ const List = () => {
                       <span>
                         {new Date(transaction.datetime).toLocaleDateString(
                           'en-us',
-                          { year: 'numeric', month: 'numeric', day: 'numeric' })}
+                          { month: 'numeric', day: 'numeric' })}
                       </span>
                       {transaction.categories?.map((category) => (
                         <span className={`emoji ${category.period}`}>
@@ -60,6 +60,12 @@ const List = () => {
                 </div>
                 <div>
                   <div><DollarCents value={transaction.amount} /></div>
+                  <ArrowIcon
+                    stroke={'currentColor'}
+                    size={'.85em'}
+                    strokeWidth={'18'}
+                    rotation={-90}
+                  />
                 </div>
               </div>
             </Fragment>

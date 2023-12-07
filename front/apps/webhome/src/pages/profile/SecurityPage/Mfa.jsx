@@ -37,16 +37,10 @@ const SmsAuth = ({ user }) => {
                             Text Verification
                         </span>
                     </div>
-                    <div style={{ position: 'relative' }}>
-                        <Tooltip
-                            msg={"Add SMS Verification"}
-                            ariaLabel={"Add SMS Verification"}
-                            style={{ left: '-180%' }}
-                        >
-                            <PlusPill
-                                onClick={() => navigate('/profile/security/otp-setup')}
-                            />
-                        </Tooltip>
+                    <div>
+                        <PlusPill
+                            onClick={() => navigate('/profile/security/otp-setup')}
+                        />
                     </div>
                 </>
             }

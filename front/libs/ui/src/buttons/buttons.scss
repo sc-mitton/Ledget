@@ -36,6 +36,10 @@
     padding: 0 .5em;
     min-height: 1em;
     font-weight: 400;
+
+    &:disabled {
+        cursor: default;
+    }
 }
 
 .btn-pill {
@@ -543,10 +547,13 @@ button.disabled-hover:hover svg {
 }
 
 .expand-button {
-    margin: 0 auto;
     border-radius: var(--border-radius2);
     font-weight: 500;
     padding: .375em .625em;
+
+    &.btn-clr {
+        padding: .25em .625em;
+    }
 
     &>div {
         display: flex;

@@ -63,7 +63,7 @@ export const GreenSlimArrowSubmit = withLoading(GrnSlimArrowButton)
 export const RedButton = withLoading(ButtonWithClassName('btn-red btn-2slim'))
 export const PrimaryTextButton = ButtonWithClassName('btn-grn-text btn-2slim')
 export const IconButtonSubmit = withLoading(IconButton)
-export const LinkArrowButton = withArrow(ButtonWithClassName('btn-i con2'))
+export const LinkArrowButton = withArrow(ButtonWithClassName('btn-icon2'))
 
 export const SmallArrowButton = ({ type = '', ...rest }) => (
   <button className="arrow-nav btn-scale2" {...rest}>
@@ -78,7 +78,7 @@ export const ExpandButton = ({
   ...rest
 }) => (
   <button
-    className={`btn-sp ${hasBackground ? 'btn-discreet' : ''} expand-button `}
+    className={`btn-sp ${hasBackground ? 'btn-discreet' : 'btn-clr'} expand-button `}
     tabIndex={0}
     aria-label="Expand"
     {...rest}

@@ -54,8 +54,8 @@ $number-of-bill-rows: 4;
         transition: gap .2s ease-out .2s;
 
         // All buttons but the expand button
-        button:not(:last-child) {
-            opacity: 0;
+        button:not(:first-child) {
+            opacity: .5;
         }
     }
 
@@ -86,6 +86,7 @@ $number-of-bill-rows: 4;
     &>div:first-child>div:last-child {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         gap: .325em;
 
         span {
@@ -94,7 +95,7 @@ $number-of-bill-rows: 4;
         }
 
         // All except expand button
-        &>button:not(:last-child) {
+        &>button:not(:first-child) {
             min-width: 6ch;
         }
     }

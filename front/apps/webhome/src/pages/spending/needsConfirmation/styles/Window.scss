@@ -2,6 +2,7 @@ $window-max-width: 27rem;
 $new-item-padding: 1.125em 1.125em 1.125em .875em;
 
 @import '@styles/text';
+@import '@styles/table-mixins';
 
 #new-items-container {
     display: flex;
@@ -11,6 +12,10 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
     .expand-button--container {
         opacity: 0;
         transition: opacity .2s ease-out;
+
+        button {
+            margin: 0 auto;
+        }
 
         &:hover {
             opacity: 1;
@@ -58,7 +63,9 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
     div:first-child {
         display: flex;
         align-items: center;
-        margin-right: .25em;
+        margin-right: .375em;
+
+        @include invert-image;
     }
 
     // Name, date, amount

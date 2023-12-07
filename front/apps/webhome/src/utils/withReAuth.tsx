@@ -295,8 +295,7 @@ export const ReAuthModal = withSmallModal((props) => {
 
 interface WithReAuthI {
     hideModal?: boolean,
-    zIndex?: number,
-    requiredAal?: User['highest_aal']
+    requiredAal: User['highest_aal']
     onClose?: () => void
 }
 
@@ -347,46 +346,63 @@ const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal
     return continueToComponent
 }
 
-export const ReAuthProtected = ({ children, requiredAal }:
-    {
-        children: React.FC<{
-            onReAuth: React.Dispatch<React.SetStateAction<{
-                fn: (...args: any[]) => void;
-                args: any;
-            } | undefined>>
-        }>
-        requiredAal?: User['highest_aal']
-    }) => {
+export const ReAuthProtected = ({ children, requiredAal, onReAuth }: {
+    children: React.FC<{ reAuth: () => void, current: boolean }>,
+    onReAuth: (...args: any) => void,
+    requiredAal?: User['highest_aal']
+}) => {
 
-    const reauthed = useReauthCheck({ requiredAal, onClose: () => { } })
     const [showReAuthModal, setShowReAuthModal] = useState(false)
-    const [onReAuth, setOnReAuth] = useState<{ fn: (...args: any) => void, args: any[] }>()
+    const [isReAuthing, setIsReAuthing] = useState(false)
+    const [current, setCurrent] = useState(false)
 
+    const { data: user } = useGetMeQuery()
+    const isReAuthed = useReauthCheck({ requiredAal: requiredAal || user?.highest_aal || 'aal1', onClose: () => { setShowReAuthModal(false) } })
+
+    // When the user successfully re-auths, close the modal and
+    // run the onReAuth function
     useEffect(() => {
-        if (reauthed && onReAuth) {
-            onReAuth.fn(...onReAuth.args)
+        if (isReAuthed && showReAuthModal) {
+            onReAuth()
+            setShowReAuthModal(false)
         }
-    }, [reauthed])
+    }, [isReAuthed])
 
+    // When the user initiates whatever action requires a re-auth,
+    // first check to see if they are already authed recently. If not,
+    // show the reauth modal form
     useEffect(() => {
-        onReAuth && setShowReAuthModal(true)
-    }, [onReAuth])
+        if (isReAuthed && isReAuthing) {
+            onReAuth()
+        } else if (isReAuthing) {
+            setShowReAuthModal(true)
+        }
+    }, [isReAuthing])
 
     return (
         <>
             {showReAuthModal &&
                 <ReAuthModal onClose={() => setShowReAuthModal(false)} />}
-            {children({ onReAuth: setOnReAuth })}
+            {children({
+                reAuth: () => {
+                    setIsReAuthing(true)
+                    setCurrent(true)
+                }, current
+            })}
         </>
     )
 }
 
-export default function withReAuth<P>(Component: React.FC<P & WithReAuthI>) {
+export default function withReAuth<P>(Component: React.FC<P & Partial<WithReAuthI>>) {
 
-    return (props: (WithReAuthI & P)) => {
-        const { requiredAal } = props
-        const continueToComponent = useReauthCheck({ requiredAal })
-        const { onClose } = props
+    return (props: (Partial<WithReAuthI> & P)) => {
+        const { requiredAal, onClose } = props
+
+        const { data: user } = useGetMeQuery()
+        const continueToComponent = useReauthCheck({
+            requiredAal: requiredAal || user?.highest_aal || 'aal1',
+            onClose: () => { onClose && onClose() }
+        })
 
         return (
             <>

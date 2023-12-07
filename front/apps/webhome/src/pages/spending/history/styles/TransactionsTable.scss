@@ -27,31 +27,6 @@ $charcoal: var(--charcoal-rgb);
             }
         }
     }
-
-    .emoji {
-        position: relative;
-
-        &.month::after,
-        &.year::after {
-            position: absolute;
-            content: '';
-            width: .875em;
-            height: .875em;
-            border-radius: 50%;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-        }
-
-        &.month::after {
-            background-color: var(--main-hlight5);
-        }
-
-        &.year::after {
-            background-color: var(--secondary-hlight5);
-        }
-    }
 }
 
 .transactions-history--table {
@@ -76,11 +51,24 @@ $charcoal: var(--charcoal-rgb);
         }
     }
 
-    &:not(.skeleton)>div:hover>div:not(.month-header) {
-        transition: background-color .2s ease-in-out;
-        background-color: rgb($charcoal, 0.05);
-        cursor: pointer;
+    &:not(.skeleton)>div {
+        &:not(:first-child) svg {
+            scale: 0;
+            margin-left: 0;
+            transition: all .2s ease-in-out;
+        }
+
+        &:hover:not(:first-child) {
+            cursor: pointer;
+
+            svg {
+                scale: 1;
+                margin-left: .5em;
+                transition: all .2s ease-in-out;
+            }
+        }
     }
+
 
     &>div {
         display: contents;
@@ -116,6 +104,8 @@ $charcoal: var(--charcoal-rgb);
             align-items: center;
             gap: .75em;
             flex-wrap: nowrap;
+
+            @include invert-image;
         }
 
         // Amount
@@ -126,7 +116,7 @@ $charcoal: var(--charcoal-rgb);
             padding-right: .75em;
         }
 
-        &:not(:last-child)>div {
+        &>div {
             position: relative;
             @include table-dividers();
         }
