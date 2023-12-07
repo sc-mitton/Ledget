@@ -194,7 +194,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         return category
 
     @action(methods=['get'], detail=True, url_name='spending-history',
-            permission_classes=[IsAuthenticated])
+            url_path='spending-history', permission_classes=[IsAuthenticated])
     def spending_history(self, request, pk=None):
         monthly_amounts_spent = Transaction.objects.filter(
                 transactioncategory__category__id=pk,
