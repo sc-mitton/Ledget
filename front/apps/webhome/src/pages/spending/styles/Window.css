@@ -5,6 +5,7 @@
     flex-direction: column;
     gap: .5em;
     padding-top: var(--border-radius2);
+    overflow-x: hidden;
 }
 
 #all-items-window {
