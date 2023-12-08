@@ -1,46 +1,66 @@
 @import '@styles/base.scss';
 @import '@styles/text.scss';
 
-.edit-budget-items--container {
 
-    .item {
-        position: absolute;
-        left: 0rem;
-        right: 0rem;
+#reorder-categories {
+    margin-top: 1em;
+    margin-bottom: 0;
+    transition: margin-bottom .2s ease-in-out;
+
+    &.submittable {
+        margin-bottom: 1em;
+        transition: margin-bottom .2s ease-in-out;
     }
 
-    &>div:first-of-type {
-        margin-top: 1.5em;
+    &>div:first-child {
+        margin-top: .25em;
         display: flex;
-        flex-direction: column;
-        position: relative;
+        justify-content: center;
+    }
 
-        &>div {
+    .edit-budget-items--container {
+
+        .item {
+            position: absolute;
+            left: 0rem;
+            right: 0rem;
+        }
+
+        &>div:first-of-type {
+            margin-top: 1.5em;
             display: flex;
-            align-items: center;
-            gap: .5rem;
+            flex-direction: column;
+            position: relative;
 
-            &>div:nth-child(2) {
-                flex-grow: 1;
-            }
+            &>div {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
 
-            // Delete button
-            &>div:last-child {
-                justify-self: end;
+                &>div:nth-child(2) {
+                    flex-grow: 1;
+                }
+
+                // Delete button
+                &>div:last-child {
+                    justify-self: end;
+                }
             }
+        }
+
+        .month {
+            @include month-category;
+        }
+
+        .year {
+            @include year-category;
         }
     }
 
-    .month {
-        @include month-category;
+    #delete-msg {
+        margin: 1em;
+        color: $secondary-text-color;
     }
 
-    .year {
-        @include year-category;
-    }
-}
 
-#delete-msg {
-    margin: 1em;
-    color: $secondary-text-color;
 }

@@ -1,6 +1,6 @@
 const Delete = ({
     className = '',
-    fill = "var(--btn-gray)",
+    fill = "var(--btn-mid-gray)",
     size = "1em",
     stroke = "var(--white-text)",
     strokeWidth = "12",

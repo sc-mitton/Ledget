@@ -1,3 +1,5 @@
+export * from './animations/use-pill-animation/use-pill-animation';
+export * from './inputs/tab-nav-list/tab-nav-list';
 export * from './modal/with-small-modal/with-small-modal';
 export * from './modal/with-modal/with-modal';
 export * from './misc/misc/misc';
@@ -7,7 +9,7 @@ export * from './pieces/loading-indicators/loading-indicators';
 export * from './pieces/toast/toast';
 export * from './forms/verification-form/verification-form';
 export * from './animations/animations';
-export * from './animations/hooks'
+export * from './animations/hooks';
 export * from './pieces/status-pulse/status-pulse';
 export * from './pieces/tooltip/tooltip';
 export * from './pieces/form-errors/form-errors';
@@ -22,4 +24,4 @@ export * from './utils/funcs';
 export * from './utils/hooks';
 export * from './pieces/containers/ResponsiveLine';
 export * from './charts/themes';
-export * from './charts/Tooltip'
+export * from './charts/Tooltip';

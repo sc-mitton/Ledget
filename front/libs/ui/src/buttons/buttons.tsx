@@ -172,7 +172,12 @@ export const PlusPill: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled?: '
 export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { fill?: string, stroke?: string, show?: boolean, styled?: 'input' }>
   = ({ className, show, fill, stroke, styled, ...rest }) => (
     <button className={`btn delete-button${show ? '-show' : ''} ${className}`} {...rest}>
-      <Delete fill={fill} stroke={stroke} size={'1.2em'} border={styled === 'input' ? 'var(--input-border-color)' : ''} />
+      <Delete
+        fill={fill}
+        stroke={stroke}
+        size={'1.2em'}
+        border={styled === 'input' ? 'var(--input-border-color)' : ''}
+      />
     </button>
   )
 

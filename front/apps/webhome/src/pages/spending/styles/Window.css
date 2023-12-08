@@ -3,7 +3,8 @@
     min-width: 22.5rem;
     display: flex;
     flex-direction: column;
-    padding: var(--border-radius2) 0;
+    gap: .5em;
+    padding-top: var(--border-radius2);
 }
 
 #all-items-window {

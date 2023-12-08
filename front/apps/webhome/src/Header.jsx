@@ -14,8 +14,7 @@ import {
     LogoutIcon,
     LedgetLogoIcon
 } from '@ledget/media'
-import { DropAnimation } from '@ledget/ui'
-import { usePillAnimation } from '@utils/hooks'
+import { DropAnimation, usePillAnimation } from '@ledget/ui'
 
 
 const Navigation = ({ isNarrow }) => {

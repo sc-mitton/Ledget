@@ -70,7 +70,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 ? [{ type: 'SpendingHistory', id: arg.categoryId }, { type: 'SpendingHistory', id: 'LIST' }]
                 : [{ type: 'SpendingHistory', id: 'LIST' }]
         }),
-        addNewCategory: builder.mutation<any, Category[]>({
+        addNewCategory: builder.mutation<any, Category[] | Category>({
             query: (data) => ({
                 url: 'categories',
                 method: 'POST',

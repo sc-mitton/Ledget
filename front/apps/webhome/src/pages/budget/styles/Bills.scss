@@ -98,6 +98,10 @@ $number-of-bill-rows: 4;
         &>button:not(:first-child) {
             min-width: 6ch;
         }
+
+        &>button:first-child {
+            min-width: 5ch;
+        }
     }
 }
 

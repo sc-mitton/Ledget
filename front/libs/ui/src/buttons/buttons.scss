@@ -417,6 +417,7 @@ button {
 /* ------- Delete Button ------ */
 
 .delete-button {
+    border-radius: 50%;
     opacity: 0;
     margin: 0 .125em;
     cursor: auto;
@@ -547,18 +548,20 @@ button.disabled-hover:hover svg {
 }
 
 .expand-button {
-    border-radius: var(--border-radius2);
+    border-radius: var(--border-radius3);
     font-weight: 500;
-    padding: .375em .625em;
+    padding: .375em 0;
+    min-width: 5ch;
+    display: flex;
+    place-content: center;
 
     &.btn-clr {
-        padding: .25em .625em;
+        padding: .3em 0;
     }
 
     &>div {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        place-content: center;
     }
 }
 

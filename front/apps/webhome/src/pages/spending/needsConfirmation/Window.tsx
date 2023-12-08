@@ -489,76 +489,74 @@ const NeedsConfirmationWindow = () => {
     }
 
     return (
-        <div id="new-items-container">
-            <div>
-                <Header onConfirmAll={handleConfirmAll} />
-                <InfiniteScrollDiv
-                    id="new-items"
-                    animate={isFetchingTransactions && offset > 0}
-                    ref={newItemsRef}
-                    onMouseLeave={() => flushConfirmedQue()}
+        <>
+            <Header onConfirmAll={handleConfirmAll} />
+            <InfiniteScrollDiv
+                id="new-items"
+                animate={isFetchingTransactions && offset > 0}
+                ref={newItemsRef}
+                onMouseLeave={() => flushConfirmedQue()}
+            >
+                <ShadowedContainer showShadow={expanded}>
+                    <animated.div style={containerProps} onScroll={handleScroll}>
+                        {(isSuccess && unconfirmedTransactions) &&
+                            <>
+                                {itemTransitions((style, item, obj, index) => {
+                                    if (!item) return null
+                                    return (
+                                        <NewItem
+                                            item={item}
+                                            style={style}
+                                            updatedBillCat={
+                                                transactionUpdates[item.transaction_id]?.categories
+                                                || transactionUpdates[item.transaction_id]?.bill
+                                            }
+                                            onBillCat={(e, item) => handleBillCatClick(e, item)}
+                                            onEllipsis={(e, item) => handleEllipsis(e, item)}
+                                            handleConfirm={handleItemConfirm}
+                                            tabIndex={expanded || index === 0 ? 0 : -1}
+                                        />
+                                    )
+                                })}
+                            </>
+                        }
+                    </animated.div >
+                </ShadowedContainer>
+                <Options
+                    show={showBillCatSelect}
+                    setShow={setShowBillCatSelect}
+                    pos={billCatSelectPos}
+                    topArrow={false}
                 >
-                    <ShadowedContainer showShadow={expanded}>
-                        <animated.div style={containerProps} onScroll={handleScroll}>
-                            {(isSuccess && unconfirmedTransactions) &&
-                                <>
-                                    {itemTransitions((style, item, obj, index) => {
-                                        if (!item) return null
-                                        return (
-                                            <NewItem
-                                                item={item}
-                                                style={style}
-                                                updatedBillCat={
-                                                    transactionUpdates[item.transaction_id]?.categories
-                                                    || transactionUpdates[item.transaction_id]?.bill
-                                                }
-                                                onBillCat={(e, item) => handleBillCatClick(e, item)}
-                                                onEllipsis={(e, item) => handleEllipsis(e, item)}
-                                                handleConfirm={handleItemConfirm}
-                                                tabIndex={expanded || index === 0 ? 0 : -1}
-                                            />
-                                        )
-                                    })}
-                                </>
-                            }
-                        </animated.div >
-                    </ShadowedContainer>
-                    <Options
-                        show={showBillCatSelect}
-                        setShow={setShowBillCatSelect}
-                        pos={billCatSelectPos}
-                        topArrow={false}
-                    >
-                        <SelectCategoryBill
-                            value={billCatSelectVal}
-                            onChange={setBillCatSelectVal}
-                            month={new Date(start).getMonth() + 1}
-                            year={new Date(start).getFullYear()}
-                        />
-                    </Options>
-                    <Options
-                        show={showMenu}
-                        setShow={setShowMenu}
-                        pos={menuPos}
-                    >
-                        <ItemOptions handlers={[
-                            () => { setShowTransactionModal({ split: true }) },
-                            () => { setShowTransactionModal({ split: false }) },
-                        ]} />
-                    </Options>
-                </InfiniteScrollDiv >
-                <ExpandableContainer
-                    className="expand-button--container"
-                    expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
-                    <ExpandButton onClick={() => setExpanded(!expanded)} flipped={expanded} />
-                </ExpandableContainer>
-                {showTransactionModal && focusedItem &&
-                    <TransactionModal
-                        item={focusedItem}
-                        action={showTransactionModal.split ? 'split' : undefined}
-                        onClose={() => setShowTransactionModal(undefined)} />}
-            </div >
-        </div >
+                    <SelectCategoryBill
+                        value={billCatSelectVal}
+                        onChange={setBillCatSelectVal}
+                        month={new Date(start).getMonth() + 1}
+                        year={new Date(start).getFullYear()}
+                    />
+                </Options>
+                <Options
+                    show={showMenu}
+                    setShow={setShowMenu}
+                    pos={menuPos}
+                >
+                    <ItemOptions handlers={[
+                        () => { setShowTransactionModal({ split: true }) },
+                        () => { setShowTransactionModal({ split: false }) },
+                    ]} />
+                </Options>
+            </InfiniteScrollDiv >
+            <ExpandableContainer
+                className='new-items-expand-button--container'
+                expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
+                <ExpandButton onClick={() => setExpanded(!expanded)} flipped={expanded} />
+            </ExpandableContainer>
+            {showTransactionModal && focusedItem &&
+                <TransactionModal
+                    item={focusedItem}
+                    action={showTransactionModal.split ? 'split' : undefined}
+                    onClose={() => setShowTransactionModal(undefined)} />}
+        </ >
     )
 }
 

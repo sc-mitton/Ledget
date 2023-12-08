@@ -1,19 +1,26 @@
 import { useState } from 'react'
 
+import { Listbox, Combobox } from '@headlessui/react'
+
 import './styles/Header.scss'
 import { Funnel } from '@ledget/media'
-import { IconButton, Tooltip, SlimInputButton } from '@ledget/ui'
+import { FullSelectCategoryBill } from '@components/dropdowns'
+import { LimitAmountInput } from '@components/inputs'
+import {
+    IconButton,
+    Tooltip,
+    SlimInputButton
+} from '@ledget/ui'
 
 const FilterWindow = ({ expanded = false, setShowFilter }:
     { expanded: boolean, setShowFilter: (show: boolean) => void }) => {
 
     // Filters to include
-    // 1. By amount
-    // 2. By merchant
-    // 3. By date
-    // 4. By category
-    // 5. By account
-    // 6. By bill
+    // By date
+    // By amount
+    // By merchant
+    // By category/bill
+    // By account
 
     return (
         <div className={`filter-window ${expanded ? 'expanded' : ''}`}>
@@ -35,9 +42,7 @@ const HistoryHeader = () => {
     return (
         <>
             <div className="window-header" id="history-header">
-                <div>
-                    <h2>History</h2>
-                </div>
+                <div><h2>History</h2></div>
                 <div className="header-btns">
                     <Tooltip
                         msg="Filter"

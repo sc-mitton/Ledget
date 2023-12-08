@@ -4,23 +4,17 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
 @import '@styles/text';
 @import '@styles/table-mixins';
 
-#new-items-container {
-    display: flex;
-    flex-direction: column;
-    position: relative;
 
-    .expand-button--container {
+.new-items-expand-button--container {
+    button {
         opacity: 0;
         transition: opacity .2s ease-out;
+        margin: 0 auto;
+    }
 
-        button {
-            margin: 0 auto;
-        }
-
-        &:hover {
-            opacity: 1;
-            transition: opacity .2s ease-out;
-        }
+    &:hover button {
+        opacity: 1;
+        transition: opacity .2s ease-out;
     }
 }
 
@@ -28,7 +22,6 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
     position: relative;
     background: radial-gradient(ellipse, rgba(14, 7, 7, .02) 1%, transparent 50%);
     max-width: $window-max-width;
-    margin: 0 auto;
     z-index: 100;
 }
 

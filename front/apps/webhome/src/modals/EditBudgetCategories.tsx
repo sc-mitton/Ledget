@@ -1,14 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react'
 
+import { Tab } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom'
 import { useTransition, useSpringRef, useSpring, animated } from '@react-spring/web'
 
 import './styles/EditBudgetItems.scss'
-import { withModal } from '@ledget/ui'
-import { useGetCategoriesQuery, useReorderCategoriesMutation, useRemoveCategoriresMutation } from '@features/categorySlice'
+import {
+    useGetCategoriesQuery,
+    useReorderCategoriesMutation,
+    useRemoveCategoriresMutation,
+    Category
+} from '@features/categorySlice'
 import { GripButton } from '@components/buttons'
-import { useSpringDrag, DeleteButton, useLoaded, ExpandableContainer } from '@ledget/ui'
 import { SubmitForm } from '@components/pieces'
+import {
+    useSpringDrag,
+    DeleteButton,
+    useLoaded,
+    ExpandableContainer,
+    withModal,
+    TabNavList
+} from '@ledget/ui'
 
 const itemHeight = 25
 const itemPadding = 8
@@ -65,7 +77,6 @@ const useItems = (
 ) => {
     const order = useRef<string[]>([])
     const [items, setItems] = useState<Item[]>()
-    const [deletedItems, setDeletedItems] = useState<Item[]>()
 
     // Set initial categories
     useEffect(() => {
@@ -78,8 +89,6 @@ const useItems = (
     return {
         items,
         setItems,
-        deletedItems,
-        setDeletedItems,
         order,
     }
 }
@@ -97,40 +106,17 @@ const deleteButtonHandler = (
     }
 }
 
-const EditCategoriesModal = withModal((props) => {
+const Categories = ({ period, setDeletedItems }: {
+    period: Category['period'],
+    setDeletedItems: React.Dispatch<React.SetStateAction<Item[] | undefined>>,
+}) => {
+
     const { data: categories } = useGetCategoriesQuery()
-    const { items, setItems, deletedItems, setDeletedItems, order } = useItems(categories)
-    const { itemsApi, containerProps, transitions } = useAnimations(items)
-    const [showSubmit, setShowSubmit] = useState(false)
-    const [
-        removeCategories,
-        { isSuccess: categoriesAreDeleted, isLoading: submittingDeleteMutation }
-    ] = useRemoveCategoriresMutation()
+    const { items, setItems, order } = useItems(categories)
+    const { itemsApi, containerProps, transitions } = useAnimations(
+        items?.filter((item) => item.period === period))
+
     const [reorderCategories] = useReorderCategoriesMutation()
-
-    useEffect(() => {
-        let timeout: NodeJS.Timeout
-        if (deletedItems?.length) {
-            timeout = setTimeout(() => {
-                setShowSubmit(true)
-            }, 500)
-        }
-        return () => {
-            clearTimeout(timeout)
-        }
-    }, [deletedItems])
-
-    useEffect(() => {
-        let timeout: NodeJS.Timeout
-        if (categoriesAreDeleted) {
-            timeout = setTimeout(() => {
-                props.closeModal()
-            }, 1000)
-        }
-        return () => {
-            clearTimeout(timeout)
-        }
-    }, [categoriesAreDeleted])
 
     const bind = useSpringDrag({
         order: order,
@@ -153,6 +139,56 @@ const EditCategoriesModal = withModal((props) => {
         }
     })
 
+    return (
+        <animated.div style={containerProps}>
+            <>
+                {transitions((style, item) => (
+                    <animated.div className="item" style={style} {...bind(item?.id)}>
+                        <GripButton />
+                        <div>
+                            <div className={`${item?.period}`}>
+                                <span>{item?.emoji}</span>
+                                <span>{`${item?.name.charAt(0).toUpperCase()}${item?.name.slice(1)}`}</span>
+                            </div>
+                        </div>
+                        <div>
+                            {!item?.is_default &&
+                                <DeleteButton
+                                    show={true}
+                                    stroke={'var(--inner-window-solid)'}
+                                    onClick={() => {
+                                        deleteButtonHandler(item, setItems, setDeletedItems, order)
+                                    }}
+                                />
+                            }
+                        </div>
+                    </animated.div>
+                ))}
+            </>
+        </animated.div>
+    )
+}
+
+const EditCategoriesModal = withModal((props) => {
+    const [showSubmit, setShowSubmit] = useState(false)
+    const [updatePill, setUpdatePill] = useState(false)
+    const [deletedItems, setDeletedItems] = useState<Item[]>()
+
+    useEffect(() => {
+        let timeout: NodeJS.Timeout
+        if (deletedItems?.length) {
+            timeout = setTimeout(() => {
+                setShowSubmit(true)
+            }, 500)
+        }
+        return () => { clearTimeout(timeout) }
+    }, [deletedItems])
+
+    const [
+        removeCategories,
+        { isSuccess: categoriesAreDeleted, isLoading: submittingDeleteMutation }
+    ] = useRemoveCategoriresMutation()
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (deletedItems?.length) {
@@ -160,41 +196,43 @@ const EditCategoriesModal = withModal((props) => {
         }
     }
 
+    useEffect(() => {
+        let timeout: NodeJS.Timeout
+        if (categoriesAreDeleted) {
+            timeout = setTimeout(() => {
+                props.closeModal()
+            }, 1000)
+        }
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [categoriesAreDeleted])
+
     return (
         <form onSubmit={handleSubmit}>
-            <div className="edit-budget-items--container">
-                <h2>Edit Categories</h2>
-                <animated.div style={containerProps}>
-                    <>
-                        {transitions((style, item) => (
-                            <animated.div className="item" style={style} {...bind(item?.id)}>
-                                <GripButton />
-                                <div>
-                                    <div className={`${item?.period}`}>
-                                        <span>{item?.emoji}</span>
-                                        <span>{`${item?.name.charAt(0).toUpperCase()}${item?.name.slice(1)}`}</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    {!item?.is_default &&
-                                        <DeleteButton
-                                            className="show"
-                                            stroke={'var(--inner-window-solid)'}
-                                            onClick={() => {
-                                                deleteButtonHandler(item, setItems, setDeletedItems, order)
-                                            }}
-                                        />
-                                    }
-                                </div>
-                            </animated.div>
-                        ))}
-                    </>
-                </animated.div>
-            </div>
-            <ExpandableContainer
-                expanded={showSubmit}
-                style={{ marginTop: '1em' }}
+            <h2>Edit Categories</h2>
+            <Tab.Group
+                onChange={() => { setUpdatePill(!updatePill) }}
+                as='div'
+                className={`inner-window ${showSubmit ? 'submittable' : ''}`}
+                id="reorder-categories"
             >
+                <div>
+                    <TabNavList
+                        labels={['Month', 'Year']}
+                        toggle={updatePill}
+                    />
+                </div>
+                <Tab.Panels as={'div'} className="edit-budget-items--container">
+                    <Tab.Panel as={React.Fragment}>
+                        <Categories period={'month'} setDeletedItems={setDeletedItems} />
+                    </Tab.Panel>
+                    <Tab.Panel as={React.Fragment}>
+                        <Categories period={'year'} setDeletedItems={setDeletedItems} />
+                    </Tab.Panel>
+                </Tab.Panels>
+            </Tab.Group>
+            <ExpandableContainer expanded={showSubmit}>
                 <SubmitForm
                     submitting={submittingDeleteMutation}
                     success={categoriesAreDeleted}

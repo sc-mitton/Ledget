@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 
+import Big from 'big.js'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useForm } from "react-hook-form"
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import './styles/Forms.css'
-import { useAddNewCategoryMutation } from '@features/categorySlice'
+import { useAddNewCategoryMutation, Category } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect } from '@components/inputs'
 import { withModal } from '@ledget/ui'
 import SubmitForm from '@components/pieces/SubmitForm'
@@ -14,10 +15,12 @@ import { FormErrorTip } from '@ledget/ui'
 
 export const schema = z.object({
     name: z.string().min(1, { message: 'required' }).toLowerCase(),
-    limit_amount: z.string().min(1, { message: 'required' }).transform((value) => value.replace(/\D+/g, '')),
+    limit_amount: z.string().min(1, { message: 'required' }).transform((value) =>
+        Big(value.replace(/\D+/g, '')).times(100).toString(),
+    ),
 })
 
-const Form = (props) => {
+const CreateCategoryModal = withModal((props) => {
     const location = useLocation()
     const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation()
 
@@ -28,25 +31,6 @@ const Form = (props) => {
     })
     const watchLimitAmount = watch('limit_amount')
 
-    const submit = (data, e) => {
-        e.preventDefault()
-        const formData = new FormData(e.target)
-        let body = Object.fromEntries(formData)
-
-        let alerts = []
-        for (const [key, value] of Object.entries(body)) {
-            if (key.includes('alert')) {
-                alerts.push({ percent_amount: Number(value.replace(/\D+/g, '')) })
-                delete body[key]
-            }
-        }
-        if (alerts.length > 0) {
-            body.alerts = alerts
-        }
-
-        addNewCategory({ ...body, ...data })
-    }
-
     useEffect(() => {
         isSuccess && props.closeModal()
     }, [isSuccess])
@@ -56,7 +40,24 @@ const Form = (props) => {
             <h3>New Category</h3>
             <hr />
             <form
-                onSubmit={handleSubmit((data, e) => submit(data, e))}
+                onSubmit={handleSubmit((data, e) => {
+                    e?.preventDefault()
+                    const formData = new FormData(e?.target)
+                    let body = Object.fromEntries(formData as any)
+
+                    let alerts = []
+                    for (const [key, value] of Object.entries(body)) {
+                        if (key.includes('alert')) {
+                            alerts.push({ percent_amount: Number(value.replace(/\D+/g, '')) })
+                            delete body[key]
+                        }
+                    }
+                    if (alerts.length > 0) {
+                        body.alerts = alerts
+                    }
+
+                    addNewCategory({ ...body, ...data } as Category)
+                })}
                 id="new-cat-form"
                 className="create-form"
             >
@@ -71,14 +72,17 @@ const Form = (props) => {
                     </div>
                     <div>
                         <LimitAmountInput withCents={false} control={control}>
-                            <FormErrorTip errors={[errors.limit_amount]} />
+                            <FormErrorTip errors={[(errors as any).limit_amount]} />
                         </LimitAmountInput>
                     </div>
 
                 </div>
                 <div className="extra-padded-row">
                     <div>
-                        <PeriodSelect labelPrefix={'Resets'} default={location.state?.period} />
+                        <PeriodSelect
+                            labelPrefix={'Resets'}
+                            default={location.state?.period}
+                        />
                     </div>
                     <div>
                         <AddAlert limitAmount={watchLimitAmount} />
@@ -91,19 +95,16 @@ const Form = (props) => {
             </form>
         </>
     )
-}
+})
 
-const Modal = withModal(Form)
-
-export default (props) => {
+export default () => {
     const navigate = useNavigate()
 
     return (
-        <Modal
-            {...props}
+        <CreateCategoryModal
             onClose={() => navigate(-1)}
-            maxWidth={props.maxWidth || '21.875rem'}
-            minWidth={props.minWidth || '0'}
+            maxWidth={'21.875rem'}
+            minWidth={'0'}
             blur={2}
         />
 

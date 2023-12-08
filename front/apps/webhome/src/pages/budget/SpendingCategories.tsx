@@ -591,7 +591,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     const OptionsMenu = () => (
         <Menu>
             {({ open }) => (
-                <div style={{ position: 'absolute', top: '.5em', right: '3em' }}>
+                <div style={{ position: 'absolute', top: '.625em', right: '3em' }}>
                     <Menu.Button as={IconButton}>
                         <Ellipsis rotate={90} />
                     </Menu.Button>
@@ -654,7 +654,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                 <div>
                     <ResponsiveLineContainer>
                         {window && <WindowSelection />}
-                        {spendingSummaryData?.length && spendingSummaryData?.length < 2 &&
+                        {(spendingSummaryData && spendingSummaryData?.length < 2) &&
                             <span id="not-enough-data-message">
                                 Not enough data to display yet
                             </span>
@@ -738,6 +738,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
         </>
     )
 }
+
 
 const SpendingCategories = () => {
     const [searchParams, setSearchParams] = useSearchParams()

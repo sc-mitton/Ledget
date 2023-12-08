@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useState, createContext, useContext } from 'react'
+import { useRef, useEffect, useState, createContext, useContext } from 'react'
 
 import { animated } from '@react-spring/web'
 
-import { usePillAnimation } from '@utils/hooks'
+import { usePillAnimation } from '@ledget/ui'
 import './styles/Radios.css'
 
 
@@ -19,11 +19,7 @@ const Radios = (props) => {
         propOnChange && propOnChange(newValue)
     }
 
-    const data = {
-        value,
-        onChange: handleChange,
-        ref
-    }
+    const data = { value, onChange: handleChange, ref }
 
     return (
         <RadioContext.Provider value={data}>

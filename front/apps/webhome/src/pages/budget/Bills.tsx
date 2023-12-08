@@ -198,7 +198,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                     hasBackground={false}
                     onClick={() => { setCollapsed(!collapsed) }}
                     aria-label="Collapse bills"
-                    size={'.95em'}
+                    size={'.85em'}
                 />
                 <PillOptionButton
                     disabled={collapsed}

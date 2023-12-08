@@ -9,8 +9,7 @@ import './styles/Main.scss'
 import Deposits from './DepositsTab'
 
 import NotFound from '@pages/notFound/NotFound'
-import { usePillAnimation } from '@utils/hooks'
-import { RefreshButton } from '@ledget/ui'
+import { RefreshButton, usePillAnimation } from '@ledget/ui'
 import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/media'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { popToast } from '@features/toastSlice'

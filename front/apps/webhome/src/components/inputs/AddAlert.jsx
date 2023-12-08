@@ -11,8 +11,9 @@ import { SlimInputButton, MenuTextInput, DropAnimation } from '@ledget/ui'
 const formatDollar = (value, percentage) => {
     if (!value) return ''
     !percentage && (percentage = 0)
+    const val = Number(`${value}`.replace(/[^0-9.]/g, ''))
 
-    return formatCurrency({ val: Big(value).times(percetnage).times(100).toNumber() })
+    return formatCurrency({ val: Big(val).times(percentage).toNumber(), withCents: false })
 }
 
 const AddAlert = (props) => {

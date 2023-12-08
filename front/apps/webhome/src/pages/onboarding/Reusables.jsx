@@ -7,11 +7,10 @@ import { useLocation } from 'react-router-dom'
 
 import { ItemsContext } from './ItemsContext'
 import { Recommendations as RecommendationsIcon } from '@ledget/media'
-import { usePillAnimation } from '@utils/hooks'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { BlueCheckSubmitButton, BlackSubmitWithArrow, BlueSlimButton2 } from '@ledget/ui'
+import { BlueCheckSubmitButton, BlackSubmitWithArrow, BlueSlimButton2, usePillAnimation } from '@ledget/ui'
 
 
 export const TabView = ({ children }) => {

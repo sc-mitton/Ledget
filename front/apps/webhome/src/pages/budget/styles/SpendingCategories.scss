@@ -382,6 +382,7 @@ $background: var(--window);
 
             &:not(:first-child)>div svg {
                 scale: 0;
+                width: 0;
                 margin-left: 0;
                 transition: all .2s ease-in-out;
             }
@@ -392,6 +393,7 @@ $background: var(--window);
                 svg {
                     scale: 1;
                     margin-left: .5em;
+                    width: 1em;
                     transition: all .2s ease-in-out;
                 }
             }
