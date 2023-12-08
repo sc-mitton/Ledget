@@ -6,8 +6,8 @@ import { CardElement } from '@stripe/react-stripe-js'
 import { z } from 'zod'
 
 
-import './text.css'
-import './password-input.css'
+import './text.scss'
+import './password-input.scss'
 import { FormErrorTip, FormError } from '../../pieces/form-errors/form-errors'
 import { SelectProvence } from '../select-provence/select-provence'
 import { InputShimmerDiv } from '../../pieces/shimmer/shimmer'

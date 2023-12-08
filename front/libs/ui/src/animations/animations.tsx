@@ -45,7 +45,7 @@ export const DropAnimation = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivE
   )
 })
 
-export const ZoomMotionDiv = ({ children, ...rest }: { children: ReactNode }) => (
+export const ZoomMotionDiv: FC<HTMLMotionProps<'div'>> = ({ children, ...rest }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.95 }}
     animate={{ opacity: 1, scale: 1 }}

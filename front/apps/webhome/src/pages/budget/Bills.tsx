@@ -181,7 +181,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                     aria-label="Show calendar"
                     aria-haspopup="true"
                 >
-                    <CalendarIcon size={'1.4em'} />
+                    <CalendarIcon size={'1.2em'} />
                 </IconScaleButton>
                 <DropAnimation
                     placement='left'

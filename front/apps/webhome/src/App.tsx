@@ -20,24 +20,24 @@ import {
     EditBudgetItems,
     BillModal,
     EditCategory
-} from '@modals'
+} from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 
 const PrivateRoute = () => {
-    const { isSuccess, isLoading, isPending } = useGetMeQuery()
+    const { isSuccess, isLoading } = useGetMeQuery()
 
     useEffect(() => {
         // Check the condition for redirection here
-        if (!isSuccess && !isLoading && !isPending) {
+        if (!isSuccess && !isLoading) {
             // Redirect to the specified URL
             window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL
         }
-    }, [isSuccess, isLoading, isPending])
+    }, [isSuccess, isLoading])
 
     return (
-        (isSuccess || isLoading || isPending) && <Outlet />
+        (isSuccess || isLoading) && <Outlet />
     )
 }
 
@@ -75,14 +75,14 @@ const MainApp = () => {
     const [isNarrow, setIsNarrow] = useState(false)
     const location = useLocation()
     const navigate = useNavigate()
-    const ref = useRef(null)
+    const ref = useRef<HTMLDivElement>(null)
     const { data: user } = useGetMeQuery()
     const toastStack = useAppSelector(toastStackSelector)
     const dispatch = useAppDispatch()
 
     useLayoutEffect(() => {
         const handleResize = () => {
-            setIsNarrow(ref.current.offsetWidth < 1000)
+            setIsNarrow((ref.current?.offsetWidth || 0) < 1000)
         }
         handleResize()
         window.addEventListener('resize', handleResize)

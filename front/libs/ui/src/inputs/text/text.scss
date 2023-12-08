@@ -1,0 +1,140 @@
+@mixin input-focus-styling {
+    box-shadow: 0 0 0 0 transparent;
+    transition: box-shadow 1s ease;
+    border: var(--input-border);
+    transition: all .2s ease;
+
+    &:focus-within {
+        box-shadow: var(--input-focus-drop-shadow);
+        transition: all .2s ease;
+    }
+}
+
+.input-container {
+    background-color: var(--input-background);
+    border-radius: var(--border-radius2);
+    padding: var(--input-padding);
+    margin: .375em 0;
+    box-sizing: border-box;
+    display: flex;
+    position: relative;
+    width: auto;
+    align-items: center;
+
+    @include input-focus-styling;
+
+    input::placeholder {
+        color: var(--input-placeholder);
+    }
+
+    input:focus::placeholder {
+        transition: color .2s ease;
+        color: var(--input-focus);
+        opacity: 1;
+    }
+
+    input {
+        width: 100%;
+    }
+
+}
+
+.menu-text-input-container {
+    flex-grow: 1;
+    cursor: text;
+
+    &>div {
+        padding: .125em;
+        margin: 0 -.25em;
+        background-color: transparent;
+        color: var(--m-text);
+        border-radius: var(--border-radius2);
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: border .2s ease;
+        position: relative;
+
+        @include input-focus-styling;
+    }
+
+    input {
+        padding-left: .5em;
+    }
+
+    button {
+        margin: 0 .25em;
+    }
+}
+
+
+
+/* ------------------------------ Card Element ------------------------------ */
+.card-container {
+    background-color: var(--input-background);
+    border-radius: var(--border-radius2);
+    z-index: 0;
+    padding: .75em 1em;
+    margin: .25em 0;
+    box-sizing: border-box;
+    position: relative;
+
+    @include input-focus-styling;
+}
+
+
+#payment-error {
+    margin-left: .875em;
+}
+
+/* --------------------------- Location Inputs Row -------------------------- */
+
+#location-inputs-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+
+    input {
+        width: 100%;
+    }
+
+    &>div:not(:last-child) {
+        margin-right: .75em;
+    }
+
+}
+
+#city-container,
+#city-error {
+    flex: 1;
+}
+
+#state-error {
+    width: 25%;
+    min-width: 4.6875em;
+}
+
+#state-container {
+    width: 30%;
+    min-width: 4.6875em;
+    position: relative;
+}
+
+#zip-container,
+#zip-error {
+    width: 25%;
+}
+
+#zip-error,
+#city-error {
+    height: 0px;
+}
+
+#location-input-errors {
+    position: relative;
+    top: -.25em;
+    display: flex;
+    height: 1.25rem;
+}

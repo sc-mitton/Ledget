@@ -10,7 +10,8 @@ $charcoal: var(--charcoal-rgb);
     flex-direction: column;
     position: relative;
     z-index: 0;
-    width: calc(100% + #{$scroll-bar-padding});
+    margin-left: #{$scroll-bar-padding};
+    width: calc(100% + #{$scroll-bar-padding} - 3em);
 
     .left-info {
         overflow: hidden;

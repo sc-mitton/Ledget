@@ -5,7 +5,7 @@ import { Menu } from '@headlessui/react'
 import { animated } from '@react-spring/web'
 
 import './styles/header.scss'
-import { Logout, Help } from '@modals'
+import { Logout, Help } from '@modals/index'
 import {
     Profile1,
     Profile2,
@@ -17,32 +17,25 @@ import {
 import { DropAnimation, usePillAnimation } from '@ledget/ui'
 
 
-const Navigation = ({ isNarrow }) => {
-    let tabs = [
+const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
+    const tabs = [
         { name: "budget", path: "budget" },
         { name: "accounts", path: "accounts/deposits" }
     ]
 
     const location = useLocation()
     const navigate = useNavigate()
-    const navListRef = useRef()
+    const navListRef = useRef<HTMLUListElement>(null)
     const { props: tabsSpring } = usePillAnimation({
         ref: navListRef,
         update: [location.pathname],
         refresh: [isNarrow],
         querySelectall: '[role=link]',
-        find: (element) => element.firstChild.name === location.pathname.split("/")[1],
+        find: (element) => (element.firstChild as any)?.name === location.pathname.split("/")[1],
         styles: { borderRadius: 'var(--border-radius3)', backgroundColor: 'var(--m-text)' },
     })
 
-    const [showPill, setShowPill] = useState()
-
-    const handleTabClick = (e) => {
-        e.preventDefault()
-        navigate(
-            tabs.find((tab) => tab.name === e.target.name).path
-        )
-    }
+    const [showPill, setShowPill] = useState<boolean>(false)
 
     useEffect(() => {
         const rootPath = location.pathname.split("/")[1]
@@ -62,11 +55,14 @@ const Navigation = ({ isNarrow }) => {
                         className={`${location.pathname.split('/')[1] === tab.name ? "current-" : ""}nav-item`}
                         role="link"
                         tabIndex={0}
-                        onClick={handleTabClick}
-                        onKeyDown={(e) => e.key === "Enter" && handleTabClick(e)}
+                        onClick={() => navigate(tab.path)}
+                        onKeyDown={(e) => { if (e.key === "Enter") { navigate(tab.path) } }}
                     >
                         <a
-                            name={tab.name}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                navigate(tab.path)
+                            }}
                             aria-current={location.pathname === tab.path ? "page" : undefined}
                         >
                             {tab.name.charAt(0).toUpperCase() + tab.name.slice(1)}
@@ -79,10 +75,13 @@ const Navigation = ({ isNarrow }) => {
                         role="link"
                         tabIndex={0}
                         onClick={() => navigate("/spending")}
-                        onKeyDown={(e) => e.key === "Enter" && handleTabClick(e)}
+                        onKeyDown={(e) => { if (e.key === "Enter") { navigate("/spending") } }}
                     >
                         <a
-                            name='spending'
+                            onClick={(e) => {
+                                e.preventDefault()
+                                navigate("/spending")
+                            }}
                             aria-current={location.pathname === "spending" ? "page" : undefined}
                         >
                             Spending
@@ -95,17 +94,21 @@ const Navigation = ({ isNarrow }) => {
     )
 }
 
-const DropDownMenu = ({ isNarrow, setModal }) => {
+type Modal = "help" | "logout"
+
+const DropDownMenu = ({ isNarrow, setModal }:
+    { isNarrow: boolean, setModal: React.Dispatch<React.SetStateAction<Modal | undefined>> }) => {
     const navigate = useNavigate()
 
-    const Wrapper = ({ onClick, children }) => {
+    const Wrapper = ({ onClick, children }:
+        { onClick: React.MouseEventHandler<HTMLButtonElement>, children: React.ReactNode }) => {
 
         return (
             <Menu.Item as={React.Fragment}>
                 {({ active }) => (
                     <button
                         className={`dropdown-item ${active && "active-dropdown-item"}`}
-                        onClick={() => onClick()}
+                        onClick={(e) => onClick(e)}
                     >
                         {children}
                     </button>
@@ -150,22 +153,18 @@ const DropDownMenu = ({ isNarrow, setModal }) => {
     )
 }
 
-function Header({ isNarrow }) {
-    const [modal, setModal] = useState('')
+function Header({ isNarrow }: { isNarrow: boolean }) {
+    const [modal, setModal] = useState<Modal>()
 
-    const Modal = ({ selection }) => {
+    const Modal = ({ selection }: { selection?: Modal }) => {
         switch (selection) {
             case "help":
                 return (
-                    <Help onClose={() => setModal('')} />
-                )
-            case "account":
-                return (
-                    <Account onClose={() => setModal('')} />
+                    <Help onClose={() => setModal(undefined)} />
                 )
             case "logout":
                 return (
-                    <Logout onClose={() => setModal('')} maxWidth={"18.75rem"} hasExit={false} />
+                    <Logout onClose={() => setModal(undefined)} maxWidth={"18.75rem"} hasExit={false} />
                 )
             default:
                 return null
