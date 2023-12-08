@@ -1,12 +1,13 @@
 .limit-amount--container {
 
     &:focus-within>div>button,
-    &.valid>div>button {
+    &.valid>div>button,
+    &>div>button:hover {
         color: var(--m-text);
         transition: color .2s ease;
     }
 
-    &:not(.valid):not(:focus-within)>div>button {
+    &:not(.valid):not(:focus-within):not(:hover)>div>button {
         color: var(--input-placeholder2);
         transition: color .2s ease;
     }
@@ -17,9 +18,9 @@
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: .25em;
-    bottom: 0;
-    right: .5em;
+    top: 50%;
+    transform: translateY(-50%);
+    right: .375em;
     border-radius: var(--border-radius1);
     padding: .125em;
 
@@ -33,10 +34,7 @@
         align-items: center;
         justify-content: center;
         border-radius: var(--border-radius);
-
-        svg {
-            margin: .125em;
-        }
+        padding: .125em;
     }
 }
 

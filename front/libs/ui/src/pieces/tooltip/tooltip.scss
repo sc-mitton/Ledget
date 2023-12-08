@@ -12,8 +12,6 @@
     position: absolute;
     visibility: hidden;
     z-index: 1100;
-    bottom: 100%;
-    left: -50%;
     margin-bottom: .5em;
     background-color: var(--btn-hover-gray);
     color: var(--white-text);
@@ -23,6 +21,17 @@
     transform: scale(0.8);
     opacity: 0;
     transition: transform 0.2s, opacity 0.2s;
+
+    &.top {
+        bottom: 100%;
+        left: -50%;
+    }
+
+    &.left {
+        bottom: calc(0% - .25em);
+        translate: translateY(-50%);
+        right: calc(100% + .25em);
+    }
 }
 
 .tooltip:hover .tooltiptext {

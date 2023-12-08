@@ -16,6 +16,7 @@
     "@react-spring/web": "^9.7.2",
     "@stripe/react-stripe-js": "^2.3.1",
     "@use-gesture/react": "^10.2.27",
+    "antd": "^5.12.1",
     "color": "^4.2.3",
     "framer-motion": "^10.16.4",
     "lodash.clamp": "^4.0.3",

@@ -2,11 +2,18 @@
     box-shadow: 0 0 0 0 transparent;
     transition: box-shadow 1s ease;
     border: var(--input-border);
-    transition: all .2s ease;
+    transition: all .25s ease;
 
-    &:focus-within {
+    &:focus-within,
+    &.focused {
+        border: var(--input-border-focus);
         box-shadow: var(--input-focus-drop-shadow);
-        transition: all .2s ease;
+        transition: all .25s ease;
+    }
+
+    &:hover:not(:focus-within):not(.focused) {
+        border: var(--input-border-hover);
+        transition: all .25s ease;
     }
 }
 
@@ -46,7 +53,7 @@
     &>div {
         padding: .125em;
         margin: 0 -.25em;
-        background-color: transparent;
+        background-color: var(--input-background);
         color: var(--m-text);
         border-radius: var(--border-radius2);
         box-sizing: border-box;

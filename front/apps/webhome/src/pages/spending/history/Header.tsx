@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState, useRef } from 'react'
 
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -11,6 +11,7 @@ import './styles/Header.scss'
 import { Funnel } from '@ledget/media'
 import { FullSelectCategoryBill } from '@components/dropdowns'
 import { LimitAmountInput } from '@components/inputs'
+import { useClickClose } from '@utils/hooks'
 import {
     IconButton,
     Tooltip,
@@ -51,6 +52,7 @@ const FilterWindow = ({ setShowFilter }:
                         <div>
                             <label htmlFor="date_range">Date</label>
                             <RangePicker
+                                className='ledget-range-picker'
                                 aria-label='Date Range'
                                 status={fieldState.error ? "error" : undefined}
                                 ref={field.ref}
@@ -125,8 +127,7 @@ const HistoryHeader = () => {
                     <Tooltip
                         msg="Filter"
                         ariaLabel="Filter"
-                        type="top"
-                        style={{ left: '-.4rem' }}
+                        type="left"
                     >
                         <IconButton
                             id="funnel-icon"

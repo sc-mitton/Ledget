@@ -31,7 +31,10 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
         update: [location.pathname],
         refresh: [isNarrow],
         querySelectall: '[role=link]',
-        find: (element) => (element.firstChild as any)?.name === location.pathname.split("/")[1],
+        find: (element) => {
+            console.log((element.firstChild as any)?.getAttribute('aria-current'))
+            return (element.firstChild as any)?.getAttribute('aria-current') === 'page'
+        },
         styles: { borderRadius: 'var(--border-radius3)', backgroundColor: 'var(--m-text)' },
     })
 
@@ -63,7 +66,7 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
                                 e.preventDefault()
                                 navigate(tab.path)
                             }}
-                            aria-current={location.pathname === tab.path ? "page" : undefined}
+                            aria-current={location.pathname.split('/')[1] === tab.name ? "page" : undefined}
                         >
                             {tab.name.charAt(0).toUpperCase() + tab.name.slice(1)}
                         </a>

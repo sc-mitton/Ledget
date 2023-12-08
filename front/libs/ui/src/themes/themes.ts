@@ -1,6 +1,7 @@
 
 import { Theme } from "@nivo/core"
 import { LineSvgProps } from '@nivo/line';
+import { ThemeConfig } from 'antd'; ``
 
 // Define the type for your base props
 type NivoResponsiveLineBaseProps = Omit<LineSvgProps, 'data'>
@@ -62,3 +63,38 @@ export const nivoResponsiveLineTheme: Theme = {
         },
     },
 }
+
+export const ledgetAntTheme: ThemeConfig = {
+    token: {
+        colorPrimary: '#5c6087',
+        boxShadowSecondary: 'var(--mid-elevation-drop-shadow)',
+        borderRadius: 8,
+        colorBgContainer: '#e8e8e8',
+        colorTextPlaceholder: '#a6a6a6',
+    },
+}
+
+
+export const stripeCardTheme = (focus: boolean) => ({
+    style: {
+        base: {
+            fontFamily: "Source Sans Pro, sans-serif",
+            color: '#292929',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+                color: focus ? '#949de0' : '#767676',
+            },
+            iconColor: focus ? '#0000ff' : '#292929',
+            ':disabled': {
+                color: '#767676',
+                iconColor: '#767676'
+            }
+        },
+        invalid: {
+            fontFamily: 'Source Sans Pro, sans-serif',
+            color: '#f47788',
+            iconColor: '#f47788'
+        }
+    }
+})

@@ -90,7 +90,7 @@ $charcoal: var(--charcoal-rgb);
 
         &>div {
             align-self: stretch;
-            padding: .5em;
+            padding: .5em 0;
             transition: background-color .2s ease-in-out;
 
             &:last-child {
@@ -107,6 +107,7 @@ $charcoal: var(--charcoal-rgb);
             display: flex;
             align-items: center;
             gap: .75em;
+            padding-left: .125em;
             flex-wrap: nowrap;
 
             @include invert-image;
@@ -117,7 +118,7 @@ $charcoal: var(--charcoal-rgb);
             display: flex;
             align-items: center;
             justify-content: right;
-            padding-right: .75em;
+            padding-right: .125em;
         }
 
         &>div {

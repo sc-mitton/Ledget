@@ -11,6 +11,7 @@ import './password-input.scss'
 import { FormErrorTip, FormError } from '../../pieces/form-errors/form-errors'
 import { SelectProvence } from '../select-provence/select-provence'
 import { InputShimmerDiv } from '../../pieces/shimmer/shimmer'
+import { stripeCardTheme } from '../../themes/themes'
 
 
 export const TextInputWrapper = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((props, ref) => {
@@ -97,30 +98,6 @@ interface CardProps {
 export const CardInput = ({ requiredError, onComplete, clearError, loading }: CardProps) => {
   let [cardFocus, setCardFocus] = useState(false)
 
-  const cardElementOptions = {
-    style: {
-      base: {
-        fontFamily: "Source Sans Pro, sans-serif",
-        color: '#292929',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-          color: cardFocus ? '#949de0' : '#767676',
-        },
-        iconColor: cardFocus ? '#0000ff' : '#292929',
-        ':disabled': {
-          color: '#767676',
-          iconColor: '#767676'
-        }
-      },
-      invalid: {
-        fontFamily: 'Source Sans Pro, sans-serif',
-        color: '#f47788',
-        iconColor: '#f47788'
-      }
-    }
-  }
-
   return (
     <>
       {loading
@@ -134,7 +111,7 @@ export const CardInput = ({ requiredError, onComplete, clearError, loading }: Ca
               clearError()
               onComplete()
             }}
-            options={cardElementOptions}
+            options={stripeCardTheme(cardFocus)}
           />
           {requiredError && <FormErrorTip errors={[{ type: 'required' }]} />}
         </div>

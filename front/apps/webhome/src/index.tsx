@@ -3,7 +3,8 @@ import * as ReactDOM from 'react-dom/client';
 
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { ConfigProvider, theme } from 'antd';
+import { ConfigProvider } from 'antd';
+import { ledgetAntTheme } from '@ledget/ui';
 
 import App from './App';
 import store from '@features/store';
@@ -12,11 +13,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
     <Provider store={store}>
-        <ConfigProvider
-            theme={{
-
-            }}
-        >
+        <ConfigProvider theme={ledgetAntTheme}>
             <BrowserRouter>
                 <React.StrictMode>
                     <App />

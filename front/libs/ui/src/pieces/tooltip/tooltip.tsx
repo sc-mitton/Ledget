@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './tooltip.css'
+import './tooltip.scss'
 
 interface Props {
   msg?: string,

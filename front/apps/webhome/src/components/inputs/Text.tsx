@@ -73,15 +73,14 @@ export const EmojiComboText = (props:
 interface IncrementDecrement {
     val: string;
     setVal: React.Dispatch<React.SetStateAction<string>>;
-    field?: {
-        onChange: (newVal: number) => void;
-    }
+    field?: { onChange: (newVal: number) => void }
+    withCents?: boolean;
 }
 
 type IncrementFunction = (args: IncrementDecrement) => void;
 
 
-const increment: IncrementFunction = ({ val, setVal, field }) => {
+const increment: IncrementFunction = ({ val, setVal, field, withCents }) => {
     let newVal: number
     if (!val || val === '' || val === '$0' || val === '$0.00') {
         newVal = 100
@@ -91,10 +90,10 @@ const increment: IncrementFunction = ({ val, setVal, field }) => {
     }
 
     field?.onChange(newVal)
-    setVal(formatCurrency({ val: newVal }))
+    setVal(formatCurrency({ val: newVal, withCents }))
 }
 
-const decrement: IncrementFunction = ({ val, setVal, field }) => {
+const decrement: IncrementFunction = ({ val, setVal, field, withCents }) => {
     let newVal
     if (!val) {
         newVal = 0
@@ -107,14 +106,14 @@ const decrement: IncrementFunction = ({ val, setVal, field }) => {
         newVal = 0
     }
     field?.onChange(newVal)
-    setVal(formatCurrency({ val: newVal }))
+    setVal(formatCurrency({ val: newVal, withCents }))
 }
 
-const IncrementDecrementButton = ({ val, setVal, field }: IncrementDecrement) => (
+const IncrementDecrementButton = ({ val, setVal, field, withCents = true }: IncrementDecrement) => (
     <div className="increment-arrows--container">
         <IconButton2
             type="button"
-            onClick={() => increment({ val, setVal, field })}
+            onClick={() => increment({ val, setVal, field, withCents })}
             aria-label="increment"
             tabIndex={-1}
         >
@@ -122,7 +121,7 @@ const IncrementDecrementButton = ({ val, setVal, field }: IncrementDecrement) =>
         </IconButton2>
         <IconButton2
             type="button"
-            onClick={() => decrement({ val, setVal, field })}
+            onClick={() => decrement({ val, setVal, field, withCents })}
             aria-label="decrement"
             tabIndex={-1}
         >
@@ -156,8 +155,8 @@ export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
         // set field value to default if present
         useEffect(() => {
             if (defaultValue) {
-                field.onChange(formatCurrency({ val: defaultValue }))
-                setVal(formatCurrency({ val: defaultValue }))
+                field.onChange(formatCurrency({ val: defaultValue, withCents }))
+                setVal(formatCurrency({ val: defaultValue, withCents }))
             }
         }, [defaultValue])
 
@@ -168,7 +167,12 @@ export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
                     control={control}
                     name={rest.name || 'limit_amount'}
                     render={({ field: { onChange, onBlur, ref } }) => (
-                        <TextInputWrapper className={`limit-amount--container ${val ? 'valid' : ''}`}>
+                        <TextInputWrapper
+                            className={`limit-amount--container ${val ? 'valid' : ''}`}
+                            onBlur={() => {
+                                (val === '$0' || val === '$0.00') && setVal('')
+                            }}
+                        >
                             <input
                                 type="text"
                                 name='limit_amount'
@@ -196,13 +200,18 @@ export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
                                     }
                                 }}
                                 onBlur={(e) => {
-                                    (e.target.value.length <= 1 || val === '$0' || val === '$0.00') && setVal('')
+                                    (e.target.value.length <= 1 && setVal(''))
                                     onBlur()
                                 }}
                                 size={14}
                                 {...rest}
                             />
-                            <IncrementDecrementButton val={val} setVal={setVal} field={field} />
+                            <IncrementDecrementButton
+                                val={val}
+                                setVal={setVal}
+                                field={field}
+                                withCents={withCents}
+                            />
                             {children}
                         </TextInputWrapper>
                     )}
