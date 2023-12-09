@@ -94,33 +94,6 @@ const FilterWindow = ({ onSubmit }: { onSubmit: () => void }) => {
                     />
                 </div>
                 <div>
-                    <label htmlFor="merchant">Merchant</label>
-                    <label htmlFor="account">Account</label>
-                </div>
-                <div>
-                    <BakedComboBox
-                        name="merchant"
-                        control={control}
-                        options={merchantsData}
-                        placement={'left'}
-                        placeholder={'Merchant'}
-                        maxLength={24}
-                        multiple={true}
-                    />
-                    <BakedListBox
-                        name="account"
-                        control={control}
-                        options={accountsData?.accounts}
-                        placement={'left'}
-                        placeholder={'Account'}
-                        multiple={true}
-                        labelKey={'name'}
-                        valueKey={'account_id'}
-                        buttonMaxWidth={true}
-                        dividerKey={'institution_id'}
-                    />
-                </div>
-                <div>
                     <label htmlFor="category">Category or Bill</label>
                 </div>
                 <div>
@@ -129,6 +102,34 @@ const FilterWindow = ({ onSubmit }: { onSubmit: () => void }) => {
                         SelectorComponent={InputButton}
                         name="item"
                         control={control}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="merchant">Merchant</label>
+                    <label htmlFor="account">Account</label>
+                </div>
+                <div>
+                    <BakedComboBox
+                        name="merchant"
+                        control={control as any}
+                        options={merchantsData}
+                        placement={'left'}
+                        placeholder={'Merchant'}
+                        maxLength={24}
+                        multiple={true}
+                    />
+                    <BakedListBox
+                        name="account"
+                        control={control as any}
+                        options={accountsData?.accounts}
+                        placement={'right'}
+                        placeholder={'Account'}
+                        multiple={true}
+                        labelKey={'name'}
+                        subLabelKey={'mask'}
+                        subLabelPrefix={'••••'}
+                        valueKey={'account_id'}
+                        dividerKey={'institution_id'}
                     />
                 </div>
             </fieldset>

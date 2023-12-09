@@ -60,6 +60,65 @@
     animation: grow-on .3s ease forwards;
 }
 
+
+
+.dropdown-item {
+    overflow: hidden;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: .875em;
+    width: auto;
+    padding: .25em .75em;
+    transition: background-color 0.3s ease-out;
+    border-radius: var(--border-radius1);
+}
+
+.dropdown-item {
+    overflow: hidden;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: .875em;
+    width: auto;
+    padding: .25em .75em;
+    transition: background-color 0.3s ease-out;
+    border-radius: var(--border-radius1);
+
+    &>div {
+        display: flex;
+        align-items: center;
+    }
+
+    &.active {
+        outline: none;
+        background-color: var(--icon-light-gray);
+        box-shadow: none;
+    }
+
+    &.selected {
+        background-color: var(--main-hlight2);
+    }
+
+    &.selected.active {
+        background-color: var(--main-hlight5);
+    }
+
+    &:focus-visible {
+        outline: none;
+        background-color: var(--icon-light-gray);
+        box-shadow: none;
+    }
+
+    &:hover {
+        background-color: var(--icon-light-gray);
+        transition: background-color 0.3s ease-out;
+        cursor: pointer;
+        height: 100%;
+        box-shadow: none;
+    }
+}
+
 @keyframes grow-on {
     0% {
         max-height: 0;

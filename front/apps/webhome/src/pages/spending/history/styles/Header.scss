@@ -39,7 +39,7 @@ $padding: 1.5em;
 
         fieldset {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
 
             .ledget-range-picker {
                 margin-top: .375em;

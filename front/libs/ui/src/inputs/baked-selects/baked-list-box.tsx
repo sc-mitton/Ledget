@@ -17,8 +17,10 @@ export interface BakedSelectProps {
   value?: string;
   onChange?: (val?: any) => void;
   labelKey?: string;
+  subLabelKey?: string;
   valueKey?: string;
   labelPrefix?: string;
+  subLabelPrefix?: string;
   placement?: ComponentProps<typeof DropAnimation>['placement']
   placeholder?: string;
   withCheckMarkIndicator?: boolean;
@@ -78,13 +80,14 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
               if (typeof val === 'string') {
                 label = val
               } else if (Array.isArray(val)) {
-                label = val.reduce((acc: any, curr: any) => {
-                  if (typeof curr === 'string') {
-                    return acc ? acc + ', ' + curr : curr
-                  } else if (typeof curr === 'object') {
-                    return acc + curr[props.labelKey || 'label'] + ', '
-                  }
-                }, '')
+                if (typeof props.options?.[0] === 'string') {
+                  label = val.join(', ')
+                } else {
+                  label = props.options?.filter(op => {
+                    const value = typeof op === 'string' ? op : op[props.valueKey || 'value']
+                    return val.includes(value)
+                  }).map(op => op[props.labelKey || 'label']).join(', ') || ''
+                }
               } else if (typeof val === 'object' && !Array.isArray(val)) {
                 label = val[props.labelKey || 'label']
               }
@@ -132,14 +135,25 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
                           value={value}
                           disabled={isDisabled}
                         >
-                          {({ active, selected }) => (
-                            <DropdownItem active={active} selected={selected}>
-                              <span>
-                                {label.slice(0, props.maxLength)}
-                                {`${(props.maxLength || label.length) < label.length ? '...' : ''}`}
-                              </span>
-                            </DropdownItem>
-                          )}
+                          {({ active, selected }) => {
+                            return (
+                              <DropdownItem
+                                active={active}
+                                selected={selected}
+                                className="baked-dropdown-item"
+                              >
+                                <span>
+                                  {label.slice(0, props.maxLength)}
+                                  {`${(props.maxLength || label.length) < label.length ? '...' : ''}`}
+                                </span>
+                                {props.subLabelKey &&
+                                  <span className='sub-label'>
+                                    {typeof op !== 'string' && `${props.subLabelPrefix + ' '}${op[props.subLabelKey]}`}
+                                  </span>}
+                              </DropdownItem>
+                            )
+                          }
+                          }
                         </Listbox.Option>
                         {hasDivider && <hr />}
                       </>

@@ -55,7 +55,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps, 'as'> & { WrapperCom
     >
       {({ open }) => (
         <>
-          <props.WrapperComponent ref={inputRef}>
+          <props.WrapperComponent ref={inputRef} className="baked-combo-list-wrapper">
             <Combobox.Input
               onChange={(event) => setQuery(event.target.value)}
               onFocus={() => setFocused(true)}

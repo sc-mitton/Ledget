@@ -12,8 +12,20 @@
         margin: 0 auto;
     }
 
-    &>div:first-of-type {
+    .baked-combo-list-wrapper {
         padding: .325em .625em;
+    }
+
+    .baked-dropdown-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .25em;
+
+        .sub-label {
+            opacity: .7;
+            font-size: .875em;
+        }
     }
 
     &>button {
@@ -27,7 +39,6 @@
             overflow: auto;
             scrollbar-width: none;
         }
-
 
         &:not(.valid)>div:not(.active) {
             color: var(--input-placeholder2);
@@ -49,7 +60,14 @@
 
     .dropdown {
         margin-top: .375em;
-        overflow: hidden;
+        max-height: calc(25vh);
+        padding: 0.25em;
+
+        &>ul {
+            overflow: scroll;
+            margin: .125em -.375em .125em .125em;
+            padding-right: .75em;
+        }
     }
 
     .baked-list-options {
