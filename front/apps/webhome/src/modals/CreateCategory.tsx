@@ -44,10 +44,6 @@ const CreateCategoryModal = withModal((props) => {
                     e?.preventDefault()
                     const formData = new FormData(e?.target)
                     let body = Object.fromEntries(formData as any)
-
-                    console.log('body', body)
-                    return
-
                     let alerts = []
                     for (const [key, value] of Object.entries(body)) {
                         if (key.includes('alert')) {

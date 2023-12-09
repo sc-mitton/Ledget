@@ -12,7 +12,7 @@ interface P {
     hasLabel?: boolean
     labelPrefix?: string
     value?: typeof opts[number]['value']
-    onChange?: (val: typeof opts[number]['value']) => void
+    onChange?: React.Dispatch<React.SetStateAction<any>>
     enableAll?: boolean
     default?: string
 }

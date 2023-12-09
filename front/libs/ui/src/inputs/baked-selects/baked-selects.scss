@@ -7,8 +7,16 @@
         position: relative;
     }
 
+    hr {
+        width: calc(100% - 1em);
+        margin: 0 auto;
+    }
+
+    &>div:first-of-type {
+        padding: .325em .625em;
+    }
+
     &>button {
-        overflow: visible;
 
         &>div {
             display: flex;
@@ -16,6 +24,8 @@
             align-items: center;
             gap: 1em;
             width: 100%;
+            overflow: auto;
+            scrollbar-width: none;
         }
 
 
@@ -39,11 +49,13 @@
 
     .dropdown {
         margin-top: .375em;
+        overflow: hidden;
     }
 
     .baked-list-options {
         display: flex;
         flex-direction: column;
         gap: .25em;
+        overflow: hidden;
     }
 }

@@ -20,8 +20,11 @@ class NoteSerializer(serializers.ModelSerializer):
 class MerchantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ('merchant',)
-        read_only_fields = ('merchant',)
+        fields = ('merchant_name',)
+        read_only_fields = ('merchant_name',)
+
+    def to_representation(self, instance):
+        return instance.get('merchant_name')
 
 
 class UpdateTransactionListSerializer(serializers.ListSerializer):

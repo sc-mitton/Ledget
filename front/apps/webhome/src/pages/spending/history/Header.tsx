@@ -1,11 +1,16 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Combobox } from '@headlessui/react'
-import { Controller, useForm, useWatch } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { DatePicker } from "antd";
-import { useTransition, animated, useSpring, useChain, useSpringRef } from '@react-spring/web'
+import {
+    useTransition,
+    animated,
+    useSpring,
+    useChain,
+    useSpringRef
+} from '@react-spring/web'
 import { useGetAccountsQuery } from '@features/accountsSlice'
 import { useGetMerchantsQuery } from '@features/transactionsSlice'
 
@@ -16,34 +21,40 @@ import { LimitAmountInput } from '@components/inputs'
 import {
     IconButton,
     Tooltip,
-    SlimInputButton,
+    BlueSlimButton2,
     InputButton,
     BakedListBox,
+    BakedComboBox
 } from '@ledget/ui'
 
 
 const { RangePicker } = DatePicker
 
 const filterSchema = z.object({
-    date_range: z.array(z.number().nullable()),
-    limit_amount_lower: z.number().nullable(),
-    limit_amount_upper: z.number().nullable(),
+    date_range: z.array(z.number()),
+    limit_amount_lower: z.number(),
+    limit_amount_upper: z.number(),
+    item: z.array(z.string()),
+    merchant: z.array(z.string()),
+    account: z.array(z.string()),
 })
 
-const FilterWindow = ({ setShowFilter }:
-    { setShowFilter: (show: boolean) => void }) => {
+const FilterWindow = ({ onSubmit }: { onSubmit: () => void }) => {
 
     const { data: accountsData } = useGetAccountsQuery()
     const { data: merchantsData } = useGetMerchantsQuery()
 
-    const { handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof filterSchema>>({
+    const { handleSubmit, control } = useForm<z.infer<typeof filterSchema>>({
         resolver: zodResolver(filterSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
 
     return (
-        <form>
+        <form onSubmit={handleSubmit((data) => {
+            console.log(data)
+            onSubmit()
+        })}>
             <fieldset>
                 <Controller
                     name="date_range"
@@ -57,6 +68,12 @@ const FilterWindow = ({ setShowFilter }:
                                 className='ledget-range-picker'
                                 aria-label='Date Range'
                                 {...props}
+                                onChange={(e) => {
+                                    props.field.onChange([
+                                        e?.[0]?.unix(),
+                                        e?.[1]?.unix()
+                                    ])
+                                }}
                             />
                         </>
                     )}
@@ -81,15 +98,26 @@ const FilterWindow = ({ setShowFilter }:
                     <label htmlFor="account">Account</label>
                 </div>
                 <div>
-                    <BakedListBox
+                    <BakedComboBox
+                        name="merchant"
+                        control={control}
                         options={merchantsData}
                         placement={'left'}
                         placeholder={'Merchant'}
+                        maxLength={24}
+                        multiple={true}
                     />
                     <BakedListBox
+                        name="account"
+                        control={control}
                         options={accountsData?.accounts}
                         placement={'left'}
                         placeholder={'Account'}
+                        multiple={true}
+                        labelKey={'name'}
+                        valueKey={'account_id'}
+                        buttonMaxWidth={true}
+                        dividerKey={'institution_id'}
                     />
                 </div>
                 <div>
@@ -105,9 +133,9 @@ const FilterWindow = ({ setShowFilter }:
                 </div>
             </fieldset>
             <div>
-                <SlimInputButton>
+                <BlueSlimButton2>
                     Apply
-                </SlimInputButton>
+                </BlueSlimButton2>
             </div>
         </form>
     )
@@ -161,7 +189,7 @@ const HistoryHeader = () => {
                 {transitions((styles, item) => item && (
                     <animated.div className="filter-window" style={styles}>
                         <animated.div style={containerStyles}>
-                            <FilterWindow setShowFilter={setShowFilter} />
+                            <FilterWindow onSubmit={() => { setShowFilter(false) }} />
                         </animated.div>
                     </animated.div>
                 ))}

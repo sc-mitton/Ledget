@@ -259,8 +259,10 @@ class TransactionViewSet(ModelViewSet):
             url_name='merchants', permission_classes=[IsAuthedVerifiedSubscriber])
     def merchants(self, request, *args, **kwargs):
         qset = Transaction.objects.filter(
-            account__useraccount__user=self.request.user
-        ).values('merchant').distinct()
+            account__useraccount__user=self.request.user,
+            merchant_name__isnull=False
+        ).distinct('merchant_name').values('merchant_name').order_by('merchant_name')
+
         serializer = MerchantSerializer(qset, many=True)
 
         return Response(serializer.data)

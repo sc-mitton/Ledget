@@ -20,15 +20,18 @@ import { LoadingRingDiv, DropAnimation, useAccessEsc } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 interface I {
+    default?: string,
     value?: (Category | Bill | undefined)
     includeBills?: boolean
     includeCategories?: boolean
     onChange?: React.Dispatch<React.SetStateAction<Category | Bill | undefined>>
     month?: number
     year?: number
+    multiple?: boolean
+    name?: string
 }
 
-function StaticSelectCategoryBill({ value, onChange, includeBills = true, includeCategories = true, month, year }: I) {
+function StaticSelectCategoryBill({ value, name, onChange, includeBills = true, includeCategories = true, month, year }: I) {
     const [query, setQuery] = useState('')
     const { start, end } = useGetStartEndQueryParams(month, year)
     const {
@@ -81,7 +84,13 @@ function StaticSelectCategoryBill({ value, onChange, includeBills = true, includ
     useEffect(() => { inputRef.current?.focus() }, [])
 
     return (
-        <Combobox value={value} onChange={onChange} as={'div'} className="select-bill-category">
+        <Combobox
+            name={name}
+            value={value}
+            onChange={onChange}
+            as={'div'}
+            className="select-bill-category"
+        >
             <div className="category-select--container">
                 <div>
                     <SearchIcon />
@@ -122,35 +131,32 @@ interface Selector extends Omit<I, 'value' | 'onChange'> {
         & RefAttributes<HTMLButtonElement>>
     children?: React.ReactNode
     placeholder?: string
-    defaultBillCat?: string
     control?: Control<any>
-    name?: string
 }
 
 export const FullSelectCategoryBill =
-    ({ SelectorComponent, defaultBillCat, placeholder, includeBills,
-        includeCategories, month, year, name, children, control }: Selector) => {
+    ({ SelectorComponent, placeholder, children, control, ...rest }: Selector) => {
 
         const [value, onChange] = useState<Category | Bill | undefined>()
         const [showBillCatSelect, setShowBillCatSelect] = useState(false)
         const dropdownRef = useRef<HTMLDivElement>(null)
         const buttonRef = useRef<HTMLButtonElement>(null)
+        const name = useRef<string>(rest.name ||
+            !rest.includeBills
+            ? 'category'
+            : !rest.includeCategories ? 'bill' : 'item'
+        )
 
-        const { start, end } = useGetStartEndQueryParams(month, year)
-        const {
-            data: categoryData,
-            isSuccess: isFetchCategoriesSuccess
-        } = useGetCategoriesQuery({ start, end, spending: false })
-        const {
-            data: billData,
-            isSuccess: isFetchBillsSuccess
-        } = useGetBillsQuery({ month, year })
-
+        // Controll for react-hook-form
         const { field } = useController({
-            name: name || 'category',
+            name: name.current,
             control,
-            defaultValue: value
         })
+
+        // Update controller on value change
+        useEffect(() => {
+            field.onChange(value)
+        }, [value])
 
         useAccessEsc({
             refs: [dropdownRef, buttonRef],
@@ -158,30 +164,12 @@ export const FullSelectCategoryBill =
             setVisible: setShowBillCatSelect
         })
 
-        // Set default billcat
-        useEffect(() => {
-            if (defaultBillCat && isFetchCategoriesSuccess && isFetchBillsSuccess) {
-                const billcat = [...categoryData, ...billData].find((bc) => bc.id === defaultBillCat)
-                if (billcat) {
-                    onChange && onChange(billcat)
-                }
-            }
-        }, [isFetchCategoriesSuccess, isFetchBillsSuccess])
-
-        // Update field as value changes
-        useEffect(() => {
-            field.onChange(value?.id)
-        }, [value])
-
         return (
             <div className="bill-cat-select--container--container">
-                <input
-                    type='hidden'
-                    value={value ? value.id : ''}
-                    ref={field.ref}
-                />
                 <SelectorComponent
-                    className={`bill-category-selector--button ${value ? 'valid' : 'placeholder'} ${showBillCatSelect ? 'active' : ''}`}
+                    className={`bill-category-selector--button
+                        ${value ? 'valid' : 'placeholder'}
+                        ${showBillCatSelect ? 'active' : ''}`}
                     type='button'
                     onClick={() => setShowBillCatSelect(!showBillCatSelect)}
                     ref={buttonRef}
@@ -192,7 +180,9 @@ export const FullSelectCategoryBill =
                                 <span>{value?.emoji}</span>
                                 <span>{value?.name.charAt(0).toUpperCase()}{value?.name.slice(1)}</span>
                             </>
-                            : placeholder ? `${placeholder}` : <span style={{ opacity: 0, visibility: 'hidden' }}>None</span>
+                            : placeholder
+                                ? `${placeholder}`
+                                : <span style={{ opacity: 0, visibility: 'hidden' }}>None</span>
                         }
                     </div>
                     <ArrowIcon size={'.8em'} stroke={'currentColor'} />
@@ -206,12 +196,10 @@ export const FullSelectCategoryBill =
                         ref={dropdownRef}
                     >
                         <StaticSelectCategoryBill
-                            includeCategories={includeCategories}
-                            includeBills={includeBills}
                             value={value}
                             onChange={onChange}
-                            month={month}
-                            year={year}
+                            {...rest}
+                            name={name.current}
                         />
                     </DropAnimation>
                 </div>

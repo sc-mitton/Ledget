@@ -1,4 +1,5 @@
-export * from './inputs/baked-list-box/baked-list-box';
+export * from './inputs/baked-selects/baked-combo-box';
+export * from './inputs/baked-selects/baked-list-box';
 export * from './animations/use-pill-animation/use-pill-animation';
 export * from './inputs/tab-nav-list/tab-nav-list';
 export * from './modal/with-small-modal/with-small-modal';
