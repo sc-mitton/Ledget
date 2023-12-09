@@ -3,16 +3,15 @@
 const CheckMark = ({
     className = 'checkmark',
     stroke = "var(--icon-dark)",
-    width = ".9em",
-    height = ".9em",
+    size = ".9em",
     ...rest
 }) => {
 
     return (
         <svg
             className={className}
-            width={width}
-            height={height}
+            width={size}
+            height={size}
             viewBox="0 0 100 100"
             xmlns="http://www.w3.org/2000/svg"
             x="0px"

@@ -51,6 +51,13 @@
     flex-direction: column;
     align-items: center;
 
+    &>div:first-child svg {
+        position: absolute;
+        left: 1.125em;
+        top: 1em;
+        opacity: .7;
+    }
+
     &>div,
     &>ul {
         width: 100%;
@@ -73,12 +80,7 @@
         flex: 1;
     }
 
-    svg {
-        position: absolute;
-        left: 1.125em;
-        top: 1em;
-        opacity: .7;
-    }
+
 
     input {
         background-color: var(--input-background);

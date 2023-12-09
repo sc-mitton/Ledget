@@ -200,8 +200,7 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
             <CheckMark
               className="resend-btn-success-icon"
               stroke={'currentColor'}
-              height={'.8em'}
-              width={'.8em'}
+              size={'.8em'}
             />
           ) : (
             <ReplayIcon fill={'currentColor'} size={'1.1em'} />

@@ -86,8 +86,7 @@ const AddReminder = ({ value, onChange, defaultSelected }:
                                 ?
                                 <CheckMark
                                     stroke={'currentColor'}
-                                    width={'.7em'}
-                                    height={'.7em'}
+                                    size={'.7em'}
                                 /> :
                                 <Plus
                                     stroke={'currentColor'}

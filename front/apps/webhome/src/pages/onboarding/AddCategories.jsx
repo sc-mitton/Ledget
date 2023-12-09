@@ -168,8 +168,7 @@ const RecommendationsView = () => {
                         >
                             {`${suggestion.emoji} ${suggestion.name}`}
                             <CheckMark
-                                width={'.7em'}
-                                height={'.7em'}
+                                size={'.7em'}
                                 stroke={yearItems.some((item) => item.name === suggestion.name.toLowerCase())
                                     ? 'var(--white-text)' : 'currentColor'
                                 }

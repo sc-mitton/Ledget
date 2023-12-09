@@ -107,8 +107,7 @@ export const withCheckMark = (Component: FC<any>) => {
             >
                 {children}
                 <CheckMark
-                    width={'.8em'}
-                    height={'.8em'}
+                    size={'.8em'}
                     stroke={'currentColor' || stroke}
                 />
             </Component>

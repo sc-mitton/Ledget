@@ -20,18 +20,27 @@ import { LoadingRingDiv, DropAnimation, useAccessEsc, BillCatLabel } from '@ledg
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 interface I {
-    default?: string,
+    default?: string | string[]
     value?: (Category | Bill | undefined | (Category | Bill)[]),
+    onChange?: React.Dispatch<React.SetStateAction<Category | Bill | undefined | (Category | Bill)[]>>
     includeBills?: boolean
     includeCategories?: boolean
-    onChange?: React.Dispatch<React.SetStateAction<Category | Bill | undefined | (Category | Bill)[]>>
     month?: number
     year?: number
     multiple?: boolean
     name?: string
 }
 
-function SelectCategoryBillBody({ value, name, onChange, includeBills = true, includeCategories = true, month, year }: I) {
+function SelectCategoryBillBody({
+    value,
+    name,
+    onChange,
+    month,
+    year,
+    includeBills = true,
+    includeCategories = true,
+    multiple = false
+}: I) {
     const [query, setQuery] = useState('')
     const { start, end } = useGetStartEndQueryParams(month, year)
     const {
@@ -81,8 +90,6 @@ function SelectCategoryBillBody({ value, name, onChange, includeBills = true, in
         }
     }, [query])
 
-    useEffect(() => { inputRef.current?.focus() }, [])
-
     return (
         <Combobox
             name={name}
@@ -90,11 +97,13 @@ function SelectCategoryBillBody({ value, name, onChange, includeBills = true, in
             onChange={onChange}
             as={'div'}
             className="select-bill-category"
+            multiple={multiple as any}
         >
             <div className="category-select--container">
                 <div>
                     <SearchIcon />
                     <Combobox.Input
+                        autoFocus
                         ref={inputRef}
                         className="input"
                         value={query}
@@ -149,10 +158,17 @@ export const FullSelectCategoryBill =
         )
 
         // Controll for react-hook-form
-        const { field } = useController({
-            name: name.current,
-            control,
-        })
+        const { field } = useController({ name: name.current, control })
+
+        // Update react-hook-form value
+        useEffect(() => {
+            Array.isArray(value) && console.log(value.map?.((v) => v.id))
+            field.onChange(value
+                ? Array.isArray(value)
+                    ? value.map?.((v) => v.id)
+                    : value.id : ''
+            )
+        }, [value])
 
         useEffect(() => {
             if (Array.isArray(value)) {
@@ -172,21 +188,39 @@ export const FullSelectCategoryBill =
             <div className="bill-cat-select--container--container">
                 <SelectorComponent
                     className={`bill-category-selector--button
-                        ${value ? 'valid' : 'placeholder'}
+                        ${value && (Array.isArray(value) && value.length) ? 'valid' : 'placeholder'}
                         ${showBillCatSelect ? 'active' : ''}`}
                     type='button'
                     onClick={() => setShowBillCatSelect(!showBillCatSelect)}
                     ref={buttonRef}
                 >
                     <div className="selector-current-label">
-                        {value ?
-                            <>
-                                <span>{value?.emoji}</span>
-                                <span>{value?.name.charAt(0).toUpperCase()}{value?.name.slice(1)}</span>
+                        {!value || (Array.isArray(value) && value.length === 0)
+                            ? <span>{`${placeholder || ''}`}</span>
+                            : <>
+                                {Array.isArray(value)
+                                    ? <>
+                                        {value.map((v) => (
+                                            <BillCatLabel
+                                                key={v.id}
+                                                slim={true}
+                                                color={v.period === 'month' ? 'blue' : 'green'}
+                                                name={v.name}
+                                                tint={true}
+                                                hoverable={false}
+                                            />
+                                        ))}
+                                    </>
+                                    : <BillCatLabel
+                                        slim={true}
+                                        color={value.period === 'month' ? 'blue' : 'green'}
+                                        name={value.name}
+                                        emoji={value.emoji}
+                                        tint={true}
+                                        hoverable={false}
+                                    />
+                                }
                             </>
-                            : placeholder
-                                ? `${placeholder}`
-                                : <span style={{ opacity: 0, visibility: 'hidden' }}>None</span>
                         }
                     </div>
                     <ArrowIcon size={'.8em'} stroke={'currentColor'} />
