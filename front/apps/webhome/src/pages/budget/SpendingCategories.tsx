@@ -560,7 +560,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
         </div>
     )
 
-    const OptionsMenu = () => (
+    const Options = () => (
         <Menu>
             {({ open }) => (
                 <div style={{ position: 'absolute', top: '.625em', right: '3em' }}>
@@ -620,7 +620,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                     onClose={() => setTransactionModalItem(undefined)}
                 />
             }
-            <OptionsMenu />
+            <Options />
             <h2>{`${category.emoji}`}&nbsp;&nbsp;{`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
             <div className="grid">
                 <div>

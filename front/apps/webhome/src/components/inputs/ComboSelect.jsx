@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useRef } from 'react'
 
-import { useClickClose } from '@utils/hooks'
+import { useClickClose } from '@ledget/ui'
 
 const DataContext = createContext()
 

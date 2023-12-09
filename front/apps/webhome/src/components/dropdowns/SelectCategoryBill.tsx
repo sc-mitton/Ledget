@@ -153,11 +153,6 @@ export const FullSelectCategoryBill =
             control,
         })
 
-        // Update controller on value change
-        useEffect(() => {
-            field.onChange(value)
-        }, [value])
-
         useAccessEsc({
             refs: [dropdownRef, buttonRef],
             visible: showBillCatSelect,

@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { DatePicker } from "antd";
 import {
     useTransition,
@@ -49,6 +49,22 @@ const FilterWindow = ({ onSubmit }: { onSubmit: () => void }) => {
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
+
+    const fields = useWatch({
+        control,
+        name: [
+            'date_range',
+            'limit_amount_lower',
+            'limit_amount_upper',
+            'item',
+            'merchant',
+            'account'
+        ]
+    })
+
+    useEffect(() => {
+        console.log(fields)
+    }, [fields])
 
     return (
         <form onSubmit={handleSubmit((data) => {

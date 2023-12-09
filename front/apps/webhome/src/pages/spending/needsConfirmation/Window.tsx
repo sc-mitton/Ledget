@@ -10,7 +10,6 @@ import TransactionModal from '@modals/TransactionItem'
 import { Ellipsis, CheckMark } from "@ledget/media"
 import Header from './Header'
 import ShadowedContainer from '@components/pieces/ShadowedContainer'
-import Options from "@components/dropdowns/Options"
 import { SelectCategoryBill } from '@components/dropdowns'
 import { Logo } from '@components/pieces'
 import ItemOptions from "./ItemOptions"
@@ -22,7 +21,8 @@ import {
     Tooltip,
     DollarCents,
     BlueSlimButton,
-    GrnSlimButton
+    GrnSlimButton,
+    AbsPosMenu
 } from "@ledget/ui"
 import { formatDateOrRelativeDate, InfiniteScrollDiv, useLoaded } from '@ledget/ui'
 import { Category, isCategory, SplitCategory, addTransaction2Cat } from '@features/categorySlice'
@@ -324,12 +324,6 @@ const NeedsConfirmationWindow = () => {
         }
     }, [expanded, unconfirmedTransactions])
 
-    // Menu closing effects, clear positions
-    useEffect(() => {
-        !showMenu && setMenuPos(undefined)
-        !showBillCatSelect && setBillCatSelectPos(undefined)
-    }, [showMenu, showBillCatSelect])
-
     // When options are selected from the bill/category combo dropdown
     // update the list of updated bills/categories, then clean up
     // the focused item and selected value
@@ -522,7 +516,7 @@ const NeedsConfirmationWindow = () => {
                         }
                     </animated.div >
                 </ShadowedContainer>
-                <Options
+                <AbsPosMenu
                     show={showBillCatSelect}
                     setShow={setShowBillCatSelect}
                     pos={billCatSelectPos}
@@ -534,8 +528,8 @@ const NeedsConfirmationWindow = () => {
                         month={new Date(start).getMonth() + 1}
                         year={new Date(start).getFullYear()}
                     />
-                </Options>
-                <Options
+                </AbsPosMenu>
+                <AbsPosMenu
                     show={showMenu}
                     setShow={setShowMenu}
                     pos={menuPos}
@@ -544,7 +538,7 @@ const NeedsConfirmationWindow = () => {
                         () => { setShowTransactionModal({ split: true }) },
                         () => { setShowTransactionModal({ split: false }) },
                     ]} />
-                </Options>
+                </AbsPosMenu>
             </InfiniteScrollDiv >
             <ExpandableContainer
                 className='new-items-expand-button--container'

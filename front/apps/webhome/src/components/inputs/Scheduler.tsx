@@ -6,7 +6,7 @@ import './styles/Dropdowns.css'
 import './styles/Scheduler.scss'
 import Radios from './Radios'
 import type { Bill } from '@features/billSlice'
-import { useClickClose } from '@utils/hooks'
+import { useClickClose } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 import { SlimInputButton, FormErrorTip, DropAnimation, getDaySuffix } from '@ledget/ui'
 
