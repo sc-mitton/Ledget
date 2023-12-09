@@ -17,6 +17,13 @@ class NoteSerializer(serializers.ModelSerializer):
         return obj.user == self.context['request'].user
 
 
+class MerchantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = ('merchant',)
+        read_only_fields = ('merchant',)
+
+
 class UpdateTransactionListSerializer(serializers.ListSerializer):
 
     @transaction.atomic

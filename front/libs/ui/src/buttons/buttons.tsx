@@ -292,13 +292,13 @@ export const EdgeGlowPillButton
   )
 
 export const PillOptionButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { isSelected?: boolean }>((props, ref) => {
-  const { isSelected, children, ...rest } = props
+  const { isSelected, children, className, ...rest } = props
 
   return (
     <button
       aria-selected={isSelected}
       ref={ref}
-      className={`btn-small-pill btn btn-gr2 ${isSelected ? 'selected' : ''}`}
+      className={`btn-small-pill btn btn-gr2 ${isSelected ? 'selected' : ''} ${className ? className : ''}}`}
       {...rest}
     >
       {children}

@@ -317,21 +317,11 @@ $background: var(--window);
 
             .chart-window-selectors {
                 z-index: 10;
+                top: .25em;
                 position: absolute;
                 width: 100%;
-                transform: translateY(100%);
-
-                .chart-window-select--container {
-                    position: absolute;
-                    left: 50%;
-                    bottom: -.5em;
-                }
-
-                button {
-                    margin: 0 auto;
-                    gap: .25em;
-                    min-width: 6ch;
-                }
+                display: flex;
+                justify-content: center;
             }
         }
 

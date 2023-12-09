@@ -38,45 +38,42 @@ $padding: 1.5em;
         }
 
         fieldset {
-            display: flex;
-            flex-direction: column;
-            gap: .75em;
+            display: grid;
+            grid-template-columns: 1fr;
 
-            &>div {
+            .ledget-range-picker {
+                margin-top: .375em;
+            }
+
+            label {
+                margin-top: .5em;
+            }
+
+            &>div:not(:first-of-type) {
                 display: flex;
-                flex-direction: column;
+                align-items: baseline;
+                gap: 1.25em;
 
-                &:first-child>div {
-                    margin-top: .375em;
+                &>div,
+                &>label {
+                    flex: 1;
                 }
 
-                &:not(:first-child)>div {
-                    display: flex;
-                    gap: 1.375em;
-
-                    &>div {
-                        display: flex;
-                        flex: 1;
-                        position: relative;
-
-
-                        &:first-child::after {
-                            content: '';
-                            position: absolute;
-                            left: calc(100% + .5em);
-                            top: 50%;
-                            transform: translateY(-50%);
-                            width: .375em;
-                            height: 1.5px;
-                            background-color: var(--border-color);
-                        }
-                    }
+                &.amounts>div:first-child::after {
+                    content: '';
+                    position: absolute;
+                    left: calc(100% + .5em);
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: .375em;
+                    height: 1.5px;
+                    background-color: var(--border-color);
                 }
             }
         }
-    }
 
-    button {
-        float: right;
+        &>div:last-child>button {
+            float: right;
+        }
     }
 }

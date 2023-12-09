@@ -63,7 +63,7 @@
     --m-text: var(--main-dark5);
     --m-secondary: color-mix(in srgb, var(--main-dark4), white 50%);
     --sub-text: #3d3d3d;
-    --input-placeholder: #848484;
+    --input-placeholder: #616161;
     --input-placeholder2: #a6a6a6;
     --input-focus: var(--input-placeholder);
     --white-text: #f8f8f8;
@@ -76,8 +76,8 @@
     --btn-light-light-gray: #eeeeee;
     --btn-light-gray: #e6e4e4;
     --btn-hover-light-gray: hsl(0, 1%, 83%);
-    --btn-inner-window: rgb(0, 0, 0, .06);
-    --btn-inner-window-hover: rgb(0, 0, 0, .08);
+    --btn-inner-window: #ebebeb;
+    --btn-inner-window-hover: #e0e0e0;
     --btn-gray: #3b3b3b;
     --btn-hover-gray: #292929;
     --btn-mid-gray: #848484;
@@ -129,7 +129,7 @@
 @-moz-document url-prefix() {
     :root {
         --input-focus: hsl(233, 56%, 73%);
-        --input-placeholder: #2a2a2a;
+        --input-placeholder: #616161;
         --m-text: var(--main-dark5);
     }
 

@@ -22,12 +22,13 @@ import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 interface I {
     value?: (Category | Bill | undefined)
     includeBills?: boolean
+    includeCategories?: boolean
     onChange?: React.Dispatch<React.SetStateAction<Category | Bill | undefined>>
     month?: number
     year?: number
 }
 
-function StaticSelectCategoryBill({ value, onChange, includeBills = true, month, year }: I) {
+function StaticSelectCategoryBill({ value, onChange, includeBills = true, includeCategories = true, month, year }: I) {
     const [query, setQuery] = useState('')
     const { start, end } = useGetStartEndQueryParams(month, year)
     const {
@@ -47,7 +48,9 @@ function StaticSelectCategoryBill({ value, onChange, includeBills = true, month,
     useEffect(() => {
         if (categoryData && billData) {
             includeBills
-                ? setFilteredBillCats([...categoryData, ...billData])
+                ? includeCategories
+                    ? setFilteredBillCats([...categoryData, ...billData])
+                    : setFilteredBillCats(billData)
                 : setFilteredBillCats(categoryData)
         }
     }, [isFetchCategoriesSuccess, isFetchBillsSuccess])
@@ -57,7 +60,9 @@ function StaticSelectCategoryBill({ value, onChange, includeBills = true, month,
         let data: (Category | Bill)[] | undefined
         if (categoryData && billData) {
             data = includeBills
-                ? [...categoryData, ...billData]
+                ? includeCategories
+                    ? [...categoryData, ...billData]
+                    : billData
                 : categoryData
         }
         if (query && data) {
@@ -78,14 +83,16 @@ function StaticSelectCategoryBill({ value, onChange, includeBills = true, month,
     return (
         <Combobox value={value} onChange={onChange} as={'div'} className="select-bill-category">
             <div className="category-select--container">
-                <SearchIcon />
-                <Combobox.Input
-                    ref={inputRef}
-                    className="input"
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                    size={filteredBillCats.reduce((acc, curr) => Math.max(acc, curr.name.length), 0)}
-                />
+                <div>
+                    <SearchIcon />
+                    <Combobox.Input
+                        ref={inputRef}
+                        className="input"
+                        value={query}
+                        onChange={(event) => setQuery(event.target.value)}
+                        size={filteredBillCats.reduce((acc, curr) => Math.max(acc, curr.name.length), 0)}
+                    />
+                </div>
                 {isFetchingCategories || !isFetchBillsSuccess
                     ? <LoadingRingDiv loading={true} style={{ height: '2em' }} />
                     : <Combobox.Options className="options" static>
@@ -114,13 +121,15 @@ interface Selector extends Omit<I, 'value' | 'onChange'> {
     SelectorComponent: ForwardRefExoticComponent<ButtonHTMLAttributes<HTMLButtonElement>
         & RefAttributes<HTMLButtonElement>>
     children?: React.ReactNode
+    placeholder?: string
     defaultBillCat?: string
     control?: Control<any>
     name?: string
 }
 
 export const FullSelectCategoryBill =
-    ({ SelectorComponent, defaultBillCat, includeBills, month, year, name, children, control }: Selector) => {
+    ({ SelectorComponent, defaultBillCat, placeholder, includeBills,
+        includeCategories, month, year, name, children, control }: Selector) => {
 
         const [value, onChange] = useState<Category | Bill | undefined>()
         const [showBillCatSelect, setShowBillCatSelect] = useState(false)
@@ -165,14 +174,14 @@ export const FullSelectCategoryBill =
         }, [value])
 
         return (
-            <div>
+            <div className="bill-cat-select--container--container">
                 <input
                     type='hidden'
                     value={value ? value.id : ''}
                     ref={field.ref}
                 />
                 <SelectorComponent
-                    className={`bill-category-selector--button ${value ? 'valid' : ''} ${showBillCatSelect ? 'active' : ''}`}
+                    className={`bill-category-selector--button ${value ? 'valid' : 'placeholder'} ${showBillCatSelect ? 'active' : ''}`}
                     type='button'
                     onClick={() => setShowBillCatSelect(!showBillCatSelect)}
                     ref={buttonRef}
@@ -183,26 +192,29 @@ export const FullSelectCategoryBill =
                                 <span>{value?.emoji}</span>
                                 <span>{value?.name.charAt(0).toUpperCase()}{value?.name.slice(1)}</span>
                             </>
-                            : <span style={{ opacity: 0, visibility: 'hidden' }}>None</span>
+                            : placeholder ? `${placeholder}` : <span style={{ opacity: 0, visibility: 'hidden' }}>None</span>
                         }
                     </div>
                     <ArrowIcon size={'.8em'} stroke={'currentColor'} />
                     {children}
                 </SelectorComponent>
-                <DropAnimation
-                    placement='left'
-                    visible={showBillCatSelect}
-                    className="dropdown"
-                    ref={dropdownRef}
-                >
-                    <StaticSelectCategoryBill
-                        includeBills={includeBills}
-                        value={value}
-                        onChange={onChange}
-                        month={month}
-                        year={year}
-                    />
-                </DropAnimation>
+                <div>
+                    <DropAnimation
+                        placement='left'
+                        visible={showBillCatSelect}
+                        className="dropdown"
+                        ref={dropdownRef}
+                    >
+                        <StaticSelectCategoryBill
+                            includeCategories={includeCategories}
+                            includeBills={includeBills}
+                            value={value}
+                            onChange={onChange}
+                            month={month}
+                            year={year}
+                        />
+                    </DropAnimation>
+                </div>
             </div>
         )
     }

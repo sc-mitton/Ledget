@@ -6,7 +6,7 @@ import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { ResponsiveLine } from '@nivo/line'
 import type { Datum } from '@nivo/line'
-import { Listbox, Menu } from '@headlessui/react'
+import { Menu } from '@headlessui/react'
 
 import TransactionModal from '@modals/TransactionItem'
 import { Logo } from '@components/pieces'
@@ -44,7 +44,8 @@ import {
     LoadingRing,
     ShimmerDiv,
     IconButton,
-    ShadowScrollDiv
+    ShadowScrollDiv,
+    BakedListBox
 } from '@ledget/ui'
 import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -486,7 +487,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     const [transactionModalItem, setTransactionModalItem] = useState<Transaction>()
 
     const [chartData, setChartData] = useState<Datum[]>([])
-    const windowOptions = ['4 months', '1 year', '2 year', 'max'] as const
+    const windowOptions = ['4 months', '1 year', '2 year', 'max']
     const [disabledOptions, setDisabledOptions] = useState<(typeof windowOptions[number])[]>()
     const [window, setWindow] = useState<typeof windowOptions[number]>()
     const buttonRef = useRef<HTMLButtonElement>(null)
@@ -548,44 +549,15 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     }, [spendingSummaryDataIsFetched])
 
     const WindowSelection = () => (
-        <Listbox value={window} onChange={setWindow} as='div' className='chart-window-selectors'>
-            {({ open }) => (
-                <>
-                    <Listbox.Button as={PillOptionButton} ref={buttonRef}>
-                        {window}
-                        <ArrowIcon
-                            stroke={'currentColor'}
-                            size={'.85em'}
-                            strokeWidth={'18'}
-                        />
-                    </Listbox.Button>
-                    <div className="chart-window-select--container">
-                        <DropAnimation
-                            placement='middle'
-                            visible={open}
-                            className="dropdown"
-                            style={{ minWidth: `${buttonRef?.current?.offsetWidth}px` }}
-                        >
-                            <Listbox.Options className="chart-window-selector-options" static>
-                                {windowOptions.filter(option => !disabledOptions?.includes(option))
-                                    .map(option => (
-                                        <Listbox.Option key={option} value={option}>
-                                            {({ active, selected }) => (
-                                                <div className={`dropdown-item
-                                ${active && "active"}
-                                ${selected && "selected"}`}
-                                                >
-                                                    {option}
-                                                </div>
-                                            )}
-                                        </Listbox.Option>
-                                    ))}
-                            </Listbox.Options>
-                        </DropAnimation>
-                    </div>
-                </>
-            )}
-        </Listbox>
+        <div className='chart-window-selectors'>
+            <BakedListBox
+                as={PillOptionButton}
+                options={windowOptions}
+                disabled={disabledOptions}
+                default={windowOptions[0]}
+                placement='middle'
+            />
+        </div>
     )
 
     const OptionsMenu = () => (

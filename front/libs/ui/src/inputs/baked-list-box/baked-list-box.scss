@@ -1,0 +1,49 @@
+.baked-listbox--container {
+    display: inline-flex;
+    min-width: 4em;
+    flex-direction: column;
+
+    &>div:last-of-type {
+        position: relative;
+    }
+
+    &>button {
+        overflow: visible;
+
+        &>div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1em;
+            width: 100%;
+        }
+
+
+        &:not(.valid)>div:not(.active) {
+            color: var(--input-placeholder2);
+
+            * {
+                color: var(--input-placeholder2);
+            }
+        }
+
+        &.valid,
+        &>div.active {
+            color: var(--m-text);
+        }
+    }
+
+    .baked-select-loading {
+        padding: 1em;
+    }
+
+    .dropdown {
+        margin-top: .375em;
+    }
+
+    .baked-list-options {
+        display: flex;
+        flex-direction: column;
+        gap: .25em;
+    }
+}

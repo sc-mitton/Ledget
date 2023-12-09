@@ -35,10 +35,10 @@ class TransactionsCategoriesRouter(SimpleRouter):
         ),
         DynamicRoute(
             url=r'^{prefix}/{url_path}$',
-            name='{basename}-confirmation',
+            name='{basename}-{url_name}}',
             detail=False,
             initkwargs={}
-        )
+        ),
     ]
 
 

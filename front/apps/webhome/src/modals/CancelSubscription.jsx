@@ -7,9 +7,8 @@ import { AnimatePresence } from 'framer-motion'
 import './styles/CancelSubscription.css'
 import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
-import { RedButton, GrnPrimaryButton, SlideMotionDiv, useLoaded } from '@ledget/ui'
+import { RedButton, GrnPrimaryButton, SlideMotionDiv, useLoaded, BakedListBox } from '@ledget/ui'
 import { useUpdateSubscriptionMutation, useGetSubscriptionQuery } from '@features/userSlice'
-import { BakedSelect } from '@components/dropdowns'
 
 export const CancelationWindow = (props) => {
     const [feedback, setFeedback] = useState('')
@@ -70,7 +69,8 @@ export const CancelationWindow = (props) => {
                             ...reasonSprings
                         }}
                     >
-                        <BakedSelect
+                        <BakedListBox
+                            placeholder='Select'
                             value={cancelationReason}
                             onChange={setCancelationReason}
                             options={[
@@ -82,7 +82,7 @@ export const CancelationWindow = (props) => {
                             ]}
                         >
                             <span>Reason</span>
-                        </BakedSelect>
+                        </BakedListBox>
                     </animated.div>
                 </div>
                 <div>
@@ -96,7 +96,8 @@ export const CancelationWindow = (props) => {
                             ...feedbackSprings
                         }}
                     >
-                        <BakedSelect
+                        <BakedListBox
+                            placeholder='Select'
                             value={feedback}
                             onChange={setFeedback}
                             options={[
@@ -109,7 +110,7 @@ export const CancelationWindow = (props) => {
                             ]}
                         >
                             <span>Select&nbsp;&nbsp;</span>
-                        </BakedSelect>
+                        </BakedListBox>
                     </animated.div>
                 </div>
                 <div >

@@ -1,5 +1,7 @@
 .bill-category-selector--button {
     overflow: visible;
+    display: flex;
+    justify-content: space-between;
 
     .selector-current-label {
         display: flex;
@@ -9,6 +11,10 @@
     &:not(.valid),
     &:not(.active) {
         color: var(--input-placeholder2);
+
+        * {
+            color: var(--input-placeholder2);
+        }
     }
 
     &.valid,
@@ -27,11 +33,30 @@
 
 }
 
+.bill-cat-select--container--container {
+    display: flex;
+    flex-direction: column;
+
+    &>div:last-child {
+        position: relative;
+    }
+
+    .dropdown {
+        min-width: 10em;
+    }
+}
+
 .category-select--container {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
+
+    &>div,
+    &>ul {
+        width: 100%;
+        display: flex;
+    }
 
     .options {
         display: flex;
@@ -46,6 +71,7 @@
 
     input {
         margin: 0.5em .25em;
+        flex: 1;
     }
 
     svg {

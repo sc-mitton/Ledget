@@ -2,25 +2,27 @@ import { useState, useRef } from 'react'
 
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Listbox, Combobox } from '@headlessui/react'
-import { Controller, useForm } from 'react-hook-form'
-import { DatePicker, theme } from "antd";
+import { Combobox } from '@headlessui/react'
+import { Controller, useForm, useWatch } from 'react-hook-form'
+import { DatePicker } from "antd";
 import { useTransition, animated, useSpring, useChain, useSpringRef } from '@react-spring/web'
+import { useGetAccountsQuery } from '@features/accountsSlice'
+import { useGetMerchantsQuery } from '@features/transactionsSlice'
 
 import './styles/Header.scss'
 import { Funnel } from '@ledget/media'
 import { FullSelectCategoryBill } from '@components/dropdowns'
 import { LimitAmountInput } from '@components/inputs'
-import { useClickClose } from '@utils/hooks'
 import {
     IconButton,
     Tooltip,
-    SlimInputButton
+    SlimInputButton,
+    InputButton,
+    BakedListBox,
 } from '@ledget/ui'
 
 
 const { RangePicker } = DatePicker
-const { useToken } = theme;
 
 const filterSchema = z.object({
     date_range: z.array(z.number().nullable()),
@@ -31,57 +33,75 @@ const filterSchema = z.object({
 const FilterWindow = ({ setShowFilter }:
     { setShowFilter: (show: boolean) => void }) => {
 
+    const { data: accountsData } = useGetAccountsQuery()
+    const { data: merchantsData } = useGetMerchantsQuery()
+
     const { handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof filterSchema>>({
         resolver: zodResolver(filterSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
 
-    // Filters to include
-    // By merchant
-    // By category/bill
-    // By account
-
     return (
         <form>
             <fieldset>
                 <Controller
+                    name="date_range"
                     control={control}
-                    name={"date_range"}
-                    render={({ field, fieldState }) => (
-                        <div>
+                    rules={{ required: true }}
+                    render={(props) => (
+                        <>
                             <label htmlFor="date_range">Date</label>
                             <RangePicker
+                                format="YYYY-MM-DD"
                                 className='ledget-range-picker'
                                 aria-label='Date Range'
-                                status={fieldState.error ? "error" : undefined}
-                                ref={field.ref}
-                                name={field.name}
-                                onBlur={field.onBlur}
-                                value={field.value ? field.value : null}
-                                onChange={(date) => {
-                                    field.onChange(date ? date.valueOf() : null);
-                                }}
+                                {...props}
                             />
-                        </div>
+                        </>
                     )}
                 />
+                <label htmlFor='limit_amount'>Amount</label>
+                <div className='amounts'>
+                    <LimitAmountInput
+                        name="limit_amount_lower"
+                        hasLabel={false}
+                        withCents={false}
+                        control={control}
+                    />
+                    <LimitAmountInput
+                        name="limit_amount_upper"
+                        hasLabel={false}
+                        withCents={false}
+                        control={control}
+                    />
+                </div>
                 <div>
-                    <label htmlFor='limit_amount'>Amount</label>
-                    <div>
-                        <LimitAmountInput
-                            name="limit_amount_lower"
-                            hasLabel={false}
-                            withCents={false}
-                            control={control}
-                        />
-                        <LimitAmountInput
-                            name="limit_amount_upper"
-                            hasLabel={false}
-                            withCents={false}
-                            control={control}
-                        />
-                    </div>
+                    <label htmlFor="merchant">Merchant</label>
+                    <label htmlFor="account">Account</label>
+                </div>
+                <div>
+                    <BakedListBox
+                        options={merchantsData}
+                        placement={'left'}
+                        placeholder={'Merchant'}
+                    />
+                    <BakedListBox
+                        options={accountsData?.accounts}
+                        placement={'left'}
+                        placeholder={'Account'}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="category">Category or Bill</label>
+                </div>
+                <div>
+                    <FullSelectCategoryBill
+                        placeholder="Category or Bill"
+                        SelectorComponent={InputButton}
+                        name="item"
+                        control={control}
+                    />
                 </div>
             </fieldset>
             <div>

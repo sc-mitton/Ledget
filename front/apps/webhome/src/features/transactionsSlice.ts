@@ -192,6 +192,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
             keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
+        getMerchants: builder.query<string[], void>({
+            query: () => ({
+                url: 'transactions/merchants',
+                params: {},
+            }),
+            keepUnusedDataFor: 60 * 30, // 30 minutes
+        }),
         confirmTransactions: builder.mutation<any, ConfirmTransactionParams>({
             query: (data) => ({
                 url: 'transactions/confirmation',
@@ -367,6 +374,7 @@ export const {
     useUpdateTransactionMutation,
     useAddNoteMutation,
     useUpdateDeleteNoteMutation,
+    useGetMerchantsQuery,
 } = extendedApiSlice
 
 export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransactions.useQueryState

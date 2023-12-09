@@ -100,3 +100,12 @@ export const GrowOnDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>
       {children}
     </div>
   ))
+
+
+
+export const DropdownItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & { active: boolean, selected: boolean }>(
+  ({ children, active, selected, ...rest }, ref) => (
+    <div className={`dropdown-item ${active && "active"} ${selected && "selected"}`}>
+      {children}
+    </div>
+  ))

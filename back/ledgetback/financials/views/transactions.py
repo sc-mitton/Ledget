@@ -5,6 +5,7 @@ import pytz
 
 from django.db import transaction, models
 from django.db.models import Q, Prefetch, F
+
 from rest_framework.generics import GenericAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
@@ -29,7 +30,8 @@ from financials.models import Transaction
 from financials.serializers.transactions import (
     TransactionSerializer,
     UpdateTransactionsConfirmationSerializer,
-    NoteSerializer
+    NoteSerializer,
+    MerchantSerializer
 )
 from financials.models import PlaidItem, Note
 from budget.models import Category
@@ -252,6 +254,16 @@ class TransactionViewSet(ModelViewSet):
             return self._get_timeslice_of_transactions(start, end)
         else:
             return self._get_transactions()
+
+    @action(detail=False, methods=['get'], url_path='merchants',
+            url_name='merchants', permission_classes=[IsAuthedVerifiedSubscriber])
+    def merchants(self, request, *args, **kwargs):
+        qset = Transaction.objects.filter(
+            account__useraccount__user=self.request.user
+        ).values('merchant').distinct()
+        serializer = MerchantSerializer(qset, many=True)
+
+        return Response(serializer.data)
 
     def _get_timeslice_of_transactions(self, start, end):
         try:

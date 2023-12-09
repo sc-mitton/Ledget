@@ -32,7 +32,6 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
         refresh: [isNarrow],
         querySelectall: '[role=link]',
         find: (element) => {
-            console.log((element.firstChild as any)?.getAttribute('aria-current'))
             return (element.firstChild as any)?.getAttribute('aria-current') === 'page'
         },
         styles: { borderRadius: 'var(--border-radius3)', backgroundColor: 'var(--m-text)' },

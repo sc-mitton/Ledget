@@ -13,6 +13,7 @@ export const DropAnimation = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivE
     from: {
       opacity: 0,
       y: 0,
+      left: `${placement === 'middle' ? '50%' : placement === 'left' ? '0%' : '100%'}`,
       x: `-${placement === 'middle' ? '50%' : placement === 'left' ? '0%' : '100%'}`,
       transform: 'scale(0.85)',
       transformOrigin:

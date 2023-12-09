@@ -255,6 +255,14 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
+    id: 'merchants',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/transactions/merchants',
+    },
+  },
+  GenericAuthedBase
+  {
     id: 'add_note',
     match: {
       methods: ['POST'],
