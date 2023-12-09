@@ -30,7 +30,7 @@
     --main-hlight2: #dde2f3;
     --main-hlight3: #a7acd3;
     --main-hlight4: #e3e5f5;
-    --main-hlight5: #c7ccf2;
+    --main-hlight5: #c6caeb;
     --main-hlight6: #c2c9d8;
     --main-dark: hsl(232, 17%, 35%);
     --main-dark2: hsl(232, 17%, 30%);
@@ -44,7 +44,7 @@
     --secondary-hlight: hsl(165, 47%, 70%);
     --secondary-hlight2: hsl(162, 35%, 89%);
     --secondary-hlight3: hsl(167, 39%, 83%);
-    --secondary-hlight5: rgb(181, 235, 221);
+    --secondary-hlight5: rgb(175, 222, 209);
     --secondary-color-alt: hsl(156, 31%, 62%);
     --secondary-dark: hsl(164, 17%, 35%);
     --secondary-dark4: hsl(164, 5%, 27%);
@@ -54,7 +54,7 @@
 
     /* Input Colors */
     --input-background: #e8e8e8;
-    --input-border-color: #d9d9d9;
+    --input-border-color: #dedede;
     --input-border: solid 1px var(--input-border-color);
     --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight2) 30%);
     --input-border-focus: solid 1px var(--input-background);

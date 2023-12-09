@@ -122,18 +122,6 @@ export const CloseButton =
     )
   })
 
-interface BillCatButtonProps {
-  color: 'green' | 'blue'
-  slimLevel?: 1 | 2
-}
-
-export const BillCatButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & BillCatButtonProps> =
-  ({ color, children, className, slimLevel, ...rest }) => (
-    <button className={`${className} ${slimLevel === 1 ? 'btn-slim' : 'btn-2slim'} ${color === 'blue' ? 'btn-blue2' : 'btn-grn3'} `} {...rest}>
-      {children}
-    </button>
-  )
-
 export const BackButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText?: boolean }>
   = ({ children, withText = true, ...rest }) => (
     <div>

@@ -19,7 +19,8 @@ import {
     useLoaded,
     ExpandableContainer,
     withModal,
-    TabNavList
+    TabNavList,
+    BillCatLabel
 } from '@ledget/ui'
 
 const itemHeight = 25
@@ -146,10 +147,15 @@ const Categories = ({ period, setDeletedItems }: {
                     <animated.div className="item" style={style} {...bind(item?.id)}>
                         <GripButton />
                         <div>
-                            <div className={`${item?.period}`}>
-                                <span>{item?.emoji}</span>
-                                <span>{`${item?.name.charAt(0).toUpperCase()}${item?.name.slice(1)}`}</span>
-                            </div>
+                            <BillCatLabel
+                                as='div'
+                                name={item?.name}
+                                emoji={item?.emoji}
+                                color={item?.period === 'month' ? 'blue' : 'green'}
+                                slim={true}
+                                hoverable={false}
+                                tint={true}
+                            />
                         </div>
                         <div>
                             {!item?.is_default &&

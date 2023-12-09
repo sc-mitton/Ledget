@@ -69,11 +69,6 @@ $background: var(--window);
         cursor: pointer;
         transition: all .2s ease-in-out;
 
-        .row-label {
-            display: flex;
-            gap: .5em;
-        }
-
         &>div.spanned {
             // cover 2-5 columns
             grid-column: 2 / span 4;
@@ -172,42 +167,6 @@ $background: var(--window);
             padding-right: .75em;
             display: flex;
             align-items: center;
-        }
-
-        // Coloring
-        &.month * {
-            color: var(--main-dark);
-        }
-
-        &.month>div:first-child>div,
-        &.year>div:first-child>div {
-            padding: $label-padding;
-            border-radius: var(--border-radius2);
-            display: flex;
-            gap: .5em;
-        }
-
-        &.month>div:first-child>div {
-            background-color: $blue;
-        }
-
-        &.month:hover>div:first-child>div {
-            background-color: $blue-hover;
-            transition: all .2s ease-in-out;
-        }
-
-        &.year * {
-            color: var(--secondary-dark);
-        }
-
-        &.year>div:first-child>div {
-            background-color: $green;
-        }
-
-        &.year:hover>div:first-child>div {
-            background-color: $green-hover;
-            transition: all .2s ease-in-out;
-
         }
 
         // Borders in between rows

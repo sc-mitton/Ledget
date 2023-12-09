@@ -28,8 +28,8 @@ export const BakedComboBox = (props: Omit<BakedSelectProps, 'as'> & { WrapperCom
 
   // Update controller on value change
   useEffect(() => {
-    field.onChange(query)
-  }, [query])
+    field.onChange(value)
+  }, [value])
 
   useEffect(() => {
     setFilterOptions(
@@ -51,7 +51,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps, 'as'> & { WrapperCom
       as='div'
       className="baked-listbox--container"
       defaultValue={props.options?.find((op) => typeof op !== 'string' && op.default)?.value}
-      multiple={props.multiple ? undefined : false}
+      multiple={props.multiple as any}
     >
       {({ open }) => (
         <>

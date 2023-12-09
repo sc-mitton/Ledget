@@ -118,6 +118,7 @@ const FilterWindow = ({ onSubmit }: { onSubmit: () => void }) => {
                         SelectorComponent={InputButton}
                         name="item"
                         control={control}
+                        multiple={true}
                     />
                 </div>
                 <div>

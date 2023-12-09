@@ -1,0 +1,65 @@
+.bill-cat-label,
+.bill-cat-label>div {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.bill-cat-label {
+    border-radius: var(--border-radius2);
+    padding: .1875em .75em;
+
+    &.slim {
+        padding: .0625em .5em;
+    }
+
+    &.hoverable {
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--);
+        }
+    }
+
+    &.blue {
+        background-color: var(--main-hlight2);
+        transition: background-color 0.2s ease-in-out;
+        color: var(--main-dark);
+
+        &.tint {
+            background-color: var(--main-hlight5);
+
+            &.hoverable:hover,
+            &.hoverable.active {
+                background-color: color-mix(in srgb, var(--main-hlight5), var(--main-dark3) 7%);
+                transition: background-color 0.2s ease-in-out;
+            }
+        }
+
+        &.hoverable:hover {
+            background-color: color-mix(in srgb, var(--main-hlight2), var(--main-hlight) 30%);
+            transition: background-color 0.2s ease-in-out;
+        }
+    }
+
+    &.green {
+        background-color: var(--secondary-hlight2);
+        transition: background-color 0.2s ease-in-out;
+        color: var(--secondary-dark);
+
+        &.tint {
+            background-color: var(--secondary-hlight5);
+
+            &.hoverable:hover,
+            &.hoverable.active {
+                background-color: color-mix(in srgb, var(--secondary-hligh5), var(--secondary-dark4) 7%);
+                transition: background-color 0.2s ease-in-out;
+            }
+        }
+
+        &.hoverable:hover {
+            background-color: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-hlight) 30%);
+            transition: background-color 0.2s ease-in-out;
+        }
+    }
+}

@@ -45,7 +45,8 @@ import {
     ShimmerDiv,
     IconButton,
     ShadowScrollDiv,
-    BakedListBox
+    BakedListBox,
+    BillCatLabel
 } from '@ledget/ui'
 import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -100,19 +101,16 @@ const Row = ({ category }: { category: Category }) => {
 
     return (
         <div className={`row ${category.period}`}>
-            <div
-                className="row-label"
-                role="button"
-                tabIndex={0}
-                onClick={() => {
-                    searchParams.set('category', category.id)
-                    setSearchParams(searchParams)
-                }}
-            >
-                <div>
-                    <span>{category.emoji}</span>
-                    <span>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</span>
-                </div>
+            <div>
+                <BillCatLabel
+                    name={category.name}
+                    emoji={category.emoji}
+                    color={category.period === 'year' ? 'green' : 'blue'}
+                    onClick={() => {
+                        searchParams.set('category', category.id)
+                        setSearchParams(searchParams)
+                    }}
+                />
             </div>
             {category.limit_amount ?
                 <>

@@ -7,7 +7,7 @@ import { AnimatePresence } from 'framer-motion'
 import './styles/TransactionItem.scss'
 import { Transaction } from '@features/transactionsSlice'
 import { useGetAccountsQuery } from "@features/accountsSlice"
-import { withModal, Base64Logo, DollarCents } from '@ledget/ui'
+import { withModal, Base64Logo, DollarCents, BillCatLabel } from '@ledget/ui'
 import { SelectCategoryBill } from '@components/dropdowns'
 import {
     useConfirmTransactionsMutation,
@@ -22,7 +22,6 @@ import { Ellipsis, Split, Edit } from '@ledget/media'
 import { SplitTransactionInput } from '@components/split'
 import {
     DropAnimation,
-    BillCatButton,
     useAccessEsc,
     IconButton,
     SlideMotionDiv,
@@ -134,14 +133,15 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
             {changeAble
                 ?
                 <div ref={buttonContainerRef}>
-                    <BillCatButton
+                    <BillCatLabel
                         color={billCat?.period === 'month' ? 'blue' : 'green'}
-                        slimLevel={2}
+                        name={billCat?.name || ''}
+                        emoji={billCat?.emoji}
+                        slim={true}
+                        hoverable={changeAble}
                         onClick={() => { setShowBillCatSelect(!showBillCatSelect) }}
-                    >
-                        <span>{billCat?.emoji}</span>
-                        <span>{billCat?.name.charAt(0).toUpperCase()}{billCat?.name.slice(1)}</span>
-                    </BillCatButton>
+                        tint={true}
+                    />
                     <DropAnimation
                         placement='left'
                         visible={showBillCatSelect}
@@ -159,13 +159,14 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
                 </div>
                 : item.categories?.map((cat) => (
                     <div key={cat.id}>
-                        <BillCatButton
+                        <BillCatLabel
                             color={cat.period === 'month' ? 'blue' : 'green'}
-                            slimLevel={2}
-                        >
-                            <span>{cat.emoji}</span>
-                            <span>{cat.name.charAt(0).toUpperCase()}{cat.name.slice(1)}</span>
-                        </BillCatButton>
+                            name={cat.name}
+                            emoji={cat.emoji}
+                            slim={true}
+                            hoverable={changeAble}
+                            tint={true}
+                        />
                     </div>
                 ))
             }

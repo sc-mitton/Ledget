@@ -16,22 +16,22 @@ import './SelectCategoryBill.scss'
 import { Category, useGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useGetBillsQuery } from '@features/billSlice'
 import { SearchIcon, ArrowIcon } from '@ledget/media'
-import { LoadingRingDiv, DropAnimation, useAccessEsc } from '@ledget/ui'
+import { LoadingRingDiv, DropAnimation, useAccessEsc, BillCatLabel } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 interface I {
     default?: string,
-    value?: (Category | Bill | undefined)
+    value?: (Category | Bill | undefined | (Category | Bill)[]),
     includeBills?: boolean
     includeCategories?: boolean
-    onChange?: React.Dispatch<React.SetStateAction<Category | Bill | undefined>>
+    onChange?: React.Dispatch<React.SetStateAction<Category | Bill | undefined | (Category | Bill)[]>>
     month?: number
     year?: number
     multiple?: boolean
     name?: string
 }
 
-function StaticSelectCategoryBill({ value, name, onChange, includeBills = true, includeCategories = true, month, year }: I) {
+function SelectCategoryBillBody({ value, name, onChange, includeBills = true, includeCategories = true, month, year }: I) {
     const [query, setQuery] = useState('')
     const { start, end } = useGetStartEndQueryParams(month, year)
     const {
@@ -108,14 +108,15 @@ function StaticSelectCategoryBill({ value, name, onChange, includeBills = true, 
                         {filteredBillCats.map((billcat) => (
                             <Combobox.Option key={billcat.id} value={billcat} as={Fragment}>
                                 {({ active, selected }) => (
-                                    <li
-                                        className={`option
-                                    ${active ? 'active' : ''} ${selected ? 'selected' : ''}
-                                    ${billcat.period === 'year' ? 'year' : 'month'}`}
-                                    >
-                                        <span>{billcat.emoji}</span>
-                                        <span>{billcat.name.charAt(0).toUpperCase()}{billcat.name.slice(1)}</span>
-                                    </li>
+                                    <BillCatLabel
+                                        as='li'
+                                        slim={true}
+                                        color={billcat.period === 'month' ? 'blue' : 'green'}
+                                        name={billcat.name}
+                                        emoji={billcat.emoji}
+                                        checked={selected}
+                                        active={active}
+                                    />
                                 )}
                             </Combobox.Option>
                         ))}
@@ -137,7 +138,7 @@ interface Selector extends Omit<I, 'value' | 'onChange'> {
 export const FullSelectCategoryBill =
     ({ SelectorComponent, placeholder, children, control, ...rest }: Selector) => {
 
-        const [value, onChange] = useState<Category | Bill | undefined>()
+        const [value, onChange] = useState<Category | Bill | undefined | (Category | Bill)[]>()
         const [showBillCatSelect, setShowBillCatSelect] = useState(false)
         const dropdownRef = useRef<HTMLDivElement>(null)
         const buttonRef = useRef<HTMLButtonElement>(null)
@@ -152,6 +153,14 @@ export const FullSelectCategoryBill =
             name: name.current,
             control,
         })
+
+        useEffect(() => {
+            if (Array.isArray(value)) {
+                field.onChange(value ? value.map?.((v) => v.id) : [])
+            } else {
+                field.onChange(value ? value.id : '')
+            }
+        }, [value])
 
         useAccessEsc({
             refs: [dropdownRef, buttonRef],
@@ -190,7 +199,7 @@ export const FullSelectCategoryBill =
                         className="dropdown"
                         ref={dropdownRef}
                     >
-                        <StaticSelectCategoryBill
+                        <SelectCategoryBillBody
                             value={value}
                             onChange={onChange}
                             {...rest}
@@ -202,4 +211,4 @@ export const FullSelectCategoryBill =
         )
     }
 
-export default StaticSelectCategoryBill
+export default SelectCategoryBillBody
