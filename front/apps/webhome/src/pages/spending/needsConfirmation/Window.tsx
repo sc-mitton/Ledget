@@ -40,6 +40,7 @@ import {
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
+import { useFilterFormContext } from '../context'
 
 // Sizing (in ems)
 const translate = 1
@@ -224,6 +225,8 @@ const NeedsConfirmationWindow = () => {
             JSON.parse(sessionStorage.getItem('transactionUpdates') || '{}')
         )
     const { start, end } = useGetStartEndQueryParams()
+    const { setShowFilterForm } = useFilterFormContext()
+
 
     const [confirmTransactions] = useConfirmTransactionsMutation()
     const unconfirmedTransactions = useAppSelector(
@@ -322,6 +325,7 @@ const NeedsConfirmationWindow = () => {
                 height: _getContainerHeight(unconfirmedTransactions.length, expanded)
             } as any)
         }
+        setShowFilterForm(false)
     }, [expanded, unconfirmedTransactions])
 
     // When options are selected from the bill/category combo dropdown

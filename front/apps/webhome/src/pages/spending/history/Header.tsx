@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { z } from 'zod'
+import { set, z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm, useWatch } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { DatePicker } from "antd";
 import {
     useTransition,
@@ -27,6 +27,7 @@ import {
     BakedComboBox,
     SecondaryButtonSlim
 } from '@ledget/ui'
+import { useFilterFormContext } from '../context';
 
 
 const { RangePicker } = DatePicker
@@ -40,8 +41,8 @@ const filterSchema = z.object({
     account: z.array(z.string()),
 })
 
-const FilterWindow = ({ onSubmit }: { onSubmit: () => void }) => {
-
+const FilterWindow = () => {
+    const { setShowFilterForm } = useFilterFormContext()
     const { data: accountsData } = useGetAccountsQuery()
     const { data: merchantsData } = useGetMerchantsQuery()
 
@@ -51,22 +52,9 @@ const FilterWindow = ({ onSubmit }: { onSubmit: () => void }) => {
         reValidateMode: 'onBlur',
     })
 
-    const fields = useWatch({
-        control,
-        name: [
-            'date_range',
-            'limit_amount_lower',
-            'limit_amount_upper',
-            'item',
-            'merchant',
-            'account'
-        ]
-    })
-
     return (
         <form onSubmit={handleSubmit((data) => {
-            console.log(data)
-            onSubmit()
+            setShowFilterForm(false)
         })}>
             <fieldset>
                 <Controller
@@ -150,7 +138,7 @@ const FilterWindow = ({ onSubmit }: { onSubmit: () => void }) => {
             <div>
                 <SecondaryButtonSlim
                     type="button"
-                    onClick={() => { onSubmit() }}
+                    onClick={() => { setShowFilterForm(false) }}
                 >
                     Cancel
                 </SecondaryButtonSlim>
@@ -163,10 +151,9 @@ const FilterWindow = ({ onSubmit }: { onSubmit: () => void }) => {
 }
 
 const HistoryHeader = () => {
-    const [showFilter, setShowFilter] = useState<boolean>(false)
-
+    const { showFilterForm, setShowFilterForm } = useFilterFormContext()
     const windowApi = useSpringRef()
-    const transitions = useTransition(showFilter, {
+    const transitions = useTransition(showFilterForm, {
         from: {
             zIndex: 0,
             top: 0,
@@ -182,11 +169,11 @@ const HistoryHeader = () => {
 
     const formApi = useSpringRef()
     const containerStyles = useSpring({
-        opacity: showFilter ? 1 : 0,
+        opacity: showFilterForm ? 1 : 0,
         ref: formApi
     })
 
-    useChain(showFilter ? [windowApi, formApi] : [formApi, windowApi], [0, .4])
+    useChain(showFilterForm ? [windowApi, formApi] : [formApi, windowApi], [0, .4])
 
     return (
         <>
@@ -201,7 +188,7 @@ const HistoryHeader = () => {
                         <IconButton
                             id="funnel-icon"
                             aria-label="Filter"
-                            onClick={() => setShowFilter(!showFilter)}
+                            onClick={() => setShowFilterForm(!showFilterForm)}
                         >
                             <Funnel />
                         </IconButton>
@@ -210,7 +197,7 @@ const HistoryHeader = () => {
                 {transitions((styles, item) => item && (
                     <animated.div className="filter-window" style={styles}>
                         <animated.div style={containerStyles}>
-                            <FilterWindow onSubmit={() => { setShowFilter(false) }} />
+                            <FilterWindow />
                         </animated.div>
                     </animated.div>
                 ))}

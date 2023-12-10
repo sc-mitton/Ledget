@@ -1,0 +1,14 @@
+#all-items-window {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    gap: 1em;
+    overflow-x: hidden;
+
+    &.showing-filter-form {
+        overflow-y: visible;
+        overflow-x: visible;
+    }
+}

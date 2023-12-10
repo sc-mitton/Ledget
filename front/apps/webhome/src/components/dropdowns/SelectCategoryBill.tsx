@@ -20,16 +20,20 @@ import { LoadingRingDiv, DropAnimation, useAccessEsc, BillCatLabel } from '@ledg
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 interface I {
-    default?: string | string[]
-    value?: (Category | Bill | undefined | (Category | Bill)[]),
-    onChange?: React.Dispatch<React.SetStateAction<Category | Bill | undefined | (Category | Bill)[]>>
-    includeBills?: boolean
-    includeCategories?: boolean
-    month?: number
-    year?: number
-    multiple?: boolean
-    name?: string
+    default?: string | string[];
+    value?: Category | Bill | undefined | (Category | Bill)[];
+    includeBills?: boolean;
+    includeCategories?: boolean;
+    month?: number;
+    year?: number;
+    multiple?: boolean;
+    name?: string;
+
+    onChange?: I['multiple'] extends true
+    ? React.Dispatch<React.SetStateAction<(Category | Bill)[] | undefined>>
+    : React.Dispatch<React.SetStateAction<Category | Bill | undefined>>;
 }
+
 
 function SelectCategoryBillBody({
     value,
@@ -94,10 +98,10 @@ function SelectCategoryBillBody({
         <Combobox
             name={name}
             value={value}
-            onChange={onChange}
+            multiple={multiple as any}
+            onChange={onChange as any}
             as={'div'}
             className="select-bill-category"
-            multiple={multiple as any}
         >
             <div className="category-select--container">
                 <div>
@@ -147,7 +151,7 @@ interface Selector extends Omit<I, 'value' | 'onChange'> {
 export const FullSelectCategoryBill =
     ({ SelectorComponent, placeholder, children, control, ...rest }: Selector) => {
 
-        const [value, onChange] = useState<Category | Bill | undefined | (Category | Bill)[]>()
+        const [value, onChange] = useState<typeof rest.multiple extends true ? (Category | Bill)[] : Category | Bill>()
         const [showBillCatSelect, setShowBillCatSelect] = useState(false)
         const dropdownRef = useRef<HTMLDivElement>(null)
         const buttonRef = useRef<HTMLButtonElement>(null)
