@@ -151,7 +151,12 @@ const FilterWindow = () => {
 }
 
 const HistoryHeader = () => {
-    const { showFilterForm, setShowFilterForm } = useFilterFormContext()
+    const {
+        showFilterForm,
+        setShowFilterForm,
+        unconfirmedStackExpanded,
+        setUnconfirmedStackExpanded
+    } = useFilterFormContext()
     const windowApi = useSpringRef()
     const transitions = useTransition(showFilterForm, {
         from: {
@@ -188,7 +193,14 @@ const HistoryHeader = () => {
                         <IconButton
                             id="funnel-icon"
                             aria-label="Filter"
-                            onClick={() => setShowFilterForm(!showFilterForm)}
+                            onClick={() => {
+                                if (unconfirmedStackExpanded) {
+                                    setTimeout(() => {
+                                        setShowFilterForm(true)
+                                    }, 200)
+                                }
+                                setUnconfirmedStackExpanded(false)
+                            }}
                         >
                             <Funnel />
                         </IconButton>

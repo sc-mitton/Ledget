@@ -211,7 +211,6 @@ const NewItem: FC<{
 const NeedsConfirmationWindow = () => {
     const [searchParams] = useSearchParams()
     const [offset, setOffset] = useState(0)
-    const [expanded, setExpanded] = useState(false)
     const loaded = useLoaded()
     const [showMenu, setShowMenu] = useState(false)
     const [showBillCatSelect, setShowBillCatSelect] = useState(false)
@@ -225,7 +224,7 @@ const NeedsConfirmationWindow = () => {
             JSON.parse(sessionStorage.getItem('transactionUpdates') || '{}')
         )
     const { start, end } = useGetStartEndQueryParams()
-    const { setShowFilterForm } = useFilterFormContext()
+    const { setShowFilterForm, unconfirmedStackExpanded, setUnconfirmedStackExpanded } = useFilterFormContext()
 
 
     const [confirmTransactions] = useConfirmTransactionsMutation()
@@ -268,7 +267,7 @@ const NeedsConfirmationWindow = () => {
         position: 'relative',
         left: '50%',
         transform: 'translateX(-50%)',
-        height: _getContainerHeight(unconfirmedTransactions?.length || 0, expanded),
+        height: _getContainerHeight(unconfirmedTransactions?.length || 0, unconfirmedStackExpanded),
         overflowX: 'hidden',
         overflowY: 'hidden',
     } as React.CSSProperties))
@@ -278,26 +277,26 @@ const NeedsConfirmationWindow = () => {
         {
             from: (item, index) => ({
                 // top: getTop(index, false),
-                y: _getY(index, expanded, false),
-                transform: `scale(${_getScale(index, expanded, false)})`,
+                y: _getY(index, unconfirmedStackExpanded, false),
+                transform: `scale(${_getScale(index, unconfirmedStackExpanded, false)})`,
             }),
             enter: (item, index) => ({
-                y: _getY(index, expanded, true),
-                transform: `scale(${_getScale(index, expanded)})`,
+                y: _getY(index, unconfirmedStackExpanded, true),
+                transform: `scale(${_getScale(index, unconfirmedStackExpanded)})`,
                 zIndex: `${(unconfirmedTransactions!.length - index)}`,
-                opacity: _getOpacity(index, expanded),
+                opacity: _getOpacity(index, unconfirmedStackExpanded),
                 x: 0,
                 left: 0,
                 right: 0,
             }),
             update: (item, index) => ({
-                y: _getY(index, expanded),
-                transform: `scale(${_getScale(index, expanded)})`,
+                y: _getY(index, unconfirmedStackExpanded),
+                transform: `scale(${_getScale(index, unconfirmedStackExpanded)})`,
                 zIndex: `${(unconfirmedTransactions!.length - index)}`,
-                opacity: _getOpacity(index, expanded),
+                opacity: _getOpacity(index, unconfirmedStackExpanded),
             }),
             onRest: () => {
-                expanded
+                unconfirmedStackExpanded
                     ? containerApi.start({ overflowY: 'scroll', overflowX: 'hidden' })
                     : containerApi.start({ overflowY: 'visible', overflowX: 'hidden' })
             },
@@ -315,18 +314,18 @@ const NeedsConfirmationWindow = () => {
 
     useEffect(() => {
         containerApi.start({ overflowY: 'hidden', overflowX: 'hidden' })
-    }, [expanded])
+    }, [unconfirmedStackExpanded])
 
     // Animate the container shrinking when list gets smaller
     useEffect(() => {
         if (unconfirmedTransactions.length >= 0) {
             itemsApi.start()
             containerApi.start({
-                height: _getContainerHeight(unconfirmedTransactions.length, expanded)
+                height: _getContainerHeight(unconfirmedTransactions.length, unconfirmedStackExpanded)
             } as any)
         }
         setShowFilterForm(false)
-    }, [expanded, unconfirmedTransactions])
+    }, [unconfirmedStackExpanded, unconfirmedTransactions])
 
     // When options are selected from the bill/category combo dropdown
     // update the list of updated bills/categories, then clean up
@@ -495,7 +494,7 @@ const NeedsConfirmationWindow = () => {
                 ref={newItemsRef}
                 onMouseLeave={() => flushConfirmedQue()}
             >
-                <ShadowedContainer showShadow={expanded}>
+                <ShadowedContainer showShadow={unconfirmedStackExpanded}>
                     <animated.div style={containerProps} onScroll={handleScroll}>
                         {(isSuccess && unconfirmedTransactions) &&
                             <>
@@ -512,7 +511,7 @@ const NeedsConfirmationWindow = () => {
                                             onBillCat={(e, item) => handleBillCatClick(e, item)}
                                             onEllipsis={(e, item) => handleEllipsis(e, item)}
                                             handleConfirm={handleItemConfirm}
-                                            tabIndex={expanded || index === 0 ? 0 : -1}
+                                            tabIndex={unconfirmedStackExpanded || index === 0 ? 0 : -1}
                                         />
                                     )
                                 })}
@@ -547,7 +546,7 @@ const NeedsConfirmationWindow = () => {
             <ExpandableContainer
                 className='new-items-expand-button--container'
                 expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
-                <ExpandButton onClick={() => setExpanded(!expanded)} flipped={expanded} />
+                <ExpandButton onClick={() => setUnconfirmedStackExpanded(!unconfirmedStackExpanded)} flipped={unconfirmedStackExpanded} />
             </ExpandableContainer>
             {showTransactionModal && focusedItem &&
                 <TransactionModal
