@@ -47,7 +47,6 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
 
   // Update controller on value change
   useEffect(() => {
-    console.log(value)
     field.onChange(value)
   }, [value])
 

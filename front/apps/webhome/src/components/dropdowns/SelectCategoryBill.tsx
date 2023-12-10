@@ -152,9 +152,9 @@ export const FullSelectCategoryBill =
         const dropdownRef = useRef<HTMLDivElement>(null)
         const buttonRef = useRef<HTMLButtonElement>(null)
         const name = useRef<string>(rest.name ||
-            !rest.includeBills
-            ? 'category'
-            : !rest.includeCategories ? 'bill' : 'item'
+            (!rest.includeBills
+                ? 'category'
+                : !rest.includeCategories ? 'bill' : 'item')
         )
 
         // Controll for react-hook-form
@@ -162,12 +162,7 @@ export const FullSelectCategoryBill =
 
         // Update react-hook-form value
         useEffect(() => {
-            Array.isArray(value) && console.log(value.map?.((v) => v.id))
-            field.onChange(value
-                ? Array.isArray(value)
-                    ? value.map?.((v) => v.id)
-                    : value.id : ''
-            )
+            field.onChange(value)
         }, [value])
 
         useEffect(() => {
