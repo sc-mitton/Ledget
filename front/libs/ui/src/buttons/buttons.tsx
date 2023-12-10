@@ -19,7 +19,8 @@ import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './bu
 
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')
 export const BlackPrimaryButton = ButtonWithClassName('btn-chcl btn3')
-export const SecondaryButton = ButtonWithClassName('btn3 btn-scale btn-scale btn-second')
+export const SecondaryButton = ButtonWithClassName('btn3 btn-second')
+export const SecondaryButtonSlim = ButtonWithClassName('btn3 btn-second btn-2slim')
 export const GrnPrimaryButton = ButtonWithClassName('btn-grn2 btn3')
 export const BluePrimaryButton = ButtonWithClassName('btn-blue btn3')
 export const GrayButton = ButtonWithClassName('btn-gr3 btn-slim')

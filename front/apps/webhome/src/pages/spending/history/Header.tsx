@@ -24,7 +24,8 @@ import {
     BlueSlimButton2,
     InputButton,
     BakedListBox,
-    BakedComboBox
+    BakedComboBox,
+    SecondaryButtonSlim
 } from '@ledget/ui'
 
 
@@ -61,10 +62,6 @@ const FilterWindow = ({ onSubmit }: { onSubmit: () => void }) => {
             'account'
         ]
     })
-
-    useEffect(() => {
-        console.log(fields)
-    }, [fields])
 
     return (
         <form onSubmit={handleSubmit((data) => {
@@ -151,6 +148,12 @@ const FilterWindow = ({ onSubmit }: { onSubmit: () => void }) => {
                 </div>
             </fieldset>
             <div>
+                <SecondaryButtonSlim
+                    type="button"
+                    onClick={() => { onSubmit() }}
+                >
+                    Cancel
+                </SecondaryButtonSlim>
                 <BlueSlimButton2>
                     Apply
                 </BlueSlimButton2>

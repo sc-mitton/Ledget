@@ -33,6 +33,12 @@ $padding: 1.5em;
         flex-direction: column;
         justify-content: space-between;
 
+        &>div:last-of-type {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
         label {
             margin-left: .125em;
         }

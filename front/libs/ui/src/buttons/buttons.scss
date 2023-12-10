@@ -27,6 +27,13 @@
 
 .btn-second {
     margin-right: .25em;
+    background-color: transparent;
+    transition: all .3s ease;
+
+    &:hover {
+        background-color: var(--btn-light-gray);
+        transition: all .3s ease;
+    }
 }
 
 /* --------------------------------- Shapes --------------------------------- */

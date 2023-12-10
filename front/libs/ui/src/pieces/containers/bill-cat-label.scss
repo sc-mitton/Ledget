@@ -13,6 +13,10 @@
     border-radius: var(--border-radius2);
     padding: .1875em .75em;
 
+    span {
+        font-weight: 400;
+    }
+
     &.slim {
         padding: .0625em .5em;
     }
