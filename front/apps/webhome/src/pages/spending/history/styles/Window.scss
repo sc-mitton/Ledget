@@ -5,7 +5,11 @@
     align-items: center;
     position: relative;
     gap: 1em;
-    overflow-x: hidden;
+
+    &.not-showing-filter-form {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
     &.showing-filter-form {
         overflow-y: visible;

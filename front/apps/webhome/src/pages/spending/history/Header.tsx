@@ -198,6 +198,8 @@ const HistoryHeader = () => {
                                     setTimeout(() => {
                                         setShowFilterForm(true)
                                     }, 200)
+                                } else {
+                                    setShowFilterForm(!showFilterForm)
                                 }
                                 setUnconfirmedStackExpanded(false)
                             }}
