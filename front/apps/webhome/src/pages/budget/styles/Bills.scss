@@ -125,6 +125,7 @@ $number-of-bill-rows: 4;
         align-self: center;
         justify-self: center;
         font-weight: 400;
+        z-index: 1;
 
         // Number of bills hover tip
         &>div:not(.has-bill-dot) {
@@ -153,6 +154,7 @@ $number-of-bill-rows: 4;
         &.hoverable::after {
             content: '';
             position: absolute;
+            z-index: 0;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -165,7 +167,7 @@ $number-of-bill-rows: 4;
 
         &.hoverable:hover::after,
         &.hoverable.selected::after {
-            background-color: var(--btn-inner-window);
+            background-color: rgb(0, 0, 0, .05);
             transition: background-color .2s ease-in-out;
         }
 

@@ -71,8 +71,8 @@
         gap: 0.625em;
         max-height: 15em;
         overflow-y: auto;
-        width: calc(auto + 1em);
-        padding: 0.5em 0;
+        width: calc(100% - .75em);
+        padding: 0.5em .75em;
         mask-image: linear-gradient(to bottom, transparent, black .5em, black calc(100% - .5em), transparent);
     }
 

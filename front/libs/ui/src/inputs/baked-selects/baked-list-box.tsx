@@ -31,6 +31,7 @@ export interface BakedSelectProps {
   maxLength?: number
   buttonMaxWidth?: boolean
   dividerKey?: string
+  showLabel?: boolean
 }
 
 const useOptionalControl = (props: Pick<BakedSelectProps, 'control' | 'name'>): UseControllerReturn | { field: undefined } => {
@@ -53,11 +54,24 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
     control: props.control,
   })
 
-  // Update controller on value change
+  // Clear value if field reset from react-hook-form
   useEffect(() => {
-    field?.onChange(value)
-    props.onChange?.(value)
+    if (field?.value === undefined) onChange(undefined)
+  }, [field?.value])
+
+  // Update field value if value changes
+  useEffect(() => {
+    if (field?.value !== value) field?.onChange(value)
   }, [value])
+
+  // Set initial default value
+  useEffect(() => {
+    const defaultValue = props.options?.find((op) => typeof op !== 'string' && op.default)
+
+    if (defaultValue) {
+      onChange(defaultValue[props.valueKey || 'value'])
+    }
+  }, [])
 
   useEffect(() => {
     if (!value) {
@@ -77,7 +91,6 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
       onChange={onChange}
       as='div'
       className="baked-listbox--container"
-      defaultValue={props.options?.find((op) => typeof op !== 'string' && op.default)}
       multiple={props.multiple}
     >
       {({ open }) => (
@@ -106,7 +119,9 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
                     : labels.push(op[props.labelKey || 'label'])
                 }
               }
-              const label = labels?.length ? labels.join(', ') : props.placeholder || 'Select'
+              const label = labels?.length && props.showLabel
+                ? labels.join(', ')
+                : props.placeholder || 'Select'
 
               return (
                 <div className={`${isActive ? 'active' : ''}`}>
@@ -128,6 +143,7 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
               style={{
                 minWidth: `${buttonRef?.current?.offsetWidth}px`,
                 maxWidth: props.buttonMaxWidth ? `${buttonRef?.current?.offsetWidth}px` : 'none',
+                ...props.style,
               }}
             >
               {props.options?.length
@@ -190,6 +206,7 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
 
 BakedListBox.defaultProps = {
   withCheckMarkIndicator: false,
+  showLabel: true,
   as: InputButton,
   labelPrefix: '',
   labelKey: 'label',

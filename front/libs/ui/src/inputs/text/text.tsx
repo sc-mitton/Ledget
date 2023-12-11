@@ -5,7 +5,6 @@ import { VisibilityIcon } from "@ledget/media"
 import { CardElement } from '@stripe/react-stripe-js'
 import { z } from 'zod'
 
-
 import './text.scss'
 import './password-input.scss'
 import { FormErrorTip, FormError } from '../../pieces/form-errors/form-errors'
@@ -14,13 +13,13 @@ import { InputShimmerDiv } from '../../pieces/shimmer/shimmer'
 import { stripeCardTheme } from '../../themes/themes'
 
 
-export const TextInputWrapper = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((props, ref) => {
+export const TextInputWrapper = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & { slim?: boolean }>((props, ref) => {
 
-  const { className, children, ...rest } = props
+  const { className, children, slim, ...rest } = props
 
   return (
     <div
-      className={`input-container ${className || ''}`}
+      className={`input-container ${className || ''} ${slim ? 'slim' : ''}`}
       ref={ref}
       {...rest}
     >

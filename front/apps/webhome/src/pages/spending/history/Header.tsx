@@ -1,6 +1,8 @@
-import { set, z } from 'zod'
+import { useState } from 'react'
+
+import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useWatch, useForm } from 'react-hook-form'
 import { DatePicker } from "antd";
 import {
     useTransition,
@@ -44,16 +46,23 @@ const FilterWindow = () => {
     const { data: accountsData } = useGetAccountsQuery()
     const { data: merchantsData } = useGetMerchantsQuery()
 
-    const { handleSubmit, control } = useForm<z.infer<typeof filterSchema>>({
+    const { handleSubmit, control, reset } = useForm<z.infer<typeof filterSchema>>({
         resolver: zodResolver(filterSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
 
+    const merchantFieldValue = useWatch({ control, name: 'merchant' })
+    const accountFieldValue = useWatch({ control, name: 'account' })
+    const [resetKey, setResetKey] = useState(0)
+
     return (
-        <form onSubmit={handleSubmit((data) => {
-            setShowFilterForm(false)
-        })}>
+        <form
+            key={resetKey}
+            onSubmit={handleSubmit((data) => {
+                setShowFilterForm(false)
+            })}
+        >
             <fieldset>
                 <Controller
                     name="date_range"
@@ -80,12 +89,14 @@ const FilterWindow = () => {
                 <label htmlFor='limit_amount'>Amount</label>
                 <div className='amounts'>
                     <LimitAmountInput
+                        slim={true}
                         name="limit_amount_lower"
                         hasLabel={false}
                         withCents={false}
                         control={control}
                     />
                     <LimitAmountInput
+                        slim={true}
                         name="limit_amount_upper"
                         hasLabel={false}
                         withCents={false}
@@ -117,6 +128,7 @@ const FilterWindow = () => {
                         placeholder={'Merchant'}
                         maxLength={24}
                         multiple={true}
+                        style={{ marginTop: '.375em' }}
                     />
                     <BakedListBox
                         name="account"
@@ -130,19 +142,47 @@ const FilterWindow = () => {
                         subLabelPrefix={'••••'}
                         valueKey={'account_id'}
                         dividerKey={'institution_id'}
+                        style={{ marginTop: '.25em' }}
+                        showLabel={false}
                     />
+                </div>
+                <div>
+                    {merchantFieldValue?.map((merchant, index) => (
+                        <span>{`${merchant}${index !== merchantFieldValue?.length - 1 ? ', ' : ''}`}</span>
+                    ))}
+                </div>
+                <div>
+                    {accountFieldValue?.map((account, index) => (
+                        <span>
+                            {accountsData?.accounts?.find((acc) => acc.account_id === account)?.name}
+                            {index !== accountFieldValue?.length - 1 ? ', ' : ''}
+                        </span>
+                    ))}
                 </div>
             </fieldset>
             <div>
                 <SecondaryButtonSlim
                     type="button"
-                    onClick={() => { setShowFilterForm(false) }}
+                    onClick={() => {
+                        reset()
+                        setResetKey(resetKey + 1)
+                    }}
                 >
-                    Cancel
+                    Clear
                 </SecondaryButtonSlim>
-                <BlueSlimButton2>
-                    Apply
-                </BlueSlimButton2>
+                <div>
+                    <SecondaryButtonSlim
+                        type="button"
+                        onClick={() => {
+                            setShowFilterForm(false)
+                        }}
+                    >
+                        Cancel
+                    </SecondaryButtonSlim>
+                    <BlueSlimButton2>
+                        Apply
+                    </BlueSlimButton2>
+                </div>
             </div>
         </form>
     )

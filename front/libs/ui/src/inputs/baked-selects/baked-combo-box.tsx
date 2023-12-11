@@ -85,6 +85,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps, 'as'> & { WrapperCom
               style={{
                 minWidth: `${inputRef?.current?.offsetWidth}px`,
                 maxWidth: props.buttonMaxWidth ? `${inputRef?.current?.offsetWidth}px` : 'none',
+                ...props.style,
               }}
             >
               {props.options?.length

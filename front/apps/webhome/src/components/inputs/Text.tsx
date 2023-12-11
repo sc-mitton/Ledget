@@ -135,6 +135,7 @@ export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
     defaultValue?: number,
     hasLabel?: boolean
     withCents?: boolean
+    slim?: boolean
 }> = ({
     control,
     defaultValue,
@@ -142,6 +143,7 @@ export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
     hasLabel = true,
     withCents = true,
     required = true,
+    slim = false,
     ...rest
 }) => {
         const [val, setVal] = useState<string>('')
@@ -168,6 +170,7 @@ export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
                     name={rest.name || 'limit_amount'}
                     render={({ field: { onChange, onBlur, ref } }) => (
                         <TextInputWrapper
+                            slim={slim}
                             className={`limit-amount--container ${val ? 'valid' : ''}`}
                             onBlur={() => {
                                 (val === '$0' || val === '$0.00') && setVal('')

@@ -28,6 +28,11 @@
     width: auto;
     align-items: center;
 
+    &.slim {
+        padding-top: .3em;
+        padding-bottom: .3em;
+    }
+
     @include input-focus-styling;
 
     input::placeholder {

@@ -32,7 +32,10 @@
     &.blue {
         background-color: var(--main-hlight2);
         transition: background-color 0.2s ease-in-out;
-        color: var(--main-dark);
+
+        * {
+            color: color-mix(in srgb, var(--main-dark) 100%, var(--main-hlight2));
+        }
 
         &.tint {
             background-color: var(--main-hlight5);
@@ -53,7 +56,10 @@
     &.green {
         background-color: var(--secondary-hlight2);
         transition: background-color 0.2s ease-in-out;
-        color: var(--secondary-dark);
+
+        * {
+            color: color-mix(in srgb, var(--secondary-dark) 100%, var(--secondary-hlight2));
+        }
 
         &.tint {
             background-color: var(--secondary-hlight5);

@@ -75,6 +75,7 @@ const useAnimations = (items: Item[] | undefined) => {
 
 const useItems = (
     itemsData: Item[] | undefined,
+    period: Category['period']
 ) => {
     const order = useRef<string[]>([])
     const [items, setItems] = useState<Item[]>()
@@ -82,8 +83,8 @@ const useItems = (
     // Set initial categories
     useEffect(() => {
         if (itemsData) {
-            setItems(itemsData);
-            order.current = [...itemsData.map((item) => item.id)]
+            setItems(itemsData.filter((item) => item.period === period))
+            order.current = [...itemsData.filter((item) => item.period === period).map((item) => item.id)]
         }
     }, [itemsData])
 
@@ -113,7 +114,7 @@ const Categories = ({ period, setDeletedItems }: {
 }) => {
 
     const { data: categories } = useGetCategoriesQuery()
-    const { items, setItems, order } = useItems(categories)
+    const { items, setItems, order } = useItems(categories, period)
     const { itemsApi, containerProps, transitions } = useAnimations(
         items?.filter((item) => item.period === period))
 

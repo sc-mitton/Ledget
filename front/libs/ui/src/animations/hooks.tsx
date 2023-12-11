@@ -97,6 +97,7 @@ const useSpringDrag: UseItemsDrag = ({ order, indexCol = 'id', api, style, onRes
             0,
             order.current.length - 1
         )
+
         const newOrder = swap<string>(order.current, curIndex, curPosition)
         api.start(fn(
             newOrder,
