@@ -127,8 +127,10 @@ const DropDownMenu = ({ isNarrow, setModal }:
                         <Profile1 fill={'var(--main-dark4'} />
                     </Menu.Button>
                     <DropAnimation
+                        placement='right'
                         className='dropdown profile-dropdown'
                         visible={open}
+                        transformOrigin='center'
                     >
                         <Menu.Items static>
                             <Wrapper onClick={() => navigate("/profile/details")}>

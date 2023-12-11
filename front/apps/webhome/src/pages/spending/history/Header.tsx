@@ -170,12 +170,14 @@ const HistoryHeader = () => {
         enter: { width: '100%', height: '100%', opacity: 1 },
         leave: { width: '0%', height: '0%', opacity: 0 },
         ref: windowApi,
+        config: { tension: 400, friction: 40 },
     })
 
     const formApi = useSpringRef()
     const containerStyles = useSpring({
         opacity: showFilterForm ? 1 : 0,
-        ref: formApi
+        ref: formApi,
+        config: { tension: 400, friction: 40 },
     })
 
     useChain(showFilterForm ? [windowApi, formApi] : [formApi, windowApi], [0, .4])

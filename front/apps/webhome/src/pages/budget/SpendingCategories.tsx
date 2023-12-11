@@ -116,7 +116,7 @@ const Row = ({ category }: { category: Category }) => {
                 <>
                     <div>
                         <DollarCents
-                            value={category.amount_spent ? Big(category.amount_spent).times(100).toNumber() : '0'}
+                            value={category.amount_spent ? Big(category.amount_spent).times(100).round(0, 0).toNumber() : '0'}
                             withCents={false}
                         />
                     </div>
@@ -227,7 +227,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
     )
 }
 
-const ColumnView = ({ categories }: { categories: Category[] }) => {
+const ColumnView = ({ categories }: { categories?: Category[] }) => {
 
     return (
         <>
@@ -249,7 +249,7 @@ const ColumnView = ({ categories }: { categories: Category[] }) => {
     )
 }
 
-const TabView = ({ categories }: { categories: Category[] }) => {
+const TabView = ({ categories }: { categories?: Category[] }) => {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const {
         monthly_spent,
@@ -488,7 +488,6 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     const windowOptions = ['4 months', '1 year', '2 year', 'max']
     const [disabledOptions, setDisabledOptions] = useState<(typeof windowOptions[number])[]>()
     const [window, setWindow] = useState<typeof windowOptions[number]>()
-    const buttonRef = useRef<HTMLButtonElement>(null)
 
     // Initial fetching Transactions
     useEffect(() => {
@@ -553,6 +552,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                 options={windowOptions}
                 disabled={disabledOptions}
                 default={windowOptions[0]}
+                onChange={setWindow}
                 placement='middle'
             />
         </div>
@@ -653,7 +653,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                     <div>
                                         <AnimatedDollarCents
                                             value={category.amount_spent
-                                                ? Big(category.amount_spent).times(100).toNumber()
+                                                ? Big(category.amount_spent).times(100).round(0, 2).toNumber()
                                                 : 0}
                                         />
                                     </div>
@@ -688,7 +688,17 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                                     'en-US', { month: 'numeric', day: 'numeric' })}
                                             </div>
                                             <div>
-                                                <div><DollarCents value={transaction.amount} /></div>
+                                                <div>
+                                                    <DollarCents
+                                                        value={
+                                                            Big(transaction.amount)
+                                                                .times(transaction.categories?.find(c => c.id === category.id)?.fraction || 1)
+                                                                .times(100)
+                                                                .round(0, 2)
+                                                                .toNumber()
+                                                        }
+                                                    />
+                                                </div>
                                                 <ArrowIcon rotation={-90} size={'.875em'} />
                                             </div>
                                         </div>
@@ -770,7 +780,7 @@ const SpendingCategories = () => {
                     :
                     <FadeInOutDiv key="category-detail" className="category-detail--container">
                         <CategoryDetail
-                            category={categories.find(category =>
+                            category={categories?.find(category =>
                                 category.id === searchParams.get('category'))!}
                         />
                     </FadeInOutDiv>

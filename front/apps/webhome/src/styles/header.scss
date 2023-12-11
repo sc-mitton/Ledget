@@ -68,7 +68,7 @@ header {
     display: flex;
     text-align: left;
     top: 2.75em;
-    left: -50%;
+    margin-left: 1.25em;
     @include dropdown-arrow;
 }
 

@@ -203,7 +203,9 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
                 month=ExtractMonth('datetime'),
                 year=ExtractYear('datetime')
             ).values('month', 'year').annotate(
-                amount_spent=Sum('transactioncategory__transaction__amount')
+                amount_spent=Sum(
+                    F('transactioncategory__fraction') *
+                    F('transactioncategory__transaction__amount'))
             ).order_by('year', 'month')
 
         serializer = SpendingHistorySerializer(monthly_amounts_spent, many=True)
@@ -323,7 +325,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        include_spending = self.request.query_params.get('spending', False)
+        include_spending = self.request.query_params.get('spending', True)
         yearly_category_anchor = datetime.utcnow().replace(day=1) \
             if not self.request.user.yearly_anchor else self.request.user.yearly_anchor
 

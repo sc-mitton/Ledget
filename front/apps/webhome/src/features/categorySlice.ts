@@ -129,7 +129,7 @@ export function isCategory(obj: any): obj is Category {
 }
 
 type initialState = {
-    categories: Category[],
+    categories?: Category[],
     monthly_spent: number,
     yearly_spent: number,
     limit_amount_monthly: number,
@@ -150,13 +150,15 @@ export const categorySlice = createSlice({
     } as initialState,
     reducers: {
         addTransaction2Cat: (state, action: PayloadAction<{ categoryId: string | undefined, amount: number }>) => {
-            const foundCategory = state.categories.find(category => category.id === action.payload.categoryId);
+            const foundCategory = state.categories?.find(category => category.id === action.payload.categoryId);
             if (foundCategory) {
-                const foundIndex = state.categories.findIndex(category => category.id === action.payload.categoryId);
+                const foundIndex = state.categories?.findIndex(category => category.id === action.payload.categoryId);
 
-                state.categories[foundIndex] = {
-                    ...foundCategory,
-                    amount_spent: Big(foundCategory.amount_spent || 0).plus(action.payload.amount).toNumber(),
+                if (state.categories) {
+                    state.categories[foundIndex || 0] = {
+                        ...foundCategory,
+                        amount_spent: Big(foundCategory.amount_spent || 0).plus(action.payload.amount).toNumber(),
+                    }
                 }
 
                 // Update the monthly or yearly spent amount
@@ -169,16 +171,16 @@ export const categorySlice = createSlice({
             }
         },
         sortCategoriesAlpha: (state) => {
-            state.categories.sort((a, b) => a.name.localeCompare(b.name))
+            state.categories?.sort((a, b) => a.name.localeCompare(b.name))
         },
         sortCategoriesAmountAsc: (state) => {
-            state.categories.sort((a, b) => (a.limit_amount || 0) - (b.limit_amount || 0))
+            state.categories?.sort((a, b) => (a.limit_amount || 0) - (b.limit_amount || 0))
         },
         sortCategoriesAmountDesc: (state) => {
-            state.categories.sort((a, b) => (b.limit_amount || 0) - (a.limit_amount || 0))
+            state.categories?.sort((a, b) => (b.limit_amount || 0) - (a.limit_amount || 0))
         },
         sortCategoriesDefault: (state) => {
-            state.categories.sort((a, b) => (a.order || 0) - (b.order || 0))
+            state.categories?.sort((a, b) => (a.order || 0) - (b.order || 0))
         }
     },
     extraReducers: (builder) => {
