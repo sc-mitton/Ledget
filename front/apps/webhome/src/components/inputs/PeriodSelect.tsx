@@ -33,12 +33,7 @@ const PeriodSelect = (props: P) => {
     const localValue = propsValue || value
 
     useEffect(() => {
-        setOptions(opts.map((op) => {
-            return {
-                ...op,
-                disabled: !enableAll && op.value !== defaultValue
-            }
-        }))
+        setOptions(opts.filter(op => enableAll ? false : !op.disabled))
     }, [enableAll, defaultValue])
 
     return (

@@ -1,14 +1,14 @@
-import { useRef, useEffect, useState, useId, ComponentProps, forwardRef } from 'react';
+import { useRef, useEffect, useState, useId, ComponentProps, forwardRef } from 'react'
 
-import { Listbox } from '@headlessui/react';
-import { Control, useController } from 'react-hook-form';
+import { Listbox } from '@headlessui/react'
+import { Control, useController, UseControllerReturn } from 'react-hook-form'
 
-import './baked-selects.scss';
-import { DropAnimation } from '../../animations/animations';
-import { InputButton } from '../../buttons/buttons';
-import { ArrowIcon, CheckMark } from '@ledget/media';
-import { DropdownItem } from "../../pieces/containers/containers";
-import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
+import './baked-selects.scss'
+import { DropAnimation } from '../../animations/animations'
+import { InputButton } from '../../buttons/buttons'
+import { ArrowIcon, CheckMark } from '@ledget/media'
+import { DropdownItem } from "../../pieces/containers/containers"
+import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators'
 
 export interface BakedSelectProps {
   options?: readonly any[];
@@ -33,6 +33,14 @@ export interface BakedSelectProps {
   dividerKey?: string;
 }
 
+const useOptionalControl = (props: Pick<BakedSelectProps, 'control' | 'name'>): UseControllerReturn | { field: undefined } => {
+  if (!props.control) return { field: undefined }
+  return useController({
+    name: props.name || 'baked-list-box',
+    control: props.control,
+  })
+}
+
 // export function BakedListBox(props: BakedListBoxProps) {
 export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((props, ref) => {
   const id = useId()
@@ -40,14 +48,14 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
   const [value, onChange] = useState<any>()
 
   // Controll for react-hook-form
-  const { field } = useController({
+  const { field } = useOptionalControl({
     name: props.name || `baked-list-box-${id}`,
     control: props.control,
   })
 
   // Update controller on value change
   useEffect(() => {
-    field.onChange(value)
+    field?.onChange(value)
   }, [value])
 
   return (
@@ -60,7 +68,7 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
       }}
       as='div'
       className="baked-listbox--container"
-      defaultValue={props.options?.find((op) => typeof op !== 'string' && op.default)?.value}
+      defaultValue={props.options?.find((op) => typeof op !== 'string' && op.default)}
       multiple={props.multiple}
     >
       {({ open }) => (
@@ -76,25 +84,25 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
             className={`${props.as ? 'custom' : ''} ${open ? 'active' : ''}`}
           >
             {({ value: val }) => {
-              let label = ''
-              if (typeof val === 'string') {
-                label = val
-              } else if (Array.isArray(val)) {
-                if (typeof props.options?.[0] === 'string') {
-                  label = val.join(', ')
-                } else {
-                  label = props.options?.filter(op => {
-                    const value = typeof op === 'string' ? op : op[props.valueKey || 'value']
-                    return val.includes(value)
-                  }).map(op => op[props.labelKey || 'label']).join(', ') || ''
+              let labels: string[] = []
+              const isActive = Array.isArray(val) ? val.length : Boolean(val)
+
+              for (const op of props.options || []) {
+                const opValue = typeof op === 'string' ? op : op[props.valueKey || 'value']
+                const valValue = typeof val === 'string' ? val : val[props.valueKey || 'value']
+
+                if (Array.isArray(val) && val.includes(op) || valValue === opValue) {
+                  if (typeof op === 'string') {
+                    labels.push(op)
+                  } else {
+                    labels.push(op[props.labelKey || 'label'])
+                  }
                 }
-              } else if (typeof val === 'object' && !Array.isArray(val)) {
-                label = val[props.labelKey || 'label']
               }
-              label = label ? label : props.placeholder || 'Select'
+              const label = labels.join(', ')
 
               return (
-                <div className={`${val?.length ? 'active' : ''}`}>
+                <div className={`${isActive ? 'active' : ''}`}>
                   <span>{`${props.labelPrefix + ' '}${label}`}</span>
                   {val
                     ? props.withCheckMarkIndicator
@@ -120,8 +128,8 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
                 <Listbox.Options className="baked-list-options" static>
                   {props.options.map((op, index) => {
                     const isDisabled = props.disabled?.includes(op) || op.disabled
-                    const value = typeof op === 'string' ? op : op[props.valueKey || 'value']
                     const label = typeof op === 'string' ? op : op[props.labelKey || 'label']
+
                     const hasDivider =
                       props.dividerKey &&
                       index > 0 &&
@@ -132,7 +140,7 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
                       <>
                         <Listbox.Option
                           key={`${id}${index}`}
-                          value={value}
+                          value={op}
                           disabled={isDisabled}
                         >
                           {({ active, selected }) => {
