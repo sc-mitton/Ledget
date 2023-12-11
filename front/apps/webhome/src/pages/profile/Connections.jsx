@@ -75,10 +75,7 @@ const DeleteAllButton = ({ onClick }) => {
                 id='delete-all-tooltip'
                 msg={'Remove account'}
                 ariaLabel={'Remove Account'}
-                style={{
-                    left: '-460%',
-                    bottom: '-50%',
-                }}
+                style={{ bottom: '-50%' }}
                 type={'left'}
             >
                 <DeleteButton
@@ -86,6 +83,7 @@ const DeleteAllButton = ({ onClick }) => {
                     aria-label="Remove account"
                     onClick={() => onClick()}
                     disabled={!editing}
+                    fill={'var(--m-text)'}
                 />
             </Tooltip>
         </div >
