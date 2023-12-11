@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 
+import { Control, useController } from 'react-hook-form'
+
 import { SlimInputButton, BakedListBox } from '@ledget/ui'
 
 const opts = [
@@ -11,40 +13,45 @@ const opts = [
 interface P {
     hasLabel?: boolean
     labelPrefix?: string
-    value?: typeof opts[number]['value']
-    onChange?: React.Dispatch<React.SetStateAction<any>>
     enableAll?: boolean
     default?: string
+    control: Control<any>
+    name?: string
 }
 
 const PeriodSelect = (props: P) => {
     const {
         hasLabel,
-        labelPrefix,
-        value: propsValue,
-        onChange,
         enableAll,
-        default: defaultValue
+        default: defaultValue,
+        labelPrefix,
+        control,
+        name
     } = props
 
     const [options, setOptions] = useState<typeof opts>(opts)
-    const [value, setValue] = useState<typeof opts[number]['value']>()
-    const localSetValue = onChange || setValue
-    const localValue = propsValue || value
+    const [value, setValue] = useState<typeof opts[number]>()
 
     useEffect(() => {
         setOptions(opts.filter(op => enableAll ? false : !op.disabled))
     }, [enableAll, defaultValue])
 
+    const { field } = useController({
+        name: name || 'period',
+        control
+    })
+
+    useEffect(() => {
+        field.onChange(value)
+    }, [value])
+
     return (
         <>
             {hasLabel && <label htmlFor="period">Refreshes</label>}
             <BakedListBox
-                name='period'
                 as={SlimInputButton}
                 options={options}
-                value={localValue}
-                onChange={localSetValue}
+                onChange={setValue}
                 labelPrefix={labelPrefix}
             />
         </>

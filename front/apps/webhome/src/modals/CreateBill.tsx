@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { z } from 'zod'
 
 import './styles/Forms.css'
@@ -22,7 +22,8 @@ import { Reminder } from '@features/remindersSlice'
 export const billSchema = z.object({
     name: z.string().toLowerCase().min(1, { message: 'required' }).max(50, { message: 'Name is too long.' }),
     lower_amount: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
-    upper_amount: z.number().transform((value) => (isNaN(value) ? undefined : value))
+    upper_amount: z.number().transform((value) => (isNaN(value) ? undefined : value)),
+    period: z.string().min(1, { message: 'required' }),
 }).refine((data) => {
     return data.lower_amount && data.upper_amount
         ? data.lower_amount < data.upper_amount
@@ -66,7 +67,6 @@ export const extractBill = (e: React.FormEvent<HTMLFormElement>) => {
 
 const Form = withModal((props) => {
     const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
-    const [billPeriod, setBillPeriod] = useState<Bill['period']>('month')
     const [scheduleMissing, setScheduleMissing] = useState(false)
     const [rangeMode, setRangeMode] = useState(false)
 
@@ -92,6 +92,12 @@ const Form = withModal((props) => {
         })(e)
     }
 
+    const billPeriod = useWatch({
+        control,
+        name: 'period',
+        defaultValue: 'month'
+    })
+
     return (
         <>
             <h3>New Bill</h3>
@@ -105,11 +111,7 @@ const Form = withModal((props) => {
                     <label htmlFor="schedule">Schedule</label>
                     <div className="multi-input-row">
                         <div>
-                            <PeriodSelect
-                                value={billPeriod}
-                                onChange={setBillPeriod}
-                                enableAll={true}
-                            />
+                            <PeriodSelect control={control} enableAll={true} />
                         </div>
                         {billPeriod !== 'once' &&
                             <div>

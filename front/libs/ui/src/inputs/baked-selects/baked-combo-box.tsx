@@ -29,6 +29,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps, 'as'> & { WrapperCom
   // Update controller on value change
   useEffect(() => {
     field.onChange(value)
+    console.log('value', value)
   }, [value])
 
   useEffect(() => {

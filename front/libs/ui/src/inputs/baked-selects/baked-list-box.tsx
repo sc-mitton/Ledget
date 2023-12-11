@@ -11,26 +11,26 @@ import { DropdownItem } from "../../pieces/containers/containers"
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators'
 
 export interface BakedSelectProps {
-  options?: readonly any[];
-  name?: string;
+  options?: readonly any[]
+  name?: string
   disabled?: any[]
-  value?: string;
-  onChange?: (val?: any) => void;
-  labelKey?: string;
-  subLabelKey?: string;
-  valueKey?: string;
-  labelPrefix?: string;
-  subLabelPrefix?: string;
+  value?: string
+  onChange?: (val?: any) => void
+  labelKey?: string
+  subLabelKey?: string
+  valueKey?: string
+  labelPrefix?: string
+  subLabelPrefix?: string
   placement?: ComponentProps<typeof DropAnimation>['placement']
-  placeholder?: string;
-  withCheckMarkIndicator?: boolean;
-  as?: React.ElementType;
-  style?: React.CSSProperties;
-  control?: Control<any>;
-  multiple?: boolean;
-  maxLength?: number;
-  buttonMaxWidth?: boolean;
-  dividerKey?: string;
+  placeholder?: string
+  withCheckMarkIndicator?: boolean
+  as?: React.ElementType
+  style?: React.CSSProperties
+  control?: Control<any>
+  multiple?: boolean
+  maxLength?: number
+  buttonMaxWidth?: boolean
+  dividerKey?: string
 }
 
 const useOptionalControl = (props: Pick<BakedSelectProps, 'control' | 'name'>): UseControllerReturn | { field: undefined } => {
@@ -56,16 +56,25 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
   // Update controller on value change
   useEffect(() => {
     field?.onChange(value)
+    props.onChange?.(value)
   }, [value])
+
+  useEffect(() => {
+    if (!value) {
+      const defaultOp = props.options?.find((op) => {
+        return typeof op !== 'string'
+          ? op.default
+          : false
+      })
+      onChange(defaultOp ? defaultOp[props.valueKey || 'value'] : undefined)
+    }
+  }, [props.options])
 
   return (
     <Listbox
       name={props.name}
       value={value}
-      onChange={(val) => {
-        onChange(val)
-        if (props.onChange) props.onChange(val)
-      }}
+      onChange={onChange}
       as='div'
       className="baked-listbox--container"
       defaultValue={props.options?.find((op) => typeof op !== 'string' && op.default)}
@@ -91,15 +100,13 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
                 const opValue = typeof op === 'string' ? op : op[props.valueKey || 'value']
                 const valValue = typeof val === 'string' ? val : val[props.valueKey || 'value']
 
-                if (Array.isArray(val) && val.includes(op) || valValue === opValue) {
-                  if (typeof op === 'string') {
-                    labels.push(op)
-                  } else {
-                    labels.push(op[props.labelKey || 'label'])
-                  }
+                if (props.multiple && val.includes(opValue) || valValue === opValue) {
+                  typeof op === 'string'
+                    ? labels.push(op)
+                    : labels.push(op[props.labelKey || 'label'])
                 }
               }
-              const label = labels.join(', ')
+              const label = labels?.length ? labels.join(', ') : props.placeholder || 'Select'
 
               return (
                 <div className={`${isActive ? 'active' : ''}`}>
@@ -129,6 +136,7 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
                   {props.options.map((op, index) => {
                     const isDisabled = props.disabled?.includes(op) || op.disabled
                     const label = typeof op === 'string' ? op : op[props.labelKey || 'label']
+                    const value = props.valueKey ? op[props.valueKey] : op
 
                     const hasDivider =
                       props.dividerKey &&
@@ -140,7 +148,7 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
                       <>
                         <Listbox.Option
                           key={`${id}${index}`}
-                          value={op}
+                          value={value}
                           disabled={isDisabled}
                         >
                           {({ active, selected }) => {

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
 
@@ -169,7 +169,6 @@ const Form = () => {
     const { items: monthItems, setItems: setMonthItems } = useContext(ItemsContext).month
     const { items: yearItems, setItems: setYearItems } = useContext(ItemsContext).year
 
-    const [period, setPeriod] = useState(null)
     const [scheduleMissing, setScheduleMissing] = useState(false)
     const [hasSchedule, setHasSchedule] = useState(false)
 
@@ -177,6 +176,8 @@ const Form = () => {
         resolver: zodResolver(billSchema),
         mode: 'onSubmit', reValidateMode: 'onChange'
     })
+
+    const period = useWatch({ control, name: 'period' })
 
     const submitForm = (e) => {
         const body = extractBill(e)
@@ -189,7 +190,7 @@ const Form = () => {
 
             const item = { ...body, ...data }
 
-            if (body.period === 'month') {
+            if (data.period === 'month') {
                 setMonthItems([...monthItems, item])
             } else {
                 setYearItems([...yearItems, item])
@@ -217,10 +218,7 @@ const Form = () => {
                     <label>Schedule</label>
                     <div className="padded-input-row">
                         <div>
-                            <PeriodSelect
-                                value={period}
-                                onChange={setPeriod}
-                            />
+                            <PeriodSelect control={control} />
                         </div>
                         <div >
                             <BillScheduler

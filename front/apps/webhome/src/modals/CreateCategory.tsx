@@ -18,6 +18,7 @@ export const schema = z.object({
     limit_amount: z.string().min(1, { message: 'required' }).transform((value) =>
         Big(value.replace(/\D+/g, '')).times(100).toString(),
     ),
+    period: z.string().min(1, { message: 'required' }),
 })
 
 const CreateCategoryModal = withModal((props) => {
@@ -79,6 +80,8 @@ const CreateCategoryModal = withModal((props) => {
                 <div className="extra-padded-row">
                     <div>
                         <PeriodSelect
+                            name="period"
+                            control={control}
                             labelPrefix={'Resets'}
                             default={location.state?.period}
                         />

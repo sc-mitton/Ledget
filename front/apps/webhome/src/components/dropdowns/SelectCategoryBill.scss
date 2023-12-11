@@ -5,6 +5,10 @@
 
     .selector-current-label {
         display: flex;
+        overflow-x: auto;
+        overflow-y: visible;
+        scrollbar-width: none;
+        max-width: 100%;
         gap: .375em;
     }
 
@@ -35,6 +39,10 @@
 .bill-cat-select--container--container {
     display: flex;
     flex-direction: column;
+    overflow-y: visible;
+    scrollbar-width: none;
+    flex-wrap: wrap;
+    max-width: 100%;
 
     &>div:last-child {
         position: relative;

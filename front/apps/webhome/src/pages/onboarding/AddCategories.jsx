@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, useRef } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
 
@@ -254,7 +254,6 @@ const Form = () => {
         setBufferItem
     } = useContext(ItemsContext)
     const [formKey, setFormKey] = useState(Date.now())
-    const [period, setPeriod] = useState('month')
 
     const { register, handleSubmit, reset, setValue, formState: { errors }, control } = useForm({
         resolver: zodResolver(categorySchema),
@@ -268,7 +267,7 @@ const Form = () => {
         let body = Object.fromEntries(formData)
         body = { ...body, ...data }
 
-        if (body.period === 'month') {
+        if (data.period === 'month') {
             setMonthItems((prev) => [...prev, body])
         } else {
             setYearItems((prev) => [...prev, body])
@@ -287,7 +286,6 @@ const Form = () => {
         if (bufferItem) {
             setValue('name', bufferItem.name)
             setEmoji({ 'native': bufferItem.emoji })
-            setPeriod(bufferItem.period)
         }
         setBufferItem(undefined)
     }, [bufferItem])
@@ -325,8 +323,7 @@ const Form = () => {
                     <div>
                         <PeriodSelect
                             labelPrefix={'Reset'}
-                            value={period}
-                            onChange={setPeriod}
+                            control={control}
                         />
                     </div>
                 </div>

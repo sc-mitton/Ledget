@@ -9,7 +9,7 @@ import { withModal } from '@ledget/ui'
 import { useGetCategoriesQuery, Category, useUpdateCategoriesMutation } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect, emoji } from '@components/inputs'
 import SubmitForm from '@components/pieces/SubmitForm'
-import { FormErrorTip, formatCurrency } from '@ledget/ui'
+import { FormErrorTip } from '@ledget/ui'
 import { schema as categoryFormSchema } from './CreateCategory'
 
 const EditCategory = withModal((props) => {
@@ -97,7 +97,7 @@ const EditCategory = withModal((props) => {
                 </div>
                 <div className="extra-padded-row">
                     <div>
-                        <PeriodSelect labelPrefix={'Resets'} default={category?.period} />
+                        <PeriodSelect control={control} labelPrefix={'Resets'} default={category?.period} />
                     </div>
                     <div>
                         <AddAlert
