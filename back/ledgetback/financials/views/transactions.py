@@ -267,62 +267,80 @@ class TransactionViewSet(ModelViewSet):
 
         return Response(serializer.data)
 
-    def _get_timeslice_of_transactions(self, start, end):
+    def _extract_start_end_args(self) -> dict:
+        params = self.request.query_params
+        start = params.get('start', None)
+        end = params.get('end', None)
+
+        if not start or not end:
+            return {}
+
         try:
             start = datetime.fromtimestamp(int(start), tz=pytz.utc)
             end = datetime.fromtimestamp(int(end), tz=pytz.utc)
         except ValueError:
             raise ValidationError('Invalid date format')
 
-        extra_args = {}
-        if self.request.query_params.get('category'):
-            extra_args['categories__id'] = self.request.query_params.get('category')
+        return {'datetime__gte': start, 'datetime__lte': end}
 
-        # Get confirmed transactions
+    def _exract_filter_args(self):
+        query_params = self.request.query_params
+
+        result = {'account__plaid_item__user_id':
+                  str(self.request.user.id)}
+        result.update(self._extract_start_end_args())
+
+        # If querying for unconfirmed transactions
+        if query_params.get('confirmed') != 'true':
+            result['bill__isnull'] = True
+            result['categories'] = None
+
+        query_params_2_filter_params = {
+            'merchant': 'merchant_name__in',
+            'account': 'account_id',
+            'category': 'transactioncategory__category_id__in',
+            'limit_amount_lower': 'amount__gte',
+            'limit_amount_upper': 'amount__lte',
+            'type': 'account__type',
+            'merchants': 'merchant_name__in',
+            'accounts': 'account_id__in',
+        }
+
+        for key, value in query_params.items():
+            if key not in query_params_2_filter_params:
+                continue
+            if value == 'true':
+                value = True
+            elif value == 'false':
+                value = False
+            result[query_params_2_filter_params[key]] = value
+
+        return result
+
+    def _get_timeslice_of_transactions(self, start, end):
+        filter_args = self._exract_filter_args()
+        base_qset = Transaction.objects.filter(**filter_args) \
+                                       .select_related(
+                                           'predicted_category',
+                                           'predicted_bill') \
+                                       .prefetch_related('notes')
+
+        # Get prefetched data for confirmed transactions query
+        # , or if unspecified, assume the data should be prefetched
         if self.request.query_params.get('confirmed') == 'true':
-            confirmed = Transaction.objects.filter(
-                datetime__gte=start,
-                datetime__lte=end,
-                **extra_args
-            ).filter(
+            prefetch_categories = Prefetch(
+                'categories',
+                queryset=Category.objects.all().annotate(
+                    fraction=F('transactioncategory__fraction')))
+
+            base_qset = base_qset.filter(
                 Q(bill__isnull=False) | Q(transactioncategory__isnull=False)
             ).select_related('bill') \
-             .prefetch_related(Prefetch(
-                 'categories',
-                 queryset=Category.objects.all().annotate(
-                     fraction=F('transactioncategory__fraction')))) \
-             .prefetch_related('notes') \
-             .order_by('-datetime') \
-             .distinct()
+             .prefetch_related(prefetch_categories)
 
-            return confirmed
-
-        # Get unconfirmed transactions
-        else:
-            return Transaction.objects.filter(
-                datetime__gte=start,
-                datetime__lte=end,
-                categories=None,
-                bill__isnull=True
-            ).select_related('predicted_category', 'predicted_bill') \
-             .prefetch_related('notes')
-
-    def _get_transactions(self):
-        type = self.request.query_params.get('type', None)
-        account = self.request.query_params.get('account', None)
-
-        return Transaction.objects.filter(
-            account__plaid_item__user_id=self.request.user.id,
-            account__type=type,
-            account_id=account
-        ).select_related('bill') \
-         .prefetch_related(Prefetch(
-             'categories',
-             queryset=Category.objects.all().annotate(
-                 fraction=F('transactioncategory__fraction')))) \
-         .prefetch_related('notes') \
-         .order_by('-datetime') \
-         .distinct()
+        return base_qset.prefetch_related('notes') \
+                        .order_by('-datetime') \
+                        .distinct()
 
 
 class NoteViewSet(ModelViewSet):

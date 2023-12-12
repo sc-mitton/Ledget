@@ -59,9 +59,16 @@ export interface GetTransactionsParams {
     confirmed?: boolean
     start?: number
     end?: number
-    offset?: number
-    limit?: number
+    limit_amount_lower?: string
+    limit_amount_upper?: string
+    items?: string[]
+    merchants?: string[]
+    accounts?: string[]
     category?: string
+
+    // Pagination query params
+    limit?: number
+    offset?: number
 }
 
 interface GetTransactionsResponse {

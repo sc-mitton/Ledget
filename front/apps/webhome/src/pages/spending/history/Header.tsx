@@ -11,6 +11,7 @@ import {
     useChain,
     useSpringRef
 } from '@react-spring/web'
+import { useLazyGetTransactionsQuery } from '@features/transactionsSlice';
 import { useGetAccountsQuery } from '@features/accountsSlice'
 import { useGetMerchantsQuery } from '@features/transactionsSlice'
 
@@ -46,8 +47,9 @@ const FilterWindow = () => {
     const { setShowFilterForm } = useFilterFormContext()
     const { data: accountsData } = useGetAccountsQuery()
     const { data: merchantsData } = useGetMerchantsQuery()
+    const [getLazyTransactions] = useLazyGetTransactionsQuery()
 
-    const { handleSubmit, control, reset, formState: { errors }, resetField } = useForm<z.infer<typeof filterSchema>>({
+    const { handleSubmit, control, reset, resetField } = useForm<z.infer<typeof filterSchema>>({
         resolver: zodResolver(filterSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
@@ -63,8 +65,13 @@ const FilterWindow = () => {
         <form
             key={resetKey}
             onSubmit={handleSubmit((data) => {
-                console.log('data', data)
-                // setShowFilterForm(false)
+                const { date_range, ...rest } = data
+                const newData = {
+                    ...rest,
+                    start: date_range?.[0],
+                    end: date_range?.[1],
+                }
+                getLazyTransactions(newData)
             })}
         >
             <fieldset>

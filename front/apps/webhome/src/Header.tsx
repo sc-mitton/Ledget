@@ -84,7 +84,7 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
                                 e.preventDefault()
                                 navigate("/spending")
                             }}
-                            aria-current={location.pathname === "spending" ? "page" : undefined}
+                            aria-current={location.pathname.split('/')[1] === "spending" ? "page" : undefined}
                         >
                             Spending
                         </a>
