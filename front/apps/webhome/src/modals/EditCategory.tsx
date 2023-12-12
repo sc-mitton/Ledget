@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm, FieldValues } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import './styles/Forms.css'
+import './styles/Forms.scss'
 import { withModal } from '@ledget/ui'
 import { useGetCategoriesQuery, Category, useUpdateCategoriesMutation } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect, emoji } from '@components/inputs'

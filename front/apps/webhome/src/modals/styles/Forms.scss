@@ -64,31 +64,37 @@
     margin: .5em 0;
     align-items: center;
     justify-content: space-between;
+
+    &>div {
+        flex: 1;
+
+        &>div {
+            width: 100%;
+        }
+    }
+
+    button {
+        width: 100%;
+    }
 }
 
-.multi-input-row>div {
-    flex: 1;
-}
-
-.multi-input-row button {
-    width: 100%;
-}
 
 .split-inputs {
     display: inline-flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
-}
 
-.split-inputs>div:first-child {
-    flex: 1;
-    margin-right: .25em;
-}
+    &>div:first-child {
+        flex: 1;
+        margin-right: .25em;
+    }
 
-.split-inputs>div:last-child {
-    flex: 1;
-    margin-left: .25em;
+    &>div:last-child {
+        flex: 1;
+        margin-left: .25em;
+    }
+
 }
 
 /* ---------------------------------- Emoji --------------------------------- */
@@ -122,17 +128,21 @@ input.emoji {
     margin-left: .75em;
 }
 
-#new-bill-form #add-reminder--container {
-    margin-top: .5em;
+#new-bill-form {
+    #add-reminder--container {
+        margin-top: .5em;
+    }
+
+    #range-checkbox--container label {
+        margin-top: .125em;
+    }
+
+    .bottom-row {
+        margin-bottom: 1.5em;
+    }
 }
 
-#new-bill-form #range-checkbox--container label {
-    margin-top: .125em;
-}
 
-#new-bill-form .bottom-row {
-    margin-bottom: 1.5em;
-}
 
 @media only screen and (max-width: 700px) {
     .split-inputs {

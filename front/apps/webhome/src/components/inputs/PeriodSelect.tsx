@@ -33,7 +33,7 @@ const PeriodSelect = (props: P) => {
     const [value, setValue] = useState<typeof opts[number]>()
 
     useEffect(() => {
-        setOptions(opts.filter(op => enableAll ? false : !op.disabled))
+        setOptions(opts.filter(op => enableAll ? true : !op.disabled))
     }, [enableAll, defaultValue])
 
     const { field } = useController({

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, useWatch } from "react-hook-form"
 import { z } from 'zod'
 
-import './styles/Forms.css'
+import './styles/Forms.scss'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { withModal } from '@ledget/ui'
 import {

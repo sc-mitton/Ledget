@@ -1,9 +1,9 @@
-.scheduler--container {
-    position: 'relative';
+#scheduler--container {
+    position: relative;
 
     &>div {
-        position: 'absolute';
-        top: 0;
+        position: absolute;
+        bottom: 0;
     }
 }
 

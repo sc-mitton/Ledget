@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { useForm } from "react-hook-form"
 import { useNavigate, useLocation } from 'react-router-dom'
 
-import './styles/Forms.css'
+import './styles/Forms.scss'
 import { useAddNewCategoryMutation, Category } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect } from '@components/inputs'
 import { withModal } from '@ledget/ui'

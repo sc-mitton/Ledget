@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -34,12 +34,12 @@ import { useFilterFormContext } from '../context';
 const { RangePicker } = DatePicker
 
 const filterSchema = z.object({
-    date_range: z.array(z.number()),
-    limit_amount_lower: z.number(),
-    limit_amount_upper: z.number(),
-    item: z.array(z.string()),
-    merchant: z.array(z.string()),
-    account: z.array(z.string()),
+    date_range: z.array(z.number()).optional(),
+    limit_amount_lower: z.string().optional().transform(val => val?.replace(/\D+/, '')),
+    limit_amount_upper: z.string().optional().transform(val => val?.replace(/\D+/, '')),
+    items: z.array(z.string()).optional(),
+    merchants: z.array(z.string()).optional(),
+    accounts: z.array(z.string()).optional(),
 })
 
 const FilterWindow = () => {
@@ -47,14 +47,14 @@ const FilterWindow = () => {
     const { data: accountsData } = useGetAccountsQuery()
     const { data: merchantsData } = useGetMerchantsQuery()
 
-    const { handleSubmit, control, reset, resetField } = useForm<z.infer<typeof filterSchema>>({
+    const { handleSubmit, control, reset, formState: { errors }, resetField } = useForm<z.infer<typeof filterSchema>>({
         resolver: zodResolver(filterSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
 
-    const merchantFieldValue = useWatch({ control, name: 'merchant' })
-    const accountFieldValue = useWatch({ control, name: 'account' })
+    const merchantsFieldValue = useWatch({ control, name: 'merchants' })
+    const accountsFieldValue = useWatch({ control, name: 'accounts' })
     const [resetKey, setResetKey] = useState(Math.random().toString(36).slice(2, 9))
     const [resetAccountMerchantKeys, setResetAccountMerchantKeys] =
         useState([Math.random().toString(36).slice(2, 9), Math.random().toString(36).slice(2, 9)])
@@ -63,7 +63,8 @@ const FilterWindow = () => {
         <form
             key={resetKey}
             onSubmit={handleSubmit((data) => {
-                setShowFilterForm(false)
+                console.log('data', data)
+                // setShowFilterForm(false)
             })}
         >
             <fieldset>
@@ -113,7 +114,7 @@ const FilterWindow = () => {
                     <FullSelectCategoryBill
                         placeholder="Category or Bill"
                         SelectorComponent={InputButton}
-                        name="item"
+                        name="items"
                         control={control}
                         multiple={true}
                     />
@@ -125,7 +126,7 @@ const FilterWindow = () => {
                 <div>
                     <div key={resetAccountMerchantKeys[0]}>
                         <BakedComboBox
-                            name="merchant"
+                            name="merchants"
                             control={control as any}
                             options={merchantsData}
                             placement={'left'}
@@ -137,7 +138,7 @@ const FilterWindow = () => {
                     </div>
                     <div key={resetAccountMerchantKeys[1]}>
                         <BakedListBox
-                            name="account"
+                            name="accounts"
                             control={control as any}
                             options={accountsData?.accounts}
                             placement={'right'}
@@ -154,10 +155,10 @@ const FilterWindow = () => {
                     </div>
                 </div>
                 <div>
-                    {merchantFieldValue?.map((merchant, index) => (
-                        <span>{`${merchant}${index !== merchantFieldValue?.length - 1 ? ', ' : ''}`}</span>
+                    {merchantsFieldValue?.map((merchant, index) => (
+                        <span>{`${merchant}${index !== merchantsFieldValue?.length - 1 ? ', ' : ''}`}</span>
                     ))}
-                    {merchantFieldValue &&
+                    {merchantsFieldValue &&
                         <DeleteButton
                             show={true}
                             hoverable={false}
@@ -166,17 +167,18 @@ const FilterWindow = () => {
                                     Math.random().toString(36).slice(2, 9),
                                     prev[1]
                                 ])
+                                resetField('merchants')
                             }}
                         />}
                 </div>
                 <div>
-                    {accountFieldValue?.map((account, index) => (
+                    {accountsFieldValue?.map((account, index) => (
                         <span>
                             {accountsData?.accounts?.find((acc) => acc.account_id === account)?.name}
-                            {index !== accountFieldValue?.length - 1 ? ', ' : ''}
+                            {index !== accountsFieldValue?.length - 1 ? ', ' : ''}
                         </span>
                     ))}
-                    {accountFieldValue &&
+                    {accountsFieldValue &&
                         <DeleteButton
                             show={true}
                             hoverable={false}
@@ -185,6 +187,7 @@ const FilterWindow = () => {
                                     prev[0],
                                     Math.random().toString(36).slice(2, 9)
                                 ])
+                                resetField('accounts')
                             }}
                         />}
                 </div>

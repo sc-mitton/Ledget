@@ -172,8 +172,8 @@ export const FullSelectCategoryBill =
         useEffect(() => {
             if (Array.isArray(value)) {
                 field.onChange(value ? value.map?.((v) => v.id) : [])
-            } else {
-                field.onChange(value ? value.id : '')
+            } else if (value) {
+                field.onChange(value.id)
             }
         }, [value])
 

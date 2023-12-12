@@ -111,7 +111,9 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
 
               for (const op of props.options || []) {
                 const opValue = typeof op === 'string' ? op : op[props.valueKey || 'value']
-                const valValue = typeof val === 'string' ? val : val[props.valueKey || 'value']
+                const valValue = typeof val === 'string'
+                  ? val
+                  : val?.[props.valueKey || 'value']
 
                 if (props.multiple && val.includes(opValue) || valValue === opValue) {
                   typeof op === 'string'
