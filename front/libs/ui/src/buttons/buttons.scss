@@ -385,7 +385,7 @@
 // Animated-stroke
 
 button {
-    .animated-stroke {
+    .animated-stroke svg {
         stroke-dasharray: 1000;
         stroke-dashoffset: 1000;
 
@@ -396,7 +396,8 @@ button {
         }
     }
 
-    &:hover {
+    &.hoverable:hover,
+    &.not-hoverable {
         .animated-stroke {
             animation: draw 1s ease-in-out forwards;
 
@@ -444,20 +445,31 @@ button {
 
 .delete-button-show {
     margin: 0 .125em;
-    opacity: 1;
+    opacity: .6;
     cursor: pointer;
     transition: all .22s ease;
 }
 
 .delete-button:hover,
 .delete-button-show:hover {
+    opacity: .9;
     transform: rotate(-45deg);
     transition: all .22s ease;
     transition-delay: .1s;
 }
 
+.delete-button-show.not-hoverable,
+.delete-button.not-hoverable {
+    transform: rotate(-45deg);
+
+    &:hover {
+        opacity: 1;
+        transition: all .22s ease;
+    }
+}
+
 .delete-button.show {
-    opacity: 1;
+    opacity: .6;
     animation: pop .22s ease;
     cursor: pointer;
 }

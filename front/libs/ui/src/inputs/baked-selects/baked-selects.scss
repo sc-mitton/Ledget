@@ -40,7 +40,7 @@
             scrollbar-width: none;
         }
 
-        &:not(.valid)>div:not(.active) {
+        &:not(.valid)>div:not(.active):not(.semi-active) {
             color: var(--input-placeholder2);
 
             * {
@@ -51,6 +51,14 @@
         &.valid,
         &>div.active {
             color: var(--m-text);
+        }
+
+        &>div.semi-active {
+            color: var(--m-text);
+
+            span {
+                color: var(--input-placeholder2);
+            }
         }
     }
 

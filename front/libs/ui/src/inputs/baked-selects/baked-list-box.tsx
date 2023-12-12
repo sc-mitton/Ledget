@@ -124,7 +124,10 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
                 : props.placeholder || 'Select'
 
               return (
-                <div className={`${isActive ? 'active' : ''}`}>
+                <div className={`${(isActive
+                  ? props.showLabel ? 'active' : 'semi-active'
+                  : ''
+                )} baked-listbox--button`}>
                   <span>{`${props.labelPrefix + ' '}${label}`}</span>
                   {val
                     ? props.withCheckMarkIndicator

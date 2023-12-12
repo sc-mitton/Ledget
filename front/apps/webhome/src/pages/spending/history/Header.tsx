@@ -25,7 +25,8 @@ import {
     InputButton,
     BakedListBox,
     BakedComboBox,
-    SecondaryButtonSlim
+    SecondaryButtonSlim,
+    DeleteButton
 } from '@ledget/ui'
 import { useFilterFormContext } from '../context';
 
@@ -46,7 +47,7 @@ const FilterWindow = () => {
     const { data: accountsData } = useGetAccountsQuery()
     const { data: merchantsData } = useGetMerchantsQuery()
 
-    const { handleSubmit, control, reset } = useForm<z.infer<typeof filterSchema>>({
+    const { handleSubmit, control, reset, resetField } = useForm<z.infer<typeof filterSchema>>({
         resolver: zodResolver(filterSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
@@ -54,7 +55,9 @@ const FilterWindow = () => {
 
     const merchantFieldValue = useWatch({ control, name: 'merchant' })
     const accountFieldValue = useWatch({ control, name: 'account' })
-    const [resetKey, setResetKey] = useState(0)
+    const [resetKey, setResetKey] = useState(Math.random().toString(36).slice(2, 9))
+    const [resetAccountMerchantKeys, setResetAccountMerchantKeys] =
+        useState([Math.random().toString(36).slice(2, 9), Math.random().toString(36).slice(2, 9)])
 
     return (
         <form
@@ -120,36 +123,51 @@ const FilterWindow = () => {
                     <label htmlFor="account">Account</label>
                 </div>
                 <div>
-                    <BakedComboBox
-                        name="merchant"
-                        control={control as any}
-                        options={merchantsData}
-                        placement={'left'}
-                        placeholder={'Merchant'}
-                        maxLength={24}
-                        multiple={true}
-                        style={{ marginTop: '.375em' }}
-                    />
-                    <BakedListBox
-                        name="account"
-                        control={control as any}
-                        options={accountsData?.accounts}
-                        placement={'right'}
-                        placeholder={'Account'}
-                        multiple={true}
-                        labelKey={'name'}
-                        subLabelKey={'mask'}
-                        subLabelPrefix={'••••'}
-                        valueKey={'account_id'}
-                        dividerKey={'institution_id'}
-                        style={{ marginTop: '.25em' }}
-                        showLabel={false}
-                    />
+                    <div key={resetAccountMerchantKeys[0]}>
+                        <BakedComboBox
+                            name="merchant"
+                            control={control as any}
+                            options={merchantsData}
+                            placement={'left'}
+                            placeholder={'Merchant'}
+                            maxLength={24}
+                            multiple={true}
+                            style={{ marginTop: '.375em' }}
+                        />
+                    </div>
+                    <div key={resetAccountMerchantKeys[1]}>
+                        <BakedListBox
+                            name="account"
+                            control={control as any}
+                            options={accountsData?.accounts}
+                            placement={'right'}
+                            placeholder={'Account'}
+                            multiple={true}
+                            labelKey={'name'}
+                            subLabelKey={'mask'}
+                            subLabelPrefix={'••••'}
+                            valueKey={'account_id'}
+                            dividerKey={'institution_id'}
+                            style={{ marginTop: '.25em' }}
+                            showLabel={false}
+                        />
+                    </div>
                 </div>
                 <div>
                     {merchantFieldValue?.map((merchant, index) => (
                         <span>{`${merchant}${index !== merchantFieldValue?.length - 1 ? ', ' : ''}`}</span>
                     ))}
+                    {merchantFieldValue &&
+                        <DeleteButton
+                            show={true}
+                            hoverable={false}
+                            onClick={() => {
+                                setResetAccountMerchantKeys(prev => [
+                                    Math.random().toString(36).slice(2, 9),
+                                    prev[1]
+                                ])
+                            }}
+                        />}
                 </div>
                 <div>
                     {accountFieldValue?.map((account, index) => (
@@ -158,6 +176,17 @@ const FilterWindow = () => {
                             {index !== accountFieldValue?.length - 1 ? ', ' : ''}
                         </span>
                     ))}
+                    {accountFieldValue &&
+                        <DeleteButton
+                            show={true}
+                            hoverable={false}
+                            onClick={() => {
+                                setResetAccountMerchantKeys(prev => [
+                                    prev[0],
+                                    Math.random().toString(36).slice(2, 9)
+                                ])
+                            }}
+                        />}
                 </div>
             </fieldset>
             <div>
@@ -165,7 +194,7 @@ const FilterWindow = () => {
                     type="button"
                     onClick={() => {
                         reset()
-                        setResetKey(resetKey + 1)
+                        setResetKey(Math.random().toString(36).slice(2, 9))
                     }}
                 >
                     Clear
