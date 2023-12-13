@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -22,6 +22,7 @@ import {
     selectConfirmedTransactionFilter,
     setConfirmedTransactionFilter
 } from '@features/transactionsSlice'
+import { useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { Funnel } from '@ledget/media'
 import { FullSelectCategoryBill } from '@components/dropdowns'
 import { LimitAmountInput } from '@components/inputs'
@@ -60,6 +61,7 @@ const FilterWindow = () => {
     const [getLazyTransactions] = useLazyGetTransactionsQuery()
     const { start, end } = useGetStartEndQueryParams()
     const filter = useAppSelector(selectConfirmedTransactionFilter)
+    const [getCategories, { data: categoryData }] = useLazyGetCategoriesQuery()
 
     const { handleSubmit, control, reset, resetField } = useForm<TransactionFilterSchema>({
         resolver: zodResolver(filterSchema),
@@ -73,6 +75,12 @@ const FilterWindow = () => {
     const [resetKey, setResetKey] = useState(Math.random().toString(36).slice(2, 9))
     const [resetAccountMerchantKeys, setResetAccountMerchantKeys] =
         useState([Math.random().toString(36).slice(2, 9), Math.random().toString(36).slice(2, 9)])
+
+    useEffect(() => {
+        const s = dateRangeFieldValue?.[0]
+        const e = dateRangeFieldValue?.[1]
+        getCategories({ start: s, end: e, spending: false }, true)
+    }, [dateRangeFieldValue])
 
     return (
         <form
@@ -145,6 +153,7 @@ const FilterWindow = () => {
                 </div>
                 <div>
                     <FullSelectCategoryBill
+                        defaultValue={categoryData?.filter(cat => filter?.items?.includes(cat.id))}
                         placeholder="Category or Bill"
                         SelectorComponent={SlimInputButton}
                         name="items"
