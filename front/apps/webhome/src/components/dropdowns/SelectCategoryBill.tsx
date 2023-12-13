@@ -19,21 +19,29 @@ import { SearchIcon, ArrowIcon } from '@ledget/media'
 import { LoadingRingDiv, DropAnimation, useAccessEsc, BillCatLabel } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
-interface I {
-    default?: string | string[];
-    value?: Category | Bill | undefined | (Category | Bill)[];
+interface IBase {
     includeBills?: boolean;
     includeCategories?: boolean;
     month?: number;
     year?: number;
-    multiple?: boolean;
     name?: string;
-
-    onChange?: I['multiple'] extends true
-    ? React.Dispatch<React.SetStateAction<(Category | Bill)[] | undefined>>
-    : React.Dispatch<React.SetStateAction<Category | Bill | undefined>>;
 }
 
+interface I1 extends IBase {
+    multiple?: true;
+    value?: (Category | Bill)[];
+    onChange?: (value: (Category | Bill)[]) => void;
+    defaultValue?: (Category | Bill)[];
+}
+
+interface I2 extends IBase {
+    multiple?: false;
+    value?: Category | Bill;
+    onChange?: (value: Category | Bill) => void;
+    defaultValue?: Category | Bill;
+}
+
+type I = I1 | I2
 
 function SelectCategoryBillBody({
     value,
@@ -41,9 +49,9 @@ function SelectCategoryBillBody({
     onChange,
     month,
     year,
+    multiple,
     includeBills = true,
     includeCategories = true,
-    multiple = false
 }: I) {
     const [query, setQuery] = useState('')
     const { start, end } = useGetStartEndQueryParams(month, year)
@@ -140,7 +148,7 @@ function SelectCategoryBillBody({
     )
 }
 
-interface Selector extends Omit<I, 'value' | 'onChange'> {
+interface SelectorBase extends IBase {
     SelectorComponent: ForwardRefExoticComponent<ButtonHTMLAttributes<HTMLButtonElement>
         & RefAttributes<HTMLButtonElement>>
     children?: React.ReactNode
@@ -148,10 +156,22 @@ interface Selector extends Omit<I, 'value' | 'onChange'> {
     control?: Control<any>
 }
 
+interface Selector1 extends SelectorBase {
+    multiple?: true;
+    defaultValue?: (Category | Bill)[];
+}
+
+interface Selector2 extends SelectorBase {
+    multiple?: false;
+    defaultValue?: Category | Bill;
+}
+
+type Selector = Selector1 | Selector2
+
 export const FullSelectCategoryBill =
     ({ SelectorComponent, placeholder, children, control, ...rest }: Selector) => {
 
-        const [value, onChange] = useState<typeof rest.multiple extends true ? (Category | Bill)[] : Category | Bill>()
+        const [value, onChange] = useState<typeof rest.defaultValue>()
         const [showBillCatSelect, setShowBillCatSelect] = useState(false)
         const dropdownRef = useRef<HTMLDivElement>(null)
         const buttonRef = useRef<HTMLButtonElement>(null)
@@ -160,6 +180,11 @@ export const FullSelectCategoryBill =
                 ? 'category'
                 : !rest.includeCategories ? 'bill' : 'item')
         )
+
+        // Set default
+        useEffect(() => {
+            onChange(rest.defaultValue)
+        }, [rest.defaultValue])
 
         // Controll for react-hook-form
         const { field } = useController({ name: name.current, control })
@@ -187,7 +212,9 @@ export const FullSelectCategoryBill =
             <div className="bill-cat-select--container--container">
                 <SelectorComponent
                     className={`bill-category-selector--button
-                        ${value && (Array.isArray(value) && value.length) ? 'valid' : 'placeholder'}
+                        ${Array.isArray(value)
+                            ? value?.length > 0 ? 'active' : ''
+                            : value ? 'active' : ''}
                         ${showBillCatSelect ? 'active' : ''}`}
                     type='button'
                     onClick={() => setShowBillCatSelect(!showBillCatSelect)}
@@ -233,9 +260,9 @@ export const FullSelectCategoryBill =
                         ref={dropdownRef}
                     >
                         <SelectCategoryBillBody
-                            value={value}
-                            onChange={onChange}
                             {...rest}
+                            value={value as any}
+                            onChange={onChange}
                             name={name.current}
                         />
                     </DropAnimation>

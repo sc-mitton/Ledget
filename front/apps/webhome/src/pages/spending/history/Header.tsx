@@ -23,7 +23,7 @@ import {
     IconButton,
     Tooltip,
     BlueSlimButton2,
-    InputButton,
+    SlimInputButton,
     BakedListBox,
     BakedComboBox,
     SecondaryButtonSlim,
@@ -120,7 +120,7 @@ const FilterWindow = () => {
                 <div>
                     <FullSelectCategoryBill
                         placeholder="Category or Bill"
-                        SelectorComponent={InputButton}
+                        SelectorComponent={SlimInputButton}
                         name="items"
                         control={control}
                         multiple={true}
@@ -133,6 +133,7 @@ const FilterWindow = () => {
                 <div>
                     <div key={resetAccountMerchantKeys[0]}>
                         <BakedComboBox
+                            slim={true}
                             name="merchants"
                             control={control as any}
                             options={merchantsData}
@@ -145,6 +146,7 @@ const FilterWindow = () => {
                     </div>
                     <div key={resetAccountMerchantKeys[1]}>
                         <BakedListBox
+                            as={SlimInputButton}
                             name="accounts"
                             control={control as any}
                             options={accountsData?.accounts}

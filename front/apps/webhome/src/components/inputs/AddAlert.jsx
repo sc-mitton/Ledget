@@ -6,7 +6,7 @@ import './styles/Dropdowns.css'
 import { Plus, Return, ArrowIcon, CheckMark } from '@ledget/media'
 import ComboSelect from './ComboSelect'
 import { formatCurrency } from '@ledget/ui'
-import { SlimInputButton, MenuTextInput, DropAnimation } from '@ledget/ui'
+import { SlimmestInputButton, MenuTextInput, DropAnimation } from '@ledget/ui'
 
 const formatDollar = (value, percentage) => {
     if (!value) return ''
@@ -218,7 +218,7 @@ const AddAlert = (props) => {
                 <>
                     <ComboSelect.Button
                         tabIndex={0}
-                        as={SlimInputButton}
+                        as={SlimmestInputButton}
                         id="add-alert-btn"
                         ref={buttonRef}
                     >

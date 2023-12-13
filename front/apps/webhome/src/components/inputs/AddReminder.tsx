@@ -3,7 +3,7 @@ import React, { useState, Dispatch, SetStateAction, useEffect } from 'react'
 import './styles/Dropdowns.css'
 import { Listbox } from '@headlessui/react'
 import { Plus, CheckMark } from '@ledget/media'
-import { SlimInputButton, DropAnimation } from '@ledget/ui'
+import { SlimmestInputButton, DropAnimation } from '@ledget/ui'
 import { useGetRemindersQuery, Reminder } from '@features/remindersSlice'
 
 
@@ -77,7 +77,7 @@ const AddReminder = ({ value, onChange, defaultSelected }:
                 {({ open }) => (
                     <>
                         <Listbox.Button
-                            as={SlimInputButton}
+                            as={SlimmestInputButton}
                             id="add-reminder-btn"
                             style={{ fontWeight: '400' }}
                         >

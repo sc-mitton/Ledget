@@ -12,7 +12,7 @@ import { DropdownItem } from "../../pieces/containers/containers";
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
 
 
-export const BakedComboBox = (props: Omit<BakedSelectProps, 'as'> & { WrapperComponent: React.ElementType }) => {
+export const BakedComboBox = (props: Omit<BakedSelectProps, 'as'> & { WrapperComponent: React.ElementType, slim?: boolean }) => {
   const id = useId()
   const [value, onChange] = useState<any>()
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -55,7 +55,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps, 'as'> & { WrapperCom
     >
       {({ open }) => (
         <>
-          <props.WrapperComponent ref={inputRef} className="baked-combo-list-wrapper">
+          <props.WrapperComponent ref={inputRef} className="baked-combo-list-wrapper" slim={props.slim}>
             <Combobox.Input
               onChange={(event) => setQuery(event.target.value)}
               onFocus={() => setFocused(true)}

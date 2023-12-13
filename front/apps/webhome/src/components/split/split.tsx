@@ -108,7 +108,7 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
                 SelectorComponent={InputButton}
                 month={new Date(item.datetime).getMonth() + 1}
                 year={new Date(item.datetime).getFullYear()}
-                defaultBillCat={field.category}
+                defaultValue={categoriesData?.find((c) => c.id === field.category)}
                 control={control}
                 name={`splits.${index}.category`}
               >

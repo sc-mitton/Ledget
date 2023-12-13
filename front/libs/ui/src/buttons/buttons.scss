@@ -386,8 +386,12 @@
 
 button {
     .animated-stroke {
-        stroke-dasharray: 1000;
-        stroke-dashoffset: 1000;
+
+        line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+
 
         line:first-of-type {
             stroke-dasharray: 1000;
@@ -453,6 +457,10 @@ button {
         opacity: .6;
         transition: all .22s ease;
     }
+
+    &.input svg {
+        opacity: 1;
+    }
 }
 
 .delete-button:hover,
@@ -507,11 +515,19 @@ button {
 }
 
 .btn-input-full {
-    padding: .375em .625em;
+    padding: var(--input-padding);
     margin: .375em 0;
     border-radius: var(--border-radius2);
     width: 100%;
 }
+
+.btn-less-full {
+    padding: .375em 1em;
+    margin: .375em 0;
+    border-radius: var(--border-radius2);
+}
+
+
 
 /* Scaling Buttons */
 .btn-scale {

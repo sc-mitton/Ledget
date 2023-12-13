@@ -8,7 +8,7 @@ import Radios from './Radios'
 import type { Bill } from '@features/billSlice'
 import { useClickClose } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
-import { SlimInputButton, FormErrorTip, DropAnimation, getDaySuffix } from '@ledget/ui'
+import { SlimmestInputButton, FormErrorTip, DropAnimation, getDaySuffix } from '@ledget/ui'
 
 interface Context extends Pick<Bill, 'day' | 'week' | 'month'> {
     open: boolean,
@@ -93,7 +93,7 @@ const Button: FC<React.HTMLAttributes<HTMLButtonElement>> = ({ children, ...prop
 
     return (
         <>
-            <SlimInputButton
+            <SlimmestInputButton
                 onClick={() => setOpen(!open)}
                 onKeyDown={(event) => {
                     if (event.key === 'Enter') {
@@ -119,7 +119,7 @@ const Button: FC<React.HTMLAttributes<HTMLButtonElement>> = ({ children, ...prop
                 </div>
                 <ArrowIcon size={'.8em'} />
                 {children}
-            </SlimInputButton>
+            </SlimmestInputButton>
         </>
 
     )
