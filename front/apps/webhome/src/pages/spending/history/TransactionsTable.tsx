@@ -1,7 +1,6 @@
 import { useRef, Fragment, useEffect, useState } from 'react'
 
 import './styles/TransactionsTable.scss'
-import { useGetMeQuery } from '@features/userSlice'
 import TransactionModal from '@modals/TransactionItem'
 import { useLazyGetTransactionsQuery, useGetTransactionsQuery, Transaction } from "@features/transactionsSlice"
 import { Logo } from '@components/pieces'
@@ -9,21 +8,24 @@ import { DollarCents, InfiniteScrollDiv, TransactionShimmer } from '@ledget/ui'
 import { ShadowedContainer } from '@components/pieces'
 import { EmptyListImage, ArrowIcon } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
+import { useAppSelector } from '@hooks/store'
+import { selectFilteredFetchedConfirmedTransactions } from '@features/transactionsSlice'
 
 const List = ({ setFocusedTransaction }:
   { setFocusedTransaction: React.Dispatch<React.SetStateAction<Transaction | undefined>> }) => {
   const { start, end } = useGetStartEndQueryParams()
 
-  const { data: transactionsData, isError } = useGetTransactionsQuery({ confirmed: true, start, end })
+  const { isError } = useGetTransactionsQuery({ confirmed: true, start, end })
+  const transactionsData = useAppSelector(selectFilteredFetchedConfirmedTransactions)
 
   let monthholder: number | undefined
   let newMonth = false
 
   return (
     <>
-      {(transactionsData && transactionsData.results?.length > 0 && !isError)
+      {(transactionsData && transactionsData?.length > 0 && !isError)
         ?
-        transactionsData?.results.map((transaction) => {
+        transactionsData?.map((transaction) => {
           const date = new Date(transaction.datetime)
           date.getMonth() !== monthholder ? newMonth = true : newMonth = false
           monthholder = date.getMonth()

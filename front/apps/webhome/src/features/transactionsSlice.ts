@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk, PayloadAction, createSelector } from '@r
 
 import { apiSlice } from '@api/apiSlice'
 import { Category, addTransaction2Cat, SplitCategory } from '@features/categorySlice'
+import { TransactionFilterSchema } from '@pages/spending/history/Header'
 import { addTransaction2Bill } from '@features/billSlice'
 import type { Bill } from '@features/billSlice'
 import type { RootState } from './store'
@@ -112,6 +113,8 @@ type ConfirmTransactionParams = {
     splits?: { category: SplitCategory['id'], fraction: SplitCategory['fraction'] }[]
     bill?: Bill['id']
 }[]
+
+// RTK slice
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -259,6 +262,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     }),
 })
 
+// State Slices
+
 export const confirmStack = createSlice({
     name: 'confirmStack',
     initialState: {
@@ -320,6 +325,30 @@ export const confirmStack = createSlice({
     }
 })
 
+export const filteredFetchedConfirmedTransactions = createSlice({
+    name: 'filteredFetchedonfirmedTransactions',
+    initialState: {
+        filtered: [],
+        filter: {}
+    } as { filtered: Transaction[], filter: TransactionFilterSchema },
+    reducers: {
+        setConfirmedTransactionFilter: (state, action: PayloadAction<TransactionFilterSchema>) => {
+            state.filter = action.payload
+        }
+    },
+    extraReducers: (builder) => {
+        builder.addMatcher(
+            extendedApiSlice.endpoints.getTransactions.matchFulfilled,
+            (state, action) => {
+
+                if (action.meta.arg.originalArgs.confirmed) {
+                    state.filtered = action.payload.results
+                }
+            }
+        )
+    }
+})
+
 // Confirm a single transaction and update the metadata
 // for the bills and categories. The argument is an object
 // with the transaction id and the confirmed categories/bills
@@ -339,11 +368,31 @@ export const confirmAndUpdateMetaData = createAsyncThunk(
     }
 )
 
+// Actions and hooks
 export const { confirmTransaction, removeUnconfirmedTransaction } = confirmStack.actions
+export const { setConfirmedTransactionFilter } = filteredFetchedConfirmedTransactions.actions
 
+export const {
+    useTransactionsSyncMutation,
+    useGetTransactionsQuery,
+    useLazyGetTransactionsQuery,
+    useLazyGetUnconfirmedTransactionsQuery,
+    useConfirmTransactionsMutation,
+    useUpdateTransactionMutation,
+    useAddNoteMutation,
+    useUpdateDeleteNoteMutation,
+    useGetMerchantsQuery,
+} = extendedApiSlice
+
+export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransactions.useQueryState
+
+
+// Selectors
 const selectUnconfirmed = (state: RootState) => state.confirmStack.unconfirmed
 const selectConfirmedQue = (state: RootState) => state.confirmStack.confirmedQue
 const selectDateYear = (state: RootState, date: { year: number, month: number }) => date
+export const selectFilteredFetchedConfirmedTransactions = (state: RootState) => state.filteredFetchedonfirmedTransactions.filtered
+export const selectConfirmedTransactionFilter = (state: RootState) => state.filteredFetchedonfirmedTransactions.filter
 
 export const selectUnconfirmedTransactions = createSelector(
     [selectUnconfirmed, selectDateYear],
@@ -371,17 +420,3 @@ export const selectUnconfirmedLength = createSelector(
         return acc
     }, 0)
 )
-
-export const {
-    useTransactionsSyncMutation,
-    useGetTransactionsQuery,
-    useLazyGetTransactionsQuery,
-    useLazyGetUnconfirmedTransactionsQuery,
-    useConfirmTransactionsMutation,
-    useUpdateTransactionMutation,
-    useAddNoteMutation,
-    useUpdateDeleteNoteMutation,
-    useGetMerchantsQuery,
-} = extendedApiSlice
-
-export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransactions.useQueryState

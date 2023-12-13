@@ -4,7 +4,7 @@ import { authSlice } from '@features/authSlice'
 import { toastSlice } from '@features/toastSlice'
 import { categorySlice } from './categorySlice'
 import { billSlice } from './billSlice'
-import { confirmStack } from './transactionsSlice'
+import { confirmStack, filteredFetchedConfirmedTransactions } from './transactionsSlice'
 
 const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
@@ -12,7 +12,8 @@ const rootReducer = combineReducers({
     toast: toastSlice.reducer,
     categories: categorySlice.reducer,
     bills: billSlice.reducer,
-    confirmStack: confirmStack.reducer
+    confirmStack: confirmStack.reducer,
+    filteredFetchedonfirmedTransactions: filteredFetchedConfirmedTransactions.reducer,
 })
 
 export default rootReducer

@@ -14,9 +14,14 @@ import {
 import dayjs from 'dayjs'
 
 import './styles/Header.scss'
-import { useLazyGetTransactionsQuery } from '@features/transactionsSlice';
+
 import { useGetAccountsQuery } from '@features/accountsSlice'
-import { useGetMerchantsQuery } from '@features/transactionsSlice'
+import {
+    useGetMerchantsQuery,
+    useLazyGetTransactionsQuery,
+    selectConfirmedTransactionFilter,
+    setConfirmedTransactionFilter
+} from '@features/transactionsSlice'
 import { Funnel } from '@ledget/media'
 import { FullSelectCategoryBill } from '@components/dropdowns'
 import { LimitAmountInput } from '@components/inputs'
@@ -32,6 +37,8 @@ import {
 } from '@ledget/ui'
 import { useFilterFormContext } from '../context';
 import { useGetStartEndQueryParams } from '@hooks/utilHooks';
+import { useAppSelector } from '@hooks/store';
+import { formatCurrency } from '@ledget/ui';
 
 
 const { RangePicker } = DatePicker
@@ -45,14 +52,17 @@ const filterSchema = z.object({
     accounts: z.array(z.string()).optional(),
 })
 
+export type TransactionFilterSchema = z.infer<typeof filterSchema>
+
 const FilterWindow = () => {
     const { setShowFilterForm } = useFilterFormContext()
     const { data: accountsData } = useGetAccountsQuery()
     const { data: merchantsData } = useGetMerchantsQuery()
     const [getLazyTransactions] = useLazyGetTransactionsQuery()
     const { start, end } = useGetStartEndQueryParams()
+    const filter = useAppSelector(selectConfirmedTransactionFilter)
 
-    const { handleSubmit, control, reset, resetField } = useForm<z.infer<typeof filterSchema>>({
+    const { handleSubmit, control, reset, resetField } = useForm<TransactionFilterSchema>({
         resolver: zodResolver(filterSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
@@ -69,12 +79,15 @@ const FilterWindow = () => {
             key={resetKey}
             onSubmit={handleSubmit((data) => {
                 const { date_range, ...rest } = data
+                setConfirmedTransactionFilter(data)
                 const newData = {
                     ...rest,
                     start: date_range?.[0],
                     end: date_range?.[1],
+                    confirmed: true
                 }
                 getLazyTransactions(newData)
+                setShowFilterForm(false)
             })}
         >
             <fieldset>
@@ -86,7 +99,14 @@ const FilterWindow = () => {
                         <>
                             <label htmlFor="date_range">Date</label>
                             <RangePicker
-                                defaultValue={[dayjs.unix(start), dayjs.unix(end)]}
+                                defaultValue={
+                                    filter?.date_range
+                                        ? [
+                                            dayjs.unix(filter.date_range[0]),
+                                            dayjs.unix(filter.date_range[1])
+                                        ]
+                                        : [dayjs.unix(start), dayjs.unix(end)]
+                                }
                                 format="MM/DD/YYYY"
                                 className='ledget-range-picker'
                                 aria-label='Date Range'
@@ -104,6 +124,7 @@ const FilterWindow = () => {
                 <label htmlFor='limit_amount'>Amount</label>
                 <div className='amounts'>
                     <LimitAmountInput
+                        defaultValue={Number(filter?.limit_amount_lower)}
                         slim={true}
                         name="limit_amount_lower"
                         hasLabel={false}
@@ -111,6 +132,7 @@ const FilterWindow = () => {
                         control={control}
                     />
                     <LimitAmountInput
+                        defaultValue={Number(filter?.limit_amount_upper)}
                         slim={true}
                         name="limit_amount_upper"
                         hasLabel={false}

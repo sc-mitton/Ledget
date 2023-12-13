@@ -31,14 +31,12 @@ interface I1 extends IBase {
     multiple?: true;
     value?: (Category | Bill)[];
     onChange?: (value: (Category | Bill)[]) => void;
-    defaultValue?: (Category | Bill)[];
 }
 
 interface I2 extends IBase {
     multiple?: false;
     value?: Category | Bill;
     onChange?: (value: Category | Bill) => void;
-    defaultValue?: Category | Bill;
 }
 
 type I = I1 | I2
@@ -158,19 +156,18 @@ interface SelectorBase extends IBase {
 
 interface Selector1 extends SelectorBase {
     multiple?: true;
-    defaultValue?: (Category | Bill)[];
+    defaultValue?: (Category | Bill)[]
 }
 
 interface Selector2 extends SelectorBase {
     multiple?: false;
-    defaultValue?: Category | Bill;
+    defaultValue?: Category | Bill
 }
 
 type Selector = Selector1 | Selector2
 
 export const FullSelectCategoryBill =
     ({ SelectorComponent, placeholder, children, control, ...rest }: Selector) => {
-
         const [value, onChange] = useState<typeof rest.defaultValue>()
         const [showBillCatSelect, setShowBillCatSelect] = useState(false)
         const dropdownRef = useRef<HTMLDivElement>(null)
@@ -190,10 +187,6 @@ export const FullSelectCategoryBill =
         const { field } = useController({ name: name.current, control })
 
         // Update react-hook-form value
-        useEffect(() => {
-            field.onChange(value)
-        }, [value])
-
         useEffect(() => {
             if (Array.isArray(value)) {
                 field.onChange(value ? value.map?.((v) => v.id) : [])
