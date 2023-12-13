@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -11,11 +11,12 @@ import {
     useChain,
     useSpringRef
 } from '@react-spring/web'
+import dayjs from 'dayjs'
+
+import './styles/Header.scss'
 import { useLazyGetTransactionsQuery } from '@features/transactionsSlice';
 import { useGetAccountsQuery } from '@features/accountsSlice'
 import { useGetMerchantsQuery } from '@features/transactionsSlice'
-
-import './styles/Header.scss'
 import { Funnel } from '@ledget/media'
 import { FullSelectCategoryBill } from '@components/dropdowns'
 import { LimitAmountInput } from '@components/inputs'
@@ -30,6 +31,7 @@ import {
     DeleteButton
 } from '@ledget/ui'
 import { useFilterFormContext } from '../context';
+import { useGetStartEndQueryParams } from '@hooks/utilHooks';
 
 
 const { RangePicker } = DatePicker
@@ -48,6 +50,7 @@ const FilterWindow = () => {
     const { data: accountsData } = useGetAccountsQuery()
     const { data: merchantsData } = useGetMerchantsQuery()
     const [getLazyTransactions] = useLazyGetTransactionsQuery()
+    const { start, end } = useGetStartEndQueryParams()
 
     const { handleSubmit, control, reset, resetField } = useForm<z.infer<typeof filterSchema>>({
         resolver: zodResolver(filterSchema),
@@ -83,7 +86,8 @@ const FilterWindow = () => {
                         <>
                             <label htmlFor="date_range">Date</label>
                             <RangePicker
-                                format="YYYY-MM-DD"
+                                defaultValue={[dayjs.unix(start), dayjs.unix(end)]}
+                                format="MM/DD/YYYY"
                                 className='ledget-range-picker'
                                 aria-label='Date Range'
                                 {...props}
