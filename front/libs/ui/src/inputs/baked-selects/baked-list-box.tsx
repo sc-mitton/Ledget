@@ -10,12 +10,9 @@ import { ArrowIcon, CheckMark } from '@ledget/media'
 import { DropdownItem } from "../../pieces/containers/containers"
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators'
 
-export interface BakedSelectProps {
-  options?: readonly any[]
+export interface BakedSelectPropsBase<T> {
   name?: string
-  disabled?: any[]
-  value?: string
-  onChange?: (val?: any) => void
+  options?: T[]
   labelKey?: string
   subLabelKey?: string
   valueKey?: string
@@ -27,14 +24,39 @@ export interface BakedSelectProps {
   as?: React.ElementType
   style?: React.CSSProperties
   control?: Control<any>
-  multiple?: boolean
   maxLength?: number
   buttonMaxWidth?: boolean
   dividerKey?: string
   showLabel?: boolean
 }
 
-const useOptionalControl = (props: Pick<BakedSelectProps, 'control' | 'name'>): UseControllerReturn | { field: undefined } => {
+interface BakedSelectProps1<T> extends BakedSelectPropsBase<T> {
+  multiple?: true
+  value?: T[]
+  defaultValue?: T[]
+  disabled?: T[]
+  onChange?: (val?: T[]) => void
+}
+
+interface BakedSelectProps2<T> extends BakedSelectPropsBase<T> {
+  multiple?: false
+  value?: T
+  defaultValue?: T
+  disabled?: T
+  onChange?: (val?: T) => void
+}
+
+export type BakedSelectProps<T> = BakedSelectProps1<T> | BakedSelectProps2<T>
+
+export type Option = {
+  label?: string
+  value?: string
+  default?: boolean
+  disabled?: boolean
+  [key: string]: any
+}
+
+const useOptionalControl = (props: Pick<BakedSelectProps<any>, 'control' | 'name'>): UseControllerReturn | { field: undefined } => {
   if (!props.control) return { field: undefined }
   return useController({
     name: props.name || 'baked-list-box',
@@ -43,7 +65,7 @@ const useOptionalControl = (props: Pick<BakedSelectProps, 'control' | 'name'>): 
 }
 
 // export function BakedListBox(props: BakedListBoxProps) {
-export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((props, ref) => {
+export const BakedListBox = <T extends Option>(props: BakedSelectProps<T> | BakedSelectProps<string>) => {
   const id = useId()
   const buttonRef = useRef<HTMLButtonElement | null>(null)
   const [value, onChange] = useState<any>()
@@ -68,9 +90,10 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
   useEffect(() => {
     const defaultValue = props.options?.find((op) => typeof op !== 'string' && op.default)
 
-    if (defaultValue) {
-      onChange(defaultValue[props.valueKey || 'value'])
-    }
+    onChange(
+      typeof defaultValue === 'string'
+        ? defaultValue
+        : defaultValue?.[props.valueKey || 'value'])
   }, [])
 
   useEffect(() => {
@@ -80,7 +103,10 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
           ? op.default
           : false
       })
-      onChange(defaultOp ? defaultOp[props.valueKey || 'value'] : undefined)
+      onChange(
+        typeof defaultOp === 'string'
+          ? defaultOp
+          : defaultOp?.[props.valueKey || 'value'])
     }
   }, [props.options])
 
@@ -96,11 +122,7 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
       {({ open }) => (
         <>
           <Listbox.Button
-            ref={(el) => {
-              buttonRef.current = el
-              if (typeof ref === 'function') ref(el)
-              else if (ref) ref.current = el
-            }}
+            ref={buttonRef}
             as={props.as}
             style={props.style}
             className={`${props.as ? 'custom' : ''} ${open ? 'active' : ''}`}
@@ -155,15 +177,21 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
                 ?
                 <Listbox.Options className="baked-list-options" static>
                   {props.options.map((op, index) => {
-                    const isDisabled = props.disabled?.includes(op) || op.disabled
-                    const label = typeof op === 'string' ? op : op[props.labelKey || 'label']
-                    const value = props.valueKey ? op[props.valueKey] : op
+                    const isDisabled = typeof op === 'string'
+                      ? props.disabled?.includes(op)
+                      : props.disabled?.includes(op[props.valueKey || 'value']) || op.disabled
+                    const label = typeof op === 'string'
+                      ? op
+                      : op[props.labelKey || 'label']
+                    const value =
+                      typeof op !== 'string'
+                        ? op[props.valueKey || 'value']
+                        : op
 
                     const hasDivider =
                       props.dividerKey &&
-                      index > 0 &&
                       typeof op === 'object' &&
-                      op[props.dividerKey || 'label'] !== props.options?.[index - 1][props.dividerKey || 'label']
+                      op[props.dividerKey] !== (props.options as any)[index - 1]?.[props.dividerKey]
 
                     return (
                       <>
@@ -207,7 +235,7 @@ export const BakedListBox = forwardRef<HTMLButtonElement, BakedSelectProps>((pro
       )}
     </Listbox>
   )
-})
+}
 
 BakedListBox.defaultProps = {
   withCheckMarkIndicator: false,

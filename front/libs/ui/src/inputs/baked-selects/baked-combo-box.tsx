@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useId, ComponentProps, forwardRef } from '
 
 import { Combobox } from '@headlessui/react';
 import { useController } from 'react-hook-form';
-import { BakedSelectProps } from './baked-list-box';
+import { BakedSelectProps, Option } from './baked-list-box';
 
 import './baked-selects.scss';
 import { DropAnimation } from '../../animations/animations';
@@ -12,7 +12,7 @@ import { DropdownItem } from "../../pieces/containers/containers";
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
 
 
-export const BakedComboBox = (props: Omit<BakedSelectProps, 'as'> & { WrapperComponent: React.ElementType, slim?: boolean }) => {
+export const BakedComboBox = <T extends Option>(props: Omit<BakedSelectProps<string> | BakedSelectProps<string>, 'as'> & { WrapperComponent: React.ElementType, slim?: boolean }) => {
   const id = useId()
   const [value, onChange] = useState<any>()
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -50,7 +50,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps, 'as'> & { WrapperCom
       }}
       as='div'
       className="baked-listbox--container"
-      defaultValue={props.options?.find((op) => typeof op !== 'string' && op.default)?.value}
+      defaultValue={props.defaultValue}
       multiple={props.multiple as any}
     >
       {({ open }) => (
@@ -97,9 +97,8 @@ export const BakedComboBox = (props: Omit<BakedSelectProps, 'as'> & { WrapperCom
                     const label = typeof op === 'string' ? op : op[props.labelKey || 'label']
                     const hasDivider =
                       props.dividerKey &&
-                      index > 0 &&
                       typeof op === 'object' &&
-                      op[props.dividerKey || 'label'] !== props.options?.[index - 1][props.dividerKey || 'label']
+                      op[props.dividerKey] !== (props.options as any)[index - 1]?.[props.dividerKey]
 
                     return (
                       <>

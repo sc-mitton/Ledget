@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useWatch, useForm } from 'react-hook-form'
-import { DatePicker } from "antd";
+import { DatePicker } from "antd"
 import {
     useTransition,
     animated,
@@ -38,7 +38,6 @@ import {
 import { useFilterFormContext } from '../context';
 import { useGetStartEndQueryParams } from '@hooks/utilHooks';
 import { useAppSelector } from '@hooks/store';
-import { formatCurrency } from '@ledget/ui';
 
 
 const { RangePicker } = DatePicker
@@ -70,6 +69,7 @@ const FilterWindow = () => {
 
     const merchantsFieldValue = useWatch({ control, name: 'merchants' })
     const accountsFieldValue = useWatch({ control, name: 'accounts' })
+    const dateRangeFieldValue = useWatch({ control, name: 'date_range' })
     const [resetKey, setResetKey] = useState(Math.random().toString(36).slice(2, 9))
     const [resetAccountMerchantKeys, setResetAccountMerchantKeys] =
         useState([Math.random().toString(36).slice(2, 9), Math.random().toString(36).slice(2, 9)])
@@ -159,19 +159,21 @@ const FilterWindow = () => {
                 <div>
                     <div key={resetAccountMerchantKeys[0]}>
                         <BakedComboBox
+                            options={merchantsData}
+                            multiple={true}
                             slim={true}
                             name="merchants"
                             control={control as any}
-                            options={merchantsData}
+                            defaultValue={filter?.merchants}
                             placement={'left'}
                             placeholder={'Merchant'}
                             maxLength={24}
-                            multiple={true}
                             style={{ marginTop: '.375em' }}
                         />
                     </div>
                     <div key={resetAccountMerchantKeys[1]}>
                         <BakedListBox
+                            defaultValue={accountsData?.accounts.filter(acc => accountsFieldValue?.includes(acc.account_id))}
                             as={SlimInputButton}
                             name="accounts"
                             control={control as any}
