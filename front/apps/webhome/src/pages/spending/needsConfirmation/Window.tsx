@@ -65,7 +65,7 @@ const _getContainerHeight = (length: number, expanded: boolean) => {
 const _getOpacity = (index: number, expanded: boolean) => {
     const belowStackMax = index > stackMax
     if (!expanded && index == 1) {
-        return .8
+        return .9
     }
     return (!expanded && belowStackMax && index !== 0) ? 0 : 1
 }
@@ -102,6 +102,16 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
         }
     }
 }
+
+// const _getBackGroundColor = (index: number, expanded: boolean) => {
+//     let lightness: number
+//     if (index === 0 || expanded) {
+//         lightness = 98
+//     } else {
+//         lightness = 98 - 4 * (index * 2)
+//     }
+//     return `hsl(0, 0%, ${lightness}%)`
+// }
 
 const NewItem: FC<{
     item: Transaction

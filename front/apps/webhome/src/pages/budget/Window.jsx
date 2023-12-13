@@ -137,7 +137,7 @@ function Window() {
     return (
         <>
             <div id="budget-window">
-                <div className="window">
+                <div>
                     <div className="window-header">
                         <MonthPicker />
                         <div className="header-btns">

@@ -72,6 +72,7 @@
     --faded-text: rgb(0, 0, 0, .6);
 
     --input-padding: .525em 1em;
+    --window-padding: 1.5em;
 
     /* Icons & Buttons */
     --btn-light-light-gray: #eeeeee;
@@ -312,7 +313,7 @@ div.body {
 .window {
     box-shadow: var(--window-drop-shadow);
     border-radius: var(--border-radius3);
-    padding: 1.5em;
+    padding: var(--window-padding);
     box-sizing: border-box;
     border: 1.25px solid var(--window-border);
     background-color: var(--window);

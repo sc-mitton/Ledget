@@ -6,8 +6,14 @@ header {
     width: 100%;
     padding: .75em 0;
 
+    &.narrow {
+        &>div {
+            max-width: calc(100% - 2.75rem);
+        }
+    }
+
     &>div {
-        max-width: 87.5rem;
+        max-width: calc(100% - 3.5rem);
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
