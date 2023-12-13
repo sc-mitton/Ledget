@@ -246,14 +246,30 @@ class TransactionViewSet(ModelViewSet):
         return instances
 
     def get_queryset(self):
-        params = self.request.query_params
-        start = params.get('start', None)
-        end = params.get('end', None)
+        filter_args = self._exract_filter_args()
+        print('filter_args', filter_args)
+        base_qset = Transaction.objects.filter(**filter_args) \
+                                       .select_related(
+                                           'predicted_category',
+                                           'predicted_bill') \
+                                       .prefetch_related('notes')
 
-        if start and end:
-            return self._get_timeslice_of_transactions(start, end)
-        else:
-            return self._get_transactions()
+        # Get prefetched data for confirmed transactions query
+        # , or if unspecified, assume the data should be prefetched
+        if self.request.query_params.get('confirmed') == 'true':
+            prefetch_categories = Prefetch(
+                'categories',
+                queryset=Category.objects.all().annotate(
+                    fraction=F('transactioncategory__fraction')))
+
+            base_qset = base_qset.filter(
+                Q(bill__isnull=False) | Q(transactioncategory__isnull=False)
+            ).select_related('bill') \
+             .prefetch_related(prefetch_categories)
+
+        return base_qset.prefetch_related('notes') \
+                        .order_by('-datetime') \
+                        .distinct()
 
     @action(detail=False, methods=['get'], url_path='merchants',
             url_name='merchants', permission_classes=[IsAuthedVerifiedSubscriber])
@@ -298,7 +314,8 @@ class TransactionViewSet(ModelViewSet):
         query_params_2_filter_params = {
             'merchant': 'merchant_name__in',
             'account': 'account_id',
-            'category': 'transactioncategory__category_id__in',
+            'category': 'transactioncategory__category_id',
+            'categories': 'transactioncategory__category_id__in',
             'limit_amount_lower': 'amount__gte',
             'limit_amount_upper': 'amount__lte',
             'type': 'account__type',
@@ -316,31 +333,6 @@ class TransactionViewSet(ModelViewSet):
             result[query_params_2_filter_params[key]] = value
 
         return result
-
-    def _get_timeslice_of_transactions(self, start, end):
-        filter_args = self._exract_filter_args()
-        base_qset = Transaction.objects.filter(**filter_args) \
-                                       .select_related(
-                                           'predicted_category',
-                                           'predicted_bill') \
-                                       .prefetch_related('notes')
-
-        # Get prefetched data for confirmed transactions query
-        # , or if unspecified, assume the data should be prefetched
-        if self.request.query_params.get('confirmed') == 'true':
-            prefetch_categories = Prefetch(
-                'categories',
-                queryset=Category.objects.all().annotate(
-                    fraction=F('transactioncategory__fraction')))
-
-            base_qset = base_qset.filter(
-                Q(bill__isnull=False) | Q(transactioncategory__isnull=False)
-            ).select_related('bill') \
-             .prefetch_related(prefetch_categories)
-
-        return base_qset.prefetch_related('notes') \
-                        .order_by('-datetime') \
-                        .distinct()
 
 
 class NoteViewSet(ModelViewSet):

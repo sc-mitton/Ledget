@@ -385,32 +385,33 @@
 // Animated-stroke
 
 button {
-    .animated-stroke svg {
+    .animated-stroke {
         stroke-dasharray: 1000;
         stroke-dashoffset: 1000;
 
-        line:last-child,
-        line:first-child {
+        line:first-of-type {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 0;
+        }
+
+        line:last-of-type {
             stroke-dasharray: 1000;
             stroke-dashoffset: 1000;
         }
-    }
 
-    &.hoverable:hover,
-    &.not-hoverable {
-        .animated-stroke {
+        &.drawable:hover,
+        &.not-drawable {
             animation: draw 1s ease-in-out forwards;
 
-            line:first-child {
-                animation: draw .5s ease-in-out forwards;
-                animation-delay: .1s;
-            }
+            // line:first-child {
+            //     animation: draw .5s ease-in-out forwards;
+            //     animation-delay: .1s;
+            // }
 
-            line:last-child {
+            line:last-of-type {
                 animation: draw .5s ease-in-out forwards;
                 animation-delay: .2s;
             }
-
         }
     }
 }
@@ -445,27 +446,30 @@ button {
 
 .delete-button-show {
     margin: 0 .125em;
-    opacity: .6;
     cursor: pointer;
     transition: all .22s ease;
+
+    svg {
+        opacity: .6;
+        transition: all .22s ease;
+    }
 }
 
 .delete-button:hover,
 .delete-button-show:hover {
-    opacity: .9;
     transform: rotate(-45deg);
     transition: all .22s ease;
     transition-delay: .1s;
-}
 
-.delete-button-show.not-hoverable,
-.delete-button.not-hoverable {
-    transform: rotate(-45deg);
-
-    &:hover {
-        opacity: 1;
+    svg {
+        opacity: .9;
         transition: all .22s ease;
     }
+}
+
+.delete-button-show.not-drawable,
+.delete-button.not-drawable {
+    transform: rotate(-45deg);
 }
 
 .delete-button.show {

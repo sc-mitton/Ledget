@@ -168,7 +168,7 @@ const FilterWindow = () => {
                     {merchantsFieldValue &&
                         <DeleteButton
                             show={true}
-                            hoverable={false}
+                            drawable={false}
                             onClick={() => {
                                 setResetAccountMerchantKeys(prev => [
                                     Math.random().toString(36).slice(2, 9),
@@ -188,7 +188,7 @@ const FilterWindow = () => {
                     {accountsFieldValue &&
                         <DeleteButton
                             show={true}
-                            hoverable={false}
+                            drawable={false}
                             onClick={() => {
                                 setResetAccountMerchantKeys(prev => [
                                     prev[0],

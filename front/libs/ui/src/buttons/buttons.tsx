@@ -159,17 +159,16 @@ export const PlusPill: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled?: '
   )
 
 export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> &
-{ fill?: string, stroke?: string, show?: boolean, styled?: 'input', hoverable?: boolean }>
-  = ({ className, show, fill, stroke, styled, hoverable, ...rest }) => (
+{ fill?: string, stroke?: string, show?: boolean, styled?: 'input', drawable?: boolean }>
+  = ({ className, show, fill, stroke, styled, drawable = true, ...rest }) => (
     <button
       className={`btn delete-button${show ? '-show' : ''}
-        ${className}
-        ${hoverable ? 'hoverable' : 'not-hoverable'}`
-      }
+        ${drawable ? 'drawable' : 'not-drawable'}
+        ${className ? className : ''}`}
       {...rest}
     >
       <Delete
-        className={`animated-stroke ${hoverable ? 'hoverable' : 'not-hoverable'}`}
+        className={`animated-stroke ${drawable ? 'drawable' : 'not-drawable'}`}
         fill={fill}
         stroke={stroke}
         size={'1.2em'}

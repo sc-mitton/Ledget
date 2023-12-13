@@ -34,7 +34,7 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
         find: (element) => {
             return (element.firstChild as any)?.getAttribute('aria-current') === 'page'
         },
-        styles: { borderRadius: 'var(--border-radius3)', backgroundColor: 'var(--m-text)' },
+        styles: { borderRadius: 'var(--border-radius3)', backgroundColor: 'var(--white-text)' },
     })
 
     const [showPill, setShowPill] = useState<boolean>(false)
@@ -124,7 +124,7 @@ const DropDownMenu = ({ isNarrow, setModal }:
             {({ open }) => (
                 <div style={{ position: 'relative' }}>
                     <Menu.Button className="profile-button">
-                        <Profile1 fill={'var(--main-dark4'} />
+                        <Profile1 fill={'var(--white-text'} />
                     </Menu.Button>
                     <DropAnimation
                         placement='right'
@@ -178,9 +178,11 @@ function Header({ isNarrow }: { isNarrow: boolean }) {
     return (
         <>
             <header className={`${isNarrow ? 'narrow' : ''}`}>
-                <div><LedgetLogoIcon /></div>
-                <div><Navigation isNarrow={isNarrow} /></div>
-                <DropDownMenu setModal={setModal} isNarrow={isNarrow} />
+                <div>
+                    <div><LedgetLogoIcon /></div>
+                    <div><Navigation isNarrow={isNarrow} /></div>
+                    <DropDownMenu setModal={setModal} isNarrow={isNarrow} />
+                </div>
             </header>
             <Modal selection={modal} />
         </>
