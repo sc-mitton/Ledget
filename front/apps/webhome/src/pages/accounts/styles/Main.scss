@@ -1,5 +1,8 @@
 @import '@styles/text.scss';
 
+$wafer-height: 6rem;
+$wafer-container-padding: .75rem;
+
 .account-wafers--container,
 .skeleton-account-wafers--container {
     display: grid;
@@ -55,11 +58,11 @@
 .account-wafers,
 .skeleton-wafers {
     display: inline-flex;
-    height: 6.75rem;
+    height: calc($wafer-height + 2 * $wafer-container-padding - .25em);
     gap: .75em;
     overflow-x: hidden;
     overflow-y: hidden;
-    padding: 1em 0 1em .25em;
+    padding: $wafer-container-padding 0 $wafer-container-padding .25em;
     animation: make-scroll 1s ease-in-out forwards;
     animation-delay: 1s;
 }
@@ -112,7 +115,7 @@
 .skeleton-account-wafer--container {
     padding-top: .525em;
     padding-bottom: .525em;
-    height: 5.75rem;
+    height: $wafer-height;
     border-radius: var(--border-radius5);
 }
 
@@ -122,6 +125,15 @@
 
 .skeleton-account-wafer--container {
     position: relative;
+
+    .wafer-institution-logo {
+        position: relative;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        transform: translateY(-50%);
+        width: min-content;
+    }
 }
 
 .skeleton-account-wafer,
@@ -137,6 +149,8 @@
 .account-wafer {
     box-shadow: var(--new-item-drop-shadow);
     border: 1px solid white;
+    display: flex;
+    flex-direction: column;
 
     &>button:first-child {
         visibility: hidden;
@@ -178,40 +192,60 @@
     &>div[role='button'] {
         flex-grow: 1;
         display: flex;
+        gap: .125em;
         flex-direction: column;
         align-items: flex-start;
         cursor: pointer;
         padding-left: 1em;
         padding-right: 1em;
+
+        .wafer-institution-logo {
+            margin-left: -.125em;
+            margin-bottom: .25em;
+        }
+
+        .wafer-name--container {
+            position: relative;
+            overflow: hidden;
+            width: calc(100% - .375em);
+            display: inline-flex;
+            flex-direction: column;
+            white-space: nowrap;
+
+            * {
+                font-weight: 500;
+            }
+
+            &.masked {
+                mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            }
+
+            .spacer {
+                visibility: hidden;
+            }
+        }
+
+        .wafer-meta--container {
+            opacity: .8;
+            font-size: .8rem;
+            display: flex;
+            gap: .25em;
+            align-items: center;
+        }
+
+        .wafer-balance--container {
+            flex-grow: 1;
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+
+            div * {
+                font-size: 1rem;
+                letter-spacing: .0625em;
+                font-weight: 500;
+            }
+        }
     }
-
-    &>div:nth-child(2) {
-        margin-left: .75em;
-    }
-}
-
-.wafer-name--container {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    display: inline-flex;
-    flex-direction: column;
-    white-space: nowrap;
-    padding-left: .25em;
-    margin-left: -.25em;
-
-    * {
-        font-weight: 500;
-    }
-
-    &.masked {
-        mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-    }
-
-    .spacer {
-        visibility: hidden;
-    }
-
 }
 
 
@@ -267,22 +301,6 @@
     100% {
         opacity: 1;
         transform: translateX(-115%);
-    }
-}
-
-.wafer-meta--container {
-    flex-grow: 1;
-    opacity: .8;
-    font-size: .8rem;
-}
-
-.wafer-balance--container {
-    margin-top: .5em;
-
-    * {
-        font-size: 1rem;
-        letter-spacing: .0625em;
-        font-weight: 500;
     }
 }
 
@@ -422,7 +440,7 @@ $borderRadius2: var(--border-radius2);
 
     .account-wafer--container,
     .skeleton-account-wafer--container {
-        height: 5.25rem;
+        height: calc($wafer-height - .5em);
     }
 
 
@@ -434,8 +452,8 @@ $borderRadius2: var(--border-radius2);
 
     .account-wafers,
     .skeleton-account-wafers {
-        padding: 1em 0;
-        height: 6.25rem;
+        padding: $wafer-container-padding 0;
+        height: calc($wafer-height + 2 * $wafer-container-padding - .5em);
     }
 
     .account-wafers--container {

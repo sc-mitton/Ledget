@@ -16,6 +16,7 @@ import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
 import { AccountWafers } from './AccountWafers'
+import { NotImplimentedMessage } from '@components/pieces'
 
 const getNavIcon = (key = '', isCurrent: boolean) => {
     const fill = isCurrent ? 'var(--main-dark4)' : 'currentColor'
@@ -198,9 +199,9 @@ function Window() {
                         key={location.pathname.split('/')[2]}
                     >
                         <Route path="deposits" element={<Transactions />} />
-                        <Route path="investments" element={<div>Investments</div>} />
+                        <Route path="investments" element={<NotImplimentedMessage />} />
                         <Route path="credit" element={<Transactions />} />
-                        <Route path="loans" element={<div>Loans</div>} />
+                        <Route path="loans" element={<NotImplimentedMessage />} />
                         <Route path="*" element={<NotFound hasBackground={false} />} />
                     </Routes>
                 </motion.div>

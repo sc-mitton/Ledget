@@ -21,10 +21,12 @@ interface Base64LogoProps {
   backgroundColor?: string;
   size?: string;
   style?: React.CSSProperties;
+  className?: string;
+  styled?: boolean;
 }
 
 export const Base64Logo = (props: Base64LogoProps) => {
-  const { data, backgroundColor, alt, style, size = '1em', ...rest } = props
+  const { data, backgroundColor, className, alt, style, styled = true, size = '1em', ...rest } = props
 
   const config = {
     padding: '1px',
@@ -39,8 +41,8 @@ export const Base64Logo = (props: Base64LogoProps) => {
 
   return (
     <div
-      className='base64-image--container'
-      style={config}
+      className={`base64-image--container ${className}`}
+      style={styled ? config : {}}
       {...rest}
     >
       <img

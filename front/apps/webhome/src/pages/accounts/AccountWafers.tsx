@@ -163,7 +163,8 @@ export const FilledWafers = () => {
 
     return (
         <div className="account-wafers--container inner-window">
-            <WafersHeader />
+            {['deposits', 'credit'].includes(location.pathname.split('/')[2])
+                && <WafersHeader />}
             <div
                 className="account-wafers"
                 onScroll={(e) => {
@@ -193,15 +194,17 @@ export const FilledWafers = () => {
                                     id={`${account.account_id}`}
                                     tabIndex={-1}
                                 />
-                                <Base64Logo
-                                    data={institution?.logo}
-                                    alt={institution?.name.charAt(0).toUpperCase() || 'A'}
-                                />
                                 <div
                                     role="button"
                                     tabIndex={-1}
                                     onClick={() => { handleClick(account.account_id) }}
                                 >
+                                    <Base64Logo
+                                        className="wafer-institution-logo"
+                                        styled={false}
+                                        data={institution?.logo}
+                                        alt={institution?.name.charAt(0).toUpperCase() || 'A'}
+                                    />
                                     <div className={`wafer-name--container ${nameIsLong ? 'masked' : ''}`}>
                                         <div className={`${nameIsLong ? 'scrolling-text' : ''}`}>
                                             {account.official_name}
@@ -215,7 +218,7 @@ export const FilledWafers = () => {
                                         {account.mask}
                                     </div>
                                     <div className="wafer-balance--container">
-                                        <DollarCents value={Big(account.balances.current).times(100).toNumber()} />
+                                        <div><DollarCents value={Big(account.balances.current).times(100).toNumber()} /></div>
                                     </div>
                                 </div>
                             </div>

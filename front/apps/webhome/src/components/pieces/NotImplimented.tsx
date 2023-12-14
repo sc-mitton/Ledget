@@ -1,8 +1,11 @@
 
+import './styles/NotImplimented.scss'
 
 const NotImplimented = () => {
     return (
-        <div>Feature Coming Soon!</div>
+        <div className="not-implimented-message">
+            <span>Feature Coming Soon</span>
+        </div>
     )
 }
 
