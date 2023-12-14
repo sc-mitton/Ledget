@@ -146,7 +146,7 @@ def sync_transactions(plaid_item: PlaidItem) -> dict:
 
 class TransactionsPagination(LimitOffsetPagination):
     page_size = 25
-    ordering = '-datetime'
+    ordering = ['-datetime', '-date']
 
     def get_paginated_response(self, data):
         return Response(OrderedDict([
@@ -237,7 +237,7 @@ class TransactionViewSet(ModelViewSet):
              .prefetch_related(prefetch_categories)
 
         return base_qset.prefetch_related('notes') \
-                        .order_by('-datetime') \
+                        .order_by('-datetime', '-date') \
                         .distinct()
 
     @action(detail=False, methods=['get'], url_path='merchants',

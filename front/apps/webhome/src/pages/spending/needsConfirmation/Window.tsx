@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
+import dayjs from 'dayjs'
 
 import "./styles/Window.scss"
 import TransactionModal from '@modals/TransactionItem'
@@ -168,7 +169,7 @@ const NewItem: FC<{
                     </div>
                     <div className={item.amount! < 0 ? 'is-debit' : ''}>
                         <DollarCents value={item.amount!} />
-                        <span>{formatDateOrRelativeDate(new Date(item.datetime!).getTime())}</span>
+                        <span>{formatDateOrRelativeDate(dayjs(item.datetime!).valueOf())}</span>
                     </div>
                 </div>
             </div>

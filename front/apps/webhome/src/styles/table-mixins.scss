@@ -16,8 +16,8 @@
 
 @mixin invert-image {
     img {
-        filter: invert(1) contrast(3.5);
-        opacity: .7;
+        // filter: invert(1) contrast(3.5);
+        // opacity: .7;
         transform: scale(1.2);
     }
 }

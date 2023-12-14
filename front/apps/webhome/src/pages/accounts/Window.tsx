@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { Outlet, Routes, Route, useNavigate, useLocation, useSearchParams } from 'react-router-dom'
+import { Outlet, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import './styles/Window.css'
+import './styles/Window.scss'
 import './styles/Main.scss'
-import Deposits from './DepositsTab'
+import Transactions from './Transactions'
 
 import NotFound from '@pages/notFound/NotFound'
 import { RefreshButton, usePillAnimation } from '@ledget/ui'
@@ -71,7 +71,6 @@ const Header = () => {
 
     const location = useLocation()
     const navigate = useNavigate()
-    const [searchParams] = useSearchParams()
     const currentPath = location.pathname.split('/')[2]
 
     const [syncTransactions, {
@@ -177,7 +176,7 @@ function Window() {
 
     return (
         <div id="accounts-window">
-            <div className="window">
+            <div>
                 <Header />
                 <AccountWafers />
             </div>
@@ -198,9 +197,9 @@ function Window() {
                         location={location}
                         key={location.pathname.split('/')[2]}
                     >
-                        <Route path="deposits" element={<Deposits />} />
+                        <Route path="deposits" element={<Transactions />} />
                         <Route path="investments" element={<div>Investments</div>} />
-                        <Route path="credit" element={<div>Credit</div>} />
+                        <Route path="credit" element={<Transactions />} />
                         <Route path="loans" element={<div>Loans</div>} />
                         <Route path="*" element={<NotFound hasBackground={false} />} />
                     </Routes>

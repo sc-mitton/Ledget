@@ -10,6 +10,10 @@
     margin-top: 1.5em;
     padding-top: 0;
     padding-bottom: 0;
+
+    .account-wafers--header h3 {
+        font-weight: 400;
+    }
 }
 
 @keyframes delay-auto-width {
@@ -109,15 +113,11 @@
     padding-top: .525em;
     padding-bottom: .525em;
     height: 5.75rem;
-    border-radius: var(--border-radius4);
+    border-radius: var(--border-radius5);
 }
 
 .account-wafer--container {
     position: absolute;
-
-    &:active {
-        box-shadow: var(--wafer-drag-drop-shadow);
-    }
 }
 
 .skeleton-account-wafer--container {
@@ -126,7 +126,7 @@
 
 .skeleton-account-wafer,
 .account-wafer {
-    background-color: var(--main-dark5);
+    background-color: var(--window);
     border-radius: var(--border-radius4);
     position: absolute;
     inset: 0;
@@ -135,9 +135,8 @@
 }
 
 .account-wafer {
-    * {
-        color: var(--white-text);
-    }
+    box-shadow: var(--new-item-drop-shadow);
+    border: 1px solid white;
 
     &>button:first-child {
         visibility: hidden;
@@ -169,9 +168,7 @@
 
     &.inactive:hover,
     &.inactive:focus-visible {
-        border: none;
         outline: none;
-        box-shadow: none;
         transform: scale(1.02);
         transition: all .2s ease-out;
         border-radius: var(--border-radius4);
@@ -204,7 +201,7 @@
     margin-left: -.25em;
 
     * {
-        font-weight: 400;
+        font-weight: 500;
     }
 
     &.masked {
@@ -276,7 +273,6 @@
 .wafer-meta--container {
     flex-grow: 1;
     opacity: .8;
-    font-weight: 300;
     font-size: .8rem;
 }
 
@@ -285,8 +281,8 @@
 
     * {
         font-size: 1rem;
-        font-weight: 300;
         letter-spacing: .0625em;
+        font-weight: 500;
     }
 }
 

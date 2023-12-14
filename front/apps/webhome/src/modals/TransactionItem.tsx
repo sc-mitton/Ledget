@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import Big from 'big.js'
 import { Menu } from '@headlessui/react'
 import { AnimatePresence } from 'framer-motion'
+import dayjs from 'dayjs'
 
 import './styles/TransactionItem.scss'
 import { Transaction } from '@features/transactionsSlice'
@@ -152,8 +153,8 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
                             includeBills={true}
                             value={billCat}
                             onChange={setBillCat}
-                            month={new Date(item.datetime).getMonth() + 1}
-                            year={new Date(item.datetime).getFullYear()}
+                            month={dayjs(item.datetime || item.date).month() + 1}
+                            year={dayjs(item.datetime || item.date).year()}
                         />
                     </DropAnimation>
                 </div>
@@ -211,7 +212,7 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
                 </>}
             <div>Date </div>
             <div>
-                {new Date(item?.datetime).toLocaleDateString('en-US', { 'month': 'short', 'day': 'numeric', 'year': 'numeric' })}
+                {dayjs(item?.datetime || item?.date).format('MMM D, YYYY')}
             </div>
             {(item?.address || item?.city || item?.region) &&
                 <>

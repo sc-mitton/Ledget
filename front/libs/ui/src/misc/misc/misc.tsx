@@ -27,10 +27,9 @@ export const Base64Logo = (props: Base64LogoProps) => {
   const { data, backgroundColor, alt, style, size = '1em', ...rest } = props
 
   const config = {
-    filter: 'grayscale(1)',
     padding: '1px',
     backgroundColor: backgroundColor,
-    borderRadius: 'var(--border-radius4)',
+    borderRadius: 'var(--border-radius5)',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',

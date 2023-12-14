@@ -817,7 +817,7 @@ button.disabled-hover:hover svg {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: calc(var(--border-radius4) + .125em);
+    border-radius: calc(var(--border-radius5) + .125em);
     font-size: 1em;
     position: relative;
     overflow: hidden;
@@ -842,7 +842,7 @@ button.disabled-hover:hover svg {
         background-color: var(--btn-gray);
         gap: .5em;
         padding: .25em 20;
-        border-radius: var(--border-radius4);
+        border-radius: var(--border-radius5);
         color: var(--white-text);
         font-weight: 500;
     }

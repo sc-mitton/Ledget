@@ -47,7 +47,7 @@ const WafersHeader = () => {
     const { data, isSuccess } = useGetAccountsQuery()
 
     return (
-        <div>
+        <div className="account-wafers--header">
             <h3>{pathMappings.getWaferTitle(location)}</h3>
             <div>
                 <DollarCents
@@ -115,7 +115,9 @@ export const FilledWafers = () => {
     // Set first account on get accounts success
     useEffect(() => {
         if (data?.accounts && data?.accounts.length > 0) {
-            searchParams.set('account', data?.accounts[0].account_id)
+            const account = data?.accounts.filter((account: any) =>
+                account.type === pathMappings.getAccountType(location))[0]
+            searchParams.set('account', account?.account_id)
             setSearchParams(searchParams)
         }
     }, [isSuccessLoadingAccounts, location.pathname.split('/')[2]])

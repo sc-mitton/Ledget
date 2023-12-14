@@ -1,5 +1,7 @@
 import { useRef, Fragment, useEffect, useState } from 'react'
 
+import dayjs from 'dayjs'
+
 import './styles/TransactionsTable.scss'
 import TransactionModal from '@modals/TransactionItem'
 import { useLazyGetTransactionsQuery, useGetTransactionsQuery, Transaction } from "@features/transactionsSlice"
@@ -26,7 +28,7 @@ const List = ({ setFocusedTransaction }:
       {(transactionsData && transactionsData?.length > 0 && !isError)
         ?
         transactionsData?.map((transaction) => {
-          const date = new Date(transaction.datetime)
+          const date = new Date(transaction.datetime || transaction.date)
           date.getMonth() !== monthholder ? newMonth = true : newMonth = false
           monthholder = date.getMonth()
 
@@ -47,9 +49,7 @@ const List = ({ setFocusedTransaction }:
                     <div>{transaction.preferred_name || transaction.name}</div>
                     <div>
                       <span>
-                        {new Date(transaction.datetime).toLocaleDateString(
-                          'en-us',
-                          { month: 'numeric', day: 'numeric' })}
+                        {dayjs(transaction.datetime || transaction.date).format('MM/DD')}
                       </span>
                       {transaction.categories?.map((category) => (
                         <span className={`emoji ${category.period}`}>

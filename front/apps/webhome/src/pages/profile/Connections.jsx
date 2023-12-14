@@ -156,6 +156,7 @@ const PlaidItem = ({ item }) => {
                         data={item.institution.logo}
                         alt={item.institution.name}
                         style={{ marginRight: '.75em' }}
+                        size={'1.4em'}
                     />
                     <h4>{item.institution.name}</h4>
                 </div>

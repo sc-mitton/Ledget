@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState, FC, HTMLProps, useRef, createContext, us
 
 import { useLocation, useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
+import dayjs from 'dayjs'
 
 import TransactionModal from '@modals/TransactionItem'
 import { useLazyGetTransactionsQuery, useGetTransactionQueryState, Transaction } from '@features/transactionsSlice'
@@ -156,7 +157,7 @@ export const Transactions = () => {
         <>
             {isTransactionsSuccess && transactionsData &&
                 transactionsData.results?.map((transaction: any) => {
-                    const date = new Date(transaction.datetime)
+                    const date = dayjs(transaction.datetime || transaction.date).toDate()
                     const currentMonth = date.getMonth()
                     const currentYear = date.getFullYear()
                     let newMonth = false
