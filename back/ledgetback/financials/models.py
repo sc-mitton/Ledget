@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 import uuid
 
 from core.models import User
@@ -156,54 +155,6 @@ class Transaction(models.Model):
     lat = models.FloatField(null=True, blank=True)
     lon = models.FloatField(null=True, blank=True)
     store_number = models.CharField(max_length=50, null=True, blank=True)
-
-    def create(self, validated_data):
-
-        keys = ['category', 'category_id', 'bill', 'bill_id', 'predicted_category',
-                'predicted_category_id', 'predicted_bill', 'predicted_bill_id']
-
-        add_predicted_category = True
-        for key in keys:
-            if key in validated_data:
-                add_predicted_category = False
-                break
-
-        if add_predicted_category:
-            validated_data['predicted_category'] = Category.objects.filter(
-                usercategory__user=self.context['request'].user,
-                is_default=True).first()
-
-        return super().create(validated_data)
-
-    def bulk_create(self, validated_data):
-
-        keys = ['category', 'category_id', 'bill', 'bill_id', 'predicted_category',
-                'predicted_category_id', 'predicted_bill', 'predicted_bill_id']
-
-        predicted_category = Category.objects.filter(
-                usercategory__user=self.context['request'].user,
-                is_default=True).first()
-
-        new_data = []
-
-        for data in validated_data:
-            if not any(key in data for key in keys):
-                data['predicted_category'] = predicted_category
-            new_data.append(data)
-
-        return super().bulk_create(new_data)
-
-    def bulk_update(self, validated_data):
-
-        keys = ['category', 'category_id', 'bill', 'bill_id']
-
-        i = 0
-        for data in validated_data:
-            if any(key in data for key in keys):
-                validated_data[i]['confirmed_date'] = timezone.now().date()
-                validated_data[i]['confirmed_datetime'] = timezone.now()
-
-        return super().bulk_update(validated_data)
 
 
 class Note(models.Model):

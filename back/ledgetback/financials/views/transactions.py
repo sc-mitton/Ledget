@@ -6,7 +6,6 @@ import pytz
 from django.db import transaction, models
 from django.db.models import Q, Prefetch, F
 
-from rest_framework.generics import GenericAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -54,8 +53,9 @@ filter_target_fields = [
 def sync_transactions(plaid_item: PlaidItem) -> dict:
     added, modified, removed = [], [], []
     plaid_options = TransactionsSyncRequestOptions(
-        include_personal_finance_category=True
-    )
+        include_personal_finance_category=True)
+    default_category = Category.objects.filter(
+        usercategory__user=plaid_item.user, is_default=True).first()
 
     cursor = plaid_item.cursor or ''
     has_more = True
@@ -84,7 +84,8 @@ def sync_transactions(plaid_item: PlaidItem) -> dict:
 
     @transaction.atomic
     def _bulk_add_transactions():
-        objs = [Transaction(**added) for added in added]
+        objs = [Transaction(predicted_category=default_category, **added)
+                for added in added]
         Transaction.objects.bulk_create(objs)
 
     @transaction.atomic
@@ -141,37 +142,6 @@ def sync_transactions(plaid_item: PlaidItem) -> dict:
         )
 
     return response_data
-
-
-class TransactionsSyncView(GenericAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
-
-    def post(self, request, *args, **kwargs):
-
-        plaid_item = self.get_plaid_item(request)
-        sync_results = sync_transactions(plaid_item)
-
-        return Response(sync_results, HTTP_200_OK)
-
-    def get_plaid_item(self, request):
-        item_id = self.request.query_params.get('item', None)
-        account_id = self.request.query_params.get('account', None)
-
-        if item_id:
-            try:
-                plaid_item = PlaidItem.objects.get(id=item_id)
-            except PlaidItem.DoesNotExist:
-                raise ValidationError('Invalid item id')
-        elif account_id:
-            try:
-                plaid_item = PlaidItem.objects.get(accounts__id=account_id)
-            except PlaidItem.DoesNotExist:
-                raise ValidationError('Invalid account id')
-        else:
-            raise ValidationError('Invalid request')
-
-        self.check_object_permissions(request, plaid_item)
-        return plaid_item
 
 
 class TransactionsPagination(LimitOffsetPagination):
@@ -247,7 +217,6 @@ class TransactionViewSet(ModelViewSet):
 
     def get_queryset(self):
         filter_args = self._exract_filter_args()
-        print('filter_args', filter_args)
         base_qset = Transaction.objects.filter(**filter_args) \
                                        .select_related(
                                            'predicted_category',
@@ -282,6 +251,37 @@ class TransactionViewSet(ModelViewSet):
         serializer = MerchantSerializer(qset, many=True)
 
         return Response(serializer.data)
+
+    @action(detail=False, methods=['post'], url_path='sync', url_name='sync',
+            permission_classes=[IsAuthedVerifiedSubscriber, IsObjectOwner])
+    def sync(self, request, *args, **kwargs):
+        plaid_items = self._get_plaid_items(request)
+        for plaid_item in plaid_items:
+            sync_results = sync_transactions(plaid_item)
+
+        return Response(sync_results, HTTP_200_OK)
+
+    def _get_plaid_items(self, request):
+        item_id = self.request.query_params.get('item', None)
+        account_id = self.request.query_params.get('account', None)
+
+        if item_id:
+            try:
+                plaid_items = PlaidItem.objects.filter(id=item_id)
+            except PlaidItem.DoesNotExist:
+                raise ValidationError('Invalid item id')
+        elif account_id:
+            try:
+                plaid_items = PlaidItem.objects.filter(accounts__id=account_id)
+            except PlaidItem.DoesNotExist:
+                raise ValidationError('Invalid account id')
+        else:
+            plaid_items = PlaidItem.objects.filter(
+                user_id=str(self.request.user.id))
+
+        for item in plaid_items:
+            self.check_object_permissions(request, item)
+        return plaid_items
 
     def _extract_start_end_args(self) -> dict:
         params = self.request.query_params

@@ -14,13 +14,13 @@ import {
 import dayjs from 'dayjs'
 
 import './styles/Header.scss'
-
 import { useGetAccountsQuery } from '@features/accountsSlice'
 import {
     useGetMerchantsQuery,
     useLazyGetTransactionsQuery,
     selectConfirmedTransactionFilter,
-    setConfirmedTransactionFilter
+    setConfirmedTransactionFilter,
+    clearConfirmedTransactionFilter
 } from '@features/transactionsSlice'
 import { useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { Funnel } from '@ledget/media'
@@ -38,15 +38,15 @@ import {
 } from '@ledget/ui'
 import { useFilterFormContext } from '../context';
 import { useGetStartEndQueryParams } from '@hooks/utilHooks';
-import { useAppSelector } from '@hooks/store';
+import { useAppDispatch, useAppSelector } from '@hooks/store';
 
 
 const { RangePicker } = DatePicker
 
 const filterSchema = z.object({
     date_range: z.array(z.number()).optional(),
-    limit_amount_lower: z.string().optional().transform(val => val?.replace(/\D+/, '')),
-    limit_amount_upper: z.string().optional().transform(val => val?.replace(/\D+/, '')),
+    limit_amount_lower: z.number().optional(),
+    limit_amount_upper: z.number().optional(),
     items: z.array(z.string()).optional(),
     merchants: z.array(z.string()).optional(),
     accounts: z.array(z.string()).optional(),
@@ -61,12 +61,14 @@ const FilterWindow = () => {
     const [getLazyTransactions] = useLazyGetTransactionsQuery()
     const { start, end } = useGetStartEndQueryParams()
     const filter = useAppSelector(selectConfirmedTransactionFilter)
+    const dispatch = useAppDispatch()
     const [getCategories, { data: categoryData }] = useLazyGetCategoriesQuery()
 
     const { handleSubmit, control, reset, resetField } = useForm<TransactionFilterSchema>({
         resolver: zodResolver(filterSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
+        defaultValues: filter
     })
 
     const merchantsFieldValue = useWatch({ control, name: 'merchants' })
@@ -87,7 +89,7 @@ const FilterWindow = () => {
             key={resetKey}
             onSubmit={handleSubmit((data) => {
                 const { date_range, ...rest } = data
-                setConfirmedTransactionFilter(data)
+                dispatch(setConfirmedTransactionFilter(data))
                 const newData = {
                     ...rest,
                     start: date_range?.[0],
@@ -154,6 +156,8 @@ const FilterWindow = () => {
                 <div>
                     <FullSelectCategoryBill
                         defaultValue={categoryData?.filter(cat => filter?.items?.includes(cat.id))}
+                        month={new Date(dateRangeFieldValue?.[1] || new Date().getTime()).getMonth() + 1}
+                        year={new Date(dateRangeFieldValue?.[1] || new Date().getTime()).getFullYear()}
                         placeholder="Category or Bill"
                         SelectorComponent={SlimInputButton}
                         name="items"
@@ -244,6 +248,7 @@ const FilterWindow = () => {
                     onClick={() => {
                         reset()
                         setResetKey(Math.random().toString(36).slice(2, 9))
+                        dispatch(clearConfirmedTransactionFilter())
                     }}
                 >
                     Clear
@@ -251,9 +256,7 @@ const FilterWindow = () => {
                 <div>
                     <SecondaryButtonSlim
                         type="button"
-                        onClick={() => {
-                            setShowFilterForm(false)
-                        }}
+                        onClick={() => { setShowFilterForm(false) }}
                     >
                         Cancel
                     </SecondaryButtonSlim>

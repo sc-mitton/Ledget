@@ -376,16 +376,16 @@ div.body {
 
 @media screen and (max-width: 450px) {
     .dashboard {
-        padding: 0;
+        padding: .5em;
         width: calc(100% - .5em);
     }
 
-    .window {
-        box-shadow: none;
-        border: none;
-        padding: 16px 0;
-        padding-top: 12px;
-    }
+    // .window {
+    //     box-shadow: none;
+    //     border: none;
+    //     padding: 16px 0;
+    //     padding-top: 12px;
+    // }
 }
 
 /* --------------------------------- Inputs --------------------------------- */

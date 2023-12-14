@@ -9,7 +9,6 @@ from financials.views.items import (
      PlaidLinkTokenView
 )
 from financials.views.transactions import (
-    TransactionsSyncView,
     TransactionViewSet,
     NoteViewSet
 )
@@ -57,6 +56,5 @@ urlpatterns = [
     path('plaid_token_exchange', PlaidTokenExchangeView.as_view(), name='plaid_token_exchange'), # noqa
     path('accounts', AccountsView.as_view(), name='account'),
     path('', include(transactions_router.urls)),
-    path('transactions/sync', TransactionsSyncView.as_view(), name='transactions_sync'),
     path('transactions/<str:id>/', include(note_router.urls)),
 ]

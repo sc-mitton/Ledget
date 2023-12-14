@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.db import transaction
+from datetime import datetime
 
 from financials.models import Transaction, Note
 from budget.serializers import CategorySerializer, BillSerializer
@@ -95,6 +96,13 @@ class UpdateTransactionsConfirmationSerializer(serializers.Serializer):
         if percent_sum != 1:
             raise serializers.ValidationError('Fractions must sum to 1')
         return value
+
+    def update(self, instance, validated_data):
+        if any(key in validated_data for key in
+               ['category', 'category_id', 'bill', 'bill_id']):
+            validated_data['confirmed_date'] = datetime.now()
+            validated_data['confirmed_datetime'] = datetime.now()
+        return super().update(instance, validated_data)
 
 
 class TransactionSerializer(serializers.ModelSerializer):

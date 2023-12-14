@@ -60,8 +60,8 @@ export interface GetTransactionsParams {
     confirmed?: boolean
     start?: number
     end?: number
-    limit_amount_lower?: string
-    limit_amount_upper?: string
+    limit_amount_lower?: string | number
+    limit_amount_upper?: string | number
     items?: string[]
     merchants?: string[]
     accounts?: string[]
@@ -118,7 +118,7 @@ type ConfirmTransactionParams = {
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        transactionsSync: builder.mutation<TransactionsSyncResponse, { account: string } | { item: string }>({
+        transactionsSync: builder.mutation<TransactionsSyncResponse, { account?: string } | { item?: string }>({
             query: (params) => ({
                 url: 'transactions/sync',
                 params: params,
@@ -334,6 +334,9 @@ export const filteredFetchedConfirmedTransactions = createSlice({
     reducers: {
         setConfirmedTransactionFilter: (state, action: PayloadAction<TransactionFilterSchema>) => {
             state.filter = action.payload
+        },
+        clearConfirmedTransactionFilter: (state) => {
+            state.filter = {}
         }
     },
     extraReducers: (builder) => {
@@ -370,7 +373,7 @@ export const confirmAndUpdateMetaData = createAsyncThunk(
 
 // Actions and hooks
 export const { confirmTransaction, removeUnconfirmedTransaction } = confirmStack.actions
-export const { setConfirmedTransactionFilter } = filteredFetchedConfirmedTransactions.actions
+export const { setConfirmedTransactionFilter, clearConfirmedTransactionFilter } = filteredFetchedConfirmedTransactions.actions
 
 export const {
     useTransactionsSyncMutation,

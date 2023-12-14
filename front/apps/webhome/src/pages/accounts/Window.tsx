@@ -121,6 +121,7 @@ const Header = () => {
                 type: 'success',
                 message: `Synced${syncResult?.added ? `, ${syncResult?.added} new transactions` : ' successfully'}`,
                 hasLoadingBar: true,
+
             }))
         }
     }, [isTransactionsSyncSuccess])
@@ -161,10 +162,7 @@ const Header = () => {
                             fill={'var(--m-text)'}
                             loading={isSyncing}
                             onClick={() => {
-                                const account = searchParams.get('account')
-                                if (account) {
-                                    syncTransactions({ account: account })
-                                }
+                                syncTransactions({})
                             }}
                         />}
                 </ul>

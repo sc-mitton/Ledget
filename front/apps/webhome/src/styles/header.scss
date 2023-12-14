@@ -144,10 +144,7 @@ header {
 
 @media (max-width: 700px) {
 
-    header {
-        &>div:first-child {
-            margin-left: -.5em;
-        }
+    header>div {
 
         &>div:nth-child(2) {
             flex-grow: 0;
@@ -164,7 +161,7 @@ header {
     }
 
     .current-nav-item * {
-        color: var(--m-text);
+        color: var(--white-text);
     }
 
     header>div span {

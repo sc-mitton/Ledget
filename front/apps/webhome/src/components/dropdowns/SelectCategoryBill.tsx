@@ -13,8 +13,8 @@ import { Combobox } from "@headlessui/react"
 import { useController, Control } from 'react-hook-form'
 
 import './SelectCategoryBill.scss'
-import { Category, useGetCategoriesQuery } from '@features/categorySlice'
-import { Bill, useGetBillsQuery } from '@features/billSlice'
+import { Category, useLazyGetCategoriesQuery } from '@features/categorySlice'
+import { Bill, useLazyGetBillsQuery } from '@features/billSlice'
 import { SearchIcon, ArrowIcon } from '@ledget/media'
 import { LoadingRingDiv, DropAnimation, useAccessEsc, BillCatLabel } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -24,6 +24,8 @@ interface IBase {
     includeCategories?: boolean;
     month?: number;
     year?: number;
+    activeBeginning?: number;
+    activeEnding?: number;
     name?: string;
 }
 
@@ -41,36 +43,48 @@ interface I2 extends IBase {
 
 type I = I1 | I2
 
-function SelectCategoryBillBody({
-    value,
-    name,
-    onChange,
-    month,
-    year,
-    multiple,
-    includeBills = true,
-    includeCategories = true,
-}: I) {
+function SelectCategoryBillBody(props: I) {
     const [query, setQuery] = useState('')
-    const { start, end } = useGetStartEndQueryParams(month, year)
-    const {
+    const { start, end } = useGetStartEndQueryParams(props.month, props.year)
+    const [getCategories, {
         data: categoryData,
         isLoading: isFetchingCategories,
         isSuccess: isFetchCategoriesSuccess
-    } = useGetCategoriesQuery({ start, end, spending: false })
-    const {
+    }] = useLazyGetCategoriesQuery()
+    const [getBills, {
         data: billData,
         isSuccess: isFetchBillsSuccess
-    } = useGetBillsQuery({ month, year })
+    }] = useLazyGetBillsQuery()
 
     const [filteredBillCats, setFilteredBillCats] = useState<(Category | Bill)[]>([])
     const inputRef = useRef<HTMLInputElement>(null)
 
+    useEffect(() => {
+        if (props.activeBeginning && props.activeEnding) {
+            getCategories({
+                start: props.activeBeginning,
+                end: props.activeEnding,
+                spending: false
+            })
+            getBills({
+                month: new Date(props.activeBeginning).getMonth() + 1,
+                year: new Date(props.activeBeginning).getFullYear()
+            })
+        } else {
+            getCategories({ start, end, spending: false })
+            getBills({
+                month: new Date(start).getMonth() + 1,
+                year: new Date(start).getFullYear()
+            })
+        }
+
+    }, [props.activeBeginning, props.activeEnding, props.month, props.year])
+
     // Set billcats
     useEffect(() => {
         if (categoryData && billData) {
-            includeBills
-                ? includeCategories
+            props.includeBills
+                ? props.includeCategories
                     ? setFilteredBillCats([...categoryData, ...billData])
                     : setFilteredBillCats(billData)
                 : setFilteredBillCats(categoryData)
@@ -81,8 +95,8 @@ function SelectCategoryBillBody({
     useEffect(() => {
         let data: (Category | Bill)[] | undefined
         if (categoryData && billData) {
-            data = includeBills
-                ? includeCategories
+            data = props.includeBills
+                ? props.includeCategories
                     ? [...categoryData, ...billData]
                     : billData
                 : categoryData
@@ -102,10 +116,10 @@ function SelectCategoryBillBody({
 
     return (
         <Combobox
-            name={name}
-            value={value}
-            multiple={multiple as any}
-            onChange={onChange as any}
+            name={props.name}
+            value={props.value}
+            multiple={props.multiple as any}
+            onChange={props.onChange as any}
             as={'div'}
             className="select-bill-category"
         >
@@ -181,7 +195,7 @@ export const FullSelectCategoryBill =
         // Set default
         useEffect(() => {
             onChange(rest.defaultValue)
-        }, [rest.defaultValue])
+        }, [rest.month, rest.year])
 
         // Controll for react-hook-form
         const { field } = useController({ name: name.current, control })
