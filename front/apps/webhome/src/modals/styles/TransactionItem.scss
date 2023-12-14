@@ -11,14 +11,13 @@
         font-size: 2rem;
     }
 
-
-    &>div:last-child,
-    &>button:last-child {
+    &>div:nth-child(2),
+    &>button:nth-child(2) {
         font-size: 1rem;
         color: $secondary-text-color-darker;
     }
 
-    &>div:last-child {
+    &>div:nth-child(2) {
         width: 70%;
 
         input {
@@ -29,7 +28,7 @@
         }
     }
 
-    &>button:last-child {
+    &>button:nth-child(2) {
         max-width: 70%;
         white-space: normal;
         text-align: center;
@@ -50,6 +49,12 @@
             transform: scale(1) translateY(-50%);
             transition: transform .2s ease-in-out;
         }
+    }
+
+    .pending {
+        text-align: center;
+        color: $secondary-text-color-darker;
+        font-size: 1em;
     }
 }
 

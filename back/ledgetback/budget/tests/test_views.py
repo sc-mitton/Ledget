@@ -1,5 +1,7 @@
 import json
 from unittest import skip # noqa
+from datetime import datetime, timedelta, timezone
+import time
 
 from ledgetback.tests.mixins import ViewTestsMixin
 from ledgetback.tests.utils import timeit # noqa
@@ -9,7 +11,7 @@ from ..models import (
     Bill,
     Reminder
 )
-from financials.models import Account
+from financials.models import Account, Transaction, TransactionCategory
 from .data import (
     single_category_creation_payload,
     multiple_category_creation_payload,
@@ -249,3 +251,52 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
             reverse('categories-spending-history', kwargs={'pk': category.id})
         )
         self.assertEqual(response.status_code, 200)
+
+    def test_delete_category(self):
+        '''
+        Add five transactions to the first category found belonging to the test user
+        Delete the category
+        Make sure the category is no longer active according to the field
+        Make sure the transactions are no longer associated with the category
+        '''
+
+        # 1
+        category = Category.objects.filter(usercategory__user=self.user).first()
+        transactions = Transaction.objects.filter(
+            account__useraccount__user=self.user
+        )[:5]
+        TransactionCategory.objects.bulk_create(
+              [TransactionCategory(transaction=t, category=category, fraction=1)
+               for t in transactions])
+
+        # 2
+        tz = time.timezone/60
+        response = self.client.delete(
+            reverse('categories-items'),
+            json.dumps({
+                'categories': [str(category.id)],
+                'tz': tz,
+            }),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 204)
+
+        # 3
+        category.refresh_from_db()
+        self.assertEqual(category.removed_on is not None, True)
+
+        # 4
+        tz_offset = timedelta(minutes=tz)
+        tz = timezone(tz_offset)
+        start = datetime.utcnow().replace(tzinfo=tz).replace(
+            day=1, hour=0, minute=0, second=0, microsecond=0)
+        end = datetime.now().replace(tzinfo=tz).replace(
+            minute=0, second=0, microsecond=0)
+
+        transactions = Transaction.objects.filter(
+            account__useraccount__user=self.user,
+            transactioncategory__category=category,
+            datetime__range=(start, end)
+        )
+        self.assertEqual(transactions.count(), 0)

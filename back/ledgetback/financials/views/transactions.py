@@ -48,6 +48,8 @@ transaction_fields = [
 filter_target_fields = [
     f for f in transaction_fields if f not in Transaction.ignored_plaid_fields
 ]
+NOT_SPEND_CATEGORIES = ['INCOME', 'TRANSFER_OUT', 'TRANSFER_IN']
+NOT_SPEND_DETAIL = ['LOAN_PAYMENTS_CREDIT_CARD_PAYMENT']
 
 
 def sync_transactions(plaid_item: PlaidItem) -> dict:
@@ -61,7 +63,12 @@ def sync_transactions(plaid_item: PlaidItem) -> dict:
     has_more = True
     response_data = {'added': 0, 'modified': 0, 'removed': 0}
 
-    def _filter_transaction(unfiltered):
+    def _format_transaction(unfiltered):
+        '''
+        Take in a transaction from the plaid api response
+        and return a filtered dict that matches the transaction
+        schema
+        '''
         filtered = {}
         for field in filter_target_fields:
             if unfiltered.get(field, False):
@@ -69,18 +76,31 @@ def sync_transactions(plaid_item: PlaidItem) -> dict:
         for nested_field in Transaction.nested_plaid_fields:
             filtered.update(**unfiltered[nested_field])
 
+        if unfiltered.get('personal_finance_category', {}) \
+                     .get('primary', '').upper() in NOT_SPEND_CATEGORIES or \
+           unfiltered.get('personal_finance_category', {}) \
+                     .get('detailed', '').upper() in NOT_SPEND_DETAIL:
+            filtered['is_spend'] = False
+        else:
+            filtered['is_spend'] = True
+
         return filtered
 
     def _extend_lists(response):
+        '''
+        Take in the plaid api response and extend the list
+        of added, modified, and removed transactions which will
+        eventually be flushed to the database
+        '''
         for _ in ['added', 'modified', 'removed']:
-            for unfiltered in response[_]:
-                filtered = _filter_transaction(unfiltered)
+            for trans in response[_]:
+                formated_trans = _format_transaction(trans)
                 if _ == 'added':
-                    added.append(filtered)
+                    added.append(formated_trans)
                 elif _ == 'modified':
-                    modified.append(filtered)
+                    modified.append(formated_trans)
                 elif _ == 'removed':
-                    removed.append(filtered)
+                    removed.append(formated_trans)
 
     @transaction.atomic
     def _bulk_add_transactions():
@@ -217,6 +237,7 @@ class TransactionViewSet(ModelViewSet):
 
     def get_queryset(self):
         filter_args = self._exract_filter_args()
+        print(filter_args)
         base_qset = Transaction.objects.filter(**filter_args) \
                                        .select_related(
                                            'predicted_category',
@@ -297,7 +318,7 @@ class TransactionViewSet(ModelViewSet):
         except ValueError:
             raise ValidationError('Invalid date format')
 
-        return {'datetime__gte': start, 'datetime__lte': end}
+        return {'date__gte': start, 'date__lte': end}
 
     def _exract_filter_args(self):
         query_params = self.request.query_params
@@ -310,6 +331,11 @@ class TransactionViewSet(ModelViewSet):
         if query_params.get('confirmed') != 'true':
             result['bill__isnull'] = True
             result['categories'] = None
+
+        if query_params.get('confirmed') is not None:
+            # If filtering for confirmed or unconfirmed transactions
+            # filter out everything that isn't spending
+            result['is_spend'] = True
 
         query_params_2_filter_params = {
             'merchant': 'merchant_name__in',

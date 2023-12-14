@@ -1,4 +1,4 @@
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 import calendar
 import logging
 import pytz
@@ -69,11 +69,13 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         self.check_object_permissions(self.request, bill)
         return bill
 
-    @action(detail=True, methods=['POST'], url_path='remove',
-            permission_classes=[IsAuthenticated])
-    def remove(self, request, pk=None):
+    def destroy(self, request, pk=None):
+        '''
+        Destory a bill. A single bill can be destroyed, or all future bills ('composit')
+        or all bills ('all') can be destroyed.
+        '''
 
-        which_instances = request.data.get('instances', None)
+        which_instances = request.query_params.get('instances', None)
         if not which_instances or which_instances not in ['all', 'single', 'composit']:
             raise ValidationError('Invalid request')
 
@@ -193,6 +195,23 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         self.check_object_permissions(self.request, category)
         return category
 
+    @action(methods=['delete'], detail=False, url_name='items',
+            url_path='items', permission_classes=[IsAuthenticated])
+    def remove(self, request):
+        category_ids = request.data.get('categories', None)
+
+        if not category_ids:
+            raise ValidationError('Invalid request')
+
+        try:
+            self._update_db(category_ids)
+        except Exception as e:
+            logger.warning(e)
+            return Response(data={'error': str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     @action(methods=['get'], detail=True, url_name='spending-history',
             url_path='spending-history', permission_classes=[IsAuthenticated])
     def spending_history(self, request, pk=None):
@@ -239,30 +258,19 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
 
         UserCategory.objects.bulk_update(updated, ['order'])
 
-    @action(detail=False, methods=['post'], url_path='remove',
-            permission_classes=[IsAuthenticated])
-    def remove(self, request):
-        category_ids = request.data.get('categories', None)
-        tz_offset = request.data.get('tz_offset', None)
-        if not category_ids or not tz_offset:
-            raise ValidationError('Invalid request')
-
-        try:
-            default_category = self._get_default_category()
-            categories = self._get_categories_qset(category_ids)
-            self._update_db(categories, default_category, tz_offset)
-        except Exception as e:
-            logger.warning(e)
-            return Response(data={'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
     @atomic
-    def _update_db(self, categories, default_category, tz_offset):
+    def _update_db(self, category_ids):
         '''
         Set the categories to inactive, and set all of the connected transactions
         for the current month to the default category
         '''
+
+        # Update categories
+        categories = self._get_categories_from_ids(category_ids)
+        categories.update(removed_on=dbtz.now())
+
+        # Set all transactions for the month to the default category
+        tz_offset = self.request.data.get('tz', None)
         tz_offset = timedelta(minutes=tz_offset)
         tz = timezone(tz_offset)
         start = datetime.utcnow().replace(tzinfo=tz).replace(
@@ -270,15 +278,22 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         end = datetime.now().replace(tzinfo=tz).replace(
             minute=0, second=0, microsecond=0)
 
-        categories.update(removed_on=dbtz.now())
+        # Set all transactions for the period to the default category
+        transactioncat_objs = TransactionCategory.objects.filter(
+            category_id__in=category_ids,
+            transaction__datetime__range=(start, end))
 
-        objs = TransactionCategory.objects.filter(
-            category__in=categories,
-            transaction__datetime__range=(start, end)
-        )
-        objs.update(category=default_category)
+        default_category = self._get_default_category()
+        for obj in transactioncat_objs:
+            obj.category = default_category
+        TransactionCategory.objects.bulk_update(transactioncat_objs, ['category'])
 
-    def _get_default_category(self):
+    def _get_categories_from_ids(self, ids):
+        return Category.objects.filter(
+            usercategory__user=self.request.user,
+            id__in=ids)
+
+    def _get_default_category(self) -> Category:
         default_category = Category.objects.filter(
             usercategory__user=self.request.user,
             is_default=True

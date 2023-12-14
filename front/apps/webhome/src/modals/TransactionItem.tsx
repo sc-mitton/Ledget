@@ -325,6 +325,8 @@ const TransactionModal = withModal<{ item: Transaction, action?: Action }>(({ it
                         {preferredName || item?.preferred_name || item?.name}
                         <Edit size={'.8em'} fill={'currentColor'} />
                     </button>}
+                {item.pending &&
+                    <div className='pending'>pending</div>}
             </div>
             <AnimatePresence mode='wait'>
                 {action === 'split' &&

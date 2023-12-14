@@ -264,7 +264,7 @@ export const RefreshButton = ({ fill = 'currentColor', hasBackground = true, loa
           {...rest}
         >
           <LoadingRing visible={loading} />
-          <ReplayIcon fill={fill} />
+          <div style={{ opacity: loading ? 0 : 1 }}><ReplayIcon fill={fill} /></div>
         </IconButton>
       }
     </Tooltip>

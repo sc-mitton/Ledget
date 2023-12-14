@@ -110,13 +110,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: [{ type: 'Category', id: 'LIST' }]
         }),
-        removeCategorires: builder.mutation<any, string[]>({
+        removeCategories: builder.mutation<any, string[]>({
             query: (data) => ({
-                url: 'categories/remove',
-                method: 'POST',
+                url: 'categories/items',
+                method: 'DELETE',
                 body: {
                     categories: data,
-                    tz_offset: new Date().getTimezoneOffset(),
+                    tz: new Date().getTimezoneOffset(),
                 },
             }),
             invalidatesTags: [{ type: 'Category', id: 'LIST' }]
@@ -259,7 +259,7 @@ export const SelectCategoryBillMetaData = createSelector(
 
 export const {
     useAddNewCategoryMutation,
-    useRemoveCategoriresMutation,
+    useRemoveCategoriesMutation,
     useGetCategoriesQuery,
     useLazyGetCategoriesQuery,
     useUpdateCategoriesMutation,

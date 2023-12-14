@@ -169,9 +169,17 @@ local GenericAuthedBase = {
   {
     id: 'categories',
     match: {
-      methods: ['POST', 'GET', 'PATCH', 'DELETE'],
+      methods: ['POST', 'GET', 'PATCH'],
       url: base_url + '/<(categories|category)>',
     }
+  },
+  GenericAuthedBase
+    {
+    id: 'delete_categories',
+    match: {
+      methods: ['DELETE'],
+      url: base_url + '/categories/items',
+    },
   },
   GenericAuthedBase
     {
@@ -194,7 +202,7 @@ local GenericAuthedBase = {
     id: 'order',
     match: {
       methods: ['POST'],
-      url: base_url + '/categories/<(order|remove)>',
+      url: base_url + '/categories/order',
     }
   },
   GenericAuthedBase
@@ -215,10 +223,10 @@ local GenericAuthedBase = {
   },
     GenericAuthedBase
   {
-    id: 'modify_bills',
+    id: 'delete_bills',
     match: {
-      methods: ['POST'],
-      url: base_url + '/bills/<[a-zA-Z0-9-]+>/remove',
+      methods: ['DELETE'],
+      url: base_url + '/bills/<[a-zA-Z0-9-]+>',
     },
   },
   GenericAuthedBase

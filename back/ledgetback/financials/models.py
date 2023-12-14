@@ -122,6 +122,7 @@ class Transaction(models.Model):
                                        null=True,
                                        blank=True,
                                        related_name='predicted_bill')
+    is_spend = models.BooleanField(null=True, blank=True)
 
     # Transaction info
     name = models.CharField(max_length=100, null=False, blank=False)

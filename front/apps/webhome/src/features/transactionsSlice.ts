@@ -27,6 +27,7 @@ export type Transaction = {
     bill?: Bill,
     predicted_category?: Category,
     predicted_bill?: Bill,
+    is_spend?: boolean
     name: string
     preferred_name?: string
     merchant_name?: string
@@ -400,7 +401,7 @@ export const selectConfirmedTransactionFilter = (state: RootState) => state.filt
 export const selectUnconfirmedTransactions = createSelector(
     [selectUnconfirmed, selectDateYear],
     (unconfirmed, date) => unconfirmed.filter(item => {
-        const itemDate = new Date(item.datetime)
+        const itemDate = new Date(item.datetime || item.date)
         return itemDate.getFullYear() === date.year && itemDate.getMonth() + 1 === date.month
     })
 )
@@ -408,7 +409,7 @@ export const selectUnconfirmedTransactions = createSelector(
 export const selectConfirmedTransactions = createSelector(
     [selectConfirmedQue, selectDateYear],
     (confirmedQue, date) => confirmedQue.filter(item => {
-        const itemDate = new Date(item.transaction.datetime)
+        const itemDate = new Date(item.transaction.datetime || item.transaction.date)
         return itemDate.getFullYear() === date.year && itemDate.getMonth() + 1 === date.month
     })
 )
@@ -416,7 +417,7 @@ export const selectConfirmedTransactions = createSelector(
 export const selectUnconfirmedLength = createSelector(
     [selectUnconfirmed, selectDateYear],
     (unconfirmed, date) => unconfirmed.reduce((acc, item) => {
-        const itemDate = new Date(item.datetime)
+        const itemDate = new Date(item.datetime || item.date)
         if (itemDate.getFullYear() === date.year && itemDate.getMonth() + 1 === date.month) {
             return acc + 1
         }

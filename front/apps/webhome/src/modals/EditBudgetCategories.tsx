@@ -8,7 +8,7 @@ import './styles/EditBudgetItems.scss'
 import {
     useGetCategoriesQuery,
     useReorderCategoriesMutation,
-    useRemoveCategoriresMutation,
+    useRemoveCategoriesMutation,
     Category
 } from '@features/categorySlice'
 import { GripButton } from '@components/buttons'
@@ -194,7 +194,7 @@ const EditCategoriesModal = withModal((props) => {
     const [
         removeCategories,
         { isSuccess: categoriesAreDeleted, isLoading: submittingDeleteMutation }
-    ] = useRemoveCategoriresMutation()
+    ] = useRemoveCategoriesMutation()
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()

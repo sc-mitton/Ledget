@@ -420,10 +420,36 @@
          "methods": [
             "POST",
             "GET",
-            "PATCH",
-            "DELETE"
+            "PATCH"
          ],
          "url": "https://localhost/api/v1/<(categories|category)>"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "delete_categories",
+      "match": {
+         "methods": [
+            "DELETE"
+         ],
+         "url": "https://localhost/api/v1/categories/items"
       },
       "mutators": [
          {
@@ -504,7 +530,7 @@
          "methods": [
             "POST"
          ],
-         "url": "https://localhost/api/v1/categories/<(order|remove)>"
+         "url": "https://localhost/api/v1/categories/order"
       },
       "mutators": [
          {
@@ -581,12 +607,12 @@
       "authorizer": {
          "handler": "allow"
       },
-      "id": "modify_bills",
+      "id": "delete_bills",
       "match": {
          "methods": [
-            "POST"
+            "DELETE"
          ],
-         "url": "https://localhost/api/v1/bills/<[a-zA-Z0-9-]+>/remove"
+         "url": "https://localhost/api/v1/bills/<[a-zA-Z0-9-]+>"
       },
       "mutators": [
          {

@@ -104,18 +104,15 @@ class OtpView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         recipient = '{}{}'.format(
             serializer.validated_data['country_code'],
-            serializer.validated_data['phone']
-        )
+            serializer.validated_data['phone'])
 
         try:
             verify = mbird_client.verify_create(
-                recipient=int(recipient)
-            )
+                recipient=int(recipient))
         except messagebird.client.ErrorException as e:
             return Response(
                 {'error': e.message},
-                status=HTTP_400_BAD_REQUEST
-            )
+                status=HTTP_400_BAD_REQUEST)
 
         return Response({'id': verify.id}, HTTP_200_OK)
 
@@ -129,13 +126,11 @@ class OtpView(GenericAPIView):
         except Exception as e: # noqa
             return Response(
                 {'error': 'Invalid code'},
-                HTTP_400_BAD_REQUEST
-            )
+                HTTP_400_BAD_REQUEST)
         if verify.status != 'verified':
             return Response(
                 {'error': 'Invalid code'},
-                HTTP_400_BAD_REQUEST
-            )
+                HTTP_400_BAD_REQUEST)
 
         self._update_objects(request, serializer_data=serializer.validated_data)
 

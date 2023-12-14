@@ -1,11 +1,12 @@
-import { FC, ButtonHTMLAttributes } from 'react'
+import { FC, ButtonHTMLAttributes, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 
 import './styles/Header.scss'
 import { CheckAll } from '@ledget/media'
 import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
-import { useGetPlaidItemsQuery } from '@features/plaidSlice'
+import { useAppDispatch } from '@hooks/store'
+import { popToast } from '@features/toastSlice'
 import {
     useTransactionsSyncMutation,
     selectUnconfirmedLength
@@ -30,21 +31,45 @@ const NewItemsHeader = (
     { onConfirmAll }: { onConfirmAll: () => void }
 ) => {
     const [searchParams] = useSearchParams()
-    const { data: plaidItems } = useGetPlaidItemsQuery()
     const unconfirmedLength = useSelector((state: RootState) =>
         selectUnconfirmedLength(state, {
             month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
             year: parseInt(searchParams.get('year')!) || new Date().getFullYear()
         })
     )
-    const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
+    const [syncTransactions, {
+        isLoading: isSyncing,
+        isSuccess: isSyncSuccess,
+        isError: isSyncError,
+        data: syncResult
+    }] = useTransactionsSyncMutation()
+    const dispatch = useAppDispatch()
 
     const handleRefreshClick = () => {
         // sync everything
-        for (const item of plaidItems || []) {
-            syncTransactions({ item: item.id })
-        }
+        syncTransactions({})
     }
+
+    // Dispatch synced toast
+    useEffect(() => {
+        if (isSyncSuccess) {
+            dispatch(popToast({
+                type: 'success',
+                message: `Synced${syncResult?.added ? `, ${syncResult?.added} new transactions` : ' successfully'}`,
+                hasLoadingBar: true,
+            }))
+        }
+    }, [isSyncSuccess])
+
+    // Dispatch synced error toast
+    useEffect(() => {
+        if (isSyncError) {
+            dispatch(popToast({
+                type: 'error',
+                message: 'There was an error syncing your transactions',
+            }))
+        }
+    }, [isSyncError])
 
     return (
         <div id="needs-confirmation-header-container">
@@ -64,6 +89,7 @@ const NewItemsHeader = (
                     <RefreshButton
                         fill={'var(--faded-text)'}
                         hasBackground={false}
+                        loading={isSyncing}
                         onClick={handleRefreshClick}
                     />
                     {(unconfirmedLength > 0) &&

@@ -6,7 +6,7 @@
 }
 
 #needs-confirmation-header {
-    padding: .25em .875em .25em .875em;
+    padding: .25em 1.25em .25em .875em;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -27,8 +27,8 @@
         z-index: 200;
     }
 
-    div:first-child {
-        gap: .125em;
+    &>div:last-child>div {
+        padding: .125em;
     }
 
     #number-of-items {
