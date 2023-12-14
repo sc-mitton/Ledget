@@ -352,6 +352,13 @@ div.body {
     margin: -.125em;
 }
 
+.inner-window-bordered {
+    border: 1.5px solid var(--subtle-border-color);
+    border-radius: var(--inner-window-border-radius);
+    padding: .75em;
+    margin: -.125em;
+}
+
 .overlay {
     position: absolute;
     top: 0;

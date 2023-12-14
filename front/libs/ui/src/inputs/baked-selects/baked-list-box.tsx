@@ -35,15 +35,15 @@ interface BakedSelectProps1<T> extends BakedSelectPropsBase<T> {
   value?: T[]
   defaultValue?: T[]
   disabled?: T[]
-  onChange?: (val?: T[]) => void
+  onChange?: (val: T[]) => void
 }
 
 interface BakedSelectProps2<T> extends BakedSelectPropsBase<T> {
   multiple?: false
   value?: T
   defaultValue?: T
-  disabled?: T
-  onChange?: (val?: T) => void
+  disabled?: T | T[]
+  onChange?: (val: T) => void
 }
 
 export type BakedSelectProps<T> = BakedSelectProps1<T> | BakedSelectProps2<T>
@@ -65,7 +65,7 @@ const useOptionalControl = (props: Pick<BakedSelectProps<any>, 'control' | 'name
 }
 
 // export function BakedListBox(props: BakedListBoxProps) {
-export const BakedListBox = <T extends Option>(props: BakedSelectProps<T> | BakedSelectProps<string>) => {
+export const BakedListBox = <T extends Option | string>(props: BakedSelectProps<T>) => {
   const id = useId()
   const buttonRef = useRef<HTMLButtonElement | null>(null)
   const [value, onChange] = useState<any>()

@@ -103,6 +103,7 @@ const Row = ({ category }: { category: Category }) => {
         <div className={`row ${category.period}`}>
             <div>
                 <BillCatLabel
+                    slim={true}
                     name={category.name}
                     emoji={category.emoji}
                     color={category.period === 'year' ? 'green' : 'blue'}
@@ -487,7 +488,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     const [chartData, setChartData] = useState<Datum[]>([])
     const windowOptions = ['4 months', '1 year', '2 year', 'max']
     const [disabledOptions, setDisabledOptions] = useState<(typeof windowOptions[number])[]>()
-    const [window, setWindow] = useState<typeof windowOptions[number]>()
+    const [window, setWindow] = useState<string>()
 
     // Initial fetching Transactions
     useEffect(() => {
@@ -551,7 +552,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                 as={PillOptionButton}
                 options={windowOptions}
                 disabled={disabledOptions}
-                default={windowOptions[0]}
+                defaultValue={windowOptions[0]}
                 onChange={setWindow}
                 placement='middle'
             />
