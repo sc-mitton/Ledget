@@ -50,7 +50,7 @@ export interface Device {
     [key: string]: any,
 }
 
-interface Subscription {
+export interface Subscription {
     id: string,
     status: SubscriptionStatus,
     current_period_end: number,
@@ -58,7 +58,7 @@ interface Subscription {
     plan: {
         id: string,
         amount: number,
-        nickname: string,
+        nickname: 'Month' | 'Year',
         interval: 'month' | 'year',
     }
 }
@@ -85,8 +85,8 @@ interface UpdatePaymentMethod {
 interface UpdateSubscription {
     subId: string
     cancelAtPeriodEnd: boolean
-    cancelationReason: string
-    feedback: string
+    cancelationReason?: string
+    feedback?: string
 }
 
 

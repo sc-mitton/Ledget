@@ -21,6 +21,22 @@
     justify-content: center;
     padding-top: .75em;
     margin-bottom: 30;
+    position: relative;
+    width: min-content;
+    margin: 0 auto;
+
+    #edit-personal-info--button {
+        transform: scale(0);
+        position: absolute;
+        right: -2.25em;
+        bottom: .75em;
+        transition: transform .2s ease-in-out;
+    }
+
+    &:hover #edit-personal-info--button {
+        transform: scale(1);
+        transition: transform .2s ease-in-out;
+    }
 }
 
 #info-container span {

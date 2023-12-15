@@ -169,7 +169,7 @@ const NewItem: FC<{
                     </div>
                     <div className={item.amount! < 0 ? 'is-debit' : ''}>
                         <DollarCents value={item.amount!} />
-                        <span>{formatDateOrRelativeDate(dayjs(item.datetime!).valueOf())}</span>
+                        <span>{formatDateOrRelativeDate(dayjs(item.datetime! || item.date).valueOf())}</span>
                     </div>
                 </div>
             </div>

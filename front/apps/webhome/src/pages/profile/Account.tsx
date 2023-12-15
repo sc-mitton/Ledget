@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
@@ -10,18 +10,28 @@ import {
     useGetPaymentMethodQuery,
     useUpdateSubscriptionMutation,
     useGetNextInvoiceQuery,
-    useGetSubscriptionQuery
+    useGetSubscriptionQuery,
+    Subscription
 } from '@features/userSlice'
-import { BlueSlimButton, BlueSlimArrowButton, ShimmerDiv, DropAnimation } from '@ledget/ui'
+import {
+    BlueSlimButton,
+    BlueSlimArrowButton,
+    ShimmerDiv,
+    DropAnimation,
+    IconButton
+} from '@ledget/ui'
+import { Edit } from '@ledget/media'
+import { UpdatePersonalInfo } from '@modals/index'
 
 
-const getStatusColor = (subscription) => {
+const getStatusColor = (subscription: Subscription) => {
     const statusColorMap = {
         active: 'var(--secondary-color-alt)',
         trialing: 'var(--secondary-color-alt)',
         paused: 'var(--yellow)',
         default: 'var(--dark-red)'
-    }
+    } as { [key: string]: string }
+
     if (subscription.cancel_at_period_end) {
         return statusColorMap.paused
     } else {
@@ -30,7 +40,7 @@ const getStatusColor = (subscription) => {
     }
 }
 
-const getStatus = (subscription) => {
+const getStatus = (subscription: Subscription) => {
     if (subscription.cancel_at_period_end) {
         return 'canceled'
     }
@@ -40,7 +50,7 @@ const getStatus = (subscription) => {
     return subscription.status?.toLowerCase()
 }
 
-const Info = () => {
+const Info = ({ children }: { children: React.ReactNode }) => {
     const { data: user } = useGetMeQuery()
 
     return (
@@ -51,6 +61,7 @@ const Info = () => {
             <div>
                 <span>{`${user?.email}`}</span>
             </div>
+            {children}
         </div>
     )
 }
@@ -67,16 +78,20 @@ const ChangePlanMenu = () => {
 
     const options = [
         {
-            label: nickNameMap[subscription.plan.nickname],
+            label: subscription ? nickNameMap[subscription.plan.nickname] : '',
             onClick: () => navigate('/profile/details/change-bill-cycle'),
             cancel_at_period_end: false,
         },
         {
             label: "Don't Cancel",
-            onClick: () => updateSubscription({
-                subId: subscription.id,
-                cancelAtPeriodEnd: false
-            }),
+            onClick: () => {
+                if (subscription) {
+                    updateSubscription({
+                        subId: subscription.id,
+                        cancelAtPeriodEnd: false
+                    })
+                }
+            },
             cancel_at_period_end: true
         },
         {
@@ -88,7 +103,7 @@ const ChangePlanMenu = () => {
 
     const Items = () => (
         <Menu.Items static>
-            {options.filter((op) => op.cancel_at_period_end === subscription.cancel_at_period_end)
+            {options.filter((op) => op.cancel_at_period_end === subscription?.cancel_at_period_end)
                 .map((op, i) => (
                     <Menu.Item key={op.label} as={React.Fragment}>
                         {({ active }) => (
@@ -130,9 +145,11 @@ const ChangePlanMenu = () => {
 const Plan = () => {
     const { data: subscription } = useGetSubscriptionQuery()
     const { data: nextInvoice } = useGetNextInvoiceQuery()
-    const nextTimeStamp = nextInvoice.next_payment_date
+    const nextTimeStamp = nextInvoice?.next_payment_date
         ? new Date(nextInvoice.next_payment_date * 1000)
-        : new Date(subscription.plan.current_period_end * 1000)
+        : subscription
+            ? new Date(subscription?.current_period_end * 1000)
+            : new Date()
     const nextDate = nextTimeStamp.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
@@ -147,9 +164,9 @@ const Plan = () => {
                         <h3>Plan</h3>
                         <span
                             className="indicator"
-                            style={{ color: getStatusColor(subscription) }}
+                            style={{ color: subscription ? getStatusColor(subscription) : '' }}
                         >
-                            {getStatus(subscription)}
+                            {subscription ? getStatus(subscription) : ''}
                         </span>
                     </div>
                     <div>
@@ -159,17 +176,24 @@ const Plan = () => {
                 <div className="inner-window">
                     <div id="invoice-details--container">
                         <div>Renews</div>
-                        <span>{`${subscription.plan.interval}ly`}</span>
-                        <div>
-                            {subscription.cancel_at_period_end ? 'Ending on' : 'Next charge'}
-                        </div>
-                        <div>
-                            {subscription.cancel_at_period_end
-                                ? nextDate
-                                : `$${subscription.plan.amount / 100} on ${nextDate}`}
-                        </div>
-                        <div>{nextInvoice.balance > 0 && 'Account Credit'}</div>
-                        <div>{nextInvoice.balance > 0 && `$${nextInvoice.balance / -100}`}</div>
+                        {subscription &&
+                            <>
+                                <span>{`${subscription.plan.interval}ly`}</span>
+                                <div>
+                                    {subscription.cancel_at_period_end ? 'Ending on' : 'Next charge'}
+                                </div>
+                                <div>
+                                    {subscription.cancel_at_period_end
+                                        ? nextDate
+                                        : `$${subscription.plan.amount / 100} on ${nextDate}`}
+                                </div>
+                            </>
+                        }
+                        {nextInvoice &&
+                            <>
+                                <div>{nextInvoice.balance > 0 && 'Account Credit'}</div>
+                                <div>{nextInvoice.balance > 0 && `$${nextInvoice.balance / -100}`}</div>
+                            </>}
                     </div>
                 </div>
             </div>
@@ -181,14 +205,11 @@ const PaymentMethod = () => {
     const { data } = useGetPaymentMethodQuery()
     const navigate = useNavigate()
 
-    let expDate = new Date(
-        data?.payment_method.exp_year,
-        data?.payment_method.exp_month
-    )
-    expDate = expDate.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-    })
+    const expDate = data
+        ? new Date(
+            data?.exp_year,
+            data?.exp_month)
+        : new Date()
 
     return (
         <div className="section">
@@ -210,12 +231,12 @@ const PaymentMethod = () => {
                     <CardIcon width={'1.4em'} height={'1.4em'} />
                 </div>
                 <div >
-                    {data?.payment_method.brand.charAt(0).toUpperCase()
-                        + data?.payment_method.brand.slice(1)}
+                    {data && `${data.brand.charAt(0).toUpperCase()}`}
+                    {data && `${data.brand.slice(1)}`}
                     &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
-                    {data?.payment_method.last4}
+                    {data && `${data.last4}`}
                 </div>
-                <div>{`Exp. ${expDate}`}</div>
+                <div>{`Exp. ${expDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}`}</div>
             </div>
         </div>
     )
@@ -226,6 +247,7 @@ const Account = () => {
     const { isLoading: loadingInvoice } = useGetNextInvoiceQuery()
     const { isLoading: loadingSubscription } = useGetSubscriptionQuery()
     const { data: user } = useGetMeQuery()
+    const [editPersonalInfoModal, setEditPersonalInfoModal] = useState(false)
 
     return (
         <>
@@ -238,15 +260,26 @@ const Account = () => {
                         <h2>Account</h2>
                     </div>
                     <div id="avatar">
-                        {user.name.first.charAt(0).toUpperCase() + user.name.last.charAt(0).toUpperCase()}
+                        {user && `${user.name.first.charAt(0).toUpperCase()} ${user.name.last.charAt(0).toUpperCase()}`}
                     </div>
-                    <Info />
+                    <Info>
+                        <IconButton
+                            id='edit-personal-info--button'
+                            onClick={() => setEditPersonalInfoModal(true)}
+                            aria-label="Edit personal info"
+                        >
+                            <Edit size={'1rem'} />
+                        </IconButton>
+                    </Info>
                     <div>
                         <Plan />
                         <PaymentMethod />
                     </div>
                 </div>
             </ShimmerDiv>
+            {editPersonalInfoModal && (
+                <UpdatePersonalInfo onClose={() => setEditPersonalInfoModal(false)} />
+            )}
             <Outlet />
         </>
     )

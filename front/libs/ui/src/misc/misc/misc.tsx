@@ -41,7 +41,7 @@ export const Base64Logo = (props: Base64LogoProps) => {
 
   return (
     <div
-      className={`base64-image--container ${className}`}
+      className={`base64-image--container ${className ? className : ''}`}
       style={styled ? config : {}}
       {...rest}
     >

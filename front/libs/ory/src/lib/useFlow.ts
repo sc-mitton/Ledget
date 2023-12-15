@@ -79,7 +79,7 @@ export const useFlow = (query: any, mutation: any, flowType: typeof endpointName
     // target component, and we don't want the mutation results to carry
     // overy in between
 
-    const fetchFlow = (args: { aal: string, refresh: boolean }) => {
+    const fetchFlow = (args: { aal?: string, refresh?: boolean } | void) => {
         // If the aal param is different, this means a new flow is needed
         // and the search param flow id can't be used
         let aal, refresh

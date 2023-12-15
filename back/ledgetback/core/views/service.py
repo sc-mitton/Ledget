@@ -285,8 +285,7 @@ class PaymentMethodView(APIView):
 
         try:
             payment_methods = self.get_default_stripe_payment_methods(
-                request.user.customer.id
-            )
+                request.user.customer.id)
             payment_method = {
                 'id': payment_methods.data[0].id,
                 'brand': payment_methods.data[0].card.brand,
@@ -302,7 +301,7 @@ class PaymentMethodView(APIView):
             )
 
         return Response(
-            data={'payment_method': payment_method},
+            data=payment_method,
             status=HTTP_200_OK
         )
 
