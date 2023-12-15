@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 import { useNavigate } from 'react-router-dom'
 
-import './styles/ForceVerification.css'
+import './styles/ForceVerification.scss'
 import { withModal } from '@ledget/ui'
 import {
     FormError,
@@ -13,7 +13,7 @@ import { useFlow } from '@ledget/ory'
 import { useGetMeQuery } from '@features/userSlice'
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
 
-const ForceVerification = withModal((props) => {
+export const ForceVerification = ({ onSuccess }: { onSuccess: () => void }) => {
     const { data: user } = useGetMeQuery()
     const [jiggle, setJiggle] = useState(false)
     const [codeIsCorrect, setCodeIsCorrect] = useState(false)
@@ -42,10 +42,10 @@ const ForceVerification = withModal((props) => {
     }, [jiggle])
 
     useEffect(() => {
-        let timeout
+        let timeout: NodeJS.Timeout
         if (codeIsCorrect) {
             timeout = setTimeout(() => {
-                props.closeModal()
+                onSuccess()
             }, 1000)
         }
         return () => clearTimeout(timeout)
@@ -114,8 +114,7 @@ const ForceVerification = withModal((props) => {
                                 flow={flow}
                                 refreshSuccess={refreshSuccess}
                                 submit={submit}
-                                identifier={user?.email}
-                                resendOnLoad={true}
+                                identifier={user?.email || ''}
                                 loading={isGettingFlow}
                                 submitting={isCompletingFlow}
                             />
@@ -125,18 +124,24 @@ const ForceVerification = withModal((props) => {
             </div>
         </>
     )
+}
+
+const ForceVerificationModal = withModal((props) => {
+    return <ForceVerification
+        onSuccess={() => { props.closeModal() }}
+    />
 })
 
-export default function (props) {
+export default function () {
     const navigate = useNavigate()
 
     return (
-        <ForceVerification
+        <ForceVerificationModal
             hasExit={false}
             overLayExit={false}
             onClose={() => navigate(-1)}
             disableClose={true}
-            maxWidth={props.maxWidth || '21.875rem'}
+            maxWidth={'21.875rem'}
             blur={1}
         />
     )

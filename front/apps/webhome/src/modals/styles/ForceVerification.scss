@@ -1,0 +1,23 @@
+#force-verification-form--container {
+    .subheader {
+        display: flex;
+        flex-direction: column;
+        margin: 1em 0;
+        width: 90%;
+    }
+
+    #force-verification-form--container {
+        margin-top: .75em;
+        color: var(--main-dark3);
+    }
+
+    #force-verification-form--container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    &>div:last-child {
+        margin-top: 2em;
+    }
+}
