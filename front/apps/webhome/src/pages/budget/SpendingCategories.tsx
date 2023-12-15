@@ -46,7 +46,8 @@ import {
     IconButton,
     ShadowScrollDiv,
     BakedListBox,
-    BillCatLabel
+    BillCatLabel,
+    TabNavList
 } from '@ledget/ui'
 import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -251,7 +252,6 @@ const ColumnView = ({ categories }: { categories?: Category[] }) => {
 }
 
 const TabView = ({ categories }: { categories?: Category[] }) => {
-    const [selectedIndex, setSelectedIndex] = useState(0)
     const {
         monthly_spent,
         yearly_spent,
@@ -260,58 +260,78 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
     } = useAppSelector(SelectCategoryBillMetaData)
 
     return (
-        <Tab.Group as={Column} selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-            <Tab.List style={{ display: 'contents' }} className="row header">
-                <div>
-                    <Tab as={'span'}>MONTHLY SPENDING</Tab>
-                    <Tab as={'span'}>YEARLY SPENDING</Tab>
-                </div>
-                <div>
-                    <div>
-                        <DollarCents
-                            value={
-                                selectedIndex === 0
-                                    ? monthly_spent || '0.00'
-                                    : yearly_spent || '0.00'
-                            }
-                        />
+        <Tab.Group as={Column}>
+            {({ selectedIndex }) => (
+                <>
+                    <div className='row'>
+                        <div>
+                            <TabNavList
+                                labels={['Monthly', 'Yearly']}
+                                toggle={selectedIndex}
+                                className='spending-categories--tab-nav-list'
+                                theme={[
+                                    {
+                                        tabColor: 'var(--main-dark)',
+                                        tabBackgroundColor: 'var(--main-hlight4)',
+                                        pillColor: 'var(--main-dark)',
+                                        pillBackgroundColor: 'var(--main-hlight5)',
+                                    },
+                                    {
+                                        tabColor: 'var(--secondary-dark)',
+                                        tabBackgroundColor: 'var(--secondary-hlight2)',
+                                        pillColor: 'var(--secondary-dark)',
+                                        pillBackgroundColor: 'var(--secondary-hlight3)',
+                                    }
+                                ]}
+                                selectedIndex={selectedIndex}
+                            />
+                        </div>
+                        <div>
+                            <DollarCents
+                                value={
+                                    selectedIndex === 0
+                                        ? monthly_spent || '0.00'
+                                        : yearly_spent || '0.00'
+                                }
+                            />
+                        </div>
+                        <div>/</div>
+                        <div>
+                            <DollarCents
+                                value={
+                                    selectedIndex === 0
+                                        ? limit_amount_monthly ? limit_amount_monthly : '0.00'
+                                        : limit_amount_yearly ? limit_amount_yearly : '0.00'
+                                }
+                                withCents={false}
+                            />
+                        </div>
+                        <div>
+                            <StaticProgressCircle
+                                value={
+                                    selectedIndex === 0
+                                        ? (monthly_spent && limit_amount_monthly) ? Math.round(monthly_spent / limit_amount_monthly * 100) / 100 : 0
+                                        : (yearly_spent && limit_amount_yearly) ? Math.round(yearly_spent / limit_amount_yearly * 100) / 100 : 0
+                                }
+                            />
+                        </div>
                     </div>
-                </div>
-                <div>/</div>
-                <div>
-                    <DollarCents
-                        value={
-                            selectedIndex === 0
-                                ? limit_amount_monthly ? limit_amount_monthly : '0.00'
-                                : limit_amount_yearly ? limit_amount_yearly : '0.00'
-                        }
-                        withCents={false}
-                    />
-                </div>
-                <div>
-                    <StaticProgressCircle
-                        value={
-                            selectedIndex === 0
-                                ? (monthly_spent && limit_amount_monthly) ? Math.round(monthly_spent / limit_amount_monthly * 100) / 100 : 0
-                                : (yearly_spent && limit_amount_yearly) ? Math.round(yearly_spent / limit_amount_yearly * 100) / 100 : 0
-                        }
-                    />
-                </div>
-            </Tab.List>
-            <Tab.Panels as={Fragment}>
-                <Tab.Panel as={Fragment}>
-                    <Rows
-                        categories={categories?.filter(category => category.period === 'month') || []}
-                        period="month"
-                    />
-                </Tab.Panel>
-                <Tab.Panel as={Fragment}>
-                    <Rows
-                        categories={categories?.filter(category => category.period === 'year') || []}
-                        period="year"
-                    />
-                </Tab.Panel>
-            </Tab.Panels>
+                    <Tab.Panels as={Fragment}>
+                        <Tab.Panel as={Fragment}>
+                            <Rows
+                                categories={categories?.filter(category => category.period === 'month') || []}
+                                period="month"
+                            />
+                        </Tab.Panel>
+                        <Tab.Panel as={Fragment}>
+                            <Rows
+                                categories={categories?.filter(category => category.period === 'year') || []}
+                                period="year"
+                            />
+                        </Tab.Panel>
+                    </Tab.Panels>
+                </>
+            )}
         </Tab.Group>
     )
 }

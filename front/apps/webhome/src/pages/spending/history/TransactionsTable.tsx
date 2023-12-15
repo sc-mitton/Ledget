@@ -1,6 +1,7 @@
 import { useRef, Fragment, useEffect, useState } from 'react'
 
 import dayjs from 'dayjs'
+import { useSearchParams } from 'react-router-dom'
 
 import './styles/TransactionsTable.scss'
 import TransactionModal from '@modals/TransactionItem'
@@ -86,6 +87,7 @@ const List = ({ setFocusedTransaction }:
 }
 
 export default function Table() {
+  const [searchParams] = useSearchParams()
   const [isFetchingMore, setFetchingMore] = useState(false)
   const { start, end } = useGetStartEndQueryParams()
   const [focusedTransaction, setFocusedTransaction] = useState<Transaction>()
@@ -96,7 +98,7 @@ export default function Table() {
   // Initial transaction fetch
   useEffect(() => {
     getTransactions({ confirmed: true, start, end }, true)
-  }, [])
+  }, [searchParams.get('month'), searchParams.get('year')])
 
   // Refetches for pagination
   const handleScroll = (e: any) => {

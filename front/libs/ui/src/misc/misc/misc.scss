@@ -3,25 +3,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgb(var(--charcoal-rgb), .2);
 
     img {
         position: relative;
         z-index: 1;
-    }
-
-    &::after {
-        content: '';
-        border-radius: 50%;
-        position: absolute;
-        z-index: 0;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background-color: rgb(var(--charcoal-rgb), .2);
-        width: calc(100% + 2px);
-        height: calc(100% + 2px);
-        opacity: 0;
-        animation: fade-in .2s ease-in-out .5s forwards;
     }
 }
 

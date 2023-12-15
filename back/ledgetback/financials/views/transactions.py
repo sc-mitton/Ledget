@@ -237,7 +237,6 @@ class TransactionViewSet(ModelViewSet):
 
     def get_queryset(self):
         filter_args = self._exract_filter_args()
-        print(filter_args)
         base_qset = Transaction.objects.filter(**filter_args) \
                                        .select_related(
                                            'predicted_category',
@@ -250,7 +249,7 @@ class TransactionViewSet(ModelViewSet):
             prefetch_categories = Prefetch(
                 'categories',
                 queryset=Category.objects.all().annotate(
-                    fraction=F('transactioncategory__fraction')))
+                    fraction=F('transactioncategory__fraction')).distinct())
 
             base_qset = base_qset.filter(
                 Q(bill__isnull=False) | Q(transactioncategory__isnull=False)

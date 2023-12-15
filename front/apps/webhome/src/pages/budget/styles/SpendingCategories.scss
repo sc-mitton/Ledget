@@ -52,9 +52,13 @@ $background: var(--window);
             row-gap: $item-row-gap;
             position: relative;
 
-            button {
+            &:not(:first-child) button {
                 grid-column: 1 / span 5;
                 padding: calc($row-padding + .125em) 0;
+            }
+
+            &:first-child button {
+                padding: .125em 0;
             }
 
             &::after {
@@ -67,6 +71,15 @@ $background: var(--window);
     .row {
         display: contents;
         transition: all .2s ease-in-out;
+
+        &:first-child>div {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: var(--window);
+            box-shadow: 0 1.5px 1.5px 1px var(--window);
+            padding-bottom: .75em;
+        }
 
         &>div.spanned {
             // cover 2-5 columns
@@ -175,7 +188,7 @@ $background: var(--window);
 
             &::after {
                 content: "";
-                height: .0625em;
+                height: 1px;
                 position: absolute;
                 bottom: -.625em;
                 background-color: var(--subtle-border-color);
@@ -208,6 +221,10 @@ $background: var(--window);
             width: 100%;
         }
     }
+
+    .spending-categories--tab-nav-list {
+        width: 70%;
+    }
 }
 
 #spending-categories-window {
@@ -219,7 +236,7 @@ $background: var(--window);
     justify-content: flex-start;
     // Aprx. 5 rows
     // the 2em comes from the bottom buttons space
-    min-height: calc(5.25 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em);
+    min-height: calc(4.25 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em);
 
     h2 {
         margin-left: .625em;
@@ -232,7 +249,7 @@ $background: var(--window);
     width: 100%;
     justify-content: flex-end;
     align-items: flex-end;
-    margin-top: .5em;
+    margin-top: .75em;
 
     &>div {
         height: min-content;

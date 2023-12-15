@@ -337,8 +337,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         except ValueError:
             return Response(
                 data={'error': 'Invalid date format'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+                status=status.HTTP_400_BAD_REQUEST)
 
         include_spending = self.request.query_params.get('spending', True)
         yearly_category_anchor = datetime.utcnow().replace(day=1) \
