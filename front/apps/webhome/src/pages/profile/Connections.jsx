@@ -165,9 +165,9 @@ const PlaidItem = ({ item }) => {
                 </div>
             </div >
             <div className="account-headers">
-                <div>Acct. Name</div>
-                <div>Type</div>
-                <div>Acct. Num.</div>
+                <h4>Acct. Name</h4>
+                <h4>Type</h4>
+                <h4>Acct. Num.</h4>
             </div>
             <div className="accounts">
                 {item.accounts.map((account) => (

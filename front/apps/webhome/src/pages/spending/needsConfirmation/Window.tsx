@@ -46,7 +46,7 @@ import { useFilterFormContext } from '../context'
 // Sizing (in ems)
 const translate = 1
 const expandedTranslate = 6.125;
-const expandedHeight = 29
+const expandedHeight = 25
 const collapsedHeight = 8
 const scale = .1
 const stackMax = 2

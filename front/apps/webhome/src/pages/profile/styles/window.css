@@ -50,7 +50,7 @@
     flex: 1;
     max-width: 15.75rem;
     padding: .75em .5em;
-    border-right: 3px solid rgb(0, 0, 0, .05);
+    border-right: 3px solid var(--subtle-border-color);
     margin: 1em 0;
     font-weight: 400;
     display: flex;
@@ -160,7 +160,7 @@
     #gutter {
         width: 3.25rem;
         flex: 0;
-        border-right: 2px solid rgb(0, 0, 0, .05);
+        border-right: 2px solid var(--subtle-border-color);
         padding-left: 0;
         padding-right: 0;
     }
