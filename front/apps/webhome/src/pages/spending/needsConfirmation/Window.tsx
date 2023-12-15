@@ -309,7 +309,7 @@ const NeedsConfirmationWindow = () => {
             onRest: () => {
                 unconfirmedStackExpanded
                     ? containerApi.start({ overflowY: 'scroll', overflowX: 'hidden' })
-                    : containerApi.start({ overflowY: 'visible', overflowX: 'hidden' })
+                    : containerApi.start({ overflowY: 'hidden', overflowX: 'hidden' })
             },
             config: {
                 tension: 180,

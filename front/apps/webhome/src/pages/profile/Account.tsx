@@ -145,6 +145,7 @@ const ChangePlanMenu = () => {
 const Plan = () => {
     const { data: subscription } = useGetSubscriptionQuery()
     const { data: nextInvoice } = useGetNextInvoiceQuery()
+    const { data: user } = useGetMeQuery()
     const nextTimeStamp = nextInvoice?.next_payment_date
         ? new Date(nextInvoice.next_payment_date * 1000)
         : subscription
@@ -189,11 +190,19 @@ const Plan = () => {
                                 </div>
                             </>
                         }
-                        {nextInvoice &&
+                        {(nextInvoice && nextInvoice.balance > 0) &&
                             <>
                                 <div>{nextInvoice.balance > 0 && 'Account Credit'}</div>
                                 <div>{nextInvoice.balance > 0 && `$${nextInvoice.balance / -100}`}</div>
                             </>}
+                        <div>Member since</div>
+                        <div>
+                            {new Date(user?.created_on || new Date()).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,5 @@
+@import '@styles/text';
+
 #avatar {
     background-color: var(--icon-light-gray);
     border-radius: 50%;
@@ -85,10 +87,15 @@
 #invoice-details--container {
     display: grid;
     grid-template-columns: minmax(auto, max-content) 1fr;
+    gap: .5em;
     column-gap: 1em;
 
     &>div:nth-child(2n + 1) {
         font-weight: 500;
+    }
+
+    &>div:nth-child(2n) {
+        color: $secondary-text-color-darker;
     }
 
     &>div {
