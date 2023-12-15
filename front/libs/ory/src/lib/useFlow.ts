@@ -197,6 +197,7 @@ export const useFlow = (query: any, mutation: any, flowType: typeof endpointName
     return {
         flow,
         fetchFlow,
+        completeFlow,
         submit,
         result,
         flowStatus: {

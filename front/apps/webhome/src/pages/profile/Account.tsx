@@ -278,7 +278,10 @@ const Account = () => {
                 </div>
             </ShimmerDiv>
             {editPersonalInfoModal && (
-                <UpdatePersonalInfo onClose={() => setEditPersonalInfoModal(false)} />
+                <UpdatePersonalInfo
+                    onClose={() =>
+                        setEditPersonalInfoModal(false)
+                    } />
             )}
             <Outlet />
         </>

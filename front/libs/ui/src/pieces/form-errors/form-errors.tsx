@@ -3,7 +3,7 @@ import './form-errors.css';
 
 import { Alert2 } from '@ledget/media'
 
-interface Error {
+export interface Error {
   message?: string,
   type: string
 }

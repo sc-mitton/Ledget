@@ -252,8 +252,17 @@ const Otp = () => {
 }
 
 export const ReAuthModal = withSmallModal((props) => {
-    const [searchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
     const loaded = useLoaded(100)
+
+    // Clean up search params on unmount
+    useEffect(() => {
+        return () => {
+            searchParams.delete('aal')
+            searchParams.delete('flow')
+            setSearchParams(searchParams)
+        }
+    }, [])
 
     return (
         <AnimatePresence mode="wait">
@@ -393,7 +402,7 @@ export const ReAuthProtected = ({ children, requiredAal, onReAuth }: {
     )
 }
 
-export default function withReAuth<P>(Component: React.FC<P & Partial<WithReAuthI>>) {
+export function withReAuth<P>(Component: React.FC<P & Partial<WithReAuthI>>) {
 
     return (props: (Partial<WithReAuthI> & P)) => {
         const { requiredAal, onClose } = props
@@ -422,3 +431,5 @@ export default function withReAuth<P>(Component: React.FC<P & Partial<WithReAuth
         )
     }
 }
+
+export default withReAuth

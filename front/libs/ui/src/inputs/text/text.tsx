@@ -4,10 +4,11 @@ import { FC } from 'react'
 import { VisibilityIcon } from "@ledget/media"
 import { CardElement } from '@stripe/react-stripe-js'
 import { z } from 'zod'
+import { FieldError } from 'react-hook-form'
 
 import './text.scss'
 import './password-input.scss'
-import { FormErrorTip, FormError } from '../../pieces/form-errors/form-errors'
+import { FormErrorTip, FormError, Error } from '../../pieces/form-errors/form-errors'
 import { SelectProvence } from '../select-provence/select-provence'
 import { InputShimmerDiv } from '../../pieces/shimmer/shimmer'
 import { stripeCardTheme } from '../../themes/themes'
@@ -28,14 +29,15 @@ export const TextInputWrapper = forwardRef<HTMLDivElement, React.HTMLProps<HTMLD
   )
 })
 
+
 interface PlainTextInputProps extends React.HTMLProps<HTMLInputElement> {
-  errors: any,
-  loading: boolean,
+  loading?: boolean
   name: string
+  error?: FieldError
 }
 
-export const PlainTextInput = forwardRef<HTMLInputElement, Partial<PlainTextInputProps>>((props, ref) => {
-  const { errors, loading, name, ...rest } = props
+export const PlainTextInput = forwardRef<HTMLInputElement, PlainTextInputProps>((props, ref) => {
+  const { error, loading, name, ...rest } = props
 
   return (
     <>
@@ -50,7 +52,7 @@ export const PlainTextInput = forwardRef<HTMLInputElement, Partial<PlainTextInpu
             ref={ref}
             {...rest}
           />
-          {errors && <FormErrorTip errors={[errors?.[name || '']]} />}
+          {error && <FormErrorTip errors={[error]} />}
         </TextInputWrapper>
       }
     </>

@@ -12,7 +12,7 @@ import { DropdownItem } from "../../pieces/containers/containers";
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
 
 
-export const BakedComboBox = <T extends Option>(props: Omit<BakedSelectProps<string> | BakedSelectProps<string>, 'as'> & { WrapperComponent: React.ElementType, slim?: boolean }) => {
+export const BakedComboBox = (props: Omit<BakedSelectProps<string> | BakedSelectProps<string>, 'as'> & { WrapperComponent: React.ElementType, slim?: boolean }) => {
   const id = useId()
   const [value, onChange] = useState<any>()
   const inputRef = useRef<HTMLInputElement | null>(null)
