@@ -112,7 +112,7 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
                 control={control}
                 name={`splits.${index}.category`}
               >
-                <FormErrorTip errors={[(errors as any).splits?.[index]?.category]} />
+                <FormErrorTip error={(errors as any).splits?.[index]?.category} />
               </FullSelectCategoryBill>
               <LimitAmountInput
                 hasLabel={false}
@@ -122,7 +122,7 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
                   Number(field.amount.replace(/\D+/g, ''))
                 }
               >
-                <FormErrorTip errors={[(errors as any).splits?.[index]?.amount]} />
+                <FormErrorTip error={(errors as any).splits?.[index]?.amount} />
               </LimitAmountInput>
               <div>
                 {fields.length > 1 &&

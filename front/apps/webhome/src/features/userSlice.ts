@@ -99,7 +99,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
         }),
         getMe: builder.query<User, void>({
             query: () => 'user/me',
-            providesTags: ['user']
+            providesTags: ['User']
         }),
         getSubscription: builder.query<Subscription, void>({
             query: () => 'subscription',

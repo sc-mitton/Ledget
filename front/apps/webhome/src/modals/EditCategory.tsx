@@ -90,7 +90,7 @@ const EditCategory = withModal((props) => {
                             defaultValue={category?.limit_amount || 0}
                             control={control}
                         >
-                            < FormErrorTip errors={errors.limit_amount && [errors.limit_amount] as any} />
+                            < FormErrorTip error={errors.limit_amount && errors.limit_amount as any} />
                         </LimitAmountInput>
                     </div>
 

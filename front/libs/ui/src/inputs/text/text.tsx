@@ -8,7 +8,7 @@ import { FieldError } from 'react-hook-form'
 
 import './text.scss'
 import './password-input.scss'
-import { FormErrorTip, FormError, Error } from '../../pieces/form-errors/form-errors'
+import { FormErrorTip, FormError } from '../../pieces/form-errors/form-errors'
 import { SelectProvence } from '../select-provence/select-provence'
 import { InputShimmerDiv } from '../../pieces/shimmer/shimmer'
 import { stripeCardTheme } from '../../themes/themes'
@@ -52,7 +52,7 @@ export const PlainTextInput = forwardRef<HTMLInputElement, PlainTextInputProps>(
             ref={ref}
             {...rest}
           />
-          {error && <FormErrorTip errors={[error]} />}
+          {error && <FormErrorTip error={error} />}
         </TextInputWrapper>
       }
     </>
@@ -114,7 +114,7 @@ export const CardInput = ({ requiredError, onComplete, clearError, loading }: Ca
             }}
             options={stripeCardTheme(cardFocus)}
           />
-          {requiredError && <FormErrorTip errors={[{ type: 'required' }]} />}
+          {requiredError && <FormErrorTip error={{ type: 'required' }} />}
         </div>
       }
     </>
@@ -138,7 +138,7 @@ export const CityInput = forwardRef<HTMLInputElement, ZodValidatedInputProps>((p
         ref={ref}
         {...rest}
       />
-      <FormErrorTip errors={[errors.city]} />
+      <FormErrorTip error={errors.city} />
     </TextInputWrapper>
   )
 })
@@ -157,7 +157,7 @@ export const NameOnCardInput = forwardRef<HTMLInputElement, ZodValidatedInputPro
           ref={ref}
           {...rest}
         />
-        <FormErrorTip errors={[errors.name]} />
+        <FormErrorTip error={errors.name} />
       </TextInputWrapper>
       <div id="name-on-card-error">
         {errors.name?.type !== 'required' &&
@@ -180,7 +180,7 @@ export const ZipInput = forwardRef<HTMLInputElement, ZodValidatedInputProps>((pr
         ref={ref}
         {...rest}
       />
-      <FormErrorTip errors={[errors.zip]} />
+      <FormErrorTip error={errors.zip} />
     </TextInputWrapper>
   )
 })
@@ -298,7 +298,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>((props,
           {pwdInput && inputType != 'confirm-password'
             && <VisibilityIcon mode={visible} onClick={() => { setVisible(!visible) }} />}
           {error && (error.type === 'required' || error.msg?.includes('required'))
-            && <FormErrorTip errors={[{ type: 'required' }]} />}
+            && <FormErrorTip error={{ type: 'required' }} />}
         </TextInputWrapper>
       }
     </>

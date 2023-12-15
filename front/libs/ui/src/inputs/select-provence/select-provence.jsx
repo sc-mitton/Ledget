@@ -52,7 +52,7 @@ export const SelectProvence = ({ field, errors }) => {
                 stroke={(focused && !provence) ? 'var(--input-focus)' : 'var(--m-text)'}
               />
             </Combobox.Button>
-            {errors[field.name] && <FormErrorTip errors={[{ type: 'required' }]} />}
+            {errors[field.name] && <FormErrorTip errors={{ type: 'required' }} />}
           </TextInputWrapper>
           <div className="provence-options--container">
             <DropAnimation

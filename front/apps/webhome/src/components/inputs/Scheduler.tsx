@@ -791,7 +791,7 @@ export const BillScheduler = (props: BSP) => {
                 <div id="scheduler--container">
                     <Scheduler.Button>
                         {error &&
-                            <FormErrorTip errors={[{ type: 'required' }]} />}
+                            <FormErrorTip error={{ type: 'required' }} />}
                     </Scheduler.Button>
                     <div>
                         {billPeriod === 'month'

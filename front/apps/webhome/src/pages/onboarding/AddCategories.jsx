@@ -308,7 +308,7 @@ const Form = () => {
                     </div>
                     <div>
                         <LimitAmountInput control={control}>
-                            < FormErrorTip errors={[errors.limit_amount]} />
+                            < FormErrorTip errors={errors.limit_amount} />
                         </LimitAmountInput>
                     </div>
                 </div>

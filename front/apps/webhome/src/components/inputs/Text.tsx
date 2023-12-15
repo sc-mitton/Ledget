@@ -65,7 +65,7 @@ export const EmojiComboText = (props:
                     }}
                     style={{ marginLeft: '.25em' }}
                 />
-                <FormErrorTip errors={error} />
+                <FormErrorTip error={error} />
             </TextInputWrapper>
         </>
     )
@@ -244,7 +244,7 @@ export const DollarRangeInput = (
                         control={control}
                         name={'lower_amount'}
                     >
-                        <FormErrorTip errors={errors.lower_amount && [errors.lower_amount]} />
+                        <FormErrorTip error={errors.lower_amount && errors.lower_amount} />
                     </LimitAmountInput>
                 }
                 <LimitAmountInput
@@ -253,7 +253,7 @@ export const DollarRangeInput = (
                     control={control}
                     name={'upper_amount'}
                 >
-                    <FormErrorTip errors={errors.upper_amount && [errors.upper_amount]} />
+                    <FormErrorTip error={errors.upper_amount && errors.upper_amount} />
                 </LimitAmountInput>
             </div>
             {(errors.lower_amount?.type !== 'required' && errors.lower_amount?.message.toLowerCase() !== 'required')
