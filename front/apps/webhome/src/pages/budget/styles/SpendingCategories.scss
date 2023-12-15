@@ -172,6 +172,29 @@ $background: var(--window);
         &:not(:first-child):not(:last-of-type)>div {
             position: relative;
             z-index: 0;
+
+            &::after {
+                content: "";
+                height: .0625em;
+                position: absolute;
+                bottom: -.625em;
+                background-color: var(--subtle-border-color);
+            }
+
+            &:first-child::after {
+                left: .375em;
+                right: 0;
+            }
+
+            &:not(:first-child)::after {
+                left: 0;
+                right: 0;
+            }
+
+            &:last-of-type::after {
+                left: 0;
+                right: .75em;
+            }
         }
     }
 

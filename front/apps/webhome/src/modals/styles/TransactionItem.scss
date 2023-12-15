@@ -134,6 +134,7 @@
                 display: flex;
                 align-items: center;
                 gap: .5em;
+                grid-column: 1/span 2;
             }
 
             input {
