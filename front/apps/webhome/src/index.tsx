@@ -12,6 +12,7 @@ import localeData from 'dayjs/plugin/localeData'
 import weekday from 'dayjs/plugin/weekday'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import weekYear from 'dayjs/plugin/weekYear'
+import { ColorSchemeProvider } from '@ledget/ui'
 
 dayjs.extend(customParseFormat)
 dayjs.extend(advancedFormat)
@@ -28,11 +29,13 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
     <Provider store={store}>
         <ConfigProvider theme={ledgetAntTheme}>
-            <BrowserRouter>
-                <React.StrictMode>
-                    <App />
-                </React.StrictMode>
-            </BrowserRouter>
+            <ColorSchemeProvider>
+                <BrowserRouter>
+                    <React.StrictMode>
+                        <App />
+                    </React.StrictMode>
+                </BrowserRouter>
+            </ColorSchemeProvider>
         </ConfigProvider>
     </Provider>
 )
