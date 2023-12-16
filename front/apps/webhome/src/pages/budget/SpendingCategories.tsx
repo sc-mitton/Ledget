@@ -47,7 +47,8 @@ import {
     ShadowScrollDiv,
     BakedListBox,
     BillCatLabel,
-    TabNavList
+    TabNavList,
+    DropdownItem
 } from '@ledget/ui'
 import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -269,21 +270,6 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
                                 labels={['Monthly', 'Yearly']}
                                 toggle={selectedIndex}
                                 className='spending-categories--tab-nav-list'
-                                theme={[
-                                    {
-                                        tabColor: 'var(--main-dark)',
-                                        tabBackgroundColor: 'var(--main-hlight4)',
-                                        pillColor: 'var(--main-dark)',
-                                        pillBackgroundColor: 'var(--main-hlight5)',
-                                    },
-                                    {
-                                        tabColor: 'var(--secondary-dark)',
-                                        tabBackgroundColor: 'var(--secondary-hlight2)',
-                                        pillColor: 'var(--secondary-dark)',
-                                        pillBackgroundColor: 'var(--secondary-hlight3)',
-                                    }
-                                ]}
-                                selectedIndex={selectedIndex}
                             />
                         </div>
                         <div>
@@ -595,8 +581,9 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                             <Menu.Items static>
                                 <Menu.Item as={Fragment}>
                                     {({ active }) => (
-                                        <button
-                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                        <DropdownItem
+                                            as='button'
+                                            active={active}
                                             onClick={() => {
                                                 navigate(`${location.pathname}/edit-category${location.search}`, {
                                                     state: { categoryId: category.id }
@@ -604,7 +591,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                             }}
                                         >
                                             <Edit size={'1em'} /> Edit
-                                        </button>
+                                        </DropdownItem>
                                     )}
                                 </Menu.Item>
                             </Menu.Items>

@@ -39,7 +39,7 @@ export function nivoResponsiveLineBaseProps({ disabled = false }: { disabled?: b
 export const nivoResponsiveLineTheme: Theme = {
     crosshair: {
         line: {
-            stroke: 'var(--main-hlight5)',
+            stroke: 'var(--main-hlight)',
             strokeWidth: 1.5,
             strokeDasharray: 'solid',
         },

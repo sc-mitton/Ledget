@@ -53,10 +53,10 @@ const BillsColumn = ({ period }) => {
                             className="budget-item-name--container"
                             style={{ flexBasis: nameFlexBasis }}
                         >
-                            <div className="budget-item-name">
+                            <BillCatLabel color={item.period === 'month' ? 'blue' : 'green'} slim={true}>
                                 <span>{item.emoji}</span>
                                 <span>{formatName(item.name)}</span>
-                            </div>
+                            </BillCatLabel>
                         </div>
                         <div className="amount--container">
                             <div className="budget-dollar--container">

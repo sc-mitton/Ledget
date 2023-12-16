@@ -267,11 +267,10 @@ const MainHeader = ({ onPlus }) => {
                         <Edit />
                     </IconButton>}
                 {plaidItems?.length === 0
-                    ? <button className="pulse" onClick={onPlus}><Plus /></button>
+                    ? <button onClick={onPlus}><Plus /></button>
                     : <IconButton onClick={onPlus} aria-label="Add institution connection">
                         <Plus />
-                    </IconButton>
-                }
+                    </IconButton>}
             </div>
         </div>
     )

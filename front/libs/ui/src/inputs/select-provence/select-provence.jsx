@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import './select-provence.css'
 import { DropAnimation } from '../../animations/animations'
 import { Combobox } from '@headlessui/react'
 import { states as provences } from './provences-data'
 import { TextInputWrapper } from "../text/text";
 import { ArrowIcon } from '@ledget/media'
 import { FormErrorTip } from '../../pieces/form-errors/form-errors'
+import { DropdownItem } from "../../pieces/containers/containers"
 
 export const SelectProvence = ({ field, errors }) => {
   const [query, setQuery] = useState('')
@@ -65,9 +65,9 @@ export const SelectProvence = ({ field, errors }) => {
                 {filterProvence.map((provence) => (
                   <Combobox.Option key={provence.value} value={provence} as={React.Fragment}>
                     {({ active, selected }) => (
-                      <li className={`provence ${active ? 'active' : ''} ${selected ? 'selected' : ''}`}>
+                      <DropdownItem active={active} selected={selected} >
                         {provence.label}
-                      </li>
+                      </DropdownItem>
                     )}
                   </Combobox.Option>
                 ))}

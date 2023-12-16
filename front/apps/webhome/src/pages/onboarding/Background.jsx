@@ -17,7 +17,7 @@ const Dashboard = () => (
         <Header />
         <div
             style={{
-                backgroundColor: 'var(--overlay2)',
+                backgroundColor: 'var(--overlay)',
                 display: 'flex',
                 position: 'fixed',
                 inset: '0',

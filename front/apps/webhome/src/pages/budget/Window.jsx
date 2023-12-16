@@ -16,13 +16,12 @@ import Bills from './Bills'
 const Wrapper = ({ onClick, children }) => (
     <Menu.Item as={React.Fragment}>
         {({ active }) => (
-            <button
-                className={`dropdown-item
-                        ${active && "active-dropdown-item"}`}
+            <DropdownItem
+                active={active}
                 onClick={() => onClick()}
             >
                 {children}
-            </button>
+            </DropdownItem>
         )}
     </Menu.Item>
 )

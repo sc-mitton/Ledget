@@ -1,7 +1,7 @@
 import { FC, HTMLProps } from 'react'
 
 import './shimmer.scss';
-import { useTransition, animated, AnimatedComponent } from '@react-spring/web'
+import { useTransition, animated } from '@react-spring/web'
 import { TextInputWrapper } from '../../inputs/text/text'
 import { useColorScheme } from '../../utils/use-color-scheme/use-color-scheme';
 import React from 'react';
@@ -46,7 +46,7 @@ interface ColoredShimmerProps extends ShimmerProps {
   style?: React.CSSProperties
 }
 
-export const ColoredShimmer = (props: ColoredShimmerProps & AnimatedComponent<'div'>) => {
+export const ColoredShimmer = (props: ColoredShimmerProps) => {
 
   const {
     shimmering = false,

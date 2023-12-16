@@ -18,7 +18,8 @@ import {
     BlueSlimArrowButton,
     ShimmerDiv,
     DropAnimation,
-    IconButton
+    IconButton,
+    DropdownItem
 } from '@ledget/ui'
 import { Edit } from '@ledget/media'
 import { UpdatePersonalInfo } from '@modals/index'
@@ -107,12 +108,13 @@ const ChangePlanMenu = () => {
                 .map((op, i) => (
                     <Menu.Item key={op.label} as={React.Fragment}>
                         {({ active }) => (
-                            <button
-                                className={`dropdown-item ${active && "active-dropdown-item"}`}
+                            <DropdownItem
+                                active={active}
+                                as={'button'}
                                 onClick={op.onClick}
                             >
                                 <div>{op.label}</div>
-                            </button>)}
+                            </DropdownItem>)}
                     </Menu.Item>
                 ))}
         </Menu.Items>

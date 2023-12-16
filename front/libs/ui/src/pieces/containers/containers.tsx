@@ -1,4 +1,5 @@
-import React, { FC, useRef, HTMLProps, useEffect, forwardRef } from 'react'
+import React, { ComponentPropsWithoutRef, ElementType, FC, useRef, HTMLProps, useEffect, forwardRef } from 'react'
+import { PolymorphicComponentProps } from '../../types/helpers'
 import './containers.scss'
 
 export const ExpandableContainer: FC<HTMLProps<HTMLDivElement> & { expanded?: boolean }>
@@ -101,11 +102,26 @@ export const GrowOnDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>
     </div>
   ))
 
+type DropdownItemProps<C extends ElementType> = {
+  active?: boolean
+  selected?: boolean
+} & ComponentPropsWithoutRef<C>
 
+export const DropdownItem = <C extends ElementType = 'div'>
+  (props: PolymorphicComponentProps<'li' | 'div' | 'button', DropdownItemProps<C>>) => {
 
-export const DropdownItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & { active: boolean, selected: boolean }>(
-  ({ children, active, selected, className, ...rest }, ref) => (
-    <div className={`${className} dropdown-item ${active && "active"} ${selected && "selected"}`}>
+  const { children, active, selected, className, as, ...rest } = props
+  const Component = as || 'div'
+
+  return (
+    <Component
+      {...rest}
+      className={`
+        ${className} dropdown-item
+        ${active ? "active" : ''}
+        ${selected ? "selected" : ''}`}
+    >
       {children}
-    </div>
-  ))
+    </Component>
+  )
+}

@@ -19,118 +19,6 @@
     --header-pill: hsl(0, 0%, 98%);
     --header-pill-hover: hsl(0, 0%, 50%);
 
-    main.dark {
-
-        --main-color: rgb(92, 96, 135);
-        --main-color-hover: hsl(235, 24%, 53%);
-        --main-color-values: 92, 96, 135;
-        --main-hlight: hsl(233, 41%, 24%);
-        --main-hlight: hsl(226, 48%, 9%);
-        --main-hlight3: hsl(233, 33%, 26%);
-        --main-hlight4: hsl(233, 47%, 7%);
-        --main-hlight5: hsl(233, 56%, 12%);
-        --main-hlight6: hsl(221, 22%, 20%);
-        --main-dark: hsl(232, 17%, 65%);
-        --main-dark2: hsl(232, 17%, 70%);
-        --main-dark3: hsl(232, 17%, 75%);
-        --main-dark4: hsl(229, 23%, 82%);
-        --main-dark5: hsl(240, 6%, 87%);
-        --main-sat: rgb(182, 182, 250);
-        --yellow: rgb(175, 175, 51);
-
-        --secondary-color: hsl(153, 100%, 91%);
-        --secondary-hlight: hsl(165, 47%, 70%);
-        --secondary-hlight2: hsl(162, 35%, 89%);
-        --secondary-hlight3: hsl(167, 39%, 83%);
-        --secondary-hlight5: rgb(202, 221, 216);
-        --secondary-color-alt: hsl(156, 31%, 62%);
-        --secondary-dark: hsl(164, 17%, 35%);
-        --secondary-dark4: hsl(164, 5%, 27%);
-
-        --charcoal-rgb: 41, 41, 41;
-        --charcoal: rgb(41, 41, 41);
-        --gray: hsl(0, 0%, 50%);
-
-        /* Windows */
-        --window: rgb(30, 30, 30);
-        --window-rgb: 250, 250, 250;
-        --window2: hsl(0, 0%, 93%);
-        --window-background-color: var(--window);
-        --inner-window-rgb: 13, 13, 13;
-        --inner-window: hsl(0, 0%, 5%);
-        --header-background: var(--main-hlight6);
-        --window-rgb: 252, 248, 247;
-
-        --overlay: rgba(49, 49, 49, 0.7);
-        --overlay2: rgba(49, 49, 49, 0.5);
-
-        /* Input Colors */
-        --input-background: #e8e8e8;
-        --input-border-color: #dedede;
-        --input-border: solid 1px var(--input-border-color);
-        --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight) 30%);
-        --input-border-focus: solid 1px var(--input-background);
-
-        /* Icons & Buttons */
-        --btn-light-light-gray: hsl(0, 0%, 7%);
-        --btn-light-gray: hsl(0, 4%, 10%);
-        --btn-hover-light-gray: hsl(0, 1%, 17%);
-        --btn-inner-window: hsl(0, 0%, 8%);
-        --btn-inner-window-hover: hsl(0, 0%, 12%);
-        --btn-gray: hsl(0, 0%, 73%);
-        --btn-hover-gray: hsl(0, 0%, 84%);
-        --btn-mid-gray: hsl(0, 0%, 48%);
-        --btn-black: hsl(0, 0%, 86%);
-        --icon-dark: var(--main-dark5);
-        --icon-light-gray: hsl(0, 0%, 8%);
-        --icon-hover-light-gray: hsl(0, 0%, 12%);
-        --icon-hover-gray: hsl(0, 0%, 23%);
-        --drop-down-hover-background: hsl(0, 0%, 13%);
-
-        /* Text */
-        --m-text: var(--main-dark5);
-        --m-invert-text: #f7f7f7;
-        --m-secondary-text: color-mix(in srgb, var(--main-dark4), white 50%);
-        --m-text-tirtiary: var(--m-secondary-text);
-        --m-text-secondary: color-mix(in srgb, var(--m-text-tirtiary), $primary-text-color 60%);
-        --m-text-tirtiary: hsl(0, 0%, 44%);
-        --debit-text: #3aae83;
-
-        --m-text-secondary: #3d3d3d;
-        --input-placeholder: #616161;
-        --input-placeholder2: #a6a6a6;
-        --input-focus: var(--input-placeholder);
-
-
-        --input-padding: .525em 1em;
-        --window-padding: 1.5em;
-
-        /* Drop Shadows */
-        --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
-        --window-drop-shadow: rgba(170, 170, 170, 0.25) 0px 2px 16px;
-        --header-box-shadow: rgba(170, 170, 170, 0.05) 0px 2px 2px;
-        --window-drop-shadow-lower-elevation: rgba(149, 157, 165, 0.7) 0px 0px 2px;
-        --new-item-drop-shadow: rgba(255, 255, 255, .09) 0px 2px 12px;
-        --scroll-shadow: rgba(248, 248, 248), transparent;
-
-        --input-focus-dropshadow-color: var(--main-hlight6);
-        --accessible-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
-        --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
-        --low-elevation-drop-shadow: rgba(255, 255, 255, 0.1) 0px 1px 6px 0px;
-        --mid-elevation-drop-shadow: rgba(255, 255, 255, 0.3) 0px 3px 15px;
-        --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
-        --input-drop-shadow: rgba(255, 255, 255, 0.07) 0px 1px 0px .3px;
-
-        --wafer-drop-shadow: rgba(255, 255, 255, .1) 0px 4px 12px;
-        --active-wafer-drop-shadow: var(--main-sat) 0px 0px 12px;
-        --wafer-hover-drop-shadow: rgb(255, 255, 255, .2) 0px 0px 12px 2px;
-        --wafer-drag-drop-shadow: var(--wafer-drop-shadow);
-
-        /* Borders */
-        --subtle-border-color: rgb(255, 255, 255, .07);
-        --subtle-border: .75px solid var(--subtle-border-color);
-    }
-
     main.light {
 
         --main-color-h: 234;
@@ -138,21 +26,18 @@
         --main-color-l: 45%;
         --main-color-values: 93, 97, 137;
         --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
-        --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 10%));
+        --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
         --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 45%));
-        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 35%));
+        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 40%));
 
-
-        --main-hlight3: #a7acd3;
-        --main-hlight4: #e3e5f5;
-        --main-hlight5: #ced2f1;
-        --main-hlight6: #c2c9d8;
         --main-sat: rgb(182, 182, 250);
+
         --main-dark: hsl(232, 17%, 35%);
         --main-dark2: hsl(232, 17%, 30%);
         --main-dark3: hsl(232, 17%, 25%);
-        --main-dark4: hsl(229, 23%, 18%);
-        --main-dark5: hsl(240, 6%, 17%);
+        --main-dark4: hsl(232, 17%, 20%);
+        --main-dark5: hsl(232, 17%, 15%);
+
         --yellow: rgb(175, 175, 51);
 
         --secondary-color: hsl(153, 100%, 91%);
@@ -176,9 +61,7 @@
         --inner-window: hsl(0, 0%, 95%);
         --inner-window-rgb: 246, 246, 246;
         --header-background: var(--main-dark4);
-
-        --overlay: rgba(49, 49, 49, 0.7);
-        --overlay2: rgba(49, 49, 49, 0.5);
+        --overlay: hsl(0, 0%, 20%);
 
         /* Input Colors */
         --input-background: #e8e8e8;
@@ -204,6 +87,8 @@
         --window-padding: 1.5em;
 
         /* Icons & Buttons */
+        --icon-dark: var(--main-dark5);
+
         --btn-light-light-gray: #eeeeee;
         --btn-light-gray: #e6e4e4;
         --btn-hover-light-gray: hsl(0, 1%, 83%);
@@ -213,7 +98,6 @@
         --btn-hover-gray: #292929;
         --btn-mid-gray: #848484;
         --btn-black: #242424;
-        --icon-dark: var(--main-dark5);
         --icon-light-gray: #ebebeb;
         --icon-hover-light-gray: #e0e0e0;
         --icon-hover-gray: rgb(196, 196, 196);
@@ -227,7 +111,7 @@
         --new-item-drop-shadow: rgba(0, 0, 0, .09) 0px 2px 12px;
         --scroll-shadow: rgba(248, 248, 248), transparent;
 
-        --input-focus-dropshadow-color: var(--main-hlight6);
+        --input-focus-dropshadow-color: var(--main-sat);
         --accessible-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
         --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
         --low-elevation-drop-shadow: rgba(0, 0, 0, 0.1) 0px 1px 6px 0px;
@@ -390,20 +274,6 @@ fieldset {
     margin: 0;
 }
 
-.header,
-.header2 {
-    margin-left: .25em;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.header3 {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
 .dashboard {
     width: calc(100% - 4em);
     height: 100%;
@@ -415,21 +285,11 @@ fieldset {
     gap: 4em;
 }
 
-div.body {
-    opacity: .9;
-}
-
-.body span {
-    opacity: .9;
-}
-
-.body svg {
-    margin-right: .375em;
-    opacity: .95;
-}
-
-.faded-text {
-    color: var(--m-text-tirtiary);
+@media screen and (max-width: 450px) {
+    .dashboard {
+        padding: .5em;
+        width: calc(100% - .5em);
+    }
 }
 
 .window {
@@ -501,22 +361,6 @@ div.body {
     box-shadow: var(--input-focus-drop-shadow);
 }
 
-/* ------------------------------- Responsive ------------------------------- */
-
-@media screen and (max-width: 450px) {
-    .dashboard {
-        padding: .5em;
-        width: calc(100% - .5em);
-    }
-
-    // .window {
-    //     box-shadow: none;
-    //     border: none;
-    //     padding: 16px 0;
-    //     padding-top: 12px;
-    // }
-}
-
 /* --------------------------------- Inputs --------------------------------- */
 
 input {
@@ -571,53 +415,6 @@ input:focus {
     outline: none;
 }
 
-/* ----------------------------- Category Styles ---------------------------- */
-
-@mixin category-label {
-    display: inline-flex;
-    gap: .5em;
-    align-items: center;
-    border-radius: var(--border-radius2);
-    padding: .125em .75em;
-}
-
-@mixin month-category {
-    @include category-label;
-    background-color: color-mix(in srgb, var(--main-hlight), var(--main-hlight) 10%);
-    transition: all .3s ease;
-
-    * {
-        color: var(--main-dark4);
-    }
-}
-
-@mixin month-category-hover-effects {
-
-    &:hover {
-        background-color: var(--main-hlight3);
-        transition: all .3s ease;
-
-        * {
-            color: color-mix(in srgb, var(--main-dark4), black 10%);
-        }
-    }
-}
-
-@mixin year-category {
-    @include category-label;
-    background-color: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-hlight) 15%);
-    color: var(--secondary-dark4);
-    transition: all .3s ease;
-}
-
-@mixin year-category-hover-effects {
-    &:hover {
-        color: color-mix(in srgb, var(--secondary-dark4), black 10%);
-        background-color: var(--secondary-hlight3);
-        transition: all .3s ease;
-    }
-}
-
 /* ---------------------------- New Button Styles --------------------------- */
 
 button {
@@ -641,81 +438,11 @@ button:focus-visible {
     box-shadow: var(--accessible-focus-drop-shadow);
 }
 
-button.pulse {
-    animation: pulse 1.5s infinite;
-    border-radius: 50%;
-    padding: .25em;
-    transition: all .3s ease;
-}
-
-button.pulse:hover {
-    background-color: var(--main-hlight);
-    border-radius: var(--border-radius1);
-    animation: none;
-    background-color: var(--main-hlight);
-    transition: all .3s ease;
-}
-
 /* Header Buttons */
 .header-btns {
     display: flex;
     align-items: center;
     gap: .125em;
-}
-
-.budget-item-name {
-    padding: .125em .75em;
-    border-radius: var(--border-radius2);
-    background-color: var(--main-hlight);
-    display: inline-block;
-    white-space: nowrap;
-    transition: background-color .3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.budget-item-name[role="button"] {
-    cursor: pointer;
-    color: var(--main-dark4);
-}
-
-.budget-item-name[role="button"]:hover {
-    background-color: var(--main-color);
-    transition: background-color .3s ease;
-}
-
-.budget-item-name * {
-    color: var(--main-dark4);
-}
-
-.budget-item-name span:first-child {
-    margin-right: .25em;
-}
-
-.budget-item-name.unselected svg {
-    transform: scale(0);
-    opacity: 0;
-    transition: all .3 ease;
-    margin-left: -.5em;
-}
-
-.budget-item-name.selected svg {
-    transform: scale(1);
-    opacity: 1;
-    transition: all .3 ease;
-    margin-left: .5em;
-}
-
-.budget-item-name.selected {
-    background-color: var(--btn-gray);
-    color: var(--m-invert-text);
-    transition: background-color .3s ease;
-}
-
-.budget-item-name.selected:hover {
-    background-color: var(--btn-hover-gray);
-    transition: background-color .3s ease;
 }
 
 /* -------------------------------- Dropdowns ------------------------------- */
@@ -758,55 +485,6 @@ ul hr {
     margin: .125em 0;
     border: none;
     border-top: 1.5px solid var(--subtle-border-color);
-}
-
-.dropdown-item {
-    overflow: hidden;
-    font-weight: 400;
-    display: flex;
-    align-items: center;
-    gap: .875em;
-    width: auto;
-    padding: .25em .75em;
-    transition: background-color 0.3s ease-out;
-    border-radius: var(--border-radius1);
-
-    &>div {
-        display: flex;
-        align-items: center;
-    }
-
-    &.active {
-        outline: none;
-        background-color: var(--icon-light-gray);
-        box-shadow: none;
-    }
-
-    &.selected {
-        background-color: var(--main-hlight);
-    }
-
-    &.selected.active {
-        background-color: var(--main-hlight5);
-    }
-
-    &:focus-visible {
-        outline: none;
-        background-color: var(--icon-light-gray);
-        box-shadow: none;
-    }
-
-    &:hover {
-        background-color: var(--icon-light-gray);
-        transition: background-color 0.3s ease-out;
-        cursor: pointer;
-        height: 100%;
-        box-shadow: none;
-    }
-}
-
-.active-dropdown-item {
-    background-color: var(--icon-light-gray);
 }
 
 .dropdown.right {
@@ -866,23 +544,3 @@ ul hr {
         gap: .75em;
     }
 }
-
-/* ---------------------------------- Tabs ---------------------------------- */
-
-.tab-list--container {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: .5em 0;
-}
-
-.tab-list {
-    position: relative;
-    border-radius: var(--border-radius2);
-    background-color: var(--input-background);
-    z-index: 0;
-    display: flex;
-    justify-content: center;
-}
-
-/* ------------------------------- Animations ------------------------------- */

@@ -1,12 +1,10 @@
 
-import { ElementType, PropsWithChildren, ComponentPropsWithoutRef } from 'react'
+import { ElementType, ComponentPropsWithoutRef } from 'react'
 import { CheckMark } from '@ledget/media'
+import { PolymorphicComponentProps } from '../../types/helpers'
 
 import './bill-cat-label.scss'
 
-type AsProp<C extends React.ElementType> = {
-  as?: C;
-}
 
 type BillCatProps<C extends ElementType> = {
   name: string
@@ -19,15 +17,9 @@ type BillCatProps<C extends ElementType> = {
   active?: boolean
 } & ComponentPropsWithoutRef<C>
 
-type PolymorphicComponentProp<
-  C extends React.ElementType,
-  Props = {}
-> = PropsWithChildren<Props & AsProp<C>> &
-  Omit<ComponentPropsWithoutRef<C>, keyof (AsProp<C> & Props)>
-
 type AllowedElements = 'div' | 'li' | 'button'
 
-export const BillCatLabel = <C extends ElementType = 'div'>(props: PolymorphicComponentProp<AllowedElements, BillCatProps<C>>) => {
+export const BillCatLabel = <C extends ElementType = 'div'>(props: PolymorphicComponentProps<AllowedElements, BillCatProps<C>>) => {
   const {
     as,
     name,

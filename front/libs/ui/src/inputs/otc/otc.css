@@ -22,15 +22,6 @@
     -webkit-appearance: textfield;
     border: 2px solid transparent;
     border-radius: var(--border-radius2);
-}
-
-.otc.green input[type="text"] {
-    background-color: var(--main-hlight);
-    border: solid 1px rgb(var(--main-color-values), .06);
-    color: var(--main-color-hover);
-}
-
-.otc.gray input[type="text"] {
     background-color: var(--input-background);
     border: solid 1px rgb(0, 0, 0, .02);
     color: var(--m-text);
@@ -65,12 +56,5 @@
     height: .25rem;
     margin: 0 .2em;
     order: 1;
-}
-
-.otc.green div::before {
-    background: var(--main-hlight3);
-}
-
-.otc.gray div::before {
     background: rgb(0, 0, 0, .3);
 }

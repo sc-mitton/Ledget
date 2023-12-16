@@ -47,14 +47,6 @@
                 }
             }
         }
-
-        .month {
-            @include month-category;
-        }
-
-        .year {
-            @include year-category;
-        }
     }
 
     #delete-msg {

@@ -53,7 +53,7 @@ export const CancelationWindow = (props) => {
     return (
         <div id='cancelation-modal--container'>
             <h2>Are you sure?</h2>
-            <div className="body">
+            <div>
                 Before you go, we'd love to hear why you're leaving
                 and what we can do to improve.
             </div>
@@ -131,7 +131,7 @@ const SuccessWindow = (props) => {
     return (
         <div id="success-window--container">
             <h2>Success</h2>
-            <div className="body" style={{ margin: '1em 0 1em 0' }}>
+            <div style={{ margin: '1em 0 1em 0' }}>
                 If you change your mind, you can stop the
                 cancellation at any time before the end of
                 the current billing cycle. After that, your

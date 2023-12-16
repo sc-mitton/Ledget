@@ -7,7 +7,7 @@ interface Props {
   querySelectall: string
   update: any[]
   refresh?: any[]
-  styles?: any
+  styles?: React.CSSProperties
 }
 
 /**
@@ -35,7 +35,7 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
     borderRadius: 'var(--border-radius2)',
     zIndex: 0,
     config: { tension: 200, friction: 22 }
-  }
+  } as React.CSSProperties
 
   baseStyles = { ...baseStyles, ...styles }
 

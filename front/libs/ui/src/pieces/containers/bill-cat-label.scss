@@ -34,21 +34,21 @@
         transition: background-color 0.2s ease-in-out;
 
         * {
-            color: color-mix(in srgb, var(--main-dark) 100%, var(--main-hlight));
+            color: color-mix(in srgb, var(--main-dark) 100%, var(--main-hlight-hover));
         }
 
         &.tint {
-            background-color: var(--main-hlight5);
+            background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark) 10%);
 
             &.hoverable:hover,
             &.hoverable.active {
-                background-color: color-mix(in srgb, var(--main-hlight5), var(--main-dark3) 7%);
+                background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark) 30%);
                 transition: background-color 0.2s ease-in-out;
             }
         }
 
         &.hoverable:hover {
-            background-color: color-mix(in srgb, var(--main-hlight), var(--main-hlight) 30%);
+            background-color: var(--main-hlight-hover);
             transition: background-color 0.2s ease-in-out;
         }
     }
@@ -72,7 +72,7 @@
         }
 
         &.hoverable:hover {
-            background-color: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-hlight) 30%);
+            background-color: var(--secondary-hlight2);
             transition: background-color 0.2s ease-in-out;
         }
     }

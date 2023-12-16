@@ -41,6 +41,12 @@ export default defineConfig({
     },
   },
 
+  resolve: {
+    alias: {
+      '@types': path.resolve(__dirname, './src/types'),
+    }
+  },
+
   test: {
     globals: true,
     cache: {

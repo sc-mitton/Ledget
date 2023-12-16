@@ -14,7 +14,7 @@ import {
     LogoutIcon,
     LedgetLogoIcon
 } from '@ledget/media'
-import { DropAnimation, usePillAnimation } from '@ledget/ui'
+import { DropAnimation, usePillAnimation, DropdownItem } from '@ledget/ui'
 
 
 const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
@@ -111,12 +111,13 @@ const DropDownMenu = ({ isNarrow, setModal }:
         return (
             <Menu.Item as={React.Fragment}>
                 {({ active }) => (
-                    <button
-                        className={`dropdown-item ${active && "active-dropdown-item"}`}
-                        onClick={(e) => onClick(e)}
+                    <DropdownItem
+                        as='button'
+                        active={active}
+                        onClick={onClick}
                     >
                         {children}
-                    </button>
+                    </DropdownItem>
                 )}
             </Menu.Item>
         )

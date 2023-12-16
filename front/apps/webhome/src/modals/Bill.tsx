@@ -21,7 +21,8 @@ import {
     useLoaded,
     Checkbox,
     formatCurrency,
-    IconButton
+    IconButton,
+    DropdownItem
 } from '@ledget/ui'
 import { CheckMark2, Ellipsis, TrashIcon, BellOff, Edit } from '@ledget/media'
 import {
@@ -94,25 +95,27 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                             <Menu.Items static>
                                 <Menu.Item>
                                     {({ active }) => (
-                                        <button
-                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                        <DropdownItem
+                                            as='button'
+                                            active={active}
                                             onClick={() => setAction('edit')}
                                         >
                                             <Edit size={'1em'} />
                                             <span>Edit Bill</span>
-                                        </button>
+                                        </DropdownItem>
                                     )}
                                 </Menu.Item>
                                 <hr />
                                 <Menu.Item>
                                     {({ active }) => (
-                                        <button
-                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                        <DropdownItem
+                                            as='button'
+                                            active={active}
                                             onClick={() => setAction('delete')}
                                         >
                                             <TrashIcon />
                                             <span>Delete Bill</span>
-                                        </button>
+                                        </DropdownItem>
                                     )}
                                 </Menu.Item>
                             </Menu.Items>

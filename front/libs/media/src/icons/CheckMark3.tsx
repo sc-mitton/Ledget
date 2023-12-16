@@ -3,7 +3,7 @@
 const CheckMark3 = ({
     className = 'checkmark3',
     fill = "var(--m-text)",
-    stroke = "var(--main-hlight4)",
+    stroke = "var(--main-hlight-hex)",
     strokeWidth = "17",
     width = "1.1em",
     height = "1.1em"

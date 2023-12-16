@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { animated } from '@react-spring/web'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -13,7 +13,7 @@ const NavList = () => {
     const rootPath = useLocation().pathname.split("/")[2]
     const navigate = useNavigate()
 
-    const Icon = (props) => {
+    const Icon = (props: { name: string, fill: string }) => {
         switch (props.name) {
             case "settings":
                 return <Settings {...props} />
@@ -34,11 +34,9 @@ const NavList = () => {
                 id={route}
                 tabIndex={0}
                 onClick={() => navigate(route)}
-                onKeyDown={(e) => {
-                    e.key === "Enter" && navigate(route)
-                }}
+                onKeyDown={(e) => { e.key === "Enter" && navigate(route) }}
                 className={`slim side-nav-item${rootPath === route ? "-current" : ''}`}
-                aria-current={rootPath === route ? "page" : null}
+                data-current={rootPath === route ? "page" : null}
             >
                 <Tooltip
                     msg={route.charAt(0).toUpperCase() + route.slice(1)}
@@ -64,13 +62,12 @@ const Profile = () => {
         <li
             key="Account"
             role="link"
-            name="profile"
             tabIndex={0}
             onClick={() => navigate("/profile/details")}
             onKeyDown={(e) => e.key === "Enter" && navigate("/profile/details")}
             className={`side-nav-item${location.pathname === "/profile/details" ? "-current" : ''}`}
             id="profile"
-            aria-current={location.pathname === "/profile/details" ? "page" : null}
+            data-current={location.pathname === "/profile/details" ? "page" : null}
         >
             <Tooltip
                 msg={"Profile"}
@@ -102,9 +99,9 @@ const Gutter = () => {
         update: [location.pathname, gutterWidth],
         refresh: [],
         querySelectall: '[role=link]',
-        find: (el) => el.getAttribute('aria-current') === 'page',
+        find: (el) => el.getAttribute('data-current') === 'page',
         styles: {
-            backgroundColor: 'var(--main-hlight4)',
+            backgroundColor: '#dddeee',
             borderRadius: location.pathname === '/profile/details'
                 ? 'var(--border-radius25)'
                 : 'var(--border-radius2)',
@@ -131,13 +128,13 @@ const Gutter = () => {
 
     return (
         <div id="gutter" >
-            <div>
+            <nav>
                 <ul role="navigation" ref={ref}>
                     <Profile />
                     <NavList />
                     <animated.span id="gutter-pill" style={props} />
                 </ul>
-            </div>
+            </nav>
         </div>
     )
 }

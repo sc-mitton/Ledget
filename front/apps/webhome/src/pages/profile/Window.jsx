@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react'
-
 import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
 
-import './styles/window.css'
+import './styles/window.scss'
 import Gutter from './Gutter'
 import AccountPage from './Account'
 import ConnectionsPage from './Connections'

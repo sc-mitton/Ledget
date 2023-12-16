@@ -201,23 +201,12 @@
 
 
 .btn-blue {
-    background-color: var(--main-hlight4);
+    background-color: var(--main-hlight-hex);
     color: var(--main-dark);
     transition: all .3s ease;
 
     &:hover {
-        background-color: color-mix(in srgb, var(--main-hlight4), var(--main-dark4) 7%);
-        transition: all .3s ease;
-    }
-}
-
-.btn-blue2 {
-    background-color: var(--main-hlight5);
-    color: var(--main-dark);
-    transition: all .3s ease;
-
-    &:hover {
-        background-color: color-mix(in srgb, var(--main-hlight5), var(--main-dark3) 7%);
+        background-color: color-mix(in srgb, var(--main-hlight-hex), var(--main-dark4) 7%);
         transition: all .3s ease;
     }
 }

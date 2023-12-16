@@ -105,7 +105,7 @@ export function Otc({ codeLength = 6, required = true, colorful = false }) {
   )
 
   return (
-    <div className={`otc ${colorful ? 'green' : 'gray'}`}>
+    <div className='otc'>
       <fieldset>
         <div>
           {inputStates.map((input, index) => (

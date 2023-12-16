@@ -6,9 +6,6 @@
     --window-border: white;
     --window-background-color: #f0f0f0;
 
-    --overlay: rgba(49, 49, 49, 0.7);
-    --overlay2: rgba(49, 49, 49, 0.5);
-
     /* Palet */
     --mute-red: #fe8797;
     --hover-red: #fb6a7e;
@@ -19,9 +16,7 @@
     --main-color-values: 92, 96, 135;
     --main-hlight: #a9afdb;
     --main-hlight: #dde2f3;
-    --main-hlight3: #a7acd3;
-    --main-hlight4: #e3e5f5;
-    --main-hlight5: #c7ccf2;
+    --main-hlight-hex: #e3e5f5;
     --main-dark: hsl(232, 17%, 35%);
     --main-dark2: hsl(232, 17%, 30%);
     --main-dark3: hsl(232, 17%, 25%);

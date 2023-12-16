@@ -75,7 +75,7 @@
     }
 
     &.selected.active {
-        background-color: var(--main-hlight5);
+        background-color: var(--main-hlight-hover);
         transition: all 0.3s ease-out;
     }
 }

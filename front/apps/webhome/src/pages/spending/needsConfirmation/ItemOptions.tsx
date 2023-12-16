@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 
+import { DropdownItem } from '@ledget/ui'
 import { Split, Info as DetailsIcon, Snooze } from "@ledget/media"
 
 interface ItemOptionsMenuProps {
@@ -55,8 +56,9 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                 onKeyDown={handleKeyDown}
                 tabIndex={0}
             >
-                <li
-                    className={`dropdown-item${activeIndex === 0 ? ' active' : ''}`}
+                <DropdownItem
+                    as='li'
+                    active={activeIndex === 0}
                     role="menuitem"
                     ref={refs.current && refs.current[0]}
                     tabIndex={-1}
@@ -64,9 +66,9 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                     aria-label="Split"
                 >
                     <Split /> Split
-                </li>
-                <li
-                    className={`dropdown-item${activeIndex === 2 ? ' active' : ''}`}
+                </DropdownItem>
+                <DropdownItem
+                    as='li'
                     role="menuitem"
                     onClick={() => { props.handlers[1]() }}
                     tabIndex={-1}
@@ -74,7 +76,7 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                 >
                     <DetailsIcon />
                     Details
-                </li>
+                </DropdownItem>
             </ul>
         </div>
     )

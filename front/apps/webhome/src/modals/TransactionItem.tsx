@@ -26,7 +26,8 @@ import {
     useAccessEsc,
     IconButton,
     SlideMotionDiv,
-    useLoaded
+    useLoaded,
+    DropdownItem
 } from '@ledget/ui'
 
 
@@ -51,13 +52,14 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                             <Menu.Items static>
                                 <Menu.Item>
                                     {({ active }) => (
-                                        <button
-                                            className={`dropdown-item ${active && "active-dropdown-item"}`}
+                                        <DropdownItem
+                                            as='button'
+                                            active={active}
                                             onClick={() => setAction('split')}
                                         >
                                             <Split />
                                             <span>Split</span>
-                                        </button>
+                                        </DropdownItem>
                                     )}
                                 </Menu.Item>
                             </Menu.Items>

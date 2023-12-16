@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { animated } from '@react-spring/web'
 import { Tab } from '@headlessui/react'
 import { useLocation } from 'react-router-dom'
 
@@ -10,13 +9,12 @@ import { Recommendations as RecommendationsIcon } from '@ledget/media'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { BlueCheckSubmitButton, BlackSubmitWithArrow, BlueSlimButton2, usePillAnimation } from '@ledget/ui'
+import { BlueCheckSubmitButton, BlackSubmitWithArrow, BlueSlimButton2, } from '@ledget/ui'
 
 
 export const TabView = ({ children }) => {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [updatePill, setUpdatePill] = useState(false)
-    const tabListRef = useRef(null)
     const { month: { items: monthItems }, year: { items: yearItems } } = useContext(ItemsContext)
 
     useEffect(() => {
@@ -29,16 +27,6 @@ export const TabView = ({ children }) => {
         setSelectedIndex(1)
     }, [yearItems])
 
-    const { props } = usePillAnimation({
-        ref: tabListRef,
-        update: [updatePill],
-        refresh: [],
-        querySelectall: '[role=tab]',
-        styles: { zIndex: -1 },
-        find: (element) => {
-            return element.getAttribute('data-headlessui-state') === 'selected'
-        }
-    })
 
     useEffect(() => {
         setUpdatePill(!updatePill)
@@ -46,20 +34,7 @@ export const TabView = ({ children }) => {
 
     return (
         <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-            <Tab.List className="tab-list--container" ref={tabListRef}>
-                <div className="tab-list">
-                    {['Monthly', 'Yearly'].map((tab, i) => (
-                        <Tab key={i} as={React.Fragment}>
-                            {({ selected }) => (
-                                <button className="btn-2slim">
-                                    {tab}
-                                </button>
-                            )}
-                        </Tab>
-                    ))}
-                    <animated.span style={props} className="tab-list--pill" />
-                </div>
-            </Tab.List>
+            <TabNavList labels={['Monthly', 'Yearly']} />
             <Tab.Panels>
                 {children}
             </Tab.Panels>

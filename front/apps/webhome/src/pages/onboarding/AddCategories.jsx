@@ -21,7 +21,8 @@ import {
     useSpringDrag,
     CloseButton,
     FormErrorTip,
-    DollarCents
+    DollarCents,
+    BillCatLabel
 } from '@ledget/ui'
 import { itemHeight, itemPadding } from './constants'
 
@@ -71,10 +72,10 @@ const CategoriesColumn = ({ period }) => {
                                 className="budget-item-name--container"
                                 style={{ flexBasis: getLongestLength(context.items, 'name') + 6 }}
                             >
-                                <div className="budget-item-name">
+                                <BillCatLabel slim={true} color={period === 'month' ? 'blue' : 'green'}>
                                     <span>{item.emoji}</span>
                                     <span>{formatName(item.name)}</span>
-                                </div>
+                                </BillCatLabel>
                             </div>
                             <div >
                                 <div className="budget-dollar--container">
@@ -131,11 +132,10 @@ const RecommendationsView = () => {
             <Tab.Panel>
                 <div className="recommendations-container">
                     {monthRecommendations.map((suggestion, index) => (
-                        <div
+                        <BillCatLabel
+                            slim={true}
+                            color={'blue'}
                             key={`month-suggestion-${index}`}
-                            className={`budget-item-name
-                                ${monthItems.some((item) => item.name === suggestion.name.toLowerCase())
-                                    ? 'selected' : 'unselected'}`}
                             style={{ '--animation-order': monthAnimationOrder[index] }}
                             onClick={(e) => handleClick(e, 'month')}
                             role='button'
@@ -149,18 +149,17 @@ const RecommendationsView = () => {
                                     ? 'var(--m-invert-text)' : 'currentColor'
                                 }
                             />
-                        </div>
+                        </BillCatLabel>
                     ))}
                 </div>
             </Tab.Panel>
             <Tab.Panel>
                 <div className="recommendations-container">
                     {yearRecommendations.map((suggestion, index) => (
-                        <div
+                        <BillCatLabel
+                            slim={true}
+                            color={'green'}
                             key={`year-suggestion-${index}`}
-                            className={`budget-item-name
-                                ${yearItems.some((item) => item.name === suggestion.name.toLowerCase())
-                                    ? 'selected' : 'unselected'} `}
                             style={{ '--animation-order': yearAnimationOrder[index] }}
                             onClick={(e) => handleClick(e, 'year')}
                             role='button'
@@ -173,7 +172,7 @@ const RecommendationsView = () => {
                                     ? 'var(--m-invert-text)' : 'currentColor'
                                 }
                             />
-                        </div>
+                        </BillCatLabel>
                     ))}
                 </div>
             </Tab.Panel>
