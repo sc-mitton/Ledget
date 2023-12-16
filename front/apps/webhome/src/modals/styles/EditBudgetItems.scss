@@ -1,5 +1,4 @@
 @import '@styles/base.scss';
-@import '@styles/text.scss';
 
 
 #reorder-categories {
@@ -60,7 +59,7 @@
 
     #delete-msg {
         margin: 1em;
-        color: $secondary-text-color;
+        color: var(--secondary-text-color);
     }
 
 

@@ -1,10 +1,8 @@
-$primary-text-color: #292929;
+$primary-text-color: var(--m-text-color);
 $secondary-text-color: var(--m-secondary);
 $secondary-text-color-darker: color-mix(in srgb, $secondary-text-color, $primary-text-color 60%);
-$tirtiary-text-color: hsl(0, 0%, 56%);
+$tirtiary-text-color: hsl(0, 0%, 44%);
 $debit-text: #3aae83;
-$charcoal: var(--charcoal-rgb);
-
 
 @mixin make_all_secondary_text_color {
     * {

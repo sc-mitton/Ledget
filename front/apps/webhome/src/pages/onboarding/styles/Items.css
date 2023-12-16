@@ -82,7 +82,7 @@
 }
 
 #onboarding-app .tab-list button[aria-selected='true'] {
-    color: var(--white-text);
+    color: var(--m-invert-text);
 }
 
 /* ----------------------------- Suggested Items ---------------------------- */

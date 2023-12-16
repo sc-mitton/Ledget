@@ -1,5 +1,3 @@
-@import '@styles/text.scss';
-
 #split-transaction--form {
 
     .total-left--container {
@@ -17,7 +15,7 @@
 
         &.is-even *,
         &.has-remaining * {
-            color: $secondary-text-color-darker;
+            color: var(--secondary-text-color-darker);
         }
 
         &.is-over *,

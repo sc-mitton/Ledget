@@ -34,7 +34,10 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
         find: (element) => {
             return (element.firstChild as any)?.getAttribute('aria-current') === 'page'
         },
-        styles: { borderRadius: 'var(--border-radius3)', backgroundColor: 'var(--white-text)' },
+        styles: {
+            borderRadius: 'var(--border-radius3)',
+            backgroundColor: 'var(--header-pill)'
+        },
     })
 
     const [showPill, setShowPill] = useState<boolean>(false)
@@ -124,7 +127,7 @@ const DropDownMenu = ({ isNarrow, setModal }:
             {({ open }) => (
                 <div style={{ position: 'relative' }}>
                     <Menu.Button className="profile-button">
-                        <Profile1 fill={'var(--white-text'} />
+                        <Profile1 fill={'var(--m-invert-text'} />
                     </Menu.Button>
                     <DropAnimation
                         placement='right'

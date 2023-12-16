@@ -22,7 +22,7 @@ const CheckAllButton: FC<ButtonHTMLAttributes<HTMLButtonElement>> = (props) => (
         style={{ left: '-1.3rem' }}
     >
         <IconButton id="check-all-icon" aria-label="Check all" {...props}>
-            <CheckAll fill={'var(--faded-text)'} />
+            <CheckAll fill={'currentColor'} />
         </IconButton>
     </Tooltip>
 )
@@ -87,15 +87,13 @@ const NewItemsHeader = (
                 </div>
                 <div>
                     <RefreshButton
-                        fill={'var(--faded-text)'}
+                        fill={'currentColor'}
                         hasBackground={false}
                         loading={isSyncing}
                         onClick={handleRefreshClick}
                     />
                     {(unconfirmedLength > 0) &&
-                        <CheckAllButton
-                            onClick={onConfirmAll}
-                        />
+                        <CheckAllButton onClick={onConfirmAll} />
                     }
                 </div>
             </div>

@@ -4,7 +4,7 @@ const Suggestions = ({
     width = "1.25em",
     height = "1.25em",
     className = '',
-    fill = "var(--white-text)"
+    fill = "var(--m-invert-text)"
 }) => {
 
     return (

@@ -1,4 +1,4 @@
-import './shimmer.css';
+import './shimmer.scss';
 
 import { useTransition, animated } from '@react-spring/web'
 import { TextInputWrapper } from '../../inputs/text/text'

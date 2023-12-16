@@ -68,9 +68,9 @@
     --sub-text: #3d3d3d;
     --input-placeholder: #848484;
     --input-placeholder2: #a6a6a6;
-    --white-text: #f8f8f8;
+    --m-invert-text: #f8f8f8;
     --muted-text-gray: #848484;
-    --faded-text: rgb(0, 0, 0, .4);
+    --tirtiary-text-color: rgb(0, 0, 0, .4);
 
     /* Icons & Buttons */
     --icon-light-gray: #ebebeb;

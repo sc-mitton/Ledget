@@ -144,7 +144,7 @@
 
 .btn-chcl {
     background-color: var(--btn-gray);
-    color: var(--white-text);
+    color: var(--m-invert-text);
     transition: all .3s ease;
 
     &:hover {
@@ -269,7 +269,7 @@
 
 .btn-gr4 {
     background-color: rgb(0, 0, 0, .5);
-    color: var(--white-text);
+    color: var(--m-invert-text);
     transition: all .3s ease;
     font-weight: 400;
 
@@ -291,7 +291,7 @@
 
 .btn-discreet {
     background-color: var(--icon-light-gray);
-    color: var(--faded-text);
+    color: var(--tirtiary-text-color);
     transition: all .3s ease;
 
     &:hover {
@@ -302,7 +302,7 @@
 
 .btn-red {
     background-color: var(--mute-red);
-    color: var(--white-text);
+    color: var(--m-invert-text);
     font-weight: 500;
     margin: .25em 0;
     transition: all .3s ease;
@@ -843,7 +843,7 @@ button.disabled-hover:hover svg {
         gap: .5em;
         padding: .25em 20;
         border-radius: var(--border-radius5);
-        color: var(--white-text);
+        color: var(--m-invert-text);
         font-weight: 500;
     }
 

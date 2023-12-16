@@ -1,7 +1,5 @@
 $scroll-bar-padding: 1em;
-$charcoal: var(--charcoal-rgb);
 
-@import '@styles/text';
 @import '@styles/table-mixins.scss';
 
 .transactions-history-table--container {
@@ -25,7 +23,7 @@ $charcoal: var(--charcoal-rgb);
 
             &>span:first-child {
                 font-size: .75rem;
-                color: $secondary-text-color;
+                color: var(--secondary-text-color);
             }
         }
     }
@@ -85,7 +83,7 @@ $charcoal: var(--charcoal-rgb);
             padding-left: .125em;
             margin: 0;
             cursor: default;
-            color: $secondary-text-color;
+            color: var(--secondary-text-color);
         }
 
         &>div {

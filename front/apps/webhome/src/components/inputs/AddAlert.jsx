@@ -111,7 +111,7 @@ const AddAlert = (props) => {
                                     <Return
                                         width={'.6em'}
                                         height={'.6em'}
-                                        stroke={"var(--white-text)"}
+                                        stroke={"var(--m-invert-text)"}
                                     />
                                 </div>
                             </>
@@ -168,7 +168,7 @@ const AddAlert = (props) => {
                     <span
                         style={{
                             backgroundColor: 'var(--m-text)',
-                            color: 'var(--white-text)',
+                            color: 'var(--m-invert-text)',
                             borderRadius: '50%',
                             padding: '.375em',
                             width: '.5em',

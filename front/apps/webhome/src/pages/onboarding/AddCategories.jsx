@@ -146,7 +146,7 @@ const RecommendationsView = () => {
                                 width={'.7em'}
                                 height={'.7em'}
                                 stroke={monthItems.some((item) => item.name === suggestion.name.toLowerCase())
-                                    ? 'var(--white-text)' : 'currentColor'
+                                    ? 'var(--m-invert-text)' : 'currentColor'
                                 }
                             />
                         </div>
@@ -170,7 +170,7 @@ const RecommendationsView = () => {
                             <CheckMark
                                 size={'.7em'}
                                 stroke={yearItems.some((item) => item.name === suggestion.name.toLowerCase())
-                                    ? 'var(--white-text)' : 'currentColor'
+                                    ? 'var(--m-invert-text)' : 'currentColor'
                                 }
                             />
                         </div>

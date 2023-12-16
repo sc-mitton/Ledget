@@ -127,7 +127,7 @@ const BlackRadios = (props) => {
                         <span
                             style={{
                                 color: selected
-                                    ? 'var(--white-text)'
+                                    ? 'var(--m-invert-text)'
                                     : 'var(--input-placeholder2)',
                                 fontWeight: '400'
                             }}

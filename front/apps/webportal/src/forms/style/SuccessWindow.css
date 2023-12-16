@@ -23,7 +23,7 @@
 }
 
 .radial-fill-window * {
-    color: var(--white-text);
+    color: var(--m-invert-text);
 }
 
 .radial-fill-window span {

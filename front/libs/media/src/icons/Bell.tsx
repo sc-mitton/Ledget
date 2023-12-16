@@ -5,7 +5,7 @@ const Bell = ({
     className = '',
     fill = "var(--icon-dark)",
     numberOfAlerts = 0,
-    color = "var(--white-text)"
+    color = "var(--m-invert-text)"
 }) => {
 
     return (

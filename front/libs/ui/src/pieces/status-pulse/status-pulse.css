@@ -223,7 +223,7 @@
 .keypad-graphic-status div {
     width: 1.2em;
     height: 1.2em;
-    color: var(--white-text);
+    color: var(--m-invert-text);
     border-radius: 50%;
     font-size: .875rem;
     font-weight: 400;

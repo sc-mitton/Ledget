@@ -1,6 +1,6 @@
 header {
-    background-color: var(--main-dark4);
-    box-shadow: 0 1px 0 1px var(--main-dark);
+    background-color: var(--header-background);
+    box-shadow: var(--header-box-shadow);
 
     // Same as dashboard
     width: 100%;
@@ -112,7 +112,7 @@ header {
 }
 
 .nav-item a {
-    color: var(--white-text)
+    color: var(--m-invert-text);
 }
 
 .nav-item a,
@@ -124,14 +124,18 @@ header {
     font-weight: 400;
 }
 
+.nav-item {
+    background-color: transparent;
+    opacity: 1;
+}
+
 .nav-item:hover {
-    background-color: var(--main-dark);
-    opacity: .8;
-    transition: all 0.3s ease-out;
+    background-color: var(--header-pill-hover);
+    transition: all 0.3s;
 }
 
 .current-nav-item * {
-    color: var(--m-text);
+    color: var(--header-background);
 }
 
 @media (max-width: 1079px) {
@@ -161,7 +165,7 @@ header {
     }
 
     .current-nav-item * {
-        color: var(--white-text);
+        color: var(--m-invert-text);
     }
 
     header>div span {
