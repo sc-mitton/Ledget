@@ -30,11 +30,11 @@
     }
 
     &.blue {
-        background-color: var(--main-hlight2);
+        background-color: var(--main-hlight);
         transition: background-color 0.2s ease-in-out;
 
         * {
-            color: color-mix(in srgb, var(--main-dark) 100%, var(--main-hlight2));
+            color: color-mix(in srgb, var(--main-dark) 100%, var(--main-hlight));
         }
 
         &.tint {
@@ -48,7 +48,7 @@
         }
 
         &.hoverable:hover {
-            background-color: color-mix(in srgb, var(--main-hlight2), var(--main-hlight) 30%);
+            background-color: color-mix(in srgb, var(--main-hlight), var(--main-hlight) 30%);
             transition: background-color 0.2s ease-in-out;
         }
     }

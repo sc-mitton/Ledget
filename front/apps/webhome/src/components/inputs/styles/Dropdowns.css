@@ -52,7 +52,7 @@
 }
 
 .s-slct-item {
-    background-color: var(--main-hlight2);
+    background-color: var(--main-hlight);
     transition: background-color 0.3s ease-out;
 }
 

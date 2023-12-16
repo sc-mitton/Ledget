@@ -155,12 +155,12 @@
 
 .btn-grn {
     color: var(--main-dark4);
-    background-color: var(--main-hlight2);
+    background-color: var(--main-hlight);
     transition: all .3s ease;
 
     &:hover {
         color: var(--main-dark4);
-        background-color: color-mix(in srgb, var(--main-hlight2), var(--main-dark4) 8%);
+        background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark4) 8%);
         transition: all .3s ease;
     }
 }
@@ -170,7 +170,7 @@
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--main-hlight2);
+        background-color: var(--main-hlight);
         color: var(--main-dark4);
         transition: all .3s ease;
     }
@@ -261,7 +261,7 @@
     font-weight: 400;
 
     &:hover {
-        background-color: var(--main-hlight2);
+        background-color: var(--main-hlight);
         color: var(--main-dark4);
         transition: all .3s ease;
     }
@@ -291,7 +291,7 @@
 
 .btn-discreet {
     background-color: var(--icon-light-gray);
-    color: var(--tirtiary-text-color);
+    color: var(--m-text-tirtiary);
     transition: all .3s ease;
 
     &:hover {

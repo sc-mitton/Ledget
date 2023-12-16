@@ -24,7 +24,7 @@
     bottom: 0;
     left: 0;
     height: 2.5px;
-    background-color: var(--logo-dark);
+    background-color: var(--m-text);
     animation: loading-bar calc(var(--toast-timer) - 300ms) linear forwards;
     mask-image: linear-gradient(to right, transparent 0%, black 97%, transparent);
 }

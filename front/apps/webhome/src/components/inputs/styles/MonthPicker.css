@@ -52,7 +52,7 @@
 }
 
 .month-picker-item-selected {
-    background-color: var(--main-hlight2);
+    background-color: var(--main-hlight);
     color: var(--main-dark4);
 }
 

@@ -60,7 +60,7 @@
     border-radius: var(--border-radius1);
 
     &.selected {
-        background-color: var(--main-hlight2);
+        background-color: var(--main-hlight);
         transition: all 0.3s ease-out;
     }
 

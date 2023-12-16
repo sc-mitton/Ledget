@@ -1,8 +1,6 @@
 :root {
-    --shimmer-background: linear-gradient(115deg, var(--window) 30%, #f0f0f0 50%, var(--window) 70%);
-    --block-shimmer-background: linear-gradient(115deg, rgba(255, 255, 255, 0) 25%, #f5f5f5 50%, rgba(255, 255, 255, 0) 75%);
-    --translucent-shimmer-background: linear-gradient(115deg, rgba(255, 255, 255, 0) 25%, #fbfbfb 50%, rgba(255, 255, 255, 0) 75%);
-
+    --translucent-shimmer-background-light: linear-gradient(115deg, transparent 25%, hsl(0, 0%, 98%) 50%, transparent 75%);
+    --translucent-shimmer-background-dark: linear-gradient(115deg, transparent 25%, hsl(0, 0%, 2%) 50%, transparent 75%);
     --blue-shimmer-background: linear-gradient(115deg, transparent 30%, var(--main-hlight3) 50%, transparent 70%);
     --green-shimmer-background: linear-gradient(115deg, transparent 30%, var(--secondary-hlight) 50%, transparent 70%);
 }
@@ -19,7 +17,7 @@
 }
 
 .colored-loading-shimmer.blue {
-    background-color: var(--main-hlight2);
+    background-color: var(--main-hlight);
 }
 
 .loading-shimmer {
@@ -67,7 +65,14 @@
 }
 
 .translucent-shimmer--container .shimmer {
-    background: var(--translucent-shimmer-background);
+
+    &.light {
+        background: var(--translucent-shimmer-background-light);
+    }
+
+    &.dark {
+        background: var(--translucent-shimmer-background-dark);
+    }
 }
 
 .block-shimmer--container,
@@ -87,6 +92,7 @@
 }
 
 .translucent-shimmer--container .loading-shimmer {
+
     background-color: rgb(0, 0, 0);
 }
 

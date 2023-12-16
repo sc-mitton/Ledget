@@ -25,7 +25,7 @@
 }
 
 .otc.green input[type="text"] {
-    background-color: var(--main-hlight2);
+    background-color: var(--main-hlight);
     border: solid 1px rgb(var(--main-color-values), .06);
     color: var(--main-color-hover);
 }
@@ -37,8 +37,7 @@
 }
 
 .otc input[type="text"]:focus {
-    border: 1.5px solid var(--main-hlight3);
-    /* background-color: var(--window); */
+    border: 1.5px solid var(--input-border-focus);
 }
 
 .otc input::-webkit-outer-spin-button,

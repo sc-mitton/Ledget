@@ -92,7 +92,7 @@
 
 #connections-page .accounts>div:nth-child(3n + 2),
 #connections-page .accounts>div:nth-child(3n + 3) {
-    color: var(--secondary-text-color-darker);
+    color: var(--m-text-secondary);
     padding: .375em 0;
     font-size: .75rem;
 }
@@ -128,7 +128,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: var(--secondary-text-color);
+    color: var(--m-text-tirtiary);
 }
 
 #no-connections-message h2 {

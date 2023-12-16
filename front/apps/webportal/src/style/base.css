@@ -6,8 +6,6 @@
     --window-border: white;
     --window-background-color: #f0f0f0;
 
-    --background-color: #fcfcfc;
-    --logo-dark: #242424;
     --overlay: rgba(49, 49, 49, 0.7);
     --overlay2: rgba(49, 49, 49, 0.5);
 
@@ -20,7 +18,7 @@
     --main-color-hover: hsl(235, 24%, 53%);
     --main-color-values: 92, 96, 135;
     --main-hlight: #a9afdb;
-    --main-hlight2: #dde2f3;
+    --main-hlight: #dde2f3;
     --main-hlight3: #a7acd3;
     --main-hlight4: #e3e5f5;
     --main-hlight5: #c7ccf2;
@@ -65,12 +63,11 @@
     /* Text */
     --input-focus: hsl(233, 56%, 73%);
     --m-text: #292929;
-    --sub-text: #3d3d3d;
+    --m-text-secondary: #3d3d3d;
     --input-placeholder: #848484;
     --input-placeholder2: #a6a6a6;
     --m-invert-text: #f8f8f8;
-    --muted-text-gray: #848484;
-    --tirtiary-text-color: rgb(0, 0, 0, .4);
+    --m-text-tirtiary: rgb(0, 0, 0, .4);
 
     /* Icons & Buttons */
     --icon-light-gray: #ebebeb;
@@ -155,7 +152,6 @@ h1,
 h2,
 h3,
 h4 {
-    color: var(--logo-dark);
     margin: 0;
 }
 

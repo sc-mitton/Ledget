@@ -117,11 +117,11 @@
         }
 
         &.month {
-            background-color: var(--main-hlight2);
+            background-color: var(--main-hlight);
             color: var(--main-dark4);
 
             &:hover {
-                background-color: color-mix(in srgb, var(--main-hlight2), var(--main-dark4) 8%);
+                background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark4) 8%);
                 transition: all .3s ease;
             }
         }

@@ -58,7 +58,7 @@ export const nivoResponsiveLineTheme: Theme = {
                 fontSize: 12,
                 fontFamily: 'inherit',
                 fontWeight: 400,
-                fill: 'var(--m-secondary)',
+                fill: 'var(--m-secondary-text)',
             },
         },
     },

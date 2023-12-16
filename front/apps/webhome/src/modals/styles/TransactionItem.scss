@@ -13,7 +13,7 @@
     &>div:nth-child(2),
     &>button:nth-child(2) {
         font-size: 1rem;
-        color: var(--secondary-text-color-darker);
+        color: var(--m-text-secondary);
     }
 
     &>div:nth-child(2) {
@@ -52,7 +52,7 @@
 
     .pending {
         text-align: center;
-        color: var(--secondary-text-color-darker);
+        color: var(--m-text-secondary);
         font-size: 1em;
     }
 }
@@ -107,7 +107,7 @@
 
             &>div:nth-child(2n),
             &>div:nth-child(2n) * {
-                color: var(--secondary-text-color-darker);
+                color: var(--m-text-secondary);
             }
         }
 
@@ -137,7 +137,7 @@
             }
 
             input {
-                color: var(--secondary-text-color-darker);
+                color: var(--m-text-secondary);
                 width: 100%;
                 padding: 0;
             }

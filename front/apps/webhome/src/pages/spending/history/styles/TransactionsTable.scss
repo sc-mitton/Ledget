@@ -23,7 +23,7 @@ $scroll-bar-padding: 1em;
 
             &>span:first-child {
                 font-size: .75rem;
-                color: var(--secondary-text-color);
+                color: var(--m-text-tirtiary);
             }
         }
     }
@@ -83,7 +83,7 @@ $scroll-bar-padding: 1em;
             padding-left: .125em;
             margin: 0;
             cursor: default;
-            color: var(--secondary-text-color);
+            color: var(--m-text-tirtiary);
         }
 
         &>div {

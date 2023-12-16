@@ -14,7 +14,11 @@ import { InputShimmerDiv } from '../../pieces/shimmer/shimmer'
 import { stripeCardTheme } from '../../themes/themes'
 
 
-export const TextInputWrapper = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & { slim?: boolean }>((props, ref) => {
+export interface TextInputWrapperProps extends React.HTMLProps<HTMLDivElement> {
+  slim?: boolean
+}
+
+export const TextInputWrapper = forwardRef<HTMLDivElement, TextInputWrapperProps>((props, ref) => {
 
   const { className, children, slim, ...rest } = props
 

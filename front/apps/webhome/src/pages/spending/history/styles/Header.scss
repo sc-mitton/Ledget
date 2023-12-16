@@ -16,7 +16,7 @@ $padding: 1.5em;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: var(--inner-window-solid);
+    background-color: var(--inner-window);
     border-radius: var(--border-radius3);
 
     &>div {
@@ -80,7 +80,7 @@ $padding: 1.5em;
                     transform: translateY(-50%);
                     width: .375em;
                     height: 1.5px;
-                    background-color: var(--border-color);
+                    background-color: var(--subtle-border-color);
                 }
             }
 

@@ -71,7 +71,7 @@
 }
 
 .recover-propt--container span {
-    color: var(--sub-text);
+    color: var(--m-text-secondary);
 }
 
 .mfa-prompt--container button {

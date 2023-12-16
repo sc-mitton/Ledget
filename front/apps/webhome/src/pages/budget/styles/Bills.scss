@@ -8,7 +8,6 @@ $number-of-bill-rows: 4;
     --number-of-bill-rows: 4;
 }
 
-@import '../../../styles/greenblues.scss';
 @import './Variables.scss';
 @import './SpendingCategories.scss';
 @import '@styles/table-mixins';
@@ -239,7 +238,7 @@ $number-of-bill-rows: 4;
     &>.monthly-bill {
 
         &>div:first-child {
-            background-color: $blue;
+            background-color: var(--main-hlight);
             transition: all .2s ease-in-out;
             padding: $label-padding;
             border-radius: var(--border-radius2);
@@ -250,16 +249,16 @@ $number-of-bill-rows: 4;
         }
 
         &:hover>div:first-child {
-            background-color: $blue-hover;
+            background-color: var(--main-hlight-hover);
             transition: all .2s ease-in-out;
         }
     }
 
     &>.yearly-bill {
-        background-color: $green;
+        background-color: var(--secondary-hlight);
 
         &>div:first-child {
-            background-color: $green;
+            background-color: var(--secondary-hlight);
             transition: all .2s ease-in-out;
             padding: $label-padding;
             border-radius: var(--border-radius2);
@@ -270,7 +269,7 @@ $number-of-bill-rows: 4;
         }
 
         &:hover>div:first-child {
-            background-color: $green-hover;
+            background-color: var(--secondary-hlight-hover);
             transition: all .2s ease-in-out;
         }
 

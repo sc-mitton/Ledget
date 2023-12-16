@@ -15,7 +15,7 @@
 
         &.is-even *,
         &.has-remaining * {
-            color: var(--secondary-text-color-darker);
+            color: var(--m-text-secondary);
         }
 
         &.is-over *,

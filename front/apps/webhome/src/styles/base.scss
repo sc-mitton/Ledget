@@ -25,7 +25,7 @@
         --main-color-hover: hsl(235, 24%, 53%);
         --main-color-values: 92, 96, 135;
         --main-hlight: hsl(233, 41%, 24%);
-        --main-hlight2: hsl(226, 48%, 9%);
+        --main-hlight: hsl(226, 48%, 9%);
         --main-hlight3: hsl(233, 33%, 26%);
         --main-hlight4: hsl(233, 47%, 7%);
         --main-hlight5: hsl(233, 56%, 12%);
@@ -50,21 +50,17 @@
         --charcoal-rgb: 41, 41, 41;
         --charcoal: rgb(41, 41, 41);
         --gray: hsl(0, 0%, 50%);
-        --window-rgb: 252, 248, 247;
 
         /* Windows */
         --window: rgb(30, 30, 30);
         --window-rgb: 250, 250, 250;
         --window2: hsl(0, 0%, 93%);
-        --window-values: 250, 250, 250;
         --window-background-color: var(--window);
-        --inner-window: rgba(255, 255, 255, .04);
-        --inner-window-rgb: 246, 246, 246;
-        --inner-window-solid: rgb(13, 13, 13);
+        --inner-window-rgb: 13, 13, 13;
+        --inner-window: hsl(0, 0%, 5%);
         --header-background: var(--main-hlight6);
+        --window-rgb: 252, 248, 247;
 
-        --background-color: rgb(3, 3, 3);
-        --logo-dark: #242424;
         --overlay: rgba(49, 49, 49, 0.7);
         --overlay2: rgba(49, 49, 49, 0.5);
 
@@ -72,7 +68,7 @@
         --input-background: #e8e8e8;
         --input-border-color: #dedede;
         --input-border: solid 1px var(--input-border-color);
-        --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight2) 30%);
+        --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight) 30%);
         --input-border-focus: solid 1px var(--input-background);
 
         /* Icons & Buttons */
@@ -94,19 +90,18 @@
         /* Text */
         --m-text: var(--main-dark5);
         --m-invert-text: #f7f7f7;
-        --m-secondary: color-mix(in srgb, var(--main-dark4), white 50%);
-        --primary-text-color: var(--m-text-color);
-        --secondary-text-color: var(--m-secondary);
-        --secondary-text-color-darker: color-mix(in srgb, var(--secondary-text-color), $primary-text-color 60%);
-        --tirtiary-text-color: hsl(0, 0%, 44%);
+        --m-secondary-text: color-mix(in srgb, var(--main-dark4), white 50%);
+        --m-text-tirtiary: var(--m-secondary-text);
+        --m-text-secondary: color-mix(in srgb, var(--m-text-tirtiary), $primary-text-color 60%);
+        --m-text-tirtiary: hsl(0, 0%, 44%);
         --debit-text: #3aae83;
 
-        --sub-text: #3d3d3d;
+        --m-text-secondary: #3d3d3d;
         --input-placeholder: #616161;
         --input-placeholder2: #a6a6a6;
         --input-focus: var(--input-placeholder);
 
-        --muted-text-gray: #848484;
+
         --input-padding: .525em 1em;
         --window-padding: 1.5em;
 
@@ -133,27 +128,31 @@
 
         /* Borders */
         --subtle-border-color: rgb(255, 255, 255, .07);
-        --border-color: rgb(255, 255, 255, .3);
         --subtle-border: .75px solid var(--subtle-border-color);
     }
 
     main.light {
 
-        --main-color: rgb(92, 96, 135);
-        --main-color-hover: rgb(106, 111, 164);
-        --main-color-values: 92, 96, 135;
-        --main-hlight: #a9afdb;
-        --main-hlight2: #dde2f3;
+        --main-color-h: 234;
+        --main-color-s: 19%;
+        --main-color-l: 45%;
+        --main-color-values: 93, 97, 137;
+        --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
+        --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 10%));
+        --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 45%));
+        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 35%));
+
+
         --main-hlight3: #a7acd3;
         --main-hlight4: #e3e5f5;
         --main-hlight5: #ced2f1;
         --main-hlight6: #c2c9d8;
+        --main-sat: rgb(182, 182, 250);
         --main-dark: hsl(232, 17%, 35%);
         --main-dark2: hsl(232, 17%, 30%);
         --main-dark3: hsl(232, 17%, 25%);
         --main-dark4: hsl(229, 23%, 18%);
         --main-dark5: hsl(240, 6%, 17%);
-        --main-sat: rgb(182, 182, 250);
         --yellow: rgb(175, 175, 51);
 
         --secondary-color: hsl(153, 100%, 91%);
@@ -165,51 +164,42 @@
         --secondary-dark: hsl(164, 17%, 35%);
         --secondary-dark4: hsl(164, 5%, 27%);
 
-        /* Windows */
-        --window: rgb(250, 250, 250);
-        --window-rgb: 250, 250, 250;
-        --window2: hsl(0, 0%, 93%);
-        --window-values: 250, 250, 250;
-        --window-background-color: var(--window);
-        --inner-window: rgba(0, 0, 0, .04);
-        --inner-window-rgb: 246, 246, 246;
-        --inner-window-solid: rgb(241, 241, 241);
-        --header-background: var(--main-dark4);
-
-        --background-color: #fcfcfc;
-        --logo-dark: #242424;
-        --overlay: rgba(49, 49, 49, 0.7);
-        --overlay2: rgba(49, 49, 49, 0.5);
-
+        --gray-hlight: hsl(0, 0%, 90%);
         --charcoal-rgb: 41, 41, 41;
         --charcoal: rgb(41, 41, 41);
-        --window-rgb: 252, 248, 247;
-        --gray: hsl(0, 0%, 85%);
+
+        /* Windows */
+        --window: hsl(0, 0%, 98%);
+        --window-rgb: 250, 250, 250;
+        --window2: hsl(0, 0%, 93%);
+        --window-background-color: var(--window);
+        --inner-window: hsl(0, 0%, 95%);
+        --inner-window-rgb: 246, 246, 246;
+        --header-background: var(--main-dark4);
+
+        --overlay: rgba(49, 49, 49, 0.7);
+        --overlay2: rgba(49, 49, 49, 0.5);
 
         /* Input Colors */
         --input-background: #e8e8e8;
         --input-border-color: #dedede;
         --input-border: solid 1px var(--input-border-color);
-        --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight2) 30%);
+        --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight) 30%);
         --input-border-focus: solid 1px var(--input-background);
 
         /* Text */
         --m-text: var(--main-dark5);
         --m-invert-text: hsl(0, 0%, 97%);
-        --m-secondary: color-mix(in srgb, var(--main-dark4), white 50%);
-        --primary-text-color: var(--m-text-color);
-        --secondary-text-color: var(--m-secondary);
-        --secondary-text-color-darker: color-mix(in srgb, var(--secondary-text-color), $primary-text-color 60%);
-        --tirtiary-text-color: hsl(0, 0%, 44%);
+        --m-text-secondary: color-mix(in srgb, var(--m-text), white 20%);
+        --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 40%);
+        --m-text-quinary: color-mix(in srgb, var(--m-text), white 60%);
         --debit-text: #3aae83;
 
-        --sub-text: #3d3d3d;
         --input-placeholder: #616161;
         --input-placeholder2: #a6a6a6;
         --input-focus: var(--input-placeholder);
-        --muted-text-gray: #848484;
-        --tirtiary-text-color: rgb(0, 0, 0, .6);
 
+        /* Paddings */
         --input-padding: .525em 1em;
         --window-padding: 1.5em;
 
@@ -246,13 +236,12 @@
         --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
 
         --wafer-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
-        --active-wafer-drop-shadow: color-mix(in srgb, var(--main-hlight2) 80%, var(--main-color)) 0px 0px 12px;
+        --active-wafer-drop-shadow: color-mix(in srgb, var(--main-hlight) 80%, var(--main-color)) 0px 0px 12px;
         --wafer-hover-drop-shadow: rgb(0, 0, 0, .2) 0px 0px 12px 2px;
         --wafer-drag-drop-shadow: var(--wafer-drop-shadow);
 
         /* Borders */
         --subtle-border-color: rgb(0, 0, 0, .07);
-        --border-color: rgb(0, 0, 0, .3);
         --subtle-border: .75px solid var(--subtle-border-color);
     }
 }
@@ -440,7 +429,7 @@ div.body {
 }
 
 .faded-text {
-    color: var(--tirtiary-text-color);
+    color: var(--m-text-tirtiary);
 }
 
 .window {
@@ -594,7 +583,7 @@ input:focus {
 
 @mixin month-category {
     @include category-label;
-    background-color: color-mix(in srgb, var(--main-hlight2), var(--main-hlight) 10%);
+    background-color: color-mix(in srgb, var(--main-hlight), var(--main-hlight) 10%);
     transition: all .3s ease;
 
     * {
@@ -660,10 +649,10 @@ button.pulse {
 }
 
 button.pulse:hover {
-    background-color: var(--main-hlight2);
+    background-color: var(--main-hlight);
     border-radius: var(--border-radius1);
     animation: none;
-    background-color: var(--main-hlight2);
+    background-color: var(--main-hlight);
     transition: all .3s ease;
 }
 
@@ -677,7 +666,7 @@ button.pulse:hover {
 .budget-item-name {
     padding: .125em .75em;
     border-radius: var(--border-radius2);
-    background-color: var(--main-hlight2);
+    background-color: var(--main-hlight);
     display: inline-block;
     white-space: nowrap;
     transition: background-color .3s ease;
@@ -794,7 +783,7 @@ ul hr {
     }
 
     &.selected {
-        background-color: var(--main-hlight2);
+        background-color: var(--main-hlight);
     }
 
     &.selected.active {
