@@ -19,7 +19,8 @@ import {
     ExpandButton,
     DropAnimation,
     useAccessEsc,
-    ShimmerText
+    ShimmerText,
+    BillCatLabel
 } from '@ledget/ui';
 import { Calendar as CalendarIcon, CheckMark2, BackArrow } from '@ledget/media'
 
@@ -282,13 +283,16 @@ const Bills = () => {
                                 })
                             }}
                         >
-                            <div>
-                                <span>{bill.emoji}</span>
-                                <span>{bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}</span>
+                            <BillCatLabel
+                                name={bill.name}
+                                emoji={bill.emoji}
+                                slim={true}
+                                color={bill.period === 'month' ? 'blue' : 'green'}
+                            >
                                 <span>
                                     {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
                                 </span>
-                            </div>
+                            </BillCatLabel>
                             <div><DollarCents value={bill.upper_amount} /></div>
                             <CheckMark2 style={{ opacity: bill?.is_paid ? 1 : .3 }} />
                         </div>

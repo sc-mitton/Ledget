@@ -108,40 +108,7 @@ const Pill = (props) => {
     )
 }
 
-const BlackRadios = (props) => {
-    const { options, ...rest } = props
-
-    return (
-        <Radios
-            {...rest}
-            className="black-radios-container"
-        >
-            <Pill styles={{ backgroundColor: 'var(--btn-mid-gray)' }} />
-            {options.map((option, index) => (
-                <Input
-                    key={index}
-                    option={option}
-                    className="black-radios-container-label"
-                >
-                    {({ selected }) => (
-                        <span
-                            style={{
-                                color: selected
-                                    ? 'var(--m-invert-text)'
-                                    : 'var(--input-placeholder2)',
-                                fontWeight: '400'
-                            }}
-                        >
-                            {option.label}
-                        </span>
-                    )}
-                </Input>
-            ))}
-        </Radios>
-    )
-}
 
 Radios.Input = Input
 Radios.Pill = Pill
 export default Radios
-export { BlackRadios }

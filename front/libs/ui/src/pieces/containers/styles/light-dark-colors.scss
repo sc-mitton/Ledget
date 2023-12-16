@@ -1,5 +1,5 @@
 :root {
-    /* Palet */
+    /* Base Palet */
     --mute-red: #fe8797;
     --hover-red: #fb6a7e;
     --alert-red: #f35050;
@@ -12,13 +12,18 @@
     --header-pill: hsl(0, 0%, 98%);
     --header-pill-hover: rgb(255, 255, 255, 15%);
 
-
-
-    // Primary
+    // Primary and Secondary base colors
     --main-color-h: 234;
     --main-color-s: 20%;
     --main-color-l: 45%;
     --main-color-values: 93, 97, 137;
+
+    --secondary-color-h: 162;
+    --secondary-color-s: 20%;
+    --secondary-color-l: 45%;
+    --secondary-color-values: 93, 137, 97;
+
+    // Secondary and Primary Derivations
     --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
     --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
     --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 45%));
@@ -32,11 +37,6 @@
     --main-dark4: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 25%));
     --main-dark5: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 30%));
 
-    // Secondary
-    --secondary-color-h: 162;
-    --secondary-color-s: 20%;
-    --secondary-color-l: 45%;
-    --secondary-color-values: 93, 137, 97;
     --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
     --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
     --secondary-hlight: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 45%));
@@ -48,6 +48,7 @@
     --secondary-dark4: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 20%));
     --secondary-dark5: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 25%));
 
+    /* Grays */
     --gray-hlight: hsl(0, 0%, 90%);
     --charcoal-rgb: 41, 41, 41;
     --charcoal: rgb(41, 41, 41);
@@ -63,8 +64,8 @@
     --overlay: hsl(0, 0%, 20%);
 
     /* Input Colors */
-    --input-background: #e8e8e8;
-    --input-border-color: #dedede;
+    --input-background: hsl(0, 0%, 91%);
+    --input-border-color: hsl(0, 0%, 87%);
     --input-border: solid 1px var(--input-border-color);
     --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight) 30%);
     --input-border-focus: solid 1px var(--input-background);
@@ -83,22 +84,14 @@
 
     /* Icons & Buttons */
     --icon-full: var(--main-dark5);
-
-    --btn-light-light-gray: #eeeeee;
-    --btn-light-gray: #e6e4e4;
-    --btn-hover-light-gray: hsl(0, 1%, 83%);
-
-    --btn-inner-window: #ebebeb;
-    --btn-inner-window-hover: #e0e0e0;
-
-    --btn-gray: #3b3b3b;
-    --btn-hover-gray: #292929;
-
-    --btn-mid-gray: #848484;
-
     --icon-light-gray: #ebebeb;
     --icon-hover-light-gray: #e0e0e0;
     --icon-hover-gray: rgb(196, 196, 196);
+
+    --btn-gray: #ebebeb;
+    --btn-gray-hover: #e0e0e0;
+    --btn-mid-gray: #848484;
+
 
     /* Drop Shadows */
     --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;

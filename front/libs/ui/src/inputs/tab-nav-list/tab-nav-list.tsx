@@ -43,7 +43,7 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
     refresh: [],
     styles: {
       zIndex: 1,
-      backgroundColor: 'var(--btn-hover-light-gray)',
+      backgroundColor: 'var(--btn-gray)',
       borderRadius: 'var(--border-radius2)',
       ...(theme && Array.isArray(theme)
         ? {

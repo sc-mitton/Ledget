@@ -164,7 +164,7 @@ $wafer-container-padding: .75rem;
 
     &.active {
         // box-shadow: var(--active-wafer-drop-shadow);
-        border: 1.5px solid rgb(var(--main-color-values), .3);
+        border: 2px solid rgb(var(--main-color-values), .3);
         border-radius: var(--border-radius4);
         transform: scale(1.01);
 

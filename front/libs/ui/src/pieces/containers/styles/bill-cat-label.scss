@@ -72,7 +72,7 @@
         }
 
         &.hoverable:hover {
-            background-color: var(--secondary-hlight);
+            background-color: var(--secondary-hlight-hover);
             transition: background-color 0.2s ease-in-out;
         }
     }

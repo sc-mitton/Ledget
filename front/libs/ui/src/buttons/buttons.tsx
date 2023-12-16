@@ -23,7 +23,7 @@ export const SecondaryButton = ButtonWithClassName('btn3 btn-second')
 export const SecondaryButtonSlim = ButtonWithClassName('btn3 btn-second btn-2slim')
 export const GrnPrimaryButton = ButtonWithClassName('btn-grn2 btn3')
 export const BluePrimaryButton = ButtonWithClassName('btn-blue btn3')
-export const GrayButton = ButtonWithClassName('btn-gr3 btn-slim')
+export const GrayButton = ButtonWithClassName('btn-gr btn-slim')
 export const GrayArrowButton = withArrow(GrayButton)
 
 export const BlackWideButton = ButtonWithClassName('btn-chcl btn-wide')

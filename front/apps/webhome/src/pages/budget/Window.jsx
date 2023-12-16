@@ -6,7 +6,7 @@ import { useNavigate, createSearchParams, useSearchParams, useLocation } from 'r
 
 import './styles/Window.scss'
 import { Plus, Edit, Ellipsis } from '@ledget/media'
-import { IconButton, DropAnimation } from '@ledget/ui'
+import { IconButton, DropAnimation, DropdownItem } from '@ledget/ui'
 import MonthPicker from '@components/inputs/MonthPicker'
 import BudgetSummary from './BudgetSummary'
 import SpendingCategories from './SpendingCategories'
