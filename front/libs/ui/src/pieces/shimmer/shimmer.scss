@@ -2,7 +2,7 @@
     --translucent-shimmer-background-light: linear-gradient(115deg, transparent 25%, hsl(0, 0%, 98%) 50%, transparent 75%);
     --translucent-shimmer-background-dark: linear-gradient(115deg, transparent 25%, hsl(0, 0%, 2%) 50%, transparent 75%);
     --blue-shimmer-background: linear-gradient(115deg, transparent 30%, var(--main-hlight-hover) 50%, transparent 70%);
-    --green-shimmer-background: linear-gradient(115deg, transparent 30%, var(--secondary-hlight) 50%, transparent 70%);
+    --green-shimmer-background: linear-gradient(115deg, transparent 30%, var(--secondary-hlight-hover) 50%, transparent 70%);
 }
 
 .loading-shimmer--container {
@@ -13,7 +13,7 @@
 }
 
 .colored-loading-shimmer.green {
-    background-color: var(--secondary-hlight2);
+    background-color: var(--secondary-hlight);
 }
 
 .colored-loading-shimmer.blue {

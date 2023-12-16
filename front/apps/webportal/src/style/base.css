@@ -16,7 +16,6 @@
     --main-color-values: 92, 96, 135;
     --main-hlight: #a9afdb;
     --main-hlight: #dde2f3;
-    --main-hlight-hex: #e3e5f5;
     --main-dark: hsl(232, 17%, 35%);
     --main-dark2: hsl(232, 17%, 30%);
     --main-dark3: hsl(232, 17%, 25%);
@@ -26,8 +25,7 @@
     --yellow: rgb(175, 175, 51);
 
     --secondary-color: hsl(153, 100%, 91%);
-    --secondary-hlight: hsl(165, 47%, 70%);
-    --secondary-hlight2: hsl(162, 35%, 89%);
+    --secondary-hlight: hsl(162, 35%, 89%);
     --secondary-hlight3: hsl(165, 29%, 87%);
     --secondary-hlight5: rgb(181, 235, 221);
     --secondary-color-alt: hsl(156, 31%, 62%);

@@ -235,49 +235,6 @@ $number-of-bill-rows: 4;
     gap: $item-row-gap;
     transition: all .3s ease-in-out;
 
-    &>.monthly-bill {
-
-        &>div:first-child {
-            background-color: var(--main-hlight);
-            transition: all .2s ease-in-out;
-            padding: $label-padding;
-            border-radius: var(--border-radius2);
-
-            * {
-                color: var(--main-dark);
-            }
-        }
-
-        &:hover>div:first-child {
-            background-color: var(--main-hlight-hover);
-            transition: all .2s ease-in-out;
-        }
-    }
-
-    &>.yearly-bill {
-        background-color: var(--secondary-hlight);
-
-        &>div:first-child {
-            background-color: var(--secondary-hlight);
-            transition: all .2s ease-in-out;
-            padding: $label-padding;
-            border-radius: var(--border-radius2);
-
-            * {
-                color: var(--secondary-dark);
-            }
-        }
-
-        &:hover>div:first-child {
-            background-color: var(--secondary-hlight-hover);
-            transition: all .2s ease-in-out;
-        }
-
-        * {
-            color: var(--secondary-dark4);
-        }
-    }
-
     // Bill item (cell)
     &>div {
         cursor: pointer;

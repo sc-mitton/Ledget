@@ -1,6 +1,6 @@
 import React, { ComponentPropsWithoutRef, ElementType, FC, useRef, HTMLProps, useEffect, forwardRef } from 'react'
 import { PolymorphicComponentProps } from '../../types/helpers'
-import './containers.scss'
+import './styles/containers.scss'
 
 export const ExpandableContainer: FC<HTMLProps<HTMLDivElement> & { expanded?: boolean }>
   = ({ expanded = true, className = '', children, ...rest }) => (

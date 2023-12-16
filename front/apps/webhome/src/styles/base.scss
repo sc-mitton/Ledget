@@ -9,125 +9,9 @@
     --border-radius5: 24px;
     --inner-window-border-radius: var(--border-radius25);
 
-    /* Palet */
-    --mute-red: #fe8797;
-    --hover-red: #fb6a7e;
-    --alert-red: #f35050;
-    --red-rgb: 243, 80, 80;
-    --dark-red: #8b2424;
-
-    --header-pill: hsl(0, 0%, 98%);
-    --header-pill-hover: hsl(0, 0%, 50%);
-
-    main.light {
-
-        --main-color-h: 234;
-        --main-color-s: 19%;
-        --main-color-l: 45%;
-        --main-color-values: 93, 97, 137;
-        --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
-        --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
-        --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 45%));
-        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 40%));
-
-        --main-sat: rgb(182, 182, 250);
-
-        --main-dark: hsl(232, 17%, 35%);
-        --main-dark2: hsl(232, 17%, 30%);
-        --main-dark3: hsl(232, 17%, 25%);
-        --main-dark4: hsl(232, 17%, 20%);
-        --main-dark5: hsl(232, 17%, 15%);
-
-        --yellow: rgb(175, 175, 51);
-
-        --secondary-color: hsl(153, 100%, 91%);
-        --secondary-hlight: hsl(165, 47%, 70%);
-        --secondary-hlight2: hsl(162, 35%, 89%);
-        --secondary-hlight3: hsl(167, 39%, 83%);
-        --secondary-hlight5: rgb(202, 221, 216);
-        --secondary-color-alt: hsl(156, 31%, 62%);
-        --secondary-dark: hsl(164, 17%, 35%);
-        --secondary-dark4: hsl(164, 5%, 27%);
-
-        --gray-hlight: hsl(0, 0%, 90%);
-        --charcoal-rgb: 41, 41, 41;
-        --charcoal: rgb(41, 41, 41);
-
-        /* Windows */
-        --window: hsl(0, 0%, 98%);
-        --window-rgb: 250, 250, 250;
-        --window2: hsl(0, 0%, 93%);
-        --window-background-color: var(--window);
-        --inner-window: hsl(0, 0%, 95%);
-        --inner-window-rgb: 246, 246, 246;
-        --header-background: var(--main-dark4);
-        --overlay: hsl(0, 0%, 20%);
-
-        /* Input Colors */
-        --input-background: #e8e8e8;
-        --input-border-color: #dedede;
-        --input-border: solid 1px var(--input-border-color);
-        --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight) 30%);
-        --input-border-focus: solid 1px var(--input-background);
-
-        /* Text */
-        --m-text: var(--main-dark5);
-        --m-invert-text: hsl(0, 0%, 97%);
-        --m-text-secondary: color-mix(in srgb, var(--m-text), white 20%);
-        --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 40%);
-        --m-text-quinary: color-mix(in srgb, var(--m-text), white 60%);
-        --debit-text: #3aae83;
-
-        --input-placeholder: #616161;
-        --input-placeholder2: #a6a6a6;
-        --input-focus: var(--input-placeholder);
-
-        /* Paddings */
-        --input-padding: .525em 1em;
-        --window-padding: 1.5em;
-
-        /* Icons & Buttons */
-        --icon-dark: var(--main-dark5);
-
-        --btn-light-light-gray: #eeeeee;
-        --btn-light-gray: #e6e4e4;
-        --btn-hover-light-gray: hsl(0, 1%, 83%);
-        --btn-inner-window: #ebebeb;
-        --btn-inner-window-hover: #e0e0e0;
-        --btn-gray: #3b3b3b;
-        --btn-hover-gray: #292929;
-        --btn-mid-gray: #848484;
-        --btn-black: #242424;
-        --icon-light-gray: #ebebeb;
-        --icon-hover-light-gray: #e0e0e0;
-        --icon-hover-gray: rgb(196, 196, 196);
-        --drop-down-hover-background: #dfdfdf;
-
-        /* Drop Shadows */
-        --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
-        --window-drop-shadow: rgba(170, 170, 170, 0.25) 0px 2px 16px;
-        --header-box-shadow: rgba(170, 170, 170, 0.05) 0px 2px 2px;
-        --window-drop-shadow-lower-elevation: rgba(149, 157, 165, 0.7) 0px 0px 2px;
-        --new-item-drop-shadow: rgba(0, 0, 0, .09) 0px 2px 12px;
-        --scroll-shadow: rgba(248, 248, 248), transparent;
-
-        --input-focus-dropshadow-color: var(--main-sat);
-        --accessible-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
-        --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
-        --low-elevation-drop-shadow: rgba(0, 0, 0, 0.1) 0px 1px 6px 0px;
-        --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
-        --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
-        --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
-
-        --wafer-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
-        --active-wafer-drop-shadow: color-mix(in srgb, var(--main-hlight) 80%, var(--main-color)) 0px 0px 12px;
-        --wafer-hover-drop-shadow: rgb(0, 0, 0, .2) 0px 0px 12px 2px;
-        --wafer-drag-drop-shadow: var(--wafer-drop-shadow);
-
-        /* Borders */
-        --subtle-border-color: rgb(0, 0, 0, .07);
-        --subtle-border: .75px solid var(--subtle-border-color);
-    }
+    /* Paddings */
+    --input-padding: .525em 1em;
+    --window-padding: 1.5em;
 }
 
 @import './animations.scss';
@@ -144,7 +28,6 @@
         scrollbar-width: thin;
     }
 }
-
 
 *::-webkit-scrollbar {
     width: .25em;
@@ -274,6 +157,90 @@ fieldset {
     margin: 0;
 }
 
+
+input {
+    border: none;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+textarea {
+    border: none;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    resize: none;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: inset 0 0 0px 9999px var(--input-background) !important;
+    background-color: transparent !important;
+    background-clip: content-box !important;
+    border: none;
+    font-size: .875rem;
+    outline: none;
+}
+
+input {
+    --webkit-text-security: disc;
+    outline: none;
+}
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-webkit-autofill::after {
+    border: none;
+    background-color: #fafafa !important;
+    background-clip: content-box !important;
+}
+
+input:focus {
+    outline: none;
+}
+
+
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    white-space: nowrap;
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+button:focus-visible {
+    outline: none;
+    box-shadow: var(--accessible-focus-drop-shadow);
+}
+
+@media screen and (max-width: 450px) {
+    .dashboard {
+        padding: .5em;
+        width: calc(100% - .5em);
+    }
+}
+
+/* --------------------------------- Windows & Dashboard -------------------------------- */
+
 .dashboard {
     width: calc(100% - 4em);
     height: 100%;
@@ -283,13 +250,6 @@ fieldset {
     display: flex;
     justify-content: center;
     gap: 4em;
-}
-
-@media screen and (max-width: 450px) {
-    .dashboard {
-        padding: .5em;
-        width: calc(100% - .5em);
-    }
 }
 
 .window {
@@ -361,82 +321,7 @@ fieldset {
     box-shadow: var(--input-focus-drop-shadow);
 }
 
-/* --------------------------------- Inputs --------------------------------- */
-
-input {
-    border: none;
-    outline: none;
-    background: transparent;
-    box-shadow: none;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-}
-
-input[type="radio"] {
-    display: none;
-}
-
-textarea {
-    border: none;
-    outline: none;
-    background: transparent;
-    box-shadow: none;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    resize: none;
-}
-
-input:-webkit-autofill {
-    -webkit-box-shadow: inset 0 0 0px 9999px var(--input-background) !important;
-    background-color: transparent !important;
-    background-clip: content-box !important;
-    border: none;
-    font-size: .875rem;
-    outline: none;
-}
-
-input {
-    --webkit-text-security: disc;
-    outline: none;
-}
-
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active,
-input:-webkit-autofill::after {
-    border: none;
-    background-color: #fafafa !important;
-    background-clip: content-box !important;
-}
-
-input:focus {
-    outline: none;
-}
-
 /* ---------------------------- New Button Styles --------------------------- */
-
-button {
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background: transparent;
-    box-shadow: none;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    white-space: nowrap;
-    border-radius: inherit;
-    display: flex;
-    align-items: center;
-    padding: 0;
-}
-
-button:focus-visible {
-    outline: none;
-    box-shadow: var(--accessible-focus-drop-shadow);
-}
 
 /* Header Buttons */
 .header-btns {

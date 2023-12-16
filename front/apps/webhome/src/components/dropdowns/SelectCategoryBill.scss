@@ -106,11 +106,11 @@
         margin: 0 .25em;
 
         &.year {
-            background-color: var(--secondary-hlight2);
+            background-color: var(--secondary-hlight);
             color: var(--secondary-dark4);
 
             &:hover {
-                background-color: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-dark4) 8%);
+                background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark4) 8%);
                 transition: all .3s ease;
             }
 

@@ -10,7 +10,12 @@ import Spending from '@pages/spending/Window'
 import Profile from '@pages/profile/Window'
 import Accounts from '@pages/accounts/Window'
 import NotFound from '@pages/notFound/NotFound'
-import { SlideMotionDiv, ZoomMotionDiv, Toast, useColorScheme } from '@ledget/ui'
+import {
+    SlideMotionDiv,
+    ZoomMotionDiv,
+    Toast,
+    ColorSchemedMain
+} from '@ledget/ui'
 import { WelcomeConnect, AddCategories, AddBills } from '@pages/onboarding'
 import { Background } from '@pages/onboarding'
 import {
@@ -141,12 +146,11 @@ const MainApp = () => {
 
 const App = () => {
     const { isLoading } = useGetMeQuery()
-    const { isDark } = useColorScheme()
 
     return (
         <>
             {!isLoading &&
-                <main className={isDark ? 'dark' : 'light'}>
+                <ColorSchemedMain>
                     <Routes>
                         <Route path="/" element={<PrivateRoute />} >
                             <Route path="/" element={<OnboardedRoute />} >
@@ -156,7 +160,7 @@ const App = () => {
                             <Route path="*" element={<NotFound />} />
                         </Route>
                     </Routes>
-                </main >
+                </ColorSchemedMain >
             }
         </>
     )

@@ -178,35 +178,23 @@
 
 
 .btn-grn2 {
-    background-color: var(--secondary-hlight2);
+    background-color: var(--secondary-hlight);
     color: var(--secondary-dark4);
     transition: all .3s ease;
 
     &:hover {
-        background-color: color-mix(in srgb, var(--secondary-hlight2), var(--secondary-dark4) 7%);
+        background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark4) 7%);
         transition: all .3s ease;
     }
 }
-
-.btn-grn3 {
-    background-color: var(--secondary-hlight3);
-    color: var(--secondary-dark4);
-    transition: all .3s ease;
-
-    &:hover {
-        background-color: color-mix(in srgb, var(--secondary-hlight3), var(--secondary-dark4) 7%);
-        transition: all .3s ease;
-    }
-}
-
 
 .btn-blue {
-    background-color: var(--main-hlight-hex);
+    background-color: var(--main-hlight);
     color: var(--main-dark);
     transition: all .3s ease;
 
     &:hover {
-        background-color: color-mix(in srgb, var(--main-hlight-hex), var(--main-dark4) 7%);
+        background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark4) 7%);
         transition: all .3s ease;
     }
 }

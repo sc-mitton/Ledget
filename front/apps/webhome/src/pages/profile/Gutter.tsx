@@ -101,7 +101,7 @@ const Gutter = () => {
         querySelectall: '[role=link]',
         find: (el) => el.getAttribute('data-current') === 'page',
         styles: {
-            backgroundColor: '#dddeee',
+            backgroundColor: 'var(--main-hlight)',
             borderRadius: location.pathname === '/profile/details'
                 ? 'var(--border-radius25)'
                 : 'var(--border-radius2)',

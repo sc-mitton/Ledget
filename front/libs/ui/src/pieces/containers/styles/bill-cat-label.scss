@@ -54,25 +54,25 @@
     }
 
     &.green {
-        background-color: var(--secondary-hlight2);
+        background-color: var(--secondary-hlight);
         transition: background-color 0.2s ease-in-out;
 
         * {
-            color: color-mix(in srgb, var(--secondary-dark) 100%, var(--secondary-hlight2));
+            color: color-mix(in srgb, var(--secondary-dark) 100%, var(--secondary-hlight));
         }
 
         &.tint {
-            background-color: var(--secondary-hlight5);
+            background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark) 10%);
 
             &.hoverable:hover,
             &.hoverable.active {
-                background-color: color-mix(in srgb, var(--secondary-hligh5), var(--secondary-dark4) 7%);
+                background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark) 30%);
                 transition: background-color 0.2s ease-in-out;
             }
         }
 
         &.hoverable:hover {
-            background-color: var(--secondary-hlight2);
+            background-color: var(--secondary-hlight);
             transition: background-color 0.2s ease-in-out;
         }
     }

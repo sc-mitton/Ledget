@@ -182,7 +182,7 @@ $header-gap: calc(.75em + .125vw);
             cursor: pointer;
             left: calc(2/3 * 100% + $header-gap);
             width: calc(100% / 3 - $header-gap);
-            background-color: var(--secondary-hlight2);
+            background-color: var(--secondary-hlight);
 
             * {
                 color: var(--secondary-dark);

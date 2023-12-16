@@ -1,3 +1,4 @@
+export * from './pieces/containers/color-schemed-main';
 export * from './utils/use-color-scheme/use-color-scheme';
 export * from './pieces/containers/bill-cat-label';
 export * from './dropdowns/abs-pos-menu/abs-pos-menu';

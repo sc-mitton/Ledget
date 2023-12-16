@@ -3,7 +3,7 @@ import { ElementType, ComponentPropsWithoutRef } from 'react'
 import { CheckMark } from '@ledget/media'
 import { PolymorphicComponentProps } from '../../types/helpers'
 
-import './bill-cat-label.scss'
+import './styles/bill-cat-label.scss'
 
 
 type BillCatProps<C extends ElementType> = {
@@ -57,3 +57,5 @@ export const BillCatLabel = <C extends ElementType = 'div'>(props: PolymorphicCo
     </Component>
   )
 }
+
+export default BillCatLabel
