@@ -7,7 +7,7 @@ interface I {
 
 const CheckMark2: React.FC<HTMLAttributes<SVGElement> & I> = ({
     className = 'checkmark3',
-    fill = "var(--icon-dark)",
+    fill = "var(--icon-full)",
     size = '1em',
     ...rest
 }) => {

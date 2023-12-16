@@ -4,7 +4,7 @@ const Passkey = ({
     className = '',
     width = "1.2em",
     height = "1.2em",
-    fill = "var(--icon-dark)",
+    fill = "var(--icon-full)",
 }) => {
     return (
         <svg

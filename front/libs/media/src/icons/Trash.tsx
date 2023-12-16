@@ -1,7 +1,7 @@
 const Trash = ({
     className = '',
     size = "1em",
-    fill = "var(--icon-dark)",
+    fill = "var(--icon-full)",
 }) => {
     return (
         <svg

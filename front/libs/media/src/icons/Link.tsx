@@ -2,7 +2,7 @@
 
 const Link = ({
     className = 'link',
-    fill = "var(--icon-dark)",
+    fill = "var(--icon-full)",
     width = "1.4em",
     height = "1.4em"
 }) => {

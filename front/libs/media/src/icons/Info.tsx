@@ -4,7 +4,7 @@ const Info = ({
     className = '',
     width = "1em",
     height = "1em",
-    fill = "var(--icon-dark)",
+    fill = "var(--icon-full)",
 }) => {
     return (
         <svg

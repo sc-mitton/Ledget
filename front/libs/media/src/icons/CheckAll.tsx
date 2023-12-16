@@ -2,7 +2,7 @@
 
 const CheckAll = ({
     className = 'check-all',
-    fill = "var(--icon-dark)",
+    fill = "var(--icon-full)",
     width = "1.3em",
     height = "1.3em"
 }) => {

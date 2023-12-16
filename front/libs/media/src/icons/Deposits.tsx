@@ -4,7 +4,7 @@ const Deposits = ({
     width = "1.4em",
     height = "1.4em",
     className = '',
-    fill = "var(--icon-dark)",
+    fill = "var(--icon-full)",
 }) => {
     return (
         <svg

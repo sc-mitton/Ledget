@@ -1,6 +1,6 @@
 const Location = ({
     className = 'location-icon',
-    fill = "var(--icon-dark)",
+    fill = "var(--icon-full)",
     width = "1em",
     height = "1em"
 }) => {

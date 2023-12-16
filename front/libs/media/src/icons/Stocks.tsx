@@ -4,7 +4,7 @@ const Stocks = ({
     width = "1.2em",
     height = "1.2em",
     className = '',
-    fill = "var(--icon-dark)"
+    fill = "var(--icon-full)"
 }) => {
 
     return (

@@ -4,7 +4,7 @@ const Show = ({
     width = "1.6em",
     height = "1.6em",
     className = '',
-    stroke = "var(--icon-dark)"
+    stroke = "var(--icon-full)"
 }) => {
 
     return (

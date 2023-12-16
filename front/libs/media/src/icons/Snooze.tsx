@@ -4,7 +4,7 @@ const Snooze = ({
     width = "1em",
     height = "1em",
     className = '',
-    fill = "var(--icon-dark)"
+    fill = "var(--icon-full)"
 }) => {
 
     return (

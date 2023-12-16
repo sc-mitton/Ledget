@@ -12,6 +12,8 @@
     --header-pill: hsl(0, 0%, 98%);
     --header-pill-hover: rgb(255, 255, 255, 15%);
 
+
+
     // Primary
     --main-color-h: 234;
     --main-color-s: 20%;
@@ -80,20 +82,23 @@
     --input-focus: var(--input-placeholder);
 
     /* Icons & Buttons */
-    --icon-dark: var(--main-dark5);
+    --icon-full: var(--main-dark5);
+
     --btn-light-light-gray: #eeeeee;
     --btn-light-gray: #e6e4e4;
     --btn-hover-light-gray: hsl(0, 1%, 83%);
+
     --btn-inner-window: #ebebeb;
     --btn-inner-window-hover: #e0e0e0;
+
     --btn-gray: #3b3b3b;
     --btn-hover-gray: #292929;
+
     --btn-mid-gray: #848484;
-    --btn-black: #242424;
+
     --icon-light-gray: #ebebeb;
     --icon-hover-light-gray: #e0e0e0;
     --icon-hover-gray: rgb(196, 196, 196);
-    --drop-down-hover-background: #dfdfdf;
 
     /* Drop Shadows */
     --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;

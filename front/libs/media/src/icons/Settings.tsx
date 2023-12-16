@@ -4,7 +4,7 @@ const Settings = ({
     className = '',
     width = "1.1em",
     height = "1.1em",
-    fill = "var(--icon-dark)",
+    fill = "var(--icon-full)",
 }) => {
     return (
         <svg

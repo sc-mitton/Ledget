@@ -4,7 +4,7 @@ const Profile = ({
     className = '',
     width = "1.8em",
     height = "1.8em",
-    fill = "var(--icon-dark)",
+    fill = "var(--icon-full)",
 }) => {
     return (
         <svg
