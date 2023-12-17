@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSpring } from '@react-spring/web'
-import { useSchemeVar } from '@ledget/ui'
+import { useSchemeVar, useColorScheme } from '@ledget/ui'
 
 interface Props {
   ref: React.RefObject<HTMLElement>

@@ -1,5 +1,5 @@
 
-import './switch.css'
+import './switch.scss'
 import { Switch } from '@headlessui/react'
 
 interface DefaultSwitchProps {
