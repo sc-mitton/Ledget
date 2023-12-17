@@ -41,7 +41,7 @@
         button,
         span,
         &+span {
-            color: var(--m-text-tirtiary);
+            color: var(--m-text-secondary);
         }
 
         &>span {
@@ -59,7 +59,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: var(--btn-gray);
+            background-color: var(--icon-light-gray);
             border-radius: 50%;
         }
     }

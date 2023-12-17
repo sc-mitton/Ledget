@@ -7,7 +7,7 @@ import './styles/TransactionsTable.scss'
 import TransactionModal from '@modals/TransactionItem'
 import { useLazyGetTransactionsQuery, useGetTransactionsQuery, Transaction } from "@features/transactionsSlice"
 import { Logo } from '@components/pieces'
-import { DollarCents, InfiniteScrollDiv, TransactionShimmer } from '@ledget/ui'
+import { DollarCents, InfiniteScrollDiv, TransactionShimmer, useColorScheme } from '@ledget/ui'
 import { ShadowedContainer } from '@components/pieces'
 import { EmptyListImage, ArrowIcon } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -17,6 +17,7 @@ import { selectFilteredFetchedConfirmedTransactions } from '@features/transactio
 const List = ({ setFocusedTransaction }:
   { setFocusedTransaction: React.Dispatch<React.SetStateAction<Transaction | undefined>> }) => {
   const { start, end } = useGetStartEndQueryParams()
+  const { isDark } = useColorScheme()
 
   const { isError } = useGetTransactionsQuery({ confirmed: true, start, end })
   const transactionsData = useAppSelector(selectFilteredFetchedConfirmedTransactions)
@@ -78,7 +79,11 @@ const List = ({ setFocusedTransaction }:
           )
         })
         :
-        <div id="empty-list-icon--container" key={'empty-list-icon--container'}>
+        <div
+          id="empty-list-icon--container"
+          className={isDark ? 'dark' : ''}
+          key={'empty-list-icon--container'}
+        >
           <EmptyListImage />
         </div>
       }

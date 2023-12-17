@@ -127,10 +127,16 @@ $scroll-bar-padding: 1em;
 }
 
 
-#empty-list-icon--container img {
-    height: 5em;
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+#empty-list-icon--container {
+    &.dark img {
+        filter: invert(1) brightness(1.25);
+    }
+
+    img {
+        height: 5em;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 }

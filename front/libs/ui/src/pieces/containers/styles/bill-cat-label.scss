@@ -34,7 +34,7 @@
         transition: background-color 0.2s ease-in-out;
 
         * {
-            color: color-mix(in srgb, var(--main-dark) 100%, var(--main-hlight-hover));
+            color: var(--main-dark4);
         }
 
         &.tint {
@@ -58,7 +58,7 @@
         transition: background-color 0.2s ease-in-out;
 
         * {
-            color: color-mix(in srgb, var(--secondary-dark) 100%, var(--secondary-hlight));
+            color: var(--secondary-dark) 100%;
         }
 
         &.tint {

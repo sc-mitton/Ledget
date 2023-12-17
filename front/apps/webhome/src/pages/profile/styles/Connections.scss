@@ -8,6 +8,11 @@
 #connections-page .header {
     margin-bottom: .75em;
     margin-right: 1.75em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
 }
 
 #connections-page .institution {
@@ -22,8 +27,9 @@
     margin-bottom: .75em;
     margin-right: .375em;
     padding: 0 .25em;
-    height: 100%;
     opacity: 1;
+    display: flex;
+    justify-content: space-between;
 }
 
 #connections-page .institution .header2 img {

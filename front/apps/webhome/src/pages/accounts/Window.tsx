@@ -19,17 +19,16 @@ import { AccountWafers } from './AccountWafers'
 import { NotImplimentedMessage } from '@components/pieces'
 
 const getNavIcon = (key = '', isCurrent: boolean) => {
-    const fill = isCurrent ? 'var(--main-dark4)' : 'currentColor'
 
     switch (key) {
         case 'deposits':
-            return <DepositsIcon fill={fill} />
+            return <DepositsIcon fill={'currentColor'} />
         case 'credit':
-            return <CardIcon fill={fill} />
+            return <CardIcon fill={'currentColor'} />
         case 'investments':
-            return <StocksIcon fill={fill} />
+            return <StocksIcon fill={'currentColor'} />
         case 'loans':
-            return <ClockIcon fill={fill} />
+            return <ClockIcon fill={'currentColor'} />
         default:
             return null
     }
@@ -91,7 +90,7 @@ const Header = () => {
         querySelectall: '[role=link]',
         find: (element) => element.getAttribute('aria-current') === 'true',
         styles: {
-            backgroundColor: '#dcdeee',
+            backgroundColor: 'var(--main-hlight)',
             borderRadius: 'var(--border-radius3)',
         }
     })

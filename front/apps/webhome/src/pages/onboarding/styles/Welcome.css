@@ -37,5 +37,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--button-drop-shadow);
+    box-shadow: var(--low-elevation-drop-shadow);
 }

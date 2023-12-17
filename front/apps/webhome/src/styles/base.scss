@@ -335,8 +335,6 @@ button:focus-visible {
 .dropdown {
     background-color: var(--window);
     box-shadow: var(--mid-elevation-drop-shadow);
-    -webkit-box-shadow: var(--mid-elevation-drop-shadow);
-    /* -moz-box-shadow: var(--mid-elevation-drop-shadow); */
     box-sizing: border-box;
     border-radius: var(--border-radius2);
     transform-origin: top;

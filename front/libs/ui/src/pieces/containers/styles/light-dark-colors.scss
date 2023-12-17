@@ -1,3 +1,11 @@
+:root.dark {
+    --dark-mode: true;
+}
+
+:root.light {
+    --dark-mode: false;
+}
+
 :root {
     /* Base Palet */
     --mute-red: #fe8797;
@@ -7,114 +15,233 @@
     --dark-red: #8b2424;
 
     --yellow: rgb(175, 175, 51);
+    --debit-text: #3aae83;
     --secondary-color-alt: hsl(156, 31%, 62%);
+    --charcoal-rgb: 41, 41, 41;
 
     --header-pill: hsl(0, 0%, 98%);
     --header-pill-hover: rgb(255, 255, 255, 15%);
 
-    // Primary and Secondary base colors
-    --main-color-h: 234;
-    --main-color-s: 20%;
-    --main-color-l: 45%;
-    --main-color-values: 93, 97, 137;
+    // Secondary and Primary Base Values
+    @if var(--dark-mode) {
+        --main-color-h: 234;
+        --main-color-s: 15%;
+        --main-color-l: 35%;
 
-    --secondary-color-h: 162;
-    --secondary-color-s: 20%;
-    --secondary-color-l: 45%;
-    --secondary-color-values: 93, 137, 97;
+        --secondary-color-h: 162;
+        --secondary-color-s: 22%;
+        --secondary-color-l: 40%;
 
-    // Secondary and Primary Derivations
-    --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
-    --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
-    --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 45%));
-    --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 40%));
+        --main-color-values: 93, 97, 137;
+        --secondary-color-values: 93, 137, 97;
 
-    --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 70%), calc(var(--main-color-l) + 40%));
+        --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
+        --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 5%));
+        --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 20%));
+        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 15%));
 
-    --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
-    --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 10%));
-    --main-dark3: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 15%));
-    --main-dark4: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 25%));
-    --main-dark5: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 30%));
+        --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) - 40%));
 
-    --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
-    --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
-    --secondary-hlight: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 45%));
-    --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 40%));
+        --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
+        --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 5%));
+        --secondary-hlight: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 20%), calc(var(--secondary-color-l) - 20%));
+        --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 20%), calc(var(--secondary-color-l) - 15%));
 
-    --secondary-dark: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
-    --secondary-dark2: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 10%));
-    --secondary-dark3: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 15%));
-    --secondary-dark4: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 20%));
-    --secondary-dark5: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 25%));
+        --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 30%));
+        --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 35%));
+        --main-dark3: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 40%));
+        --main-dark4: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 45%));
+        --main-dark5: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 55%));
+
+        --secondary-dark: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 15%));
+        --secondary-dark2: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 20%));
+        --secondary-dark3: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 25%));
+        --secondary-dark4: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 30%));
+        --secondary-dark5: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 35%));
+    }
+
+    @else {
+        --main-color-h: 234;
+        --main-color-s: 15%;
+        --main-color-l: 40%;
+
+        --secondary-color-h: 162;
+        --secondary-color-s: 15%;
+        --secondary-color-l: 40%;
+
+        --main-color-values: 61, 62, 92;
+        --secondary-color-values: 61, 92, 83;
+
+        --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
+        --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
+        --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 45%));
+        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 40%));
+
+        --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 40%));
+
+        --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
+        --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
+        --secondary-hlight: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 45%));
+        --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 40%));
+
+
+        --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
+        --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 10%));
+        --main-dark3: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 15%));
+        --main-dark4: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 25%));
+        --main-dark5: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 30%));
+
+        --secondary-dark: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
+        --secondary-dark2: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 10%));
+        --secondary-dark3: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 15%));
+        --secondary-dark4: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 20%));
+        --secondary-dark5: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 25%));
+    }
 
     /* Grays */
-    --gray-hlight: hsl(0, 0%, 90%);
-    --charcoal-rgb: 41, 41, 41;
-    --charcoal: rgb(41, 41, 41);
+    @if var(--dark-mode) {
+        --gray-hlight: hsl(0, 0%, 10%);
+    }
+
+    @else {
+        --gray-hlight: hsl(0, 0%, 90%);
+    }
+
 
     /* Windows */
-    --window: hsl(0, 0%, 98%);
-    --window-rgb: 250, 250, 250;
-    --window2: hsl(0, 0%, 93%);
     --window-background-color: var(--window);
-    --inner-window: hsl(0, 0%, 95%);
-    --inner-window-rgb: 246, 246, 246;
-    --header-background: var(--main-dark4);
-    --overlay: hsl(0, 0%, 20%);
+
+    @if var(--dark-mode) {
+        --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 70%);
+
+        --window: hsl(0, 0%, 7%);
+        --window-rgb: 5, 5, 5;
+        --window2: hsl(0, 0%, 7%);
+
+        --inner-window: hsl(0, 0%, 10%);
+        --inner-window-rgb: 13, 13, 13;
+        --overlay: hsl(0, 0%, 80%);
+    }
+
+    @else {
+        --header-background: var(--main-dark4);
+
+        --window: hsl(0, 0%, 98%);
+        --window-rgb: 250, 250, 250;
+        --window2: hsl(0, 0%, 93%);
+
+        --inner-window: hsl(0, 0%, 94%);
+        --inner-window-rgb: 246, 246, 246;
+        --overlay: hsl(0, 0%, 20%);
+    }
 
     /* Input Colors */
-    --input-background: hsl(0, 0%, 91%);
-    --input-border-color: hsl(0, 0%, 87%);
     --input-border: solid 1px var(--input-border-color);
-    --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight) 30%);
     --input-border-focus: solid 1px var(--input-background);
+    --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight) 30%);
+
+    @if var(--dark-mode) {
+        --input-background: hsl(0, 0%, 9%);
+        --input-border-color: hsl(0, 0%, 13%);
+    }
+
+    @else {
+        --input-background: hsl(0, 0%, 91%);
+        --input-border-color: hsl(0, 0%, 87%);
+    }
+
 
     /* Text */
     --m-text: var(--main-dark5);
-    --m-invert-text: hsl(0, 0%, 97%);
-    --m-text-secondary: color-mix(in srgb, var(--m-text), white 20%);
-    --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 40%);
-    --m-text-quinary: color-mix(in srgb, var(--m-text), white 60%);
-    --debit-text: #3aae83;
-
-    --input-placeholder: #616161;
-    --input-placeholder2: #a6a6a6;
     --input-focus: var(--input-placeholder);
+    --m-invert-text: hsl(0, 0%, 97%);
+
+    @if var(--dark-mode) {
+        --m-text-secondary: color-mix(in srgb, var(--m-text), black 20%);
+        --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 40%);
+        --m-text-quinary: color-mix(in srgb, var(--m-text), black 60%);
+
+        --input-placeholder: hsl(0, 0%, 62%);
+        --input-placeholder2: hsl(0, 0%, 35%);
+    }
+
+    @else {
+        --m-text-secondary: color-mix(in srgb, var(--m-text), white 20%);
+        --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 40%);
+        --m-text-quinary: color-mix(in srgb, var(--m-text), white 60%);
+
+        --input-placeholder: hsl(0, 0%, 38%);
+        --input-placeholder2: hsl(0, 0%, 65%);
+    }
 
     /* Icons & Buttons */
-    --icon-full: var(--main-dark5);
-    --icon-light-gray: #ebebeb;
-    --icon-hover-light-gray: #e0e0e0;
-    --icon-hover-gray: rgb(196, 196, 196);
 
-    --btn-gray: #ebebeb;
-    --btn-gray-hover: #e0e0e0;
-    --btn-mid-gray: #848484;
+    @if var(--dark-mode) {
+        --icon-full: var(--main-dark5);
+        --icon-light-gray: hsl(0, 0%, 20%);
+        --icon-hover-light-gray: hsl(0, 0%, 40%);
+        --icon-hover-gray: hsl(0, 0%, 50%);
 
+        --btn-gray: hsl(0, 0%, 8%);
+        --btn-gray-hover: hsl(0, 0%, 12%);
+        --btn-mid-gray: hsl(0, 0%, 48%);
+    }
+
+    @else {
+        --icon-full: var(--main-dark5);
+        --icon-light-gray: hsl(0, 0%, 92%);
+        --icon-hover-light-gray: hsl(0, 0%, 88%);
+        --icon-hover-gray: hsl(0, 0%, 77%);
+
+        --btn-gray: hsl(0, 0%, 92%);
+        --btn-gray-hover: hsl(0, 0%, 88%);
+        --btn-mid-gray: hsl(0, 0%, 52%);
+    }
 
     /* Drop Shadows */
-    --item-hover-drop-shadow: rgba(0, 0, 0, .4) 0px 4px 12px;
-    --window-drop-shadow: rgba(170, 170, 170, 0.25) 0px 2px 16px;
-    --header-box-shadow: rgba(170, 170, 170, 0.05) 0px 2px 2px;
-    --window-drop-shadow-lower-elevation: rgba(149, 157, 165, 0.7) 0px 0px 2px;
-    --new-item-drop-shadow: rgba(0, 0, 0, .09) 0px 2px 12px;
-    --scroll-shadow: rgba(248, 248, 248), transparent;
+    @if var(--dark-mode) {
+        --window-drop-shadow-color: hsl(0, 0%, 10%);
+        --header-box-shadow-color: hsl(0, 0%, 10%);
+        --new-item-drop-shadow-color: hsl(0, 0%, 12%);
+        --scroll-shadow: hsl(0, 0%, 3%), transparent;
+
+        --low-elevation-drop-shadow-color: rgba(255, 255, 255, 0.1);
+        --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.2);
+        --input-drop-shadow-color: rgba(255, 255, 255, 0.07);
+    }
+
+    @else {
+        --window-drop-shadow-color: hsl(0, 0%, 90%);
+        --header-box-shadow-color: hsl(0, 0%, 70%);
+        --new-item-drop-shadow-color: hsl(0, 0%, 88%);
+        --scroll-shadow: hsl(0, 0%, 97%), transparent;
+
+        --low-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);
+        --mid-elevation-drop-shadow-color: rgba(0, 0, 0, 0.3);
+        --input-drop-shadow-color: rgba(0, 0, 0, 0.07);
+    }
+
+    --window-drop-shadow: var(--window-drop-shadow-color) 0px 2px 16px;
+    --header-box-shadow: var(--header-box-shadow-color) 0px 2px 2px;
+    --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 2px 12px;
+
+    --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px 6px 0px;
+    --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 6px 15px;
+    --input-drop-shadow: var(--input-drop-shadow-color) 0px 1px 0px .3px;
 
     --input-focus-dropshadow-color: var(--main-sat);
     --accessible-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
     --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
-    --low-elevation-drop-shadow: rgba(0, 0, 0, 0.1) 0px 1px 6px 0px;
-    --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
-    --button-drop-shadow: rgba(50, 50, 93, 0.4) 0px 2px 3px -1px, rgba(0, 0, 0, 0.5) 0px 1px 1px -1px;
-    --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
-
-    --wafer-drop-shadow: rgba(0, 0, 0, .1) 0px 4px 12px;
     --active-wafer-drop-shadow: color-mix(in srgb, var(--main-hlight) 80%, var(--main-color)) 0px 0px 12px;
-    --wafer-hover-drop-shadow: rgb(0, 0, 0, .2) 0px 0px 12px 2px;
-    --wafer-drag-drop-shadow: var(--wafer-drop-shadow);
 
     /* Borders */
-    --subtle-border-color: rgb(0, 0, 0, .07);
+    @if var(--dark-mode) {
+        --subtle-border-color: rgb(255, 255, 255, .07);
+    }
+
+    @else {
+        --subtle-border-color: rgb(0, 0, 0, .07);
+    }
+
     --subtle-border: .75px solid var(--subtle-border-color);
 }
