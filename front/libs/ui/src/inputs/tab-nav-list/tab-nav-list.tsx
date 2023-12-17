@@ -5,6 +5,7 @@ import { animated } from '@react-spring/web'
 
 import './tab-nav-list.scss';
 import { usePillAnimation } from '../../animations/use-pill-animation/use-pill-animation'
+import useSchemeVar from '../../utils/hooks/use-scheme-var/use-scheme-var';
 
 
 interface TabNavListBaseProps {
@@ -35,6 +36,7 @@ export type TabNavListProps = TabNavListPropsWithoutTheme | TabNavListPropsWithT
 export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDivElement>) {
   const ref = useRef<HTMLDivElement>(null)
   const { labels, toggle, className, theme, selectedIndex, ...rest } = props
+  const backgroundColor = useSchemeVar('--icon-hover-light-gray')
 
   const { props: pillProps } = usePillAnimation({
     ref: ref,
@@ -43,7 +45,7 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
     refresh: [],
     styles: {
       zIndex: 1,
-      backgroundColor: 'var(--icon-hover-light-gray)',
+      backgroundColor: backgroundColor,
       borderRadius: 'var(--border-radius2)',
       ...(theme && Array.isArray(theme)
         ? {

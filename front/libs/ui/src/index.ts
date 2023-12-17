@@ -1,5 +1,6 @@
+export * from './utils/hooks/use-scheme-var/use-scheme-var';
 export * from './pieces/containers/color-schemed-main';
-export * from './utils/use-color-scheme/use-color-scheme';
+export * from './utils/hooks/use-color-scheme/use-color-scheme';
 export * from './pieces/containers/bill-cat-label';
 export * from './dropdowns/abs-pos-menu/abs-pos-menu';
 export * from './inputs/baked-selects/baked-combo-box';

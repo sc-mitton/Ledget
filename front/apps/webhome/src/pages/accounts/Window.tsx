@@ -9,7 +9,7 @@ import './styles/Main.scss'
 import Transactions from './Transactions'
 
 import NotFound from '@pages/notFound/NotFound'
-import { RefreshButton, usePillAnimation } from '@ledget/ui'
+import { RefreshButton, usePillAnimation, useSchemeVar } from '@ledget/ui'
 import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/media'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { popToast } from '@features/toastSlice'
@@ -83,6 +83,7 @@ const Header = () => {
         data: accountsData,
         isSuccess: isSuccessLoadingAccounts
     } = useGetAccountsQuery()
+    const backgroundColor = useSchemeVar('--main-hlight')
 
     const { props } = usePillAnimation({
         ref: ref,
@@ -90,7 +91,7 @@ const Header = () => {
         querySelectall: '[role=link]',
         find: (element) => element.getAttribute('aria-current') === 'true',
         styles: {
-            backgroundColor: 'var(--main-hlight)',
+            backgroundColor: backgroundColor,
             borderRadius: 'var(--border-radius3)',
         }
     })

@@ -3,6 +3,7 @@ import { useTransition, animated } from '@react-spring/web'
 
 import './with-modal.css'
 import { CloseButton } from '../../buttons/buttons'
+import { useSchemeVar } from '../../utils/hooks/use-scheme-var/use-scheme-var'
 
 
 interface I {
@@ -88,6 +89,7 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
 
     const [closeAll, setCloseAll] = useState(false)
     const modalRef = useRef<HTMLDivElement>(null)
+    const [window, windowBackground] = useSchemeVar(['--window', '--window-background-color'])
 
     useAccessEsc({
       refs: overLayExit ? [modalRef] : [],
@@ -135,13 +137,13 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
       from: {
         opacity: 0,
         scale: 0.92,
-        backgroundColor: 'var(--window)',
+        backgroundColor: window,
         ...contentConfig
       },
       enter: {
         opacity: 1,
         scale: 1,
-        backgroundColor: 'var(--window-background-color)',
+        backgroundColor: windowBackground,
         ...contentConfig,
       },
       leave: { opacity: 0, scale: .92 },

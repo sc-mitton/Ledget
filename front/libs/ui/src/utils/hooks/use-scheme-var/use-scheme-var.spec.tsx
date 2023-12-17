@@ -1,11 +1,11 @@
 import { act, renderHook } from '@testing-library/react';
 import * as React from 'react';
 
-import useColorScheme from './use-color-scheme';
+import useSchemeVar from './use-scheme-var';
 
-describe('useColorScheme', () => {
+describe('useSchemeVar', () => {
   it('should render successfully', () => {
-    const { result } = renderHook(() => useColorScheme());
+    const { result } = renderHook(() => useSchemeVar());
 
     expect(result.current.count).toBe(0);
 

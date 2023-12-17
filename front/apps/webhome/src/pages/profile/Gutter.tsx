@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { animated } from '@react-spring/web'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Tooltip, usePillAnimation } from '@ledget/ui'
+import { Tooltip, usePillAnimation, useSchemeVar } from '@ledget/ui'
 import { Profile1, Shield, Settings, Link } from '@ledget/media'
 import { useGetMeQuery } from '@features/userSlice'
 import { useEffect } from 'react'
@@ -93,6 +93,7 @@ const Gutter = () => {
     const ref = useRef(null)
     const location = useLocation()
     const [gutterWidth, setGutterWidth] = useState(0)
+    const backgroundColor = useSchemeVar('--main-hlight')
 
     const { props } = usePillAnimation({
         ref: ref,
@@ -101,7 +102,7 @@ const Gutter = () => {
         querySelectall: '[role=link]',
         find: (el) => el.getAttribute('data-current') === 'page',
         styles: {
-            backgroundColor: 'var(--main-hlight)',
+            backgroundColor: backgroundColor,
             borderRadius: location.pathname === '/profile/details'
                 ? 'var(--border-radius25)'
                 : 'var(--border-radius2)',

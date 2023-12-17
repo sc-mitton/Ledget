@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
 import { createContext, useContext } from 'react'
-import { useMediaQuery } from 'react-responsive'
 
 
 interface UseColorScheme {
@@ -20,7 +19,7 @@ export function useColorScheme(): UseColorScheme {
 
 export const ColorSchemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [isDark, setIsDark] = useState(false)
-  const isDarkModeMediaQuery = useMediaQuery({ query: '(prefers-color-scheme: dark)' })
+  const isDarkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)').matches
 
   useEffect(() => {
     const persistedColorScheme = localStorage.getItem('color-scheme')

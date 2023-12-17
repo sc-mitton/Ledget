@@ -14,7 +14,7 @@ import {
     LogoutIcon,
     LedgetLogoIcon
 } from '@ledget/media'
-import { DropAnimation, usePillAnimation, DropdownItem } from '@ledget/ui'
+import { DropAnimation, usePillAnimation, DropdownItem, useSchemeVar } from '@ledget/ui'
 
 
 const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
@@ -22,6 +22,7 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
         { name: "budget", path: "budget" },
         { name: "accounts", path: "accounts/deposits" }
     ]
+    const backgroundColor = useSchemeVar('--header-pill')
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -36,7 +37,7 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
         },
         styles: {
             borderRadius: 'var(--border-radius3)',
-            backgroundColor: 'var(--header-pill)'
+            backgroundColor: backgroundColor
         },
     })
 
