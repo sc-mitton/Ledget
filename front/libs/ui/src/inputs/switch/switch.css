@@ -12,12 +12,12 @@
 }
 
 .switch-crib.enabled {
-    background-color: var(--main-hlight);
+    background-color: var(--main-dark2);
     transition: background-color 0.2s ease-in-out;
 }
 
 .switch-crib.disabled {
-    background-color: rgb(0, 0, 0, .2);
+    background-color: var(--btn-mid-gray);
     transition: background-color 0.2s ease-in-out;
 }
 
@@ -29,12 +29,12 @@
 
 .switch-pill.disabled {
     transform: translateX(0);
-    background-color: var(--btn-mid-gray);
+    background-color: var(--icon-light-gray);
     transition: all 0.2s ease-in-out;
 }
 
 .switch-pill.enabled {
-    transform: translateX(.75rem);
-    background-color: var(--main-dark3);
+    transform: translateX(.82rem);
+    background-color: var(--main-hlight);
     transition: all 0.2s ease-in-out;
 }
