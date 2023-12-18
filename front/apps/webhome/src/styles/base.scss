@@ -52,6 +52,7 @@ option,
 span {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-size: .875rem;
+    font-weight: var(--fw-regular);
     letter-spacing: 0.2px;
     color: var(--m-text);
 }
@@ -59,7 +60,7 @@ span {
 p,
 textarea {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    font-weight: 400;
+    font-weight: var(--fw-light);
     font-size: .875rem;
     color: var(--m-text);
     opacity: .8
@@ -91,7 +92,7 @@ h3,
 h4,
 h5 {
     margin: 0;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
 }
 
 a {
@@ -328,7 +329,7 @@ button:focus-visible {
     transform-origin: top;
     padding: .375em .375em;
     color: var(--m-text);
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     border: var(--subtle-border);
     white-space: nowrap;
     position: absolute;

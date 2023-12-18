@@ -1,7 +1,7 @@
 .back-button {
     float: left;
     text-align: left;
-    font-weight: 600;
+    font-weight: var(--fw-bold);
     padding: .5em .25em;
     display: flex;
     align-items: center;

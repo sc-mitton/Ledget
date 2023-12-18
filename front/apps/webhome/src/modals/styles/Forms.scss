@@ -17,7 +17,7 @@
 }
 
 .create-form label {
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     margin-left: .125em;
 }
 
@@ -121,7 +121,7 @@ input.emoji {
 }
 
 #limit-radios button {
-    font-weight: 400;
+    font-weight: var(--fw-light);
 }
 
 #bottom-inputs .checkbox-container {

@@ -4,5 +4,5 @@
 
 #logout-countdown * {
     font-size: .9375rem;
-    font-weight: 400;
+    font-weight: var(--fw-light);
 }

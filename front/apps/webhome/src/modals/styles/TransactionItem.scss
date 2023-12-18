@@ -102,7 +102,7 @@
             }
 
             &>div:nth-child(2n+1) {
-                font-weight: 500;
+                font-weight: var(--fw-regular);
             }
 
             &>div:nth-child(2n),
@@ -120,7 +120,7 @@
             &>div {
 
                 &:first-child {
-                    font-weight: 500;
+                    font-weight: var(--fw-regular);
                     margin-right: .25em;
                 }
             }

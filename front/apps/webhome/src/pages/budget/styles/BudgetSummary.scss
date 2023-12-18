@@ -125,7 +125,7 @@ $header-gap: calc(.75em + .125vw);
 
         h4 {
             font-size: $header-font-size;
-            font-weight: 400;
+            font-weight: var(--fw-light);
         }
 
         // All statistic elements
@@ -244,7 +244,7 @@ $header-gap: calc(.75em + .125vw);
         align-items: baseline;
 
         &:not(:last-child) {
-            font-weight: 500;
+            font-weight: var(--fw-regular);
         }
 
         &>div {
@@ -252,11 +252,11 @@ $header-gap: calc(.75em + .125vw);
             flex-direction: column;
             align-items: baseline;
             font-size: calc($base-stats-font-size);
-            font-weight: 500;
+            font-weight: var(--fw-regular);
 
             &>div:last-of-type {
                 font-size: calc($base-stats-font-size - .25rem);
-                font-weight: 400;
+                font-weight: var(--fw-light);
                 margin-top: -.125em;
             }
         }

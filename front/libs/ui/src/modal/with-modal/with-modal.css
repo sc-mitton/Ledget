@@ -7,7 +7,7 @@
 
 .edit-button {
     padding: .25em .75em;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
 }
 
 .edit-button:hover {
@@ -18,7 +18,7 @@
 
 .cancel-button {
     padding: .25em .5em;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     margin: 0 .25em;
     background-color: var(--btn-gray);
     color: var(--window);

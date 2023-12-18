@@ -89,7 +89,7 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
             &>span:last-child {
                 color: var(--m-text-tirtiary);
                 font-size: .75rem;
-                font-weight: 400;
+                font-weight: var(--fw-light);
 
                 &:last-child {
                     margin-left: .5em;
@@ -122,7 +122,7 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
     padding: .125em .75em;
     cursor: pointer;
     border-radius: var(--border-radius2);
-    font-weight: 500;
+    font-weight: var(--fw-regular);
 
     &:hover {
         transform: scale(1.1);

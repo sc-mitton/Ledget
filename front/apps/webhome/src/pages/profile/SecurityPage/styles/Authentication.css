@@ -34,7 +34,7 @@
 }
 
 .authentication-method>div:nth-child(2)>span:first-child {
-    font-weight: 600;
+    font-weight: var(--fw-bold);
 }
 
 .authentication-method>div:last-child {

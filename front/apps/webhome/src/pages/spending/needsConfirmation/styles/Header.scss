@@ -32,7 +32,7 @@
     }
 
     #number-of-items {
-        font-weight: 400;
+        font-weight: var(--fw-light);
         margin-right: .625em;
         position: relative;
         padding: 0 .25em;
@@ -47,7 +47,7 @@
         &>span {
             position: relative;
             z-index: 1;
-            font-weight: 400;
+            font-weight: var(--fw-light);
         }
 
         &::after {

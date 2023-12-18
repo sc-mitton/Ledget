@@ -57,13 +57,13 @@
     padding-right: .5em;
     flex-grow: 1;
     overflow: hidden;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     display: flex;
     gap: .5em;
 }
 
 .toast>div:last-child a {
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     text-decoration: underline;
     text-underline-offset: 2px;
 }

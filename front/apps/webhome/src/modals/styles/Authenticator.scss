@@ -50,7 +50,7 @@
 #code-setup--container>span:first-child {
     font-size: 1em;
     margin-bottom: .75rem;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
 }
 
 #code-setup--container>div {
@@ -59,7 +59,7 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: .5em;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     padding: .5rem .75rem;
     border-radius: var(--border-radius5);
     border: 1.5px solid var(--m-text);

@@ -27,6 +27,6 @@
 .form-error {
     display: inline-block;
     font-size: .875rem;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     color: var(--mute-red);
 }

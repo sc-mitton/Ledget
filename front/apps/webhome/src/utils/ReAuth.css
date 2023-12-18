@@ -27,7 +27,7 @@
     margin-top: .5em;
     margin-left: .125em;
     margin-bottom: 1em;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
 }
 
 .reauth-form .graphic {

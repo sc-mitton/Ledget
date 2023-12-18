@@ -27,7 +27,7 @@
 }
 
 .radial-fill-window span {
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     font-size: 1.125rem;
 }
 

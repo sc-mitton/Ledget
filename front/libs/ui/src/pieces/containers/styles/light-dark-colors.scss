@@ -24,7 +24,6 @@
 
     /* Text */
     --m-text: var(--main-dark5);
-    --input-focus: var(--input-placeholder);
 
     /* Drop Shadows & Borders */
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 2px 16px;
@@ -107,7 +106,13 @@
         --m-text-quinary: color-mix(in srgb, var(--m-text), black 60%);
 
         --input-placeholder: hsl(0, 0%, 62%);
-        --input-placeholder2: hsl(0, 0%, 35%);
+        --input-placeholder2: rgb(89, 89, 89);
+        --input-placeholder-focus: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), var(--main-color-l));
+
+        /* Font Weights */
+        --fw-light: 300;
+        --fw-regular: 300;
+        --fw-bold: 400;
 
         // Icons & Buttons
         --icon-full: var(--main-dark5);
@@ -201,6 +206,12 @@
 
         --input-placeholder: hsl(0, 0%, 38%);
         --input-placeholder2: hsl(0, 0%, 65%);
+        --input-placeholder-focus: hsl(var(--main-color-h), calc(var(--main-color-s) - 10%), var(--main-color-l));
+
+        /* Font Weights */
+        --fw-light: 300;
+        --fw-regular: 400;
+        --fw-bold: 500;
 
         // Icons & Buttons
         --icon-full: var(--main-dark5);
@@ -229,16 +240,4 @@
         @include common;
     }
 
-}
-
-@-moz-document url-prefix() {
-    :root {
-        --input-focus: hsl(233, 56%, 73%);
-        --input-placeholder: #616161;
-        --m-text: var(--main-dark5);
-    }
-
-    * {
-        scrollbar-width: thin;
-    }
 }

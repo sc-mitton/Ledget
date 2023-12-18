@@ -90,7 +90,7 @@ $background: var(--window);
             cursor: default;
             display: flex;
             gap: .75em;
-            font-weight: 500;
+            font-weight: var(--fw-regular);
             z-index: 1;
             @include header-styles;
             padding-bottom: .5em;
@@ -403,7 +403,7 @@ $background: var(--window);
 
             // Header row
             &:first-child {
-                font-weight: 500;
+                font-weight: var(--fw-regular);
                 @include table-header-mask-image;
 
                 &>div {

@@ -43,7 +43,7 @@
     border-radius: .75em;
     padding: 0 .5em;
     min-height: 1em;
-    font-weight: 400;
+    font-weight: var(--fw-light);
 
     &:disabled {
         cursor: default;
@@ -78,32 +78,32 @@
 .btn3 {
     padding: .375em .75em;
     border-radius: var(--border-radius2);
-    font-weight: 400;
+    font-weight: var(--fw-light);
 }
 
 .btn-slim {
     padding: 0 .5em;
     border-radius: var(--border-radius2);
-    font-weight: 400;
+    font-weight: var(--fw-light);
 }
 
 .btn-2slim {
     padding: .125em .75em;
     border-radius: var(--border-radius2);
-    font-weight: 400;
+    font-weight: var(--fw-light);
     gap: .25em;
 }
 
 .btn-3slim {
     padding: .125em 1em;
     border-radius: var(--border-radius2);
-    font-weight: 400;
+    font-weight: var(--fw-light);
 }
 
 .btn-narrow {
     padding: .25em 0;
     border-radius: .375em;
-    font-weight: 400;
+    font-weight: var(--fw-light);
 }
 
 .btn-wide.btn-grn,
@@ -144,12 +144,14 @@
 }
 
 .btn-chcl {
-    background-color: var(--m-text);
+    background-color: var(--main-dark3);
+    font-weight: var(--fw-bold);
     color: var(--m-invert-text);
     transition: all .3s ease;
 
     &:hover {
         transition: all .3s ease;
+        background-color: var(--main-dark4);
     }
 }
 
@@ -260,7 +262,7 @@
 .btn-red {
     background-color: var(--mute-red);
     color: var(--m-invert-text);
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     margin: .25em 0;
     transition: all .3s ease;
 
@@ -553,7 +555,7 @@ button.disabled-hover:hover svg {
 
 .expand-button {
     border-radius: var(--border-radius3);
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     padding: .375em 0;
     min-width: 5ch;
     display: flex;
@@ -803,7 +805,7 @@ button.disabled-hover:hover svg {
         padding: .25em 20;
         border-radius: var(--border-radius5);
         color: var(--m-invert-text);
-        font-weight: 500;
+        font-weight: var(--fw-regular);
     }
 
     &>span:last-child {

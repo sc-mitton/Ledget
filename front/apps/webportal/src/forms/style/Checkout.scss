@@ -12,7 +12,7 @@
 
 
     h4 {
-        font-weight: 600;
+        font-weight: var(--fw-bold);
         font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
         color: var(--m-text);
         margin: .5em 0;
@@ -28,7 +28,7 @@
 
 #prices-container {
     background-color: var(--main-hlight);
-    box-shadow: 0 1px 1px 0 var(--main-hlight);
+    border: 2px solid var(--m-invert-text);
     border-top-left-radius: var(--border-radius3);
     border-top-right-radius: var(--border-radius3);
     position: relative;
@@ -96,7 +96,8 @@ input[type="radio"]:checked+.subscription-radio--container {
 }
 
 input[type="radio"]:not(:checked)+.subscription-radio--container {
-    box-shadow: inset 0 0 3px 1px var(--main-hlight);
+    box-shadow: inset 0 0 3px 1px var(--main-color);
+    opacity: .6;
 }
 
 .dog-ear {
@@ -114,7 +115,7 @@ input[type="radio"]:checked+.subscription-radio--container .dog-ear {
 }
 
 input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
-    background-color: var(--main-hlight);
+    background-color: var(--main-color);
 }
 
 .dog-ear svg {
@@ -154,7 +155,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
     justify-content: end;
     padding: .75em .5em;
     margin-bottom: .5em;
-    border-top: .125em solid rgba(0, 0, 0, 0.07);
+    border-top: .125em solid var(--subtle-border-color);
 
     table {
         border-collapse: collapse;
@@ -175,7 +176,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
             }
 
             &:last-child {
-                font-weight: 500;
+                font-weight: var(--fw-regular);
             }
 
             &:last-child span {
@@ -192,7 +193,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
 .general-error {
     margin-bottom: 1.5em;
     text-align: center;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
 
     img {
         height: 1em;
@@ -215,10 +216,12 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
     position: relative;
     bottom: -1.5em;
     height: 0;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
 
     a {
         border: none;
+        display: flex;
+        align-items: center;
     }
 
 
@@ -250,7 +253,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
 
 #checkout-window-loading-error #message {
     padding: .25em 2.5em;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
 }
 
 /* ------------------------------- Responsive ------------------------------- */

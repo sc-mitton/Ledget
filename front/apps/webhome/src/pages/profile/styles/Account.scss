@@ -11,7 +11,7 @@
     align-items: center;
     justify-content: center;
     font-size: 2rem;
-    font-weight: 400;
+    font-weight: var(--fw-light);
 }
 
 #info-container {
@@ -89,7 +89,7 @@
     column-gap: 1em;
 
     &>div:nth-child(2n + 1) {
-        font-weight: 500;
+        font-weight: var(--fw-regular);
     }
 
     &>div:nth-child(2n) {

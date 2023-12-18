@@ -49,7 +49,7 @@ export const SelectProvence = ({ field, errors }) => {
             >
               <ArrowIcon
                 size={'.9em'}
-                stroke={(focused && !provence) ? 'var(--input-focus)' : 'var(--m-text)'}
+                stroke={(focused && !provence) ? 'var(--input-placeholder-focus)' : 'var(--m-text)'}
               />
             </Combobox.Button>
             {errors[field.name] && <FormErrorTip errors={{ type: 'required' }} />}

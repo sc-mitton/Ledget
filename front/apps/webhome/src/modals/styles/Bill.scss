@@ -40,7 +40,7 @@
         }
 
         &>div:nth-child(2n+1) {
-            font-weight: 500;
+            font-weight: var(--fw-regular);
         }
 
         // Reminders row
@@ -65,7 +65,7 @@
     margin: 1em 0;
 
     label {
-        font-weight: 500;
+        font-weight: var(--fw-regular);
         margin-left: .25em;
     }
 
@@ -110,7 +110,7 @@
 
         h4 {
             margin: .125em 0;
-            font-weight: 400;
+            font-weight: var(--fw-light);
         }
 
         &>div {

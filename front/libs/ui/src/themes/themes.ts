@@ -74,18 +74,23 @@ export const ledgetAntTheme: ThemeConfig = {
     },
 }
 
-
-export const stripeCardTheme = (focus: boolean) => ({
+export const useStripeCardTheme = ({ focus, isDark }: { focus: boolean, isDark?: boolean }) => ({
     style: {
         base: {
             fontFamily: "Source Sans Pro, sans-serif",
-            color: '#292929',
+            color: isDark ? '#e2e2e9' : '#292929',
             fontSmoothing: 'antialiased',
-            fontSize: '16px',
+            fontSize: '1em',
             '::placeholder': {
-                color: focus ? '#949de0' : '#767676',
+                color:
+                    isDark
+                        ? focus ? '#434770' : '#606060'
+                        : focus ? '#949de0' : '#767676',
             },
-            iconColor: focus ? '#0000ff' : '#292929',
+            iconColor:
+                isDark
+                    ? focus ? '#7b97ff' : '#595959'
+                    : focus ? '#0000ff' : '#767676',
             ':disabled': {
                 color: '#767676',
                 iconColor: '#767676'

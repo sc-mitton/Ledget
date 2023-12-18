@@ -8,7 +8,7 @@
 
 .black-radios-container-label {
     position: relative;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     cursor: pointer;
     display: block;
     height: 100%;

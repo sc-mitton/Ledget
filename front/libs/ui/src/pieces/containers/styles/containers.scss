@@ -64,7 +64,7 @@
 
 .dropdown-item {
     overflow: hidden;
-    font-weight: 400;
+    font-weight: var(--fw-light);
     display: flex;
     align-items: center;
     gap: .875em;
@@ -76,7 +76,7 @@
 
 .dropdown-item {
     overflow: hidden;
-    font-weight: 400;
+    font-weight: var(--fw-light);
     display: flex;
     align-items: center;
     gap: .875em;

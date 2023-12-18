@@ -13,7 +13,7 @@ $wafer-container-padding: .75rem;
     padding-bottom: 0;
 
     .account-wafers--header h3 {
-        font-weight: 400;
+        font-weight: var(--fw-light);
     }
 }
 
@@ -38,7 +38,7 @@ $wafer-container-padding: .75rem;
 
 .skeleton-account-wafers--container>div:first-child>div,
 .account-wafers--container>div:first-child>div {
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     font-size: 1.375em;
 }
 
@@ -212,7 +212,7 @@ $wafer-container-padding: .75rem;
             white-space: nowrap;
 
             * {
-                font-weight: 500;
+                font-weight: var(--fw-regular);
             }
 
             &.masked {
@@ -241,7 +241,7 @@ $wafer-container-padding: .75rem;
             div * {
                 font-size: 1rem;
                 letter-spacing: .0625em;
-                font-weight: 500;
+                font-weight: var(--fw-regular);
             }
         }
     }
@@ -404,7 +404,7 @@ $borderRadius2: var(--border-radius2);
 
             span:last-child {
                 opacity: 0.4;
-                font-weight: 400;
+                font-weight: var(--fw-light);
             }
         }
 
@@ -474,7 +474,7 @@ $borderRadius2: var(--border-radius2);
 
         // All accounts balance */
         &>div:first-child>div {
-            font-weight: 500;
+            font-weight: var(--fw-regular);
         }
 
         &>div:first-child {

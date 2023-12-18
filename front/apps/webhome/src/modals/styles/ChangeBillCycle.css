@@ -7,7 +7,7 @@
 }
 
 #new-plan--container span:first-child {
-    font-weight: 600;
+    font-weight: var(--fw-bold);
 }
 
 #new-plan--container span:last-child {

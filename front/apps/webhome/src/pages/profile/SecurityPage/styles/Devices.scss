@@ -60,14 +60,14 @@
 .device-title {
 
     &>span:first-child {
-        font-weight: 500;
+        font-weight: var(--fw-regular);
         margin-right: .5em;
     }
 
     &>span:nth-child(2) {
         padding: 0 .5em;
         border-radius: var(--border-radius1);
-        font-weight: 500;
+        font-weight: var(--fw-regular);
     }
 
     &>div {
@@ -139,7 +139,7 @@
     column-gap: .75em;
 
     &>div:nth-child(2n -1) {
-        font-weight: 600;
+        font-weight: var(--fw-bold);
     }
 }
 

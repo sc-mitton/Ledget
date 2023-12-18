@@ -238,7 +238,7 @@ $inner-circle-positive: var(--main-hlight-hover);
     color: var(--m-invert-text);
     border-radius: 50%;
     font-size: .875rem;
-    font-weight: 400;
+    font-weight: var(--fw-light);
     padding: .25em;
     display: flex;
     align-items: center;

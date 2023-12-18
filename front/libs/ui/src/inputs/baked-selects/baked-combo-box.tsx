@@ -73,7 +73,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string> | BakedSelect
             >
               <ArrowIcon
                 size={'.8em'}
-                stroke={(focused && !value) ? 'var(--input-focus)' : 'var(--m-text)'}
+                stroke={(focused && !value) ? 'var(--input-placeholder-focus)' : 'var(--m-text)'}
               />
             </Combobox.Button>
           </props.WrapperComponent>

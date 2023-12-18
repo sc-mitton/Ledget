@@ -70,7 +70,7 @@ a {
 .landing-message p {
     color: var(--logo-dark);
     text-align: center;
-    font-weight: 500;
+    font-weight: var(--fw-regular);
 }
 
 /* ------------------ Header ------------------ */
@@ -131,7 +131,7 @@ a {
 }
 
 .nav-container a {
-    font-weight: 500;
+    font-weight: var(--fw-regular);
     position: relative;
     color: #000;
     text-decoration: none;
