@@ -9,7 +9,6 @@ import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
 import './style/Checkout.scss'
-import stripelogo from '@assets/images/stripelogo.svg'
 import ledgetapi from '@api/axios'
 import { useGetPricesQuery } from '@features/pricesSlice'
 import { WindowLoadingBar } from '../pieces'
@@ -22,7 +21,7 @@ import {
     CityStateZipInputs,
     baseBillingSchema
 } from '@ledget/ui'
-import { LogoIcon2 } from '@ledget/media'
+import { LogoIcon2, StripeLogo } from '@ledget/media'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
@@ -299,7 +298,7 @@ const CheckoutWindow = () => {
                             <div>powered by</div>
                             <div>
                                 <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
-                                    <img className="stripe-logo" src={stripelogo} alt="Stripe" />
+                                    <StripeLogo />
                                 </a>
                             </div>
                         </div>

@@ -5,6 +5,7 @@
     justify-content: center;
     position: relative;
     margin-bottom: 1em;
+    color: var(--m-text);
 }
 
 .auth-factor-status-graphic img {
@@ -23,98 +24,109 @@
 
 .status-circle {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     margin: auto;
     border-radius: 50%;
     box-shadow: none;
+    z-index: 0;
+}
+
+$outer-circle-negative: var(--btn-mid-gray);
+$outer-circle-positive: var(--main-hlight);
+$inner-circle-negative: var(--btn-mid-gray-hover);
+$inner-circle-positive: var(--main-hlight-hover);
+
+@mixin pulse-styles($outerOrInner: inner) {
+
+    @if $outerOrInner ==inner {
+
+        &.negative {
+            background-color: $inner-circle-negative;
+            opacity: .05;
+            animation: status-pulse 4s ease-in-out infinite;
+        }
+
+        &.color-default-positive,
+        &.positive {
+            background-color: $inner-circle-positive;
+            opacity: .05;
+            transition: all .5s ease-out;
+        }
+
+        &.positive {
+            animation: success .6s ease-out forwards;
+        }
+    }
+
+    @else if $outerOrInner ==outer {
+
+        &.negative {
+            background-color: $outer-circle-negative;
+            opacity: .1;
+            animation: status-pulse 4s ease-in-out infinite;
+        }
+
+        &.color-default-positive,
+        &.positive {
+            background-color: $outer-circle-positive;
+            opacity: .1;
+            transition: all .5s ease-out;
+        }
+
+        &.positive {
+            animation: success .6s ease-out forwards;
+        }
+    }
 }
 
 #inner-circle {
     z-index: 2;
+
+    &.small {
+        width: 28px;
+        height: 28px;
+    }
+
+    &.medium {
+        width: 40px;
+        height: 40px;
+    }
+
+    &.medium-large {
+        width: 45px;
+        height: 45px;
+    }
+
+    @include pulse-styles(inner);
+
+    &.positive.small {
+        animation: success2 1s ease-out forwards;
+    }
 }
 
 #outer-circle {
     z-index: 1;
-}
 
-/* Small */
+    &.small {
+        width: 40px;
+        height: 40px;
+    }
 
-#inner-circle.small {
-    width: 28px;
-    height: 28px;
-}
+    &.medium {
+        width: 55px;
+        height: 55px;
+    }
 
-#outer-circle.small {
-    width: 40px;
-    height: 40px;
-}
+    &.medium-large {
+        width: 70px;
+        height: 70px;
+    }
 
-/* Medium */
-#inner-circle.medium {
-    width: 40px;
-    height: 40px;
-}
+    @include pulse-styles(outer);
 
-#outer-circle.medium {
-    width: 55px;
-    height: 55px;
-}
-
-#inner-circle.medium-large {
-    width: 45px;
-    height: 45px;
-}
-
-#outer-circle.medium-large {
-    width: 70px;
-    height: 70px;
-}
-
-/* Inner Circle */
-#inner-circle.negative {
-    background-color: rgb(0, 0, 0, .045);
-    animation: status-pulse 4s ease-in-out infinite;
-}
-
-#inner-circle.color-default-positive {
-    background-color: rgba(140, 149, 251, 0.7);
-}
-
-#inner-circle.positive {
-    background-color: rgba(69, 81, 255, 0.3);
-    transition: all .5s ease-out;
-}
-
-#inner-circle.positive {
-    animation: success .6s ease-out forwards;
-}
-
-#inner-circle.positive.small {
-    animation: success2 1s ease-out forwards;
-}
-
-/* Outer Circle */
-#outer-circle.negative {
-    background-color: rgb(0, 0, 0, .025);
-    animation: status-pulse 4s ease-in-out infinite;
-    animation-delay: .4s;
-}
-
-#outer-circle.positive,
-#outer-circle.color-default-positive {
-    background-color: rgb(212, 212, 255);
-    transition: all .5s ease-out;
-}
-
-#outer-circle.positive {
-    animation: success .6s ease-out forwards;
-}
-
-#outer-circle.positive.small {
-    animation: success2 1s ease-out forwards;
+    &.positive.small {
+        animation: success2 1s ease-out forwards;
+    }
 }
 
 @keyframes success {
@@ -202,7 +214,7 @@
 .sms-verify-status #success-checkmark {
     position: absolute;
     z-index: 50;
-    background-color: #292929;
+    background-color: var(--m-text);
     padding: .5em .75em;
     border-radius: var(--border-radius1);
     animation: popOn 0.3s ease-out forwards;

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { Desert } from '@components/pieces'
+import { DesertImage } from '@ledget/media'
 import { BlackPrimaryButton } from '@ledget/ui'
 
 import './NotFound.css'
@@ -18,7 +18,7 @@ const NotFound = ({ hasBackground = true }) => {
             }}
         >
             <div>
-                <Desert />
+                <DesertImage />
                 <h1>404 Not Found</h1>
                 <BlackPrimaryButton
                     aria-label="Return home"

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 
-import "./pieces.css"
+import "./pieces.scss"
 
 export const WindowLoadingBar = ({ visible }) => (
     <AnimatePresence initial={false}>

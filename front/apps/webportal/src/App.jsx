@@ -5,17 +5,18 @@ import "./style/base.css"
 import "./style/portal.scss"
 import Routes from './Routes'
 import store from '@features/store'
+import { ColorSchemedMain } from '@ledget/ui'
 
 function App() {
 
     return (
-        <main>
+        <ColorSchemedMain>
             <Provider store={store}>
                 <BrowserRouter>
                     <Routes />
                 </BrowserRouter>
             </Provider>
-        </main >
+        </ColorSchemedMain>
     )
 }
 

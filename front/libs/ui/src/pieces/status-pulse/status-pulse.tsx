@@ -1,6 +1,6 @@
 
-import './status-pulse.css'
-import { CheckMark, SmsAuthIcon, SmsAuthIcon2, VerifyEmail, AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
+import './status-pulse.scss'
+import { CheckMark, SmsAuthIcon2, VerifyEmail, AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
 import { shuffleArray } from '../../utils/funcs'
 
 

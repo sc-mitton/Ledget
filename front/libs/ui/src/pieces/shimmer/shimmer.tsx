@@ -3,7 +3,7 @@ import { FC, HTMLProps } from 'react'
 import './shimmer.scss';
 import { useTransition, animated } from '@react-spring/web'
 import { TextInputWrapper } from '../../inputs/text/text'
-import { useColorScheme } from '../../utils/hooks/use-color-scheme/use-color-scheme';
+import { useColorScheme } from '../../utils/hooks/use-color-scheme/use-color-scheme'
 import React from 'react';
 
 
@@ -32,7 +32,7 @@ export const Shimmer = (props: ShimmerProps) => {
           >
             <div
               className={`shimmer`}
-              style={{ '--shimmer-lightness': `${(isDark || darkMode) ? 100 - lightness : lightness}%` } as React.CSSProperties}
+              style={{ '--shimmer-lightness': `${(isDark || darkMode) ? 98 - lightness : lightness}%` } as React.CSSProperties}
             />
           </animated.div>
       )}

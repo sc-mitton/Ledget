@@ -1,13 +1,12 @@
-import React from 'react'
 
 import './pieces.css'
-import logo from "@assets/images/logo.svg"
+import { LedgetLogo } from '@ledget/media'
 
 function SignUpFlowHeader() {
     return (
         <div className="signup-container-header">
             <div>
-                <img src={logo} alt="Ledget" />
+                <LedgetLogo />
             </div>
         </div>
     )

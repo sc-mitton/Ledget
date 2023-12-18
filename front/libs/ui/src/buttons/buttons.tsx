@@ -130,11 +130,11 @@ export const BackButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText
       <button className="btn btn-2slim back-btn" {...rest}>
         <svg width="20" height="20" viewBox="0 0 20 20">
           <g transform={'translate(19, 20) rotate(-180)'}>
-            <path className="arrow-tail" d="M5 10L12.5 10" stroke="#292929" strokeWidth="2"
+            <path className="arrow-tail" d="M5 10L12.5 10" stroke="currentColor" strokeWidth="2"
               strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            <path className="arrow-head" d="M8 14L12 10" stroke="#292929" strokeWidth="2"
+            <path className="arrow-head" d="M8 14L12 10" stroke="currentColor" strokeWidth="2"
               strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            <path className="arrow-head" d="M12 10L8 6" stroke="#292929" strokeWidth="2"
+            <path className="arrow-head" d="M12 10L8 6" stroke="currentColor" strokeWidth="2"
               strokeLinecap="round" strokeLinejoin="round" fill="none" />
           </g>
         </svg>

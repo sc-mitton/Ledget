@@ -16,18 +16,6 @@
 
 @import './animations.scss';
 
-/* Override color values for Firefox */
-@-moz-document url-prefix() {
-    :root {
-        --input-focus: hsl(233, 56%, 73%);
-        --input-placeholder: #616161;
-        --m-text: var(--main-dark5);
-    }
-
-    * {
-        scrollbar-width: thin;
-    }
-}
 
 *::-webkit-scrollbar {
     width: .25em;

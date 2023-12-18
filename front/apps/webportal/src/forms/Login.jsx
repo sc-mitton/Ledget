@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
 
-import './style/Login.css'
+import './style/Login.scss'
 import SocialAuth from "./SocialAuth"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"

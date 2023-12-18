@@ -1,6 +1,5 @@
-import React from 'react'
 
-import Desert from '@assets/images/desert.svg'
+import Desert from './desert.svg'
 
 const DesertImage = () => {
     return (

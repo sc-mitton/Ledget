@@ -5,20 +5,12 @@
     width: 100%;
     margin: 2.25em 0;
     position: relative;
-}
 
-#image-container img {
-    width: 25%;
-    min-width: 5rem;
-    position: relative;
-    z-index: 50;
-    transform: rotateX(0deg);
-}
+    svg {
+        position: relative;
+        z-index: 10;
+    }
 
-#image-container.unlocked img {
-    z-index: 50;
-    transform: rotateX(180deg);
-    transition: transform 0.4s ease-in-out;
 }
 
 /* ------------------------- End Key Flip Animation ------------------------- */

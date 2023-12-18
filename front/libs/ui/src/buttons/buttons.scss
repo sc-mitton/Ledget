@@ -144,12 +144,11 @@
 }
 
 .btn-chcl {
-    background-color: var(--btn-gray);
+    background-color: var(--m-text);
     color: var(--m-invert-text);
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--btn-hover-gray);
         transition: all .3s ease;
     }
 }
@@ -202,11 +201,11 @@
 
 .btn-gr {
     box-shadow: var(--btn-drop-shadow);
-    background-color: var(--btn-gray);
+    background-color: var(--icon-light-gray);
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--btn-gray-hover);
+        background-color: var(--icon-hover-light-gray);
         transition: all .3s ease;
     }
 }
@@ -220,6 +219,11 @@
     &:hover {
         background-color: var(--icon-hover-light-gray);
         transition: all .3s ease;
+        color: var(--btn-mid-gray-hover);
+
+        * {
+            color: var(--btn-mid-gray-hover);
+        }
     }
 
     &:not(:selected) {
@@ -603,6 +607,8 @@ button.disabled-hover:hover svg {
     width: auto;
     padding-left: .375em;
     margin-left: -.5em;
+    color: var(--m-text);
+    gap: 0;
 
     svg {
         height: 1.3em;

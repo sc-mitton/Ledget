@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from "framer-motion"
 
-import './style/Recovery.css'
+import './style/Recovery.scss'
 import { WindowLoadingBar } from '@pieces'
 import { ledgetapi } from "@api"
 import { FormError, GrnWideButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc } from '@ledget/ui'
-import forgotPassword from '@assets/images/forgotPassword.svg'
+import { ForgotPassword } from '@ledget/media'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory'
 
@@ -27,7 +27,7 @@ const MainGraphic = ({ unLocked }) => (
         className={`${(unLocked) ? 'unlocked' : 'locked'}`}
         id="image-container"
     >
-        <img src={forgotPassword} alt="Forgot password" />
+        <ForgotPassword />
         <StatusPulse positive={unLocked} size="medium" />
     </div>
 )
@@ -69,6 +69,8 @@ const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }) => {
                     autoComplete="email"
                     ref={emailRef}
                     name="email"
+                    autoFocus
+                    required
                 />
                 <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
                 <GrnWideButton

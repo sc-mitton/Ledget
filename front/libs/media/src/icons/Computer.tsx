@@ -3,7 +3,7 @@ const Computer = ({
     width = "4.5em",
     height = "4.5em",
     fill = 'var(--m-text)',
-    fill2 = 'var(--gray-hlight)'
+    fill2 = 'var(--icon-hover-light-gray)'
 }) => {
 
     return (

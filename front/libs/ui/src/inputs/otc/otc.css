@@ -16,19 +16,20 @@
     line-height: 1;
     margin: .2em;
     padding: .25em 0;
+    min-width: 1.5em;
     font-size: 1.5em;
     text-align: center;
     appearance: textfield;
     -webkit-appearance: textfield;
-    border: 2px solid transparent;
     border-radius: var(--border-radius2);
     background-color: var(--input-background);
-    border: solid 1px rgb(0, 0, 0, .02);
+    border: solid 1px var(--input-border-color);
     color: var(--m-text);
 }
 
 .otc input[type="text"]:focus {
-    border: 1.5px solid var(--input-border-focus);
+    border: 1.5px solid transparent;
+    box-shadow: var(--input-focus-drop-shadow);
 }
 
 .otc input::-webkit-outer-spin-button,
@@ -56,5 +57,5 @@
     height: .25rem;
     margin: 0 .2em;
     order: 1;
-    background: rgb(0, 0, 0, .3);
+    background: var(--m-text-tirtiary);
 }

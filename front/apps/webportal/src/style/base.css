@@ -1,76 +1,6 @@
 /* Root css file for style variables and global styles */
 
 :root {
-    /* Windows */
-    --window: rgb(250, 250, 250);
-    --window-border: white;
-    --window-background-color: #f0f0f0;
-
-    /* Palet */
-    --mute-red: #fe8797;
-    --hover-red: #fb6a7e;
-    --alert-red: #f35050;
-
-    --main-color: rgb(92, 96, 135);
-    --main-color-hover: hsl(235, 24%, 53%);
-    --main-color-values: 92, 96, 135;
-    --main-hlight: #a9afdb;
-    --main-hlight: #dde2f3;
-    --main-dark: hsl(232, 17%, 35%);
-    --main-dark2: hsl(232, 17%, 30%);
-    --main-dark3: hsl(232, 17%, 25%);
-    --main-dark4: hsl(229, 23%, 18%);
-    --main-dark5: hsl(240, 6%, 17%);
-    --main-sat: rgb(182, 182, 250);
-    --yellow: rgb(175, 175, 51);
-
-    --secondary-color: hsl(153, 100%, 91%);
-    --secondary-hlight: hsl(162, 35%, 89%);
-    --secondary-hlight3: hsl(165, 29%, 87%);
-    --secondary-hlight5: rgb(181, 235, 221);
-    --secondary-color-alt: hsl(156, 31%, 62%);
-    --secondary-dark: hsl(164, 17%, 35%);
-    --secondary-dark4: hsl(164, 5%, 27%);
-
-    --accessible-color: #9999ac;
-
-    --window-rgb: 252, 248, 247;
-
-    /* Drop Shadows */
-    --input-focus-dropshadow-color: rgb(197, 203, 233);
-    --accessible-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
-    --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
-    --low-elevation-drop-shadow: rgba(0, 0, 0, 0.02) 0px 1px 6px 0px;
-    --mid-elevation-drop-shadow: rgba(0, 0, 0, 0.3) 0px 3px 15px;
-    --input-drop-shadow: rgba(0, 0, 0, 0.07) 0px 1px 0px .3px;
-    --new-item-drop-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px;
-    --window-drop-shadow: rgba(149, 157, 165, 0.7) 0px 0px 2px;
-    --scroll-shadow: rgba(248, 248, 248), transparent;
-
-    /* Input Colors */
-    --input-background: #ededed;
-    --input-border: solid 1px rgb(0, 0, 0, .02);
-
-    /* Text */
-    --input-focus: hsl(233, 56%, 73%);
-    --m-text: #292929;
-    --m-text-secondary: #3d3d3d;
-    --input-placeholder: #848484;
-    --input-placeholder2: #a6a6a6;
-    --m-invert-text: #f8f8f8;
-    --m-text-tirtiary: rgb(0, 0, 0, .4);
-
-    /* Icons & Buttons */
-    --icon-light-gray: #ebebeb;
-    --btn-light-gray: var(--input-background);
-    --btn-light-gray-hover: rgb(228, 228, 228);
-    --btn-gray: #3b3b3b;
-    --btn-hover-gray: #292929;
-    --btn-mid-gray: #848484;
-    --icon-light-gray: #ebebeb;
-    --icon-hover-light-gray: #e0e0e0;
-    --icon-hover-gray: #c4c4c4;
-
     /* Borders */
     --subtle-border-color: rgb(0, 0, 0, .07);
     --subtle-border: .75px solid var(--subtle-border-color);
@@ -84,30 +14,11 @@
     --border-radius25: 12px;
     --border-radius3: 16px;
     --border-radius5: 24px;
-
-    /* Loading Shimmer */
-    --shimmer-background: linear-gradient(115deg, var(--window) 30%, #f0f0f0 50%, var(--window) 70%);
 }
-
-/* Override color values for Firefox */
-@-moz-document url-prefix() {
-    :root {
-        --input-focus: hwb(233 58% 12%);
-        --input-placeholder: #2a2a2a;
-        --m-text: rgb(44, 44, 44);
-    }
-
-    * {
-        scrollbar-width: thin;
-    }
-}
-
-
 
 #root {
     height: 100%;
 }
-
 
 html,
 body {
@@ -174,7 +85,7 @@ button:focus-visible {
 a {
     outline: none;
     text-decoration: none;
-    border-bottom: 2px solid var(--m-text);
+    border-bottom: 2px solid var(--m-text-tirtiary);
     text-decoration-skip-ink: none;
     text-underline-offset: 1.5px;
     cursor: pointer;
@@ -200,7 +111,7 @@ a:focus-visible::before,
 a:hover::before {
     transform: scaleX(1);
     transform-origin: bottom left;
-    background-color: var(--main-hlight);
+    background-color: var(--m-text);
     transition: transform .2s ease-in-out;
     transition-delay: .2s;
 }
