@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 
 import './styles/MonthPicker.css'
 import { useGetMeQuery } from '@features/userSlice'
-import { SmallArrowButton, IconButton, DropAnimation } from '@ledget/ui'
+import { SmallArrowButton, IconButton, DropDownDiv } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 
 export const monthMappings: [string | number, string | number][] = [
@@ -170,10 +170,9 @@ const MonthPicker = () => {
                     <ArrowIcon size={'1em'} />
                 </IconButton>
             </div>
-            <DropAnimation
+            <DropDownDiv
                 placement="left"
                 visible={showPicker}
-                className="dropdown"
                 id="picker-container"
             >
                 <div >
@@ -194,7 +193,7 @@ const MonthPicker = () => {
                         {renderMonths()}
                     </div>
                 </div>
-            </DropAnimation>
+            </DropDownDiv>
         </div>
     )
 }

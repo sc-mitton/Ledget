@@ -6,7 +6,7 @@ import './styles/Dropdowns.css'
 import { Plus, Return, ArrowIcon, CheckMark } from '@ledget/media'
 import ComboSelect from './ComboSelect'
 import { formatCurrency } from '@ledget/ui'
-import { SlimmestInputButton, MenuTextInput, DropAnimation } from '@ledget/ui'
+import { SlimmestInputButton, MenuTextInput, DropDownDiv } from '@ledget/ui'
 
 const formatDollar = (value, percentage) => {
     if (!value) return ''
@@ -228,9 +228,9 @@ const AddAlert = (props) => {
                         className="select-container"
                         static
                     >
-                        <DropAnimation
+                        <DropDownDiv
                             placement='left'
-                            className="dropdown select"
+                            className="select"
                             visible={open}
                             style={{
                                 minWidth: buttonRef.current?.offsetWidth,
@@ -238,7 +238,7 @@ const AddAlert = (props) => {
                         >
                             <Options />
                             <CustomOption />
-                        </DropAnimation>
+                        </DropDownDiv>
                     </ComboSelect.Options>
                 </>
             )}

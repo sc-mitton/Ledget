@@ -34,6 +34,7 @@
     --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px 6px 0px;
     --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 3px 12px;
     --input-drop-shadow: var(--input-drop-shadow-color) 0px 1px 0px .3px;
+    --antd-drop-shadow: var(--m-invert-text) 0 3px 12px;
 
     --input-focus-dropshadow-color: var(--main-sat);
     --accessible-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
@@ -86,11 +87,10 @@
         --gray-hlight: hsl(0, 0%, 10%);
 
         // Windows
-        --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 70%);
-
-        --window: hsl(0, 0%, 7%);
+        --window: #121212;
         --window-rgb: 5, 5, 5;
-        --window2: hsl(0, 0%, 7%);
+        --window2: #121212;
+        --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 70%);
 
         --inner-window: hsl(0, 0%, 10%);
         --inner-window-rgb: 13, 13, 13;
@@ -112,7 +112,7 @@
 
         /* Font Weights */
         --fw-light: 300;
-        --fw-regular: 300;
+        --fw-regular: 400;
         --fw-bold: 400;
         --letter-spacing: .4px;
 
@@ -134,8 +134,8 @@
         --scroll-shadow: hsl(0, 0%, 3%),
             transparent;
 
-        --low-elevation-drop-shadow-color: rgba(255, 255, 255, 0.1);
-        --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.25);
+        --low-elevation-drop-shadow-color: rgba(255, 255, 255, 0.05);
+        --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
         --input-drop-shadow-color: rgba(255, 255, 255, 0.07);
 
         --subtle-border-color: rgb(255, 255, 255, .07);
@@ -188,9 +188,9 @@
         // Windows
         --header-background: var(--main-dark4);
 
-        --window: hsl(0, 0%, 98%);
+        --window: #fafafa;
         --window-rgb: 250, 250, 250;
-        --window2: hsl(0, 0%, 93%);
+        --window2: #ededed;
 
         --inner-window: hsl(0, 0%, 94%);
         --inner-window-rgb: 246, 246, 246;

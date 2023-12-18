@@ -16,7 +16,7 @@ import {
     DollarCents,
     getDaySuffix,
     mapWeekDayNumberToName,
-    DropAnimation,
+    DropDownDiv,
     SlideMotionDiv,
     useLoaded,
     Checkbox,
@@ -87,9 +87,10 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                         <Ellipsis rotate={90} size={'1.375em'} />
                     </Menu.Button>
                     <div>
-                        <DropAnimation
+                        <DropDownDiv
                             placement='right'
-                            className='dropdown arrow-right right'
+                            arrow='right'
+                            className='right'
                             visible={open}
                         >
                             <Menu.Items static>
@@ -119,7 +120,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                     )}
                                 </Menu.Item>
                             </Menu.Items>
-                        </DropAnimation>
+                        </DropDownDiv>
                     </div>
                 </>
             )}

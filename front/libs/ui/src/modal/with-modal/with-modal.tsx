@@ -3,7 +3,7 @@ import { useTransition, animated } from '@react-spring/web'
 
 import './with-modal.css'
 import { CloseButton } from '../../buttons/buttons'
-import { useSchemeVar } from '../../utils/hooks/use-scheme-var/use-scheme-var'
+import { useColorScheme } from '../../utils/hooks/use-color-scheme/use-color-scheme'
 
 
 interface I {
@@ -89,7 +89,7 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
 
     const [closeAll, setCloseAll] = useState(false)
     const modalRef = useRef<HTMLDivElement>(null)
-    const [window, windowBackground] = useSchemeVar(['--window', '--window-background-color'])
+    const { isDark } = useColorScheme()
 
     useAccessEsc({
       refs: overLayExit ? [modalRef] : [],
@@ -109,7 +109,7 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      background: hasOverlay ? 'rgba(49, 49, 49, 0.7)' : 'transparent',
+      background: hasOverlay ? 'rgba(50, 50, 50, 0.7)' : 'transparent',
       backdropFilter: hasOverlay ? `blur(${blur}px)` : 'none',
     }
 
@@ -137,13 +137,13 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
       from: {
         opacity: 0,
         scale: 0.92,
-        backgroundColor: window,
+        background: isDark ? 'hsl(0, 0%, 7%)' : 'hsl(0, 0%, 93%)',
         ...contentConfig
       },
       enter: {
         opacity: 1,
         scale: 1,
-        backgroundColor: windowBackground,
+        background: isDark ? 'hsl(0, 0%, 7%)' : 'hsl(0, 0%, 93%)',
         ...contentConfig,
       },
       leave: { opacity: 0, scale: .92 },

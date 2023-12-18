@@ -17,7 +17,7 @@ import {
     PillOptionButton,
     IconScaleButton,
     ExpandButton,
-    DropAnimation,
+    DropDownDiv,
     useAccessEsc,
     ShimmerText,
     BillCatLabel
@@ -184,14 +184,14 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                 >
                     <CalendarIcon size={'1.2em'} />
                 </IconScaleButton>
-                <DropAnimation
+                <DropDownDiv
                     placement='left'
                     visible={showCalendar}
-                    className="dropdown" ref={dropdownRef}
+                    ref={dropdownRef}
                     style={{ borderRadius: 'var(--border-radius25)' }}
                 >
                     <Calendar ref={calendarRef} />
-                </DropAnimation>
+                </DropDownDiv>
             </div>
             <div>
                 <ExpandButton

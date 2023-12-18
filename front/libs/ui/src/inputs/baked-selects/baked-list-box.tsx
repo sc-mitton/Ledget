@@ -4,7 +4,7 @@ import { Listbox } from '@headlessui/react'
 import { Control, useController, UseControllerReturn } from 'react-hook-form'
 
 import './baked-selects.scss'
-import { DropAnimation } from '../../animations/animations'
+import { DropDownDiv } from '../../animations/animations'
 import { InputButton } from '../../buttons/buttons'
 import { ArrowIcon, CheckMark } from '@ledget/media'
 import { DropdownItem } from "../../pieces/containers/containers"
@@ -18,7 +18,7 @@ export interface BakedSelectPropsBase<T> {
   valueKey?: string
   labelPrefix?: string
   subLabelPrefix?: string
-  placement?: ComponentProps<typeof DropAnimation>['placement']
+  placement?: ComponentProps<typeof DropDownDiv>['placement']
   placeholder?: string
   withCheckMarkIndicator?: boolean
   as?: React.ElementType
@@ -163,10 +163,10 @@ export const BakedListBox = <T extends Option | string>(props: BakedSelectProps<
             }}
           </Listbox.Button>
           <div>
-            <DropAnimation
+            <DropDownDiv
+              className='dropdown-div'
               placement={props.placement}
               visible={open}
-              className="dropdown"
               style={{
                 minWidth: `${buttonRef?.current?.offsetWidth}px`,
                 maxWidth: props.buttonMaxWidth ? `${buttonRef?.current?.offsetWidth}px` : 'none',
@@ -229,7 +229,7 @@ export const BakedListBox = <T extends Option | string>(props: BakedSelectProps<
                   <LoadingRingDiv loading={true} />
                 </div>
               }
-            </DropAnimation>
+            </DropDownDiv>
           </div>
         </>
       )}

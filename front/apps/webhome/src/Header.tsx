@@ -14,7 +14,7 @@ import {
     LogoutIcon,
     LedgetLogoIcon
 } from '@ledget/media'
-import { DropAnimation, usePillAnimation, DropdownItem, useSchemeVar } from '@ledget/ui'
+import { DropDownDiv, usePillAnimation, DropdownItem, useSchemeVar } from '@ledget/ui'
 
 
 const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
@@ -131,9 +131,10 @@ const DropDownMenu = ({ isNarrow, setModal }:
                     <Menu.Button className="profile-button">
                         <Profile1 />
                     </Menu.Button>
-                    <DropAnimation
+                    <DropDownDiv
                         placement='right'
-                        className='dropdown profile-dropdown'
+                        arrow='right'
+                        className='profile-dropdown'
                         visible={open}
                         transformOrigin='center'
                     >
@@ -141,10 +142,6 @@ const DropDownMenu = ({ isNarrow, setModal }:
                             <Wrapper onClick={() => navigate("/profile/details")}>
                                 <Profile2 fill={'var(--main-dark4'} />
                                 Profile
-                            </Wrapper>
-                            <Wrapper onClick={() => navigate('/profile/settings')}>
-                                <SettingsIcon fill={'var(--main-dark4'} />
-                                Settings
                             </Wrapper>
                             <Wrapper onClick={() => setModal("help")}>
                                 <HelpIcon fill={'var(--main-dark4'} />
@@ -155,7 +152,7 @@ const DropDownMenu = ({ isNarrow, setModal }:
                                 Log out
                             </Wrapper>
                         </Menu.Items>
-                    </DropAnimation>
+                    </DropDownDiv>
                 </div>
             )}
         </Menu >

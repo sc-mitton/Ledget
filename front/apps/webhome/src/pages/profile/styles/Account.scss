@@ -1,3 +1,25 @@
+#account-page {
+
+    .sections {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5em;
+    }
+
+    .header2 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        &>div:first-child {
+            display: flex;
+            gap: .5em;
+            align-items: baseline;
+        }
+    }
+}
+
 #avatar {
     background-color: var(--icon-light-gray);
     border-radius: 50%;
@@ -37,32 +59,10 @@
         transform: scale(1);
         transition: transform .2s ease-in-out;
     }
-}
 
-#info-container span {
-    opacity: .5;
-}
-
-#account-page .header2 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-
-#account-page .header2>div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#account-page .header2 button span,
-#account-page .header2 button {
-    font-size: .8125rem;
-}
-
-#account-page .indicator {
-    margin-left: .75em;
+    #info-container {
+        opacity: .5;
+    }
 }
 
 #card-info--container {
@@ -70,15 +70,16 @@
     flex-direction: row;
     align-items: center;
     gap: .75em;
+
+    &>div:first-child {
+        display: flex;
+        align-items: center;
+    }
 }
 
-#card-info--container>div:first-child {
-    display: flex;
-    align-items: center;
-}
 
 #change-plan--menu {
-    top: 1.25em;
+    top: .5em;
 }
 
 
@@ -101,17 +102,6 @@
     }
 }
 
-.card-info--container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.card-info--container>div:first-child {
-    margin-right: .75em;
-    display: flex;
-    align-items: center;
-}
 
 @media (max-width: 550) {
     .card-info--container {

@@ -6,7 +6,7 @@ import { useNavigate, createSearchParams, useSearchParams, useLocation } from 'r
 
 import './styles/Window.scss'
 import { Plus, Edit, Ellipsis } from '@ledget/media'
-import { IconButton, DropAnimation, DropdownItem } from '@ledget/ui'
+import { IconButton, DropDownDiv, DropdownItem } from '@ledget/ui'
 import MonthPicker from '@components/inputs/MonthPicker'
 import BudgetSummary from './BudgetSummary'
 import SpendingCategories from './SpendingCategories'
@@ -36,9 +36,11 @@ const DropDown = () => {
                 <>
                     <Menu.Button as={IconButton}><Ellipsis rotate={90} size={'1.25em'} /></Menu.Button>
                     <div style={{ position: 'relative' }}>
-                        <DropAnimation
+                        <DropDownDiv
                             placement='right'
-                            visible={open} className="dropdown arrow-right right2"
+                            arrow='right'
+                            visible={open}
+                            className="right2"
                         >
                             <Menu.Items static>
                                 <Wrapper
@@ -78,7 +80,7 @@ const DropDown = () => {
                                     New bill
                                 </Wrapper>
                             </Menu.Items>
-                        </DropAnimation>
+                        </DropDownDiv>
                     </div>
                 </>
             )}

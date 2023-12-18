@@ -5,7 +5,7 @@ import { useController } from 'react-hook-form';
 import { BakedSelectProps, Option } from './baked-list-box';
 
 import './baked-selects.scss';
-import { DropAnimation } from '../../animations/animations';
+import { DropDownDiv } from '../../animations/animations';
 import { TextInputWrapper } from '../text/text';
 import { ArrowIcon } from '@ledget/media';
 import { DropdownItem } from "../../pieces/containers/containers";
@@ -78,10 +78,9 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string> | BakedSelect
             </Combobox.Button>
           </props.WrapperComponent>
           <div className="provence-options--container">
-            <DropAnimation
+            <DropDownDiv
               placement="left"
               visible={open}
-              className="dropdown"
               style={{
                 minWidth: `${inputRef?.current?.offsetWidth}px`,
                 maxWidth: props.buttonMaxWidth ? `${inputRef?.current?.offsetWidth}px` : 'none',
@@ -125,7 +124,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string> | BakedSelect
                   <LoadingRingDiv loading={true} />
                 </div>
               }
-            </DropAnimation>
+            </DropDownDiv>
           </div>
         </>
       )}

@@ -22,7 +22,7 @@ import { Category, isCategory } from "@features/categorySlice";
 import { Ellipsis, Split, Edit } from '@ledget/media'
 import { SplitTransactionInput } from '@components/split'
 import {
-    DropAnimation,
+    DropDownDiv,
     useAccessEsc,
     IconButton,
     SlideMotionDiv,
@@ -44,9 +44,10 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                         <Ellipsis rotate={90} size={'1.375em'} />
                     </Menu.Button>
                     <div>
-                        <DropAnimation
+                        <DropDownDiv
                             placement='right'
-                            className='dropdown arrow-right right'
+                            arrow='right'
+                            className='right'
                             visible={open}
                         >
                             <Menu.Items static>
@@ -63,7 +64,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                     )}
                                 </Menu.Item>
                             </Menu.Items>
-                        </DropAnimation>
+                        </DropDownDiv>
                     </div>
                 </>
             )}
@@ -145,10 +146,9 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
                         onClick={() => { setShowBillCatSelect(!showBillCatSelect) }}
                         tint={true}
                     />
-                    <DropAnimation
+                    <DropDownDiv
                         placement='left'
                         visible={showBillCatSelect}
-                        className="dropdown"
                         ref={dropdownRef}
                     >
                         <SelectCategoryBill
@@ -158,7 +158,7 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
                             month={dayjs(item.datetime || item.date).month() + 1}
                             year={dayjs(item.datetime || item.date).year()}
                         />
-                    </DropAnimation>
+                    </DropDownDiv>
                 </div>
                 : item.categories?.map((cat) => (
                     <div key={cat.id}>

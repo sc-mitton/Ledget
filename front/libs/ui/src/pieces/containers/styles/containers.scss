@@ -61,22 +61,8 @@
 }
 
 
-
 .dropdown-item {
     overflow: hidden;
-    font-weight: var(--fw-light);
-    display: flex;
-    align-items: center;
-    gap: .875em;
-    width: auto;
-    padding: .25em .75em;
-    transition: background-color 0.3s ease-out;
-    border-radius: var(--border-radius1);
-}
-
-.dropdown-item {
-    overflow: hidden;
-    font-weight: var(--fw-light);
     display: flex;
     align-items: center;
     gap: .875em;

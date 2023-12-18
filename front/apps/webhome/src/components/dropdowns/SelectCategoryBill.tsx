@@ -16,7 +16,7 @@ import './SelectCategoryBill.scss'
 import { Category, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useLazyGetBillsQuery } from '@features/billSlice'
 import { SearchIcon, ArrowIcon } from '@ledget/media'
-import { LoadingRingDiv, DropAnimation, useAccessEsc, BillCatLabel } from '@ledget/ui'
+import { LoadingRingDiv, DropDownDiv, useAccessEsc, BillCatLabel } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 interface IBase {
@@ -260,10 +260,9 @@ export const FullSelectCategoryBill =
                     {children}
                 </SelectorComponent>
                 <div>
-                    <DropAnimation
+                    <DropDownDiv
                         placement='left'
                         visible={showBillCatSelect}
-                        className="dropdown"
                         ref={dropdownRef}
                     >
                         <SelectCategoryBillBody
@@ -272,7 +271,7 @@ export const FullSelectCategoryBill =
                             onChange={onChange}
                             name={name.current}
                         />
-                    </DropAnimation>
+                    </DropDownDiv>
                 </div>
             </div>
         )

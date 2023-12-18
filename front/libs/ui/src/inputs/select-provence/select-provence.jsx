@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { DropAnimation } from '../../animations/animations'
+import './select-provence.scss'
+import { DropDownDiv } from '../../animations/animations'
 import { Combobox } from '@headlessui/react'
 import { states as provences } from './provences-data'
 import { TextInputWrapper } from "../text/text";
@@ -55,10 +56,10 @@ export const SelectProvence = ({ field, errors }) => {
             {errors[field.name] && <FormErrorTip errors={{ type: 'required' }} />}
           </TextInputWrapper>
           <div className="provence-options--container">
-            <DropAnimation
+            <DropDownDiv
+              className="provence-options"
               placement="left"
               visible={open}
-              className="provence-options"
               style={{ minWidth: `${inputRef.current?.offsetWidth}px` }}
             >
               <Combobox.Options static>
@@ -72,7 +73,7 @@ export const SelectProvence = ({ field, errors }) => {
                   </Combobox.Option>
                 ))}
               </Combobox.Options>
-            </DropAnimation>
+            </DropDownDiv>
           </div>
         </>
       )}

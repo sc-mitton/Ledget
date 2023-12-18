@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-import { DropAnimation } from '@ledget/ui'
+import { DropDownDiv } from '@ledget/ui'
 import { useClickClose } from '../../utils/hooks'
 import './abs-pos-menu.css'
 
@@ -48,15 +48,15 @@ export const AbsPosMenu = ({ pos, show, setShow, topArrow = true, children }:
         left: pos ? pos.x + 8 : 0,
       }}
     >
-      <DropAnimation
+      <DropDownDiv
         placement={'middle'}
         visible={show}
-        className={`dropdown options-dropdown ${topArrow ? 'top-arrow' : ''}`}
+        className={`options-dropdown ${topArrow ? 'top-arrow' : ''}`}
         style={{ zIndex: 10 }}
         ref={menuRef}
       >
         {children}
-      </DropAnimation>
+      </DropDownDiv>
     </div>
   )
 }

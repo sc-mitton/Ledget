@@ -78,9 +78,13 @@ header {
     flex-direction: column;
     display: flex;
     text-align: left;
-    top: 2.5em;
-    margin-left: 1.25em;
+    top: 2.75em;
+    margin-left: .75em;
     @include dropdown-arrow;
+
+    button {
+        width: 100%;
+    }
 }
 
 /* ------------------------------- Nav ------------------------------- */

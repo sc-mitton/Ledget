@@ -233,6 +233,7 @@ $wafer-container-padding: .75rem;
         .wafer-meta--container {
             opacity: .8;
             font-size: .8rem;
+            font-weight: var(--fw-light);
             display: flex;
             gap: .25em;
             align-items: center;
@@ -247,7 +248,7 @@ $wafer-container-padding: .75rem;
             div * {
                 font-size: 1rem;
                 letter-spacing: .0625em;
-                font-weight: var(--fw-regular);
+                font-weight: var(--fw-light);
             }
         }
     }

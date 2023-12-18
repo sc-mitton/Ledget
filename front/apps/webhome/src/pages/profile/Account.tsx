@@ -17,9 +17,11 @@ import {
     BlueSlimButton,
     BlueSlimArrowButton,
     ShimmerDiv,
-    DropAnimation,
+    DropDownDiv,
     IconButton,
-    DropdownItem
+    DropdownItem,
+    BakedSwitch,
+    useColorScheme
 } from '@ledget/ui'
 import { Edit } from '@ledget/media'
 import { UpdatePersonalInfo } from '@modals/index'
@@ -130,13 +132,13 @@ const ChangePlanMenu = () => {
                         </BlueSlimArrowButton>
                     </Menu.Button>
                     <div style={{ position: 'relative' }}>
-                        <DropAnimation
+                        <DropDownDiv
                             visible={open}
-                            className="dropdown" id="change-plan--menu"
+                            id="change-plan--menu"
                             placement='right'
                         >
                             <Items />
-                        </DropAnimation>
+                        </DropDownDiv>
                     </div>
                 </>
             )}
@@ -160,55 +162,53 @@ const Plan = () => {
     })
 
     return (
-        <div className="section">
-            <div>
-                <div className="header2">
-                    <div>
-                        <h3>Plan</h3>
-                        <span
-                            className="indicator"
-                            style={{ color: subscription ? getStatusColor(subscription) : '' }}
-                        >
-                            {subscription ? getStatus(subscription) : ''}
-                        </span>
-                    </div>
-                    <div>
-                        <ChangePlanMenu />
-                    </div>
+        <section className="section">
+            <div className="header2">
+                <div>
+                    <h3>Plan</h3>
+                    <span
+                        className="indicator"
+                        style={{ color: subscription ? getStatusColor(subscription) : '' }}
+                    >
+                        {subscription ? getStatus(subscription) : ''}
+                    </span>
                 </div>
-                <div className="inner-window">
-                    <div id="invoice-details--container">
-                        <div>Renews</div>
-                        {subscription &&
-                            <>
-                                <span>{`${subscription.plan.interval}ly`}</span>
-                                <div>
-                                    {subscription.cancel_at_period_end ? 'Ending on' : 'Next charge'}
-                                </div>
-                                <div>
-                                    {subscription.cancel_at_period_end
-                                        ? nextDate
-                                        : `$${subscription.plan.amount / 100} on ${nextDate}`}
-                                </div>
-                            </>
-                        }
-                        {(nextInvoice && nextInvoice.balance > 0) &&
-                            <>
-                                <div>{nextInvoice.balance > 0 && 'Account Credit'}</div>
-                                <div>{nextInvoice.balance > 0 && `$${nextInvoice.balance / -100}`}</div>
-                            </>}
-                        <div>Member since</div>
-                        <div>
-                            {new Date(user?.created_on || new Date()).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric'
-                            })}
-                        </div>
+                <div>
+                    <ChangePlanMenu />
+                </div>
+            </div>
+            <div className="inner-window">
+                <div id="invoice-details--container">
+                    <div>Renews</div>
+                    {subscription &&
+                        <>
+                            <div>{`${subscription.plan.interval}ly`}</div>
+                            <div>
+                                {subscription.cancel_at_period_end ? 'Ending on' : 'Next charge'}
+                            </div>
+                            <div>
+                                {subscription.cancel_at_period_end
+                                    ? nextDate
+                                    : `$${subscription.plan.amount / 100} on ${nextDate}`}
+                            </div>
+                        </>
+                    }
+                    {(nextInvoice && nextInvoice.balance > 0) &&
+                        <>
+                            <div>{nextInvoice.balance > 0 && 'Account Credit'}</div>
+                            <div>{nextInvoice.balance > 0 && `$${nextInvoice.balance / -100}`}</div>
+                        </>}
+                    <div>Member since</div>
+                    <div>
+                        {new Date(user?.created_on || new Date()).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                        })}
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 
@@ -223,7 +223,7 @@ const PaymentMethod = () => {
         : new Date()
 
     return (
-        <div className="section">
+        <section className="section">
             <div className="header2">
                 <div>
                     <h3>Payment Method</h3>
@@ -249,7 +249,30 @@ const PaymentMethod = () => {
                 </div>
                 <div>{`Exp. ${expDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}`}</div>
             </div>
-        </div>
+        </section>
+    )
+}
+
+const Settings = () => {
+    const { isDark, setDarkMode } = useColorScheme()
+
+    return (
+        <section className="section">
+            <h3 className='header2'>Settings</h3>
+            <div className="settings-list">
+                <section className='inner-window'>
+                    <ul>
+                        <BakedSwitch
+                            as='li'
+                            checked={isDark}
+                            onChange={() => setDarkMode(!isDark)}
+                        >
+                            <span>{isDark ? 'Dark' : 'Light'} mode</span>
+                        </BakedSwitch>
+                    </ul>
+                </section>
+            </div>
+        </section>
     )
 }
 
@@ -273,18 +296,19 @@ const Account = () => {
                     <div id="avatar">
                         {user && `${user.name.first.charAt(0).toUpperCase()} ${user.name.last.charAt(0).toUpperCase()}`}
                     </div>
-                    <Info>
-                        <IconButton
-                            id='edit-personal-info--button'
-                            onClick={() => setEditPersonalInfoModal(true)}
-                            aria-label="Edit personal info"
-                        >
-                            <Edit size={'1rem'} />
-                        </IconButton>
-                    </Info>
-                    <div>
+                    <div className="sections">
+                        <Info>
+                            <IconButton
+                                id='edit-personal-info--button'
+                                onClick={() => setEditPersonalInfoModal(true)}
+                                aria-label="Edit personal info"
+                            >
+                                <Edit size={'1rem'} />
+                            </IconButton>
+                        </Info>
                         <Plan />
                         <PaymentMethod />
+                        <Settings />
                     </div>
                 </div>
             </ShimmerDiv>

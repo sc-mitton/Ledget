@@ -9,7 +9,7 @@ import { useGetMeQuery } from '@features/userSlice'
 import { useEffect } from 'react'
 
 const NavList = () => {
-    const tabs = ['settings', 'connections', 'security']
+    const tabs = ['connections', 'security']
     const rootPath = useLocation().pathname.split("/")[2]
     const navigate = useNavigate()
 

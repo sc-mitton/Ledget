@@ -6,7 +6,6 @@ import './styles/window.scss'
 import Gutter from './Gutter'
 import AccountPage from './Account'
 import ConnectionsPage from './Connections'
-import SettingsPage from './Settings'
 import { SecurityPage } from './SecurityPage'
 import {
     UpdatePayment,
@@ -51,7 +50,6 @@ function Profile() {
                             <Route path="cancel-subscription" element={<CancelSubscription />} />
                             <Route path="change-bill-cycle" element={<ChangeBillCycle />} />
                         </Route>
-                        <Route path="settings" element={<SettingsPage />} />
                         <Route path="connections" element={<ConnectionsPage />} />
                         <Route path="security" element={<SecurityPage />} >
                             <Route path="delete-authenticator" element={<DeactivateAuthentictor />} />

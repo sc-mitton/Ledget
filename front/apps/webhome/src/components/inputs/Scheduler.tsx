@@ -8,7 +8,7 @@ import Radios from './Radios'
 import type { Bill } from '@features/billSlice'
 import { useClickClose } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
-import { SlimmestInputButton, FormErrorTip, DropAnimation, getDaySuffix } from '@ledget/ui'
+import { SlimmestInputButton, FormErrorTip, DropDownDiv, getDaySuffix } from '@ledget/ui'
 
 interface Context extends Pick<Bill, 'day' | 'week' | 'month'> {
     open: boolean,
@@ -559,10 +559,9 @@ const DayWeekPicker = () => {
 
     return (
         <>
-            <DropAnimation
+            <DropDownDiv
                 placement='left'
                 visible={open}
-                className="dropdown"
                 id="schedule-dropdown"
             >
                 <div
@@ -578,7 +577,7 @@ const DayWeekPicker = () => {
                     {mode === 'day' && <DayPicker />}
                     {mode === 'week' && <WeekPicker />}
                 </div>
-            </DropAnimation>
+            </DropDownDiv>
         </>
     )
 }
@@ -717,10 +716,9 @@ const MonthDayPicker = () => {
 
     return (
         <>
-            <DropAnimation
+            <DropDownDiv
                 placement='left'
                 visible={open}
-                className="dropdown"
                 id="schedule-dropdown"
                 style={{ marginTop: '.5em' }}
             >
@@ -738,7 +736,7 @@ const MonthDayPicker = () => {
                     <hr style={{ opacity: '.7', margin: '.5em 0', width: '100%' }} />
                     <DayPicker />
                 </div>
-            </DropAnimation>
+            </DropDownDiv>
         </>
     )
 }

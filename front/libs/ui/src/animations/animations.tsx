@@ -1,13 +1,28 @@
 import React, { ReactNode, FC, forwardRef, useEffect, useState, useId } from 'react'
 
+import './styles/animations.scss'
 import { useTransition, animated, useSpring } from '@react-spring/web'
 import { motion, HTMLMotionProps } from 'framer-motion'
 
+interface IDropDownDiv {
+  visible: boolean
+  placement?: 'middle' | 'left' | 'right'
+  transformOrigin?: 'center' | 'left' | 'right'
+  arrow?: 'right'
+}
 
+export const DropDownDiv = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & IDropDownDiv>((props, ref) => {
 
-export const DropAnimation = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> &
-{ visible: boolean, placement?: 'middle' | 'left' | 'right', transformOrigin?: 'center' | 'left' | 'right' }>((props, ref) => {
-  const { visible, children, placement = 'middle', transformOrigin, style = {}, ...rest } = props
+  const {
+    visible,
+    children,
+    placement = 'middle',
+    transformOrigin,
+    style = {},
+    className,
+    arrow,
+    ...rest
+  } = props
 
   const transitions = useTransition(visible, {
     from: {
@@ -39,7 +54,7 @@ export const DropAnimation = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivE
 
   return transitions((styles, item) =>
     item && (
-      <animated.div style={styles} {...rest} ref={ref}>
+      <animated.div className={`dropdown arrow-${arrow ? arrow : ''} ${className}`} style={styles} {...rest} ref={ref}>
         {children}
       </animated.div>
     )

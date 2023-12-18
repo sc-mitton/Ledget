@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import Picker from '@emoji-mart/react'
 
 import './styles/EmojiPicker.css'
-import { IconScaleButton, DropAnimation } from '@ledget/ui'
+import { IconScaleButton, DropDownDiv } from '@ledget/ui'
 
 export type emoji = string | { native: string, [key: string]: any }
 
@@ -88,7 +88,7 @@ const EmojiPicker = () => {
     }
 
     return (
-        <DropAnimation visible={picker}>
+        <DropDownDiv visible={picker}>
             <div id="em-picker-container" >
                 <Picker
                     autoFocus
@@ -106,7 +106,7 @@ const EmojiPicker = () => {
                     categoryIcons={categoryIcons}
                 />
             </div>
-        </DropAnimation>
+        </DropDownDiv>
     )
 }
 

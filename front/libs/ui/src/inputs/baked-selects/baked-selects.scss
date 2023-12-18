@@ -12,6 +12,11 @@
         margin: 0 auto;
     }
 
+    .dropdown-div {
+        overflow: hidden;
+        max-height: 20em;
+    }
+
     .baked-dropdown-item {
         display: flex;
         flex-direction: column;

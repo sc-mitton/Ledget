@@ -40,7 +40,7 @@ import {
     nivoResponsiveLineBaseProps,
     nivoResponsiveLineTheme,
     ChartTip,
-    DropAnimation,
+    DropDownDiv,
     LoadingRing,
     ShimmerDiv,
     IconButton,
@@ -573,10 +573,11 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                         <Ellipsis rotate={90} />
                     </Menu.Button>
                     <div style={{ position: 'absolute', right: '0' }}>
-                        <DropAnimation
+                        <DropDownDiv
                             placement='right'
+                            arrow='right'
                             visible={open}
-                            className='dropdown arrow-right right'
+                            className='right'
                         >
                             <Menu.Items static>
                                 <Menu.Item as={Fragment}>
@@ -595,7 +596,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                     )}
                                 </Menu.Item>
                             </Menu.Items>
-                        </DropAnimation>
+                        </DropDownDiv>
                     </div>
                 </div>
             )

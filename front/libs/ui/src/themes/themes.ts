@@ -67,9 +67,10 @@ export const nivoResponsiveLineTheme: Theme = {
 export const ledgetAntTheme: ThemeConfig = {
     token: {
         colorPrimary: '#5c6087',
-        boxShadowSecondary: 'var(--mid-elevation-drop-shadow)',
+        boxShadow: 'var(--antd-drop-shadow)',
         borderRadius: 8,
-        colorBgContainer: '#e8e8e8',
+        colorBgContainer: 'var(--input-background)',
+        colorBorder: 'var(--input-border-color)',
         colorTextPlaceholder: '#a6a6a6',
     },
 }
