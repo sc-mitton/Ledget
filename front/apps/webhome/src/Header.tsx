@@ -129,7 +129,7 @@ const DropDownMenu = ({ isNarrow, setModal }:
             {({ open }) => (
                 <div style={{ position: 'relative' }}>
                     <Menu.Button className="profile-button">
-                        <Profile1 fill={'var(--m-invert-text'} />
+                        <Profile1 />
                     </Menu.Button>
                     <DropAnimation
                         placement='right'

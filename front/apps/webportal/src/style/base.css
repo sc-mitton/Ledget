@@ -45,6 +45,7 @@ select,
 option {
     font-family: "Source Sans 3";
     font-size: 1rem;
+    letter-spacing: var(--leter-spacing);
     font-weight: var(--fw-regular);
     color: var(--m-text);
 }

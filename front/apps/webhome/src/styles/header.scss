@@ -112,7 +112,7 @@ header {
 }
 
 .nav-item a {
-    color: var(--m-invert-text);
+    color: var(--white);
 }
 
 .nav-item a,
@@ -121,7 +121,6 @@ header {
     width: 100%;
     height: 100%;
     padding: .125em .75em;
-    font-weight: var(--fw-light);
 }
 
 .nav-item {
@@ -136,6 +135,7 @@ header {
 
 .current-nav-item * {
     color: var(--header-background);
+    font-weight: var(--fw-bold);
 }
 
 @media (max-width: 1079px) {

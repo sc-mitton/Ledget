@@ -172,12 +172,12 @@ $number-of-bill-rows: 4;
 
         &.hoverable:hover::after,
         &.hoverable.selected::after {
-            background-color: rgb(0, 0, 0, .05);
+            background-color: rgba(var(--main-color-values), .2);
             transition: background-color .2s ease-in-out;
         }
 
         &.hoverable.selected:hover::after {
-            background-color: rgb(0, 0, 0, .1);
+            background-color: rgba(var(--main-color-values), .3);
             transition: background-color .2s ease-in-out;
         }
 

@@ -24,6 +24,7 @@
 
     /* Text */
     --m-text: var(--main-dark5);
+    --white: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 100%));
 
     /* Drop Shadows & Borders */
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 2px 16px;
@@ -113,6 +114,7 @@
         --fw-light: 300;
         --fw-regular: 300;
         --fw-bold: 400;
+        --letter-spacing: .4px;
 
         // Icons & Buttons
         --icon-full: var(--main-dark5);
@@ -209,9 +211,10 @@
         --input-placeholder-focus: hsl(var(--main-color-h), calc(var(--main-color-s) - 10%), var(--main-color-l));
 
         /* Font Weights */
-        --fw-light: 300;
+        --fw-light: 400;
         --fw-regular: 400;
         --fw-bold: 500;
+        --letter-spacing: .2px;
 
         // Icons & Buttons
         --icon-full: var(--main-dark5);
