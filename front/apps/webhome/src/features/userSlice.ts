@@ -143,6 +143,13 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
             }),
             invalidatesTags: ['user'],
         }),
+        emailUser: builder.mutation<any, { issue: string, detail: string }>({
+            query: (data) => ({
+                url: 'user/email',
+                method: 'POST',
+                body: data,
+            }),
+        }),
         updateSubscription: builder.mutation<any, UpdateSubscription>({
             query: ({ subId, cancelAtPeriodEnd, cancelationReason, feedback }) => ({
                 url: `subscription/${subId}`,
@@ -177,5 +184,6 @@ export const {
     useUpdateDefaultPaymentMethodMutation,
     useUpdateSubscriptionMutation,
     useGetPricesQuery,
-    useUpdateSubscriptionItemsMutation
+    useUpdateSubscriptionItemsMutation,
+    useEmailUserMutation,
 } = extendedApiSlice

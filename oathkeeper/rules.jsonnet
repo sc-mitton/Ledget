@@ -87,6 +87,14 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
+    id: 'email_user',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/user/email',
+    },
+  },
+  GenericAuthedBase
+  {
     id: 'plaid_link_token',
     match: {
       methods: ['GET'],

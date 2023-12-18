@@ -468,10 +468,11 @@ button {
 }
 
 .btn-input-full {
-    padding: var(--input-padding);
+    padding: .625em 1em;
     margin: .375em 0;
     border-radius: var(--border-radius2);
     width: 100%;
+    overflow: visible;
 }
 
 .btn-less-full {

@@ -1,15 +1,16 @@
 from django.urls import path, include
 from core.views import service as service_views
-from core.views.user import UserView
+from core.views.user import UserView, EmailView
 from core.views.device import (
      OtpView,
      DeviceView,
-     DestroyDeviceView
+     DestroyDeviceView,
 )
 
 
 urlpatterns = [
      path('user/me', UserView.as_view(), name='user_me'),
+     path('user/email', EmailView.as_view(), name='user_email'),
 
      path('device/<str:id>', DestroyDeviceView.as_view(), name='device'),
      path('devices', DeviceView.as_view(), name='devices'),

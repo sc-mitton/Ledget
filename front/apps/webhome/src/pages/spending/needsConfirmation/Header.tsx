@@ -19,7 +19,7 @@ const CheckAllButton: FC<ButtonHTMLAttributes<HTMLButtonElement>> = (props) => (
     <Tooltip
         msg={"Confirm all"}
         ariaLabel={"Confirm all items"}
-        style={{ left: '-1.3rem' }}
+        style={{ left: '-1.1rem' }}
     >
         <IconButton id="check-all-icon" aria-label="Check all" {...props}>
             <CheckAll fill={'currentColor'} />

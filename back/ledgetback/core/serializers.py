@@ -234,3 +234,8 @@ class OtpSerializer(serializers.Serializer):
             kwargs['required'] = field_name == 'code'
 
         return kwargs
+
+
+class EmailSerializer(serializers.Serializer):
+    text = serializers.CharField(required=False)
+    detail = serializers.CharField(required=False)

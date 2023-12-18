@@ -87,7 +87,7 @@
         --gray-hlight: hsl(0, 0%, 10%);
 
         // Windows
-        --window: #121212;
+        --window: hsl(0, 0%, 7%);
         --window-rgb: 5, 5, 5;
         --window2: #121212;
         --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 70%);
@@ -122,8 +122,8 @@
         --icon-hover-light-gray: hsl(0, 0%, 25%);
         --icon-hover-gray: hsl(0, 0%, 50%);
 
-        --btn-gray: hsl(0, 0%, 8%);
-        --btn-gray-hover: hsl(0, 0%, 12%);
+        --btn-gray: hsl(0, 0%, 12%);
+        --btn-gray-hover: hsl(0, 0%, 17%);
         --btn-mid-gray: hsl(0, 0%, 48%);
         --btn-mid-gray-hover: hsl(0, 0%, 90%);
 

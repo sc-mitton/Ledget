@@ -131,7 +131,7 @@ const EmojiButton = ({ ...rest }) => {
             aria-expanded={picker}
             aria-controls="emoji-picker-ledget--container"
             tabIndex={0}
-            style={{ color: !emoji && "rgb(0, 0, 0, .4)" } as React.CSSProperties}
+            style={{ color: !emoji && "var(--input-placeholder)" } as React.CSSProperties}
             {...rest}
         >
             {emoji

@@ -61,13 +61,23 @@ span {
     color: var(--m-text);
 }
 
-p,
-textarea {
+p {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-weight: var(--fw-light);
     font-size: .875rem;
     color: var(--m-text);
     opacity: .8
+}
+
+textarea {
+    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    font-weight: var(--fw-regular);
+    color: var(--m-text);
+    opacity: .8
+}
+
+textarea::placeholder {
+    color: var(--input-placeholder);
 }
 
 h1,

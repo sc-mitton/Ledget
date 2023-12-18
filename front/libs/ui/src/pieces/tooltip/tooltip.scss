@@ -13,7 +13,7 @@
     visibility: hidden;
     z-index: 1100;
     margin-bottom: .5em;
-    background-color: var(--btn-hover-gray);
+    background-color: var(--m-text);
     color: var(--m-invert-text);
     padding: .125em .375em;
     border-radius: var(--border-radius1);
@@ -54,7 +54,7 @@
     margin-left: -.3125em;
     border-width: .3125em;
     border-style: solid;
-    border-color: var(--btn-hover-gray) transparent transparent transparent;
+    border-color: var(--m-text) transparent transparent transparent;
 }
 
 .tooltiptext.left::after {
@@ -65,7 +65,7 @@
     margin-top: -.25em;
     border-width: .25em;
     border-style: solid;
-    border-color: transparent transparent transparent var(--btn-hover-gray);
+    border-color: transparent transparent transparent var(--m-text);
 }
 
 .tooltiptext.right::after {
@@ -76,5 +76,5 @@
     margin-top: -.25em;
     border-width: .25em;
     border-style: solid;
-    border-color: transparent var(--btn-hover-gray) transparent transparent;
+    border-color: transparent var(--m-text) transparent transparent;
 }

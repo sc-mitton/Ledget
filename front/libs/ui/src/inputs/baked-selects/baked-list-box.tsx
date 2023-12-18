@@ -1,7 +1,7 @@
-import { useRef, useEffect, useState, useId, ComponentProps, forwardRef } from 'react'
+import { useRef, useEffect, useState, useId, ComponentProps } from 'react'
 
 import { Listbox } from '@headlessui/react'
-import { Control, useController, UseControllerReturn } from 'react-hook-form'
+import { Control, useController, UseControllerReturn, FieldError } from 'react-hook-form'
 
 import './baked-selects.scss'
 import { DropDownDiv } from '../../animations/animations'
@@ -9,6 +9,7 @@ import { InputButton } from '../../buttons/buttons'
 import { ArrowIcon, CheckMark } from '@ledget/media'
 import { DropdownItem } from "../../pieces/containers/containers"
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators'
+import { FormErrorTip } from '../../pieces/form-errors/form-errors'
 
 export interface BakedSelectPropsBase<T> {
   name?: string
@@ -22,6 +23,7 @@ export interface BakedSelectPropsBase<T> {
   placeholder?: string
   withCheckMarkIndicator?: boolean
   as?: React.ElementType
+  error?: FieldError
   style?: React.CSSProperties
   control?: Control<any>
   maxLength?: number
@@ -148,17 +150,20 @@ export const BakedListBox = <T extends Option | string>(props: BakedSelectProps<
                 : props.placeholder || 'Select'
 
               return (
-                <div className={`${(isActive
-                  ? props.showLabel ? 'active' : 'semi-active'
-                  : ''
-                )} baked-listbox--button`}>
-                  <span>{`${props.labelPrefix + ' '}${label}`}</span>
-                  {val
-                    ? props.withCheckMarkIndicator
-                      ? <CheckMark size={'.8em'} stroke={'currentColor'} />
-                      : <ArrowIcon size={'.8em'} stroke={'currentColor'} />
-                    : <ArrowIcon size={'.8em'} stroke={'currentColor'} />}
-                </div>
+                <>
+                  <div className={`${(isActive
+                    ? props.showLabel ? 'active' : 'semi-active'
+                    : ''
+                  )} baked-listbox--button`}>
+                    <span>{`${props.labelPrefix + ' '}${label}`}</span>
+                    {val
+                      ? props.withCheckMarkIndicator
+                        ? <CheckMark size={'.8em'} stroke={'currentColor'} />
+                        : <ArrowIcon size={'.8em'} stroke={'currentColor'} />
+                      : <ArrowIcon size={'.8em'} stroke={'currentColor'} />}
+                  </div>
+                  <FormErrorTip error={props.error} />
+                </>
               )
             }}
           </Listbox.Button>
