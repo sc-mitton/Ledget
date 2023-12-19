@@ -57,8 +57,6 @@ export { default as SmsAuthIcon } from './icons/SmsAuth';
 export { default as RelinkIcon } from './icons/Relink';
 export { default as ComputerIcon } from './icons/Computer';
 export { default as PhoneIcon } from './icons/Phone';
-export { default as AuthenticatorImage } from './images/Authenticator';
-export { default as RecoveryCodeImage } from './images/RecoveryCode';
 export { default as CornerGrip } from './icons/CornerGrip';
 export { default as ThumbUp } from './icons/ThumbUp';
 export { default as SearchIcon } from './icons/SearchIcon';
@@ -67,9 +65,12 @@ export { default as LedgetLogo } from './brand/Logo'
 export { default as LedgetLogoIcon } from './brand/LogoIcon'
 export { default as LogoIcon2 } from './brand/LogoIcon2'
 export { default as TrashIcon } from './icons/Trash';
+export { default as Hamburger } from './icons/Hamburger';
 
 export { default as EmptyListImage } from './images/EmptyList';
 export { default as EmptyListDark } from './images/EmptyListDark';
 export { default as DesertImage } from './images/Desert';
 export { default as ForgotPassword } from './images/ForgotPassword'
 export { default as StripeLogo } from './images/StripeLogo'
+export { default as AuthenticatorImage } from './images/Authenticator';
+export { default as RecoveryCodeImage } from './images/RecoveryCode';

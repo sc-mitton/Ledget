@@ -4,7 +4,7 @@ import { useSchemeVar, useColorScheme } from '@ledget/ui'
 
 interface Props {
   ref: React.RefObject<HTMLElement>
-  find: (element: HTMLElement) => boolean
+  find: (element: HTMLElement, index?: number) => boolean
   querySelectall: string
   update: any[]
   refresh?: any[]
@@ -50,8 +50,12 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
   })
 
   useEffect(() => {
+    console.log(selectorHeight, selectorWidth, selectorLeft, selectorTop)
+  }, [selectorHeight, selectorWidth, selectorLeft, selectorTop])
+
+  useEffect(() => {
     if (selectors.length > 0) {
-      const element = selectors.find(find)
+      const element = selectors?.[0]
       if (element) {
         setSelectorHeight(element.offsetHeight)
         setSelectorWidth(element.offsetWidth)
