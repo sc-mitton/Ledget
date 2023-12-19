@@ -1,3 +1,5 @@
+import { createContext, useContext, ReactNode, useEffect, useState } from 'react'
+
 import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
@@ -16,17 +18,45 @@ import {
     AuthenticatorSetup,
     RecoveryCodes,
     SmsSetup
-} from '@modals'
+} from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@ledget/ui'
+import { useScreenContext } from '@context/context'
+
+const GutterContext = createContext<[
+    boolean,
+    React.Dispatch<React.SetStateAction<boolean>>
+] | undefined>(undefined)
+
+export const useGutterContext = () => {
+    const context = useContext(GutterContext)
+    if (context === undefined) {
+        throw new Error('useGutterContext must be used within a GutterProvider')
+    }
+    return context
+}
+
+const GutterProvider = ({ children }: { children: ReactNode }) => {
+    const [open, setOpen] = useState(false)
+
+    return (
+        <GutterContext.Provider value={[open, setOpen]}>
+            {children}
+        </GutterContext.Provider>
+    )
+}
 
 function Profile() {
     const { isLoading: userLoading } = useGetMeQuery()
     const location = useLocation()
+    const [open] = useGutterContext()
+    const { screenSize } = useScreenContext()
 
     return (
         <ShimmerDiv
-            className="window"
+            className={`window
+                ${open ? 'with-open-gutter' : ''}
+                ${screenSize === 'small' ? 'small-screen' : ''}`}
             id="profile-window"
             shimmering={userLoading}
         >
@@ -37,11 +67,9 @@ function Profile() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     key={location.pathname.split('/')[2]}
-                    config={{ duration: 0.15 }}
                     className="content"
                 >
                     <Routes
-                        path="profile"
                         location={location}
                         key={location.pathname.split('/')[2]}
                     >
@@ -65,4 +93,10 @@ function Profile() {
     )
 }
 
-export default Profile
+export default function () {
+    return (
+        <GutterProvider>
+            <Profile />
+        </GutterProvider>
+    )
+}

@@ -1,15 +1,23 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
-import { animated } from '@react-spring/web'
+import { animated, useSpring } from '@react-spring/web'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Tooltip, usePillAnimation, useSchemeVar } from '@ledget/ui'
-import { Profile1, Shield, Settings, Link } from '@ledget/media'
+import {
+    Tooltip,
+    usePillAnimation,
+    useSchemeVar,
+    IconButton,
+    useAccessEsc
+} from '@ledget/ui'
+import { Profile1, Shield, Settings, Link, Hamburger } from '@ledget/media'
 import { useGetMeQuery } from '@features/userSlice'
-import { useEffect } from 'react'
+import { useScreenContext } from '@context/context'
+import { useGutterContext } from './Window'
+
+const tabs = ['details', 'connections', 'security']
 
 const NavList = () => {
-    const tabs = ['connections', 'security']
     const rootPath = useLocation().pathname.split("/")[2]
     const navigate = useNavigate()
 
@@ -27,16 +35,15 @@ const NavList = () => {
     }
 
     return (
-        tabs.map((route) => (
+        tabs.slice(1, 3).map((route) => (
             <li
+                role="menuitem"
+                data-current={location.pathname === "/profile/details" ? "page" : ''}
                 key={route}
-                role="link"
                 id={route}
-                tabIndex={0}
                 onClick={() => navigate(route)}
                 onKeyDown={(e) => { e.key === "Enter" && navigate(route) }}
                 className={`slim side-nav-item${rootPath === route ? "-current" : ''}`}
-                data-current={rootPath === route ? "page" : null}
             >
                 <Tooltip
                     msg={route.charAt(0).toUpperCase() + route.slice(1)}
@@ -60,23 +67,18 @@ const Profile = () => {
 
     return (
         <li
-            key="Account"
-            role="link"
-            tabIndex={0}
+            role="menuitem"
+            data-current={location.pathname === "/profile/details" ? "page" : ''}
             onClick={() => navigate("/profile/details")}
             onKeyDown={(e) => e.key === "Enter" && navigate("/profile/details")}
             className={`side-nav-item${location.pathname === "/profile/details" ? "-current" : ''}`}
             id="profile"
-            data-current={location.pathname === "/profile/details" ? "page" : null}
         >
             <Tooltip
                 msg={"Profile"}
                 ariaLabel={"Profile"}
                 type="right"
-                style={{
-                    bottom: '10%',
-                    left: '120%'
-                }}
+                style={{ bottom: '10%', left: '120%' }}
             >
                 <Profile1 width="1.6em" height="1.6em" fill={'currentColor'} />
             </Tooltip>
@@ -90,17 +92,21 @@ const Profile = () => {
 }
 
 const Gutter = () => {
-    const ref = useRef(null)
+    const ulRef = useRef<HTMLUListElement>(null)
+    const buttonRef = useRef<HTMLButtonElement>(null)
+
     const location = useLocation()
-    const [gutterWidth, setGutterWidth] = useState(0)
     const backgroundColor = useSchemeVar('--main-hlight')
+    const [open, setOpen] = useGutterContext()
+    const [updatePill, setUpdatePill] = useState(false)
+    const { screenSize } = useScreenContext()
 
     const { props } = usePillAnimation({
-        ref: ref,
-        update: [location.pathname, gutterWidth],
+        ref: ulRef,
+        update: [location.pathname, open, updatePill],
         refresh: [],
-        querySelectall: '[role=link]',
-        find: (el) => el.getAttribute('data-current') === 'page',
+        querySelectall: '[role=menuitem]',
+        find: (el, index) => index === tabs.indexOf(location.pathname.split("/")[2]),
         styles: {
             backgroundColor: backgroundColor,
             borderRadius: location.pathname === '/profile/details'
@@ -109,34 +115,82 @@ const Gutter = () => {
         }
     })
 
-    // Resize observer to update gutter width
-    useEffect(() => {
-        const observer = new ResizeObserver(entries => {
-            for (const entry of entries) {
-                const newWidth = entry.contentRect.width
-                setGutterWidth(newWidth)
+    const navProps = useSpring({
+        flex: open ? 1 : 0,
+        ...(screenSize === 'small'
+            ? {
+                left: 0,
+                right: open ? '50%' : '0%',
+                bottom: 0,
+                top: 0
             }
-        })
+            : {}
+        ),
 
-        if (ref.current) {
-            observer.observe(ref.current)
-        }
+        maxWidth: open ? '15.75rem' : '0em',
+        paddingLeft: open ? '0.5em' : '0em',
+        paddingRight: open ? '0.5em' : '0em',
+        paddingTop: open ? '0.75em' : '0em',
+        paddingBottom: open ? '0.75em' : '0em',
+        marginTop: open
+            ? screenSize !== 'small' ? '1em' : '0em'
+            : '0em',
+        marginBottom: open
+            ? screenSize !== 'small' ? '1em' : '0em'
+            : '0em',
+        config: { duration: 200 },
+        delay: open ? 0 : 200,
+        onRest: () => setUpdatePill(!updatePill)
+    })
 
-        return () => {
-            observer.disconnect()
+    useAccessEsc({
+        refs: [buttonRef, ulRef],
+        visible: open,
+        setVisible: () => {
+            if (screenSize === 'small') {
+                setOpen(false)
+            }
         }
-    }, [])
+    })
+
+    // Close gutter on screen resize to small
+    useEffect(() => {
+        if (screenSize === 'small') {
+            setOpen(false)
+        } else {
+            setOpen(true)
+        }
+    }, [screenSize])
+
+    // On page navigation, if in small screen, close gutter
+    useEffect(() => {
+        if (screenSize === 'small') {
+            setOpen(false)
+        }
+    }, [location.pathname])
 
     return (
-        <div id="gutter" >
-            <nav>
-                <ul role="navigation" ref={ref}>
+        <>
+            <div id='hamburger'>
+                <IconButton
+                    onClick={() => { screenSize === 'small' && setOpen(!open) }}
+                    ref={buttonRef}
+                >
+                    <Hamburger size={'1.2em'} />
+                </IconButton>
+            </div>
+            <animated.nav
+                style={navProps}
+                id='gutter'
+                className={`${open ? 'open' : ''} ${screenSize === 'small' ? 'small-screen' : ''}`}
+            >
+                <ul ref={ulRef}>
                     <Profile />
                     <NavList />
-                    <animated.span id="gutter-pill" style={props} />
+                    <animated.span style={props} />
                 </ul>
-            </nav>
-        </div>
+            </animated.nav>
+        </>
     )
 }
 

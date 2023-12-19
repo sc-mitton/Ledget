@@ -32,6 +32,9 @@
       "@pages/*": [
         "src/pages/*"
       ],
+      "@context/*": [
+        "src/context/*"
+      ],
       "@ledget/ui": [
         "../../libs/ui/src"
       ],

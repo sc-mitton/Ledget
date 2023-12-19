@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, useRef } from 'react'
+import { useEffect, useLayoutEffect, useState, useRef, createContext, useContext, ReactNode } from 'react'
 
 import { Routes, Outlet, Navigate, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
@@ -29,6 +29,7 @@ import {
 import { useGetMeQuery } from '@features/userSlice'
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
+import { ScreenProvider } from '@context/index'
 
 const PrivateRoute = () => {
     const { isSuccess, isLoading } = useGetMeQuery()
@@ -148,7 +149,7 @@ const App = () => {
     const { isLoading } = useGetMeQuery()
 
     return (
-        <>
+        <ScreenProvider>
             {!isLoading &&
                 <ColorSchemedMain>
                     <Routes>
@@ -162,7 +163,7 @@ const App = () => {
                     </Routes>
                 </ColorSchemedMain >
             }
-        </>
+        </ScreenProvider>
     )
 }
 

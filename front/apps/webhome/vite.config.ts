@@ -44,6 +44,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
       '@components': path.resolve(__dirname, './src/components'),
       '@utils': path.resolve(__dirname, './src/utils'),
+      '@context': path.resolve(__dirname, './src/context'),
       '@flow': path.resolve(__dirname, './src/flow'),
       '@features': path.resolve(__dirname, './src/features'),
       '@api': path.resolve(__dirname, './src/api'),

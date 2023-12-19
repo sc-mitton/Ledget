@@ -63,6 +63,10 @@
     #info-container {
         opacity: .5;
     }
+
+    &>div:last-of-type span {
+        color: var(--m-text-secondary);
+    }
 }
 
 #card-info--container {

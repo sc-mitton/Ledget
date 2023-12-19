@@ -39,6 +39,7 @@ const AntProvider = ({ children }: { children: React.ReactNode }) => {
     )
 }
 
+
 root.render(
     <Provider store={store}>
         <ColorSchemeProvider>

@@ -110,7 +110,7 @@
 
         --input-placeholder: hsl(0, 0%, 62%);
         --input-placeholder2: rgb(89, 89, 89);
-        --input-placeholder-focus: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), var(--main-color-l));
+        --input-placeholder-focus: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 10%));
 
         /* Font Weights */
         --fw-light: 300;

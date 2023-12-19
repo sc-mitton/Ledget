@@ -128,9 +128,10 @@ export const TransactionShimmer = ({ shimmering = true, darkMode, ...rest }: Tra
   </>
 )
 
-type ShimmerDivProps = HTMLProps<HTMLDivElement> & Pick<ShimmerProps, 'shimmering' | 'lightness' | 'darkMode'> & {
-  background?: string;
-}
+type ShimmerDivProps =
+  HTMLProps<HTMLDivElement> &
+  Pick<ShimmerProps, 'shimmering' | 'lightness' | 'darkMode'> &
+  { background?: string }
 
 export const ShimmerDiv = (props: ShimmerDivProps) => {
   const {

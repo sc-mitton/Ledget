@@ -38,12 +38,6 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
   const { labels, toggle, className, theme, selectedIndex, ...rest } = props
   const defaultBackgroundColor = useSchemeVar('--icon-hover-light-gray')
 
-  useEffect(() => {
-    console.log(theme
-      ? Array.isArray(theme) ? theme[selectedIndex]?.pillBackgroundColor : theme?.pillBackgroundColor
-      : defaultBackgroundColor)
-  }, [theme, selectedIndex])
-
   const { props: pillProps } = usePillAnimation({
     ref: ref,
     querySelectall: '[role=tab]',
