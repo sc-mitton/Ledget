@@ -50,12 +50,8 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
   })
 
   useEffect(() => {
-    console.log(selectorHeight, selectorWidth, selectorLeft, selectorTop)
-  }, [selectorHeight, selectorWidth, selectorLeft, selectorTop])
-
-  useEffect(() => {
     if (selectors.length > 0) {
-      const element = selectors?.[0]
+      const element = selectors.find(find)
       if (element) {
         setSelectorHeight(element.offsetHeight)
         setSelectorWidth(element.offsetWidth)
