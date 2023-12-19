@@ -129,7 +129,7 @@ const Devices = ({ devices }: { devices: DeviceType[] }) => {
     const groupedDevices = Object.entries(_(devices, (device) => [device.device_family, device.location]))
 
     return (
-        <>
+        <section>
             <h3 className="header2">Devices</h3>
             <div className="inner-window" id="device-list">
                 {(groupedDevices).map(([device, info], index) =>
@@ -139,7 +139,7 @@ const Devices = ({ devices }: { devices: DeviceType[] }) => {
                         info={info}
                     />)}
             </div>
-        </>
+        </section>
     )
 }
 

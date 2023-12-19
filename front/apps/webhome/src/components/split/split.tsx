@@ -119,7 +119,9 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
                 control={control}
                 name={`splits.${index}.amount`}
                 defaultValue={
-                  Number(field.amount.replace(/\D+/g, ''))
+                  field.amount
+                    ? typeof field.amount === 'string' ? Number(field.amount.replace(/\D+/g, '')) : 0
+                    : 0
                 }
               >
                 <FormErrorTip error={(errors as any).splits?.[index]?.amount} />

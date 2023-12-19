@@ -1,6 +1,7 @@
 #security-page {
     display: flex;
     flex-direction: column;
+    gap: 1.5em;
     height: 100%;
     overflow: auto;
     overflow-x: hidden;

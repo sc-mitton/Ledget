@@ -104,6 +104,7 @@ services:
       - bird_api_key
       - bird_api_key_id
       - bird_signing_key
+      - sparkpost_api_key
     depends_on:
       - db
       - redis
@@ -156,6 +157,8 @@ secrets:
     file: ./secrets/bird_api_key_id
   bird_signing_key:
     file: ./secrets/bird_signing_key
+  sparkpost_api_key:
+    file: ./secrets/sparkpost_api_key
   stripe_webhook_secret:
     file: ./secrets/stripe_dev_webhook_secret
   stripe_api_key:

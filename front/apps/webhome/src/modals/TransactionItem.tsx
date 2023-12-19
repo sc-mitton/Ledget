@@ -132,7 +132,7 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
     }, [billCat])
 
     return (
-        <div className='inner-window'>
+        <div className='inner-window' id="bills-and-categories">
             <div>{getBillCategoryLabel(item)}</div>
             {changeAble
                 ?
@@ -221,7 +221,12 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
                     <div>Location </div>
                     <div>
                         <span>{item?.address}</span>
-                        <span>{`${item?.city}${item?.region ? ', ' + item.region : ''}`}</span>
+                        <span>
+                            {item.city && item.region
+                                ? `${item.city}, ${item.region}`
+                                : item.city ? `${item.city}` : `${item.region}`
+                            }
+                        </span>
                     </div>
                 </>
             }
@@ -343,7 +348,7 @@ const TransactionModal = withModal<{ item: Transaction, action?: Action }>(({ it
                     <SlideMotionDiv key={'default-view'} position={loaded ? 'first' : 'fixed'}>
                         <Actions setAction={setAction} />
                         <div className='transaction-info--container'>
-                            {(item.predicted_bill || item.predicted_category || item.bill || item.categories?.length)
+                            {(item.predicted_bill || item.predicted_category || item.bill || (item.categories?.length || 0) > 0)
                                 && <CategoriesBillInnerWindow item={item} />}
                             <InfoTableInnerWindow item={item} />
                             <NoteInnerWindow item={item} />

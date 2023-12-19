@@ -144,7 +144,7 @@ const Mfa = () => {
     const { data: user } = useGetMeQuery()
 
     return (
-        <>
+        <section>
             <div
                 className="header2"
                 style={{
@@ -160,7 +160,7 @@ const Mfa = () => {
                 <AuthenticatorApp user={user} />
                 <SmsAuth user={user} />
             </div>
-        </>
+        </section>
     )
 }
 

@@ -6,8 +6,7 @@ $wafer-container-padding: .75rem;
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 1.5em;
-    animation: delay-auto-width .5s ease-in-out forwards;
-    animation-delay: 1s;
+    width: auto;
     margin-top: 1.5em;
     padding-top: 0;
     padding-bottom: 0;
@@ -20,16 +19,6 @@ $wafer-container-padding: .75rem;
         &>div * {
             font-weight: var(--fw-bold);
         }
-    }
-}
-
-@keyframes delay-auto-width {
-    0% {
-        width: 100%;
-    }
-
-    100% {
-        width: auto;
     }
 }
 

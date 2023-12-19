@@ -14,6 +14,10 @@
     display: flex;
     flex-direction: column;
     z-index: 1000;
+
+    button {
+        width: 100%;
+    }
 }
 
 .dropdown:focus-visible {

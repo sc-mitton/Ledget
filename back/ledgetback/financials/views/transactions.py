@@ -104,9 +104,12 @@ def sync_transactions(plaid_item: PlaidItem) -> dict:
 
     @transaction.atomic
     def _bulk_add_transactions():
-        objs = [Transaction(predicted_category=default_category, **added)
-                for added in added]
-        Transaction.objects.bulk_create(objs)
+        Transaction.objects.bulk_create([
+            Transaction(predicted_category=default_category, **t)
+            if t.is_spend
+            else Transaction(**t)
+            for t in added
+        ])
 
     @transaction.atomic
     def _bulk_modify_transactions():
@@ -237,6 +240,7 @@ class TransactionViewSet(ModelViewSet):
 
     def get_queryset(self):
         filter_args = self._exract_filter_args()
+        print('filter_args', filter_args)
         base_qset = Transaction.objects.filter(**filter_args) \
                                        .select_related(
                                            'predicted_category',

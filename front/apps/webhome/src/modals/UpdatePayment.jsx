@@ -102,6 +102,7 @@ const Modal = withModal((props) => {
     return (
         <>
             <h2>Update Payment Method</h2>
+            <hr />
             <form onSubmit={submitForm}>
                 <div id="update-payment-form">
                     <h4>Info</h4>

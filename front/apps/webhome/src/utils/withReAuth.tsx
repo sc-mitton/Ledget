@@ -252,17 +252,9 @@ const Otp = () => {
 }
 
 export const ReAuthModal = withSmallModal((props) => {
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
     const loaded = useLoaded(100)
 
-    // Clean up search params on unmount
-    useEffect(() => {
-        return () => {
-            searchParams.delete('aal')
-            searchParams.delete('flow')
-            setSearchParams(searchParams)
-        }
-    }, [])
 
     return (
         <AnimatePresence mode="wait">
@@ -405,19 +397,25 @@ export const ReAuthProtected = ({ children, requiredAal, onReAuth }: {
 export function withReAuth<P>(Component: React.FC<P & Partial<WithReAuthI>>) {
 
     return (props: (Partial<WithReAuthI> & P)) => {
-        const { requiredAal, onClose } = props
-
+        const [searchParams, setSearchParams] = useSearchParams()
         const { data: user } = useGetMeQuery()
         const continueToComponent = useReauthCheck({
-            requiredAal: requiredAal || user?.highest_aal || 'aal1',
-            onClose: () => { onClose && onClose() }
+            requiredAal: props.requiredAal || user?.highest_aal || 'aal1',
+            onClose: () => { props.onClose && props.onClose() }
         })
 
         return (
             <>
                 <ReAuthModal
                     hideAll={continueToComponent}
-                    onClose={() => !continueToComponent && onClose && onClose()}
+                    onClose={() => {
+                        searchParams.delete('aal')
+                        searchParams.delete('flow')
+                        setSearchParams(searchParams)
+                        if (props.onClose) {
+                            props.onClose()
+                        }
+                    }}
                     hasOverlay={false}
                     blur={1}
                     zIndex={300}
