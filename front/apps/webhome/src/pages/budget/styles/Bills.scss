@@ -2,10 +2,10 @@ $gap: calc(.25em + 2vw);
 $bill-flex-grid-gap: calc(.25em + .5vw);
 $bill-item-padding: .25em .75em;
 $window-padding: $bill-flex-grid-gap;
-$number-of-bill-rows: 4;
+$number-of-bill-rows: 5;
 
 :root {
-    --number-of-bill-rows: 4;
+    --number-of-bill-rows: 5;
 }
 
 @import './Variables.scss';
@@ -115,7 +115,7 @@ $number-of-bill-rows: 4;
     display: inline-grid;
     grid-template-columns: repeat(7, minmax(0, 1.25em));
     justify-self: center;
-    row-gap: .5em;
+    row-gap: .75em;
     column-gap: 1.25em;
     margin-left: .375em;
 

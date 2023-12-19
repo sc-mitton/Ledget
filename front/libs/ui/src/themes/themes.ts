@@ -49,6 +49,7 @@ export const nivoResponsiveLineTheme: Theme = {
             stroke: 'var(--subtle-border-color)',
             strokeWidth: 1.5,
             strokeDasharray: 'solid',
+            fill: 'var(--m-text-secondary)',
         },
     },
     axis: {
@@ -58,7 +59,7 @@ export const nivoResponsiveLineTheme: Theme = {
                 fontSize: 12,
                 fontFamily: 'inherit',
                 fontWeight: 400,
-                fill: 'var(--m-secondary-text)',
+                fill: 'var(--m-text-secondary)',
             },
         },
     },

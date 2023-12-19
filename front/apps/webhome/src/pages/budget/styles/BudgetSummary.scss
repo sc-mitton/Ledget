@@ -133,7 +133,7 @@ $header-gap: calc(.75em + .125vw);
             margin-top: $teaser-stats-margin-top;
             display: flex;
             align-items: baseline;
-            gap: .125em;
+            gap: .25em;
             font-size: $base-stats-font-size;
             @include header-contents-transitions(out);
 

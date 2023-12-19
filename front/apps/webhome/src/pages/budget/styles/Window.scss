@@ -5,7 +5,7 @@
     // grid-template-rows: minmax(0, min-content) 1fr minmax(0, min-content);
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
+    gap: 2.25em;
 
     // Spending categories window
     &>div:nth-last-child(2) {

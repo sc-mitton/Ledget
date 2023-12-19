@@ -280,8 +280,6 @@ $background: var(--window);
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: rgb(var(--window-rgb), .75);
-        // box-shadow: 0px 0px 0px 12px rgb(var(--window-rgb), .75);
         z-index: 100;
         color: var(--m-text-tirtiary);
         text-align: center;
@@ -352,7 +350,7 @@ $background: var(--window);
         padding-right: 1em;
 
         &.no-transactions {
-            width: 60%;
+            width: 80%;
             overflow: hidden;
             margin: 0 auto;
             grid-auto-rows: minmax(1.5em, 1.5em);
@@ -419,7 +417,7 @@ $background: var(--window);
                 &>div:last-child {
                     display: flex;
                     align-items: center;
-                    gap: .25em;
+                    gap: .5em;
                     justify-self: flex-end;
                 }
             }
