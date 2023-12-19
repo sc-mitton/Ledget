@@ -9,7 +9,7 @@ import { useLazyGetTransactionsQuery, useGetTransactionsQuery, Transaction } fro
 import { Logo } from '@components/pieces'
 import { DollarCents, InfiniteScrollDiv, TransactionShimmer, useColorScheme } from '@ledget/ui'
 import { ShadowedContainer } from '@components/pieces'
-import { EmptyListImage, ArrowIcon } from '@ledget/media'
+import { EmptyListImage, ArrowIcon, EmptyListDark } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useAppSelector } from '@hooks/store'
 import { selectFilteredFetchedConfirmedTransactions } from '@features/transactionsSlice'
@@ -81,10 +81,9 @@ const List = ({ setFocusedTransaction }:
         :
         <div
           id="empty-list-icon--container"
-          className={isDark ? 'dark' : ''}
           key={'empty-list-icon--container'}
         >
-          <EmptyListImage />
+          {isDark ? <EmptyListDark /> : <EmptyListImage />}
         </div>
       }
     </>

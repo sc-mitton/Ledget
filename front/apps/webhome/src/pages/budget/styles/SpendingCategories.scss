@@ -77,6 +77,16 @@ $background: var(--window);
             background-color: var(--window);
             box-shadow: 0 1.5px 1.5px 1px var(--window);
             padding-bottom: .75em;
+
+            &.tab-nav-cell {
+                grid-column: 1 / span 5;
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+        &.total>div:first-child {
+            padding-left: .25em;
         }
 
         &>div.spanned {

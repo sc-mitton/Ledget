@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Tab } from '@headlessui/react';
 import { animated } from '@react-spring/web'
@@ -36,28 +36,22 @@ export type TabNavListProps = TabNavListPropsWithoutTheme | TabNavListPropsWithT
 export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDivElement>) {
   const ref = useRef<HTMLDivElement>(null)
   const { labels, toggle, className, theme, selectedIndex, ...rest } = props
-  const backgroundColor = useSchemeVar('--icon-hover-light-gray')
+  const defaultBackgroundColor = useSchemeVar('--icon-hover-light-gray')
 
   const { props: pillProps } = usePillAnimation({
     ref: ref,
     querySelectall: '[role=tab]',
-    update: [toggle],
+    update: [toggle, theme],
     refresh: [],
     styles: {
       zIndex: 1,
-      backgroundColor: backgroundColor,
       borderRadius: 'var(--border-radius2)',
-      ...(theme && Array.isArray(theme)
-        ? {
-          color: theme[selectedIndex]?.pillColor,
-          backgroundColor: theme[selectedIndex]?.pillBackgroundColor,
-        }
-        : theme ?
-          {
-            color: theme.pillColor,
-            backgroundColor: theme.pillBackgroundColor,
-          } : {}
-      )
+      color: theme
+        ? Array.isArray(theme) ? theme[selectedIndex]?.pillColor : theme?.pillColor
+        : undefined,
+      backgroundColor: theme
+        ? Array.isArray(theme) ? theme[selectedIndex]?.pillBackgroundColor : theme?.pillBackgroundColor
+        : defaultBackgroundColor,
     },
     find: (element) => element.attributes.getNamedItem('aria-selected')?.value === 'true',
   })

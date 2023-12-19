@@ -48,7 +48,8 @@ import {
     BakedListBox,
     BillCatLabel,
     TabNavList,
-    DropdownItem
+    DropdownItem,
+    useSchemeVar
 } from '@ledget/ui'
 import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -259,61 +260,91 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
         limit_amount_monthly,
         limit_amount_yearly,
     } = useAppSelector(SelectCategoryBillMetaData)
+    // mHlightHover, mDark, sHlight, sDark, sHlightHover
+    const [mHlight, mHlightHover, mDark, sHlight, sHlightHover, sDark] = useSchemeVar([
+        '--main-hlight',
+        '--main-hlight-hover',
+        '--main-dark4',
+        '--secondary-hlight',
+        '--secondary-hlight-hover',
+        '--secondary-dark4'
+    ])
+
+    const TotalRow = ({ selectedIndex }: { selectedIndex: number }) => (
+        <div className='row total'>
+            <div>Total</div>
+            <div>
+                <DollarCents
+                    value={
+                        selectedIndex === 0
+                            ? monthly_spent || '0.00'
+                            : yearly_spent || '0.00'
+                    }
+                />
+            </div>
+            <div>/</div>
+            <div>
+                <DollarCents
+                    value={
+                        selectedIndex === 0
+                            ? limit_amount_monthly ? limit_amount_monthly : '0.00'
+                            : limit_amount_yearly ? limit_amount_yearly : '0.00'
+                    }
+                    withCents={false}
+                />
+            </div>
+            <div>
+                <StaticProgressCircle
+                    value={
+                        selectedIndex === 0
+                            ? (monthly_spent && limit_amount_monthly) ? Math.round(monthly_spent / limit_amount_monthly * 100) / 100 : 0
+                            : (yearly_spent && limit_amount_yearly) ? Math.round(yearly_spent / limit_amount_yearly * 100) / 100 : 0
+                    }
+                />
+            </div>
+        </div>
+    )
+
+    useEffect(() => {
+        console.log('mHlightHover', mHlightHover, 'sHlightHover', sHlightHover)
+    }, [mHlightHover, sHlightHover])
 
     return (
         <Tab.Group as={Column}>
             {({ selectedIndex }) => (
                 <>
                     <div className='row'>
-                        <div>
+                        <div className="tab-nav-cell">
                             <TabNavList
                                 labels={['Monthly', 'Yearly']}
                                 toggle={selectedIndex}
                                 className='spending-categories--tab-nav-list'
-                            />
-                        </div>
-                        <div>
-                            <DollarCents
-                                value={
-                                    selectedIndex === 0
-                                        ? monthly_spent || '0.00'
-                                        : yearly_spent || '0.00'
-                                }
-                            />
-                        </div>
-                        <div>/</div>
-                        <div>
-                            <DollarCents
-                                value={
-                                    selectedIndex === 0
-                                        ? limit_amount_monthly ? limit_amount_monthly : '0.00'
-                                        : limit_amount_yearly ? limit_amount_yearly : '0.00'
-                                }
-                                withCents={false}
-                            />
-                        </div>
-                        <div>
-                            <StaticProgressCircle
-                                value={
-                                    selectedIndex === 0
-                                        ? (monthly_spent && limit_amount_monthly) ? Math.round(monthly_spent / limit_amount_monthly * 100) / 100 : 0
-                                        : (yearly_spent && limit_amount_yearly) ? Math.round(yearly_spent / limit_amount_yearly * 100) / 100 : 0
-                                }
+                                theme={[
+                                    { pillColor: mDark, pillBackgroundColor: mHlightHover, tabBackgroundColor: mHlight, tabColor: mDark },
+                                    { pillColor: sDark, pillBackgroundColor: sHlightHover, tabBackgroundColor: sHlight, tabColor: sDark }
+                                ]}
+                                selectedIndex={selectedIndex}
                             />
                         </div>
                     </div>
                     <Tab.Panels as={Fragment}>
                         <Tab.Panel as={Fragment}>
-                            <Rows
-                                categories={categories?.filter(category => category.period === 'month') || []}
-                                period="month"
-                            />
+                            <>
+                                <TotalRow selectedIndex={selectedIndex} />
+                                <Rows
+                                    categories={categories?.filter(category => category.period === 'month') || []}
+                                    period="month"
+                                />
+                            </>
                         </Tab.Panel>
                         <Tab.Panel as={Fragment}>
-                            <Rows
-                                categories={categories?.filter(category => category.period === 'year') || []}
-                                period="year"
-                            />
+                            <>
+                                <TotalRow selectedIndex={selectedIndex} />
+                                <Rows
+                                    categories={categories?.filter(category => category.period === 'year') || []}
+                                    period="year"
+                                />
+                            </>
                         </Tab.Panel>
                     </Tab.Panels>
                 </>

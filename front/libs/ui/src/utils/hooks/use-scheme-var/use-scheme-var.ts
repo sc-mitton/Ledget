@@ -7,7 +7,9 @@ type ReturnType<T> = T extends CSSVar[] ? string[] : string | undefined
 
 export function useSchemeVar<T extends CSSVar[] | CSSVar>(variable: T): ReturnType<T> {
   const { isDark } = useColorScheme()
-  const [result, setResult] = useState<ReturnType<T>>()
+  const [result, setResult] = useState<ReturnType<T>>(
+    typeof variable === 'string' ? undefined : Array(variable.length).fill(undefined) as any
+  )
 
   useEffect(() => {
     const main = document.querySelector('main')
@@ -18,7 +20,6 @@ export function useSchemeVar<T extends CSSVar[] | CSSVar>(variable: T): ReturnTy
     } else {
       setResult(getComputedStyle(main).getPropertyValue(variable) as any)
     }
-
   }, [isDark])
 
   return result as ReturnType<T>

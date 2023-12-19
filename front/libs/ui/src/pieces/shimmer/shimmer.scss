@@ -51,7 +51,7 @@
     animation: shimmer .8s linear infinite;
     z-index: 102;
     position: relative;
-    background: linear-gradient(115deg, transparent 25%, hsl(0, 0%, var(--shimmer-lightness)) 50%, transparent 75%)
+    background: linear-gradient(115deg, transparent 30%, hsl(0, 0%, var(--shimmer-lightness)) 50%, transparent 70%)
 }
 
 .colored-loading-shimmer.green .shimmer {
