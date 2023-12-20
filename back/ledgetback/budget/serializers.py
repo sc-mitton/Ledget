@@ -200,7 +200,7 @@ class BillSerializer(NestedCreateMixin, serializers.ModelSerializer):
 
             Transaction.objects.filter(
                         bill=instance,
-                        transaction__date__month=datetime.now().month) \
+                        date__month=datetime.now().month) \
                 .update(bill=new_instance)
 
         reminders = validated_data.pop('reminders', [])

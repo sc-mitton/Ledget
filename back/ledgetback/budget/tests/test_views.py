@@ -354,14 +354,13 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
             reverse('bills-detail', kwargs={'pk': bill.id}),
             data=json.dumps(payload),
             content_type='application/json')
-        print(response.data)
 
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data['id'], bill.id)
 
         # Check to make sure all of the transactions for the current month
         # have been moved to the new bill
-        transactions = TransactionCategory.objects.filter(
-            bill_id=bill.id,
-            transaction__date__month=datetime.now().month)
+        transactions = Transaction.objects.filter(
+            bill=bill.id,
+            date__month=datetime.now().month)
         self.assertEqual(transactions.count(), 0)
