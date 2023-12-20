@@ -193,10 +193,9 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
 
         payload = {
             'name': 'New Name',
-            'upper_amount': bill.upper_amount + 100,
             'reminders': [{'id': str(reminder.id)} for reminder in reminders]
         }
-        response = self.client.put(
+        response = self.client.patch(
             reverse('bills-detail', kwargs={'pk': bill.id}),
             data=json.dumps(payload),
             content_type='application/json'
@@ -204,7 +203,6 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
 
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data['name'], bill.name)
-        self.assertNotEqual(response.data['upper_amount'], bill.upper_amount)
         bill.refresh_from_db()
         self.assertEqual(bill.reminders.count(), len(reminders))
 
@@ -212,6 +210,7 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
     def test_update_category(self):
         '''
         Test updating a view values and adding some alerts for a category
+        This is a patch method
         '''
 
         category = Category.objects.prefetch_related('alerts') \
@@ -220,20 +219,17 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
 
         payload = {
             'name': 'New Name',
-            'limit_amount': category.limit_amount + 100,
             'alerts': [{'id': str(alert.id)} for alert in alerts],
         }
         payload['alerts'].append({'percent_amount': 50})  # Add a new alert
 
-        response = self.client.put(
+        response = self.client.patch(
             reverse('categories-detail', kwargs={'pk': category.id}),
             data=json.dumps(payload),
-            content_type='application/json'
-        )
+            content_type='application/json')
 
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data['name'], category.name)
-        self.assertNotEqual(response.data['limit_amount'], category.limit_amount)
         category.refresh_from_db()
         self.assertEqual(category.alerts.count(), len(payload['alerts']))
 
@@ -299,4 +295,73 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
             transactioncategory__category=category,
             datetime__range=(start, end)
         )
+        self.assertEqual(transactions.count(), 0)
+
+    @timeit
+    def test_update_category_amount(self):
+        '''
+        When a category's limit_amount is updated when the category has existed
+        for more than a month, then a new category will need to be created on the
+        backend and the transactions for the month associated with the old category
+        will need to be associated with the new category.
+        '''
+        category = Category.objects.filter(removed_on__isnull=True).first()
+        payload = {
+            'limit_amount': category.limit_amount + 100,
+            'emoji': category.emoji,
+            'name': category.name,
+            'period': category.period,
+        }
+
+        response = self.client.put(
+            reverse('categories-detail', kwargs={'pk': category.id}),
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response.data['id'], category.id)
+
+        # Check to make sure all of the transactions for the current month
+        # have been moved to the new category
+        transactions = TransactionCategory.objects.filter(
+            category_id=category.id,
+            transaction__date__month=datetime.now().month)
+
+        self.assertEqual(transactions.count(), 0)
+
+    @timeit
+    def test_update_bill_amount(self):
+        '''
+        When a bill's amount is updated when the bill has existed
+        for more than a month, then a new bill will need to be created on the
+        backend and the transactions for the month associated with the old bill
+        will need to be associated with the new bill.
+        '''
+
+        bill = Bill.objects.filter(removed_on__isnull=True).first()
+        payload = {
+            'name': bill.name,
+            'period': bill.period,
+            'upper_amount': bill.upper_amount + 100,
+            'day': bill.day,
+            'week': bill.week,
+            'week_day': bill.week_day,
+            'month': bill.month,
+        }
+
+        response = self.client.put(
+            reverse('bills-detail', kwargs={'pk': bill.id}),
+            data=json.dumps(payload),
+            content_type='application/json')
+        print(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response.data['id'], bill.id)
+
+        # Check to make sure all of the transactions for the current month
+        # have been moved to the new bill
+        transactions = TransactionCategory.objects.filter(
+            bill_id=bill.id,
+            transaction__date__month=datetime.now().month)
         self.assertEqual(transactions.count(), 0)

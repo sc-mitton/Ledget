@@ -254,6 +254,9 @@ $number-of-bill-rows: 5;
         &>div:last-of-type {
             flex-grow: 1;
             text-align: right;
+        }
+
+        &[role="button"]>div:last-of-type {
             margin-right: .75em;
         }
     }

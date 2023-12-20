@@ -1,10 +1,12 @@
+from datetime import datetime
 
 from rest_framework import serializers
 from django.db import transaction
-from datetime import datetime
+from django.utils import timezone
 import logging
 
 from ledgetback.serializer_mixins import NestedCreateMixin
+from financials.models import TransactionCategory, Transaction
 from .models import (
     Category,
     Alert,
@@ -73,15 +75,24 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
         is older than a month. All transactions for the month that were
         connected to the old category will be reconnected to the new category.
         '''
-        now = datetime.now()
         if 'limit_amount' in validated_data and \
-                instance.created < now.replace(month=now.month - 1):
-            return self.create(validated_data)
+                instance.created.month < datetime.now().month - 1:
+            instance.removed_on = timezone.now()
+
+            new_instance = self.create(validated_data)
+
+            TransactionCategory.objects.filter(
+                    category=instance,
+                    transaction__date__month=datetime.now().month) \
+                .update(category=new_instance)
+
+            return new_instance
 
         # Update the object instance and save it to the db
         try:
             alerts = self._get_or_create_alerts(
                 instance, validated_data.pop('alerts', []))
+            print('alerts', alerts)
 
             for field, value in validated_data.items():
                 setattr(instance, field, value)
@@ -181,6 +192,17 @@ class BillSerializer(NestedCreateMixin, serializers.ModelSerializer):
         list_serializer_class = BillListCreateSerializer
 
     def update(self, instance, validated_data, *args, **kwargs):
+        if ('lower_amount' in validated_data or 'upper_amount' in validated_data) \
+             and instance.created.month < datetime.now().month - 1:
+
+            instance.removed_on = timezone.now()
+            new_instance = self.create(validated_data)
+
+            Transaction.objects.filter(
+                        bill=instance,
+                        transaction__date__month=datetime.now().month) \
+                .update(bill=new_instance)
+
         reminders = validated_data.pop('reminders', [])
         reminder_ids = [reminder.get('id', None)
                         for reminder in reminders

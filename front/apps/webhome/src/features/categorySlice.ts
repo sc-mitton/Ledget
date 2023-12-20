@@ -89,7 +89,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 } else {
                     return {
                         url: `categories/${data.id}`,
-                        method: 'PUT',
+                        method: data.limit_amount ? 'PUT' : 'PATCH',
                         body: data,
                     }
                 }

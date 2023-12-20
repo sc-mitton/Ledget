@@ -163,7 +163,7 @@ local GenericAuthedBase = {
     match: {
       methods: ['POST', 'DELETE'],
       url: base_url + '/subscription/<[a-zA-Z0-9_]+>',
-    }
+    },
   },
   GenericAuthedBase
   {
@@ -171,7 +171,7 @@ local GenericAuthedBase = {
     match: {
       methods: ['PUT'],
       url: base_url + '/subscription_item',
-    }
+    },
   },
   GenericAuthedBase
   {
@@ -179,10 +179,10 @@ local GenericAuthedBase = {
     match: {
       methods: ['POST', 'GET', 'PATCH'],
       url: base_url + '/<(categories|category)>',
-    }
+    },
   },
   GenericAuthedBase
-    {
+  {
     id: 'delete_categories',
     match: {
       methods: ['DELETE'],
@@ -190,28 +190,28 @@ local GenericAuthedBase = {
     },
   },
   GenericAuthedBase
-    {
+  {
     id: 'update_category',
     match: {
-      methods: ['PUT'],
+      methods: ['PUT', 'PATCH'],
       url: base_url + '/categories/<[a-zA-Z0-9-]+>',
     },
   },
-    GenericAuthedBase
+  GenericAuthedBase
   {
     id: 'spending_history',
     match: {
       methods: ['GET'],
       url: base_url + '/categories/<[a-zA-Z0-9-]+>/spending-history',
-    }
+    },
   },
-    GenericAuthedBase
+  GenericAuthedBase
   {
     id: 'order',
     match: {
       methods: ['POST'],
       url: base_url + '/categories/order',
-    }
+    },
   },
   GenericAuthedBase
   {
@@ -222,14 +222,14 @@ local GenericAuthedBase = {
     },
   },
   GenericAuthedBase
-    {
+  {
     id: 'update_bill',
     match: {
-      methods: ['PUT'],
+      methods: ['PUT', 'PATCH'],
       url: base_url + '/bills/<[a-zA-Z0-9-]+>',
     },
   },
-    GenericAuthedBase
+  GenericAuthedBase
   {
     id: 'delete_bills',
     match: {
@@ -253,7 +253,7 @@ local GenericAuthedBase = {
       url: base_url + '/transactions',
     },
   },
-    GenericAuthedBase
+  GenericAuthedBase
   {
     id: 'update_transaction',
     match: {
@@ -315,7 +315,7 @@ local GenericAuthedBase = {
     match: {
       methods: ['POST'],
       url: base_url + '/otp',
-    }
+    },
   },
   GenericAuthedBase
   {
@@ -323,7 +323,7 @@ local GenericAuthedBase = {
     match: {
       methods: ['GET'],
       url: base_url + '/otp/<[a-zA-Z0-9-]+>',
-    }
+    },
   },
   GenericAuthedBase
   {
@@ -331,7 +331,7 @@ local GenericAuthedBase = {
     match: {
       methods: ['GET', 'PATCH'],
       url: base_url + '/accounts',
-    }
+    },
   },
   GenericAuthedBase
   {
@@ -339,6 +339,6 @@ local GenericAuthedBase = {
     match: {
       methods: ['GET'],
       url: base_url + '/reminders',
-    }
-  }
+    },
+  },
 ]

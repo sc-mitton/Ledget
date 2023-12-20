@@ -29,7 +29,9 @@ class Category(BudgetItem):
     users = models.ManyToManyField(User,
                                    through='UserCategory',
                                    related_name='categories')
-    limit_amount = models.IntegerField(null=True, blank=True)
+    limit_amount = models.IntegerField(null=True, blank=True, validators=[
+        MinValueValidator(0, message="Limit must be greater than 0."),
+    ])
     is_default = models.BooleanField(default=False)
 
 

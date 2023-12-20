@@ -308,7 +308,7 @@ const Bills = () => {
         >
             <>
                 {Array.from(Array(8).keys()).map(i => (
-                    <ShimmerText key={i} shimmering={true} style={{ width: '100%', height: '2em' }} />
+                    <ShimmerText key={i} shimmering={true} style={{ width: '100', height: '1.25em' }} />
                 ))}
             </>
         </div>
