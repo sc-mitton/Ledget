@@ -4,7 +4,7 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 import Big from 'big.js'
 import { RootState } from './store'
 
-interface Alert {
+export interface Alert {
     percent_amount: number
 }
 
