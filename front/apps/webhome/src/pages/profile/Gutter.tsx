@@ -140,7 +140,8 @@ const Gutter = () => {
             : '0em',
         config: { duration: 200 },
         delay: open ? 0 : 200,
-        onRest: () => setUpdatePill(!updatePill)
+        onRest: () => setUpdatePill(!updatePill),
+        immediate: screenSize !== 'small'
     })
 
     useAccessEsc({
