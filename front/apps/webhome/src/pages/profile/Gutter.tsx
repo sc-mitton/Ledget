@@ -120,7 +120,7 @@ const Gutter = () => {
         ...(screenSize === 'small'
             ? {
                 left: 0,
-                right: open ? '50%' : '0%',
+                right: open ? '20%' : '0%',
                 bottom: 0,
                 top: 0
             }

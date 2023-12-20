@@ -19,7 +19,6 @@ const EditCategory = withModal((props) => {
     const [category, setCategory] = useState<Category>()
     const [updateCategory, { isSuccess: categoryIsUpdated, isLoading: isUpdatingCategory }] = useUpdateCategoriesMutation()
 
-
     const { register, handleSubmit, watch, formState: { errors }, control, setValue } = useForm({
         resolver: zodResolver(categoryFormSchema) as any,
         mode: 'onSubmit',

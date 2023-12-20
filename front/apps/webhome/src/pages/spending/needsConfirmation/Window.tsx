@@ -505,31 +505,33 @@ const NeedsConfirmationWindow = () => {
                 ref={newItemsRef}
                 onMouseLeave={() => flushConfirmedQue()}
             >
-                <ShadowedContainer showShadow={unconfirmedStackExpanded}>
-                    <animated.div style={containerProps} onScroll={handleScroll}>
-                        {(isSuccess && unconfirmedTransactions) &&
-                            <>
-                                {itemTransitions((style, item, obj, index) => {
-                                    if (!item) return null
-                                    return (
-                                        <NewItem
-                                            item={item}
-                                            style={style}
-                                            updatedBillCat={
-                                                transactionUpdates[item.transaction_id]?.categories
-                                                || transactionUpdates[item.transaction_id]?.bill
-                                            }
-                                            onBillCat={(e, item) => handleBillCatClick(e, item)}
-                                            onEllipsis={(e, item) => handleEllipsis(e, item)}
-                                            handleConfirm={handleItemConfirm}
-                                            tabIndex={unconfirmedStackExpanded || index === 0 ? 0 : -1}
-                                        />
-                                    )
-                                })}
-                            </>
-                        }
-                    </animated.div >
-                </ShadowedContainer>
+                <div>
+                    <ShadowedContainer showShadow={unconfirmedStackExpanded}>
+                        <animated.div style={containerProps} onScroll={handleScroll}>
+                            {(isSuccess && unconfirmedTransactions) &&
+                                <>
+                                    {itemTransitions((style, item, obj, index) => {
+                                        if (!item) return null
+                                        return (
+                                            <NewItem
+                                                item={item}
+                                                style={style}
+                                                updatedBillCat={
+                                                    transactionUpdates[item.transaction_id]?.categories
+                                                    || transactionUpdates[item.transaction_id]?.bill
+                                                }
+                                                onBillCat={(e, item) => handleBillCatClick(e, item)}
+                                                onEllipsis={(e, item) => handleEllipsis(e, item)}
+                                                handleConfirm={handleItemConfirm}
+                                                tabIndex={unconfirmedStackExpanded || index === 0 ? 0 : -1}
+                                            />
+                                        )
+                                    })}
+                                </>
+                            }
+                        </animated.div >
+                    </ShadowedContainer>
+                </div>
                 <AbsPosMenu
                     show={showBillCatSelect}
                     setShow={setShowBillCatSelect}

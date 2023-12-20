@@ -20,8 +20,13 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
 #new-items {
     position: relative;
     background: radial-gradient(ellipse, rgba(14, 7, 7, .02) 1%, transparent 50%);
-    max-width: $window-max-width;
+    width: 100%;
     z-index: 100;
+
+    &>div:first-child {
+        margin: 0 auto;
+        max-width: $window-max-width;
+    }
 }
 
 .new-item {

@@ -245,14 +245,14 @@ button:focus-visible {
 /* --------------------------------- Windows & Dashboard -------------------------------- */
 
 .dashboard {
-    width: calc(100% - 2em);
+    width: calc(100% - 3em);
     height: 100%;
     box-sizing: border-box;
-    max-width: 85.5rem;
+    max-width: 82.5rem;
     margin: 1.75em auto;
     display: flex;
     justify-content: center;
-    gap: 5em;
+    gap: 3.5em;
 }
 
 .window {

@@ -68,25 +68,24 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
     def update(self, instance, validated_data, *args, **kwargs):
         alerts = validated_data.pop('alerts', [])
 
-        new_alerts = [
-            Alert(category=instance, **alert)
-            for alert in alerts
-            if not alert.get('id', False)]
-        create_alerts = Alert.objects.bulk_create(new_alerts)
+        new_alerts = []
+        alert_ids = []
+        for alert in alerts:
+            # Validated alert data without an id means it's new
+            if alert.get('id', False):
+                alert_ids.append(alert.get('id'))
+            else:
+                new_alerts.append(Alert(category=instance, **alert))
 
-        alert_ids = [alert.get('id', None)
-                     for alert in alerts
-                     if alert.get('id', False)]
+        create_alerts = Alert.objects.bulk_create(new_alerts)
         for alert in create_alerts:
             alert_ids.append(str(alert.id))
 
-        alerts = Alert.objects.filter(id__in=alert_ids)
-
+        # Update the object instance and save it to the db
         try:
             for field, value in validated_data.items():
                 setattr(instance, field, value)
-
-            instance.alerts.set(alerts)
+            instance.alerts.set(Alert.objects.filter(id__in=alert_ids))
             instance.save()
         except Exception as e:
             logger.error(e)

@@ -92,7 +92,7 @@
         --window: hsl(0, 0%, 7%);
         --window-rgb: 5, 5, 5;
         --window2: #121212;
-        --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 70%);
+        --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 75%);
 
         --inner-window: hsl(0, 0%, 10%);
         --inner-window-rgb: 13, 13, 13;
@@ -133,8 +133,7 @@
         --window-drop-shadow-color: hsl(0, 0%, 15%);
         --header-box-shadow-color: hsl(0, 0%, 10%);
         --new-item-drop-shadow-color: hsl(0, 0%, 15%);
-        --scroll-shadow: hsl(0, 0%, 3%),
-            transparent;
+        --scroll-shadow: hsl(0, 0%, 3%), transparent;
 
         --low-elevation-drop-shadow-color: rgba(255, 255, 255, 0.05);
         --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
