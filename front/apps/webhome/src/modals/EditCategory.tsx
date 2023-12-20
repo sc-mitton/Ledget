@@ -19,30 +19,12 @@ const EditCategory = withModal((props) => {
     const [category, setCategory] = useState<Category>()
     const [updateCategory, { isSuccess: categoryIsUpdated, isLoading: isUpdatingCategory }] = useUpdateCategoriesMutation()
 
-    const { register, handleSubmit, watch, formState: { errors }, control, setValue } = useForm({
+    const { register, handleSubmit, watch, formState: { errors, touchedFields }, control, setValue } = useForm({
         resolver: zodResolver(categoryFormSchema) as any,
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
     const watchLimitAmount = watch('limit_amount')
-
-    const submit = (data: FieldValues, e: React.BaseSyntheticEvent | undefined) => {
-        e?.preventDefault()
-        const formData = new FormData(e?.target)
-        let body = Object.fromEntries(formData as any)
-
-        let alerts = []
-        for (const [key, value] of Object.entries(body)) {
-            if (key.includes('alert')) {
-                alerts.push({ percent_amount: Number(value.replace(/[^0-9]/g, '')) })
-                delete body[key]
-            }
-        }
-        if (alerts.length > 0) {
-            body.alerts = alerts
-        }
-        updateCategory({ id: category?.id, ...body, ...data } as Category)
-    }
 
     // Set values on load
     useEffect(() => {
@@ -67,7 +49,16 @@ const EditCategory = withModal((props) => {
     return (
         <div>
             <form
-                onSubmit={handleSubmit((data, e) => submit(data, e))}
+                onSubmit={handleSubmit((data, e) => {
+                    const payload = { id: category?.id } as Partial<Category>
+                    let k: keyof Category
+                    for (k in category) {
+                        if (data[k] !== category?.[k]) {
+                            payload[k] = data[k]
+                        }
+                    }
+                    updateCategory(payload as Category)
+                })}
                 id="new-cat-form"
                 className="create-form"
             >
@@ -92,7 +83,6 @@ const EditCategory = withModal((props) => {
                             < FormErrorTip error={errors.limit_amount && errors.limit_amount as any} />
                         </LimitAmountInput>
                     </div>
-
                 </div>
                 <div className="extra-padded-row">
                     <div>
@@ -100,6 +90,7 @@ const EditCategory = withModal((props) => {
                     </div>
                     <div>
                         <AddAlert
+                            control={control}
                             limitAmount={watchLimitAmount}
                             defaultValues={category?.alerts}
                         />

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 
 import Big from 'big.js'
+import { Control, useController } from 'react-hook-form'
 
 import './styles/Dropdowns.css'
 import { Plus, Return, ArrowIcon, CheckMark } from '@ledget/media'
@@ -8,7 +9,7 @@ import ComboSelect from './ComboSelect'
 import { formatCurrency } from '@ledget/ui'
 import { SlimmestInputButton, MenuTextInput, DropDownDiv } from '@ledget/ui'
 
-const formatDollar = (value, percentage) => {
+const formatDollar = (value: string, percentage: number) => {
     if (!value) return ''
     !percentage && (percentage = 0)
     const val = Number(`${value}`.replace(/[^0-9.]/g, ''))
@@ -16,55 +17,53 @@ const formatDollar = (value, percentage) => {
     return formatCurrency({ val: Big(val).times(percentage).toNumber(), withCents: false })
 }
 
-const AddAlert = (props) => {
+const baseAlertOptions = [
+    { id: 1, value: { percent_amount: 25 }, disabled: false },
+    { id: 2, value: { percent_amount: 50 }, disabled: false },
+    { id: 3, value: { percent_amount: 75 }, disabled: false },
+    { id: 4, value: { percent_amount: 100 }, disabled: false },
+]
+
+const AddAlert = (props: { limitAmount: string, defaultValues?: typeof baseAlertOptions[0]['value'][], control: Control<any> }) => {
     const { limitAmount, defaultValues } = props
-    const [selectedAlerts, setSelectedAlerts] = useState([])
-    const buttonRef = useRef(null)
+    const [selectedAlerts, setSelectedAlerts] = useState(defaultValues)
+    const buttonRef = useRef<HTMLButtonElement>(null)
 
-    const [alertOptions, setAlertOptions] = useState([
-        { id: 1, value: 25, disabled: false },
-        { id: 2, value: 50, disabled: false },
-        { id: 3, value: 75, disabled: false },
-        { id: 4, value: 100, disabled: false },
-    ])
-
-    // Set Default Values
-    useEffect(() => {
-        if (defaultValues) {
-            setSelectedAlerts([...defaultValues.map((op) => op.percent_amount)])
-        }
-    }, [defaultValues])
+    const [alertOptions, setAlertOptions] = useState(baseAlertOptions)
 
     const CustomOption = () => {
-        const ref = useRef('')
+        const ref = useRef<HTMLInputElement>(null)
         const [pct, setPct] = useState('')
 
         useEffect(() => {
-            ref.current.selectionEnd = pct.indexOf('%')
-            ref.current.selectionStart = pct.indexOf('%')
+            if (ref.current) {
+                ref.current.selectionEnd = pct.indexOf('%')
+                ref.current.selectionStart = pct.indexOf('%')
+            }
         }, [pct])
 
-        const handleChange = (e) => {
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target.value.replace(/[^0-9]/g, '').slice(0, 2)
             setPct(`${newValue}%`)
         }
 
-        const handleKeyDown = (e) => {
+        const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
             if (pct.length > 2 && e.key !== 'Backspace') {
                 e.preventDefault()
             }
         }
 
         const handleFocus = () => {
+            if (!ref.current) return
             ref.current.selectionEnd = pct.indexOf('%')
             ref.current.selectionStart = pct.indexOf('%')
         }
 
-        const DollarFormat = ({ visible, value, ...rest }) => {
+        const DollarFormat = ({ visible, value, style }: { visible: boolean, value: number, style?: React.CSSProperties }) => {
             return (
                 <>
                     {visible &&
-                        <span {...rest}>
+                        <span style={style}>
                             &#40;{formatDollar(limitAmount, value)}&#41;
                         </span>}
                 </>
@@ -90,8 +89,8 @@ const AddAlert = (props) => {
                         getValue={() => getValue()}
                         onFocus={() => handleFocus()}
                         onBlur={() => { setPct('') }}
-                        value={pct}
-                        size="7"
+                        value={{ percent_amount: pct }}
+                        size={7}
                     >
                         {({ focused }) => (
                             <>
@@ -111,7 +110,7 @@ const AddAlert = (props) => {
                                     <Return
                                         width={'.6em'}
                                         height={'.6em'}
-                                        stroke={"var(--m-invert-text)"}
+                                        stroke={"var(--m-text-secondary)"}
                                     />
                                 </div>
                             </>
@@ -122,7 +121,7 @@ const AddAlert = (props) => {
         )
     }
 
-    const Option = ({ value, active, selected }) => (
+    const Option = ({ value, active, selected }: { value: number, active: boolean, selected?: boolean }) => (
         <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
             <div>{value}%</div>
             <div>
@@ -142,13 +141,13 @@ const AddAlert = (props) => {
     const Options = () => (
         alertOptions.map((option) => (
             <ComboSelect.Option
-                value={option.value}
+                option={option}
                 disabled={option.disabled}
                 key={option.id}
             >
                 {({ active, selected }) => (
                     <Option
-                        value={option.value}
+                        value={option.value.percent_amount}
                         active={active}
                         selected={selected}
                     />
@@ -159,7 +158,7 @@ const AddAlert = (props) => {
 
     const ButtonText = () => (
         <>
-            {selectedAlerts.length > 0
+            {(selectedAlerts?.length && selectedAlerts?.length > 0)
                 &&
                 <div style={{
                     display: 'flex',
@@ -188,11 +187,11 @@ const AddAlert = (props) => {
                     </span>
                 </div>
             }
-            {selectedAlerts.length === 0 &&
+            {(selectedAlerts?.length && selectedAlerts.length === 0 || selectedAlerts == undefined) &&
                 <span>
                     Add Alert
                 </span>}
-            {selectedAlerts.length > 0
+            {(selectedAlerts?.length && selectedAlerts.length > 0)
                 ?
                 <ArrowIcon
                     stroke={'var(--m-text)'}
@@ -205,6 +204,17 @@ const AddAlert = (props) => {
         </>
     )
 
+    const { field } = useController({
+        name: 'alerts',
+        control: props.control,
+        defaultValue: selectedAlerts
+    })
+
+    // Update form value
+    useEffect(() => {
+        field.onChange(selectedAlerts)
+    }, [selectedAlerts])
+
     return (
         <ComboSelect
             name="alert"
@@ -212,7 +222,7 @@ const AddAlert = (props) => {
             onChange={setSelectedAlerts}
             setSelections={setAlertOptions}
             limit={7}
-            multiple
+            multiple={true}
         >
             {({ open }) => (
                 <>

@@ -1,36 +1,36 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import Big from 'big.js'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import './styles/Forms.scss'
 import { useAddNewCategoryMutation, Category } from '@features/categorySlice'
-import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect } from '@components/inputs'
+import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect, emoji } from '@components/inputs'
 import { withModal } from '@ledget/ui'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@ledget/ui'
 
 export const schema = z.object({
     name: z.string().min(1, { message: 'required' }).toLowerCase(),
-    limit_amount: z.string().min(1, { message: 'required' }).transform((value) =>
-        Big(value.replace(/\D+/g, '')).times(100).toString(),
-    ),
+    limit_amount: z.number().min(1, { message: 'required' }).transform((value) => (isNaN(value) ? undefined : value)),
     period: z.string().min(1, { message: 'required' }),
+    alerts: z.array(z.object({ percent_amount: z.number() })).optional(),
 })
 
 const CreateCategoryModal = withModal((props) => {
     const location = useLocation()
+    const [emoji, setEmoji] = useState<emoji>()
     const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation()
 
-    const { register, watch, control, handleSubmit, formState: { errors } } = useForm({
+    const { register, control, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(schema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
-    const watchLimitAmount = watch('limit_amount')
+    const watchLimitAmount = useWatch({ control, name: 'limit_amount' })
 
     useEffect(() => {
         isSuccess && props.closeModal()
@@ -42,21 +42,7 @@ const CreateCategoryModal = withModal((props) => {
             <hr />
             <form
                 onSubmit={handleSubmit((data, e) => {
-                    e?.preventDefault()
-                    const formData = new FormData(e?.target)
-                    let body = Object.fromEntries(formData as any)
-                    let alerts = []
-                    for (const [key, value] of Object.entries(body)) {
-                        if (key.includes('alert')) {
-                            alerts.push({ percent_amount: Number(value.replace(/\D+/g, '')) })
-                            delete body[key]
-                        }
-                    }
-                    if (alerts.length > 0) {
-                        body.alerts = alerts
-                    }
-
-                    addNewCategory({ ...body, ...data } as Category)
+                    addNewCategory({ ...data, emoji: emoji } as Category)
                 })}
                 id="new-cat-form"
                 className="create-form"
@@ -64,6 +50,8 @@ const CreateCategoryModal = withModal((props) => {
                 <div className="split-inputs">
                     <div>
                         <EmojiComboText
+                            emoji={emoji}
+                            setEmoji={setEmoji}
                             name="name"
                             placeholder="Name"
                             register={register}
@@ -87,7 +75,7 @@ const CreateCategoryModal = withModal((props) => {
                         />
                     </div>
                     <div>
-                        <AddAlert limitAmount={watchLimitAmount} />
+                        <AddAlert limitAmount={watchLimitAmount} control={control} />
                     </div>
                 </div>
                 <SubmitForm

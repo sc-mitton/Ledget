@@ -42,8 +42,16 @@ const PeriodSelect = (props: P) => {
     })
 
     useEffect(() => {
-        field.onChange(value)
+        field.onChange(value?.value)
     }, [value])
+
+    // Set value as default value
+    useEffect(() => {
+        const defaultOption = options.find(op => op.default)
+        if (defaultOption) {
+            setValue(defaultOption)
+        }
+    }, [options])
 
     return (
         <>
