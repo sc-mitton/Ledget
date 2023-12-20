@@ -19,7 +19,9 @@ const List = ({ setFocusedTransaction }:
   const { start, end } = useGetStartEndQueryParams()
   const { isDark } = useColorScheme()
 
-  const { isError } = useGetTransactionsQuery({ confirmed: true, start, end })
+  const { isError } = useGetTransactionsQuery(
+    { confirmed: true, start, end },
+    { skip: !start || !end })
   const transactionsData = useAppSelector(selectFilteredFetchedConfirmedTransactions)
 
   let monthholder: number | undefined
@@ -91,7 +93,6 @@ const List = ({ setFocusedTransaction }:
 }
 
 export default function Table() {
-  const [searchParams] = useSearchParams()
   const [isFetchingMore, setFetchingMore] = useState(false)
   const { start, end } = useGetStartEndQueryParams()
   const [focusedTransaction, setFocusedTransaction] = useState<Transaction>()
@@ -101,8 +102,9 @@ export default function Table() {
 
   // Initial transaction fetch
   useEffect(() => {
+    if (!start || !end) return
     getTransactions({ confirmed: true, start, end }, true)
-  }, [searchParams.get('month'), searchParams.get('year')])
+  }, [start, end])
 
   // Refetches for pagination
   const handleScroll = (e: any) => {

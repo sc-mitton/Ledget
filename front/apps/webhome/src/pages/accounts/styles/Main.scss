@@ -140,7 +140,7 @@ $wafer-container-padding: .75rem;
 }
 
 .account-wafer {
-    box-shadow: var(--new-item-drop-shadow);
+    box-shadow: var(--wafer-drop-shadow);
     display: flex;
     flex-direction: column;
 
@@ -158,7 +158,6 @@ $wafer-container-padding: .75rem;
     }
 
     &.active {
-        // box-shadow: var(--active-wafer-drop-shadow);
         border: 2px solid rgb(var(--main-color-values), .3);
         border-radius: var(--border-radius4);
         transform: scale(1.01);

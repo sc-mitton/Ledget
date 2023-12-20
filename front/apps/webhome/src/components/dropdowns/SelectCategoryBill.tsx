@@ -45,7 +45,7 @@ type I = I1 | I2
 
 function SelectCategoryBillBody(props: I) {
     const [query, setQuery] = useState('')
-    const { start, end } = useGetStartEndQueryParams(props.month, props.year)
+    const { start, end } = useGetStartEndQueryParams({ month: props.month, year: props.year })
     const [getCategories, {
         data: categoryData,
         isLoading: isFetchingCategories,

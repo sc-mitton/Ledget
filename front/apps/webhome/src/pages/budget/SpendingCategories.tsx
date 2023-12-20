@@ -305,10 +305,6 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
         </div>
     )
 
-    useEffect(() => {
-        console.log('mHlightHover', mHlightHover, 'sHlightHover', sHlightHover)
-    }, [mHlightHover, sHlightHover])
-
     return (
         <Tab.Group as={Column}>
             {({ selectedIndex }) => (

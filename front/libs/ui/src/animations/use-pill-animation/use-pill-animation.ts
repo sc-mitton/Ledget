@@ -50,10 +50,6 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
   })
 
   useEffect(() => {
-    console.group(selectorWidth, selectorHeight, selectorLeft, selectorTop)
-  }, [selectorWidth, selectorHeight, selectorLeft, selectorTop])
-
-  useEffect(() => {
     if (selectors.length > 0) {
       const element = selectors.find(find)
       if (element) {

@@ -27,9 +27,10 @@
     --white: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 100%));
 
     /* Drop Shadows & Borders */
-    --window-drop-shadow: var(--window-drop-shadow-color) 0px 2px 16px;
+    --window-drop-shadow: var(--window-drop-shadow-color) 0px 2px 20px;
     --header-box-shadow: var(--header-box-shadow-color) 0px 2px 2px;
     --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 2px 14px;
+    --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0 2px 16px;
 
     --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px 6px 0px;
     --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 3px 12px;
@@ -90,6 +91,7 @@
 
         // Windows
         --window: hsl(0, 0%, 7%);
+        --window-border: hsl(0, 0%, 12%);
         --window-rgb: 5, 5, 5;
         --window2: #121212;
         --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 75%);
@@ -130,9 +132,10 @@
         --btn-mid-gray-hover: hsl(0, 0%, 90%);
 
         // Drop Shadows & Borders
-        --window-drop-shadow-color: hsl(0, 0%, 15%);
+        --window-drop-shadow-color: hsl(0, 0%, 9%);
         --header-box-shadow-color: hsl(0, 0%, 10%);
-        --new-item-drop-shadow-color: hsl(0, 0%, 15%);
+        --new-item-drop-shadow-color: hsl(0, 0%, 5%);
+        --wafer-drop-shadow-color: hsl(0, 0%, 15%);
         --scroll-shadow: hsl(0, 0%, 3%), transparent;
 
         --low-elevation-drop-shadow-color: rgba(255, 255, 255, 0.05);
@@ -193,6 +196,7 @@
         --window: #fafafa;
         --window-rgb: 250, 250, 250;
         --window2: #ededed;
+        --window-border: hsl(0, 0%, 94%);
 
         --inner-window: hsl(0, 0%, 93%);
         --inner-window-rgb: 246, 246, 246;
@@ -230,9 +234,10 @@
         --btn-mid-gray-hover: hsl(0, 0%, 40%);
 
         // Drop Shadows & Borders
-        --window-drop-shadow-color: hsl(0, 0%, 90%);
+        --window-drop-shadow-color: hsl(0, 0%, 92%);
+        --wafer-drop-shadow-color: hsl(0, 0%, 88%);
         --header-box-shadow-color: hsl(0, 0%, 70%);
-        --new-item-drop-shadow-color: hsl(0, 0%, 88%);
+        --new-item-drop-shadow-color: hsl(0, 0%, 100%);
         --scroll-shadow: hsl(0, 0%, 97%),
             transparent;
 

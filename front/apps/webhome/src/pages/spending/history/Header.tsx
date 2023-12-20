@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useWatch, useForm } from 'react-hook-form'
+import { useSearchParams } from 'react-router-dom'
 import { DatePicker } from "antd"
 import {
     useTransition,
@@ -68,7 +69,13 @@ const FilterWindow = () => {
         resolver: zodResolver(filterSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
-        defaultValues: filter
+        defaultValues: {
+            ...filter,
+            date_range: filter.date_range ? [
+                filter.date_range[0],
+                filter.date_range[1]
+            ] : [start, end]
+        }
     })
 
     const merchantsFieldValue = useWatch({ control, name: 'merchants' })
@@ -270,6 +277,7 @@ const FilterWindow = () => {
 }
 
 const HistoryHeader = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
     const {
         showFilterForm,
         setShowFilterForm,
@@ -300,6 +308,18 @@ const HistoryHeader = () => {
     })
 
     useChain(showFilterForm ? [windowApi, formApi] : [formApi, windowApi], [0, .4])
+
+    // On mount set month and date query params to current date and month
+    useEffect(() => {
+        if (!searchParams.get('month') || !searchParams.get('year')) {
+            const year = sessionStorage.getItem(`${location.pathname}-year`) || new Date().getFullYear()
+            const month = sessionStorage.getItem(`${location.pathname}-month`) || new Date().getMonth() + 1
+
+            searchParams.set('month', `${month}`)
+            searchParams.set('year', `${year}`)
+        }
+        setSearchParams(searchParams)
+    }, [])
 
     return (
         <>

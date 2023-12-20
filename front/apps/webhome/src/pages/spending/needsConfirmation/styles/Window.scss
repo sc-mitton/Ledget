@@ -33,7 +33,7 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
     position: absolute;
     border-radius: var(--border-radius3);
     box-shadow: var(--new-item-drop-shadow);
-    background: var(--window);
+    // background: var(--window);
     padding: $new-item-padding;
     border: 1.25px solid var(--window-border);
     display: grid;

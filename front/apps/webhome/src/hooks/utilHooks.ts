@@ -1,3 +1,5 @@
+
+import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
 interface DateRange {
@@ -5,17 +7,26 @@ interface DateRange {
     end: number
 }
 
-export const useGetStartEndQueryParams = (month?: number, year?: number): DateRange => {
+export const useGetStartEndQueryParams = (arg?: { month?: number, year?: number }): DateRange => {
+    const { month, year } = arg || {}
     const [searchParams] = useSearchParams()
-    const today = new Date()
-    const searchYear = searchParams.get('year')
-    const searchMonth = searchParams.get('month')
 
-    const localYear = searchYear ? parseInt(searchYear) : year ? year : today.getFullYear()
-    const localMonth = searchMonth ? parseInt(searchMonth) : month ? month : today.getMonth()
+    const [start, setStart] = useState(0)
+    const [end, setEnd] = useState(0)
 
-    const start = Math.floor(new Date(localYear, localMonth - 1, 1).getTime() / 1000)
-    const end = Math.floor(new Date(localYear, localMonth, 0).getTime() / 1000)
+    useEffect(() => {
+        if (month && year) {
+            const start = Math.floor(new Date(year, month - 1, 1).getTime() / 1000)
+            const end = Math.floor(new Date(year, month, 0).getTime() / 1000)
+            setStart(start)
+            setEnd(end)
+        } else if (searchParams.get('month') && searchParams.get('year')) {
+            const year = parseInt(searchParams.get('year')!)
+            const month = parseInt(searchParams.get('month')!)
+            setStart(Math.floor(new Date(year, month - 1, 1).getTime() / 1000))
+            setEnd(Math.floor(new Date(year, month, 0).getTime() / 1000))
+        }
+    }, [month, year, searchParams.get('month'), searchParams.get('year')])
 
     return { start, end }
 }

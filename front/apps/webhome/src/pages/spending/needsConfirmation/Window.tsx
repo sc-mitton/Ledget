@@ -42,6 +42,7 @@ import {
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useFilterFormContext } from '../context'
+import { useColorScheme } from '@ledget/ui'
 
 // Sizing (in ems)
 const translate = 1
@@ -104,15 +105,15 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
     }
 }
 
-// const _getBackGroundColor = (index: number, expanded: boolean) => {
-//     let lightness: number
-//     if (index === 0 || expanded) {
-//         lightness = 98
-//     } else {
-//         lightness = 98 - 4 * (index * 2)
-//     }
-//     return `hsl(0, 0%, ${lightness}%)`
-// }
+const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean) => {
+    let lightness: number
+    if (index === 0 || expanded) {
+        lightness = darkMode ? 10 : 94
+    } else {
+        lightness = darkMode ? 8 + (index * 2) : 94 - (index * 2)
+    }
+    return `hsl(0, 0%, ${lightness}%)`
+}
 
 const NewItem: FC<{
     item: Transaction
@@ -236,7 +237,7 @@ const NeedsConfirmationWindow = () => {
         )
     const { start, end } = useGetStartEndQueryParams()
     const { setShowFilterForm, unconfirmedStackExpanded, setUnconfirmedStackExpanded } = useFilterFormContext()
-
+    const { isDark } = useColorScheme()
 
     const [confirmTransactions] = useConfirmTransactionsMutation()
     const unconfirmedTransactions = useAppSelector(
@@ -261,8 +262,10 @@ const NeedsConfirmationWindow = () => {
 
     // Initial fetch when query params change
     useEffect(() => {
-        fetchTransactions({ start, end, offset }, true)
-    }, [searchParams.get('month'), searchParams.get('year')])
+        if (start && end) {
+            fetchTransactions({ start, end, offset }, true)
+        }
+    }, [start, end])
 
     // Paginated requests
     useEffect(() => {
@@ -290,6 +293,7 @@ const NeedsConfirmationWindow = () => {
                 // top: getTop(index, false),
                 y: _getY(index, unconfirmedStackExpanded, false),
                 transform: `scale(${_getScale(index, unconfirmedStackExpanded, false)})`,
+                backgroundColor: _getBackGroundColor(index, unconfirmedStackExpanded, isDark),
             }),
             enter: (item, index) => ({
                 y: _getY(index, unconfirmedStackExpanded, true),
@@ -305,6 +309,7 @@ const NeedsConfirmationWindow = () => {
                 transform: `scale(${_getScale(index, unconfirmedStackExpanded)})`,
                 zIndex: `${(unconfirmedTransactions!.length - index)}`,
                 opacity: _getOpacity(index, unconfirmedStackExpanded),
+                backgroundColor: _getBackGroundColor(index, unconfirmedStackExpanded, isDark),
             }),
             onRest: () => {
                 unconfirmedStackExpanded

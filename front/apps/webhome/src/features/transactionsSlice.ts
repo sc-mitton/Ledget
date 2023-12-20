@@ -344,7 +344,7 @@ export const filteredFetchedConfirmedTransactions = createSlice({
         builder.addMatcher(
             extendedApiSlice.endpoints.getTransactions.matchFulfilled,
             (state, action) => {
-
+                console.log('fullfilled')
                 if (action.meta.arg.originalArgs.confirmed && !action.meta.arg.originalArgs.category) {
                     state.filtered = action.payload.results
                 }
@@ -397,6 +397,7 @@ const selectConfirmedQue = (state: RootState) => state.confirmStack.confirmedQue
 const selectDateYear = (state: RootState, date: { year: number, month: number }) => date
 export const selectFilteredFetchedConfirmedTransactions = (state: RootState) => state.filteredFetchedonfirmedTransactions.filtered
 export const selectConfirmedTransactionFilter = (state: RootState) => state.filteredFetchedonfirmedTransactions.filter
+
 
 export const selectUnconfirmedTransactions = createSelector(
     [selectUnconfirmed, selectDateYear],

@@ -54,10 +54,10 @@ const TotalLeft = ({ control, amount, error }: { control: Control<SplitsSchema>,
 
 export function SplitTransactionInput({ item, onCancel }: { item: Transaction, onCancel: () => void }) {
   const [confirmTransactions, { isSuccess: isUpdateSuccess, isLoading: isUpdating }] = useConfirmTransactionsMutation()
-  const { start, end } = useGetStartEndQueryParams(
-    new Date(item.datetime).getMonth() + 1,
-    new Date(item.datetime).getFullYear()
-  )
+  const { start, end } = useGetStartEndQueryParams({
+    month: new Date(item.datetime).getMonth() + 1,
+    year: new Date(item.datetime).getFullYear()
+  })
   const { data: categoriesData } = useGetCategoriesQuery({ start, end, spending: false })
 
   const { handleSubmit, formState: { errors }, control } = useForm<SplitsSchema>({

@@ -11,6 +11,8 @@ import MonthPicker from '@components/inputs/MonthPicker'
 import BudgetSummary from './BudgetSummary'
 import SpendingCategories from './SpendingCategories'
 import Bills from './Bills'
+import { setConfirmedTransactionFilter } from '@features/transactionsSlice'
+import { useAppDispatch } from '@hooks/store'
 
 
 const Wrapper = ({ onClick, children }) => (
@@ -113,6 +115,7 @@ const Spending = () => {
 function Window() {
     const [searchParams, setSearchParams] = useSearchParams()
     const location = useLocation()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         // On mount set month and date to current date and month
@@ -122,6 +125,13 @@ function Window() {
 
             searchParams.set('month', `${month}`)
             searchParams.set('year', `${year}`)
+
+            dispatch(setConfirmedTransactionFilter({
+                date_range: [
+                    Math.floor(new Date(year, month - 1, 1).getTime() / 1000),
+                    Math.floor(new Date(year, month, 0).getTime() / 1000)
+                ]
+            }))
         }
 
         setSearchParams(searchParams)
