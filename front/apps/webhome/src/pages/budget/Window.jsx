@@ -120,18 +120,11 @@ function Window() {
     useEffect(() => {
         // On mount set month and date to current date and month
         if (!searchParams.get('month') || !searchParams.get('year')) {
-            const year = sessionStorage.getItem(`${location.pathname}-year`) || new Date().getFullYear()
-            const month = sessionStorage.getItem(`${location.pathname}-month`) || new Date().getMonth() + 1
+            const year = sessionStorage.getItem(`budget-year`) || new Date().getFullYear()
+            const month = sessionStorage.getItem(`budget-month`) || new Date().getMonth() + 1
 
             searchParams.set('month', `${month}`)
             searchParams.set('year', `${year}`)
-
-            dispatch(setConfirmedTransactionFilter({
-                date_range: [
-                    Math.floor(new Date(year, month - 1, 1).getTime() / 1000),
-                    Math.floor(new Date(year, month, 0).getTime() / 1000)
-                ]
-            }))
         }
 
         setSearchParams(searchParams)
@@ -143,6 +136,15 @@ function Window() {
         const month = searchParams.get('month')
         sessionStorage.setItem(`${location.pathname}-month`, `${month}`)
         sessionStorage.setItem(`${location.pathname}-year`, `${year}`)
+
+        // Dispatch filter
+        dispatch(setConfirmedTransactionFilter({
+            date_range: [
+                Math.floor(new Date(year, month - 1, 1).getTime() / 1000),
+                Math.floor(new Date(year, month, 0).getTime() / 1000)
+            ]
+        }))
+
     }, [searchParams.get('year'), searchParams.get('month')])
 
     return (

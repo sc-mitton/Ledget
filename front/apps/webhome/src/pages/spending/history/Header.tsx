@@ -69,13 +69,7 @@ const FilterWindow = () => {
         resolver: zodResolver(filterSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
-        defaultValues: {
-            ...filter,
-            date_range: filter.date_range ? [
-                filter.date_range[0],
-                filter.date_range[1]
-            ] : [start, end]
-        }
+        defaultValues: filter
     })
 
     const merchantsFieldValue = useWatch({ control, name: 'merchants' })
@@ -312,8 +306,8 @@ const HistoryHeader = () => {
     // On mount set month and date query params to current date and month
     useEffect(() => {
         if (!searchParams.get('month') || !searchParams.get('year')) {
-            const year = sessionStorage.getItem(`${location.pathname}-year`) || new Date().getFullYear()
-            const month = sessionStorage.getItem(`${location.pathname}-month`) || new Date().getMonth() + 1
+            const year = sessionStorage.getItem(`budget-year`) || new Date().getFullYear()
+            const month = sessionStorage.getItem(`budget-month`) || new Date().getMonth() + 1
 
             searchParams.set('month', `${month}`)
             searchParams.set('year', `${year}`)

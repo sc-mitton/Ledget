@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useForm, FieldValues } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
+import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import './styles/Forms.scss'
@@ -19,12 +20,12 @@ const EditCategory = withModal((props) => {
     const [category, setCategory] = useState<Category>()
     const [updateCategory, { isSuccess: categoryIsUpdated, isLoading: isUpdatingCategory }] = useUpdateCategoriesMutation()
 
-    const { register, handleSubmit, watch, formState: { errors, touchedFields }, control, setValue } = useForm({
+    const { register, handleSubmit, watch, formState: { errors }, control, setValue } = useForm<z.infer<typeof categoryFormSchema>>({
         resolver: zodResolver(categoryFormSchema) as any,
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
-    const watchLimitAmount = watch('limit_amount')
+    const watchLimitAmount = useWatch({ control, name: 'limit_amount' })
 
     // Set values on load
     useEffect(() => {
@@ -46,19 +47,28 @@ const EditCategory = withModal((props) => {
         }
     }, [categoryIsUpdated])
 
+    const onSubmit = (data: z.infer<typeof categoryFormSchema>) => {
+        const payload = { id: category?.id } as any
+        if (data.limit_amount !== category?.limit_amount) {
+            // If the limit amount is changed, we'll need to create
+            // a new category on the backend, so we pass all the data
+            updateCategory({
+                id: category?.id,
+                ...data
+            } as Category)
+        } else {
+            let k: keyof typeof data
+            for (k in data)
+                if (data[k] !== category?.[k])
+                    payload[k] = data[k]
+            updateCategory(payload as Category)
+        }
+    }
+
     return (
         <div>
             <form
-                onSubmit={handleSubmit((data, e) => {
-                    const payload = { id: category?.id } as Partial<Category>
-                    let k: keyof Category
-                    for (k in category) {
-                        if (data[k] !== category?.[k]) {
-                            payload[k] = data[k]
-                        }
-                    }
-                    updateCategory(payload as Category)
-                })}
+                onSubmit={handleSubmit((data, e) => onSubmit(data))}
                 id="new-cat-form"
                 className="create-form"
             >
@@ -91,7 +101,7 @@ const EditCategory = withModal((props) => {
                     <div>
                         <AddAlert
                             control={control}
-                            limitAmount={watchLimitAmount}
+                            limitAmount={watchLimitAmount ? watchLimitAmount / 100 : undefined}
                             defaultValues={category?.alerts}
                         />
                     </div>

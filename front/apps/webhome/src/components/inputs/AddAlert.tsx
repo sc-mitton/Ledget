@@ -9,7 +9,7 @@ import ComboSelect from './ComboSelect'
 import { formatCurrency } from '@ledget/ui'
 import { SlimmestInputButton, MenuTextInput, DropDownDiv } from '@ledget/ui'
 
-const formatDollar = (value: string, percentage: number) => {
+const formatDollar = (value?: string | number, percentage?: number) => {
     if (!value) return ''
     !percentage && (percentage = 0)
     const val = Number(`${value}`.replace(/[^0-9.]/g, ''))
@@ -24,7 +24,7 @@ const baseAlertOptions = [
     { id: 4, value: { percent_amount: 100 }, disabled: false },
 ]
 
-const AddAlert = (props: { limitAmount: string, defaultValues?: typeof baseAlertOptions[0]['value'][], control: Control<any> }) => {
+const AddAlert = (props: { limitAmount?: string | number, defaultValues?: typeof baseAlertOptions[0]['value'][], control: Control<any> }) => {
     const { limitAmount, defaultValues } = props
     const [selectedAlerts, setSelectedAlerts] = useState(defaultValues)
     const buttonRef = useRef<HTMLButtonElement>(null)

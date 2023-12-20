@@ -1,6 +1,7 @@
 
 from rest_framework import serializers
 from django.db import transaction
+from datetime import datetime
 import logging
 
 from ledgetback.serializer_mixins import NestedCreateMixin
@@ -66,11 +67,40 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data, *args, **kwargs):
-        alerts = validated_data.pop('alerts', [])
+        '''
+        Update the category instance and its alerts. If the category's limit
+        is being updated, then a new category will be created if the category
+        is older than a month. All transactions for the month that were
+        connected to the old category will be reconnected to the new category.
+        '''
+        now = datetime.now()
+        if 'limit_amount' in validated_data and \
+                instance.created < now.replace(month=now.month - 1):
+            return self.create(validated_data)
 
-        new_alerts = []
-        alert_ids = []
-        for alert in alerts:
+        # Update the object instance and save it to the db
+        try:
+            alerts = self._get_or_create_alerts(
+                instance, validated_data.pop('alerts', []))
+
+            for field, value in validated_data.items():
+                setattr(instance, field, value)
+            instance.alerts.set(alerts)
+            instance.save()
+        except Exception as e:
+            logger.error(e)
+            raise serializers.ValidationError(e)
+
+        return instance
+
+    def _get_or_create_alerts(self, instance, validated_alert_data):
+        '''
+        Takes a list of validated alert data and returns a list of alert objects
+        that are either new alerts or existing alerts that have been updated.
+        '''
+        new_alerts, alert_ids = [], []
+
+        for alert in validated_alert_data:
             # Validated alert data without an id means it's new
             if alert.get('id', False):
                 alert_ids.append(alert.get('id'))
@@ -81,17 +111,7 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
         for alert in create_alerts:
             alert_ids.append(str(alert.id))
 
-        # Update the object instance and save it to the db
-        try:
-            for field, value in validated_data.items():
-                setattr(instance, field, value)
-            instance.alerts.set(Alert.objects.filter(id__in=alert_ids))
-            instance.save()
-        except Exception as e:
-            logger.error(e)
-            raise serializers.ValidationError(e)
-
-        return instance
+        return Alert.objects.filter(id__in=alert_ids)
 
     def get_amount_spent(self, obj):
         if hasattr(obj, 'amount_spent'):
