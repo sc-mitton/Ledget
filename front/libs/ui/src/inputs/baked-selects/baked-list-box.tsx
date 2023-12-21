@@ -85,7 +85,7 @@ export const BakedListBox = <T extends Option | string>(props: BakedSelectProps<
 
   // Update field value if value changes
   useEffect(() => {
-    if (field?.value !== value) field?.onChange(value)
+    if (value) field?.onChange(value)
   }, [value])
 
   // Set initial default value

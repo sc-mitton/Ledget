@@ -116,7 +116,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         updateBills: builder.mutation<any, Bill>({
             query: (data) => ({
                 url: `bills/${data.id}`,
-                method: 'PUT',
+                method: Array.isArray(data)
+                    ? 'PATCH'
+                    : (data.upper_amount || data.lower_amount) ? 'PUT' : 'PATCH',
                 body: data,
             }),
             invalidatesTags: ['Bill'],

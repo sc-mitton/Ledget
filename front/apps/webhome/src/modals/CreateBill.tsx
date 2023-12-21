@@ -24,6 +24,12 @@ export const billSchema = z.object({
     lower_amount: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
     upper_amount: z.number().transform((value) => (isNaN(value) ? undefined : value)),
     period: z.string().min(1, { message: 'required' }),
+
+    day: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
+    week: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
+    week_day: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
+    month: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
+
 }).refine((data) => {
     return data.lower_amount && data.upper_amount
         ? data.lower_amount < data.upper_amount
@@ -70,7 +76,7 @@ const Form = withModal((props) => {
     const [scheduleMissing, setScheduleMissing] = useState(false)
     const [rangeMode, setRangeMode] = useState(false)
 
-    const { register, handleSubmit, formState: { errors }, control } = useForm<Bill>({
+    const { register, handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof billSchema>>({
         resolver: zodResolver(billSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
@@ -88,15 +94,11 @@ const Form = withModal((props) => {
 
         handleSubmit((data) => {
             if (body.errors) { return }
-            addNewBill({ ...body, ...data })
+            addNewBill({ ...body, ...data } as Bill)
         })(e)
     }
 
-    const billPeriod = useWatch({
-        control,
-        name: 'period',
-        defaultValue: 'month'
-    })
+    const billPeriod = useWatch({ control, name: 'period' })
 
     return (
         <>
@@ -111,12 +113,12 @@ const Form = withModal((props) => {
                     <label htmlFor="schedule">Schedule</label>
                     <div className="multi-input-row">
                         <div>
-                            <PeriodSelect control={control} enableAll={true} />
+                            <PeriodSelect name="period" control={control} enableAll={true} />
                         </div>
                         {billPeriod !== 'once' &&
                             <div>
                                 <BillScheduler
-                                    billPeriod={billPeriod}
+                                    billPeriod={billPeriod as Bill['period']}
                                     error={scheduleMissing}
                                     register={register}
                                 />

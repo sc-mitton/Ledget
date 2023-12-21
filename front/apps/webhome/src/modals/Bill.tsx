@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion'
 import { Menu, RadioGroup } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import './styles/Bill.scss'
 import { billSchema } from './CreateBill'
@@ -259,7 +260,7 @@ const DeleteBill = ({ bill, onCancel, onDelete }: { bill: TransformedBill, onCan
 
 const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, onCancel: () => void, onUpdateSuccess: () => void }) => {
     const [updateBill, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useUpdateBillsMutation()
-    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<Bill>({
+    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<z.infer<typeof billSchema>>({
         resolver: zodResolver(billSchema)
     })
 
@@ -273,17 +274,26 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
         // parse form data
         const data = new FormData(e.currentTarget)
         const body = Object.fromEntries(data as any)
-        if (body.errors) {
+        if (body.errors)
             body.errors.schedule && setScheduleMissing(true)
-        }
 
         handleSubmit((data) => {
             if (body.errors) { return }
-            updateBill({
-                reminders: reminders,
-                ...body,
-                ...data,
-            } as Bill)
+            if (data.upper_amount || data.lower_amount) {
+                updateBill({
+                    id: bill?.id,
+                    reminders: reminders,
+                    ...body,
+                    ...data,
+                } as Bill)
+            } else {
+                const payload = { id: bill?.id } as any
+                let k: keyof typeof data
+                for (k in data)
+                    if (data[k] !== bill?.[k])
+                        payload[k] = data[k]
+                updateBill(payload as Bill)
+            }
         })(e)
     }
 
@@ -306,7 +316,6 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
 
     return (
         <form onSubmit={submitForm}>
-            <input type="hidden" value={bill.id} {...register('id')} />
             <div id="bill-edit">
                 <h3>Edit Bill</h3>
                 <hr />

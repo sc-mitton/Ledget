@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 
-import { Control, useController } from 'react-hook-form'
+import { Control } from 'react-hook-form'
 
 import { SlimmestInputButton, BakedListBox } from '@ledget/ui'
 
-const opts = [
+const baseopts = [
     { id: 1, value: 'month', label: 'Monthly', disabled: false, default: true },
     { id: 2, value: 'year', label: 'Yearly', disabled: false, default: false },
     { id: 3, value: 'once', label: 'Once', disabled: true, default: false }
@@ -14,7 +14,7 @@ interface P {
     hasLabel?: boolean
     labelPrefix?: string
     enableAll?: boolean
-    default?: string
+    default?: typeof baseopts[number]['value']
     control: Control<any>
     name?: string
 }
@@ -29,37 +29,22 @@ const PeriodSelect = (props: P) => {
         name
     } = props
 
-    const [options, setOptions] = useState<typeof opts>(opts)
-    const [value, setValue] = useState<typeof opts[number]>()
+    const [options, setOptions] = useState<typeof baseopts>(baseopts)
 
     useEffect(() => {
-        setOptions(opts.filter(op => enableAll ? true : !op.disabled))
+        const newOptions = baseopts.map(op => enableAll ? { ...op, disabled: false } : op)
+        setOptions(newOptions)
     }, [enableAll, defaultValue])
-
-    const { field } = useController({
-        name: name || 'period',
-        control
-    })
-
-    useEffect(() => {
-        field.onChange(value?.value)
-    }, [value])
-
-    // Set value as default value
-    useEffect(() => {
-        const defaultOption = options.find(op => op.default)
-        if (defaultOption) {
-            setValue(defaultOption)
-        }
-    }, [options])
 
     return (
         <>
             {hasLabel && <label htmlFor="period">Refreshes</label>}
             <BakedListBox
+                control={control as any}
+                name={name}
                 as={SlimmestInputButton}
                 options={options}
-                onChange={setValue}
+                defaultValue={options.find(op => op.value === defaultValue)}
                 labelPrefix={labelPrefix}
             />
         </>

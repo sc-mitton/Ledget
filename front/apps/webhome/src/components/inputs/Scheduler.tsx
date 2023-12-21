@@ -1,11 +1,13 @@
 import React, { FC, useState, useEffect, useRef, useContext, createContext } from 'react'
 
 import { UseFormRegister } from 'react-hook-form'
+import { z } from 'zod'
 
 import './styles/Dropdowns.css'
 import './styles/Scheduler.scss'
 import Radios from './Radios'
 import type { Bill } from '@features/billSlice'
+import { billSchema } from '@modals/CreateBill'
 import { useClickClose } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 import { SlimmestInputButton, FormErrorTip, DropDownDiv, getDaySuffix } from '@ledget/ui'
@@ -141,12 +143,12 @@ const ModeSelector = ({ mode, setMode }: {
             onChange={setMode}
             style={{
                 borderRadius: 'var(--border-radius2)',
-                backgroundColor: 'var(--input-background)',
+                backgroundColor: 'var(--icon-hover-light-gray)',
                 display: 'inline-block',
             }}
         >
             <Radios.Pill styles={{
-                backgroundColor: 'var(--btn-gray)',
+                backgroundColor: 'var(--icon-hover-gray)',
                 borderRadius: 'var(--border-radius2)'
             }} />
             {options.map((option) => (
@@ -163,7 +165,7 @@ const ModeSelector = ({ mode, setMode }: {
                             style={{
                                 color: selected
                                     ? 'var(--m-invert-text)'
-                                    : 'var(--input-placeholder2)',
+                                    : 'var(--m-text-tirtiary)',
                                 fontWeight: '400'
                             }}
                         >
@@ -748,7 +750,7 @@ interface BSP {
     defaultValue?: defaultValue,
     setHasSchedule?: React.Dispatch<React.SetStateAction<boolean>>,
     error: any
-    register: UseFormRegister<Bill>
+    register: UseFormRegister<z.infer<typeof billSchema>>
 }
 
 export const BillScheduler = (props: BSP) => {
