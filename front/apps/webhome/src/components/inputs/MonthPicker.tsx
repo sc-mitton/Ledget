@@ -167,7 +167,7 @@ const MonthPicker = () => {
                     onClick={() => { setShowPicker(!showPicker) }}
                     aria-label="Open month picker"
                 >
-                    <ArrowIcon size={'1em'} />
+                    <ArrowIcon size={'1em'} stroke={'currentColor'} />
                 </IconButton>
             </div>
             <DropDownDiv

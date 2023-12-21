@@ -65,7 +65,7 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                     onClick={() => { props.handlers[0]() }}
                     aria-label="Split"
                 >
-                    <Split /> Split
+                    <Split fill={'currentColor'} /> Split
                 </DropdownItem>
                 <DropdownItem
                     as='li'
@@ -74,7 +74,7 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                     tabIndex={-1}
                     aria-label="Details"
                 >
-                    <DetailsIcon />
+                    <DetailsIcon fill={'currentColor'} />
                     Details
                 </DropdownItem>
             </ul>

@@ -54,7 +54,7 @@ const DropDown = () => {
                                         }).toString()
                                     })}
                                 >
-                                    <Edit size={'.9em'} />
+                                    <Edit size={'.9em'} fill={'currentColor'} />
                                     Categories
                                 </Wrapper>
                                 <Wrapper
@@ -66,7 +66,7 @@ const DropDown = () => {
                                         }).toString()
                                     })}
                                 >
-                                    <Plus size={'.9em'} />
+                                    <Plus size={'.9em'} stroke={'currentColor'} />
                                     New category
                                 </Wrapper>
                                 <Wrapper
@@ -78,7 +78,7 @@ const DropDown = () => {
                                         }).toString()
                                     })}
                                 >
-                                    <Plus size={'.9em'} />
+                                    <Plus size={'.9em'} stroke={'currentColor'} />
                                     New bill
                                 </Wrapper>
                             </Menu.Items>

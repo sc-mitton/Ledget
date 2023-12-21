@@ -59,7 +59,7 @@
 .month-picker-item:hover,
 .month-picker-item:focus,
 .arrow-nav:focus-visible {
-    background-color: var(--icon-light-gray);
+    background-color: var(--dropdown-item-background);
     box-shadow: none;
     outline: none;
 }

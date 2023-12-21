@@ -102,7 +102,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                             active={active}
                                             onClick={() => setAction('edit')}
                                         >
-                                            <Edit size={'1em'} />
+                                            <Edit size={'1em'} fill={'currentColor'} />
                                             <span>Edit Bill</span>
                                         </DropdownItem>
                                     )}
@@ -115,7 +115,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                             active={active}
                                             onClick={() => setAction('delete')}
                                         >
-                                            <TrashIcon />
+                                            <TrashIcon fill={'currentColor'} />
                                             <span>Delete Bill</span>
                                         </DropdownItem>
                                     )}

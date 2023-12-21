@@ -26,7 +26,7 @@ const _filterAccounts = (accounts: any[], location: Location) => {
 
 
 export const SkeletonWafers = () => (
-    <div className="skeleton-account-wafers--container">
+    <div className="skeleton-account-wafers--container window">
         <div>
             <span>Total Deposits</span>
             <div><DollarCents value="0" /></div>

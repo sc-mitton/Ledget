@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import { Tab } from '@headlessui/react';
 import { animated } from '@react-spring/web'
@@ -11,6 +11,7 @@ import useSchemeVar from '../../utils/hooks/use-scheme-var/use-scheme-var';
 interface TabNavListBaseProps {
   labels: string[] | React.ReactNode[],
   className?: string
+  selectedIndex: number,
 }
 
 interface TabStyle {
@@ -34,18 +35,17 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
   const ref = useRef<HTMLDivElement>(null)
   const { labels, className, theme, ...rest } = props
   const defaultBackgroundColor = useSchemeVar('--icon-hover-light-gray')
-  const [indexTracker, setIndexTracker] = useState(0)
 
   const { props: pillProps } = usePillAnimation({
     ref: ref,
     querySelectall: '[role=tab]',
-    update: [indexTracker, theme],
+    update: [theme, props.selectedIndex],
     refresh: [],
     styles: {
       zIndex: 1,
       borderRadius: 'var(--border-radius2)',
       backgroundColor: theme
-        ? Array.isArray(theme) ? theme[indexTracker]?.pillBackgroundColor : theme?.pillBackgroundColor
+        ? Array.isArray(theme) ? theme[props.selectedIndex]?.pillBackgroundColor : theme?.pillBackgroundColor
         : defaultBackgroundColor,
     },
     find: (element) => element.attributes.getNamedItem('aria-selected')?.value === 'true',
@@ -59,8 +59,8 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
         style={{
           ...(theme && Array.isArray(theme)
             ? {
-              color: theme[indexTracker]?.tabColor,
-              backgroundColor: theme[indexTracker]?.tabBackgroundColor,
+              color: theme[props.selectedIndex]?.tabColor,
+              backgroundColor: theme[props.selectedIndex]?.tabBackgroundColor,
             }
             : theme ?
               {
@@ -69,15 +69,9 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
               } : {}),
         }}
       >
-        <>
-          {({ selectedIndex }: { selectedIndex: number }) => {
-            setIndexTracker(selectedIndex)
-
-            return (labels.map((label, index) => (
-              <Tab>{label}</Tab>
-            )))
-          }}
-        </>
+        <>{labels.map((label, index) => (
+          <Tab>{label}</Tab>
+        ))}</>
         <animated.span style={pillProps} />
       </Tab.List>
     </>

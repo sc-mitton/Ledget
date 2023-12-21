@@ -30,7 +30,7 @@
     left: 2.8125rem;
     display: inline-block;
     border-right: .375rem solid transparent;
-    border-bottom: .375rem solid var(--window);
+    border-bottom: .375rem solid var(--dropdown-background);
     border-left: .375rem solid transparent;
     content: '';
 }

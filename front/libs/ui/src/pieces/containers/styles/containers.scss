@@ -78,7 +78,7 @@
 
     &.active {
         outline: none;
-        background-color: var(--icon-light-gray);
+        background-color: var(--dropdown-item-background);
         box-shadow: none;
     }
 
@@ -92,12 +92,12 @@
 
     &:focus-visible {
         outline: none;
-        background-color: var(--icon-light-gray);
+        background-color: var(--dropdown-item-background);
         box-shadow: none;
     }
 
     &:hover {
-        background-color: var(--icon-light-gray);
+        background-color: var(--dropdown-item-background);
         transition: background-color 0.3s ease-out;
         cursor: pointer;
         height: 100%;

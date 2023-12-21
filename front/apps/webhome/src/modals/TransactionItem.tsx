@@ -58,7 +58,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                             active={active}
                                             onClick={() => setAction('split')}
                                         >
-                                            <Split />
+                                            <Split fill={'currentColor'} />
                                             <span>Split</span>
                                         </DropdownItem>
                                     )}

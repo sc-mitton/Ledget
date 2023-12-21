@@ -18,6 +18,9 @@ from rest_framework.status import (
 )
 import plaid
 
+from plaid.model.transactions_recurring_get_request import (
+    TransactionsRecurringGetRequest
+)
 from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.model.transactions_sync_request_options import (
     TransactionsSyncRequestOptions
@@ -48,8 +51,21 @@ transaction_fields = [
 filter_target_fields = [
     f for f in transaction_fields if f not in Transaction.ignored_plaid_fields
 ]
-NOT_SPEND_CATEGORIES = ['INCOME', 'TRANSFER_OUT', 'TRANSFER_IN']
-NOT_SPEND_DETAIL = ['LOAN_PAYMENTS_CREDIT_CARD_PAYMENT']
+NOT_SPEND_CATEGORIES = [
+    'INCOME',
+    'TRANSFER_OUT',
+    'TRANSFER_IN'
+]
+NOT_SPEND_DETAIL = [
+    'LOAN_PAYMENTS_CREDIT_CARD_PAYMENT'
+]
+RECURRING_IGNORE_TYPES = [
+    'INCOME_INTEREST_EARNED',
+    'TRANSFER_OUT',
+    'TRANSFER_IN',
+    'LOAN_PAYMENTS',
+    'BANK_FEES'
+]
 
 
 def sync_transactions(plaid_item: PlaidItem) -> dict:
@@ -243,7 +259,6 @@ class TransactionViewSet(ModelViewSet):
 
     def get_queryset(self):
         filter_args = self._exract_filter_args()
-        print('filter_args', filter_args)
         base_qset = Transaction.objects.filter(**filter_args) \
                                        .select_related(
                                            'predicted_category',
@@ -279,14 +294,30 @@ class TransactionViewSet(ModelViewSet):
 
         return Response(serializer.data)
 
+    @action(detail=False, methods=['get'], url_path='recurring/get',
+            url_name='recurring', permission_classes=[IsAuthedVerifiedSubscriber])
+    def recurring(self, request, *args, **kwargs):
+        plaid_items = self._get_plaid_items(request)
+        results = []
+        for plaid_item in plaid_items:
+            pass
+
+        return Response(results, HTTP_200_OK)
+
     @action(detail=False, methods=['post'], url_path='sync', url_name='sync',
             permission_classes=[IsAuthedVerifiedSubscriber, IsObjectOwner])
     def sync(self, request, *args, **kwargs):
         plaid_items = self._get_plaid_items(request)
+        sync_results = {'added': 0, 'modified': 0, 'removed': 0}
         for plaid_item in plaid_items:
-            sync_results = sync_transactions(plaid_item)
+            results = sync_transactions(plaid_item)
+            for key, value in results.items():
+                sync_results[key] += value
 
         return Response(sync_results, HTTP_200_OK)
+
+    def _get_recurring_transactions(self, request):
+        pass
 
     def _get_plaid_items(self, request):
         item_id = self.request.query_params.get('item', None)

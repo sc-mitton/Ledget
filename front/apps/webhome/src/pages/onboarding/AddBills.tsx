@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+import './styles/Items.scss'
 import { TabView, BottomButtons } from './Reusables'
 import { useItemsContext, ItemsProvider } from "./ItemsContext"
 import { LimitAmountInput, EmojiComboText, BillScheduler } from '@components/inputs'
@@ -161,31 +162,31 @@ const Form = () => {
             key={`create-bill-form-${monthItems.length}-${yearItems.length}}`}
         >
             <div>
-                <div>
-                    <label>Schedule</label>
-                    <div className="padded-input-row">
-                        <div >
-                            <BillScheduler
-                                billPeriod="month"
-                                error={scheduleMissing}
-                                setHasSchedule={setHasSchedule}
-                                register={register}
-                            />
-                        </div>
+                <div className="split-inputs">
+                    <div>
+                        <EmojiComboText
+                            name="name"
+                            placeholder="Name"
+                            register={register}
+                            error={errors.name}
+                        />
+                    </div>
+                    <div >
+                        <label htmlFor="upper_amount">Amount</label>
+                        <LimitAmountInput name="upper_amount" control={control} hasLabel={false}>
+                            <FormErrorTip error={errors.upper_amount && errors.upper_amount as any} />
+                        </LimitAmountInput>
                     </div>
                 </div>
                 <div>
-                    <EmojiComboText
-                        name="name"
-                        placeholder="Name"
-                        register={register}
-                        error={errors.name}
-                    />
-                </div>
-                <div >
-                    <LimitAmountInput name="upper_amount" control={control}>
-                        <FormErrorTip error={errors.upper_amount && errors.upper_amount as any} />
-                    </LimitAmountInput>
+                    <div className="padded-input-row">
+                        <BillScheduler
+                            billPeriod="month"
+                            error={scheduleMissing}
+                            setHasSchedule={setHasSchedule}
+                            register={register}
+                        />
+                    </div>
                 </div>
             </div>
             <BottomButtons item={'bill'} />
@@ -195,7 +196,6 @@ const Form = () => {
 
 const BillsList = () => {
     const {
-        recommendationsMode,
         year: { isEmpty: emptyYearItems },
         month: { isEmpty: emptyMonthItems }
     } = useItemsContext('bill')
@@ -209,14 +209,11 @@ const BillsList = () => {
     return (
         <div
             id="budget-items--container"
-            className={`inner-window ${!emptyYearItems && !emptyMonthItems ? '' : 'expand'}`}
+            className={`${!emptyYearItems && !emptyMonthItems ? '' : 'expand'}`}
         >
-            {!recommendationsMode && (emptyYearItems && emptyMonthItems)
-                ? <StartPrompt />
-                : <TabView item={'bill'}>
-                    {recommendationsMode ? <RecommendationsView /> : <ListView />}
-                </TabView>
-            }
+            <TabView item={'bill'}>
+                <ListView />
+            </TabView>
         </div>
     )
 }

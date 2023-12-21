@@ -312,6 +312,7 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
                     <div className='row'>
                         <div className="tab-nav-cell">
                             <TabNavList
+                                selectedIndex={selectedIndex}
                                 labels={['Monthly', 'Yearly']}
                                 className='spending-categories--tab-nav-list'
                                 theme={[
@@ -616,7 +617,8 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                                 })
                                             }}
                                         >
-                                            <Edit size={'1em'} /> Edit
+                                            <Edit size={'1em'} fill={'currentColor'} />
+                                            Edit
                                         </DropdownItem>
                                     )}
                                 </Menu.Item>

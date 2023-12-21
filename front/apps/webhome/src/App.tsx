@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, useRef, createContext, useContext, ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 
 import { Routes, Outlet, Navigate, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
@@ -11,13 +11,10 @@ import Profile from '@pages/profile/Window'
 import Accounts from '@pages/accounts/Window'
 import NotFound from '@pages/notFound/NotFound'
 import {
-    SlideMotionDiv,
     ZoomMotionDiv,
     Toast,
     ColorSchemedMain
 } from '@ledget/ui'
-import { WelcomeConnect, AddCategories, AddBills } from '@pages/onboarding'
-import { Background } from '@pages/onboarding'
 import {
     CreateCategory,
     CreateBill,
@@ -47,37 +44,7 @@ const PrivateRoute = () => {
     )
 }
 
-const OnboardedRoute = () => {
-    const { data: user } = useGetMeQuery()
-
-    return user?.is_onboarded ? <Outlet /> : <Navigate to="/welcome/connect" />
-}
-
-const OnboardingApp = () => {
-    const location = useLocation()
-
-    return (
-        <>
-            <Background />
-            <AnimatePresence mode="wait">
-                <SlideMotionDiv
-                    position={location.pathname === '/welcome/connect' ? 'first' : 'last'}
-                    key={location.pathname}
-                    id="onboarding-app"
-                >
-                    <Routes location={location} key={location.pathname} >
-                        <Route path="/connect" element={<WelcomeConnect />} />
-                        <Route path="/add-categories" element={<AddCategories />} />
-                        <Route path="/add-bills" element={<AddBills />} />
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </SlideMotionDiv>
-            </AnimatePresence>
-        </>
-    )
-}
-
-const MainApp = () => {
+const App = () => {
     const [isNarrow, setIsNarrow] = useState(false)
     const location = useLocation()
     const navigate = useNavigate()
@@ -145,7 +112,7 @@ const MainApp = () => {
     )
 }
 
-const App = () => {
+const EnrichedApp = () => {
     const { isLoading } = useGetMeQuery()
 
     return (
@@ -154,10 +121,7 @@ const App = () => {
                 <ColorSchemedMain>
                     <Routes>
                         <Route path="/" element={<PrivateRoute />} >
-                            <Route path="/" element={<OnboardedRoute />} >
-                                <Route path="/*" element={<MainApp />} />
-                            </Route>
-                            <Route path="welcome/*" element={<OnboardingApp />} />
+                            <Route path="/*" element={<App />} />
                             <Route path="*" element={<NotFound />} />
                         </Route>
                     </Routes>
@@ -167,4 +131,4 @@ const App = () => {
     )
 }
 
-export default App
+export default EnrichedApp

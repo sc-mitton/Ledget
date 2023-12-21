@@ -222,17 +222,24 @@ const EditCategoriesModal = withModal((props) => {
                 className={`inner-window ${showSubmit ? 'submittable' : ''}`}
                 id="reorder-categories"
             >
-                <div>
-                    <TabNavList labels={['Month', 'Year']} />
-                </div>
-                <Tab.Panels as={'div'} className="edit-budget-items--container">
-                    <Tab.Panel as={React.Fragment}>
-                        <Categories period={'month'} setDeletedItems={setDeletedItems} />
-                    </Tab.Panel>
-                    <Tab.Panel as={React.Fragment}>
-                        <Categories period={'year'} setDeletedItems={setDeletedItems} />
-                    </Tab.Panel>
-                </Tab.Panels>
+                {({ selectedIndex }) => (
+                    <>
+                        <div>
+                            <TabNavList
+                                selectedIndex={selectedIndex}
+                                labels={['Month', 'Year']}
+                            />
+                        </div>
+                        <Tab.Panels as={'div'} className="edit-budget-items--container">
+                            <Tab.Panel as={React.Fragment}>
+                                <Categories period={'month'} setDeletedItems={setDeletedItems} />
+                            </Tab.Panel>
+                            <Tab.Panel as={React.Fragment}>
+                                <Categories period={'year'} setDeletedItems={setDeletedItems} />
+                            </Tab.Panel>
+                        </Tab.Panels>
+                    </>
+                )}
             </Tab.Group>
             <ExpandableContainer expanded={showSubmit}>
                 <SubmitForm

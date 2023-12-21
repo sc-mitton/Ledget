@@ -140,15 +140,15 @@ const DropDownMenu = ({ isNarrow, setModal }:
                     >
                         <Menu.Items static>
                             <Wrapper onClick={() => navigate("/profile/details")}>
-                                <Profile2 fill={'var(--main-dark4'} />
+                                <Profile2 fill={'currentColor'} />
                                 Profile
                             </Wrapper>
                             <Wrapper onClick={() => setModal("help")}>
-                                <HelpIcon fill={'var(--main-dark4'} />
+                                <HelpIcon fill={'currentColor'} />
                                 Help
                             </Wrapper>
                             <Wrapper onClick={() => setModal("logout")}>
-                                <LogoutIcon id="logout-icon" fill={'var(--main-dark4'} />
+                                <LogoutIcon id="logout-icon" fill={'currentColor'} />
                                 Log out
                             </Wrapper>
                         </Menu.Items>

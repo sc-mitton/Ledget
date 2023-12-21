@@ -1,0 +1,218 @@
+.start-prompt {
+    font-weight: var(--fw-regular);
+    text-align: center;
+    padding: .75em;
+}
+
+#onboarding-app {
+
+    form>div {
+        display: grid;
+        grid-template-columns: 1fr;
+
+        &>div>div {
+            margin-top: .75em;
+
+            &>label {
+                font-weight: var(--fw-regular);
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    #add-bills--window {
+        background-color: var(--inner-window2);
+    }
+
+    #add-bills--window form>div>div:nth-child(2) {
+        margin-right: 0;
+    }
+
+    #add-bills--window>div:first-child {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    #budget-items--container {
+        display: flex;
+        flex-direction: column;
+        border-radius: var(--border-radius3);
+        background-color: var(--input-background);
+        max-height: 10rem;
+        opacity: 1;
+        width: auto;
+        margin: 0 auto;
+
+        margin: 1.5em 0;
+        padding: 1em;
+
+        &>div:first-of-type {
+            margin: 0 auto;
+            width: 80%;
+            min-width: 20rem;
+        }
+
+        &.expand {
+            max-height: 62.5rem;
+        }
+    }
+
+    label:first-of-type {
+        margin-left: .125em;
+        font-weight: var(--fw-regular);
+    }
+
+    .checkbox-container label {
+        margin: .125em 0;
+    }
+
+    #bill-scheduler--container>div:last-child {
+        margin: .5em 0;
+    }
+
+    form>div:first-child {
+        margin: 0 0 1.5em 0;
+    }
+
+
+    .tab-list button:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .tab-list button[aria-selected='true'] {
+        color: var(--m-invert-text);
+    }
+
+    /* ---------------------------- Input Row Styling --------------------------- */
+
+    .split-row-inputs {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: .5em;
+
+        &>div {
+            flex: 1;
+        }
+    }
+
+    .padded-input-row {
+        display: flex;
+        gap: .5em;
+        margin-top: .325em;
+    }
+}
+
+
+#add-categories--window>div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+#recommendations-btn {
+    gap: .375rem;
+}
+
+/* ----------------------------- Suggested Items ---------------------------- */
+
+#recommendations-button--container {
+    display: flex;
+    justify-content: center;
+    margin-top: .75em;
+}
+
+.recommendations-container {
+    display: block;
+    margin: 0 auto;
+    margin-top: .75em;
+    text-align: center;
+
+    &>div {
+        display: inline-flex;
+        margin: .25em .375em;
+        animation-name: pop-fade-in;
+        animation-duration: 350ms;
+        animation-delay: calc(var(--animation-order) * 30ms);
+        animation-fill-mode: both;
+        animation-timing-function: ease-out;
+    }
+
+    .budget-item-name {
+        cursor: pointer;
+    }
+}
+
+.empty-message--container {
+    margin: 1.5rem 0 1rem 0;
+    text-align: center;
+    font-weight: var(--fw-regular);
+    opacity: .4;
+}
+
+
+/* ------------------------- Individual Rows Styling ------------------------ */
+
+.budget-item--container {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: .5em;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.budget-item {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+
+
+    &>div {
+        &:first-of-type {
+            flex-grow: 1;
+            flex-shrink: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        &:last-of-type {
+            flex: 1 0 0%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+    }
+
+    &>div:not(:first-of-type):not(:last-of-type) {
+        flex: 2 0 0%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+
+    .bill-item {
+
+        .amount--container {
+            justify-content: flex-start;
+            flex-wrap: nowrap;
+        }
+
+        .budget-dollar--container {
+            display: flex;
+        }
+    }
+}
