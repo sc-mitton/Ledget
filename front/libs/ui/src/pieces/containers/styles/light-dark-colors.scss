@@ -19,7 +19,7 @@
     --white: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 100%));
 
     /* Drop Shadows & Borders */
-    --window-drop-shadow: var(--window-drop-shadow-color) 0px 2px 20px;
+    --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 20px;
     --header-box-shadow: var(--header-box-shadow-color) 0px 2px 2px;
     --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 2px 14px;
     --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0 2px 16px;

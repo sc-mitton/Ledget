@@ -313,13 +313,11 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
                         <div className="tab-nav-cell">
                             <TabNavList
                                 labels={['Monthly', 'Yearly']}
-                                toggle={selectedIndex}
                                 className='spending-categories--tab-nav-list'
                                 theme={[
                                     { pillColor: mDark, pillBackgroundColor: mHlightHover, tabBackgroundColor: mHlight, tabColor: mDark },
                                     { pillColor: sDark, pillBackgroundColor: sHlightHover, tabBackgroundColor: sHlight, tabColor: sDark }
                                 ]}
-                                selectedIndex={selectedIndex}
                             />
                         </div>
                     </div>

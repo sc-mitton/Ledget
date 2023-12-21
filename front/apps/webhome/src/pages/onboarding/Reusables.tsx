@@ -1,21 +1,20 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { Tab } from '@headlessui/react'
-import { useLocation } from 'react-router-dom'
 
-import { ItemsContext } from './ItemsContext'
+import { useItemsContext, ItemS, Item } from './ItemsContext'
 import { Recommendations as RecommendationsIcon } from '@ledget/media'
-import { useAddnewBillMutation } from '@features/billSlice'
-import { useAddNewCategoryMutation } from '@features/categorySlice'
+import { useAddnewBillMutation, Bill } from '@features/billSlice'
+import { useAddNewCategoryMutation, Category } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
 import { BlueCheckSubmitButton, BlackSubmitWithArrow, BlueSlimButton2, TabNavList } from '@ledget/ui'
 
 
-export const TabView = ({ children }) => {
+export const TabView = ({ children, item }: { children: React.ReactNode, item: ItemS }) => {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [updatePill, setUpdatePill] = useState(false)
-    const { month: { items: monthItems }, year: { items: yearItems } } = useContext(ItemsContext)
+    const { month: { items: monthItems }, year: { items: yearItems } } = useItemsContext(item)
 
     useEffect(() => {
         if (monthItems.length === 0) return
@@ -26,7 +25,6 @@ export const TabView = ({ children }) => {
         if (yearItems.length === 0) return
         setSelectedIndex(1)
     }, [yearItems])
-
 
     useEffect(() => {
         setUpdatePill(!updatePill)
@@ -42,31 +40,47 @@ export const TabView = ({ children }) => {
     )
 }
 
-export const BottomButtons = () => {
+export const BottomButtons = ({ item }: { item: ItemS }) => {
     const navigate = useNavigate()
-    const { itemsEmpty } = useContext(ItemsContext)
-    const location = useLocation()
     const [addNewBill, { isLoading: isBillLoading, isSuccess: isBillSuccess }] = useAddnewBillMutation()
     const [addNewCategory, { isLoading: isCategoryLoading, isSuccess: isCategorySuccess }] = useAddNewCategoryMutation()
     const { refetch: refetchUser } = useGetMeQuery()
     const [updateUser, { isSuccess: patchedUserSuccess }] = useUpdateUserMutation()
 
-    const { month: { items: monthItems }, year: { items: yearItems } } = useContext(ItemsContext)
+    const { month: { items: monthItems }, year: { items: yearItems }, itemsEmpty } = useItemsContext(item)
 
-    const handleClick = (e) => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        const newMonthItems = monthItems.filter(item => !item.fetchedFromServer)
-        const newYearItems = yearItems.filter(item => !item.fetchedFromServer)
-        if (newMonthItems.length === 0 && newYearItems.length === 0) {
-            navigate('/welcome/add-categories')
-        }
 
-        switch (location.pathname) {
-            case '/welcome/add-bills':
-                addNewBill([...newMonthItems, ...newYearItems])
+        const newMonthItems = item === 'bill'
+            ? (monthItems as Item<Bill, 'month'>[]).filter(item => !item.fetchedFromServer).map(item => {
+                const { name, upper_amount, period, emoji } = item
+                return { name, upper_amount, period, emoji }
+            })
+            : (monthItems as Item<Category, 'month'>[]).filter(item => !item.fetchedFromServer).map(item => {
+                const { name, limit_amount, period, emoji } = item
+                return { name, limit_amount, period, emoji }
+            })
+
+        const newYearItems = item === 'bill'
+            ? (yearItems as Item<Bill, 'year'>[]).filter(item => !item.fetchedFromServer).map(item => {
+                const { name, upper_amount, period, emoji } = item
+                return { name, upper_amount, period, emoji }
+            })
+            : (yearItems as Item<Category, 'year'>[]).filter(item => !item.fetchedFromServer).map(item => {
+                const { name, limit_amount, period, emoji } = item
+                return { name, limit_amount, period, emoji }
+            })
+
+        if (newMonthItems.length === 0 && newYearItems.length === 0)
+            navigate('/welcome/add-categories')
+
+        switch (item) {
+            case 'bill':
+                addNewBill([...newMonthItems, ...newYearItems] as Bill[])
                 break
-            case '/welcome/add-categories':
-                addNewCategory([...newMonthItems, ...newYearItems])
+            case 'category':
+                addNewCategory([...newMonthItems, ...newYearItems] as Category[])
                 break
             default:
                 break
@@ -85,9 +99,7 @@ export const BottomButtons = () => {
     // 3) if user is onboarded, navigate to dashboard
     useEffect(() => {
         if (isCategorySuccess) {
-            updateUser({
-                data: { is_onboarded: true }
-            })
+            updateUser({ is_onboarded: true })
         }
     }, [isCategorySuccess])
 
@@ -123,8 +135,8 @@ export const BottomButtons = () => {
     )
 }
 
-export const RecommendationsButton = () => {
-    const { setRecommendationsMode } = useContext(ItemsContext)
+export const RecommendationsButton = ({ item }: { item: ItemS }) => {
+    const { setRecommendationsMode } = useItemsContext(item)
 
     return (
         <div>

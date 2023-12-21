@@ -1,11 +1,72 @@
-import React, { useEffect, useState, createContext, useContext } from 'react'
+import { useContext, createContext, useState, useEffect } from "react"
+import {
+    TransitionFn,
+    SpringRef,
+    SpringValue,
+    useSpringRef,
+    useSpring,
+    useTransition,
+    useChain
+} from '@react-spring/web'
+import { useLocation } from "react-router-dom"
 
-import { useLocation } from 'react-router-dom'
+import { Bill, useLazyGetBillsQuery } from '@features/billSlice'
+import { Category, useLazyGetCategoriesQuery } from '@features/categorySlice'
 
-import { useTransition, useSpring, useSpringRef, useChain } from '@react-spring/web'
-import { itemHeight, itemPadding } from './constants'
-import { useLazyGetBillsQuery, Bill } from '@features/billSlice'
-import { useLazyGetCategoriesQuery, Category } from '@features/categorySlice'
+const itemHeight = 25
+const itemPadding = 8
+
+type Period = 'month' | 'year'
+export type ItemS = 'bill' | 'category'
+
+type BillOrCatFromString<I extends ItemS> = I extends 'bill' ? Bill : Category
+
+export type Item<I extends Bill | Category, P> = I extends Bill
+    ? Omit<Bill, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' }) & { fetchedFromServer?: boolean }
+    : Omit<Category, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' }) & { fetchedFromServer?: boolean }
+
+interface MonthYearContext<BC extends Bill | Category, P extends Period> {
+    items: Item<BC, P>[]
+    setItems: React.Dispatch<React.SetStateAction<Item<BC, P>[]>>
+    transitions: TransitionFn<Item<BC, P> | undefined, any>
+    api: SpringRef<any>
+    containerProps: { [key: string]: SpringValue<any> }
+    containerApi: SpringRef<any>
+    isEmpty: boolean
+}
+
+interface ItemsContextProps<BC extends Bill | Category> {
+    itemsEmpty: boolean
+    recommendationsMode: boolean
+    setRecommendationsMode: React.Dispatch<React.SetStateAction<boolean>>
+    bufferItem: BC | undefined
+    setBufferItem: React.Dispatch<React.SetStateAction<BC | undefined>>
+    month: MonthYearContext<BC, 'month'>
+    year: MonthYearContext<BC, 'year'>
+}
+
+const BillsContext = createContext<ItemsContextProps<Bill> | undefined>(undefined)
+const CategoriesContext = createContext<ItemsContextProps<Category> | undefined>(undefined)
+
+export const useItemsContext = <T extends ItemS>(items: T):
+    T extends 'bill' ? ItemsContextProps<Bill> : ItemsContextProps<Category> => {
+
+    const context = items === 'bill' ? useContext(BillsContext) : useContext(CategoriesContext)
+
+    if (context === undefined) {
+        throw new Error('useBillsContext must be used within a BillsProvider')
+    }
+
+    return context as any
+}
+
+export const useCategoriesContext = () => {
+    const context = useContext(CategoriesContext)
+    if (context === undefined) {
+        throw new Error('useCategoriesContext must be used within a CategoriesProvider')
+    }
+    return context
+}
 
 const transitionConfig = {
     from: () => ({ opacity: 0, zIndex: 0, scale: 1 }),
@@ -15,37 +76,23 @@ const transitionConfig = {
     config: { duration: 100 },
 }
 
-export const ItemsContext = createContext<
-    {
-        items: (Bill | Category)[],
-        setItems: React.Dispatch<React.SetStateAction<(Bill | Category)[]>>,
-        transitions: any,
-        api: any,
-        containerProps: any,
-        containerApi: any,
-        isEmpty: boolean
-    } | undefined
->(undefined)
+export const ItemsProvider = ({ children, itemType }: { children: React.ReactNode, itemType: ItemS }) => {
+    const [
+        fetchBills,
+        { data: fetchedBills, isSuccess: fetchedBillsSuccess }
+    ] = useLazyGetBillsQuery()
+    const [
+        fetchCategories,
+        { data: fetchedCategories, isSuccess: fetchedCategoriesSuccess }
+    ] = useLazyGetCategoriesQuery()
 
-const useItemsContext = () => {
-    const context = useContext(ItemsContext)
-    if (context === undefined) {
-        throw new Error('useItemsContext must be used within a ItemsProvider')
-    }
-    return context
-}
-
-export const ItemsProvider = ({ children }: { children: React.ReactNode }) => {
-    const [fetchBills, { data: fetchedBills, isSuccess: fetchedBillsSuccess }] = useLazyGetBillsQuery()
-    const [fetchCategories, { data: fetchedCategories, isSuccess: fetchedCategoriesSuccess }] = useLazyGetCategoriesQuery()
-
-    const [monthItems, setMonthItems] = useState([])
-    const [yearItems, setYearItems] = useState([])
+    const [monthItems, setMonthItems] = useState<Item<BillOrCatFromString<typeof itemType>, 'month'>[]>([])
+    const [yearItems, setYearItems] = useState<Item<BillOrCatFromString<typeof itemType>, 'year'>[]>([])
     const [itemsEmpty, setItemsEmpty] = useState(true)
     const [recommendationsMode, setRecommendationsMode] = useState(false)
     const [emptyYearItems, setEmptyYearItems] = useState(true)
     const [emptyMonthItems, setEmptyMonthItems] = useState(true)
-    const [bufferItem, setBufferItem] = useState(undefined)
+    const [bufferItem, setBufferItem] = useState<BillOrCatFromString<typeof itemType> | undefined>(undefined)
 
     const monthApi = useSpringRef()
     const yearApi = useSpringRef()
@@ -95,26 +142,24 @@ export const ItemsProvider = ({ children }: { children: React.ReactNode }) => {
     }, [location])
 
     useEffect(() => {
-        if (fetchedBillsSuccess) {
+        if (fetchedBillsSuccess && fetchedBills) {
             for (const bill of fetchedBills) {
-                const { period, ...rest } = bill
-                if (period === 'month' && monthItems.length === 0) {
-                    setMonthItems((prev) => [...prev, { ...rest, fetchedFromServer: true }])
-                } else if (period === 'year' && yearItems.length === 0) {
-                    setYearItems((prev) => [...prev, { ...rest, fetchedFromServer: true }])
+                if (bill.period === 'month' && monthItems.length === 0) {
+                    setMonthItems((prev) => [...prev, { ...bill, period: 'month', fetchedFromServer: true }])
+                } else if (bill.period === 'year' && yearItems.length === 0) {
+                    setYearItems((prev) => [...prev, { ...bill, period: 'year', fetchedFromServer: true }])
                 }
             }
         }
     }, [fetchedBills])
 
     useEffect(() => {
-        if (fetchedCategoriesSuccess) {
-            fetchedCategories.filter(category => category.name !== 'miscellaneous').forEach(category => {
-                const { period, ...rest } = category
-                if (period === 'month' && monthItems.length === 0) {
-                    setMonthItems((prev) => [...prev, { ...rest, fetchedFromServer: true }])
-                } else if (period === 'year' && yearItems.length === 0) {
-                    setYearItems((prev) => [...prev, { ...rest, fetchedFromServer: true }])
+        if (fetchedCategoriesSuccess && fetchedCategories) {
+            fetchedCategories.filter(category => !category.is_default).forEach(category => {
+                if (category.period === 'month' && monthItems.length === 0) {
+                    setMonthItems((prev) => [...prev, { ...category, period: 'month', fetchedFromServer: true }])
+                } else if (category.period === 'year' && yearItems.length === 0) {
+                    setYearItems((prev) => [...prev, { ...category, period: 'year', fetchedFromServer: true }])
                 }
             })
         }
@@ -175,8 +220,13 @@ export const ItemsProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <ItemsContext.Provider value={vals}>
-            {children}
-        </ItemsContext.Provider>
+        itemType === 'bill' ?
+            <BillsContext.Provider value={vals as ItemsContextProps<Bill>} >
+                {children}
+            </BillsContext.Provider>
+            :
+            <CategoriesContext.Provider value={vals as any}>
+                {children}
+            </CategoriesContext.Provider>
     )
 }

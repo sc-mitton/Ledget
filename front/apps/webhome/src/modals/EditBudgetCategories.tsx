@@ -178,7 +178,6 @@ const Categories = ({ period, setDeletedItems }: {
 
 const EditCategoriesModal = withModal((props) => {
     const [showSubmit, setShowSubmit] = useState(false)
-    const [updatePill, setUpdatePill] = useState(false)
     const [deletedItems, setDeletedItems] = useState<Item[]>()
 
     useEffect(() => {
@@ -219,16 +218,12 @@ const EditCategoriesModal = withModal((props) => {
         <form onSubmit={handleSubmit}>
             <h2>Edit Categories</h2>
             <Tab.Group
-                onChange={() => { setUpdatePill(!updatePill) }}
                 as='div'
                 className={`inner-window ${showSubmit ? 'submittable' : ''}`}
                 id="reorder-categories"
             >
                 <div>
-                    <TabNavList
-                        labels={['Month', 'Year']}
-                        toggle={updatePill}
-                    />
+                    <TabNavList labels={['Month', 'Year']} />
                 </div>
                 <Tab.Panels as={'div'} className="edit-budget-items--container">
                     <Tab.Panel as={React.Fragment}>

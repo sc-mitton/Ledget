@@ -18,6 +18,7 @@ export interface User {
     account_flag: string | null,
     is_customer: boolean,
     is_verified: boolean,
+    is_onboarded: boolean,
     service_provisioned_until: number,
     session_aal: 'aal1' | 'aal15' | 'aal2',
     highest_aal: 'aal1' | 'aal15' | 'aal2',
@@ -135,8 +136,8 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
             }),
             invalidatesTags: ['payment_method'],
         }),
-        updateUser: builder.mutation<any, User>({
-            query: ({ data }) => ({
+        updateUser: builder.mutation<any, Partial<User>>({
+            query: (data) => ({
                 url: 'user/me',
                 method: 'PATCH',
                 body: data,

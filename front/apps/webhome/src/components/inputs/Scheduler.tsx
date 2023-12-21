@@ -1,13 +1,11 @@
 import React, { FC, useState, useEffect, useRef, useContext, createContext } from 'react'
 
-import { UseFormRegister } from 'react-hook-form'
-import { z } from 'zod'
+import { UseFormRegister, FieldError } from 'react-hook-form'
 
 import './styles/Dropdowns.css'
 import './styles/Scheduler.scss'
 import Radios from './Radios'
 import type { Bill } from '@features/billSlice'
-import { billSchema } from '@modals/CreateBill'
 import { useClickClose } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 import { SlimmestInputButton, FormErrorTip, DropDownDiv, getDaySuffix } from '@ledget/ui'
@@ -749,8 +747,8 @@ interface BSP {
     billPeriod: Bill['period'],
     defaultValue?: defaultValue,
     setHasSchedule?: React.Dispatch<React.SetStateAction<boolean>>,
-    error: any
-    register: UseFormRegister<z.infer<typeof billSchema>>
+    error: boolean
+    register: UseFormRegister<any>
 }
 
 export const BillScheduler = (props: BSP) => {

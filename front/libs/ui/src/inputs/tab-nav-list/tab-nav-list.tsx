@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Tab } from '@headlessui/react';
 import { animated } from '@react-spring/web'
@@ -10,7 +10,6 @@ import useSchemeVar from '../../utils/hooks/use-scheme-var/use-scheme-var';
 
 interface TabNavListBaseProps {
   labels: string[] | React.ReactNode[],
-  toggle: any,
   className?: string
 }
 
@@ -23,31 +22,30 @@ interface TabStyle {
 
 interface TabNavListPropsWithoutTheme extends TabNavListBaseProps {
   theme?: never
-  selectedIndex?: never
 }
 
 interface TabNavListPropsWithTheme extends TabNavListBaseProps {
   theme: TabStyle | TabStyle[]
-  selectedIndex: number
 }
 
 export type TabNavListProps = TabNavListPropsWithoutTheme | TabNavListPropsWithTheme
 
 export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDivElement>) {
   const ref = useRef<HTMLDivElement>(null)
-  const { labels, toggle, className, theme, selectedIndex, ...rest } = props
+  const { labels, className, theme, ...rest } = props
   const defaultBackgroundColor = useSchemeVar('--icon-hover-light-gray')
+  const [indexTracker, setIndexTracker] = useState(0)
 
   const { props: pillProps } = usePillAnimation({
     ref: ref,
     querySelectall: '[role=tab]',
-    update: [toggle, theme],
+    update: [indexTracker, theme],
     refresh: [],
     styles: {
       zIndex: 1,
       borderRadius: 'var(--border-radius2)',
       backgroundColor: theme
-        ? Array.isArray(theme) ? theme[selectedIndex]?.pillBackgroundColor : theme?.pillBackgroundColor
+        ? Array.isArray(theme) ? theme[indexTracker]?.pillBackgroundColor : theme?.pillBackgroundColor
         : defaultBackgroundColor,
     },
     find: (element) => element.attributes.getNamedItem('aria-selected')?.value === 'true',
@@ -61,8 +59,8 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
         style={{
           ...(theme && Array.isArray(theme)
             ? {
-              color: theme[selectedIndex]?.tabColor,
-              backgroundColor: theme[selectedIndex]?.tabBackgroundColor,
+              color: theme[indexTracker]?.tabColor,
+              backgroundColor: theme[indexTracker]?.tabBackgroundColor,
             }
             : theme ?
               {
@@ -71,11 +69,15 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
               } : {}),
         }}
       >
-        {labels.map((label, index) => (
-          <Tab>
-            {label}
-          </Tab>
-        ))}
+        <>
+          {({ selectedIndex }: { selectedIndex: number }) => {
+            setIndexTracker(selectedIndex)
+
+            return (labels.map((label, index) => (
+              <Tab>{label}</Tab>
+            )))
+          }}
+        </>
         <animated.span style={pillProps} />
       </Tab.List>
     </>

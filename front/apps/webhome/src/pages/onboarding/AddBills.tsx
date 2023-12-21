@@ -1,49 +1,42 @@
 import { useContext, useEffect, useState } from 'react'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { useForm, useWatch } from "react-hook-form"
 import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-import './styles/Items.css'
-import { ItemsProvider, ItemsContext } from './ItemsContext'
+import { TabView, BottomButtons } from './Reusables'
+import { useItemsContext, ItemsProvider } from "./ItemsContext"
+import { LimitAmountInput, EmojiComboText, BillScheduler } from '@components/inputs'
 import {
-    EmojiComboText,
-    LimitAmountInput,
-    PeriodSelect,
-    BillScheduler
-} from '@components/inputs'
-import { ShadowedContainer } from '@components/pieces'
-import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
-import { billSchema, extractBill } from '@modals/CreateBill'
-import { DeleteButton } from '@components/buttons'
-import { getLongestLength, DollarCentsRange, BillCatLabel, FormErrorTip } from '@ledget/ui'
-import { useGetBillRecommendationsQuery } from '@features/billSlice'
-import { CloseButton, Checkbox } from '@ledget/ui'
+    getLongestLength,
+    BillCatLabel,
+    DeleteButton,
+    ShadowScrollDiv,
+    CloseButton,
+    DollarCents,
+    FormErrorTip
+} from '@ledget/ui'
 
 const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
-    const context = useContext(ItemsContext)[period]
+    const context = useItemsContext('bill')
     const [nameFlexBasis, setNameFlexBasis] = useState('auto')
 
     const {
         items,
         setItems,
         transitions,
-        containerProps,
-    } = context
+        containerProps
+    } = period === 'month' ? context.month : context.year
 
     useEffect(() => {
-        const longestNameLength = getLongestLength(context.items, 'name')
+        const longestNameLength = getLongestLength(items, 'name')
         setNameFlexBasis(`${longestNameLength + 1}ch`)
     }, [items])
 
-    const handleDelete = (toDelete) => {
-        setItems(items.filter((category) => category !== toDelete))
-    }
-
     return (
-        <ShadowedContainer style={{ height: 'auto' }}>
+        <ShadowScrollDiv style={{ height: 'auto' }}>
             <animated.div style={containerProps} >
                 {transitions((style, item, index) =>
                     <animated.div
@@ -55,25 +48,23 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
                             style={{ flexBasis: nameFlexBasis }}
                         >
                             <BillCatLabel
-                                name={item.name}
-                                emoji={item.emoji}
-                                color={item.period === 'month' ? 'blue' : 'green'}
+                                name={item?.name || ''}
+                                emoji={item?.emoji}
+                                color={item?.period === 'month' ? 'blue' : 'green'}
                                 slim={true}
                             />
                         </div>
                         <div className="amount--container">
                             <div className="budget-dollar--container">
-                                <DollarCentsRange
-                                    lower={item.lower_amount}
-                                    upper={item.upper_amount}
-                                />
+                                <DollarCents value={item?.upper_amount || 0} />
                             </div>
                         </div >
-                        <DeleteButton onClick={() => handleDelete(item)} />
+                        <DeleteButton onClick={() =>
+                            setItems((prev: any) => prev.filter((i: any) => i !== item))} />
                     </animated.div>
                 )}
             </animated.div>
-        </ShadowedContainer>
+        </ShadowScrollDiv>
     )
 }
 
@@ -81,7 +72,7 @@ const ListView = () => {
     const {
         year: { isEmpty: emptyYearItems },
         month: { isEmpty: emptyMonthItems }
-    } = useContext(ItemsContext)
+    } = useItemsContext('bill')
 
     return (
         <>
@@ -108,12 +99,7 @@ const ListView = () => {
 }
 
 const RecommendationsView = () => {
-    const { setRecommendationsMode } = useContext(ItemsContext)
-    const {
-        month: { items: monthItems },
-        year: { items: yearItems },
-        setBufferItem,
-    } = useContext(ItemsContext)
+    const { setRecommendationsMode } = useItemsContext('bill')
 
     return (
         <>
@@ -135,68 +121,27 @@ const RecommendationsView = () => {
     )
 }
 
-const BillsList = () => {
-    const {
-        recommendationsMode,
-        year: { isEmpty: emptyYearItems },
-        month: { isEmpty: emptyMonthItems }
-    } = useContext(ItemsContext)
-
-    const StartPrompt = () => (
-        <div className="start-prompt">
-            Add some of your bills to get started
-        </div>
-    )
-
-    return (
-        <div
-            id="budget-items--container"
-            className={`inner-window ${!emptyYearItems && !emptyMonthItems ? '' : 'expand'}`}
-        >
-            {!recommendationsMode && (emptyYearItems && emptyMonthItems)
-                ?
-                <StartPrompt />
-                :
-                <TabView>
-                    {recommendationsMode ? <RecommendationsView /> : <ListView />}
-                </TabView>
-            }
-        </div>
-    )
-}
+const schema = z.object({
+    name: z.string().min(1, { message: 'required' }),
+    upper_amount: z.number().min(0, { message: 'required' }),
+    day: z.number().min(1, { message: 'required' }),
+    week: z.number().min(1, { message: 'required' }),
+    week_day: z.number().min(1, { message: 'required' }),
+    month: z.number().min(1, { message: 'required' }),
+})
 
 const Form = () => {
-    const { items: monthItems, setItems: setMonthItems } = useContext(ItemsContext).month
-    const { items: yearItems, setItems: setYearItems } = useContext(ItemsContext).year
+    const {
+        month: { items: monthItems }, year: { items: yearItems }
+    } = useItemsContext('bill')
 
     const [scheduleMissing, setScheduleMissing] = useState(false)
     const [hasSchedule, setHasSchedule] = useState(false)
 
-    const { register, watch, handleSubmit, reset, formState: { errors }, control } = useForm<z.infer<typeof billSchema>>({
-        resolver: zodResolver(billSchema),
+    const { register, handleSubmit, reset, formState: { errors }, control } = useForm<z.infer<typeof schema>>({
+        resolver: zodResolver(schema),
         mode: 'onSubmit', reValidateMode: 'onChange'
     })
-
-    const period = useWatch({ control, name: 'period' })
-
-    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-        const body = extractBill(e)
-        if (body.errors) {
-            body.errors.schedule && setScheduleMissing(true)
-        }
-
-        handleSubmit((data) => {
-            if (!hasSchedule || body.errors) { return }
-
-            const item = { ...body, ...data }
-
-            if (data.period === 'month') {
-                setMonthItems([...monthItems, item])
-            } else {
-                setYearItems([...yearItems, item])
-            }
-        })(e)
-    }
 
     useEffect(() => { hasSchedule && setScheduleMissing(false) }, [hasSchedule])
 
@@ -210,19 +155,18 @@ const Form = () => {
 
     return (
         <form
-            onSubmit={submitForm}
+            onSubmit={handleSubmit((data) => {
+                console.log(data)
+            })}
             key={`create-bill-form-${monthItems.length}-${yearItems.length}}`}
         >
             <div>
                 <div>
                     <label>Schedule</label>
                     <div className="padded-input-row">
-                        <div>
-                            <PeriodSelect control={control} />
-                        </div>
                         <div >
                             <BillScheduler
-                                billPeriod={period as any}
+                                billPeriod="month"
                                 error={scheduleMissing}
                                 setHasSchedule={setHasSchedule}
                                 register={register}
@@ -244,27 +188,51 @@ const Form = () => {
                     </LimitAmountInput>
                 </div>
             </div>
-            <BottomButtons />
+            <BottomButtons item={'bill'} />
         </form>
     )
 }
 
-const Window = () => {
-    const { recommendationsMode } = useContext(ItemsContext)
+const BillsList = () => {
+    const {
+        recommendationsMode,
+        year: { isEmpty: emptyYearItems },
+        month: { isEmpty: emptyMonthItems }
+    } = useItemsContext('bill')
+
+    const StartPrompt = () => (
+        <div className="start-prompt">
+            Add some of your bills to get started
+        </div>
+    )
+
     return (
-        <div className="window3" id="add-bills--window">
-            <div>
-                <h2>Bills</h2>
-                {!recommendationsMode && < RecommendationsButton />}
-            </div>
-            <BillsList />
-            <Form />
+        <div
+            id="budget-items--container"
+            className={`inner-window ${!emptyYearItems && !emptyMonthItems ? '' : 'expand'}`}
+        >
+            {!recommendationsMode && (emptyYearItems && emptyMonthItems)
+                ? <StartPrompt />
+                : <TabView item={'bill'}>
+                    {recommendationsMode ? <RecommendationsView /> : <ListView />}
+                </TabView>
+            }
         </div>
     )
 }
 
+const Window = () => (
+    <div className="window" id="add-bills--window">
+        <div>
+            <h2>Bills</h2>
+        </div>
+        <BillsList />
+        <Form />
+    </div>
+)
+
 const AddBills = () => (
-    <ItemsProvider>
+    <ItemsProvider itemType="bill">
         <Window />
     </ItemsProvider>
 )
