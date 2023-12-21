@@ -1,12 +1,10 @@
 #onboarding-app {
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+    inset: 0;
     position: absolute;
     z-index: 0;
     overflow-x: hidden;
     overflow-y: auto;
+    background-color: var(--overlay);
 }
 
 #onboarding-app .window2,

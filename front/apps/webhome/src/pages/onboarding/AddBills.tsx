@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { useForm, useWatch } from "react-hook-form"
 import { Tab } from '@headlessui/react'
 import { animated } from '@react-spring/web'
@@ -9,7 +10,7 @@ import './styles/Items.css'
 import { ItemsProvider, ItemsContext } from './ItemsContext'
 import {
     EmojiComboText,
-    DollarRangeInput,
+    LimitAmountInput,
     PeriodSelect,
     BillScheduler
 } from '@components/inputs'
@@ -17,11 +18,11 @@ import { ShadowedContainer } from '@components/pieces'
 import { BottomButtons, TabView, RecommendationsButton } from './Reusables'
 import { billSchema, extractBill } from '@modals/CreateBill'
 import { DeleteButton } from '@components/buttons'
-import { formatName, getLongestLength, DollarCentsRange } from '@ledget/ui'
+import { getLongestLength, DollarCentsRange, BillCatLabel, FormErrorTip } from '@ledget/ui'
 import { useGetBillRecommendationsQuery } from '@features/billSlice'
 import { CloseButton, Checkbox } from '@ledget/ui'
 
-const BillsColumn = ({ period }) => {
+const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
     const context = useContext(ItemsContext)[period]
     const [nameFlexBasis, setNameFlexBasis] = useState('auto')
 
@@ -53,17 +54,18 @@ const BillsColumn = ({ period }) => {
                             className="budget-item-name--container"
                             style={{ flexBasis: nameFlexBasis }}
                         >
-                            <BillCatLabel color={item.period === 'month' ? 'blue' : 'green'} slim={true}>
-                                <span>{item.emoji}</span>
-                                <span>{formatName(item.name)}</span>
-                            </BillCatLabel>
+                            <BillCatLabel
+                                name={item.name}
+                                emoji={item.emoji}
+                                color={item.period === 'month' ? 'blue' : 'green'}
+                                slim={true}
+                            />
                         </div>
                         <div className="amount--container">
                             <div className="budget-dollar--container">
                                 <DollarCentsRange
                                     lower={item.lower_amount}
                                     upper={item.upper_amount}
-                                    style={{ textAlign: 'end' }}
                                 />
                             </div>
                         </div >
@@ -106,14 +108,12 @@ const ListView = () => {
 }
 
 const RecommendationsView = () => {
-    const { isLoading, isError } = useGetBillRecommendationsQuery()
     const { setRecommendationsMode } = useContext(ItemsContext)
     const {
         month: { items: monthItems },
         year: { items: yearItems },
         setBufferItem,
     } = useContext(ItemsContext)
-    const { data: billRecommendations } = useGetBillRecommendationsQuery()
 
     return (
         <>
@@ -172,14 +172,14 @@ const Form = () => {
     const [scheduleMissing, setScheduleMissing] = useState(false)
     const [hasSchedule, setHasSchedule] = useState(false)
 
-    const { register, watch, handleSubmit, reset, formState: { errors }, control } = useForm({
+    const { register, watch, handleSubmit, reset, formState: { errors }, control } = useForm<z.infer<typeof billSchema>>({
         resolver: zodResolver(billSchema),
         mode: 'onSubmit', reValidateMode: 'onChange'
     })
 
     const period = useWatch({ control, name: 'period' })
 
-    const submitForm = (e) => {
+    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         const body = extractBill(e)
         if (body.errors) {
             body.errors.schedule && setScheduleMissing(true)
@@ -222,9 +222,10 @@ const Form = () => {
                         </div>
                         <div >
                             <BillScheduler
-                                billPeriod={`${period}ly`}
+                                billPeriod={period as any}
                                 error={scheduleMissing}
                                 setHasSchedule={setHasSchedule}
+                                register={register}
                             />
                         </div>
                     </div>
@@ -238,18 +239,9 @@ const Form = () => {
                     />
                 </div>
                 <div >
-                    <DollarRangeInput
-                        rangeMode={watch('range', '')}
-                        control={control}
-                        errors={errors}
-                    />
-                    <Checkbox
-                        label='Range'
-                        name='range'
-                        id="range"
-                        aria-label='Change bill amount to a range.'
-                        {...register('range')}
-                    />
+                    <LimitAmountInput name="upper_amount" control={control}>
+                        <FormErrorTip error={errors.upper_amount && errors.upper_amount as any} />
+                    </LimitAmountInput>
                 </div>
             </div>
             <BottomButtons />

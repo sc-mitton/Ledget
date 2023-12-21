@@ -1,23 +1,41 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, createContext, useContext } from 'react'
 
 import { useLocation } from 'react-router-dom'
 
 import { useTransition, useSpring, useSpringRef, useChain } from '@react-spring/web'
 import { itemHeight, itemPadding } from './constants'
-import { useLazyGetBillsQuery } from '@features/billSlice'
-import { useLazyGetCategoriesQuery } from '@features/categorySlice'
+import { useLazyGetBillsQuery, Bill } from '@features/billSlice'
+import { useLazyGetCategoriesQuery, Category } from '@features/categorySlice'
 
 const transitionConfig = {
     from: () => ({ opacity: 0, zIndex: 0, scale: 1 }),
-    enter: (item, index) => ({ opacity: 1, y: index * (itemHeight + itemPadding) }),
-    update: (item, index) => ({ y: index * (itemHeight + itemPadding) }),
+    enter: (item: any, index: number) => ({ opacity: 1, y: index * (itemHeight + itemPadding) }),
+    update: (item: any, index: number) => ({ y: index * (itemHeight + itemPadding) }),
     leave: () => ({ opacity: 0 }),
     config: { duration: 100 },
 }
 
-export const ItemsContext = React.createContext()
+export const ItemsContext = createContext<
+    {
+        items: (Bill | Category)[],
+        setItems: React.Dispatch<React.SetStateAction<(Bill | Category)[]>>,
+        transitions: any,
+        api: any,
+        containerProps: any,
+        containerApi: any,
+        isEmpty: boolean
+    } | undefined
+>(undefined)
 
-export const ItemsProvider = ({ children }) => {
+const useItemsContext = () => {
+    const context = useContext(ItemsContext)
+    if (context === undefined) {
+        throw new Error('useItemsContext must be used within a ItemsProvider')
+    }
+    return context
+}
+
+export const ItemsProvider = ({ children }: { children: React.ReactNode }) => {
     const [fetchBills, { data: fetchedBills, isSuccess: fetchedBillsSuccess }] = useLazyGetBillsQuery()
     const [fetchCategories, { data: fetchedCategories, isSuccess: fetchedCategoriesSuccess }] = useLazyGetCategoriesQuery()
 

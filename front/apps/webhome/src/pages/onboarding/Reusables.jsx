@@ -9,7 +9,7 @@ import { Recommendations as RecommendationsIcon } from '@ledget/media'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { BlueCheckSubmitButton, BlackSubmitWithArrow, BlueSlimButton2, } from '@ledget/ui'
+import { BlueCheckSubmitButton, BlackSubmitWithArrow, BlueSlimButton2, TabNavList } from '@ledget/ui'
 
 
 export const TabView = ({ children }) => {
@@ -44,7 +44,6 @@ export const TabView = ({ children }) => {
 
 export const BottomButtons = () => {
     const navigate = useNavigate()
-    const { data: user } = useGetMeQuery()
     const { itemsEmpty } = useContext(ItemsContext)
     const location = useLocation()
     const [addNewBill, { isLoading: isBillLoading, isSuccess: isBillSuccess }] = useAddnewBillMutation()
@@ -98,16 +97,13 @@ export const BottomButtons = () => {
         }
     }, [patchedUserSuccess])
 
-    useEffect(() => {
-        if (user?.is_onboarded) {
-            navigate('/budget')
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (user?.is_onboarded)
+    //         navigate('/budget')
+    // }, [user])
 
     return (
-        <div
-            className="btn-container"
-        >
+        <div className="btn-container">
             <BlueCheckSubmitButton
                 aria-label="Add Category"
                 type="submit"

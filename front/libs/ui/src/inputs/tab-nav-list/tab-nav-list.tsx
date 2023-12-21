@@ -57,7 +57,7 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
     <>
       <Tab.List
         ref={ref} {...rest}
-        className={`tab-list-div ${className}`}
+        className={`tab-list-div ${className ? className : ''}`}
         style={{
           ...(theme && Array.isArray(theme)
             ? {

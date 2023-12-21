@@ -30,7 +30,10 @@ const InstitutionLogos = ({ plaidItems }) => {
                             <div
                                 key={item.id}
                                 className="institution-logo"
-                                style={{ marginLeft: index === 0 ? '0' : '-.5rem' }}
+                                style={{
+                                    marginLeft: index === 0 ? '0' : '-.5rem',
+                                    zIndex: index
+                                }}
                             >
                                 <Base64Logo
                                     size="1.5em"

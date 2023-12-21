@@ -1,3 +1,5 @@
+
+import './styles/Background.scss'
 import { LedgetLogoIcon } from '@ledget/media'
 
 const Header = () => (
