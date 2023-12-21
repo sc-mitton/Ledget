@@ -349,7 +349,7 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                         name="name"
                         placeholder="Name"
                         register={register}
-                        error={[errors.name]}
+                        error={errors.name}
                     />
                 </div>
                 <div>

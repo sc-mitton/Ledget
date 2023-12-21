@@ -25,10 +25,10 @@ export const billSchema = z.object({
     upper_amount: z.number().transform((value) => (isNaN(value) ? undefined : value)),
     period: z.string().min(1, { message: 'required' }),
 
-    day: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
-    week: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
-    week_day: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
-    month: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
+    day: z.number().nullable(),
+    week: z.number().nullable(),
+    week_day: z.number().nullable(),
+    month: z.number().nullable(),
 
 }).refine((data) => {
     return data.lower_amount && data.upper_amount
@@ -100,6 +100,10 @@ const Form = withModal((props) => {
 
     const billPeriod = useWatch({ control, name: 'period' })
 
+    useEffect(() => {
+        console.log('errors', errors)
+    }, [errors])
+
     return (
         <>
             <h3>New Bill</h3>
@@ -131,7 +135,7 @@ const Form = withModal((props) => {
                         name="name"
                         placeholder="Name"
                         register={register}
-                        error={[errors.name]}
+                        error={errors.name}
                     />
                 </div>
                 <div className="padded-row">

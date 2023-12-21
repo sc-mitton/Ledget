@@ -82,7 +82,7 @@ const EditCategory = withModal((props) => {
                             name="name"
                             placeholder="Name"
                             register={register}
-                            error={[errors.name]}
+                            error={errors.name}
                         />
                     </div>
                     <div>

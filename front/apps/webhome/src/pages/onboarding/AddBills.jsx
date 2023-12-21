@@ -234,7 +234,7 @@ const Form = () => {
                         name="name"
                         placeholder="Name"
                         register={register}
-                        error={[errors.name]}
+                        error={errors.name}
                     />
                 </div>
                 <div >
