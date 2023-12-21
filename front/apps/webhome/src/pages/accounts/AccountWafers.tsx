@@ -55,14 +55,14 @@ export const SkeletonWafers = () => (
 
 type SelectOption = { value: string, filterType: 'institution' | 'deposit-type' | 'meta', label: string }
 
-const WafersHeader = () => {
+const WafersHeader = ({ accounts, setAccounts }: { accounts: Account[], setAccounts: React.Dispatch<React.SetStateAction<Account[]>> }) => {
     const location = useLocation()
     const { data, isSuccess } = useGetAccountsQuery()
     const [accountsFilter, setAccountsFilter] = useState<SelectOption['value']>()
     const [accountsFilterOptions, setAccountsFilterOptions] = useState<SelectOption[]>([{
         value: 'all',
         filterType: 'meta',
-        label: 'Total Deposits',
+        label: pathMappings.getWaferTitle(location)
     }])
     const headerRef = useRef<HTMLDivElement>(null)
 
@@ -79,15 +79,32 @@ const WafersHeader = () => {
                 .map((account: any) => ({
                     value: account.subtype,
                     filterType: 'deposit-type',
-                    label: account.subtype,
+                    label: account.subtype.charAt(0).toUpperCase() + account.subtype.slice(1),
                 } as const))
             setAccountsFilterOptions([
                 ...accountsFilterOptions,
                 ...(institutions || []),
-                ...(depositTypes || [])
+                ...(depositTypes.length > 1 ? depositTypes : [])
             ])
         }
     }, [isSuccess, location.pathname])
+
+    // Filter accounts
+    useEffect(() => {
+        if (isSuccess) {
+            const filteredAccounts = data?.accounts.filter((account: any) => {
+                const filter = accountsFilterOptions.find(f => f.value === accountsFilter)
+                if (filter?.filterType === 'institution') {
+                    return account.institution_id === accountsFilter && account.type === pathMappings.getAccountType(location)
+                } else if (filter?.filterType === 'deposit-type') {
+                    return account.subtype === accountsFilter && account.type === pathMappings.getAccountType(location)
+                } else if (filter?.filterType === 'meta') {
+                    return account.type === pathMappings.getAccountType(location)
+                }
+            })
+            setAccounts(filteredAccounts || [])
+        }
+    }, [accountsFilter, isSuccess, location.pathname])
 
     const Button = (props: ButtonHTMLAttributes<HTMLButtonElement>) => (
         <button
@@ -109,18 +126,16 @@ const WafersHeader = () => {
                 onChange={setAccountsFilter}
                 dividerKey='filterType'
                 placement='left'
-                dropdownStyle={{ minWidth: (headerRef.current?.offsetWidth || 100) * 1.5 }}
+                dropdownStyle={{
+                    minWidth: (headerRef.current?.offsetWidth || 100) * 1.75,
+                    marginLeft: '-.75em'
+                }}
                 as={Button}
             />
             <div>
-                <DollarCents
-                    value={
-                        (isSuccess && data)
-                            ? data?.accounts.filter(account => account.type === pathMappings.getAccountType(location))
-                                .reduce((acc, account) => acc.plus(account.balances.current), Big(0))
-                                .times(100).toNumber()
-                            : '0.00'
-                    }
+                <DollarCents value={accounts.filter(account => account.type === pathMappings.getAccountType(location))
+                    .reduce((acc, account) => acc.plus(account.balances.current), Big(0))
+                    .times(100).toNumber()}
                 />
             </div>
         </div>
@@ -135,36 +150,34 @@ export const FilledWafers = () => {
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
     const [turnOffBottomMask, setTurnOffBottomMask] = useState(false)
-    const [freezeWaerAnimation, setFreezeWaerAnimation] = useState(false)
+    const [freezeWaferAnimation, setFreezeWaferAnimation] = useState(false)
 
     const waferApi = useSpringRef()
-    const transitions = useTransition(
-        accounts.filter((account: any) => account.type === pathMappings.getAccountType(location)) || [],
-        {
-            from: (item: any, index: number) => ({
-                x: index * (waferWidth + waferPadding) + (15 * (index + 1) ** 2),
-                scale: 1,
-                zIndex: 0,
-                width: waferWidth,
-                opacity: 0,
-            }),
-            enter: (item: any, index: number) => ({
-                x: index * (waferWidth + waferPadding),
-                opacity: 1,
-            }),
-            immediate: freezeWaerAnimation,
-            ref: waferApi
-        })
+    const transitions = useTransition(accounts, {
+        from: (item: any, index: number) => ({
+            x: index * (waferWidth + waferPadding) + (15 * (index + 1) ** 2),
+            scale: 1,
+            zIndex: 0,
+            width: waferWidth,
+            opacity: 0,
+        }),
+        enter: (item: any, index: number) => ({
+            x: index * (waferWidth + waferPadding),
+            opacity: 1,
+        }),
+        immediate: freezeWaferAnimation,
+        ref: waferApi
+    })
 
     // Freeze Wafer Animation when updating order
     useEffect(() => {
         if (isUpdating) {
-            setFreezeWaerAnimation(true)
+            setFreezeWaferAnimation(true)
         }
         let timeout: NodeJS.Timeout
         if (isUpdateSuccess) {
             timeout = setTimeout(() => {
-                setFreezeWaerAnimation(false)
+                setFreezeWaferAnimation(false)
             }, 2000)
         }
         return () => { clearTimeout(timeout) }
@@ -183,7 +196,7 @@ export const FilledWafers = () => {
     // Start initial animation
     useEffect(() => {
         isSuccessLoadingAccounts && waferApi.start()
-    }, [location.pathname, isSuccessLoadingAccounts, data])
+    }, [location.pathname, isSuccessLoadingAccounts, data, accounts])
 
     const order = useRef(_filterAccounts(data?.accounts || [], location).map((item) => item.account_id))
     const bind = useSpringDrag({
@@ -222,7 +235,7 @@ export const FilledWafers = () => {
     return (
         <div className="account-wafers--container window">
             {['deposits', 'credit'].includes(location.pathname.split('/')[2])
-                && <WafersHeader />}
+                && <WafersHeader setAccounts={setAccounts} accounts={accounts} />}
             <div
                 className="account-wafers"
                 onScroll={(e) => {

@@ -1,10 +1,5 @@
 @mixin common {
     /* Base Palet */
-    --mute-red: #fe8797;
-    --hover-red: #fb6a7e;
-    --alert-red: #f35050;
-    --red-rgb: 243, 80, 80;
-    --dark-red: #8b2424;
 
     --yellow: rgb(175, 175, 51);
     --debit-text: #3aae83;
@@ -45,6 +40,13 @@
 
 :root {
     main.dark {
+
+        --mute-red: hsl(352, 98%, 90%);
+        --hover-red: hsl(352, 95%, 85%);
+        --alert-red: hsl(352, 96%, 80%);
+        --red-rgb: 243, 80, 80;
+        --dark-red: #8b2424;
+
         // Secondary and Primary Base Values
         --main-color-h: 234;
         --main-color-s: 10%;
@@ -93,7 +95,7 @@
         --window-rgb: 5, 5, 5;
         --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 75%);
 
-        --inner-window: hsl(0, 0%, 5%);
+        --inner-window: hsl(0, 0%, 6%);
         --inner-window2: hsl(0, 0%, 12%);
         --inner-window-rgb: 13, 13, 13;
         --overlay: hsl(0, 0%, 80%);
@@ -126,8 +128,8 @@
         --icon-hover-light-gray: hsl(0, 0%, 25%);
         --icon-hover-gray: hsl(0, 0%, 50%);
 
-        --btn-gray: hsl(0, 0%, 12%);
-        --btn-gray-hover: hsl(0, 0%, 17%);
+        --btn-gray: hsl(0, 0%, 18%);
+        --btn-gray-hover: hsl(0, 0%, 22%);
         --btn-mid-gray: hsl(0, 0%, 48%);
         --btn-mid-gray-hover: hsl(0, 0%, 90%);
 
@@ -149,6 +151,12 @@
     }
 
     main.light {
+
+        --mute-red: #fe8797;
+        --hover-red: #fb6a7e;
+        --alert-red: #f35050;
+        --red-rgb: 243, 80, 80;
+        --dark-red: #8b2424;
 
         // Secondary and Primary Base Values
         --main-color-h: 234;

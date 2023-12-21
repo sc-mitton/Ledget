@@ -9,6 +9,7 @@
 .toast {
     background-color: var(--window);
     border-radius: calc(var(--border-radius2) + 2px);
+    border: 1.5px solid var(--window-border);
     box-shadow: var(--mid-elevation-drop-shadow);
     display: flex;
     align-items: center;
@@ -30,7 +31,7 @@
 }
 
 .toast.error::after {
-    background-color: var(--dark-red);
+    background-color: var(--alert-red);
 }
 
 @keyframes loading-bar {
@@ -44,7 +45,7 @@
 }
 
 .toast.error * {
-    color: var(--dark-red);
+    color: var(--alert-red);
 }
 
 .toast>div {

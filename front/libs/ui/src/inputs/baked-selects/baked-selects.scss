@@ -19,9 +19,9 @@
 
     .baked-dropdown-item {
         display: flex;
-        flex-direction: column;
+        justify-content: space-between;
         align-items: flex-start;
-        gap: .25em;
+        gap: 1em;
 
         .sub-label {
             opacity: .7;
@@ -68,7 +68,7 @@
     }
 
     .dropdown {
-        margin-top: .5em;
+        margin-top: .25em;
         max-height: calc(25vh);
         padding: 0.25em;
 

@@ -229,7 +229,7 @@ const FilterWindow = () => {
                             {index !== accountsFieldValue?.length - 1 ? ', ' : ''}
                         </span>
                     ))}
-                    {accountsFieldValue &&
+                    {(accountsFieldValue?.length as any > 0) &&
                         <DeleteButton
                             show={true}
                             drawable={false}

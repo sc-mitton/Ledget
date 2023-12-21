@@ -344,7 +344,6 @@ export const filteredFetchedConfirmedTransactions = createSlice({
         builder.addMatcher(
             extendedApiSlice.endpoints.getTransactions.matchFulfilled,
             (state, action) => {
-                console.log('fullfilled')
                 if (action.meta.arg.originalArgs.confirmed && !action.meta.arg.originalArgs.category) {
                     state.filtered = action.payload.results
                 }

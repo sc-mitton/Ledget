@@ -13,7 +13,7 @@ import { FormErrorTip } from '../../pieces/form-errors/form-errors'
 
 export interface BakedSelectPropsBase<O> {
   name?: string
-  options: O[]
+  options?: O[]
   labelKey?: string
   subLabelKey?: string
   valueKey?: string
@@ -105,7 +105,6 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
             : defaultOp?.[props.valueKey || 'value']
       )
     }
-    console.log('props.options', props.options)
   }, [props.options])
 
   return (

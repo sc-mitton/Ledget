@@ -69,20 +69,19 @@ def sync_transactions(plaid_item: PlaidItem) -> dict:
         and return a filtered dict that matches the transaction
         schema
         '''
-        filtered = {}
+        filtered = {'is_spend': True}
         for field in filter_target_fields:
             if unfiltered.get(field, False):
                 filtered[field] = unfiltered[field]
         for nested_field in Transaction.nested_plaid_fields:
-            filtered.update(**unfiltered[nested_field])
+            if unfiltered.get(nested_field, False):
+                filtered.update(**unfiltered[nested_field])
 
         if unfiltered.get('personal_finance_category', {}) \
                      .get('primary', '').upper() in NOT_SPEND_CATEGORIES or \
            unfiltered.get('personal_finance_category', {}) \
                      .get('detailed', '').upper() in NOT_SPEND_DETAIL:
             filtered['is_spend'] = False
-        else:
-            filtered['is_spend'] = True
 
         return filtered
 
@@ -94,30 +93,34 @@ def sync_transactions(plaid_item: PlaidItem) -> dict:
         '''
         for _ in ['added', 'modified', 'removed']:
             for trans in response[_]:
-                formated_trans = _format_transaction(trans)
                 if _ == 'added':
+                    formated_trans = _format_transaction(trans)
                     added.append(formated_trans)
                 elif _ == 'modified':
+                    formated_trans = _format_transaction(trans)
                     modified.append(formated_trans)
                 elif _ == 'removed':
-                    removed.append(formated_trans)
+                    removed.append(trans['transaction_id'])
 
     @transaction.atomic
     def _bulk_add_transactions():
         Transaction.objects.bulk_create([
             Transaction(predicted_category=default_category, **t)
-            if t.is_spend
+            if t['is_spend']
             else Transaction(**t)
             for t in added
         ])
 
     @transaction.atomic
     def _bulk_modify_transactions():
-        pass
+        for t in modified:
+            transaction_id = t.pop('transaction_id')
+            Transaction.objects.filter(
+                transaction_id=transaction_id).update(**t)
 
     @transaction.atomic
     def _bulk_remove_transactions():
-        pass
+        Transaction.objects.filter(transaction_id__in=removed).delete()
 
     @transaction.atomic
     def _flush_to_db():
