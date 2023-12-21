@@ -91,6 +91,7 @@ $duration: .2s;
     &.small-screen {
         position: absolute;
         box-shadow: var(--mid-elevation-drop-shadow);
+        background-color: var(--inner-window);
     }
 
     &.open {

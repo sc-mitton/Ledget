@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useId, ComponentProps, forwardRef } from '
 
 import { Combobox } from '@headlessui/react';
 import { useController } from 'react-hook-form';
-import { BakedSelectProps, Option } from './baked-list-box';
+import { BakedSelectProps } from './baked-list-box';
 
 import './baked-selects.scss';
 import { DropDownDiv } from '../../animations/animations';

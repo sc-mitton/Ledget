@@ -1,19 +1,29 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, ButtonHTMLAttributes } from 'react'
 
 import { useLocation, Location, useSearchParams } from 'react-router-dom'
 import { animated, useTransition, useSpringRef } from '@react-spring/web'
 import Big from 'big.js'
 
 import { CornerGripButton } from '@components/buttons'
-import { Base64Logo, DollarCents, ShimmerDiv, useSpringDrag } from '@ledget/ui'
+import { Base64Logo, DollarCents, ShimmerDiv, useSpringDrag, BakedListBox } from '@ledget/ui'
 import {
     useGetAccountsQuery,
     useUpdateAccountsMutation,
+    Account
 } from "@features/accountsSlice"
 import pathMappings from './path-mappings'
+import { ArrowIcon } from '@ledget/media'
+import { set } from 'react-hook-form'
 
 const waferWidth = 165
 const waferPadding = 6
+
+const _filterAccounts = (accounts: any[], location: Location) => {
+    return accounts.filter((account: any) =>
+        account.type === pathMappings.getAccountType(location)
+    )
+}
+
 
 export const SkeletonWafers = () => (
     <div className="skeleton-account-wafers--container">
@@ -33,6 +43,7 @@ export const SkeletonWafers = () => (
                         key={index}
                         className="skeleton-account-wafer"
                         shimmering={true}
+                        lightness={10}
                         background="var(--inner-window)"
                         style={{ position: 'absolute' }}
                     />
@@ -42,13 +53,65 @@ export const SkeletonWafers = () => (
     </div>
 )
 
+type SelectOption = { value: string, filterType: 'institution' | 'deposit-type' | 'meta', label: string }
+
 const WafersHeader = () => {
     const location = useLocation()
     const { data, isSuccess } = useGetAccountsQuery()
+    const [accountsFilter, setAccountsFilter] = useState<SelectOption['value']>()
+    const [accountsFilterOptions, setAccountsFilterOptions] = useState<SelectOption[]>([{
+        value: 'all',
+        filterType: 'meta',
+        label: 'Total Deposits',
+    }])
+    const headerRef = useRef<HTMLDivElement>(null)
+
+    // Set filter options
+    useEffect(() => {
+        if (isSuccess) {
+            const institutions = data?.institutions.map((institution: any) => ({
+                value: institution.id,
+                filterType: 'institution',
+                label: institution.name,
+            } as const))
+            const depositTypes = data?.accounts
+                .filter((account: any) => account.type === pathMappings.getAccountType(location))
+                .map((account: any) => ({
+                    value: account.subtype,
+                    filterType: 'deposit-type',
+                    label: account.subtype,
+                } as const))
+            setAccountsFilterOptions([
+                ...accountsFilterOptions,
+                ...(institutions || []),
+                ...(depositTypes || [])
+            ])
+        }
+    }, [isSuccess, location.pathname])
+
+    const Button = (props: ButtonHTMLAttributes<HTMLButtonElement>) => (
+        <button
+            aria-haspopup="listbox"
+            aria-label="Filter Accounts"
+            {...props}
+        >
+            {accountsFilterOptions.find(option => option.value === accountsFilter)?.label || ''}
+            <ArrowIcon size={'.9em'} />
+        </button>
+    )
 
     return (
-        <div className="account-wafers--header">
-            <h3>{pathMappings.getWaferTitle(location)}</h3>
+        <div className="account-wafers--header" ref={headerRef}>
+            <BakedListBox
+                defaultValue={accountsFilterOptions[0].value}
+                options={accountsFilterOptions}
+                value={accountsFilter}
+                onChange={setAccountsFilter}
+                dividerKey='filterType'
+                placement='left'
+                dropdownStyle={{ minWidth: (headerRef.current?.offsetWidth || 100) * 1.5 }}
+                as={Button}
+            />
             <div>
                 <DollarCents
                     value={
@@ -64,15 +127,10 @@ const WafersHeader = () => {
     )
 }
 
-const filterAccounts = (accounts: any[], location: Location) => {
-    return accounts.filter((account: any) =>
-        account.type === pathMappings.getAccountType(location)
-    )
-}
-
 export const FilledWafers = () => {
     const [updateOrder, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useUpdateAccountsMutation()
     const { data, isSuccess: isSuccessLoadingAccounts } = useGetAccountsQuery()
+    const [accounts, setAccounts] = useState<Account[]>(data?.accounts || [])
 
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -81,7 +139,7 @@ export const FilledWafers = () => {
 
     const waferApi = useSpringRef()
     const transitions = useTransition(
-        data?.accounts.filter((account: any) => account.type === pathMappings.getAccountType(location)) || [],
+        accounts.filter((account: any) => account.type === pathMappings.getAccountType(location)) || [],
         {
             from: (item: any, index: number) => ({
                 x: index * (waferWidth + waferPadding) + (15 * (index + 1) ** 2),
@@ -127,7 +185,7 @@ export const FilledWafers = () => {
         isSuccessLoadingAccounts && waferApi.start()
     }, [location.pathname, isSuccessLoadingAccounts, data])
 
-    const order = useRef(filterAccounts(data?.accounts || [], location).map((item) => item.account_id))
+    const order = useRef(_filterAccounts(data?.accounts || [], location).map((item) => item.account_id))
     const bind = useSpringDrag({
         order: order,
         indexCol: 'account_id',
@@ -162,7 +220,7 @@ export const FilledWafers = () => {
     }
 
     return (
-        <div className="account-wafers--container inner-window">
+        <div className="account-wafers--container window">
             {['deposits', 'credit'].includes(location.pathname.split('/')[2])
                 && <WafersHeader />}
             <div

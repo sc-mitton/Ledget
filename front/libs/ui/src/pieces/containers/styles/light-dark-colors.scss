@@ -14,9 +14,6 @@
     --header-pill: hsl(0, 0%, 98%);
     --header-pill-hover: rgb(255, 255, 255, 15%);
 
-    // Windows
-    --window-background-color: var(--window);
-
     /* Input Colors */
     --input-border: solid 1px var(--input-border-color);
     --input-border-focus: solid 1px var(--input-background);
@@ -50,11 +47,11 @@
     main.dark {
         // Secondary and Primary Base Values
         --main-color-h: 234;
-        --main-color-s: 15%;
+        --main-color-s: 10%;
         --main-color-l: 35%;
 
         --secondary-color-h: 162;
-        --secondary-color-s: 22%;
+        --secondary-color-s: 17%;
         --secondary-color-l: 40%;
 
         --main-color-values: 93, 97, 137;
@@ -90,15 +87,18 @@
         --gray-hlight: hsl(0, 0%, 15%);
 
         // Windows
-        --window: hsl(0, 0%, 7%);
+        --window-background-color: hsl(0, 0%, 7%);
+        --window: hsl(0, 0%, 10%);
         --window-border: hsl(0, 0%, 12%);
         --window-rgb: 5, 5, 5;
-        --window2: #121212;
         --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 75%);
 
-        --inner-window: hsl(0, 0%, 10%);
+        --inner-window: hsl(0, 0%, 5%);
+        --inner-window2: hsl(0, 0%, 12%);
         --inner-window-rgb: 13, 13, 13;
         --overlay: hsl(0, 0%, 80%);
+
+        --wafer-background: rgb(15, 15, 15);
 
         // Inputs
         --input-background: hsl(0, 0%, 9%);
@@ -132,8 +132,8 @@
         --btn-mid-gray-hover: hsl(0, 0%, 90%);
 
         // Drop Shadows & Borders
-        --window-drop-shadow-color: hsl(0, 0%, 9%);
-        --header-box-shadow-color: hsl(0, 0%, 10%);
+        --window-drop-shadow-color: hsl(0, 0%, 6%);
+        --header-box-shadow-color: hsl(0, 0%, 7%);
         --new-item-drop-shadow-color: hsl(0, 0%, 5%);
         --wafer-drop-shadow-color: hsl(0, 0%, 15%);
         --scroll-shadow: hsl(0, 0%, 3%), transparent;
@@ -152,11 +152,11 @@
 
         // Secondary and Primary Base Values
         --main-color-h: 234;
-        --main-color-s: 15%;
+        --main-color-s: 10%;
         --main-color-l: 40%;
 
         --secondary-color-h: 162;
-        --secondary-color-s: 15%;
+        --secondary-color-s: 10%;
         --secondary-color-l: 40%;
 
         --main-color-values: 61, 62, 92;
@@ -165,14 +165,14 @@
         --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
         --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
         --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 45%));
-        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 40%));
+        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 35%));
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 40%));
 
         --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
         --secondary-hlight: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 45%));
-        --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 40%));
+        --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 35%));
 
 
         --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
@@ -191,20 +191,23 @@
         --gray-hlight: hsl(0, 0%, 90%);
 
         // Windows
+        --window-background-color: hsl(0, 0%, 93%);
         --header-background: var(--main-dark4);
 
-        --window: #fafafa;
+        --window: hsl(0, 0%, 98%);
         --window-rgb: 250, 250, 250;
-        --window2: #ededed;
-        --window-border: hsl(0, 0%, 94%);
+        --window-border: hsl(0, 0%, 92%);
 
         --inner-window: hsl(0, 0%, 93%);
+        --inner-window2: hsl(0, 0%, 86%);
         --inner-window-rgb: 246, 246, 246;
         --overlay: hsl(0, 0%, 20%);
 
+        --wafer-background: hsl(0, 0, 93%);
+
         // Inputs
         --input-background: hsl(0, 0%, 91%);
-        --input-border-color: hsl(0, 0%, 87%);
+        --input-border-color: hsl(0, 0%, 84%);
 
         // Text
         --m-invert-text: hsl(0, 0%, 97%);
@@ -224,20 +227,20 @@
 
         // Icons & Buttons
         --icon-full: var(--main-dark5);
-        --icon-light-gray: hsl(0, 0%, 92%);
-        --icon-hover-light-gray: hsl(0, 0%, 88%);
-        --icon-hover-gray: hsl(0, 0%, 77%);
+        --icon-light-gray: hsl(0, 0%, 88%);
+        --icon-hover-light-gray: hsl(0, 0%, 84%);
+        --icon-hover-gray: hsl(0, 0%, 69%);
 
-        --btn-gray: hsl(0, 0%, 88%);
-        --btn-gray-hover: hsl(0, 0%, 84%);
-        --btn-mid-gray: hsl(0, 0%, 52%);
-        --btn-mid-gray-hover: hsl(0, 0%, 40%);
+        --btn-gray: hsl(0, 0%, 80%);
+        --btn-gray-hover: hsl(0, 0%, 76%);
+        --btn-mid-gray: hsl(0, 0%, 48%);
+        --btn-mid-gray-hover: hsl(0, 0%, 32%);
 
         // Drop Shadows & Borders
         --window-drop-shadow-color: hsl(0, 0%, 92%);
         --wafer-drop-shadow-color: hsl(0, 0%, 88%);
         --header-box-shadow-color: hsl(0, 0%, 70%);
-        --new-item-drop-shadow-color: hsl(0, 0%, 100%);
+        --new-item-drop-shadow-color: hsl(0, 0%, 90%);
         --scroll-shadow: hsl(0, 0%, 97%),
             transparent;
 

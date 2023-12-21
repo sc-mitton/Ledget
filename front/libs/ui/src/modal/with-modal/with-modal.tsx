@@ -137,13 +137,13 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
       from: {
         opacity: 0,
         scale: 0.92,
-        background: isDark ? 'hsl(0, 0%, 7%)' : 'hsl(0, 0%, 93%)',
+        background: isDark ? 'hsl(0, 0%, 12%)' : 'hsl(0, 0%, 98%)',
         ...contentConfig
       },
       enter: {
         opacity: 1,
         scale: 1,
-        background: isDark ? 'hsl(0, 0%, 7%)' : 'hsl(0, 0%, 93%)',
+        background: isDark ? 'hsl(0, 0%, 12%)' : 'hsl(0, 0%, 98%)',
         ...contentConfig,
       },
       leave: { opacity: 0, scale: .92 },

@@ -85,12 +85,11 @@ class AccountsView(GenericAPIView):
         except plaid.ApiException as e:
             return Response({'error': {'message': str(e)}}, e.status)
 
-        institution_data = [
-            InstitutionSerializer(account.institution).data
-            for account in accounts
-        ]
+        institution_data = {
+            account.institution.id: InstitutionSerializer(account.institution).data
+            for account in accounts}
 
-        return Response(
-            {'accounts': account_balances.values(), 'institutions': institution_data},
-            HTTP_200_OK
-        )
+        return Response({
+            'accounts': account_balances.values(),
+            'institutions': institution_data.values(),
+        }, HTTP_200_OK)

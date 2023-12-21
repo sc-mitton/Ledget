@@ -12,12 +12,22 @@ $wafer-container-padding: .75rem;
     padding-bottom: 0;
 
     .account-wafers--header {
-        h3 {
+        font-size: 1.125rem;
+
+        button {
+            font-size: .95rem;
             font-weight: var(--fw-light);
+            display: flex;
+            align-items: center;
+            gap: .5em;
         }
 
         &>div * {
             font-weight: var(--fw-bold);
+        }
+
+        &>div:last-child {
+            margin-top: .125em;
         }
     }
 }
@@ -131,7 +141,7 @@ $wafer-container-padding: .75rem;
 
 .skeleton-account-wafer,
 .account-wafer {
-    background-color: var(--window);
+    background-color: var(--wafer-background);
     border-radius: var(--border-radius4);
     position: absolute;
     inset: 0;
@@ -160,7 +170,7 @@ $wafer-container-padding: .75rem;
     &.active {
         border: 2px solid rgb(var(--main-color-values), .3);
         border-radius: var(--border-radius4);
-        transform: scale(1.01);
+        transform: scale(1.02);
 
         &:focus-visible {
             transition: all .2s ease-out;
@@ -176,7 +186,7 @@ $wafer-container-padding: .75rem;
     &.inactive:hover,
     &.inactive:focus-visible {
         outline: none;
-        transform: scale(1.02);
+        transform: scale(1.03);
         transition: all .2s ease-out;
         border-radius: var(--border-radius4);
     }
@@ -329,7 +339,7 @@ $wafer-container-padding: .75rem;
         }
 
         &:last-child {
-            font-size: .75em;
+            font-size: .875em;
             position: relative;
             z-index: 1;
             background-color: transparent;

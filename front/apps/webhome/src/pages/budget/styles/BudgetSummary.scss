@@ -158,7 +158,7 @@ $header-gap: calc(.75em + .125vw);
         // Total header
         &:nth-child(1) {
             width: calc(100% / 3 - $header-gap);
-            background-color: var(--gray-hlight);
+            background-color: var(--inner-window2);
 
             &>span:last-of-type {
                 font-size: calc($base-stats-font-size - .25rem);

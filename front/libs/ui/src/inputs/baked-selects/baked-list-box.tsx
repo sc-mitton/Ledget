@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useId, ComponentProps } from 'react'
+import { useRef, useEffect, useState, useId, ComponentProps, ComponentPropsWithoutRef } from 'react'
 
 import { Listbox } from '@headlessui/react'
 import { Control, useController, UseControllerReturn, FieldError } from 'react-hook-form'
@@ -11,9 +11,9 @@ import { DropdownItem } from "../../pieces/containers/containers"
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators'
 import { FormErrorTip } from '../../pieces/form-errors/form-errors'
 
-export interface BakedSelectPropsBase<T> {
+export interface BakedSelectPropsBase<O> {
   name?: string
-  options?: T[]
+  options: O[]
   labelKey?: string
   subLabelKey?: string
   valueKey?: string
@@ -22,9 +22,10 @@ export interface BakedSelectPropsBase<T> {
   placement?: ComponentProps<typeof DropDownDiv>['placement']
   placeholder?: string
   withCheckMarkIndicator?: boolean
-  as?: React.ElementType
+  as?: React.FC<ComponentPropsWithoutRef<'button'>>
   error?: FieldError
   style?: React.CSSProperties
+  dropdownStyle?: React.CSSProperties
   control?: Control<any>
   maxLength?: number
   buttonMaxWidth?: boolean
@@ -32,31 +33,32 @@ export interface BakedSelectPropsBase<T> {
   showLabel?: boolean
 }
 
-interface BakedSelectProps1<T> extends BakedSelectPropsBase<T> {
+interface BakedSelectProps1<TVal> {
   multiple?: true
-  value?: T[]
-  defaultValue?: T[]
-  disabled?: T[]
-  onChange?: (val: T[]) => void
+  value?: TVal[]
+  defaultValue?: TVal[]
+  disabled?: TVal[]
+  onChange?: React.Dispatch<React.SetStateAction<TVal[] | undefined>>
 }
 
-interface BakedSelectProps2<T> extends BakedSelectPropsBase<T> {
+interface BakedSelectProps2<TVal> {
   multiple?: false
-  value?: T
-  defaultValue?: T
-  disabled?: T | T[]
-  onChange?: (val: T) => void
+  value?: TVal
+  defaultValue?: TVal
+  disabled?: TVal | TVal[]
+  onChange?: React.Dispatch<React.SetStateAction<TVal | undefined>>
 }
-
-export type BakedSelectProps<T> = BakedSelectProps1<T> | BakedSelectProps2<T>
 
 export type Option = {
   label?: string
-  value?: string
+  value?: string | { [key: string]: any }
   default?: boolean
   disabled?: boolean
   [key: string]: any
 }
+
+export type BakedSelectProps<Val extends Option['value']> = (BakedSelectProps1<Val> | BakedSelectProps2<Val>)
+  & BakedSelectPropsBase<Val extends string ? string | Option : Option>
 
 const useOptionalControl = (props: Pick<BakedSelectProps<any>, 'control' | 'name'>): UseControllerReturn | { field: undefined } => {
   if (!props.control) return { field: undefined }
@@ -67,10 +69,10 @@ const useOptionalControl = (props: Pick<BakedSelectProps<any>, 'control' | 'name
 }
 
 // export function BakedListBox(props: BakedListBoxProps) {
-export const BakedListBox = <T extends Option | string>(props: BakedSelectProps<T>) => {
+export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<O>) => {
   const id = useId()
   const buttonRef = useRef<HTMLButtonElement | null>(null)
-  const [value, onChange] = useState<any>()
+  const [value, onChange] = useState<typeof props.defaultValue>()
 
   // Controll for react-hook-form
   const { field } = useOptionalControl({
@@ -84,32 +86,26 @@ export const BakedListBox = <T extends Option | string>(props: BakedSelectProps<
   }, [field?.value])
 
   // Update field value if value changes
+  // Also call props.onChange if it exists to keep parent state in sync
   useEffect(() => {
     if (value) field?.onChange(value)
+    if (props.onChange && value) props.onChange(value as any)
   }, [value])
-
-  // Set initial default value
-  useEffect(() => {
-    const defaultValue = props.options?.find((op) => typeof op !== 'string' && op.default)
-
-    onChange(
-      typeof defaultValue === 'string'
-        ? defaultValue
-        : defaultValue?.[props.valueKey || 'value'])
-  }, [])
 
   useEffect(() => {
     if (!value) {
       const defaultOp = props.options?.find((op) => {
-        return typeof op !== 'string'
-          ? op.default
-          : false
+        return typeof op !== 'string' ? op.default : false
       })
       onChange(
-        typeof defaultOp === 'string'
-          ? defaultOp
-          : defaultOp?.[props.valueKey || 'value'])
+        props.defaultValue
+          ? props.defaultValue
+          : typeof defaultOp === 'string'
+            ? defaultOp
+            : defaultOp?.[props.valueKey || 'value']
+      )
     }
+    console.log('props.options', props.options)
   }, [props.options])
 
   return (
@@ -175,7 +171,7 @@ export const BakedListBox = <T extends Option | string>(props: BakedSelectProps<
               style={{
                 minWidth: `${buttonRef?.current?.offsetWidth}px`,
                 maxWidth: props.buttonMaxWidth ? `${buttonRef?.current?.offsetWidth}px` : 'none',
-                ...props.style,
+                ...props.dropdownStyle,
               }}
             >
               {props.options?.length
@@ -195,11 +191,12 @@ export const BakedListBox = <T extends Option | string>(props: BakedSelectProps<
 
                     const hasDivider =
                       props.dividerKey &&
-                      typeof op === 'object' &&
+                      typeof op === 'object' && index !== 0 &&
                       op[props.dividerKey] !== (props.options as any)[index - 1]?.[props.dividerKey]
 
                     return (
                       <>
+                        {hasDivider && <hr />}
                         <Listbox.Option
                           key={`${id}${index}`}
                           value={value}
@@ -225,7 +222,6 @@ export const BakedListBox = <T extends Option | string>(props: BakedSelectProps<
                           }
                           }
                         </Listbox.Option>
-                        {hasDivider && <hr />}
                       </>
                     )
                   })}

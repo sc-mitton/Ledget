@@ -32,7 +32,7 @@ export const Shimmer = (props: ShimmerProps) => {
           >
             <div
               className={`shimmer`}
-              style={{ '--shimmer-lightness': `${(isDark || darkMode) ? lightness - 75 : lightness}%` } as React.CSSProperties}
+              style={{ '--shimmer-lightness': `${(isDark || darkMode) ? lightness - 85 : lightness}%` } as React.CSSProperties}
             />
           </animated.div>
       )}
