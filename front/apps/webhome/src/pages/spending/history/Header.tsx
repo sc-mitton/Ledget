@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useWatch, useForm } from 'react-hook-form'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useLocation } from 'react-router-dom'
 import { DatePicker } from "antd"
 import {
     useTransition,
@@ -272,6 +272,7 @@ const FilterWindow = () => {
 
 const HistoryHeader = () => {
     const [searchParams, setSearchParams] = useSearchParams()
+    const location = useLocation()
     const {
         showFilterForm,
         setShowFilterForm,
@@ -304,7 +305,11 @@ const HistoryHeader = () => {
     useChain(showFilterForm ? [windowApi, formApi] : [formApi, windowApi], [0, .4])
 
     // On mount set month and date query params to current date and month
+    // if we're on the spending page (otherwise the spending is located on the side
+    // of the budget page)
     useEffect(() => {
+        if (!location.pathname.includes('spending')) return
+
         if (!searchParams.get('month') || !searchParams.get('year')) {
             const year = sessionStorage.getItem(`budget-year`) || new Date().getFullYear()
             const month = sessionStorage.getItem(`budget-month`) || new Date().getMonth() + 1

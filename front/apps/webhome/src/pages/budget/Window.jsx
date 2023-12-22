@@ -134,8 +134,8 @@ function Window() {
     useEffect(() => {
         const year = searchParams.get('year')
         const month = searchParams.get('month')
-        sessionStorage.setItem(`${location.pathname}-month`, `${month}`)
-        sessionStorage.setItem(`${location.pathname}-year`, `${year}`)
+        sessionStorage.setItem(`budget-month`, `${month}`)
+        sessionStorage.setItem(`budget-year`, `${year}`)
 
         // Dispatch filter
         dispatch(setConfirmedTransactionFilter({
