@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Tab } from '@headlessui/react'
 
 import { useItemsContext, ItemS, Item } from './ItemsContext'
@@ -49,7 +49,7 @@ export const TabView = ({ children, item }: { children: React.ReactNode, item: I
                             { pillColor: sDark, pillBackgroundColor: sHlightHover, tabBackgroundColor: sHlight, tabColor: sDark }
                         ]}
                     />
-                    <Tab.Panels>
+                    <Tab.Panels as={Fragment}>
                         {children}
                     </Tab.Panels>
                 </>
@@ -60,6 +60,7 @@ export const TabView = ({ children, item }: { children: React.ReactNode, item: I
 
 export const BottomButtons = ({ item }: { item: ItemS }) => {
     const navigate = useNavigate()
+    const location = useLocation()
     const [addNewBill, { isLoading: isBillLoading, isSuccess: isBillSuccess }] = useAddnewBillMutation()
     const [addNewCategory, { isLoading: isCategoryLoading, isSuccess: isCategorySuccess }] = useAddNewCategoryMutation()
     const { refetch: refetchUser } = useGetMeQuery()
@@ -107,7 +108,10 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
 
     useEffect(() => {
         if (isBillSuccess) {
-            navigate('/welcome/add-categories')
+            navigate({
+                pathname: '/budget/welcome/add-categories',
+                search: location.search,
+            })
         }
     }, [isBillSuccess])
 
@@ -134,12 +138,12 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
 
     return (
         <div className="btn-container">
-            <BlackCheckSubmitButton
+            {/* <BlackCheckSubmitButton
                 aria-label="Add Category"
                 type="submit"
             >
                 Add
-            </BlackCheckSubmitButton>
+            </BlackCheckSubmitButton> */}
             <BlackSubmitWithArrow
                 aria-label="Next"
                 onClick={handleClick}

@@ -101,7 +101,7 @@ const Gutter = () => {
     const [updatePill, setUpdatePill] = useState(false)
     const { screenSize } = useScreenContext()
 
-    const { props } = usePillAnimation({
+    const [props] = usePillAnimation({
         ref: ulRef,
         update: [location.pathname, open, updatePill],
         refresh: [],

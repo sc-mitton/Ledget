@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useSpring } from '@react-spring/web'
-import { useSchemeVar, useColorScheme } from '@ledget/ui'
+import { useSpring, useSpringRef } from '@react-spring/web'
+import { useSchemeVar } from '@ledget/ui'
 
 interface Props {
   ref: React.RefObject<HTMLElement>
@@ -31,7 +31,7 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
   const [selectorTop, setSelectorTop] = useState<number>()
   const backgroundColor = useSchemeVar('--btn-gray-hover')
 
-  let baseStyles = {
+  const baseStyles = {
     position: "absolute",
     backgroundColor: backgroundColor,
     borderRadius: 'var(--border-radius2)',
@@ -39,15 +39,21 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
     config: { tension: 200, friction: 22 }
   } as React.CSSProperties
 
-  baseStyles = { ...baseStyles, ...styles }
-
+  const api = useSpringRef()
   const props = useSpring({
-    width: selectorWidth,
-    left: selectorLeft,
-    top: selectorTop,
-    height: selectorHeight,
-    ...baseStyles
+    from: { ...baseStyles, ...styles },
+    to: {
+      width: selectorWidth,
+      left: selectorLeft,
+      top: selectorTop,
+      height: selectorHeight,
+    },
+    ref: api
   })
+
+  useEffect(() => {
+    api.start()
+  }, [selectorWidth, selectorHeight, selectorLeft, selectorTop])
 
   useEffect(() => {
     if (selectors.length > 0) {
@@ -70,7 +76,7 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
     }, 50)
   }, [...refresh])
 
-  return { props }
+  return [props, api]
 }
 
 export default usePillAnimation

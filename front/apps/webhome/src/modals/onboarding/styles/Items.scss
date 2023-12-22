@@ -6,25 +6,22 @@
 
 #onboarding-app {
 
-    form>div {
-        display: grid;
-        grid-template-columns: 1fr;
+    form {
 
-        &>div>div {
-            margin-top: .75em;
+        &>div {
+            display: flex;
+            gap: .5em;
 
-            &>label {
-                font-weight: var(--fw-regular);
+            &>div:last-child {
+                display: flex;
+                align-items: center;
             }
 
-            &:last-child {
-                margin-right: 0;
+            &>div:not(:last-child) {
+                flex: 1;
             }
         }
-    }
 
-    #add-bills--window {
-        background-color: var(--inner-window2);
     }
 
     #add-bills--window form>div>div:nth-child(2) {
@@ -33,28 +30,33 @@
 
     #add-bills--window>div:first-child {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        gap: .5em;
         align-items: center;
+        justify-content: flex-start;
     }
 
 
     #budget-items--container {
         display: flex;
         flex-direction: column;
+        align-items: center;
         border-radius: var(--border-radius3);
         background-color: var(--input-background);
         max-height: 10rem;
-        opacity: 1;
-        width: auto;
-        margin: 0 auto;
 
         margin: 1.5em 0;
         padding: 1em;
 
         &>div:first-of-type {
             margin: 0 auto;
-            width: 80%;
-            min-width: 20rem;
+            min-width: 15rem;
+            max-width: 25rem;
+        }
+
+        &>div:last-of-type {
+            width: 100%;
+            max-width: 22rem;
         }
 
         &.expand {

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Tab } from '@headlessui/react';
 import { animated } from '@react-spring/web'
@@ -36,7 +36,7 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
   const { labels, className, theme, ...rest } = props
   const defaultBackgroundColor = useSchemeVar('--icon-hover-light-gray')
 
-  const { props: pillProps } = usePillAnimation({
+  const [pillProps, api] = usePillAnimation({
     ref: ref,
     querySelectall: '[role=tab]',
     update: [theme, props.selectedIndex],
@@ -50,6 +50,14 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
     },
     find: (element) => element.attributes.getNamedItem('aria-selected')?.value === 'true',
   })
+
+  useEffect(() => {
+    api.start({
+      backgroundColor: theme
+        ? Array.isArray(theme) ? theme[props.selectedIndex]?.pillBackgroundColor : theme?.pillBackgroundColor
+        : defaultBackgroundColor,
+    })
+  }, [props.selectedIndex])
 
   return (
     <>

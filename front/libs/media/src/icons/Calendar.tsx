@@ -3,7 +3,7 @@
 const Calendar
     = ({
         className = 'calendar-icon',
-        fill = "var(--icon-full)",
+        fill = "currentColor",
         size = "1.5em",
     }) => {
 

@@ -22,7 +22,7 @@ interface Account {
     verification_status?: string
 }
 
-interface PlaidItem {
+export interface PlaidItem {
     user: string
     id: string
     access_token?: string

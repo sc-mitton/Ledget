@@ -108,9 +108,9 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
 const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean) => {
     let lightness: number
     if (index === 0 || expanded) {
-        lightness = darkMode ? 10 : 98
+        lightness = darkMode ? 11 : 98
     } else {
-        lightness = darkMode ? 10 - (index * 2) : 98 - (index * 2)
+        lightness = darkMode ? 11 - (index * 2) : 98 - (index * 2)
     }
     return `hsl(0, 0%, ${lightness}%)`
 }

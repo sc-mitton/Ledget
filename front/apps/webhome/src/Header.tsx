@@ -27,7 +27,7 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
     const location = useLocation()
     const navigate = useNavigate()
     const navListRef = useRef<HTMLUListElement>(null)
-    const { props: tabsSpring } = usePillAnimation({
+    const [tabsSpring] = usePillAnimation({
         ref: navListRef,
         update: [location.pathname],
         refresh: [isNarrow],

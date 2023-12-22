@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect, useRef, useContext, createContext } from 'react'
 
-import { UseFormRegister, FieldError } from 'react-hook-form'
+import { UseFormRegister } from 'react-hook-form'
 
 import './styles/Dropdowns.css'
 import './styles/Scheduler.scss'
@@ -8,7 +8,8 @@ import Radios from './Radios'
 import type { Bill } from '@features/billSlice'
 import { useClickClose } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
-import { SlimmestInputButton, FormErrorTip, DropDownDiv, getDaySuffix } from '@ledget/ui'
+import { SlimmestInputButton, InputButton, FormErrorTip, DropDownDiv, getDaySuffix } from '@ledget/ui'
+import { Calendar } from '@ledget/media'
 
 interface Context extends Pick<Bill, 'day' | 'week' | 'month'> {
     open: boolean,
@@ -59,10 +60,12 @@ const Scheduler = (props: Omit<Context, 'open' | 'setOpen' | 'buttonRef'> & { ch
     )
 }
 
-const Button: FC<React.HTMLAttributes<HTMLButtonElement>> = ({ children, ...props }) => {
+const Button: FC<React.HTMLAttributes<HTMLButtonElement> & { iconPlaceholder?: boolean }> = ({ children, iconPlaceholder, ...props }) => {
+    const Component = iconPlaceholder ? InputButton : SlimmestInputButton
+
     const dayMap = {
-        1: 'Sunday', 2: 'Monday', 3: 'Tuesday', 4: 'Wednesday',
-        5: 'Thursday', 6: 'Friday', 7: 'Saturday',
+        1: 'Sun', 2: 'Mon', 3: 'Tue', 4: 'Wed',
+        5: 'Thu', 6: 'Fri', 7: 'Sat',
     }
     const monthMap = {
         1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
@@ -93,7 +96,7 @@ const Button: FC<React.HTMLAttributes<HTMLButtonElement>> = ({ children, ...prop
 
     return (
         <>
-            <SlimmestInputButton
+            <Component
                 onClick={() => setOpen(!open)}
                 onKeyDown={(event) => {
                     if (event.key === 'Enter') {
@@ -110,16 +113,22 @@ const Button: FC<React.HTMLAttributes<HTMLButtonElement>> = ({ children, ...prop
                 aria-haspopup="true"
                 aria-expanded={`${open}`}
                 aria-controls="schedule-dropdown"
+                style={{
+                    color: placeholder ? 'var(--m-text)' : 'var(--input-placeholder2)'
+                }}
                 {...props}
             >
-                <div>
-                    <span>
-                        {placeholder || 'Repeats on'}
-                    </span>
-                </div>
-                <ArrowIcon size={'.8em'} />
+                {iconPlaceholder
+                    ?
+                    <><Calendar size={'1.25em'} />{placeholder}</>
+                    : <div>
+                        <span>
+                            {placeholder || 'Repeats on'}
+                        </span>
+                    </div>}
+                <ArrowIcon size={'.8em'} stroke={'currentColor'} />
                 {children}
-            </SlimmestInputButton>
+            </Component>
         </>
 
     )
@@ -141,12 +150,12 @@ const ModeSelector = ({ mode, setMode }: {
             onChange={setMode}
             style={{
                 borderRadius: 'var(--border-radius2)',
-                backgroundColor: 'var(--icon-hover-light-gray)',
+                backgroundColor: 'var(--btn-mid-gray-hover)',
                 display: 'inline-block',
             }}
         >
             <Radios.Pill styles={{
-                backgroundColor: 'var(--icon-hover-gray)',
+                backgroundColor: 'var(--btn-mid-gray)',
                 borderRadius: 'var(--border-radius2)'
             }} />
             {options.map((option) => (
@@ -749,6 +758,7 @@ interface BSP {
     setHasSchedule?: React.Dispatch<React.SetStateAction<boolean>>,
     error: boolean
     register: UseFormRegister<any>
+    iconPlaceholder?: boolean
 }
 
 export const BillScheduler = (props: BSP) => {
@@ -787,7 +797,7 @@ export const BillScheduler = (props: BSP) => {
                 setWeekDay={setWeekDay}
             >
                 <div id="scheduler--container">
-                    <Scheduler.Button>
+                    <Scheduler.Button iconPlaceholder={props.iconPlaceholder}>
                         {error &&
                             <FormErrorTip error={{ type: 'required' }} />}
                     </Scheduler.Button>

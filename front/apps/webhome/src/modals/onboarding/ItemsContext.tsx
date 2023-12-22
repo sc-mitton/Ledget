@@ -110,22 +110,20 @@ export const ItemsProvider = ({ children, itemType }: { children: React.ReactNod
     )
 
     const monthContainerProps = useSpring({
-        height: (monthItems.length + 1) * (itemHeight + itemPadding),
+        height: (monthItems.length) * (itemHeight + itemPadding),
         maxHeight: 6 * (itemHeight + itemPadding),
         ref: monthContainerApi,
         config: { duration: 100 },
         position: 'relative',
         overflowX: 'hidden',
-        marginTop: '1.25em',
         overflowY: monthItems.length >= 6 ? 'scroll' : 'hidden',
     })
     const yearContainerProps = useSpring({
-        height: (yearItems.length + 1) * (itemHeight + itemPadding),
+        height: (yearItems.length) * (itemHeight + itemPadding),
         maxHeight: 6 * (itemHeight + itemPadding),
         ref: yearContainerApi,
         position: 'relative',
         overflowX: 'hidden',
-        marginTop: '1.25em',
         overflowY: yearItems.length >= 6 ? 'scroll' : 'hidden',
         config: { duration: 100 },
     })
@@ -134,9 +132,9 @@ export const ItemsProvider = ({ children, itemType }: { children: React.ReactNod
     useChain([yearApi, yearContainerApi,], [0, 0])
 
     useEffect(() => {
-        if (location.pathname === '/welcome/add-bills') {
+        if (location.pathname.includes('add-bills')) {
             fetchBills()
-        } else if (location.pathname === '/welcome/add-categories') {
+        } else if (location.pathname.includes('add-categories')) {
             fetchCategories()
         }
     }, [location])

@@ -91,7 +91,7 @@
 
         // Windows
         --window-background-color: hsl(0, 0%, 6%);
-        --window: hsl(0, 0%, 10%);
+        --window: hsl(0, 0%, 9%);
         --window-border: hsl(0, 0%, 12%);
         --window-rgb: 5, 5, 5;
         --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 75%);
@@ -106,7 +106,7 @@
         --dropdown-item-background: hsl(0, 0%, 12%);
 
         // Inputs
-        --input-background: hsl(0, 0%, 9%);
+        --input-background: hsl(0, 0%, 8%);
         --input-border-color: hsl(0, 0%, 13%);
 
         // Text
@@ -134,7 +134,7 @@
         --btn-gray: hsl(0, 0%, 18%);
         --btn-gray-hover: hsl(0, 0%, 22%);
         --btn-mid-gray: hsl(0, 0%, 48%);
-        --btn-mid-gray-hover: hsl(0, 0%, 90%);
+        --btn-mid-gray-hover: hsl(0, 0%, 18%);
 
         // Drop Shadows & Borders
         --window-drop-shadow-color: hsl(0, 0%, 6%);

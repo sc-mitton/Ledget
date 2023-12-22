@@ -85,7 +85,7 @@ const Header = () => {
     } = useGetAccountsQuery()
     const backgroundColor = useSchemeVar('--main-hlight')
 
-    const { props } = usePillAnimation({
+    const [props] = usePillAnimation({
         ref: ref,
         update: [location.pathname, windowWidth],
         querySelectall: '[role=link]',

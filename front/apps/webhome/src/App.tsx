@@ -21,7 +21,8 @@ import {
     ForceVerification,
     EditBudgetItems,
     BillModal,
-    EditCategory
+    EditCategory,
+    OnboardingModal
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
 import { toastStackSelector, tossToast } from '@features/toastSlice'
@@ -42,6 +43,20 @@ const PrivateRoute = () => {
     return (
         (isSuccess || isLoading) && <Outlet />
     )
+}
+
+const OnboardedRoute = () => {
+    const { data: user } = useGetMeQuery()
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    useEffect(() => {
+        if (true) {
+            navigate('/budget/welcome/connect')
+        }
+    }, [user?.is_onboarded])
+
+    return user?.is_onboarded && <Outlet />
 }
 
 const App = () => {
@@ -86,23 +101,26 @@ const App = () => {
                     style={{ flexGrow: '1', display: 'flex', flexDirection: 'column' }}
                 >
                     <div className="dashboard" ref={ref}>
-                        <Routes location={location} key={location.pathname.split('/')[1]} >
-                            <Route path="budget" element={
-                                <><Budget />{!isNarrow && <Spending />}</>
-                            }>
-                                <Route path="new-category" element={<CreateCategory />} />
-                                <Route path="new-bill" element={<CreateBill />} />
-                                <Route path="edit-categories" element={<EditBudgetItems />} />
-                                <Route path="edit-category" element={<EditCategory />} />
-                                <Route path="verify-email" element={<ForceVerification />} />
-                                <Route path="bill" element={<BillModal />} />
+                        <Routes location={location} key={location.pathname.split('/')[1]}>
+                            <Route path="/" element={<OnboardedRoute />} >
+                                <Route path="budget" element={
+                                    <><Budget />{!isNarrow && <Spending />}</>
+                                }>
+                                    <Route path="new-category" element={<CreateCategory />} />
+                                    <Route path="new-bill" element={<CreateBill />} />
+                                    <Route path="edit-categories" element={<EditBudgetItems />} />
+                                    <Route path="edit-category" element={<EditCategory />} />
+                                    <Route path="verify-email" element={<ForceVerification />} />
+                                    <Route path="bill" element={<BillModal />} />
+                                    <Route path="welcome/*" element={<OnboardingModal />} />
+                                </Route>
+                                <Route path="spending" element={
+                                    isNarrow ? <Spending /> : <Navigate to="/budget" />
+                                } />
+                                <Route path="accounts/*" element={<Accounts />} />
+                                <Route path="profile/*" element={<Profile />} />
+                                <Route path="*" element={<NotFound />} />
                             </Route>
-                            <Route path="spending" element={
-                                isNarrow ? <Spending /> : <Navigate to="/budget" />
-                            } />
-                            <Route path="accounts/*" element={<Accounts />} />
-                            <Route path="profile/*" element={<Profile />} />
-                            <Route path="*" element={<NotFound />} />
                         </Routes>
                     </div>
                 </ZoomMotionDiv>
@@ -113,7 +131,7 @@ const App = () => {
 }
 
 const EnrichedApp = () => {
-    const { isLoading } = useGetMeQuery()
+    const { data: user, isLoading } = useGetMeQuery()
 
     return (
         <ScreenProvider>

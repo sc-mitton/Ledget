@@ -2,22 +2,22 @@ import { useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import './styles/Welcome.css'
+import './styles/Welcome.scss'
 import './styles/Main.css'
 import { Plus, CheckMark } from '@ledget/media'
 import { useBakedPlaidLink } from '@utils/hooks'
-import { useGetPlaidItemsQuery } from '@features/plaidSlice'
+import { useGetPlaidItemsQuery, PlaidItem } from '@features/plaidSlice'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
 import {
-    BluePrimaryButton,
     ExpandableContainer,
     LoadingRing,
     BlackPrimaryButtonWithArrow,
     Base64Logo,
-    useLoaded
+    useLoaded,
+    BluePrimaryButton
 } from '@ledget/ui'
 
-const InstitutionLogos = ({ plaidItems }) => {
+const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
     const { isLoading } = useGetPlaidItemsQuery()
 
     return (
@@ -44,7 +44,7 @@ const InstitutionLogos = ({ plaidItems }) => {
                             </div>
                         ))}
                         <div style={{ marginLeft: '1em' }}>
-                            <LoadingRing visible={isLoading} color="dark" />
+                            <LoadingRing visible={isLoading} />
                         </div>
                     </div>
                 </>
@@ -53,14 +53,14 @@ const InstitutionLogos = ({ plaidItems }) => {
     )
 }
 
-const BottomButtons = ({ continueDisabled }) => {
+const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
     const { open } = useBakedPlaidLink({ onBoarding: true })
     const navigate = useNavigate()
 
     return (
         <div className="btn-container-enabled">
             <BluePrimaryButton
-                onClick={open}
+                onClick={() => open()}
                 aria-label="Link Account"
                 style={{ gap: '.5em' }}
             >
@@ -70,7 +70,7 @@ const BottomButtons = ({ continueDisabled }) => {
             <ExpandableContainer expanded={!continueDisabled}>
                 <BlackPrimaryButtonWithArrow
                     aria-label="Next"
-                    onClick={() => navigate('/welcome/add-bills')}
+                    onClick={() => navigate('/budget/welcome/add-bills')}
                     disabled={continueDisabled}
                 >
                     Continue
@@ -115,7 +115,7 @@ const WelcomeConnect = () => {
     // We should only sync when there's been a new plaid item added
     // after the initial load
     useEffect(() => {
-        if (plaidItems?.length > 0 && loaded) {
+        if (plaidItems?.length && plaidItems?.length > 0 && loaded) {
             setTimeout(() => {
                 syncTransactions({ item: plaidItems[plaidItems.length - 1].id })
             }, 4000)
@@ -123,16 +123,16 @@ const WelcomeConnect = () => {
     }, [plaidItems])
 
     useEffect(() => {
-        if (plaidItems?.length > 0) {
+        if (plaidItems?.length && plaidItems?.length > 0) {
             setContinueDisabled(false)
         }
     }, [plaidItems])
 
     return (
-        <div className="window3">
+        <div id="welcome-connect">
             <h1 className="spaced-header">Welcome to Ledget!</h1>
             <div>
-                <h4 className="spaced-header2">Let's get started by connecting your financial accounts.</h4>
+                <h4>Let's get started by connecting your financial accounts.</h4>
                 <SecurityMessage />
                 {fetchedPlaidItemsSuccess && <InstitutionLogos plaidItems={plaidItems} />}
             </div>

@@ -101,7 +101,7 @@ const Pill = (props) => {
         find: (element) => element.htmlFor === value || element.name === value
     }
 
-    const { props: pillProps } = usePillAnimation(animationConfig)
+    const [pillProps] = usePillAnimation(animationConfig)
 
     return (
         <animated.span style={pillProps} />
