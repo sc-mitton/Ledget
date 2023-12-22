@@ -8,20 +8,13 @@ import { Recommendations as RecommendationsIcon } from '@ledget/media'
 import { useAddnewBillMutation, Bill } from '@features/billSlice'
 import { useAddNewCategoryMutation, Category } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { BlackCheckSubmitButton, BlackSubmitWithArrow, BlueSlimButton2, TabNavList, useSchemeVar } from '@ledget/ui'
+import { BlackCheckSubmitButton, BlackSubmitWithArrow, BlueSlimButton2, TabNavList, useBillCatTabTheme } from '@ledget/ui'
 
 export const TabView = ({ children, item }: { children: React.ReactNode, item: ItemS }) => {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [updatePill, setUpdatePill] = useState(false)
     const { month: { items: monthItems }, year: { items: yearItems } } = useItemsContext(item)
-    const [mHlight, mHlightHover, mDark, sHlight, sHlightHover, sDark] = useSchemeVar([
-        '--main-hlight',
-        '--main-hlight-hover',
-        '--main-dark4',
-        '--secondary-hlight',
-        '--secondary-hlight-hover',
-        '--secondary-dark4'
-    ])
+    const tabTheme = useBillCatTabTheme()
 
     useEffect(() => {
         if (monthItems.length === 0) return
@@ -42,12 +35,10 @@ export const TabView = ({ children, item }: { children: React.ReactNode, item: I
             {({ selectedIndex }) => (
                 <>
                     <TabNavList
+                        className="onboarding-tab-list"
                         selectedIndex={selectedIndex}
                         labels={['Monthly', 'Yearly']}
-                        theme={[
-                            { pillColor: mDark, pillBackgroundColor: mHlightHover, tabBackgroundColor: mHlight, tabColor: mDark },
-                            { pillColor: sDark, pillBackgroundColor: sHlightHover, tabBackgroundColor: sHlight, tabColor: sDark }
-                        ]}
+                        theme={tabTheme}
                     />
                     <Tab.Panels as={Fragment}>
                         {children}

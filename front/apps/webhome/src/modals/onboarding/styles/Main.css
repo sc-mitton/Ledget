@@ -17,7 +17,6 @@
     }
 
     .btn-container {
-        margin-top: 1em;
         display: flex;
         justify-content: flex-end;
         max-height: 6.25rem;

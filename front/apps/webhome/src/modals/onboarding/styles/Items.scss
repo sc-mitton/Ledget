@@ -6,6 +6,12 @@
 
 #onboarding-app {
 
+    .onboarding-tab-list {
+        margin: 0 auto;
+        min-width: 15rem;
+        max-width: 22rem;
+    }
+
     form {
 
         &>div {
@@ -23,29 +29,14 @@
         }
 
     }
+}
 
-    #custom-suggested-tabs {
-        margin: 1em 0;
-        display: flex;
-        gap: 1em;
-        justify-content: center;
+#add-bills--window {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
 
-        .tab--label {
-            color: var(--m-text-tirtiary);
-            transition: color .2s ease-out;
-
-            &.selected {
-                color: var(--m-text);
-                transition: color .2s ease-out;
-            }
-        }
-    }
-
-    #add-bills--window form>div>div:nth-child(2) {
-        margin-right: 0;
-    }
-
-    #add-bills--window>div:first-child {
+    &>div:first-child {
         display: flex;
         flex-direction: column;
         gap: .5em;
@@ -53,79 +44,79 @@
         justify-content: flex-start;
     }
 
-
-    #budget-items--container {
+    &>div:nth-child(2) {
         display: flex;
         flex-direction: column;
+        gap: 1.5em;
         align-items: center;
         border-radius: var(--border-radius3);
         background-color: var(--input-background);
         max-height: 10rem;
 
-        margin: 1.5em 0;
         padding: 1em;
-
-        &>div:first-of-type {
-            margin: 0 auto;
-            min-width: 15rem;
-            max-width: 25rem;
-        }
 
         &>div:last-of-type {
             width: 100%;
             max-width: 22rem;
-        }
-
-        &.expand {
-            max-height: 62.5rem;
+            margin: 0 auto;
         }
     }
 
-    label:first-of-type {
-        margin-left: .125em;
-        font-weight: var(--fw-regular);
-    }
-
-    .checkbox-container label {
-        margin: .125em 0;
-    }
-
-    #bill-scheduler--container>div:last-child {
-        margin: .5em 0;
-    }
-
-    form>div:first-child {
-        margin: 0 0 1.5em 0;
-    }
-
-
-    .tab-list button:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
-    .tab-list button[aria-selected='true'] {
-        color: var(--m-invert-text);
-    }
-
-    /* ---------------------------- Input Row Styling --------------------------- */
-
-    .split-row-inputs {
+    &>div:nth-child(3) {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        gap: 1em;
         align-items: center;
-        gap: .5em;
+        justify-content: flex-start;
+    }
+}
 
-        &>div {
-            flex: 1;
+
+label:first-of-type {
+    margin-left: .125em;
+    font-weight: var(--fw-regular);
+}
+
+.checkbox-container label {
+    margin: .125em 0;
+}
+
+#bill-scheduler--container>div:last-child {
+    margin: .5em 0;
+}
+
+
+.tab-list {
+    button {
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        &[aria-selected='true'] {
+            color: var(--m-invert-text);
         }
     }
+}
 
-    .padded-input-row {
-        display: flex;
-        gap: .5em;
-        margin-top: .325em;
+
+/* ---------------------------- Input Row Styling --------------------------- */
+
+.split-row-inputs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .5em;
+
+    &>div {
+        flex: 1;
     }
+}
+
+.padded-input-row {
+    display: flex;
+    gap: .5em;
+    margin-top: .325em;
 }
 
 

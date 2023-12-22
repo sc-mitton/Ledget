@@ -17,7 +17,8 @@ import {
     ShadowScrollDiv,
     DollarCents,
     FormErrorTip,
-    IconButton
+    IconButton,
+    TabNavList
 } from '@ledget/ui'
 import { CheckMark } from '@ledget/media'
 
@@ -180,25 +181,15 @@ const CutomTabPanel = () => {
 const AddBillsTabs = () => {
 
     return (
-        <Tab.Group>
+        <Tab.Group as='div'>
             {({ selectedIndex }) => (
                 <>
-                    <Tab.List as="div" id="custom-suggested-tabs">
-                        <Tab>
-                            {({ selected }) => (
-                                <span className={`tab--label ${selected ? 'selected' : ''}`}>
-                                    Custom
-                                </span>
-                            )}
-                        </Tab>
-                        <Tab>
-                            {({ selected }) => (
-                                <span className={`tab--label ${selected ? 'selected' : ''}`}>
-                                    Suggested
-                                </span>
-                            )}
-                        </Tab>
-                    </Tab.List>
+                    <TabNavList
+                        labels={['Custom', 'Suggested']}
+                        selectedIndex={selectedIndex}
+                        id='custom-suggested-tabs'
+                        className="onboarding-tab-list"
+                    />
                     <Tab.Panels as={Fragment}>
                         <CutomTabPanel />
                         <Tab.Panel>
@@ -220,7 +211,7 @@ const AddBills = () => (
                     Let's add a few of your monthly and yearly bills
                 </span>
             </div>
-            <div id="budget-items--container">
+            <div>
                 <TabView item={'bill'}>
                     <ListView />
                 </TabView>

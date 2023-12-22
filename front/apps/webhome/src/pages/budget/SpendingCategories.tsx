@@ -49,7 +49,8 @@ import {
     BillCatLabel,
     TabNavList,
     DropdownItem,
-    useSchemeVar
+    useSchemeVar,
+    useBillCatTabTheme
 } from '@ledget/ui'
 import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -261,14 +262,7 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
         limit_amount_yearly,
     } = useAppSelector(SelectCategoryBillMetaData)
     // mHlightHover, mDark, sHlight, sDark, sHlightHover
-    const [mHlight, mHlightHover, mDark, sHlight, sHlightHover, sDark] = useSchemeVar([
-        '--main-hlight',
-        '--main-hlight-hover',
-        '--main-dark4',
-        '--secondary-hlight',
-        '--secondary-hlight-hover',
-        '--secondary-dark4'
-    ])
+    const tabTheme = useBillCatTabTheme()
 
     const TotalRow = ({ selectedIndex }: { selectedIndex: number }) => (
         <div className='row total'>
@@ -315,10 +309,7 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
                                 selectedIndex={selectedIndex}
                                 labels={['Monthly', 'Yearly']}
                                 className='spending-categories--tab-nav-list'
-                                theme={[
-                                    { pillColor: mDark, pillBackgroundColor: mHlightHover, tabBackgroundColor: mHlight, tabColor: mDark },
-                                    { pillColor: sDark, pillBackgroundColor: sHlightHover, tabBackgroundColor: sHlight, tabColor: sDark }
-                                ]}
+                                theme={tabTheme}
                             />
                         </div>
                     </div>
