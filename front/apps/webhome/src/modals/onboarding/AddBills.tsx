@@ -64,6 +64,7 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
                                 emoji={item?.emoji}
                                 color={item?.period === 'month' ? 'blue' : 'green'}
                                 slim={true}
+                                tint={true}
                             />
                         </div>
                         <div className="amount--container">
@@ -71,8 +72,10 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
                                 <DollarCents value={item?.upper_amount || 0} />
                             </div>
                         </div >
-                        <DeleteButton onClick={() =>
-                            setItems((prev: any) => prev.filter((i: any) => i !== item))} />
+                        <DeleteButton
+                            show={true}
+                            onClick={() => setItems((prev: any) => prev.filter((i: any) => i !== item))}
+                        />
                     </animated.div>
                 )}
             </animated.div>
@@ -184,12 +187,12 @@ const AddBillsTabs = () => {
         <Tab.Group as='div'>
             {({ selectedIndex }) => (
                 <>
-                    <TabNavList
+                    {/* <TabNavList
                         labels={['Custom', 'Suggested']}
                         selectedIndex={selectedIndex}
                         id='custom-suggested-tabs'
                         className="onboarding-tab-list"
-                    />
+                    /> */}
                     <Tab.Panels as={Fragment}>
                         <CutomTabPanel />
                         <Tab.Panel>

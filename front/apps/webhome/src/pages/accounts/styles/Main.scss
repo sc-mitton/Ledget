@@ -139,14 +139,21 @@ $wafer-container-padding: .75rem;
     }
 }
 
-.skeleton-account-wafer,
-.account-wafer {
-    background-color: var(--wafer-background);
+.account-wafer,
+.skeleton-account-wafer {
     border-radius: var(--border-radius4);
     position: absolute;
     inset: 0;
     padding: .525em 0;
     margin: 0 .25em;
+}
+
+.account-wafer {
+    background-color: var(--wafer-background);
+}
+
+.skeleton-account-wafer {
+    background-color: var(--window-background-color);
 }
 
 .account-wafer {

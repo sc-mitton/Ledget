@@ -35,6 +35,10 @@
         justify-content: center;
         border-radius: var(--border-radius);
         padding: .125em;
+
+        &:hover {
+            color: var(--m-text);
+        }
     }
 }
 

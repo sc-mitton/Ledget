@@ -186,7 +186,6 @@
         --secondary-hlight: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 45%));
         --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 35%));
 
-
         --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
         --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 10%));
         --main-dark3: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 15%));
@@ -220,7 +219,7 @@
         --dropdown-item-background: hsl(0, 0%, 88%);
 
         // Inputs
-        --input-background: hsl(0, 0%, 92%);
+        --input-background: hwb(0 92% 8%);
         --input-border-color: rgba(76, 76, 76, 0.1);
 
         // Text

@@ -216,9 +216,10 @@
         background-color: var(--icon-hover-light-gray);
         transition: all .3s ease;
         color: var(--btn-mid-gray-hover);
+        color: var(--m-text);
 
         * {
-            color: var(--btn-mid-gray-hover);
+            color: var(--m-text);
         }
     }
 

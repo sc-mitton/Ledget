@@ -150,7 +150,7 @@ const ModeSelector = ({ mode, setMode }: {
             onChange={setMode}
             style={{
                 borderRadius: 'var(--border-radius2)',
-                backgroundColor: 'var(--btn-mid-gray-hover)',
+                backgroundColor: 'none',
                 display: 'inline-block',
             }}
         >

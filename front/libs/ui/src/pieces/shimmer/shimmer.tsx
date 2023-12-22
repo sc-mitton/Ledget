@@ -14,7 +14,7 @@ interface ShimmerProps {
 }
 
 export const Shimmer = (props: ShimmerProps) => {
-  const { shimmering = false, lightness = 90, darkMode = false } = props
+  const { shimmering = false, lightness = 85, darkMode = false } = props
   const transitions = useTransition(shimmering, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -101,7 +101,7 @@ export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'>) => {
           height: '2.5ch',
           margin: '2px 0',
           borderRadius: 'var(--border-radius1)',
-          backgroundColor: 'var(--icon-light-gray)',
+          backgroundColor: 'var(--window-background-color)',
           position: 'relative',
           ...style,
         }}
@@ -139,7 +139,7 @@ export const ShimmerDiv = (props: ShimmerDivProps) => {
     background,
     children,
     style = {},
-    lightness = 90,
+    lightness = 85,
     darkMode,
     ...rest
   } = props

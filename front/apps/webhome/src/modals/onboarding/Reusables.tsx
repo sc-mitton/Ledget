@@ -136,13 +136,13 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
                 Add
             </BlackCheckSubmitButton> */}
             <BlackSubmitWithArrow
-                aria-label="Next"
+                aria-label="Continue"
                 onClick={handleClick}
                 disabled={itemsEmpty}
                 submitting={isBillLoading || isCategoryLoading}
                 type="button"
             >
-                Next
+                Continue
             </BlackSubmitWithArrow>
         </div>
     )

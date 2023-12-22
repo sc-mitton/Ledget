@@ -5,15 +5,15 @@ export function useBillCatTabTheme() {
   const [mHlight, mHlightHover, mDark, sHlight, sHlightHover, sDark] = useSchemeVar([
     '--main-hlight',
     '--main-hlight-hover',
-    '--main-dark4',
+    '--main-dark',
     '--secondary-hlight',
     '--secondary-hlight-hover',
-    '--secondary-dark4'
+    '--secondary-dark'
   ])
 
   return [
-    { pillColor: mDark, pillBackgroundColor: mHlightHover, tabBackgroundColor: mHlight, tabColor: mDark },
-    { pillColor: sDark, pillBackgroundColor: sHlightHover, tabBackgroundColor: sHlight, tabColor: sDark }
+    { pillColor: mDark, pillBackgroundColor: mHlight, tabBackgroundColor: mHlightHover, tabColor: mDark },
+    { pillColor: sDark, pillBackgroundColor: sHlight, tabBackgroundColor: sHlightHover, tabColor: sDark }
   ]
 }
 
