@@ -24,6 +24,23 @@
 
     }
 
+    #custom-suggested-tabs {
+        margin: 1em 0;
+        display: flex;
+        gap: 1em;
+        justify-content: center;
+
+        .tab--label {
+            color: var(--m-text-tirtiary);
+            transition: color .2s ease-out;
+
+            &.selected {
+                color: var(--m-text);
+                transition: color .2s ease-out;
+            }
+        }
+    }
+
     #add-bills--window form>div>div:nth-child(2) {
         margin-right: 0;
     }

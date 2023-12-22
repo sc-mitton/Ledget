@@ -5,7 +5,6 @@ import { animated } from '@react-spring/web'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Tab } from '@headlessui/react'
 
 import './styles/Items.scss'
 import { TabView, BottomButtons } from './Reusables'
@@ -18,8 +17,7 @@ import {
     ShadowScrollDiv,
     DollarCents,
     FormErrorTip,
-    IconButton,
-    TabNavList
+    IconButton
 } from '@ledget/ui'
 import { CheckMark } from '@ledget/media'
 
@@ -111,7 +109,8 @@ const ListView = () => {
     )
 }
 
-const Form = () => {
+
+const CutomTabPanel = () => {
     const {
         month: { items: monthItems }, year: { items: yearItems }
     } = useItemsContext('bill')
@@ -135,13 +134,13 @@ const Form = () => {
     }, [monthItems, yearItems])
 
     return (
-        <form
+        <Tab.Panel
+            as={'form'}
             onSubmit={handleSubmit((data) => {
                 console.log(data)
             })}
             key={`create-bill-form-${monthItems.length}-${yearItems.length}}`}
         >
-            <label>Custom</label>
             <div>
                 <div>
                     <EmojiComboText
@@ -172,8 +171,43 @@ const Form = () => {
                     </IconButton>
                 </div>
             </div>
-            <BottomButtons item={'bill'} />
-        </form>
+        </Tab.Panel>
+    )
+}
+
+
+
+const AddBillsTabs = () => {
+
+    return (
+        <Tab.Group>
+            {({ selectedIndex }) => (
+                <>
+                    <Tab.List as="div" id="custom-suggested-tabs">
+                        <Tab>
+                            {({ selected }) => (
+                                <span className={`tab--label ${selected ? 'selected' : ''}`}>
+                                    Custom
+                                </span>
+                            )}
+                        </Tab>
+                        <Tab>
+                            {({ selected }) => (
+                                <span className={`tab--label ${selected ? 'selected' : ''}`}>
+                                    Suggested
+                                </span>
+                            )}
+                        </Tab>
+                    </Tab.List>
+                    <Tab.Panels as={Fragment}>
+                        <CutomTabPanel />
+                        <Tab.Panel>
+                            <span>empty for now</span>
+                        </Tab.Panel>
+                    </Tab.Panels>
+                </>
+            )}
+        </Tab.Group>
     )
 }
 
@@ -191,7 +225,8 @@ const AddBills = () => (
                     <ListView />
                 </TabView>
             </div>
-            <Form />
+            <AddBillsTabs />
+            <BottomButtons item={'bill'} />
         </div>
     </ItemsProvider>
 )
