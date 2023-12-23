@@ -10,8 +10,8 @@ import {
 } from '@react-spring/web'
 import { useLocation } from "react-router-dom"
 
-import { Bill, useLazyGetBillsQuery } from '@features/billSlice'
-import { Category, useLazyGetCategoriesQuery } from '@features/categorySlice'
+import { FormBill, useLazyGetBillsQuery } from '@features/billSlice'
+import { FormCategory, useLazyGetCategoriesQuery } from '@features/categorySlice'
 
 const itemHeight = 25
 const itemPadding = 8
@@ -19,13 +19,16 @@ const itemPadding = 8
 type Period = 'month' | 'year'
 export type ItemS = 'bill' | 'category'
 
-type BillOrCatFromString<I extends ItemS> = I extends 'bill' ? Bill : Category
+type BillOrCatFromString<I extends ItemS> = I extends 'bill' ? FormBill : FormCategory
 
-export type Item<I extends Bill | Category, P> = I extends Bill
-    ? Omit<Bill, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' }) & { fetchedFromServer?: boolean }
-    : Omit<Category, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' }) & { fetchedFromServer?: boolean }
+export type Item<I extends FormBill | FormCategory, P> = I extends FormBill
+    ? Omit<FormBill, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' }) & { fetchedFromServer?: boolean }
+    : Omit<FormCategory, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' }) & { fetchedFromServer?: boolean }
 
-interface MonthYearContext<BC extends Bill | Category, P extends Period> {
+export type BillItem<P extends Period> = Item<FormBill, P>
+export type CategoryItem<P extends Period> = Item<FormCategory, P>
+
+interface MonthYearContext<BC extends FormBill | FormCategory, P extends Period> {
     items: Item<BC, P>[]
     setItems: React.Dispatch<React.SetStateAction<Item<BC, P>[]>>
     transitions: TransitionFn<Item<BC, P> | undefined, any>
@@ -35,7 +38,7 @@ interface MonthYearContext<BC extends Bill | Category, P extends Period> {
     isEmpty: boolean
 }
 
-interface ItemsContextProps<BC extends Bill | Category> {
+interface ItemsContextProps<BC extends FormBill | FormCategory> {
     itemsEmpty: boolean
     recommendationsMode: boolean
     setRecommendationsMode: React.Dispatch<React.SetStateAction<boolean>>
@@ -45,11 +48,11 @@ interface ItemsContextProps<BC extends Bill | Category> {
     year: MonthYearContext<BC, 'year'>
 }
 
-const BillsContext = createContext<ItemsContextProps<Bill> | undefined>(undefined)
-const CategoriesContext = createContext<ItemsContextProps<Category> | undefined>(undefined)
+const BillsContext = createContext<ItemsContextProps<FormBill> | undefined>(undefined)
+const CategoriesContext = createContext<ItemsContextProps<FormCategory> | undefined>(undefined)
 
 export const useItemsContext = <T extends ItemS>(items: T):
-    T extends 'bill' ? ItemsContextProps<Bill> : ItemsContextProps<Category> => {
+    T extends 'bill' ? ItemsContextProps<FormBill> : ItemsContextProps<FormCategory> => {
 
     const context = items === 'bill' ? useContext(BillsContext) : useContext(CategoriesContext)
 
@@ -58,14 +61,6 @@ export const useItemsContext = <T extends ItemS>(items: T):
     }
 
     return context as any
-}
-
-export const useCategoriesContext = () => {
-    const context = useContext(CategoriesContext)
-    if (context === undefined) {
-        throw new Error('useCategoriesContext must be used within a CategoriesProvider')
-    }
-    return context
 }
 
 const transitionConfig = {
@@ -116,6 +111,7 @@ export const ItemsProvider = ({ children, itemType }: { children: React.ReactNod
         config: { duration: 100 },
         position: 'relative',
         overflowX: 'hidden',
+        width: '100%',
         overflowY: monthItems.length >= 6 ? 'scroll' : 'hidden',
     })
     const yearContainerProps = useSpring({
@@ -124,6 +120,7 @@ export const ItemsProvider = ({ children, itemType }: { children: React.ReactNod
         ref: yearContainerApi,
         position: 'relative',
         overflowX: 'hidden',
+        width: '100%',
         overflowY: yearItems.length >= 6 ? 'scroll' : 'hidden',
         config: { duration: 100 },
     })
@@ -219,11 +216,11 @@ export const ItemsProvider = ({ children, itemType }: { children: React.ReactNod
 
     return (
         itemType === 'bill' ?
-            <BillsContext.Provider value={vals as ItemsContextProps<Bill>} >
+            <BillsContext.Provider value={vals as ItemsContextProps<FormBill>} >
                 {children}
             </BillsContext.Provider>
             :
-            <CategoriesContext.Provider value={vals as any}>
+            <CategoriesContext.Provider value={vals as ItemsContextProps<FormCategory>}>
                 {children}
             </CategoriesContext.Provider>
     )

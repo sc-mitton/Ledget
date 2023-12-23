@@ -24,27 +24,27 @@ export const billSchema = z.object({
     lower_amount: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
     upper_amount: z.number().transform((value) => (isNaN(value) ? undefined : value)),
     period: z.string().min(1, { message: 'required' }),
-
-    day: z.number().nullable(),
-    week: z.number().nullable(),
-    week_day: z.number().nullable(),
-    month: z.number().nullable(),
-
+    day: z.coerce.number().min(1).max(31).optional(),
+    week: z.coerce.number().min(1).max(5).optional(),
+    week_day: z.coerce.number().min(1).max(7).optional(),
+    month: z.coerce.number().min(1).max(12).optional(),
 }).refine((data) => {
     return data.lower_amount && data.upper_amount
         ? data.lower_amount < data.upper_amount
         : true
-})
+}).refine((data) => {
+    const check1 = data.day === undefined
+    const check2 = data.week === undefined && data.week_day === undefined
+    const check3 = data.month === undefined && data.day === undefined
+    if (check1 && check2 && check3)
+        return false
+    else return true
+}, { message: 'required', path: ['day'] })
 
-export const extractBill = (e: React.FormEvent<HTMLFormElement>) => {
+export const extractReminders = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.target as any)
     let body = Object.fromEntries(formData as any)
-
-    // Check if schedule is missing
-    if (!body.day && !(body.week && body.weekDay) && !(body.month && body.day)) {
-        return { errors: { schedule: 'required.' } }
-    }
 
     // Extract reminder objects
     let reminders: Reminder[] = []
@@ -64,16 +64,11 @@ export const extractBill = (e: React.FormEvent<HTMLFormElement>) => {
         }
     }
 
-    if (reminders.length > 0)
-        body.reminders = reminders
-
-    delete body.range
-    return body
+    return reminders
 }
 
 const Form = withModal((props) => {
     const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
-    const [scheduleMissing, setScheduleMissing] = useState(false)
     const [rangeMode, setRangeMode] = useState(false)
 
     const { register, handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof billSchema>>({
@@ -87,22 +82,14 @@ const Form = withModal((props) => {
     }, [isSuccess])
 
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-        const body = extractBill(e)
-        if (body.errors) {
-            body.errors.schedule && setScheduleMissing(true)
-        }
 
         handleSubmit((data) => {
-            if (body.errors) { return }
-            addNewBill({ ...body, ...data } as Bill)
+            const reminders = extractReminders(e)
+            addNewBill({ reminders, ...data } as Bill)
         })(e)
     }
 
     const billPeriod = useWatch({ control, name: 'period' })
-
-    useEffect(() => {
-        console.log('errors', errors)
-    }, [errors])
 
     return (
         <>
@@ -123,7 +110,7 @@ const Form = withModal((props) => {
                             <div>
                                 <BillScheduler
                                     billPeriod={billPeriod as Bill['period']}
-                                    error={scheduleMissing}
+                                    error={errors.day}
                                     register={register}
                                 />
                             </div>}

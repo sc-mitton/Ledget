@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import './styles/Items.scss'
 import { TabView, BottomButtons } from './Reusables'
 import { useItemsContext, ItemsProvider } from "./ItemsContext"
-import { LimitAmountInput, EmojiComboText, BillScheduler } from '@components/inputs'
+import { LimitAmountInput, EmojiComboText, BillScheduler, emoji } from '@components/inputs'
 import {
     getLongestLength,
     BillCatLabel,
@@ -18,29 +18,42 @@ import {
     DollarCents,
     FormErrorTip,
     IconButton,
-    TabNavList
 } from '@ledget/ui'
-import { CheckMark } from '@ledget/media'
+import { extractReminders } from '@modals/CreateBill'
+import { CheckMark, Recommendations, Plus } from '@ledget/media'
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'required' }),
-    upper_amount: z.number().min(0, { message: 'required' }),
-    day: z.number().min(1, { message: 'required' }),
-    week: z.number().min(1, { message: 'required' }),
-    week_day: z.number().min(1, { message: 'required' }),
-    month: z.number().min(1, { message: 'required' }),
-})
+    upper_amount: z.number(),
+    day: z.coerce.number().min(1).max(31).optional(),
+    week: z.coerce.number().min(1).max(5).optional(),
+    week_day: z.coerce.number().min(1).max(7).optional(),
+    month: z.coerce.number().min(1).max(12).optional(),
+}).refine((data) => {
+    const check1 = data.day === undefined
+    const check2 = data.week === undefined && data.week_day === undefined
+    const check3 = data.month === undefined && data.day === undefined
+    if (check1 && check2 && check3)
+        return false
+    else return true
+}, { message: 'required', path: ['day'] })
+
 
 const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
-    const context = useItemsContext('bill')
     const [nameFlexBasis, setNameFlexBasis] = useState('auto')
+
+    const context = useItemsContext('bill')
 
     const {
         items,
-        setItems,
         transitions,
         containerProps
     } = period === 'month' ? context.month : context.year
+
+    const {
+        month: { setItems: setMonthItems },
+        year: { setItems: setYearItems }
+    } = useItemsContext('bill')
 
     useEffect(() => {
         const longestNameLength = getLongestLength(items, 'name')
@@ -65,6 +78,7 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
                                 color={item?.period === 'month' ? 'blue' : 'green'}
                                 slim={true}
                                 tint={true}
+                                hoverable={false}
                             />
                         </div>
                         <div className="amount--container">
@@ -74,7 +88,13 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
                         </div >
                         <DeleteButton
                             show={true}
-                            onClick={() => setItems((prev: any) => prev.filter((i: any) => i !== item))}
+                            onClick={() => {
+                                if (period === 'month') {
+                                    setMonthItems((prev) => prev.filter((i) => i !== item))
+                                } else {
+                                    setYearItems((prev) => prev.filter((i) => i !== item))
+                                }
+                            }}
                         />
                     </animated.div>
                 )}
@@ -114,40 +134,49 @@ const ListView = () => {
 }
 
 
-const CutomTabPanel = () => {
+const CutomTabPanel = ({ selectedIndex = 0 }) => {
     const {
-        month: { items: monthItems }, year: { items: yearItems }
+        month: { items: monthItems, setItems: setMonthItems },
+        year: { items: yearItems, setItems: setYearItems },
     } = useItemsContext('bill')
 
-    const [scheduleMissing, setScheduleMissing] = useState(false)
-    const [hasSchedule, setHasSchedule] = useState(false)
+    const [emoji, setEmoji] = useState<emoji>()
 
     const { register, handleSubmit, reset, formState: { errors }, control } = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         mode: 'onSubmit', reValidateMode: 'onChange'
     })
 
-    useEffect(() => { hasSchedule && setScheduleMissing(false) }, [hasSchedule])
-
     useEffect(() => {
-        let timeout = setTimeout(() => {
-            reset()
-            setScheduleMissing(false)
-        }, 100)
+        const timeout = setTimeout(() => { reset() }, 100)
         return () => clearTimeout(timeout)
     }, [monthItems, yearItems])
+
+    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+
+        handleSubmit((data) => {
+            const reminders = extractReminders(e)
+            const item = { ...data, reminders, emoji: typeof emoji === 'string' ? emoji : emoji?.native }
+
+            if (selectedIndex === 0) {
+                setMonthItems((prev) => [...prev, { ...item, period: 'month' }])
+            } else {
+                setYearItems((prev) => [...prev, { ...item, period: 'year' }])
+            }
+        })(e)
+    }
 
     return (
         <Tab.Panel
             as={'form'}
-            onSubmit={handleSubmit((data) => {
-                console.log(data)
-            })}
+            onSubmit={submitForm}
             key={`create-bill-form-${monthItems.length}-${yearItems.length}}`}
         >
             <div>
                 <div>
                     <EmojiComboText
+                        emoji={emoji}
+                        setEmoji={setEmoji}
                         hasLabel={false}
                         name="name"
                         placeholder="Name"
@@ -164,8 +193,7 @@ const CutomTabPanel = () => {
                     <BillScheduler
                         billPeriod="month"
                         iconPlaceholder={true}
-                        error={scheduleMissing}
-                        setHasSchedule={setHasSchedule}
+                        error={errors.day}
                         register={register}
                     />
                 </div>
@@ -179,47 +207,42 @@ const CutomTabPanel = () => {
     )
 }
 
-
-
-const AddBillsTabs = () => {
-
-    return (
-        <Tab.Group as='div'>
-            {({ selectedIndex }) => (
-                <>
-                    {/* <TabNavList
-                        labels={['Custom', 'Suggested']}
-                        selectedIndex={selectedIndex}
-                        id='custom-suggested-tabs'
-                        className="onboarding-tab-list"
-                    /> */}
-                    <Tab.Panels as={Fragment}>
-                        <CutomTabPanel />
-                        <Tab.Panel>
-                            <span>empty for now</span>
-                        </Tab.Panel>
-                    </Tab.Panels>
-                </>
-            )}
-        </Tab.Group>
-    )
-}
+const AddSuggestedCustomBills = () => (
+    <Tab.Group as='div'>
+        {({ selectedIndex }) => (
+            <>
+                <Tab.Panels as={Fragment}>
+                    <CutomTabPanel selectedIndex={selectedIndex} />
+                    <Tab.Panel className="suggested-bills--container">
+                        <span>Coming soon</span>
+                    </Tab.Panel>
+                </Tab.Panels>
+                <Tab.List className="custom-suggested-tabs">
+                    <Tab>
+                        Custom
+                        <Plus size={'.8em'} />
+                    </Tab>
+                    <Tab>
+                        Suggested
+                        <Recommendations fill={'currentColor'} />
+                    </Tab>
+                </Tab.List>
+            </>
+        )}
+    </Tab.Group>
+)
 
 const AddBills = () => (
     <ItemsProvider itemType="bill">
         <div id="add-bills--window">
             <div>
                 <h1>Bills</h1>
-                <span>
-                    Let's add a few of your monthly and yearly bills
-                </span>
+                <h3>Let's add a few of your monthly and yearly bills</h3>
             </div>
-            <div>
-                <TabView item={'bill'}>
-                    <ListView />
-                </TabView>
-            </div>
-            <AddBillsTabs />
+            <TabView>
+                <ListView />
+            </TabView>
+            <AddSuggestedCustomBills />
             <BottomButtons item={'bill'} />
         </div>
     </ItemsProvider>

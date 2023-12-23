@@ -13,7 +13,7 @@ export interface Category {
     period: 'year' | 'month',
     name: string,
     created: string,
-    emoji: string | null,
+    emoji?: string | null,
     limit_amount: number,
     amount_spent: number,
     alerts: Alert[],
@@ -21,6 +21,8 @@ export interface Category {
     has_transactions: boolean,
     order?: number,
 }
+
+export type FormCategory = Partial<Pick<Category, 'alerts' | 'emoji'>> & Pick<Category, 'id' | 'name' | 'limit_amount' | 'period'>
 
 export interface SplitCategory extends Category {
     fraction: number

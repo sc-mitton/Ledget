@@ -5,6 +5,8 @@
 }
 
 #onboarding-app {
+    display: flex;
+    flex-direction: column;
 
     .onboarding-tab-list {
         margin: 0 auto;
@@ -31,10 +33,12 @@
     }
 }
 
-#add-bills--window {
+#add-bills--window,
+#add-categories--window {
     display: flex;
     flex-direction: column;
-    gap: 1.75em;
+    width: 100%;
+    gap: 2em;
 
     &>div:first-of-type {
         display: flex;
@@ -49,28 +53,62 @@
         flex-direction: column;
         gap: 1.5em;
         align-items: center;
-        max-height: 10rem;
 
         &>div:last-of-type {
             width: 100%;
-            max-width: 22rem;
+            // max-width: 22rem;
             margin: 0 auto;
         }
     }
 
     &>div:nth-of-type(2),
-    &>div:nth-of-type(3) {
+    &>div:nth-of-type(3),
+    .suggested-bills--container {
         background-color: var(--window);
         border-radius: var(--border-radius3);
-        padding: 1em;
+        padding: 1em 1.5em;
     }
 
     &>div:nth-of-type(3) {
         display: flex;
         flex-direction: column;
-        gap: 1em;
-        align-items: center;
         justify-content: flex-start;
+        gap: 2.25em;
+
+        &>div {
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    .custom-suggested-tabs {
+        position: relative;
+        display: flex;
+        width: 100%;
+
+        button {
+            position: absolute;
+            left: 50%;
+            bottom: 0em;
+            transform: translateX(-50%);
+            display: flex;
+            gap: .25em;
+            opacity: 0;
+            padding: 0 .5em;
+            border-radius: var(--border-radius2);
+            z-index: 0;
+
+            &:not([aria-selected='true']) {
+                opacity: 1;
+                z-index: 1;
+
+                &:hover {
+                    background-color: var(--btn-gray);
+                }
+            }
+        }
     }
 }
 
@@ -101,34 +139,6 @@ label:first-of-type {
         }
     }
 }
-
-
-/* ---------------------------- Input Row Styling --------------------------- */
-
-.split-row-inputs {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: .5em;
-
-    &>div {
-        flex: 1;
-    }
-}
-
-.padded-input-row {
-    display: flex;
-    gap: .5em;
-    margin-top: .325em;
-}
-
-
-#add-categories--window>div:first-child {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 
 #recommendations-btn {
     gap: .375rem;
@@ -191,6 +201,25 @@ label:first-of-type {
     position: absolute;
     width: 100%;
 
+    .budget-dollar--container {
+        display: flex;
+        align-items: center;
+        gap: 0;
+
+        svg {
+            scale: 0;
+        }
+
+        &:hover {
+            gap: .5em;
+            transition: gap .2s ease-out;
+
+            svg {
+                scale: 1;
+                transition: scale .2s ease-out;
+            }
+        }
+    }
 
     &>div {
         &:first-of-type {

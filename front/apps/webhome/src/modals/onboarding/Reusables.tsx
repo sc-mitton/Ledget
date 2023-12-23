@@ -8,30 +8,14 @@ import { Recommendations as RecommendationsIcon } from '@ledget/media'
 import { useAddnewBillMutation, Bill } from '@features/billSlice'
 import { useAddNewCategoryMutation, Category } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { BlackCheckSubmitButton, BlackSubmitWithArrow, BlueSlimButton2, TabNavList, useBillCatTabTheme } from '@ledget/ui'
+import { BlackSubmitWithArrow, BlueSlimButton2, TabNavList, useBillCatTabTheme } from '@ledget/ui'
 
-export const TabView = ({ children, item }: { children: React.ReactNode, item: ItemS }) => {
+export const TabView = ({ children }: { children: React.ReactNode }) => {
     const [selectedIndex, setSelectedIndex] = useState(0)
-    const [updatePill, setUpdatePill] = useState(false)
-    const { month: { items: monthItems }, year: { items: yearItems } } = useItemsContext(item)
     const tabTheme = useBillCatTabTheme()
 
-    useEffect(() => {
-        if (monthItems.length === 0) return
-        setSelectedIndex(0)
-    }, [monthItems])
-
-    useEffect(() => {
-        if (yearItems.length === 0) return
-        setSelectedIndex(1)
-    }, [yearItems])
-
-    useEffect(() => {
-        setUpdatePill(!updatePill)
-    }, [selectedIndex])
-
     return (
-        <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+        <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex} as='div'>
             {({ selectedIndex }) => (
                 <>
                     <TabNavList
@@ -83,7 +67,7 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
             })
 
         if (newMonthItems.length === 0 && newYearItems.length === 0)
-            navigate('/welcome/add-categories')
+            navigate('/budget/welcome/add-categories')
 
         switch (item) {
             case 'bill':
@@ -129,12 +113,6 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
 
     return (
         <div className="btn-container">
-            {/* <BlackCheckSubmitButton
-                aria-label="Add Category"
-                type="submit"
-            >
-                Add
-            </BlackCheckSubmitButton> */}
             <BlackSubmitWithArrow
                 aria-label="Continue"
                 onClick={handleClick}

@@ -2,36 +2,28 @@ import { apiSlice } from '@api/apiSlice'
 import Big from 'big.js'
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 import { Reminder } from './remindersSlice'
+import { NumericRange } from '@utils/types'
 
 
-type NumericRange<
-    START_ARR extends number[],
-    END extends number,
-    ACC extends number = never>
-    = START_ARR['length'] extends END
-    ? ACC | END
-    : NumericRange<[...START_ARR, 1], END, ACC | START_ARR['length']>
-
-interface BaseBill {
+export interface Bill {
     id: string
     is_paid: boolean
     last_paid?: string
     period: 'year' | 'month' | 'once'
     name: string
-    emoji: string
-    lower_amount: number
+    emoji?: string
+    lower_amount?: number
     upper_amount: number
     bill_confirmed: boolean
     reminders?: Reminder[]
-}
-
-export interface Bill extends BaseBill {
-    day?: NumericRange<[1], 31>
-    week?: NumericRange<[1], 5>
-    week_day?: NumericRange<[1], 7>
-    month?: NumericRange<[1], 12>
+    day?: number
+    week?: number
+    week_day?: number
+    month?: number
     year?: number
 }
+
+export type FormBill = Omit<Bill, 'id' | 'is_paid' | 'last_paid' | 'bill_confirmed' | 'reminders'>
 
 export interface TransformedBill extends Bill {
     date: string,
@@ -105,7 +97,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        addnewBill: builder.mutation<any, Bill | Bill[]>({
+        addnewBill: builder.mutation<any, FormBill | FormBill[]>({
             query: (data) => ({
                 url: 'bills',
                 method: 'POST',

@@ -131,6 +131,82 @@ const IncrementDecrementButton = ({ val, setVal, field, withCents = true }: Incr
     </div>
 )
 
+export const HeadlessLimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
+    control?: Control<any>,
+    defaultValue?: number,
+    hasLabel?: boolean
+    withCents?: boolean
+    slim?: boolean
+}> = ({
+    control,
+    defaultValue,
+    children,
+    hasLabel = true,
+    withCents = true,
+    required = true,
+    slim = false,
+    ...rest
+}) => {
+        const [val, setVal] = useState<string>('')
+
+        const { field } = useController({
+            control,
+            name: rest.name || 'limit_amount',
+            rules: { required }
+        })
+
+        // set field value to default if present
+        useEffect(() => {
+            if (defaultValue) {
+                field.onChange(formatCurrency({ val: defaultValue, withCents }))
+                setVal(formatCurrency({ val: defaultValue, withCents }))
+            }
+        }, [defaultValue])
+
+        // Update controller value
+        useEffect(() => {
+            if (val)
+                field.onChange(makeIntCurrencyFromStr(val))
+        }, [val])
+
+        return (
+            <>
+                <input
+                    type="text"
+                    name='limit_amount'
+                    id="limit_amount"
+                    placeholder={withCents ? '$0.00' : '$0'}
+                    value={val}
+                    ref={field.ref}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Right' || e.key === 'ArrowRight') {
+                            e.preventDefault()
+                            increment({ val, setVal, field })
+                        } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+                            e.preventDefault()
+                            decrement({ val, setVal, field })
+                        }
+                    }}
+                    onChange={(e) => {
+                        setVal(formatCurrency({ val: e.target.value, withCents }))
+                    }}
+                    onFocus={(e) => {
+                        if (e.target.value.length <= 1 || val === '$0') {
+                            withCents ? setVal('$0.00') : setVal('$0')
+                        }
+                    }}
+                    onBlur={(e) => {
+                        (e.target.value.length <= 1 && setVal(''))
+                    }
+                    }
+                    size={14}
+                    {...rest}
+                />
+                {children}
+            </>
+        )
+    }
+
 export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
     control?: Control<any>,
     defaultValue?: number,

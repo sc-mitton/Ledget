@@ -47,7 +47,7 @@ export const BillCatLabel = <C extends ElementType = 'div'>(props: PolymorphicCo
       }
     >
       <div>
-        <span>{emoji}</span>
+        <span>{emoji || ''}</span>
         <span>{name.charAt(0).toUpperCase() + name.slice(1)}</span>
       </div>
       <div>

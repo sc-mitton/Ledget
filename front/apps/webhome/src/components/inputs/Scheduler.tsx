@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect, useRef, useContext, createContext } from 'react'
 
-import { UseFormRegister } from 'react-hook-form'
+import { UseFormRegister, FieldError } from 'react-hook-form'
 
 import './styles/Dropdowns.css'
 import './styles/Scheduler.scss'
@@ -10,6 +10,9 @@ import { useClickClose } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 import { SlimmestInputButton, InputButton, FormErrorTip, DropDownDiv, getDaySuffix } from '@ledget/ui'
 import { Calendar } from '@ledget/media'
+
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const dayMap = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 interface Context extends Pick<Bill, 'day' | 'week' | 'month'> {
     open: boolean,
@@ -63,16 +66,6 @@ const Scheduler = (props: Omit<Context, 'open' | 'setOpen' | 'buttonRef'> & { ch
 const Button: FC<React.HTMLAttributes<HTMLButtonElement> & { iconPlaceholder?: boolean }> = ({ children, iconPlaceholder, ...props }) => {
     const Component = iconPlaceholder ? InputButton : SlimmestInputButton
 
-    const dayMap = {
-        1: 'Sun', 2: 'Mon', 3: 'Tue', 4: 'Wed',
-        5: 'Thu', 6: 'Fri', 7: 'Sat',
-    }
-    const monthMap = {
-        1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
-        5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug',
-        9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
-    }
-
     const [placeholder, setPlaceholder] = useState('')
     const {
         open,
@@ -86,7 +79,7 @@ const Button: FC<React.HTMLAttributes<HTMLButtonElement> & { iconPlaceholder?: b
 
     useEffect(() => {
         if (month && day) {
-            setPlaceholder(`${monthMap[month]} ${day}${getDaySuffix(day)}`)
+            setPlaceholder(`${months[month]} ${day}${getDaySuffix(day)}`)
         } else if (week && weekDay) {
             setPlaceholder(`${week}${getDaySuffix(week)} ${dayMap[weekDay]}`)
         } else if (day) {
@@ -185,16 +178,13 @@ const ModeSelector = ({ mode, setMode }: {
     )
 }
 
-const daysMap = {
-    1: 31, 2: 28, 3: 31, 4: 30,
-    5: 31, 6: 30, 7: 31, 8: 31,
-    9: 30, 10: 31, 11: 30, 12: 31,
-} as const // How many days are in each month
+// How many days are in each month
+const daysMap = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] as const
 
 const DayPicker = () => {
 
     const { setOpen, day, setDay, month } = usePickerContext()
-    const [numberOfDays, setNumberOfDays] = useState<typeof daysMap[keyof typeof daysMap]>(daysMap[month || 1])
+    const [numberOfDays, setNumberOfDays] = useState<number>(daysMap[month || 1])
     const [activeDay, setActiveDay] = useState<typeof day>()
     const ref = useRef<HTMLDivElement>(null)
 
@@ -599,11 +589,6 @@ const MonthPicker = () => {
 
     const translateMonthNumber = (monthNumber: typeof month) => {
         // Lookup table
-        const months = {
-            1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
-            5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug',
-            9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
-        }
         return monthNumber ? months[monthNumber] : months[1]
     }
 
@@ -756,7 +741,7 @@ interface BSP {
     billPeriod: Bill['period'],
     defaultValue?: defaultValue,
     setHasSchedule?: React.Dispatch<React.SetStateAction<boolean>>,
-    error: boolean
+    error?: FieldError
     register: UseFormRegister<any>
     iconPlaceholder?: boolean
 }
