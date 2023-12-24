@@ -67,6 +67,7 @@ class Account(models.Model):
 class UserAccount(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    primary_owner = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:

@@ -139,6 +139,7 @@ class UserCategory(models.Model):
 
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE)
+    primary_owner = models.BooleanField(default=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     order = models.IntegerField(null=False, default=0)
 
@@ -172,6 +173,7 @@ class UserBill(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
+    primary_owner = models.BooleanField(default=True)
 
     def create(self):
         if not self.user.yearly_anchor and self.bill.period == 'year':

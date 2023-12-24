@@ -15,10 +15,11 @@ export const monthRecommendations = [
     { emoji: '🍺', name: 'Drinks' },
     { emoji: '👔', name: 'Clothing' },
     { emoji: '🎁', name: 'Gifts' },
+    { emoji: '☕️', name: 'Coffee' },
     { emoji: '📚', name: 'Books' },
     { emoji: '⛽️', name: 'Gas' },
     { emoji: '🚕', name: 'Taxi' },
     { emoji: '💄', name: 'Cosmetics' },
     { emoji: '💈', name: 'Haircuts' },
-    { emoji: '🎨', name: 'Hobbies' }
+    { emoji: '🎨', name: 'Hobbies' },
 ]

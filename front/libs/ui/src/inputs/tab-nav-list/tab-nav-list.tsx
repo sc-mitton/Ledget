@@ -11,7 +11,6 @@ import useSchemeVar from '../../utils/hooks/use-scheme-var/use-scheme-var';
 interface TabNavListBaseProps {
   labels: string[] | React.ReactNode[],
   className?: string
-  selectedIndex: number,
 }
 
 interface TabStyle {
@@ -27,6 +26,7 @@ interface TabNavListPropsWithoutTheme extends TabNavListBaseProps {
 
 interface TabNavListPropsWithTheme extends TabNavListBaseProps {
   theme: TabStyle | TabStyle[]
+  selectedIndex: number,
 }
 
 export type TabNavListProps = TabNavListPropsWithoutTheme | TabNavListPropsWithTheme
@@ -39,7 +39,7 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
   const [pillProps, api] = usePillAnimation({
     ref: ref,
     querySelectall: '[role=tab]',
-    update: [theme, props.selectedIndex],
+    update: theme ? [theme, props.selectedIndex] : [],
     refresh: [],
     styles: {
       zIndex: 1,
@@ -57,7 +57,7 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
         ? Array.isArray(theme) ? theme[props.selectedIndex]?.pillBackgroundColor : theme?.pillBackgroundColor
         : defaultBackgroundColor,
     })
-  }, [props.selectedIndex])
+  }, [theme ? props.selectedIndex : null])
 
   return (
     <>

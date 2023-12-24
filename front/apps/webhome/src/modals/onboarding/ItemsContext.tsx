@@ -8,22 +8,21 @@ import {
     useTransition,
     useChain
 } from '@react-spring/web'
-import { useLocation } from "react-router-dom"
 
-import { FormBill, useLazyGetBillsQuery } from '@features/billSlice'
-import { FormCategory, useLazyGetCategoriesQuery } from '@features/categorySlice'
+import { FormBill } from '@features/billSlice'
+import { FormCategory } from '@features/categorySlice'
 
 const itemHeight = 25
 const itemPadding = 8
 
-type Period = 'month' | 'year'
+export type Period = 'month' | 'year'
 export type ItemS = 'bill' | 'category'
 
 type BillOrCatFromString<I extends ItemS> = I extends 'bill' ? FormBill : FormCategory
 
 export type Item<I extends FormBill | FormCategory, P> = I extends FormBill
-    ? Omit<FormBill, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' }) & { fetchedFromServer?: boolean }
-    : Omit<FormCategory, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' }) & { fetchedFromServer?: boolean }
+    ? Omit<FormBill, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' })
+    : Omit<FormCategory, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' })
 
 export type BillItem<P extends Period> = Item<FormBill, P>
 export type CategoryItem<P extends Period> = Item<FormCategory, P>
@@ -42,10 +41,10 @@ interface ItemsContextProps<BC extends FormBill | FormCategory> {
     itemsEmpty: boolean
     recommendationsMode: boolean
     setRecommendationsMode: React.Dispatch<React.SetStateAction<boolean>>
-    bufferItem: BC | undefined
-    setBufferItem: React.Dispatch<React.SetStateAction<BC | undefined>>
     month: MonthYearContext<BC, 'month'>
     year: MonthYearContext<BC, 'year'>
+    periodTabIndex: number
+    setPeriodTabIndex: React.Dispatch<React.SetStateAction<number>>
 }
 
 const BillsContext = createContext<ItemsContextProps<FormBill> | undefined>(undefined)
@@ -72,14 +71,6 @@ const transitionConfig = {
 }
 
 export const ItemsProvider = ({ children, itemType }: { children: React.ReactNode, itemType: ItemS }) => {
-    const [
-        fetchBills,
-        { data: fetchedBills, isSuccess: fetchedBillsSuccess }
-    ] = useLazyGetBillsQuery()
-    const [
-        fetchCategories,
-        { data: fetchedCategories, isSuccess: fetchedCategoriesSuccess }
-    ] = useLazyGetCategoriesQuery()
 
     const [monthItems, setMonthItems] = useState<Item<BillOrCatFromString<typeof itemType>, 'month'>[]>([])
     const [yearItems, setYearItems] = useState<Item<BillOrCatFromString<typeof itemType>, 'year'>[]>([])
@@ -87,13 +78,12 @@ export const ItemsProvider = ({ children, itemType }: { children: React.ReactNod
     const [recommendationsMode, setRecommendationsMode] = useState(false)
     const [emptyYearItems, setEmptyYearItems] = useState(true)
     const [emptyMonthItems, setEmptyMonthItems] = useState(true)
-    const [bufferItem, setBufferItem] = useState<BillOrCatFromString<typeof itemType> | undefined>(undefined)
+    const [periodTabIndex, setPeriodTabIndex] = useState<number>(0)
 
     const monthApi = useSpringRef()
     const yearApi = useSpringRef()
     const monthContainerApi = useSpringRef()
     const yearContainerApi = useSpringRef()
-    const location = useLocation()
 
     const monthTransitions = useTransition(
         monthItems,
@@ -127,38 +117,6 @@ export const ItemsProvider = ({ children, itemType }: { children: React.ReactNod
 
     useChain([monthApi, monthContainerApi], [0, 0])
     useChain([yearApi, yearContainerApi,], [0, 0])
-
-    useEffect(() => {
-        if (location.pathname.includes('add-bills')) {
-            fetchBills()
-        } else if (location.pathname.includes('add-categories')) {
-            fetchCategories()
-        }
-    }, [location])
-
-    useEffect(() => {
-        if (fetchedBillsSuccess && fetchedBills) {
-            for (const bill of fetchedBills) {
-                if (bill.period === 'month' && monthItems.length === 0) {
-                    setMonthItems((prev) => [...prev, { ...bill, period: 'month', fetchedFromServer: true }])
-                } else if (bill.period === 'year' && yearItems.length === 0) {
-                    setYearItems((prev) => [...prev, { ...bill, period: 'year', fetchedFromServer: true }])
-                }
-            }
-        }
-    }, [fetchedBills])
-
-    useEffect(() => {
-        if (fetchedCategoriesSuccess && fetchedCategories) {
-            fetchedCategories.filter(category => !category.is_default).forEach(category => {
-                if (category.period === 'month' && monthItems.length === 0) {
-                    setMonthItems((prev) => [...prev, { ...category, period: 'month', fetchedFromServer: true }])
-                } else if (category.period === 'year' && yearItems.length === 0) {
-                    setYearItems((prev) => [...prev, { ...category, period: 'year', fetchedFromServer: true }])
-                }
-            })
-        }
-    }, [fetchedCategories])
 
     useEffect(() => {
         monthApi.start()
@@ -208,10 +166,10 @@ export const ItemsProvider = ({ children, itemType }: { children: React.ReactNod
         itemsEmpty,
         recommendationsMode: recommendationsMode,
         setRecommendationsMode: setRecommendationsMode,
-        bufferItem,
-        setBufferItem,
         month: monthContext,
         year: yearContext,
+        periodTabIndex,
+        setPeriodTabIndex,
     }
 
     return (

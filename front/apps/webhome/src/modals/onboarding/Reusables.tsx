@@ -3,19 +3,19 @@ import { useEffect, useState, Fragment } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Tab } from '@headlessui/react'
 
-import { useItemsContext, ItemS, Item } from './ItemsContext'
+import { useItemsContext, ItemS, Item, Period } from './ItemsContext'
 import { Recommendations as RecommendationsIcon } from '@ledget/media'
 import { useAddnewBillMutation, Bill } from '@features/billSlice'
 import { useAddNewCategoryMutation, Category } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
 import { BlackSubmitWithArrow, BlueSlimButton2, TabNavList, useBillCatTabTheme } from '@ledget/ui'
 
-export const TabView = ({ children }: { children: React.ReactNode }) => {
-    const [selectedIndex, setSelectedIndex] = useState(0)
+export const TabView = ({ children, item }: { children: React.ReactNode, item: ItemS }) => {
     const tabTheme = useBillCatTabTheme()
+    const { periodTabIndex, setPeriodTabIndex } = useItemsContext(item)
 
     return (
-        <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex} as='div'>
+        <Tab.Group selectedIndex={periodTabIndex} onChange={setPeriodTabIndex} as='div'>
             {({ selectedIndex }) => (
                 <>
                     <TabNavList
@@ -41,27 +41,28 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
     const { refetch: refetchUser } = useGetMeQuery()
     const [updateUser, { isSuccess: patchedUserSuccess }] = useUpdateUserMutation()
 
-    const { month: { items: monthItems }, year: { items: yearItems }, itemsEmpty } = useItemsContext(item)
+    const { month: { items: monthItems }, year: { items: yearItems } } = useItemsContext(item)
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
+        console.log('clicked')
 
         const newMonthItems = item === 'bill'
-            ? (monthItems as Item<Bill, 'month'>[]).filter(item => !item.fetchedFromServer).map(item => {
+            ? (monthItems as Item<Bill, 'month'>[]).map(item => {
                 const { name, upper_amount, period, emoji } = item
                 return { name, upper_amount, period, emoji }
             })
-            : (monthItems as Item<Category, 'month'>[]).filter(item => !item.fetchedFromServer).map(item => {
+            : (monthItems as Item<Category, 'month'>[]).map(item => {
                 const { name, limit_amount, period, emoji } = item
                 return { name, limit_amount, period, emoji }
             })
 
         const newYearItems = item === 'bill'
-            ? (yearItems as Item<Bill, 'year'>[]).filter(item => !item.fetchedFromServer).map(item => {
+            ? (yearItems as Item<Bill, 'year'>[]).map(item => {
                 const { name, upper_amount, period, emoji } = item
                 return { name, upper_amount, period, emoji }
             })
-            : (yearItems as Item<Category, 'year'>[]).filter(item => !item.fetchedFromServer).map(item => {
+            : (yearItems as Item<Category, 'year'>[]).map(item => {
                 const { name, limit_amount, period, emoji } = item
                 return { name, limit_amount, period, emoji }
             })
@@ -116,7 +117,6 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
             <BlackSubmitWithArrow
                 aria-label="Continue"
                 onClick={handleClick}
-                disabled={itemsEmpty}
                 submitting={isBillLoading || isCategoryLoading}
                 type="button"
             >

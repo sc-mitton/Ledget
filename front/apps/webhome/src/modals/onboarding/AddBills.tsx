@@ -115,8 +115,7 @@ const ListView = () => {
                 {(emptyMonthItems)
                     ?
                     <div className="empty-message--container">
-                        <span>Looks like you haven't added any</span><br />
-                        <span>monthly bills yet...</span>
+                        <span>No monthly bills added yet</span>
                     </div>
                     : <BillsColumn period={'month'} />}
             </Tab.Panel>
@@ -124,8 +123,7 @@ const ListView = () => {
                 {(emptyYearItems)
                     ?
                     <div className="empty-message--container">
-                        <span>Looks like you haven't added any</span><br />
-                        <span>yearly bills yet...</span>
+                        <span>No yearly categories added yet</span>
                     </div>
                     : <BillsColumn period={'year'} />}
             </Tab.Panel>
@@ -134,10 +132,11 @@ const ListView = () => {
 }
 
 
-const CutomTabPanel = ({ selectedIndex = 0 }) => {
+const CutomTabPanel = () => {
     const {
         month: { items: monthItems, setItems: setMonthItems },
         year: { items: yearItems, setItems: setYearItems },
+        periodTabIndex
     } = useItemsContext('bill')
 
     const [emoji, setEmoji] = useState<emoji>()
@@ -158,7 +157,7 @@ const CutomTabPanel = ({ selectedIndex = 0 }) => {
             const reminders = extractReminders(e)
             const item = { ...data, reminders, emoji: typeof emoji === 'string' ? emoji : emoji?.native }
 
-            if (selectedIndex === 0) {
+            if (periodTabIndex === 0) {
                 setMonthItems((prev) => [...prev, { ...item, period: 'month' }])
             } else {
                 setYearItems((prev) => [...prev, { ...item, period: 'year' }])
@@ -212,7 +211,7 @@ const AddSuggestedCustomBills = () => (
         {({ selectedIndex }) => (
             <>
                 <Tab.Panels as={Fragment}>
-                    <CutomTabPanel selectedIndex={selectedIndex} />
+                    <CutomTabPanel />
                     <Tab.Panel className="suggested-bills--container">
                         <span>Coming soon</span>
                     </Tab.Panel>
@@ -239,7 +238,7 @@ const AddBills = () => (
                 <h1>Bills</h1>
                 <h3>Let's add a few of your monthly and yearly bills</h3>
             </div>
-            <TabView>
+            <TabView item='bill'>
                 <ListView />
             </TabView>
             <AddSuggestedCustomBills />

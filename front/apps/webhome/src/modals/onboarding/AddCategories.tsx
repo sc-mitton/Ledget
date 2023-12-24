@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useId, Fragment } from 'react'
+import { useRef, useState, useId, Fragment } from 'react'
 
 import { animated } from '@react-spring/web'
 import { Tab } from '@headlessui/react'
@@ -22,12 +22,13 @@ import {
     makeIntCurrencyFromStr
 } from '@ledget/ui'
 import { Recommendations, Plus, CheckMark, Edit } from '@ledget/media'
-import { useItemsContext, ItemsProvider } from "./ItemsContext"
+import { useItemsContext, ItemsProvider, Period } from "./ItemsContext"
+import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
 
 const itemHeight = 25
 const itemPadding = 8
 
-const CategoriesColumn = ({ period }: { period: 'month' | 'year' }) => {
+const CategoriesColumn = ({ period }: { period: Period }) => {
     const context = useItemsContext('category')
     const [editAmountIndex, setEditAmountIndex] = useState<number | boolean>(false)
     const [editValue, setEditValue] = useState<number>()
@@ -123,7 +124,6 @@ const CategoriesColumn = ({ period }: { period: 'month' | 'year' }) => {
                                             onFocus={() => setEditValue(item?.limit_amount || 0)}
                                             onBlur={() => finalizeEditAmountChange(index)}
                                             autoFocus={true}
-                                            size={`${(item?.limit_amount || 1) / 100}`.length + 1}
                                         />
                                         : <><DollarCents value={item?.limit_amount || 0} withCents={false} />
                                             <Edit size={'.8em'} /></>}
@@ -147,35 +147,33 @@ const CategoriesColumn = ({ period }: { period: 'month' | 'year' }) => {
     )
 }
 
-const ListView = () => {
+const ListOfCategories = () => {
     const {
         year: { isEmpty: emptyYearItems },
         month: { isEmpty: emptyMonthItems }
     } = useItemsContext('category')
 
     return (
-        <>
-            <Tab.Panel>
+        <TabView item='category'>
+            <Tab.Panel as={Fragment}>
                 {emptyMonthItems
                     ?
                     <div className="empty-message--container">
-                        <span>Looks like you haven't added any</span><br />
-                        <span>monthly categories yet...</span>
+                        <span>No monthly categories added yet</span>
                     </div>
                     : <CategoriesColumn period={'month'} />
                 }
             </Tab.Panel>
-            <Tab.Panel>
+            <Tab.Panel as={Fragment}>
                 {emptyYearItems
                     ?
                     <div className="empty-message--container">
-                        <span>Looks like you haven't added any</span><br />
-                        <span>yearly categories yet...</span>
+                        <span>No yearly categories added yet</span>
                     </div>
                     : <CategoriesColumn period={'year'} />
                 }
             </Tab.Panel>
-        </>
+        </TabView>
     )
 }
 
@@ -184,15 +182,14 @@ const categorySchema = z.object({
     limit_amount: z.number().min(1, { message: 'Limit amount required.' })
 })
 
-const CutomTabPanel = ({ selectedIndex = 0 }) => {
+const CustomTabPanel = () => {
     const [emoji, setEmoji] = useState<emoji>()
     const id = useId()
 
     const {
         month: { setItems: setMonthItems, items: monthItems },
         year: { setItems: setYearItems, items: yearItems },
-        bufferItem,
-        setBufferItem
+        periodTabIndex
     } = useItemsContext('category')
 
     const { register, handleSubmit, reset, setValue, formState: { errors }, control } = useForm<z.infer<typeof categorySchema>>({
@@ -211,7 +208,7 @@ const CutomTabPanel = ({ selectedIndex = 0 }) => {
                 emoji: typeof emoji === 'string' ? emoji : emoji?.native
             }
 
-            if (selectedIndex === 0) {
+            if (periodTabIndex === 0) {
                 setMonthItems((prev) => [...prev, { ...item, period: 'month' }])
             } else {
                 setYearItems((prev) => [...prev, { ...item, period: 'year' }])
@@ -220,14 +217,6 @@ const CutomTabPanel = ({ selectedIndex = 0 }) => {
             setEmoji(undefined)
         })(e)
     }
-
-    useEffect(() => {
-        if (bufferItem) {
-            setValue('name', bufferItem.name)
-            setEmoji({ 'native': bufferItem.emoji || '' })
-        }
-        setBufferItem(undefined)
-    }, [bufferItem])
 
     return (
         <Tab.Panel
@@ -242,6 +231,8 @@ const CutomTabPanel = ({ selectedIndex = 0 }) => {
                         name="name"
                         placeholder="Name"
                         register={register}
+                        emoji={emoji}
+                        setEmoji={setEmoji}
                         error={errors.name}
                     />
                 </div>
@@ -260,28 +251,78 @@ const CutomTabPanel = ({ selectedIndex = 0 }) => {
     )
 }
 
+const SuggestedTabPanel = () => {
+    const {
+        periodTabIndex,
+        month: { items: monthItems, setItems: setMonthItems },
+        year: { items: yearItems, setItems: setYearItems }
+    } = useItemsContext('category')
+    const id = useId()
+
+    return (
+        <Tab.Panel className="suggested-items--container" as='div'>
+            {periodTabIndex === 0
+                ? monthRecommendations.filter(r => !monthItems.find(i => i.name === r.name)).map((item) => {
+                    return (
+                        <BillCatLabel
+                            as='button'
+                            key={item.name}
+                            name={item.name}
+                            emoji={item.emoji}
+                            color={periodTabIndex === 0 ? 'blue' : 'green'}
+                            onClick={() => {
+                                const newItem = {
+                                    ...item,
+                                    period: 'month',
+                                    limit_amount: 100,
+                                    id: id
+                                } as const
+                                setMonthItems((prev) => [...prev, newItem])
+                            }}
+                        />
+                    )
+                })
+                : yearRecommendations.filter(r => !yearItems.find(i => i.name === r.name)).map((item) => {
+                    return (
+                        <BillCatLabel
+                            as='button'
+                            key={item.name}
+                            name={item.name}
+                            emoji={item.emoji}
+                            color={periodTabIndex === 0 ? 'blue' : 'green'}
+                            onClick={() => {
+                                const newItem = {
+                                    ...item,
+                                    period: 'year',
+                                    limit_amount: 100,
+                                    id: id
+                                } as const
+                                setYearItems((prev) => [...prev, newItem])
+                            }}
+                        />
+                    )
+                })
+            }
+        </Tab.Panel>
+    )
+}
+
 const AddSuggestedCustomCategories = () => (
     <Tab.Group as='div'>
-        {({ selectedIndex }) => (
-            <>
-                <Tab.Panels as={Fragment}>
-                    <CutomTabPanel selectedIndex={selectedIndex} />
-                    <Tab.Panel className="suggested-bills--container">
-                        <span>Coming soon</span>
-                    </Tab.Panel>
-                </Tab.Panels>
-                <Tab.List className="custom-suggested-tabs">
-                    <Tab>
-                        Custom
-                        <Plus size={'.8em'} />
-                    </Tab>
-                    <Tab>
-                        Suggested
-                        <Recommendations fill={'currentColor'} />
-                    </Tab>
-                </Tab.List>
-            </>
-        )}
+        <Tab.Panels as={Fragment}>
+            <SuggestedTabPanel />
+            <CustomTabPanel />
+        </Tab.Panels>
+        <Tab.List className="custom-suggested-tabs">
+            <Tab>
+                Suggested
+                <Recommendations fill={'currentColor'} />
+            </Tab>
+            <Tab>
+                Custom
+                <Plus size={'.8em'} />
+            </Tab>
+        </Tab.List>
     </Tab.Group>
 )
 
@@ -293,9 +334,7 @@ export default function () {
                     <h1>Categories</h1>
                     <h3>Now let's add a few spending categories</h3>
                 </div>
-                <TabView>
-                    <ListView />
-                </TabView>
+                <ListOfCategories />
                 <AddSuggestedCustomCategories />
                 <BottomButtons item={'category'} />
             </div>
