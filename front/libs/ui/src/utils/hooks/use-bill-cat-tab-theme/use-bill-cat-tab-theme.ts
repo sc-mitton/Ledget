@@ -4,10 +4,10 @@ import { useSchemeVar } from '../use-scheme-var/use-scheme-var';
 export function useBillCatTabTheme() {
   const [mHlight, mHlightHover, mDark, sHlight, sHlightHover, sDark] = useSchemeVar([
     '--main-hlight',
-    '--main-hlight-hover-darker',
+    '--main-hlight-hover',
     '--main-dark',
     '--secondary-hlight',
-    '--secondary-hlight-hover-darker',
+    '--secondary-hlight-hover',
     '--secondary-dark'
   ])
 

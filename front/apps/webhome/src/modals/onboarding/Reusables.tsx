@@ -3,10 +3,10 @@ import { useEffect, useState, Fragment } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Tab } from '@headlessui/react'
 
-import { useItemsContext, ItemS, Item, Period } from './ItemsContext'
+import { useItemsContext, ItemS } from './ItemsContext'
 import { Recommendations as RecommendationsIcon } from '@ledget/media'
-import { useAddnewBillMutation, Bill } from '@features/billSlice'
-import { useAddNewCategoryMutation, Category } from '@features/categorySlice'
+import { useAddnewBillMutation, FormBill } from '@features/billSlice'
+import { useAddNewCategoryMutation, FormCategory } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
 import { BlackSubmitWithArrow, BlueSlimButton2, TabNavList, useBillCatTabTheme } from '@ledget/ui'
 
@@ -45,40 +45,14 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        console.log('clicked')
 
-        const newMonthItems = item === 'bill'
-            ? (monthItems as Item<Bill, 'month'>[]).map(item => {
-                const { name, upper_amount, period, emoji } = item
-                return { name, upper_amount, period, emoji }
-            })
-            : (monthItems as Item<Category, 'month'>[]).map(item => {
-                const { name, limit_amount, period, emoji } = item
-                return { name, limit_amount, period, emoji }
-            })
-
-        const newYearItems = item === 'bill'
-            ? (yearItems as Item<Bill, 'year'>[]).map(item => {
-                const { name, upper_amount, period, emoji } = item
-                return { name, upper_amount, period, emoji }
-            })
-            : (yearItems as Item<Category, 'year'>[]).map(item => {
-                const { name, limit_amount, period, emoji } = item
-                return { name, limit_amount, period, emoji }
-            })
-
-        if (newMonthItems.length === 0 && newYearItems.length === 0)
+        if (monthItems.length === 0 && yearItems.length === 0)
             navigate('/budget/welcome/add-categories')
 
-        switch (item) {
-            case 'bill':
-                addNewBill([...newMonthItems, ...newYearItems] as Bill[])
-                break
-            case 'category':
-                addNewCategory([...newMonthItems, ...newYearItems] as Category[])
-                break
-            default:
-                break
+        if (typeof item === typeof 'bill') {
+            addNewBill([...monthItems, ...yearItems] as FormBill[])
+        } else {
+            addNewCategory([...monthItems, ...yearItems] as FormCategory[])
         }
     }
 

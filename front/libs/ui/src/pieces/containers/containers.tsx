@@ -1,6 +1,7 @@
 import React, { ComponentPropsWithoutRef, ElementType, FC, useRef, HTMLProps, useEffect, forwardRef } from 'react'
 import { PolymorphicComponentProps } from '../../types/helpers'
 import './styles/containers.scss'
+import { H } from 'vitest/dist/types-198fd1d9'
 
 export const ExpandableContainer: FC<HTMLProps<HTMLDivElement> & { expanded?: boolean }>
   = ({ expanded = true, className = '', children, ...rest }) => (
@@ -35,9 +36,9 @@ const getMaskImage = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
 }
 
 export const ShadowScrollDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
-  ({ children, ...rest }, parentRef) => {
+  ({ children, style, ...rest }, parentRef) => {
     const [shadow, setShadow] = React.useState<'top' | 'bottom' | 'bottom-top' | ''>('')
-    const localRef = useRef<HTMLDivElement | null>(null);
+    const localRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
       const handleScroll = (e: Event) => {
@@ -56,33 +57,25 @@ export const ShadowScrollDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivEleme
         }
       }
 
-      if (localRef.current) {
-        localRef.current.addEventListener('scroll', handleScroll);
-      }
+      localRef.current?.addEventListener('scroll', handleScroll)
 
       return () => {
-        if (localRef.current) {
-          localRef.current.removeEventListener('scroll', handleScroll);
-        }
+        localRef.current?.removeEventListener('scroll', handleScroll)
       }
     }, [])
-
-    const handleParentRef = (el: HTMLDivElement | null) => {
-      if (el) {
-        localRef.current = el
-        if (typeof parentRef === 'function') {
-          parentRef(el)
-        } else if (parentRef && 'current' in parentRef) {
-          (parentRef as React.MutableRefObject<HTMLDivElement | null>).current = el
-        }
-      }
-    }
 
     return (
       <div
         {...rest}
-        style={{ maskImage: getMaskImage(shadow) }}
-        ref={handleParentRef}
+        style={{ maskImage: getMaskImage(shadow), position: 'relative', ...style }}
+        ref={(el) => {
+          localRef.current = el
+          if (typeof parentRef === 'function') {
+            parentRef(el)
+          } else if (parentRef && 'current' in parentRef) {
+            (parentRef as React.MutableRefObject<HTMLDivElement | null>).current = el
+          }
+        }}
       >
         {children}
       </div>

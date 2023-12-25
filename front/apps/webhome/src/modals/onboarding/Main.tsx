@@ -32,6 +32,7 @@ export default function () {
 
     return (
         <Main
+            hasExit={false}
             onClose={() => navigate({
                 pathname: '/budget',
                 search: location.search,

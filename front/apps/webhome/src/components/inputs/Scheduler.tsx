@@ -185,7 +185,7 @@ const DayPicker = () => {
 
     const { setOpen, day, setDay, month } = usePickerContext()
     const [numberOfDays, setNumberOfDays] = useState<number>(daysMap[month || 1])
-    const [activeDay, setActiveDay] = useState<typeof day>()
+    const [activeDay, setActiveDay] = useState<typeof day>(0)
     const ref = useRef<HTMLDivElement>(null)
 
     const Day = ({ dayNumber }: { dayNumber: NonNullable<typeof day> }) => (
@@ -213,21 +213,17 @@ const DayPicker = () => {
 
     const Row = ({ number }: { number: number }) => (
         <tr>
-            {
-                Array.from({ length: 7 }, (_, i) =>
-                    <Day key={i} dayNumber={i + 1 + (7 * number) as NonNullable<typeof day>} />
-                )
-            }
+            {Array.from({ length: 7 }, (_, i) =>
+                <Day key={i} dayNumber={i + 1 + (7 * number) as NonNullable<typeof day>} />
+            )}
         </tr>
     )
 
     const PartialRow = () => (
         <tr>
-            {
-                Array.from({ length: numberOfDays - 28 }, (_, i) =>
-                    <Day key={i + 29} dayNumber={i + 29 as NonNullable<typeof day>} />
-                )
-            }
+            {Array.from({ length: numberOfDays - 28 }, (_, i) =>
+                <Day key={i + 29} dayNumber={i + 29 as NonNullable<typeof day>} />
+            )}
         </tr>
     )
 
@@ -235,9 +231,7 @@ const DayPicker = () => {
         if (event.shiftKey || event.altKey || event.ctrlKey) {
             return
         }
-        if (!activeDay) {
-            return
-        }
+        if (activeDay === undefined) return
 
         switch (event.key) {
             case 'ArrowRight':

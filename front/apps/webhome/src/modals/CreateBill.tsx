@@ -16,14 +16,14 @@ import {
     PeriodSelect
 } from '@components/inputs'
 import { Checkbox } from '@ledget/ui'
-import { useAddnewBillMutation, Bill } from '@features/billSlice'
+import { useAddnewBillMutation } from '@features/billSlice'
 import { Reminder } from '@features/remindersSlice'
 
 export const billSchema = z.object({
     name: z.string().toLowerCase().min(1, { message: 'required' }).max(50, { message: 'Name is too long.' }),
-    lower_amount: z.number().transform((value) => (isNaN(value) ? undefined : value)).nullable(),
-    upper_amount: z.number().transform((value) => (isNaN(value) ? undefined : value)),
-    period: z.string().min(1, { message: 'required' }),
+    lower_amount: z.number(),
+    upper_amount: z.number().min(1, { message: 'required' }),
+    period: z.enum(['once', 'month', 'year']),
     day: z.coerce.number().min(1).max(31).optional(),
     week: z.coerce.number().min(1).max(5).optional(),
     week_day: z.coerce.number().min(1).max(7).optional(),
@@ -85,7 +85,7 @@ const Form = withModal((props) => {
 
         handleSubmit((data) => {
             const reminders = extractReminders(e)
-            addNewBill({ reminders, ...data } as Bill)
+            addNewBill({ reminders, ...data })
         })(e)
     }
 
@@ -109,7 +109,7 @@ const Form = withModal((props) => {
                         {billPeriod !== 'once' &&
                             <div>
                                 <BillScheduler
-                                    billPeriod={billPeriod as Bill['period']}
+                                    billPeriod={billPeriod}
                                     error={errors.day}
                                     register={register}
                                 />

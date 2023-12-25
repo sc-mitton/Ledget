@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import './styles/Forms.scss'
 import { withModal } from '@ledget/ui'
-import { useGetCategoriesQuery, Category, useUpdateCategoriesMutation } from '@features/categorySlice'
+import { useGetCategoriesQuery, NewCategory, useUpdateCategoriesMutation } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect, emoji } from '@components/inputs'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@ledget/ui'
@@ -17,11 +17,11 @@ const EditCategory = withModal((props) => {
     const [searchParams] = useSearchParams()
     const { data: categories, isSuccess: categoriesAreFetched } = useGetCategoriesQuery()
     const [emoji, setEmoji] = useState<emoji>()
-    const [category, setCategory] = useState<Category>()
+    const [category, setCategory] = useState<NewCategory>()
     const [updateCategory, { isSuccess: categoryIsUpdated, isLoading: isUpdatingCategory }] = useUpdateCategoriesMutation()
 
-    const { register, handleSubmit, watch, formState: { errors }, control, setValue } = useForm<z.infer<typeof categoryFormSchema>>({
-        resolver: zodResolver(categoryFormSchema) as any,
+    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<z.infer<typeof categoryFormSchema>>({
+        resolver: zodResolver(categoryFormSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
     })
@@ -49,19 +49,19 @@ const EditCategory = withModal((props) => {
 
     const onSubmit = (data: z.infer<typeof categoryFormSchema>) => {
         const payload = { id: category?.id } as any
-        if (data.limit_amount !== category?.limit_amount) {
+        if (data.limit_amount !== category?.limit_amount && category?.id) {
             // If the limit amount is changed, we'll need to create
             // a new category on the backend, so we pass all the data
             updateCategory({
                 id: category?.id,
                 ...data
-            } as Category)
+            })
         } else {
             let k: keyof typeof data
             for (k in data)
                 if (data[k] !== category?.[k])
                     payload[k] = data[k]
-            updateCategory(payload as Category)
+            updateCategory(payload)
         }
     }
 

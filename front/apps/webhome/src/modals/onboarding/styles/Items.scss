@@ -74,7 +74,7 @@ $scrollbar-padding: 1em;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        gap: 2.75em;
+        gap: 2.25em;
 
         &>div {
             width: 100%;
@@ -106,7 +106,7 @@ $scrollbar-padding: 1em;
                 z-index: 1;
 
                 &:hover {
-                    background-color: var(--btn-gray);
+                    background-color: var(--icon-light-gray);
                 }
             }
         }

@@ -208,26 +208,22 @@ const CutomTabPanel = () => {
 
 const AddSuggestedCustomBills = () => (
     <Tab.Group as='div'>
-        {({ selectedIndex }) => (
-            <>
-                <Tab.Panels as={Fragment}>
-                    <CutomTabPanel />
-                    <Tab.Panel className="suggested-bills--container">
-                        <span>Coming soon</span>
-                    </Tab.Panel>
-                </Tab.Panels>
-                <Tab.List className="custom-suggested-tabs">
-                    <Tab>
-                        Custom
-                        <Plus size={'.8em'} />
-                    </Tab>
-                    <Tab>
-                        Suggested
-                        <Recommendations fill={'currentColor'} />
-                    </Tab>
-                </Tab.List>
-            </>
-        )}
+        <Tab.Panels as={Fragment}>
+            <CutomTabPanel />
+            <Tab.Panel className="suggested-bills--container">
+                <span>Coming soon</span>
+            </Tab.Panel>
+        </Tab.Panels>
+        <Tab.List className="custom-suggested-tabs">
+            <Tab>
+                Custom
+                <Plus size={'.8em'} />
+            </Tab>
+            <Tab>
+                Suggested
+                <Recommendations fill={'currentColor'} />
+            </Tab>
+        </Tab.List>
     </Tab.Group>
 )
 
@@ -236,7 +232,7 @@ const AddBills = () => (
         <div id="add-bills--window">
             <div>
                 <h1>Bills</h1>
-                <h3>Let's add a few of your monthly and yearly bills</h3>
+                <h4>Let's add a few of your monthly and yearly bills</h4>
             </div>
             <TabView item='bill'>
                 <ListView />

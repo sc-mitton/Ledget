@@ -1,4 +1,4 @@
-import { useRef, useState, useId, Fragment } from 'react'
+import { useRef, useState, useId, useEffect, Fragment } from 'react'
 
 import { animated } from '@react-spring/web'
 import { Tab } from '@headlessui/react'
@@ -45,7 +45,11 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
         year: { setItems: setYearItems }
     } = useItemsContext('category')
 
-    let order = useRef(items.map((item) => item.id))
+    let order = useRef<string[]>([])
+
+    useEffect(() => {
+        order.current = items.map((item) => item.id)
+    }, [items])
 
     const bind = useSpringDrag({
         order: order,
@@ -90,7 +94,12 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
     }
 
     return (
-        <ShadowScrollDiv>
+        <ShadowScrollDiv
+            style={{
+                overflowY: items.length > 6 ? 'auto' : 'hidden',
+                overflowX: 'hidden'
+            }}
+        >
             <animated.div style={containerProps} >
                 {transitions((style, item, _, index) => {
                     return (
@@ -123,6 +132,11 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
                                             onChange={handleEditAmount}
                                             onFocus={() => setEditValue(item?.limit_amount || 0)}
                                             onBlur={() => finalizeEditAmountChange(index)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    finalizeEditAmountChange(index)
+                                                }
+                                            }}
                                             autoFocus={true}
                                         />
                                         : <><DollarCents value={item?.limit_amount || 0} withCents={false} />
@@ -184,7 +198,6 @@ const categorySchema = z.object({
 
 const CustomTabPanel = () => {
     const [emoji, setEmoji] = useState<emoji>()
-    const id = useId()
 
     const {
         month: { setItems: setMonthItems, items: monthItems },
@@ -192,7 +205,7 @@ const CustomTabPanel = () => {
         periodTabIndex
     } = useItemsContext('category')
 
-    const { register, handleSubmit, reset, setValue, formState: { errors }, control } = useForm<z.infer<typeof categorySchema>>({
+    const { register, handleSubmit, reset, formState: { errors }, control } = useForm<z.infer<typeof categorySchema>>({
         resolver: zodResolver(categorySchema),
         mode: 'onSubmit',
         reValidateMode: 'onChange',
@@ -204,7 +217,7 @@ const CustomTabPanel = () => {
             e.preventDefault()
             const item = {
                 ...data,
-                id: id + 1,
+                id: Math.random().toString(36).slice(2),
                 emoji: typeof emoji === 'string' ? emoji : emoji?.native
             }
 
@@ -257,12 +270,11 @@ const SuggestedTabPanel = () => {
         month: { items: monthItems, setItems: setMonthItems },
         year: { items: yearItems, setItems: setYearItems }
     } = useItemsContext('category')
-    const id = useId()
 
     return (
         <Tab.Panel className="suggested-items--container" as='div'>
             {periodTabIndex === 0
-                ? monthRecommendations.filter(r => !monthItems.find(i => i.name === r.name)).map((item) => {
+                ? monthRecommendations.filter(r => !monthItems.find(i => i.name === r.name)).map((item, index) => {
                     return (
                         <BillCatLabel
                             as='button'
@@ -275,14 +287,14 @@ const SuggestedTabPanel = () => {
                                     ...item,
                                     period: 'month',
                                     limit_amount: 100,
-                                    id: id
+                                    id: Math.random().toString(36).slice(2)
                                 } as const
                                 setMonthItems((prev) => [...prev, newItem])
                             }}
                         />
                     )
                 })
-                : yearRecommendations.filter(r => !yearItems.find(i => i.name === r.name)).map((item) => {
+                : yearRecommendations.filter(r => !yearItems.find(i => i.name === r.name)).map((item, index) => {
                     return (
                         <BillCatLabel
                             as='button'
@@ -295,7 +307,7 @@ const SuggestedTabPanel = () => {
                                     ...item,
                                     period: 'year',
                                     limit_amount: 100,
-                                    id: id
+                                    id: Math.random().toString(36).slice(2)
                                 } as const
                                 setYearItems((prev) => [...prev, newItem])
                             }}
@@ -332,7 +344,7 @@ export default function () {
             <div id="add-categories--window">
                 <div>
                     <h1>Categories</h1>
-                    <h3>Now let's add a few spending categories</h3>
+                    <h4>Now let's add a few spending categories</h4>
                 </div>
                 <ListOfCategories />
                 <AddSuggestedCustomCategories />

@@ -10,7 +10,7 @@ import { z } from 'zod'
 import './styles/Bill.scss'
 import { billSchema } from './CreateBill'
 import { withModal } from '@ledget/ui'
-import { useGetBillsQuery, TransformedBill, useDeleteBillMutation, useUpdateBillsMutation, Bill } from '@features/billSlice'
+import { useGetBillsQuery, TransformedBill, useDeleteBillMutation, useUpdateBillsMutation, UpdateBill } from '@features/billSlice'
 import { Reminder } from '@features/remindersSlice'
 import { SubmitForm } from '@components/pieces'
 import {
@@ -21,10 +21,10 @@ import {
     SlideMotionDiv,
     useLoaded,
     Checkbox,
-    formatCurrency,
     IconButton,
     DropdownItem
 } from '@ledget/ui'
+import { extractReminders } from '@modals/CreateBill'
 import { CheckMark2, Ellipsis, TrashIcon, BellOff, Edit } from '@ledget/media'
 import {
     EmojiComboText,
@@ -264,7 +264,6 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
         resolver: zodResolver(billSchema)
     })
 
-    const [scheduleMissing, setScheduleMissing] = useState(false)
     const [emoji, setEmoji] = useState<emoji>()
     const [reminders, setReminders] = useState<Reminder[]>()
     const [rangeMode, setRangeMode] = useState(Boolean(bill.lower_amount))
@@ -272,27 +271,22 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         // parse form data
-        const data = new FormData(e.currentTarget)
-        const body = Object.fromEntries(data as any)
-        if (body.errors)
-            body.errors.schedule && setScheduleMissing(true)
+        const reminders = extractReminders(e)
 
         handleSubmit((data) => {
-            if (body.errors) { return }
             if (data.upper_amount || data.lower_amount) {
                 updateBill({
                     id: bill?.id,
                     reminders: reminders,
-                    ...body,
                     ...data,
-                } as Bill)
+                })
             } else {
                 const payload = { id: bill?.id } as any
                 let k: keyof typeof data
                 for (k in data)
                     if (data[k] !== bill?.[k])
                         payload[k] = data[k]
-                updateBill(payload as Bill)
+                updateBill(payload as UpdateBill)
             }
         })(e)
     }
@@ -330,7 +324,7 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                                 month: bill.month
                             }}
                             billPeriod={bill.period}
-                            error={scheduleMissing}
+                            error={errors.day}
                             register={register}
                         />
                         <AddReminder

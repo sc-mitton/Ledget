@@ -6,7 +6,7 @@ import { useForm, useWatch } from "react-hook-form"
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import './styles/Forms.scss'
-import { useAddNewCategoryMutation, Category } from '@features/categorySlice'
+import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect, emoji } from '@components/inputs'
 import { withModal } from '@ledget/ui'
 import SubmitForm from '@components/pieces/SubmitForm'
@@ -14,8 +14,8 @@ import { FormErrorTip } from '@ledget/ui'
 
 export const schema = z.object({
     name: z.string().min(1, { message: 'required' }).toLowerCase(),
-    limit_amount: z.number().min(1, { message: 'required' }).transform((value) => (isNaN(value) ? undefined : value)),
-    period: z.string().min(1, { message: 'required' }),
+    limit_amount: z.number().min(1, { message: 'required' }),
+    period: z.enum(['month', 'year']),
     alerts: z.array(z.object({ percent_amount: z.number() })).optional(),
 })
 
@@ -24,7 +24,7 @@ const CreateCategoryModal = withModal((props) => {
     const [emoji, setEmoji] = useState<emoji>()
     const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation()
 
-    const { register, control, handleSubmit, formState: { errors } } = useForm({
+    const { register, control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
@@ -41,7 +41,8 @@ const CreateCategoryModal = withModal((props) => {
             <hr />
             <form
                 onSubmit={handleSubmit((data, e) => {
-                    addNewCategory({ ...data, emoji: emoji } as Category)
+                    const em = typeof emoji === 'string' ? emoji : emoji?.native
+                    addNewCategory({ ...data, emoji: em })
                 })}
                 id="new-cat-form"
                 className="create-form"

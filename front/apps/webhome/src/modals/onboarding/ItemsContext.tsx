@@ -9,8 +9,8 @@ import {
     useChain
 } from '@react-spring/web'
 
-import { FormBill } from '@features/billSlice'
-import { FormCategory } from '@features/categorySlice'
+import { NewBill } from '@features/billSlice'
+import { NewCategory } from '@features/categorySlice'
 
 const itemHeight = 25
 const itemPadding = 8
@@ -18,16 +18,16 @@ const itemPadding = 8
 export type Period = 'month' | 'year'
 export type ItemS = 'bill' | 'category'
 
-type BillOrCatFromString<I extends ItemS> = I extends 'bill' ? FormBill : FormCategory
+type BillOrCatFromString<I extends ItemS> = I extends 'bill' ? NewBill : NewCategory
 
-export type Item<I extends FormBill | FormCategory, P> = I extends FormBill
-    ? Omit<FormBill, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' })
-    : Omit<FormCategory, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' })
+export type Item<I extends NewBill | NewCategory, P> = I extends NewBill
+    ? Omit<NewBill, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' })
+    : Omit<NewCategory, 'period'> & (P extends 'month' ? { period: 'month' } : { period: 'year' }) & { id: string }
 
-export type BillItem<P extends Period> = Item<FormBill, P>
-export type CategoryItem<P extends Period> = Item<FormCategory, P>
+export type BillItem<P extends Period> = Item<NewBill, P>
+export type CategoryItem<P extends Period> = Item<NewCategory, P>
 
-interface MonthYearContext<BC extends FormBill | FormCategory, P extends Period> {
+interface MonthYearContext<BC extends NewBill | NewCategory, P extends Period> {
     items: Item<BC, P>[]
     setItems: React.Dispatch<React.SetStateAction<Item<BC, P>[]>>
     transitions: TransitionFn<Item<BC, P> | undefined, any>
@@ -37,7 +37,7 @@ interface MonthYearContext<BC extends FormBill | FormCategory, P extends Period>
     isEmpty: boolean
 }
 
-interface ItemsContextProps<BC extends FormBill | FormCategory> {
+interface ItemsContextProps<BC extends NewBill | NewCategory> {
     itemsEmpty: boolean
     recommendationsMode: boolean
     setRecommendationsMode: React.Dispatch<React.SetStateAction<boolean>>
@@ -47,11 +47,11 @@ interface ItemsContextProps<BC extends FormBill | FormCategory> {
     setPeriodTabIndex: React.Dispatch<React.SetStateAction<number>>
 }
 
-const BillsContext = createContext<ItemsContextProps<FormBill> | undefined>(undefined)
-const CategoriesContext = createContext<ItemsContextProps<FormCategory> | undefined>(undefined)
+const BillsContext = createContext<ItemsContextProps<NewBill> | undefined>(undefined)
+const CategoriesContext = createContext<ItemsContextProps<NewCategory> | undefined>(undefined)
 
 export const useItemsContext = <T extends ItemS>(items: T):
-    T extends 'bill' ? ItemsContextProps<FormBill> : ItemsContextProps<FormCategory> => {
+    T extends 'bill' ? ItemsContextProps<NewBill> : ItemsContextProps<NewCategory> => {
 
     const context = items === 'bill' ? useContext(BillsContext) : useContext(CategoriesContext)
 
@@ -100,18 +100,14 @@ export const ItemsProvider = ({ children, itemType }: { children: React.ReactNod
         ref: monthContainerApi,
         config: { duration: 100 },
         position: 'relative',
-        overflowX: 'hidden',
         width: '100%',
-        overflowY: monthItems.length >= 6 ? 'scroll' : 'hidden',
     })
     const yearContainerProps = useSpring({
         height: (yearItems.length) * (itemHeight + itemPadding),
         maxHeight: 6 * (itemHeight + itemPadding),
         ref: yearContainerApi,
         position: 'relative',
-        overflowX: 'hidden',
         width: '100%',
-        overflowY: yearItems.length >= 6 ? 'scroll' : 'hidden',
         config: { duration: 100 },
     })
 
@@ -121,17 +117,15 @@ export const ItemsProvider = ({ children, itemType }: { children: React.ReactNod
     useEffect(() => {
         monthApi.start()
         monthContainerApi.start()
-        if (monthItems.length > 0) {
+        if (monthItems.length > 0)
             setEmptyMonthItems(false)
-        }
     }, [monthItems])
 
     useEffect(() => {
         yearApi.start()
         yearContainerApi.start()
-        if (yearItems.length > 0) {
+        if (yearItems.length > 0)
             setEmptyYearItems(false)
-        }
     }, [yearItems])
 
     useEffect(() => {
@@ -174,11 +168,11 @@ export const ItemsProvider = ({ children, itemType }: { children: React.ReactNod
 
     return (
         itemType === 'bill' ?
-            <BillsContext.Provider value={vals as ItemsContextProps<FormBill>} >
+            <BillsContext.Provider value={vals as ItemsContextProps<NewBill>} >
                 {children}
             </BillsContext.Provider>
             :
-            <CategoriesContext.Provider value={vals as ItemsContextProps<FormCategory>}>
+            <CategoriesContext.Provider value={vals as ItemsContextProps<NewCategory>}>
                 {children}
             </CategoriesContext.Provider>
     )

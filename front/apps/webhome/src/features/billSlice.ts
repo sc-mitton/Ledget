@@ -2,7 +2,6 @@ import { apiSlice } from '@api/apiSlice'
 import Big from 'big.js'
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 import { Reminder } from './remindersSlice'
-import { NumericRange } from '@utils/types'
 
 
 export interface Bill {
@@ -23,7 +22,8 @@ export interface Bill {
     year?: number
 }
 
-export type FormBill = Omit<Bill, 'id' | 'is_paid' | 'last_paid' | 'bill_confirmed' | 'reminders'>
+export type NewBill = Omit<Bill, 'id' | 'is_paid' | 'last_paid' | 'bill_confirmed'>
+export type UpdateBill = NewBill & Pick<Bill, 'id'>
 
 export interface TransformedBill extends Bill {
     date: string,
@@ -97,7 +97,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        addnewBill: builder.mutation<any, FormBill | FormBill[]>({
+        addnewBill: builder.mutation<any, NewBill | NewBill[]>({
             query: (data) => ({
                 url: 'bills',
                 method: 'POST',
@@ -105,7 +105,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Bill'],
         }),
-        updateBills: builder.mutation<any, Bill>({
+        updateBills: builder.mutation<any, UpdateBill>({
             query: (data) => ({
                 url: `bills/${data.id}`,
                 method: Array.isArray(data)

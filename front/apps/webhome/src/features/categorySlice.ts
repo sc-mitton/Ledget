@@ -22,7 +22,8 @@ export interface Category {
     order?: number,
 }
 
-export type FormCategory = Partial<Pick<Category, 'alerts' | 'emoji'>> & Pick<Category, 'id' | 'name' | 'limit_amount' | 'period'>
+export type NewCategory = Partial<Pick<Category, 'alerts' | 'emoji' | 'id'>> & Pick<Category, | 'name' | 'limit_amount' | 'period'>
+export type UpdateCategory = NewCategory & Pick<Category, 'id'>
 
 export interface SplitCategory extends Category {
     fraction: number
@@ -72,7 +73,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 ? [{ type: 'SpendingHistory', id: arg.categoryId }, { type: 'SpendingHistory', id: 'LIST' }]
                 : [{ type: 'SpendingHistory', id: 'LIST' }]
         }),
-        addNewCategory: builder.mutation<any, Category[] | Category>({
+        addNewCategory: builder.mutation<any, NewCategory[] | NewCategory>({
             query: (data) => ({
                 url: 'categories',
                 method: 'POST',
@@ -80,7 +81,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: [{ type: 'Category', id: 'LIST' }]
         }),
-        updateCategories: builder.mutation<any, Category[] | Category>({
+        updateCategories: builder.mutation<any, UpdateCategory[] | UpdateCategory>({
             query: (data) => {
                 if (Array.isArray(data)) {
                     return {
