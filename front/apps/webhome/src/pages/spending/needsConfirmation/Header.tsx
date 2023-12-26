@@ -1,18 +1,17 @@
 import { FC, ButtonHTMLAttributes, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useSearchParams } from 'react-router-dom'
 
 import './styles/Header.scss'
 import { CheckAll } from '@ledget/media'
 import { IconButton, RefreshButton, Tooltip } from '@ledget/ui'
-import { useAppDispatch } from '@hooks/store'
+import { useAppDispatch, useAppSelector } from '@hooks/store'
 import { popToast } from '@features/toastSlice'
 import {
     useTransactionsSyncMutation,
-    selectUnconfirmedLength
+    selectConfirmedLength,
+    useGetTransactionsCountQuery
 } from '@features/transactionsSlice'
-import { RootState } from '@features/store'
 import { Shimmer } from '@ledget/ui'
+import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 
 const CheckAllButton: FC<ButtonHTMLAttributes<HTMLButtonElement>> = (props) => (
@@ -30,13 +29,9 @@ const CheckAllButton: FC<ButtonHTMLAttributes<HTMLButtonElement>> = (props) => (
 const NewItemsHeader = (
     { onConfirmAll }: { onConfirmAll: () => void }
 ) => {
-    const [searchParams] = useSearchParams()
-    const unconfirmedLength = useSelector((state: RootState) =>
-        selectUnconfirmedLength(state, {
-            month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
-            year: parseInt(searchParams.get('year')!) || new Date().getFullYear()
-        })
-    )
+    const { start, end } = useGetStartEndQueryParams()
+    const { data: unconfirmedLength } = useGetTransactionsCountQuery({ confirmed: false, start, end })
+    const confirmedLength = useAppSelector(selectConfirmedLength)
     const [syncTransactions, {
         isLoading: isSyncing,
         isSuccess: isSyncSuccess,
@@ -78,12 +73,12 @@ const NewItemsHeader = (
                 <div>
                     <div id="number-of-items">
                         <span>
-                            {unconfirmedLength > 99
+                            {((unconfirmedLength || 0) - confirmedLength) > 99
                                 ? '99'
-                                : `${unconfirmedLength}`}
+                                : `${((unconfirmedLength || 0) - confirmedLength)}`}
                         </span>
                     </div>
-                    <span>{`Item${unconfirmedLength !== 1 ? 's' : ''}`} to confirm</span>
+                    <span>{`Item${((unconfirmedLength || 0) - confirmedLength) !== 1 ? 's' : ''}`} to confirm</span>
                 </div>
                 <div>
                     <RefreshButton
@@ -92,7 +87,7 @@ const NewItemsHeader = (
                         loading={isSyncing}
                         onClick={handleRefreshClick}
                     />
-                    {(unconfirmedLength > 0) &&
+                    {(((unconfirmedLength || 0) - confirmedLength) > 0) &&
                         <CheckAllButton onClick={onConfirmAll} />
                     }
                 </div>

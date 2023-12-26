@@ -25,6 +25,7 @@ export const apiSlice = createApi({
         'SpendingHistory',
         'Device',
         'User',
+        'TransactionCount',
     ],
     endpoints: (builder) => ({}),
 })

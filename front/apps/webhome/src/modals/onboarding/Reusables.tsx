@@ -50,7 +50,7 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
         if (monthItems.length === 0 && yearItems.length === 0)
             navigate('/budget/welcome/add-categories')
 
-        if (typeof item === typeof 'bill') {
+        if (location.pathname.includes('add-bills')) {
             addNewBill([...monthItems, ...yearItems] as NewBill[])
         } else {
             addNewCategory([...monthItems, ...yearItems] as NewCategory[])
@@ -83,9 +83,13 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
     }, [patchedUserSuccess])
 
     useEffect(() => {
-        if (user?.is_onboarded)
-            navigate('/budget')
-    }, [user])
+        let timeout: NodeJS.Timeout
+        if (isCategorySuccess)
+            timeout = setTimeout(() => {
+                navigate('/budget')
+            }, 1000)
+        return () => clearTimeout(timeout)
+    }, [isCategorySuccess])
 
     return (
         <div className="btn-container">

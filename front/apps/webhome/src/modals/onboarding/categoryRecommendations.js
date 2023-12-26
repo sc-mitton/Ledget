@@ -22,4 +22,5 @@ export const monthRecommendations = [
     { emoji: '💄', name: 'Cosmetics' },
     { emoji: '💈', name: 'Haircuts' },
     { emoji: '🎨', name: 'Hobbies' },
+    { emoji: '💘', name: 'Dates'}
 ]

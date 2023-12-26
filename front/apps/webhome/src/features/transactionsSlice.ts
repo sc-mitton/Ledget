@@ -203,6 +203,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
             keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
+        getTransactionsCount: builder.query<number, GetTransactionsParams>({
+            query: (params) => ({
+                url: 'transactions/count',
+                params: params,
+                providesTags: ['TransactionCout']
+            }),
+        }),
         getMerchants: builder.query<string[], void>({
             query: () => ({
                 url: 'transactions/merchants',
@@ -385,6 +392,7 @@ export const {
     useAddNoteMutation,
     useUpdateDeleteNoteMutation,
     useGetMerchantsQuery,
+    useGetTransactionsCountQuery,
 } = extendedApiSlice
 
 export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransactions.useQueryState
@@ -396,7 +404,7 @@ const selectConfirmedQue = (state: RootState) => state.confirmStack.confirmedQue
 const selectDateYear = (state: RootState, date: { year: number, month: number }) => date
 export const selectFilteredFetchedConfirmedTransactions = (state: RootState) => state.filteredFetchedonfirmedTransactions.filtered
 export const selectConfirmedTransactionFilter = (state: RootState) => state.filteredFetchedonfirmedTransactions.filter
-
+export const selectConfirmedLength = (state: RootState) => state.confirmStack.unconfirmed.length
 
 export const selectUnconfirmedTransactions = createSelector(
     [selectUnconfirmed, selectDateYear],
@@ -412,15 +420,4 @@ export const selectConfirmedTransactions = createSelector(
         const itemDate = new Date(item.transaction.datetime || item.transaction.date)
         return itemDate.getFullYear() === date.year && itemDate.getMonth() + 1 === date.month
     })
-)
-
-export const selectUnconfirmedLength = createSelector(
-    [selectUnconfirmed, selectDateYear],
-    (unconfirmed, date) => unconfirmed.reduce((acc, item) => {
-        const itemDate = new Date(item.datetime || item.date)
-        if (itemDate.getFullYear() === date.year && itemDate.getMonth() + 1 === date.month) {
-            return acc + 1
-        }
-        return acc
-    }, 0)
 )

@@ -11,10 +11,10 @@ export const ExpandableContainer: FC<HTMLProps<HTMLDivElement> & { expanded?: bo
   )
 
 
-export const InfiniteScrollDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & { animate: boolean }>(({
+export const InfiniteScrollDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & { animate?: boolean }>(({
   children,
   className,
-  animate,
+  animate = false,
   ...rest
 }, ref) => (
   <div className={`infinite-scroll--container ${className ? className : ''} ${animate ? 'fetching-more' : ''}`} {...rest} ref={ref}>

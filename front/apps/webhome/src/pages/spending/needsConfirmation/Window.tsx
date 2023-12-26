@@ -222,7 +222,6 @@ const NewItem: FC<{
 
 const NeedsConfirmationWindow = () => {
     const [searchParams] = useSearchParams()
-    const [offset, setOffset] = useState(0)
     const loaded = useLoaded()
     const [showMenu, setShowMenu] = useState(false)
     const [showBillCatSelect, setShowBillCatSelect] = useState(false)
@@ -263,16 +262,9 @@ const NeedsConfirmationWindow = () => {
     // Initial fetch when query params change
     useEffect(() => {
         if (start && end) {
-            fetchTransactions({ start, end, offset }, true)
+            fetchTransactions({ start, end, offset: 0 }, true)
         }
     }, [start, end])
-
-    // Paginated requests
-    useEffect(() => {
-        if (transactionsData?.next) {
-            fetchTransactions({ start, end, offset })
-        }
-    }, [offset])
 
     // Animation hooks/effects
     const itemsApi = useSpringRef()
@@ -325,7 +317,7 @@ const NeedsConfirmationWindow = () => {
         }
     )
 
-    // Animate container expanding
+    // Initial animate container expanding
     useEffect(() => { containerApi.start() }, [])
 
     useEffect(() => {
@@ -495,7 +487,7 @@ const NeedsConfirmationWindow = () => {
     const handleScroll = (e: any) => {
         // Once the bottom is reached, then fetch the next list of items
         if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight) {
-            transactionsData?.next && setOffset(transactionsData.next)
+            transactionsData?.next && fetchTransactions({ start, end, offset: transactionsData?.next })
         }
         setShowMenu(false)
         setShowBillCatSelect(false)
@@ -506,7 +498,6 @@ const NeedsConfirmationWindow = () => {
             <Header onConfirmAll={handleConfirmAll} />
             <InfiniteScrollDiv
                 id="new-items"
-                animate={isFetchingTransactions && offset > 0}
                 ref={newItemsRef}
                 onMouseLeave={() => flushConfirmedQue()}
             >

@@ -414,8 +414,8 @@ $borderRadius2: var(--border-radius2);
             border-top-left-radius: $borderRadius2;
             border-bottom-left-radius: $borderRadius2;
 
-            span:last-child {
-                opacity: 0.4;
+            &>div span {
+                color: var(--m-text-tirtiary);
                 font-weight: var(--fw-light);
             }
         }

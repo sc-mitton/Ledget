@@ -255,6 +255,14 @@ local GenericAuthedBase = {
   },
   GenericAuthedBase
   {
+    id: 'transactions_count',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/transactions/count',
+    },
+  },
+  GenericAuthedBase
+  {
     id: 'recurring_transactions',
     match: {
       methods: ['GET'],

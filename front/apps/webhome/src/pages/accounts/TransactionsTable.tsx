@@ -184,7 +184,14 @@ export const Transactions = () => {
                             >
                                 <div>
                                     <span>{transaction.preferred_name || transaction.name}</span>
-                                    <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
+                                    <div>
+                                        <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
+                                    </div>
+                                    <div>
+                                        {transaction.categories.map((c, index) => (
+                                            <span key={index}>{c.emoji}</span>
+                                        ))}
+                                    </div>
                                 </div>
                                 <div>
                                     <div className={transaction.amount < 0 ? 'debit' : 'credit'}>

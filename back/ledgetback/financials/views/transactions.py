@@ -18,9 +18,9 @@ from rest_framework.status import (
 )
 import plaid
 
-from plaid.model.transactions_recurring_get_request import (
-    TransactionsRecurringGetRequest
-)
+# from plaid.model.transactions_recurring_get_request import (
+#     TransactionsRecurringGetRequest
+# )
 from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.model.transactions_sync_request_options import (
     TransactionsSyncRequestOptions
@@ -315,6 +315,12 @@ class TransactionViewSet(ModelViewSet):
                 sync_results[key] += value
 
         return Response(sync_results, HTTP_200_OK)
+
+    @action(detail=False, methods=['get'], url_path='count', url_name='count',
+            permission_classes=[IsAuthedVerifiedSubscriber])
+    def count(self, request, *args, **kwargs):
+        qset = self.get_queryset()
+        return Response({'count': qset.count()})
 
     def _get_recurring_transactions(self, request):
         pass
