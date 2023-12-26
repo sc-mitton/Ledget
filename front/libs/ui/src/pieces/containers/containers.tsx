@@ -67,7 +67,7 @@ export const ShadowScrollDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivEleme
     return (
       <div
         {...rest}
-        style={{ maskImage: getMaskImage(shadow), position: 'relative', ...style }}
+        style={{ maskImage: getMaskImage(shadow), ...style }}
         ref={(el) => {
           localRef.current = el
           if (typeof parentRef === 'function') {
