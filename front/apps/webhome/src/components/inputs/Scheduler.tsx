@@ -184,9 +184,11 @@ const daysMap = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] as const
 const DayPicker = () => {
 
     const { setOpen, day, setDay, month } = usePickerContext()
-    const [numberOfDays, setNumberOfDays] = useState<number>(daysMap[month || 1])
+    const [numberOfDays, setNumberOfDays] = useState<number>(daysMap[month || 0])
     const [activeDay, setActiveDay] = useState<typeof day>(0)
     const ref = useRef<HTMLDivElement>(null)
+
+    console.log('numberOfDays', numberOfDays)
 
     const Day = ({ dayNumber }: { dayNumber: NonNullable<typeof day> }) => (
         <td key={dayNumber}>
@@ -208,7 +210,7 @@ const DayPicker = () => {
     )
 
     useEffect(() => {
-        setNumberOfDays(daysMap[month || 1])
+        setNumberOfDays(daysMap[month || 0])
     }, [month])
 
     const Row = ({ number }: { number: number }) => (

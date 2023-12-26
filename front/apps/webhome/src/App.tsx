@@ -51,7 +51,7 @@ const OnboardedRoute = () => {
     const location = useLocation()
 
     useEffect(() => {
-        if (true) {
+        if (!user?.is_onboarded) {
             navigate('/budget/welcome/connect')
         }
     }, [user?.is_onboarded])

@@ -82,7 +82,7 @@ export const useStripeCardTheme = ({ focus, isDark }: { focus: boolean, isDark?:
             fontFamily: "Source Sans Pro, sans-serif",
             color: isDark ? '#e2e2e9' : '#292929',
             fontSmoothing: 'antialiased',
-            fontSize: '1em',
+            fontSize: '1.05em',
             '::placeholder': {
                 color:
                     isDark

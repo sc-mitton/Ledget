@@ -30,8 +30,8 @@
     --antd-drop-shadow: var(--m-invert-text) 0 3px 12px;
 
     --input-focus-dropshadow-color: var(--main-sat);
-    --accessible-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
-    --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
+    --accessible-focus-drop-shadow: 0 0 0 1px var(--input-focus-dropshadow-color);
+    --input-focus-drop-shadow: 0 0 0 1px var(--input-focus-dropshadow-color);
     --active-wafer-drop-shadow: color-mix(in srgb, var(--main-hlight) 80%, var(--main-color)) 0px 0px 12px;
 
     --subtle-border: .75px solid var(--subtle-border-color);
@@ -50,7 +50,7 @@
         // Secondary and Primary Base Values
         --main-color-h: 230;
         --main-color-s: 10%;
-        --main-color-l: 35%;
+        --main-color-l: 40%;
 
         --secondary-color-h: 162;
         --secondary-color-s: 17%;
@@ -62,8 +62,8 @@
         --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
         --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 5%));
         --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 15%));
-        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 10%));
-        --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 5%));
+        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 7%));
+        --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), var(--main-color-l));
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), var(--main-color-l));
 
@@ -92,7 +92,7 @@
 
         // Windows
         --window-background-color: hsl(0, 0%, 6%);
-        --window: hsl(0, 0%, 9%);
+        --window: hsl(0, 0%, 10%);
         --window-border: hsl(0, 0%, 12%);
         --window-rgb: 5, 5, 5;
         --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 75%);

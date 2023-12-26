@@ -60,7 +60,7 @@ const CreateCategoryModal = withModal((props) => {
                     </div>
                     <div>
                         <LimitAmountInput withCents={false} control={control}>
-                            <FormErrorTip error={(errors as any).limit_amount} />
+                            <FormErrorTip error={errors.limit_amount} />
                         </LimitAmountInput>
                     </div>
 

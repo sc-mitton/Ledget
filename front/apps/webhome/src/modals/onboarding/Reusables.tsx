@@ -5,8 +5,8 @@ import { Tab } from '@headlessui/react'
 
 import { useItemsContext, ItemS } from './ItemsContext'
 import { Recommendations as RecommendationsIcon } from '@ledget/media'
-import { useAddnewBillMutation, FormBill } from '@features/billSlice'
-import { useAddNewCategoryMutation, FormCategory } from '@features/categorySlice'
+import { useAddnewBillMutation, NewBill } from '@features/billSlice'
+import { useAddNewCategoryMutation, NewCategory } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
 import { BlackSubmitWithArrow, BlueSlimButton2, TabNavList, useBillCatTabTheme } from '@ledget/ui'
 
@@ -36,6 +36,7 @@ export const TabView = ({ children, item }: { children: React.ReactNode, item: I
 export const BottomButtons = ({ item }: { item: ItemS }) => {
     const navigate = useNavigate()
     const location = useLocation()
+    const { data: user } = useGetMeQuery()
     const [addNewBill, { isLoading: isBillLoading, isSuccess: isBillSuccess }] = useAddnewBillMutation()
     const [addNewCategory, { isLoading: isCategoryLoading, isSuccess: isCategorySuccess }] = useAddNewCategoryMutation()
     const { refetch: refetchUser } = useGetMeQuery()
@@ -50,9 +51,9 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
             navigate('/budget/welcome/add-categories')
 
         if (typeof item === typeof 'bill') {
-            addNewBill([...monthItems, ...yearItems] as FormBill[])
+            addNewBill([...monthItems, ...yearItems] as NewBill[])
         } else {
-            addNewCategory([...monthItems, ...yearItems] as FormCategory[])
+            addNewCategory([...monthItems, ...yearItems] as NewCategory[])
         }
     }
 
@@ -81,10 +82,10 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
         }
     }, [patchedUserSuccess])
 
-    // useEffect(() => {
-    //     if (user?.is_onboarded)
-    //         navigate('/budget')
-    // }, [user])
+    useEffect(() => {
+        if (user?.is_onboarded)
+            navigate('/budget')
+    }, [user])
 
     return (
         <div className="btn-container">

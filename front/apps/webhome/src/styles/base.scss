@@ -262,6 +262,7 @@ button:focus-visible {
     box-sizing: border-box;
     border: 1.25px solid var(--window-border);
     background-color: var(--window);
+    overflow: hidden;
 }
 
 .window2 {
