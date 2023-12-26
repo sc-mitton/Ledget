@@ -33,7 +33,6 @@ export const axiosBaseQuery = async <T>({ url, method, data, params, transformRe
     return { data: result.data }
   } catch (axiosError) {
     let err = axiosError as AxiosError
-
     return {
       error: {
         status: err.response?.status,

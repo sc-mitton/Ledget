@@ -203,7 +203,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
             keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
-        getTransactionsCount: builder.query<number, GetTransactionsParams>({
+        getTransactionsCount: builder.query<{ count: number }, GetTransactionsParams>({
             query: (params) => ({
                 url: 'transactions/count',
                 params: params,
@@ -404,7 +404,7 @@ const selectConfirmedQue = (state: RootState) => state.confirmStack.confirmedQue
 const selectDateYear = (state: RootState, date: { year: number, month: number }) => date
 export const selectFilteredFetchedConfirmedTransactions = (state: RootState) => state.filteredFetchedonfirmedTransactions.filtered
 export const selectConfirmedTransactionFilter = (state: RootState) => state.filteredFetchedonfirmedTransactions.filter
-export const selectConfirmedLength = (state: RootState) => state.confirmStack.unconfirmed.length
+export const selectConfirmedLength = (state: RootState) => state.confirmStack.confirmedQue.length
 
 export const selectUnconfirmedTransactions = createSelector(
     [selectUnconfirmed, selectDateYear],

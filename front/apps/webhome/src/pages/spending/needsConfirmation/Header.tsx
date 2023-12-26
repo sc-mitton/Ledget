@@ -30,7 +30,7 @@ const NewItemsHeader = (
     { onConfirmAll }: { onConfirmAll: () => void }
 ) => {
     const { start, end } = useGetStartEndQueryParams()
-    const { data: unconfirmedLength } = useGetTransactionsCountQuery({ confirmed: false, start, end })
+    const { data: tCountData } = useGetTransactionsCountQuery({ confirmed: false, start, end })
     const confirmedLength = useAppSelector(selectConfirmedLength)
     const [syncTransactions, {
         isLoading: isSyncing,
@@ -71,14 +71,15 @@ const NewItemsHeader = (
             <div id="needs-confirmation-header">
                 <Shimmer shimmering={isSyncing} lightness={90} />
                 <div>
-                    <div id="number-of-items">
-                        <span>
-                            {((unconfirmedLength || 0) - confirmedLength) > 99
-                                ? '99'
-                                : `${((unconfirmedLength || 0) - confirmedLength)}`}
-                        </span>
-                    </div>
-                    <span>{`Item${((unconfirmedLength || 0) - confirmedLength) !== 1 ? 's' : ''}`} to confirm</span>
+                    {tCountData &&
+                        <div id="number-of-items">
+                            <span>
+                                {(tCountData?.count - confirmedLength) > 99
+                                    ? '99'
+                                    : `${(tCountData?.count - confirmedLength)}`}
+                            </span>
+                        </div>}
+                    <span>{`Item${((tCountData?.count || 0) - confirmedLength) !== 1 ? 's' : ''}`} to confirm</span>
                 </div>
                 <div>
                     <RefreshButton
@@ -87,7 +88,7 @@ const NewItemsHeader = (
                         loading={isSyncing}
                         onClick={handleRefreshClick}
                     />
-                    {(((unconfirmedLength || 0) - confirmedLength) > 0) &&
+                    {(((tCountData?.count || 0) - confirmedLength) > 0) &&
                         <CheckAllButton onClick={onConfirmAll} />
                     }
                 </div>
