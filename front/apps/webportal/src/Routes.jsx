@@ -7,7 +7,7 @@ import CheckoutWindow from '@forms/Checkout'
 import VerificationWindow from '@forms/Verification'
 import RecoverWindow from '@forms/Recovery'
 import Header from './Header'
-import { SendRegisteredToCheckout, ProtectedCheckout } from '@utils'
+import { SendRegisteredToCheckout } from '@utils'
 
 function AnimatedRoutes() {
     const location = useLocation()
@@ -34,9 +34,7 @@ function AnimatedRoutes() {
                         </Route>
                         <Route path="/register" element={<SignUpWindow />} />
                         <Route path="/verification" element={<VerificationWindow />} />
-                        <Route path="/" element={<ProtectedCheckout />}>
-                            <Route path="/checkout" element={<CheckoutWindow />} />
-                        </Route>
+                        <Route path="/checkout" element={<CheckoutWindow />} />
                     </Routes>
                 </motion.div >
             </AnimatePresence>

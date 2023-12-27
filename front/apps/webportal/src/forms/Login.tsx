@@ -210,11 +210,7 @@ const OryFormWrapper = ({ children, onSubmit, flow, errMsg, email, setEmail }: O
                     {searchParams.get('mfa') ? 'back' : email}
                 </BackButton>
             </div>
-            {errMsg &&
-                <div style={{ marginBottom: '.75em' }}>
-                    <FormError msg={errMsg} />
-                </div>
-            }
+            {errMsg && <FormError msg={errMsg} />}
             {children}
             <CsrfToken csrf={flow?.csrf_token} />
         </form>

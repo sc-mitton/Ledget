@@ -5,6 +5,7 @@
 #email-container {
     width: 100%;
     text-align: left;
+    margin-bottom: 1.25em;
 
     h3 {
         margin: 0;
@@ -38,10 +39,10 @@
 }
 
 #password-auth--container {
-    margin-top: 2em;
     display: flex;
     flex-direction: column;
     gap: .5em;
+    margin-top: .25em;
 }
 
 .below-login--container {
