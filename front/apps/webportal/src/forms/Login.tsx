@@ -173,6 +173,54 @@ const Password = () => (
     </div>
 )
 
+interface OryFormWrapperProps {
+    children: React.ReactNode
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+    flow?: { csrf_token: string, [key: string]: any }
+    errMsg?: string[]
+    email: string
+    setEmail: React.Dispatch<React.SetStateAction<string | undefined>>
+}
+
+const OryFormWrapper = ({ children, onSubmit, flow, errMsg, email, setEmail }: OryFormWrapperProps) => {
+    const [searchParams] = useSearchParams()
+    const navigate = useNavigate()
+
+    return (
+        <form onSubmit={onSubmit}>
+            <div id="email-container">
+                <h3>
+                    {searchParams.get('mfa')
+                        ? '2-Step Verification'
+                        : 'Welcome Back'}
+                </h3>
+                <BackButton
+                    type="button"
+                    withText={Boolean(searchParams.get('mfa'))}
+                    onClick={() => {
+                        if (searchParams.get('mfa') === 'lookup_secret') {
+                            navigate(-1)
+                        } else if (searchParams.get('aal') === 'aal1') {
+                            setEmail(undefined)
+                        } else {
+                            navigate('/login')
+                        }
+                    }}
+                >
+                    {searchParams.get('mfa') ? 'back' : email}
+                </BackButton>
+            </div>
+            {errMsg &&
+                <div style={{ marginBottom: '.75em' }}>
+                    <FormError msg={errMsg} />
+                </div>
+            }
+            {children}
+            <CsrfToken csrf={flow?.csrf_token} />
+        </form>
+    )
+}
+
 const Login = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
@@ -247,46 +295,17 @@ const Login = () => {
             submit(e)
         } else {
             const data = Object.fromEntries(new FormData(e.target as any) as any)
-            verifyOtp({
-                id: searchParams.get('id'),
-                data: data.code
-            })
+            verifyOtp({ id: searchParams.get('id'), data: data.code })
         }
     }
 
-    const OryFormWrapper = ({ children }: { children: React.ReactNode }) => (
-        <form onSubmit={handleSubmit}>
-            <div id="email-container">
-                <h3>
-                    {searchParams.get('mfa')
-                        ? '2-Step Verification'
-                        : 'Welcome Back'}
-                </h3>
-                <BackButton
-                    type="button"
-                    withText={Boolean(searchParams.get('mfa'))}
-                    onClick={() => {
-                        if (searchParams.get('mfa') === 'lookup_secret') {
-                            navigate(-1)
-                        } else if (searchParams.get('aal') === 'aal1') {
-                            setEmail(undefined)
-                        } else {
-                            navigate('/login')
-                        }
-                    }}
-                >
-                    {searchParams.get('mfa') ? 'back' : email}
-                </BackButton>
-            </div>
-            {errMsg &&
-                <div style={{ marginBottom: '.75em' }}>
-                    <FormError msg={errMsg} />
-                </div>
-            }
-            {children}
-            <CsrfToken csrf={flow?.csrf_token} />
-        </form>
-    )
+    const oryFormArgs = {
+        flow,
+        errMsg,
+        setEmail,
+        email: email || '',
+        onSubmit: handleSubmit
+    }
 
     return (
         <AnimatePresence mode="wait">
@@ -302,7 +321,10 @@ const Login = () => {
                             Recover Account
                         </LinkArrowButton>
                     </div>
-                    <WindowLoadingBar visible={isGettingFlow} />
+                    <WindowLoadingBar
+                        visible={[verifyingOtp, creatingOtp, isGettingFlow,
+                            isCompletingFlow, isRefreshingDevices].some(Boolean)}
+                    />
                 </SlideMotionDiv>
                 :
                 <JiggleDiv jiggle={isCompleteError || isOtpVerifyError} className="wrapper-window">
@@ -313,7 +335,7 @@ const Login = () => {
                             key="aal1-step"
                             position={searchParams.get('mfa') ? 'first' : 'last'}
                         >
-                            <OryFormWrapper>
+                            <OryFormWrapper {...oryFormArgs}>
                                 <Password />
                                 <input type="hidden" name="identifier" value={email || ''} />
                             </OryFormWrapper>
@@ -322,7 +344,7 @@ const Login = () => {
                     {/* Totp 2nd Factor */}
                     {['totp', 'lookup_secret'].includes(searchParams.get('mfa') || '') &&
                         <SlideMotionDiv className='nested-window' key="aal2-step" position={'last'}>
-                            <OryFormWrapper>
+                            <OryFormWrapper {...oryFormArgs}>
                                 <TotpMfa finished={devicesRefreshedSuccess} />
                             </OryFormWrapper>
                         </SlideMotionDiv>
@@ -336,13 +358,14 @@ const Login = () => {
                     {/* Recovery Code 2nd Factor */}
                     {searchParams.get('mfa') === 'lookup_secret' &&
                         <SlideMotionDiv className='nested-window' key="aal2-step" position={'last'}>
-                            <OryFormWrapper>
+                            <OryFormWrapper {...oryFormArgs}>
                                 <RecoveryMfa finished={devicesRefreshedSuccess} />
                             </OryFormWrapper>
                         </SlideMotionDiv>
                     }
                     <WindowLoadingBar
-                        visible={verifyingOtp || creatingOtp || isGettingFlow || isCompletingFlow || isRefreshingDevices}
+                        visible={[verifyingOtp, creatingOtp, isGettingFlow,
+                            isCompletingFlow, isRefreshingDevices].some(Boolean)}
                     />
                 </JiggleDiv>
             }
