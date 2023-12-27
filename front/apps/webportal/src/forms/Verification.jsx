@@ -22,8 +22,7 @@ const Verification = () => {
     const { flow, result, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetVerificationFlowQuery,
         useCompleteVerificationFlowMutation,
-        'verification'
-    )
+        'verification')
     const {
         errMsg,
         isGettingFlow,

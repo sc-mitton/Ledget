@@ -11,7 +11,7 @@ import './style/Login.scss'
 import SocialAuth from "./SocialAuth"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
-import { WindowLoadingBar } from "@pieces"
+import { WindowLoadingBar } from "@pieces/index"
 import {
     BlackWideButton,
     Checkbox,
@@ -38,12 +38,17 @@ const schema = z.object({
     remember: z.union([z.boolean(), z.string()])
 })
 
+interface EmailFormProps {
+    flow: any
+    setEmail: React.Dispatch<React.SetStateAction<string | undefined>>
+    socialSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+}
 
-const EmailForm = ({ flow, setEmail, socialSubmit }) => {
+const EmailForm = ({ flow, setEmail, socialSubmit }: EmailFormProps) => {
     const { register, handleSubmit, formState: { errors }, setFocus } =
-        useForm({ resolver: zodResolver(schema), mode: 'onBlur' })
+        useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema), mode: 'onBlur' })
 
-    const submit = (data) => {
+    const submit = (data: z.infer<typeof schema>) => {
         if (data.remember) {
             localStorage.setItem('login-email', JSON.stringify(data.email))
         } else {
@@ -63,23 +68,21 @@ const EmailForm = ({ flow, setEmail, socialSubmit }) => {
                 <div>
                     <PlainTextInput
                         type="email"
-                        name="email"
                         placeholder="Email"
                         {...register('email')}
                     />
-                    {errors['email'] && <FormError msg={errors['email'].message} />}
+                    {errors['email'] && <FormError msg={errors['email'].message || ''} />}
                     <div id="remember-me-checkbox-container">
                         <Checkbox
                             id='remember'
                             label='Remember me'
-                            name='remember'
                             {...register('remember')}
                         />
                     </div>
                     <BlackWideButton>Continue</BlackWideButton>
                 </div>
             </form >
-            <SocialAuth flow={flow} submit={socialSubmit} csrf={flow?.csrf_token} />
+            <SocialAuth flow={flow} submit={socialSubmit} />
         </>
     )
 }
@@ -102,7 +105,7 @@ const LookupSecretPrompt = () => {
     )
 }
 
-const TotpMfa = ({ finished }) => {
+const TotpMfa = ({ finished }: { finished: boolean }) => {
     const [searchParams] = useSearchParams()
 
     return (
@@ -118,14 +121,14 @@ const TotpMfa = ({ finished }) => {
                     placeholder='Code'
                 />
             </div>
-            <BlackWideButton name="method" value={searchParams.get('mfa')}>
+            <BlackWideButton name="method" value={searchParams.get('mfa') || ''}>
                 Submit
             </BlackWideButton>
         </>
     )
 }
 
-const RecoveryMfa = ({ finished }) => {
+const RecoveryMfa = ({ finished }: { finished: boolean }) => {
     const [searchParams] = useSearchParams()
 
     return (
@@ -140,14 +143,14 @@ const RecoveryMfa = ({ finished }) => {
                     placeholder='Code'
                 />
             </div>
-            <BlackWideButton name="method" value={searchParams.get('mfa')}>
+            <BlackWideButton name="method" value={searchParams.get('mfa') || ''}>
                 Submit
             </BlackWideButton>
         </>
     )
 }
 
-const OtpMfa = ({ finished }) => (
+const OtpMfa = ({ finished }: { finished: boolean }) => (
     <>
         <div className="mfa-container">
             <SmsVerifyStatus finished={finished} />
@@ -174,7 +177,7 @@ const Login = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
 
-    const [email, setEmail] = useState('')
+    const [email, setEmail] = useState<string>()
 
     const [createOtp, { data: otp, isLoading: creatingOtp, isSuccess: createdOtp }] = useCreateOtpMutation()
     const [verifyOtp, { isSuccess: otpVerified, isLoading: verifyingOtp, isError: isOtpVerifyError }] = useVerifyOtpMutation()
@@ -225,7 +228,7 @@ const Login = () => {
 
     // Handle Login Finished
     useEffect(() => {
-        let timeout
+        let timeout: NodeJS.Timeout
         if (devicesRefreshedSuccess) {
             if (searchParams.get('mfa')) {
                 setTimeout(() => {
@@ -238,12 +241,12 @@ const Login = () => {
         return () => clearTimeout(timeout)
     }, [devicesRefreshedSuccess])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (searchParams.get('aal')) {
             submit(e)
         } else {
-            const data = Object.fromEntries(new FormData(e.target))
+            const data = Object.fromEntries(new FormData(e.target as any) as any)
             verifyOtp({
                 id: searchParams.get('id'),
                 data: data.code
@@ -251,7 +254,7 @@ const Login = () => {
         }
     }
 
-    const OryFormWrapper = ({ children }) => (
+    const OryFormWrapper = ({ children }: { children: React.ReactNode }) => (
         <form onSubmit={handleSubmit}>
             <div id="email-container">
                 <h3>
@@ -266,7 +269,7 @@ const Login = () => {
                         if (searchParams.get('mfa') === 'lookup_secret') {
                             navigate(-1)
                         } else if (searchParams.get('aal') === 'aal1') {
-                            setEmail(null)
+                            setEmail(undefined)
                         } else {
                             navigate('/login')
                         }
@@ -317,7 +320,7 @@ const Login = () => {
                         </SlideMotionDiv>
                     }
                     {/* Totp 2nd Factor */}
-                    {['totp', 'lookup_secret'].includes(searchParams.get('mfa')) &&
+                    {['totp', 'lookup_secret'].includes(searchParams.get('mfa') || '') &&
                         <SlideMotionDiv className='nested-window' key="aal2-step" position={'last'}>
                             <OryFormWrapper>
                                 <TotpMfa finished={devicesRefreshedSuccess} />
@@ -338,7 +341,9 @@ const Login = () => {
                             </OryFormWrapper>
                         </SlideMotionDiv>
                     }
-                    <WindowLoadingBar visible={verifyingOtp || creatingOtp || isGettingFlow || isCompletingFlow || isRefreshingDevices} />
+                    <WindowLoadingBar
+                        visible={verifyingOtp || creatingOtp || isGettingFlow || isCompletingFlow || isRefreshingDevices}
+                    />
                 </JiggleDiv>
             }
         </AnimatePresence>

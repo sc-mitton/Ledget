@@ -9,10 +9,13 @@ export const axiosBaseQuery = (config: AxiosBaseQueryConfig) => {
   return axios({
     url: oryBaseUrl + url,
     withCredentials: true,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
     ...rest,
   }).then((response: AxiosResponse) => ({ data: response.data }))
     .catch((error: AxiosError) => {
-      console.log('axiosBaseQuery error.response', error.response)
       throw {
         error: {
           status: error.response?.status,
@@ -67,8 +70,7 @@ const completeFlow = async ({ url, data, params }: Omit<AxiosBaseQueryConfig, 'm
     url: `${url}`,
     method: 'POST',
     data: data,
-    params: params,
-    transformResponse: () => { },
+    params: params
   }).then(result => ({ data: result.data }))
     .catch(result => ({ error: result.error }))
 

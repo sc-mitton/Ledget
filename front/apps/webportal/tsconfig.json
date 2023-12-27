@@ -8,17 +8,34 @@
     "types": [
       "vite/client",
       "vitest"
-    ]
-  },
-  "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
+    ],
+    "paths": {
+      "@features/*": [
+        "src/features/*"
+      ],
+      "@pieces/*": [
+        "src/pieces/*"
+      ],
+      "@ledget/ui": [
+        "../../libs/ui/src"
+      ],
+      "@ledget/media": [
+        "../../libs/media/src"
+      ],
+      "@ledget/ory": [
+        "../../libs/ory/src"
+      ],
     },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ],
-  "extends": "../../tsconfig.base.json"
+    "files": [],
+    "include": [],
+    "references": [
+      {
+        "path": "./tsconfig.app.json"
+      },
+      {
+        "path": "./tsconfig.spec.json"
+      }
+    ],
+    "extends": "../../tsconfig.base.json"
+  }
 }

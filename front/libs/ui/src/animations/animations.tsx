@@ -1,4 +1,4 @@
-import React, { ReactNode, FC, forwardRef, useEffect, useState, useId } from 'react'
+import { ReactNode, FC, forwardRef, useEffect, useState, useId, HTMLProps } from 'react'
 
 import './styles/animations.scss'
 import { useTransition, animated, useSpring } from '@react-spring/web'
@@ -11,7 +11,7 @@ interface IDropDownDiv {
   arrow?: 'right'
 }
 
-export const DropDownDiv = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & IDropDownDiv>((props, ref) => {
+export const DropDownDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & IDropDownDiv>((props, ref) => {
 
   const {
     visible,
@@ -102,7 +102,8 @@ export const SlideMotionDiv = ({ children, position, style, ...rest }
   )
 }
 
-export const JiggleDiv = ({ jiggle, children, ...rest }: { jiggle: boolean, children: React.ReactNode }) => {
+
+export const JiggleDiv = ({ jiggle, children, ...rest }: { jiggle: boolean } & Omit<HTMLProps<HTMLDivElement>, 'style' | 'ref'>) => {
   const [jiggleCanBeFired, setJiggleCanBeFired] = useState(false)
 
   const [props, api] = useSpring(() => ({ x: 0 }))
