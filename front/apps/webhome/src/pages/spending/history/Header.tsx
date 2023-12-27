@@ -159,7 +159,7 @@ const FilterWindow = () => {
                         defaultValue={categoryData?.filter(cat => filter?.items?.includes(cat.id))}
                         month={new Date(dateRangeFieldValue?.[1] || new Date().getTime()).getMonth() + 1}
                         year={new Date(dateRangeFieldValue?.[1] || new Date().getTime()).getFullYear()}
-                        placeholder="Category or Bill"
+                        placeholder="Select"
                         SelectorComponent={SlimInputButton}
                         name="items"
                         control={control}
@@ -180,7 +180,7 @@ const FilterWindow = () => {
                             control={control as any}
                             defaultValue={filter?.merchants}
                             placement={'left'}
-                            placeholder={'Merchant'}
+                            placeholder={'Select'}
                             maxLength={24}
                             style={{ marginTop: '.375em' }}
                         />
@@ -193,7 +193,7 @@ const FilterWindow = () => {
                             control={control as any}
                             options={accountsData?.accounts}
                             placement={'right'}
-                            placeholder={'Account'}
+                            placeholder={'Select'}
                             multiple={true}
                             labelKey={'name'}
                             subLabelKey={'mask'}

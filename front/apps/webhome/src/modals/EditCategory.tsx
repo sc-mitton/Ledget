@@ -101,7 +101,7 @@ const EditCategory = withModal((props) => {
                     <div>
                         <AddAlert
                             control={control}
-                            limitAmount={watchLimitAmount ? watchLimitAmount / 100 : undefined}
+                            limitAmount={watchLimitAmount}
                             defaultValues={category?.alerts}
                         />
                     </div>

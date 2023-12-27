@@ -6,16 +6,7 @@ import { Control, useController } from 'react-hook-form'
 import './styles/Dropdowns.css'
 import { Plus, Return, ArrowIcon, CheckMark } from '@ledget/media'
 import ComboSelect from './ComboSelect'
-import { formatCurrency } from '@ledget/ui'
-import { SlimmestInputButton, MenuTextInput, DropDownDiv } from '@ledget/ui'
-
-const formatDollar = (value?: string | number, percentage?: number) => {
-    if (!value) return ''
-    !percentage && (percentage = 0)
-    const val = Number(`${value}`.replace(/[^0-9.]/g, ''))
-
-    return formatCurrency({ val: Big(val).times(percentage).toNumber(), withCents: false })
-}
+import { SlimmestInputButton, MenuTextInput, DropDownDiv, DollarCents } from '@ledget/ui'
 
 const baseAlertOptions = [
     { id: 1, value: { percent_amount: 25 }, disabled: false },
@@ -24,7 +15,7 @@ const baseAlertOptions = [
     { id: 4, value: { percent_amount: 100 }, disabled: false },
 ]
 
-const AddAlert = (props: { limitAmount?: string | number, defaultValues?: typeof baseAlertOptions[0]['value'][], control: Control<any> }) => {
+const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAlertOptions[0]['value'][], control: Control<any> }) => {
     const { limitAmount, defaultValues } = props
     const [selectedAlerts, setSelectedAlerts] = useState(defaultValues)
     const buttonRef = useRef<HTMLButtonElement>(null)
@@ -59,17 +50,6 @@ const AddAlert = (props: { limitAmount?: string | number, defaultValues?: typeof
             ref.current.selectionStart = pct.indexOf('%')
         }
 
-        const DollarFormat = ({ visible, value, style }: { visible: boolean, value: number, style?: React.CSSProperties }) => {
-            return (
-                <>
-                    {visible &&
-                        <span style={style}>
-                            &#40;{formatDollar(limitAmount, value)}&#41;
-                        </span>}
-                </>
-            )
-        }
-
         const getValue = () => {
             return {
                 id: alertOptions.length + 1,
@@ -94,9 +74,11 @@ const AddAlert = (props: { limitAmount?: string | number, defaultValues?: typeof
                     >
                         {({ focused }) => (
                             <>
-                                <DollarFormat
-                                    visible={Boolean(limitAmount)}
-                                    value={parseInt(pct.replace(/[^0-9]/g, ''), 10)}
+                                <DollarCents
+                                    value={Big(limitAmount || 0)
+                                        .times(parseInt(pct.replace(/[^0-9]/g, ''), 10))
+                                        .div(100)
+                                        .toNumber()}
                                     style={{
                                         opacity: focused ? ".5" : "0",
                                         marginRight: '.5em'
@@ -125,12 +107,16 @@ const AddAlert = (props: { limitAmount?: string | number, defaultValues?: typeof
         <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
             <div>{value}%</div>
             <div>
-                <span className={`${active ? 'active' : ''}`} style={{ fontWeight: '400' }}>
-                    {limitAmount
-                        ? `(${formatDollar(limitAmount, value)})`
-                        : ('of limit')
-                    }
-                </span>
+                <DollarCents
+                    value={Big(limitAmount || 0)
+                        .times(value)
+                        .div(100)
+                        .toNumber()}
+                    style={{
+                        opacity: active ? ".5" : "0",
+                        marginRight: '.5em'
+                    }}
+                />
                 <CheckMark
                     stroke={`${selected ? 'var(--main-dark)' : 'transparent'}`}
                 />

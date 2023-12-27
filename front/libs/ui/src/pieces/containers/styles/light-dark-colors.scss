@@ -97,12 +97,12 @@
         --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 75%);
 
         --inner-window: hsl(0, 0%, 6%);
-        --inner-window2: hsl(0, 0%, 14%);
+        --inner-window2: hsl(0, 0%, 10%);
         --inner-window-rgb: 13, 13, 13;
         --overlay: hsl(0, 0%, 10%);
 
         --wafer-background: rgb(15, 15, 15);
-        --dropdown-background: hsl(0, 0%, 24%);
+        --dropdown-background: hsl(0, 0%, 32%);
         --dropdown-item-background: hsl(0, 0%, 12%);
 
         // Inputs
@@ -220,7 +220,7 @@
         --window-border: hsl(0, 0%, 92%);
 
         --inner-window: hsl(0, 0%, 93%);
-        --inner-window2: hsl(0, 0%, 87%);
+        --inner-window2: hsl(0, 0%, 98%);
         --inner-window-rgb: 246, 246, 246;
         --overlay: hsl(0, 0%, 20%);
 
@@ -259,8 +259,8 @@
         --btn-gray-hover: hsl(0, 0%, 76%);
         --btn-mid-gray: hsl(0, 0%, 48%);
         --btn-mid-gray-hover: hsl(0, 0%, 32%);
-        --btn-dark: var(--main-dark4);
-        --btn-dark-hover: var(--main-dark5);
+        --btn-dark: var(--main-dark3);
+        --btn-dark-hover: var(--main-dark4);
 
         --negative-pulse-outer: rgba(0, 0, 0, .5);
         --negative-pulse-inner: rgba(0, 0, 0, .7);
@@ -280,7 +280,7 @@
         --subtle-border-color: rgb(0, 0, 0, .07);
         --institution-logo-border: solid 1.5px rgb(0, 0, 0, .2);
 
-        --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
+        --input-focus-drop-shadow: 0 0 0 2px var(--input-focus-dropshadow-color);
 
         @include common;
     }

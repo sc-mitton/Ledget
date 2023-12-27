@@ -40,6 +40,7 @@ const PeriodSelect = (props: P) => {
         <>
             {hasLabel && <label htmlFor="period">Refreshes</label>}
             <BakedListBox
+                placement='left'
                 control={control as any}
                 name={name}
                 as={SlimmestInputButton}

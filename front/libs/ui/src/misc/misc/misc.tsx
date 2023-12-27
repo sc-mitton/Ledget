@@ -60,7 +60,7 @@ export const Base64Logo = (props: Base64LogoProps) => {
   )
 }
 
-export const DollarCents = ({ value = 0, style = {}, withCents = true, ...rest }:
+export const DollarCents = ({ value = 0, style = {}, withCents = true }:
   { value: string | number, isDebit?: boolean, style?: React.CSSProperties, [key: string]: any }
 ) => {
   const str = formatCurrency({
@@ -70,11 +70,11 @@ export const DollarCents = ({ value = 0, style = {}, withCents = true, ...rest }
 
   return (
     <>
-      <span style={{ fontSize: 'inherit' }}>
+      <span style={{ fontSize: 'inherit', ...style }}>
         {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
       </span>
       {withCents &&
-        <span style={{ fontSize: '.75em' }}>
+        <span style={{ fontSize: '.75em', ...style }}>
           {`.${str.split('.')[1]}`}
         </span>
       }
