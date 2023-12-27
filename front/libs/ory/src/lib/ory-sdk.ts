@@ -1,96 +1,80 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios'
 import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
 
-interface AxiosBaseQueryParams {
-  url: string;
-  method: string;
-  data?: any;
-  params?: any;
-  transformResponse?: any;
-}
+type AxiosBaseQueryConfig = AxiosRequestConfig<any>
 
-interface AxiosBaseQueryResult<T> {
-  data?: T;
-  error?: {
-    status?: number;
-    data?: any;
-  }
-}
-
-export const axiosBaseQuery = async <T>({ url, method, data, params, transformResponse }: AxiosBaseQueryParams): Promise<AxiosBaseQueryResult<T>> => {
+export const axiosBaseQuery = (config: AxiosBaseQueryConfig) => {
   const oryBaseUrl = import.meta.env.VITE_ORY_API_URI;
-
-  try {
-    const result: AxiosResponse<T> = await axios({
-      url: oryBaseUrl + url,
-      withCredentials: true,
-      method,
-      data,
-      params,
-      transformResponse,
+  const { url, ...rest } = config
+  return axios({
+    url: oryBaseUrl + url,
+    withCredentials: true,
+    ...rest,
+  }).then((response: AxiosResponse) => ({ data: response.data }))
+    .catch((error: AxiosError) => {
+      console.log('axiosBaseQuery error.response', error.response)
+      throw {
+        error: {
+          status: error.response?.status,
+          data: error.response?.data || error.message
+        },
+      }
     })
-
-    return { data: result.data }
-  } catch (axiosError) {
-    let err = axiosError as AxiosError
-    return {
-      error: {
-        status: err.response?.status,
-        data: err.response?.data || err.message,
-      },
-    }
-  }
 }
 
-const createFlow = async ({ url, params, transformResponse }: Omit<AxiosBaseQueryParams, 'method'>) => {
-  const result = await axiosBaseQuery({
+const createFlow = async ({ url, params, transformResponse }: Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>) =>
+  axiosBaseQuery({
     url: `${url}/browser`,
     method: 'GET',
     params: params,
     transformResponse: transformResponse,
     data: null
-  })
-  return result.data ? { data: result.data } : { error: result.error }
-}
+  }).then(result => ({ data: result.data }))
+    .catch(result => ({ error: result.error }))
 
-const getFlow = async ({ url, params = {}, transformResponse }: Omit<AxiosBaseQueryParams, 'method'>) => {
-  let result
+const getFlow = async ({ url, params = {}, transformResponse }: Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>) => {
   const { id, ...rest } = params
   if (id) {
-    result = await axiosBaseQuery({
+    return await axiosBaseQuery({
       url: `${url}/flows`,
       method: 'GET',
       params: params,
       transformResponse: transformResponse,
       data: null
-    })
-  }
-  if (!id || result?.error?.status === 410) {
-    result = await createFlow({
+    }).then(result => ({ data: result.data }))
+      .catch(result => {
+        if (result?.error?.status === 410) {
+          return createFlow({
+            url,
+            transformResponse,
+            params: { ...rest }
+          })
+        } else {
+          return { error: result.error }
+        }
+      })
+  } else {
+    return await createFlow({
       url,
       transformResponse,
       params: { ...rest }
     })
   }
-  return result?.data ? { data: result.data } : { error: result?.error }
 }
 
-const completeFlow = async ({ url, data, params }: Omit<AxiosBaseQueryParams, 'method'>) => {
-  const result = await axiosBaseQuery({
+const completeFlow = async ({ url, data, params }: Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>) =>
+  await axiosBaseQuery({
     url: `${url}`,
     method: 'POST',
     data: data,
     params: params,
     transformResponse: () => { },
-  })
-  return result.data ? { data: result.data } : { error: result.error }
-}
+  }).then(result => ({ data: result.data }))
+    .catch(result => ({ error: result.error }))
 
 export const endpointNames = [
   'settings', 'login', 'registration', 'logout', 'verification', 'recovery'
 ] as const
-
-
 
 const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>) => {
 

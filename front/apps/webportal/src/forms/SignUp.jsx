@@ -14,7 +14,7 @@ import PasswordlessForm from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import PasskeyInfoModal from '@modals/PassKey'
 import {
-    GrnWideButton,
+    BlackWideButton,
     FormError,
     PasswordInput,
     SlideMotionDiv,
@@ -92,9 +92,9 @@ const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
                 <div
                     style={{ marginTop: '1em' }}
                 >
-                    <GrnWideButton type='submit' aria-label="Submit form">
+                    <BlackWideButton type='submit' aria-label="Submit form">
                         Continue
-                    </GrnWideButton>
+                    </BlackWideButton>
                 </div>
             </form>
             <SocialAuth flow={flow} submit={submit} />
@@ -152,9 +152,9 @@ const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }
                 <input type='hidden' name='traits.email' value={userInfo.email} />
                 <input type='hidden' name='traits.name.first' value={userInfo.firstName} />
                 <input type='hidden' name='traits.name.last' value={userInfo.lastName} />
-                <GrnWideButton id="continue-button" name="method" value="password" type="submit">
+                <BlackWideButton id="continue-button" name="method" value="password" type="submit">
                     Create
-                </GrnWideButton>
+                </BlackWideButton>
             </form >
             {typeof (PublicKeyCredential) != "undefined" &&
                 <PasswordlessForm flow={flow}>

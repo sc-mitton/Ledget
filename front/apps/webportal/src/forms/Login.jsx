@@ -13,7 +13,7 @@ import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces"
 import {
-    GrnWideButton,
+    BlackWideButton,
     Checkbox,
     FormError,
     PasswordInput,
@@ -35,7 +35,7 @@ import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/otpSlice'
 
 const schema = z.object({
     email: z.string().min(1, { message: 'required' }).email({ message: 'invalid email' }),
-    remember: z.boolean()
+    remember: z.union([z.boolean(), z.string()])
 })
 
 
@@ -45,9 +45,9 @@ const EmailForm = ({ flow, setEmail, socialSubmit }) => {
 
     const submit = (data) => {
         if (data.remember) {
-            localStorage.setItem('loginEmail', JSON.stringify(data.email))
+            localStorage.setItem('login-email', JSON.stringify(data.email))
         } else {
-            localStorage.removeItem('loginEmail')
+            localStorage.removeItem('login-email')
         }
         setEmail(data.email)
     }
@@ -76,7 +76,7 @@ const EmailForm = ({ flow, setEmail, socialSubmit }) => {
                             {...register('remember')}
                         />
                     </div>
-                    <GrnWideButton>Continue</GrnWideButton>
+                    <BlackWideButton>Continue</BlackWideButton>
                 </div>
             </form >
             <SocialAuth flow={flow} submit={socialSubmit} csrf={flow?.csrf_token} />
@@ -118,9 +118,9 @@ const TotpMfa = ({ finished }) => {
                     placeholder='Code'
                 />
             </div>
-            <GrnWideButton name="method" value={searchParams.get('mfa')}>
+            <BlackWideButton name="method" value={searchParams.get('mfa')}>
                 Submit
-            </GrnWideButton>
+            </BlackWideButton>
         </>
     )
 }
@@ -140,9 +140,9 @@ const RecoveryMfa = ({ finished }) => {
                     placeholder='Code'
                 />
             </div>
-            <GrnWideButton name="method" value={searchParams.get('mfa')}>
+            <BlackWideButton name="method" value={searchParams.get('mfa')}>
                 Submit
-            </GrnWideButton>
+            </BlackWideButton>
         </>
     )
 }
@@ -163,9 +163,9 @@ const OtpMfa = ({ finished }) => (
 const Password = () => (
     <div id="password-auth--container">
         <PasswordInput autoFocus required />
-        <GrnWideButton name="method" value="password">
+        <BlackWideButton name="method" value="password">
             Sign In
-        </GrnWideButton>
+        </BlackWideButton>
         {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
     </div>
 )

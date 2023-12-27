@@ -138,14 +138,14 @@
 }
 
 .btn-chcl {
-    background-color: var(--main-dark3);
+    background-color: var(--btn-dark);
     font-weight: var(--fw-bold);
     color: var(--m-invert-text);
     transition: all .3s ease;
 
     &:hover {
         transition: all .3s ease;
-        background-color: var(--main-dark4);
+        background-color: var(--btn-dark-hover);
     }
 }
 

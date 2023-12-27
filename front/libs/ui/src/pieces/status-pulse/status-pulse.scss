@@ -26,9 +26,9 @@
     z-index: 0;
 }
 
-$outer-circle-negative: var(--btn-mid-gray);
+$outer-circle-negative: var(--negative-pulse-outer);
 $outer-circle-positive: var(--main-hlight);
-$inner-circle-negative: var(--btn-mid-gray-hover);
+$inner-circle-negative: var(--negative-pulse-inner);
 $inner-circle-positive: var(--main-hlight-hover);
 
 @mixin pulse-styles($outerOrInner: inner) {
