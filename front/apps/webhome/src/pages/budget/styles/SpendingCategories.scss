@@ -105,7 +105,7 @@ $background: var(--window);
             font-weight: var(--fw-regular);
             z-index: 1;
             @include header-styles;
-            padding-bottom: .5em;
+            padding-bottom: .25em;
 
             &:first-child {
                 padding-left: .125em;
@@ -166,7 +166,7 @@ $background: var(--window);
             align-items: center;
             text-align: right;
             justify-content: flex-end;
-            padding-right: .5em;
+            padding-right: .25em;
         }
 
         // Forward slash columns
@@ -179,7 +179,7 @@ $background: var(--window);
         &>div:nth-child(5n+4) {
             display: flex;
             align-items: center;
-            padding-left: .5em;
+            padding-left: .25em;
             padding-right: .25em;
         }
 
