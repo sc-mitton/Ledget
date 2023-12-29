@@ -46,7 +46,6 @@ $background: var(--window);
             padding-bottom: .5em;
             display: grid;
             max-height: 100%;
-            grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
             @include table-header-mask-image;
             row-gap: $item-row-gap;
             position: relative;
@@ -69,7 +68,7 @@ $background: var(--window);
     }
 
     .row {
-        display: contents;
+        display: flex;
         transition: all .2s ease-in-out;
 
         &:first-child>div {
@@ -162,6 +161,7 @@ $background: var(--window);
 
         // Amount spent columns
         &>div:nth-child(5n+2):not(.spanned) {
+            flex-grow: 1;
             display: flex;
             align-items: center;
             text-align: right;
@@ -249,7 +249,7 @@ $background: var(--window);
     min-height: calc(4.25 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em);
 
     h2 {
-        margin-left: .625em;
+        margin-left: .25em;
     }
 }
 
@@ -300,8 +300,8 @@ $background: var(--window);
     // Graph and list of transactions container
     &>div:last-of-type {
         @include outermost-div-placement-styling;
-        padding: .5em;
-        padding-top: 1.75em;
+        padding: 0 .25em;
+        margin-top: 1.75em;
         gap: 1.5em;
         color: var(--main-hlight);
 

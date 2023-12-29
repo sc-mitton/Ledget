@@ -1,0 +1,12 @@
+[run]
+omit=
+    */tests/*
+    */migrations/*
+    */settings/*
+    */wsgi
+    */__init__
+    */admin
+    */apps
+    */models
+    */urls
+    */env
