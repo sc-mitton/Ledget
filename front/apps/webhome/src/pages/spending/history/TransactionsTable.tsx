@@ -96,6 +96,7 @@ export default function Table() {
   const [isFetchingMore, setFetchingMore] = useState(false)
   const { start, end } = useGetStartEndQueryParams()
   const [focusedTransaction, setFocusedTransaction] = useState<Transaction>()
+  const { isDark } = useColorScheme()
 
   const ref = useRef<HTMLDivElement>(null)
   const [getTransactions, { data: transactionsData, isLoading }] = useLazyGetTransactionsQuery()
@@ -139,7 +140,7 @@ export default function Table() {
             : Array.from({ length: (ref.current ? ref.current.clientHeight : 0) / 65 }, (_, i) =>
               <Fragment key={i}>
                 <div>
-                  <TransactionShimmer />
+                  <TransactionShimmer style={{ backgroundColor: isDark ? 'var(--window)' : 'var(--icon-light-gray)' }} />
                 </div>
               </Fragment>
             )

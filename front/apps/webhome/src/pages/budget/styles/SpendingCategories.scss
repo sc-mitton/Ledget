@@ -159,9 +159,13 @@ $background: var(--window);
             }
         }
 
+        // Name columns
+        &>div:nth-child(5n+1):not(.spanned) {
+            flex-grow: 1;
+        }
+
         // Amount spent columns
         &>div:nth-child(5n+2):not(.spanned) {
-            flex-grow: 1;
             display: flex;
             align-items: center;
             text-align: right;

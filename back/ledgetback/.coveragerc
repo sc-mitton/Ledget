@@ -4,9 +4,8 @@ omit=
     */migrations/*
     */settings/*
     */wsgi
-    */__init__
+    */__init__.py
     */admin
     */apps
     */models
-    */urls
     */env
