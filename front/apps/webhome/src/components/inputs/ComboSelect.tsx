@@ -10,53 +10,49 @@ import React, {
 
 import { useClickClose } from '@ledget/ui'
 
-type OptionValue = {
-    [key: string]: any
+type OptionValue = object | string | number
+type Option<T> = {
+    id: string | number
+    value: T
+    disabled?: boolean
 }
 
-type Option = {
-    value: OptionValue
-    [key: string]: any
+interface ComboSelectPropsMultiple<V extends OptionValue> {
+    multiple?: true
+    defaultValue?: V[]
+    value?: V[]
+    onChange: React.Dispatch<React.SetStateAction<V[] | undefined>>
 }
 
-interface ComboSelectBaseProps {
+interface ComboSelectPropsSingle<V extends OptionValue> {
+    multiple?: false
+    defaultValue?: V
+    value?: V
+    onChange: React.Dispatch<React.SetStateAction<V | undefined>>
+}
+
+type ComboSelectProps<V extends OptionValue, O extends Option<V>> = (ComboSelectPropsMultiple<V> | ComboSelectPropsSingle<V>) & {
     limit?: number
     name?: string
     children?: React.ReactNode | (({ open }: { open: boolean }) => React.ReactNode)
+    syncOptions?: (options: O[]) => void
 }
 
-interface ComboSelectPropsMultiple<Op, Val> extends ComboSelectBaseProps {
-    multiple?: true
-    value?: Val[]
-    defaultValue?: Val[]
-    onChange?: React.Dispatch<React.SetStateAction<Val[] | undefined>>
-    setSelections: React.Dispatch<React.SetStateAction<Op[]>>
-}
-
-interface ComboSelectPropsSingle<Op, Val> extends ComboSelectBaseProps {
-    multiple?: false
-    value?: Val
-    defaultValue?: Val
-    onChange?: React.Dispatch<React.SetStateAction<Val | undefined>>
-    setSelections?: React.Dispatch<React.SetStateAction<Op>>
-}
-
-type ComboSelectProps<Op, Val> = ComboSelectPropsMultiple<Op, Val> | ComboSelectPropsSingle<Op, Val>
-
-type TDataContext = ComboSelectProps<Option, OptionValue> & {
+type TDataContextBaseProps = {
     open: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
-    active: any
-    setActive: React.Dispatch<React.SetStateAction<Option | undefined>>
-    options: Option[]
-    setOptions: React.Dispatch<React.SetStateAction<Option[]>>
-    buttonRef: React.MutableRefObject<HTMLButtonElement>
-    ulRef: React.MutableRefObject<HTMLUListElement>
-    customRef: React.MutableRefObject<HTMLInputElement>
-    custom: OptionValue[]
-    setCustom: React.Dispatch<React.SetStateAction<Option[]>>
+    active?: Option<OptionValue>
+    setActive: React.Dispatch<React.SetStateAction<Option<OptionValue> | undefined>>
+    options: Option<OptionValue>[]
+    setOptions: React.Dispatch<React.SetStateAction<Option<OptionValue>[]>>
+    buttonRef: React.RefObject<HTMLButtonElement>
+    ulRef: React.RefObject<HTMLUListElement>
+    customRef: React.RefObject<HTMLInputElement>
+    custom: Option<OptionValue>[]
+    setCustom: React.Dispatch<React.SetStateAction<Option<OptionValue>[]>>
 }
 
+type TDataContext = TDataContextBaseProps & ComboSelectProps<OptionValue, Option<OptionValue>>
 const DataContext = createContext<TDataContext | undefined>(undefined)
 
 const useDataContext = () => {
@@ -67,20 +63,19 @@ const useDataContext = () => {
     return context
 }
 
-const ComboSelect = <Op extends Option, Val extends OptionValue>(props: ComboSelectProps<Op, Val>) => {
-    const { value, defaultValue, onChange, setSelections, limit, multiple = false, children } = props
+const ComboSelect = <TV extends OptionValue, TO extends { id: string | number, value: TV, disabled?: boolean }>
+    (props: ComboSelectProps<TV, TO>) => {
+    const { defaultValue, onChange, children, ...rest } = props
     const [open, setOpen] = useState(false)
-    const [active, setActive] = useState<Op>()
-    const [options, setOptions] = useState<Op[]>([])
-    const [custom, setCustom] = useState<Val[]>([])
+    const [active, setActive] = useState<TO>()
+    const [options, setOptions] = useState<TO[]>([])
+    const [custom, setCustom] = useState<TO[]>([])
     const buttonRef = useRef<HTMLButtonElement>(null)
     const ulRef = useRef<HTMLUListElement>(null)
     const customRef = useRef<HTMLInputElement>(null)
 
     const data = {
-        value,
         onChange,
-        setSelections,
         open,
         setOpen,
         active,
@@ -92,8 +87,7 @@ const ComboSelect = <Op extends Option, Val extends OptionValue>(props: ComboSel
         customRef,
         custom,
         setCustom,
-        limit,
-        multiple
+        ...rest
     }
 
     // Set default value
@@ -140,9 +134,8 @@ const Button = forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButt
                         ref.current = e
                     }
                 }
-                if (buttonRef) {
+                if (buttonRef)
                     (buttonRef.current as any) = e
-                }
             }}
             onClick={handleClick}
             onKeyDown={handleKeyDown}
@@ -183,7 +176,7 @@ const Options = (props: OptionsProps) => {
 
     // ul focus on open
     useEffect(() => {
-        ulRef.current.focus()
+        ulRef.current?.focus()
 
         const handleTab = (event: KeyboardEvent) => {
             if (event.key === 'Tab') {
@@ -273,13 +266,12 @@ const Options = (props: OptionsProps) => {
 }
 
 interface OptionProps {
-    option: Option
+    option: Option<OptionValue>
     disabled?: boolean
-    isDefault?: boolean
     children: ({ active, selected, disabled }: { active: boolean, selected?: boolean, disabled?: boolean }) => React.ReactNode
 }
 
-const Option = ({ option, disabled, isDefault, children }: OptionProps) => {
+const Option = ({ option, disabled, children }: OptionProps) => {
 
     const {
         multiple,
@@ -291,36 +283,34 @@ const Option = ({ option, disabled, isDefault, children }: OptionProps) => {
         onChange,
         setCustom,
         setActive,
-        setOptions,
-        setSelections,
-        setOpen
+        setOptions
     } = useDataContext()
 
     // Updating the active list
     const updateValue = () => {
         if (multiple) {
-            if (limit && contextValue?.length === limit) {
-                return
-            } else if (contextValue?.includes(option.value)) {
-                onChange && onChange(contextValue.filter((item) => item !== option.value))
-            } else if (contextValue) {
-                onChange && onChange([...contextValue, option.value])
-            } else {
-                onChange && onChange([option.value])
-            }
+            onChange((prev) => {
+                if (limit && prev?.length === limit) {
+                    return prev
+                } else if (prev?.includes(option.value)) {
+                    return prev.filter((item) => item !== option.value)
+                } else if (prev) {
+                    return [...prev, option.value]
+                } else {
+                    return [option.value]
+                }
+            })
         } else {
-            onChange && onChange(option.value as any)
-            setOpen(false)
+            onChange(option.value as any)
         }
     }
 
     // If value is in custom list, remove it entirely
     const updateOptions = () => {
-        if (custom.includes(option.value)) {
-            setSelections && setSelections((prev: any) =>
-                prev.filter((item: any) => item.value !== option.value))
-            setCustom((prev: any) =>
-                prev.filter((item: any) => item !== option.value))
+        if (custom.includes(option)) {
+            setOptions((prev) => prev.filter((item) => item !== option))
+            setCustom((prev) =>
+                prev.filter((item) => item !== option.value))
         }
     }
 
@@ -342,7 +332,9 @@ const Option = ({ option, disabled, isDefault, children }: OptionProps) => {
     return (
         <li
             role="option"
-            aria-selected={multiple ? contextValue?.includes(option.value) : contextValue === option.value}
+            aria-selected={Array.isArray(contextValue)
+                ? contextValue?.some((item) => item === option.value)
+                : contextValue === option.value}
             headlessui-state={!disabled && contextActive === option ? 'active' : null}
             tabIndex={-1}
             onKeyDown={(event) => {
@@ -356,10 +348,9 @@ const Option = ({ option, disabled, isDefault, children }: OptionProps) => {
         >
             {children({
                 active: !disabled && contextActive === option,
-                selected:
-                    (multiple && !disabled)
-                        ? contextValue?.some((item) => item === option)
-                        : contextValue === option,
+                selected: Array.isArray(contextValue)
+                    ? contextValue?.some((item) => item === option.value)
+                    : contextValue === option.value,
                 disabled: disabled
             })}
         </li>
@@ -368,10 +359,9 @@ const Option = ({ option, disabled, isDefault, children }: OptionProps) => {
 
 type CustomInputProps = {
     children: ({ focused }: { focused: boolean }) => React.ReactNode
-    getValue?: (value: any) => any
-    value?: OptionValue
+    transformValue?: (value?: string | number | readonly string[] | undefined) => any
     inputSize?: number
-} & Omit<ComponentPropsWithRef<'input'>, | 'value' | 'children'>
+} & Omit<ComponentPropsWithRef<'input'>, | 'children'>
 
 const Custom = forwardRef<HTMLInputElement, CustomInputProps>((props, ref) => {
     const {
@@ -379,18 +369,19 @@ const Custom = forwardRef<HTMLInputElement, CustomInputProps>((props, ref) => {
         customRef,
         ulRef,
         onChange,
-        setSelections,
         setCustom,
         setOpen,
         options,
-        setActive
+        setOptions,
+        setActive,
+        syncOptions,
     } = useDataContext()
     const {
         children,
         onBlur,
         onFocus,
         onKeyDown,
-        getValue,
+        transformValue,
         value,
         ...rest
     } = props
@@ -400,32 +391,37 @@ const Custom = forwardRef<HTMLInputElement, CustomInputProps>((props, ref) => {
         event.preventDefault()
 
         // Add new option to options list
-        const cleanedVal = getValue ? getValue(value) : value
-        setSelections && setSelections((prev: any) => {
-            const updatedArray = prev.some((item: any) => item.value === cleanedVal.value)
+        const cleanedVal = transformValue ? transformValue(value) : value
+        setOptions((prev) => {
+            const updatedArray = prev.some((item) => item.value === cleanedVal.value)
                 ? prev
                 : [...prev, cleanedVal]
 
-            updatedArray.sort((a: any, b: any) => a.value - b.value)
+            updatedArray.sort((a, b) => a.value - b.value)
             return updatedArray
         })
 
         // Add new option to selected values
-        onChange && onChange((prev: any) =>
-            prev.some((item: any) => item === cleanedVal.value)
+        onChange && onChange((prev) =>
+            prev?.some((item) => item === cleanedVal.value)
                 ? prev
-                : multiple ? [...prev, cleanedVal.value] : [cleanedVal.value]
+                : multiple ? prev?.concat(cleanedVal.value) : [cleanedVal.value]
         )
 
         // Add to list of custom options
-        setCustom((prev: any) => {
-            const updatedArray = prev.some((item: any) => item === cleanedVal.value)
+        setCustom((prev) => {
+            const updatedArray = prev.some((item) => item === cleanedVal.value)
                 ? prev
                 : [...prev, cleanedVal.value]
 
             return updatedArray
         })
     }
+
+    // Sync options with parent
+    useEffect(() => {
+        syncOptions && syncOptions(options)
+    }, [options])
 
     const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
         // execute prop function
@@ -436,7 +432,7 @@ const Custom = forwardRef<HTMLInputElement, CustomInputProps>((props, ref) => {
     const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
         // execute prop function
         setFocused(false)
-        ulRef.current.focus()
+        ulRef.current?.focus()
         setActive(options[options.length - 1])
         onBlur && onBlur(event)
     }
@@ -446,7 +442,7 @@ const Custom = forwardRef<HTMLInputElement, CustomInputProps>((props, ref) => {
         switch (event.key) {
             case 'ArrowUp':
                 setFocused(false)
-                customRef.current.blur()
+                customRef.current?.blur()
                 break
             case 'Enter':
                 handleEnter(event)
@@ -467,6 +463,7 @@ const Custom = forwardRef<HTMLInputElement, CustomInputProps>((props, ref) => {
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
+                value={value}
                 ref={(e) => {
                     if (ref) {
                         if (typeof ref === 'function') {

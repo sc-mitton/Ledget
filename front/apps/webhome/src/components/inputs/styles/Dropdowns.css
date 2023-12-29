@@ -41,49 +41,7 @@
     width: auto;
     padding: .25rem .75rem;
     margin: .125rem 0;
-    transition: background-color 0.3s ease-out;
-    border-radius: var(--border-radius);
     cursor: pointer;
-}
-
-.a-slct-item {
-    background-color: var(--icon-light-gray);
-    transition: background-color 0.3s ease-out;
-}
-
-.s-slct-item {
-    background-color: var(--main-hlight);
-    transition: background-color 0.3s ease-out;
-}
-
-.a-slct-item.s-slct-item {
-    background-color: var(--main-hlight-hover);
-    transition: background-color 0.3s ease-out;
-}
-
-.slct-item.custom-input {
-    padding: .125rem .5rem;
-}
-
-.slct-item.custom-input input[type='text'] {
-    font-weight: var(--fw-regular);
-}
-
-.slct-item.custom-input input[type='text']::placeholder {
-    color: inherit;
-}
-
-.slct-item div:last-child span {
-    display: flex;
-    align-items: center;
-    font-size: 1em;
-    display: inline;
-    opacity: 0;
-    margin: 0 .5rem;
-}
-
-.slct-item div:last-child span.active {
-    opacity: .3;
 }
 
 #return-btn {
@@ -99,11 +57,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: .4;
     border-radius: var(--border-radius);
     padding: .125rem;
     margin: 0 .125rem;
-    background-color: var(--btn-gray);
+    background-color: var(--btn-mid-gray);
+}
+
+.custom-input {
+    margin-top: .25em;
 }
 
 #return-btn-focused svg {

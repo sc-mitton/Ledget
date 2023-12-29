@@ -114,7 +114,7 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
                             setSearchParams(searchParams)
                         }}
                     >
-                        {day.getDate()}
+                        <span>{day.getDate()}</span>
                         {(monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1) &&
                             <div role="tooltip">
                                 {monthlyBillCountEachDay[i] > 0 &&

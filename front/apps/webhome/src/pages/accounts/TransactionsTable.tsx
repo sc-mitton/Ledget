@@ -156,7 +156,7 @@ export const Transactions = () => {
     return (
         <>
             {isTransactionsSuccess && transactionsData &&
-                transactionsData.results?.map((transaction: any) => {
+                transactionsData.results?.map((transaction) => {
                     const date = dayjs(transaction.datetime || transaction.date).toDate()
                     const currentMonth = date.getMonth()
                     const currentYear = date.getFullYear()
@@ -178,7 +178,7 @@ export const Transactions = () => {
                                 <span>{newYear && `${date.toLocaleString('default', { year: 'numeric' })}`}</span>
                             </div>
                             <div
-                                key={transaction.id}
+                                key={transaction.transaction_id}
                                 role="button"
                                 onClick={() => setTransactionModalItem(transaction)}
                             >
@@ -188,7 +188,7 @@ export const Transactions = () => {
                                         <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
                                     </div>
                                     <div>
-                                        {transaction.categories.map((c, index) => (
+                                        {transaction.categories?.map((c, index) => (
                                             <span key={index}>{c.emoji}</span>
                                         ))}
                                     </div>

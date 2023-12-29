@@ -75,7 +75,6 @@ $duration: .2s;
     flex-direction: column;
     background-color: inherit;
     opacity: 1;
-
     z-index: 1;
     border-right: none;
 
@@ -92,6 +91,8 @@ $duration: .2s;
         position: absolute;
         box-shadow: var(--mid-elevation-drop-shadow);
         background-color: var(--window);
+        border-top-right-radius: var(--border-radius25);
+        border-bottom-right-radius: var(--border-radius25);
     }
 
     &.open {
@@ -100,8 +101,6 @@ $duration: .2s;
 
         &.small-screen {
             box-shadow: var(--mid-elevation-drop-shadow);
-            border-top-right-radius: var(--border-radius25);
-            border-bottom-right-radius: var(--border-radius25);
             border-right: none;
         }
 

@@ -54,15 +54,16 @@
 .menu-text-input-container {
     flex-grow: 1;
     cursor: text;
+    display: flex;
 
     &>div {
         padding: .125em;
-        margin: 0 -.25em;
         background-color: var(--input-background);
         color: var(--m-text);
         border-radius: var(--border-radius2);
         box-sizing: border-box;
         display: flex;
+        gap: .5em;
         align-items: center;
         justify-content: space-between;
         transition: border .2s ease;
@@ -73,10 +74,6 @@
 
     input {
         padding-left: .5em;
-    }
-
-    button {
-        margin: 0 .25em;
     }
 }
 

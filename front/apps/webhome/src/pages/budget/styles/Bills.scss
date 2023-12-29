@@ -132,6 +132,11 @@ $number-of-bill-rows: 5;
         font-weight: var(--fw-light);
         z-index: 1;
 
+        span {
+            position: relative;
+            z-index: 1;
+        }
+
         // Number of bills hover tip
         &>div:not(.has-bill-dot) {
             padding: .125em .5em;
@@ -172,12 +177,12 @@ $number-of-bill-rows: 5;
 
         &.hoverable:hover::after,
         &.hoverable.selected::after {
-            background-color: rgba(var(--main-color-values), .2);
+            background-color: var(--icon-light-gray);
             transition: background-color .2s ease-in-out;
         }
 
         &.hoverable.selected:hover::after {
-            background-color: rgba(var(--main-color-values), .3);
+            background-color: var(--icon-hover-light-gray);
             transition: background-color .2s ease-in-out;
         }
 

@@ -32,7 +32,7 @@ export const Shimmer = (props: ShimmerProps) => {
           >
             <div
               className={`shimmer`}
-              style={{ '--shimmer-lightness': `${(isDark || darkMode) ? lightness - 85 : lightness}%` } as React.CSSProperties}
+              style={{ '--shimmer-lightness': `${(isDark || darkMode) ? lightness - 82 : lightness}%` } as React.CSSProperties}
             />
           </animated.div>
       )}
@@ -86,7 +86,7 @@ export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'>) => {
   const {
     shimmering = false,
     length = 12,
-    lightness = 90,
+    lightness = 85,
     style = {} as React.CSSProperties,
     darkMode,
     ...rest
@@ -118,11 +118,11 @@ export const TransactionShimmer = ({ shimmering = true, darkMode, ...rest }: Tra
   <>
     <div {...rest}>
       <div>
-        <ShimmerText lightness={90} shimmering={shimmering} length={25} darkMode={darkMode} />
-        <ShimmerText lightness={90} shimmering={shimmering} length={10} darkMode={darkMode} />
+        <ShimmerText shimmering={shimmering} length={25} darkMode={darkMode} />
+        <ShimmerText shimmering={shimmering} length={10} darkMode={darkMode} />
       </div>
       <div>
-        <ShimmerText lightness={90} shimmering={shimmering} length={10} darkMode={darkMode} />
+        <ShimmerText shimmering={shimmering} length={10} darkMode={darkMode} />
       </div>
     </div>
   </>

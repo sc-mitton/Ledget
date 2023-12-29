@@ -19,7 +19,7 @@ export const useLoaded = (time?: number, flag: boolean = true) => {
 }
 
 interface Props {
-    refs: React.RefObject<HTMLElement>[]
+    refs: React.RefObject<HTMLElement | undefined>[]
     visible: boolean
     setVisible: (visible: boolean) => void
 }

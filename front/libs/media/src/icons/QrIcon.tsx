@@ -4,7 +4,7 @@ const QrIcon = ({
     width = "1em",
     height = "1em",
     className = '',
-    fill = "var(--m-text)"
+    fill = "var(--icon-full)"
 }) => {
 
     return (

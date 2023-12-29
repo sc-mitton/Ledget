@@ -2,7 +2,7 @@ const Computer = ({
     className = '',
     width = "4.5em",
     height = "4.5em",
-    fill = 'var(--m-text)',
+    fill = 'var(--icon-full)',
     fill2 = 'var(--icon-hover-light-gray)'
 }) => {
 

@@ -21,8 +21,7 @@ import {
     IconButton,
     Tooltip,
     DollarCents,
-    BlueSlimButton,
-    GrnSlimButton,
+    BillCatLabel,
     AbsPosMenu
 } from "@ledget/ui"
 import { formatDateOrRelativeDate, InfiniteScrollDiv, useLoaded } from '@ledget/ui'
@@ -177,21 +176,23 @@ const NewItem: FC<{
             <div className='new-item-icons' >
                 {color === 'green' || color === 'green-split'
                     ?
-                    <GrnSlimButton
+                    <BillCatLabel
+                        name={name}
+                        slim={true}
+                        as='button'
                         aria-label="Choose budget category"
                         tabIndex={tabIndex}
                         onClick={(e) => { onBillCat(e, item) }}
-                    >
-                        {`${name}`}
-                    </GrnSlimButton>
+                    />
                     :
-                    <BlueSlimButton
+                    <BillCatLabel
+                        name={name}
+                        slim={true}
+                        as='button'
                         aria-label="Choose budget category"
                         tabIndex={tabIndex}
                         onClick={(e) => { onBillCat(e, item) }}
-                    >
-                        {`${name}`}
-                    </BlueSlimButton>
+                    />
                 }
                 <Tooltip
                     msg="Confirm"

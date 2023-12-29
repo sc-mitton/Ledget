@@ -6,7 +6,7 @@ import { Control, useController } from 'react-hook-form'
 import './styles/Dropdowns.css'
 import { Plus, Return, ArrowIcon, CheckMark } from '@ledget/media'
 import ComboSelect from './ComboSelect'
-import { SlimmestInputButton, MenuTextInput, DropDownDiv, DollarCents } from '@ledget/ui'
+import { SlimmestInputButton, MenuTextInput, DropDownDiv, DollarCents, DropdownItem } from '@ledget/ui'
 
 const baseAlertOptions = [
     { id: 1, value: { percent_amount: 25 }, disabled: false },
@@ -17,9 +17,9 @@ const baseAlertOptions = [
 
 const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAlertOptions[0]['value'][], control: Control<any> }) => {
     const { limitAmount, defaultValues } = props
-    const [selectedAlerts, setSelectedAlerts] = useState(defaultValues)
     const buttonRef = useRef<HTMLButtonElement>(null)
 
+    const [selectedAlerts, setSelectedAlerts] = useState(defaultValues)
     const [alertOptions, setAlertOptions] = useState(baseAlertOptions)
 
     const CustomOption = () => {
@@ -38,45 +38,37 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
             setPct(`${newValue}%`)
         }
 
-        const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (pct.length > 2 && e.key !== 'Backspace') {
-                e.preventDefault()
-            }
-        }
-
         const handleFocus = () => {
             if (!ref.current) return
             ref.current.selectionEnd = pct.indexOf('%')
             ref.current.selectionStart = pct.indexOf('%')
         }
 
-        const getValue = () => {
-            return {
-                id: alertOptions.length + 1,
-                value: parseInt(pct.replace(/[^0-9]/g, ''), 10),
-                disabled: false
-            }
-        }
+        const transformValue = () => ({
+            id: alertOptions.length + 1,
+            value: { percent_amount: parseInt(pct.replace(/[^0-9]/g, '') || '0', 10) },
+            disabled: false
+        })
 
         return (
-            <div className='slct-item custom-input'>
+            <div className='custom-input'>
                 <MenuTextInput>
                     <ComboSelect.Custom
                         ref={ref}
                         placeholder="Custom..."
                         onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                        getValue={() => getValue()}
+                        transformValue={() => transformValue()}
                         onFocus={() => handleFocus()}
                         onBlur={() => { setPct('') }}
-                        value={{ percent_amount: pct }}
+                        value={pct}
                         size={7}
                     >
                         {({ focused }) => (
                             <>
                                 <DollarCents
+                                    withCents={false}
                                     value={Big(limitAmount || 0)
-                                        .times(parseInt(pct.replace(/[^0-9]/g, ''), 10))
+                                        .times(parseInt(pct.replace(/[^0-9]/g, '') || '0', 10))
                                         .div(100)
                                         .toNumber()}
                                     style={{
@@ -92,7 +84,7 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                                     <Return
                                         width={'.6em'}
                                         height={'.6em'}
-                                        stroke={"var(--m-text-secondary)"}
+                                        stroke={"var(--m-invert-text)"}
                                     />
                                 </div>
                             </>
@@ -103,40 +95,34 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
         )
     }
 
-    const Option = ({ value, active, selected }: { value: number, active: boolean, selected?: boolean }) => (
-        <div className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}>
-            <div>{value}%</div>
-            <div>
-                <DollarCents
-                    value={Big(limitAmount || 0)
-                        .times(value)
-                        .div(100)
-                        .toNumber()}
-                    style={{
-                        opacity: active ? ".5" : "0",
-                        marginRight: '.5em'
-                    }}
-                />
-                <CheckMark
-                    stroke={`${selected ? 'var(--main-dark)' : 'transparent'}`}
-                />
-            </div>
-        </div>
-    )
-
     const Options = () => (
-        alertOptions.map((option) => (
+        alertOptions.sort((a, b) => a.value.percent_amount - b.value.percent_amount).map((option) => (
             <ComboSelect.Option
                 option={option}
                 disabled={option.disabled}
                 key={option.id}
             >
                 {({ active, selected }) => (
-                    <Option
-                        value={option.value.percent_amount}
-                        active={active}
-                        selected={selected}
-                    />
+                    <DropdownItem active={active} selected={selected} className="slct-item" >
+                        <div>{option.value.percent_amount}%</div>
+                        <div>
+                            <DollarCents
+                                withCents={false}
+                                value={Big(limitAmount || 0)
+                                    .times(option.value.percent_amount)
+                                    .div(100)
+                                    .toNumber()}
+                                style={{
+                                    opacity: active ? ".5" : "0",
+                                    marginRight: '.5em'
+                                }}
+                            />
+                            <CheckMark
+                                size={'.8em'}
+                                stroke={`${selected ? 'var(--main-dark)' : 'transparent'}`}
+                            />
+                        </div>
+                    </DropdownItem>
                 )}
             </ComboSelect.Option>
         ))
@@ -206,9 +192,9 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
             name="alert"
             value={selectedAlerts}
             onChange={setSelectedAlerts}
-            setSelections={setAlertOptions}
             limit={7}
             multiple={true}
+            syncOptions={setAlertOptions}
         >
             {({ open }) => (
                 <>

@@ -14,6 +14,7 @@ import { Profile1, Shield, Settings, Link, Hamburger } from '@ledget/media'
 import { useGetMeQuery } from '@features/userSlice'
 import { useScreenContext } from '@context/context'
 import { useGutterContext } from './Window'
+import { useColorScheme } from '@ledget/ui'
 
 const tabs = ['details', 'connections', 'security']
 
@@ -100,20 +101,24 @@ const Gutter = () => {
     const [open, setOpen] = useGutterContext()
     const [updatePill, setUpdatePill] = useState(false)
     const { screenSize } = useScreenContext()
+    const { isDark } = useColorScheme()
 
     const [props] = usePillAnimation({
         ref: ulRef,
-        update: [location.pathname, open, updatePill],
+        update: [location.pathname, open, updatePill, isDark],
         refresh: [],
         querySelectall: '[role=menuitem]',
         find: (el, index) => index === tabs.indexOf(location.pathname.split("/")[2]),
         styles: {
             backgroundColor: backgroundColor,
-            borderRadius: location.pathname === '/profile/details'
-                ? 'var(--border-radius25)'
-                : 'var(--border-radius2)',
+            borderRadius: '8px',
+            opacity: .7
         }
     })
+
+    useEffect(() => {
+        console.log(location.pathname)
+    }, [location.pathname])
 
     const navProps = useSpring({
         flex: open ? 1 : 0,
