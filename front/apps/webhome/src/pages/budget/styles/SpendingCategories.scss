@@ -56,7 +56,7 @@ $background: var(--window);
             }
 
             &:first-child button {
-                padding: .5em 0;
+                // padding: .125em 0;
                 grid-column: 1 / span 5;
             }
 
@@ -237,7 +237,8 @@ $background: var(--window);
     }
 
     .spending-categories--tab-nav-list {
-        width: 70%;
+        width: 60%;
+        min-width: 13.125em;
     }
 }
 
@@ -476,11 +477,6 @@ $background: var(--window);
 @media screen and (max-width: 550px) {
     .row {
         gap: .125em;
-
-        &:first-child {
-            flex-direction: column;
-            align-items: flex-start;
-        }
     }
 }
 

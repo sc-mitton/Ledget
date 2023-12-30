@@ -15,7 +15,7 @@ import {
 import {
     DollarCents,
     PillOptionButton,
-    IconScaleButton,
+    IconButton,
     ExpandButton,
     DropDownDiv,
     useAccessEsc,
@@ -175,7 +175,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                 </h3>
             </div>
             <div>
-                <IconScaleButton
+                <IconButton
                     ref={buttonRef}
                     onClick={() => setShowCalendar(!showCalendar)}
                     tabIndex={0}
@@ -183,7 +183,7 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                     aria-haspopup="true"
                 >
                     <CalendarIcon size={'1.2em'} />
-                </IconScaleButton>
+                </IconButton>
                 <DropDownDiv
                     placement='left'
                     visible={showCalendar}

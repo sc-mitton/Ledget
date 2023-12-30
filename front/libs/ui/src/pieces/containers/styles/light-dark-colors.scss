@@ -92,7 +92,7 @@
         // Windows
         --window-background-color: hsl(0, 0%, 6%);
         --window: hsl(0, 0%, 9%);
-        --window-border: hsl(0, 0%, 13%);
+        --window-border: hsl(0, 0%, 10%);
         --window-rgb: 5, 5, 5;
         --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 75%);
 
@@ -278,7 +278,7 @@
         --input-drop-shadow-color: rgba(0, 0, 0, 0.07);
 
         --subtle-border-color: rgb(0, 0, 0, .07);
-        --institution-logo-border: solid 1.5px rgb(0, 0, 0, .2);
+        --institution-logo-border: solid 1px rgb(0, 0, 0, .2);
 
         --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
 
