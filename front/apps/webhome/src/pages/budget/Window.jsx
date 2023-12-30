@@ -33,7 +33,7 @@ const DropDown = () => {
     const [searchParams] = useSearchParams()
 
     return (
-        <Menu>
+        <Menu as='div'>
             {({ open }) => (
                 <>
                     <Menu.Button as={IconButton}><Ellipsis rotate={90} size={'1.25em'} /></Menu.Button>
@@ -153,14 +153,14 @@ function Window() {
                 <div>
                     <div className="window-header">
                         <MonthPicker />
-                        <div className="header-btns">
-                            <DropDown />
-                        </div>
+                        <DropDown />
                     </div>
                     <BudgetSummary />
                 </div>
-                <Spending />
-                <Bills />
+                <div>
+                    <Spending />
+                    <Bills />
+                </div>
             </div>
             <Outlet />
         </>

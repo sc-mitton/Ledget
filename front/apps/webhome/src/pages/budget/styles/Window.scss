@@ -1,21 +1,26 @@
 #budget-window {
     flex: 6;
     height: 100%;
-    display: grid;
-    grid-template-rows: minmax(0, min-content) minmax(0, 1fr) minmax(0, min-content);
-    // display: flex;
-    // flex-direction: column;
+    display: flex;
+    flex-direction: column;
     gap: 1.75em;
 
-    // Spending categories window
-    &>div:nth-last-child(2) {
-        flex: 1 1 0;
-    }
+    &>div:last-child {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.75em;
 
-    // Bills window
-    // &>div:last-child {
-    //     flex: 0 1 0;
-    // }
+        // Categories
+        &>div:first-child {
+            flex: 1 0 0;
+        }
+
+        // Bills
+        &>div:last-child {
+            flex: 1 1 0;
+        }
+    }
 
     &>div {
         padding: 0 .5em;
