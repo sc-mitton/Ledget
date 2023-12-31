@@ -28,7 +28,7 @@ $background: var(--window);
     flex-grow: 1;
 }
 
-#all-categorires-table {
+#all-categories-table {
     gap: $column-gap;
     border-radius: var(--border-radius25);
     @include outermost-div-placement-styling;
