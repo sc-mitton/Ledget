@@ -1,15 +1,26 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Big from 'big.js'
+import { useNavigate, createSearchParams } from 'react-router-dom'
+import { Menu } from '@headlessui/react'
 
 import './styles/BudgetSummary.scss'
-import { DollarCents, AnimatedDollarCents, StaticProgressCircle } from '@ledget/ui'
-import { ThumbUp, CheckMark2 } from '@ledget/media'
+import {
+    DollarCents,
+    AnimatedDollarCents,
+    StaticProgressCircle,
+    IconButton,
+    DropDownDiv,
+    DropdownItem
+} from '@ledget/ui'
+import { ThumbUp, CheckMark2, Plus, Edit, Ellipsis } from '@ledget/media'
 import { SelectCategoryBillMetaData, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { selectBillMetaData, useLazyGetBillsQuery } from '@features/billSlice'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
+
+import MonthPicker from '@components/inputs/MonthPicker'
 
 const SummaryStats = ({ showMonthStats = false, showYearStats = false }) => {
     const [searchParams] = useSearchParams()
@@ -211,14 +222,98 @@ const SummaryStatsTeaser = ({
     )
 }
 
+
+const Wrapper = ({ onClick, children }: { onClick: () => void, children: React.ReactNode }) => (
+    <Menu.Item as={Fragment}>
+        {({ active }) => (
+            <DropdownItem
+                active={active}
+                onClick={() => onClick()}
+            >
+                {children}
+            </DropdownItem>
+        )}
+    </Menu.Item>
+)
+
+const DropDown = () => {
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+
+    return (
+        <Menu as='div'>
+            {({ open }) => (
+                <>
+                    <Menu.Button as={IconButton}><Ellipsis rotate={90} size={'1.25em'} /></Menu.Button>
+                    <div style={{ position: 'relative' }}>
+                        <DropDownDiv
+                            placement='right'
+                            arrow='right'
+                            visible={open}
+                            className="right2"
+                        >
+                            <Menu.Items static>
+                                <Wrapper
+                                    onClick={() => navigate({
+                                        pathname: '/budget/edit-categories',
+                                        search: createSearchParams({
+                                            month: searchParams.get('month') || '',
+                                            year: searchParams.get('year') || ''
+                                        }).toString()
+                                    })}
+                                >
+                                    <Edit size={'.9em'} fill={'currentColor'} />
+                                    Categories
+                                </Wrapper>
+                                <Wrapper
+                                    onClick={() => navigate({
+                                        pathname: `/budget/new-category`,
+                                        search: createSearchParams({
+                                            month: searchParams.get('month') || '',
+                                            year: searchParams.get('year') || ''
+                                        }).toString()
+                                    })}
+                                >
+                                    <Plus size={'.9em'} stroke={'currentColor'} />
+                                    New category
+                                </Wrapper>
+                                <Wrapper
+                                    onClick={() => navigate({
+                                        pathname: `/budget/new-bill`,
+                                        search: createSearchParams({
+                                            month: searchParams.get('month') || '',
+                                            year: searchParams.get('year') || ''
+                                        }).toString()
+                                    })}
+                                >
+                                    <Plus size={'.9em'} stroke={'currentColor'} />
+                                    New bill
+                                </Wrapper>
+                            </Menu.Items>
+                        </DropDownDiv>
+                    </div>
+                </>
+            )}
+        </Menu >
+    )
+}
+
 const BudgetSummary = () => {
     const [showMonthStats, setShowMonthStats] = useState(false)
     const [showYearStats, setShowYearStats] = useState(false)
 
     return (
-        <div className={`budget-summary--container ${showMonthStats || showYearStats ? 'expanded' : ''}`}>
-            <SummaryStatsTeaser setShowMonthStats={setShowMonthStats} setShowYearStats={setShowYearStats} />
-            <SummaryStats showMonthStats={showMonthStats} showYearStats={showYearStats} />
+        <div>
+            <div>
+                <div className="window-header">
+                    <MonthPicker />
+                    <DropDown />
+                </div>
+            </div>
+            <div className={`budget-summary--container ${showMonthStats || showYearStats ? 'expanded' : ''}`}>
+                <SummaryStatsTeaser setShowMonthStats={setShowMonthStats} setShowYearStats={setShowYearStats} />
+                <SummaryStats showMonthStats={showMonthStats} showYearStats={showYearStats} />
+            </div>
         </div>
     )
 }

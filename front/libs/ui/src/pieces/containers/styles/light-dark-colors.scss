@@ -62,7 +62,7 @@
         --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 5%));
         --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 15%));
         --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 7%));
-        --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), var(--main-color-l));
+        --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 7%));
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), var(--main-color-l));
 
@@ -72,7 +72,7 @@
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 5%));
         --secondary-hlight: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 20%));
         --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) - 15%));
-        --secondary-hlight-hover-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) - 10%));
+        --secondary-hlight-hover-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) - 15%));
 
         --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 30%));
         --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 35%));
@@ -172,29 +172,29 @@
 
         // Secondary and Primary Base Values
         --main-color-h: 220;
-        --main-color-s: 17%;
-        --main-color-l: 40%;
+        --main-color-s: 15%;
+        --main-color-l: 37%;
 
         --secondary-color-h: 162;
         --secondary-color-s: 10%;
-        --secondary-color-l: 40%;
+        --secondary-color-l: 33%;
 
         --main-color-values: 61, 62, 92;
         --secondary-color-values: 61, 92, 83;
 
         --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
         --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
-        --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 45%));
-        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 40%));
-        --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 25%));
+        --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 50%));
+        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 45%));
+        --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), calc(var(--main-color-l) + 40%));
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 40%));
 
         --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
-        --secondary-hlight: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 45%));
-        --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 40%));
-        --secondary-hlight-hover-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) + 25%));
+        --secondary-hlight: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 10%), calc(var(--secondary-color-l) + 50%));
+        --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 10%), calc(var(--secondary-color-l) + 45%));
+        --secondary-hlight-hover-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 5%), calc(var(--secondary-color-l) + 40%));
 
         --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
         --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 10%));

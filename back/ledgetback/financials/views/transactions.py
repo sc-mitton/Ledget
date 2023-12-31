@@ -68,12 +68,10 @@ RECURRING_IGNORE_TYPES = [
 ]
 
 
-def sync_transactions(plaid_item: PlaidItem) -> dict:
+def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict:
     added, modified, removed = [], [], []
     plaid_options = TransactionsSyncRequestOptions(
         include_personal_finance_category=True)
-    default_category = Category.objects.filter(
-        usercategory__user=plaid_item.user, is_default=True).first()
 
     cursor = plaid_item.cursor or ''
     has_more = True
@@ -307,10 +305,13 @@ class TransactionViewSet(ModelViewSet):
     @action(detail=False, methods=['post'], url_path='sync', url_name='sync',
             permission_classes=[IsAuthedVerifiedSubscriber, IsObjectOwner])
     def sync(self, request, *args, **kwargs):
+        default_category = Category.objects.filter(
+            usercategory__user=self.request.user, is_default=True).first()
+
         plaid_items = self._get_plaid_items(request)
         sync_results = {'added': 0, 'modified': 0, 'removed': 0}
         for plaid_item in plaid_items:
-            results = sync_transactions(plaid_item)
+            results = sync_transactions(plaid_item, default_category)
             for key, value in results.items():
                 sync_results[key] += value
 

@@ -8,10 +8,6 @@ import { usePillAnimation } from '../../animations/use-pill-animation/use-pill-a
 import useSchemeVar from '../../utils/hooks/use-scheme-var/use-scheme-var';
 
 
-interface TabNavListBaseProps {
-  labels: string[] | React.ReactNode[],
-  className?: string
-}
 
 interface TabStyle {
   pillColor: string,
@@ -20,26 +16,22 @@ interface TabStyle {
   tabBackgroundColor: string,
 }
 
-interface TabNavListPropsWithoutTheme extends TabNavListBaseProps {
-  theme?: never
-}
-
-interface TabNavListPropsWithTheme extends TabNavListBaseProps {
-  theme: TabStyle | TabStyle[]
+interface TabNavListProps {
   selectedIndex: number,
+  labels: string[] | React.ReactNode[],
+  className?: string,
+  theme?: TabStyle | TabStyle[]
 }
-
-export type TabNavListProps = TabNavListPropsWithoutTheme | TabNavListPropsWithTheme
 
 export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDivElement>) {
   const ref = useRef<HTMLDivElement>(null)
   const { labels, className, theme, ...rest } = props
-  const defaultBackgroundColor = useSchemeVar('--icon-hover-light-gray')
+  const defaultBackgroundColor = useSchemeVar('--inner-window')
 
   const [pillProps, api] = usePillAnimation({
     ref: ref,
     querySelectall: '[role=tab]',
-    update: theme ? [theme, props.selectedIndex] : [],
+    update: theme ? [theme, props.selectedIndex] : [props.selectedIndex],
     refresh: [],
     styles: {
       zIndex: 1,

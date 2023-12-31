@@ -9,20 +9,21 @@ import { Logout, Help } from '@modals/index'
 import {
     Profile1,
     Profile2,
-    Settings as SettingsIcon,
     Help as HelpIcon,
     LogoutIcon,
     LedgetLogoIcon
 } from '@ledget/media'
 import { DropDownDiv, usePillAnimation, DropdownItem, useSchemeVar } from '@ledget/ui'
+import { useScreenContext } from './context'
 
 
-const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
+const Navigation = () => {
     const tabs = [
         { name: "budget", path: "budget" },
         { name: "accounts", path: "accounts/deposits" }
     ]
     const backgroundColor = useSchemeVar('--header-pill')
+    const { screenSize } = useScreenContext()
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -30,7 +31,7 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
     const [tabsSpring] = usePillAnimation({
         ref: navListRef,
         update: [location.pathname],
-        refresh: [isNarrow],
+        refresh: [screenSize],
         querySelectall: '[role=link]',
         find: (element) => {
             return (element.firstChild as any)?.getAttribute('aria-current') === 'page'
@@ -75,7 +76,7 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
                         </a>
                     </li>
                 ))}
-                {isNarrow &&
+                {screenSize !== 'large' &&
                     <li
                         className={`${location.pathname === "/spending" ? "current-" : ""}nav-item`}
                         role="link"
@@ -102,8 +103,8 @@ const Navigation = ({ isNarrow }: { isNarrow: boolean }) => {
 
 type Modal = "help" | "logout"
 
-const DropDownMenu = ({ isNarrow, setModal }:
-    { isNarrow: boolean, setModal: React.Dispatch<React.SetStateAction<Modal | undefined>> }) => {
+const DropDownMenu = ({ setModal }:
+    { setModal: React.Dispatch<React.SetStateAction<Modal | undefined>> }) => {
     const navigate = useNavigate()
 
     const Wrapper = ({ onClick, children }:
@@ -159,8 +160,9 @@ const DropDownMenu = ({ isNarrow, setModal }:
     )
 }
 
-function Header({ isNarrow }: { isNarrow: boolean }) {
+function Header() {
     const [modal, setModal] = useState<Modal>()
+    const { screenSize } = useScreenContext()
 
     const Modal = ({ selection }: { selection?: Modal }) => {
         switch (selection) {
@@ -179,11 +181,11 @@ function Header({ isNarrow }: { isNarrow: boolean }) {
 
     return (
         <>
-            <header className={`${isNarrow ? 'narrow' : ''}`}>
+            <header className={`${screenSize !== 'large' ? 'narrow' : ''}`}>
                 <div>
                     <div><LedgetLogoIcon /></div>
-                    <div><Navigation isNarrow={isNarrow} /></div>
-                    <DropDownMenu setModal={setModal} isNarrow={isNarrow} />
+                    <div><Navigation /></div>
+                    <DropDownMenu setModal={setModal} />
                 </div>
             </header>
             <Modal selection={modal} />

@@ -28,6 +28,7 @@ import { useGetMeQuery } from '@features/userSlice'
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 import { ScreenProvider } from '@context/index'
+import { useScreenContext } from '@context/index';
 
 const PrivateRoute = () => {
     const { isSuccess, isLoading } = useGetMeQuery()
@@ -60,22 +61,13 @@ const OnboardedRoute = () => {
 }
 
 const App = () => {
-    const [isNarrow, setIsNarrow] = useState(false)
     const location = useLocation()
     const navigate = useNavigate()
     const ref = useRef<HTMLDivElement>(null)
     const { data: user } = useGetMeQuery()
     const toastStack = useAppSelector(toastStackSelector)
     const dispatch = useAppDispatch()
-
-    useLayoutEffect(() => {
-        const handleResize = () => {
-            setIsNarrow((ref.current?.offsetWidth || 0) < 1000)
-        }
-        handleResize()
-        window.addEventListener('resize', handleResize)
-        return () => window.removeEventListener('resize', handleResize)
-    }, [])
+    const { screenSize } = useScreenContext()
 
     // Handling the situations where the user missed the initial email verification
     // or had errors in the checkout process
@@ -94,7 +86,7 @@ const App = () => {
 
     return (
         <>
-            <Header isNarrow={isNarrow} />
+            <Header />
             <AnimatePresence mode="wait">
                 <ZoomMotionDiv
                     key={location.pathname.split('/')[1]}
@@ -103,9 +95,7 @@ const App = () => {
                     <div className="dashboard" ref={ref}>
                         <Routes location={location} key={location.pathname.split('/')[1]}>
                             <Route path="/" element={<OnboardedRoute />} >
-                                <Route path="budget" element={
-                                    <><Budget />{!isNarrow && <Spending />}</>
-                                }>
+                                <Route path="budget" element={<Budget />} >
                                     <Route path="new-category" element={<CreateCategory />} />
                                     <Route path="new-bill" element={<CreateBill />} />
                                     <Route path="edit-categories" element={<EditBudgetItems />} />
@@ -115,7 +105,7 @@ const App = () => {
                                     <Route path="welcome/*" element={<OnboardingModal />} />
                                 </Route>
                                 <Route path="spending" element={
-                                    isNarrow ? <Spending /> : <Navigate to="/budget" />
+                                    screenSize !== 'large' ? <Spending /> : <Navigate to="/budget" />
                                 } />
                                 <Route path="accounts/*" element={<Accounts />} />
                                 <Route path="profile/*" element={<Profile />} />
@@ -131,7 +121,7 @@ const App = () => {
 }
 
 const EnrichedApp = () => {
-    const { data: user, isLoading } = useGetMeQuery()
+    const { isLoading } = useGetMeQuery()
 
     return (
         <ScreenProvider>

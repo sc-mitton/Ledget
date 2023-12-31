@@ -282,7 +282,7 @@ const HistoryHeader = () => {
     const windowApi = useSpringRef()
     const transitions = useTransition(showFilterForm, {
         from: {
-            zIndex: 0,
+            zIndex: 1,
             top: 0,
             right: 0,
             width: '0%',

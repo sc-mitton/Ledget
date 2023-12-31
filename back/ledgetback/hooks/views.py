@@ -131,12 +131,17 @@ class OryRegistrationHook(APIView):
 
     @transaction.atomic
     def create_objects(self, request):
+        '''
+        Create a user to match the Ory user and a default
+        category for the user.
+        '''
         new_user = {'id': request.data['user_id']}
         if request.data.get('is_verified', False):
             new_user['is_verified'] = True
         user = get_user_model().objects.create_user(**new_user)
         default_category = Category.objects.create(
             name='miscellaneous',
+            emoji='🪣',
             is_default=True)
         default_category.users.add(user)
 

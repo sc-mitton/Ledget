@@ -49,7 +49,6 @@ import {
     BillCatLabel,
     TabNavList,
     DropdownItem,
-    useSchemeVar,
     useBillCatTabTheme
 } from '@ledget/ui'
 import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
@@ -745,7 +744,6 @@ const CategoryDetail = ({ category }: { category: Category }) => {
         </>
     )
 }
-
 
 const SpendingCategories = () => {
     const [searchParams, setSearchParams] = useSearchParams()

@@ -213,15 +213,15 @@ $background: var(--window);
                 right: 0;
             }
 
-            &:not(:first-child)::after {
+            &:not(:first-child):not(:last-child)::after {
                 left: 0;
                 right: 0;
             }
 
-            &:last-of-type::after {
-                left: 0;
-                right: .75em;
-            }
+            // &:last-of-type::after {
+            //     left: 0;
+            //     right: .75em;
+            // }
         }
     }
 
