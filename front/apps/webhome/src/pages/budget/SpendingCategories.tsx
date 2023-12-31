@@ -799,7 +799,7 @@ const SpendingCategories = () => {
             <AnimatePresence mode='wait'>
                 {!searchParams.get('category')
                     ?
-                    <FadeInOutDiv id="all-categorires-table" immediate={!loaded} key="all-categories">
+                    <FadeInOutDiv id="all-categories-table" immediate={!loaded} key="all-categories">
                         {(isLoading || isUninitialized)
                             ? <SkeletonRows numberOfRows={skeletonRowCount} />
                             : isTabView ? <TabView categories={categories} /> : <ColumnView categories={categories} />
