@@ -30,7 +30,7 @@ const NewItemsHeader = (
     { onConfirmAll }: { onConfirmAll: () => void }
 ) => {
     const { start, end } = useGetStartEndQueryParams()
-    const { data: tCountData } = useGetTransactionsCountQuery({ confirmed: false, start, end })
+    const { data: tCountData } = useGetTransactionsCountQuery({ confirmed: false, start, end }, { skip: !start || !end })
     const confirmedLength = useAppSelector(selectConfirmedLength)
     const [syncTransactions, {
         isLoading: isSyncing,

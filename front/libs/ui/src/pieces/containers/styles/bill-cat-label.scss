@@ -12,6 +12,12 @@
 .bill-cat-label {
     border-radius: var(--border-radius2);
     padding: .1875em .75em;
+    position: relative;
+
+    &>div {
+        z-index: 1;
+        position: relative;
+    }
 
     span {
         font-weight: var(--fw-regular);
@@ -29,7 +35,8 @@
         }
     }
 
-    &.blue {
+    &.blue,
+    &.blue-split {
         background-color: var(--main-hlight);
         transition: background-color 0.2s ease-in-out;
 
@@ -53,7 +60,8 @@
         }
     }
 
-    &.green {
+    &.green,
+    &.green-split {
         background-color: var(--secondary-hlight);
         transition: background-color 0.2s ease-in-out;
 
@@ -74,6 +82,45 @@
         &.hoverable:hover {
             background-color: var(--secondary-hlight-hover);
             transition: background-color 0.2s ease-in-out;
+        }
+    }
+
+    &.green-blue,
+    &.green-blue-split {
+        background-color: var(--secondary-hlight);
+        transition: background-color 0.2s ease-in-out;
+
+        * {
+            color: var(--secondary-dark) 100%;
+        }
+
+        &.tint {
+            background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark) 10%);
+
+            &.hoverable:hover,
+            &.hoverable.active {
+                background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark) 30%);
+                transition: background-color 0.2s ease-in-out;
+            }
+        }
+
+        &.hoverable:hover {
+            background-color: var(--secondary-hlight-hover);
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        &::after {
+            content: '';
+            z-index: 0;
+            position: absolute;
+            border-radius: inherit;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 50%;
+            background-color: var(--main-hlight);
         }
     }
 }

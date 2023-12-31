@@ -340,7 +340,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST)
 
         include_spending = self.request.query_params.get('spending', True)
-        yearly_category_anchor = datetime.utcnow().replace(day=1) \
+        yearly_category_anchor = datetime.now(tz=pytz.utc).replace(day=1) \
             if not self.request.user.yearly_anchor else self.request.user.yearly_anchor
 
         monthly_qset = Category.objects.filter(
@@ -355,7 +355,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             usercategory__category__period='year',
         ).annotate(order=F('usercategory__order'))
 
-        if not include_spending:
+        if include_spending == 'false':
             return monthly_qset.union(yearly_qset).order_by('order', 'name')
 
         monthly_amount_spent = Sum(

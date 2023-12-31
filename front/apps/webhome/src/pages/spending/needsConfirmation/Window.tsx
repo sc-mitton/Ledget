@@ -174,26 +174,15 @@ const NewItem: FC<{
                 </div>
             </div>
             <div className='new-item-icons' >
-                {color === 'green' || color === 'green-split'
-                    ?
-                    <BillCatLabel
-                        name={name}
-                        slim={true}
-                        as='button'
-                        aria-label="Choose budget category"
-                        tabIndex={tabIndex}
-                        onClick={(e) => { onBillCat(e, item) }}
-                    />
-                    :
-                    <BillCatLabel
-                        name={name}
-                        slim={true}
-                        as='button'
-                        aria-label="Choose budget category"
-                        tabIndex={tabIndex}
-                        onClick={(e) => { onBillCat(e, item) }}
-                    />
-                }
+                <BillCatLabel
+                    name={name}
+                    slim={true}
+                    as='button'
+                    color={color}
+                    aria-label="Choose budget category"
+                    tabIndex={tabIndex}
+                    onClick={(e) => { onBillCat(e, item) }}
+                />
                 <Tooltip
                     msg="Confirm"
                     ariaLabel="Confirm"

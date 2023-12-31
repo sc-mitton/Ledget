@@ -749,7 +749,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
 
 const SpendingCategories = () => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const [fetchCategories, { isLoading }] = useLazyGetCategoriesQuery()
+    const [fetchCategories, { isLoading, isUninitialized }] = useLazyGetCategoriesQuery()
     const [isTabView, setIsTabView] = useState(false)
     const [skeletonRowCount, setSkeletonRowCount] = useState(5)
     const ref = useRef<HTMLDivElement>(null)
@@ -758,8 +758,9 @@ const SpendingCategories = () => {
     const categories = useAppSelector(selectCategories)
 
     useEffect(() => {
-        fetchCategories({ start: start, end: end }, true)
-    }, [searchParams.get('month'), searchParams.get('year')])
+        if (start && end)
+            fetchCategories({ start: start, end: end }, true)
+    }, [start && end])
 
     useEffect(() => {
         const handleResize = () => {
@@ -799,7 +800,7 @@ const SpendingCategories = () => {
                 {!searchParams.get('category')
                     ?
                     <FadeInOutDiv id="all-categorires-table" immediate={!loaded} key="all-categories">
-                        {isLoading
+                        {(isLoading || isUninitialized)
                             ? <SkeletonRows numberOfRows={skeletonRowCount} />
                             : isTabView ? <TabView categories={categories} /> : <ColumnView categories={categories} />
                         }

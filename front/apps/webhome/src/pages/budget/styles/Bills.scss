@@ -26,6 +26,7 @@ $number-of-bill-rows: 5;
     flex-direction: column;
     gap: .75em;
     transition: gap .2s ease-out .1s;
+    height: 100%;
 
     // Header
     &>div:first-child {
@@ -39,6 +40,7 @@ $number-of-bill-rows: 5;
 
     // Div around the calendar and bill items
     &>div:last-child {
+        flex-grow: 1;
         display: flex;
         justify-content: space-between;
         gap: $gap;
@@ -81,7 +83,7 @@ $number-of-bill-rows: 5;
             // Calendar pop up
             &>div:last-child {
                 margin-top: .25em;
-                padding: 1em;
+                padding: .75em;
             }
         }
 

@@ -9,7 +9,7 @@ import './styles/bill-cat-label.scss'
 type BillCatProps<C extends ElementType> = {
   name: string
   emoji?: string | null
-  color?: 'green' | 'blue'
+  color?: 'blue' | 'green' | 'green-split' | 'blue-split' | 'green-blue-split'
   hoverable?: boolean
   slim?: boolean
   tint?: boolean
