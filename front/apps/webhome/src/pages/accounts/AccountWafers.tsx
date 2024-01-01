@@ -112,7 +112,7 @@ const WafersHeader = ({ accounts, setAccounts }: { accounts: Account[], setAccou
             {...props}
         >
             {accountsFilterOptions.find(option => option.value === accountsFilter)?.label || ''}
-            <ArrowIcon size={'.9em'} />
+            <ArrowIcon size={'.8em'} />
         </button>
     )
 

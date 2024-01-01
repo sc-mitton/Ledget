@@ -315,7 +315,7 @@ const Bills = () => {
     )
 
     return (
-        <div id="bills-summary-window" className="window">
+        <div className={`window bills-summary-window ${collapsed ? 'collapsed' : ''}`}>
             <div className={`calendar-bills--container ${collapsed ? 'collapsed' : ''}`}>
                 <Header
                     collapsed={collapsed}
