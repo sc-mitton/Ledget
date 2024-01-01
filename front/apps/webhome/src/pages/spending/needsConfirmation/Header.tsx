@@ -52,7 +52,6 @@ const NewItemsHeader = (
                 type: 'success',
                 message: `Synced${syncResult?.added ? `, ${syncResult?.added} new transactions` : ' successfully'}`,
                 hasLoadingBar: true,
-                timer: 20000
             }))
         }
     }, [isSyncSuccess])

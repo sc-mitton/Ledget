@@ -22,7 +22,7 @@ import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 import MonthPicker from '@components/inputs/MonthPicker'
 
-const SummaryStats = ({ showMonthStats = false, showYearStats = false }) => {
+const SummaryStats = ({ showStats }: { showStats: 'month' | 'year' | undefined }) => {
     const [searchParams] = useSearchParams()
     const { start, end } = useGetStartEndQueryParams()
 
@@ -66,12 +66,9 @@ const SummaryStats = ({ showMonthStats = false, showYearStats = false }) => {
                         key={period}
                         className={`summary-stats
                         ${period}
-                        ${period === 'month' && showMonthStats ? 'show' : ''}
-                        ${period === 'year' && showYearStats ? 'show' : ''}`}
-                        aria-hidden={
-                            (period === 'month' && !showMonthStats) ||
-                            (period === 'year' && !showYearStats)
-                        }
+                        ${period === 'year' && showStats === 'year' ? 'show' : ''}
+                        ${period === 'month' && showStats === 'month' ? 'show' : ''}`}
+                        aria-hidden={showStats ? false : true}
                         aria-label={`${period} stats`}
                     >
                         <div>
@@ -149,10 +146,7 @@ const SummaryStats = ({ showMonthStats = false, showYearStats = false }) => {
     )
 }
 
-const SummaryStatsTeaser = ({
-    setShowMonthStats = (a: boolean) => { },
-    setShowYearStats = (a: boolean) => { },
-}) => {
+const SummaryStatsTeaser = ({ setShowStats }: { setShowStats: React.Dispatch<React.SetStateAction<"month" | "year" | undefined>> }) => {
     const [searchParams] = useSearchParams()
     const { start, end } = useGetStartEndQueryParams()
 
@@ -180,7 +174,7 @@ const SummaryStatsTeaser = ({
     return (
         <>
             {/* Summary Teasers */}
-            <div>
+            <div className='header'>
                 <div><h4>Total</h4></div>
                 <div>
                     <AnimatedDollarCents
@@ -191,18 +185,19 @@ const SummaryStatsTeaser = ({
                     <span>spent</span>
                 </div>
             </div>
-            {Array.from(['month', 'year']).map((period, i) => {
+            {Array.from(['month', 'year'] as const).map((period, i) => {
                 const amountLeft = (period === 'month')
                     ? Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber()
                     : Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber()
                 return (
                     <div
+                        className='header'
                         key={period}
                         tabIndex={0}
-                        onFocus={() => period === 'month' ? setShowMonthStats(true) : setShowYearStats(true)}
-                        onBlur={() => period === 'month' ? setShowMonthStats(false) : setShowYearStats(false)}
-                        onMouseEnter={() => period === 'month' ? setShowMonthStats(true) : setShowYearStats(true)}
-                        onMouseLeave={() => period === 'month' ? setShowMonthStats(false) : setShowYearStats(false)}
+                        onFocus={() => setShowStats(period)}
+                        onBlur={() => setShowStats(undefined)}
+                        onMouseOver={() => setShowStats(period)}
+                        onMouseOut={() => setShowStats(undefined)}
                     >
                         <div><h4>{period.charAt(0).toUpperCase() + period.slice(1)}</h4></div>
                         <div>
@@ -299,8 +294,7 @@ const DropDown = () => {
 }
 
 const BudgetSummary = () => {
-    const [showMonthStats, setShowMonthStats] = useState(false)
-    const [showYearStats, setShowYearStats] = useState(false)
+    const [showStats, setShowStats] = useState<'month' | 'year'>()
 
     return (
         <div>
@@ -310,9 +304,9 @@ const BudgetSummary = () => {
                     <DropDown />
                 </div>
             </div>
-            <div className={`budget-summary--container ${showMonthStats || showYearStats ? 'expanded' : ''}`}>
-                <SummaryStatsTeaser setShowMonthStats={setShowMonthStats} setShowYearStats={setShowYearStats} />
-                <SummaryStats showMonthStats={showMonthStats} showYearStats={showYearStats} />
+            <div className={`budget-summary--container ${showStats ? 'expanded' : ''}`}>
+                <SummaryStatsTeaser setShowStats={setShowStats} />
+                <SummaryStats showStats={showStats} />
             </div>
         </div>
     )

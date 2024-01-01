@@ -144,7 +144,6 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
                         slim={true}
                         hoverable={changeAble}
                         onClick={() => { setShowBillCatSelect(!showBillCatSelect) }}
-                        tint={true}
                     />
                     <DropDownDiv
                         placement='left'
