@@ -7,6 +7,7 @@ import { AnimatePresence } from 'framer-motion'
 import { ResponsiveLine } from '@nivo/line'
 import type { Datum } from '@nivo/line'
 import { Menu } from '@headlessui/react'
+import dayjs from 'dayjs'
 
 import TransactionModal from '@modals/TransactionItem'
 import { Logo } from '@components/pieces'
@@ -192,9 +193,9 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
 
     const totalSpent = period === 'month' ? monthly_spent : yearly_spent
     const totalLimit = period === 'month' ? limit_amount_monthly : limit_amount_yearly
-    const yearly_start = oldest_yearly_category_created
-        ? new Date(new Date().getFullYear(), new Date(oldest_yearly_category_created).getMonth(), 1)
-        : null
+    const yearly_start = new Date(oldest_yearly_category_created).getMonth > new Date().getMonth
+        ? dayjs(oldest_yearly_category_created).subtract(1, 'year').toDate()
+        : dayjs(oldest_yearly_category_created).toDate()
     const yearly_end = yearly_start
         ? new Date(yearly_start.getFullYear() + 1, yearly_start.getMonth(), 1)
         : null
@@ -209,7 +210,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
                     <h4>
                         {yearly_start.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
                         <br />
-                        -
+                        &nbsp;-&nbsp;
                         {yearly_end.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
                     </h4>}
             </div>

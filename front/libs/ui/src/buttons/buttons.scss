@@ -590,6 +590,18 @@ button.disabled-hover:hover svg {
     margin: 0 .75em;
     border-radius: var(--border-radius);
 
+    &>div {
+        color: var(--btn-gray-hover);
+        display: flex;
+        align-items: center;
+        transition: color .2s ease-in-out;
+    }
+
+    &:hover>div {
+        color: var(--btn-dark);
+        transition: color .2s ease-in-out;
+    }
+
     &:first-child {
         justify-content: flex-end;
     }

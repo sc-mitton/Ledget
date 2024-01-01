@@ -139,6 +139,7 @@ $background: var(--window);
                 h4:not(:first-child) {
                     position: absolute;
                     left: 0;
+                    top: 0;
                     opacity: 0;
                     transition: opacity .2s ease-in-out;
                 }
