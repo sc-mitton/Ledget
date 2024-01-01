@@ -340,8 +340,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST)
 
         include_spending = self.request.query_params.get('spending', True)
-        yearly_category_anchor = datetime.now(tz=pytz.utc).replace(day=1) \
-            if not self.request.user.yearly_anchor else self.request.user.yearly_anchor
+        yearly_category_anchor = end.replace(day=1)
 
         monthly_qset = Category.objects.filter(
             Q(removed_on__gt=end) | Q(removed_on__isnull=True),
@@ -358,27 +357,34 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         if include_spending == 'false':
             return monthly_qset.union(yearly_qset).order_by('order', 'name')
 
-        monthly_amount_spent = Sum(
-            F('transactioncategory__transaction__amount') *
-            F('transactioncategory__fraction'),
-            filter=Q(transactioncategory__transaction__datetime__range=(start, end))
-        )
-
-        yearly_amount_spent = Sum(
-            F('transactioncategory__transaction__amount') *
-            F('transactioncategory__fraction'),
-            filter=Q(transactioncategory__transaction__datetime__range=(
-                yearly_category_anchor, end
-            ))
-        )
+        if self.request.user.yearly_anchor:
+            if end.month >= self.request.user.yearly_anchor.month:
+                yearly_category_anchor = end.replace(
+                    day=1,
+                    year=self.request.user.yearly_anchor.year)
+            else:
+                yearly_category_anchor = end.replace(
+                    day=1,
+                    year=self.request.user.yearly_anchor.year - 1)
 
         monthly_qset = monthly_qset \
-            .annotate(amount_spent=monthly_amount_spent) \
+            .annotate(amount_spent=Sum(
+                F('transactioncategory__transaction__amount') *
+                F('transactioncategory__fraction'),
+                filter=Q(transactioncategory__transaction__date__range=(start, end))
+            )) \
             .exclude(
                 Q(amount_spent__isnull=True) | Q(amount_spent=0),
                 removed_on__isnull=False)
+
+        print('yearly_category_anchor, end', yearly_category_anchor, end)
         yearly_qset = yearly_qset \
-            .annotate(amount_spent=yearly_amount_spent) \
+            .annotate(amount_spent=Sum(
+                F('transactioncategory__transaction__amount') *
+                F('transactioncategory__fraction'),
+                filter=Q(transactioncategory__transaction__date__range=(
+                    yearly_category_anchor, end))
+            )) \
             .exclude(
                 Q(amount_spent__isnull=True) | Q(amount_spent=0),
                 removed_on__isnull=False)

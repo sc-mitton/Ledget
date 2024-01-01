@@ -42,13 +42,13 @@ $header-gap: calc(.75em + .125vw);
 
     @else {
         transition:
-            transform .2s ease-in-out,
-            top .2s ease-in-out,
-            left .2s ease-in-out,
-            height .2s ease-in-out,
-            width .2s ease-in-out,
-            border-radius .2s ease-in-out,
-            z-index 0s linear .2s;
+            transform .2s ease-in-out .2s,
+            top .2s ease-in-out .2s,
+            left .2s ease-in-out .2s,
+            height .2s ease-in-out .2s,
+            width .2s ease-in-out .2s,
+            border-radius .2s ease-in-out .2s,
+            z-index 0s linear .4s;
     }
 }
 
@@ -105,17 +105,21 @@ $header-gap: calc(.75em + .125vw);
     transition: padding-bottom 0.3s ease-in-out;
     position: relative;
 
+    &:not(:focus-within):not(:hover) .header {
+        border-radius: var(--border-radius2);
+    }
+
     &.expanded {
         @include summary-padding-bottom(true);
         @include padding-transition(in);
     }
 
     // Headers
-    &>div:nth-child(-n+3) {
+    .header {
         position: absolute;
         z-index: 0;
         box-sizing: border-box;
-        border-radius: var(--border-radius2);
+        border-radius: var(--border-radius3);
         @include header-padding(light);
         transform: scale(1);
         display: flex;
@@ -189,7 +193,7 @@ $header-gap: calc(.75em + .125vw);
             }
         }
 
-        // Hover effects
+        // Hover effects //
         &:not(:first-child):hover,
         &:not(:first-child):focus-visible {
             outline: none;
@@ -199,7 +203,14 @@ $header-gap: calc(.75em + .125vw);
             width: 100%;
             height: 100%;
             transform: scale(1);
+            border-radius: var(--border-radius25);
+            opacity: 1;
             @include header-transitions(in);
+        }
+
+        &:not(:first-child):hover~&,
+        &:not(:first-child):focus-visible~& {
+            border-radius: var(--border-radius25);
         }
 
         &:not(:first-child):hover>div,

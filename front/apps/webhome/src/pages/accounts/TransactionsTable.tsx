@@ -189,14 +189,14 @@ export const Transactions = () => {
                                 onClick={() => setTransactionModalItem(transaction)}
                             >
                                 <div>
-                                    <span>{transaction.preferred_name || transaction.name}</span>
                                     <div>
-                                        <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
+                                        <span>{transaction.preferred_name || transaction.name}</span>
+                                        {transaction.pending && <span className='pending'>Pending</span>}
                                     </div>
                                     <div>
+                                        <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
                                         {transaction.categories?.map((c, index) => (
-                                            <span key={index}>{c.emoji}</span>
-                                        ))}
+                                            <span key={index}>{c.emoji}</span>))}
                                     </div>
                                 </div>
                                 <div>

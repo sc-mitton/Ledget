@@ -63,8 +63,7 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
         UserCategory.objects.create(
             user_id=self.context['request'].user.id,
             category_id=instance.id,
-            order=0
-        )
+            order=0)
         return instance
 
     @transaction.atomic

@@ -142,7 +142,6 @@ function SelectCategoryBillBody(props: I) {
                             <Combobox.Option key={billcat.id} value={billcat} as={Fragment}>
                                 {({ active, selected }) => (
                                     <BillCatLabel
-                                        as='li'
                                         slim={true}
                                         color={billcat.period === 'month' ? 'blue' : 'green'}
                                         name={billcat.name}

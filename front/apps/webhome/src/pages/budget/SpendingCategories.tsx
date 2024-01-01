@@ -133,7 +133,7 @@ const Row = ({ category }: { category: Category }) => {
                     </div>
                     <div>
                         <StaticProgressCircle value={
-                            Math.round(Big(category.amount_spent || 0).div(category.limit_amount).times(100).toNumber()) / 100 || 0
+                            Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100
                         } />
                     </div>
                 </>
@@ -290,8 +290,8 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
                 <StaticProgressCircle
                     value={
                         selectedIndex === 0
-                            ? (monthly_spent && limit_amount_monthly) ? Math.round(monthly_spent / limit_amount_monthly * 100) / 100 : 0
-                            : (yearly_spent && limit_amount_yearly) ? Math.round(yearly_spent / limit_amount_yearly * 100) / 100 : 0
+                            ? (monthly_spent && limit_amount_monthly) ? Math.round(monthly_spent / limit_amount_monthly) : 0
+                            : (yearly_spent && limit_amount_yearly) ? Math.round(yearly_spent / limit_amount_yearly) : 0
                     }
                 />
             </div>

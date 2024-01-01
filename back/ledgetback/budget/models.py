@@ -143,11 +143,11 @@ class UserCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     order = models.IntegerField(null=False, default=0)
 
-    def create(self):
+    def save(self, **kwargs):
         if not self.user.yearly_anchor and self.category.period == 'year':
             self.user.yearly_anchor = timezone.now()
             self.user.save()
-        return super().create()
+        return super().save()
 
 
 class TransactionCategory(models.Model):

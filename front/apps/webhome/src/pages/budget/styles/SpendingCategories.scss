@@ -100,7 +100,6 @@ $background: var(--window);
         &.header {
             cursor: default;
             display: flex;
-            gap: .75em;
             font-weight: var(--fw-regular);
             z-index: 1;
             @include header-styles;

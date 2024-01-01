@@ -220,7 +220,6 @@ export const StaticProgressCircle = ({
     <div className="progress-circle--svg">
       <svg viewBox="0 0 36 36" style={{ width: size, height: size }}>
         <circle
-          className="progress-circle--background"
           cx="18"
           cy="18"
           r="14"
@@ -230,7 +229,6 @@ export const StaticProgressCircle = ({
           fill="transparent"
         />
         <circle
-          className="progress-circle--foreground"
           cx="18"
           cy="18"
           r="14"
