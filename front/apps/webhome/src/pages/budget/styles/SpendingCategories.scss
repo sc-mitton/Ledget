@@ -97,14 +97,13 @@ $background: var(--window);
             padding-right: 1em;
         }
 
-        &.header>div {
+        &.header {
             cursor: default;
             display: flex;
             gap: .75em;
             font-weight: var(--fw-regular);
             z-index: 1;
             @include header-styles;
-            padding-bottom: .25em;
 
             &:first-child {
                 padding-left: .125em;

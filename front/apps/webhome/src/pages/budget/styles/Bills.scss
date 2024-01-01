@@ -13,7 +13,7 @@ $number-of-bill-rows: 5;
 @import '@styles/table-mixins';
 
 .bills-summary-window {
-    flex: 1 1 0;
+    flex: 0 1 0;
     display: flex;
 
     &.collapsed {

@@ -68,7 +68,7 @@ export const IconButtonSubmit = withLoading(IconButton)
 export const LinkArrowButton = withArrow(ButtonWithClassName('btn-icon2'))
 
 export const SmallArrowButton = ({ type = '', ...rest }) => (
-  <button className="arrow-nav btn-scale2" {...rest}>
+  <button className="arrow-nav btn-clr btn-icon" {...rest}>
     <ArrowIcon stroke='currentColor' scale={.7} rotation={type === "back" ? 90 : -90} />
   </button>
 )

@@ -9,8 +9,8 @@
 .toast {
     background-color: var(--window);
     border-radius: calc(var(--border-radius2) + 2px);
-    border: 1.5px solid var(--window-border);
-    box-shadow: var(--mid-elevation-drop-shadow);
+    border: 1px solid var(--subtle-border-color);
+    box-shadow: var(--window-box-shadow);
     display: flex;
     align-items: center;
     gap: .625em;
@@ -27,7 +27,7 @@
     height: 2.5px;
     background-color: var(--m-text);
     animation: loading-bar calc(var(--toast-timer) - 300ms) linear forwards;
-    mask-image: linear-gradient(to right, transparent 0%, black 97%, transparent);
+    opacity: .2;
 }
 
 .toast.error::after {

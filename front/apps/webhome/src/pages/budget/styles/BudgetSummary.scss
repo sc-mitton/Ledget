@@ -1,12 +1,12 @@
 $base-stats-font-size: clamp(1rem, calc(.25rem + .25vw), 1.125rem);
 $teaser-stats-margin-top: .125em;
 $header-font-size: clamp(.8125rem, calc(.75em + .25vw), 1rem);
-$header-padding-light: calc(.25em + .25vw) calc(.75em + .5vw);
+$header-padding-light: .125em calc(.75em + .5vw);
 $header-padding-heavier: calc(.25em + .25vw) calc(.75em + .75vw);
 $header-gap: calc(.75em + .125vw);
 
 @mixin summary-padding-bottom($isExpanded, $isResponsive: false) {
-    $summary-padding-bottom: calc(nth($header-padding-light, 1) + $teaser-stats-margin-top + $header-font-size + 1.25em);
+    $summary-padding-bottom: calc(nth($header-padding-light, 1) + $teaser-stats-margin-top + $header-font-size + 1em);
     $summary-padding-bottom-expanded: calc(nth($header-padding-heavier, 1) * 2 + $base-stats-font-size + $teaser-stats-margin-top + $header-font-size + 1.25em);
     $responsive-summary-padding-bottom: calc(nth($header-padding-light, 1) + $teaser-stats-margin-top + $header-font-size * 4 + 1.75em);
     $responsive-summary-padding-bottom-expanded: calc(nth($header-padding-light, 1) + $teaser-stats-margin-top + $header-font-size * 7 + 1.75em);
@@ -115,7 +115,7 @@ $header-gap: calc(.75em + .125vw);
         position: absolute;
         z-index: 0;
         box-sizing: border-box;
-        border-radius: var(--border-radius25);
+        border-radius: var(--border-radius2);
         @include header-padding(light);
         transform: scale(1);
         display: flex;

@@ -19,7 +19,7 @@ const Spending = () => {
                 unconfirmedStackExpanded,
                 setUnconfirmedStackExpanded
             }}>
-            <div id="spending-window" style={{ paddingTop: screenSize === 'large' ? '3.375em' : '0em' }}>
+            <div id="spending-window" style={{ paddingTop: screenSize === 'large' ? '3.125em' : '0em' }}>
                 <NeedsConfirmationWindow />
                 <HistoryWindow />
             </div>

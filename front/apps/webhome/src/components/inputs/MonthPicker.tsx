@@ -46,9 +46,10 @@ const MonthPicker = () => {
 
             let newDateOptions: { [year: number]: number[] } = {}
             const numberOfMonths = (currentYear - userCreatedYear) * 12 + (currentMonth - userCreatedMonth) + 1
+
             for (let i = 0; i < numberOfMonths; i++) {
-                const year = userCreatedYear + Math.floor(i / 12)
-                const month = userCreatedMonth + (i % 12)
+                const year = userCreatedYear + Math.floor((userCreatedMonth + i - 1) / 12)
+                const month = (userCreatedMonth + i - 1) % 12 + 1
 
                 if (newDateOptions[year]) {
                     newDateOptions[year].push(month)
@@ -125,7 +126,7 @@ const MonthPicker = () => {
     }
 
     const renderMonths = () => {
-        return dateOptions[pickerYear].map((month) => {
+        return dateOptions[pickerYear]?.map((month) => {
             const isSelected = (searchParams.get('month') === `${month}` && searchParams.get('year') == `${pickerYear}`)
             return (
                 <button
@@ -147,16 +148,18 @@ const MonthPicker = () => {
     }
 
     const incrementYear = () => {
-        if (pickerYear < parseInt(searchParams.get('year') || '')) {
+        if (pickerYear < new Date().getFullYear())
             setPickerYear(pickerYear + 1)
-        }
     }
 
     const decrementYear = () => {
-        if (pickerYear > parseInt(searchParams.get('year') || '')) {
+        if (pickerYear > new Date(user?.created_on || new Date()).getFullYear())
             setPickerYear(pickerYear - 1)
-        }
     }
+
+    useEffect(() => {
+        console.log('pickerYear', pickerYear)
+    }, [pickerYear])
 
     return (
         <div id="month-picker" ref={monthPickerRef}>
