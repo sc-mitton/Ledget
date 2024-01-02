@@ -66,10 +66,13 @@ ORY_AUTH_SCHEME = 'Api-Key'
 
 # Oathkeeper
 oathkeeper_endpoint = 'http://oathkeeper:4456/.well-known/jwks.json'
-jwks = requests.get(oathkeeper_endpoint).json()['keys']
-OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
-    json.dumps(jwks[0])
-)
+if 'test' in sys.argv or 'test_coverage' in sys.argv:
+    OATHKEEPER_PUBLIC_KEY=None
+else:
+    jwks = requests.get(oathkeeper_endpoint).json()['keys']
+    OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
+        json.dumps(jwks[0]))
+
 OATHKEEPER_AUTH_HEADER = 'HTTP_AUTHORIZATION'
 OATHKEEPER_AUTH_SCHEME = 'Bearer'
 
