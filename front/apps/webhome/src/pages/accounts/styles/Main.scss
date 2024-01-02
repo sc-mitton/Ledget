@@ -186,6 +186,7 @@ $wafer-container-padding: .75rem;
     }
 
     &.inactive {
+        border: 1px solid var(--window-border);
         transform: scale(1);
         transition: all .2s ease-out;
     }
@@ -349,7 +350,6 @@ $wafer-container-padding: .75rem;
             font-size: .875em;
             position: relative;
             z-index: 1;
-            background-color: transparent;
         }
     }
 }
@@ -426,7 +426,7 @@ $borderRadius2: var(--border-radius2);
                 border-radius: var(--border-radius1);
                 padding: 0 .5em;
                 font-size: .75rem;
-                font-weight: var(--fw-bold);
+                color: var(--m-text-tirtiary);
             }
 
             // Date and category emojis

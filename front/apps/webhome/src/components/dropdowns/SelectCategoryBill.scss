@@ -54,8 +54,8 @@
 
     &>div:first-child svg {
         position: absolute;
-        left: 1.125em;
-        top: 1em;
+        left: .75em;
+        top: .9em;
         opacity: .7;
     }
 
@@ -84,8 +84,8 @@
 
     input {
         background-color: var(--icon-hover-light-gray);
-        padding: .25em 0em;
-        padding-left: 2.25em;
+        padding: .125em 0em;
+        padding-left: 1.75em;
     }
 
     .option,

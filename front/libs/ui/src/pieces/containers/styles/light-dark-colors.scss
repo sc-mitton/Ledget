@@ -96,7 +96,7 @@
         --window-rgb: 5, 5, 5;
         --header-background: color-mix(in srgb, var(--main-hlight), var(--window) 75%);
 
-        --inner-window: hsl(0, 0%, 7%);
+        --inner-window: hsl(0, 0%, 6%);
         --inner-window2: hsl(0, 0%, 9%);
         --inner-window-rgb: 13, 13, 13;
         --overlay: hsl(0, 0%, 10%);
@@ -156,6 +156,7 @@
 
         --subtle-border-color: rgb(255, 255, 255, .07);
         --institution-logo-border: solid 1px rgb(255, 255, 255, .3);
+        --toast-border: 1px solid var(--subtle-border-color);
 
         --input-focus-drop-shadow: 0 0 0 1px var(--input-focus-dropshadow-color);
 
@@ -219,12 +220,12 @@
         --window-rgb: 250, 250, 250;
         --window-border: hsl(0, 0%, 92%);
 
-        --inner-window: hsl(0, 0%, 94%);
+        --inner-window: hsl(0, 0%, 93%);
         --inner-window2: hsl(0, 0%, 98%);
         --inner-window-rgb: 246, 246, 246;
         --overlay: hsl(0, 0%, 20%);
 
-        --wafer-background: rgb(255, 255, 255);
+        --wafer-background: hsl(0, 0%, 100%);
         --dropdown-background: hsl(0, 0%, 98%);
         --dropdown-item-background: hsl(0, 0%, 90%);
 
@@ -279,6 +280,7 @@
 
         --subtle-border-color: rgb(0, 0, 0, .07);
         --institution-logo-border: solid 1px rgb(0, 0, 0, .2);
+        --toast-border: transparent;
 
         --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
 

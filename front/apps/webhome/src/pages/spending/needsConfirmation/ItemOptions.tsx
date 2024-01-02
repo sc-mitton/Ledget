@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 
 import { DropdownItem } from '@ledget/ui'
-import { Split, Info as DetailsIcon, Snooze } from "@ledget/media"
+import { Split, Info as DetailsIcon } from "@ledget/media"
 
 interface ItemOptionsMenuProps {
     handlers: (() => void)[]

@@ -45,13 +45,13 @@ export const AbsPosMenu = ({ pos, show, setShow, topArrow = true, children }:
       style={{
         position: 'absolute',
         top: pos ? pos.y + 40 : 0,
-        left: pos ? pos.x + 8 : 0,
+        left: pos ? pos.x : 0,
       }}
     >
       <DropDownDiv
-        placement={'middle'}
+        placement={'right'}
         visible={show}
-        className={`options-dropdown ${topArrow ? 'top-arrow' : ''}`}
+        className={`options-dropdown ${topArrow ? 'arrow-right' : ''}`}
         style={{ zIndex: 10 }}
         ref={menuRef}
       >

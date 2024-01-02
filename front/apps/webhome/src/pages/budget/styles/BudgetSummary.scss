@@ -1,7 +1,7 @@
 $base-stats-font-size: clamp(1rem, calc(.25rem + .25vw), 1.125rem);
 $teaser-stats-margin-top: .125em;
 $header-font-size: clamp(.8125rem, calc(.75em + .25vw), 1rem);
-$header-padding-light: .75em calc(.75em + .5vw);
+$header-padding-light: .5em calc(.75em + .5vw) .75em calc(.75em + .5vw);
 $header-padding-heavier: calc(.25em + .25vw) calc(.75em + .75vw);
 $header-gap: calc(.75em + .125vw);
 

@@ -124,8 +124,19 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 url: 'transactions/sync',
                 params: params,
                 method: 'POST',
-                invalidatesTags: ['Transactions']
             }),
+            invalidatesTags: (result, error, arg) => {
+                if (!result) {
+                    return []
+                } else if (result.added > 0 || result.modified > 0 || result.removed > 0) {
+                    return [
+                        { type: 'Transaction', id: 'LIST' },
+                        { type: 'UnconfirmedTransaction', id: 'LIST' },
+                    ]
+                } else {
+                    return []
+                }
+            }
         }),
         getUnconfirmedTransactions: builder.query<GetTransactionsResponse, GetTransactionsParams>({
             query: (params) => ({
@@ -207,7 +218,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query: (params) => ({
                 url: 'transactions/count',
                 params: params,
-                providesTags: ['TransactionCout']
+                providesTags: ['TransactionCount']
             }),
         }),
         getMerchants: builder.query<string[], void>({

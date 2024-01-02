@@ -456,7 +456,7 @@ const NeedsConfirmationWindow = () => {
     const handleEllipsis = useCallback((e: any, item: Transaction) => {
         const buttonRect = e.target.closest('button').getBoundingClientRect()
         setMenuPos({
-            x: buttonRect.left - newItemsRef.current!.getBoundingClientRect().left || 0,
+            x: buttonRect.right - newItemsRef.current!.getBoundingClientRect().left + 14 || 0,
             y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 4 || 0,
         })
         setFocusedItem(item)
@@ -466,7 +466,7 @@ const NeedsConfirmationWindow = () => {
     const handleBillCatClick = useCallback((e: any, item: Transaction) => {
         const buttonRect = e.target.closest('button').getBoundingClientRect()
         setBillCatSelectPos({
-            x: ((buttonRect.left + buttonRect.right) / 2) - newItemsRef.current!.getBoundingClientRect().left || 0,
+            x: buttonRect.right - newItemsRef.current!.getBoundingClientRect().left || 0,
             y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 12 || 0,
         })
         setFocusedItem(item)

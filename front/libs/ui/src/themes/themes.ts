@@ -91,8 +91,8 @@ export const useStripeCardTheme = ({ focus, isDark }: { focus: boolean, isDark?:
             },
             iconColor:
                 isDark
-                    ? focus ? '#7b97ff' : '#595959'
-                    : focus ? '#0000ff' : '#767676',
+                    ? focus ? '#7b97ff' : '#cbcbcb'
+                    : focus ? '#2759d8' : '#767676',
             ':disabled': {
                 color: '#767676',
                 iconColor: '#767676'

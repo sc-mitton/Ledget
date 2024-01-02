@@ -139,7 +139,7 @@ function SelectCategoryBillBody(props: I) {
                     ? <LoadingRingDiv loading={true} style={{ height: '2em' }} />
                     : <Combobox.Options className="options" static>
                         {filteredBillCats.map((billcat) => (
-                            <Combobox.Option key={billcat.id} value={billcat} as={Fragment}>
+                            <Combobox.Option key={billcat.id} value={billcat}>
                                 {({ active, selected }) => (
                                     <BillCatLabel
                                         slim={true}

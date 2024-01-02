@@ -9,8 +9,8 @@
 .toast {
     background-color: var(--window);
     border-radius: calc(var(--border-radius2) + 2px);
-    border: 1px solid var(--subtle-border-color);
-    box-shadow: var(--window-box-shadow);
+    border: var(--toast-border);
+    box-shadow: var(--low-elevation-drop-shadow);
     display: flex;
     align-items: center;
     gap: .625em;
@@ -19,16 +19,26 @@
     overflow: hidden;
 }
 
-.toast.has-loading-bar::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2.5px;
-    background-color: var(--m-text);
-    animation: loading-bar calc(var(--toast-timer) - 300ms) linear forwards;
-    opacity: .2;
+.toast {
+    &.error.has-loading-bar::after {
+        background-color: var(--mute-red);
+        opacity: .5;
+    }
+
+
+    &.has-loading-bar::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2.5px;
+        background-color: var(--main-hlight);
+        animation: loading-bar calc(var(--toast-timer) - 300ms) linear forwards;
+        mask-image: linear-gradient(to right, transparent, black 20%, black 97%, transparent);
+    }
 }
+
+
 
 .toast.error::after {
     background-color: var(--alert-red);

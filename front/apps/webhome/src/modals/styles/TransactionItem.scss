@@ -51,13 +51,13 @@
     }
 
     .pending {
-        margin-top: .25em;
+        margin-top: .5em;
         text-align: center;
-        font-size: 1em;
-        background-color: var(--icon-light-gray);
+        font-size: .8rem;
+        background-color: var(--inner-window);
         border-radius: var(--border-radius1);
         padding: 0 .5em;
-        font-weight: var(--fw-bold);
+        color: var(--m-text-tirtiary);
     }
 }
 
