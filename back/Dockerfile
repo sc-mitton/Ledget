@@ -28,6 +28,8 @@ COPY --from=base /usr/local/bin/ /usr/local/bin/
 
 WORKDIR /ledgetback
 COPY ./ledgetback .
+RUN mkdir -p ./ledgetback/logs && touch ./ledgetback/logs/stripe_logs && touch ./ledgetback/logs/ledget_logs
+
 
 RUN chown -R python:python /ledgetback
 USER python
