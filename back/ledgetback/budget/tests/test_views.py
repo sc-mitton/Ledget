@@ -87,7 +87,7 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
         self.assertEqual(bill.day, payload['day'])
 
         reminders = bill.reminders.all()
-        self.assertEqual(reminders.count(), payload['reminders'].__len__())
+        self.assertEqual(reminders.count(), len(payload.get('reminders'), []))
 
         bill.delete()
 
@@ -109,7 +109,7 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
         for bill in bills:
             self.assertEqual(
                 bill.reminders.count(),
-                len(payload[i]['reminders'])
+                len(payload[i].get('reminders', []))
             )
             i += 1
 
