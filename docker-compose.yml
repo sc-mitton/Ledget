@@ -139,9 +139,14 @@ services:
     image: oryd/ory
     ports:
       - 4000:4000
-    env_file:
-      - ./secrets/.env.ory
-    command: tunnel --project reverent-lewin-bqqp1o2zws --allowed-cors-origins https://localhost:3000 https://localhost:3001
+    secrets:
+      - ory_tunnel_key
+    entrypoint: ''
+    command: >
+      sh -c "
+        export ORY_API_KEY=\$(cat /run/secrets/ory_tunnel_key) &&
+        ory tunnel --project reverent-lewin-bqqp1o2zws --allowed-cors-origins https://localhost:3000 https://localhost:3001
+      "
 volumes:
   dev-db-data:
   doker-events:
@@ -174,5 +179,7 @@ secrets:
     file: ./secrets/ory_hook_api_key
   ory_api_key:
     file: ./secrets/ory_api_key
+  ory_tunnel_key:
+    file: ./secrets/ory_tunnel_key
   jwks.json:
     file: ./secrets/dev_jwks.json
