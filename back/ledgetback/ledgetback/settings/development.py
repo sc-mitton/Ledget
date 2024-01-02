@@ -66,7 +66,7 @@ ORY_AUTH_SCHEME = 'Api-Key'
 
 # Oathkeeper
 oathkeeper_endpoint = 'http://oathkeeper:4456/.well-known/jwks.json'
-if any(['test', 'test_coverage', 'migrate', 'makemigrations'] in sys.argv):
+if any(a in sys.argv for a in ['test', 'test_coverage', 'migrate', 'makemigrations']):
     OATHKEEPER_PUBLIC_KEY=None
 else:
     jwks = requests.get(oathkeeper_endpoint).json()['keys']
