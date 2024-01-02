@@ -7,4 +7,3 @@ exclude =
     env,
     .env
 max-line-length = 88
-

@@ -377,7 +377,6 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
                 Q(amount_spent__isnull=True) | Q(amount_spent=0),
                 removed_on__isnull=False)
 
-        print('yearly_category_anchor, end', yearly_category_anchor, end)
         yearly_qset = yearly_qset \
             .annotate(amount_spent=Sum(
                 F('transactioncategory__transaction__amount') *

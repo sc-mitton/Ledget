@@ -91,7 +91,6 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
         try:
             alerts = self._get_or_create_alerts(
                 instance, validated_data.pop('alerts', []))
-            print('alerts', alerts)
 
             for field, value in validated_data.items():
                 setattr(instance, field, value)
