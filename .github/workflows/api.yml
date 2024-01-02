@@ -24,8 +24,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     - name: Test
-      run: |
-        docker-compose -f docker-compose.test.yml run --rm ledgetback sh -c "python manage.py test"
+      run: docker-compose -f docker-compose.test.yml run --rm ledgetback sh -c "python manage.py test"
     - name: Lint
-      run: |
-        docker-compose -f docker-compose.test.yml run --rm ledgetback sh -c "flake8"
+      run: docker-compose -f docker-compose.test.yml run --rm ledgetback sh -c "flake8"
