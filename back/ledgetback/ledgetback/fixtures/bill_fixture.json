@@ -1,0 +1,162 @@
+[
+    {
+        "model": "budget.bill",
+        "pk": "1fd201c1-d962-40f2-945f-78773c6467e9",
+        "fields": {
+            "name": "phone",
+            "emoji": "📱",
+            "created": "2023-11-15T05:19:31.296Z",
+            "removed_on": "2023-11-15T05:44:51.155Z",
+            "period": "month",
+            "lower_amount": null,
+            "upper_amount": 4000,
+            "day": 22,
+            "week": null,
+            "week_day": null,
+            "month": null,
+            "skipped": false,
+            "year": null,
+            "reminders": []
+        }
+    },
+    {
+        "model": "budget.bill",
+        "pk": "624826f3-80e2-4cae-9812-5347c59476d3",
+        "fields": {
+            "name": "utilities",
+            "emoji": "🔌",
+            "created": "2023-10-04T17:48:41.942Z",
+            "removed_on": "2023-11-14T06:41:07.958Z",
+            "period": "month",
+            "lower_amount": 2000,
+            "upper_amount": 4000,
+            "day": 17,
+            "week": null,
+            "week_day": null,
+            "month": null,
+            "skipped": false,
+            "year": null,
+            "reminders": []
+        }
+    },
+    {
+        "model": "budget.bill",
+        "pk": "7f06e564-17cd-44f2-a489-10a86cccdaf5",
+        "fields": {
+            "name": "rent",
+            "emoji": "🏠",
+            "created": "2023-10-04T17:48:41.942Z",
+            "removed_on": null,
+            "period": "month",
+            "lower_amount": null,
+            "upper_amount": 140000,
+            "day": 1,
+            "week": null,
+            "week_day": null,
+            "month": null,
+            "skipped": false,
+            "year": null,
+            "reminders": []
+        }
+    },
+    {
+        "model": "budget.bill",
+        "pk": "a1d5b42e-a27b-4f4f-b398-5ba324d7e167",
+        "fields": {
+            "name": "utilities",
+            "emoji": "🔌",
+            "created": "2023-11-15T05:19:00.119Z",
+            "removed_on": "2023-11-15T05:43:01.747Z",
+            "period": "month",
+            "lower_amount": 4000,
+            "upper_amount": 10000,
+            "day": 17,
+            "week": null,
+            "week_day": null,
+            "month": null,
+            "skipped": false,
+            "year": null,
+            "reminders": []
+        }
+    },
+    {
+        "model": "budget.bill",
+        "pk": "d8da35bd-1444-4da9-9237-4b6ea6b5aa3d",
+        "fields": {
+            "name": "phone",
+            "emoji": "📱",
+            "created": "2023-11-15T05:46:43.981Z",
+            "removed_on": "2023-11-15T05:46:50.716Z",
+            "period": "month",
+            "lower_amount": null,
+            "upper_amount": 3750,
+            "day": 17,
+            "week": null,
+            "week_day": null,
+            "month": null,
+            "skipped": false,
+            "year": null,
+            "reminders": []
+        }
+    },
+    {
+        "model": "budget.bill",
+        "pk": "f161ccdf-0576-4dd1-bcdb-d05695672e08",
+        "fields": {
+            "name": "utilities",
+            "emoji": "🔌",
+            "created": "2023-11-15T17:48:57.328Z",
+            "removed_on": null,
+            "period": "month",
+            "lower_amount": 4000,
+            "upper_amount": 5000,
+            "day": 17,
+            "week": null,
+            "week_day": null,
+            "month": null,
+            "skipped": false,
+            "year": null,
+            "reminders": []
+        }
+    },
+    {
+        "model": "budget.bill",
+        "pk": "f2a89277-6748-4f89-a449-e983545e107a",
+        "fields": {
+            "name": "phone",
+            "emoji": "📱",
+            "created": "2023-11-15T05:45:50.895Z",
+            "removed_on": "2023-11-15T05:46:04.738Z",
+            "period": "month",
+            "lower_amount": null,
+            "upper_amount": 4000,
+            "day": 17,
+            "week": null,
+            "week_day": null,
+            "month": null,
+            "skipped": false,
+            "year": null,
+            "reminders": []
+        }
+    },
+    {
+        "model": "budget.bill",
+        "pk": "fd165345-22fa-499d-adb4-a8cacf6cbb9b",
+        "fields": {
+            "name": "utilities",
+            "emoji": "🔌",
+            "created": "2023-11-15T17:48:27.417Z",
+            "removed_on": "2023-11-15T17:48:36.941Z",
+            "period": "month",
+            "lower_amount": 4000,
+            "upper_amount": 5250,
+            "day": 16,
+            "week": null,
+            "week_day": null,
+            "month": null,
+            "skipped": false,
+            "year": null,
+            "reminders": []
+        }
+    }
+]

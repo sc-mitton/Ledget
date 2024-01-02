@@ -1,0 +1,42 @@
+[
+    {
+        "model": "core.user",
+        "pk": "5ccddb2e-55e3-4874-9724-991b145fe6a3",
+        "fields": {
+            "is_active": true,
+            "account_flag": null,
+            "is_onboarded": true,
+            "is_co_owner": false,
+            "is_verified": true,
+            "password_last_changed": null,
+            "created_on": "2023-10-04T15:32:33.462Z",
+            "canceled_on": null,
+            "mfa_method": null,
+            "mfa_enabled_on": null,
+            "last_otp_verification": null,
+            "phone_number": null,
+            "phone_country_code": null,
+            "yearly_anchor": null
+        }
+    },
+    {
+        "model": "core.user",
+        "pk": "828ba195-c936-49ce-bae2-8f27c61bbe22",
+        "fields": {
+            "is_active": false,
+            "account_flag": null,
+            "is_onboarded": true,
+            "is_co_owner": false,
+            "is_verified": true,
+            "password_last_changed": "2023-09-26T18:32:26.306Z",
+            "created_on": "2023-10-01T02:58:02.854Z",
+            "canceled_on": "2023-10-01T05:32:29.781Z",
+            "mfa_method": "totp",
+            "mfa_enabled_on": "2023-09-28T19:00:03.587Z",
+            "last_otp_verification": null,
+            "phone_number": null,
+            "phone_country_code": null,
+            "yearly_anchor": null
+        }
+    }
+]

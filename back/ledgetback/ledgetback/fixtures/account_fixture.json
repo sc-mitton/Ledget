@@ -1,0 +1,41 @@
+[
+    {
+        "model": "financials.account",
+        "pk": "QA7dkp9vLLCk36A4P4mdCwq1y37k4nfOArgqD",
+        "fields": {
+            "plaid_item": "RvKwAXV0DDiJjLvaeayKHOBvwzYjB9sygBzLY",
+            "institution": "ins_25",
+            "name": "Savings Account",
+            "mask": "4735",
+            "subtype": "savings",
+            "type": "depository",
+            "verification_status": null
+        }
+    },
+    {
+        "model": "financials.account",
+        "pk": "RvKwAXV0DDiJjLvaeayKHOB7Ygo0qmfeX3b7n",
+        "fields": {
+            "plaid_item": "RvKwAXV0DDiJjLvaeayKHOBvwzYjB9sygBzLY",
+            "institution": "ins_25",
+            "name": "Spending Account",
+            "mask": "3638",
+            "subtype": "checking",
+            "type": "depository",
+            "verification_status": null
+        }
+    },
+    {
+        "model": "financials.account",
+        "pk": "nBrKANoPMMTZ6OPazayATRPpnw3YAbtB195vX",
+        "fields": {
+            "plaid_item": "RvKwAXV0DDiJjLvaeayKHOBvwzYjB9sygBzLY",
+            "institution": "ins_25",
+            "name": "Money Market Savings",
+            "mask": "4948",
+            "subtype": "money market",
+            "type": "depository",
+            "verification_status": null
+        }
+    }
+]

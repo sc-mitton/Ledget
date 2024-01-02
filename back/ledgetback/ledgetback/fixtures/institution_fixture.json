@@ -1,0 +1,24 @@
+[
+    {
+        "model": "financials.institution",
+        "pk": "ins_10",
+        "fields": {
+            "name": "American Express",
+            "logo": "logos/logo_ins_10_9Q0rdSJ.png",
+            "primary_color": "#007cc3",
+            "url": "https://www.americanexpress.com/",
+            "oath": null
+        }
+    },
+    {
+        "model": "financials.institution",
+        "pk": "ins_25",
+        "fields": {
+            "name": "Ally Bank",
+            "logo": "logos/logo_ins_25_dsGTGqW.png",
+            "primary_color": "#631f5f",
+            "url": "https://www.ally.com",
+            "oath": null
+        }
+    }
+]

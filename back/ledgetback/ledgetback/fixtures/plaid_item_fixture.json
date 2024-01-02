@@ -1,0 +1,15 @@
+[
+    {
+        "model": "financials.plaiditem",
+        "pk": "RvKwAXV0DDiJjLvaeayKHOBvwzYjB9sygBzLY",
+        "fields": {
+            "institution": "ins_25",
+            "user": "5ccddb2e-55e3-4874-9724-991b145fe6a3",
+            "access_token": "access-development",
+            "cursor": "cursor-development",
+            "login_required": false,
+            "new_accounts_available": false,
+            "permission_revoked": false
+        }
+    }
+]
