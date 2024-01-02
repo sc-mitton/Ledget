@@ -237,7 +237,6 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
     const [addNote] = useAddNoteMutation()
     const [updateDeleteNote] = useUpdateDeleteNoteMutation()
     const [showHeader, setShowHeader] = useState(false)
-    const [isDirty, setIsDirty] = useState(false)
 
     const handleAddSubmit = (text: string) => {
         if (text) {
@@ -248,8 +247,8 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
     }
 
     const handleModifySubmit = (note: Note, text: string) => {
-        if (text) {
-            isDirty && updateDeleteNote({
+        if (note.text !== text) {
+            updateDeleteNote({
                 transactionId: item.transaction_id,
                 noteId: note.id,
                 text
@@ -273,9 +272,14 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                     {item.notes.filter(note => !note.is_current_users).length > 0 &&
                         <span>{'avatar'}</span>}
                     {item.notes.filter(note => note.is_current_users).map((note) => (
-                        <input
-                            onChange={() => setIsDirty(true)}
-                            type="text"
+                        <textarea
+                            onKeyDown={(e: any) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault()
+                                    handleModifySubmit(note, e.target.value)
+                                    e.target.blur()
+                                }
+                            }}
                             key={note.id}
                             defaultValue={note.text}
                             onBlur={(e) => handleModifySubmit(note, e.target.value)}
@@ -284,9 +288,15 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                 </div>
                 :
                 <div>
-                    <input
+                    <textarea
                         onBlur={(e) => handleAddSubmit(e.target.value)}
-                        type="text"
+                        onKeyDown={(e: any) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault()
+                                handleAddSubmit(e.target.value)
+                                e.target.blur()
+                            }
+                        }}
                         placeholder="Add a note..."
                     />
                 </div>

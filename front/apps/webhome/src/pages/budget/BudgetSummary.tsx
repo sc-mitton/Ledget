@@ -243,9 +243,7 @@ const DropDown = () => {
                     <div style={{ position: 'relative' }}>
                         <DropDownDiv
                             placement='right'
-                            arrow='right'
                             visible={open}
-                            className="right2"
                         >
                             <Menu.Items static>
                                 <Wrapper

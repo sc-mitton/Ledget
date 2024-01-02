@@ -6,7 +6,7 @@
     background-color: var(--btn-gray);
     border-radius: calc(var(--border-radius2) + 1px);
     position: relative;
-    padding: .125em;
+    padding: .125em .125em .15em .125em;
 
     &>button {
         flex: 1;

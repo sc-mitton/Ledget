@@ -16,8 +16,9 @@ $padding: 1.5em;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: var(--inner-window2);
+    background-color: var(--window);
     border-radius: var(--border-radius3);
+    border: 1px solid var(--window-border);
 
     &>div {
         flex: 1;

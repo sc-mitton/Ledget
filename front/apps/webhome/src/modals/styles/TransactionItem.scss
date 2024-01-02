@@ -91,7 +91,7 @@
         &:nth-last-child(1) {
             display: grid;
             column-gap: 1.5em;
-            row-gap: .5em;
+            row-gap: .25em;
             grid-template-columns: minmax(0, auto) 1fr;
 
             #account-info-cell {
@@ -106,7 +106,7 @@
             }
 
             &>div:nth-child(2n+1) {
-                font-weight: var(--fw-regular);
+                font-weight: var(--fw-bold);
             }
 
             &>div:nth-child(2n),
@@ -124,7 +124,7 @@
             &>div {
 
                 &:first-child {
-                    font-weight: var(--fw-regular);
+                    font-weight: var(--fw-bold);
                     margin-right: .25em;
                 }
             }
@@ -140,7 +140,7 @@
                 grid-column: 1/span 2;
             }
 
-            input {
+            textarea {
                 color: var(--m-text-secondary);
                 width: 100%;
                 padding: 0;

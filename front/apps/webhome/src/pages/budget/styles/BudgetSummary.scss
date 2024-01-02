@@ -1,7 +1,7 @@
 $base-stats-font-size: clamp(1rem, calc(.25rem + .25vw), 1.125rem);
 $teaser-stats-margin-top: .125em;
 $header-font-size: clamp(.8125rem, calc(.75em + .25vw), 1rem);
-$header-padding-light: .125em calc(.75em + .5vw);
+$header-padding-light: .75em calc(.75em + .5vw);
 $header-padding-heavier: calc(.25em + .25vw) calc(.75em + .75vw);
 $header-gap: calc(.75em + .125vw);
 
@@ -106,7 +106,7 @@ $header-gap: calc(.75em + .125vw);
     position: relative;
 
     &:not(:focus-within):not(:hover) .header {
-        border-radius: var(--border-radius2);
+        border-radius: var(--border-radius25);
     }
 
     &.expanded {
@@ -123,7 +123,6 @@ $header-gap: calc(.75em + .125vw);
         @include header-padding(light);
         transform: scale(1);
         display: flex;
-        align-items: baseline;
         height: 100%;
         @include header-transitions(out);
 
@@ -134,7 +133,6 @@ $header-gap: calc(.75em + .125vw);
 
         // All statistic elements
         &>div {
-            margin-top: $teaser-stats-margin-top;
             display: flex;
             align-items: baseline;
             gap: .25em;

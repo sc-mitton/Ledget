@@ -266,7 +266,7 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
 
     const TotalRow = ({ selectedIndex }: { selectedIndex: number }) => (
         <div className='row total'>
-            <div>Total</div>
+            <div><h4>Total</h4></div>
             <div>
                 <DollarCents
                     value={
@@ -592,9 +592,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                     <div style={{ position: 'absolute', right: '0' }}>
                         <DropDownDiv
                             placement='right'
-                            arrow='right'
                             visible={open}
-                            className='right'
                         >
                             <Menu.Items static>
                                 <Menu.Item as={Fragment}>
