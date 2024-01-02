@@ -145,28 +145,31 @@ class BillListCreateSerializer(serializers.ListSerializer):
 
         return instances
 
+    @transaction.atomic
     def _create_bills(self, validated_data):
         reminders = self._get_reminder_objects(validated_data)
 
-        bills_reminder_map = {reminder_id: [] for reminder_id in reminders}
+        reminder_bills_map = {id: [] for id in reminders.keys()}
         new_bill_instances = []
 
         for data in validated_data:
-            reminder_ids = [reminder.get('id', None)
-                            for reminder in data.pop('reminders', [])]
+            reminder_ids = [reminder.get('id')
+                            for reminder in data.pop('reminders', [])
+                            if reminder.get('id')]
             new_bill_instances.append(Bill(**data))
 
             # Add the bill to all of the reminders in the map
-            for id in reminder_ids:
-                bills_reminder_map[id].append(new_bill_instances[-1])
+            for r_id in reminder_ids:
+                reminder_bills_map[r_id].append(new_bill_instances[-1])
 
+        # DB operations
         Bill.objects.bulk_create(new_bill_instances)
-        for reminder_id, bills in bills_reminder_map.items():
-            reminders[reminder_id].bills.add(*bills)
+        for r_id, bills in reminder_bills_map.items():
+            reminders[r_id].bills.add(*bills)
 
         return new_bill_instances
 
-    def _get_reminder_objects(self, validated_data) -> dict:
+    def _get_reminder_objects(self, validated_data):
         reminder_ids = []
         for data in validated_data:
             for reminder in data.get('reminders', []):
