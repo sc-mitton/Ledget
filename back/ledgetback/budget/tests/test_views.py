@@ -71,7 +71,6 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
     @timeit
     def test_bill_creation(self):
         payload = single_bill_creation_payload
-        print('payload', payload)
         response = self.client.post(
             reverse('bills-list'),
             data=json.dumps(payload),

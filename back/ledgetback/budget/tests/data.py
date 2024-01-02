@@ -37,11 +37,11 @@ single_bill_creation_payload = {
     'day': 1,
     'lower_amount': 1000,
     'upper_amount': 10000,
-    'reminders': [
-        {'id': str(reminder.id)
-         for reminder in reminders[:number_of_reminders // 2]}
-    ]
 }
+if number_of_reminders > 0:
+    single_bill_creation_payload['reminders'] = [
+        {'id': str(reminder.id)
+         for reminder in reminders[:number_of_reminders // 2]}]
 
 
 multiple_bill_creation_payload = [
@@ -52,10 +52,12 @@ multiple_bill_creation_payload = [
         'day': 1,
         'lower_amount': 1000,
         'upper_amount': 10000,
-        'reminders': [
-            {'id': str(reminder.id)
-             for reminder in reminders[:number_of_reminders // 2]}
-        ]
     }
     for i in range(1, 20)
 ]
+
+if number_of_reminders > 0:
+    for i in range(len(multiple_bill_creation_payload)):
+        multiple_bill_creation_payload[i]['reminders'] = [
+            {'id': str(reminder.id)
+             for reminder in reminders[:number_of_reminders // 2]}]
