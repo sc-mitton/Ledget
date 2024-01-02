@@ -37,8 +37,10 @@ services:
       - postgres_user
       - postgres_password
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
     ports:
       - 8000:8000
 volumes:
