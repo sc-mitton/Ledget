@@ -8,7 +8,9 @@
 
 
 
-https://github.com/sc-mitton/Ledget/assets/72230794/e637a250-5597-4778-b76c-4159cae9029c
+![alt-text](https://github.com/sc-mitton/Ledget/blob/assets/screenshot1.png)
+
+![alt-text](https://github.com/sc-mitton/Ledget/blob/assets/screenshot2.png)
 
 
 ## Introduction
