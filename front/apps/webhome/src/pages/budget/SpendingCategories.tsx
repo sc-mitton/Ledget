@@ -1,4 +1,14 @@
-import React, { FC, memo, Fragment, useMemo, useState, useRef, useEffect } from 'react'
+import React, {
+    FC,
+    memo,
+    Fragment,
+    useMemo,
+    useState,
+    useRef,
+    useEffect,
+    createContext,
+    useContext
+} from 'react'
 
 import Big from 'big.js'
 import { Tab } from '@headlessui/react'
@@ -55,6 +65,27 @@ import {
 import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
+const categoryDetailContext = createContext<{
+    detailedCategory?: Category,
+    setDetailedCategory: React.Dispatch<React.SetStateAction<Category | undefined>>
+} | undefined>(undefined)
+
+const useCategoryDetailContext = () => {
+    const context = useContext(categoryDetailContext)
+    if (context === undefined) {
+        throw new Error('useCategoryDetailContext must be used within a CategoryDetailProvider')
+    }
+    return context
+}
+const CategoryDetailProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [detailedCategory, setDetailedCategory] = useState<Category>()
+
+    return (
+        <categoryDetailContext.Provider value={{ detailedCategory, setDetailedCategory }}>
+            {children}
+        </categoryDetailContext.Provider>
+    )
+}
 
 const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) => {
     const navigate = useNavigate()
@@ -101,7 +132,7 @@ const Column: FC<React.HTMLProps<HTMLDivElement>> = ({ children }) => {
 }
 
 const Row = ({ category }: { category: Category }) => {
-    const [searchParams, setSearchParams] = useSearchParams()
+    const { setDetailedCategory } = useCategoryDetailContext()
 
     return (
         <div className={`row ${category.period}`}>
@@ -112,8 +143,7 @@ const Row = ({ category }: { category: Category }) => {
                     emoji={category.emoji}
                     color={category.period === 'year' ? 'green' : 'blue'}
                     onClick={() => {
-                        searchParams.set('category', category.id)
-                        setSearchParams(searchParams)
+                        setDetailedCategory(category)
                     }}
                 />
             </div>
@@ -197,7 +227,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
         ? dayjs(oldest_yearly_category_created).subtract(1, 'year').toDate()
         : dayjs(oldest_yearly_category_created).toDate()
     const yearly_end = yearly_start
-        ? new Date(yearly_start.getFullYear() + 1, yearly_start.getMonth(), 1)
+        ? new Date(yearly_start.getFullYear() + 1, yearly_start.getMonth() - 1, 1)
         : null
 
     return (
@@ -745,7 +775,6 @@ const CategoryDetail = ({ category }: { category: Category }) => {
 }
 
 const SpendingCategories = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
     const [fetchCategories, { isLoading, isUninitialized }] = useLazyGetCategoriesQuery()
     const [isTabView, setIsTabView] = useState(false)
     const [skeletonRowCount, setSkeletonRowCount] = useState(5)
@@ -753,6 +782,7 @@ const SpendingCategories = () => {
     const { start, end } = useGetStartEndQueryParams()
     const loaded = useLoaded(1000)
     const categories = useAppSelector(selectCategories)
+    const { detailedCategory, setDetailedCategory } = useCategoryDetailContext()
 
     useEffect(() => {
         if (start && end)
@@ -794,7 +824,7 @@ const SpendingCategories = () => {
             ref={ref}
         >
             <AnimatePresence mode='wait'>
-                {!searchParams.get('category')
+                {!detailedCategory
                     ?
                     <FadeInOutDiv id="all-categories-table" immediate={!loaded} key="all-categories">
                         {(isLoading || isUninitialized)
@@ -804,23 +834,19 @@ const SpendingCategories = () => {
                     </FadeInOutDiv>
                     :
                     <FadeInOutDiv key="category-detail" className="category-detail--container">
-                        <CategoryDetail
-                            category={categories?.find(category =>
-                                category.id === searchParams.get('category'))!}
-                        />
+                        <CategoryDetail category={detailedCategory} />
                     </FadeInOutDiv>
                 }
             </AnimatePresence>
             <AnimatePresence mode='wait'>
-                {!searchParams.get('category')
+                {!detailedCategory
                     ? <FadeInOutDiv id="category-filters--container" key="all-categories">
                         <Footer />
                     </FadeInOutDiv>
                     : <FadeInOutDiv key="category-detail">
                         <CloseButton
                             onClick={() => {
-                                searchParams.delete('category')
-                                setSearchParams(searchParams)
+                                setDetailedCategory(undefined)
                             }}
                         />
                     </FadeInOutDiv>
@@ -830,4 +856,10 @@ const SpendingCategories = () => {
     )
 }
 
-export default SpendingCategories
+export default function () {
+    return (
+        <CategoryDetailProvider>
+            <SpendingCategories />
+        </CategoryDetailProvider>
+    )
+}
