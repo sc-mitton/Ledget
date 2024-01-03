@@ -188,8 +188,6 @@ const DayPicker = () => {
     const [activeDay, setActiveDay] = useState<typeof day>(0)
     const ref = useRef<HTMLDivElement>(null)
 
-    console.log('numberOfDays', numberOfDays)
-
     const Day = ({ dayNumber }: { dayNumber: NonNullable<typeof day> }) => (
         <td key={dayNumber}>
             <div

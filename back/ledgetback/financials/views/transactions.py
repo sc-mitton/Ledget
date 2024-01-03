@@ -320,7 +320,12 @@ class TransactionViewSet(ModelViewSet):
     @action(detail=False, methods=['get'], url_path='count', url_name='count',
             permission_classes=[IsAuthedVerifiedSubscriber])
     def count(self, request, *args, **kwargs):
-        qset = self.get_queryset()
+        qset = Transaction.objects.filter(**self._exract_filter_args())
+
+        if self.request.query_params.get('confirmed') == 'true':
+            qset = qset.filter(
+                Q(bill__isnull=False) | Q(transactioncategory__isnull=False))
+
         return Response({'count': qset.count()})
 
     def _get_recurring_transactions(self, request):
@@ -357,8 +362,8 @@ class TransactionViewSet(ModelViewSet):
             return {}
 
         try:
-            start = datetime.fromtimestamp(int(start), tz=pytz.utc)
-            end = datetime.fromtimestamp(int(end), tz=pytz.utc)
+            start = datetime.fromtimestamp(int(start), tz=pytz.utc).date()
+            end = datetime.fromtimestamp(int(end), tz=pytz.utc).date()
         except ValueError:
             raise ValidationError('Invalid date format')
 

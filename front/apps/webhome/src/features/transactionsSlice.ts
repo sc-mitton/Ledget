@@ -421,7 +421,7 @@ export const selectUnconfirmedTransactions = createSelector(
     [selectUnconfirmed, selectDateYear],
     (unconfirmed, date) => unconfirmed.filter(item => {
         const itemDate = new Date(item.datetime || item.date)
-        return itemDate.getFullYear() === date.year && itemDate.getMonth() + 1 === date.month
+        return itemDate.getUTCFullYear() === date.year && itemDate.getUTCMonth() + 1 === date.month
     })
 )
 

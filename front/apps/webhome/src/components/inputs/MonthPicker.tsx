@@ -157,10 +157,6 @@ const MonthPicker = () => {
             setPickerYear(pickerYear - 1)
     }
 
-    useEffect(() => {
-        console.log('pickerYear', pickerYear)
-    }, [pickerYear])
-
     return (
         <div id="month-picker" ref={monthPickerRef}>
             <h2>{monthMappings[parseInt(searchParams.get('month') || '1') - 1][1]} {searchParams.get('year')}</h2>

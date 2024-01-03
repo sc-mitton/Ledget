@@ -116,10 +116,6 @@ const Gutter = () => {
         }
     })
 
-    useEffect(() => {
-        console.log(location.pathname)
-    }, [location.pathname])
-
     const navProps = useSpring({
         flex: open ? 1 : 0,
         ...(screenSize === 'small'
