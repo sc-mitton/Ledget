@@ -23,7 +23,7 @@
     --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 2px 14px;
     --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0 2px 16px;
 
-    --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px 6px 0px;
+    --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px 1px 1px;
     --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 3px 12px;
     --input-drop-shadow: var(--input-drop-shadow-color) 0px 1px 0px .3px;
     --dropdown-box-shadow: var(--dropdown-box-shadow-color) 0px 3px 12px;
@@ -234,7 +234,7 @@
         --input-border-color: rgba(80, 80, 80, 0.08);
 
         // Text
-        --m-text: var(--main-dark5);
+        --m-text: hsl(0, 0%, 30%);
         --m-invert-text: hsl(0, 0%, 97%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), white 20%);
         --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 40%);
@@ -252,7 +252,7 @@
 
         // Icons & Buttons
         --icon-full: var(--m-text);
-        --icon-light-gray: hsl(0, 0%, 88%);
+        --icon-light-gray: hsl(0, 0%, 90%);
         --icon-hover-light-gray: hsl(0, 0%, 85%);
         --icon-hover-gray: hsl(0, 0%, 69%);
 
