@@ -50,3 +50,4 @@ sketch.ipynb
 **/token.json
 htmlcov
 **/.coverage
+**/.nx

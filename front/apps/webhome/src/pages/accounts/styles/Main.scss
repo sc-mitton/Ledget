@@ -12,6 +12,7 @@ $wafer-container-padding: .75rem;
     padding-bottom: 0;
 
     .account-wafers--header {
+        display: inline-block;
         font-size: 1.125rem;
 
         button {
@@ -35,7 +36,6 @@ $wafer-container-padding: .75rem;
 .skeleton-account-wafers--container>div:first-child,
 .account-wafers--container>div:first-child {
     display: flex;
-    margin-left: .75em;
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
@@ -212,7 +212,7 @@ $wafer-container-padding: .75rem;
 
         .wafer-institution-logo {
             margin-left: -.125em;
-            margin-bottom: .375em;
+            margin-bottom: .125em;
         }
 
         .wafer-name--container {
@@ -488,16 +488,13 @@ $borderRadius2: var(--border-radius2);
         // Balance header container
         &>div:first-child {
             padding-top: 0;
-            display: flex;
+            width: min-content;
+            display: inline-flex;
             flex-direction: row;
             align-items: flex-end;
             justify-content: flex-start;
             gap: .5em;
-            margin-left: .25em;
-            margin-bottom: 1em;
-            order: 2;
-
-
+            margin: .75em 0 .25em .25em;
         }
 
         // All accounts balance */
@@ -507,6 +504,22 @@ $borderRadius2: var(--border-radius2);
 
         &>div:first-child {
             padding-bottom: 0;
+            align-items: baseline;
+
+            &>div:first-child {
+                background-color: var(--icon-light-gray);
+                padding: 0 .375em;
+                border-radius: var(--border-radius1);
+
+                button {
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+
+            &>div:last-child {
+                font-size: 1.125em;
+            }
         }
 
         .account-wafers {

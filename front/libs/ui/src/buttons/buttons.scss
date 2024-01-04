@@ -136,8 +136,20 @@
     padding: .125em;
 }
 
+.btn-dark {
+    background-color: var(--main-dark4);
+    font-weight: var(--fw-bold);
+    color: var(--m-invert-text);
+    transition: all .3s ease;
+
+    &:hover {
+        transition: all .3s ease;
+        background-color: var(--main-dark5);
+    }
+}
+
 .btn-chcl {
-    background-color: var(--btn-dark);
+    background-color: var(--m-text);
     font-weight: var(--fw-bold);
     color: var(--m-invert-text);
     transition: all .3s ease;

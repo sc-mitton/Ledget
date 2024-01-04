@@ -13,7 +13,6 @@ import {
 } from "@features/accountsSlice"
 import pathMappings from './path-mappings'
 import { ArrowIcon } from '@ledget/media'
-import { set } from 'react-hook-form'
 
 const waferWidth = 165
 const waferPadding = 6
@@ -23,7 +22,6 @@ const _filterAccounts = (accounts: any[], location: Location) => {
         account.type === pathMappings.getAccountType(location)
     )
 }
-
 
 export const SkeletonWafers = () => (
     <div className="skeleton-account-wafers--container window">
@@ -126,7 +124,7 @@ const WafersHeader = ({ accounts, setAccounts }: { accounts: Account[], setAccou
                 dividerKey='filterType'
                 placement='left'
                 dropdownStyle={{
-                    minWidth: (headerRef.current?.offsetWidth || 100) * 1.75,
+                    minWidth: (headerRef.current?.offsetWidth || 100) * 1.5,
                     marginLeft: '-.75em'
                 }}
                 as={Button}

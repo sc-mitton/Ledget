@@ -160,7 +160,7 @@ $header-gap: calc(.75em + .125vw);
         // Total header
         &:nth-child(1) {
             width: calc(100% / 3 - $header-gap);
-            background-color: var(--icon-hover-light-gray);
+            background-color: var(--gray-hlight);
 
             &>span:last-of-type {
                 font-size: calc($base-stats-font-size - .25rem);
@@ -235,7 +235,7 @@ $header-gap: calc(.75em + .125vw);
     @include stats-transitions(out);
 
     &.month * {
-        color: var(--main-dark4);
+        color: var(--main-dark);
     }
 
     &.year * {

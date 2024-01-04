@@ -13,7 +13,7 @@ import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces/index"
 import {
-    BlackWideButton,
+    DarkWideButton,
     Checkbox,
     FormError,
     PasswordInput,
@@ -79,7 +79,7 @@ const EmailForm = ({ flow, setEmail, socialSubmit }: EmailFormProps) => {
                             {...register('remember')}
                         />
                     </div>
-                    <BlackWideButton>Continue</BlackWideButton>
+                    <DarkWideButton>Continue</DarkWideButton>
                 </div>
             </form >
             <SocialAuth flow={flow} submit={socialSubmit} />
@@ -121,9 +121,9 @@ const TotpMfa = ({ finished }: { finished: boolean }) => {
                     placeholder='Code'
                 />
             </div>
-            <BlackWideButton name="method" value={searchParams.get('mfa') || ''}>
+            <DarkWideButton name="method" value={searchParams.get('mfa') || ''}>
                 Submit
-            </BlackWideButton>
+            </DarkWideButton>
         </>
     )
 }
@@ -143,9 +143,9 @@ const RecoveryMfa = ({ finished }: { finished: boolean }) => {
                     placeholder='Code'
                 />
             </div>
-            <BlackWideButton name="method" value={searchParams.get('mfa') || ''}>
+            <DarkWideButton name="method" value={searchParams.get('mfa') || ''}>
                 Submit
-            </BlackWideButton>
+            </DarkWideButton>
         </>
     )
 }
@@ -166,9 +166,9 @@ const OtpMfa = ({ finished }: { finished: boolean }) => (
 const Password = () => (
     <div id="password-auth--container">
         <PasswordInput autoFocus required />
-        <BlackWideButton name="method" value="password">
+        <DarkWideButton name="method" value="password">
             Sign In
-        </BlackWideButton>
+        </DarkWideButton>
         {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
     </div>
 )

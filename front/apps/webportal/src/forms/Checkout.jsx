@@ -14,7 +14,7 @@ import { useGetPricesQuery } from '@features/pricesSlice'
 import { WindowLoadingBar } from '../pieces'
 import { Star } from '@ledget/media'
 import {
-    BlackWideButton,
+    DarkWideButton,
     CardInput,
     FormError,
     NameOnCardInput,
@@ -269,9 +269,9 @@ const Form = (props) => {
                             unit_amount={unit_amount}
                             trial_period_days={trial_period_days}
                         />
-                        <BlackWideButton form={'billing-form'}>
+                        <DarkWideButton form={'billing-form'}>
                             {`Start ${trial_period_days}-day Free Trial`}
-                        </BlackWideButton>
+                        </DarkWideButton>
                     </div>
                 </div>
             </form >

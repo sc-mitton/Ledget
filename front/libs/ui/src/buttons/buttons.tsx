@@ -26,7 +26,7 @@ export const BluePrimaryButton = ButtonWithClassName('btn-blue btn3')
 export const GrayButton = ButtonWithClassName('btn-gr btn-slim')
 export const GrayArrowButton = withArrow(GrayButton)
 
-export const BlackWideButton = ButtonWithClassName('btn-chcl btn-wide')
+export const DarkWideButton = ButtonWithClassName('btn-dark btn-wide')
 export const GrnWideButton = ButtonWithClassName('btn-grn btn-wide')
 export const GrayWideButton = ButtonWithClassName('btn-gr btn-wide')
 export const LightGrnWideButton = withLoading(ButtonWithClassName('btn-grn btn-wide2'))

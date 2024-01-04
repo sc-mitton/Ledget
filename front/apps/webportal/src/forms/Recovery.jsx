@@ -6,7 +6,7 @@ import { AnimatePresence } from "framer-motion"
 import './style/Recovery.scss'
 import { WindowLoadingBar } from '@pieces'
 import { ledgetapi } from "@api"
-import { FormError, BlackWideButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc } from '@ledget/ui'
+import { FormError, DarkWideButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc } from '@ledget/ui'
 import { ForgotPassword } from '@ledget/media'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory'
@@ -73,13 +73,13 @@ const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }) => {
                     required
                 />
                 <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
-                <BlackWideButton
+                <DarkWideButton
                     name='method'
                     type="submit"
                     value="code"
                 >
                     Send code
-                </BlackWideButton>
+                </DarkWideButton>
             </form>
         </>
     )
@@ -130,14 +130,14 @@ const RecoveryVerificationForm = ({ submit, flow, codeSuccess, isCompleteError, 
                 <Otc codeLength={6} />
                 <input type="hidden" name="csrf_token" value={csrfToken} />
                 <div className="verification-button-container">
-                    <BlackWideButton
+                    <DarkWideButton
                         name="method"
                         type="submit"
                         value="code"
                         style={{ color: 'var(--main-dark4)' }}
                     >
                         Verify Code
-                    </BlackWideButton>
+                    </DarkWideButton>
                 </div>
             </form>
         </>

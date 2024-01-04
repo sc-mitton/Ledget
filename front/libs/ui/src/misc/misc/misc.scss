@@ -26,11 +26,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--btn-mid-gray);
+    color: var(--m-text);
+    opacity: .9;
 
     circle:first-child {
         stroke: currentColor;
-        opacity: .3;
+        opacity: .4;
     }
 
     circle:last-child {
