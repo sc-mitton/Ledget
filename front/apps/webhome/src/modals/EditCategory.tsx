@@ -1,41 +1,30 @@
 import { useEffect, useState } from 'react'
 
-import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import './styles/Forms.scss'
 import { withModal } from '@ledget/ui'
-import { useGetCategoriesQuery, NewCategory, useUpdateCategoriesMutation } from '@features/categorySlice'
+import { useUpdateCategoriesMutation, Category } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect, emoji } from '@components/inputs'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@ledget/ui'
 import { schema as categoryFormSchema } from './CreateCategory'
 
-const EditCategory = withModal((props) => {
-    const [searchParams] = useSearchParams()
-    const { data: categories, isSuccess: categoriesAreFetched } = useGetCategoriesQuery()
+const EditCategory = withModal<{ category: Category }>((props) => {
     const [emoji, setEmoji] = useState<emoji>()
-    const [category, setCategory] = useState<NewCategory>()
     const [updateCategory, { isSuccess: categoryIsUpdated, isLoading: isUpdatingCategory }] = useUpdateCategoriesMutation()
 
-    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<z.infer<typeof categoryFormSchema>>({
+    const { register, handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof categoryFormSchema>>({
         resolver: zodResolver(categoryFormSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
+        defaultValues: {
+            name: props.category.name.charAt(0).toUpperCase() + props.category.name.slice(1),
+        }
     })
     const watchLimitAmount = useWatch({ control, name: 'limit_amount' })
-
-    // Set values on load
-    useEffect(() => {
-        const cat = categories?.find((c) => c.id === searchParams.get('category'))
-        if (cat) {
-            setCategory(cat)
-            setEmoji(cat.emoji || '')
-            setValue('name', cat.name.charAt(0).toUpperCase() + cat.name.slice(1))
-        }
-    }, [categoriesAreFetched])
 
     // Close Modal on success
     useEffect(() => {
@@ -47,19 +36,25 @@ const EditCategory = withModal((props) => {
         }
     }, [categoryIsUpdated])
 
+    // Set emoji on load
+    useEffect(() => {
+        if (props.category.emoji)
+            setEmoji(props.category.emoji)
+    }, [])
+
     const onSubmit = (data: z.infer<typeof categoryFormSchema>) => {
-        const payload = { id: category?.id } as any
-        if (data.limit_amount !== category?.limit_amount && category?.id) {
+        const payload = { id: props.category.id } as any
+        if (data.limit_amount !== props.category.limit_amount && props.category.id) {
             // If the limit amount is changed, we'll need to create
             // a new category on the backend, so we pass all the data
             updateCategory({
-                id: category?.id,
+                id: props.category.id,
                 ...data
             })
         } else {
             let k: keyof typeof data
             for (k in data)
-                if (data[k] !== category?.[k])
+                if (data[k] !== props.category[k])
                     payload[k] = data[k]
             updateCategory(payload)
         }
@@ -87,7 +82,7 @@ const EditCategory = withModal((props) => {
                     </div>
                     <div>
                         <LimitAmountInput
-                            defaultValue={category?.limit_amount || 0}
+                            defaultValue={props.category.limit_amount || 0}
                             control={control}
                         >
                             < FormErrorTip error={errors.limit_amount && errors.limit_amount as any} />
@@ -96,13 +91,17 @@ const EditCategory = withModal((props) => {
                 </div>
                 <div className="extra-padded-row">
                     <div>
-                        <PeriodSelect control={control} labelPrefix={'Resets'} default={category?.period} />
+                        <PeriodSelect
+                            control={control}
+                            labelPrefix={'Resets'}
+                            default={props.category.period}
+                        />
                     </div>
                     <div>
                         <AddAlert
                             control={control}
                             limitAmount={watchLimitAmount}
-                            defaultValues={category?.alerts}
+                            defaultValues={props.category.alerts}
                         />
                     </div>
                 </div>
@@ -116,13 +115,4 @@ const EditCategory = withModal((props) => {
     )
 })
 
-export default function EnahncedModal() {
-    const navigate = useNavigate()
-
-    return (
-        <EditCategory
-            maxWidth={'20rem'}
-            onClose={() => navigate(-1)}
-        />
-    )
-}
+export default EditCategory

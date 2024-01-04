@@ -25,6 +25,7 @@ import { useAppSelector, useAppDispatch } from '@hooks/store'
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
 import { useLazyGetTransactionsQuery, Transaction } from '@features/transactionsSlice'
+import { EditCategory as EditCategoryModal } from '@modals/index'
 import {
     useLazyGetCategoriesQuery,
     SelectCategoryBillMetaData,
@@ -544,6 +545,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     const windowOptions = ['4 months', '1 year', '2 year', 'max']
     const [disabledOptions, setDisabledOptions] = useState<(typeof windowOptions[number])[]>()
     const [window, setWindow] = useState<string>()
+    const [showEditCategoryModal, setShowEditCategoryModal] = useState(false)
 
     // Initial fetching Transactions
     useEffect(() => {
@@ -632,11 +634,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                         <DropdownItem
                                             as='button'
                                             active={active}
-                                            onClick={() => {
-                                                navigate(`${location.pathname}/edit-category${location.search}`, {
-                                                    state: { categoryId: category.id }
-                                                })
-                                            }}
+                                            onClick={() => { setShowEditCategoryModal(true) }}
                                         >
                                             <Edit size={'1em'} fill={'currentColor'} />
                                             Edit
@@ -673,6 +671,13 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                 <TransactionModal
                     item={transactionModalItem}
                     onClose={() => setTransactionModalItem(undefined)}
+                />
+            }
+            {showEditCategoryModal &&
+                <EditCategoryModal
+                    category={category}
+                    maxWidth={'20rem'}
+                    onClose={() => setShowEditCategoryModal(false)}
                 />
             }
             <Options />

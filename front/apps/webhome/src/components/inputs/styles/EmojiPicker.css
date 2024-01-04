@@ -5,16 +5,17 @@
 
 #em-picker-container {
     position: absolute;
-    top: 1.125rem;
-    left: 0;
+    top: 1rem;
+    left: -1em;
     right: 0;
+    color: rgb(72, 83, 206);
 }
 
 em-emoji-picker {
     height: 30vh;
     box-shadow: var(--mid-elevation-drop-shadow);
     --font-family: font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    --rgb-accent: 67, 71, 112;
+    --rgb-accent: 56, 95, 168;
     --rgb-background: 18, 18, 18;
     --rgb-input: 23, 23, 23;
     --border-radius: var(--border-radius3);

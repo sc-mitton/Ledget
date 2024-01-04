@@ -21,7 +21,6 @@ import {
     ForceVerification,
     EditBudgetItems,
     BillModal,
-    EditCategory,
     OnboardingModal
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
@@ -99,7 +98,6 @@ const App = () => {
                                     <Route path="new-category" element={<CreateCategory />} />
                                     <Route path="new-bill" element={<CreateBill />} />
                                     <Route path="edit-categories" element={<EditBudgetItems />} />
-                                    <Route path="edit-category" element={<EditCategory />} />
                                     <Route path="verify-email" element={<ForceVerification />} />
                                     <Route path="bill" element={<BillModal />} />
                                     <Route path="welcome/*" element={<OnboardingModal />} />

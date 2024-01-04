@@ -103,6 +103,8 @@
         --dropdown-background: hsl(0, 0%, 14%);
         --dropdown-item-background: hsl(0, 0%, 20%);
 
+        --new-item-border: hsl(0, 0%, 9%);
+
         // Inputs
         --input-background: hsl(0, 0%, 4%);
         --input-border-color: hsl(0, 0%, 13%);
@@ -146,7 +148,7 @@
         --window-drop-shadow-color: hsl(0, 0%, 4%);
         --header-box-shadow-color: hsl(0, 0%, 7%);
         --new-item-drop-shadow-color: hsl(0, 0%, 5%);
-        --wafer-drop-shadow-color: hsl(0, 0%, 15%);
+        --wafer-drop-shadow-color: hsl(0, 0%, 12%);
         --scroll-shadow: hsl(0, 0%, 3%), transparent;
         --dropdown-box-shadow-color: hsl(0, 0%, 4%);
 
@@ -180,8 +182,6 @@
         --secondary-color-h: 162;
         --secondary-color-s: 50%;
         --secondary-color-l: 40%;
-
-        --col: #385fa8;
 
         --main-color-values: 61, 62, 92;
         --secondary-color-values: 61, 92, 83;
@@ -231,6 +231,8 @@
         --wafer-background: hsl(0, 0%, 100%);
         --dropdown-background: hsl(0, 0%, 98%);
         --dropdown-item-background: hsl(0, 0%, 90%);
+
+        --new-item-border: hsl(0, 0%, 92%);
 
         // Inputs
         --input-background: hwb(0 92% 8%);
@@ -285,7 +287,7 @@
 
         --border-color-dimmest: rgb(0, 0, 0, .07);
         --border-color: rgb(0, 0, 0, .1);
-        --institution-logo-border: solid 1px rgb(0, 0, 0, .2);
+        --institution-logo-border: solid 2px rgb(0, 0, 0, .2);
         --toast-border: transparent;
 
         --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);

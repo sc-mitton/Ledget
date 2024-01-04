@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 
 import { DropdownItem } from '@ledget/ui'
-import { Split, Info as DetailsIcon } from "@ledget/media"
+import { Split, Plus, Info as DetailsIcon } from "@ledget/media"
 
 interface ItemOptionsMenuProps {
     handlers: (() => void)[]
@@ -69,8 +69,30 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                 </DropdownItem>
                 <DropdownItem
                     as='li'
+                    active={activeIndex === 0}
                     role="menuitem"
+                    ref={refs.current && refs.current[1]}
+                    tabIndex={-1}
                     onClick={() => { props.handlers[1]() }}
+                    aria-label="New monthly bill"
+                >
+                    <Plus size={'.9em'} stroke={'currentColor'} /> New monthly bill
+                </DropdownItem>
+                <DropdownItem
+                    as='li'
+                    active={activeIndex === 0}
+                    role="menuitem"
+                    ref={refs.current && refs.current[2]}
+                    tabIndex={-1}
+                    onClick={() => { props.handlers[2]() }}
+                    aria-label="New yearly bill"
+                >
+                    <Plus size={'.9em'} stroke={'currentColor'} /> New yearly bill
+                </DropdownItem>
+                <DropdownItem
+                    as='li'
+                    role="menuitem"
+                    onClick={() => { props.handlers[3]() }}
                     tabIndex={-1}
                     aria-label="Details"
                 >

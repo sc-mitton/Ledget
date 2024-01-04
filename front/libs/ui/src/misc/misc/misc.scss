@@ -4,12 +4,22 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    border: var(--institution-logo-border);
+
+    &.has-data {
+        border: var(--institution-logo-border);
+    }
 
     img {
         position: relative;
         z-index: 1;
     }
+}
+
+.logo-placeholder {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background-color: var(--icon-hover-light-gray);
 }
 
 @keyframes fade-in {

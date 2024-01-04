@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState, useEffect, useRef } from 'react'
 
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
@@ -107,9 +107,9 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
 const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean) => {
     let lightness: number
     if (index === 0 || expanded) {
-        lightness = darkMode ? 11 : 98
+        lightness = darkMode ? 8 : 98
     } else {
-        lightness = darkMode ? 11 - (index * 2.25) : 98 - (index * 1.5)
+        lightness = darkMode ? 8 - (index * 2) : 98 - (index * 1.5)
     }
     return `hsl(0, 0%, ${lightness}%)`
 }
@@ -227,6 +227,8 @@ const NeedsConfirmationWindow = () => {
     const { start, end } = useGetStartEndQueryParams()
     const { setShowFilterForm, unconfirmedStackExpanded, setUnconfirmedStackExpanded } = useFilterFormContext()
     const { isDark } = useColorScheme()
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const [confirmTransactions] = useConfirmTransactionsMutation()
     const unconfirmedTransactions = useAppSelector(
@@ -538,6 +540,20 @@ const NeedsConfirmationWindow = () => {
                 >
                     <ItemOptions handlers={[
                         () => { setShowTransactionModal({ split: true }) },
+                        () => {
+                            navigate({
+                                pathname: '/budget/new-bill',
+                                search: location.search,
+                            }, { state: { period: 'month', upper_amount: focusedItem?.amount, name: focusedItem?.name } }),
+                                setShowMenu(false)
+                        },
+                        () => {
+                            navigate({
+                                pathname: '/budget/new-bill',
+                                search: location.search,
+                            }, { state: { period: 'year', upper_amount: focusedItem?.amount, name: focusedItem?.name } }),
+                                setShowMenu(false)
+                        },
                         () => { setShowTransactionModal({ split: false }) },
                     ]} />
                 </AbsPosMenu>

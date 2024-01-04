@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, useWatch } from "react-hook-form"
 import { z } from 'zod'
@@ -70,11 +70,13 @@ export const extractReminders = (e: React.FormEvent<HTMLFormElement>) => {
 const Form = withModal((props) => {
     const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
     const [rangeMode, setRangeMode] = useState(false)
+    const location = useLocation()
 
     const { register, handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof billSchema>>({
         resolver: zodResolver(billSchema),
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
+        defaultValues: location.state
     })
 
     useEffect(() => {
@@ -104,7 +106,12 @@ const Form = withModal((props) => {
                     <label htmlFor="schedule">Schedule</label>
                     <div className="multi-input-row">
                         <div>
-                            <PeriodSelect name="period" control={control} enableAll={true} />
+                            <PeriodSelect
+                                name="period"
+                                control={control}
+                                enableAll={true}
+                                default={location.state?.period}
+                            />
                         </div>
                         {billPeriod !== 'once' &&
                             <div>
@@ -130,6 +137,7 @@ const Form = withModal((props) => {
                         rangeMode={rangeMode}
                         control={control}
                         errors={errors}
+                        defaultUpperValue={location.state?.upper_amount}
                     />
                     <div id="range-checkbox--container">
                         <Checkbox

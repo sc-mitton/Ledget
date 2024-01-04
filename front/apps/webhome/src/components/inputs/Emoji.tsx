@@ -88,7 +88,7 @@ const EmojiPicker = () => {
     }
 
     return (
-        <DropDownDiv visible={picker}>
+        <DropDownDiv visible={picker} style={{ 'backgroundColor': 'transparent', boxShadow: 'none' }}>
             <div id="em-picker-container" >
                 <Picker
                     autoFocus

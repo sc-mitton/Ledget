@@ -16,8 +16,8 @@ function getContrastColor(bgColor: string | undefined) {
 }
 
 interface Base64LogoProps {
-  data: string | undefined;
-  alt: string | undefined;
+  data?: string;
+  alt?: string;
   backgroundColor?: string;
   size?: string;
   style?: React.CSSProperties;
@@ -28,34 +28,23 @@ interface Base64LogoProps {
 export const Base64Logo = (props: Base64LogoProps) => {
   const { data, backgroundColor, className, alt, style, styled = true, size = '1em', ...rest } = props
 
-  const config = {
-    padding: '1px',
-    backgroundColor: backgroundColor,
-    borderRadius: 'var(--border-radius5)',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: getContrastColor(backgroundColor),
-    ...style
-  }
-
   return (
     <div
-      className={`base64-image--container ${className ? className : ''}`}
-      style={styled
-        ? { ...config, width: size, height: size }
-        : { width: size, height: size }
-      }
+      className={`base64-image--container ${className ? className : ''} ${data ? 'has-data' : ''}`}
+      style={size ? { width: size, height: size, ...style } : style}
       {...rest}
     >
-      <img
-        style={{
-          height: size,
-          width: size
-        }}
-        src={`data:image/png;base64,${data}`}
-        alt={alt}
-      />
+      {data
+        ? <img
+          style={{
+            height: size,
+            width: size
+          }}
+          src={`data:image/png;base64,${data}`}
+          alt={alt}
+        />
+        : <span className="logo-placeholder" />
+      }
     </div>
   )
 }
