@@ -48,8 +48,8 @@ import {
     CloseButton,
     ResponsiveLineContainer,
     formatCurrency,
-    nivoResponsiveLineBaseProps,
-    nivoResponsiveLineTheme,
+    useNivoResponsiveBaseProps,
+    useNivoResponsiveLineTheme,
     ChartTip,
     DropDownDiv,
     LoadingRing,
@@ -426,6 +426,8 @@ const Footer = () => {
 
 const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?: boolean }) => {
     const xaxisPadding = 8
+    const nivoResponsiveLineBaseProps = useNivoResponsiveBaseProps({ disabled })
+    const nivoResponsiveLineTheme = useNivoResponsiveLineTheme()
 
     const maxY = Math.max(...data.map(d => d.y as number))
     const minY = Math.min(...data.map(d => d.y as number))
@@ -486,7 +488,7 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
                 >
                     <span>{new Date(point.data.x).toLocaleString('default', { month: 'short' })}</span>
                     &nbsp;&nbsp;
-                    <DollarCents value={formatCurrency({ val: point.data.y.toString() })} />
+                    <DollarCents value={point.data.y as number} />
                 </ChartTip>
             )
             }
@@ -494,7 +496,7 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
             gridYValues={4}
             crosshairType="bottom"
             theme={nivoResponsiveLineTheme}
-            {...nivoResponsiveLineBaseProps({ disabled: disabled })}
+            {...nivoResponsiveLineBaseProps}
         />
     )
 }

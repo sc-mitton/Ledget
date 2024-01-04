@@ -3,10 +3,10 @@
         content: '';
         position: absolute;
         bottom: $bottom;
-        left: 0;
-        right: 0;
-        height: 1.5px;
-        background-color: var(--subtle-border-color);
+        left: .25em;
+        right: 0em;
+        height: 1px;
+        background-color: var(--border-color-dimmest);
     }
 }
 

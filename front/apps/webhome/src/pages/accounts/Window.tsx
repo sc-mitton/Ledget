@@ -83,7 +83,7 @@ const Header = () => {
         data: accountsData,
         isSuccess: isSuccessLoadingAccounts
     } = useGetAccountsQuery()
-    const backgroundColor = useSchemeVar('--main-hlight')
+    const [backgroundColor, boxShadowColor] = useSchemeVar(['--main-hlight', '--main-hlight-hover'])
 
     const [props] = usePillAnimation({
         ref: ref,
@@ -92,6 +92,7 @@ const Header = () => {
         find: (element) => element.getAttribute('aria-current') === 'true',
         styles: {
             backgroundColor: backgroundColor,
+            boxShadow: `inset 0 0 0 1px ${boxShadowColor}`,
             borderRadius: 'var(--border-radius3)',
         }
     })

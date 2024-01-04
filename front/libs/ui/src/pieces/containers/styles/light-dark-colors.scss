@@ -20,7 +20,7 @@
     /* Drop Shadows & Borders */
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 20px;
     --header-box-shadow: var(--header-box-shadow-color) 0px 2px 2px;
-    --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 2px 14px;
+    --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 14px;
     --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0 2px 16px;
 
     --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px 1px 1px;
@@ -33,7 +33,7 @@
     --accessible-focus-drop-shadow: 0 0 0 1px var(--input-focus-dropshadow-color);
     --active-wafer-drop-shadow: color-mix(in srgb, var(--main-hlight) 80%, var(--main-color)) 0px 0px 12px;
 
-    --subtle-border: .75px solid var(--subtle-border-color);
+    --subtle-border: .75px solid var(--border-color-dimmest);
 
 }
 
@@ -154,9 +154,10 @@
         --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
         --input-drop-shadow-color: rgba(255, 255, 255, 0.07);
 
-        --subtle-border-color: rgb(255, 255, 255, .07);
+        --border-color-dimmest: rgb(255, 255, 255, .07);
+        --border-color: rgb(255, 255, 255, .1);
         --institution-logo-border: solid 1px rgb(255, 255, 255, .3);
-        --toast-border: 1px solid var(--subtle-border-color);
+        --toast-border: 1px solid var(--border-color-dimmest);
 
         --input-focus-drop-shadow: 0 0 0 1px var(--input-focus-dropshadow-color);
 
@@ -180,13 +181,15 @@
         --secondary-color-s: 50%;
         --secondary-color-l: 40%;
 
+        --col: #385fa8;
+
         --main-color-values: 61, 62, 92;
         --secondary-color-values: 61, 92, 83;
 
         --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
         --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
         --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 50%));
-        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 45%));
+        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 47%));
         --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), calc(var(--main-color-l) + 40%));
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 40%));
@@ -213,12 +216,12 @@
         --gray-hlight: hsl(0, 0%, 90%);
 
         // Windows
-        --window-background-color: hsl(0, 0%, 96%);
+        --window-background-color: hsl(0, 0%, 97%);
         --header-background: hsl(0, 0%, 10%);
 
         --window: hsl(0, 0%, 99%);
         --window-rgb: 250, 250, 250;
-        --window-border: hsl(0, 0%, 92%);
+        --window-border: hsl(0, 0%, 94%);
 
         --inner-window: hsl(0, 0%, 94%);
         --inner-window2: hsl(0, 0%, 98%);
@@ -231,7 +234,7 @@
 
         // Inputs
         --input-background: hwb(0 92% 8%);
-        --input-border-color: rgba(80, 80, 80, 0.08);
+        --input-border-color: rgba(80, 80, 80, 0.06);
 
         // Text
         --m-text: hsl(0, 0%, 30%);
@@ -252,14 +255,14 @@
 
         // Icons & Buttons
         --icon-full: var(--m-text);
-        --icon-light-gray: hsl(0, 0%, 90%);
-        --icon-hover-light-gray: hsl(0, 0%, 85%);
+        --icon-light-gray: hsl(0, 0%, 93%);
+        --icon-hover-light-gray: hsl(0, 0%, 88%);
         --icon-hover-gray: hsl(0, 0%, 69%);
 
         --gray-hlight: hsl(0, 0%, 92%);
 
-        --btn-gray: hsl(0, 0%, 80%);
-        --btn-gray-hover: hsl(0, 0%, 76%);
+        --btn-gray: hsl(0, 0%, 82%);
+        --btn-gray-hover: hsl(0, 0%, 78%);
         --btn-mid-gray: hsl(0, 0%, 52%);
         --btn-mid-gray-hover: hsl(0, 0%, 32%);
         --btn-dark: hsl(0, 0%, 94%);
@@ -280,7 +283,8 @@
         --mid-elevation-drop-shadow-color: rgba(0, 0, 0, 0.3);
         --input-drop-shadow-color: rgba(0, 0, 0, 0.07);
 
-        --subtle-border-color: rgb(0, 0, 0, .07);
+        --border-color-dimmest: rgb(0, 0, 0, .07);
+        --border-color: rgb(0, 0, 0, .1);
         --institution-logo-border: solid 1px rgb(0, 0, 0, .2);
         --toast-border: transparent;
 

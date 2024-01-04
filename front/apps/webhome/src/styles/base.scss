@@ -149,7 +149,7 @@ hr {
     display: block;
     height: 1px;
     border: 0;
-    border-top: 2px solid var(--subtle-border-color);
+    border-top: 2px solid var(--border-color-dimmest);
     margin: .5em 0 .75em 0;
     padding: 0;
 }
@@ -297,7 +297,7 @@ button:focus-visible {
 }
 
 .inner-window-bordered {
-    border: 1.5px solid var(--subtle-border-color);
+    border: 1.5px solid var(--border-color-dimmest);
     border-radius: var(--inner-window-border-radius);
     padding: .75em;
     margin: -.125em;
@@ -344,7 +344,7 @@ ul hr {
 .line {
     margin: .125em 0;
     border: none;
-    border-top: 1.5px solid var(--subtle-border-color);
+    border-top: 1.5px solid var(--border-color-dimmest);
 }
 
 @mixin window-corner-dropdown {

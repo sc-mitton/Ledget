@@ -155,7 +155,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
     justify-content: end;
     padding: .75em .5em;
     margin-bottom: .5em;
-    border-top: .125em solid var(--subtle-border-color);
+    border-top: .125em solid var(--border-color-dimmest);
 
     table {
         border-collapse: collapse;

@@ -178,7 +178,7 @@ input:focus {
     &:after {
         content: "";
         flex: 1 1;
-        border-top: 2px solid var(--subtle-border-color);
+        border-top: 2px solid var(--border-color-dimmest);
         margin: auto;
     }
 

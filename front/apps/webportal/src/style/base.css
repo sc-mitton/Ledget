@@ -2,8 +2,8 @@
 
 :root {
     /* Borders */
-    --subtle-border-color: rgb(0, 0, 0, .07);
-    --subtle-border: .75px solid var(--subtle-border-color);
+    --border-color-dimmest: rgb(0, 0, 0, .07);
+    --subtle-border: .75px solid var(--border-color-dimmest);
 
     --input-padding: .525em 1em;
 

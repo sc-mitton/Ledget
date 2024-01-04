@@ -267,6 +267,10 @@ $header-gap: calc(.75em + .125vw);
                 font-size: calc($base-stats-font-size - .25rem);
                 font-weight: var(--fw-light);
                 margin-top: -.125em;
+
+                &:not(:has(svg)) {
+                    font-weight: var(--fw-bold);
+                }
             }
         }
 

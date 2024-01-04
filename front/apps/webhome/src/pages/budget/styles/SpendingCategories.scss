@@ -204,7 +204,7 @@ $background: var(--window);
                 height: 1px;
                 position: absolute;
                 bottom: -.625em;
-                background-color: var(--subtle-border-color);
+                border-bottom: 1.25px dashed var(--border-color);
             }
 
             &:first-child::after {

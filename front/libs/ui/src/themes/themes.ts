@@ -1,28 +1,35 @@
 
 import { Theme } from "@nivo/core"
 import { LineSvgProps } from '@nivo/line';
-import { ThemeConfig } from 'antd'; ``
+import { ThemeConfig } from 'antd';
+import { useSchemeVar } from '../utils/hooks/use-scheme-var/use-scheme-var'
 
 // Define the type for your base props
 type NivoResponsiveLineBaseProps = Omit<LineSvgProps, 'data'>
 
-export function nivoResponsiveLineBaseProps({ disabled = false }: { disabled?: boolean }): NivoResponsiveLineBaseProps {
+export const useNivoResponsiveBaseProps = ({ disabled = false }: { disabled?: boolean }): NivoResponsiveLineBaseProps => {
+    const [mainColorHover, mainSat, window] = useSchemeVar(['--main-color-hover', '--main-sat', '--window'])
+
     return ({
         enablePoints: true,
+        pointColor: window,
+        pointSize: 7,
+        pointBorderColor: mainColorHover,
+        pointBorderWidth: 1.75,
         enableArea: true,
         enableGridX: false,
         enableGridY: true,
         lineWidth: 1,
         curve: 'catmullRom',
-        colors: [!disabled ? 'var(--main-color-hover)' : 'transparent'],
+        colors: [!disabled ? mainColorHover : 'transparent'],
         useMesh: !disabled,
         defs: [
             {
                 id: 'gradientC',
                 type: 'linearGradient',
                 colors: [
-                    { offset: 0, color: 'var(--main-sat)', opacity: disabled ? 0 : 1, },
-                    { offset: 100, color: 'var(--window)', opacity: disabled ? 0 : 1, },
+                    { offset: 0, color: mainSat, opacity: disabled ? 0 : 1, },
+                    { offset: 100, color: window, opacity: disabled ? 0 : 1, },
                 ],
             },
 
@@ -36,43 +43,49 @@ export function nivoResponsiveLineBaseProps({ disabled = false }: { disabled?: b
     })
 }
 
-export const nivoResponsiveLineTheme: Theme = {
-    crosshair: {
-        line: {
-            stroke: 'var(--main-hlight)',
-            strokeWidth: 1.5,
-            strokeDasharray: 'solid',
-        },
-    },
-    grid: {
-        line: {
-            stroke: 'var(--subtle-border-color)',
-            strokeWidth: 1.5,
-            strokeDasharray: 'solid',
-            fill: 'var(--m-text-secondary)',
-        },
-    },
-    axis: {
-        ticks: {
-            line: { strokeWidth: 0 },
-            text: {
-                fontSize: 12,
-                fontFamily: 'inherit',
-                fontWeight: 400,
-                fill: 'var(--m-text-secondary)',
+export const useNivoResponsiveLineTheme = (): Theme => {
+    const [mainHlightHover, borderColorDimmest, mTextSecondary] = useSchemeVar([
+        '--main-hlight-hover', '--border-color-dimmest', '--m-text-secondary'])
+
+    return ({
+        crosshair: {
+            line: {
+                stroke: mainHlightHover,
+                strokeWidth: 1.5,
+                strokeDasharray: 'solid',
             },
         },
-    },
+        grid: {
+            line: {
+                stroke: borderColorDimmest,
+                strokeWidth: 1.5,
+                strokeDasharray: '2, 2',
+                fill: mTextSecondary,
+            },
+        },
+        axis: {
+            ticks: {
+                line: { strokeWidth: 0 },
+                text: {
+                    fontSize: 12,
+                    fontFamily: 'inherit',
+                    fontWeight: 400,
+                    fill: mTextSecondary,
+                },
+            },
+        },
+    })
 }
 
 export const ledgetAntTheme: ThemeConfig = {
     token: {
-        colorPrimary: '#2d3353',
+        colorPrimary: '#385fa8',
         boxShadow: 'var(--antd-drop-shadow)',
         borderRadius: 8,
         colorBgContainer: 'var(--input-background)',
         colorBorder: 'var(--input-border-color)',
         colorTextPlaceholder: '#a6a6a6',
+
     },
 }
 

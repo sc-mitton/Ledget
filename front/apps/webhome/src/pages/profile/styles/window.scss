@@ -97,7 +97,7 @@ $duration: .2s;
 
     &.open {
         z-index: 11;
-        border-right: 2px solid var(--subtle-border-color);
+        border-right: 2px solid var(--border-color-dimmest);
 
         &.small-screen {
             box-shadow: var(--mid-elevation-drop-shadow);

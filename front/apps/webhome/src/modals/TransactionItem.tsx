@@ -328,6 +328,12 @@ const TransactionModal = withModal<{ item: Transaction, action?: Action }>(({ it
                                 setNameIsDirty(true)
                                 setPreferredName(e.target.value)
                             }}
+                            onKeyDown={(e: any) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault()
+                                    e.target.blur()
+                                }
+                            }}
                             onBlur={(e) => {
                                 nameIsDirty && updateTransaction({
                                     transactionId: item.transaction_id,

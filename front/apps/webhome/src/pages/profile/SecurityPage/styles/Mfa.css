@@ -36,7 +36,7 @@
 
 .mfa-settings--container:not(:last-child) {
     padding: .25em .1875em .825em .1875em;
-    border-bottom: 2px solid var(--subtle-border-color);
+    border-bottom: 2px solid var(--border-color-dimmest);
 }
 
 .mfa-settings--container .delete-btn--container {
