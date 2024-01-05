@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-import './styles/SmsSetup.css'
+import './styles/SmsSetup.scss'
 import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
 import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/authSlice'

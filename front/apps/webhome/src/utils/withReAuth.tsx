@@ -71,8 +71,8 @@ const PassWord = ({ onCancel }: { onCancel: () => void }) => {
         <form onSubmit={submit} className="reauth-form">
             <div>
                 {['setup', 'change', 'delete'].some((word) => location.pathname.includes(word))
-                    ? 'To make this change, first confirm your login'
-                    : 'First confirm your login'
+                    ? 'To make this change, first confirm your password'
+                    : 'First confirm your password'
                 }
             </div>
             <div>
@@ -304,7 +304,9 @@ const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal
     const { data: user } = useGetMeQuery()
     const [searchParams, setSearchParams] = useSearchParams()
     const reAuthed = useAppSelector(state => state.auth.reAuthed)
-    const [continueToComponent, setContinueToComponent] = useState(false)
+    const [continueToComponent, setContinueToComponent] = useState(
+        (Date.now() - (reAuthed.at || 0) < 1000 * 60 * 9) && reAuthed.level === (requiredAal ?? user?.highest_aal)
+    )
 
     // Controller for checking if the user has reached the required
     // authentication level. It reacts to changes in the reAuthed
@@ -412,7 +414,7 @@ export function withReAuth<P>(Component: React.FC<P & Partial<WithReAuthI>>) {
                         searchParams.delete('aal')
                         searchParams.delete('flow')
                         setSearchParams(searchParams)
-                        if (props.onClose) {
+                        if (!continueToComponent && props.onClose) {
                             props.onClose()
                         }
                     }}

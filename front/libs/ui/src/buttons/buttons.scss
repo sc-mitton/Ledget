@@ -149,14 +149,14 @@
 }
 
 .btn-chcl {
-    background-color: var(--m-text);
+    background-color: var(--m-text-secondary);
     font-weight: var(--fw-bold);
     color: var(--m-invert-text);
     transition: all .3s ease;
 
     &:hover {
         transition: all .3s ease;
-        background-color: var(--btn-dark-hover);
+        background-color: var(--m-text);
     }
 }
 
@@ -604,14 +604,14 @@ button.disabled-hover:hover svg {
     border-radius: var(--border-radius);
 
     &>div {
-        color: var(--btn-mid-gray);
+        color: var(--m-text-tirtiary);
         display: flex;
         align-items: center;
         transition: color .2s ease-in-out;
     }
 
     &:hover>div {
-        color: var(--btn-dark);
+        color: var(--m-text);
         transition: color .2s ease-in-out;
     }
 

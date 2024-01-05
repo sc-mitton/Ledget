@@ -10,7 +10,7 @@ import { useAddRememberedDeviceMutation } from '@features/authSlice'
 import { Content as RecoveryCodes } from '@modals/RecoveryCodes'
 import { useFlow } from '@ledget/ory'
 import { withModal } from '@ledget/ui'
-import { withReAuth } from '@utils'
+import { withReAuth } from '@utils/index'
 import {
     BackButton,
     BlueSubmitWithArrow,
@@ -28,16 +28,23 @@ import {
     useLoaded
 } from '@ledget/ui'
 
+interface SetupAppProps {
+    flow: any
+    isError: boolean
+    isLoading: boolean
+    codeMode: boolean
+    setCodeMode: (value: boolean) => void
+}
 
-const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
-    const [qrNode, setQrNode] = useState(null)
+const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }: SetupAppProps) => {
+    const [qrNode, setQrNode] = useState<{ attributes: string }>()
     const [totpSecret, setTotpSecret] = useState('')
 
     useEffect(() => {
         if (flow) {
-            const node = flow.ui.nodes.find(node => node.group === 'totp' && node.type === 'img')
+            const node = flow.ui.nodes.find((node: any) => node.group === 'totp' && node.type === 'img')
             setQrNode(node)
-            const totpSecret = flow.ui.nodes.find(node => node.group === 'totp' && node.type === 'text')
+            const totpSecret = flow.ui.nodes.find((node: any) => node.group === 'totp' && node.type === 'text')
             setTotpSecret(totpSecret?.attributes.text.context.secret)
         }
     }, [flow])
@@ -45,10 +52,7 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
     return (
         <div >
             {!codeMode &&
-                <div
-                    className="spaced-header2"
-                    style={{ opacity: .8 }}
-                >
+                <div className="spaced-header2">
                     <span>
                         Scan the QR code below with your authenticator app
                     </span>
@@ -95,10 +99,11 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }) => {
     )
 }
 
-const Authenticator = (props) => {
+const Authenticator = withReAuth(withModal((props) => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [codeMode, setCodeMode] = useState(false)
     const loaded = useLoaded(100)
+    const [step, setStep] = useState<'setup' | 'confirm' | undefined>('setup')
 
     const [updateUser] = useUpdateUserMutation()
     const [addRememberedDevice] = useAddRememberedDeviceMutation()
@@ -110,7 +115,7 @@ const Authenticator = (props) => {
     )
     const {
         isGettingFlow,
-        errorFetchingFlow,
+        isGetFlowError,
         isCompleteError,
         isCompleteSuccess,
         isCompletingFlow,
@@ -119,33 +124,25 @@ const Authenticator = (props) => {
     const handleBack = () => {
         if (codeMode) {
             setCodeMode(false)
-        } else if (searchParams.get('step') === 'setup') {
+        } else if (step === 'setup') {
             props.closeModal()
-        } else if (searchParams.get('step') === 'confirm') {
-            searchParams.set('step', 'setup')
-            setSearchParams(searchParams)
+        } else if (step === 'confirm') {
+            setStep('setup')
         }
     }
 
     // Fetch flow on mount
     useEffect(() => { fetchFlow() }, [])
 
-    // Set initial view
-    useEffect(() => {
-        searchParams.set('step', 'setup')
-        setSearchParams(searchParams)
-    }, [])
-
     // Handle successful flow completion
     // Update the user's mfa settings and the device token cookie
     useEffect(() => {
-        let timeout
+        let timeout: NodeJS.Timeout
         if (isCompleteSuccess) {
             updateUser({ data: { mfa_method: 'totp' } })
             addRememberedDevice()
             timeout = setTimeout(() => {
-                searchParams.delete('step')
-                searchParams.set('lookup_secret_regenerate', true)
+                searchParams.set('lookup_secret_regenerate', 'true')
                 setSearchParams(searchParams)
             }, 1200)
         }
@@ -158,7 +155,7 @@ const Authenticator = (props) => {
                 <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
                 <AnimatePresence mode="wait">
                     {/* Page 1: Setup App */}
-                    {searchParams.get('step') === 'setup' &&
+                    {step === 'setup' &&
                         <SlideMotionDiv key='setup-app' position={loaded ? 'first' : 'fixed'}>
                             <h2>Authenticator App</h2>
                             <SetupApp
@@ -166,12 +163,12 @@ const Authenticator = (props) => {
                                 codeMode={codeMode}
                                 setCodeMode={setCodeMode}
                                 isLoading={isGettingFlow}
-                                isError={errorFetchingFlow}
+                                isError={isGetFlowError}
                             />
                         </SlideMotionDiv>
                     }
                     {/* Page 2: Confirm Code */}
-                    {searchParams.get('step') === 'confirm' &&
+                    {step === 'confirm' &&
                         <SlideMotionDiv
                             key="confirm-code"
                             position={!searchParams.get('step')
@@ -191,12 +188,10 @@ const Authenticator = (props) => {
                         </SlideMotionDiv>
                     }
                     {/* Page 3: Recovery Codes */}
-                    {!searchParams.get('step') &&
-                        searchParams.get('lookup_secret_regenerate') &&
+                    {!step && searchParams.get('lookup_secret_regenerate') &&
                         <SlideMotionDiv key="lookup-secrets" position={'last'}>
                             <RecoveryCodes closeModal={() => props.closeModal()} />
-                        </SlideMotionDiv>
-                    }
+                        </SlideMotionDiv>}
                 </AnimatePresence>
                 {/* Nav Buttons */}
                 {!searchParams.get('lookup_secret_regenerate') &&
@@ -214,10 +209,7 @@ const Authenticator = (props) => {
                             :
                             <BlueSubmitWithArrow
                                 type="button"
-                                onClick={() => {
-                                    searchParams.set('step', 'confirm')
-                                    setSearchParams(searchParams)
-                                }}
+                                onClick={() => { setStep('confirm') }}
                             >
                                 Next
                             </BlueSubmitWithArrow>
@@ -227,18 +219,16 @@ const Authenticator = (props) => {
             </form>
         </div>
     )
-}
-
-const EnrichedModal = withReAuth(withModal(Authenticator))
+}))
 
 export default function () {
     const navigate = useNavigate()
 
     return (
-        <EnrichedModal
+        <Authenticator
             onClose={() => navigate('/profile/security')}
             blur={1}
-            maxWidth={350}
+            maxWidth={'350px'}
         />
     )
 }

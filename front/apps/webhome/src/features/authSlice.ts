@@ -47,14 +47,14 @@ export const authSlice = createSlice({
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        addRememberedDevice: builder.mutation({
+        addRememberedDevice: builder.mutation<any, void>({
             query: () => ({
                 url: 'devices',
                 method: 'POST',
             }),
             invalidatesTags: ['Device'],
         }),
-        deleteRememberedDevice: builder.mutation({
+        deleteRememberedDevice: builder.mutation<any, { deviceId: string }>({
             query: ({ deviceId }) => ({
                 url: `device/${deviceId}`,
                 method: 'DELETE',
