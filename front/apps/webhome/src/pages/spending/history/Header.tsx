@@ -283,13 +283,13 @@ const HistoryHeader = () => {
     const transitions = useTransition(showFilterForm, {
         from: {
             zIndex: 1,
-            top: 0,
+            top: '4em',
             right: 0,
             width: '0%',
             height: '0%',
             opacity: 0
         },
-        enter: { width: '100%', height: '100%', opacity: 1 },
+        enter: { width: '100%', height: 'calc(100% - 4em)', opacity: 1 },
         leave: { width: '0%', height: '0%', opacity: 0 },
         ref: windowApi,
         config: { tension: 400, friction: 40 },

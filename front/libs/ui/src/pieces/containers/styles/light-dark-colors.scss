@@ -103,7 +103,7 @@
         --dropdown-background: hsl(0, 0%, 14%);
         --dropdown-item-background: hsl(0, 0%, 20%);
 
-        --new-item-border: hsl(0, 0%, 9%);
+        --new-item-border: hsl(0, 0%, 11%);
 
         // Inputs
         --input-background: hsl(0, 0%, 4%);
@@ -247,7 +247,7 @@
 
         --input-placeholder: hsl(0, 0%, 38%);
         --input-placeholder2: hsl(0, 0%, 65%);
-        --input-placeholder-focus: hsl(var(--main-color-h), calc(var(--main-color-s) - 10%), var(--main-color-l));
+        --input-placeholder-focus: hsl(var(--main-color-h), calc(var(--main-color-s) - 10%), calc(var(--main-color-l) + 20%));
 
         /* Font Weights */
         --fw-light: 400;
@@ -277,7 +277,7 @@
         --window-drop-shadow-color: hsl(0, 0%, 94%);
         --wafer-drop-shadow-color: hsl(0, 0%, 89%);
         --header-box-shadow-color: hsl(0, 0%, 77%);
-        --new-item-drop-shadow-color: hsl(0, 0%, 90%);
+        --new-item-drop-shadow-color: hsl(0, 0%, 91%);
         --scroll-shadow: hsl(0, 0%, 97%), transparent;
         --dropdown-box-shadow-color: rgba(0, 0, 0, 0.3);
 

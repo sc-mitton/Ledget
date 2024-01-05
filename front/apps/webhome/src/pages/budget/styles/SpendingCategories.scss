@@ -77,7 +77,7 @@ $background: var(--window);
             z-index: 10;
             background-color: var(--window);
             box-shadow: 0 1.5px 1.5px 1px var(--window);
-            padding-bottom: .75em;
+            padding-bottom: .25em;
 
             &.tab-nav-cell {
                 grid-column: 1 / span 5;

@@ -235,12 +235,8 @@
         }
     }
 
-    &:not(:selected) {
-        font-weight: 450;
-    }
-
     &.selected {
-        box-shadow: inset 0 0 0 1.5px var(--main-sat);
+        border: 1px solid var(--main-sat);
         transition: none;
     }
 }

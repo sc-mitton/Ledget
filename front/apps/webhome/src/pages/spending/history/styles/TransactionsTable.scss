@@ -34,7 +34,7 @@ $scroll-bar-padding: 1em;
     padding-right: $scroll-bar-padding;
     position: absolute;
     inset: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     display: grid;
     grid-template-columns: minmax(0, 65%) 1fr;
