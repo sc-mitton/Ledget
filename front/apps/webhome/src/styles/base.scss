@@ -102,15 +102,11 @@ h1 {
 
 h1,
 h2,
-h3 {
-    margin: 0;
-    font-weight: var(--fw-bold);
-}
-
+h3,
 h4,
 h5 {
     margin: 0;
-    font-weight: var(--fw-regular);
+    font-weight: var(--fw-bold);
 }
 
 a {
@@ -286,6 +282,7 @@ button:focus-visible {
 
 .window-header {
     padding-bottom: 1em;
+    padding-left: .25em;
     height: 1.875rem;
     display: flex;
     justify-content: space-between;

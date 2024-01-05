@@ -235,7 +235,8 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
         <div className={`row header ${yearly_end ? 'has-alternate-header' : ''}`}>
             <div className={`${period === 'year' ? 'yearly' : 'monthly'}`}>
                 <h4>
-                    {`${period.toUpperCase()}LY`} <br /> SPENDING
+                    {/* {`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`} */}
+                    {`${period.toUpperCase()}LY`}
                 </h4>
                 {period === 'year' && yearly_start && yearly_end &&
                     <h4>
@@ -528,7 +529,6 @@ const fakeChartData = [
 
 const CategoryDetail = ({ category }: { category: Category }) => {
     const { start, end } = useGetStartEndQueryParams()
-    const navigate = useNavigate()
     const {
         data: spendingSummaryData,
         isSuccess: spendingSummaryDataIsFetched
