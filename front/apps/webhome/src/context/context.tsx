@@ -27,6 +27,7 @@ export const ScreenProvider = ({ children }: { children: ReactNode }) => {
                 setScreenSize('large')
             }
         }
+        handleResize()
         window.addEventListener('resize', handleResize)
         return () => {
             window.removeEventListener('resize', handleResize)

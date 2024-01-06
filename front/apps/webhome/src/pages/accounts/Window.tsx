@@ -176,7 +176,7 @@ function Window() {
     const location = useLocation()
 
     return (
-        <div id="accounts-window">
+        <div id="accounts-window" className="main-window">
             <div>
                 <Header />
                 <AccountWafers />

@@ -28,9 +28,9 @@
     }
 
     &.left {
-        bottom: calc(0% - .25em);
+        bottom: calc(0% - .5em);
         translate: translateY(-50%);
-        right: calc(100% + .25em);
+        right: calc(100% + .375em);
     }
 }
 

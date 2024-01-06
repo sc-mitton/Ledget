@@ -48,7 +48,6 @@ const PrivateRoute = () => {
 const OnboardedRoute = () => {
     const { data: user } = useGetMeQuery()
     const navigate = useNavigate()
-    const location = useLocation()
 
     useEffect(() => {
         if (!user?.is_onboarded) {

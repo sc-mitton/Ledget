@@ -49,11 +49,13 @@ function Window() {
 
     return (
         <>
-            <div id="budget-window">
-                <BudgetSummary />
+            <div id="budget-window" className="main-window">
                 <div>
-                    <SpendingCategories />
-                    <Bills />
+                    <BudgetSummary />
+                    <div>
+                        <SpendingCategories />
+                        <Bills />
+                    </div>
                 </div>
             </div>
             {screenSize === 'large' && <Spending />}

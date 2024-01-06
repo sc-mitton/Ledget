@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import { DesertImage } from '@ledget/media'
 import { BlackPrimaryButton } from '@ledget/ui'
 
-import './NotFound.css'
+import './NotFound.scss'
 
 const NotFound = ({ hasBackground = true }) => {
     const navigate = useNavigate()
 
     return (
         <div
-            className="window"
+            className="window main-window"
             id="not-found-window"
             style={{
                 ...(!hasBackground ? { backgroundColor: 'none', boxShadow: 'none' } : {})

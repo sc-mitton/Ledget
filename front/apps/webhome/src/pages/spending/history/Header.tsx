@@ -262,7 +262,7 @@ const FilterWindow = () => {
                         Cancel
                     </SecondaryButtonSlim>
                     <BlueSlimButton2>
-                        Apply
+                        Filter
                     </BlueSlimButton2>
                 </div>
             </div>

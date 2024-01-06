@@ -53,43 +53,45 @@ function Profile() {
     const { screenSize } = useScreenContext()
 
     return (
-        <ShimmerDiv
-            className={`window
+        <div id="profile-window" className='main-window'>
+            <ShimmerDiv
+                className={`window
                 ${open ? 'with-open-gutter' : ''}
                 ${screenSize === 'small' ? 'small-screen' : ''}`}
-            id="profile-window"
-            shimmering={userLoading}
-        >
-            <Gutter />
-            <AnimatePresence mode="wait">
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    key={location.pathname.split('/')[2]}
-                    className="content"
-                >
-                    <Routes
-                        location={location}
+                id="profile-window"
+                shimmering={userLoading}
+            >
+                <Gutter />
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         key={location.pathname.split('/')[2]}
+                        className="content"
                     >
-                        <Route path="details" element={<AccountPage />} >
-                            <Route path="update-payment" element={<UpdatePayment />} />
-                            <Route path="cancel-subscription" element={<CancelSubscription />} />
-                            <Route path="change-bill-cycle" element={<ChangeBillCycle />} />
-                        </Route>
-                        <Route path="connections" element={<ConnectionsPage />} />
-                        <Route path="security" element={<SecurityPage />} >
-                            <Route path="delete-authenticator" element={<DeactivateAuthentictor />} />
-                            <Route path="authenticator-setup" element={<AuthenticatorSetup />} />
-                            <Route path="change-password" element={<ChangePassword />} />
-                            <Route path="recovery-codes" element={<RecoveryCodes />} />
-                            <Route path="otp-setup" element={<SmsSetup />} />
-                        </Route>
-                    </Routes>
-                </motion.div>
-            </AnimatePresence>
-        </ShimmerDiv>
+                        <Routes
+                            location={location}
+                            key={location.pathname.split('/')[2]}
+                        >
+                            <Route path="details" element={<AccountPage />} >
+                                <Route path="update-payment" element={<UpdatePayment />} />
+                                <Route path="cancel-subscription" element={<CancelSubscription />} />
+                                <Route path="change-bill-cycle" element={<ChangeBillCycle />} />
+                            </Route>
+                            <Route path="connections" element={<ConnectionsPage />} />
+                            <Route path="security" element={<SecurityPage />} >
+                                <Route path="delete-authenticator" element={<DeactivateAuthentictor />} />
+                                <Route path="authenticator-setup" element={<AuthenticatorSetup />} />
+                                <Route path="change-password" element={<ChangePassword />} />
+                                <Route path="recovery-codes" element={<RecoveryCodes />} />
+                                <Route path="otp-setup" element={<SmsSetup />} />
+                            </Route>
+                        </Routes>
+                    </motion.div>
+                </AnimatePresence>
+            </ShimmerDiv>
+        </div>
     )
 }
 

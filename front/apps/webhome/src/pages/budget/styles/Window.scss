@@ -1,19 +1,31 @@
+@import '@styles/table-mixins.scss';
+
 #budget-window {
     flex: 6;
-    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1.75em;
+    align-items: center;
+    gap: 2em;
+    position: relative;
 
-    &>div:last-child {
-        flex-grow: 1;
+    &>div {
+        max-width: 52rem;
+        width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
         gap: 1.75em;
-    }
 
-    &>div {
-        padding: 0 .5em;
+        &>div:last-child {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.75em;
+        }
+
+        &>div {
+            padding: 0 .5em;
+        }
     }
 }
 
