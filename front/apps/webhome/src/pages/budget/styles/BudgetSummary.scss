@@ -239,7 +239,7 @@ $header-gap: calc(.75em + .125vw);
     }
 
     &.year * {
-        color: var(--secondary-dark4);
+        color: var(--secondary-dark2);
     }
 
     * {
@@ -250,7 +250,7 @@ $header-gap: calc(.75em + .125vw);
     &>div:nth-child(-n+4) {
         display: flex;
         justify-content: center;
-        align-items: baseline;
+        align-items: center;
 
         &:not(:last-child) {
             font-weight: var(--fw-regular);
@@ -276,6 +276,9 @@ $header-gap: calc(.75em + .125vw);
 
         &>div:not(:first-child):last-child {
             align-self: center;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             margin-left: .5em;
         }
     }

@@ -84,6 +84,14 @@ const SummaryStats = ({ showStats }: { showStats: 'month' | 'year' | undefined }
                             </div>
                         </div>
                         <div>
+                            <StaticProgressCircle
+                                value={
+                                    (loadingBills || loadingCategories) ? 0 : period === 'month'
+                                        ? Math.round((monthly_spent / limit_amount_monthly) * 100) / 100
+                                        : Math.round((yearly_spent / limit_amount_yearly) * 100) / 100
+                                }
+                                size={'1.2em'}
+                            />
                             <div>
                                 <div>
                                     <DollarCents value={
@@ -96,16 +104,13 @@ const SummaryStats = ({ showStats }: { showStats: 'month' | 'year' | undefined }
                                 </div>
                                 <div>spending left</div>
                             </div>
-                            <StaticProgressCircle
-                                value={
-                                    (loadingBills || loadingCategories) ? 0 : period === 'month'
-                                        ? Math.round((monthly_spent / limit_amount_monthly) * 100) / 100
-                                        : Math.round((yearly_spent / limit_amount_yearly) * 100) / 100
-                                }
-                                size={'1.2em'}
-                            />
                         </div>
                         <div>
+                            <StaticProgressCircle value={
+                                period === 'year'
+                                    ? Math.round(yearly_bills_amount_remaining! / (total_yearly_bills_amount!)) / 100 || 0
+                                    : Math.round(monthly_bills_amount_remaining! / (total_monthly_bills_amount!)) / 100 || 0
+                            } size={'1.2em'} />
                             <div>
                                 <div><DollarCents value={
                                     period === 'month'
@@ -114,13 +119,16 @@ const SummaryStats = ({ showStats }: { showStats: 'month' | 'year' | undefined }
                                 } /></div>
                                 <div> in bills left</div>
                             </div>
-                            <StaticProgressCircle value={
-                                period === 'year'
-                                    ? Math.round(yearly_bills_amount_remaining! / (total_yearly_bills_amount!)) / 100 || 0
-                                    : Math.round(monthly_bills_amount_remaining! / (total_monthly_bills_amount!)) / 100 || 0
-                            } size={'1.2em'} />
                         </div>
                         <div>
+                            <div style={{
+                                opacity: period === 'month'
+                                    ? (monthly_bills_paid === 0 ? .25 : 1)
+                                    : (yearly_bills_paid === 0 ? .25 : 1)
+                            }}
+                            >
+                                <CheckMark2 fill={'currentColor'} />
+                            </div>
                             <div>
                                 <span>
                                     {period === 'month'
@@ -129,14 +137,6 @@ const SummaryStats = ({ showStats }: { showStats: 'month' | 'year' | undefined }
                                     }
                                 </span>
                                 <div>bills paid</div>
-                            </div>
-                            <div style={{
-                                opacity: period === 'month'
-                                    ? (monthly_bills_paid === 0 ? .25 : 1)
-                                    : (yearly_bills_paid === 0 ? .25 : 1)
-                            }}
-                            >
-                                <CheckMark2 fill={'currentColor'} />
                             </div>
                         </div>
                     </div>

@@ -164,9 +164,10 @@ const Row = ({ category }: { category: Category }) => {
                         />
                     </div>
                     <div>
-                        <StaticProgressCircle value={
-                            Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100
-                        } />
+                        <StaticProgressCircle
+                            value={Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100}
+                            color={category.period === 'year' ? 'green' : 'blue'}
+                        />
                     </div>
                 </>
                 :
@@ -236,7 +237,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
             <div className={`${period === 'year' ? 'yearly' : 'monthly'}`}>
                 <h4>
                     {/* {`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`} */}
-                    {`${period.toUpperCase()}LY`}
+                    {`${period.toUpperCase()}LY SPENDING`}
                 </h4>
                 {period === 'year' && yearly_start && yearly_end &&
                     <h4>
@@ -256,9 +257,10 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
                 <DollarCents value={totalLimit ? totalLimit : '0.00'} withCents={false} />
             </div>
             <div>
-                <StaticProgressCircle value={
-                    totalLimit && totalSpent ? Math.round(totalSpent / totalLimit * 100) / 100 : 0
-                } />
+                <StaticProgressCircle
+                    color={period === 'year' ? 'green' : 'blue'}
+                    value={totalLimit && totalSpent ? Math.round(totalSpent / totalLimit * 100) / 100 : 0}
+                />
             </div>
         </div>
     )

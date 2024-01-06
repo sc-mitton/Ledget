@@ -92,9 +92,8 @@ $background: var(--window);
 
         &>div.spanned {
             // cover 2-5 columns
-            grid-column: 2 / span 4;
             text-align: right;
-            padding-right: 1em;
+            padding-right: 2.75em;
         }
 
         &.header {

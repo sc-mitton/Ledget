@@ -39,6 +39,14 @@
     color: var(--m-text);
     opacity: .9;
 
+    &.green {
+        color: var(--secondary-color);
+    }
+
+    &.blue {
+        color: var(--main-color);
+    }
+
     circle:first-child {
         stroke: currentColor;
         opacity: .4;

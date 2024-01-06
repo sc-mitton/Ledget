@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 
-import './styles/MonthPicker.css'
+import './styles/MonthPicker.scss'
 import { useGetMeQuery } from '@features/userSlice'
 import { SmallArrowButton, IconButton, DropDownDiv } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'

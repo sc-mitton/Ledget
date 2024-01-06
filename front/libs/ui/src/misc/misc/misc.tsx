@@ -200,13 +200,20 @@ export const DollarCentsRange = ({ lower, upper }: { lower?: number | undefined,
 )
 
 export const StaticProgressCircle = ({
+  color,
   value = 0,
   size = '1.1rem',
   strokeWidth = 5,
   noProgress = false
+}: {
+  color?: 'green' | 'blue',
+  value?: number,
+  size?: string,
+  strokeWidth?: number,
+  noProgress?: boolean
 }) => (
   <div className="progress-circle--container" style={{ width: size, height: size }}>
-    <div className="progress-circle--svg">
+    <div className={`progress-circle--svg ${color ? color : ''}`}>
       <svg viewBox="0 0 36 36" style={{ width: size, height: size }}>
         <circle
           cx="18"
