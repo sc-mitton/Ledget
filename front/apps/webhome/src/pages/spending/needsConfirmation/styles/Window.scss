@@ -21,7 +21,7 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
     position: relative;
     background: radial-gradient(ellipse, rgba(14, 7, 7, .02) 1%, transparent 50%);
     width: 100%;
-    z-index: 100;
+    z-index: 0;
 
     &>div:first-child {
         margin: 0 auto;

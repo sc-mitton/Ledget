@@ -137,26 +137,26 @@
 }
 
 .btn-dark {
-    background-color: var(--main-dark4);
+    background-color: var(--btn-dark);
     font-weight: var(--fw-bold);
     color: var(--m-invert-text);
     transition: all .3s ease;
 
     &:hover {
         transition: all .3s ease;
-        background-color: var(--main-dark5);
+        background-color: var(--btn-dark-hover);
     }
 }
 
 .btn-chcl {
-    background-color: var(--m-text-secondary);
+    background-color: var(--btn-dark);
     font-weight: var(--fw-bold);
     color: var(--m-invert-text);
     transition: all .3s ease;
 
     &:hover {
         transition: all .3s ease;
-        background-color: var(--m-text);
+        background-color: var(--btn-dark-hover);
     }
 }
 
