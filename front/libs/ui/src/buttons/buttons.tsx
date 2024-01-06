@@ -88,7 +88,7 @@ export const ExpandButton = ({
     {...rest}
   >
     <div className={`expand-button--icon ${flipped ? 'flipped' : ''} `}>
-      <ExpandIcon stroke={"var(--btn-mid-gray)"} size={size} />
+      <ExpandIcon stroke={"currentColor"} size={size} />
     </div >
   </button>
 )

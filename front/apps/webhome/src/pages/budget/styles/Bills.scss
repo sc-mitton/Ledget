@@ -49,7 +49,7 @@ $number-of-bill-rows: 5;
         max-height: 350px;
         opacity: 1;
         position: relative;
-        z-index: 1;
+        z-index: 0;
         transition: max-height .4s ease-out, opacity .2s ease-out .2s, z-index 0s ease-out 0s;
     }
 
@@ -254,6 +254,8 @@ $number-of-bill-rows: 5;
         justify-content: space-between;
         align-items: center;
         position: relative;
+        position: relative;
+        z-index: 0;
 
         &>div:first-child {
             display: inline-flex;

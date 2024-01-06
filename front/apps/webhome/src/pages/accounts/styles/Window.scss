@@ -23,7 +23,6 @@
         position: relative;
         gap: .5em;
 
-
         li {
             padding: .125em 1em;
             font-weight: var(--fw-regular);
@@ -38,7 +37,7 @@
         }
 
         li:not([aria-current="true"]) {
-            border: var(--input-border);
+            border: 1px solid var(--gray-button-border);
         }
 
         li[aria-current="true"] {

@@ -72,6 +72,7 @@ const SummaryStats = ({ showStats }: { showStats: 'month' | 'year' | undefined }
                         aria-label={`${period} stats`}
                     >
                         <div>
+                            <div><span /></div>
                             <div>
                                 <div>
                                     <DollarCents value={
@@ -123,11 +124,11 @@ const SummaryStats = ({ showStats }: { showStats: 'month' | 'year' | undefined }
                         <div>
                             <div style={{
                                 opacity: period === 'month'
-                                    ? (monthly_bills_paid === 0 ? .25 : 1)
-                                    : (yearly_bills_paid === 0 ? .25 : 1)
+                                    ? (monthly_bills_paid === 0 ? .25 : .8)
+                                    : (yearly_bills_paid === 0 ? .25 : .8)
                             }}
                             >
-                                <CheckMark2 fill={'currentColor'} />
+                                <CheckMark2 fill={period === 'month' ? 'var(--main-color)' : 'var(--secondary-color)'} />
                             </div>
                             <div>
                                 <span>

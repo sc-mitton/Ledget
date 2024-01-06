@@ -220,12 +220,12 @@
 .btn-gr2 {
     box-shadow: var(--btn-drop-shadow);
     background-color: var(--icon-light-gray);
-    border: var(--input-border);
+    border: 1px solid var(--gray-button-border);
     transition: all .3s ease;
     color: var(--btn-mid-gray);
 
     &:hover {
-        background-color: var(--icon-hover-light-gray);
+        background-color: var(--gray-button-border);
         transition: all .3s ease;
         color: var(--btn-mid-gray-hover);
         color: var(--m-text);
@@ -566,6 +566,14 @@ button.disabled-hover:hover svg {
     min-width: 5ch;
     display: flex;
     place-content: center;
+
+    * {
+        color: var(--btn-mid-gray);
+    }
+
+    &:hover * {
+        color: var(--m-text);
+    }
 
     &.btn-clr {
         padding: .3em 0;

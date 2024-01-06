@@ -128,7 +128,7 @@ $header-gap: calc(.75em + .125vw);
 
         h4 {
             font-size: $header-font-size;
-            font-weight: var(--fw-bold);
+            font-weight: var(--fw-regular);
         }
 
         // All statistic elements
@@ -141,6 +141,10 @@ $header-gap: calc(.75em + .125vw);
 
             &:first-child {
                 flex: 1;
+            }
+
+            &:not(:first-child) {
+                opacity: .8;
             }
 
             // Thumbs container
@@ -234,16 +238,48 @@ $header-gap: calc(.75em + .125vw);
     z-index: 1;
     @include stats-transitions(out);
 
-    &.month * {
+    &.month div,
+    &.month span {
         color: var(--main-dark);
     }
 
-    &.year * {
+    &.year div,
+    &.year span {
         color: var(--secondary-dark2);
     }
 
     * {
         font-size: $base-stats-font-size;
+    }
+
+    &.month>div:nth-child(1)>div:first-child>span {
+        background-color: var(--main-hlight-hover-darker);
+        opacity: .9;
+    }
+
+    &.year>div:nth-child(1)>div:first-child>span {
+        background-color: var(--secondary-hlight-hover-darker);
+        opacity: .9;
+    }
+
+    &>div:nth-child(1) {
+        &>div:first-child>span {
+            width: 1.125em;
+            height: 1.125em;
+            border-radius: 50%;
+            position: relative;
+
+            &::before {
+                content: '$';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                font-size: .75rem;
+                font-weight: var(--fw-bold);
+                transform: translate(-50%, -50%);
+                color: var(--main-dark);
+            }
+        }
     }
 
     // Each statistic cell
@@ -284,6 +320,7 @@ $header-gap: calc(.75em + .125vw);
     }
 
     // Bills paid
+
     &>div:nth-child(4) {
         gap: .125em;
 

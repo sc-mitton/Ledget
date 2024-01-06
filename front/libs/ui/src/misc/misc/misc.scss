@@ -40,20 +40,21 @@
     opacity: .9;
 
     &.green {
-        color: var(--secondary-color);
+        color: var(--secondary-dark);
     }
 
     &.blue {
-        color: var(--main-color);
+        color: var(--main-dark);
     }
 
     circle:first-child {
         stroke: currentColor;
-        opacity: .4;
+        opacity: .2;
     }
 
     circle:last-child {
         stroke: currentColor;
+        opacity: .9;
     }
 }
 

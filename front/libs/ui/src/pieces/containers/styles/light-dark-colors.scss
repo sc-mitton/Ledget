@@ -49,11 +49,11 @@
         // Secondary and Primary Base Values
         --main-color-h: 226;
         --main-color-s: 30%;
-        --main-color-l: 37%;
+        --main-color-l: 40%;
 
         --secondary-color-h: 170;
         --secondary-color-s: 30%;
-        --secondary-color-l: 40%;
+        --secondary-color-l: 43%;
 
         --main-color-values: 93, 97, 137;
         --secondary-color-values: 93, 137, 97;
@@ -61,7 +61,7 @@
         --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
         --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 5%));
         --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 15%));
-        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 20%));
+        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 10%));
         --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 7%));
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), var(--main-color-l));
@@ -69,7 +69,7 @@
         --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 5%));
         --secondary-hlight: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 20%));
-        --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) - 25%));
+        --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) - 15%));
         --secondary-hlight-hover-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) - 15%));
 
         --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 40%));
@@ -92,16 +92,16 @@
         --window: hsl(0, 0%, 8%);
         --window-border: hsl(0, 0%, 10%);
         --window-rgb: 5, 5, 5;
-        --header-background: hsl(0, 0%, 2%);
+        --header-background: hsl(0, 0%, 0%);
 
         --side-window: hsl(0, 0%, 4%);
 
-        --inner-window: hsl(0, 0%, 6%);
+        --inner-window: hsl(0, 0%, 5%);
         --inner-window2: hsl(0, 0%, 9%);
         --inner-window-rgb: 13, 13, 13;
         --overlay: hsl(0, 0%, 10%);
 
-        --wafer-background: rgb(15, 15, 15);
+        --wafer-background: rgb(10, 10, 10);
         --dropdown-background: hsl(0, 0%, 14%);
         --dropdown-item-background: hsl(0, 0%, 20%);
 
@@ -109,7 +109,7 @@
 
         // Inputs
         --input-background: hsl(0, 0%, 4%);
-        --input-border-color: hsl(0, 0%, 13%);
+        --input-border-color: hsl(0, 0%, 14%);
 
         // Text
         --m-text: hsl(0, 0%, 86%);
@@ -162,6 +162,7 @@
         --border-color: rgb(255, 255, 255, .1);
         --institution-logo-border: solid 1px rgb(255, 255, 255, .3);
         --toast-border: 1px solid var(--border-color-dimmest);
+        --gray-button-border: hsl(0, 0%, 23%);
 
         --input-focus-drop-shadow: 0 0 0 1px var(--input-focus-dropshadow-color);
 
@@ -293,6 +294,7 @@
         --border-color: rgb(0, 0, 0, .1);
         --institution-logo-border: solid 2px rgb(0, 0, 0, .2);
         --toast-border: transparent;
+        --gray-button-border: hsl(0, 0%, 90%);
 
         --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
 
