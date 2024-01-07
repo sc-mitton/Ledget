@@ -2,9 +2,9 @@
 
 const Close = ({
     className = '',
-    size = "1em",
+    size = ".7em",
     stroke = "var(--icon-full)",
-    strokeWidth = "20"
+    strokeWidth = "22"
 }) => {
 
     return (

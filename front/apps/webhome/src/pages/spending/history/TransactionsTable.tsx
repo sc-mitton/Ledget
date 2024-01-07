@@ -33,7 +33,7 @@ const List = ({ setFocusedTransaction }:
         ?
         transactionsData?.map((transaction) => {
           const date = new Date(transaction.datetime || transaction.date)
-          date.getMonth() !== monthholder ? newMonth = true : newMonth = false
+          date.getUTCMonth() !== monthholder ? newMonth = true : newMonth = false
           monthholder = date.getMonth()
 
           return (

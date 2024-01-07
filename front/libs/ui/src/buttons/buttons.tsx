@@ -118,7 +118,7 @@ export const CloseButton =
     return (
       <button
         ref={ref}
-        className={`btn-clr btn btn-icon close-btn ${className ? className : ''}`}
+        className={`btn-gr btn btn-icon close-btn ${className ? className : ''}`}
         {...rest}
       >
         <CloseIcon size={size} />

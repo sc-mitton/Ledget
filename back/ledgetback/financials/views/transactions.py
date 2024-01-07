@@ -272,12 +272,12 @@ class TransactionViewSet(ModelViewSet):
                     fraction=F('transactioncategory__fraction')).distinct())
 
             base_qset = base_qset.filter(
-                Q(bill__isnull=False) | Q(transactioncategory__isnull=False)
-            ).select_related('bill') \
-             .prefetch_related(prefetch_categories)
+                    Q(bill__isnull=False) | Q(transactioncategory__isnull=False)
+                ).select_related('bill') \
+                 .prefetch_related(prefetch_categories)
 
         return base_qset.prefetch_related('notes') \
-                        .order_by('-datetime', '-date') \
+                        .order_by('-date') \
                         .distinct()
 
     @action(detail=False, methods=['get'], url_path='merchants',
