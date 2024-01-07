@@ -3,7 +3,7 @@ import React, { useState, Dispatch, SetStateAction, useEffect } from 'react'
 import './styles/Dropdowns.css'
 import { Listbox } from '@headlessui/react'
 import { Plus, CheckMark } from '@ledget/media'
-import { SlimmestInputButton, DropDownDiv } from '@ledget/ui'
+import { SlimmestInputButton, DropDownDiv, DropdownItem } from '@ledget/ui'
 import { useGetRemindersQuery, Reminder } from '@features/remindersSlice'
 
 
@@ -26,8 +26,10 @@ const AddReminder = ({ value, onChange, defaultSelected }:
 
         return (
             <>
-                <div
-                    className={`slct-item ${active && "a-slct-item"} ${selected && "s-slct-item"}`}
+                <DropdownItem
+                    active={active}
+                    selected={selected}
+                    style={{ justifyContent: 'space-between' }}
                 >
                     <div>
                         {value.offset}
@@ -36,9 +38,9 @@ const AddReminder = ({ value, onChange, defaultSelected }:
                     </div>
                     {!selected
                         ? <Plus stroke={'currentColor'} size={'.8em'} />
-                        : <CheckMark stroke={`${selected ? 'var(--main-dark)' : 'transparent'}`} />
+                        : <CheckMark size={'.7em'} stroke={`${selected ? 'var(--main-dark)' : 'transparent'}`} />
                     }
-                </div>
+                </DropdownItem>
                 <div style={{ padding: '0 .5em' }}>
                     {nextOp && nextOp.period !== value.period && <hr />}
                 </div>

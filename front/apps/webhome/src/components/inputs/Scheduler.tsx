@@ -119,7 +119,7 @@ const Button: FC<React.HTMLAttributes<HTMLButtonElement> & { iconPlaceholder?: b
                             {placeholder || 'Repeats on'}
                         </span>
                     </div>}
-                <ArrowIcon size={'.8em'} stroke={'currentColor'} />
+                <ArrowIcon size={'.8em'} stroke={'var(--m-text)'} />
                 {children}
             </Component>
         </>
