@@ -1,6 +1,6 @@
 
 const Authenticator = ({
-    fill = 'var(--main-dark)',
+    fill = 'var(--m-text)',
     fill2 = 'var(--window)',
     size = '7em'
 }) => {

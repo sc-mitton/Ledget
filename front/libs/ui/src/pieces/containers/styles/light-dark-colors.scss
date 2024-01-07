@@ -231,7 +231,7 @@
         --side-window: hsl(0, 0%, 94%);
 
         --inner-window: hsl(0, 0%, 94%);
-        --inner-window2: hsl(0, 0%, 98%);
+        --inner-window2: hsl(0, 0%, 92%);
         --inner-window-rgb: 246, 246, 246;
         --overlay: hsl(0, 0%, 20%);
 
@@ -278,8 +278,8 @@
         --btn-dark: hsl(0, 0%, 14%);
         --btn-dark-hover: hsl(0, 0%, 8%);
 
-        --negative-pulse-outer: rgba(0, 0, 0, .5);
-        --negative-pulse-inner: rgba(0, 0, 0, .7);
+        --negative-pulse-outer: rgba(0, 0, 0, .3);
+        --negative-pulse-inner: rgba(0, 0, 0, .75);
 
         // Drop Shadows & Borders
         --window-drop-shadow-color: hsl(0, 0%, 94%);

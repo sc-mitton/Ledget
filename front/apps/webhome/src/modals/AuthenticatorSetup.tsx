@@ -80,7 +80,7 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }: SetupAppP
                             <ZoomMotionDiv id="qr-setup--container" key={'qr-setup--container'}>
                                 {(qrNode && !isError) &&
                                     <>
-                                        <NodeImage node={qrNode} attributes={qrNode.attributes} />
+                                        <div><NodeImage node={qrNode} attributes={qrNode.attributes} /></div>
                                         <PrimaryTextButton
                                             type='button'
                                             onClick={() => setCodeMode(true)}
@@ -171,9 +171,9 @@ const Authenticator = withReAuth(withModal((props) => {
                     {step === 'confirm' &&
                         <SlideMotionDiv
                             key="confirm-code"
-                            position={!searchParams.get('step')
-                                ? 'first'
-                                : searchParams.get('step') === 'confirm' ? 'last' : 'fixed'}
+                            position={step === 'confirm'
+                                ? 'last'
+                                : step ? 'last' : 'first'}
                         >
                             <JiggleDiv jiggle={isCompleteError} className="content">
                                 <div>
