@@ -92,7 +92,6 @@ const Header = () => {
         find: (element) => element.getAttribute('aria-current') === 'true',
         styles: {
             backgroundColor: backgroundColor,
-            boxShadow: `inset 0 0 0 1px ${boxShadowColor}`,
             borderRadius: 'var(--border-radius3)',
         }
     })

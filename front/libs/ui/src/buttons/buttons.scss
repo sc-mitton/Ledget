@@ -220,7 +220,6 @@
 .btn-gr2 {
     box-shadow: var(--btn-drop-shadow);
     background-color: var(--icon-light-gray);
-    border: 1px solid var(--gray-button-border);
     transition: all .3s ease;
     color: var(--btn-mid-gray);
 
@@ -794,9 +793,11 @@ button.disabled-hover:hover svg {
 /* Close Button */
 .close-btn {
     position: absolute;
-    top: .625em;
-    right: .625em;
+    top: .75em;
+    right: 1em;
     padding: .375em;
+    border-radius: 50%;
+    border: none;
 }
 
 /* Zipper Button */

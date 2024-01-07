@@ -551,12 +551,18 @@ const CategoryDetail = ({ category }: { category: Category }) => {
 
     // Initial fetching Transactions
     useEffect(() => {
-        getTransactions({
-            confirmed: true,
-            start, end,
-            category: category.id,
-        }, true)
-    }, [])
+        if (start && end) {
+            getTransactions({
+                confirmed: true,
+                start: category.period === 'month'
+                    ? start
+                    : new Date(start * 1000).setFullYear(new Date(start * 1000).getFullYear() - 1) / 1000,
+                end,
+                category: category.id,
+            }, true)
+
+        }
+    }, [start, end])
 
     useEffect(() => {
         if (!spendingSummaryData)

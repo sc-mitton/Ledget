@@ -10,7 +10,7 @@
     --header-pill-hover: rgb(255, 255, 255, 15%);
 
     /* Input Colors */
-    --input-border: solid 1px var(--input-border-color);
+    --input-border: solid 1px transparent;
     --input-border-focus: solid 1px var(--input-background);
     --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight) 30%);
 
@@ -90,9 +90,9 @@
         // Windows
         --window-background-color: hsl(0, 0%, 5%);
         --window: hsl(0, 0%, 8%);
-        --window-border: hsl(0, 0%, 10%);
+        // --window-border: hsl(0, 0%, 10%);
         --window-rgb: 5, 5, 5;
-        --header-background: hsl(0, 0%, 0%);
+        --header-background: hsl(240, 38%, 3%);
 
         --side-window: hsl(0, 0%, 4%);
 
@@ -105,7 +105,7 @@
         --dropdown-background: hsl(0, 0%, 14%);
         --dropdown-item-background: hsl(0, 0%, 20%);
 
-        --new-item-border: hsl(0, 0%, 11%);
+        // --new-item-border: hsl(0, 0%, 11%);
 
         // Inputs
         --input-background: hsl(0, 0%, 4%);
@@ -163,6 +163,7 @@
         --institution-logo-border: solid 1px rgb(255, 255, 255, .3);
         --toast-border: 1px solid var(--border-color-dimmest);
         --gray-button-border: hsl(0, 0%, 23%);
+        --sidebar-border-color: hsl(0, 0%, 10%);
 
         --input-focus-drop-shadow: 0 0 0 1px var(--input-focus-dropshadow-color);
 
@@ -224,9 +225,9 @@
 
         --window: hsl(0, 0%, 99%);
         --window-rgb: 250, 250, 250;
-        --window-border: hsl(0, 0%, 94%);
+        // --window-border: hsl(0, 0%, 94%);
 
-        --side-window: hsl(0, 0%, 95%);
+        --side-window: hsl(0, 0%, 94%);
 
         --inner-window: hsl(0, 0%, 94%);
         --inner-window2: hsl(0, 0%, 98%);
@@ -237,7 +238,7 @@
         --dropdown-background: hsl(0, 0%, 98%);
         --dropdown-item-background: hsl(0, 0%, 90%);
 
-        --new-item-border: hsl(0, 0%, 92%);
+        // --new-item-border: hsl(0, 0%, 92%);
 
         // Inputs
         --input-background: hwb(0 92% 8%);
@@ -262,16 +263,16 @@
 
         // Icons & Buttons
         --icon-full: var(--m-text);
-        --icon-light-gray: hsl(0, 0%, 93%);
-        --icon-hover-light-gray: hsl(0, 0%, 88%);
-        --icon-hover-gray: hsl(0, 0%, 69%);
+        --icon-light-gray: hsl(0, 0%, 89%);
+        --icon-hover-light-gray: hsl(0, 0%, 84%);
+        --icon-hover-gray: hsl(0, 0%, 65%);
 
         --gray-hlight: hsl(0, 0%, 92%);
 
-        --btn-gray: hsl(0, 0%, 82%);
-        --btn-gray-hover: hsl(0, 0%, 78%);
-        --btn-mid-gray: hsl(0, 0%, 52%);
-        --btn-mid-gray-hover: hsl(0, 0%, 32%);
+        --btn-gray: hsl(0, 0%, 80%);
+        --btn-gray-hover: hsl(0, 0%, 76%);
+        --btn-mid-gray: hsl(0, 0%, 48%);
+        --btn-mid-gray-hover: hsl(0, 0%, 28%);
         --btn-dark: hsl(0, 0%, 14%);
         --btn-dark-hover: hsl(0, 0%, 8%);
 
@@ -294,7 +295,8 @@
         --border-color: rgb(0, 0, 0, .1);
         --institution-logo-border: solid 2px rgb(0, 0, 0, .2);
         --toast-border: transparent;
-        --gray-button-border: hsl(0, 0%, 90%);
+        --gray-button-border: hsl(0, 0%, 86%);
+        --sidebar-border-color: hsl(0, 0%, 92%);
 
         --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
 

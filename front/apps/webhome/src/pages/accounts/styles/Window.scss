@@ -36,10 +36,6 @@
             gap: .5em;
         }
 
-        li:not([aria-current="true"]) {
-            border: 1px solid var(--gray-button-border);
-        }
-
         li[aria-current="true"] {
             background-color: transparent;
             transition: background-color 0.5s ease-in-out;

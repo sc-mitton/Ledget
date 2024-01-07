@@ -48,7 +48,7 @@
     height: .875rem;
     font-size: .75rem;
     transform: scale(1);
-    border: 1.5px solid var(--btn-gray-hover);
+    border: 1.5px solid transparent;
     background-color: var(--input-background);
     border-radius: var(--border-radius);
     transition: all 0.3s ease;
