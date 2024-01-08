@@ -4,6 +4,9 @@ import Big from 'big.js'
 import { Menu } from '@headlessui/react'
 import { AnimatePresence } from 'framer-motion'
 import dayjs from 'dayjs'
+import { useForm, useFieldArray, set } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 
 import './styles/TransactionItem.scss'
 import { Transaction } from '@features/transactionsSlice'
@@ -15,19 +18,20 @@ import {
     useAddNoteMutation,
     useUpdateDeleteNoteMutation,
     useUpdateTransactionMutation,
-    Note
 } from '@features/transactionsSlice'
 import { Bill } from "@features/billSlice";
 import { Category, isCategory } from "@features/categorySlice";
-import { Ellipsis, Split, Edit } from '@ledget/media'
+import { Split, Edit, CheckMark, TrashIcon, Ellipsis } from '@ledget/media'
 import { SplitTransactionInput } from '@components/split'
 import {
     DropDownDiv,
     useAccessEsc,
-    IconButton,
+    DropdownItem,
     SlideMotionDiv,
     useLoaded,
-    DropdownItem
+    CircleIconButton,
+    Tooltip,
+    IconButton
 } from '@ledget/ui'
 
 
@@ -88,90 +92,132 @@ const getBillCategoryLabel = (item: Transaction) => {
     }
 }
 
-function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
-    const [changeAble, setChangeAble] = useState(false)
-    const [billCat, setBillCat] = useState<Bill | Category | undefined>()
-    const [showBillCatSelect, setShowBillCatSelect] = useState(false)
-    const [confirmTransactions] = useConfirmTransactionsMutation()
-    const buttonContainerRef = useRef<HTMLDivElement>(null)
-    const dropdownRef = useRef<HTMLDivElement>(null)
+const schema = z.object({ notes: z.array(z.object({ text: z.string(), noteId: z.string() })) })
 
-    // If the transaction has been set to be split between categories in the past,
-    // then we don't want to have the dropdown available. The user will have to go the
-    // split transaction view.
-    useEffect(() => {
-        if (item?.categories?.length && item?.categories?.length > 1) {
-            setChangeAble(false)
-        } else {
-            setChangeAble(true)
-            setBillCat(item?.categories?.length
-                ? item.categories[0]
-                : item.bill
-                    ? item.bill
-                    : item.predicted_category ? item.predicted_category : item.predicted_bill
-            )
+const NoteInnerWindow = ({ item }: { item: Transaction }) => {
+    const [addNote] = useAddNoteMutation()
+    const [updateDeleteNote] = useUpdateDeleteNoteMutation()
+    const { register, control, getFieldState } = useForm<z.infer<typeof schema>>({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            notes: [{ noteId: 'new', text: '' }]
+                .concat([...item.notes].sort((a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime())
+                    .map((note) => ({ noteId: note.id, text: note.text })))
         }
-    }, [item])
-
-    useAccessEsc({
-        refs: [buttonContainerRef, dropdownRef],
-        visible: showBillCatSelect,
-        setVisible: setShowBillCatSelect,
     })
+    const { fields, prepend, remove } = useFieldArray({ control, name: 'notes' })
+    const [focusedNoteIndex, setFocusedNoteIndex] = useState<number>()
+    const notesContainerRef = useRef<HTMLDivElement>(null)
+    const [addFillerRow, setAddFillerRow] = useState(false)
 
-    useEffect(() => {
-        if (showBillCatSelect && billCat) {
-            confirmTransactions([{
-                transaction_id: item.transaction_id,
-                ...(isCategory(billCat)
-                    ? { splits: [{ category: billCat.id, fraction: 1 }] }
-                    : { bill: billCat.id })
-            }])
-            setShowBillCatSelect(false)
+    const handleNoteAction = (index: number, deleteNote?: boolean) => {
+        setFocusedNoteIndex(undefined)
+        const state = getFieldState(`notes.${index}.text`)
+        const field = fields.find((field, i) => i === index)
+        if (deleteNote && field) {
+            updateDeleteNote({
+                transactionId: item.transaction_id,
+                noteId: field.noteId,
+            })
+        } else if (state.isDirty) {
+            if (field?.noteId === 'new') {
+                addNote({
+                    transactionId: item.transaction_id,
+                    text: field.text
+                })
+                prepend({ text: '', noteId: 'new' })
+            } else if (field) {
+                remove(index)
+                updateDeleteNote({
+                    transactionId: item.transaction_id,
+                    noteId: field.noteId,
+                    text: field.text
+                })
+            }
         }
-    }, [billCat])
+    }
+
+    // When textarea is focused, add event listener to notesContainerRef
+    // So that when it's clicked outside, the textarea is blurred. This
+    // will make it so the trash and save buttons will work. Esc will also
+    // blur things and
+    useEffect(() => {
+        if (focusedNoteIndex === undefined) { return }
+        const handler = (e: MouseEvent) => {
+            if (!notesContainerRef.current?.contains(e.target as Node)) {
+                handleNoteAction(focusedNoteIndex)
+            }
+        }
+        const escHandler = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                handleNoteAction(focusedNoteIndex)
+            }
+        }
+        document.addEventListener('keydown', escHandler)
+        document.addEventListener('click', handler)
+        return () => {
+            document.removeEventListener('click', handler)
+            document.removeEventListener('keydown', escHandler)
+        }
+    }, [focusedNoteIndex])
 
     return (
-        <div className='inner-window' id="bills-and-categories">
-            <div>{getBillCategoryLabel(item)}</div>
-            {changeAble
-                ?
-                <div ref={buttonContainerRef}>
-                    <BillCatLabel
-                        color={billCat?.period === 'month' ? 'blue' : 'green'}
-                        name={billCat?.name || ''}
-                        emoji={billCat?.emoji}
-                        slim={true}
-                        hoverable={changeAble}
-                        onClick={() => { setShowBillCatSelect(!showBillCatSelect) }}
-                    />
-                    <DropDownDiv
-                        placement='left'
-                        visible={showBillCatSelect}
-                        ref={dropdownRef}
-                    >
-                        <SelectCategoryBill
-                            includeBills={true}
-                            value={billCat}
-                            onChange={setBillCat}
-                            month={dayjs(item.datetime || item.date).month() + 1}
-                            year={dayjs(item.datetime || item.date).year()}
-                        />
-                    </DropDownDiv>
+        <div className='inner-window'>
+            <h4>{`Note${item.notes.length > 1 ? 's' : ''}`}</h4>
+            <div id="notes--container" ref={notesContainerRef}>
+                <div>
+                    {fields.map((field, index) => (
+                        <div className='note--container' key={`note${index}`}>
+                            <textarea
+                                key={`field${index}`}
+                                {...register(`notes.${index}.text`)}
+                                defaultValue={field.text}
+                                disabled={!item.notes[index - 1]?.is_current_users && index !== 0}
+                                onFocus={() => {
+                                    setFocusedNoteIndex(index)
+                                    setAddFillerRow(true)
+                                }}
+                                onBlur={() => {
+                                    setAddFillerRow(false)
+                                }}
+                                rows={1}
+                                placeholder='Add a note...'
+                            />
+                            {focusedNoteIndex === index &&
+                                <span className="last-changed">
+                                    Last changed&nbsp;
+                                    {dayjs(item.notes[index - 1]?.datetime).format('HH:mm A M/DD/YY')}
+                                </span>}
+                        </div>
+                    ))}
+                    {addFillerRow &&
+                        <div className='note--container'>
+                            <textarea
+                                placeholder='Just a filler so the container size does jump'
+                                rows={1}
+                                disabled
+                            /></div>}
+                    {focusedNoteIndex !== undefined &&
+                        <>
+                            {focusedNoteIndex !== 0 &&
+                                <Tooltip msg={'Delete'} ariaLabel={'delete'}>
+                                    <CircleIconButton onClick={(e) => {
+                                        handleNoteAction(focusedNoteIndex, true)
+                                    }}>
+                                        <TrashIcon size={'.9em'} />
+                                    </CircleIconButton>
+                                </Tooltip>
+                            }
+                            <Tooltip msg={'Save'} ariaLabel={'save'}>
+                                <CircleIconButton onClick={(e) => {
+                                    handleNoteAction(focusedNoteIndex)
+                                }}>
+                                    <CheckMark size={'.8em'} />
+                                </CircleIconButton>
+                            </Tooltip>
+                        </>}
                 </div>
-                : item.categories?.map((cat) => (
-                    <div key={cat.id}>
-                        <BillCatLabel
-                            color={cat.period === 'month' ? 'blue' : 'green'}
-                            name={cat.name}
-                            emoji={cat.emoji}
-                            slim={true}
-                            hoverable={changeAble}
-                            tint={true}
-                        />
-                    </div>
-                ))
-            }
+            </div>
         </div>
     )
 }
@@ -233,81 +279,100 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
     )
 }
 
-const NoteInnerWindow = ({ item }: { item: Transaction }) => {
-    const [addNote] = useAddNoteMutation()
-    const [updateDeleteNote] = useUpdateDeleteNoteMutation()
-    const [showHeader, setShowHeader] = useState(false)
+function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
+    const [itemIsSplit, setItemIsSplit] = useState(false)
+    const [billCat, setBillCat] = useState<Bill | Category | undefined>()
+    const [showBillCatSelect, setShowBillCatSelect] = useState(false)
+    const [confirmTransactions] = useConfirmTransactionsMutation()
+    const buttonContainerRef = useRef<HTMLDivElement>(null)
+    const dropdownRef = useRef<HTMLDivElement>(null)
 
-    const handleAddSubmit = (text: string) => {
-        if (text) {
-            setShowHeader(true)
-            addNote({ transactionId: item.transaction_id, text })
+    // If the transaction has been set to be split between categories in the past,
+    // then we don't want to have the dropdown available. The user will have to go the
+    // split transaction view.
+    useEffect(() => {
+        if (item?.categories?.length && item?.categories?.length > 1) {
+            setItemIsSplit(true)
+        } else {
+            setItemIsSplit(false)
+            setBillCat(item?.categories?.length
+                ? item.categories[0]
+                : item.bill
+                    ? item.bill
+                    : item.predicted_category ? item.predicted_category : item.predicted_bill
+            )
         }
+    }, [item])
 
-    }
+    useAccessEsc({
+        refs: [buttonContainerRef, dropdownRef],
+        visible: showBillCatSelect,
+        setVisible: setShowBillCatSelect,
+    })
 
-    const handleModifySubmit = (note: Note, text: string) => {
-        if (note.text !== text) {
-            updateDeleteNote({
-                transactionId: item.transaction_id,
-                noteId: note.id,
-                text
-            })
+    useEffect(() => {
+        if (showBillCatSelect && billCat) {
+            confirmTransactions([{
+                transaction_id: item.transaction_id,
+                ...(isCategory(billCat)
+                    ? { splits: [{ category: billCat.id, fraction: 1 }] }
+                    : { bill: billCat.id })
+            }])
+            setShowBillCatSelect(false)
         }
-    }
+    }, [billCat])
 
     return (
-        <div className='inner-window'>
-            {(item.notes.length > 0 || showHeader) &&
-                <h4>{`Note${item.notes.length > 1 ? 's' : ''}`}</h4>}
-            {item.notes.filter(note => !note.is_current_users).map((note) => (
-                <div key={note.id}>
-                    <span>{'avatar'}</span>
-                    <span>{note.text}</span>
-                </div>
-            ))}
-            {item.notes.filter(note => note.is_current_users).length > 0
+        <div className='inner-window' id="bills-and-categories">
+            <div>{getBillCategoryLabel(item)}</div>
+            {!itemIsSplit
                 ?
-                <div>
-                    {item.notes.filter(note => !note.is_current_users).length > 0 &&
-                        <span>{'avatar'}</span>}
-                    {item.notes.filter(note => note.is_current_users).map((note) => (
-                        <textarea
-                            onKeyDown={(e: any) => {
-                                if (e.key === 'Enter') {
-                                    e.preventDefault()
-                                    handleModifySubmit(note, e.target.value)
-                                    e.target.blur()
-                                }
-                            }}
-                            key={note.id}
-                            defaultValue={note.text}
-                            onBlur={(e) => handleModifySubmit(note, e.target.value)}
-                        />
-                    ))}
-                </div>
-                :
-                <div>
-                    <textarea
-                        onBlur={(e) => handleAddSubmit(e.target.value)}
-                        onKeyDown={(e: any) => {
-                            if (e.key === 'Enter') {
-                                e.preventDefault()
-                                handleAddSubmit(e.target.value)
-                                e.target.blur()
-                            }
-                        }}
-                        placeholder="Add a note..."
+                <div ref={buttonContainerRef} id="bill-cat-selector--container">
+                    <BillCatLabel
+                        as='button'
+                        ref={buttonContainerRef}
+                        color={billCat?.period === 'month' ? 'blue' : 'green'}
+                        name={billCat?.name || ''}
+                        emoji={billCat?.emoji}
+                        slim={true}
+                        onClick={() => { setShowBillCatSelect(!showBillCatSelect) }}
                     />
+                    <div>
+                        <DropDownDiv
+                            placement='left'
+                            visible={showBillCatSelect}
+                            ref={dropdownRef}
+                        >
+                            <SelectCategoryBill
+                                includeBills={false}
+                                value={billCat}
+                                onChange={setBillCat}
+                                month={dayjs(item.datetime || item.date).month() + 1}
+                                year={dayjs(item.datetime || item.date).year()}
+                            />
+                        </DropDownDiv>
+                    </div>
                 </div>
+                : item.categories?.map((cat) => (
+                    <div key={cat.id}>
+                        <BillCatLabel
+                            color={cat.period === 'month' ? 'blue' : 'green'}
+                            name={cat.name}
+                            emoji={cat.emoji}
+                            slim={true}
+                            hoverable={itemIsSplit}
+                            tint={true}
+                        />
+                    </div>
+                ))
             }
         </div>
     )
 }
 
-const TransactionModal = withModal<{ item: Transaction, action?: Action }>(({ item, action: propsAction }) => {
+const TransactionModal = withModal<{ item: Transaction, splitMode?: boolean }>(({ item, splitMode }) => {
     const loaded = useLoaded(1000)
-    const [action, setAction] = useState<Action | undefined>(propsAction)
+    const [action, setAction] = useState<Action | undefined>()
     const [edit, setEdit] = useState(false)
     const [preferredName, setPreferredName] = useState<string | undefined>()
     const [updateTransaction] = useUpdateTransactionMutation()

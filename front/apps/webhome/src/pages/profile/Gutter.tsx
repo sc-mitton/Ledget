@@ -4,7 +4,6 @@ import { animated, useSpring } from '@react-spring/web'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import {
-    Tooltip,
     usePillAnimation,
     useSchemeVar,
     IconButton,
@@ -46,13 +45,7 @@ const NavList = () => {
                 onKeyDown={(e) => { e.key === "Enter" && navigate(route) }}
                 className={`slim side-nav-item${rootPath === route ? "-current" : ''}`}
             >
-                <Tooltip
-                    msg={route.charAt(0).toUpperCase() + route.slice(1)}
-                    ariaLabel={route.charAt(0).toUpperCase() + route.slice(1)}
-                    type="right"
-                >
-                    <Icon name={route} fill={'currentColor'} />
-                </Tooltip>
+                <div><Icon name={route} fill={'currentColor'} /></div>
                 <div>
                     {route.charAt(0).toUpperCase() + route.slice(1)}
                 </div>
@@ -75,14 +68,7 @@ const Profile = () => {
             className={`side-nav-item${location.pathname === "/profile/details" ? "-current" : ''}`}
             id="profile"
         >
-            <Tooltip
-                msg={"Profile"}
-                ariaLabel={"Profile"}
-                type="right"
-                style={{ bottom: '10%', left: '120%' }}
-            >
-                <Profile1 width="1.6em" height="1.6em" fill={'currentColor'} />
-            </Tooltip>
+            <div><Profile1 width="1.6em" height="1.6em" fill={'currentColor'} /></div>
             <div>
                 <span>{`${user?.name.first}'s`} Ledget</span>
                 <br />

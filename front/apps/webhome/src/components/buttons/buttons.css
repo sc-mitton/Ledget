@@ -5,6 +5,7 @@
     margin-right: .375rem;
     touch-action: none;
     border-radius: .125em;
+    color: inherit;
 }
 
 .corner-grip-btn {

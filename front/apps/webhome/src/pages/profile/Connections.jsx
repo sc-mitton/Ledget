@@ -75,7 +75,6 @@ const DeleteAllButton = ({ onClick }) => {
                 id='delete-all-tooltip'
                 msg={'Remove account'}
                 ariaLabel={'Remove Account'}
-                style={{ bottom: '-50%' }}
                 type={'left'}
             >
                 <DeleteButton

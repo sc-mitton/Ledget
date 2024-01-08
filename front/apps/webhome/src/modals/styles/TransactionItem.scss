@@ -1,4 +1,5 @@
 @import '@styles/base.scss';
+@import '@styles/table-mixins.scss';
 
 /* Header */
 .transaction-info--header {
@@ -87,8 +88,7 @@
 
         // Account and institution info
         // accunt, merchant, date, etc. info
-        &:nth-last-child(2),
-        &:nth-last-child(1) {
+        &:nth-last-child(2) {
             display: grid;
             column-gap: 1.5em;
             row-gap: .25em;
@@ -102,7 +102,6 @@
             &>div {
                 display: flex;
                 align-items: center;
-                gap: .125em;
             }
 
             &>div:nth-child(2n+1) {
@@ -114,41 +113,108 @@
                 color: var(--m-text-secondary);
             }
         }
+    }
 
-        &#bills-and-categories {
-            display: flex;
-            align-items: center;
-            gap: .75em;
-            position: relative;
 
-            &>div {
+    #bills-and-categories {
+        display: flex;
+        align-items: center;
+        gap: .75em;
+        position: relative;
 
-                &:first-child {
-                    font-weight: var(--fw-bold);
-                    margin-right: .25em;
-                }
-            }
+        &>div {
+            font-weight: var(--fw-bold);
         }
 
-        // Add a note container
-        &:last-child {
+        #bill-cat-selector--container {
+            display: flex;
+            flex-direction: column;
 
             &>div {
-                display: flex;
-                align-items: center;
-                gap: .5em;
-                grid-column: 1/span 2;
-            }
-
-            textarea {
-                color: var(--m-text-secondary);
+                position: relative;
                 width: 100%;
-                padding: 0;
+
+                &>div {
+                    margin-top: .375em;
+                }
             }
         }
     }
 
-    h4 {
-        grid-column: span 2;
+    // Add a note container
+    #notes--container {
+        margin-top: .5em;
+        grid-column: 1/span 2;
+        position: relative;
+        overflow-x: visible;
+
+        &>div {
+            overflow-y: auto;
+            overflow-x: visible;
+            padding-right: 1em;
+            width: calc(100% - 1em);
+            max-height: 12.5em;
+            display: flex;
+            flex-direction: column;
+            gap: .5em;
+
+            // Tooltip divs around delete and save buttons
+            &>div[role="tooltip"] {
+                opacity: 1;
+                z-index: 20;
+                position: absolute;
+                bottom: 0em;
+                right: 2.5em;
+
+                &:last-of-type {
+                    right: 0.5em;
+                }
+            }
+
+            &:focus-within button {
+                opacity: 1;
+            }
+        }
+
+        &:focus-within {
+            overflow-y: hidden;
+        }
+
+        .note--container {
+            width: 100%;
+            height: auto;
+            position: relative;
+            padding: .25em 0 .625em 0;
+            display: flex;
+            color: var(--m-text-secondary);
+
+            span {
+                white-space: nowrap;
+
+                &.last-changed {
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    color: var(--m-text-quinary);
+                }
+            }
+
+            &:focus-within {
+                position: absolute;
+                height: calc(100% - .75em);
+                background-color: var(--inner-window);
+                z-index: 10;
+            }
+
+            &:not(:last-child):not(:focus-within) {
+                @include table-dividers(0em, false);
+            }
+
+            textarea {
+                width: 100%;
+                height: calc(100% - 1.25em);
+                padding: 0;
+            }
+        }
     }
 }

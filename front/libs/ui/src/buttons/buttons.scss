@@ -703,6 +703,31 @@ button.disabled-hover:hover svg {
     animation: pop-fade-in 0.3s ease-in-out;
 }
 
+/* Circle Icon Button */
+.circle-icon-btn {
+    position: relative;
+    width: 1.625em;
+    height: 1.625em;
+    border-radius: 50%;
+
+    svg {
+        position: relative;
+        z-index: 1;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: var(--icon-light-gray);
+        z-index: 0;
+    }
+
+    &:hover::after {
+        background-color: var(--icon-hover-light-gray);
+    }
+}
+
 @keyframes rotate {
     0% {
         transform: scale(1) rotate(0deg);

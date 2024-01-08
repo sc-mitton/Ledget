@@ -186,7 +186,6 @@ const NewItem: FC<{
                 <Tooltip
                     msg="Confirm"
                     ariaLabel="Confirm"
-                    style={{ left: '-1.1rem' }}
                 >
                     <IconButton
                         onClick={() => { handleConfirm(item) }}
@@ -566,7 +565,7 @@ const NeedsConfirmationWindow = () => {
             {showTransactionModal && focusedItem &&
                 <TransactionModal
                     item={focusedItem}
-                    action={showTransactionModal.split ? 'split' : undefined}
+                    splitMode={showTransactionModal.split}
                     onClose={() => setShowTransactionModal(undefined)} />}
         </ >
     )

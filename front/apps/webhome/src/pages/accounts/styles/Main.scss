@@ -10,7 +10,7 @@ $wafer-container-padding: .75rem;
     margin-top: 1.5em;
     padding-top: 0;
     padding-bottom: 0;
-    // background-color: var(--inner-window2);
+    background-color: var(--inner-window2);
 
     .account-wafers--header {
         display: inline-block;
@@ -171,15 +171,17 @@ $wafer-container-padding: .75rem;
         transition: opacity .2s ease-out;
     }
 
-    &.active {
-        border: 2px solid rgb(var(--main-color-values), .2);
-        border-radius: var(--border-radius4);
-        transform: scale(1.02);
-
-        &:focus-visible {
-            transition: all .2s ease-out;
-            transform: scale(1.02);
-        }
+    &.active::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -.75em;
+        width: 25%;
+        height: 4px;
+        border-radius: var(--border-radius1);
+        background-color: var(--main-color);
+        opacity: .6;
     }
 
     &.inactive {
@@ -193,7 +195,6 @@ $wafer-container-padding: .75rem;
         outline: none;
         transform: scale(1.03);
         transition: all .2s ease-out;
-        border-radius: var(--border-radius4);
     }
 
     /* Wafer Text */
@@ -209,7 +210,7 @@ $wafer-container-padding: .75rem;
 
         .wafer-institution-logo {
             margin-left: -.125em;
-            margin-bottom: .125em;
+            margin-top: .375em;
         }
 
         .wafer-name--container {
@@ -219,6 +220,7 @@ $wafer-container-padding: .75rem;
             display: inline-flex;
             flex-direction: column;
             white-space: nowrap;
+            margin-top: .25em;
 
             * {
                 font-weight: var(--fw-regular);

@@ -97,11 +97,11 @@
         --side-window: hsl(0, 0%, 4%);
 
         --inner-window: hsl(0, 0%, 5%);
-        --inner-window2: hsl(0, 0%, 9%);
+        --inner-window2: hsl(0, 0%, 11%);
         --inner-window-rgb: 13, 13, 13;
         --overlay: hsl(0, 0%, 10%);
 
-        --wafer-background: rgb(10, 10, 10);
+        --wafer-background: hsl(0, 0%, 6%);
         --dropdown-background: hsl(0, 0%, 14%);
         --dropdown-item-background: hsl(0, 0%, 20%);
 
@@ -112,8 +112,8 @@
         --input-border-color: hsl(0, 0%, 14%);
 
         // Text
-        --m-header-text: hsl(0, 0%, 85%);
-        --m-text: hsl(0, 0%, 70%);
+        --m-header-text: hsl(0, 0%, 95%);
+        --m-text: hsl(0, 0%, 80%);
         --m-invert-text: hsl(0, 0%, 20%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), black 20%);
         --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 40%);
@@ -231,11 +231,11 @@
         --side-window: hsl(0, 0%, 94%);
 
         --inner-window: hsl(0, 0%, 94%);
-        --inner-window2: hsl(0, 0%, 92%);
+        --inner-window2: hsl(0, 0%, 91%);
         --inner-window-rgb: 246, 246, 246;
         --overlay: hsl(0, 0%, 20%);
 
-        --wafer-background: hsl(0, 0%, 100%);
+        --wafer-background: hsl(0, 0%, 95%);
         --dropdown-background: hsl(0, 0%, 98%);
         --dropdown-item-background: hsl(0, 0%, 90%);
 

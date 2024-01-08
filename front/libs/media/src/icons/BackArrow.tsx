@@ -3,9 +3,9 @@
 const BackArrow = ({
     className = '',
     size = '1em',
-    stroke = "#363636",
+    stroke = "currentColor",
     strokeWidth = "24",
-    rotate = "0"
+    rotate = 0
 }) => {
 
     return (

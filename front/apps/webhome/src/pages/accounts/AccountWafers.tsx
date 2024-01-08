@@ -159,7 +159,7 @@ export const FilledWafers = () => {
             opacity: 0,
         }),
         enter: (item: any, index: number) => ({
-            x: index * (waferWidth + waferPadding),
+            x: index * (waferWidth + waferPadding) + 4,
             opacity: 1,
         }),
         immediate: freezeWaferAnimation,

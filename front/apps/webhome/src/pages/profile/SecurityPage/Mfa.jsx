@@ -73,7 +73,6 @@ const AuthenticatorApp = ({ user }) => {
                         <Tooltip
                             msg={"Remove authenticator"}
                             ariaLabel={"Remove authenticator"}
-                            style={{ left: '-183%' }}
                         >
                             <DeleteButton
                                 className="delete-button-show"
@@ -106,7 +105,6 @@ const RecoveryCodes = () => {
                 <Tooltip
                     msg={"Generate new codes"}
                     ariaLabel={"Generate new recovery codes"}
-                    style={{ left: '-168%' }}
                 >
                     <IconScaleButton
                         onClick={() => {
@@ -122,7 +120,6 @@ const RecoveryCodes = () => {
                 <Tooltip
                     msg={"Show recovery codes"}
                     ariaLabel={"Show recovery codes"}
-                    style={{ left: '-147%' }}
                 >
                     <IconScaleButton
                         onClick={() => {

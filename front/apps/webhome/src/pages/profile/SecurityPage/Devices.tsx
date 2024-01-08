@@ -100,7 +100,6 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
                                                     <Tooltip
                                                         msg={"Logout"}
                                                         ariaLabel={"Refresh list"}
-                                                        style={{ left: '-30%' }}
                                                     >
                                                         <IconButtonSubmit
                                                             submitting={processingDelete && current}

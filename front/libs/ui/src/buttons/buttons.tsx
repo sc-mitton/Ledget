@@ -41,7 +41,7 @@ export const GreenSlimButton = ButtonWithClassName('btn-grn btn-slim')
 export const SlimButton = ButtonWithClassName('btn-clr btn-2slim')
 export const NarrowButton = ButtonWithClassName('btn-clr btn-narrow')
 export const IconButton = ButtonWithClassName('btn-clr btn-icon')
-export const IconButton2 = ButtonWithClassName('btn-gr2 btn-icon2')
+export const IconButton2 = ButtonWithClassName('btn-gr2 btn-icon')
 export const IconScaleButton = ButtonWithClassName('btn-scale2 btn-transparent btn-icon2')
 export const InputButton = ButtonWithClassName('btn-input btn-input-full')
 export const SlimInputButton = ButtonWithClassName('btn-input btn-less-full')
@@ -122,6 +122,21 @@ export const CloseButton =
         {...rest}
       >
         <CloseIcon size={size} />
+      </button>
+    )
+  })
+
+export const CircleIconButton =
+  forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { size?: string }>((props, ref) => {
+    const { style, className, ...rest } = props
+    return (
+      <button
+        ref={ref}
+        className={`btn circle-icon-btn ${className}`}
+        style={{ borderRadius: '50%', ...style }}
+        {...rest}
+      >
+        {props.children}
       </button>
     )
   })
@@ -239,11 +254,10 @@ export const RefreshButton = ({ fill = 'currentColor', hasBackground = true, loa
     <Tooltip
       msg={"Refresh"}
       ariaLabel={"Refresh list"}
-      style={{ left: '-.7rem' }}
     >
       {hasBackground
         ?
-        <IconButton2
+        <CircleIconButton
           className={`refresh-btn ${active ? 'active' : ''} ${(!active && loading) ? 'loading' : ''}`}
           onClick={() => {
             setActive(true)
@@ -254,7 +268,7 @@ export const RefreshButton = ({ fill = 'currentColor', hasBackground = true, loa
         >
           {loading && <LoadingRing visible={true} className="refresh-loading-ring" />}
           {(active || !loading) && <ReplayIcon fill={fill} />}
-        </IconButton2>
+        </CircleIconButton>
         :
         <IconButton
           className={`refresh-btn-clr ${active ? 'active' : ''} ${(!active && loading) ? 'loading' : ''}`}
