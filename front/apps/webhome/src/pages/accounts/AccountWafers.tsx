@@ -56,30 +56,32 @@ const WafersHeader = ({ accounts, setAccounts }: { accounts: Account[], setAccou
     const location = useLocation()
     const { data, isSuccess } = useGetAccountsQuery()
     const [accountsFilter, setAccountsFilter] = useState<SelectOption['value']>()
-    const [accountsFilterOptions, setAccountsFilterOptions] = useState<SelectOption[]>([{
-        value: 'all',
-        filterType: 'meta',
-        label: pathMappings.getWaferTitle(location)
-    }])
+    const [accountsFilterOptions, setAccountsFilterOptions] = useState<SelectOption[]>()
     const headerRef = useRef<HTMLDivElement>(null)
 
     // Set filter options
     useEffect(() => {
         if (isSuccess) {
+            const totalOption = {
+                value: 'all',
+                filterType: 'meta',
+                label: pathMappings.getWaferTitle(location)
+            } as const
             const institutions = data?.institutions.map((institution: any) => ({
                 value: institution.id,
-                filterType: 'institution',
-                label: institution.name,
-            } as const))
+                filterType: 'institution' as const,
+                label: institution.name
+            })).filter(i => !accountsFilterOptions?.find(fo => fo.value === i.value))
             const depositTypes = data?.accounts
                 .filter((account: any) => account.type === pathMappings.getAccountType(location))
                 .map((account: any) => ({
                     value: account.subtype,
-                    filterType: 'deposit-type',
-                    label: account.subtype.charAt(0).toUpperCase() + account.subtype.slice(1),
-                } as const))
-            setAccountsFilterOptions([
-                ...accountsFilterOptions,
+                    filterType: 'deposit-type' as const,
+                    label: account.subtype.charAt(0).toUpperCase() + account.subtype.slice(1)
+                }))
+                .filter(dt => !accountsFilterOptions?.find(fo => fo.value === dt.value))
+            setAccountsFilterOptions(prev => [
+                totalOption,
                 ...(institutions || []),
                 ...(depositTypes.length > 1 ? depositTypes : [])
             ])
@@ -90,7 +92,7 @@ const WafersHeader = ({ accounts, setAccounts }: { accounts: Account[], setAccou
     useEffect(() => {
         if (isSuccess) {
             const filteredAccounts = data?.accounts.filter((account: any) => {
-                const filter = accountsFilterOptions.find(f => f.value === accountsFilter)
+                const filter = accountsFilterOptions?.find(f => f.value === accountsFilter)
                 if (filter?.filterType === 'institution') {
                     return account.institution_id === accountsFilter && account.type === pathMappings.getAccountType(location)
                 } else if (filter?.filterType === 'deposit-type') {
@@ -109,7 +111,7 @@ const WafersHeader = ({ accounts, setAccounts }: { accounts: Account[], setAccou
             aria-label="Filter Accounts"
             {...props}
         >
-            {accountsFilterOptions.find(option => option.value === accountsFilter)?.label || ''}
+            {accountsFilterOptions?.find(option => option.value === accountsFilter)?.label || ''}
             <ArrowIcon size={'.8em'} />
         </button>
     )
@@ -117,7 +119,7 @@ const WafersHeader = ({ accounts, setAccounts }: { accounts: Account[], setAccou
     return (
         <div className="account-wafers--header" ref={headerRef}>
             <BakedListBox
-                defaultValue={accountsFilterOptions[0].value}
+                defaultValue={accountsFilterOptions?.[0].value}
                 options={accountsFilterOptions}
                 value={accountsFilter}
                 onChange={setAccountsFilter}

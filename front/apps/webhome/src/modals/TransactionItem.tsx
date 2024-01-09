@@ -4,9 +4,6 @@ import Big from 'big.js'
 import { Menu } from '@headlessui/react'
 import { AnimatePresence } from 'framer-motion'
 import dayjs from 'dayjs'
-import { useForm, useFieldArray, set } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 
 import './styles/TransactionItem.scss'
 import { Transaction } from '@features/transactionsSlice'
@@ -31,7 +28,8 @@ import {
     useLoaded,
     CircleIconButton,
     Tooltip,
-    IconButton
+    IconButton,
+    AutoResizeTextArea
 } from '@ledget/ui'
 
 
@@ -92,130 +90,180 @@ const getBillCategoryLabel = (item: Transaction) => {
     }
 }
 
-const schema = z.object({ notes: z.array(z.object({ text: z.string(), noteId: z.string() })) })
-
 const NoteInnerWindow = ({ item }: { item: Transaction }) => {
+    // Redux hooks
     const [addNote] = useAddNoteMutation()
     const [updateDeleteNote] = useUpdateDeleteNoteMutation()
-    const { register, control, getFieldState } = useForm<z.infer<typeof schema>>({
-        resolver: zodResolver(schema),
-        defaultValues: {
-            notes: [{ noteId: 'new', text: '' }]
-                .concat([...item.notes].sort((a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime())
-                    .map((note) => ({ noteId: note.id, text: note.text })))
-        }
-    })
-    const { fields, prepend, remove } = useFieldArray({ control, name: 'notes' })
-    const [focusedNoteIndex, setFocusedNoteIndex] = useState<number>()
-    const notesContainerRef = useRef<HTMLDivElement>(null)
-    const [addFillerRow, setAddFillerRow] = useState(false)
 
-    const handleNoteAction = (index: number, deleteNote?: boolean) => {
-        setFocusedNoteIndex(undefined)
-        const state = getFieldState(`notes.${index}.text`)
-        const field = fields.find((field, i) => i === index)
-        if (deleteNote && field) {
-            updateDeleteNote({
-                transactionId: item.transaction_id,
-                noteId: field.noteId,
-            })
-        } else if (state.isDirty) {
-            if (field?.noteId === 'new') {
-                addNote({
-                    transactionId: item.transaction_id,
-                    text: field.text
-                })
-                prepend({ text: '', noteId: 'new' })
-            } else if (field) {
-                remove(index)
-                updateDeleteNote({
-                    transactionId: item.transaction_id,
-                    noteId: field.noteId,
-                    text: field.text
-                })
+    const [focusedNoteId, setFocusedNoteId] = useState<string>()
+    const [a11yNote, setA11yNote] = useState<number>()
+    const [notes, setNotes] = useState([...item.notes].sort((a, b) =>
+        new Date(a.datetime).getTime() > new Date(b.datetime).getTime() ? -1 : 1))
+
+    const notesContainerRef = useRef<HTMLDivElement>(null)
+    const dirtyFields = useRef<{ [key: string]: boolean }>(
+        { new: false, ...Object.fromEntries(item.notes.map((note) => [note.id, false])) })
+
+    const handleNoteSaveUpdate = (noteId?: string) => {
+        const inputElement = notesContainerRef.current?.querySelector<HTMLTextAreaElement>(
+            '[data-focused="true"]')
+
+        // If the note is new, and it has text, then add it to the notes state
+        // and add another inputRef
+        if (noteId === 'new' && inputElement?.value) {
+            const newNote = {
+                id: `${Math.random().toString(36).substring(2, 8)}${notes.length}`,
+                text: inputElement?.value || '',
+                is_current_users: true,
+                datetime: dayjs().toISOString()
             }
+            setNotes(prev => [newNote, ...prev])
+            inputElement.value = ''
+        }
+        // If the note is dirty, then update the note in the state
+        else if (noteId && dirtyFields.current[noteId]) {
+            // Update the cached note
+            setNotes(prev => prev.map(note => note.id === noteId ? {
+                ...note,
+                text: inputElement?.value || '',
+                datetime: new Date().toISOString()
+            } : note))
+        }
+        setFocusedNoteId(undefined)
+    }
+
+    const textAreaBlurHandler = (e: React.FocusEvent<HTMLTextAreaElement>) => {
+        if (notesContainerRef.current?.contains(e.relatedTarget as Node)) {
+            e.preventDefault()
+        } else {
+            handleNoteSaveUpdate(e.currentTarget.dataset.focused)
         }
     }
 
-    // When textarea is focused, add event listener to notesContainerRef
-    // So that when it's clicked outside, the textarea is blurred. This
-    // will make it so the trash and save buttons will work. Esc will also
-    // blur things and
+    // On unmount, send the updates, deletes, and creates to the server
     useEffect(() => {
-        if (focusedNoteIndex === undefined) { return }
-        const handler = (e: MouseEvent) => {
-            if (!notesContainerRef.current?.contains(e.target as Node)) {
-                handleNoteAction(focusedNoteIndex)
-            }
-        }
-        const escHandler = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
-                handleNoteAction(focusedNoteIndex)
-            }
-        }
-        document.addEventListener('keydown', escHandler)
-        document.addEventListener('click', handler)
         return () => {
-            document.removeEventListener('click', handler)
-            document.removeEventListener('keydown', escHandler)
+            console.log('unmount actions')
+            item.notes.forEach((note) => {
+                // If the note is not in the notes state, then it was deleted
+                if (!notes.find(n => n.id === note.id)) {
+                    updateDeleteNote({
+                        transactionId: item.transaction_id,
+                        noteId: note.id,
+                    })
+                } else if (dirtyFields.current[note.id]) {
+                    // If the note is dirty, and it's text doesn't
+                    // match what's in the item.notes, then it was updated
+                    const text = notes.find(n => n.id === note.id)?.text
+                    if (text !== note.text) {
+                        updateDeleteNote({
+                            transactionId: item.transaction_id,
+                            noteId: note.id,
+                            text: text
+                        })
+                    }
+                }
+            })
+            notes.forEach((note) => {
+                // If the note is not in the item.notes, then it was created
+                if (!item.notes.find(n => n.id === note.id)) {
+                    addNote({
+                        transactionId: item.transaction_id,
+                        text: note.text
+                    })
+                }
+            })
         }
-    }, [focusedNoteIndex])
+    }, [])
+
+    // Handle navigating between notes
+    const handleNoteAccessibleNav = (e: React.KeyboardEvent) => {
+        document.activeElement === notesContainerRef.current && e.preventDefault()
+        if (e.key === 'ArrowUp') {
+            setA11yNote(a11yNote === undefined ? notes.length - 1 : a11yNote - 1)
+        } else if (e.key === 'ArrowDown') {
+            setA11yNote(a11yNote === undefined ? 0 : a11yNote + 1)
+        } else if (e.key === 'Enter' && a11yNote !== undefined) {
+            setFocusedNoteId(notes.find((_, index) => index === a11yNote)?.id)
+            notesContainerRef.current?.querySelector<HTMLTextAreaElement>(
+                `[data-accessible-focused='true']`)?.focus()
+        } else if (e.key === 'Escape') {
+            e.stopPropagation()
+            setFocusedNoteId(undefined)
+            notesContainerRef.current?.blur()
+            notesContainerRef.current?.querySelector<HTMLTextAreaElement>(
+                `[data-focused='true']`)?.blur()
+        }
+    }
 
     return (
         <div className='inner-window'>
             <h4>{`Note${item.notes.length > 1 ? 's' : ''}`}</h4>
-            <div id="notes--container" ref={notesContainerRef}>
+            <div
+                id="notes--container"
+                tabIndex={0}
+                ref={notesContainerRef}
+                onKeyDown={handleNoteAccessibleNav}
+                onBlur={() => setA11yNote(undefined)}
+            >
                 <div>
-                    {fields.map((field, index) => (
-                        <div className='note--container' key={`note${index}`}>
-                            <textarea
-                                key={`field${index}`}
-                                {...register(`notes.${index}.text`)}
-                                defaultValue={field.text}
-                                disabled={!item.notes[index - 1]?.is_current_users && index !== 0}
-                                onFocus={() => {
-                                    setFocusedNoteIndex(index)
-                                    setAddFillerRow(true)
+                    <AutoResizeTextArea
+                        divProps={{
+                            className: `note--container
+                            ${focusedNoteId === 'new' ? 'focused' : ''}
+                            ${a11yNote === 0 ? 'accessible-focused' : ''}`
+                        }}
+                        data-accessible-focused={a11yNote === 0}
+                        data-focused={focusedNoteId === 'new'}
+                        defaultValue={''}
+                        onChange={(e) => { dirtyFields.current['new'] = true }}
+                        onFocus={() => { setFocusedNoteId('new') }}
+                        onBlur={textAreaBlurHandler}
+                        placeholder='Add a note...'
+                        tabIndex={-1}
+                    />
+                    {notes.map((note, index) => (
+                        <>
+                            <AutoResizeTextArea
+                                divProps={{
+                                    className: `note--container
+                                        ${focusedNoteId === note.id ? 'focused' : ''}
+                                        ${a11yNote === index + 1 ? 'accessible-focused' : ''}`,
+                                    key: `note${index}`
                                 }}
-                                onBlur={() => {
-                                    setAddFillerRow(false)
-                                }}
-                                rows={1}
-                                placeholder='Add a note...'
+                                date-text={note.text}
+                                data-accessible-focused={a11yNote === index + 1}
+                                data-focused={focusedNoteId === note.id}
+                                key={`field${note.id}`}
+                                defaultValue={note.text}
+                                disabled={!notes[index]?.is_current_users}
+                                onChange={(e) => { dirtyFields.current[note.id] = true }}
+                                onFocus={() => setFocusedNoteId(note.id)}
+                                onBlur={textAreaBlurHandler}
+                                tabIndex={-1}
                             />
-                            {focusedNoteIndex === index &&
+                            {focusedNoteId === note.id &&
                                 <span className="last-changed">
                                     Last changed&nbsp;
-                                    {dayjs(item.notes[index - 1]?.datetime).format('HH:mm A M/DD/YY')}
+                                    {dayjs(notes[index].datetime).format('h:mma M/DD/YY')}
                                 </span>}
-                        </div>
+                        </>
                     ))}
-                    {addFillerRow &&
-                        <div className='note--container'>
-                            <textarea
-                                placeholder='Just a filler so the container size does jump'
-                                rows={1}
-                                disabled
-                            /></div>}
-                    {focusedNoteIndex !== undefined &&
-                        <>
-                            {focusedNoteIndex !== 0 &&
-                                <Tooltip msg={'Delete'} ariaLabel={'delete'}>
-                                    <CircleIconButton onClick={(e) => {
-                                        handleNoteAction(focusedNoteIndex, true)
-                                    }}>
-                                        <TrashIcon size={'.9em'} />
-                                    </CircleIconButton>
-                                </Tooltip>
-                            }
-                            <Tooltip msg={'Save'} ariaLabel={'save'}>
-                                <CircleIconButton onClick={(e) => {
-                                    handleNoteAction(focusedNoteIndex)
-                                }}>
-                                    <CheckMark size={'.8em'} />
-                                </CircleIconButton>
-                            </Tooltip>
-                        </>}
+                    {focusedNoteId && focusedNoteId !== 'new' &&
+                        <Tooltip msg={'Delete'} ariaLabel={'delete'}>
+                            <CircleIconButton onClick={(e) => {
+                                setNotes(prev => prev.filter(note => note.id !== focusedNoteId))
+                                setFocusedNoteId(undefined)
+                            }}>
+                                <TrashIcon size={'.9em'} />
+                            </CircleIconButton>
+                        </Tooltip>}
+                    {focusedNoteId &&
+                        <Tooltip msg={'Save'} ariaLabel={'save'}>
+                            <CircleIconButton onClick={() => handleNoteSaveUpdate(focusedNoteId)}>
+                                <CheckMark size={'.8em'} />
+                            </CircleIconButton>
+                        </Tooltip>}
                 </div>
             </div>
         </div>

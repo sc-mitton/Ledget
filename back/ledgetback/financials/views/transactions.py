@@ -424,6 +424,11 @@ class NoteViewSet(ModelViewSet):
             self.check_object_permissions(self.request, obj)
         except Note.DoesNotExist:
             raise ValidationError('Note does not exist')
+        except Exception as e:
+            logger.error(e)
+            raise ValidationError(
+                {'error': e.message},
+                code=HTTP_400_BAD_REQUEST)
 
         return obj
 

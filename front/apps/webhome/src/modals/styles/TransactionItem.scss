@@ -55,7 +55,7 @@
         margin-top: .5em;
         text-align: center;
         font-size: .8rem;
-        background-color: var(--inner-window);
+        background-color: var(--gray-hlight);
         border-radius: var(--border-radius1);
         padding: 0 .5em;
         color: var(--m-text-tirtiary);
@@ -143,27 +143,29 @@
 
     // Add a note container
     #notes--container {
-        margin-top: .5em;
-        grid-column: 1/span 2;
         position: relative;
         overflow-x: visible;
+        margin-top: .5em;
+        box-sizing: border-box;
 
         &>div {
             overflow-y: auto;
             overflow-x: visible;
             padding-right: 1em;
-            width: calc(100% - 1em);
+            width: 100%;
             max-height: 12.5em;
+            height: min-content;
             display: flex;
             flex-direction: column;
             gap: .5em;
+            box-sizing: border-box;
 
             // Tooltip divs around delete and save buttons
             &>div[role="tooltip"] {
                 opacity: 1;
                 z-index: 20;
                 position: absolute;
-                bottom: 0em;
+                bottom: .125em;
                 right: 2.5em;
 
                 &:last-of-type {
@@ -180,40 +182,52 @@
             overflow-y: hidden;
         }
 
+        span {
+            white-space: nowrap;
+
+            &.last-changed {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                color: var(--m-text-quinary);
+            }
+        }
+
         .note--container {
             width: 100%;
-            height: auto;
+            height: 100%;
             position: relative;
             padding: .25em 0 .625em 0;
             display: flex;
             color: var(--m-text-secondary);
 
-            span {
-                white-space: nowrap;
-
-                &.last-changed {
-                    position: absolute;
-                    left: 0;
-                    bottom: 0;
-                    color: var(--m-text-quinary);
-                }
+            &.accessible-focused::before {
+                content: '';
+                position: absolute;
+                width: .5em;
+                height: .5em;
+                border-radius: 50%;
+                background-color: var(--input-focus-dropshadow-color);
+                right: 0em;
+                top: 50%;
+                transform: translateY(-50%);
             }
 
-            &:focus-within {
+            &.focused {
                 position: absolute;
                 height: calc(100% - .75em);
                 background-color: var(--inner-window);
                 z-index: 10;
             }
 
-            &:not(:last-child):not(:focus-within) {
+            &:not(:last-child):not(.focused) {
                 @include table-dividers(0em, false);
             }
 
             textarea {
                 width: 100%;
-                height: calc(100% - 1.25em);
-                padding: 0;
+                height: 100%;
+                padding-right: 4.5em;
             }
         }
     }

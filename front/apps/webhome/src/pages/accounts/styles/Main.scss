@@ -180,8 +180,7 @@ $wafer-container-padding: .75rem;
         width: 25%;
         height: 4px;
         border-radius: var(--border-radius1);
-        background-color: var(--main-color);
-        opacity: .6;
+        background-color: var(--active-wafer-indicator);
     }
 
     &.inactive {

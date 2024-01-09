@@ -18,6 +18,7 @@
     "@stripe/stripe-js": "^1.50.0",
     "@types/js-cookie": "^3.0.4",
     "@types/lodash.groupby": "^4.6.9",
+    "@types/react-textarea-autosize": "^8.0.0",
     "@use-gesture/react": "^10.2.27",
     "antd": "^5.12.1",
     "axios": "^1.4.0",

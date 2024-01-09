@@ -132,7 +132,7 @@ export const CircleIconButton =
     return (
       <button
         ref={ref}
-        className={`btn circle-icon-btn ${className}`}
+        className={`btn circle-icon-btn ${className ? className : ''}`}
         style={{ borderRadius: '50%', ...style }}
         {...rest}
       >

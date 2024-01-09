@@ -159,6 +159,8 @@
         --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
         --input-drop-shadow-color: rgba(255, 255, 255, 0.07);
 
+        --active-wafer-indicator: var(--main-color);
+
         --border-color-dimmest: rgb(255, 255, 255, .07);
         --border-color: rgb(255, 255, 255, .1);
         --institution-logo-border: rgb(255, 255, 255, .3);
@@ -289,12 +291,14 @@
         --scroll-shadow: hsl(0, 0%, 97%), transparent;
         --dropdown-box-shadow-color: rgba(0, 0, 0, 0.3);
 
+        --active-wafer-indicator: #b7b7c0;
+
         --low-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);
         --mid-elevation-drop-shadow-color: rgba(0, 0, 0, 0.3);
         --input-drop-shadow-color: rgba(0, 0, 0, 0.07);
 
-        --border-color-dimmest: rgb(0, 0, 0, .07);
-        --border-color: rgb(0, 0, 0, .1);
+        --border-color-dimmest: rgb(0, 0, 0, .06);
+        --border-color: rgb(0, 0, 0, .07);
         --institution-logo-border: rgb(0, 0, 0, .2);
         --toast-border: transparent;
         --gray-button-border: hsl(0, 0%, 86%);

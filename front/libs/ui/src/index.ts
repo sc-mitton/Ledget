@@ -1,3 +1,4 @@
+export * from './pieces/containers/AutoResizeTextArea';
 export * from './utils/hooks/use-bill-cat-tab-theme/use-bill-cat-tab-theme';
 export * from './utils/hooks/use-scheme-var/use-scheme-var';
 export * from './pieces/containers/color-schemed-main';
