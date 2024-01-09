@@ -709,6 +709,7 @@ button.disabled-hover:hover svg {
     width: 1.5em;
     height: 1.5em;
     border-radius: 50%;
+    color: var(--btn-mid-gray);
 
     svg {
         position: relative;
@@ -723,8 +724,12 @@ button.disabled-hover:hover svg {
         z-index: 0;
     }
 
-    &:hover::after {
-        background-color: var(--icon-hover-light-gray);
+    &:hover {
+        color: var(--icon-full);
+
+        &::after {
+            background-color: var(--icon-hover-light-gray);
+        }
     }
 }
 

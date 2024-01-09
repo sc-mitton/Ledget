@@ -17,11 +17,11 @@ type Props = AutoResizeProps | NonAutoResizeProps
 
 
 export const AutoResizeTextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
-  const { autoResize = true, children, divProps, onChange, ...rest } = props
+  const { autoResize = true, children, divProps, onChange, onFocus, ...rest } = props
 
   const localRef = useRef<HTMLTextAreaElement | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [val, setVal] = useState<string>('')
+  const [val, setVal] = useState<string>(props.defaultValue || '')
 
   // As the value is updated, we need to update the height of the textarea
   useEffect(() => {
@@ -33,7 +33,7 @@ export const AutoResizeTextArea = forwardRef<HTMLTextAreaElement, Props>((props,
       localRef.current.style.height = `${localRef.current.scrollHeight}px`
       containerRef.current.style.height = `${localRef.current.scrollHeight}px`
     }
-  }, [val, autoResize])
+  }, [val, props.value, autoResize])
 
   return (
     <div {...divProps} ref={containerRef}>
@@ -47,6 +47,15 @@ export const AutoResizeTextArea = forwardRef<HTMLTextAreaElement, Props>((props,
               ref.current = el
             }
           }
+        }}
+        value={val}
+        onFocus={(e) => {
+          e.target.setSelectionRange(e.target.value.length, e.target.value.length)
+          onFocus && onFocus(e)
+        }}
+        onChange={(e) => {
+          setVal(e.target.value)
+          onChange && onChange(e)
         }}
         {...rest}
       />

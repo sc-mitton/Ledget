@@ -8,7 +8,7 @@
         height: 1px;
 
         @if $dashed {
-            border-bottom: 1.4px dashed var(--border-color-dimmest);
+            border-bottom: 1.4px dashed var(--border-color);
         }
 
         @else {

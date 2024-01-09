@@ -262,7 +262,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: (result, error, arg) => ([{ type: 'Transaction', id: arg.transactionId } as const])
         }),
-        addNote: builder.mutation<any, { transactionId: string, text: string }>({
+        addNote: builder.mutation<Note, { transactionId: string, text: string }>({
             query: ({ transactionId, text }) => ({
                 url: `transactions/${transactionId}/note`,
                 method: 'POST',

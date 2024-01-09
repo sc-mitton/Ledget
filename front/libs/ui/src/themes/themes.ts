@@ -83,9 +83,8 @@ export const ledgetAntTheme: ThemeConfig = {
         boxShadow: 'var(--antd-drop-shadow)',
         borderRadius: 8,
         colorBgContainer: 'var(--input-background)',
-        colorBorder: 'var(--input-border-color)',
         colorTextPlaceholder: '#a6a6a6',
-
+        colorBorder: 'transparent',
     },
 }
 

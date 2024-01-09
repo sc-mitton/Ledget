@@ -3,7 +3,7 @@
 const Close = ({
     className = '',
     size = ".7em",
-    stroke = "var(--icon-full)",
+    stroke = "var(--btn-mid-gray)",
     strokeWidth = "24"
 }) => {
 
