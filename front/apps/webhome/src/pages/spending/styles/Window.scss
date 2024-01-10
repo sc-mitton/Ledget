@@ -85,6 +85,8 @@
     &.large {
         background-color: var(--side-window);
         border-left: 1px solid var(--sidebar-border-color);
+        border-bottom-left-radius: var(--border-radius2);
+        border-top-left-radius: var(--border-radius2);
 
         &>div {
             max-width: 25rem;

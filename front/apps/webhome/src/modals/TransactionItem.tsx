@@ -223,26 +223,26 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
     const handleTextAreaBlur = (e?: React.FocusEvent<HTMLTextAreaElement>) => {
         if (notesContainerRef.current?.contains(e?.relatedTarget as Node))
             e?.preventDefault()
-        // else if (focusedNoteId === 'new' && newNote) {
+        else if (focusedNoteId === 'new' && newNote) {
 
-        //     if (isAddingNote) {
-        //         setNotesToSend2Server(prev => [newNote, ...prev])
-        //     } else {
-        //         setNotes(prev => [...prev, newNote])
-        //         addNote({
-        //             transactionId: item.transaction_id,
-        //             text: newNote.text
-        //         })
-        //     }
-        //     setNewNote(undefined)
-        //     setFocusedNoteId(undefined)
+            if (isAddingNote) {
+                setNotesToSend2Server(prev => [newNote, ...prev])
+            } else {
+                setNotes(prev => [...prev, newNote])
+                addNote({
+                    transactionId: item.transaction_id,
+                    text: newNote.text
+                })
+            }
+            setNewNote(undefined)
+            setFocusedNoteId(undefined)
 
-        // } else if (focusedNoteId) {
-        //     if (!notesToSend2Server.find(n => n.id === focusedNoteId)) {
-        //         handleUpdateDeleteNote(focusedNoteId)
-        //     }
-        //     setFocusedNoteId(undefined)
-        // }
+        } else if (focusedNoteId) {
+            if (!notesToSend2Server.find(n => n.id === focusedNoteId)) {
+                handleUpdateDeleteNote(focusedNoteId)
+            }
+            setFocusedNoteId(undefined)
+        }
     }
 
     return (

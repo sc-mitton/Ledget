@@ -13,6 +13,8 @@
     max-height: 62.5rem;
 }
 
+$box-shadow-color: var(--main-hlight);
+
 .infinite-scroll--container.fetching-more {
     overflow: hidden;
 
@@ -24,7 +26,7 @@
         right: 0;
         margin: 0 auto;
         border-radius: 50%;
-        background-color: rgb(var(--main-color-values), .4);
+        background-color: var(--main-hlight-hover);
         animation: fetching-more .7s ease-out forwards;
     }
 }
@@ -36,11 +38,11 @@
         height: 0%;
         min-height: 0em;
         transform: translateY(calc(100% + 2em));
-        box-shadow: rgb(var(--main-color-values), .2) 0 0 0 2em;
+        box-shadow: $box-shadow-color 0 0 0 2em;
     }
 
     50% {
-        opacity: .8;
+        opacity: .9;
     }
 
     100% {
@@ -49,7 +51,7 @@
         height: 30%;
         min-height: 5em;
         transform: translateY(60%);
-        box-shadow: rgb(var(--main-color-values), .2) 0 0 0 2em;
+        box-shadow: $box-shadow-color 0 0 0 2em;
     }
 }
 
