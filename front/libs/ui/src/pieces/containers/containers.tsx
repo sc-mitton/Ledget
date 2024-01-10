@@ -1,7 +1,6 @@
 import React, { ComponentPropsWithoutRef, ElementType, FC, useRef, HTMLProps, useEffect, forwardRef } from 'react'
 import { PolymorphicComponentProps } from '../../types/helpers'
 import './styles/containers.scss'
-import { H } from 'vitest/dist/types-198fd1d9'
 
 export const ExpandableContainer: FC<HTMLProps<HTMLDivElement> & { expanded?: boolean }>
   = ({ expanded = true, className = '', children, ...rest }) => (
@@ -100,8 +99,10 @@ type DropdownItemProps<C extends ElementType> = {
   selected?: boolean
 } & ComponentPropsWithoutRef<C>
 
-export const DropdownItem = <C extends ElementType = 'div'>
-  (props: PolymorphicComponentProps<'li' | 'div' | 'button', DropdownItemProps<C>>) => {
+type AcceptibleAs = 'li' | 'div' | 'button'
+
+export const DropdownItem = <C extends AcceptibleAs>
+  (props: PolymorphicComponentProps<C, DropdownItemProps<C>>) => {
 
   const { children, active, selected, className, as, ...rest } = props
   const Component = as || 'div'

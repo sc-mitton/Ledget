@@ -83,7 +83,7 @@ const Header = () => {
         data: accountsData,
         isSuccess: isSuccessLoadingAccounts
     } = useGetAccountsQuery()
-    const [backgroundColor, boxShadowColor] = useSchemeVar(['--main-hlight', '--main-hlight-hover'])
+    const [backgroundColor] = useSchemeVar(['--main-hlight'])
 
     const [props] = usePillAnimation({
         ref: ref,
@@ -148,7 +148,7 @@ const Header = () => {
                             role='link'
                             aria-current={currentPath === path}
                             tabIndex={0}
-                            onClick={() => navigate(`/accounts/${path}`)}
+                            onClick={() => location.pathname !== `/accounts/${path}` && navigate(`/accounts/${path}`)}
                         >
                             {getNavIcon(path, currentPath === path)}
                             {getNavLabel(path)}

@@ -161,8 +161,8 @@
 
         --active-wafer-indicator: var(--main-color);
 
-        --border-color-dimmest: rgb(255, 255, 255, .07);
-        --border-color: rgb(255, 255, 255, .1);
+        --border-color-dimmest: rgb(255, 255, 255, .04);
+        --border-color: rgb(255, 255, 255, .07);
         --institution-logo-border: rgb(255, 255, 255, .3);
         --toast-border: 1px solid var(--border-color-dimmest);
         --gray-button-border: hsl(0, 0%, 23%);
@@ -237,7 +237,7 @@
         --inner-window-rgb: 246, 246, 246;
         --overlay: hsl(0, 0%, 20%);
 
-        --wafer-background: hsl(0, 0%, 95%);
+        --wafer-background: hsl(0, 0%, 98%);
         --dropdown-background: hsl(0, 0%, 98%);
         --dropdown-item-background: hsl(0, 0%, 90%);
 
@@ -277,8 +277,8 @@
         --btn-gray-hover: hsl(0, 0%, 76%);
         --btn-mid-gray: hsl(0, 0%, 48%);
         --btn-mid-gray-hover: hsl(0, 0%, 28%);
-        --btn-dark: hsl(0, 0%, 14%);
-        --btn-dark-hover: hsl(0, 0%, 8%);
+        --btn-dark: hsl(0, 0%, 18%);
+        --btn-dark-hover: hsl(0, 0%, 12%);
 
         --negative-pulse-outer: rgba(0, 0, 0, .3);
         --negative-pulse-inner: rgba(0, 0, 0, .75);

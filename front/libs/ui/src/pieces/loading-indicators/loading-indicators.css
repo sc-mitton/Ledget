@@ -28,6 +28,7 @@
     box-sizing: border-box;
     display: block;
     position: absolute;
+    z-index: 10;
     width: .875em;
     height: .875em;
     color: inherit;

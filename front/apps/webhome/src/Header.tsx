@@ -62,13 +62,13 @@ const Navigation = () => {
                         className={`${location.pathname.split('/')[1] === tab.name ? "current-" : ""}nav-item`}
                         role="link"
                         tabIndex={0}
-                        onClick={() => navigate(tab.path)}
+                        onClick={() => location.pathname !== tab.path && navigate(tab.path)}
                         onKeyDown={(e) => { if (e.key === "Enter") { navigate(tab.path) } }}
                     >
                         <a
                             onClick={(e) => {
                                 e.preventDefault()
-                                navigate(tab.path)
+                                location.pathname !== tab.path && navigate(tab.path)
                             }}
                             aria-current={location.pathname.split('/')[1] === tab.name ? "page" : undefined}
                         >
@@ -81,7 +81,7 @@ const Navigation = () => {
                         className={`${location.pathname === "/spending" ? "current-" : ""}nav-item`}
                         role="link"
                         tabIndex={0}
-                        onClick={() => navigate("/spending")}
+                        onClick={() => location.pathname !== '/spending' && navigate("/spending")}
                         onKeyDown={(e) => { if (e.key === "Enter") { navigate("/spending") } }}
                     >
                         <a
