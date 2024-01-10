@@ -13,10 +13,6 @@
 ![alt-text](https://github.com/sc-mitton/Ledget/blob/assets/screenshot2.png)
 
 
-## Introduction
-
-Ledget was started from frustration with the choice of personal budgeting apps. Almost all had cluttered and confusing user interfaces, only a portion would automatically import data from financial institutions, and many wouldn't offer the simplicity that should come with a great user experience.
-
 ## Tech Stack
 
 Front
