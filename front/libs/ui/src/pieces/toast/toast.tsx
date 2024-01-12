@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import './toast.css'
+import './toast.scss'
 import { CheckMark3 as CheckMarkIcon, Info as InfoIcon, Alert2 } from '@ledget/media';
 import { useTransition, animated } from '@react-spring/web';
 

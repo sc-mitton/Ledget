@@ -7,16 +7,17 @@
 }
 
 .toast {
-    background-color: var(--window);
     border-radius: calc(var(--border-radius2) + 2px);
-    border: var(--toast-border);
-    box-shadow: var(--low-elevation-drop-shadow);
     display: flex;
     align-items: center;
     gap: .625em;
     position: relative;
     z-index: 1000;
     overflow: hidden;
+
+    background-color: var(--window);
+    border: var(--toast-border);
+    box-shadow: var(--toast-box-shadow);
 }
 
 .toast {

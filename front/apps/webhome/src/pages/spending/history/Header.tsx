@@ -228,7 +228,7 @@ const FilterWindow = () => {
                 <div>
                     {accountsFieldValue?.map((account, index) => (
                         <span>
-                            {accountsData?.accounts?.find((acc) => acc.account_id === account)?.name}
+                            {accountsData?.accounts?.find((acc: any) => acc.account_id === account)?.name}
                             {index !== accountsFieldValue?.length - 1 ? ', ' : ''}
                         </span>
                     ))}
