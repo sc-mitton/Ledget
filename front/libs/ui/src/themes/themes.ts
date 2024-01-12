@@ -44,8 +44,8 @@ export const useNivoResponsiveBaseProps = ({ disabled = false }: { disabled?: bo
 }
 
 export const useNivoResponsiveLineTheme = (): Theme => {
-    const [mainHlightHover, borderColorDimmest, mTextSecondary] = useSchemeVar([
-        '--main-hlight-hover', '--border-color-dimmest', '--m-text-secondary'])
+    const [mainHlightHover, borderColor, mTextSecondary] = useSchemeVar([
+        '--main-hlight-hover', '--border-color', '--m-text-secondary'])
 
     return ({
         crosshair: {
@@ -57,7 +57,7 @@ export const useNivoResponsiveLineTheme = (): Theme => {
         },
         grid: {
             line: {
-                stroke: borderColorDimmest,
+                stroke: borderColor,
                 strokeWidth: 1.5,
                 strokeDasharray: '2, 2',
                 fill: mTextSecondary,
@@ -98,12 +98,12 @@ export const useStripeCardTheme = ({ focus, isDark }: { focus: boolean, isDark?:
             '::placeholder': {
                 color:
                     isDark
-                        ? focus ? '#4b539b' : '#606060'
+                        ? focus ? '#8fb0fd' : '#606060'
                         : focus ? '#949de0' : '#767676',
             },
             iconColor:
                 isDark
-                    ? focus ? '#7b97ff' : '#cbcbcb'
+                    ? focus ? '#a7b9eb' : '#e3e7f1'
                     : focus ? '#2759d8' : '#767676',
             ':disabled': {
                 color: '#767676',

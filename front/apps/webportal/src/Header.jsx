@@ -1,10 +1,12 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { BlackPillButtonWithArrow } from '@ledget/ui'
 import { LedgetLogo } from '@ledget/media'
+import { useColorScheme } from '@ledget/ui'
 
 const Header = () => {
     const location = useLocation()
     const navigate = useNavigate()
+    const { isDark } = useColorScheme()
 
     const splitPath = location.pathname.split("/")
 
@@ -16,7 +18,7 @@ const Header = () => {
     return (
         <header id="top-header">
             <div>
-                <LedgetLogo />
+                <LedgetLogo darkMode={isDark} />
             </div>
             <div>
                 {splitPath[splitPath.length - 1] === 'register'

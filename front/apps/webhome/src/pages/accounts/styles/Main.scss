@@ -10,7 +10,7 @@ $wafer-container-padding: .75rem;
     margin-top: 1.5em;
     padding-top: 0;
     padding-bottom: 0;
-    background-color: var(--inner-window2);
+    background-color: var(--window2);
 
     .account-wafers--header {
         display: inline-block;
@@ -384,7 +384,7 @@ $borderRadius2: var(--border-radius2);
     }
 
     &.not-skeleton>div:nth-child(2n):hover>div {
-        background-color: var(--inner-window);
+        background-color: var(--transaction-hover-background);
         cursor: pointer;
     }
 

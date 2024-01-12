@@ -7,7 +7,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 0;
 
     // Collapse/Expand styling
     transition: min-width 0.3s ease-in-out, max-width 0.3s ease-in-out;
@@ -15,6 +14,14 @@
     &>div:last-of-type {
         opacity: 1;
         transition: opacity 0.3s ease-in-out .3s;
+        position: relative;
+
+        // Divs around confirmation header and confirmation
+        // stack, so that the profile dropdown doesn't go behind it
+        &>div:nth-child(-n+2) {
+            position: relative;
+            z-index: 0;
+        }
     }
 
     &.collapsed {

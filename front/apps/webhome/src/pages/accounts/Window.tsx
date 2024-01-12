@@ -120,7 +120,6 @@ const Header = () => {
             dispatch(popToast({
                 type: 'success',
                 message: `Synced${syncResult?.added ? `, ${syncResult?.added} new transactions` : ' successfully'}`,
-                hasLoadingBar: true,
             }))
         }
     }, [isTransactionsSyncSuccess])

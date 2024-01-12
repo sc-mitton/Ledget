@@ -35,7 +35,8 @@ import {
     BakedListBox,
     BakedComboBox,
     SecondaryButtonSlim,
-    DeleteButton
+    DeleteButton,
+    useColorScheme
 } from '@ledget/ui'
 import { useFilterFormContext } from '../context';
 import { useGetStartEndQueryParams } from '@hooks/utilHooks';
@@ -64,6 +65,7 @@ const FilterWindow = () => {
     const filter = useAppSelector(selectConfirmedTransactionFilter)
     const dispatch = useAppDispatch()
     const [getCategories, { data: categoryData }] = useLazyGetCategoriesQuery()
+    const { isDark } = useColorScheme()
 
     const { handleSubmit, control, reset, resetField } = useForm<TransactionFilterSchema>({
         resolver: zodResolver(filterSchema),
@@ -87,6 +89,7 @@ const FilterWindow = () => {
 
     return (
         <form
+            className={`${isDark ? 'dark' : ''}`}
             key={resetKey}
             onSubmit={handleSubmit((data) => {
                 const { date_range, ...rest } = data
