@@ -168,7 +168,7 @@ $background: var(--window);
         // Amount spent columns
         &>div:nth-child(5n+2):not(.spanned) {
             display: flex;
-            align-items: center;
+            align-items: baseline;
             text-align: right;
             justify-content: flex-end;
             padding-right: .25em;
