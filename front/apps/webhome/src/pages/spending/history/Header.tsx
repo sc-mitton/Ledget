@@ -41,6 +41,7 @@ import {
 import { useFilterFormContext } from '../context';
 import { useGetStartEndQueryParams } from '@hooks/utilHooks';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
+import { useScreenContext } from '@context/index';
 
 
 const { RangePicker } = DatePicker
@@ -297,6 +298,7 @@ const HistoryHeader = () => {
         ref: windowApi,
         config: { tension: 400, friction: 40 },
     })
+    const { screenSize } = useScreenContext()
 
     const formApi = useSpringRef()
     const containerStyles = useSpring({
@@ -352,7 +354,10 @@ const HistoryHeader = () => {
                     </Tooltip>
                 </div>
                 {transitions((styles, item) => item && (
-                    <animated.div className="filter-window" style={styles}>
+                    <animated.div
+                        className={`filter-window ${screenSize === 'large' ? 'large' : ''}`}
+                        style={styles}
+                    >
                         <animated.div style={containerStyles}>
                             <FilterWindow />
                         </animated.div>

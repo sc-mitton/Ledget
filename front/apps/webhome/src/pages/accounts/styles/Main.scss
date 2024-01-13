@@ -420,11 +420,11 @@ $borderRadius2: var(--border-radius2);
             }
 
             &>div:first-child .pending {
-                background-color: var(--icon-light-gray);
+                background-color: var(--gray-hlight);
                 border-radius: var(--border-radius1);
                 padding: 0 .5em;
                 font-size: .75rem;
-                color: var(--m-text);
+                color: var(--m-text-secondary);
                 // font-weight: var(--fw-light);
             }
 

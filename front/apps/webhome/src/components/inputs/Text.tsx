@@ -1,12 +1,12 @@
 import React, { FC, useRef, useEffect, useState, HTMLProps } from 'react'
 
-import { useController, Control, Controller } from 'react-hook-form'
+import { useController, Control } from 'react-hook-form'
 
 import './styles/Text.scss'
 import Emoji from './Emoji'
 import { EmojiProps, emoji } from './Emoji'
 import { formatCurrency, makeIntCurrencyFromStr } from '@ledget/ui'
-import { IconButton2, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
+import { IconButton, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 
 
@@ -112,22 +112,22 @@ const decrement: IncrementFunction = ({ val, setVal, field, withCents }) => {
 
 const IncrementDecrementButton = ({ val, setVal, field, withCents = true }: IncrementDecrement) => (
     <div className="increment-arrows--container">
-        <IconButton2
+        <IconButton
             type="button"
             onClick={() => increment({ val, setVal, field, withCents })}
             aria-label="increment"
             tabIndex={-1}
         >
             <ArrowIcon size={'.75em'} rotation={-180} stroke={'currentColor'} />
-        </IconButton2>
-        <IconButton2
+        </IconButton>
+        <IconButton
             type="button"
             onClick={() => decrement({ val, setVal, field, withCents })}
             aria-label="decrement"
             tabIndex={-1}
         >
             <ArrowIcon size={'.75em'} stroke={'currentColor'} />
-        </IconButton2>
+        </IconButton>
     </div>
 )
 

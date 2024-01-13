@@ -219,12 +219,12 @@
 
 .btn-gr2 {
     box-shadow: var(--btn-drop-shadow);
-    background-color: var(--icon-light-gray);
+    background-color: var(--icon-light-light-gray);
     transition: all .3s ease;
     color: var(--btn-mid-gray);
 
     &:hover {
-        background-color: var(--gray-button-border);
+        background-color: var(--icon-light-gray);
         transition: all .3s ease;
         color: var(--btn-mid-gray-hover);
         color: var(--m-text);
@@ -566,12 +566,29 @@ button.disabled-hover:hover svg {
     display: flex;
     place-content: center;
 
+    &.non-clr {
+        background-color: var(--icon-light-gray);
+        transition: all .2s ease;
+
+
+        &:hover {
+            background-color: var(--icon-hover-light-gray);
+            transition: all .2s ease;
+        }
+    }
+
     * {
         color: var(--icon-hover-gray);
     }
 
-    &:hover * {
-        color: var(--m-text);
+
+    &:hover {
+        background-color: var(--icon-light-gray);
+        transition: all .2s ease;
+
+        * {
+            color: var(--m-text);
+        }
     }
 
     &.btn-clr {

@@ -11,17 +11,20 @@
 
     /* Input Colors */
     --input-border: solid 1px transparent;
-    --input-border-focus: solid 1px var(--input-background);
+    --input-border-focus: solid 1px var(--main-sat-darker);
     --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight) 30%);
+    --input-focus-dropshadow-color: var(--main-hlight);
+    --input-focus-drop-shadow: 0 0 0px 1.5px var(--input-focus-dropshadow-color);
 
     /* Text */
     --white: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 100%));
 
     /* Drop Shadows & Borders */
-    --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 20px;
+    --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
+    --window-drop-shadow2: var(--window-drop-shadow-color) 0px 0px 12px;
     --header-box-shadow: var(--header-box-shadow-color) 0px 2px 2px;
     --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 14px;
-    --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0 2px 16px;
+    --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0 0px 1px;
 
     --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px 1px 1px;
     --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 3px 12px;
@@ -29,8 +32,7 @@
     --dropdown-box-shadow: var(--dropdown-box-shadow-color) 0px 3px 12px;
     --antd-drop-shadow: var(--antd-drop-shadow-color) 0 3px 12px;
 
-    --input-focus-dropshadow-color: var(--main-sat);
-    --accessible-focus-drop-shadow: 0 0 0 1px var(--input-focus-dropshadow-color);
+    --accessible-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
     --active-wafer-drop-shadow: color-mix(in srgb, var(--main-hlight) 80%, var(--main-color)) 0px 0px 12px;
 
     --subtle-border: .75px solid var(--border-color-dimmest);
@@ -45,6 +47,8 @@
         --alert-red: hsl(352, 96%, 80%);
         --red-rgb: 243, 80, 80;
         --dark-red: #8b2424;
+        --blue: #5172dc;
+        --blue-text: #e9eeff;
 
         // Secondary and Primary Base Values
         --main-color-h: 226;
@@ -65,6 +69,7 @@
         --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 25%));
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), var(--main-color-l));
+        --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), var(--main-color-l));
 
         --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 5%));
@@ -85,14 +90,15 @@
         --secondary-dark5: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 70%));
 
         // Grays
-        --gray-hlight: hsl(0, 0%, 15%);
+        --gray-hlight: hsl(0, 0%, 18%);
 
         // Windows
         --window-background-color: hsl(0, 0%, 9%);
+        --window-background-color-portal: hsl(0, 0%, 8%);
         --window: hsl(0, 0%, 12%);
         --window2: hsl(0, 0%, 17%);
         // --window-border: hsl(0, 0%, 10%);
-        --window-rgb: 5, 5, 5;
+        --window-rgb: 28, 28, 28;
         --header-background: hsl(240, 38%, 3%);
 
         --side-window: hsl(0, 0%, 8%);
@@ -131,17 +137,16 @@
 
         // Icons & Buttons
         --icon-full: var(--m-text);
+        --icon-light-light-gray: hsl(0, 0%, 20%);
         --icon-light-gray: hsl(0, 0%, 24%);
         --icon-hover-light-gray: hsl(0, 0%, 29%);
         --icon-hover-gray: hsl(0, 0%, 54%);
-
-        --gray-hlight: hsl(0, 0%, 16%);
 
         --btn-gray: hsl(0, 0%, 20%);
         --btn-gray-hover: hsl(0, 0%, 24%);
         --btn-mid-gray: hsl(0, 0%, 50%);
         --btn-mid-gray-hover: hsl(0, 0%, 40%);
-        --btn-dark: hsl(0, 0%, 96%);
+        --btn-dark: hsl(0, 0%, 90%);
         --btn-dark-hover: hsl(0, 0%, 98%);
 
         --negative-pulse-outer: rgba(255, 255, 255, .5);
@@ -153,7 +158,7 @@
         // --window-drop-shadow-color: hsl(0, 0%, 20%);
         --header-box-shadow-color: hsl(0, 0%, 11%);
         --new-item-drop-shadow-color: hsl(0, 0%, 7%);
-        // --wafer-drop-shadow-color: hsl(0, 0%, 8%);
+        --wafer-drop-shadow-color: hsl(0, 0%, 28%);
         --scroll-shadow: hsl(0, 0%, 3%), transparent;
         --dropdown-box-shadow-color: hsl(0, 0%, 4%);
         --antd-drop-shadow-color: hsl(0, 0%, 0%);
@@ -171,8 +176,6 @@
         --gray-button-border: hsl(0, 0%, 23%);
         --sidebar-border-color: hsl(0, 0%, 12%);
 
-        --input-focus-drop-shadow: 0 0 0 1px var(--input-focus-dropshadow-color);
-
         @include common;
     }
 
@@ -183,6 +186,8 @@
         --alert-red: #f35050;
         --red-rgb: 243, 80, 80;
         --dark-red: #8b2424;
+        --blue: #d4dbf4;
+        --blue-text: #3a5dd1;
 
         // Secondary and Primary Base Values
         --main-color-h: 219;
@@ -203,6 +208,7 @@
         --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), calc(var(--main-color-l) + 40%));
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 40%));
+        --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 30%));
 
         --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
@@ -222,18 +228,16 @@
         --secondary-dark4: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 20%));
         --secondary-dark5: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 25%));
 
-        // Grays
-        --gray-hlight: hsl(0, 0%, 90%);
-
         // Windows
-        --window-background-color: hsl(0, 0%, 97%);
+        --window-background-color: hsl(0, 0%, 95%);
+        --window-background-color-portal: hsl(0, 0%, 95%);
         --header-background: hsl(0, 0%, 10%);
 
         --window: hsl(0, 0%, 99%);
         --window-rgb: 250, 250, 250;
         // --window-border: hsl(0, 0%, 94%);
 
-        --side-window: hsl(0, 0%, 94%);
+        --side-window: hsl(0, 0%, 93%);
 
         --inner-window: hsl(0, 0%, 94%);
         --window2: hsl(0, 0%, 91%);
@@ -270,26 +274,27 @@
 
         // Icons & Buttons
         --icon-full: var(--m-text);
+        --icon-light-light-gray: hsl(0, 0%, 92%);
         --icon-light-gray: hsl(0, 0%, 89%);
         --icon-hover-light-gray: hsl(0, 0%, 84%);
         --icon-hover-gray: hsl(0, 0%, 65%);
 
-        --gray-hlight: hsl(0, 0%, 92%);
+        --gray-hlight: hsl(0, 0%, 90%);
 
         --btn-gray: hsl(0, 0%, 80%);
         --btn-gray-hover: hsl(0, 0%, 76%);
         --btn-mid-gray: hsl(0, 0%, 48%);
         --btn-mid-gray-hover: hsl(0, 0%, 28%);
-        --btn-dark: hsl(0, 0%, 18%);
-        --btn-dark-hover: hsl(0, 0%, 12%);
+        --btn-dark: hsl(0, 0%, 20%);
+        --btn-dark-hover: hsl(0, 0%, 14%);
 
-        --transaction-hover-background: hsl(0, 0%, 94%);
+        --transaction-hover-background: hsl(0, 0%, 95%);
 
         --negative-pulse-outer: rgba(0, 0, 0, .3);
         --negative-pulse-inner: rgba(0, 0, 0, .75);
 
         // Drop Shadows & Borders
-        --window-drop-shadow-color: hsl(0, 0%, 94%);
+        --window-drop-shadow-color: hsl(0, 0%, 93%);
         --wafer-drop-shadow-color: hsl(0, 0%, 87%);
         --header-box-shadow-color: hsl(0, 0%, 77%);
         --new-item-drop-shadow-color: hsl(0, 0%, 91%);
@@ -305,13 +310,11 @@
         --toast-box-shadow: var(--mid-elevation-drop-shadow);
 
         --border-color-dimmest: rgb(0, 0, 0, .06);
-        --border-color: rgb(0, 0, 0, .07);
+        --border-color: rgb(0, 0, 0, .08);
         --institution-logo-border: rgb(0, 0, 0, .2);
         --toast-border: transparent;
         --gray-button-border: hsl(0, 0%, 86%);
-        --sidebar-border-color: hsl(0, 0%, 92%);
-
-        --input-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
+        --sidebar-border-color: hsl(0, 0%, 91%);
 
         @include common;
     }

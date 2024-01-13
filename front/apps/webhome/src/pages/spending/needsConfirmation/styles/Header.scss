@@ -35,13 +35,16 @@
 
     #number-of-items {
         font-weight: var(--fw-regular);
-        margin-right: .625em;
+        margin-right: .75em;
         position: relative;
         padding: 0 .25em;
         border-radius: var(--border-radius1);
 
         button,
-        span,
+        span {
+            color: var(--m-text-secondary);
+        }
+
         &+span {
             color: var(--m-text-secondary);
         }
@@ -61,7 +64,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: var(--icon-light-gray);
+            background-color: var(--icon-hover-light-gray);
             border-radius: 50%;
         }
     }

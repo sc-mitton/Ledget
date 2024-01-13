@@ -6,7 +6,7 @@ body {
 }
 
 main {
-    background-color: var(--window-background-color);
+    background-color: var(--window-background-color-portal);
 }
 
 #top-header {
@@ -35,7 +35,7 @@ main {
     width: 100%;
     display: grid;
     place-items: center;
-    background-color: var(--window-background-color);
+    background-color: var(--window-background-color-portal);
 }
 
 .window {
@@ -45,7 +45,7 @@ main {
     border-radius: var(--border-radius3);
     border: 1.5px solid var(--window-border);
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    box-shadow: var(--window-drop-shadow);
+    box-shadow: var(--window-drop-shadow2);
     padding: 2rem 2.25rem;
     margin: 1rem 0;
     position: relative;

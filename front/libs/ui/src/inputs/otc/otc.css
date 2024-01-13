@@ -23,7 +23,7 @@
     -webkit-appearance: textfield;
     border-radius: var(--border-radius2);
     background-color: var(--input-background);
-    border: solid 1px var(--input-border-color);
+    border: var(--input-border);
     color: var(--m-text);
 }
 

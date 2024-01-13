@@ -82,7 +82,7 @@ export const ExpandButton = ({
   ...rest
 }) => (
   <button
-    className={`btn-sp ${hasBackground ? 'btn-gr2' : 'btn-clr'} expand-button `}
+    className={`btn-sp ${hasBackground ? 'non-clr' : 'btn-clr'} expand-button `}
     tabIndex={0}
     aria-label="Expand"
     {...rest}

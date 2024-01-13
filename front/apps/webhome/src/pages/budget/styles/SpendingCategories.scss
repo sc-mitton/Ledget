@@ -6,7 +6,7 @@ $window-padding: $bill-flex-grid-gap;
 
 $row-padding: .375em;
 $label-padding: calc($row-padding/2) .75em;
-$column-gap: 1.25em;
+$column-gap: 1.5em;
 $background: var(--window);
 
 
@@ -253,7 +253,7 @@ $background: var(--window);
     justify-content: flex-start;
     // Aprx. 5 rows
     // the 2em comes from the bottom buttons space
-    min-height: calc(4.25 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em);
+    min-height: calc(4.375 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em);
 
     h2 {
         margin-left: .25em;
