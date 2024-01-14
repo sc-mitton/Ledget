@@ -127,6 +127,7 @@ const FilterWindow = () => {
                                 aria-label='Date Range'
                                 {...props}
                                 onChange={(e) => {
+                                    console.log(e?.[0]?.toISOString())
                                     props.field.onChange([
                                         e?.[0]?.unix(),
                                         e?.[1]?.unix()

@@ -19,7 +19,7 @@ import type { Datum } from '@nivo/line'
 import { Menu } from '@headlessui/react'
 import dayjs from 'dayjs'
 
-import TransactionModal from '@modals/TransactionItem'
+import { TransactionItem, DeleteCategoryModal } from '@modals/index'
 import { Logo } from '@components/pieces'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import './styles/SpendingCategories.scss'
@@ -63,7 +63,7 @@ import {
     DropdownItem,
     useBillCatTabTheme,
 } from '@ledget/ui'
-import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
+import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit, TrashIcon } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useScreenContext } from '@context/context'
 
@@ -552,9 +552,10 @@ const CategoryDetail = ({ category }: { category: Category }) => {
         data: transactionsData,
         isSuccess: transactionsDataIsFetched
     }] = useLazyGetTransactionsQuery()
-    const [transactionModalItem, setTransactionModalItem] = useState<Transaction>()
+    const [TransactionItemItem, setTransactionItemItem] = useState<Transaction>()
 
     const [chartData, setChartData] = useState<Datum[]>([])
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const windowOptions = ['4 months', '1 year', '2 year', 'max']
     const [disabledOptions, setDisabledOptions] = useState<(typeof windowOptions[number])[]>()
     const [window, setWindow] = useState<string>()
@@ -660,6 +661,18 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                         </DropdownItem>
                                     )}
                                 </Menu.Item>
+                                <Menu.Item as={Fragment}>
+                                    {({ active }) => (
+                                        <DropdownItem
+                                            as='button'
+                                            active={active}
+                                            onClick={() => { setShowDeleteModal(true) }}
+                                        >
+                                            <TrashIcon size={'1em'} fill={'currentColor'} />
+                                            Delete
+                                        </DropdownItem>
+                                    )}
+                                </Menu.Item>
                             </Menu.Items>
                         </DropDownDiv>
                     </div>
@@ -686,19 +699,22 @@ const CategoryDetail = ({ category }: { category: Category }) => {
 
     return (
         <>
-            {transactionModalItem &&
-                <TransactionModal
-                    item={transactionModalItem}
-                    onClose={() => setTransactionModalItem(undefined)}
-                />
-            }
+            {TransactionItemItem &&
+                <TransactionItem
+                    item={TransactionItemItem}
+                    onClose={() => setTransactionItemItem(undefined)}
+                />}
             {showEditCategoryModal &&
                 <EditCategoryModal
                     category={category}
                     maxWidth={'20rem'}
                     onClose={() => setShowEditCategoryModal(false)}
-                />
-            }
+                />}
+            {showDeleteModal &&
+                <DeleteCategoryModal
+                    category={category}
+                    onClose={() => setShowDeleteModal(false)}
+                />}
             <Options />
             <h2>{`${category.emoji}`}&nbsp;&nbsp;{`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
             <div className="grid">
@@ -758,7 +774,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                     {transactionsData?.results?.map(transaction => (
                                         <div
                                             key={transaction.transaction_id}
-                                            onClick={() => setTransactionModalItem(transaction)}
+                                            onClick={() => setTransactionItemItem(transaction)}
                                         >
                                             <div>
                                                 <Logo accountId={transaction.account} />

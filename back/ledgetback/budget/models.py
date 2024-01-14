@@ -86,6 +86,7 @@ class Bill(BudgetItem):
     )
     skipped = models.BooleanField(default=False)
     year = models.IntegerField(null=True, blank=True)
+    expires = models.DateTimeField(null=True, blank=True)
 
     def clean(self):
 

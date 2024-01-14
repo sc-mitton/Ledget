@@ -142,6 +142,63 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
     )
 })
 
+
+const Filter = ({ disabled = false }) => {
+    const dispatch = useAppDispatch()
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    return (
+        <div id="filter">
+            <PillOptionButton
+                disabled={disabled}
+                isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('bill-sort') || '')}
+                onClick={() => {
+                    // desc -> asc -> default
+                    if (!['amount-desc', 'amount-asc'].includes(searchParams.get('bill-sort') || '')) {
+                        dispatch(sortBillsByAmountDesc())
+                        searchParams.set('bill-sort', 'amount-desc')
+                        setSearchParams(searchParams)
+                    } else if (searchParams.get('bill-sort') === 'amount-desc') {
+                        dispatch(sortBillsByAmountAsc())
+                        searchParams.set('bill-sort', 'amount-asc')
+                        setSearchParams(searchParams)
+                    } else {
+                        dispatch(sortBillsByDate())
+                        searchParams.delete('bill-sort')
+                        setSearchParams(searchParams)
+                    }
+                }}
+            >
+                <span>$</span>
+                <BackArrow
+                    stroke={'currentColor'}
+                    rotate={searchParams.get('bill-sort') === 'amount-asc' ? 90 : -90}
+                    size={'.75em'}
+                    strokeWidth={'16'}
+                />
+            </PillOptionButton>
+            <PillOptionButton
+                disabled={disabled}
+                aria-label="Sort bills by amount"
+                isSelected={searchParams.get('bill-sort') === 'a-z'}
+                onClick={() => {
+                    if (searchParams.get('bill-sort') === 'a-z') {
+                        dispatch(sortBillsByDate())
+                        searchParams.delete('bill-sort')
+                        setSearchParams(searchParams)
+                    } else {
+                        dispatch(sortBillsByAlpha())
+                        searchParams.set('bill-sort', 'a-z')
+                        setSearchParams(searchParams)
+                    }
+                }}
+            >
+                a-z
+            </PillOptionButton>
+        </div>
+    )
+}
+
 const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
     { collapsed: boolean, showCalendarIcon: boolean, setCollapsed: (a: boolean) => void }) => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -216,61 +273,8 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                     aria-label="Collapse bills"
                     size={'.85em'}
                 />
+                <Filter disabled={collapsed} />
             </div>
-        </div>
-    )
-}
-
-const Footer = () => {
-    const dispatch = useAppDispatch()
-    const [searchParams, setSearchParams] = useSearchParams()
-
-    return (
-        <div>
-            <PillOptionButton
-                isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('bill-sort') || '')}
-                onClick={() => {
-                    // desc -> asc -> default
-                    if (!['amount-desc', 'amount-asc'].includes(searchParams.get('bill-sort') || '')) {
-                        dispatch(sortBillsByAmountDesc())
-                        searchParams.set('bill-sort', 'amount-desc')
-                        setSearchParams(searchParams)
-                    } else if (searchParams.get('bill-sort') === 'amount-desc') {
-                        dispatch(sortBillsByAmountAsc())
-                        searchParams.set('bill-sort', 'amount-asc')
-                        setSearchParams(searchParams)
-                    } else {
-                        dispatch(sortBillsByDate())
-                        searchParams.delete('bill-sort')
-                        setSearchParams(searchParams)
-                    }
-                }}
-            >
-                <span>$</span>
-                <BackArrow
-                    stroke={'currentColor'}
-                    rotate={searchParams.get('bill-sort') === 'amount-asc' ? 90 : -90}
-                    size={'.75em'}
-                    strokeWidth={'16'}
-                />
-            </PillOptionButton>
-            <PillOptionButton
-                aria-label="Sort bills by amount"
-                isSelected={searchParams.get('bill-sort') === 'a-z'}
-                onClick={() => {
-                    if (searchParams.get('bill-sort') === 'a-z') {
-                        dispatch(sortBillsByDate())
-                        searchParams.delete('bill-sort')
-                        setSearchParams(searchParams)
-                    } else {
-                        dispatch(sortBillsByAlpha())
-                        searchParams.set('bill-sort', 'a-z')
-                        setSearchParams(searchParams)
-                    }
-                }}
-            >
-                a-z
-            </PillOptionButton>
         </div>
     )
 }
@@ -371,7 +375,6 @@ const Bills = () => {
                     {showCalendar && <Calendar />}
                     {isLoading ? <SkeletonBills /> : <Bills />}
                 </div>
-                <Footer />
             </div>
         </div>
     )

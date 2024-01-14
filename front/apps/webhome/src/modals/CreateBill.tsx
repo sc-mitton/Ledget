@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 
 import { useNavigate, useLocation } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, useWatch } from "react-hook-form"
+import { useForm, useWatch, Controller } from "react-hook-form"
 import { z } from 'zod'
+import { DatePicker } from "antd"
 
 import './styles/Forms.scss'
 import SubmitForm from '@components/pieces/SubmitForm'
@@ -19,6 +20,7 @@ import { Checkbox } from '@ledget/ui'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { Reminder } from '@features/remindersSlice'
 
+
 export const billSchema = z.object({
     name: z.string().toLowerCase().min(1, { message: 'required' }).max(50, { message: 'Name is too long.' }),
     lower_amount: z.number(),
@@ -28,6 +30,7 @@ export const billSchema = z.object({
     week: z.coerce.number().min(1).max(5).optional(),
     week_day: z.coerce.number().min(1).max(7).optional(),
     month: z.coerce.number().min(1).max(12).optional(),
+    expires: z.string().optional()
 }).refine((data) => {
     return data.lower_amount && data.upper_amount
         ? data.lower_amount < data.upper_amount
@@ -124,6 +127,7 @@ const Form = withModal((props) => {
                         <AddReminder />
                     </div>
                 </div>
+
                 <div>
                     <EmojiComboText
                         name="name"
@@ -146,6 +150,24 @@ const Form = withModal((props) => {
                             label='Range'
                             id="range"
                             aria-label='Change bill amount to a range.'
+                        />
+                    </div>
+                </div>
+                <div className='padded-row'>
+                    <div style={{ margin: '.375em 0', flexGrow: 1 }}>
+                        <Controller
+                            name="expires"
+                            control={control}
+                            render={(props) => (
+                                <div className="ledget-antd-date-picker">
+                                    <DatePicker
+                                        placeholder="Expires"
+                                        format="MM/DD/YYYY"
+                                        aria-label='Expiration date'
+                                        onChange={(e) => { props.field.onChange(e?.toISOString()) }}
+                                    />
+                                </div>
+                            )}
                         />
                     </div>
                 </div>

@@ -85,13 +85,19 @@
     flex-direction: row;
     justify-content: space-between;
 
-    &>div:first-child {
+    @mixin s {
         flex: 1;
+        flex-direction: column;
+        display: flex;
+    }
+
+    &>div:first-child {
+        @include s;
         margin-right: .25em;
     }
 
     &>div:last-child {
-        flex: 1;
+        @include s;
         margin-left: .25em;
     }
 

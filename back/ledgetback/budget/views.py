@@ -60,8 +60,9 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
             return self._get_specific_month_qset(int(month), int(year))
         else:
             return Bill.objects.filter(
+                Q(expires__gte=dbtz.now()) | Q(expires__isnull=True),
                 removed_on__isnull=True,
-                userbill__user=self.request.user
+                userbill__user=self.request.user,
             )
 
     def get_object(self):
@@ -134,11 +135,12 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
 
         monthly_qset = Bill.objects \
                            .filter(
+                               Q(expires__gte=dbtz.now()) | Q(expires__isnull=True),
                                Q(removed_on__month__gt=month) |
                                Q(removed_on__isnull=True),
                                userbill__user=self.request.user,
                                month__isnull=True,
-                               year__isnull=True
+                               year__isnull=True,
                             ) \
                            .annotate(is_paid=is_paid_annotation) \
 
@@ -162,10 +164,11 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
 
         once_qset = Bill.objects \
                         .filter(
+                            Q(expires__gte=dbtz.now()) | Q(expires__isnull=True),
                             userbill__user=self.request.user,
                             removed_on__isnull=True,
                             month=month,
-                            year=year
+                            year=year,
                          ) \
                         .annotate(is_paid=is_paid_annotation) \
 

@@ -20,6 +20,7 @@ export interface Bill {
     week_day?: number
     month?: number
     year?: number
+    expires?: string
 }
 
 export type NewBill = Omit<Bill, 'id' | 'is_paid' | 'last_paid' | 'bill_confirmed'>

@@ -4,8 +4,10 @@ import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Menu, RadioGroup } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
+import { DatePicker } from "antd"
+import dayjs from 'dayjs'
 
 import './styles/Bill.scss'
 import { billSchema } from './CreateBill'
@@ -177,6 +179,13 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                             { month: 'short', day: 'numeric', year: 'numeric' })}`
                     }
                 </div>
+                {bill?.expires &&
+                    <><div>Expires</div>
+                        <div>
+                            {`${new Date(bill.expires).toLocaleDateString(
+                                'en-US',
+                                { month: 'short', day: 'numeric', year: 'numeric' })}`}
+                        </div></>}
                 <div>
                     Reminders
                 </div>
@@ -194,6 +203,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                         : <BellOff size={'1.1em'} fill={'var(--btn-mid-gray-hover)'} />
                     }
                 </div>
+
             </div>
         </div>
     )
@@ -360,6 +370,23 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                         aria-label='Change bill amount to a range.'
                         checked={rangeMode}
                         setChecked={setRangeMode}
+                    />
+                </div>
+                <div style={{ margin: '.375em 0' }}>
+                    <Controller
+                        name="expires"
+                        control={control}
+                        render={(props) => (
+                            <>
+                                <DatePicker
+                                    placeholder="Expires"
+                                    format="MM/DD/YYYY"
+                                    aria-label='Expiration date'
+                                    onChange={(e) => { props.field.onChange(e?.toISOString()) }}
+                                    defaultValue={bill.expires ? dayjs(bill.expires) : undefined}
+                                />
+                            </>
+                        )}
                     />
                 </div>
             </div>

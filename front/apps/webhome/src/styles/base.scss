@@ -325,7 +325,7 @@ button:focus-visible {
     display: flex;
 }
 
-.ledget-range-picker.ant-picker-focused {
+.ant-picker:focus-within {
     border-color: transparent;
     box-shadow: var(--input-focus-drop-shadow);
 }

@@ -81,9 +81,10 @@ export const ledgetAntTheme: ThemeConfig = {
     token: {
         colorPrimary: '#385fa8',
         boxShadow: 'var(--antd-drop-shadow)',
+        boxShadowTertiary: 'var(--input-focus-drop-shadow)',
         borderRadius: 8,
         colorBgContainer: 'var(--input-background)',
-        colorTextPlaceholder: '#a6a6a6',
+        colorTextPlaceholder: 'var(--input-placeholder2)',
         colorBorder: 'transparent',
     },
 }

@@ -38,6 +38,7 @@ $number-of-bill-rows: 5;
         justify-content: space-between;
         gap: .25em;
         margin-left: .375em;
+        flex-grow: 1;
 
         &>div:first-child {
             display: flex;
@@ -58,10 +59,21 @@ $number-of-bill-rows: 5;
         }
 
         &>div:last-child {
-            opacity: 0;
+            opacity: 1;
             flex-grow: 1;
             display: flex;
+            gap: .25em;
             justify-content: flex-end;
+
+            &>button {
+                opacity: 0;
+                transition: opacity .2s ease-out;
+            }
+
+            &:hover>button {
+                opacity: 1;
+                transition: opacity .2s ease-out;
+            }
 
             &:hover,
             &:focus-within {
@@ -73,7 +85,6 @@ $number-of-bill-rows: 5;
     // Div around the calendar and bill items
     &>div:nth-child(2) {
         margin-top: .25em;
-        flex-grow: 1;
         display: flex;
         justify-content: space-between;
         gap: $gap;
@@ -90,11 +101,11 @@ $number-of-bill-rows: 5;
         overflow: hidden;
 
         // All buttons but the expand button
-        button:not(:first-child) {
+        #filter {
             opacity: .5;
         }
 
-        &>div:nth-last-child(-n+2) {
+        &>div:last-child {
             max-height: 0px;
             opacity: 0;
             position: relative;
@@ -104,7 +115,7 @@ $number-of-bill-rows: 5;
     }
 
     // Sort buttons container
-    &>div:last-child {
+    #filter {
         display: flex;
         justify-content: flex-end;
         gap: .325em;
