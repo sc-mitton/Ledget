@@ -13,9 +13,9 @@ export const useNivoResponsiveBaseProps = ({ disabled = false }: { disabled?: bo
     return ({
         enablePoints: true,
         pointColor: window,
-        pointSize: 7,
+        pointSize: disabled ? 0 : 7,
         pointBorderColor: disabled ? 'transparent' : mainColorHover,
-        pointBorderWidth: 1.75,
+        pointBorderWidth: disabled ? 0 : 1.75,
         enableArea: true,
         enableGridX: false,
         enableGridY: true,

@@ -1,413 +1,68 @@
-$base-stats-font-size: clamp(1rem, calc(.25rem + .25vw), 1.125rem);
-$teaser-stats-margin-top: .125em;
-$header-font-size: clamp(.8125rem, calc(.75em + .25vw), 1rem);
-$header-padding-light: .5em calc(.75em + .5vw) .75em calc(.75em + .5vw);
-$header-padding-heavier: calc(.25em + .25vw) calc(.75em + .75vw);
-$header-gap: calc(.75em + .125vw);
-
-@mixin summary-padding-bottom($isExpanded, $isResponsive: false) {
-    $summary-padding-bottom: calc(nth($header-padding-light, 1) + $teaser-stats-margin-top + $header-font-size + 1em);
-    $summary-padding-bottom-expanded: calc(nth($header-padding-heavier, 1) * 2 + $base-stats-font-size + $teaser-stats-margin-top + $header-font-size + 1.25em);
-    $responsive-summary-padding-bottom: calc(nth($header-padding-light, 1) + $teaser-stats-margin-top + $header-font-size * 4 + 1.75em);
-    $responsive-summary-padding-bottom-expanded: calc(nth($header-padding-light, 1) + $teaser-stats-margin-top + $header-font-size * 7 + 1.75em);
-
-    @if $isResponsive and $isExpanded {
-        padding-bottom: $responsive-summary-padding-bottom-expanded;
-    }
-
-    @else if $isResponsive {
-        padding-bottom: $responsive-summary-padding-bottom;
-    }
-
-    @else if $isExpanded {
-        padding-bottom: $summary-padding-bottom-expanded;
-    }
-
-    @else {
-        padding-bottom: $summary-padding-bottom;
-    }
-}
-
-@mixin header-transitions($direction) {
-    @if $direction ==in {
-        transition:
-            transform .2s ease-in-out .3s,
-            top .2s ease-in-out .3s,
-            left .2s ease-in-out .3s,
-            height .2s ease-in-out .3s,
-            width .2s ease-in-out .3s,
-            border-radius .2s ease-in-out .3s,
-            z-index 0s linear 0s;
-    }
-
-    @else {
-        transition:
-            transform .2s ease-in-out .2s,
-            top .2s ease-in-out .2s,
-            left .2s ease-in-out .2s,
-            height .2s ease-in-out .2s,
-            width .2s ease-in-out .2s,
-            border-radius .2s ease-in-out .2s,
-            z-index 0s linear .4s;
-    }
-}
-
-@mixin header-contents-transitions($direction) {
-    @if $direction ==in {
-        transition: opacity .2s ease-in-out .3s, visibility 0s;
-    }
-
-    @else {
-        transition: opacity .2s ease-in-out, visibility 0s;
-    }
-}
-
-@mixin stats-transitions($direction) {
-    @if $direction ==in {
-        transition:
-            visibility 0s linear .3s,
-            opacity .2s ease-in-out .3s,
-            z-index 0s linear;
-    }
-
-    @else {
-        transition:
-            visibility 0s linear .1s,
-            opacity .2s ease-in-out,
-            z-index 0s linear .2s;
-    }
-}
-
-@mixin padding-transition($direction) {
-    @if $direction ==in {
-        transition: padding-bottom 0.3s ease-in-out .3s;
-    }
-
-    @else {
-        transition: padding-bottom 0.3s ease-in-out;
-    }
-}
-
-@mixin header-padding($layout) {
-
-    @if $layout ==light {
-        padding: $header-padding-light;
-    }
-
-    @else if $layout ==heavy {
-        padding: $header-padding-heavier;
-    }
-}
-
 .budget-summary--container {
-    @include summary-padding-bottom(false);
-    @include padding-transition(out);
-    transition: padding-bottom 0.3s ease-in-out;
-    position: relative;
+    margin-top: .5em;
+    display: flex;
+    gap: 3em;
+    align-items: flex-end;
 
-    &:not(:focus-within):not(:hover) .header {
-        border-radius: var(--border-radius25);
-    }
-
-    &.expanded {
-        @include summary-padding-bottom(true);
-        @include padding-transition(in);
-    }
-
-    // Headers
-    .header {
+    #month-picker--container {
         position: absolute;
-        z-index: 0;
-        box-sizing: border-box;
-        border-radius: var(--border-radius3);
-        @include header-padding(light);
-        transform: scale(1);
-        display: flex;
-        height: 100%;
-        @include header-transitions(out);
+        top: 1em;
+        margin-left: -.25em;
+    }
 
-        h4 {
-            font-size: $header-font-size;
-            font-weight: var(--fw-regular);
-        }
+    h2 {
+        color: var(--m-text-quinary);
+    }
 
-        // All statistic elements
+    &>div:nth-child(2) {
+
         &>div {
-            display: flex;
-            align-items: baseline;
-            gap: .25em;
-            font-size: $base-stats-font-size;
-            @include header-contents-transitions(out);
-
-            &:first-child {
-                flex: 1;
-            }
-
-            &:not(:first-child) {
-                opacity: .8;
-            }
-
-            // Thumbs container
-            &>div {
-                display: flex;
-                align-items: baseline;
-                gap: .25em;
-
-                svg {
-                    vertical-align: middle;
-                    margin-bottom: .25em;
-                    margin-left: .125em;
-                }
-            }
-        }
-
-        // Total header
-        &:nth-child(1) {
-            width: calc(100% / 3 - $header-gap);
-            background-color: var(--gray-hlight);
-
-            &>span:last-of-type {
-                font-size: calc($base-stats-font-size - .25rem);
-            }
-        }
-
-        // Month header
-        &:nth-child(2) {
-            cursor: pointer;
-            left: calc(100% / 3 + $header-gap/2);
-            width: calc(100% / 3 - $header-gap);
-            background-color: var(--main-hlight);
-
-            * {
-                color: var(--main-dark);
-            }
-        }
-
-        // Year header
-        &:nth-child(3) {
-            cursor: pointer;
-            left: calc(2/3 * 100% + $header-gap);
-            width: calc(100% / 3 - $header-gap);
-            background-color: var(--secondary-hlight);
-
-            * {
-                color: var(--secondary-dark);
-            }
-        }
-
-        // Hover effects //
-        &:not(:first-child):hover,
-        &:not(:first-child):focus-visible {
-            outline: none;
-            box-shadow: none;
-            z-index: 2;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transform: scale(1);
-            border-radius: var(--border-radius25);
-            opacity: 1;
-            @include header-transitions(in);
-        }
-
-        &:not(:first-child):hover~&,
-        &:not(:first-child):focus-visible~& {
-            border-radius: var(--border-radius25);
-        }
-
-        &:not(:first-child):hover>div,
-        &:not(:first-child):focus-visible>div {
-            // visibility: none;
-            opacity: 0;
-            @include header-contents-transitions(in);
+            font-size: 2.25rem;
+            line-height: 2.625rem;
         }
     }
-}
 
-.summary-stats {
-    position: absolute;
-    visibility: hidden;
-    opacity: 0;
-    top: 38%;
-    transform: translateY(-30%);
-    left: 0;
-    width: 100%;
-    pointer-events: none;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    z-index: 1;
-    @include stats-transitions(out);
+    &>div:nth-last-child(-n+3) {
+        display: flex;
+        font-size: 1.5rem;
+        align-items: baseline;
+        gap: .25em;
+        position: relative;
 
-    &.month div,
-    &.month span {
-        color: var(--main-dark);
-    }
-
-    &.year div,
-    &.year span {
-        color: var(--secondary-dark2);
-    }
-
-    * {
-        font-size: $base-stats-font-size;
-    }
-
-    &.month>div:nth-child(1)>div:first-child>span {
-        background-color: var(--main-hlight-hover-darker);
-        opacity: .9;
-    }
-
-    &.year>div:nth-child(1)>div:first-child>span {
-        background-color: var(--secondary-hlight-hover-darker);
-        opacity: .9;
-    }
-
-    &>div:nth-child(1) {
-        &>div:first-child>span {
-            width: 1.125em;
-            height: 1.125em;
+        @mixin dot {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: -.75em;
+            width: .5rem;
+            height: .5rem;
             border-radius: 50%;
-            position: relative;
+        }
+
+        &:nth-last-child(3)::before {
+            @include dot;
+            background-color: var(--main-sat);
+        }
+
+        &:nth-last-child(2)::before {
+            @include dot;
+            background-color: var(--secondary-sat);
+        }
+
+        &:last-child {
+            span:first-child {
+                font-size: 1.25rem;
+            }
 
             &::before {
-                content: '$';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                font-size: .75rem;
-                font-weight: var(--fw-bold);
-                transform: translate(-50%, -50%);
-                color: var(--main-dark);
-            }
-        }
-    }
-
-    // Each statistic cell
-    &>div:nth-child(-n+4) {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:not(:last-child) {
-            font-weight: var(--fw-regular);
-        }
-
-        &>div {
-            display: flex;
-            flex-direction: column;
-            align-items: baseline;
-            font-size: calc($base-stats-font-size);
-            font-weight: var(--fw-regular);
-
-            &>div:last-of-type {
-                font-size: calc($base-stats-font-size - .25rem);
-                font-weight: var(--fw-light);
-                margin-top: -.125em;
-
-                &:not(:has(svg)) {
-                    font-weight: var(--fw-bold);
-                }
+                @include dot;
+                background-color: var(--btn-mid-gray);
             }
         }
 
-        &>div:not(:first-child):last-child {
-            align-self: center;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-left: .5em;
-        }
-    }
-
-    // Bills paid
-
-    &>div:nth-child(4) {
-        gap: .125em;
-
-        &>div:last-child {
-            margin-left: .375em;
-            display: flex;
-            align-items: center;
-        }
-    }
-
-    &.show {
-        z-index: 3;
-        visibility: visible;
-        opacity: 1;
-        @include stats-transitions(in);
-    }
-
-}
-
-.thumbs {
-    &.up {
-        transform: rotateX(0deg) rotateY(0deg) translateY(0%);
-        transition: transform 0.3s ease-in-out;
-    }
-
-    &.down {
-        transform: rotateX(180deg) rotateY(180deg) translateY(-25%);
-        transition: transform 0.3s ease-in-out;
-    }
-}
-
-@media (max-width: 1100px) {
-
-    .budget-summary--container {
-        @include summary-padding-bottom(true);
-    }
-
-    .budget-summary--container>div:nth-child(-n+3) {
-        flex-direction: column;
-    }
-}
-
-
-@media (max-width: 550px) {
-    .budget-summary--container {
-        @include summary-padding-bottom(false, true);
-
-        &.expanded {
-            @include summary-padding-bottom(true, true);
-        }
-
-        &>div:nth-child(-n+3)>div:last-child {
-            flex-direction: column;
-            gap: 0em;
-            margin-top: .5em;
-        }
-    }
-
-    .summary-stats-teaser {
-        text-align: end;
-        margin-top: 0;
-    }
-
-    .summary-stats {
-        grid-template-columns: minmax(0, auto) minmax(0, auto);
-        grid-template-rows: 1fr 1fr;
-        height: 100%;
-        transform: translateY(-37%);
-        align-items: center;
-        justify-content: space-evenly;
-
-        &>div {
-            display: auto;
-            justify-self: start;
-        }
-
-        &>div:first-child {
-            order: 0;
-        }
-
-        &>div:nth-child(2),
-        &>div:nth-child(3) {
-            order: 2;
-        }
-
-        &>div:last-child {
-            order: 1;
+        &>span:last-child {
+            color: var(--m-text-quaternary);
         }
     }
 }

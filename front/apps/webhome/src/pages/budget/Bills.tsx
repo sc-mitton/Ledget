@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useState, useRef, forwardRef } from 'react';
 
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '@hooks/store';
 
 import './styles/Bills.scss'
@@ -20,9 +20,9 @@ import {
     DropDownDiv,
     useAccessEsc,
     ShimmerText,
-    BillCatLabel
+    BillCatLabel,
 } from '@ledget/ui';
-import { Calendar as CalendarIcon, CheckMark2, BackArrow } from '@ledget/media'
+import { Calendar as CalendarIcon, CheckMark2, BackArrow, Plus } from '@ledget/media'
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -142,7 +142,8 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
     )
 })
 
-const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed: (a: boolean) => void }) => {
+const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
+    { collapsed: boolean, showCalendarIcon: boolean, setCollapsed: (a: boolean) => void }) => {
     const [searchParams, setSearchParams] = useSearchParams()
     const selectedDate = new Date(
         parseInt(searchParams.get('year') || `${new Date().getFullYear()}`),
@@ -152,7 +153,8 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
     const dropdownRef = useRef<HTMLDivElement>(null)
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [showCalendar, setShowCalendar] = useState(false)
-    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
         if (showCalendar) {
@@ -173,25 +175,38 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                     {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
                     {selectedDate.getFullYear()} BILLS
                 </h3>
+                <IconButton
+                    onClick={() => {
+                        navigate({
+                            pathname: '/budget/new-bill',
+                            search: location.search
+                        })
+                    }}
+                    aria-label="Add bill"
+                >
+                    <Plus size={'.8em'} />
+                </IconButton>
             </div>
             <div>
-                <IconButton
-                    ref={buttonRef}
-                    onClick={() => setShowCalendar(!showCalendar)}
-                    tabIndex={0}
-                    aria-label="Show calendar"
-                    aria-haspopup="true"
-                >
-                    <CalendarIcon size={'1.2em'} />
-                </IconButton>
-                <DropDownDiv
-                    placement='left'
-                    visible={showCalendar}
-                    ref={dropdownRef}
-                    style={{ borderRadius: 'var(--border-radius25)' }}
-                >
-                    <Calendar ref={calendarRef} />
-                </DropDownDiv>
+                {showCalendarIcon &&
+                    <>
+                        <IconButton
+                            ref={buttonRef}
+                            onClick={() => setShowCalendar(!showCalendar)}
+                            tabIndex={0}
+                            aria-label="Show calendar"
+                            aria-haspopup="true"
+                        >
+                            <CalendarIcon size={'1.2em'} />
+                        </IconButton>
+                        <DropDownDiv
+                            placement='left'
+                            visible={showCalendar}
+                            ref={dropdownRef}
+                            style={{ borderRadius: 'var(--border-radius25)' }}
+                        >
+                            <Calendar ref={calendarRef} />
+                        </DropDownDiv></>}
             </div>
             <div>
                 <ExpandButton
@@ -201,53 +216,61 @@ const Header = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed:
                     aria-label="Collapse bills"
                     size={'.85em'}
                 />
-                <PillOptionButton
-                    disabled={collapsed}
-                    isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('bill-sort') || '')}
-                    onClick={() => {
-                        // desc -> asc -> default
-                        if (!['amount-desc', 'amount-asc'].includes(searchParams.get('bill-sort') || '')) {
-                            dispatch(sortBillsByAmountDesc())
-                            searchParams.set('bill-sort', 'amount-desc')
-                            setSearchParams(searchParams)
-                        } else if (searchParams.get('bill-sort') === 'amount-desc') {
-                            dispatch(sortBillsByAmountAsc())
-                            searchParams.set('bill-sort', 'amount-asc')
-                            setSearchParams(searchParams)
-                        } else {
-                            dispatch(sortBillsByDate())
-                            searchParams.delete('bill-sort')
-                            setSearchParams(searchParams)
-                        }
-                    }}
-                >
-                    <span>$</span>
-                    <BackArrow
-                        stroke={'currentColor'}
-                        rotate={searchParams.get('bill-sort') === 'amount-asc' ? '90' : '-90'}
-                        size={'.75em'}
-                        strokeWidth={'16'}
-                    />
-                </PillOptionButton>
-                <PillOptionButton
-                    disabled={collapsed}
-                    aria-label="Sort bills by amount"
-                    isSelected={searchParams.get('bill-sort') === 'a-z'}
-                    onClick={() => {
-                        if (searchParams.get('bill-sort') === 'a-z') {
-                            dispatch(sortBillsByDate())
-                            searchParams.delete('bill-sort')
-                            setSearchParams(searchParams)
-                        } else {
-                            dispatch(sortBillsByAlpha())
-                            searchParams.set('bill-sort', 'a-z')
-                            setSearchParams(searchParams)
-                        }
-                    }}
-                >
-                    a-z
-                </PillOptionButton>
             </div>
+        </div>
+    )
+}
+
+const Footer = () => {
+    const dispatch = useAppDispatch()
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    return (
+        <div>
+            <PillOptionButton
+                isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('bill-sort') || '')}
+                onClick={() => {
+                    // desc -> asc -> default
+                    if (!['amount-desc', 'amount-asc'].includes(searchParams.get('bill-sort') || '')) {
+                        dispatch(sortBillsByAmountDesc())
+                        searchParams.set('bill-sort', 'amount-desc')
+                        setSearchParams(searchParams)
+                    } else if (searchParams.get('bill-sort') === 'amount-desc') {
+                        dispatch(sortBillsByAmountAsc())
+                        searchParams.set('bill-sort', 'amount-asc')
+                        setSearchParams(searchParams)
+                    } else {
+                        dispatch(sortBillsByDate())
+                        searchParams.delete('bill-sort')
+                        setSearchParams(searchParams)
+                    }
+                }}
+            >
+                <span>$</span>
+                <BackArrow
+                    stroke={'currentColor'}
+                    rotate={searchParams.get('bill-sort') === 'amount-asc' ? 90 : -90}
+                    size={'.75em'}
+                    strokeWidth={'16'}
+                />
+            </PillOptionButton>
+            <PillOptionButton
+                aria-label="Sort bills by amount"
+                isSelected={searchParams.get('bill-sort') === 'a-z'}
+                onClick={() => {
+                    if (searchParams.get('bill-sort') === 'a-z') {
+                        dispatch(sortBillsByDate())
+                        searchParams.delete('bill-sort')
+                        setSearchParams(searchParams)
+                    } else {
+                        dispatch(sortBillsByAlpha())
+                        searchParams.set('bill-sort', 'a-z')
+                        setSearchParams(searchParams)
+                    }
+                }}
+            >
+                a-z
+            </PillOptionButton>
         </div>
     )
 }
@@ -261,6 +284,25 @@ const Bills = () => {
     })
     const bills = useAppSelector(selectBills)
     const [collapsed, setCollapsed] = useState(false)
+    const ref = useRef<HTMLDivElement>(null)
+    const [showCalendar, setShowCalendar] = useState(true)
+
+    useEffect(() => {
+        setShowCalendar(ref.current?.clientWidth! > 800)
+        const observer = new ResizeObserver(() => {
+            if (ref.current?.clientWidth! > 800) {
+                setShowCalendar(true)
+            } else {
+                setShowCalendar(false)
+            }
+        })
+        if (ref.current)
+            observer.observe(ref.current)
+
+        return () => {
+            observer.disconnect()
+        }
+    }, [ref.current])
 
     const Bills = () => (
         <div
@@ -315,16 +357,21 @@ const Bills = () => {
     )
 
     return (
-        <div className={`window bills-summary-window ${collapsed ? 'collapsed' : ''}`}>
+        <div
+            className={`window bills-summary-window ${collapsed ? 'collapsed' : ''}`}
+            ref={ref}
+        >
             <div className={`calendar-bills--container ${collapsed ? 'collapsed' : ''}`}>
                 <Header
+                    showCalendarIcon={!showCalendar}
                     collapsed={collapsed}
                     setCollapsed={() => setCollapsed(!collapsed)}
                 />
                 <div>
-                    <Calendar />
+                    {showCalendar && <Calendar />}
                     {isLoading ? <SkeletonBills /> : <Bills />}
                 </div>
+                <Footer />
             </div>
         </div>
     )

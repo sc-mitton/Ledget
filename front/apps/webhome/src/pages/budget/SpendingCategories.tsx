@@ -47,6 +47,7 @@ import {
     FadeInOutDiv,
     useLoaded,
     CloseButton,
+    IconButton,
     ResponsiveLineContainer,
     formatCurrency,
     useNivoResponsiveBaseProps,
@@ -55,16 +56,16 @@ import {
     DropDownDiv,
     LoadingRing,
     ShimmerDiv,
-    IconButton,
     ShadowScrollDiv,
     BakedListBox,
     BillCatLabel,
     TabNavList,
     DropdownItem,
-    useBillCatTabTheme
+    useBillCatTabTheme,
 } from '@ledget/ui'
 import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
+import { useScreenContext } from '@context/context'
 
 const categoryDetailContext = createContext<{
     detailedCategory?: Category,
@@ -127,7 +128,7 @@ const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) =
 const Column: FC<React.HTMLProps<HTMLDivElement>> = ({ children }) => {
     return (
         <div className="column">
-            <div>{children}</div>
+            {children}
         </div>
     )
 }
@@ -222,6 +223,8 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
         limit_amount_yearly,
         oldest_yearly_category_created
     } = useAppSelector(SelectCategoryBillMetaData)
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const totalSpent = period === 'month' ? monthly_spent : yearly_spent
     const totalLimit = period === 'month' ? limit_amount_monthly : limit_amount_yearly
@@ -235,23 +238,29 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
     return (
         <div className={`row header ${yearly_end ? 'has-alternate-header' : ''}`}>
             <div className={`${period === 'year' ? 'yearly' : 'monthly'}`}>
-                <h4>
-                    {/* {`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`} */}
-                    {`${period.toUpperCase()}LY SPENDING`}
-                </h4>
-                {period === 'year' && yearly_start && yearly_end &&
-                    <h4>
-                        {yearly_start.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
-                        <br />
-                        &nbsp;-&nbsp;
-                        {yearly_end.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
-                    </h4>}
-            </div>
-            <div>
                 <div>
-                    <AnimatedDollarCents value={totalSpent ? totalSpent : 0} />
+                    <h4>
+                        {/* {`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`} */}
+                        {`${period.toUpperCase()}LY SPENDING`}
+                    </h4>
+                    {period === 'year' && yearly_start && yearly_end &&
+                        <h4>
+                            {yearly_start.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
+                            <br />
+                            &nbsp;-&nbsp;
+                            {yearly_end.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
+                        </h4>}
                 </div>
+                <IconButton onClick={() => {
+                    navigate(
+                        `${location.pathname}/new-category/${location.search}`,
+                        { state: { period: period } }
+                    )
+                }}>
+                    <Plus size={'.8em'} />
+                </IconButton>
             </div>
+            <AnimatedDollarCents value={totalSpent ? totalSpent : 0} />
             <div>/</div>
             <div>
                 <DollarCents value={totalLimit ? totalLimit : '0.00'} withCents={false} />
@@ -378,53 +387,55 @@ const Footer = () => {
     const dispatch = useAppDispatch()
 
     return (
-        <div>
-            <PillOptionButton
-                isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('cat-sort') || '')}
-                onClick={() => {
-                    // desc -> asc -> default
-                    if (!['amount-desc', 'amount-asc'].includes(searchParams.get('cat-sort') || '')) {
-                        dispatch(sortCategoriesAmountDesc())
-                        searchParams.set('cat-sort', 'amount-desc')
-                        setSearchParams(searchParams)
-                    } else if (searchParams.get('cat-sort') === 'amount-desc') {
-                        dispatch(sortCategoriesAmountAsc())
-                        searchParams.set('cat-sort', 'amount-asc')
-                        setSearchParams(searchParams)
-                    } else {
-                        dispatch(sortCategoriesDefault())
-                        searchParams.delete('cat-sort')
-                        setSearchParams(searchParams)
-                    }
-                }}
-            >
-                <span>$</span>
-                <BackArrow
-                    stroke={'currentColor'}
-                    rotate={searchParams.get('cat-sort') === 'amount-asc' ? '90' : '-90'}
-                    size={'.75em'}
-                    strokeWidth={'16'}
-                />
-            </PillOptionButton>
-            <PillOptionButton
-                isSelected={searchParams.get('cat-sort') === 'alpha'}
-                onClick={() => {
-                    if (searchParams.get('cat-sort') === 'alpha') {
-                        dispatch(sortCategoriesDefault())
-                        searchParams.delete('cat-sort')
-                        setSearchParams(searchParams)
-                        return
-                    } else {
-                        dispatch(sortCategoriesAlpha())
-                        searchParams.set('cat-sort', 'alpha')
-                        setSearchParams(searchParams)
-                    }
-                }}
-            >
-                a-z
-            </PillOptionButton>
-        </div>
+        <>
 
+            <div>
+                <PillOptionButton
+                    isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('cat-sort') || '')}
+                    onClick={() => {
+                        // desc -> asc -> default
+                        if (!['amount-desc', 'amount-asc'].includes(searchParams.get('cat-sort') || '')) {
+                            dispatch(sortCategoriesAmountDesc())
+                            searchParams.set('cat-sort', 'amount-desc')
+                            setSearchParams(searchParams)
+                        } else if (searchParams.get('cat-sort') === 'amount-desc') {
+                            dispatch(sortCategoriesAmountAsc())
+                            searchParams.set('cat-sort', 'amount-asc')
+                            setSearchParams(searchParams)
+                        } else {
+                            dispatch(sortCategoriesDefault())
+                            searchParams.delete('cat-sort')
+                            setSearchParams(searchParams)
+                        }
+                    }}
+                >
+                    <span>$</span>
+                    <BackArrow
+                        stroke={'currentColor'}
+                        rotate={searchParams.get('cat-sort') === 'amount-asc' ? 90 : -90}
+                        size={'.75em'}
+                        strokeWidth={'16'}
+                    />
+                </PillOptionButton>
+                <PillOptionButton
+                    isSelected={searchParams.get('cat-sort') === 'alpha'}
+                    onClick={() => {
+                        if (searchParams.get('cat-sort') === 'alpha') {
+                            dispatch(sortCategoriesDefault())
+                            searchParams.delete('cat-sort')
+                            setSearchParams(searchParams)
+                            return
+                        } else {
+                            dispatch(sortCategoriesAlpha())
+                            searchParams.set('cat-sort', 'alpha')
+                            setSearchParams(searchParams)
+                        }
+                    }}
+                >
+                    a-z
+                </PillOptionButton>
+            </div>
+        </>
     )
 }
 
@@ -791,29 +802,18 @@ const CategoryDetail = ({ category }: { category: Category }) => {
 
 const SpendingCategories = () => {
     const [fetchCategories, { isLoading, isUninitialized }] = useLazyGetCategoriesQuery()
-    const [isTabView, setIsTabView] = useState(false)
     const [skeletonRowCount, setSkeletonRowCount] = useState(5)
     const ref = useRef<HTMLDivElement>(null)
     const { start, end } = useGetStartEndQueryParams()
     const loaded = useLoaded(1000)
     const categories = useAppSelector(selectCategories)
     const { detailedCategory, setDetailedCategory } = useCategoryDetailContext()
+    const { screenSize } = useScreenContext()
 
     useEffect(() => {
         if (start && end)
             fetchCategories({ start: start, end: end }, true)
     }, [start && end])
-
-    useEffect(() => {
-        const handleResize = () => {
-            setIsTabView(window.innerWidth < 600)
-        }
-        handleResize()
-        window.addEventListener('resize', handleResize)
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
-    }, [])
 
     useEffect(() => {
         if (ref.current) {
@@ -835,7 +835,7 @@ const SpendingCategories = () => {
     return (
         <div
             id="spending-categories-window"
-            className="window"
+            className={`window ${screenSize === 'small' ? 'tabbed' : ''}`}
             ref={ref}
         >
             <AnimatePresence mode='wait'>
@@ -844,11 +844,16 @@ const SpendingCategories = () => {
                     <FadeInOutDiv id="all-categories-table" immediate={!loaded} key="all-categories">
                         {(isLoading || isUninitialized)
                             ? <SkeletonRows numberOfRows={skeletonRowCount} />
-                            : isTabView ? <TabView categories={categories} /> : <ColumnView categories={categories} />
+                            : screenSize === 'small'
+                                ? <TabView categories={categories} />
+                                : <ColumnView categories={categories} />
                         }
                     </FadeInOutDiv>
                     :
-                    <FadeInOutDiv key="category-detail" className="category-detail--container">
+                    <FadeInOutDiv
+                        key="category-detail"
+                        className={`category-detail--container ${screenSize === 'small' ? 'tabbed' : ''}`}
+                    >
                         <CategoryDetail category={detailedCategory} />
                     </FadeInOutDiv>
                 }

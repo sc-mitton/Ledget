@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 
 import './styles/MonthPicker.scss'
 import { useGetMeQuery } from '@features/userSlice'
-import { SmallArrowButton, IconButton, DropDownDiv } from '@ledget/ui'
+import { SmallArrowButton, IconButton, DropDownDiv, CircleIconButton, useAccessEsc } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 
 export const monthMappings: [string | number, string | number][] = [
@@ -32,6 +32,7 @@ const MonthPicker = () => {
     const [showPicker, setShowPicker] = useState(false)
     const [pickerYear, setPickerYear] = useState(new Date().getFullYear())
     const monthPickerRef = useRef<HTMLDivElement>(null)
+    const buttonRef = useRef<HTMLDivElement>(null)
 
     // Set date options based on when the user was created
     useEffect(() => {
@@ -61,16 +62,6 @@ const MonthPicker = () => {
         }
     }, [userIsFetched, user])
 
-    // Event listeners for closing the month picker
-    useEffect(() => {
-        window.addEventListener("mousedown", handleClickOutside)
-        window.addEventListener("keydown", handleKeyDown)
-        return () => {
-            window.removeEventListener("mousedown", handleClickOutside)
-            window.removeEventListener("keydown", handleKeyDown)
-        }
-    }, [])
-
     // Focus the month picker when it is opened
     useEffect(() => {
         if (showPicker && monthPickerRef.current) {
@@ -78,11 +69,11 @@ const MonthPicker = () => {
         }
     }, [showPicker])
 
-    const handleClickOutside = (event: MouseEvent) => {
-        if (monthPickerRef.current && !monthPickerRef.current.contains(event.target as Node)) {
-            setShowPicker(false)
-        }
-    }
+    useAccessEsc({
+        visible: showPicker,
+        setVisible: setShowPicker,
+        refs: [monthPickerRef, buttonRef]
+    })
 
     const handleArrowNavigation = (event: KeyboardEvent) => {
         // Handle arrow navigation in the month picker
@@ -119,12 +110,6 @@ const MonthPicker = () => {
         }
     }, [showPicker])
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-        if (monthPickerRef.current && ['Escape', 'Esc', 'Tab'].includes(event.key)) {
-            setShowPicker(false)
-        }
-    }
-
     const renderMonths = () => {
         return dateOptions[pickerYear]?.map((month) => {
             const isSelected = (searchParams.get('month') === `${month}` && searchParams.get('year') == `${pickerYear}`)
@@ -157,17 +142,44 @@ const MonthPicker = () => {
             setPickerYear(pickerYear - 1)
     }
 
+    const handleArrowClick = (direction: 1 | -1) => {
+
+        const currentYear = `${new Date().getFullYear()}`
+        const currentMonth = `${new Date().getMonth()}`
+
+        const newMonth = direction === 1
+            ? (parseInt(searchParams.get('month') || currentMonth) % 12) + 1
+            : (parseInt(searchParams.get('month') || currentMonth) % 12) - 1 || 12
+
+        const newYear = newMonth === 1 && direction === 1
+            ? parseInt(searchParams.get('year') || currentYear) + 1
+            : newMonth === 12 && direction === -1
+                ? parseInt(searchParams.get('year') || currentYear) - 1
+                : parseInt(searchParams.get('year') || currentYear)
+
+        console.log(newMonth, newYear)
+        if (dateOptions[newYear]?.includes(newMonth)) {
+            searchParams.set('month', `${newMonth}`)
+            searchParams.set('year', `${newYear}`)
+            setSearchParams(searchParams)
+        }
+    }
+
     return (
         <div id="month-picker" ref={monthPickerRef}>
-            <h1>{monthMappings[parseInt(searchParams.get('month') || '1') - 1][1]} {searchParams.get('year')}</h1>
-            <div id="header-arrow-container">
+            <div ref={buttonRef}>
                 <IconButton
-                    id='header-arrow'
                     onClick={() => { setShowPicker(!showPicker) }}
                     aria-label="Open month picker"
                 >
-                    <ArrowIcon size={'1em'} stroke={'currentColor'} />
+                    <span>{monthMappings[parseInt(searchParams.get('month') || '1') - 1][1]} {searchParams.get('year')}</span>
                 </IconButton>
+                <CircleIconButton onClick={() => handleArrowClick(-1)}>
+                    <ArrowIcon size={'.8em'} rotation={90} stroke={'currentColor'} />
+                </CircleIconButton>
+                <CircleIconButton onClick={() => handleArrowClick(1)}>
+                    <ArrowIcon size={'.8em'} rotation={-90} stroke={'currentColor'} />
+                </CircleIconButton>
             </div>
             <DropDownDiv
                 placement="left"

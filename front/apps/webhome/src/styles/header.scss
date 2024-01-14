@@ -1,8 +1,9 @@
 header {
     background-color: var(--header-background);
     box-shadow: var(--header-box-shadow);
-    z-index: 1;
-    position: relative;
+    z-index: 2;
+    position: sticky;
+    top: 0;
 
     // Same as dashboard
     width: 100%;

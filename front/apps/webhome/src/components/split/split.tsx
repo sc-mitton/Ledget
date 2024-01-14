@@ -11,7 +11,7 @@ import { useGetCategoriesQuery } from '@features/categorySlice';
 import { InputButton } from '@ledget/ui'
 import { LimitAmountInput } from '@components/inputs'
 import { FullSelectCategoryBill } from '@components/dropdowns'
-import { FormErrorTip, AnimatedDollarCents, DeleteButton, PlusPill } from '@ledget/ui'
+import { FormErrorTip, AnimatedDollarCents, DeleteButton, PlusButton } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import './split.scss';
 
@@ -137,7 +137,7 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
                     onClick={() => remove(index)}
                   />}
                 {index === fields.length - 1 &&
-                  <PlusPill
+                  <PlusButton
                     styled='input'
                     type='button'
                     onClick={() => append({ category: '', amount: '0' })}

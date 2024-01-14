@@ -219,12 +219,12 @@
 
 .btn-gr2 {
     box-shadow: var(--btn-drop-shadow);
-    background-color: var(--icon-light-light-gray);
+    background-color: var(--icon-light-gray);
     transition: all .3s ease;
     color: var(--btn-mid-gray);
 
     &:hover {
-        background-color: var(--icon-light-gray);
+        background-color: var(--icon-hover-light-gray);
         transition: all .3s ease;
         color: var(--btn-mid-gray-hover);
         color: var(--m-text);
@@ -237,7 +237,6 @@
     &.selected {
         border: 1px solid var(--main-sat);
         transition: none;
-        color: #5887dd;
     }
 }
 
@@ -723,8 +722,8 @@ button.disabled-hover:hover svg {
 /* Circle Icon Button */
 .circle-icon-btn {
     position: relative;
-    width: 1.5em;
-    height: 1.5em;
+    width: 1.375em;
+    height: 1.375em;
     border-radius: 50%;
     color: var(--btn-mid-gray);
 
@@ -738,7 +737,7 @@ button.disabled-hover:hover svg {
         position: absolute;
         inset: 0;
         background-color: var(--icon-light-gray);
-        z-index: -1;
+        z-index: 0;
     }
 
     &:hover {

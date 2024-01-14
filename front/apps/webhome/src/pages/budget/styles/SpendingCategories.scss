@@ -6,7 +6,7 @@ $window-padding: $bill-flex-grid-gap;
 
 $row-padding: .375em;
 $label-padding: calc($row-padding/2) .75em;
-$column-gap: 1.5em;
+$column-gap: 2em;
 $background: var(--window);
 
 
@@ -36,33 +36,27 @@ $background: var(--window);
 
     .column {
         max-height: 100%;
+        overflow-y: auto;
+        width: calc(100% + .75em);
+        box-sizing: border-box;
+        padding: 0 .125em;
+        padding-bottom: .5em;
+        max-height: 100%;
+        display: flex;
+        flex-direction: column;
+        @include table-header-mask-image;
 
-        &>div {
-            overflow-y: auto;
-            width: calc(100% + .75em);
-            box-sizing: border-box;
-            padding: 0 .125em;
-            padding-bottom: .5em;
-            display: grid;
-            max-height: 100%;
-            @include table-header-mask-image;
-            row-gap: $item-row-gap;
-            position: relative;
+        gap: $item-row-gap;
+        position: relative;
 
-            &:not(:first-child) button {
-                grid-column: 1 / span 5;
-                padding: calc($row-padding + .125em) 0;
-            }
+        &:first-child button {
+            // padding: .125em 0;
+            grid-column: 1 / span 5;
+        }
 
-            &:first-child button {
-                // padding: .125em 0;
-                grid-column: 1 / span 5;
-            }
-
-            &::after {
-                content: "";
-                height: .01em;
-            }
+        &::after {
+            content: "";
+            height: .01em;
         }
     }
 
@@ -71,13 +65,6 @@ $background: var(--window);
         transition: all .2s ease-in-out;
 
         &:first-child>div {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background-color: var(--window);
-            box-shadow: 0 1.5px 1.5px 1px var(--window);
-            padding-bottom: .125em;
-
             &.tab-nav-cell {
                 grid-column: 1 / span 5;
                 display: flex;
@@ -98,6 +85,7 @@ $background: var(--window);
         &.header {
             cursor: default;
             display: flex;
+            align-items: center;
             font-weight: var(--fw-regular);
             z-index: 1;
             @include header-styles;
@@ -134,28 +122,25 @@ $background: var(--window);
                 white-space: nowrap;
 
                 h4:first-child {
-                    opacity: 1;
-                    transition: opacity .2s ease-in-out;
+                    visibility: visible;
+                    width: auto;
                 }
 
                 h4:not(:first-child) {
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    opacity: 0;
-                    transition: opacity .2s ease-in-out;
+                    visibility: collapse;
+                    width: 0;
                 }
             }
 
             &>div.yearly:hover {
                 h4:first-child {
-                    opacity: 0;
-                    transition: opacity .2s ease-in-out;
+                    visibility: collapse;
+                    width: 0;
                 }
 
                 h4:not(:first-child) {
-                    opacity: 1;
-                    transition: opacity .2s ease-in-out;
+                    visibility: visible;
+                    width: auto;
                 }
             }
         }
@@ -163,13 +148,16 @@ $background: var(--window);
         // Name columns
         &>div:nth-child(5n+1):not(.spanned) {
             flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: .25em;
         }
 
         // Amount spent columns
         &>div:nth-child(5n+2):not(.spanned) {
             display: flex;
-            align-items: baseline;
             text-align: right;
+            align-items: baseline;
             justify-content: flex-end;
             padding-right: .25em;
         }
@@ -258,6 +246,20 @@ $background: var(--window);
     h2 {
         margin-left: .25em;
     }
+
+    &.tabbed {
+        grid-template-columns: 1fr;
+
+        &>div {
+            grid-template-columns: 1fr;
+        }
+
+        .row.header>div:first-child {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: .25em;
+        }
+    }
 }
 
 // Div surrounding the bottom buttons
@@ -294,6 +296,15 @@ $background: var(--window);
     inset: 0;
     padding: inherit;
 
+    &.tabbed>div:last-of-type {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+
+        &>div {
+            max-width: 100%;
+        }
+    }
+
     #not-enough-data-message {
         position: absolute;
         top: 50%;
@@ -309,7 +320,7 @@ $background: var(--window);
         @include outermost-div-placement-styling;
         padding: 0 .25em;
         margin-top: 1.75em;
-        gap: 1.5em;
+        gap: 2em;
         color: var(--main-hlight);
 
         &>div {
@@ -341,7 +352,7 @@ $background: var(--window);
         &>div:last-child {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            // justify-content: center;
         }
     }
 
@@ -487,31 +498,5 @@ $background: var(--window);
         &.header>div h4 br {
             display: none;
         }
-    }
-}
-
-@media screen and (max-width: 600px) {
-
-    .category-detail--container>div:last-of-type {
-        grid-template-columns: 1fr;
-        grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
-
-        &>div {
-            max-width: 100%;
-        }
-    }
-
-    #spending-categories-window {
-        grid-template-columns: 1fr;
-    }
-
-    #spending-categories-window>div {
-        grid-template-columns: 1fr;
-    }
-
-    .row.header>div:first-child {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: .25em;
     }
 }

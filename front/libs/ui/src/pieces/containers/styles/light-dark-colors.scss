@@ -68,14 +68,17 @@
         --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 20%));
         --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 25%));
 
-        --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), var(--main-color-l));
-        --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), var(--main-color-l));
+        --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 15%), var(--main-color-l));
+        --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 25%), var(--main-color-l));
 
         --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 5%));
         --secondary-hlight: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 20%));
         --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) - 27%));
         --secondary-hlight-hover-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) - 30%));
+
+        --secondary-sat: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 15%), var(--secondary-color-l));
+        --secondary-sat-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 25%), var(--secondary-color-l));
 
         --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 40%));
         --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 45%));
@@ -123,6 +126,7 @@
         --m-invert-text: hsl(0, 0%, 20%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), black 20%);
         --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 40%);
+        --m-text-quaternary: color-mix(in srgb, var(--m-text), black 50%);
         --m-text-quinary: color-mix(in srgb, var(--m-text), black 60%);
 
         --input-placeholder: hsl(0, 0%, 66%);
@@ -260,6 +264,7 @@
         --m-invert-text: hsl(0, 0%, 97%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), white 20%);
         --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 40%);
+        --m-text-quaternary: color-mix(in srgb, var(--m-text), white 50%);
         --m-text-quinary: color-mix(in srgb, var(--m-text), white 60%);
 
         --input-placeholder: hsl(0, 0%, 38%);

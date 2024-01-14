@@ -105,9 +105,8 @@ const Header = () => {
             }
         })
 
-        if (ref.current) {
+        if (ref.current)
             observer.observe(ref.current)
-        }
 
         return () => {
             observer.disconnect()

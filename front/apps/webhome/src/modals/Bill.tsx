@@ -146,7 +146,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                         size={'.9em'}
                         style={{
                             marginLeft: '.125em',
-                            ...(!bill.is_paid && { opacity: .2 })
+                            ...(!bill.is_paid && { opacity: .3 })
                         }}
                     />
                     <div>

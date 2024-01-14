@@ -169,11 +169,11 @@ export const CopyButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText
     </button>
   )
 
-export const PlusPill: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled?: 'chcl' | 'grn' | 'gr' | 'input' }>
+export const PlusButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled?: 'chcl' | 'grn' | 'gr' | 'input' }>
   = ({ styled = 'chcl', ...rest }) => (
-    <button className={`btn-circle  btn-${styled}`} {...rest}>
-      <Plus stroke={'currentColor'} />
-    </button>
+    <CircleIconButton>
+      <Plus stroke={'currentColor'} size={'.8em'} />
+    </CircleIconButton>
   )
 
 export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> &

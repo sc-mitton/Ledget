@@ -3,15 +3,17 @@
     flex-direction: row;
     position: relative;
     margin-bottom: .25em;
-}
 
-#header-arrow {
-    margin-left: .25rem;
-}
+    &>div:first-child {
+        display: flex;
+        align-items: center;
+        gap: .25em;
 
-#header-arrow-container {
-    display: flex;
-    align-items: center;
+        &>button>span {
+            font-size: 1rem;
+            line-height: 1em;
+        }
+    }
 }
 
 #picker-container {
