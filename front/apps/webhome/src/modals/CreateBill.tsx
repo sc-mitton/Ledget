@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, useWatch, Controller } from "react-hook-form"
 import { z } from 'zod'
+import dayjs from 'dayjs'
 
 import './styles/Forms.scss'
 import SubmitForm from '@components/pieces/SubmitForm'
@@ -158,6 +159,7 @@ const Form = withModal((props) => {
                         control={control}
                         render={(props) => (
                             <DatePicker
+                                disabled={[undefined, dayjs()]}
                                 placeholder="Expires"
                                 format="MM/DD/YYYY"
                                 aria-label='Expiration date'

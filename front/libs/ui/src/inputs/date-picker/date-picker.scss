@@ -57,6 +57,13 @@
         top: 50%;
         transform: translateY(calc(-50% - .0625em));
         min-height: 50%;
+        opacity: 1;
+        transition: opacity .2s ease-in-out;
+    }
+
+    &:hover>svg:nth-last-child(2) {
+        opacity: 0;
+        transition: opacity .2s ease-in-out;
     }
 
     &>button {
@@ -77,9 +84,9 @@
         transition: opacity .2s ease-in-out;
     }
 
-    &:hover>svg:last-of-type {
+    &:hover.clear-input-button>svg {
         z-index: 1;
-        opacity: 0;
+        opacity: 1;
     }
 }
 
@@ -237,7 +244,8 @@
             right: .2em;
         }
 
-        &.overflow {
+        &.overflow,
+        &.overflow * {
             color: var(--m-text-quinary);
         }
 

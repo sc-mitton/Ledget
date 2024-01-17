@@ -31,20 +31,20 @@ type DatePickerProps<T extends TPicker> =
     placeholder?: [string, string]
     pickerType: T
     defaultValue?: [Dayjs, Dayjs]
-    bounds?: [[Dayjs, Dayjs], [Dayjs, Dayjs]]
+    disabled?: [[Dayjs, Dayjs] | undefined, [Dayjs, Dayjs] | undefined]
     onChange?: (value?: [Dayjs, Dayjs]) => void
   } & BaseDatePickerProps
   : {
     placeholder?: string
     pickerType: T
     defaultValue?: Dayjs
-    bounds?: [Dayjs, Dayjs]
+    disabled?: [Dayjs | undefined, Dayjs | undefined]
     onChange?: (value?: Dayjs) => void
   } & BaseDatePickerProps
 
 type UnenrichedDatePickerProps<T extends TPicker> = Partial<Pick<DatePickerProps<T>, 'pickerType'>> & Omit<DatePickerProps<T>, 'pickerType'>
 
-type DatePickerContextProps<T extends TPicker> = Pick<DatePickerProps<T>, 'defaultValue' | 'bounds' | 'pickerType'>
+type DatePickerContextProps<T extends TPicker> = Pick<DatePickerProps<T>, 'defaultValue' | 'disabled' | 'pickerType'>
 
 type TDatePickerContext<TP extends TPicker> =
   (TP extends 'range'
@@ -53,6 +53,7 @@ type TDatePickerContext<TP extends TPicker> =
       selectedValue?: TSelectedValue<TP>
       setSelectedValue: React.Dispatch<TSelectedValue<TP> | undefined>
       inputTouchCount: [number, number]
+      disabled?: [[Dayjs, Dayjs] | undefined, [Dayjs, Dayjs] | undefined]
       setInputTouchCount: React.Dispatch<React.SetStateAction<[number, number] | undefined>>
     }
     : {
@@ -60,6 +61,7 @@ type TDatePickerContext<TP extends TPicker> =
       selectedValue?: TSelectedValue<TP>
       setSelectedValue: React.Dispatch<TSelectedValue<TP> | undefined>
       inputTouchCount: number
+      disabled?: [Dayjs, Dayjs]
       setInputTouchCount: React.Dispatch<React.SetStateAction<number | undefined>>
     }) & {
       focusedInputIndex?: 0 | 1
@@ -94,7 +96,7 @@ type YearsMonthsProps = {
 // Context
 const datePickerContext = createContext<TDatePickerContext<TPicker> | undefined>(undefined)
 
-const DatePickerContextProvider = <TP extends TPicker>({ children, pickerType, bounds, defaultValue }:
+const DatePickerContextProvider = <TP extends TPicker>({ children, pickerType, disabled, defaultValue }:
   DatePickerContextProps<TP> & { children: React.ReactNode }) => {
 
   const [selectedValue, setSelectedValue] = useState<typeof defaultValue>(defaultValue)
@@ -113,7 +115,7 @@ const DatePickerContextProvider = <TP extends TPicker>({ children, pickerType, b
         focusedInputIndex,
         setFocusedInputIndex,
         pickerType,
-        bounds,
+        disabled,
         inputTouchCount,
         setInputTouchCount
       } as any}
@@ -222,7 +224,7 @@ const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
 
 const Months = ({ windowCenter, onSelect }: YearsMonthsProps) => {
   const [activeMonth, setActiveMonth] = useState<Dayjs>()
-  const { selectedValue, setSelectedValue, pickerType, focusedInputIndex, inputTouchCount, bounds } = useDatePickerContext()
+  const { selectedValue, setSelectedValue, pickerType, focusedInputIndex, inputTouchCount, disabled } = useDatePickerContext()
 
   return (
     <div
@@ -265,7 +267,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
     selectedValue,
     setSelectedValue,
     pickerType,
-    bounds,
+    disabled,
     inputTouchCount,
     focusedInputIndex
   } = useDatePickerContext()
@@ -279,12 +281,42 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
   }
 
   const checkedDisabled = useCallback((day: Dayjs) => {
-    const disabled = pickerType === 'range' && (inputTouchCount[focusedInputIndex || 0] > 1 || selectedValue?.[focusedInputIndex || 0] === undefined)
-      ? focusedInputIndex === 0
-        ? selectedValue?.[1] ? day.isAfter(selectedValue[1], 'day') : false
-        : selectedValue?.[0] ? day.isBefore(selectedValue[0], 'day') : false
-      : false
-    return disabled
+
+    if (pickerType === 'range') {
+      // If a disabled prop was passed to the date picker, check the day to see if it supposed to
+      // be disabled. An undefined value a bound means unbounded, e.g. [undefined, Dayjs] means
+      // all days before the second bound are disabled
+      if (disabled) {
+        if (disabled[0]?.[0] && disabled[0]?.[1]) {
+          return day.isAfter(disabled[0][0], 'day') && day.isBefore(disabled[0][1], 'day')
+        } else if (!disabled[0]?.[0]) {
+          return day.isBefore(disabled[0]?.[1], 'day')
+        } else if (!disabled[0]?.[1]) {
+          return day.isAfter(disabled[0]?.[0], 'day')
+        }
+      }
+
+      // For a range picker, if the start is in focus, and the top bound is set,
+      // dates after the top end are disabled. This is only the case when the input
+      // was autofocused after selecting the start or end, or when the input has been
+      // focused enough times
+      if (inputTouchCount[focusedInputIndex || 0] > 1 || selectedValue?.[focusedInputIndex || 0] === undefined) {
+        return focusedInputIndex === 0
+          ? selectedValue?.[1] ? day.isAfter(selectedValue[1], 'day') : false
+          : selectedValue?.[0] ? day.isBefore(selectedValue[0], 'day') : false
+      }
+    } else {
+      if (disabled) {
+        if (!disabled[0]) {
+          return day.isBefore(disabled[1], 'day')
+        } else if (!disabled[1]) {
+          return day.isAfter(disabled[0], 'day')
+        } else {
+          return day.isAfter(disabled[0], 'day') && day.isBefore(disabled[1], 'day')
+        }
+      }
+    }
+
   }, [selectedValue, focusedInputIndex, pickerType, inputTouchCount])
 
   const unsetActiveDay = () => { setActiveDay(undefined) }
@@ -301,19 +333,21 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
       {/* Partial Row */}
       {Array.from({ length: firstDay.day() }).map((_, i) => {
         const day = firstDay.date(0).date(firstDay.date(0).daysInMonth() - (firstDay.day() - i - 1))
-        const disabled = checkedDisabled(day)
+        const isDisabled = checkedDisabled(day)
         return (
           <PickerCell
             onMouseEnter={unsetActiveDay}
             onClick={() => !disabled && handleClick(day, true)}
-            isDisabled={disabled}
+            isDisabled={isDisabled}
             isOverflow={true}
           >
-            {day.date()}
+            <Tooltip msg={day.format('YYYY-MM-DD')}>
+              {day.date()}
+            </Tooltip>
           </PickerCell>
         )
       })}
-      {/* Days */}
+      {/* Rows */}
       {Array.from({ length: firstDay.daysInMonth() }).map((_, i) => {
         const day = dayjs().month(month).year(year).date(i + 1)
         const isActive = activeDay
@@ -335,7 +369,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
 
         return (
           <PickerCell
-            onClick={() => handleClick(day, isSelected || (!isActive && !isActiveTerminusEnd && !isActiveTerminusStart))}
+            onClick={() => !disabled && handleClick(day, isSelected || (!isActive && !isActiveTerminusEnd && !isActiveTerminusStart))}
             onMouseEnter={() => selectedValue && setActiveDay(day)}
             isDisabled={isDisabled}
             isActive={isActive}
@@ -350,23 +384,23 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
               ? selectedValue?.[1] && day.isSame(selectedValue[1], 'day')
               : selectedValue && day.isSame(selectedValue, 'day')}
           >
-            {day.date()}
+            <Tooltip msg={day.format('YYYY-MM-DD')}>{day.date()}</Tooltip>
           </PickerCell>
         )
       })}
       {/* Partial Row */}
       {Array.from({ length: 7 - firstDay.add(1, 'month').date(1).day() }).map((_, i) => {
         const day = dayjs().month(month).year(year).add(1, 'month').date(i + 1)
-        const disabled = checkedDisabled(day)
+        const isDisabled = checkedDisabled(day)
 
         return (
           <PickerCell
             onMouseEnter={unsetActiveDay}
             onClick={() => !disabled && handleClick(day, true)}
-            isDisabled={disabled}
+            isDisabled={isDisabled}
             isOverflow={true}
           >
-            {day.date()}
+            <Tooltip msg={day.format('YYYY-MM-DD')}>{day.date()}</Tooltip>
           </PickerCell>)
       })}
       {/* Sixth Row */}
@@ -376,16 +410,16 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
           const day = dayjs().month(month).year(year)
             .add(1, 'month')
             .add(7 - firstDay.add(1, 'month').date(1).day(), 'day').date(i + 1)
-          const disabled = checkedDisabled(day)
+          const isDisabled = checkedDisabled(day)
 
           return (
             <PickerCell
               onMouseEnter={unsetActiveDay}
               onClick={() => !disabled && handleClick(day, true)}
-              isDisabled={disabled}
+              isDisabled={isDisabled}
               isOverflow={true}
             >
-              {day.date()}
+              <Tooltip msg={day.format('YYYY-MM-DD')}>{day.date()}</Tooltip>
             </PickerCell>)
         })}
     </div>
@@ -682,12 +716,14 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
               onBlur={() => { showPicker && setInputTouchCount([inputTouchCount[0], inputTouchCount[1] + 1]) }}
               name={`${props.name}[1]`}
               value={selectedValue?.[1]?.format(props.format)}
-              placeholder={Array.isArray(props.placeholder) ? props.placeholder[0] : props.placeholder}
+              placeholder={Array.isArray(props.placeholder) ? props.placeholder[1] : props.placeholder}
             />
           </>
         }
+        <CalendarIcon fill={'currentColor'} size={'1.125em'} />
         {selectedValue &&
           <CircleIconButton
+            className="clear-input-button"
             type='button'
             darker={true}
             size={'1.25em'}
@@ -695,7 +731,6 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
           >
             <CloseIcon stroke={'currentColor'} size={'.6em'} />
           </CircleIconButton>}
-        <CalendarIcon fill={'currentColor'} size={'1.125em'} />
       </TextInputWrapper>
       <DropDownDiv
         ref={dropdownRef}
@@ -718,7 +753,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
 
 export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<PT>) {
   const {
-    bounds,
+    disabled,
     pickerType = 'date',
     defaultValue,
   } = props
@@ -727,7 +762,7 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
 
   return (
     <DatePickerContextProvider
-      bounds={bounds}
+      disabled={disabled}
       pickerType={pickerType}
       defaultValue={defaultValue}
     >

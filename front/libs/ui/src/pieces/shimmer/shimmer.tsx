@@ -32,7 +32,7 @@ export const Shimmer = (props: ShimmerProps) => {
           >
             <div
               className={`shimmer`}
-              style={{ '--shimmer-lightness': `${(isDark || darkMode) ? 100 - lightness : lightness}%` } as React.CSSProperties}
+              style={{ '--shimmer-lightness': `${(isDark || darkMode) ? 99 - lightness : lightness}%` } as React.CSSProperties}
             />
           </animated.div>
       )}
@@ -99,7 +99,7 @@ export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'>) => {
           height: '2.5ch',
           margin: '2px 0',
           borderRadius: 'var(--border-radius1)',
-          backgroundColor: 'var(--window-background-color)',
+          backgroundColor: 'var(--inner-window)',
           position: 'relative',
           ...style,
         }}
