@@ -1,7 +1,6 @@
 
 import { Theme } from "@nivo/core"
 import { LineSvgProps } from '@nivo/line';
-import { ThemeConfig } from 'antd';
 import { useSchemeVar } from '../utils/hooks/use-scheme-var/use-scheme-var'
 
 // Define the type for your base props
@@ -75,18 +74,6 @@ export const useNivoResponsiveLineTheme = (): Theme => {
             },
         },
     })
-}
-
-export const ledgetAntTheme: ThemeConfig = {
-    token: {
-        colorPrimary: '#385fa8',
-        boxShadow: 'var(--antd-drop-shadow)',
-        boxShadowTertiary: 'var(--input-focus-drop-shadow)',
-        borderRadius: 8,
-        colorBgContainer: 'var(--input-background)',
-        colorTextPlaceholder: 'var(--input-placeholder2)',
-        colorBorder: 'transparent',
-    },
 }
 
 export const useStripeCardTheme = ({ focus, isDark }: { focus: boolean, isDark?: boolean }) => ({

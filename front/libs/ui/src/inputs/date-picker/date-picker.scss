@@ -1,0 +1,233 @@
+.ledget-datepicker--container {
+    position: relative;
+}
+
+@mixin transition-background($value) {
+    background-color: $value;
+    transition: background-color .2s ease-in-out;
+}
+
+.ledget-datepicker {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+    position: relative;
+    color: var(--input-placeholder2);
+
+    &.filled {
+        color: var(--m-text);
+    }
+
+    &.range::after {
+        content: '';
+        position: absolute;
+        width: calc(50% - 3em);
+        height: 1.5px;
+        left: 0;
+        bottom: 0;
+        background-color: transparent;
+        border-radius: 2px;
+        transition: left .2s linear, height .2s ease-in-out, background-color .2s ease-in-out, ;
+    }
+
+    &.range.focused-0::after {
+        background-color: var(--main-sat-darker);
+        left: 1em;
+        transition: left .2s linear;
+    }
+
+    &.range.focused-1::after {
+        background-color: var(--main-sat);
+        left: calc(50% + .75em);
+        transition: left .2s linear;
+    }
+
+    // Arrow Icon
+    &>svg:first-of-type {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    // Calendar Icon
+    &>svg:nth-of-type(2),
+    &>button {
+        position: absolute;
+        right: .75em;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &>button {
+        z-index: 2;
+        opacity: 0;
+        transition: opacity .2s ease-in-out;
+    }
+
+    &:hover>button {
+        opacity: 1;
+        transition: opacity .2s ease-in-out;
+    }
+
+    &>svg:nth-of-type(2) {
+        z-index: 1;
+    }
+}
+
+.ledget-datepicker--calendar {
+    display: flex;
+    flex-direction: column;
+    gap: .75em;
+    padding: .5em;
+
+    &>div:first-child {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: .625em;
+        border-bottom: 1.5px solid var(--border-color);
+
+        &>div:not(:first-child):not(:last-child) {
+            flex-grow: 1;
+
+            button:hover {
+                color: var(--main-sat);
+            }
+        }
+
+        &>div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5em;
+        }
+    }
+
+    &>div:last-child {
+        display: flex;
+        gap: 2em;
+    }
+
+    .day-calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+
+        &>div:nth-child(-n+7) {
+            background-color: none;
+            cursor: default
+        }
+    }
+
+    .month-calendar,
+    .year-calendar {
+        display: grid;
+        grid-column: 1 / span 2;
+        grid-template-columns: 1fr 1fr 1fr;
+        row-gap: .75em;
+    }
+
+    // Cells
+    .cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: .625em .75em;
+        width: 100%;
+        box-sizing: border-box;
+        cursor: default;
+
+        &.extra-padded {
+            padding: .75em 1.75em;
+        }
+
+        &:not(.disabled) {
+            cursor: pointer;
+        }
+
+        &::after {
+            position: absolute;
+            content: '';
+            top: .375em;
+            bottom: .375em;
+            left: 0;
+            right: 0;
+            z-index: -1;
+            background-color: transparent;
+        }
+
+        &:hover:not(.active):not(.disabled):not(.active-terminus-start):not(.active-terminus-end):not(.terminus-start):not(.terminus-end)::after {
+            @include transition-background(var(--icon-light-gray));
+            border-radius: var(--border-radius1);
+            left: .25em;
+            right: .25em;
+        }
+
+        &.active:not(.terminus-start):not(.terminus-end):not(.disabled):not(.today):not(.selected)::after {
+            border-top: 1px dashed var(--main-sat-darker);
+            border-bottom: 1px dashed var(--main-sat-darker);
+        }
+
+        &.active-terminus-end:not(.terminus-end):not(.terminus-start):not(.disabled):not(.today):not(.selected)::after {
+            border: 1px dashed var(--main-sat-darker);
+            border-left: none;
+            border-top-right-radius: var(--border-radius1);
+            border-bottom-right-radius: var(--border-radius1);
+        }
+
+        &.active-terminus-start:not(.terminus-end):not(.terminus-start):not(.disabled):not(.today):not(.selected)::after {
+            border: 1px dashed var(--main-sat-darker);
+            border-right: none;
+            border-top-left-radius: var(--border-radius1);
+            border-bottom-left-radius: var(--border-radius1);
+        }
+
+        &.today::before {
+            position: absolute;
+            top: .375em;
+            bottom: .375em;
+            left: .25em;
+            right: .25em;
+            content: '';
+            border: 1.5px solid var(--main-sat-darker);
+            border-radius: var(--border-radius2);
+        }
+
+        &.disabled::after {
+            @include transition-background(var(--icon-light-gray));
+        }
+
+        &.selected::after {
+            opacity: .2;
+            transition: opacity .2s ease-in-out .3s;
+        }
+
+        &.selected.active::after {
+            opacity: .4;
+            transition: opacity .2s ease-in-out;
+        }
+
+        &.terminus-start::after,
+        &.terminus-end:after,
+        &.selected::after {
+            @include transition-background(var(--main-sat-darker));
+        }
+
+        &.terminus-start::after {
+            border-top-left-radius: var(--border-radius1);
+            border-bottom-left-radius: var(--border-radius1);
+            left: .2em;
+        }
+
+        &.terminus-end::after {
+            border-top-right-radius: var(--border-radius1);
+            border-bottom-right-radius: var(--border-radius1);
+            right: .2em;
+        }
+
+        &.overflow {
+            color: var(--m-text-quinary);
+        }
+
+    }
+}

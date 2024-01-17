@@ -98,7 +98,6 @@ const Gutter = () => {
         styles: {
             backgroundColor: backgroundColor,
             borderRadius: '8px',
-            opacity: .7
         }
     })
 

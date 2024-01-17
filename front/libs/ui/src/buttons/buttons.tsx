@@ -42,6 +42,7 @@ export const SlimButton = ButtonWithClassName('btn-clr btn-2slim')
 export const NarrowButton = ButtonWithClassName('btn-clr btn-narrow')
 export const IconButton = ButtonWithClassName('btn-clr btn-icon')
 export const IconButton2 = ButtonWithClassName('btn-gr2 btn-icon')
+export const IconButton3 = ButtonWithClassName('btn-icon3')
 export const IconScaleButton = ButtonWithClassName('btn-scale2 btn-transparent btn-icon2')
 export const InputButton = ButtonWithClassName('btn-input btn-input-full')
 export const SlimInputButton = ButtonWithClassName('btn-input btn-less-full')
@@ -127,13 +128,15 @@ export const CloseButton =
   })
 
 export const CircleIconButton =
-  forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { size?: string }>((props, ref) => {
-    const { style, className, ...rest } = props
+  forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { size?: string, darker?: boolean }>((props, ref) => {
+    const { style, className, darker, size = '1.375em', ...rest } = props
     return (
       <button
         ref={ref}
-        className={`btn circle-icon-btn ${className ? className : ''}`}
-        style={{ borderRadius: '50%', ...style }}
+        className={`btn circle-icon-btn
+          ${darker ? 'darker' : ''}
+          ${className ? className : ''}`}
+        style={{ borderRadius: '50%', width: size, height: size, ...style }}
         {...rest}
       >
         {props.children}

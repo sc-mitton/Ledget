@@ -2,8 +2,8 @@ import { useNavigate, createSearchParams } from 'react-router-dom'
 
 import './styles/Mfa.css'
 import { useGetMeQuery } from '@features/userSlice'
-import { PlusButton, GrayButton, IconScaleButton, DeleteButton, Tooltip } from '@ledget/ui'
-import { QrIcon, SmsAuthIcon, ReplayIcon, ShowIcon } from '@ledget/media'
+import { CircleIconButton, GrayButton, IconScaleButton, DeleteButton, Tooltip } from '@ledget/ui'
+import { QrIcon, SmsAuthIcon, ReplayIcon, ShowIcon, Plus } from '@ledget/media'
 
 
 const SmsAuth = ({ user }) => {
@@ -38,9 +38,9 @@ const SmsAuth = ({ user }) => {
                         </span>
                     </div>
                     <div>
-                        <PlusButton
-                            onClick={() => navigate('/profile/security/otp-setup')}
-                        />
+                        <CircleIconButton onClick={() => navigate('/profile/security/otp-setup')}>
+                            <Plus size={'.7em'} />
+                        </CircleIconButton>
                     </div>
                 </>
             }
@@ -88,7 +88,9 @@ const AuthenticatorApp = ({ user }) => {
                         <QrIcon width={'1.25em'} height={'1.25em'} />
                         <span>Authenticator App</span>
                     </div>
-                    <PlusButton onClick={() => navigate('/profile/security/authenticator-setup')} />
+                    <CircleIconButton onClick={() => navigate('/profile/security/authenticator-setup')} >
+                        <Plus size={'.7em'} />
+                    </CircleIconButton>
                 </>
             }
         </div>

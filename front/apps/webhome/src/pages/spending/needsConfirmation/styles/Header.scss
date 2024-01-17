@@ -42,11 +42,11 @@
 
         button,
         span {
-            color: var(--m-text-secondary);
+            color: var(--m-dark6);
         }
 
         &+span {
-            color: var(--m-text-secondary);
+            color: var(--m-dark6);
         }
 
         &>span {
@@ -64,7 +64,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: var(--icon-hover-light-gray);
+            // background-color: var(--icon-hover-light-gray);
+            background-color: var(--main-sat-darker);
             border-radius: 50%;
         }
     }

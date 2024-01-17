@@ -80,7 +80,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string> | BakedSelect
           <div className="provence-options--container">
             <DropDownDiv
               placement="left"
-              visible={open}
+              visible={open || focused}
               style={{
                 minWidth: `${inputRef?.current?.offsetWidth}px`,
                 maxWidth: props.buttonMaxWidth ? `${inputRef?.current?.offsetWidth}px` : 'none',

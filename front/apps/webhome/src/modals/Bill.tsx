@@ -6,7 +6,7 @@ import { Menu, RadioGroup } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
-import { DatePicker } from "antd"
+
 import dayjs from 'dayjs'
 
 import './styles/Bill.scss'
@@ -378,13 +378,7 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                         control={control}
                         render={(props) => (
                             <>
-                                <DatePicker
-                                    placeholder="Expires"
-                                    format="MM/DD/YYYY"
-                                    aria-label='Expiration date'
-                                    onChange={(e) => { props.field.onChange(e?.toISOString()) }}
-                                    defaultValue={bill.expires ? dayjs(bill.expires) : undefined}
-                                />
+
                             </>
                         )}
                     />

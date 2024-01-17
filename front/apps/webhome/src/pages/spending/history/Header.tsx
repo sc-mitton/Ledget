@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useWatch, useForm } from 'react-hook-form'
 import { useSearchParams, useLocation } from 'react-router-dom'
-import { DatePicker } from "antd"
+
 import {
     useTransition,
     animated,
@@ -36,15 +36,14 @@ import {
     BakedComboBox,
     SecondaryButtonSlim,
     DeleteButton,
-    useColorScheme
+    useColorScheme,
+    DatePicker
 } from '@ledget/ui'
 import { useFilterFormContext } from '../context';
 import { useGetStartEndQueryParams } from '@hooks/utilHooks';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { useScreenContext } from '@context/index';
 
-
-const { RangePicker } = DatePicker
 
 const filterSchema = z.object({
     date_range: z.array(z.number()).optional(),
@@ -113,24 +112,17 @@ const FilterWindow = () => {
                     render={(props) => (
                         <>
                             <label htmlFor="date_range">Date</label>
-                            <RangePicker
-                                defaultValue={
-                                    filter?.date_range
-                                        ? [
-                                            dayjs.unix(filter.date_range[0]),
-                                            dayjs.unix(filter.date_range[1])
-                                        ]
-                                        : [dayjs.unix(start), dayjs.unix(end)]
-                                }
-                                format="MM/DD/YYYY"
-                                className='ledget-range-picker'
-                                aria-label='Date Range'
-                                {...props}
-                                onChange={(e) => {
-                                    console.log(e?.[0]?.toISOString())
+                            <DatePicker
+                                pickerType="range"
+                                placeholder={['Start', 'End']}
+                                defaultValue={filter?.date_range
+                                    ? [dayjs.unix(filter.date_range[0]),
+                                    dayjs.unix(filter.date_range[1])]
+                                    : [dayjs.unix(start), dayjs.unix(end)]}
+                                onChange={(v) => {
                                     props.field.onChange([
-                                        e?.[0]?.unix(),
-                                        e?.[1]?.unix()
+                                        v?.[0]?.unix(),
+                                        v?.[1]?.unix()
                                     ])
                                 }}
                             />

@@ -66,6 +66,8 @@ export { default as LedgetLogoIcon } from './brand/LogoIcon'
 export { default as LogoIcon2 } from './brand/LogoIcon2'
 export { default as TrashIcon } from './icons/Trash';
 export { default as Hamburger } from './icons/Hamburger';
+export { default as HalfArrow } from './icons/HalfArrow';
+export { default as DoubleArrow } from './icons/DoubleArrow';
 
 export { default as EmptyListImage } from './images/EmptyList';
 export { default as EmptyListDark } from './images/EmptyListDark';

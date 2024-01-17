@@ -39,7 +39,8 @@
         color: var(--input-placeholder);
     }
 
-    input:focus::placeholder {
+    input:focus::placeholder,
+    &.focused>input::placeholder {
         transition: color .2s ease;
         color: var(--input-placeholder-focus);
         opacity: 1;

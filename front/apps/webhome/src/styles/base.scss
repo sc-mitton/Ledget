@@ -53,7 +53,9 @@ label,
 button,
 select,
 option,
-span {
+span,
+tr,
+td {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-size: .875rem;
     font-weight: var(--fw-regular);
@@ -172,6 +174,16 @@ input {
 }
 
 input[type="radio"] {
+    display: none;
+}
+
+input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
 }
 

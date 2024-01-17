@@ -3,8 +3,6 @@ import * as ReactDOM from 'react-dom/client';
 
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { ConfigProvider, theme } from 'antd';
-import { ledgetAntTheme } from '@ledget/ui';
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -26,30 +24,15 @@ import store from '@features/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
-const AntProvider = ({ children }: { children: React.ReactNode }) => {
-    const { isDark } = useColorScheme()
-
-    return (
-        <ConfigProvider theme={{
-            algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
-            ...ledgetAntTheme
-        }}>
-            {children}
-        </ConfigProvider>
-    )
-}
-
 
 root.render(
     <Provider store={store}>
         <ColorSchemeProvider>
-            <AntProvider>
-                <BrowserRouter>
-                    <React.StrictMode>
-                        <App />
-                    </React.StrictMode>
-                </BrowserRouter>
-            </AntProvider>
+            <BrowserRouter>
+                <React.StrictMode>
+                    <App />
+                </React.StrictMode>
+            </BrowserRouter>
         </ColorSchemeProvider>
     </Provider>
 )

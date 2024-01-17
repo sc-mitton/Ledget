@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, useWatch, Controller } from "react-hook-form"
 import { z } from 'zod'
-import { DatePicker } from "antd"
 
 import './styles/Forms.scss'
 import SubmitForm from '@components/pieces/SubmitForm'
@@ -160,12 +159,7 @@ const Form = withModal((props) => {
                             control={control}
                             render={(props) => (
                                 <div className="ledget-antd-date-picker">
-                                    <DatePicker
-                                        placeholder="Expires"
-                                        format="MM/DD/YYYY"
-                                        aria-label='Expiration date'
-                                        onChange={(e) => { props.field.onChange(e?.toISOString()) }}
-                                    />
+
                                 </div>
                             )}
                         />

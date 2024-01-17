@@ -129,6 +129,16 @@
     border-radius: var(--border-radius2);
 }
 
+.btn-icon3 {
+    svg {
+        opacity: .5;
+    }
+
+    &:hover svg {
+        opacity: 1;
+    }
+}
+
 /* --------------------------------- Colors --------------------------------- */
 
 .btn-transparent {
@@ -722,10 +732,8 @@ button.disabled-hover:hover svg {
 /* Circle Icon Button */
 .circle-icon-btn {
     position: relative;
-    width: 1.375em;
-    height: 1.375em;
     border-radius: 50%;
-    color: var(--btn-mid-gray);
+    color: var(--input-placeholder);
 
     svg {
         position: relative;
@@ -738,6 +746,10 @@ button.disabled-hover:hover svg {
         inset: 0;
         background-color: var(--icon-light-gray);
         z-index: 0;
+    }
+
+    &.darker::after {
+        background-color: var(--icon-hover-light-gray);
     }
 
     &:hover {

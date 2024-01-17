@@ -17,15 +17,16 @@ import { useColorScheme } from '../../utils/hooks/use-color-scheme/use-color-sch
 
 export interface TextInputWrapperProps extends React.HTMLProps<HTMLDivElement> {
   slim?: boolean
+  focused?: boolean
 }
 
 export const TextInputWrapper = forwardRef<HTMLDivElement, TextInputWrapperProps>((props, ref) => {
 
-  const { className, children, slim, ...rest } = props
+  const { className, children, focused, slim, ...rest } = props
 
   return (
     <div
-      className={`input-container ${className || ''} ${slim ? 'slim' : ''}`}
+      className={`input-container ${className || ''} ${slim ? 'slim' : ''} ${focused ? 'focused' : ''}`}
       ref={ref}
       {...rest}
     >
