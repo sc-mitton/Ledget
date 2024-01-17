@@ -6,7 +6,8 @@ import './date-picker.scss'
 import { DropDownDiv } from '../../animations/animations';
 import { Calendar as CalendarIcon, HalfArrow, CloseIcon, ArrowIcon, DoubleArrow } from '@ledget/media'
 import { TextInputWrapper } from '../text/text';
-import { IconButton3, CircleIconButton } from '../../buttons/buttons';
+import { Tooltip } from '../../pieces/tooltip/tooltip';
+import { IconButton3, CircleIconButton, PrimaryTextButton } from '../../buttons/buttons';
 import { useAccessEsc } from '../../modal/with-modal/with-modal';
 
 
@@ -320,7 +321,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
             ? focusedInputIndex === 0
               ? day.isAfter(activeDay) && day.isBefore(selectedValue?.[1], 'day')
               : day.isBefore(activeDay) && day.isAfter(selectedValue?.[0], 'day')
-            : day.isAfter(activeDay)
+            : false
           : false
 
         const isSelected = pickerType === 'range'
@@ -342,8 +343,12 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
             isActiveTerminusStart={isActiveTerminusStart}
             isToday={day.isSame(dayjs(), 'day')}
             isSelected={isSelected}
-            isTerminusStart={pickerType === 'range' && selectedValue?.[0] && day.isSame(selectedValue[0], 'day')}
-            isTerminusEnd={pickerType === 'range' && selectedValue?.[1] && day.isSame(selectedValue[1], 'day')}
+            isTerminusStart={pickerType === 'range'
+              ? selectedValue?.[0] && day.isSame(selectedValue[0], 'day')
+              : selectedValue && day.isSame(selectedValue, 'day')}
+            isTerminusEnd={pickerType === 'range'
+              ? selectedValue?.[1] && day.isSame(selectedValue[1], 'day')
+              : selectedValue && day.isSame(selectedValue, 'day')}
           >
             {day.date()}
           </PickerCell>
@@ -516,7 +521,15 @@ const DayMonthYearPicker = () => {
               setView('month')
             }}
           />}
-
+      </div>
+      <div>
+        <PrimaryTextButton
+          type='button'
+          onClick={() => { setWindowCenter(dayjs()) }}
+          aria-label='Go to today'
+        >
+          Today
+        </PrimaryTextButton>
       </div>
     </div>
   )
@@ -537,6 +550,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const inputContainerRef = useRef<HTMLDivElement>(null)
   const [placement, setPlacement] = useState<'left' | 'right'>('left')
+  const [verticlePlacement, setVerticlePlacement] = useState<'top' | 'bottom'>('bottom')
   const startInputRef = useRef<HTMLInputElement>(null)
   const endInputRef = useRef<HTMLInputElement>(null)
 
@@ -587,6 +601,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
     } else if (selectedValue) {
       setShowPicker(false)
       setFocusedInputIndex(undefined)
+      startInputRef.current?.blur()
     }
 
   }, [selectedValue])
@@ -623,11 +638,12 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
     if (inputContainerRef.current) {
       const rect = inputContainerRef.current.getBoundingClientRect()
       rect.left > window.innerWidth / 2 ? setPlacement('right') : setPlacement('left')
+      rect.top > window.innerHeight / 2 ? setVerticlePlacement('top') : setVerticlePlacement('bottom')
     }
   }, [inputContainerRef, showPicker])
 
   return (
-    <div className='ledget-datepicker--container'>
+    <div className='ledget-datepicker--container' style={{ display: verticlePlacement === 'top' ? 'flex' : '' }}>
       <TextInputWrapper
         focused={showPicker}
         className={`ledget-datepicker
@@ -685,6 +701,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
         ref={dropdownRef}
         visible={showPicker}
         placement={placement}
+        verticlePlacement={verticlePlacement}
         onClick={() => {
           if (focusedInputIndex === 0) {
             startInputRef.current?.focus()

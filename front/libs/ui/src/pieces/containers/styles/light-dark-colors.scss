@@ -220,6 +220,9 @@
         --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 10%), calc(var(--secondary-color-l) + 45%));
         --secondary-hlight-hover-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 5%), calc(var(--secondary-color-l) + 40%));
 
+        --secondary-sat: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 15%), calc(var(--secondary-color-l) + 20%));
+        --secondary-sat-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 25%), calc(var(--secondary-color-l) + 20%));
+
         --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
         --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 10%));
         --main-dark3: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 15%));
@@ -244,7 +247,7 @@
         --side-window: hsl(0, 0%, 93%);
 
         --inner-window: hsl(0, 0%, 94%);
-        --window2: hsl(0, 0%, 91%);
+        --window2: hsl(0, 0%, 90%);
         --inner-window-rgb: 246, 246, 246;
         --overlay: hsl(0, 0%, 20%);
 

@@ -64,9 +64,9 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            // background-color: var(--icon-hover-light-gray);
-            background-color: var(--main-sat-darker);
+            background-color: var(--icon-hover-light-gray);
             border-radius: 50%;
+            opacity: .6;
         }
     }
 }

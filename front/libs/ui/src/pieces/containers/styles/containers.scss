@@ -73,6 +73,8 @@ $box-shadow-color: var(--main-hlight);
     margin: .125em 0;
     transition: background-color 0.3s ease-out;
     border-radius: var(--border-radius1);
+    width: 100%;
+    box-sizing: border-box;
 
     &>div {
         display: flex;

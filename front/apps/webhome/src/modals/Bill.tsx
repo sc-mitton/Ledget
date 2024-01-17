@@ -373,7 +373,7 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                         setChecked={setRangeMode}
                     />
                 </div>
-                <div style={{ margin: '.375em 0' }}>
+                <div>
                     <Controller
                         name="expires"
                         control={control}

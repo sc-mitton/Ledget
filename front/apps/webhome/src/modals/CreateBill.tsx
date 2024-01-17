@@ -153,20 +153,18 @@ const Form = withModal((props) => {
                     </div>
                 </div>
                 <div className='padded-row' style={{ width: '50%' }}>
-                    <div style={{ margin: '.375em 0', flexGrow: 1 }}>
-                        <Controller
-                            name="expires"
-                            control={control}
-                            render={(props) => (
-                                <DatePicker
-                                    placeholder="Expires"
-                                    format="MM/DD/YYYY"
-                                    aria-label='Expiration date'
-                                    onChange={(e) => { props.field.onChange(e?.toISOString()) }}
-                                />
-                            )}
-                        />
-                    </div>
+                    <Controller
+                        name="expires"
+                        control={control}
+                        render={(props) => (
+                            <DatePicker
+                                placeholder="Expires"
+                                format="MM/DD/YYYY"
+                                aria-label='Expiration date'
+                                onChange={(e) => { props.field.onChange(e?.toISOString()) }}
+                            />
+                        )}
+                    />
                 </div>
                 <SubmitForm
                     submitting={isLoading}

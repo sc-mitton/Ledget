@@ -29,14 +29,14 @@ export const DropDownDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> 
   const transitions = useTransition(visible, {
     from: {
       opacity: 0,
-      y: 0,
+      y: `${verticlePlacement === 'top' ? '-100%' : '0%'}`,
       left: `${placement === 'middle' ? '50%' : placement === 'left' ? '0%' : '100%'}`,
       x: `-${placement === 'middle' ? '50%' : placement === 'left' ? '0%' : '100%'}`,
       transform: 'scale(0.85)',
       transformOrigin:
         transformOrigin
-          ? `top ${transformOrigin}`
-          : (`top ${placement === 'middle' ? 'center' : placement === 'left' ? 'left' : 'right'}`)
+          ? `${verticlePlacement === 'top' ? 'bottom' : 'top'} ${transformOrigin}`
+          : (`${verticlePlacement === 'top' ? 'bottom' : 'top'} ${placement === 'middle' ? 'center' : placement === 'left' ? 'left' : 'right'}`)
     },
     enter: {
       opacity: 1,
