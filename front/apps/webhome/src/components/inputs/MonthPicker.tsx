@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 
 import './styles/MonthPicker.scss'
 import { useGetMeQuery } from '@features/userSlice'
-import { SmallArrowButton, IconButton, DropDownDiv, IconButton3, useAccessEsc } from '@ledget/ui'
+import { SmallArrowButton, FadedTextButton, DropDownDiv, IconButton3, useAccessEsc } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
 
 export const monthMappings: [string | number, string | number][] = [
@@ -168,12 +168,12 @@ const MonthPicker = () => {
     return (
         <div id="month-picker" ref={monthPickerRef}>
             <div ref={buttonRef}>
-                <button
+                <FadedTextButton
                     onClick={() => { setShowPicker(!showPicker) }}
                     aria-label="Open month picker"
                 >
                     <span>{monthMappings[parseInt(searchParams.get('month') || '1') - 1][1]} {searchParams.get('year')}</span>
-                </button>
+                </FadedTextButton>
                 <IconButton3 onClick={() => handleArrowClick(-1)}>
                     <ArrowIcon size={'.8em'} rotation={90} stroke={'currentColor'} />
                 </IconButton3>

@@ -124,15 +124,6 @@ $number-of-bill-rows: 5;
             color: inherit;
             margin-right: .125em;
         }
-
-        // All except expand button
-        &>button:not(:first-child) {
-            min-width: 6ch;
-        }
-
-        &>button:first-child {
-            min-width: 6ch;
-        }
     }
 
 }

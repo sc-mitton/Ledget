@@ -1,20 +1,16 @@
 import { useMemo, useEffect, useState, useRef, forwardRef } from 'react';
 
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '@hooks/store';
+import { useAppSelector } from '@hooks/store';
 
 import './styles/Bills.scss'
+import { BillModal } from '@modals/index'
 import {
     useGetBillsQuery,
     selectBills,
-    sortBillsByAlpha,
-    sortBillsByDate,
-    sortBillsByAmountAsc,
-    sortBillsByAmountDesc
 } from '@features/billSlice';
 import {
     DollarCents,
-    PillOptionButton,
     IconButton,
     ExpandButton,
     DropDownDiv,
@@ -22,7 +18,7 @@ import {
     ShimmerText,
     BillCatLabel,
 } from '@ledget/ui';
-import { Calendar as CalendarIcon, CheckMark2, BackArrow, Plus } from '@ledget/media'
+import { Calendar as CalendarIcon, CheckMark2, Plus } from '@ledget/media'
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -142,63 +138,6 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
     )
 })
 
-
-const Filter = ({ disabled = false }) => {
-    const dispatch = useAppDispatch()
-    const [searchParams, setSearchParams] = useSearchParams()
-
-    return (
-        <div id="filter">
-            <PillOptionButton
-                disabled={disabled}
-                isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('bill-sort') || '')}
-                onClick={() => {
-                    // desc -> asc -> default
-                    if (!['amount-desc', 'amount-asc'].includes(searchParams.get('bill-sort') || '')) {
-                        dispatch(sortBillsByAmountDesc())
-                        searchParams.set('bill-sort', 'amount-desc')
-                        setSearchParams(searchParams)
-                    } else if (searchParams.get('bill-sort') === 'amount-desc') {
-                        dispatch(sortBillsByAmountAsc())
-                        searchParams.set('bill-sort', 'amount-asc')
-                        setSearchParams(searchParams)
-                    } else {
-                        dispatch(sortBillsByDate())
-                        searchParams.delete('bill-sort')
-                        setSearchParams(searchParams)
-                    }
-                }}
-            >
-                <span>$</span>
-                <BackArrow
-                    stroke={'currentColor'}
-                    rotate={searchParams.get('bill-sort') === 'amount-asc' ? 90 : -90}
-                    size={'.75em'}
-                    strokeWidth={'16'}
-                />
-            </PillOptionButton>
-            <PillOptionButton
-                disabled={disabled}
-                aria-label="Sort bills by amount"
-                isSelected={searchParams.get('bill-sort') === 'a-z'}
-                onClick={() => {
-                    if (searchParams.get('bill-sort') === 'a-z') {
-                        dispatch(sortBillsByDate())
-                        searchParams.delete('bill-sort')
-                        setSearchParams(searchParams)
-                    } else {
-                        dispatch(sortBillsByAlpha())
-                        searchParams.set('bill-sort', 'a-z')
-                        setSearchParams(searchParams)
-                    }
-                }}
-            >
-                a-z
-            </PillOptionButton>
-        </div>
-    )
-}
-
 const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
     { collapsed: boolean, showCalendarIcon: boolean, setCollapsed: (a: boolean) => void }) => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -226,56 +165,57 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
     })
 
     return (
-        <div>
+        <>
             <div>
-                <h3>
-                    {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
-                    {selectedDate.getFullYear()} BILLS
-                </h3>
-                <IconButton
-                    onClick={() => {
-                        navigate({
-                            pathname: '/budget/new-bill',
-                            search: location.search
-                        })
-                    }}
-                    aria-label="Add bill"
-                >
-                    <Plus size={'.8em'} />
-                </IconButton>
+                <div>
+                    <h3>
+                        {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
+                        {selectedDate.getFullYear()} BILLS
+                    </h3>
+                    <IconButton
+                        onClick={() => {
+                            navigate({
+                                pathname: '/budget/new-bill',
+                                search: location.search
+                            })
+                        }}
+                        aria-label="Add bill"
+                    >
+                        <Plus size={'.8em'} />
+                    </IconButton>
+                </div>
+                <div>
+                    {showCalendarIcon &&
+                        <>
+                            <IconButton
+                                ref={buttonRef}
+                                onClick={() => setShowCalendar(!showCalendar)}
+                                tabIndex={0}
+                                aria-label="Show calendar"
+                                aria-haspopup="true"
+                            >
+                                <CalendarIcon size={'1.2em'} />
+                            </IconButton>
+                            <DropDownDiv
+                                placement='left'
+                                visible={showCalendar}
+                                ref={dropdownRef}
+                                style={{ borderRadius: 'var(--border-radius25)' }}
+                            >
+                                <Calendar ref={calendarRef} />
+                            </DropDownDiv></>}
+                </div>
+                <div>
+                    <ExpandButton
+                        flipped={collapsed}
+                        hasBackground={false}
+                        onClick={() => { setCollapsed(!collapsed) }}
+                        aria-label="Collapse bills"
+                        size={'.85em'}
+                    />
+                </div>
             </div>
-            <div>
-                {showCalendarIcon &&
-                    <>
-                        <IconButton
-                            ref={buttonRef}
-                            onClick={() => setShowCalendar(!showCalendar)}
-                            tabIndex={0}
-                            aria-label="Show calendar"
-                            aria-haspopup="true"
-                        >
-                            <CalendarIcon size={'1.2em'} />
-                        </IconButton>
-                        <DropDownDiv
-                            placement='left'
-                            visible={showCalendar}
-                            ref={dropdownRef}
-                            style={{ borderRadius: 'var(--border-radius25)' }}
-                        >
-                            <Calendar ref={calendarRef} />
-                        </DropDownDiv></>}
-            </div>
-            <div>
-                <ExpandButton
-                    flipped={collapsed}
-                    hasBackground={false}
-                    onClick={() => { setCollapsed(!collapsed) }}
-                    aria-label="Collapse bills"
-                    size={'.85em'}
-                />
-                <Filter disabled={collapsed} />
-            </div>
-        </div>
+        </>
     )
 }
 

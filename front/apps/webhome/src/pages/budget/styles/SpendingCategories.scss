@@ -241,7 +241,7 @@ $background: var(--window);
     justify-content: flex-start;
     // Aprx. 5 rows
     // the 2em comes from the bottom buttons space
-    min-height: calc(4.375 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em);
+    min-height: calc(4 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em);
 
     h2 {
         margin-left: .25em;
@@ -274,18 +274,6 @@ $background: var(--window);
         height: min-content;
         display: flex;
         gap: .325em;
-    }
-
-    button {
-        display: flex;
-        align-items: center;
-        gap: .125em;
-        min-width: 6ch;
-
-        span {
-            font-size: .925em;
-            color: inherit;
-        }
     }
 }
 

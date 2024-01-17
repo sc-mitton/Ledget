@@ -138,6 +138,7 @@ type initialState = {
     limit_amount_monthly: number,
     limit_amount_yearly: number,
     oldest_yearly_category_created: string,
+    sorted: 'default' | 'alpha' | 'amount-asc' | 'amount-desc',
 }
 
 export const categorySlice = createSlice({
@@ -150,6 +151,7 @@ export const categorySlice = createSlice({
         limit_amount_monthly: 0,
         limit_amount_yearly: 0,
         oldest_yearly_category_created: new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+        sorted: 'default',
     } as initialState,
     reducers: {
         addTransaction2Cat: (state, action: PayloadAction<{ categoryId: string | undefined, amount: number }>) => {
@@ -175,15 +177,19 @@ export const categorySlice = createSlice({
         },
         sortCategoriesAlpha: (state) => {
             state.categories?.sort((a, b) => a.name.localeCompare(b.name))
+            state.sorted = 'alpha'
         },
         sortCategoriesAmountAsc: (state) => {
             state.categories?.sort((a, b) => (a.limit_amount || 0) - (b.limit_amount || 0))
+            state.sorted = 'amount-asc'
         },
         sortCategoriesAmountDesc: (state) => {
             state.categories?.sort((a, b) => (b.limit_amount || 0) - (a.limit_amount || 0))
+            state.sorted = 'amount-desc'
         },
         sortCategoriesDefault: (state) => {
             state.categories?.sort((a, b) => (a.order || 0) - (b.order || 0))
+            state.sorted = 'default'
         }
     },
     extraReducers: (builder) => {
@@ -241,6 +247,7 @@ export const {
 
 
 export const selectCategories = (state: RootState) => state.categories.categories
+export const selectCategoriesSorting = (state: RootState) => state.categories.sorted
 export const SelectCategoryBillMetaData = createSelector(
     (state: RootState) => ({
         monthly_spent: state.categories.monthly_spent,

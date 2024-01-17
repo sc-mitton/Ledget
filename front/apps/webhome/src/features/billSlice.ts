@@ -137,6 +137,7 @@ type initialState = {
     yearly_bills_amount_remaining: number,
     total_monthly_bills_amount: number,
     total_yearly_bills_amount: number,
+    sortedBy: 'alpha' | 'date' | 'amount-asc' | 'amount-desc'
 }
 
 export function isBill(obj: any | undefined): obj is Bill {
@@ -156,6 +157,7 @@ export const billSlice = createSlice({
         yearly_bills_amount_remaining: 0,
         total_monthly_bills_amount: 0,
         total_yearly_bills_amount: 0,
+        sortedBy: 'date'
     } as initialState,
     reducers: {
         addTransaction2Bill: (state, action: PayloadAction<{ billId: string | undefined, amount: number }>) => {
@@ -183,21 +185,25 @@ export const billSlice = createSlice({
                 const nameB = b.name.toUpperCase()
                 return nameA.localeCompare(nameB)
             })
+            state.sortedBy = 'alpha'
         },
         sortBillsByDate: (state) => {
             state.bills.sort((a, b) => {
                 return new Date(a.date).getTime() - new Date(b.date).getTime()
             })
+            state.sortedBy = 'date'
         },
         sortBillsByAmountAsc: (state) => {
             state.bills.sort((a, b) => {
                 return (a.upper_amount || 0) - (b.upper_amount || 0)
             })
+            state.sortedBy = 'amount-asc'
         },
         sortBillsByAmountDesc: (state) => {
             state.bills.sort((a, b) => {
                 return (b.upper_amount || 0) - (a.upper_amount || 0)
             })
+            state.sortedBy = 'amount-desc'
         }
     },
     extraReducers: (builder) => {
@@ -265,6 +271,7 @@ export const selectBills = createSelector(
     (state: { bills: initialState }) => state.bills.bills,
     (bills) => bills
 )
+export const selectBillsSorting = (state: { bills: initialState }) => state.bills.sortedBy
 export const selectBillMetaData = createSelector(
     (state: { bills: initialState }) => ({
         monthly_bills_paid: state.bills.monthly_bills_paid,

@@ -64,9 +64,9 @@
 
         --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
         --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 5%));
-        --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 15%));
-        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 20%));
-        --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 25%));
+        --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 7%));
+        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 15%));
+        --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 20%));
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 15%), var(--main-color-l));
         --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 25%), var(--main-color-l));
@@ -98,7 +98,7 @@
         // Windows
         --window-background-color: hsl(0, 0%, 2%);
         --window-background-color-portal: hsl(0, 0%, 8%);
-        --window: hsl(0, 0%, 6%);
+        --window: hsl(0, 0%, 7%);
         --window2: hsl(0, 0%, 8%);
         // --window-border: hsl(0, 0%, 10%);
         --window-rgb: 28, 28, 28;
@@ -173,8 +173,8 @@
 
         --active-wafer-indicator: var(--main-color);
 
-        --border-color-dimmest: rgb(255, 255, 255, .04);
-        --border-color: rgb(255, 255, 255, .08);
+        --border-color-dimmest: rgb(255, 255, 255, .05);
+        --border-color: rgb(255, 255, 255, .09);
         --institution-logo-border: rgb(255, 255, 255, .3);
         --toast-border: 1px solid var(--border-color);
         --gray-button-border: hsl(0, 0%, 23%);

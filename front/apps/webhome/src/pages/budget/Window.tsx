@@ -11,6 +11,7 @@ import { setConfirmedTransactionFilter } from '@features/transactionsSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useScreenContext } from '@context/context'
 import Spending from '@pages/spending/Window'
+import Footer from './Footer'
 
 function Window() {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -55,6 +56,7 @@ function Window() {
                     <div>
                         <SpendingCategories />
                         <Bills />
+                        <Footer />
                     </div>
                 </div>
             </div>

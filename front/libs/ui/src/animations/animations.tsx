@@ -63,7 +63,7 @@ export const DropDownDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> 
   )
 })
 
-export const ZoomMotionDiv: FC<HTMLMotionProps<'div'>> = ({ children, ...rest }) => (
+export const ZoomMotionDiv = forwardRef<HTMLDivElement, HTMLMotionProps<'div'>>(({ children, ...rest }, ref) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.95 }}
     animate={{ opacity: 1, scale: 1 }}
@@ -73,7 +73,7 @@ export const ZoomMotionDiv: FC<HTMLMotionProps<'div'>> = ({ children, ...rest })
   >
     {children}
   </motion.div>
-)
+))
 
 export const SlideMotionDiv = ({ children, position, style, ...rest }
   : { children: ReactNode, position?: 'first' | 'last' | 'default' | 'fixed' } & HTMLMotionProps<'div'>) => {

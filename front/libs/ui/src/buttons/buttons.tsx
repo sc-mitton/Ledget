@@ -67,6 +67,7 @@ export const RedButton = withLoading(ButtonWithClassName('btn-red btn-2slim'))
 export const PrimaryTextButton = ButtonWithClassName('btn-grn-text btn-2slim')
 export const IconButtonSubmit = withLoading(IconButton)
 export const LinkArrowButton = withArrow(ButtonWithClassName('btn-icon2'))
+export const FadedTextButton = ButtonWithClassName('btn-faded-text')
 
 export const SmallArrowButton = ({ type = '', ...rest }) => (
   <button className="arrow-nav" {...rest}>

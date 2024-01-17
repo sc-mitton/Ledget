@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { Routes, Outlet, Navigate, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
@@ -19,7 +19,6 @@ import {
     CreateCategory,
     CreateBill,
     ForceVerification,
-    EditBudgetItems,
     BillModal,
     OnboardingModal
 } from '@modals/index'
@@ -88,28 +87,27 @@ const App = () => {
             <AnimatePresence mode="wait">
                 <ZoomMotionDiv
                     key={location.pathname.split('/')[1]}
-                    style={{ flexGrow: '1', display: 'flex', flexDirection: 'column' }}
+                    style={{ flexGrow: '1' }}
+                    className="dashboard"
+                    ref={ref}
                 >
-                    <div className="dashboard" ref={ref}>
-                        <Routes location={location} key={location.pathname.split('/')[1]}>
-                            <Route path="/" element={<OnboardedRoute />} >
-                                <Route path="budget" element={<Budget />} >
-                                    <Route path="new-category" element={<CreateCategory />} />
-                                    <Route path="new-bill" element={<CreateBill />} />
-                                    <Route path="edit-categories" element={<EditBudgetItems />} />
-                                    <Route path="verify-email" element={<ForceVerification />} />
-                                    <Route path="bill" element={<BillModal />} />
-                                    <Route path="welcome/*" element={<OnboardingModal />} />
-                                </Route>
-                                <Route path="spending" element={
-                                    screenSize !== 'large' ? <Spending /> : <Navigate to="/budget" />
-                                } />
-                                <Route path="accounts/*" element={<Accounts />} />
-                                <Route path="profile/*" element={<Profile />} />
-                                <Route path="*" element={<NotFound />} />
+                    <Routes location={location} key={location.pathname.split('/')[1]}>
+                        <Route path="/" element={<OnboardedRoute />} >
+                            <Route path="budget" element={<Budget />} >
+                                <Route path="new-category" element={<CreateCategory />} />
+                                <Route path="new-bill" element={<CreateBill />} />
+                                <Route path="bill" element={<BillModal />} />
+                                <Route path="verify-email" element={<ForceVerification />} />
+                                <Route path="welcome/*" element={<OnboardingModal />} />
                             </Route>
-                        </Routes>
-                    </div>
+                            <Route path="spending" element={
+                                screenSize !== 'large' ? <Spending /> : <Navigate to="/budget" />
+                            } />
+                            <Route path="accounts/*" element={<Accounts />} />
+                            <Route path="profile/*" element={<Profile />} />
+                            <Route path="*" element={<NotFound />} />
+                        </Route>
+                    </Routes>
                 </ZoomMotionDiv>
             </AnimatePresence>
             <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />

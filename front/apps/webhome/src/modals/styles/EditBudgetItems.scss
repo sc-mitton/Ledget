@@ -1,5 +1,64 @@
 @import '@styles/base.scss';
+@import '@styles/table-mixins.scss';
 
+.inspected-bill--container {
+
+    &>div {
+        margin-top: 2.25em;
+
+        &>button {
+            position: absolute;
+            top: .875em;
+            left: 1.75em;
+        }
+    }
+}
+
+#view-all-bills--container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1em;
+
+    .view-all-bills {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &>div:last-of-type {
+        margin-top: 1em;
+        color: var(--m-text-tirtiary);
+    }
+
+    .bills-grid {
+        display: grid;
+        width: 100%;
+        grid-template-columns: auto 1fr;
+
+        &>div:nth-child(2n - 1) {
+            display: flex;
+            align-items: center;
+        }
+
+        &>div:nth-child(2n) {
+
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+        }
+
+        &>div {
+            padding: .5em 0;
+            position: relative;
+
+            &:not(:nth-last-of-type(-n + 2)) {
+                @include table-dividers(0em, false);
+            }
+        }
+    }
+}
 
 #reorder-categories {
     margin-top: 1em;

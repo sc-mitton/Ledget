@@ -21,7 +21,7 @@ import dayjs from 'dayjs'
 
 import { TransactionItem, DeleteCategoryModal } from '@modals/index'
 import { Logo } from '@components/pieces'
-import { useAppSelector, useAppDispatch } from '@hooks/store'
+import { useAppSelector } from '@hooks/store'
 import './styles/SpendingCategories.scss'
 import type { Category } from '@features/categorySlice'
 import { useLazyGetTransactionsQuery, Transaction } from '@features/transactionsSlice'
@@ -30,10 +30,6 @@ import {
     useLazyGetCategoriesQuery,
     SelectCategoryBillMetaData,
     selectCategories,
-    sortCategoriesAlpha,
-    sortCategoriesAmountAsc,
-    sortCategoriesAmountDesc,
-    sortCategoriesDefault,
     useGetCategorySpendingHistoryQuery,
 } from '@features/categorySlice'
 import {
@@ -63,7 +59,7 @@ import {
     DropdownItem,
     useBillCatTabTheme,
 } from '@ledget/ui'
-import { Plus, BackArrow, ArrowIcon, Ellipsis, Edit, TrashIcon } from '@ledget/media'
+import { Plus, ArrowIcon, Ellipsis, Edit, TrashIcon } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useScreenContext } from '@context/context'
 
@@ -379,63 +375,6 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
                 </>
             )}
         </Tab.Group>
-    )
-}
-
-const Footer = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
-    const dispatch = useAppDispatch()
-
-    return (
-        <>
-
-            <div>
-                <PillOptionButton
-                    isSelected={['amount-asc', 'amount-desc'].includes(searchParams.get('cat-sort') || '')}
-                    onClick={() => {
-                        // desc -> asc -> default
-                        if (!['amount-desc', 'amount-asc'].includes(searchParams.get('cat-sort') || '')) {
-                            dispatch(sortCategoriesAmountDesc())
-                            searchParams.set('cat-sort', 'amount-desc')
-                            setSearchParams(searchParams)
-                        } else if (searchParams.get('cat-sort') === 'amount-desc') {
-                            dispatch(sortCategoriesAmountAsc())
-                            searchParams.set('cat-sort', 'amount-asc')
-                            setSearchParams(searchParams)
-                        } else {
-                            dispatch(sortCategoriesDefault())
-                            searchParams.delete('cat-sort')
-                            setSearchParams(searchParams)
-                        }
-                    }}
-                >
-                    <span>$</span>
-                    <BackArrow
-                        stroke={'currentColor'}
-                        rotate={searchParams.get('cat-sort') === 'amount-asc' ? 90 : -90}
-                        size={'.75em'}
-                        strokeWidth={'16'}
-                    />
-                </PillOptionButton>
-                <PillOptionButton
-                    isSelected={searchParams.get('cat-sort') === 'alpha'}
-                    onClick={() => {
-                        if (searchParams.get('cat-sort') === 'alpha') {
-                            dispatch(sortCategoriesDefault())
-                            searchParams.delete('cat-sort')
-                            setSearchParams(searchParams)
-                            return
-                        } else {
-                            dispatch(sortCategoriesAlpha())
-                            searchParams.set('cat-sort', 'alpha')
-                            setSearchParams(searchParams)
-                        }
-                    }}
-                >
-                    a-z
-                </PillOptionButton>
-            </div>
-        </>
     )
 }
 
@@ -875,18 +814,10 @@ const SpendingCategories = () => {
                 }
             </AnimatePresence>
             <AnimatePresence mode='wait'>
-                {!detailedCategory
-                    ? <FadeInOutDiv id="category-filters--container" key="all-categories">
-                        <Footer />
-                    </FadeInOutDiv>
-                    : <FadeInOutDiv key="category-detail">
-                        <CloseButton
-                            onClick={() => {
-                                setDetailedCategory(undefined)
-                            }}
-                        />
-                    </FadeInOutDiv>
-                }
+                {detailedCategory &&
+                    <FadeInOutDiv key="category-detail">
+                        <CloseButton onClick={() => { setDetailedCategory(undefined) }} />
+                    </FadeInOutDiv>}
             </AnimatePresence>
         </div>
     )

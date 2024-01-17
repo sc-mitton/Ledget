@@ -284,6 +284,23 @@
     }
 }
 
+.btn-faded-text {
+    opacity: .8;
+
+    * {
+        opacity: .8;
+    }
+
+    &:hover {
+        opacity: 1;
+
+        * {
+            opacity: 1;
+        }
+    }
+
+}
+
 .btn-red2::before,
 .btn-gr2::before,
 .btn-gr3::before,

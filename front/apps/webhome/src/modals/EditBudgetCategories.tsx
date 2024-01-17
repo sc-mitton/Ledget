@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 
 import { Tab } from '@headlessui/react'
-import { useNavigate } from 'react-router-dom'
 import { useTransition, useSpringRef, useSpring, animated } from '@react-spring/web'
 
 import './styles/EditBudgetItems.scss'
@@ -255,15 +254,9 @@ const EditCategoriesModal = withModal((props) => {
     )
 })
 
-const EditBudgetItemsModal = () => {
-    const navigate = useNavigate()
-
-    const props = {
-        maxWidth: "25em",
-        onClose: () => { navigate(-1) }
-    }
-
+const EditBudgetCategoriesModal = ({ onClose }: { onClose: () => void }) => {
+    const props = { maxWidth: "25em", onClose }
     return <EditCategoriesModal {...props} />
 }
 
-export default EditBudgetItemsModal
+export default EditBudgetCategoriesModal

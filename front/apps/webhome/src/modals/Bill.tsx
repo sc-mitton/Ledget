@@ -1,6 +1,6 @@
-import { useId, useState, useEffect, useRef } from 'react'
+import { useId, useState, useEffect } from 'react'
 
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Menu, RadioGroup } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -11,7 +11,7 @@ import dayjs from 'dayjs'
 
 import './styles/Bill.scss'
 import { billSchema } from './CreateBill'
-import { withModal } from '@ledget/ui'
+import { withModal, WithModalI } from '@ledget/ui'
 import { useGetBillsQuery, TransformedBill, useDeleteBillMutation, useUpdateBillsMutation, UpdateBill } from '@features/billSlice'
 import { Reminder } from '@features/remindersSlice'
 import { SubmitForm } from '@components/pieces'
@@ -36,6 +36,11 @@ import {
     AddReminder,
     emoji
 } from '@components/inputs'
+
+interface ModalContentProps {
+    billId?: string
+    onClose?: () => void
+}
 
 const getRepeatsDescription = ({ day, week, week_day, month, year }:
     { day: number | undefined, week: number | undefined, week_day: number | undefined, month: number | undefined, year: number | undefined }) => {
@@ -399,17 +404,17 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
     )
 }
 
-const BillModal = withModal((props) => {
+export const BillModalContent = (props: ModalContentProps) => {
     const id = useId()
     const loaded = useLoaded(100)
-    const location = useLocation()
     const [action, setAction] = useState<Action>('none')
     const [searchParams] = useSearchParams()
     const { data: bills } = useGetBillsQuery({
         month: searchParams.get('month') || undefined,
         year: searchParams.get('year') || undefined
     })
-    const bill = bills?.find(bill => bill.id === location.state?.billId)
+    const location = useLocation()
+    const bill = bills?.find(bill => bill.id === location.state?.billId || props.billId)
 
     return (
         <div id="bill-modal--content">
@@ -424,7 +429,7 @@ const BillModal = withModal((props) => {
                         <EditBill
                             bill={bill!}
                             onCancel={() => { setAction('none') }}
-                            onUpdateSuccess={() => { props.closeModal() }}
+                            onUpdateSuccess={() => { props.onClose && props.onClose() }}
                         />
                     </SlideMotionDiv>
                 }
@@ -433,22 +438,29 @@ const BillModal = withModal((props) => {
                         <DeleteBill
                             bill={bill!}
                             onCancel={() => { setAction('none') }}
-                            onDelete={() => { props.closeModal() }}
+                            onDelete={() => { props.onClose && props.onClose() }}
                         />
                     </SlideMotionDiv>
                 }
             </AnimatePresence>
         </div>
     )
-})
+}
 
-export default function EnhancedBillModal() {
+const BillModal = withModal<ModalContentProps>((props) => (BillModalContent(props)))
+
+
+export default function (props: ModalContentProps) {
     const navigate = useNavigate()
 
     return (
         <BillModal
+            billId={props.billId}
             maxWidth={'20rem'}
-            onClose={() => navigate(-1)}
+            onClose={() => {
+                props.onClose && props.onClose()
+                navigate(-1)
+            }}
         />
     )
 }
