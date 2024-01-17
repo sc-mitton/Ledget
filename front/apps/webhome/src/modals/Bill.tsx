@@ -24,7 +24,8 @@ import {
     useLoaded,
     Checkbox,
     IconButton,
-    DropdownItem
+    DropdownItem,
+    DatePicker
 } from '@ledget/ui'
 import { extractReminders } from '@modals/CreateBill'
 import { CheckMark2, Ellipsis, TrashIcon, BellOff, Edit } from '@ledget/media'
@@ -377,19 +378,22 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                         name="expires"
                         control={control}
                         render={(props) => (
-                            <>
-
-                            </>
+                            <DatePicker
+                                placeholder="Expires"
+                                format="MM/DD/YYYY"
+                                aria-label='Expiration date'
+                                onChange={(e) => { props.field.onChange(e?.toISOString()) }}
+                            />
                         )}
                     />
                 </div>
+                <SubmitForm
+                    text="Save"
+                    submitting={isUpdating}
+                    success={isUpdateSuccess}
+                    onCancel={onCancel}
+                />
             </div>
-            <SubmitForm
-                text="Save"
-                submitting={isUpdating}
-                success={isUpdateSuccess}
-                onCancel={onCancel}
-            />
         </form>
     )
 }

@@ -7,6 +7,7 @@ import { motion, HTMLMotionProps } from 'framer-motion'
 interface IDropDownDiv {
   visible: boolean
   placement?: 'middle' | 'left' | 'right'
+  verticlePlacement?: 'top' | 'bottom'
   transformOrigin?: 'center' | 'left' | 'right'
   arrow?: 'right'
 }
@@ -17,6 +18,7 @@ export const DropDownDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> 
     visible,
     children,
     placement = 'middle',
+    verticlePlacement = 'bottom',
     transformOrigin,
     style = {},
     className,

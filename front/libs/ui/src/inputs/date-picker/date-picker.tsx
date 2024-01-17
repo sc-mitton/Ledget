@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback, HTMLProps, createContext, useContext } from 'react';
+import { useState, useRef, useEffect, useCallback, HTMLProps, createContext, useContext, memo } from 'react';
 
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -8,7 +8,6 @@ import { Calendar as CalendarIcon, HalfArrow, CloseIcon, ArrowIcon, DoubleArrow 
 import { TextInputWrapper } from '../text/text';
 import { IconButton3, CircleIconButton } from '../../buttons/buttons';
 import { useAccessEsc } from '../../modal/with-modal/with-modal';
-import { start } from 'repl';
 
 
 // Types
@@ -16,7 +15,7 @@ type TPicker = 'date' | 'range';
 
 type TSelectedValue<T extends TPicker> =
   T extends 'range'
-  ? [Dayjs, Dayjs] | [Dayjs, undefined] | [undefined, Dayjs]
+  ? [Dayjs | undefined, Dayjs | undefined]
   : Dayjs
 
 type BaseDatePickerProps = {
@@ -32,17 +31,17 @@ type DatePickerProps<T extends TPicker> =
     pickerType: T
     defaultValue?: [Dayjs, Dayjs]
     bounds?: [[Dayjs, Dayjs], [Dayjs, Dayjs]]
-    onChange?: (value?: TSelectedValue<T>) => void
+    onChange?: (value?: [Dayjs, Dayjs]) => void
   } & BaseDatePickerProps
   : {
     placeholder?: string
     pickerType: T
     defaultValue?: Dayjs
     bounds?: [Dayjs, Dayjs]
-    onChange?: (value?: TSelectedValue<T>) => void
+    onChange?: (value?: Dayjs) => void
   } & BaseDatePickerProps
 
-type UnenrichedDatePickerProps<T extends TPicker> = Omit<DatePickerProps<T>, 'bounds' | 'pickerType'>
+type UnenrichedDatePickerProps<T extends TPicker> = Partial<Pick<DatePickerProps<T>, 'pickerType'>> & Omit<DatePickerProps<T>, 'pickerType'>
 
 type DatePickerContextProps<T extends TPicker> = Pick<DatePickerProps<T>, 'defaultValue' | 'bounds' | 'pickerType'>
 
@@ -471,7 +470,7 @@ const DayMonthYearPicker = () => {
       </div>
       <div>
         {/* Lowest level of selection, the day */}
-        {view === 'day' && focusedInputIndex === 0 &&
+        {view === 'day' && focusedInputIndex === 0 && pickerType === 'range' &&
           <Days
             month={windowCenter?.subtract(1, 'month').month() || 0}
             year={windowCenter?.subtract(1, 'month').year() || 0}
@@ -485,7 +484,7 @@ const DayMonthYearPicker = () => {
             activeDay={activeCell}
             setActiveDay={setActiveCell}
           />}
-        {view === 'day' && focusedInputIndex === 1 &&
+        {view === 'day' && focusedInputIndex === 1 && pickerType === 'range' &&
           <Days
             month={windowCenter?.add(1, 'month').month() || 0}
             year={windowCenter?.add(1, 'month').year() || 0}
@@ -589,7 +588,18 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
       setShowPicker(false)
       setFocusedInputIndex(undefined)
     }
-    // props.onChange && props.onChange(selectedValue as any)
+
+  }, [selectedValue])
+
+  // Call the onchange callback as the selected value changes
+  useEffect(() => {
+    if (props.onChange) {
+      if (pickerType === 'range' && selectedValue?.every(v => v !== undefined)) {
+        props.onChange(selectedValue as any)
+      } else if (pickerType === 'date') {
+        props.onChange(selectedValue as any)
+      }
+    }
   }, [selectedValue])
 
   // Clear the focused input index when the picker is closed
@@ -656,7 +666,8 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
               onBlur={() => { showPicker && setInputTouchCount([inputTouchCount[0], inputTouchCount[1] + 1]) }}
               name={`${props.name}[1]`}
               value={selectedValue?.[1]?.format(props.format)}
-              placeholder={props.placeholder?.[1]} />
+              placeholder={Array.isArray(props.placeholder) ? props.placeholder[0] : props.placeholder}
+            />
           </>
         }
         {selectedValue &&
@@ -668,7 +679,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
           >
             <CloseIcon stroke={'currentColor'} size={'.6em'} />
           </CircleIconButton>}
-        <CalendarIcon fill={'currentColor'} size={'1.1em'} />
+        <CalendarIcon fill={'currentColor'} size={'1.125em'} />
       </TextInputWrapper>
       <DropDownDiv
         ref={dropdownRef}
@@ -693,8 +704,9 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
     bounds,
     pickerType = 'date',
     defaultValue,
-    ...rest
   } = props
+
+  const args = { ...props, pickerType } as UnenrichedDatePickerProps<TPicker>
 
   return (
     <DatePickerContextProvider
@@ -702,14 +714,14 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
       pickerType={pickerType}
       defaultValue={defaultValue}
     >
-      <UnenrichedDatePicker {...rest} />
+      <UnenrichedDatePicker {...args} />
     </DatePickerContextProvider>
   )
 }
 
 const defaultProps: DatePickerProps<TPicker> = {
   pickerType: 'date',
-  format: 'MM/DD/YYYY',
+  format: 'M/D/YYYY',
   placeholder: 'Select',
   closeOnSelect: true
 }

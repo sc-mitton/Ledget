@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 import './styles/Forms.scss'
 import SubmitForm from '@components/pieces/SubmitForm'
-import { withModal } from '@ledget/ui'
+import { withModal, DatePicker } from '@ledget/ui'
 import {
     EmojiComboText,
     DollarRangeInput,
@@ -152,15 +152,18 @@ const Form = withModal((props) => {
                         />
                     </div>
                 </div>
-                <div className='padded-row'>
+                <div className='padded-row' style={{ width: '50%' }}>
                     <div style={{ margin: '.375em 0', flexGrow: 1 }}>
                         <Controller
                             name="expires"
                             control={control}
                             render={(props) => (
-                                <div className="ledget-antd-date-picker">
-
-                                </div>
+                                <DatePicker
+                                    placeholder="Expires"
+                                    format="MM/DD/YYYY"
+                                    aria-label='Expiration date'
+                                    onChange={(e) => { props.field.onChange(e?.toISOString()) }}
+                                />
                             )}
                         />
                     </div>

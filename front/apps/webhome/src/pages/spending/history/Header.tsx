@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useWatch, useForm } from 'react-hook-form'
+import { useController, useWatch, useForm } from 'react-hook-form'
 import { useSearchParams, useLocation } from 'react-router-dom'
 
 import {
@@ -87,6 +87,8 @@ const FilterWindow = () => {
         getCategories({ start: s, end: e, spending: false }, true)
     }, [dateRangeFieldValue])
 
+    const { field } = useController({ name: 'date_range', control })
+
     return (
         <form
             className={`${isDark ? 'dark' : ''}`}
@@ -105,29 +107,19 @@ const FilterWindow = () => {
             })}
         >
             <fieldset>
-                <Controller
+                <label htmlFor="date_range">Date</label>
+                <DatePicker
                     name="date_range"
-                    control={control}
-                    rules={{ required: true }}
-                    render={(props) => (
-                        <>
-                            <label htmlFor="date_range">Date</label>
-                            <DatePicker
-                                pickerType="range"
-                                placeholder={['Start', 'End']}
-                                defaultValue={filter?.date_range
-                                    ? [dayjs.unix(filter.date_range[0]),
-                                    dayjs.unix(filter.date_range[1])]
-                                    : [dayjs.unix(start), dayjs.unix(end)]}
-                                onChange={(v) => {
-                                    props.field.onChange([
-                                        v?.[0]?.unix(),
-                                        v?.[1]?.unix()
-                                    ])
-                                }}
-                            />
-                        </>
-                    )}
+                    pickerType="range"
+                    placeholder={['Start', 'End']}
+                    defaultValue={filter?.date_range
+                        ? [dayjs.unix(filter.date_range[0]),
+                        dayjs.unix(filter.date_range[1])]
+                        : [dayjs.unix(start), dayjs.unix(end)]}
+                    onChange={(v) => {
+                        const newVal = [v?.[0].unix(), v?.[1].unix()]
+                        !newVal.every((v, i) => v === dateRangeFieldValue?.[i]) && field.onChange(newVal)
+                    }}
                 />
                 <label htmlFor='limit_amount'>Amount</label>
                 <div className='amounts'>
