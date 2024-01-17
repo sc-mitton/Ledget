@@ -94,7 +94,7 @@ $background: var(--window);
                 padding-left: .125em;
             }
 
-            h4 {
+            h3 {
                 display: inline-block;
             }
 
@@ -121,24 +121,24 @@ $background: var(--window);
                 position: relative;
                 white-space: nowrap;
 
-                h4:first-child {
+                h3:first-child {
                     visibility: visible;
                     width: auto;
                 }
 
-                h4:not(:first-child) {
+                h3:not(:first-child) {
                     visibility: collapse;
                     width: 0;
                 }
             }
 
             &>div.yearly:hover {
-                h4:first-child {
+                h3:first-child {
                     visibility: collapse;
                     width: 0;
                 }
 
-                h4:not(:first-child) {
+                h3:not(:first-child) {
                     visibility: visible;
                     width: auto;
                 }
@@ -495,7 +495,7 @@ $background: var(--window);
 
 @media screen and (min-width: 800px) {
     .row {
-        &.header>div h4 br {
+        &.header>div h3 br {
             display: none;
         }
     }

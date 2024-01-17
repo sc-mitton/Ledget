@@ -99,12 +99,12 @@ const datePickerContext = createContext<TDatePickerContext<TPicker> | undefined>
 const DatePickerContextProvider = <TP extends TPicker>({ children, pickerType, disabled, defaultValue }:
   DatePickerContextProps<TP> & { children: React.ReactNode }) => {
 
-  const [selectedValue, setSelectedValue] = useState<typeof defaultValue>(defaultValue)
+  const [selectedValue, setSelectedValue] = useState<typeof defaultValue>()
   const [focusedInputIndex, setFocusedInputIndex] = useState<TDatePickerContext<TP>['focusedInputIndex']>()
   const [inputTouchCount, setInputTouchCount] = useState<TDatePickerContext<TP>['inputTouchCount']>(pickerType === 'range' ? [0, 0] : 0)
 
   useEffect(() => {
-    setSelectedValue(defaultValue)
+    !selectedValue && setSelectedValue(defaultValue)
   }, [defaultValue])
 
   return (
@@ -280,7 +280,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
       : setSelectedValue(day)
   }
 
-  const checkedDisabled = useCallback((day: Dayjs) => {
+  const checkIsDisabled = useCallback((day: Dayjs) => {
 
     if (pickerType === 'range') {
       // If a disabled prop was passed to the date picker, check the day to see if it supposed to
@@ -316,6 +316,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
         }
       }
     }
+    return false
 
   }, [selectedValue, focusedInputIndex, pickerType, inputTouchCount])
 
@@ -333,11 +334,11 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
       {/* Partial Row */}
       {Array.from({ length: firstDay.day() }).map((_, i) => {
         const day = firstDay.date(0).date(firstDay.date(0).daysInMonth() - (firstDay.day() - i - 1))
-        const isDisabled = checkedDisabled(day)
+        const isDisabled = checkIsDisabled(day)
         return (
           <PickerCell
             onMouseEnter={unsetActiveDay}
-            onClick={() => !disabled && handleClick(day, true)}
+            onClick={() => !isDisabled && handleClick(day, true)}
             isDisabled={isDisabled}
             isOverflow={true}
           >
@@ -365,11 +366,11 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
           : false
         const isActiveTerminusEnd = pickerType === 'range' && focusedInputIndex === 1 && day.isSame(activeDay, 'day') && day.isAfter(selectedValue?.[0], 'day')
         const isActiveTerminusStart = pickerType === 'range' && focusedInputIndex === 0 && day.isSame(activeDay, 'day') && day.isBefore(selectedValue?.[1], 'day')
-        const isDisabled = checkedDisabled(day)
+        const isDisabled = checkIsDisabled(day)
 
         return (
           <PickerCell
-            onClick={() => !disabled && handleClick(day, isSelected || (!isActive && !isActiveTerminusEnd && !isActiveTerminusStart))}
+            onClick={() => { !isDisabled && handleClick(day, isSelected || (!isActive && !isActiveTerminusEnd && !isActiveTerminusStart)) }}
             onMouseEnter={() => selectedValue && setActiveDay(day)}
             isDisabled={isDisabled}
             isActive={isActive}
@@ -391,12 +392,12 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
       {/* Partial Row */}
       {Array.from({ length: 7 - firstDay.add(1, 'month').date(1).day() }).map((_, i) => {
         const day = dayjs().month(month).year(year).add(1, 'month').date(i + 1)
-        const isDisabled = checkedDisabled(day)
+        const isDisabled = checkIsDisabled(day)
 
         return (
           <PickerCell
             onMouseEnter={unsetActiveDay}
-            onClick={() => !disabled && handleClick(day, true)}
+            onClick={() => !isDisabled && handleClick(day, true)}
             isDisabled={isDisabled}
             isOverflow={true}
           >
@@ -410,19 +411,19 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
           const day = dayjs().month(month).year(year)
             .add(1, 'month')
             .add(7 - firstDay.add(1, 'month').date(1).day(), 'day').date(i + 1)
-          const isDisabled = checkedDisabled(day)
+          const isDisabled = checkIsDisabled(day)
 
           return (
             <PickerCell
               onMouseEnter={unsetActiveDay}
-              onClick={() => !disabled && handleClick(day, true)}
+              onClick={() => !isDisabled && handleClick(day, true)}
               isDisabled={isDisabled}
               isOverflow={true}
             >
               <Tooltip msg={day.format('YYYY-MM-DD')}>{day.date()}</Tooltip>
             </PickerCell>)
         })}
-    </div>
+    </div >
   )
 }
 

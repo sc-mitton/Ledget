@@ -239,17 +239,17 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
         <div className={`row header ${yearly_end ? 'has-alternate-header' : ''}`}>
             <div className={`${period === 'year' ? 'yearly' : 'monthly'}`}>
                 <div>
-                    <h4>
+                    <h3>
                         {/* {`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`} */}
                         {`${period.toUpperCase()}LY SPENDING`}
-                    </h4>
+                    </h3>
                     {period === 'year' && yearly_start && yearly_end &&
-                        <h4>
+                        <h3>
                             {yearly_start.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
                             <br />
                             &nbsp;-&nbsp;
                             {yearly_end.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
-                        </h4>}
+                        </h3>}
                 </div>
                 <IconButton onClick={() => {
                     navigate(
