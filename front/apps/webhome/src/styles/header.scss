@@ -172,8 +172,12 @@ header {
         opacity: .4;
     }
 
-    .current-nav-item * {
-        color: var(--m-invert-text);
+    .current-nav-item {
+        opacity: 1;
+
+        * {
+            color: var(--m-header-text);
+        }
     }
 
     header>div span {

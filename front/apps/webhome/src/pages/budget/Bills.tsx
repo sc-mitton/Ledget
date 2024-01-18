@@ -4,7 +4,6 @@ import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from '@hooks/store';
 
 import './styles/Bills.scss'
-import { BillModal } from '@modals/index'
 import {
     useGetBillsQuery,
     selectBills,
@@ -19,6 +18,7 @@ import {
     BillCatLabel,
 } from '@ledget/ui';
 import { Calendar as CalendarIcon, CheckMark2, Plus } from '@ledget/media'
+import { useScreenContext } from '@context/context';
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -167,94 +167,84 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
     return (
         <>
             <div>
-                <div>
-                    <h3>
-                        {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
-                        {selectedDate.getFullYear()} BILLS
-                    </h3>
-                    <IconButton
-                        onClick={() => {
-                            navigate({
-                                pathname: '/budget/new-bill',
-                                search: location.search
-                            })
-                        }}
-                        aria-label="Add bill"
-                    >
-                        <Plus size={'.8em'} />
-                    </IconButton>
-                </div>
-                <div>
-                    {showCalendarIcon &&
-                        <>
-                            <IconButton
-                                ref={buttonRef}
-                                onClick={() => setShowCalendar(!showCalendar)}
-                                tabIndex={0}
-                                aria-label="Show calendar"
-                                aria-haspopup="true"
-                            >
-                                <CalendarIcon size={'1.2em'} />
-                            </IconButton>
-                            <DropDownDiv
-                                placement='left'
-                                visible={showCalendar}
-                                ref={dropdownRef}
-                                style={{ borderRadius: 'var(--border-radius25)' }}
-                            >
-                                <Calendar ref={calendarRef} />
-                            </DropDownDiv></>}
-                </div>
-                <div>
-                    <ExpandButton
-                        flipped={collapsed}
-                        hasBackground={false}
-                        onClick={() => { setCollapsed(!collapsed) }}
-                        aria-label="Collapse bills"
-                        size={'.85em'}
-                    />
-                </div>
+                <DropDownDiv
+                    placement='left'
+                    visible={showCalendar}
+                    ref={dropdownRef}
+                    style={{ borderRadius: 'var(--border-radius25)' }}
+                >
+                    <Calendar ref={calendarRef} />
+                </DropDownDiv>
             </div>
+            <div>
+                <h3>
+                    {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
+                    {selectedDate.getFullYear()} BILLS
+                </h3>
+                <IconButton
+                    onClick={() => {
+                        navigate({
+                            pathname: '/budget/new-bill',
+                            search: location.search
+                        })
+                    }}
+                    aria-label="Add bill"
+                >
+                    <Plus size={'.8em'} />
+                </IconButton>
+            </div>
+            {showCalendarIcon &&
+                <IconButton
+                    ref={buttonRef}
+                    onClick={() => setShowCalendar(!showCalendar)}
+                    tabIndex={0}
+                    aria-label="Show calendar"
+                    aria-haspopup="true"
+                >
+                    <CalendarIcon size={'1.2em'} />
+                </IconButton>}
+            <div>
+                <ExpandButton
+                    flipped={collapsed}
+                    hasBackground={false}
+                    onClick={() => { setCollapsed(!collapsed) }}
+                    aria-label="Collapse bills"
+                    size={'.85em'}
+                />
+            </div>
+
         </>
     )
 }
 
-const Bills = () => {
-    const [searchParams] = useSearchParams()
-    const navigate = useNavigate()
-    const { isLoading } = useGetBillsQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
-    })
+
+const SkeletonBills = () => (
+    <div
+        className='bills-box'
+        style={{ '--number-of-bills': 4 } as React.CSSProperties}
+    >
+        <>
+            {Array.from(Array(8).keys()).map(i => (
+                <ShimmerText key={i} shimmering={true} style={{ width: '100', height: '1.25em' }} />
+            ))}
+        </>
+    </div>
+)
+
+
+const Bills = ({ collapsed }: { collapsed: boolean }) => {
     const bills = useAppSelector(selectBills)
-    const [collapsed, setCollapsed] = useState(false)
-    const ref = useRef<HTMLDivElement>(null)
-    const [showCalendar, setShowCalendar] = useState(true)
+    const { screenSize } = useScreenContext()
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
 
-    useEffect(() => {
-        setShowCalendar(ref.current?.clientWidth! > 800)
-        const observer = new ResizeObserver(() => {
-            if (ref.current?.clientWidth! > 800) {
-                setShowCalendar(true)
-            } else {
-                setShowCalendar(false)
-            }
-        })
-        if (ref.current)
-            observer.observe(ref.current)
-
-        return () => {
-            observer.disconnect()
-        }
-    }, [ref.current])
-
-    const Bills = () => (
+    return (
         <div
-            className='bills-box'
+            className={`bills-box ${screenSize === 'small' ? 'small-screen' : ''}`}
             aria-expanded={!collapsed}
             style={{
                 '--number-of-bills': bills?.length! / 2 || 0,
-                ...(bills?.length <= 10 ? { overflowX: 'hidden' } : {})
+                ...(bills?.length <= 10 ? {} : {})
             } as React.CSSProperties}
         >
             {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
@@ -280,25 +270,39 @@ const Bills = () => {
                                 </span>
                             </BillCatLabel>
                             <div><DollarCents value={bill.upper_amount} /></div>
-                            <CheckMark2 style={{ opacity: bill?.is_paid ? 1 : .3 }} />
+                            <div><CheckMark2 style={{ opacity: bill?.is_paid ? 1 : .3 }} /></div>
                         </div>
                     )
                 })}
         </div>
     )
+}
 
-    const SkeletonBills = () => (
-        <div
-            className='bills-box'
-            style={{ '--number-of-bills': 4 } as React.CSSProperties}
-        >
-            <>
-                {Array.from(Array(8).keys()).map(i => (
-                    <ShimmerText key={i} shimmering={true} style={{ width: '100', height: '1.25em' }} />
-                ))}
-            </>
-        </div>
-    )
+
+const BillsWindow = () => {
+    const [searchParams] = useSearchParams()
+    const { isLoading } = useGetBillsQuery({
+        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
+        year: searchParams.get('year') || `${new Date().getFullYear()}`,
+    })
+    const [collapsed, setCollapsed] = useState(false)
+    const ref = useRef<HTMLDivElement>(null)
+    const [showCalendar, setShowCalendar] = useState(true)
+
+    useEffect(() => {
+        setShowCalendar(ref.current?.clientWidth! > 800)
+        const observer = new ResizeObserver(() => {
+            if (ref.current?.clientWidth! > 800) {
+                setShowCalendar(true)
+            } else {
+                setShowCalendar(false)
+            }
+        })
+        if (ref.current)
+            observer.observe(ref.current)
+
+        return () => { observer.disconnect() }
+    }, [ref.current])
 
     return (
         <div
@@ -306,18 +310,20 @@ const Bills = () => {
             ref={ref}
         >
             <div className={`calendar-bills--container ${collapsed ? 'collapsed' : ''}`}>
-                <Header
-                    showCalendarIcon={!showCalendar}
-                    collapsed={collapsed}
-                    setCollapsed={() => setCollapsed(!collapsed)}
-                />
+                <div style={{ marginLeft: showCalendar ? '.375em' : '' }}>
+                    <Header
+                        showCalendarIcon={!showCalendar}
+                        collapsed={collapsed}
+                        setCollapsed={() => setCollapsed(!collapsed)}
+                    />
+                </div>
                 <div>
                     {showCalendar && <Calendar />}
-                    {isLoading ? <SkeletonBills /> : <Bills />}
+                    {isLoading ? <SkeletonBills /> : <Bills collapsed={collapsed} />}
                 </div>
             </div>
         </div>
     )
 }
 
-export default Bills
+export default BillsWindow

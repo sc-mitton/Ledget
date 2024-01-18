@@ -12,7 +12,7 @@ import React, {
 
 import Big from 'big.js'
 import { Tab } from '@headlessui/react'
-import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { ResponsiveLine } from '@nivo/line'
 import type { Datum } from '@nivo/line'
@@ -235,17 +235,16 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
         <div className={`row header ${yearly_end ? 'has-alternate-header' : ''}`}>
             <div className={`${period === 'year' ? 'yearly' : 'monthly'}`}>
                 <div>
-                    <h3>
+                    <h4>
                         {/* {`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`} */}
                         {`${period.toUpperCase()}LY SPENDING`}
-                    </h3>
+                    </h4>
                     {period === 'year' && yearly_start && yearly_end &&
-                        <h3>
+                        <h4>
                             {yearly_start.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
-                            <br />
                             &nbsp;-&nbsp;
                             {yearly_end.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
-                        </h3>}
+                        </h4>}
                 </div>
                 <IconButton onClick={() => {
                     navigate(
@@ -304,7 +303,7 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
     const tabTheme = useBillCatTabTheme()
 
     const TotalRow = ({ selectedIndex }: { selectedIndex: number }) => (
-        <div className='row total'>
+        <div className='row total header'>
             <div><h4>Total</h4></div>
             <div>
                 <DollarCents
@@ -339,10 +338,10 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
     )
 
     return (
-        <Tab.Group as={Column}>
+        <Tab.Group as={Fragment}>
             {({ selectedIndex }) => (
                 <>
-                    <div className='row'>
+                    <div>
                         <div className="tab-nav-cell">
                             <TabNavList
                                 selectedIndex={selectedIndex}
@@ -353,7 +352,7 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
                         </div>
                     </div>
                     <Tab.Panels as={Fragment}>
-                        <Tab.Panel as={Fragment}>
+                        <Tab.Panel as={Column}>
                             <>
                                 <TotalRow selectedIndex={selectedIndex} />
                                 <Rows
@@ -362,7 +361,7 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
                                 />
                             </>
                         </Tab.Panel>
-                        <Tab.Panel as={Fragment}>
+                        <Tab.Panel as={Column}>
                             <>
                                 <TotalRow selectedIndex={selectedIndex} />
                                 <Rows
@@ -796,7 +795,7 @@ const SpendingCategories = () => {
             <AnimatePresence mode='wait'>
                 {!detailedCategory
                     ?
-                    <FadeInOutDiv id="all-categories-table" immediate={!loaded} key="all-categories">
+                    <FadeInOutDiv className={`all-categories-table ${screenSize === 'small' ? 'tab-view' : 'column-view'}`} immediate={!loaded} key="all-categories">
                         {(isLoading || isUninitialized)
                             ? <SkeletonRows numberOfRows={skeletonRowCount} />
                             : screenSize === 'small'

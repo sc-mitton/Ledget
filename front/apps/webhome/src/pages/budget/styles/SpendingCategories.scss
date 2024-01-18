@@ -20,19 +20,35 @@ $background: var(--window);
 }
 
 @mixin outermost-div-placement-styling {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: minmax(0, 1fr);
-    overflow: hidden;
-    box-sizing: border-box;
+    display: flex;
     flex-grow: 1;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
-#all-categories-table {
+.all-categories-table {
     gap: $column-gap;
     border-radius: var(--border-radius25);
     @include outermost-div-placement-styling;
     place-content: start;
+
+    &.tab-view {
+        flex-direction: column;
+        gap: 1.25em;
+
+        &>div:first-child>div {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &.column-view {
+        flex-direction: row;
+
+        &>div {
+            flex: 1;
+        }
+    }
 
     .column {
         max-height: 100%;
@@ -44,7 +60,6 @@ $background: var(--window);
         max-height: 100%;
         display: flex;
         flex-direction: column;
-        @include table-header-mask-image;
 
         gap: $item-row-gap;
         position: relative;
@@ -73,7 +88,7 @@ $background: var(--window);
         }
 
         &.total>div:first-child {
-            padding-left: .25em;
+            padding: .5em 0 .5em .25em;
         }
 
         &>div.spanned {
@@ -94,8 +109,9 @@ $background: var(--window);
                 padding-left: .125em;
             }
 
-            h3 {
+            h4 {
                 display: inline-block;
+                white-space: nowrap;
             }
 
             // Styles for tab view
@@ -121,24 +137,24 @@ $background: var(--window);
                 position: relative;
                 white-space: nowrap;
 
-                h3:first-child {
+                h4:first-child {
                     visibility: visible;
                     width: auto;
                 }
 
-                h3:not(:first-child) {
+                h4:not(:first-child) {
                     visibility: collapse;
                     width: 0;
                 }
             }
 
             &>div.yearly:hover {
-                h3:first-child {
+                h4:first-child {
                     visibility: collapse;
                     width: 0;
                 }
 
-                h3:not(:first-child) {
+                h4:not(:first-child) {
                     visibility: visible;
                     width: auto;
                 }
@@ -483,7 +499,7 @@ $background: var(--window);
 
 @media screen and (min-width: 800px) {
     .row {
-        &.header>div h3 br {
+        &.header>div h4 br {
             display: none;
         }
     }

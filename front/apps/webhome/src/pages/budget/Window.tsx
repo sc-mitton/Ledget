@@ -60,7 +60,7 @@ function Window() {
                     </div>
                 </div>
             </div>
-            {screenSize === 'large' && <Spending />}
+            {screenSize === 'extra-large' && <Spending />}
             <Outlet />
         </>
     )

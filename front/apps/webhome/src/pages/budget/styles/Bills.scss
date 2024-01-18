@@ -37,17 +37,23 @@ $number-of-bill-rows: 5;
         align-items: center;
         justify-content: space-between;
         gap: .25em;
-        margin-left: .375em;
         flex-grow: 1;
+        position: relative;
 
         &>div:first-child {
+            height: 100%;
+            top: 1em;
+            position: relative;
+        }
+
+        &>div:nth-child(2) {
             display: flex;
             align-items: center;
             gap: .25em;
         }
 
         // Container for calendar icon
-        &>div:nth-child(2) {
+        &>div:nth-child(3) {
             position: relative;
             padding-top: .125em;
 
@@ -131,11 +137,12 @@ $number-of-bill-rows: 5;
 // Calendar container
 .calendar {
     display: inline-grid;
-    grid-template-columns: repeat(7, minmax(0, 1.25em));
+    grid-template-columns: repeat(7, auto);
     justify-self: center;
     row-gap: .75em;
     column-gap: 1.25em;
     margin-left: .375em;
+    padding: .5em;
 
     // Days of week markers
     &>div:nth-child(-n+7) {
@@ -257,13 +264,27 @@ $number-of-bill-rows: 5;
     grid-auto-columns: 50%;
     gap: $item-row-gap;
     transition: all .3s ease-in-out;
+    padding-bottom: 1em;
+
+    &.small-screen {
+        grid-auto-flow: row;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        max-height: 15em;
+
+        &>div:not(:last-child) {
+            @include table-dividers(-.625em);
+        }
+    }
 
     // Bill item (cell)
     &>div {
         cursor: pointer;
         box-sizing: border-box;
         border-radius: var(--border-radius1);
-        width: calc(100% - $bill-flex-grid-gap * 2);
+        width: calc(100% - $bill-flex-grid-gap * 2 - .5em);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -276,13 +297,20 @@ $number-of-bill-rows: 5;
             gap: .375em;
         }
 
-        &>div:last-of-type {
+        &>div:nth-of-type(2) {
             flex-grow: 1;
             text-align: right;
         }
 
-        &[role="button"]>div:last-of-type {
+        &[role="button"]>div:nth-of-type(2) {
             margin-right: .75em;
+        }
+
+        &>div:last-of-type {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
         }
     }
 }

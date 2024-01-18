@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
+import dayjs from 'dayjs'
 
 import './styles/MonthPicker.scss'
 import { useGetMeQuery } from '@features/userSlice'
@@ -144,23 +145,17 @@ const MonthPicker = () => {
 
     const handleArrowClick = (direction: 1 | -1) => {
 
-        const currentYear = `${new Date().getFullYear()}`
-        const currentMonth = `${new Date().getMonth()}`
+        const currentYear = searchParams.get('year') || `${new Date().getFullYear()}`
+        const currentMonth = searchParams.get('month') || `${new Date().getMonth() + 1}`
+        const d = dayjs(`${currentYear}-${currentMonth}-01`)
+        console.log(d.format('YYYY-MM-DD'))
+        const next = d.add(direction, 'month')
 
-        const newMonth = direction === 1
-            ? (parseInt(searchParams.get('month') || currentMonth) % 12) + 1
-            : (parseInt(searchParams.get('month') || currentMonth) % 12) - 1 || 12
+        console.log('next', next.format('YYYY-MM-DD'))
 
-        const newYear = newMonth === 1 && direction === 1
-            ? parseInt(searchParams.get('year') || currentYear) + 1
-            : newMonth === 12 && direction === -1
-                ? parseInt(searchParams.get('year') || currentYear) - 1
-                : parseInt(searchParams.get('year') || currentYear)
-
-        console.log(newMonth, newYear)
-        if (dateOptions[newYear]?.includes(newMonth)) {
-            searchParams.set('month', `${newMonth}`)
-            searchParams.set('year', `${newYear}`)
+        if (dateOptions[next.year()]?.includes(next.month() + 1)) {
+            searchParams.set('month', `${next.month() + 1}`)
+            searchParams.set('year', `${next.year()}`)
             setSearchParams(searchParams)
         }
     }

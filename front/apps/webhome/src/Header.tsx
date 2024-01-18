@@ -76,7 +76,7 @@ const Navigation = () => {
                         </a>
                     </li>
                 ))}
-                {screenSize !== 'large' &&
+                {screenSize !== 'extra-large' &&
                     <li
                         className={`${location.pathname === "/spending" ? "current-" : ""}nav-item`}
                         role="link"
