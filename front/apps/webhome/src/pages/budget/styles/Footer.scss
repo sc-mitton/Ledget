@@ -29,8 +29,8 @@
                     &::after {
                         content: '';
                         position: absolute;
-                        top: 0;
-                        bottom: 0;
+                        top: 0.25em;
+                        bottom: .25em;
                         left: 0;
                         width: 1.5px;
                         background-color: var(--m-text-quaternary);

@@ -147,6 +147,7 @@ function SelectCategoryBillBody(props: I) {
                                         emoji={billcat.emoji}
                                         checked={selected}
                                         active={active}
+                                        tint={true}
                                     />
                                 )}
                             </Combobox.Option>

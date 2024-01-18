@@ -173,31 +173,28 @@ export const CopyButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText
     </button>
   )
 
-export const PlusButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { styled?: 'chcl' | 'grn' | 'gr' | 'input' }>
-  = ({ styled = 'chcl', ...rest }) => (
-    <CircleIconButton>
+export const PlusButton: FC<ButtonHTMLAttributes<HTMLButtonElement>>
+  = (props) => (
+    <CircleIconButton {...props}>
       <Plus stroke={'currentColor'} size={'.8em'} />
     </CircleIconButton>
   )
 
 export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> &
-{ fill?: string, stroke?: string, show?: boolean, styled?: 'input', drawable?: boolean }>
-  = ({ className, show, fill, stroke, styled, drawable = true, ...rest }) => (
-    <button
-      className={`btn delete-button${show ? '-show' : ''}
-        ${styled === 'input' ? 'input' : ''}
+{ fill?: string, stroke?: string, show?: boolean, drawable?: boolean, size?: `${number}em` }>
+  = ({ className, show, fill, stroke, drawable = true, size = '1.2em', ...rest }) => (
+    <CircleIconButton
+      className={`delete-button${show ? '-show' : ''}
         ${drawable ? 'drawable' : 'not-drawable'}
         ${className ? className : ''}`}
       {...rest}
     >
       <Delete
         className={`animated-stroke ${drawable ? 'drawable' : 'not-drawable'}`}
-        fill={fill}
         stroke={stroke}
-        size={'1.2em'}
-        border={styled === 'input' ? 'var(--input-border-color)' : ''}
+        size={size}
       />
-    </button>
+    </CircleIconButton>
   )
 
 export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { success: boolean }>(

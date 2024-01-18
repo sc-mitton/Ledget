@@ -57,6 +57,7 @@ const Bills = ({ period, onBillClick }: {
                   emoji={bill.emoji}
                   color={bill.period === 'month' ? 'blue' : 'green'}
                   onClick={() => onBillClick(bill.id)}
+                  tint={true}
                 />
               </div>
               <div>

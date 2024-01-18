@@ -49,7 +49,7 @@
 
             &.hoverable:hover,
             &.hoverable.active {
-                background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark) 30%);
+                background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark) 20%);
                 transition: background-color 0.2s ease-in-out;
             }
         }
@@ -74,7 +74,7 @@
 
             &.hoverable:hover,
             &.hoverable.active {
-                background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark) 30%);
+                background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark) 20%);
                 transition: background-color 0.2s ease-in-out;
             }
         }

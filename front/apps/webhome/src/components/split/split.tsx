@@ -19,9 +19,7 @@ import './split.scss';
 const schema = z.object({
   splits: z.array(z.object({
     category: z.string().min(1, { message: 'required' }),
-    amount: z.string().min(1, { message: 'required' })
-      .refine((v) => v !== '0', { message: 'required' })
-      .transform((value) => value.replace(/\D+/g, ''))
+    amount: z.number().min(1, { message: 'required' })
   }))
 })
 
@@ -63,16 +61,16 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
   const { handleSubmit, formState: { errors }, control } = useForm<SplitsSchema>({
     mode: 'onSubmit',
     resolver: zodResolver(schema.refine((data) => {
-      const totalAmount = data.splits.reduce((acc, split) => acc + parseFloat(split.amount), 0);
+      const totalAmount = data.splits.reduce((acc, split) => acc + split.amount, 0);
       return Math.abs(totalAmount - item.amount * 100) === 0
     }, { message: 'All of the dollar amounts must add up to the total', path: ['totalSum'] })),
     reValidateMode: 'onBlur',
     defaultValues: {
       splits: item.categories?.length
-        ? item.categories.map((c) => ({ category: c.id, amount: Big(item.amount).times(c.fraction || 1).toFixed(2) }))
+        ? item.categories.map((c) => ({ category: c.id, amount: Big(item.amount).times(c.fraction || 1).times(100).toNumber() }))
         : [{
           category: item.predicted_category?.id || (categoriesData ? categoriesData.find(c => c.is_default)?.id || '' : ''),
-          amount: `${item.amount}`
+          amount: Big(item.amount).times(100).toNumber()
         }]
     },
   })
@@ -83,7 +81,7 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
       transaction_id: item.transaction_id,
       splits: data.splits.map((split) => ({
         category: split.category,
-        fraction: Math.round(parseFloat(split.amount) / item.amount) / 100
+        fraction: Math.round(split.amount / item.amount) / 100
       }))
     }])
   }
@@ -118,11 +116,7 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
                 hasLabel={false}
                 control={control}
                 name={`splits.${index}.amount`}
-                defaultValue={
-                  field.amount
-                    ? typeof field.amount === 'string' ? Number(field.amount.replace(/\D+/g, '')) : 0
-                    : 0
-                }
+                defaultValue={field.amount}
               >
                 <FormErrorTip error={(errors as any).splits?.[index]?.amount} />
               </LimitAmountInput>
@@ -131,16 +125,18 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
                   <DeleteButton
                     fill={'var(--input-background)'}
                     stroke={'var(--m-text)'}
-                    styled='input'
                     show={true}
                     type='button'
                     onClick={() => remove(index)}
+                    size={'1.4em'}
                   />}
                 {index === fields.length - 1 &&
                   <PlusButton
-                    styled='input'
                     type='button'
-                    onClick={() => append({ category: '', amount: '0' })}
+                    onClick={() => {
+                      console.log('here')
+                      append({ category: '', amount: 0 })
+                    }}
                   />}
               </div>
             </section>

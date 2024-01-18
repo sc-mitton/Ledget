@@ -82,7 +82,6 @@ const DeleteAllButton = ({ onClick }) => {
                     aria-label="Remove account"
                     onClick={() => onClick()}
                     disabled={!editing}
-                    fill={'var(--m-text)'}
                 />
             </Tooltip>
         </div >

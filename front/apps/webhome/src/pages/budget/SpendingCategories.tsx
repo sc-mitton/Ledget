@@ -498,6 +498,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     const [disabledOptions, setDisabledOptions] = useState<(typeof windowOptions[number])[]>()
     const [window, setWindow] = useState<string>()
     const [showEditCategoryModal, setShowEditCategoryModal] = useState(false)
+    const { screenSize } = useScreenContext()
 
     // Initial fetching Transactions
     useEffect(() => {
@@ -655,7 +656,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                 />}
             <Options />
             <h2>{`${category.emoji}`}&nbsp;&nbsp;{`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
-            <div className="grid">
+            <div className={`category-detail ${screenSize === 'small' ? 'small' : ''}`}>
                 <div>
                     <ResponsiveLineContainer>
                         {window && <WindowSelection />}
@@ -734,7 +735,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                                         }
                                                     />
                                                 </div>
-                                                <ArrowIcon rotation={-90} size={'.875em'} />
+                                                <ArrowIcon rotation={-90} size={'.75em'} />
                                             </div>
                                         </div>
                                     ))}

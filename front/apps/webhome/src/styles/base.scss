@@ -249,12 +249,12 @@ button:focus-visible {
     box-shadow: var(--accessible-focus-drop-shadow);
 }
 
-@media screen and (max-width: 450px) {
-    .dashboard {
-        padding: .5em;
-        width: calc(100% - .5em);
-    }
-}
+// @media screen and (max-width: 450px) {
+//     .dashboard {
+//         padding: .5em;
+//         width: calc(100% - .5em);
+//     }
+// }
 
 /* --------------------------------- Windows & Dashboard -------------------------------- */
 

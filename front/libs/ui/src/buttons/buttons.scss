@@ -130,12 +130,10 @@
 }
 
 .btn-icon3 {
-    svg {
-        opacity: .5;
-    }
+    color: var(--m-text-tirtiary);
 
-    &:hover svg {
-        opacity: 1;
+    &:hover {
+        color: var(--m-text);
     }
 }
 
@@ -285,17 +283,21 @@
 }
 
 .btn-faded-text {
-    opacity: .8;
+    color: var(--m-text-tirtiary);
+    transition: all .3s ease;
 
     * {
-        opacity: .8;
+        color: var(--m-text-tirtiary);
+        transition: all .3s ease;
     }
 
     &:hover {
-        opacity: 1;
+        color: var(--m-text);
+        transition: all .3s ease;
 
         * {
-            opacity: 1;
+            color: var(--m-text);
+            transition: all .3s ease;
         }
     }
 
@@ -873,6 +875,7 @@ button.disabled-hover:hover svg {
     padding: .375em;
     border-radius: 50%;
     border: none;
+    z-index: 5;
 }
 
 /* Zipper Button */

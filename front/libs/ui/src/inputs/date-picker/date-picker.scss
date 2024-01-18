@@ -55,7 +55,7 @@
         position: absolute;
         right: .75em;
         top: 50%;
-        transform: translateY(calc(-50% - .0625em));
+        transform: translateY(calc(-50%));
         min-height: 50%;
         opacity: 1;
         transition: opacity .2s ease-in-out;

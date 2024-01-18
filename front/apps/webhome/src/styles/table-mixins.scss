@@ -1,4 +1,4 @@
-@mixin table-dividers($bottom: -0.5em, $dashed: true) {
+@mixin table-dividers($bottom: -0.5em, $dashed: true, $width: 1.4px) {
     &:not(.month-header)::after {
         content: '';
         position: absolute;
@@ -8,11 +8,11 @@
         height: 1px;
 
         @if $dashed {
-            border-bottom: 1.4px dashed var(--border-color);
+            border-bottom: $width dashed var(--border-color);
         }
 
         @else {
-            border-bottom: 1.4px solid var(--border-color);
+            border-bottom: $width solid var(--border-color);
         }
     }
 }

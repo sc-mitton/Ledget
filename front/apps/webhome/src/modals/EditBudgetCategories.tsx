@@ -162,7 +162,7 @@ const Categories = ({ period, setDeletedItems }: {
                             {!item?.is_default &&
                                 <DeleteButton
                                     show={true}
-                                    stroke={'var(--inner-window)'}
+                                    stroke={'var(--m-text)'}
                                     onClick={() => {
                                         deleteButtonHandler(item, setItems, setDeletedItems, order)
                                     }}
