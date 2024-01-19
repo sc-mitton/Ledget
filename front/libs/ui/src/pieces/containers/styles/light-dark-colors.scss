@@ -98,21 +98,20 @@
         // Windows
         --window-background-color: hsl(0, 0%, 2%);
         --window-background-color-portal: hsl(0, 0%, 8%);
-        --window: hsl(0, 0%, 7%);
-        --window2: hsl(0, 0%, 10%);
+        --window: hsl(0, 0%, 8%);
+        --window2: hsl(0, 0%, 11%);
         // --window-border: hsl(0, 0%, 10%);
         --window-rgb: 28, 28, 28;
         --header-background: hsl(240, 38%, 3%);
-
         --side-window: hsl(0, 0%, 5%);
 
-        --inner-window: hsl(0, 0%, 15%);
+        --inner-window: hsl(0, 0%, 12%);
         --inner-window-rgb: 13, 13, 13;
         --overlay: hsl(0, 0%, 10%);
 
         --wafer-background: hsl(0, 0%, 3%);
-        --dropdown-background: hsl(0, 0%, 10%);
-        --dropdown-item-background: hsl(0, 0%, 26%);
+        --dropdown-background: hsl(0, 0%, 12%);
+        --dropdown-item-background: hsl(0, 0%, 22%);
 
         // --new-item-border: hsl(0, 0%, 11%);
 
@@ -141,22 +140,22 @@
 
         // Icons & Buttons
         --icon-full: var(--m-text);
-        --icon-light-light-gray: hsl(0, 0%, 14%);
-        --icon-light-gray: hsl(0, 0%, 12%);
-        --icon-hover-light-gray: hsl(0, 0%, 18%);
-        --icon-hover-gray: hsl(0, 0%, 40%);
+        --icon-light-light-gray: hsl(0, 0%, 21%);
+        --icon-light-gray: hsl(0, 0%, 18%);
+        --icon-hover-light-gray: hsl(0, 0%, 19%);
+        --icon-hover-gray: hsl(0, 0%, 41%);
 
-        --btn-gray: hsl(0, 0%, 12%);
-        --btn-gray-hover: hsl(0, 0%, 14%);
-        --btn-mid-gray: hsl(0, 0%, 50%);
-        --btn-mid-gray-hover: hsl(0, 0%, 40%);
+        --btn-gray: hsl(0, 0%, 13%);
+        --btn-gray-hover: hsl(0, 0%, 15%);
+        --btn-mid-gray: hsl(0, 0%, 51%);
+        --btn-mid-gray-hover: hsl(0, 0%, 42%);
         --btn-dark: hsl(0, 0%, 90%);
         --btn-dark-hover: hsl(0, 0%, 98%);
 
         --negative-pulse-outer: rgba(255, 255, 255, .5);
         --negative-pulse-inner: rgba(255, 255, 255, .7);
 
-        --transaction-hover-background: hsl(0, 0%, 9%);
+        --transaction-hover-background: hsl(0, 0%, 11%);
 
         // Drop Shadows & Borders
         // --window-drop-shadow-color: hsl(0, 0%, 20%);

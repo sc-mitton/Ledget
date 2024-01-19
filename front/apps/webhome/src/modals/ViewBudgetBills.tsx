@@ -45,7 +45,7 @@ const Bills = ({ period, onBillClick }: {
   return (
     <div className="view-all-bills" key="all-bills">
       {bills?.filter(b => b.period === period)?.length === 0
-        ? <div>No {period}ly bills to display</div>
+        ? <div style={{ opacity: .5 }}>No {period}ly bills to display</div>
         :
         <div className="bills-grid">
           {bills?.filter(b => b.period === period).map((bill) => (

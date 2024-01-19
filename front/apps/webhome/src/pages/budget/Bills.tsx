@@ -273,6 +273,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                         </div>
                     )
                 })}
+
         </div>
     )
 }
