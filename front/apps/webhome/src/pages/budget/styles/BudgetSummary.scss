@@ -1,106 +1,103 @@
+#month-picker--container {
+    position: absolute;
+    top: 1em;
+    margin-left: -.25em;
+}
+
 .budget-summary--container {
     margin: 1.5em 0 1em 0;
     display: flex;
     align-items: flex-end;
+    flex-wrap: wrap;
+    gap: .875em;
+    mask-image: linear-gradient(to right, black 0%, black 90%, transparent);
+    overflow: hidden;
 
-    #month-picker--container {
-        position: absolute;
-        top: 1em;
-        margin-left: -.25em;
+    &>div:first-child {
+        margin-right: 1em;
+
+        h2,
+        h3 {
+            color: var(--m-text-quaternary);
+            font-weight: var(--fw-regular);
+        }
+
+        &>div {
+            font-size: 2.25rem;
+            line-height: 2.625rem;
+
+            * {
+                color: var(--m-text-secondary);
+            }
+        }
     }
 
-    #budget-summary {
+
+    &>div:last-child {
         display: flex;
-        align-items: flex-end;
-        flex-wrap: wrap;
-        gap: .875em;
+        align-items: baseline;
+        gap: 1.5em;
+        margin-left: .125em;
+        flex-grow: 1;
 
-        &>div:first-child {
-            margin-right: 1em;
-
-            h2,
-            h3 {
-                color: var(--m-text-quaternary);
-                font-weight: var(--fw-regular);
-            }
-
-            &>div {
-                font-size: 2.25rem;
-                line-height: 2.625rem;
-
-                * {
-                    color: var(--m-text-secondary);
-                }
-            }
-        }
-
-
-        &>div:last-child {
+        &>div:nth-child(-n+3) {
+            font-size: 1.375rem;
+            gap: .25em;
             display: flex;
             align-items: baseline;
-            gap: 1.5em;
-            margin-left: .125em;
+            position: relative;
 
-            &>div:nth-child(-n+3) {
-                font-size: 1.375rem;
-                gap: .25em;
-                display: flex;
-                align-items: baseline;
-                position: relative;
+            * {
+                color: var(--m-text-secondary);
+            }
 
-                * {
-                    color: var(--m-text-secondary);
-                }
+            @mixin dot($color-var) {
+                margin-left: .75em;
 
-                @mixin dot($color-var) {
-                    margin-left: .75em;
-
-                    &::before {
-                        content: '';
-                        position: absolute;
-                        top: 50%;
-                        transform: translateY(-50%);
-                        left: -.75em;
-                        width: .5rem;
-                        height: .5rem;
-                        border-radius: 50%;
-                        background-color: var($color-var);
-                    }
-                }
-
-                &:nth-last-child(3) {
-                    // * {
-                    //     color: var(--main-sat);
-                    // }
-
-                    @include dot(--main-sat);
-                }
-
-                &:nth-last-child(2) {
-
-                    // * {
-                    //     color: var(--secondary-sat);
-                    // }
-
-                    @include dot(--secondary-sat);
-                }
-
-                &:last-child {
-                    span:first-child {
-                        font-size: 1.25rem;
-                    }
-
-                    @include dot(--icon-hover-light-gray);
-                }
-
-                &>span:last-child {
-                    color: var(--m-text-quaternary);
-                    // color: var(--m-text-tirtiary);
-                    white-space: nowrap;
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    left: -.75em;
+                    width: .5rem;
+                    height: .5rem;
+                    border-radius: 50%;
+                    background-color: var($color-var);
                 }
             }
-        }
 
+            &:nth-last-child(3) {
+                // * {
+                //     color: var(--main-sat);
+                // }
+
+                @include dot(--main-sat);
+            }
+
+            &:nth-last-child(2) {
+
+                // * {
+                //     color: var(--secondary-sat);
+                // }
+
+                @include dot(--secondary-sat);
+            }
+
+            &:last-child {
+                span:first-child {
+                    font-size: 1.25rem;
+                }
+
+                @include dot(--icon-hover-light-gray);
+            }
+
+            &>span:last-child {
+                color: var(--m-text-quaternary);
+                // color: var(--m-text-tirtiary);
+                white-space: nowrap;
+            }
+        }
     }
 
 }

@@ -48,11 +48,11 @@ const BudgetSummary = () => {
     }, [start, end])
 
     return (
-        <div className="budget-summary--container">
+        <>
             <div id="month-picker--container">
                 <MonthPicker />
             </div>
-            <div id="budget-summary">
+            <div className="budget-summary--container">
                 <div>
                     <h2>Total Spent</h2>
                     <div>
@@ -87,7 +87,7 @@ const BudgetSummary = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
