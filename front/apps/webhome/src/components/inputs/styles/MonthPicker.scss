@@ -13,10 +13,11 @@
             font-size: 1rem;
             line-height: 1em;
             padding: .25em;
-            opacity: .8;
+            color: var(--m-secondary-quaternary);
+            font-weight: var(--fw-bold);
 
             &:hover {
-                opacity: 1;
+                opacity: var(--m-text);
             }
         }
     }

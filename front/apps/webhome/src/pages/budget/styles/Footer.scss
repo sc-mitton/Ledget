@@ -14,6 +14,10 @@
         &:first-child {
             cursor: pointer;
 
+            &>span {
+                color: var(--m-text-tirtiary);
+            }
+
             &>div {
                 opacity: 0;
                 display: flex;

@@ -35,7 +35,7 @@ $background: var(--window);
     justify-content: flex-start;
     // Aprx. 5 rows
     // the 2em comes from the bottom buttons space
-    min-height: calc(4 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em);
+    min-height: calc(3.5 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em);
     position: relative;
 
     h2 {

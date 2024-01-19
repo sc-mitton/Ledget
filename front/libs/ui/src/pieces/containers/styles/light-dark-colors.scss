@@ -106,7 +106,7 @@
 
         --side-window: hsl(0, 0%, 5%);
 
-        --inner-window: hsl(0, 0%, 10%);
+        --inner-window: hsl(0, 0%, 15%);
         --inner-window-rgb: 13, 13, 13;
         --overlay: hsl(0, 0%, 10%);
 
@@ -141,10 +141,10 @@
 
         // Icons & Buttons
         --icon-full: var(--m-text);
-        --icon-light-light-gray: hsl(0, 0%, 20%);
-        --icon-light-gray: hsl(0, 0%, 18%);
-        --icon-hover-light-gray: hsl(0, 0%, 24%);
-        --icon-hover-gray: hsl(0, 0%, 48%);
+        --icon-light-light-gray: hsl(0, 0%, 14%);
+        --icon-light-gray: hsl(0, 0%, 12%);
+        --icon-hover-light-gray: hsl(0, 0%, 18%);
+        --icon-hover-gray: hsl(0, 0%, 40%);
 
         --btn-gray: hsl(0, 0%, 12%);
         --btn-gray-hover: hsl(0, 0%, 14%);
@@ -211,8 +211,8 @@
         --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 47%));
         --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), calc(var(--main-color-l) + 40%));
 
-        --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 40%));
-        --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 30%));
+        --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 30%));
+        --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 20%));
 
         --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
@@ -245,7 +245,7 @@
         // --window-border: hsl(0, 0%, 94%);
         --side-window: hsl(0, 0%, 92%);
         --inner-window: hsl(0, 0%, 93%);
-        --window2: hsl(0, 0%, 88%);
+        --window2: hsl(0, 0%, 90%);
         --inner-window-rgb: 246, 246, 246;
         --overlay: hsl(0, 0%, 20%);
 
@@ -316,7 +316,7 @@
         --toast-box-shadow: var(--mid-elevation-drop-shadow);
 
         --border-color-dimmest: rgb(0, 0, 0, .06);
-        --border-color: rgb(0, 0, 0, .08);
+        --border-color: rgb(0, 0, 0, .09);
         --institution-logo-border: rgb(0, 0, 0, .2);
         --toast-border: transparent;
         --gray-button-border: hsl(0, 0%, 86%);

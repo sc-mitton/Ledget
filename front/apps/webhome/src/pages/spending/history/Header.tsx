@@ -340,7 +340,7 @@ const HistoryHeader = () => {
                 </div>
                 {transitions((styles, item) => item && (
                     <animated.div
-                        className={`filter-window ${screenSize === 'large' ? 'large' : ''}`}
+                        className={`filter-window ${screenSize === 'extra-large' ? 'extra-large' : ''}`}
                         style={styles}
                     >
                         <animated.div style={containerStyles}>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { useSpring, useSpringRef } from '@react-spring/web'
 import { useSchemeVar } from '@ledget/ui'
 
@@ -55,7 +55,7 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
     api.start()
   }, [selectorWidth, selectorHeight, selectorLeft, selectorTop])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (selectors.length > 0) {
       const element = selectors.find(find)
       if (element) {

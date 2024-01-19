@@ -101,7 +101,7 @@ const App = () => {
                                 <Route path="welcome/*" element={<OnboardingModal />} />
                             </Route>
                             <Route path="spending" element={
-                                screenSize !== 'large' ? <Spending /> : <Navigate to="/budget" />
+                                screenSize !== 'extra-large' ? <Spending /> : <Navigate to="/budget" />
                             } />
                             <Route path="accounts/*" element={<Accounts />} />
                             <Route path="profile/*" element={<Profile />} />

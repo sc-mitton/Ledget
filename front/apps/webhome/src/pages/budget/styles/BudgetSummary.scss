@@ -1,7 +1,6 @@
 .budget-summary--container {
-    margin-top: .625em;
+    margin: 1.5em 0 1em 0;
     display: flex;
-    gap: 3em;
     align-items: flex-end;
 
     #month-picker--container {
@@ -14,14 +13,15 @@
         display: flex;
         align-items: flex-end;
         flex-wrap: wrap;
-        gap: .75em;
+        gap: .875em;
 
         &>div:first-child {
             margin-right: 1em;
 
             h2,
             h3 {
-                color: var(--m-text-quinary);
+                color: var(--m-text-quaternary);
+                font-weight: var(--fw-regular);
             }
 
             &>div {
@@ -38,8 +38,8 @@
         &>div:last-child {
             display: flex;
             align-items: baseline;
-            gap: 2.75em;
-            margin-left: 1.5em;
+            gap: 1.5em;
+            margin-left: .125em;
 
             &>div:nth-child(-n+3) {
                 font-size: 1.5rem;
@@ -52,25 +52,37 @@
                     color: var(--m-text-secondary);
                 }
 
-                @mixin dot {
-                    content: '';
-                    position: absolute;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    left: -.75em;
-                    width: .5rem;
-                    height: .5rem;
-                    border-radius: 50%;
+                @mixin dot($color-var) {
+                    margin-left: .75em;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        left: -.75em;
+                        width: .5rem;
+                        height: .5rem;
+                        border-radius: 50%;
+                        background-color: var($color-var);
+                    }
                 }
 
-                &:nth-last-child(3)::before {
-                    @include dot;
-                    background-color: var(--main-sat);
+                &:nth-last-child(3) {
+                    // * {
+                    //     color: var(--main-sat);
+                    // }
+
+                    @include dot(--main-sat);
                 }
 
-                &:nth-last-child(2)::before {
-                    @include dot;
-                    background-color: var(--secondary-sat);
+                &:nth-last-child(2) {
+
+                    // * {
+                    //     color: var(--secondary-sat);
+                    // }
+
+                    @include dot(--secondary-sat);
                 }
 
                 &:last-child {
@@ -78,14 +90,12 @@
                         font-size: 1.25rem;
                     }
 
-                    &::before {
-                        @include dot;
-                        background-color: var(--btn-mid-gray);
-                    }
+                    @include dot(--icon-hover-light-gray);
                 }
 
                 &>span:last-child {
                     color: var(--m-text-quaternary);
+                    // color: var(--m-text-tirtiary);
                     white-space: nowrap;
                 }
             }
