@@ -8,6 +8,10 @@
     position: relative;
     padding: .125em .125em .15em .125em;
 
+    &.sm-size>button {
+        padding: 0 .75rem;
+    }
+
     &>button {
         flex: 1;
         display: flex;

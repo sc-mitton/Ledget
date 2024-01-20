@@ -58,7 +58,7 @@ $wafer-container-padding: .75rem;
 .account-wafers,
 .skeleton-wafers {
     display: inline-flex;
-    height: calc($wafer-height + 2 * $wafer-container-padding - .25em);
+    height: calc($wafer-height + 2 * $wafer-container-padding);
     gap: .75em;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -507,9 +507,9 @@ $borderRadius2: var(--border-radius2);
             align-items: baseline;
 
             &>div:first-child {
-                background-color: var(--icon-light-gray);
                 padding: 0 .375em;
                 border-radius: var(--border-radius1);
+                order: 1;
 
                 button {
                     display: flex;
@@ -518,7 +518,8 @@ $borderRadius2: var(--border-radius2);
             }
 
             &>div:last-child {
-                font-size: 1.125em;
+                font-size: 1.5em;
+                order: 0;
             }
         }
 
