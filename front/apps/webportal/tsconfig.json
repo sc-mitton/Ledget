@@ -9,8 +9,7 @@
       "vite/client",
       "vitest"
     ],
-    "module": "es2022",
-    "moduleResolution": "Node",
+    "baseUrl": ".",
     "paths": {
       "@features/*": [
         "src/features/*"
@@ -28,16 +27,16 @@
         "../../libs/ory/src"
       ],
     },
-    "files": [],
-    "include": [],
-    "references": [
-      {
-        "path": "./tsconfig.app.json"
-      },
-      {
-        "path": "./tsconfig.spec.json"
-      }
-    ],
-    "extends": "../../tsconfig.base.json"
-  }
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
+  "extends": "../../tsconfig.base.json"
 }

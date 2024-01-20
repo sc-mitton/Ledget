@@ -80,7 +80,7 @@ export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], c
       marginBottom: '8px',
     },
     leave: {
-      to: async (next, cancel) => {
+      to: async (next: any) => {
         await next({ opacity: 0, transform: 'translateX(50%)' })
         await next({
           maxHeight: '0px',

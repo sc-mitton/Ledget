@@ -20,6 +20,22 @@ importers:
 
   ../..: {}
 
+  ../../dist/apps/webhome: {}
+
+  ../../dist/apps/webportal: {}
+
+  ../../dist/libs/media: {}
+
+  ../../dist/libs/ory: {}
+
+  ../../dist/libs/ui: {}
+
+  ../../libs/media: {}
+
+  ../../libs/ory: {}
+
+  ../../libs/ui: {}
+
   ../webhome: {}
 
 packages:

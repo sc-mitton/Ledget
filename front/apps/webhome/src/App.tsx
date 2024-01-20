@@ -1,15 +1,23 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, lazy, Suspense } from 'react'
 
 import { Routes, Outlet, Navigate, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import "./styles/base.scss";
 import Header from './Header'
+import NotFound from '@pages/notFound/NotFound'
+
+//`
 import Budget from '@pages/budget/Window'
 import Spending from '@pages/spending/Window'
+
+//
 import Profile from '@pages/profile/Window'
+
+//
 import Accounts from '@pages/accounts/Window'
-import NotFound from '@pages/notFound/NotFound'
+
+
 import {
     ZoomMotionDiv,
     Toast,

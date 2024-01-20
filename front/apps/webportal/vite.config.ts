@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import path from 'path';
 import fs from 'fs';
+import { visualizer } from "rollup-plugin-visualizer";
 
 const certsDir = __dirname + '/../../certs/';
 
@@ -36,7 +37,7 @@ export default defineConfig({
     }
   },
 
-  plugins: [react(), nxViteTsPaths()],
+  plugins: [react(), nxViteTsPaths(), visualizer()],
 
   resolve: {
     alias: {

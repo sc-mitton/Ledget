@@ -6,7 +6,7 @@ $window-padding: $bill-flex-grid-gap;
 
 $row-padding: .375em;
 $label-padding: calc($row-padding/2) .75em;
-$column-gap: 2em;
+$column-gap: 1.5em;
 $background: var(--window);
 
 
@@ -96,6 +96,7 @@ $background: var(--window);
         grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
         height: min-content;
         position: relative;
+        scrollbar-width: none;
 
         &:first-child button {
             // padding: .125em 0;
@@ -143,7 +144,6 @@ $background: var(--window);
             // cover 2-5 columns
             // grid-column: 2 / span ;
             text-align: right;
-            padding-right: .25em;
         }
 
         &.header {
