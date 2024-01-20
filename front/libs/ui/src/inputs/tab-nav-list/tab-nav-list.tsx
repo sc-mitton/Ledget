@@ -8,9 +8,8 @@ import { usePillAnimation } from '../../animations/use-pill-animation/use-pill-a
 import useSchemeVar from '../../utils/hooks/use-scheme-var/use-scheme-var';
 
 
-
 interface TabStyle {
-  pillColor: string,
+  pillColor?: string,
   pillBackgroundColor: string,
   tabColor: string,
   tabBackgroundColor: string,
@@ -21,11 +20,12 @@ interface TabNavListProps {
   labels: string[] | React.ReactNode[],
   className?: string,
   theme?: TabStyle | TabStyle[]
+  size?: 'sm' | 'auto'
 }
 
 export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDivElement>) {
   const ref = useRef<HTMLDivElement>(null)
-  const { labels, className, theme, ...rest } = props
+  const { labels, className, theme, size = 'auto', ...rest } = props
   const defaultBackgroundColor = useSchemeVar('--inner-window')
 
   const [pillProps, api] = usePillAnimation({
@@ -55,7 +55,7 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
     <>
       <Tab.List
         ref={ref} {...rest}
-        className={`tab-list-div ${className ? className : ''}`}
+        className={`tab-list-div ${className ? className : ''} ${size ? `${size}-size` : ''}`}
         style={{
           ...(theme && Array.isArray(theme)
             ? {
