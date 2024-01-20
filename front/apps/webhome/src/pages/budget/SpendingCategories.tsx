@@ -168,12 +168,15 @@ const Row = ({ category }: { category: Category }) => {
                     </div>
                 </>
                 :
-                <div className="spanned">
-                    <DollarCents
-                        value={category.amount_spent ? Big(category.amount_spent).times(100).toNumber() : '0.00'}
-                        withCents={false}
-                    />
-                </div>
+                <>
+                    <div className="spanned">
+                        <DollarCents
+                            value={category.amount_spent ? Big(category.amount_spent).times(100).toNumber() : '0.00'}
+                            withCents={false}
+                        />
+                    </div>
+                    <div /><div /><div />
+                </>
             }
         </div>
     )
@@ -255,11 +258,9 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
                     <Plus size={'.8em'} stroke={'currentColor'} />
                 </IconButton>
             </div>
-            <AnimatedDollarCents value={totalSpent ? totalSpent : 0} />
+            <div><AnimatedDollarCents value={totalSpent ? totalSpent : 0} /></div>
             <div>/</div>
-            <div>
-                <DollarCents value={totalLimit ? totalLimit : '0.00'} withCents={false} />
-            </div>
+            <div><DollarCents value={totalLimit ? totalLimit : '0.00'} withCents={false} /></div>
             <div>
                 <StaticProgressCircle
                     color={period === 'year' ? 'green' : 'blue'}
@@ -305,25 +306,18 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
     const TotalRow = ({ selectedIndex }: { selectedIndex: number }) => (
         <div className='row total header'>
             <div><h4>Total</h4></div>
-            <div>
-                <DollarCents
-                    value={
-                        selectedIndex === 0
-                            ? monthly_spent || '0.00'
-                            : yearly_spent || '0.00'
-                    }
-                />
-            </div>
+            <div><div>
+                <DollarCents value={selectedIndex === 0 ? monthly_spent || '0.00' : yearly_spent || '0.00'} />
+            </div></div>
             <div>/</div>
-            <div>
-                <DollarCents
-                    value={
-                        selectedIndex === 0
-                            ? limit_amount_monthly ? limit_amount_monthly : '0.00'
-                            : limit_amount_yearly ? limit_amount_yearly : '0.00'
-                    }
-                    withCents={false}
-                />
+            <div> <DollarCents
+                value={
+                    selectedIndex === 0
+                        ? limit_amount_monthly ? limit_amount_monthly : '0.00'
+                        : limit_amount_yearly ? limit_amount_yearly : '0.00'
+                }
+                withCents={false}
+            />
             </div>
             <div>
                 <StaticProgressCircle

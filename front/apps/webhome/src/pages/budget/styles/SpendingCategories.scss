@@ -14,7 +14,8 @@ $background: var(--window);
     padding-top: 0;
     position: sticky;
     top: 0;
-    height: calc(auto + .5em);
+    // height: calc(auto + .5em);
+    height: 1.25em;
     background-color: $background;
     padding-bottom: .5em;
     z-index: 1;
@@ -52,8 +53,7 @@ $background: var(--window);
         }
 
         .row.header>div:first-child {
-            flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
             gap: .25em;
         }
     }
@@ -91,10 +91,9 @@ $background: var(--window);
         padding: 0 .125em;
         padding-bottom: .5em;
         max-height: 100%;
-        display: flex;
-        flex-direction: column;
-
-        gap: $item-row-gap;
+        display: grid;
+        grid-template-columns: 1fr minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
+        height: min-content;
         position: relative;
 
         &:first-child button {
@@ -109,11 +108,22 @@ $background: var(--window);
     }
 
     .row {
-        display: flex;
+        display: contents;
         transition: all .2s ease-in-out;
+
+        // All cells
+        &>div {
+            white-space: nowrap;
+            align-self: center;
+            height: 100%;
+        }
 
         &:not(.header) {
             transform: translateY(-.5em);
+
+            &>div {
+                margin: calc($item-row-gap / 2) 0;
+            }
         }
 
         &:first-child>div {
@@ -130,17 +140,20 @@ $background: var(--window);
 
         &>div.spanned {
             // cover 2-5 columns
+            // grid-column: 2 / span ;
             text-align: right;
-            padding-right: 2.75em;
+            padding-right: .25em;
         }
 
         &.header {
             cursor: default;
-            display: flex;
             align-items: center;
             font-weight: var(--fw-regular);
             z-index: 1;
-            @include header-styles;
+
+            &>div {
+                @include header-styles;
+            }
 
             &>div.monthly h4,
             &>div.monthly {
@@ -219,8 +232,7 @@ $background: var(--window);
         // Amount spent columns
         &>div:nth-child(5n+2):not(.spanned) {
             display: flex;
-            text-align: right;
-            align-items: baseline;
+            align-items: center;
             justify-content: flex-end;
             padding-right: .25em;
         }
@@ -252,13 +264,7 @@ $background: var(--window);
             position: relative;
             z-index: 0;
 
-            &::after {
-                content: "";
-                height: 1px;
-                position: absolute;
-                bottom: -.625em;
-                border-bottom: 1.25px dashed var(--border-color);
-            }
+            @include table-dividers(0);
 
             &:first-child::after {
                 left: .375em;
@@ -269,11 +275,6 @@ $background: var(--window);
                 left: 0;
                 right: 0;
             }
-
-            // &:last-of-type::after {
-            //     left: 0;
-            //     right: .75em;
-            // }
         }
     }
 
@@ -332,6 +333,11 @@ $background: var(--window);
 
     .category-detail {
         display: flex;
+        @include outermost-div-placement-styling;
+        padding: 0 .25em;
+        margin-top: 1.25em;
+        gap: 2em;
+        color: var(--main-hlight);
 
         &.small {
             flex-direction: column;
@@ -339,6 +345,11 @@ $background: var(--window);
 
             &>div {
                 max-height: 50%;
+                max-width: 30em;
+
+                &:last-child {
+                    justify-content: flex-start;
+                }
             }
         }
 
@@ -347,11 +358,30 @@ $background: var(--window);
                 flex: 1;
                 margin: 1em 0;
                 position: relative;
-                @include table-dividers(-3em, false, 2px);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                &>div {
+                    max-height: 20em;
+                }
+
+                .chart-window-selectors {
+                    z-index: 10;
+                    top: .25em;
+                    position: absolute;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                }
             }
 
             &:last-child {
                 flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
             }
         }
     }
@@ -364,47 +394,6 @@ $background: var(--window);
         z-index: 100;
         color: var(--m-text-tirtiary);
         text-align: center;
-    }
-
-    // Graph and list of transactions container
-    &>div:last-of-type {
-        @include outermost-div-placement-styling;
-        padding: 0 .25em;
-        margin-top: 1.25em;
-        gap: 2em;
-        color: var(--main-hlight);
-
-        &>div {
-            max-width: 30em;
-        }
-
-        // Chart
-        &>div:first-child {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-
-            &>div {
-                max-height: 20em;
-            }
-
-            .chart-window-selectors {
-                z-index: 10;
-                top: .25em;
-                position: absolute;
-                width: 100%;
-                display: flex;
-                justify-content: center;
-            }
-        }
-
-        &>div:last-child {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
     }
 
     .shimmer-div--container {
