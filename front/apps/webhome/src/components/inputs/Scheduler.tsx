@@ -1,18 +1,25 @@
 import React, { FC, useState, useEffect, useRef, useContext, createContext } from 'react'
 
 import { UseFormRegister, FieldError } from 'react-hook-form'
+import dayjs from 'dayjs'
+import { Tab } from '@headlessui/react'
 
 import './styles/Dropdowns.css'
 import './styles/Scheduler.scss'
-import Radios from './Radios'
 import type { Bill } from '@features/billSlice'
 import { useClickClose } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
-import { SlimmestInputButton, InputButton, FormErrorTip, DropDownDiv, getDaySuffix } from '@ledget/ui'
+import {
+    SlimmestInputButton,
+    InputButton,
+    FormErrorTip,
+    DropDownDiv,
+    getDaySuffix,
+    useSchemeVar,
+    TabNavList
+} from '@ledget/ui'
 import { Calendar } from '@ledget/media'
 
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-const dayMap = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 interface Context extends Pick<Bill, 'day' | 'week' | 'month'> {
     open: boolean,
@@ -79,9 +86,9 @@ const Button: FC<React.HTMLAttributes<HTMLButtonElement> & { iconPlaceholder?: b
 
     useEffect(() => {
         if (month && day) {
-            setPlaceholder(`${months[month]} ${day}${getDaySuffix(day)}`)
+            setPlaceholder(`${dayjs().month(month - 1).format('MMM')} ${day}${getDaySuffix(day)}`)
         } else if (week && weekDay) {
-            setPlaceholder(`${week}${getDaySuffix(week)} ${dayMap[weekDay]}`)
+            setPlaceholder(`${week}${getDaySuffix(week)} ${dayjs().day(weekDay).format('ddd')}`)
         } else if (day) {
             setPlaceholder(`The ${day}${getDaySuffix(day)}`)
         }
@@ -132,51 +139,6 @@ const options = [
     { label: 'Week', value: 'week', default: false },
 ]
 
-const ModeSelector = ({ mode, setMode }: {
-    mode: typeof options[number]['value'],
-    setMode: React.Dispatch<React.SetStateAction<typeof options[number]['value']>>
-}) => {
-
-    return (
-        <Radios
-            value={mode}
-            onChange={setMode}
-            style={{
-                borderRadius: 'var(--border-radius2)',
-                backgroundColor: 'none',
-                display: 'inline-block',
-            }}
-        >
-            <Radios.Pill styles={{
-                backgroundColor: 'var(--btn-mid-gray)',
-                borderRadius: 'var(--border-radius2)'
-            }} />
-            {options.map((option) => (
-                <Radios.Input
-                    key={option.value}
-                    option={option}
-                    style={{
-                        padding: '0 .75em',
-                        cursor: 'pointer'
-                    }}
-                >
-                    {({ selected }: { selected: any }) => (
-                        <span
-                            style={{
-                                color: selected
-                                    ? 'var(--m-invert-text)'
-                                    : 'var(--m-text-tirtiary)',
-                                fontWeight: '400'
-                            }}
-                        >
-                            {option.label}
-                        </span>
-                    )}
-                </Radios.Input>
-            ))}
-        </Radios>
-    )
-}
 
 // How many days are in each month
 const daysMap = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] as const
@@ -515,12 +477,10 @@ const DayWeekPicker = () => {
     } = usePickerContext()
 
     const ref = useRef<HTMLDivElement>(null)
-    const [mode, setMode] = useState<typeof options[number]['value']>('day')
+    const pillBackgroundColor = useSchemeVar('--btn-mid-gray-hover')
 
     useEffect(() => {
-        open
-            ? ref.current?.focus()
-            : ref.current?.blur()
+        open ? ref.current?.focus() : ref.current?.blur()
     }, [open])
 
     useClickClose({
@@ -542,34 +502,39 @@ const DayWeekPicker = () => {
     // Clear other inputs different mode's
     // inputs are entered
     useEffect(() => {
-        if (week || weekDay) {
+        if (week || weekDay)
             setDay(undefined)
-        }
-        if (week && weekDay) {
+        if (week && weekDay)
             setOpen(false)
-        }
     }, [weekDay, week])
 
     return (
         <>
-            <DropDownDiv
-                placement='left'
-                visible={open}
-                id="schedule-dropdown"
-            >
-                <div
-                    ref={ref}
-                    onKeyDown={(event) => {
-                        event.stopPropagation()
-                        if (event.key === 'Escape') {
-                            setOpen(false)
-                        }
-                    }}
-                >
-                    <ModeSelector mode={mode} setMode={setMode} />
-                    {mode === 'day' && <DayPicker />}
-                    {mode === 'week' && <WeekPicker />}
-                </div>
+            <DropDownDiv placement='left' visible={open} id="schedule-dropdown">
+                <Tab.Group as='div' ref={ref} defaultIndex={(week && weekDay) ? 1 : 0}>
+                    {({ selectedIndex }) => (
+                        <>
+                            <TabNavList
+                                size='sm'
+                                selectedIndex={selectedIndex}
+                                labels={['Day', 'Week']}
+                                theme={{
+                                    pillBackgroundColor: pillBackgroundColor || 'black',
+                                    tabColor: 'inherit',
+                                    tabBackgroundColor: 'transparent'
+                                }}
+                            />
+                            <Tab.Panels>
+                                <Tab.Panel>
+                                    <DayPicker />
+                                </Tab.Panel>
+                                <Tab.Panel>
+                                    <WeekPicker />
+                                </Tab.Panel>
+                            </Tab.Panels>
+                        </>
+                    )}
+                </Tab.Group>
             </DropDownDiv>
         </>
     )
@@ -580,11 +545,6 @@ const MonthPicker = () => {
 
     const [activeMonth, setActiveMonth] = useState<typeof month>()
     const ref = useRef<HTMLDivElement>(null)
-
-    const translateMonthNumber = (monthNumber: typeof month) => {
-        // Lookup table
-        return monthNumber ? months[monthNumber] : months[1]
-    }
 
     const Month = ({ monthNumber }: { monthNumber: typeof month }) => (
         <li>
@@ -600,7 +560,7 @@ const MonthPicker = () => {
                 aria-selected={`${month === monthNumber}`}
                 tabIndex={-1}
             >
-                {translateMonthNumber(monthNumber)}
+                {monthNumber && `${dayjs().month(monthNumber - 1).format('MMM')}`}
             </div>
         </li>
     )
@@ -777,8 +737,7 @@ export const BillScheduler = (props: BSP) => {
             >
                 <div id="scheduler--container">
                     <Scheduler.Button iconPlaceholder={props.iconPlaceholder}>
-                        {error &&
-                            <FormErrorTip error={{ type: 'required' }} />}
+                        {error && <FormErrorTip error={{ type: 'required' }} />}
                     </Scheduler.Button>
                     <div>
                         {billPeriod === 'month'
