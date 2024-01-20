@@ -252,7 +252,7 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
                         { state: { period: period } }
                     )
                 }}>
-                    <Plus size={'.8em'} />
+                    <Plus size={'.8em'} stroke={'currentColor'} />
                 </IconButton>
             </div>
             <AnimatedDollarCents value={totalSpent ? totalSpent : 0} />

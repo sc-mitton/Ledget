@@ -217,19 +217,19 @@
         }
 
         &.selected::after {
-            opacity: .2;
+            opacity: .15;
             transition: opacity .2s ease-in-out .3s;
         }
 
         &.selected.active::after {
-            opacity: .4;
+            opacity: .3;
             transition: opacity .2s ease-in-out;
         }
 
         &.terminus-start::after,
         &.terminus-end:after,
         &.selected::after {
-            @include transition-background(var(--main-sat-darker));
+            @include transition-background(var(--main-sat));
         }
 
         &.terminus-start::after {

@@ -11,13 +11,13 @@
 
     /* Input Colors */
     --input-border: solid 1px transparent;
-    --input-border-focus: solid 1px var(--main-sat-darker);
-    --input-border-hover: solid 1px color-mix(in srgb, var(--main-dark), var(--main-hlight) 30%);
-    --input-focus-dropshadow-color: var(--main-hlight);
+    --input-border-focus: solid 1px var(--main-sat);
+    --input-border-hover: solid 1px var(--input-border-hover-color);
     --input-focus-drop-shadow: 0 0 0px 1.5px var(--input-focus-dropshadow-color);
 
     /* Text */
     --white: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 100%));
+    --black: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 100%));
 
     /* Drop Shadows & Borders */
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
@@ -71,6 +71,8 @@
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 15%), var(--main-color-l));
         --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 25%), var(--main-color-l));
 
+        --main-color-header-text: hsl(var(--main-color-h), calc(var(--main-color-s) + 25%), calc(var(--main-color-l) + 15%));
+
         --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 5%));
         --secondary-hlight: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 20%));
@@ -79,6 +81,8 @@
 
         --secondary-sat: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 15%), var(--secondary-color-l));
         --secondary-sat-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 25%), var(--secondary-color-l));
+
+        --secondary-color-header-text: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 25%), var(--secondary-color-l));
 
         --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 40%));
         --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 45%));
@@ -117,10 +121,10 @@
 
         // Inputs
         --input-background: hsl(0, 0%, 12%);
-        --input-border-color: hsl(0, 0%, 14%);
+        --input-border-hover-color: hsl(0, 0%, 20%);
+        --input-focus-dropshadow-color: color-mix(in srgb, var(--main-hlight), var(--window) 50%);
 
         // Text
-        --m-header-text: hsl(0, 0%, 98%);
         --m-text: hsl(0, 0%, 90%);
         --m-invert-text: hsl(0, 0%, 20%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), black 20%);
@@ -212,6 +216,7 @@
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 30%));
         --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 20%));
+        --main-color-header-text: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 20%));
 
         --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
@@ -221,6 +226,7 @@
 
         --secondary-sat: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 15%), calc(var(--secondary-color-l) + 20%));
         --secondary-sat-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 25%), calc(var(--secondary-color-l) + 20%));
+        --secondary-color-header-text: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 5%), calc(var(--secondary-color-l) + 15%));
 
         --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
         --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 10%));
@@ -243,7 +249,7 @@
         --window-rgb: 250, 250, 250;
         // --window-border: hsl(0, 0%, 94%);
         --side-window: hsl(0, 0%, 92%);
-        --inner-window: hsl(0, 0%, 93%);
+        --inner-window: hsl(0, 0%, 94%);
         --window2: hsl(0, 0%, 90%);
         --inner-window-rgb: 246, 246, 246;
         --overlay: hsl(0, 0%, 20%);
@@ -256,7 +262,8 @@
 
         // Inputs
         --input-background: hsl(0, 0%, 92%);
-        --input-border-color: rgba(80, 80, 80, 0.06);
+        --input-border-hover-color: hsl(0, 0%, 78%);
+        --input-focus-dropshadow-color: var(--main-hlight);
 
         // Text
         --m-header-text: hsl(0, 0%, 10%);
@@ -279,8 +286,8 @@
 
         // Icons & Buttons
         --icon-full: var(--m-text);
-        --icon-light-light-gray: hsl(0, 0%, 88%);
-        --icon-light-gray: hsl(0, 0%, 86%);
+        --icon-light-light-gray: hsl(0, 0%, 90%);
+        --icon-light-gray: hsl(0, 0%, 88%);
         --icon-hover-light-gray: hsl(0, 0%, 84%);
         --icon-hover-gray: hsl(0, 0%, 65%);
 

@@ -123,6 +123,10 @@ header {
     color: var(--white);
 }
 
+.current-nav-item a {
+    color: var(--black);
+}
+
 .nav-item a,
 .current-nav-item a {
     border-radius: var(--border-radius3);
@@ -142,7 +146,6 @@ header {
 }
 
 .current-nav-item * {
-    color: var(--header-background);
     font-weight: var(--fw-bold);
 }
 
@@ -169,14 +172,14 @@ header {
     }
 
     .nav-item {
-        opacity: .4;
+        opacity: .6;
     }
 
     .current-nav-item {
         opacity: 1;
 
-        * {
-            color: var(--m-header-text);
+        a {
+            color: var(--m-invert-text);
         }
     }
 

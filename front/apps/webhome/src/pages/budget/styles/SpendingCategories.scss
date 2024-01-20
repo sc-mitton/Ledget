@@ -14,8 +14,9 @@ $background: var(--window);
     padding-top: 0;
     position: sticky;
     top: 0;
+    height: calc(auto + .5em);
     background-color: $background;
-    box-shadow: 0px 4px 4px -2px $background;
+    padding-bottom: .5em;
     z-index: 1;
 }
 
@@ -111,6 +112,10 @@ $background: var(--window);
         display: flex;
         transition: all .2s ease-in-out;
 
+        &:not(.header) {
+            transform: translateY(-.5em);
+        }
+
         &:first-child>div {
             &.tab-nav-cell {
                 grid-column: 1 / span 5;
@@ -136,6 +141,16 @@ $background: var(--window);
             font-weight: var(--fw-regular);
             z-index: 1;
             @include header-styles;
+
+            &>div.monthly h4,
+            &>div.monthly {
+                color: var(--main-color-header-text);
+            }
+
+            &>div.yearly h4,
+            &>div.yearly {
+                color: var(--secondary-color-header-text);
+            }
 
             &:first-child {
                 padding-left: .125em;

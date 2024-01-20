@@ -12,6 +12,8 @@
     gap: .875em;
     mask-image: linear-gradient(to right, black 0%, black 90%, transparent);
     overflow: hidden;
+    flex-grow: 0;
+    flex-shrink: 0;
 
     &>div:first-child {
         margin-right: 1em;
@@ -23,8 +25,8 @@
         }
 
         &>div {
-            font-size: 2.25rem;
-            line-height: 2.625rem;
+            font-size: 2.5rem;
+            line-height: 2.75rem;
 
             * {
                 color: var(--m-text-secondary);
