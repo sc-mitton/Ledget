@@ -166,11 +166,31 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
 
     return (
         <>
+            <div>
+                <DropDownDiv
+                    placement='left'
+                    visible={showCalendar}
+                    ref={dropdownRef}
+                    style={{ borderRadius: 'var(--border-radius25)' }}
+                >
+                    <Calendar ref={calendarRef} />
+                </DropDownDiv>
+            </div>
             <div style={{ marginLeft: !showCalendarIcon ? '.375em' : '' }}>
                 <h4>
                     {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
                     {selectedDate.getFullYear()} BILLS
                 </h4>
+                {showCalendarIcon &&
+                    <IconButton
+                        ref={buttonRef}
+                        onClick={() => setShowCalendar(!showCalendar)}
+                        tabIndex={0}
+                        aria-label="Show calendar"
+                        aria-haspopup="true"
+                    >
+                        <CalendarIcon size={'1em'} />
+                    </IconButton>}
                 <IconButton
                     onClick={() => {
                         navigate({
@@ -191,26 +211,6 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                     aria-label="Collapse bills"
                     size={'.85em'}
                 />
-                {showCalendarIcon &&
-                    <IconButton
-                        ref={buttonRef}
-                        onClick={() => setShowCalendar(!showCalendar)}
-                        tabIndex={0}
-                        aria-label="Show calendar"
-                        aria-haspopup="true"
-                    >
-                        <CalendarIcon size={'1.2em'} />
-                    </IconButton>}
-            </div>
-            <div>
-                <DropDownDiv
-                    placement='right'
-                    visible={showCalendar}
-                    ref={dropdownRef}
-                    style={{ borderRadius: 'var(--border-radius25)' }}
-                >
-                    <Calendar ref={calendarRef} />
-                </DropDownDiv>
             </div>
         </>
     )
@@ -311,7 +311,7 @@ const BillsWindow = () => {
             ref={ref}
         >
             <div className={`calendar-bills--container ${collapsed ? 'collapsed' : ''} ${screenSize === 'small' ? 'small-screen' : ''}`}>
-                <div style={{ marginLeft: showCalendar ? '.375em' : '' }}>
+                <div style={{ marginLeft: showCalendar ? '.125em' : '' }}>
                     <Header
                         showCalendarIcon={!showCalendar}
                         collapsed={collapsed}

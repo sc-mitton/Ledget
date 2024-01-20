@@ -721,7 +721,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
             />
           </>
         }
-        <CalendarIcon fill={'currentColor'} size={'1.125em'} />
+        <CalendarIcon fill={'currentColor'} size={'1em'} />
         {selectedValue &&
           <CircleIconButton
             className="clear-input-button"

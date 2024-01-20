@@ -22,7 +22,7 @@
     /* Drop Shadows & Borders */
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
     --window-drop-shadow2: var(--window-drop-shadow-color) 0px 0px 12px;
-    --header-box-shadow: var(--header-box-shadow-color) 0px 2px 2px;
+    --header-box-shadow: var(--header-box-shadow-color) 0px 1px 1px 2px;
     --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 14px;
     --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0 0px 1px;
 
@@ -216,7 +216,7 @@
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 30%));
         --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 20%));
-        --main-color-header-text: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 20%));
+        --main-color-header-text: hsl(var(--main-color-h), calc(var(--main-color-s) + 0%), calc(var(--main-color-l) - 0%));
 
         --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
@@ -226,7 +226,7 @@
 
         --secondary-sat: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 15%), calc(var(--secondary-color-l) + 20%));
         --secondary-sat-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 25%), calc(var(--secondary-color-l) + 20%));
-        --secondary-color-header-text: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 5%), calc(var(--secondary-color-l) + 15%));
+        --secondary-color-header-text: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 0%), calc(var(--secondary-color-l) - 0%));
 
         --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
         --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 10%));
@@ -266,8 +266,8 @@
         --input-focus-dropshadow-color: var(--main-hlight);
 
         // Text
-        --m-header-text: hsl(0, 0%, 10%);
-        --m-text: hsl(0, 0%, 20%);
+        --m-header-text: hsl(0, 0%, 0%);
+        --m-text: hsl(0, 0%, 10%);
         --m-invert-text: hsl(0, 0%, 97%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), white 20%);
         --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 40%);
@@ -308,7 +308,7 @@
         // Drop Shadows & Borders
         --window-drop-shadow-color: hsl(0, 0%, 93%);
         --wafer-drop-shadow-color: hsl(0, 0%, 87%);
-        --header-box-shadow-color: hsl(0, 0%, 77%);
+        --header-box-shadow-color: hsl(0, 0%, 90%);
         --new-item-drop-shadow-color: hsl(0, 0%, 91%);
         --scroll-shadow: hsl(0, 0%, 97%), transparent;
         --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);

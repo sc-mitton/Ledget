@@ -120,7 +120,7 @@ const Button: FC<React.HTMLAttributes<HTMLButtonElement> & { iconPlaceholder?: b
             >
                 {iconPlaceholder
                     ?
-                    <><Calendar size={'1.25em'} />{placeholder}</>
+                    <><Calendar size={'1.125em'} />{placeholder}</>
                     : <div>
                         <span>
                             {placeholder || 'Repeats on'}
