@@ -1,6 +1,6 @@
 export * from './inputs/date-picker/date-picker';
 export * from './pieces/containers/AutoResizeTextArea';
-export * from './utils/hooks/use-bill-cat-tab-theme/use-bill-cat-tab-theme';
+export * from './themes/use-bill-cat-tab-theme/use-bill-cat-tab-theme';
 export * from './utils/hooks/use-scheme-var/use-scheme-var';
 export * from './pieces/containers/color-schemed-main';
 export * from './utils/hooks/use-color-scheme/use-color-scheme';

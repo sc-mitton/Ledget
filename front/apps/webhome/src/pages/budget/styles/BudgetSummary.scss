@@ -1,7 +1,7 @@
 #month-picker--container {
     position: absolute;
-    top: 1em;
-    margin-left: -.25em;
+    top: 1.25em;
+    margin-left: -.375em;
 }
 
 .budget-summary--container {
@@ -20,7 +20,7 @@
 
         h2,
         h3 {
-            color: var(--m-text-quaternary);
+            color: var(--m-text-quinary);
             font-weight: var(--fw-regular);
         }
 
@@ -70,19 +70,10 @@
             }
 
             &:nth-last-child(3) {
-                // * {
-                //     color: var(--main-sat);
-                // }
-
                 @include dot(--main-sat);
             }
 
             &:nth-last-child(2) {
-
-                // * {
-                //     color: var(--secondary-sat);
-                // }
-
                 @include dot(--secondary-sat);
             }
 
@@ -95,8 +86,8 @@
             }
 
             &>span:last-child {
-                color: var(--m-text-quaternary);
-                // color: var(--m-text-tirtiary);
+                color: var(--m-text-quinary);
+                opacity: .9;
                 white-space: nowrap;
             }
         }

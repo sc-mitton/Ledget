@@ -17,6 +17,7 @@ import { useAppDispatch } from '@hooks/store'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
 import { AccountWafers } from './AccountWafers'
 import { NotImplimentedMessage } from '@components/pieces'
+import { useScreenContext } from '@context/context'
 
 const getNavIcon = (key = '', isCurrent: boolean) => {
 
@@ -171,16 +172,17 @@ const Header = () => {
 
 function Window() {
     const location = useLocation()
+    const { screenSize } = useScreenContext()
 
     return (
-        <div id="accounts-window" className="main-window">
+        <div id="accounts-window" className={`main-window  ${screenSize === 'small' ? 'small' : ''}`}>
             <div>
                 <Header />
                 <AccountWafers />
             </div>
             <AnimatePresence mode="wait">
                 <motion.div
-                    className="window"
+                    className='window'
                     key={location.pathname.split('/')[2]}
                     initial={{
                         opacity: 0,

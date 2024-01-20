@@ -112,7 +112,7 @@ const WafersHeader = ({ accounts, setAccounts }: { accounts: Account[], setAccou
             {...props}
         >
             {accountsFilterOptions?.find(option => option.value === accountsFilter)?.label || ''}
-            <ArrowIcon size={'.8em'} />
+            <ArrowIcon size={'.7em'} />
         </button>
     )
 
@@ -161,7 +161,7 @@ export const FilledWafers = () => {
             opacity: 0,
         }),
         enter: (item: any, index: number) => ({
-            x: index * (waferWidth + waferPadding) + 4,
+            x: index * (waferWidth + waferPadding),
             opacity: 1,
         }),
         immediate: freezeWaferAnimation,
@@ -240,9 +240,6 @@ export const FilledWafers = () => {
                 onScroll={(e) => {
                     const scrollContainer = e.target as HTMLDivElement
                     setTurnOffBottomMask(scrollContainer.scrollWidth - scrollContainer.scrollLeft <= scrollContainer.clientWidth)
-                }}
-                style={{
-                    maskImage: `linear-gradient(to right, transparent, black 1%, black ${turnOffBottomMask ? 100 : 99}%, transparent)`
                 }}
             >
                 {transitions((style, account) => {

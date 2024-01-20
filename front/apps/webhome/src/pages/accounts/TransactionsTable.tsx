@@ -8,6 +8,7 @@ import TransactionModal from '@modals/TransactionItem'
 import { useLazyGetTransactionsQuery, useGetTransactionQueryState, Transaction } from '@features/transactionsSlice'
 import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv, useLoaded } from '@ledget/ui'
 import pathMappings from './path-mappings'
+import { useScreenContext } from '@context/context'
 
 const TransactionModalContent = createContext<{
     item: Transaction | undefined,
@@ -41,10 +42,10 @@ const UnenrichedTable: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
     const [skeleton, setSkeleton] = useState(true)
     const loaded = useLoaded(0)
     const location = useLocation()
+    const { screenSize } = useScreenContext()
 
     const [getTransactions, {
         data: transactionsData,
-        isFetching: isFetchingTransactions,
         isLoading: isLoadingTransactions,
         isSuccess: isTransactionsSuccess,
     }] = useLazyGetTransactionsQuery()
@@ -93,7 +94,7 @@ const UnenrichedTable: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
         <>
             <InfiniteScrollDiv
                 animate={loaded && fetchMorePulse}
-                className={`transactions--container ${isLoadingTransactions ? 'loading' : ''}`}
+                className={`transactions--container ${isLoadingTransactions ? 'loading' : ''} ${screenSize === 'small' ? 'small' : ''}`}
                 ref={containerRef}
             >
                 {skeleton

@@ -10,7 +10,7 @@ import { selectBillMetaData, useLazyGetBillsQuery } from '@features/billSlice'
 import { useAppSelector } from '@hooks/store'
 import { AnimatedDollarCents } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
-
+import { useColorScheme } from '@ledget/ui'
 
 const BudgetSummary = () => {
     const [searchParams] = useSearchParams()
@@ -47,10 +47,12 @@ const BudgetSummary = () => {
         }
     }, [start, end])
 
+    const { isDark } = useColorScheme()
+
     return (
         <>
             <div id="month-picker--container">
-                <MonthPicker />
+                <MonthPicker darkMode={isDark} />
             </div>
             <div className="budget-summary--container">
                 <div>

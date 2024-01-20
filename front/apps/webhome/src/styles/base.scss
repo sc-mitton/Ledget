@@ -267,11 +267,14 @@ button:focus-visible {
     display: flex;
     justify-content: center;
     overflow: hidden;
+    scrollbar-width: none;
 }
 
 .main-window {
     padding: 2em;
     height: calc(100% - 4em);
+    overflow: auto;
+    scrollbar-width: none;
 }
 
 .window {

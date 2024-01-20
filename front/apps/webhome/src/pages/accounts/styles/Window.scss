@@ -12,6 +12,10 @@
     .window {
         position: relative;
     }
+
+    &.small .window {
+        padding: .625em .75em;
+    }
 }
 
 #accounts-header-nav {
@@ -62,14 +66,5 @@
         ul li {
             gap: 0;
         }
-    }
-}
-
-@media (max-width: 450px) {
-
-    #accounts-window .window-header {
-        visibility: collapse;
-        padding: 0;
-        height: 0;
     }
 }

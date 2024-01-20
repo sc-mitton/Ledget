@@ -3,6 +3,16 @@
     flex-direction: row;
     position: relative;
     margin-bottom: .25em;
+    border-radius: var(--border-radius4);
+    padding: 0 .375em;
+
+    &:not(.dark) {
+        background-color: var(--btn-gray);
+    }
+
+    &.dark {
+        border: 1.5px solid var(--icon-light-gray);
+    }
 
     &>div:first-child {
         display: flex;
@@ -17,7 +27,7 @@
             font-weight: var(--fw-bold);
 
             &:hover {
-                opacity: var(--m-text);
+                color: var(--m-text);
             }
         }
     }

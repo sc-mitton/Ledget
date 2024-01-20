@@ -8,8 +8,7 @@ $wafer-container-padding: .75rem;
     gap: 1.5em;
     width: auto;
     margin-top: 1.5em;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 1em 1.5em;
     background-color: var(--window2);
 
     .account-wafers--header {
@@ -27,6 +26,11 @@ $wafer-container-padding: .75rem;
         &>div * {
             font-weight: var(--fw-bold);
         }
+    }
+
+
+    * {
+        scrollbar-width: none;
     }
 }
 
@@ -62,7 +66,6 @@ $wafer-container-padding: .75rem;
     gap: .75em;
     overflow-x: hidden;
     overflow-y: hidden;
-    padding: $wafer-container-padding 0 $wafer-container-padding .25em;
     animation: make-scroll 1s ease-in-out forwards;
     animation-delay: 1s;
 }
@@ -322,6 +325,10 @@ $wafer-container-padding: .75rem;
     overflow: hidden;
     min-height: 20em;
 
+    &.small {
+        min-height: 32em;
+    }
+
     &.loading {
         border-radius: var(--border-radius3);
     }
@@ -336,7 +343,8 @@ $wafer-container-padding: .75rem;
 
     span {
         padding: 0 .75em 0 .25em;
-        color: var(--m-text-quaternary);
+        color: var(--m-text-quinary);
+        opacity: .8;
         background-color: var(--window);
         box-shadow: var(--window) 0 0 .25em .125em;
 
@@ -479,7 +487,6 @@ $borderRadius2: var(--border-radius2);
 
     .account-wafers,
     .skeleton-account-wafers {
-        padding: $wafer-container-padding 0;
         height: calc($wafer-height + 2 * $wafer-container-padding - .5em);
     }
 
@@ -490,11 +497,11 @@ $borderRadius2: var(--border-radius2);
             padding-top: 0;
             width: min-content;
             display: inline-flex;
-            flex-direction: row;
+            // flex-direction: row;
             align-items: flex-end;
             justify-content: flex-start;
-            gap: .5em;
-            margin: .75em 0 .25em .25em;
+            // gap: .5em;
+            margin: .25em .125em .75em .25em;
         }
 
         // All accounts balance */
@@ -505,13 +512,14 @@ $borderRadius2: var(--border-radius2);
         &>div:first-child {
             padding-bottom: 0;
             align-items: baseline;
+            margin-left: .5em;
 
             &>div:first-child {
                 padding: 0 .375em;
                 border-radius: var(--border-radius1);
-                order: 1;
 
                 button {
+                    margin-left: -.5em;
                     display: flex;
                     justify-content: space-between;
                 }

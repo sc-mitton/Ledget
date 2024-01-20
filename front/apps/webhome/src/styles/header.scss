@@ -49,6 +49,37 @@ header {
             margin-right: .5em;
         }
     }
+
+    &.small {
+        &>div {
+
+            &>div:nth-child(2) {
+                flex-grow: 0;
+                justify-content: center;
+            }
+
+            &>div:nth-child(3) {
+                margin-right: 0em;
+            }
+
+            span {
+                visibility: hidden;
+            }
+        }
+
+
+        .nav-item {
+            opacity: .6;
+        }
+
+        .current-nav-item {
+            opacity: 1;
+
+            a {
+                color: var(--white);
+            }
+        }
+    }
 }
 
 /* ------------------------------ Dropdown Menu ----------------------------- */
@@ -154,36 +185,5 @@ header {
         &>div:nth-child(3) {
             margin-right: .5em;
         }
-    }
-}
-
-@media (max-width: 700px) {
-
-    header>div {
-
-        &>div:nth-child(2) {
-            flex-grow: 0;
-            justify-content: center;
-        }
-
-        &>div:nth-child(3) {
-            margin-right: 0em;
-        }
-    }
-
-    .nav-item {
-        opacity: .6;
-    }
-
-    .current-nav-item {
-        opacity: 1;
-
-        a {
-            color: var(--m-invert-text);
-        }
-    }
-
-    header>div span {
-        visibility: hidden;
     }
 }

@@ -7,6 +7,7 @@ import './styles/MonthPicker.scss'
 import { useGetMeQuery } from '@features/userSlice'
 import { SmallArrowButton, FadedTextButton, DropDownDiv, IconButton3, useAccessEsc } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
+import { useColorScheme } from '@ledget/ui'
 
 export const monthMappings: [string | number, string | number][] = [
     ['Jan', 'January'],
@@ -23,7 +24,7 @@ export const monthMappings: [string | number, string | number][] = [
     ['Dec', 'December'],
 ]
 
-const MonthPicker = () => {
+const MonthPicker = ({ darkMode = false }) => {
     const { data: user, isSuccess: userIsFetched } = useGetMeQuery()
     const [searchParams, setSearchParams] = useSearchParams()
 
@@ -159,9 +160,8 @@ const MonthPicker = () => {
             setSearchParams(searchParams)
         }
     }
-
     return (
-        <div id="month-picker" ref={monthPickerRef}>
+        <div id="month-picker" ref={monthPickerRef} className={darkMode ? 'dark' : ''}>
             <div ref={buttonRef}>
                 <FadedTextButton
                     onClick={() => { setShowPicker(!showPicker) }}

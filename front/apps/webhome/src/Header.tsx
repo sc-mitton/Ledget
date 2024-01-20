@@ -181,7 +181,7 @@ function Header() {
 
     return (
         <>
-            <header className={`${screenSize !== 'large' ? 'narrow' : ''}`}>
+            <header className={`${screenSize !== 'large' ? 'narrow' : ''} ${screenSize === 'small' ? 'small' : ''}`}>
                 <div>
                     <div><LedgetLogoIcon /></div>
                     <div><Navigation /></div>

@@ -47,6 +47,7 @@ $background: var(--window);
     &.tabbed {
         grid-template-columns: 1fr;
         position: unset;
+        min-height: calc(4.5 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.25em);
 
         &>div {
             grid-template-columns: 1fr;
@@ -335,7 +336,7 @@ $background: var(--window);
         display: flex;
         @include outermost-div-placement-styling;
         padding: 0 .25em;
-        margin-top: 1.25em;
+        margin-top: .75em;
         gap: 2em;
         color: var(--main-hlight);
 
@@ -356,7 +357,6 @@ $background: var(--window);
         &>div {
             &:first-child {
                 flex: 1;
-                margin: 1em 0;
                 position: relative;
                 display: flex;
                 flex-direction: column;
@@ -381,7 +381,7 @@ $background: var(--window);
                 flex: 1;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                // justify-content: center;
             }
         }
     }
@@ -418,7 +418,6 @@ $background: var(--window);
         position: relative;
         overflow-y: auto;
         padding-right: 1em;
-        margin-bottom: 1.5em;
         width: calc(100%);
 
         &.no-transactions {
@@ -429,7 +428,7 @@ $background: var(--window);
         }
 
         &:not(.no-transactions) {
-            grid-auto-rows: minmax(2.5em, 3.5em);
+            // grid-auto-rows: minmax(2.5em, 3.5em);
         }
 
         &>div {
@@ -448,7 +447,7 @@ $background: var(--window);
 
                 svg {
                     scale: 1;
-                    margin-left: .5em;
+                    margin-left: .125em;
                     width: 1em;
                     transition: all .2s ease-in-out;
                 }
@@ -496,6 +495,7 @@ $background: var(--window);
 
             &:not(:first-child)>div {
                 z-index: 0;
+                margin: .5em 0;
             }
 
             // Name cell
