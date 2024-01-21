@@ -143,14 +143,19 @@ $background: var(--window);
         &>div.spanned {
             // cover 2-5 columns
             // grid-column: 2 / span ;
-            text-align: right;
+            align-self: center;
+
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: .125em;
         }
 
         &.header {
             cursor: default;
             align-items: center;
             font-weight: var(--fw-regular);
-            z-index: 1;
+            z-index: 0;
 
             &>div {
                 @include header-styles;
@@ -158,12 +163,12 @@ $background: var(--window);
 
             &>div.monthly h4,
             &>div.monthly {
-                color: var(--main-color-header-text);
+                color: var(--blue-header-text);
             }
 
             &>div.yearly h4,
             &>div.yearly {
-                color: var(--secondary-color-header-text);
+                color: var(--green-header-text);
             }
 
             &:first-child {
@@ -338,7 +343,7 @@ $background: var(--window);
         padding: 0 .25em;
         margin-top: .75em;
         gap: 2em;
-        color: var(--main-hlight);
+        color: var(--blue-light);
 
         &.small {
             flex-direction: column;

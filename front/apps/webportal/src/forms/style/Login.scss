@@ -72,7 +72,7 @@
     }
 
     button {
-        color: var(--main-dark2);
+        color: var(--blue-medium-dark);
         position: relative;
 
         &:before {
@@ -82,7 +82,7 @@
             height: 2px;
             bottom: -1px;
             left: 0;
-            background-color: var(--main-dark2);
+            background-color: var(--blue-medium-dark);
         }
 
         &:hover:before {

@@ -7,7 +7,6 @@ import './styles/MonthPicker.scss'
 import { useGetMeQuery } from '@features/userSlice'
 import { SmallArrowButton, FadedTextButton, DropDownDiv, IconButton3, useAccessEsc } from '@ledget/ui'
 import { ArrowIcon } from '@ledget/media'
-import { useColorScheme } from '@ledget/ui'
 
 export const monthMappings: [string | number, string | number][] = [
     ['Jan', 'January'],
@@ -177,7 +176,7 @@ const MonthPicker = ({ darkMode = false }) => {
                 </IconButton3>
             </div>
             <DropDownDiv
-                placement="left"
+                placement="middle"
                 visible={showPicker}
                 id="picker-container"
             >

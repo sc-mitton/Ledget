@@ -11,7 +11,7 @@
 }
 
 #new-plan--container span:last-child {
-    color: var(--main-dark3);
+    color: var(--blue-dark);
 }
 
 #new-plan--container>div {

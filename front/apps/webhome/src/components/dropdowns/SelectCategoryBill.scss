@@ -93,37 +93,4 @@
         border-radius: var(--border-radius1);
     }
 
-
-    .option {
-        cursor: pointer;
-        display: inline-flex;
-        gap: 0.5em;
-        border-radius: var(--border-radius1);
-        transition: all .3s ease;
-        font-weight: var(--fw-light);
-        padding: .125em .75em;
-        margin: 0 .25em;
-
-        &.year {
-            background-color: var(--secondary-hlight);
-            color: var(--secondary-dark4);
-
-            &:hover {
-                background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark4) 8%);
-                transition: all .3s ease;
-            }
-
-        }
-
-        &.month {
-            background-color: var(--main-hlight);
-            color: var(--main-dark4);
-
-            &:hover {
-                background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark4) 8%);
-                transition: all .3s ease;
-            }
-        }
-    }
-
 }

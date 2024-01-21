@@ -7,12 +7,28 @@
     padding: 0 .625em;
 
     &:not(.dark) {
-        background-color: var(--window);
-        // border: 1.5px solid var(--btn-gray);
+        // border: 1.5px solid var(--btn-light-gray);
+        background-color: var(--btn-feather-light-gray);
+
+        // &>div:first-child>button * {
+        //     color: var(--m-text);
+
+        //     &:hover {
+        //         color: var(--m-text-quaternary);
+        //     }
+        // }
     }
 
     &.dark {
-        border: 1.5px solid var(--icon-light-gray);
+        border: 1.75px solid var(--btn-light-gray);
+
+        &>div:first-child>button * {
+            color: var(--m-text-quinary);
+
+            &:hover {
+                color: var(--m-text);
+            }
+        }
     }
 
     &>div:first-child {
@@ -20,15 +36,11 @@
         align-items: center;
         gap: .125em;
 
-        &>button:first-child {
-            // margin-right: .25em;
-        }
-
         &>button>span {
             font-size: 1.1em;
             line-height: 1em;
             padding: .25em;
-            color: var(--m-secondary-quinary);
+            color: var(--m-text-quinary);
 
             &:hover {
                 color: var(--m-text);
@@ -75,8 +87,8 @@
 }
 
 .month-picker-item-selected {
-    background-color: var(--main-hlight);
-    color: var(--main-dark4);
+    background-color: var(--blue-light);
+    color: var(--blue-dark);
 }
 
 .month-picker-item:hover,

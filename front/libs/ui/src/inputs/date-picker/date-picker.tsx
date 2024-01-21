@@ -462,10 +462,10 @@ const DayMonthYearPicker = () => {
       <div>
         <div>
           <IconButton3 onClick={(e) => handleSeek(e, -1, 'fast')}>
-            <DoubleArrow rotation={90} size={'.8em'} />
+            <DoubleArrow rotation={90} size={'.8em'} stroke={'currentColor'} />
           </IconButton3>
           {view !== 'year' && <IconButton3 onClick={(e) => handleSeek(e, -1, 'slow')}>
-            <ArrowIcon rotation={90} size={'.8em'} />
+            <ArrowIcon rotation={90} size={'.8em'} stroke={'currentColor'} />
           </IconButton3>}
         </div>
         {focusedInputIndex === 0 && pickerType === 'range' && view === 'day' &&
@@ -501,10 +501,10 @@ const DayMonthYearPicker = () => {
           </div>}
         <div>
           {view !== 'year' && <IconButton3 onClick={(e) => handleSeek(e, 1, 'slow')}>
-            <ArrowIcon rotation={-90} size={'.8em'} />
+            <ArrowIcon rotation={-90} size={'.8em'} stroke={'currentColor'} />
           </IconButton3>}
           <IconButton3 onClick={(e) => handleSeek(e, 1, 'fast')}>
-            <DoubleArrow rotation={-90} size={'.8em'} />
+            <DoubleArrow rotation={-90} size={'.8em'} stroke={'currentColor'} />
           </IconButton3>
         </div>
       </div>

@@ -26,7 +26,7 @@ interface TabNavListProps {
 export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDivElement>) {
   const ref = useRef<HTMLDivElement>(null)
   const { labels, className, theme, size = 'auto', ...rest } = props
-  const defaultBackgroundColor = useSchemeVar('--inner-window')
+  const defaultBackgroundColor = useSchemeVar('--default-pill-background')
 
   const [pillProps, api] = usePillAnimation({
     ref: ref,
@@ -35,10 +35,10 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
     refresh: [],
     styles: {
       zIndex: 1,
-      borderRadius: 'var(--border-radius2)',
+      borderRadius: 'var(--border-radius1)',
       backgroundColor: theme
         ? Array.isArray(theme) ? theme[props.selectedIndex]?.pillBackgroundColor : theme?.pillBackgroundColor
-        : defaultBackgroundColor,
+        : defaultBackgroundColor
     },
     find: (element) => element.attributes.getNamedItem('aria-selected')?.value === 'true',
   })
@@ -70,7 +70,18 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
         }}
       >
         <>{labels.map((label, index) => (
-          <Tab>{label}</Tab>
+          <Tab>
+            <span style={{
+              color:
+                theme
+                  ? Array.isArray(theme)
+                    ? props.selectedIndex === index ? theme[index]?.pillColor : theme[index]?.tabColor
+                    : props.selectedIndex === index ? theme.pillColor : theme.tabColor
+                  : 'inherit'
+            }}>
+              {label}
+            </span>
+          </Tab>
         ))}</>
         <animated.span style={pillProps} />
       </Tab.List>

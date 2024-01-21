@@ -29,8 +29,8 @@ import { UpdatePersonalInfo } from '@modals/index'
 
 const getStatusColor = (subscription: Subscription) => {
     const statusColorMap = {
-        active: 'var(--secondary-color-alt)',
-        trialing: 'var(--secondary-color-alt)',
+        active: 'var(--yearly-color-alt)',
+        trialing: 'var(--yearly-color-alt)',
         paused: 'var(--yellow)',
         default: 'var(--dark-red)'
     } as { [key: string]: string }

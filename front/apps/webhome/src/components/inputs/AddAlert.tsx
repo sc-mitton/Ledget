@@ -119,7 +119,7 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                             />
                             <CheckMark
                                 size={'.8em'}
-                                stroke={`${selected ? 'var(--main-dark)' : 'transparent'}`}
+                                stroke={`${selected ? 'var(--blue-dark)' : 'transparent'}`}
                             />
                         </div>
                     </DropdownItem>

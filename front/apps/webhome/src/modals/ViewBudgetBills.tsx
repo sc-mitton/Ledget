@@ -12,7 +12,6 @@ import {
   withModal,
   TabNavList,
   BillCatLabel,
-  useBillCatTabTheme,
   getDaySuffix,
   DollarCents,
   SlideMotionDiv,
@@ -75,7 +74,6 @@ const Bills = ({ period, onBillClick }: {
 }
 
 const EditBills = withModal((props) => {
-  const tabTheme = useBillCatTabTheme()
   const [inspectedBill, setInspectedBill] = useState<string | null>(null)
 
   return (
@@ -84,15 +82,11 @@ const EditBills = withModal((props) => {
         ?
         <SlideMotionDiv key="view-all-bills" position='first'>
           <h2>Bills</h2>
-          <Tab.Group as='div' id="view-all-bills--container" className="inner-window">
+          <Tab.Group as='div' id="view-all-bills--container" className="modal-inner-window">
             {({ selectedIndex }) => (
               <>
                 <div>
-                  <TabNavList
-                    selectedIndex={selectedIndex}
-                    labels={['Month', 'Year']}
-                    theme={tabTheme}
-                  />
+                  <TabNavList selectedIndex={selectedIndex} labels={['Month', 'Year']} />
                 </div>
                 <Tab.Panels as={Fragment}>
                   <Tab.Panel as={Fragment}>

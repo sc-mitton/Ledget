@@ -20,7 +20,6 @@ import {
     withModal,
     TabNavList,
     BillCatLabel,
-    useBillCatTabTheme
 } from '@ledget/ui'
 
 const itemHeight = 25
@@ -179,7 +178,6 @@ const Categories = ({ period, setDeletedItems }: {
 const EditCategoriesModal = withModal((props) => {
     const [showSubmit, setShowSubmit] = useState(false)
     const [deletedItems, setDeletedItems] = useState<Item[]>()
-    const tabTheme = useBillCatTabTheme()
 
     useEffect(() => {
         let timeout: NodeJS.Timeout
@@ -220,17 +218,13 @@ const EditCategoriesModal = withModal((props) => {
             <h2>Edit Categories</h2>
             <Tab.Group
                 as='div'
-                className={`inner-window ${showSubmit ? 'submittable' : ''}`}
+                className={`modal-inner-window ${showSubmit ? 'submittable' : ''}`}
                 id="reorder-categories"
             >
                 {({ selectedIndex }) => (
                     <>
                         <div>
-                            <TabNavList
-                                selectedIndex={selectedIndex}
-                                labels={['Month', 'Year']}
-                                theme={tabTheme}
-                            />
+                            <TabNavList selectedIndex={selectedIndex} labels={['Month', 'Year']} />
                         </div>
                         <Tab.Panels as={'div'} className="edit-budget-items--container">
                             <Tab.Panel as={React.Fragment}>

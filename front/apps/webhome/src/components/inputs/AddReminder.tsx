@@ -38,7 +38,7 @@ const AddReminder = ({ value, onChange, defaultSelected }:
                     </div>
                     {!selected
                         ? <Plus stroke={'currentColor'} size={'.8em'} />
-                        : <CheckMark size={'.7em'} stroke={`${selected ? 'var(--main-dark)' : 'transparent'}`} />
+                        : <CheckMark size={'.7em'} stroke={`${selected ? 'var(--blue-dark)' : 'transparent'}`} />
                     }
                 </DropdownItem>
                 <div style={{ padding: '0 .5em' }}>

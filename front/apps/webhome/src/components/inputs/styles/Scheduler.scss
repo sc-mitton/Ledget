@@ -60,22 +60,22 @@
     border-radius: var(--border-radius1);
 
     &.selected {
-        background-color: var(--main-hlight);
+        background-color: var(--blue-light);
         transition: all 0.3s ease-out;
     }
 
     &.active {
-        background-color: var(--icon-light-gray);
+        background-color: var(--btn-light-gray);
         transition: all 0.3s ease-out;
     }
 
     &.unselected:hover {
-        background-color: var(--icon-light-gray);
+        background-color: var(--btn-light-gray);
         transition: all 0.3s ease-out;
     }
 
     &.selected.active {
-        background-color: var(--main-hlight-hover);
+        background-color: var(--blue-light-hover);
         transition: all 0.3s ease-out;
     }
 }

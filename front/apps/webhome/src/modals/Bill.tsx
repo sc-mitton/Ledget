@@ -147,7 +147,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                         {`${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`}
                     </h2>}
             </div>
-            <div className="inner-window">
+            <div className="modal-inner-window">
                 <div>Amount</div>
                 <div>
                     <CheckMark2
@@ -206,7 +206,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                                 </span>
                             ))}
                         </>
-                        : <BellOff size={'1.1em'} fill={'var(--btn-mid-gray-hover)'} />
+                        : <BellOff size={'1.1em'} fill={'var(--btn-gray-hover)'} />
                     }
                 </div>
 

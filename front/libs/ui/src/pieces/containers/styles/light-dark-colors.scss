@@ -3,7 +3,7 @@
 
     --yellow: rgb(175, 175, 51);
     --debit-text: #3aae83;
-    --secondary-color-alt: hsl(156, 31%, 62%);
+    --yearly-color-alt: hsl(156, 31%, 62%);
     --charcoal-rgb: 41, 41, 41;
 
     --header-pill: hsl(0, 0%, 98%);
@@ -11,20 +11,20 @@
 
     /* Input Colors */
     --input-border: solid 1px transparent;
-    --input-border-focus: solid 1px var(--main-sat);
+    --input-border-focus: solid 1px var(--blue-medium);
     --input-border-hover: solid 1px var(--input-border-hover-color);
     --input-focus-drop-shadow: 0 0 0px 1.5px var(--input-focus-dropshadow-color);
 
     /* Text */
-    --white: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 100%));
-    --black: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 100%));
+    --white: hsl(0, 0%, 100%);
+    --black: hsl(0, 0%, 0%);
 
     /* Drop Shadows & Borders */
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
     --window-drop-shadow2: var(--window-drop-shadow-color) 0px 0px 12px;
     --header-box-shadow: var(--header-box-shadow-color) 0px 1px 1px 2px;
     --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 14px;
-    --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0 0px 1px;
+    // --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0 0px 1px;
 
     --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px 1px 1px;
     --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 3px 12px;
@@ -32,8 +32,8 @@
     --dropdown-box-shadow: var(--dropdown-box-shadow-color) 0px 3px 12px;
     --antd-drop-shadow: var(--antd-drop-shadow-color) 0 3px 12px;
 
-    --accessible-focus-drop-shadow: 0 0 0 1.5px var(--main-sat);
-    --active-wafer-drop-shadow: color-mix(in srgb, var(--main-hlight) 80%, var(--main-color)) 0px 0px 12px;
+    --accessible-focus-drop-shadow: 0 0 0 1.5px var(--monthly-sat);
+    --active-wafer-drop-shadow: color-mix(in srgb, var(--monthly-hlight) 80%, var(--monthly-color)) 0px 0px 12px;
 
     --subtle-border: .75px solid var(--border-color-dimmest);
 
@@ -51,66 +51,42 @@
         --blue-text: #e9eeff;
 
         // Secondary and Primary Base Values
-        --main-color-h: 226;
-        --main-color-s: 25%;
-        --main-color-l: 45%;
+        --blue-h: 226;
+        --green-h: 170;
 
-        --secondary-color-h: 170;
-        --secondary-color-s: 30%;
-        --secondary-color-l: 47%;
+        --monthly-background-color: hsl(226, 45%, 38%);
+        --monthly-hover-background-color: hsl(226, 45%, 30%);
+        --monthly-background-color-darker: hsl(226, 45%, 20%);
+        --monthly-color: hsl(226, 45%, 80%);
+        --yearly-background-color: hsl(170, 30%, 27%);
+        --yearly-hover-background-color: hsl(170, 50%, 20%);
+        --yearly-background-color-darker: hsl(170, 30%, 20%);
+        --yearly-color: hsl(170, 30%, 80%);
 
-        --main-color-values: 93, 97, 137;
-        --secondary-color-values: 93, 137, 97;
+        // Blue Green Pallet
+        --blue-light: hsl(var(--blue-h), 45%, 28%);
+        --blue-light-hover: hsl(var(--blue-h), 45%, 23%);
+        --blue-medium: hsl(var(--blue-h), 25%, 45%);
+        --blue: hsl(var(--blue-h), 25%, 35%);
+        --blue-dark: hsl(var(--blue-h), 25%, 70%);
 
-        --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
-        --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 5%));
-        --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 7%));
-        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 15%));
-        --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) - 20%));
-
-        --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 15%), var(--main-color-l));
-        --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 25%), var(--main-color-l));
-
-        --main-color-header-text: hsl(var(--main-color-h), calc(var(--main-color-s) + 25%), calc(var(--main-color-l) + 15%));
-
-        --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
-        --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 5%));
-        --secondary-hlight: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 20%));
-        --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) - 27%));
-        --secondary-hlight-hover-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 20%), calc(var(--secondary-color-l) - 30%));
-
-        --secondary-sat: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 15%), var(--secondary-color-l));
-        --secondary-sat-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 25%), var(--secondary-color-l));
-
-        --secondary-color-header-text: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 25%), var(--secondary-color-l));
-
-        --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 40%));
-        --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 45%));
-        --main-dark3: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 50%));
-        --main-dark4: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 60%));
-        --main-dark5: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) + 70%));
-
-        --secondary-dark: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 40%));
-        --secondary-dark2: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 45%));
-        --secondary-dark3: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 50%));
-        --secondary-dark4: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 60%));
-        --secondary-dark5: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) + 70%));
-
-        // Grays
-        --gray-hlight: hsl(0, 0%, 18%);
+        --green-light: hsl(var(--green-h), 30%, 27%);
+        --green-light-hover: hsl(var(--green-h), 30%, 22%);
+        --green: hsl(var(--green-h), 30%, 47%);
+        --green-medium: hsl(var(--green-h), 30%, 70%);
+        --green-dark: hsl(var(--green-h), 30%, 80%);
 
         // Windows
         --window-background-color: hsl(0, 0%, 2%);
         --window-background-color-portal: hsl(0, 0%, 3%);
         --window: hsl(0, 0%, 8%);
         --window2: hsl(0, 0%, 11%);
-        // --window-border: hsl(0, 0%, 10%);
         --window-rgb: 28, 28, 28;
         --header-background: hsl(240, 38%, 3%);
         --side-window: hsl(0, 0%, 5%);
 
-        --inner-window: hsl(0, 0%, 12%);
-        --inner-window-rgb: 13, 13, 13;
+        --inner-window: hsl(0, 0%, 10%);
+        --modal-inner-window: var(--inner-window);
         --overlay: hsl(0, 0%, 10%);
 
         --wafer-background: hsl(0, 0%, 3%);
@@ -122,19 +98,20 @@
         // Inputs
         --input-background: hsl(0, 0%, 12%);
         --input-border-hover-color: hsl(0, 0%, 20%);
-        --input-focus-dropshadow-color: color-mix(in srgb, var(--main-hlight), var(--window) 50%);
+        --input-focus-dropshadow-color: color-mix(in srgb, var(--blue), var(--window) 50%);
 
         // Text
         --m-text: hsl(0, 0%, 90%);
-        --m-invert-text: hsl(0, 0%, 20%);
+        --m-invert-text: hsl(0, 0%, 10%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), black 20%);
         --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 40%);
         --m-text-quaternary: color-mix(in srgb, var(--m-text), black 50%);
         --m-text-quinary: color-mix(in srgb, var(--m-text), black 60%);
+        --m-text-senary: color-mix(in srgb, var(--m-text), black 70%);
 
         --input-placeholder: hsl(0, 0%, 66%);
         --input-placeholder2: rgb(115, 115, 117);
-        --input-placeholder-focus: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 30%));
+        --input-placeholder-focus: hsl(var(--monthly-item-h), calc(var(--monthly-item-s) + 20%), calc(var(--monthly-item-l) + 30%));
 
         /* Font Weights */
         --fw-light: 300;
@@ -144,18 +121,21 @@
 
         // Icons & Buttons
         --icon-full: var(--m-text);
-        --icon-light-light-gray: hsl(0, 0%, 21%);
-        --icon-light-gray: hsl(0, 0%, 18%);
-        --icon-hover-light-gray: hsl(0, 0%, 19%);
-        --icon-hover-gray: hsl(0, 0%, 41%);
+        --btn-feather-light-gray: hsl(0, 0%, 14%);
+        --btn-feather-light-gray-hover: hsl(0, 0%, 19%);
+        --btn-light-gray: hsl(0, 0%, 22%);
+        --btn-light-gray-hover: hsl(0, 0%, 25%);
+        --btn-medium-gray: hsl(0, 0%, 28%);
+        --btn-medium-gray-hover: hsl(0, 0%, 33%);
+        --btn-gray: hsl(0, 0%, 50%);
+        --btn-gray-hover: hsl(0, 0%, 55%);
+        --btn-dark-gray: hsl(0, 0%, 80%);
+        --btn-dark-gray-hover: hsl(0, 0%, 86%);
 
-        --btn-gray: hsl(0, 0%, 13%);
-        --btn-gray-hover: hsl(0, 0%, 15%);
-        --btn-mid-gray: hsl(0, 0%, 51%);
-        --btn-mid-gray-hover: hsl(0, 0%, 42%);
-        --btn-dark: hsl(0, 0%, 90%);
-        --btn-dark-hover: hsl(0, 0%, 98%);
+        --default-pill-background: hsl(0, 0%, 21%);
+        --default-tab-background: hsl(0, 0%, 13%);
 
+        --gray-hlight: hsl(0, 0%, 18%);
         --negative-pulse-outer: rgba(255, 255, 255, .5);
         --negative-pulse-inner: rgba(255, 255, 255, .7);
 
@@ -174,7 +154,7 @@
         --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
         --input-drop-shadow-color: rgba(255, 255, 255, 0.07);
 
-        --active-wafer-indicator: var(--main-color);
+        --active-wafer-indicator: var(--monthly-color);
 
         --border-color-dimmest: rgb(255, 255, 255, .05);
         --border-color: rgb(255, 255, 255, .09);
@@ -194,67 +174,49 @@
         --red-rgb: 243, 80, 80;
         --dark-red: #8b2424;
         --blue: #d4dbf4;
-        --blue-text: #3a5dd1;
 
-        // Secondary and Primary Base Values
-        --main-color-h: 219;
-        --main-color-s: 50%;
-        --main-color-l: 44%;
+        --blue-h: 223;
+        --green-h: 162;
 
-        --secondary-color-h: 162;
-        --secondary-color-s: 50%;
-        --secondary-color-l: 40%;
+        // Budget Item Pallet
+        --monthly-background-color: hsl(var(--blue-h), 80%, 94%);
+        --monthly-background-color-lighter: hsl(var(--blue-h), 80%, 98%);
+        --monthly-hover-background-color: hsl(var(--blue-h), 80%, 89%);
+        --monthly-color: hsl(var(--blue-h), 50%, 40%);
 
-        --main-color-values: 61, 62, 92;
-        --secondary-color-values: 61, 92, 83;
+        --yearly-background-color: hsl(var(--green-h), 40%, 90%);
+        --yearly-background-color-lighter: hsl(var(--green-h), 46%, 98%);
+        --yearly-hover-background-color: hsl(var(--green-h), 40%, 85%);
+        --yearly-color: hsl(var(--green-h), 50%, 30%);
 
-        --main-color: hsl(var(--main-color-h), var(--main-color-s), var(--main-color-l));
-        --main-color-hover: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
-        --main-hlight: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 50%));
-        --main-hlight-hover: hsl(var(--main-color-h), calc(var(--main-color-s) + 20%), calc(var(--main-color-l) + 47%));
-        --main-hlight-hover-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 10%), calc(var(--main-color-l) + 40%));
+        // Blue Green Pallet
+        --blue-light: hsl(var(--blue-h), 50%, 90%);
+        --blue-light-hover: hsl(var(--blue-h), 50%, 85%);
+        --blue-medium: hsl(var(--blue-h), 62%, 72%);
+        --blue: hsl(var(--blue-h), 62%, 62%);
+        --blue-medium-dark: hsl(var(--blue-h), 62%, 37%);
+        --blue-dark: hsl(var(--blue-h), 62%, 22%);
 
-        --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 30%));
-        --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 20%));
-        --main-color-header-text: hsl(var(--main-color-h), calc(var(--main-color-s) + 0%), calc(var(--main-color-l) + 10%));
-
-        --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
-        --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
-        --secondary-hlight: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 10%), calc(var(--secondary-color-l) + 50%));
-        --secondary-hlight-hover: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 10%), calc(var(--secondary-color-l) + 45%));
-        --secondary-hlight-hover-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) + 5%), calc(var(--secondary-color-l) + 40%));
-
-        --secondary-sat: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 15%), calc(var(--secondary-color-l) + 20%));
-        --secondary-sat-darker: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 25%), calc(var(--secondary-color-l) + 20%));
-        --secondary-color-header-text: hsl(var(--secondary-color-h), calc(var(--secondary-color-s) - 0%), calc(var(--secondary-color-l) - 0%));
-
-        --main-dark: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 5%));
-        --main-dark2: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 10%));
-        --main-dark3: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 15%));
-        --main-dark4: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 25%));
-        --main-dark5: hsl(var(--main-color-h), var(--main-color-s), calc(var(--main-color-l) - 30%));
-
-        --secondary-dark: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
-        --secondary-dark2: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 10%));
-        --secondary-dark3: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 15%));
-        --secondary-dark4: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 20%));
-        --secondary-dark5: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 25%));
+        --green-light: hsl(var(--green-h), 80%, 95%);
+        --green-light-hover: hsl(var(--green-h), 80%, 90%);
+        --green: hsl(var(--green-h), 30%, 62%);
+        --green-medium: hsl(var(--green-h), 30%, 42%);
+        --green-dark: hsl(var(--green-h), 30%, 22%);
 
         // Windows
-        --window-background-color: hsl(0, 0%, 95%);
+        --window-background-color: hsl(0, 0%, 100%);
         --window-background-color-portal: hsl(0, 0%, 95%);
         --header-background: hsl(0, 0%, 10%);
 
-        --window: hsl(0, 0%, 99%);
+        --window: hsl(0, 0%, 97%);
         --window-rgb: 250, 250, 250;
-        // --window-border: hsl(0, 0%, 94%);
-        --side-window: hsl(0, 0%, 92%);
-        --inner-window: hsl(0, 0%, 94%);
-        --window2: hsl(0, 0%, 90%);
-        --inner-window-rgb: 246, 246, 246;
+        --side-window: hsl(0, 0%, 97%);
+        --inner-window: hsl(0, 0%, 93%);
+        --modal-inner-window: hsl(0, 0%, 94%);
+        --window2: hsl(0, 0%, 94%);
         --overlay: hsl(0, 0%, 20%);
 
-        --wafer-background: hsl(0, 0%, 98%);
+        --wafer-background: hsl(0, 0%, 100%);
         --dropdown-background: hsl(0, 0%, 98%);
         --dropdown-item-background: hsl(0, 0%, 90%);
 
@@ -263,20 +225,23 @@
         // Inputs
         --input-background: hsl(0, 0%, 92%);
         --input-border-hover-color: hsl(0, 0%, 78%);
-        --input-focus-dropshadow-color: var(--main-hlight);
+        --input-focus-dropshadow-color: var(--blue-light);
 
         // Text
-        --m-header-text: hsl(0, 0%, 5%);
-        --m-text: hsl(0, 0%, 10%);
+        --m-header-text: hsl(0, 0%, 0%);
+        --m-text: hsl(0, 0%, 5%);
         --m-invert-text: hsl(0, 0%, 97%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), white 20%);
         --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 40%);
         --m-text-quaternary: color-mix(in srgb, var(--m-text), white 50%);
         --m-text-quinary: color-mix(in srgb, var(--m-text), white 60%);
+        --m-text-senary: color-mix(in srgb, var(--m-text), white 70%);
+        // --blue-header-text: hsl(var(--blue-h), 40%, 30%);
+        // --green-header-text: hsl(var(--green-h), 40%, 30%);
 
         --input-placeholder: hsl(0, 0%, 38%);
         --input-placeholder2: hsl(0, 0%, 65%);
-        --input-placeholder-focus: hsl(var(--main-color-h), calc(var(--main-color-s) - 10%), calc(var(--main-color-l) + 20%));
+        --input-placeholder-focus: hsl(var(--monthly-item-h), calc(var(--monthly-item-s) - 10%), calc(var(--monthly-item-l) + 20%));
 
         /* Font Weights */
         --fw-light: 400;
@@ -286,30 +251,29 @@
 
         // Icons & Buttons
         --icon-full: var(--m-text);
-        --icon-light-light-gray: hsl(0, 0%, 90%);
-        --icon-light-gray: hsl(0, 0%, 88%);
-        --icon-hover-light-gray: hsl(0, 0%, 84%);
-        --icon-hover-gray: hsl(0, 0%, 65%);
+        --btn-feather-light-gray: hsl(0, 0%, 94%);
+        --btn-feather-light-gray-hover: hsl(0, 0%, 88%);
+        --btn-light-gray: hsl(0, 0%, 90%);
+        --btn-light-gray-hover: hsl(0, 0%, 84%);
+        --btn-medium-gray: hsl(0, 0%, 80%);
+        --btn-medium-gray-hover: hsl(0, 0%, 75%);
+        --btn-gray: hsl(0, 0%, 50%);
+        --btn-gray-hover: hsl(0, 0%, 45%);
+        --btn-dark-gray: hsl(0, 0%, 20%);
+        --btn-dark-gray-hover: hsl(0, 0%, 14%);
 
-        --gray-hlight: hsl(0, 0%, 90%);
-
-        --btn-gray: hsl(0, 0%, 80%);
-        --btn-gray-hover: hsl(0, 0%, 76%);
-        --btn-mid-gray: hsl(0, 0%, 48%);
-        --btn-mid-gray-hover: hsl(0, 0%, 28%);
-        --btn-dark: hsl(0, 0%, 20%);
-        --btn-dark-hover: hsl(0, 0%, 14%);
-
-        --transaction-hover-background: hsl(0, 0%, 95%);
+        --transaction-hover-background: hsl(0, 0%, 92%);
+        --default-pill-background: hsl(0, 0%, 98%);
+        --default-tab-background: hsl(0, 0%, 90%);
 
         --negative-pulse-outer: rgba(0, 0, 0, .3);
         --negative-pulse-inner: rgba(0, 0, 0, .75);
 
         // Drop Shadows & Borders
         --window-drop-shadow-color: hsl(0, 0%, 93%);
-        --wafer-drop-shadow-color: hsl(0, 0%, 87%);
+        --wafer-drop-shadow-color: hsl(0, 0%, 80%);
         // --header-box-shadow-color: hsl(0, 0%, 47%);
-        --new-item-drop-shadow-color: hsl(0, 0%, 91%);
+        --new-item-drop-shadow-color: hsl(0, 0%, 93%);
         --scroll-shadow: hsl(0, 0%, 97%), transparent;
         --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);
         --antd-drop-shadow-color: var(--dropdown-box-shadow-color);
@@ -326,7 +290,7 @@
         --institution-logo-border: rgb(0, 0, 0, .2);
         --toast-border: transparent;
         --gray-button-border: hsl(0, 0%, 86%);
-        --sidebar-border-color: hsl(0, 0%, 91%);
+        --sidebar-border-color: hsl(0, 0%, 95%);
 
         @include common;
     }

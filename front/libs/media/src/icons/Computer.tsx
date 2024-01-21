@@ -3,7 +3,7 @@ const Computer = ({
     width = "4.5em",
     height = "4.5em",
     fill = 'var(--icon-full)',
-    fill2 = 'var(--icon-light-gray)'
+    fill2 = 'var(--btn-light-gray)'
 }) => {
 
     return (

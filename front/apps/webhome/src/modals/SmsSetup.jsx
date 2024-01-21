@@ -15,7 +15,7 @@ import { useGetMeQuery } from '@features/userSlice'
 import {
     BackButton,
     BlueSubmitWithArrow,
-    LightGrnWideButton,
+    LightBlueWideButton,
     SecondaryButton,
     PhoneInput,
     FormError,
@@ -133,12 +133,12 @@ const SmsVerify = (props) => {
                     <Otc colorful={false} />
                 </div>
                 <div>
-                    <LightGrnWideButton
+                    <LightBlueWideButton
                         submitting={isLoading}
                         success={isSucess}
                     >
                         Verify
-                    </LightGrnWideButton>
+                    </LightBlueWideButton>
                 </div>
             </form>
         </JiggleDiv>

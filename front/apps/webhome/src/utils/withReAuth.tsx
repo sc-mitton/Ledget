@@ -30,7 +30,7 @@ import {
     RecoveryCodeGraphic,
     Otc,
     BackButton,
-    LightGrnWideButton,
+    LightBlueWideButton,
     useLoaded
 } from '@ledget/ui'
 
@@ -240,12 +240,12 @@ const Otp = () => {
                 {isCreateOtpError && <ErrorFetchingFlow />}
             </div>
             <div>
-                <LightGrnWideButton
+                <LightBlueWideButton
                     loading={creatingOtp}
                     submitting={verifyingOtp}
                 >
                     Confirm
-                </LightGrnWideButton>
+                </LightBlueWideButton>
             </div>
         </form>
     )

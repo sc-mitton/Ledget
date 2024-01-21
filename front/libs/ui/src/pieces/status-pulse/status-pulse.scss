@@ -27,9 +27,9 @@
 }
 
 $outer-circle-negative: var(--negative-pulse-outer);
-$outer-circle-positive: var(--main-hlight);
+$outer-circle-positive: var(--blue-light);
 $inner-circle-negative: var(--negative-pulse-inner);
-$inner-circle-positive: var(--main-hlight-hover);
+$inner-circle-positive: var(--blue-light-hover);
 
 @mixin pulse-styles($outerOrInner: inner) {
 
@@ -264,7 +264,7 @@ $inner-circle-positive: var(--main-hlight-hover);
 }
 
 .keypad-graphic-status.finished>div {
-    color: var(--main-hlight);
+    color: var(--blue-light);
     transition: color .3s ease;
     transition-delay: .4s;
 }

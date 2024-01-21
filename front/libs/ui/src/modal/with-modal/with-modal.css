@@ -11,7 +11,7 @@
 }
 
 .edit-button:hover {
-    background-color: var(--icon-hover-light-gray);
+    background-color: var(--btn-light-gray-hover);
     transition: all 0.3s;
     border-radius: .25em;
 }
@@ -20,7 +20,7 @@
     padding: .25em .5em;
     font-weight: var(--fw-regular);
     margin: 0 .25em;
-    background-color: var(--btn-gray);
+    background-color: var(--btn-medium-gray);
     color: var(--window);
     border-radius: .25em;
 }

@@ -428,7 +428,7 @@ $borderRadius2: var(--border-radius2);
             }
 
             &>div:first-child .pending {
-                background-color: var(--gray-hlight);
+                background-color: var(--btn-feather-light-gray-hover);
                 border-radius: var(--border-radius1);
                 padding: 0 .5em;
                 font-size: .75rem;
@@ -549,7 +549,7 @@ $borderRadius2: var(--border-radius2);
         /* all name cells */
         &>div:nth-child(2n)>div:first-child {
             padding-left: .5em;
-            padding-right: 1.25em;
+            padding-right: 1.75em;
         }
 
         /* all amount cells */

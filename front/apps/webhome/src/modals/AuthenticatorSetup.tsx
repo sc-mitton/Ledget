@@ -25,7 +25,8 @@ import {
     ZoomMotionDiv,
     SlideMotionDiv,
     TotpAppGraphic,
-    useLoaded
+    useLoaded,
+    useColorScheme
 } from '@ledget/ui'
 
 interface SetupAppProps {
@@ -39,6 +40,7 @@ interface SetupAppProps {
 const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }: SetupAppProps) => {
     const [qrNode, setQrNode] = useState<{ attributes: string }>()
     const [totpSecret, setTotpSecret] = useState('')
+    const { isDark } = useColorScheme()
 
     useEffect(() => {
         if (flow) {
@@ -80,7 +82,9 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }: SetupAppP
                             <ZoomMotionDiv id="qr-setup--container" key={'qr-setup--container'}>
                                 {(qrNode && !isError) &&
                                     <>
-                                        <div><NodeImage node={qrNode} attributes={qrNode.attributes} /></div>
+                                        <div className={`qr-image ${isDark ? 'dark-mode' : ''}`}>
+                                            <NodeImage node={qrNode} attributes={qrNode.attributes} />
+                                        </div>
                                         <PrimaryTextButton
                                             type='button'
                                             onClick={() => setCodeMode(true)}

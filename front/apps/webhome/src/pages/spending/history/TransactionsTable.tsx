@@ -71,7 +71,7 @@ const List = ({ setFocusedTransaction }:
                   <div><DollarCents value={transaction.amount} /></div>
                   <ArrowIcon
                     stroke={'currentColor'}
-                    size={'.85em'}
+                    size={'.8em'}
                     strokeWidth={'18'}
                     rotation={-90}
                   />
@@ -140,7 +140,7 @@ export default function Table() {
             : Array.from({ length: (ref.current ? ref.current.clientHeight : 0) / 65 }, (_, i) =>
               <Fragment key={i}>
                 <div>
-                  <TransactionShimmer style={{ backgroundColor: isDark ? 'var(--window)' : 'var(--icon-light-gray)' }} />
+                  <TransactionShimmer style={{ backgroundColor: isDark ? 'var(--window)' : 'var(--btn-light-gray)' }} />
                 </div>
               </Fragment>
             )

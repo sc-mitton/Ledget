@@ -27,7 +27,7 @@
         margin-top: 1.5em;
     }
 
-    .inner-window {
+    .modal-inner-window {
         display: grid;
         row-gap: .75em;
         column-gap: 1.5em;
@@ -128,11 +128,11 @@
             &.radio-option {
 
                 &:hover>span.button:not(.checked) {
-                    box-shadow: 0 0 0 3px rgb(var(--main-color-values), .2);
+                    box-shadow: 0 0 0 3px rgb(var(--monthly-item-rgb-values), .2);
                 }
 
                 span.button {
-                    border: 1.5px solid var(--main-color);
+                    border: 1.5px solid var(--monthly-color);
                     border-radius: 50%;
                     width: .75rem;
                     height: .75rem;
@@ -141,7 +141,7 @@
                     &.checked::after {
                         width: .325rem;
                         height: .325rem;
-                        background-color: var(--main-color);
+                        background-color: var(--monthly-color);
                         border-radius: 50%;
                         content: '';
                         position: absolute;

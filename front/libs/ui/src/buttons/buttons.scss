@@ -31,7 +31,7 @@
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--icon-light-gray);
+        background-color: var(--btn-light-gray);
         opacity: .8;
         transition: all .3s ease;
     }
@@ -102,7 +102,7 @@
 
 .btn-wide.btn-grn,
 .btn-wide.btn-grn:hover {
-    color: var(--main-dark4);
+    color: var(--blue-dark);
 }
 
 .btn-wide {
@@ -130,7 +130,7 @@
 }
 
 .btn-icon3 {
-    color: var(--m-text-tirtiary);
+    color: var(--m-text-quinary);
 
     &:hover {
         color: var(--m-text);
@@ -152,7 +152,7 @@
 
     &:hover {
         transition: all .3s ease;
-        background-color: var(--btn-dark-hover);
+        background-color: var(--btn-dark-gray-hover);
     }
 }
 
@@ -164,77 +164,52 @@
 
     &:hover {
         transition: all .3s ease;
-        background-color: var(--btn-dark-hover);
+        background-color: var(--btn-dark-gray-hover);
     }
 }
 
-.btn-grn {
-    color: var(--main-dark4);
-    background-color: var(--main-hlight);
+.btn-blue-text {
+    color: var(--blue-dark);
     transition: all .3s ease;
 
     &:hover {
-        color: var(--main-dark4);
-        background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark4) 8%);
-        transition: all .3s ease;
-    }
-}
-
-.btn-grn-text {
-    color: var(--main-color);
-    transition: all .3s ease;
-
-    &:hover {
-        background-color: var(--main-hlight);
-        color: var(--main-dark4);
-        transition: all .3s ease;
-    }
-}
-
-
-.btn-grn2 {
-    background-color: var(--secondary-hlight);
-    color: var(--secondary-dark4);
-    transition: all .3s ease;
-
-    &:hover {
-        background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark4) 7%);
+        background-color: var(--blue-light);
         transition: all .3s ease;
     }
 }
 
 .btn-blue {
-    background-color: var(--main-hlight);
-    color: var(--main-dark3);
+    background-color: var(--blue-light);
+    color: var(--blue-dark);
     transition: all .3s ease;
 
     &:hover {
-        background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark4) 7%);
+        background-color: var(--blue-light-hover);
         transition: all .3s ease;
     }
 }
 
 .btn-gr {
     box-shadow: var(--btn-drop-shadow);
-    background-color: var(--icon-light-gray);
+    background-color: var(--btn-feather-light-gray);
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--icon-hover-light-gray);
+        background-color: var(--btn-feather-light-gray-hover);
         transition: all .3s ease;
     }
 }
 
 .btn-gr2 {
     box-shadow: var(--btn-drop-shadow);
-    background-color: var(--icon-light-gray);
+    background-color: var(--btn-feather-light-gray);
     transition: all .3s ease;
-    color: var(--btn-mid-gray);
+    color: var(--btn-gray);
 
     &:hover {
-        background-color: var(--icon-hover-light-gray);
+        background-color: var(--btn-feather-light-gray-hover);
         transition: all .3s ease;
-        color: var(--btn-mid-gray-hover);
+        color: var(--btn-gray-hover);
         color: var(--m-text);
 
         * {
@@ -243,7 +218,7 @@
     }
 
     &.selected {
-        border: 1px solid var(--main-sat);
+        border: 1px solid var(--blue);
         transition: none;
     }
 }
@@ -253,18 +228,18 @@
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--icon-light-gray);
+        background-color: var(--btn-light-gray);
         transition: all .3s ease;
     }
 }
 
 .btn-discreet {
-    background-color: var(--icon-light-gray);
+    background-color: var(--btn-light-gray);
     color: var(--m-text-tirtiary);
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--icon-hover-light-gray);
+        background-color: var(--btn-light-gray-hover);
         transition: all .3s ease;
     }
 }
@@ -501,7 +476,7 @@ button {
 }
 
 .btn-input2:hover {
-    background-color: var(--icon-hover-light-gray);
+    background-color: var(--btn-light-gray-hover);
 }
 
 .btn-input-full {
@@ -595,23 +570,23 @@ button.disabled-hover:hover svg {
     place-content: center;
 
     &.non-clr {
-        background-color: var(--icon-light-gray);
+        background-color: var(--btn-light-gray);
         transition: all .2s ease;
 
 
         &:hover {
-            background-color: var(--icon-hover-light-gray);
+            background-color: var(--btn-light-gray);
             transition: all .2s ease;
         }
     }
 
     * {
-        color: var(--icon-hover-gray);
+        color: var(--btn-gray);
     }
 
 
     &:hover {
-        background-color: var(--icon-light-gray);
+        background-color: transparent;
         transition: all .2s ease;
 
         * {
@@ -710,7 +685,7 @@ button.disabled-hover:hover svg {
 .resend-btn {
     display: flex;
     align-items: center;
-    color: var(--main-color-hover);
+    color: var(--monthly-color-hover);
     padding: .25em .5em;
     gap: .125em;
 
@@ -763,19 +738,19 @@ button.disabled-hover:hover svg {
         content: '';
         position: absolute;
         inset: 0;
-        background-color: var(--icon-light-gray);
+        background-color: var(--btn-light-gray);
         z-index: 0;
     }
 
     &.darker::after {
-        background-color: var(--icon-hover-light-gray);
+        background-color: var(--btn-light-gray-hover);
     }
 
     &:hover {
         color: var(--icon-full);
 
         &::after {
-            background-color: var(--icon-hover-light-gray);
+            background-color: var(--btn-light-gray-hover);
         }
     }
 }
@@ -905,7 +880,7 @@ button.disabled-hover:hover svg {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: var(--btn-gray);
+        background-color: var(--btn-medium-gray);
         gap: .5em;
         padding: .25em 20;
         border-radius: var(--border-radius5);
@@ -932,7 +907,7 @@ button.disabled-hover:hover svg {
         width: 200%;
         height: 500%;
         position: absolute;
-        background-image: conic-gradient(rgba(var(--main-color-values), .5), rgb(var(--main-color-values), .7), rgba(var(--main-color-values), .5));
+        background-image: conic-gradient(rgba(var(--monthly-item-rgb-values), .5), rgb(var(--monthly-item-rgb-values), .7), rgba(var(--monthly-item-rgb-values), .5));
         animation: travel 3s linear infinite;
         z-index: 1;
         opacity: 1;

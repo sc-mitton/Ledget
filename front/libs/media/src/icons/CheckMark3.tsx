@@ -3,7 +3,7 @@
 const CheckMark3 = ({
     className = 'checkmark3',
     fill = "var(--m-text)",
-    stroke = "var(--main-hlight)",
+    stroke = "var(--m-invert-text)",
     strokeWidth = "14",
     width = "1.1em",
     height = "1.1em"

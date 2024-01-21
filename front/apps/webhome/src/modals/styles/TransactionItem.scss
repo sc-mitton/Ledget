@@ -55,7 +55,7 @@
         margin-top: .5em;
         text-align: center;
         font-size: .8rem;
-        background-color: var(--gray-hlight);
+        background-color: var(--btn-light-gray);
         border-radius: var(--border-radius1);
         padding: 0 .5em;
         color: var(--m-text-tirtiary);
@@ -77,7 +77,7 @@
         @include window-corner-dropdown;
     }
 
-    .inner-window {
+    .modal-inner-window {
 
         &:not(:nth-child(3))>div,
         &>div a {
@@ -238,7 +238,7 @@
                 position: absolute;
                 min-height: calc(100% - 1.5em);
                 max-height: $maxHeight;
-                background-color: var(--inner-window);
+                background-color: var(--modal-inner-window);
                 z-index: 10;
             }
 

@@ -80,6 +80,7 @@ $duration: .2s;
     opacity: 1;
     z-index: 1;
     border-right: none;
+    transition: z-index 0s linear calc($delay * 2);
 
     ul {
         opacity: 0;
@@ -101,6 +102,7 @@ $duration: .2s;
     &.open {
         z-index: 11;
         border-right: 2px solid var(--border-color-dimmest);
+        transition: z-index 0s linear 0s;
 
         &.small-screen {
             box-shadow: var(--mid-elevation-drop-shadow);
@@ -109,7 +111,7 @@ $duration: .2s;
 
         ul {
             opacity: 1;
-            transition: opacity $duration ease-in-out $delay;
+            transition: opacity $duration ease-in-out $delay, z-index 0s linear 0s;
         }
     }
 
@@ -129,8 +131,8 @@ $duration: .2s;
         position: relative;
         z-index: 1;
 
-        &[aria-current='page'] * {
-            color: var(--main-dark4);
+        &.current * {
+            color: var(--blue-dark);
         }
 
         &#profile {
@@ -187,13 +189,13 @@ $duration: .2s;
     transition: all 0.3s ease-out;
 }
 
-.side-nav-item:hover {
-    background-color: var(--icon-light-light-gray);
+.side-nav-item:not(.current):hover {
+    background-color: var(--btn-light-gray);
     opacity: .8;
     transition: all 0.3s ease-out;
 }
 
-.side-nav-item-current svg,
+.side-nav-item.current svg,
 .side-nav-item svg {
     margin-bottom: .125em
 }

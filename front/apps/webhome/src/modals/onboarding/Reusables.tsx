@@ -8,10 +8,9 @@ import { Recommendations as RecommendationsIcon } from '@ledget/media'
 import { useAddnewBillMutation, NewBill } from '@features/billSlice'
 import { useAddNewCategoryMutation, NewCategory } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { BlackSubmitWithArrow, BlueSlimButton2, TabNavList, useBillCatTabTheme } from '@ledget/ui'
+import { BlackSubmitWithArrow, BlueSlimButton2, TabNavList } from '@ledget/ui'
 
 export const TabView = ({ children, item }: { children: React.ReactNode, item: ItemS }) => {
-    const tabTheme = useBillCatTabTheme()
     const { periodTabIndex, setPeriodTabIndex } = useItemsContext(item)
 
     return (
@@ -22,7 +21,6 @@ export const TabView = ({ children, item }: { children: React.ReactNode, item: I
                         className="onboarding-tab-list"
                         selectedIndex={selectedIndex}
                         labels={['Monthly', 'Yearly']}
-                        theme={tabTheme}
                     />
                     <Tab.Panels as={Fragment}>
                         {children}

@@ -37,75 +37,75 @@
 
     &.blue,
     &.blue-split {
-        background-color: var(--main-hlight);
+        background-color: var(--monthly-background-color);
         transition: background-color 0.2s ease-in-out;
 
         * {
-            color: var(--main-dark);
+            color: var(--monthly-color);
         }
 
         &.tint {
-            background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark) 10%);
+            background-color: var(--monthly-background-color);
 
             &.hoverable:hover,
             &.hoverable.active {
-                background-color: color-mix(in srgb, var(--main-hlight), var(--main-dark) 20%);
+                background-color: var(--monthly-hover-background-color);
                 transition: background-color 0.2s ease-in-out;
             }
         }
 
         &.hoverable:hover {
-            background-color: var(--main-hlight-hover);
+            background-color: var(--monthly-hover-background-color);
             transition: background-color 0.2s ease-in-out;
         }
     }
 
     &.green,
     &.green-split {
-        background-color: var(--secondary-hlight);
+        background-color: var(--yearly-background-color);
         transition: background-color 0.2s ease-in-out;
 
         * {
-            color: var(--secondary-dark3);
+            color: var(--yearly-color);
         }
 
         &.tint {
-            background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark) 10%);
+            background-color: var(--yearly-background-color);
 
             &.hoverable:hover,
             &.hoverable.active {
-                background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark) 20%);
+                background-color: var(--yearly-hover-background-color);
                 transition: background-color 0.2s ease-in-out;
             }
         }
 
         &.hoverable:hover {
-            background-color: var(--secondary-hlight-hover);
+            background-color: var(--yearly-hover-background-color);
             transition: background-color 0.2s ease-in-out;
         }
     }
 
     &.green-blue,
     &.green-blue-split {
-        background-color: var(--secondary-hlight);
+        background-color: var(--yearly-background-color);
         transition: background-color 0.2s ease-in-out;
 
         * {
-            color: var(--secondary-dark);
+            color: red;
         }
 
         &.tint {
-            background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark) 10%);
+            background-color: var(--yearly-background-color);
 
             &.hoverable:hover,
             &.hoverable.active {
-                background-color: color-mix(in srgb, var(--secondary-hlight), var(--secondary-dark) 30%);
+                background-color: var(--yearly-hover-background-color);
                 transition: background-color 0.2s ease-in-out;
             }
         }
 
         &.hoverable:hover {
-            background-color: var(--secondary-hlight-hover);
+            background-color: var(--yearly-hover-background-color);
             transition: background-color 0.2s ease-in-out;
         }
 
@@ -120,7 +120,7 @@
             bottom: 0;
             right: 0;
             width: 50%;
-            background-color: var(--main-hlight);
+            background-color: var(--monthly-background-color);
         }
     }
 }

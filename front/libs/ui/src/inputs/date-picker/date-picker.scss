@@ -7,6 +7,11 @@
     transition: background-color .2s ease-in-out;
 }
 
+@mixin transition-color($value) {
+    color: $value;
+    transition: color .2s ease-in-out;
+}
+
 .ledget-datepicker {
     display: flex;
     align-items: center;
@@ -31,13 +36,13 @@
     }
 
     &.range.focused-0::after {
-        background-color: var(--main-sat-darker);
+        background-color: var(--blue-medium);
         left: 1em;
         transition: left .2s linear;
     }
 
     &.range.focused-1::after {
-        background-color: var(--main-sat);
+        background-color: var(--blue);
         left: calc(50% + .75em);
         transition: left .2s linear;
     }
@@ -106,7 +111,7 @@
             flex-grow: 1;
 
             button:hover {
-                color: var(--main-sat);
+                color: var(--blue);
             }
         }
 
@@ -155,6 +160,7 @@
         width: 100%;
         box-sizing: border-box;
         cursor: default;
+        transition: color .2s ease-in-out;
 
         &.extra-padded {
             padding: .75em 1.75em;
@@ -166,6 +172,11 @@
 
         &.disabled * {
             cursor: default;
+        }
+
+        &.terminus-start *,
+        &.terminus-end * {
+            @include transition-color(var(--blue-medium-dark));
         }
 
         &::after {
@@ -180,26 +191,26 @@
         }
 
         &:hover:not(.active):not(.disabled):not(.active-terminus-start):not(.active-terminus-end):not(.terminus-start):not(.terminus-end)::after {
-            @include transition-background(var(--icon-light-gray));
+            @include transition-background(var(--btn-light-gray));
             border-radius: var(--border-radius1);
             left: .25em;
             right: .25em;
         }
 
         &.active:not(.terminus-start):not(.terminus-end):not(.disabled):not(.today):not(.selected)::after {
-            border-top: 1px dashed var(--main-sat-darker);
-            border-bottom: 1px dashed var(--main-sat-darker);
+            border-top: 1px dashed var(--blue-medium);
+            border-bottom: 1px dashed var(--blue-medium);
         }
 
         &.active-terminus-end:not(.terminus-end):not(.terminus-start):not(.disabled):not(.today):not(.selected)::after {
-            border: 1px dashed var(--main-sat-darker);
+            border: 1px dashed var(--blue-medium);
             border-left: none;
             border-top-right-radius: var(--border-radius1);
             border-bottom-right-radius: var(--border-radius1);
         }
 
         &.active-terminus-start:not(.terminus-end):not(.terminus-start):not(.disabled):not(.today):not(.selected)::after {
-            border: 1px dashed var(--main-sat-darker);
+            border: 1px dashed var(--blue-medium);
             border-right: none;
             border-top-left-radius: var(--border-radius1);
             border-bottom-left-radius: var(--border-radius1);
@@ -212,12 +223,12 @@
             left: .25em;
             right: .25em;
             content: '';
-            border: 1px solid var(--main-sat);
+            border: 1px solid var(--blue);
             border-radius: var(--border-radius2);
         }
 
         &.disabled::after {
-            @include transition-background(var(--icon-light-gray));
+            @include transition-background(var(--btn-light-gray));
         }
 
         &.selected::after {
@@ -233,7 +244,7 @@
         &.terminus-start::after,
         &.terminus-end:after,
         &.selected::after {
-            @include transition-background(var(--main-sat));
+            @include transition-background(var(--blue-medium));
         }
 
         &.terminus-start::after {

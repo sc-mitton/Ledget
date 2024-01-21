@@ -3,7 +3,7 @@
 }
 
 .recovery-code-option--container button {
-    color: var(--main-dark2);
+    color: var(--blue-medium-dark);
     position: relative;
 }
 
@@ -15,7 +15,7 @@
     height: .125em;
     bottom: -.0625;
     left: 0;
-    background-color: var(--main-dark2);
+    background-color: var(--blue-medium-dark);
 }
 
 .recovery-code-option--container button:hover:before {

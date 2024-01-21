@@ -29,7 +29,7 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
   const [selectorHeight, setSelectorHeight] = useState<number>()
   const [selectorLeft, setSelectorLeft] = useState<number>()
   const [selectorTop, setSelectorTop] = useState<number>()
-  const backgroundColor = useSchemeVar('--btn-gray-hover')
+  const backgroundColor = useSchemeVar('--btn-medium-gray-hover')
 
   const baseStyles = {
     position: "absolute",

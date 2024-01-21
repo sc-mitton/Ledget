@@ -13,7 +13,7 @@
     max-height: 62.5rem;
 }
 
-$box-shadow-color: var(--main-hlight);
+$box-shadow-color: var(--blue-light);
 
 .infinite-scroll--container.fetching-more {
     overflow: hidden;
@@ -26,7 +26,7 @@ $box-shadow-color: var(--main-hlight);
         right: 0;
         margin: 0 auto;
         border-radius: 50%;
-        background-color: var(--main-hlight-hover);
+        background-color: var(--blue-light-hover);
         animation: fetching-more .7s ease-out forwards;
     }
 }
@@ -88,11 +88,11 @@ $box-shadow-color: var(--main-hlight);
     }
 
     &.selected {
-        background-color: var(--main-hlight);
+        background-color: var(--blue-light);
     }
 
     &.selected.active {
-        background-color: var(--main-hlight-hover);
+        background-color: var(--blue-light-hover);
     }
 
     &:focus-visible {

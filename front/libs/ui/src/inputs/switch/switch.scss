@@ -11,12 +11,12 @@
     border-radius: 1.25em;
 
     &.enabled {
-        background-color: var(--main-dark);
+        background-color: var(--blue-dark);
         transition: background-color 0.2s ease-in-out;
     }
 
     &.disabled {
-        background-color: var(--btn-mid-gray);
+        background-color: var(--btn-gray);
         transition: background-color 0.2s ease-in-out;
         opacity: .4;
     }
@@ -29,15 +29,14 @@
 
     &.enabled {
         transform: translateX(.82rem);
-        background-color: var(--main-hlight);
+        background-color: var(--blue-light);
         transition: all 0.2s ease-in-out;
     }
 
     &.disabled {
         transform: translateX(0);
-        background-color: var(--icon-light-gray);
+        background-color: var(--btn-feather-light-gray);
         transition: all 0.2s ease-in-out;
-        opacity: .8;
     }
 
 }

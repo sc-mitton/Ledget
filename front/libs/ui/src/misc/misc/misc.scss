@@ -20,7 +20,7 @@
     width: 1em;
     height: 1em;
     border-radius: 50%;
-    background-color: var(--icon-hover-light-gray);
+    background-color: var(--btn-light-gray-hover);
 }
 
 @keyframes fade-in {
@@ -41,11 +41,11 @@
     opacity: .9;
 
     &.green {
-        color: var(--secondary-dark);
+        color: var(--yearly-color);
     }
 
     &.blue {
-        color: var(--main-dark);
+        color: var(--monthly-color);
     }
 
     circle:first-child {

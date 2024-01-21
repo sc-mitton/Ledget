@@ -319,8 +319,8 @@ button:focus-visible {
     margin: -.125em;
 }
 
-.inner-window-bordered {
-    border: 1.5px solid var(--border-color-dimmest);
+.modal-inner-window {
+    background-color: var(--modal-inner-window);
     border-radius: var(--inner-window-border-radius);
     padding: .75em;
     margin: -.125em;

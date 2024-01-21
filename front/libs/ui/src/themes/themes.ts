@@ -7,7 +7,7 @@ import { useSchemeVar } from '../utils/hooks/use-scheme-var/use-scheme-var'
 type NivoResponsiveLineBaseProps = Omit<LineSvgProps, 'data'>
 
 export const useNivoResponsiveBaseProps = ({ disabled = false }: { disabled?: boolean }): NivoResponsiveLineBaseProps => {
-    const [mainColorHover, mainSat, window] = useSchemeVar(['--main-color-hover', '--main-sat', '--window'])
+    const [mainColorHover, mainSat, window] = useSchemeVar(['--monthly-color-hover', '--blue', '--window'])
 
     return ({
         enablePoints: true,
@@ -44,7 +44,7 @@ export const useNivoResponsiveBaseProps = ({ disabled = false }: { disabled?: bo
 
 export const useNivoResponsiveLineTheme = (): Theme => {
     const [mainHlightHover, borderColor, mTextSecondary] = useSchemeVar([
-        '--main-hlight-hover', '--border-color', '--m-text-secondary'])
+        '--blue-light-hover', '--border-color', '--m-text-secondary'])
 
     return ({
         crosshair: {

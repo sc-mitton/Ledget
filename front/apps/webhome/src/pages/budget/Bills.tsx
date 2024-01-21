@@ -269,7 +269,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                                 </span>
                             </BillCatLabel>
                             <div><DollarCents value={bill.upper_amount} /></div>
-                            <div><CheckMark2 style={{ opacity: bill?.is_paid ? 1 : .3 }} /></div>
+                            <div><CheckMark2 style={{ opacity: bill?.is_paid ? 1 : .15 }} /></div>
                         </div>
                     )
                 })}

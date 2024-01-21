@@ -206,12 +206,12 @@ $scroll-bar-padding: .5em;
 
         &.hoverable:hover::after,
         &.hoverable.selected::after {
-            background-color: var(--icon-light-gray);
+            background-color: var(--btn-light-gray);
             transition: background-color .2s ease-in-out;
         }
 
         &.hoverable.selected:hover::after {
-            background-color: var(--icon-hover-light-gray);
+            background-color: var(--btn-light-gray-hover);
             transition: background-color .2s ease-in-out;
         }
 
@@ -240,11 +240,11 @@ $scroll-bar-padding: .5em;
             border-radius: 50%;
 
             &.month {
-                background-color: var(--main-color);
+                background-color: var(--monthly-color);
             }
 
             &.year {
-                background-color: var(--secondary-color);
+                background-color: var(--yearly-color);
             }
         }
     }

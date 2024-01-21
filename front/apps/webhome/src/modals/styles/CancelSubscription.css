@@ -17,7 +17,7 @@
 
 #cancelation-modal--container>div:first-of-type {
     margin: .5em 0 1.25em 0;
-    color: var(--secondary-text-color);
+    color: var(--yearly-text-color);
 }
 
 .transition-container {

@@ -1,7 +1,7 @@
 $translucent-shimmer-background-light: linear-gradient(115deg, transparent 25%, hsl(0, 0%, 98%) 50%, transparent 75%);
 $translucent-shimmer-background-dark: linear-gradient(115deg, transparent 25%, hsl(0, 0%, 2%) 50%, transparent 75%);
-$blue-shimmer-background: linear-gradient(115deg, transparent 30%, var(--main-hlight-hover) 50%, transparent 70%);
-$green-shimmer-background: linear-gradient(115deg, transparent 30%, var(--secondary-hlight-hover) 50%, transparent 70%);
+$blue-shimmer-background: linear-gradient(115deg, transparent 30%, var(--monthly-hover-background-color) 50%, transparent 70%);
+$green-shimmer-background: linear-gradient(115deg, transparent 30%, var(--yearly-hover-background-color) 50%, transparent 70%);
 
 .loading-shimmer--container {
     width: 100%;
@@ -11,11 +11,11 @@ $green-shimmer-background: linear-gradient(115deg, transparent 30%, var(--second
 }
 
 .colored-loading-shimmer.green {
-    background-color: var(--secondary-hlight);
+    background-color: var(--yearly-background-color);
 }
 
 .colored-loading-shimmer.blue {
-    background-color: var(--main-hlight);
+    background-color: var(--monthly-background-color);
 }
 
 .loading-shimmer {

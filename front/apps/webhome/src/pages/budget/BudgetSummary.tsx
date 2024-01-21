@@ -11,6 +11,7 @@ import { useAppSelector } from '@hooks/store'
 import { AnimatedDollarCents } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useColorScheme } from '@ledget/ui'
+import { useScreenContext } from '@context/context'
 
 const BudgetSummary = () => {
     const [searchParams] = useSearchParams()
@@ -31,10 +32,6 @@ const BudgetSummary = () => {
         yearly_bills_paid,
         number_of_monthly_bills,
         number_of_yearly_bills,
-        monthly_bills_amount_remaining,
-        yearly_bills_amount_remaining,
-        total_monthly_bills_amount,
-        total_yearly_bills_amount
     } = useAppSelector(selectBillMetaData)
 
     useEffect(() => {
@@ -48,10 +45,11 @@ const BudgetSummary = () => {
     }, [start, end])
 
     const { isDark } = useColorScheme()
+    const { screenSize } = useScreenContext()
 
     return (
         <>
-            <div id="month-picker--container">
+            <div id="month-picker--container" className={`${screenSize === 'small' ? 'small-screen' : ''}`}>
                 <MonthPicker darkMode={isDark} />
             </div>
             <div className="budget-summary--container">

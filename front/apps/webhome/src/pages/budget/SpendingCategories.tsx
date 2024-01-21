@@ -36,7 +36,6 @@ import {
     DollarCents,
     AnimatedDollarCents,
     StaticProgressCircle,
-    GrnPrimaryButton,
     BluePrimaryButton,
     ColoredShimmer,
     PillOptionButton,
@@ -57,7 +56,6 @@ import {
     BillCatLabel,
     TabNavList,
     DropdownItem,
-    useBillCatTabTheme,
 } from '@ledget/ui'
 import { Plus, ArrowIcon, Ellipsis, Edit, TrashIcon } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -93,7 +91,7 @@ const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) =
         <>
             {period === 'year'
                 ?
-                <GrnPrimaryButton
+                <BluePrimaryButton
                     className={`add-new-category ${period}`}
                     onClick={() => {
                         navigate(
@@ -103,7 +101,7 @@ const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) =
                     }}
                 >
                     <Plus stroke={'currentColor'} />
-                </GrnPrimaryButton>
+                </BluePrimaryButton>
                 :
                 <BluePrimaryButton
                     className={`add-new-category ${period}`}
@@ -300,8 +298,6 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
         limit_amount_monthly,
         limit_amount_yearly,
     } = useAppSelector(SelectCategoryBillMetaData)
-    // mHlightHover, mDark, sHlight, sDark, sHlightHover
-    const tabTheme = useBillCatTabTheme()
 
     const TotalRow = ({ selectedIndex }: { selectedIndex: number }) => (
         <div className='row total header'>
@@ -341,7 +337,6 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
                                 selectedIndex={selectedIndex}
                                 labels={['Monthly', 'Yearly']}
                                 className='spending-categories--tab-nav-list'
-                                theme={tabTheme}
                             />
                         </div>
                     </div>

@@ -2,38 +2,35 @@
 import { useSchemeVar } from '../../utils/hooks/use-scheme-var/use-scheme-var';
 
 export function useBillCatTabTheme() {
-  const [mHlight, mHlightHover, mDark, sHlight, sHlightHover, sDark] = useSchemeVar([
-    '--main-hlight',
-    '--main-hlight-hover-darker',
-    '--main-dark',
-    '--secondary-hlight',
-    '--secondary-hlight-hover-darker',
-    '--secondary-dark'
-  ])
+  const [
+    pillColor1, pillColor2,
+    pillBackgroundColor1, pillBackgroundColor2,
+    tabBackgroundColor1, tabBackgroundColor2,
+    tabColor1, tabColor2] = useSchemeVar([
+      '--monthly-color',
+      '--yearly-color',
+      '--monthly-background-color',
+      '--yearly-background-color',
+      '--btn-light-gray',
+      '--btn-light-gray',
+      '--btn-gray',
+      '--btn-gray'
+    ])
 
   return [
-    { pillColor: mDark, pillBackgroundColor: mHlight, tabBackgroundColor: mHlightHover, tabColor: mDark },
-    { pillColor: sDark, pillBackgroundColor: sHlight, tabBackgroundColor: sHlightHover, tabColor: sDark }
+    {
+      pillColor: pillColor1,
+      pillBackgroundColor: pillBackgroundColor1,
+      tabBackgroundColor: tabBackgroundColor1,
+      tabColor: tabColor1
+    },
+    {
+      pillColor: pillColor2,
+      pillBackgroundColor: pillBackgroundColor2,
+      tabBackgroundColor: tabBackgroundColor2,
+      tabColor: tabColor2
+    }
   ]
 }
 
 export default useBillCatTabTheme;
-
-
-// export function useBillCatTabTheme() {
-//   const [pillBackGround1, pillBackGround2, pillColor1, pillColor2, tabBackgroundColor] = useSchemeVar([
-//     '--main-sat',
-//     '--secondary-sat',
-//     '--main-hlight',
-//     '--secondary-hlight',
-//     '--icon-light-light-gray'
-//   ])
-
-//   return [
-//     { pillColor: pillColor1, pillBackgroundColor: pillBackGround1, tabBackgroundColor },
-//     { pillColor: pillColor2, pillBackgroundColor: pillBackGround2, tabBackgroundColor }
-//   ]
-// }
-
-// export default useBillCatTabTheme;
-

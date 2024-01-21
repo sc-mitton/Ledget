@@ -7,7 +7,7 @@
     --m-text: rgb(36, 36, 36);
 
     --mute-blue: rgb(122, 166, 248);
-    --main-blue: rgb(107, 155, 246);
+    --monthly-blue: rgb(107, 155, 246);
     --hover-blue: rgb(92, 145, 245);
 
     --mute-red: rgb(244, 119, 136);
@@ -15,7 +15,7 @@
     --alert-red: rgb(243, 80, 80);
 
     /* Icons & Buttons */
-    --btn-gray: rgb(70, 70, 70);
+    --btn-medium-gray: rgb(70, 70, 70);
     --btn-hover-gray: rgb(36, 36, 36);
 }
 
@@ -164,7 +164,7 @@ a {
     margin: 0 .5em;
     padding: .375em .5em .375em .75em;
     border-radius: 1em;
-    background-color: var(--btn-gray);
+    background-color: var(--btn-medium-gray);
     display: flex;
     align-items: center;
     cursor: pointer;

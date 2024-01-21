@@ -5,7 +5,7 @@ const SmsAuth = ({
     height = "1em",
     className = '',
     fill = 'var(--icon-full)',
-    fill2 = 'var(--m-dark4)'
+    fill2 = 'var(--blue-dark)'
 }) => {
 
     return (

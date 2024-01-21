@@ -134,7 +134,7 @@ const RecoveryVerificationForm = ({ submit, flow, codeSuccess, isCompleteError, 
                         name="method"
                         type="submit"
                         value="code"
-                        style={{ color: 'var(--main-dark4)' }}
+                        style={{ color: 'var(--blue-dark)' }}
                     >
                         Verify Code
                     </DarkWideButton>

@@ -74,15 +74,15 @@
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0px 0px var(--main-hlight);
+        box-shadow: 0 0 0px 0px var(--blue-light);
     }
 
     50% {
-        box-shadow: 0 0 0px 4px var(--main-hlight);
+        box-shadow: 0 0 0px 4px var(--blue-light);
     }
 
     100% {
-        box-shadow: 0 0 0px 0px var(--main-hlight);
+        box-shadow: 0 0 0px 0px var(--blue-light);
     }
 
 }

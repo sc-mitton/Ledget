@@ -30,7 +30,7 @@
         li {
             padding: .125em 1em;
             font-weight: var(--fw-regular);
-            background-color: var(--icon-light-gray);
+            background-color: var(--btn-feather-light-gray);
             border-radius: var(--border-radius3);
             transition: background-color 0.2s ease-in-out;
             display: inline-flex;
@@ -43,11 +43,11 @@
         li[aria-current="true"] {
             background-color: transparent;
             transition: background-color 0.5s ease-in-out;
-            color: var(--main-dark);
+            color: var(--blue-medium-dark);
         }
 
         li:not([aria-current="true"]):hover {
-            background-color: var(--icon-hover-light-gray);
+            background-color: var(--btn-feather-light-gray-hover);
             transition: background-color 0.5s ease-in-out;
         }
     }

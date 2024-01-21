@@ -7,7 +7,7 @@ import { AnimatePresence } from 'framer-motion'
 import './styles/CancelSubscription.css'
 import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
-import { RedButton, GrnPrimaryButton, SlideMotionDiv, useLoaded, BakedListBox } from '@ledget/ui'
+import { RedButton, BluePrimaryButton, SlideMotionDiv, useLoaded, BakedListBox } from '@ledget/ui'
 import { useUpdateSubscriptionMutation, useGetSubscriptionQuery } from '@features/userSlice'
 
 export const CancelationWindow = (props) => {
@@ -141,12 +141,12 @@ const SuccessWindow = (props) => {
             <div>
             </div>
             <div>
-                <GrnPrimaryButton
+                <BluePrimaryButton
                     onClick={() => { props.closeModal() }}
                     style={{ float: 'right' }}
                 >
                     OK
-                </GrnPrimaryButton>
+                </BluePrimaryButton>
             </div>
         </div>
     )

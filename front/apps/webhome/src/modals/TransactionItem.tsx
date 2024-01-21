@@ -246,7 +246,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
     }
 
     return (
-        <div className='inner-window'>
+        <div className='modal-inner-window'>
             <h4>{`Note${notes.length > 0 ? 's' : ''}`}</h4>
             <div
                 id="notes--container"
@@ -335,7 +335,7 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
     }, [accountsFetched])
 
     return (
-        <div className='inner-window'>
+        <div className='modal-inner-window'>
             <div>Account</div>
             <div id="account-info-cell">
                 <a href={institution?.url} target="_blank" rel="noreferrer">
@@ -420,7 +420,7 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
     }, [billCat])
 
     return (
-        <div className='inner-window' id="bills-and-categories">
+        <div className='modal-inner-window' id="bills-and-categories">
             <div>{getBillCategoryLabel(item)}</div>
             {!itemIsSplit
                 ?

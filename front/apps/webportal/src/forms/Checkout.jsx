@@ -58,7 +58,7 @@ const PriceRadios = ({ register }) => {
                                 <div className="subscription-radio--container">
                                     {p.nickname.toLowerCase() == 'year' &&
                                         <div className="dog-ear">
-                                            <Star fill={'var(--main-hlight)'} />
+                                            <Star fill={'var(--blue-light)'} />
                                         </div>
                                     }
                                     <span className="nickname">{p.nickname}</span>

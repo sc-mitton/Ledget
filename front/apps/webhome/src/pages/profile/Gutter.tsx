@@ -43,7 +43,7 @@ const NavList = () => {
                 id={route}
                 onClick={() => navigate(route)}
                 onKeyDown={(e) => { e.key === "Enter" && navigate(route) }}
-                className={`slim side-nav-item${rootPath === route ? "-current" : ''}`}
+                className={`slim side-nav-item ${rootPath === route ? "current" : ''}`}
             >
                 <div><Icon name={route} fill={'currentColor'} /></div>
                 <div>
@@ -65,7 +65,7 @@ const Profile = () => {
             data-current={location.pathname === "/profile/details" ? "page" : ''}
             onClick={() => navigate("/profile/details")}
             onKeyDown={(e) => e.key === "Enter" && navigate("/profile/details")}
-            className={`side-nav-item${location.pathname === "/profile/details" ? "-current" : ''}`}
+            className={`side-nav-item ${location.pathname === "/profile/details" ? "current" : ''}`}
             id="profile"
         >
             <div><Profile1 width="1.6em" height="1.6em" fill={'currentColor'} /></div>
@@ -83,7 +83,7 @@ const Gutter = () => {
     const buttonRef = useRef<HTMLButtonElement>(null)
 
     const location = useLocation()
-    const backgroundColor = useSchemeVar('--main-hlight')
+    const backgroundColor = useSchemeVar('--blue-light')
     const [open, setOpen] = useGutterContext()
     const [updatePill, setUpdatePill] = useState(false)
     const { screenSize } = useScreenContext()
