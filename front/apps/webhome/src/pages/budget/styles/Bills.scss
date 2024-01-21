@@ -257,6 +257,7 @@ $scroll-bar-padding: .5em;
     flex-shrink: 1;
     overflow-y: hidden;
     overflow-x: auto;
+    scrollbar-width: none;
     margin-top: .5em;
     max-height: clamp(calc(3 * (1em + $bill-flex-grid-gap*2)),
             calc(5 * (1em + $bill-flex-grid-gap*2 + 1vh)),

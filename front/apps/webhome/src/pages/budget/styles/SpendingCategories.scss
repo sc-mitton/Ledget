@@ -427,10 +427,6 @@ $background: var(--window);
             grid-auto-rows: minmax(1.5em, 1.5em);
         }
 
-        &:not(.no-transactions) {
-            // grid-auto-rows: minmax(2.5em, 3.5em);
-        }
-
         &>div {
             display: contents;
             position: relative;

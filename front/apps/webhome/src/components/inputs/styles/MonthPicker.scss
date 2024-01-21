@@ -4,10 +4,11 @@
     position: relative;
     margin-bottom: .25em;
     border-radius: var(--border-radius4);
-    padding: 0 .375em;
+    padding: 0 .625em;
 
     &:not(.dark) {
-        background-color: var(--btn-gray);
+        background-color: var(--window);
+        // border: 1.5px solid var(--btn-gray);
     }
 
     &.dark {
@@ -17,14 +18,17 @@
     &>div:first-child {
         display: flex;
         align-items: center;
-        gap: .25em;
+        gap: .125em;
+
+        &>button:first-child {
+            // margin-right: .25em;
+        }
 
         &>button>span {
-            font-size: 1rem;
+            font-size: 1.1em;
             line-height: 1em;
             padding: .25em;
-            color: var(--m-secondary-quaternary);
-            font-weight: var(--fw-bold);
+            color: var(--m-secondary-quinary);
 
             &:hover {
                 color: var(--m-text);

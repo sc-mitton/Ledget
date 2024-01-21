@@ -32,7 +32,7 @@
     --dropdown-box-shadow: var(--dropdown-box-shadow-color) 0px 3px 12px;
     --antd-drop-shadow: var(--antd-drop-shadow-color) 0 3px 12px;
 
-    --accessible-focus-drop-shadow: 0 0 0 1.5px var(--input-focus-dropshadow-color);
+    --accessible-focus-drop-shadow: 0 0 0 1.5px var(--main-sat);
     --active-wafer-drop-shadow: color-mix(in srgb, var(--main-hlight) 80%, var(--main-color)) 0px 0px 12px;
 
     --subtle-border: .75px solid var(--border-color-dimmest);
@@ -101,7 +101,7 @@
 
         // Windows
         --window-background-color: hsl(0, 0%, 2%);
-        --window-background-color-portal: hsl(0, 0%, 5%);
+        --window-background-color-portal: hsl(0, 0%, 3%);
         --window: hsl(0, 0%, 8%);
         --window2: hsl(0, 0%, 11%);
         // --window-border: hsl(0, 0%, 10%);
@@ -216,7 +216,7 @@
 
         --main-sat: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 30%));
         --main-sat-darker: hsl(var(--main-color-h), calc(var(--main-color-s) + 50%), calc(var(--main-color-l) + 20%));
-        --main-color-header-text: hsl(var(--main-color-h), calc(var(--main-color-s) + 0%), calc(var(--main-color-l) - 0%));
+        --main-color-header-text: hsl(var(--main-color-h), calc(var(--main-color-s) + 0%), calc(var(--main-color-l) + 10%));
 
         --secondary-color: hsl(var(--secondary-color-h), var(--secondary-color-s), var(--secondary-color-l));
         --secondary-color-hover: hsl(var(--secondary-color-h), var(--secondary-color-s), calc(var(--secondary-color-l) - 5%));
@@ -266,7 +266,7 @@
         --input-focus-dropshadow-color: var(--main-hlight);
 
         // Text
-        --m-header-text: hsl(0, 0%, 0%);
+        --m-header-text: hsl(0, 0%, 5%);
         --m-text: hsl(0, 0%, 10%);
         --m-invert-text: hsl(0, 0%, 97%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), white 20%);
@@ -308,7 +308,7 @@
         // Drop Shadows & Borders
         --window-drop-shadow-color: hsl(0, 0%, 93%);
         --wafer-drop-shadow-color: hsl(0, 0%, 87%);
-        --header-box-shadow-color: hsl(0, 0%, 90%);
+        // --header-box-shadow-color: hsl(0, 0%, 47%);
         --new-item-drop-shadow-color: hsl(0, 0%, 91%);
         --scroll-shadow: hsl(0, 0%, 97%), transparent;
         --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);
