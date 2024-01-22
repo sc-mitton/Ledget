@@ -240,11 +240,11 @@ $scroll-bar-padding: .5em;
             border-radius: 50%;
 
             &.month {
-                background-color: var(--monthly-color);
+                background-color: var(--blue-sat);
             }
 
             &.year {
-                background-color: var(--yearly-color);
+                background-color: var(--green-sat);
             }
         }
     }

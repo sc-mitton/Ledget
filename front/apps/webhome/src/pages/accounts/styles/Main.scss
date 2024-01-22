@@ -62,7 +62,7 @@ $wafer-container-padding: .75rem;
 .account-wafers,
 .skeleton-wafers {
     display: inline-flex;
-    height: calc($wafer-height + 2 * $wafer-container-padding);
+    height: calc($wafer-height + 2 * $wafer-container-padding + .25em);
     gap: .75em;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -153,7 +153,7 @@ $wafer-container-padding: .75rem;
 }
 
 .skeleton-account-wafer {
-    background-color: var(--window-background-color);
+    background-color: var(--window);
 }
 
 .account-wafer {

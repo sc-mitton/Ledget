@@ -128,7 +128,7 @@
             &.radio-option {
 
                 &:hover>span.button:not(.checked) {
-                    box-shadow: 0 0 0 3px rgb(var(--monthly-item-rgb-values), .2);
+                    box-shadow: 0 0 0 3px var(--blue-light);
                 }
 
                 span.button {

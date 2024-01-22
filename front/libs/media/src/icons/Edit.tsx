@@ -1,7 +1,7 @@
 'react'
 
 const Edit = ({
-    size = '1em',
+    size = '.9em',
     className = '',
     fill = "var(--icon-full)",
 }) => {

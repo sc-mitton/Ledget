@@ -152,7 +152,7 @@ const Mfa = () => {
                     position: 'relative',
                 }}
             >
-                <h3>Multi-Factor</h3>
+                <h4>Multi-Factor</h4>
                 {user.mfa_method === 'totp' && <RecoveryCodes />}
             </div>
             <div className="inner-window" id="mfa-options--container">

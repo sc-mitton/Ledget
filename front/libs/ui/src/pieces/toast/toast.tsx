@@ -105,7 +105,7 @@ export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], c
             {item.type === 'success' &&
               <CheckMarkIcon
                 width={'1.25em'} height={'1.25em'}
-                fill={'var(--m-text'}
+                fill={'var(--blue)'}
                 stroke={'var(--window'}
               />
             }

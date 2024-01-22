@@ -7,23 +7,25 @@
     padding: 0 .625em;
 
     &:not(.dark) {
-        // border: 1.5px solid var(--btn-light-gray);
-        background-color: var(--btn-feather-light-gray);
+        // border: 1px solid var(--btn-light-gray);
+        background-color: var(--blue-medium);
 
-        // &>div:first-child>button * {
-        //     color: var(--m-text);
+        &>div:first-child>button * {
+            color: var(--white);
+            opacity: 1;
 
-        //     &:hover {
-        //         color: var(--m-text-quaternary);
-        //     }
-        // }
+            &:hover {
+                opacity: .8;
+                color: var(--white);
+            }
+        }
     }
 
     &.dark {
         border: 1.75px solid var(--btn-light-gray);
 
         &>div:first-child>button * {
-            color: var(--m-text-quinary);
+            color: var(--m-text-tirtiary);
 
             &:hover {
                 color: var(--m-text);

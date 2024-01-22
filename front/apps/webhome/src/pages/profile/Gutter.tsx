@@ -119,7 +119,7 @@ const Gutter = () => {
         paddingTop: open ? '0.75em' : '0em',
         paddingBottom: open ? '0.75em' : '0em',
         marginTop: open
-            ? screenSize !== 'small' ? '1em' : '0em'
+            ? screenSize !== 'small' ? '.5em' : '0em'
             : '0em',
         marginBottom: open
             ? screenSize !== 'small' ? '1em' : '0em'

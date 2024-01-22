@@ -9,12 +9,12 @@ export function useBillCatTabTheme() {
     tabColor1, tabColor2] = useSchemeVar([
       '--monthly-color',
       '--yearly-color',
-      '--monthly-background-color',
-      '--yearly-background-color',
-      '--btn-light-gray',
-      '--btn-light-gray',
-      '--btn-gray',
-      '--btn-gray'
+      '--monthly-background-color-darker',
+      '--yearly-background-color-darker',
+      '--btn-feather-light',
+      '--btn-feather-light',
+      '--m-text',
+      '--m-text'
     ])
 
   return [

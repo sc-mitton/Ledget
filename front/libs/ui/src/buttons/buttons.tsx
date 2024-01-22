@@ -115,7 +115,7 @@ export const CloseButton =
         className={`btn-gr btn btn-icon close-btn ${className ? className : ''}`}
         {...rest}
       >
-        <CloseIcon size={size} />
+        <CloseIcon size={size} stroke={'currentColor'} />
       </button>
     )
   })

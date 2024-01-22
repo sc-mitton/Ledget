@@ -145,26 +145,26 @@
 }
 
 .btn-dark {
-    background-color: var(--btn-dark);
+    background-color: var(--blue-medium);
     font-weight: var(--fw-bold);
-    color: var(--m-invert-text);
+    color: var(--white);
     transition: all .3s ease;
 
     &:hover {
         transition: all .3s ease;
-        background-color: var(--btn-dark-gray-hover);
+        background-color: var(--blue-medium-hover);
     }
 }
 
 .btn-chcl {
-    background-color: var(--btn-dark);
+    background-color: var(--blue-medium);
     font-weight: var(--fw-bold);
-    color: var(--m-invert-text);
+    color: var(--white);
     transition: all .3s ease;
 
     &:hover {
         transition: all .3s ease;
-        background-color: var(--btn-dark-gray-hover);
+        background-color: var(--blue-medium-hover);
     }
 }
 
@@ -191,11 +191,11 @@
 
 .btn-gr {
     box-shadow: var(--btn-drop-shadow);
-    background-color: var(--btn-feather-light-gray);
+    background-color: var(--btn-light-gray);
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--btn-feather-light-gray-hover);
+        background-color: var(--btn-light-gray-hover);
         transition: all .3s ease;
     }
 }
@@ -218,7 +218,7 @@
     }
 
     &.selected {
-        border: 1px solid var(--blue);
+        border: 1px solid var(--blue-light-medium);
         transition: none;
     }
 }

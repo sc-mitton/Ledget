@@ -56,6 +56,7 @@ import {
     BillCatLabel,
     TabNavList,
     DropdownItem,
+    useBillCatTabTheme
 } from '@ledget/ui'
 import { Plus, ArrowIcon, Ellipsis, Edit, TrashIcon } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -298,12 +299,13 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
         limit_amount_monthly,
         limit_amount_yearly,
     } = useAppSelector(SelectCategoryBillMetaData)
+    const tabTheme = useBillCatTabTheme()
 
     const TotalRow = ({ selectedIndex }: { selectedIndex: number }) => (
         <div className='row total header'>
             <div><h4>Total</h4></div>
             <div><div>
-                <DollarCents value={selectedIndex === 0 ? monthly_spent || '0.00' : yearly_spent || '0.00'} />
+                <DollarCents value={selectedIndex === 0 ? monthly_spent || '0.00' : yearly_spent || '0.00'} withCents={false} />
             </div></div>
             <div>/</div>
             <div> <DollarCents
@@ -317,6 +319,7 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
             </div>
             <div>
                 <StaticProgressCircle
+                    color={selectedIndex === 0 ? 'blue' : 'green'}
                     value={
                         selectedIndex === 0
                             ? (monthly_spent && limit_amount_monthly) ? Math.round(monthly_spent / limit_amount_monthly) : 0
@@ -337,6 +340,7 @@ const TabView = ({ categories }: { categories?: Category[] }) => {
                                 selectedIndex={selectedIndex}
                                 labels={['Monthly', 'Yearly']}
                                 className='spending-categories--tab-nav-list'
+                                theme={tabTheme}
                             />
                         </div>
                     </div>

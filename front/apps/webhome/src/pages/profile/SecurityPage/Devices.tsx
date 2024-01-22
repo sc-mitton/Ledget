@@ -129,7 +129,7 @@ const Devices = ({ devices }: { devices: DeviceType[] }) => {
 
     return (
         <section>
-            <h3 className="header2">Devices</h3>
+            <h4 className="header2">Devices</h4>
             <div className="inner-window" id="device-list">
                 {(groupedDevices).map(([device, info], index) =>
                     <Device

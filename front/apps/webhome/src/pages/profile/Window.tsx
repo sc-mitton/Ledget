@@ -53,7 +53,7 @@ function Profile() {
     const { screenSize } = useScreenContext()
 
     return (
-        <div id="profile-window" className='main-window'>
+        <div id="profile-window--container" className='main-window'>
             <ShimmerDiv
                 className={`window
                 ${open ? 'with-open-gutter' : ''}

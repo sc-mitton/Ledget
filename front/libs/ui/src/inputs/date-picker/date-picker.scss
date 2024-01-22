@@ -176,7 +176,7 @@
 
         &.terminus-start *,
         &.terminus-end * {
-            @include transition-color(var(--blue-medium-dark));
+            @include transition-color(var(--white));
         }
 
         &::after {

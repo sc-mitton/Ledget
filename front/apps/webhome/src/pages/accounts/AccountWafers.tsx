@@ -41,7 +41,6 @@ export const SkeletonWafers = () => (
                         key={index}
                         className="skeleton-account-wafer"
                         shimmering={true}
-                        background="var(--inner-window)"
                         style={{ position: 'absolute' }}
                     />
                 </div>

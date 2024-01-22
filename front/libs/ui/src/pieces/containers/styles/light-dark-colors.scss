@@ -47,39 +47,44 @@
         --alert-red: hsl(352, 96%, 80%);
         --red-rgb: 243, 80, 80;
         --dark-red: #8b2424;
-        --blue: #5172dc;
         --blue-text: #e9eeff;
 
         // Secondary and Primary Base Values
         --blue-h: 226;
         --green-h: 170;
 
-        --monthly-background-color: hsl(226, 45%, 38%);
-        --monthly-hover-background-color: hsl(226, 45%, 30%);
-        --monthly-background-color-darker: hsl(226, 45%, 20%);
-        --monthly-color: hsl(226, 45%, 80%);
-        --yearly-background-color: hsl(170, 30%, 27%);
-        --yearly-hover-background-color: hsl(170, 50%, 20%);
-        --yearly-background-color-darker: hsl(170, 30%, 20%);
-        --yearly-color: hsl(170, 30%, 80%);
+        --monthly-background-color: hsl(var(--blue-h), 45%, 38%);
+        --monthly-hover-background-color: hsl(var(--blue-h), 45%, 30%);
+        --monthly-background-color-darker: hsl(var(--blue-h), 45%, 38%);
+        --monthly-color: hsl(var(--blue-h), 45%, 95%);
+        --yearly-background-color: hsl(var(--green-h), 30%, 27%);
+        --yearly-hover-background-color: hsl(var(--green-h), 50%, 20%);
+        --yearly-background-color-darker: hsl(var(--green-h), 50%, 20%);
+        --yearly-color: hsl(var(--green-h), 30%, 95%);
 
         // Blue Green Pallet
         --blue-light: hsl(var(--blue-h), 45%, 28%);
         --blue-light-hover: hsl(var(--blue-h), 45%, 23%);
-        --blue-medium: hsl(var(--blue-h), 25%, 45%);
+        --blue-medium: hsl(var(--blue-h), 45%, 45%);
+        --blue-medium-hover: hsl(var(--blue-h), 45%, 40%);
         --blue: hsl(var(--blue-h), 25%, 35%);
-        --blue-dark: hsl(var(--blue-h), 25%, 70%);
+        --blue-sat: hsl(var(--blue-h), 55%, 55%);
+        --blue-medium-dark: hsl(var(--blue-h), 25%, 70%);
+        --blue-dark: hsl(var(--blue-h), 25%, 90%);
+        --blue-ultra-dark: hsl(var(--blue-h), 85%, 90%);
+        --blue-ultra-dark-hover: hsl(var(--blue-h), 15%, 80%);
 
         --green-light: hsl(var(--green-h), 30%, 27%);
         --green-light-hover: hsl(var(--green-h), 30%, 22%);
         --green: hsl(var(--green-h), 30%, 47%);
+        --green-sat: hsl(var(--green-h), 30%, 57%);
         --green-medium: hsl(var(--green-h), 30%, 70%);
         --green-dark: hsl(var(--green-h), 30%, 80%);
 
         // Windows
         --window-background-color: hsl(0, 0%, 2%);
         --window-background-color-portal: hsl(0, 0%, 3%);
-        --window: hsl(0, 0%, 8%);
+        --window: hsl(0, 0%, 6%);
         --window2: hsl(0, 0%, 11%);
         --window-rgb: 28, 28, 28;
         --header-background: hsl(240, 38%, 3%);
@@ -99,6 +104,7 @@
         --input-background: hsl(0, 0%, 12%);
         --input-border-hover-color: hsl(0, 0%, 20%);
         --input-focus-dropshadow-color: color-mix(in srgb, var(--blue), var(--window) 50%);
+        --input-placeholder-focus: color-mix(in srgb, var(--blue-sat), var(--blue-dark) 50%);
 
         // Text
         --m-text: hsl(0, 0%, 90%);
@@ -111,7 +117,6 @@
 
         --input-placeholder: hsl(0, 0%, 66%);
         --input-placeholder2: rgb(115, 115, 117);
-        --input-placeholder-focus: hsl(var(--monthly-item-h), calc(var(--monthly-item-s) + 20%), calc(var(--monthly-item-l) + 30%));
 
         /* Font Weights */
         --fw-light: 300;
@@ -154,7 +159,7 @@
         --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
         --input-drop-shadow-color: rgba(255, 255, 255, 0.07);
 
-        --active-wafer-indicator: var(--monthly-color);
+        --active-wafer-indicator: var(--blue-sat);
 
         --border-color-dimmest: rgb(255, 255, 255, .05);
         --border-color: rgb(255, 255, 255, .09);
@@ -179,27 +184,35 @@
         --green-h: 162;
 
         // Budget Item Pallet
-        --monthly-background-color: hsl(var(--blue-h), 80%, 94%);
-        --monthly-background-color-lighter: hsl(var(--blue-h), 80%, 98%);
-        --monthly-hover-background-color: hsl(var(--blue-h), 80%, 89%);
-        --monthly-color: hsl(var(--blue-h), 50%, 40%);
+        --monthly-background-color: hsl(var(--blue-h), 80%, 93%);
+        --monthly-background-color-darker: hsl(var(--blue-h), 80%, 86%);
+        --monthly-hover-background-color: hsl(var(--blue-h), 80%, 87%);
+        --monthly-color: hsl(var(--blue-h), 80%, 40%);
+        --monthly-color-faded: hsl(var(--blue-h), 80%, 30%);
 
-        --yearly-background-color: hsl(var(--green-h), 40%, 90%);
-        --yearly-background-color-lighter: hsl(var(--green-h), 46%, 98%);
-        --yearly-hover-background-color: hsl(var(--green-h), 40%, 85%);
-        --yearly-color: hsl(var(--green-h), 50%, 30%);
+        --yearly-background-color: hsl(var(--green-h), 60%, 89%);
+        --yearly-background-color-darker: hsl(var(--green-h), 66%, 80%);
+        --yearly-hover-background-color: hsl(var(--green-h), 60%, 84%);
+        --yearly-color: hsl(var(--green-h), 60%, 30%);
+        --yearly-color-faded: hsl(var(--green-h), 60%, 20%);
 
         // Blue Green Pallet
-        --blue-light: hsl(var(--blue-h), 50%, 90%);
-        --blue-light-hover: hsl(var(--blue-h), 50%, 85%);
-        --blue-medium: hsl(var(--blue-h), 62%, 72%);
-        --blue: hsl(var(--blue-h), 62%, 62%);
-        --blue-medium-dark: hsl(var(--blue-h), 62%, 37%);
-        --blue-dark: hsl(var(--blue-h), 62%, 22%);
+        --blue-light: hsl(var(--blue-h), 80%, 90%);
+        --blue-light-hover: hsl(var(--blue-h), 80%, 85%);
+        --blue-light-medium: hsl(var(--blue-h), 80%, 70%);
+        --blue-medium: hsl(var(--blue-h), 92%, 62%);
+        --blue-medium-hover: hsl(var(--blue-h), 92%, 57%);
+        --blue: hsl(var(--blue-h), 82%, 52%);
+        --blue-sat: hsl(var(--blue-h), 82%, 50%);
+        --blue-medium-dark: hsl(var(--blue-h), 82%, 37%);
+        --blue-dark: hsl(var(--blue-h), 82%, 22%);
+        --blue-ultra-dark: hsl(var(--blue-h), 82%, 12%);
+        --blue-ultra-dark-hover: hsl(var(--blue-h), 52%, 18%);
 
         --green-light: hsl(var(--green-h), 80%, 95%);
         --green-light-hover: hsl(var(--green-h), 80%, 90%);
         --green: hsl(var(--green-h), 30%, 62%);
+        --green-sat: hsl(var(--green-h), 50%, 52%);
         --green-medium: hsl(var(--green-h), 30%, 42%);
         --green-dark: hsl(var(--green-h), 30%, 22%);
 
@@ -226,6 +239,7 @@
         --input-background: hsl(0, 0%, 92%);
         --input-border-hover-color: hsl(0, 0%, 78%);
         --input-focus-dropshadow-color: var(--blue-light);
+        --input-placeholder-focus: var(--blue-light-medium);
 
         // Text
         --m-header-text: hsl(0, 0%, 0%);
@@ -236,12 +250,9 @@
         --m-text-quaternary: color-mix(in srgb, var(--m-text), white 50%);
         --m-text-quinary: color-mix(in srgb, var(--m-text), white 60%);
         --m-text-senary: color-mix(in srgb, var(--m-text), white 70%);
-        // --blue-header-text: hsl(var(--blue-h), 40%, 30%);
-        // --green-header-text: hsl(var(--green-h), 40%, 30%);
 
         --input-placeholder: hsl(0, 0%, 38%);
         --input-placeholder2: hsl(0, 0%, 65%);
-        --input-placeholder-focus: hsl(var(--monthly-item-h), calc(var(--monthly-item-s) - 10%), calc(var(--monthly-item-l) + 20%));
 
         /* Font Weights */
         --fw-light: 400;
@@ -261,6 +272,7 @@
         --btn-gray-hover: hsl(0, 0%, 45%);
         --btn-dark-gray: hsl(0, 0%, 20%);
         --btn-dark-gray-hover: hsl(0, 0%, 14%);
+        --btn-black: hsl(0, 0%, 15%);
 
         --transaction-hover-background: hsl(0, 0%, 92%);
         --default-pill-background: hsl(0, 0%, 98%);
@@ -278,7 +290,7 @@
         --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);
         --antd-drop-shadow-color: var(--dropdown-box-shadow-color);
 
-        --active-wafer-indicator: #b7b7c0;
+        --active-wafer-indicator: var(--blue-medium);
 
         --low-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);
         --mid-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);

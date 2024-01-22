@@ -28,13 +28,13 @@
 
         h2,
         h3 {
-            color: var(--m-text-senary);
+            color: var(--m-text-quinary);
             font-weight: var(--fw-regular);
         }
 
         &>div {
             font-size: 2.5rem;
-            line-height: 2.75rem;
+            line-height: 3rem;
 
             * {
                 color: var(--m-text-secondary);
@@ -49,6 +49,7 @@
         gap: 1em;
         margin-left: .125em;
         flex-grow: 1;
+        margin-bottom: .25em;
 
         &>div:nth-child(-n+3) {
             font-size: 1.25rem;
@@ -78,11 +79,11 @@
             }
 
             &:nth-last-child(3) {
-                @include dot(--blue);
+                @include dot(--blue-sat);
             }
 
             &:nth-last-child(2) {
-                @include dot(--green-medium);
+                @include dot(--green-sat);
             }
 
             &:last-child {

@@ -165,7 +165,7 @@ const Plan = () => {
         <section className="section">
             <div className="header2">
                 <div>
-                    <h3>Plan</h3>
+                    <h4>Plan</h4>
                     <span
                         className="indicator"
                         style={{ color: subscription ? getStatusColor(subscription) : '' }}
@@ -226,7 +226,7 @@ const PaymentMethod = () => {
         <section className="section">
             <div className="header2">
                 <div>
-                    <h3>Payment Method</h3>
+                    <h4>Payment Method</h4>
                 </div>
                 <div>
                     <BlueSlimButton
@@ -258,7 +258,7 @@ const Settings = () => {
 
     return (
         <section className="section">
-            <h3 className='header2'>Settings</h3>
+            <h4 className='header2'>Settings</h4>
             <div className="settings-list">
                 <section className='inner-window'>
                     <ul>
@@ -303,7 +303,7 @@ const Account = () => {
                                 onClick={() => setEditPersonalInfoModal(true)}
                                 aria-label="Edit personal info"
                             >
-                                <Edit size={'1rem'} />
+                                <Edit size={'.8rem'} />
                             </IconButton>
                         </Info>
                         <Plan />

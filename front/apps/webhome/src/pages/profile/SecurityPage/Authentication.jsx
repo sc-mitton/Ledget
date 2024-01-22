@@ -23,7 +23,7 @@ const PasswordReset = () => {
 
     return (
         <section>
-            <h3 className="header2">Authentication</h3>
+            <h4 className="header2">Authentication</h4>
             <div className="inner-window" id="authentication-methods">
                 <div className="authentication-method">
                     <div><LockIcon /></div>

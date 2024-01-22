@@ -74,8 +74,8 @@
 }
 
 .checkbox-input:checked+.checkbox span:first-child {
-    background: var(--blue);
-    border-color: var(--blue);
+    background: var(--blue-sat);
+    border-color: var(--blue-sat);
     animation: zoom-in-out 0.2s ease;
 }
 
