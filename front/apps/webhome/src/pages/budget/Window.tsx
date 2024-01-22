@@ -50,7 +50,7 @@ function Window() {
 
     return (
         <>
-            <div id="budget-window" className="main-window">
+            <div id="budget-window" className={`main-window ${screenSize === 'small' ? 'small-screen' : ''}`}>
                 <div>
                     <BudgetSummary />
                     <div>

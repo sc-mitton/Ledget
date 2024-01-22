@@ -33,14 +33,18 @@
     h4 {
         font-size: .9rem;
     }
+
+    .window {
+        padding: 1.25em;
+    }
+
+    &.small-screen .window {
+        padding: 1em;
+    }
 }
 
 #budget-window .window-header {
     z-index: 100;
-}
-
-#budget-window .window {
-    padding: 1.25em;
 }
 
 #budget-items--container {

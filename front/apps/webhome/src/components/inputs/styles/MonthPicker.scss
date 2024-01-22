@@ -7,11 +7,11 @@
     padding: 0 .625em;
 
     &:not(.dark) {
-        // border: 1px solid var(--btn-light-gray);
-        background-color: var(--blue-medium);
+        border: 1px solid var(--blue-medium);
+        // background-color: var(--monthly-background-color);
 
         &>div:first-child>button * {
-            color: var(--white);
+            color: var(--monthly-color);
             opacity: 1;
 
             &:hover {
