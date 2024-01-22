@@ -32,12 +32,17 @@ interface UpdateAccount {
     [key: string]: any
 }
 
+interface GetAccountsResponse {
+    institutions: Institution[],
+    accounts: Account[]
+}
+
 const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ['Accounts'] })
 
 
 export const accountsSlice = apiWithTag.injectEndpoints({
     endpoints: (builder) => ({
-        getAccounts: builder.query<{ institutions: Institution[], accounts: Account[] }, void>({
+        getAccounts: builder.query<GetAccountsResponse, void>({
             query: () => `/accounts`,
             keepUnusedDataFor: 60 * 30, // 30 minutes
             providesTags: ['Account'],

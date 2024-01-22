@@ -6,13 +6,6 @@
 </div> -->
 
 
-
-
-![alt-text](https://github.com/sc-mitton/Ledget/blob/assets/screenshot1.png)
-
-![alt-text](https://github.com/sc-mitton/Ledget/blob/assets/screenshot2.png)
-
-
 ## Tech Stack
 
 Front

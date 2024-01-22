@@ -73,7 +73,7 @@ export interface GetTransactionsParams {
     offset?: number
 }
 
-interface GetTransactionsResponse {
+type GetTransactionsResponse = {
     results: Transaction[]
     next?: number
     previous?: number
@@ -163,7 +163,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }
                 return currentCache
             },
-            transformResponse: (response: any) => {
+            transformResponse: (response: Transaction[] | GetTransactionsResponse) => {
                 // If response is a list
                 if (Array.isArray(response)) {
                     return { results: response }
@@ -198,13 +198,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                         results: [
                             ...results.filter(item =>
                                 !newResults.find(i => i.transaction_id === item.transaction_id)),
-                            ...newResults
+                            ...newResults.map(t => ({ ...t, amount: 100 })),
                         ],
                     }
                 }
                 return currentCache
             },
-            transformResponse: (response: any) => {
+            transformResponse: (response: Transaction[] | GetTransactionsResponse) => {
                 // If response is a list
                 if (Array.isArray(response)) {
                     return { results: response }

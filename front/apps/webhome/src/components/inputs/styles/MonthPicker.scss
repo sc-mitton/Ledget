@@ -7,7 +7,7 @@
     padding: 0 .625em;
 
     &:not(.dark) {
-        border: 1px solid var(--blue-medium);
+        border: 1.5px solid var(--blue-medium);
         // background-color: var(--monthly-background-color);
 
         &>div:first-child>button * {
@@ -15,8 +15,8 @@
             opacity: 1;
 
             &:hover {
-                opacity: .8;
-                color: var(--white);
+                opacity: .7;
+                color: var(--monthly-color);
             }
         }
     }

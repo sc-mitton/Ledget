@@ -201,7 +201,7 @@ const Authenticator = withReAuth(withModal((props) => {
                 {!searchParams.get('lookup_secret_regenerate') &&
                     <div>
                         <BackButton onClick={handleBack} type="button" />
-                        {searchParams.get('step') === 'confirm'
+                        {step === 'confirm'
                             ?
                             <BlueSubmitButton
                                 name="method"
