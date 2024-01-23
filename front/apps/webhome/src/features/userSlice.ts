@@ -142,7 +142,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
                 method: 'PATCH',
                 body: data,
             }),
-            invalidatesTags: ['user'],
+            invalidatesTags: ['User'],
         }),
         emailUser: builder.mutation<any, { issue: string, detail: string }>({
             query: (data) => ({

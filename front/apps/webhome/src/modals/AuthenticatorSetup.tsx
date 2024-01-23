@@ -7,7 +7,7 @@ import './styles/Authenticator.scss'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 import { useUpdateUserMutation } from '@features/userSlice'
 import { useAddRememberedDeviceMutation } from '@features/authSlice'
-import { Content as RecoveryCodes } from '@modals/RecoveryCodes'
+import { GenerateViewRecoveryCodes } from '@modals/RecoveryCodes'
 import { useFlow } from '@ledget/ory'
 import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils/index'
@@ -94,7 +94,7 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }: SetupAppP
                                     </>
                                 }
                             </ZoomMotionDiv>
-                            {isError && <FormError msg={"Something went wrong, please try again later."} />}
+                            {isError && <FormError msg={"Something went wrong, please try again later."} insideForm={false} />}
                         </div>
                     }
                 </AnimatePresence>
@@ -141,16 +141,16 @@ const Authenticator = withReAuth(withModal((props) => {
     // Handle successful flow completion
     // Update the user's mfa settings and the device token cookie
     useEffect(() => {
-        let timeout: NodeJS.Timeout
         if (isCompleteSuccess) {
             updateUser({ data: { mfa_method: 'totp' } })
             addRememberedDevice()
-            timeout = setTimeout(() => {
+            const timeout = setTimeout(() => {
                 searchParams.set('lookup_secret_regenerate', 'true')
                 setSearchParams(searchParams)
+                setStep(undefined)
             }, 1200)
+            return () => clearTimeout(timeout)
         }
-        return () => clearTimeout(timeout)
     }, [isCompleteSuccess])
 
     return (
@@ -194,7 +194,7 @@ const Authenticator = withReAuth(withModal((props) => {
                     {/* Page 3: Recovery Codes */}
                     {!step && searchParams.get('lookup_secret_regenerate') &&
                         <SlideMotionDiv key="lookup-secrets" position={'last'}>
-                            <RecoveryCodes closeModal={() => props.closeModal()} />
+                            <GenerateViewRecoveryCodes onFinish={() => props.closeModal()} />
                         </SlideMotionDiv>}
                 </AnimatePresence>
                 {/* Nav Buttons */}
@@ -211,10 +211,7 @@ const Authenticator = withReAuth(withModal((props) => {
                                 Confirm
                             </BlueSubmitButton>
                             :
-                            <BlueSubmitWithArrow
-                                type="button"
-                                onClick={() => { setStep('confirm') }}
-                            >
+                            <BlueSubmitWithArrow type="button" onClick={() => { setStep('confirm') }}>
                                 Next
                             </BlueSubmitWithArrow>
                         }
