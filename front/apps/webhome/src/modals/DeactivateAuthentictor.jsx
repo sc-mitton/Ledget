@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
@@ -14,6 +14,7 @@ const DeactivateAuthenticator = (props) => {
     const [updateUser] = useUpdateUserMutation()
     const [searchParams] = useSearchParams()
     const unLinkTotpForm = useRef(null)
+    const [submitted, setSubmitted] = useState(false)
     const [forgetRecoveryCodes, { isSuccess: isCodesDeleted, isLoading: isDeletingCodes }] = useCompleteSettingsFlowMutation()
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetSettingsFlowQuery,
@@ -33,50 +34,42 @@ const DeactivateAuthenticator = (props) => {
 
     // Close modal on success
     useEffect(() => {
-        let timeout
-        if (isCompleteSuccess) {
-            updateUser({ data: { mfa_method: null } })
-            timeout = setTimeout(() => {
+        if (isCompleteSuccess && submitted) {
+            updateUser({ mfa_method: null })
+            const timeout = setTimeout(() => {
                 props.closeModal()
             }, 1000)
+            return () => clearTimeout(timeout)
         }
-        return () => clearTimeout(timeout)
     }, [isCompleteSuccess])
 
     // Delete recovery codes first before unlinking totp device
     const handleUnlinkSubmit = (e) => {
         e.preventDefault()
-        if (isCodesDeleted) {
-            forgetRecoveryCodes({
-                data: {
-                    csrf_token: flow?.csrf_token,
-                    method: 'lookup_secret',
-                    lookup_secret_disable: true,
-                },
-                params: { flow: searchParams.get('flow') }
-            })
-        } else {
-            submit(e)
-        }
+        setSubmitted(true)
+        forgetRecoveryCodes({
+            data: {
+                csrf_token: flow?.csrf_token,
+                method: 'lookup_secret',
+                lookup_secret_disable: true,
+            },
+            params: { flow: searchParams.get('flow') }
+        })
+        submit(e)
     }
-
-    // Unlink totp on codes deleted
-    useEffect(() => {
-        isCodesDeleted && unLinkTotpForm.current.submit()
-    }, [isCodesDeleted])
 
     return (
         <>
-            <form onSubmit={handleUnlinkSubmit} ref={unLinkTotpForm}>
+            <form onSubmit={handleUnlinkSubmit}>
                 <fieldset disabled={isGettingFlow} id="deactivate-authenticator--content">
                     <div>
                         <h3>Remove Your Authenticator?</h3>
                         You will no longer be able to use your authenticator app to log in.
-                        <FormError msg={errMsg} />
+                        <FormError msg={errMsg} insideForm={false} />
                         {!errMsg && (isCompleteError || errorFetchingFlow) &&
-                            <FormError msg={"Something went wrong, please try again later."} />}
+                            <FormError msg={"Something went wrong, please try again later."} insideForm={false} />}
                         <div>
-                            <SecondaryButton onClick={() => props.closeModal()}>
+                            <SecondaryButton type='button' onClick={() => props.closeModal()}>
                                 Cancel
                             </SecondaryButton>
                             <BlueSubmitButton

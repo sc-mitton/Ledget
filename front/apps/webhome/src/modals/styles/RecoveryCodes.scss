@@ -28,3 +28,16 @@
 #recovery-codes-save--container button {
     float: center;
 }
+
+#select-code-action--container {
+
+    margin-top: 1em;
+    display: flex;
+    gap: .5em;
+    justify-content: center;
+    width: 100%;
+
+    &>button {
+        min-width: 40%;
+    }
+}

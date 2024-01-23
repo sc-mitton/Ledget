@@ -24,7 +24,7 @@ const Modal = withSmallModal<{ category: Category }>((props) => {
                 and the category will be removed.
             </div>
             <SubmitForm
-                onClick={() => deleteCategory([props.category.id])}
+                onClick={() => { deleteCategory([props.category.id]) }}
                 submitting={isLoading}
                 success={isSuccess}
                 onCancel={() => props.closeModal()}

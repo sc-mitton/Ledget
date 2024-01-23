@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 import './ReAuth.css'
 import { useSearchParams, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
-import { withSmallModal } from '@ledget/ui'
+import { BlueSubmitButton, withSmallModal } from '@ledget/ui'
 import { useGetMeQuery, User } from '@features/userSlice'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import {
@@ -31,7 +31,8 @@ import {
     Otc,
     BackButton,
     LightBlueWideButton,
-    useLoaded
+    useLoaded,
+    BlueTextButton
 } from '@ledget/ui'
 
 const ErrorFetchingFlow = () => (<FormError msg={"Something went wrong, please try again later."} />)
@@ -56,15 +57,13 @@ const PassWord = ({ onCancel }: { onCancel: () => void }) => {
     } = flowStatus
 
     useEffect(() => {
-        if (!sessionIsFreshAal1) {
+        if (!sessionIsFreshAal1)
             fetchFlow({ aal: 'aal1', refresh: true })
-        }
     }, [])
 
     useEffect(() => {
-        if (isCompleteSuccess) {
+        if (isCompleteSuccess)
             dispatch({ type: aal1ReAuthed })
-        }
     }, [isCompleteSuccess])
 
     return (
@@ -119,16 +118,14 @@ const Totp = () => {
         isCompleteSuccess
     } = flowStatus
 
-    useEffect(() => {
-        fetchFlow({ aal: 'aal2', refresh: true })
-    }, [])
+    useEffect(() => { fetchFlow({ aal: 'aal2', refresh: true }) }, [])
 
     useEffect(() => {
         let timeout: NodeJS.Timeout
         if (isCompleteSuccess) {
             timeout = setTimeout(() => {
                 dispatch({ type: aal2ReAuthed })
-            }, 1000)
+            }, 1200)
         }
         return () => clearTimeout(timeout)
     }, [isCompleteSuccess])
@@ -141,18 +138,17 @@ const Totp = () => {
                 </h3>
                 {useLookupSecret
                     ?
-                    <BackButton
-                        onClick={() => { setUseLookupSecret(false) }}
-                    />
+                    <BackButton onClick={() => { setUseLookupSecret(false) }} type="button" />
                     :
                     <div className="recovery-code-option--container">
                         <span>or use a&nbsp;&nbsp;</span>
-                        <button
+                        <BlueTextButton
+                            type="button"
                             onClick={() => { setUseLookupSecret(true) }}
                             aria-label="Use recovery code"
                         >
                             recovery code
-                        </button>
+                        </BlueTextButton>
                     </div>
                 }
 
@@ -161,8 +157,7 @@ const Totp = () => {
                 <div className="graphic">
                     {useLookupSecret
                         ? <RecoveryCodeGraphic finished={isCompleteSuccess} />
-                        : <TotpAppGraphic finished={isCompleteSuccess} />
-                    }
+                        : <TotpAppGraphic finished={isCompleteSuccess} />}
                 </div>
                 <JiggleDiv jiggle={isCompleteError}>
                     <PlainTextInput
@@ -176,13 +171,13 @@ const Totp = () => {
                 {isGetFlowError && <ErrorFetchingFlow />}
             </div>
             <div>
-                <BlueSubmitWithArrow
+                <BlueSubmitButton
                     submitting={isCompletingFlow}
                     name="method"
                     value={`${useLookupSecret ? 'lookup_secret' : 'totp'}`}
                 >
                     Confirm
-                </BlueSubmitWithArrow>
+                </BlueSubmitButton>
             </div>
             <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
         </form>
@@ -313,7 +308,7 @@ const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal
     // object in the redux store
     useEffect(() => {
         const sessionIsFresh = Date.now() - (reAuthed.at || 0) < 1000 * 60 * 9
-        const aalGood = reAuthed.level === (requiredAal ?? user?.highest_aal)
+        const aalGood = user?.highest_aal === 'aal1' ? reAuthed.level : user?.highest_aal === reAuthed.level
         let interval: NodeJS.Timeout
 
         // If requirements are met, start the poller to check freshness
@@ -335,8 +330,10 @@ const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal
         } else if (sessionIsFresh && !aalGood) {
             // Needs to increase aal
             const neededAal = (requiredAal ?? user?.highest_aal) || ''
+
             if (neededAal === 'aal2') {
                 searchParams.set('aal', 'aal2')
+                searchParams.delete('flow')
                 setSearchParams(searchParams)
             } else {
                 setSearchParams({ aal: 'aal15' })

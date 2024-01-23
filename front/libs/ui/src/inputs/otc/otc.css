@@ -28,7 +28,7 @@
 }
 
 .otc input[type="text"]:focus {
-    border: 1.5px solid transparent;
+    border: var(--input-border-focus);
     box-shadow: var(--input-focus-drop-shadow);
 }
 

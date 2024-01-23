@@ -7,22 +7,6 @@
     position: relative;
 }
 
-/* Draw line to right hover effect for button */
-.recovery-code-option--container button:before {
-    content: "";
-    position: absolute;
-    width: 0%;
-    height: .125em;
-    bottom: -.0625;
-    left: 0;
-    background-color: var(--blue-medium-dark);
-}
-
-.recovery-code-option--container button:hover:before {
-    width: 100%;
-    transition: all 0.2s ease-out;
-}
-
 .reauth-form {
     margin-top: 1em;
 }

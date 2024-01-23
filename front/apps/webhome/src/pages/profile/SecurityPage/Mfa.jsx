@@ -1,9 +1,9 @@
-import { useNavigate, createSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-import './styles/Mfa.css'
-import { useGetMeQuery } from '@features/userSlice'
-import { CircleIconButton, GrayButton, IconScaleButton, DeleteButton, Tooltip } from '@ledget/ui'
-import { QrIcon, SmsAuthIcon, ReplayIcon, ShowIcon, Plus } from '@ledget/media'
+import './styles/Mfa.scss'
+import { useGetMeQuery, useUpdateUserMutation } from '@features/userSlice'
+import { CircleIconButton, GrayButton, BlueSlimButton, Tooltip, BlueTextButton } from '@ledget/ui'
+import { QrIcon, SmsAuthIcon, Plus } from '@ledget/media'
 
 
 const SmsAuth = ({ user }) => {
@@ -50,6 +50,7 @@ const SmsAuth = ({ user }) => {
 
 const AuthenticatorApp = ({ user }) => {
     const navigate = useNavigate()
+    const [updateUser] = useUpdateUserMutation()
 
     const formatDate = (date) => {
         const d = new Date(date)
@@ -74,11 +75,11 @@ const AuthenticatorApp = ({ user }) => {
                             msg={"Remove authenticator"}
                             ariaLabel={"Remove authenticator"}
                         >
-                            <DeleteButton
-                                className="delete-button-show"
+                            <BlueSlimButton
                                 onClick={() => navigate('/profile/security/delete-authenticator')}
-                                aria-label={"Delete Authenticator"}
-                            />
+                                aria-label={"Remove Authenticator"}>
+                                Remove
+                            </BlueSlimButton>
                         </Tooltip>
                     </div>
                 </>
@@ -97,50 +98,9 @@ const AuthenticatorApp = ({ user }) => {
     )
 }
 
-const RecoveryCodes = () => {
-    const navigate = useNavigate()
-
-    return (
-        <div id="recovery-codes-btns--container">
-            <span>Recovery Codes</span>
-            <div id="recovery-codes-btns">
-                <Tooltip
-                    msg={"Generate new codes"}
-                    ariaLabel={"Generate new recovery codes"}
-                >
-                    <IconScaleButton
-                        onClick={() => {
-                            navigate({
-                                pathname: '/profile/security/recovery-codes',
-                                search: `?${createSearchParams({ lookup_secret_regenerate: true })}`
-                            })
-                        }}
-                    >
-                        <ReplayIcon fill="currentColor" />
-                    </IconScaleButton>
-                </Tooltip>
-                <Tooltip
-                    msg={"Show recovery codes"}
-                    ariaLabel={"Show recovery codes"}
-                >
-                    <IconScaleButton
-                        onClick={() => {
-                            navigate({
-                                pathname: '/profile/security/recovery-codes',
-                                search: `?${createSearchParams({ lookup_secret_reveal: true })}`
-                            })
-                        }}
-                    >
-                        <ShowIcon stroke="currentColor" />
-                    </IconScaleButton>
-                </Tooltip>
-            </div>
-        </div>
-    )
-}
-
 const Mfa = () => {
     const { data: user } = useGetMeQuery()
+    const navigate = useNavigate()
 
     return (
         <section>
@@ -153,12 +113,16 @@ const Mfa = () => {
                 }}
             >
                 <h4>Multi-Factor</h4>
-                {user.mfa_method === 'totp' && <RecoveryCodes />}
             </div>
             <div className="inner-window" id="mfa-options--container">
                 <AuthenticatorApp user={user} />
                 <SmsAuth user={user} />
             </div>
+            {user.mfa_method === 'totp' &&
+                <div><Tooltip msg={'Recovery codes'} ariaLabel={'Recovery codes'}>
+                    <BlueTextButton onClick={() => navigate('/profile/security/recovery-codes')} >
+                        Recovery Codes</BlueTextButton>
+                </Tooltip></div>}
         </section>
     )
 }

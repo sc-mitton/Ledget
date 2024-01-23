@@ -34,7 +34,7 @@ import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/otpSlice'
 
 
 const schema = z.object({
-    email: z.string().min(1, { message: 'required' }).email({ message: 'invalid email' }),
+    email: z.string().min(1, { message: 'required' }).email({ message: 'Invalid email' }),
     remember: z.union([z.boolean(), z.string()])
 })
 

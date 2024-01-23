@@ -6,6 +6,11 @@
     position: relative;
     margin-bottom: 1em;
     color: var(--m-text);
+
+    svg {
+        position: relative;
+        z-index: 10;
+    }
 }
 
 #success-checkmark {
@@ -49,7 +54,7 @@ $inner-circle-positive: var(--blue-light-hover);
         }
 
         &.positive {
-            animation: success .6s ease-out forwards;
+            animation: success .8s ease-out forwards;
         }
     }
 
@@ -69,7 +74,7 @@ $inner-circle-positive: var(--blue-light-hover);
         }
 
         &.positive {
-            animation: success .6s ease-out forwards;
+            animation: success .8s ease-out forwards;
         }
     }
 }

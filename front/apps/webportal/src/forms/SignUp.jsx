@@ -31,7 +31,7 @@ import {
 const schema = z.object({
     firstName: z.string().min(1, { message: 'required' }),
     lastName: z.string().min(1, { message: 'required' }),
-    email: z.string().min(1, { message: 'required' }).email({ message: 'invalid email' })
+    email: z.string().min(1, { message: 'required' }).email({ message: 'Invalid email' })
 }).required()
 
 

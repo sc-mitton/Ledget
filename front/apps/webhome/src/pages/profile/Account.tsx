@@ -238,16 +238,16 @@ const PaymentMethod = () => {
                 </div>
             </div>
             <div id="card-info--container" className="inner-window">
+                <div>Card</div>
                 <div>
-                    <CardIcon width={'1.4em'} height={'1.4em'} />
+                    <div >
+                        {data && `${data.brand.charAt(0).toUpperCase()}`}
+                        {data && `${data.brand.slice(1)}`}
+                        &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
+                        {data && `${data.last4}`}
+                    </div>
+                    <div>{`Exp. ${expDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}`}</div>
                 </div>
-                <div >
-                    {data && `${data.brand.charAt(0).toUpperCase()}`}
-                    {data && `${data.brand.slice(1)}`}
-                    &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
-                    {data && `${data.last4}`}
-                </div>
-                <div>{`Exp. ${expDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}`}</div>
             </div>
         </section>
     )

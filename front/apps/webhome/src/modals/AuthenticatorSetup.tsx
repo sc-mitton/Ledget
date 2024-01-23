@@ -142,7 +142,7 @@ const Authenticator = withReAuth(withModal((props) => {
     // Update the user's mfa settings and the device token cookie
     useEffect(() => {
         if (isCompleteSuccess) {
-            updateUser({ data: { mfa_method: 'totp' } })
+            updateUser({ mfa_method: 'totp' })
             addRememberedDevice()
             const timeout = setTimeout(() => {
                 searchParams.set('lookup_secret_regenerate', 'true')
@@ -175,9 +175,7 @@ const Authenticator = withReAuth(withModal((props) => {
                     {step === 'confirm' &&
                         <SlideMotionDiv
                             key="confirm-code"
-                            position={step === 'confirm'
-                                ? 'last'
-                                : step ? 'last' : 'first'}
+                            position={step === 'confirm' ? 'last' : step ? 'last' : 'first'}
                         >
                             <JiggleDiv jiggle={isCompleteError} className="content">
                                 <div>

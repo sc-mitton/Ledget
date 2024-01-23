@@ -35,6 +35,7 @@ export const VerificationForm = (props: VerificationFormProps) => {
   }, [flow])
 
   useEffect(() => {
+    console.log(hasInitialSent)
     refreshSuccess && setHasInitialSent(true)
   }, [])
 

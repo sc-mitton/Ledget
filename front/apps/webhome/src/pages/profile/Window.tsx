@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, useContext, ReactNode, useState } from 'react'
 
 import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -70,10 +70,7 @@ function Profile() {
                         key={location.pathname.split('/')[2]}
                         className="content"
                     >
-                        <Routes
-                            location={location}
-                            key={location.pathname.split('/')[2]}
-                        >
+                        <Routes location={location} key={location.pathname.split('/')[2]}>
                             <Route path="details" element={<AccountPage />} >
                                 <Route path="update-payment" element={<UpdatePayment />} />
                                 <Route path="cancel-subscription" element={<CancelSubscription />} />

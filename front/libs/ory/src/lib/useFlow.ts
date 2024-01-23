@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react"
 
 import { useSearchParams, useNavigate } from "react-router-dom"
-import { endpointNames } from './ory-sdk'
+
+
+import { UseLazyQuery, UseMutation } from "@reduxjs/toolkit/dist/query/react/buildHooks";
+import { EndpointRootNames, OryGetFlowEndpoint, OryCompleteFlowEndpoint } from './ory-sdk'
 
 const formatErrorMessages = (errorMessages: { id: number, [key: string]: any }[]) => {
     const filteredMessages = []
@@ -47,11 +50,12 @@ const extractData: React.FormEventHandler<HTMLFormElement> = (event) => {
 }
 
 
-export const useFlow = (query: any, mutation: any, flowType: typeof endpointNames[number]) => {
+export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<OryGetFlowEndpoint<TFlow>>, mutation: UseMutation<OryCompleteFlowEndpoint<TFlow>>, flowType: TFlow) => {
     const [errMsg, setErrMsg] = useState<string[]>()
     const [errId, setErrId] = useState('')
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
+    const [mutationCacheKey, setMutationCacheKey] = useState<string>('')
 
     const [
         getFlow,
@@ -72,9 +76,7 @@ export const useFlow = (query: any, mutation: any, flowType: typeof endpointName
             isError: isCompleteError,
             isSuccess: isCompleteSuccess
         }
-    ] = mutation({
-        fixedCacheKey: `${searchParams.get('flow') || '' + searchParams.get('aal') || ''}`
-    })
+    ] = mutation({ fixedCacheKey: mutationCacheKey })
     // Fixed cache key because sometimes we reauth before going to a
     // target component, and we don't want the mutation results to carry
     // overy in between
@@ -89,12 +91,6 @@ export const useFlow = (query: any, mutation: any, flowType: typeof endpointName
         }
 
         let flowId = searchParams.get('flow')
-        if (aal) {
-            if (searchParams.get('aal') !== aal) {
-                flowId = null
-            }
-            aal && searchParams.set('aal', aal)
-        }
         setSearchParams(searchParams)
 
         const params = {
@@ -102,8 +98,8 @@ export const useFlow = (query: any, mutation: any, flowType: typeof endpointName
             aal: aal,
             id: flowId
         }
-
-        getFlow({ params: params })
+        setMutationCacheKey(`${flowId}${aal}`)
+        getFlow({ params: params } as any)
     }
 
     const submit: React.FormEventHandler<HTMLFormElement> = (event) => {
@@ -111,30 +107,32 @@ export const useFlow = (query: any, mutation: any, flowType: typeof endpointName
         setErrMsg(undefined)
         const data = extractData(event)
         const flowId = searchParams.get('flow')
-        completeFlow({ data: data, params: { flow: flowId } })
+        completeFlow({ data: data, params: { flow: flowId } } as any)
     }
 
     // Update search params
     useEffect(() => {
         if (isGetFlowSuccess) {
-            searchParams.set('flow', flow?.id)
-            setSearchParams(searchParams)
+            if (flow && 'id' in flow) {
+                searchParams.set('flow', flow?.id)
+                setSearchParams(searchParams)
+            }
+            setMutationCacheKey(`${searchParams.get('flow')}${searchParams.get('aal') || ''}`)
         }
-    }, [isGetFlowSuccess, flow?.id])
+    }, [isGetFlowSuccess, flow])
 
     // Error handler
     useEffect(() => {
-        const error = completeError || getFlowError
-        if (!error) { return }
+        if (!completeError && !getFlowError) { return }
 
-        const errorData = error.data
-        const status = error.status
-        const errorMessages = errorData.ui?.messages
+        const errorData = completeError?.data || getFlowError?.data
+        const status = completeError?.status || getFlowError?.status
+
+        const errorMessages = errorData.data?.ui?.messages
 
         if (errorMessages) {
             setErrMsg(formatErrorMessages(errorMessages))
             setErrId(errorMessages[0].id)
-            console.log('errorId', errorMessages[0].id)
         }
 
         switch (status) {
@@ -186,11 +184,11 @@ export const useFlow = (query: any, mutation: any, flowType: typeof endpointName
                 for (const key of searchParams.keys()) {
                     params[key] = searchParams.get(key)
                 }
-                getFlow({ params: params })
+                getFlow({ params: params } as any)
                 setErrMsg(["Please try again."])
                 break
             default:
-                console.error(error)
+                console.error(errorData)
         }
     }, [isGetFlowError, isCompleteError])
 

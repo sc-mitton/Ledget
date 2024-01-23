@@ -47,7 +47,7 @@ export const accountsSlice = apiWithTag.injectEndpoints({
             keepUnusedDataFor: 60 * 30, // 30 minutes
             providesTags: ['Account'],
         }),
-        updateAccounts: builder.mutation<any, UpdateAccount[]>({
+        updateAccounts: builder.mutation<UpdateAccount[], UpdateAccount[]>({
             query: (data) => ({
                 url: `/accounts`,
                 method: 'PATCH',

@@ -1,43 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 
-import './styles/RecoveryCodes.css'
-import { BlueSubmitButton, BlackSubmitButton, SecondaryButton } from '@ledget/ui'
+import './styles/RecoveryCodes.scss'
+import { BlueSubmitButton, BluePrimaryButton, SlideMotionDiv } from '@ledget/ui'
 import { withSmallModal } from '@ledget/ui'
-import { withReAuth } from '@utils'
+import { withReAuth } from '@utils/index'
 import { useFlow } from '@ledget/ory'
 import { DownloadIcon, CopyIcon } from '@ledget/media'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 
-export const Content = (props) => {
+export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
     const [searchParams] = useSearchParams()
     const [recoveryCodes, setRecoveryCodes] = useState([])
     const location = useLocation()
 
-    const [
-        confirmSecrets,
-        {
-            isSuccess: secretsAreConfirmed,
-            isError: secretsSavedError,
-        }
+    const [confirmSecrets, { isError: secretsSavedError }
     ] = useCompleteSettingsFlowMutation()
-    const [
-        getSecrets, // either generate or retrieve
-        {
-            data: recoveryCodesFlow,
-            isSuccess: codesAreFetched,
-            isError: codesFetchError,
-            isLoading: isFetchingSecrets,
-        }
-    ] = useCompleteSettingsFlowMutation()
+    const [getSecrets, {
+        // either generate or retrieve
+        data: recoveryCodesFlow,
+        error: codesFetchError,
+        isSuccess: codesAreFetched,
+        isError: isCodesFetchError,
+        isLoading: isFetchingSecrets,
+    }] = useCompleteSettingsFlowMutation()
 
     const { flow, fetchFlow, flowStatus } = useFlow(
         useLazyGetSettingsFlowQuery,
         useCompleteSettingsFlowMutation,
         'settings'
     )
-    const { isGetFlowError, isGetFlowSuccess, isGettingFlow } = flowStatus
+    const { isGetFlowSuccess, isGettingFlow, errId } = flowStatus
 
     const handleDownload = () => {
         const codes = recoveryCodes.join('\n')
@@ -54,8 +49,8 @@ export const Content = (props) => {
         navigator.clipboard.writeText(codes)
     }
 
-    const handleSaveCodes = () => {
-        const csrf_token = recoveryCodesFlow.ui.nodes.find(node =>
+    const confirmedSavedCodes = () => {
+        const csrf_token = (recoveryCodesFlow as any).ui.nodes.find((node: any) =>
             node.attributes.name === 'csrf_token'
         ).attributes.value
 
@@ -77,9 +72,9 @@ export const Content = (props) => {
     useEffect(() => {
         if (isGetFlowSuccess) {
             getSecrets({
-                params: { flow: searchParams.get('flow') || flow.id },
+                params: { flow: searchParams.get('flow') || flow?.id },
                 data: {
-                    csrf_token: flow.csrf_token,
+                    csrf_token: flow?.csrf_token,
                     method: 'lookup_secret',
                     ...(searchParams.get('lookup_secret_regenerate')
                         ? { lookup_secret_regenerate: true } : {}),
@@ -94,7 +89,7 @@ export const Content = (props) => {
     // and save the codes if we're in the autenticator setup
     useEffect(() => {
         if (codesAreFetched) {
-            recoveryCodesFlow.ui.nodes.find(node => {
+            (recoveryCodesFlow as any).ui.nodes.find((node: any) => {
                 if (node.attributes.id === 'lookup_secret_codes') {
                     setRecoveryCodes(node.attributes.text.text.split(','))
                     return true
@@ -105,27 +100,14 @@ export const Content = (props) => {
 
     // Close on any errors fetching flow or codes
     useEffect(() => {
-        if (secretsSavedError || codesFetchError) {
-            props.closeModal()
+        if (secretsSavedError || isCodesFetchError) {
+            // props.onFinish()
         }
-    }, [secretsSavedError, codesFetchError])
-
-    // Close once the codes have been saved (only if not in authenticator setup)
-    useEffect(() => {
-        if (secretsAreConfirmed && !location.pathname.includes('authenticator-setup')) {
-            props.closeModal()
-        }
-    }, [secretsAreConfirmed])
+    }, [secretsSavedError, isCodesFetchError])
 
     return (
         <div id="recovery-codes--container">
             <h2>Recovery Codes</h2>
-            {!location.pathname.includes('authenticator-setup') && searchParams.get('lookup_secret_regenerate')
-                && <span>Save your new recovery codes and confirm to invalidate the old ones.</span>
-            }
-            {location.pathname.includes('authenticator-setup')
-                && <span>Use these codes in case you lose access to your authenticator app.</span>
-            }
             <div
                 id="recovery-codes-save--container"
                 style={{
@@ -136,7 +118,10 @@ export const Content = (props) => {
                     type="button"
                     loading={isGettingFlow || isFetchingSecrets}
                     className="recovery-codes-button"
-                    onClick={handleDownload}
+                    onClick={(e) => {
+                        handleDownload()
+                        confirmedSavedCodes()
+                    }}
                 >
                     Download
                     <DownloadIcon stroke={'currentColor'} />
@@ -145,46 +130,63 @@ export const Content = (props) => {
                     type="button"
                     loading={isGettingFlow || isFetchingSecrets}
                     className="recovery-codes-button"
-                    onClick={handleCopy}
+                    onClick={() => {
+                        handleCopy()
+                        confirmedSavedCodes()
+                    }}
                 >
                     Copy
                     <CopyIcon fill={'currentColor'} />
                 </BlueSubmitButton>
             </div>
-            {searchParams.get('lookup_secret_regenerate') &&
-                !location.pathname.includes('authenticator-setup') &&
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1em' }}>
-                    <SecondaryButton
-                        type="button"
-                        className="recovery-codes-button"
-                        onClick={() => props.closeModal()}
-                    >
-                        Cancel
-                    </SecondaryButton>
-                    < BlackSubmitButton
-                        type="button"
-                        onClick={handleSaveCodes}
-                    >
-                        Keep
-                    </ BlackSubmitButton>
-                </div>
-            }
         </div>
     )
 }
 
-const Modal = withReAuth(withSmallModal(Content))
+const RecoveryCodesFlow = withReAuth(withSmallModal((props) => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [proceed2Codes, setProceed2Codes] = useState(false)
 
-const RecoveryCodesModal = (props) => {
+    return (
+        <AnimatePresence mode='wait'>
+            {proceed2Codes
+                ? <SlideMotionDiv key='generate-view-codes' position='last'>
+                    <GenerateViewRecoveryCodes onFinish={() => props.closeModal()} />
+                </SlideMotionDiv>
+                : <SlideMotionDiv key='select-code-action' id="select-code-action--container" position='first'>
+                    <BluePrimaryButton
+                        onClick={() => {
+                            searchParams.set('lookup_secret_regenerate', 'true')
+                            setSearchParams(searchParams)
+                            setProceed2Codes(true)
+                        }}
+                    >
+                        Generate Codes
+                    </BluePrimaryButton>
+                    <BluePrimaryButton
+                        onClick={() => {
+                            searchParams.set('lookup_secret_reveal', 'true')
+                            setSearchParams(searchParams)
+                            setProceed2Codes(true)
+                        }}
+                    >
+                        View Codes
+                    </BluePrimaryButton>
+                </SlideMotionDiv>}
+        </AnimatePresence>
+    )
+}))
+
+
+const RecoveryCodesModal = () => {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
 
     return (
-        <Modal
+        <RecoveryCodesFlow
             onClose={() => navigate('/profile/security')}
             hasExit={searchParams.get('lookup_secret_regenerate') ? false : true}
             overLayExit={searchParams.get('lookup_secret_regenerate') ? false : true}
-            {...props}
         />
     )
 }
