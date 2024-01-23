@@ -5,7 +5,7 @@
     gap: 1em;
 }
 
-#deactivate-authenticator--content>div>div {
+#deactivate-authenticator--content>div>div:last-child {
     display: flex;
     justify-content: flex-end;
 }

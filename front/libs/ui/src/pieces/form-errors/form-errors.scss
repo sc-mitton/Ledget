@@ -13,16 +13,22 @@
     margin-left: -.375em;
     display: flex;
     align-items: center;
+
+    &.inside-form {
+        margin-left: .625em;
+    }
+
+    svg {
+        height: .9em;
+        margin-left: .25em;
+        margin-right: .3125em;
+        position: relative;
+        text-align: left;
+        animation: pop .22s ease;
+    }
+
 }
 
-.form-error--container svg {
-    height: .9em;
-    margin-left: .625em;
-    margin-right: .3125em;
-    position: relative;
-    text-align: left;
-    animation: pop .22s ease;
-}
 
 .form-error {
     display: inline-block;

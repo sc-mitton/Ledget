@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import './form-errors.css';
+import './form-errors.scss';
 
 import { Alert2 } from '@ledget/media'
 
@@ -19,7 +19,7 @@ export const FormErrorTip = ({ error }: { error?: Error }) => (
 )
 
 
-export const FormError = ({ msg }: { msg: string | string[] }) => {
+export const FormError = ({ msg, insideForm = true }: { msg: string | string[], insideForm?: boolean }) => {
 
   const renderLines = (text: string) => {
     const lines = text.split('\n')
@@ -33,7 +33,7 @@ export const FormError = ({ msg }: { msg: string | string[] }) => {
           {(typeof msg === 'string')
             ?
             !msg.includes('required') &&
-            <div className="form-error--container">
+            <div className={`form-error--container ${insideForm ? 'inside-form' : ''}`}>
               <Alert2 />
               <div className="form-error">
                 {renderLines(msg)}

@@ -65,12 +65,14 @@
         // Blue Green Pallet
         --blue-light: hsl(var(--blue-h), 45%, 28%);
         --blue-light-hover: hsl(var(--blue-h), 45%, 23%);
+        --blue-light-medium: hsl(var(--blue-h), 45%, 35%);
         --blue-medium: hsl(var(--blue-h), 45%, 45%);
         --blue-medium-hover: hsl(var(--blue-h), 45%, 40%);
         --blue: hsl(var(--blue-h), 25%, 35%);
         --blue-sat: hsl(var(--blue-h), 55%, 55%);
         --blue-medium-dark: hsl(var(--blue-h), 25%, 70%);
         --blue-dark: hsl(var(--blue-h), 25%, 90%);
+        --blue-dark-hover: hsl(var(--blue-h), 25%, 85%);
         --blue-ultra-dark: hsl(var(--blue-h), 85%, 90%);
         --blue-ultra-dark-hover: hsl(var(--blue-h), 15%, 80%);
 
@@ -83,8 +85,8 @@
 
         // Windows
         --window-background-color: hsl(0, 0%, 2%);
-        --window-background-color-portal: hsl(0, 0%, 3%);
-        --window: hsl(0, 0%, 6%);
+        --window-background-color-portal: hsl(0, 0%, 2%);
+        --window: hsl(0, 0%, 7%);
         --window2: hsl(0, 0%, 11%);
         --window-rgb: 28, 28, 28;
         --header-background: hsl(240, 38%, 3%);

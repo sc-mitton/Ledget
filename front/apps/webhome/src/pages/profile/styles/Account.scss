@@ -74,11 +74,22 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: .75em;
+    gap: 1.5em;
 
     &>div:first-child {
+        font-weight: var(--fw-bold);
+    }
+
+    &>div:last-child {
         display: flex;
         align-items: center;
+        gap: .75em;
+
+        * {
+            color: var(--m-text-secondary);
+        }
+
+        color: var(--m-text-secondary);
     }
 }
 

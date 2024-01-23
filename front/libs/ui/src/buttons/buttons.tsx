@@ -56,10 +56,11 @@ export const GrnSlimArrowButton = withArrow(ButtonWithClassName('btn-grn2 btn-sl
 export const BlueSlimArrowButton = withArrow(ButtonWithClassName('btn-blue btn-slim'))
 export const GreenSlimArrowSubmit = withLoading(GrnSlimArrowButton)
 export const RedButton = withLoading(ButtonWithClassName('btn-red btn-2slim'))
-export const PrimaryTextButton = ButtonWithClassName('btn-blue-text btn-2slim')
+export const PrimaryTextButton = ButtonWithClassName('btn-primary-blue-text btn-2slim')
 export const IconButtonSubmit = withLoading(IconButton)
 export const LinkArrowButton = withArrow(ButtonWithClassName('btn-icon2'))
 export const FadedTextButton = ButtonWithClassName('btn-faded-text')
+export const BlueTextButton = ButtonWithClassName('btn-blue-text')
 
 export const SmallArrowButton = ({ type = '', ...rest }) => (
   <button className="arrow-nav" {...rest}>

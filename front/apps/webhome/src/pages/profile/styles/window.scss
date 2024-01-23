@@ -22,6 +22,16 @@
     flex-direction: row;
     padding: 0;
 
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+
+        &>div:nth-child(3) {
+            margin: .25em 0 0 .25em;
+        }
+    }
+
     &.with-open-gutter h2 {
         margin-left: 0;
     }
@@ -39,10 +49,6 @@
 
     .header {
         margin-bottom: 1.875em;
-    }
-
-    .header2 {
-        margin-bottom: .5em;
     }
 
     .content {

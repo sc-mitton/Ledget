@@ -168,7 +168,7 @@
     }
 }
 
-.btn-blue-text {
+.btn-primary-blue-text {
     color: var(--blue-dark);
     transition: all .3s ease;
 
@@ -341,6 +341,22 @@
     100% {
         transform: translate(-50%, -50%) scale(5);
         opacity: 0;
+    }
+}
+
+.btn-blue-text {
+    color: var(--blue);
+
+    * {
+        color: var(--blue);
+    }
+
+    &:hover {
+        color: var(--blue-light-medium);
+
+        * {
+            color: var(--blue-light-medium);
+        }
     }
 }
 

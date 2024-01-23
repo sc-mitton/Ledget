@@ -1,0 +1,51 @@
+#mfa-options--container.inner-window {
+    display: flex;
+    flex-direction: column;
+}
+
+#authenticator-set-up {
+    display: flex;
+
+    &>div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    span:first-child {
+        font-weight: var(--fw-regular)
+    }
+}
+
+.mfa-settings--container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+
+    &>div {
+        display: flex;
+        align-items: center;
+        gap: .825em;
+    }
+
+    &:not(:first-child) {
+        padding: .825em .1875em .25em .1875em;
+    }
+
+    &:not(:last-child) {
+        padding: .25em 0em .825em .1875em;
+        border-bottom: 2px solid var(--border-color-dimmest);
+    }
+
+    .delete-btn--container {
+        position: relative;
+        transform: scale(.73);
+        margin-left: .125em;
+
+    }
+
+    .delete-btn--container .tooltip {
+        transform: scale(1.3);
+    }
+}
