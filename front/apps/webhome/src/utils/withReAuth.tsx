@@ -315,12 +315,10 @@ const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal
         // We use a poller since the modal might be opened and closed multiple times
         if (sessionIsFresh && aalGood) {
 
-            setContinueToComponent(true)
-            if (searchParams.get('aal')) {
-                searchParams.delete('flow')
-            }
+            searchParams.delete('flow')
             searchParams.delete('aal')
             setSearchParams(searchParams)
+            setContinueToComponent(true)
 
             interval = setInterval(() => {
                 const isFreshCheck = Date.now() - (reAuthed.at || 0) < 1000 * 60 * 9

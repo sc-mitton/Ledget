@@ -22,13 +22,27 @@ type OryQueryError = {
   data: any
 }
 
+type AxiosBaseQueryConfig = {
+  url: string
+  method: AxiosRequestConfig['method']
+  data?: AxiosRequestConfig['data']
+  params?: AxiosRequestConfig['params']
+  headers?: AxiosRequestConfig['headers']
+  transformResponse?: AxiosRequestConfig['transformResponse']
+}
+
+type FlowType<T extends EndpointRootNames> =
+  T extends 'settings' ? TransformedSettingsFlow :
+  T extends 'login' ? TransformedLoginFlow :
+  T extends 'registration' ? TransformedRegistrationFlow :
+  T extends 'logout' ? TransformedLogoutFlow :
+  T extends 'verification' ? TransformedVerificationFlow :
+  T extends 'recovery' ? TransformedRecoveryFlow :
+  never
+
 type TOryEndpoint<TName extends EndpointRootNames, TType extends 'get' | 'complete'> =
-  TName extends 'settings' ? TType extends 'get' ? QueryDefinition<any, any, any, TransformedSettingsFlow, any> : MutationDefinition<any, any, any, SettingsFlow, any> :
-  TName extends 'login' ? TType extends 'get' ? QueryDefinition<any, any, any, TransformedLoginFlow, any> : MutationDefinition<any, any, any, LoginFlow, any> :
-  TName extends 'registration' ? TType extends 'get' ? QueryDefinition<any, any, any, TransformedRegistrationFlow, any> : MutationDefinition<any, any, any, RegistrationFlow, any> :
-  TName extends 'logout' ? TType extends 'get' ? QueryDefinition<any, any, any, TransformedLogoutFlow, any> : MutationDefinition<any, any, any, LogoutFlow, any> :
-  TName extends 'verification' ? TType extends 'get' ? QueryDefinition<any, any, any, TransformedVerificationFlow, any> : MutationDefinition<any, any, any, VerificationFlow, any> :
-  TName extends 'recovery' ? TType extends 'get' ? QueryDefinition<any, any, any, TransformedRecoveryFlow, any> : MutationDefinition<any, any, any, RecoveryFlow, any> :
+  TType extends 'get' ? QueryDefinition<any, any, any, FlowType<TName>, any> :
+  TType extends 'complete' ? MutationDefinition<any, any, any, FlowType<TName>, any> :
   never
 
 export type OryGetFlowEndpoint<TName extends EndpointRootNames> = TOryEndpoint<TName, 'get'>
@@ -46,41 +60,13 @@ type OryEndpointDefenitions = {
     getUpdatedLogoutFlow: OryGetFlowEndpoint<'logout'>
   }
 
-type AxiosBaseQueryConfig = {
-  url: string
-  method: AxiosRequestConfig['method']
-  data?: AxiosRequestConfig['data']
-  params?: AxiosRequestConfig['params']
-  headers?: AxiosRequestConfig['headers']
-  transformResponse?: AxiosRequestConfig['transformResponse']
-}
 
-export const axiosBaseQuery = (config: AxiosBaseQueryConfig) => {
+const axiosBaseQuery = async ({ url, headers, ...rest }: AxiosBaseQueryConfig) => {
   const oryBaseUrl = import.meta.env.VITE_ORY_API_URI;
-  const { url, ...rest } = config
-  return axios({
-    url: oryBaseUrl + url,
-    withCredentials: true,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    ...rest,
-  }).then((response: AxiosResponse) => ({ data: response.data }))
-    .catch((error: AxiosError) => {
-      throw {
-        error: {
-          status: error.response?.status,
-          data: error.response?.data || error.message
-        },
-      }
-    })
-}
 
-const axiosBaseQ = async ({ url, headers, ...rest }: AxiosBaseQueryConfig) => {
   try {
     const result = await axios({
-      url: url,
+      url: `${oryBaseUrl}${url}`,
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
@@ -101,39 +87,36 @@ const axiosBaseQ = async ({ url, headers, ...rest }: AxiosBaseQueryConfig) => {
   }
 }
 
-const createFlow = async ({ url, params, transformResponse }: Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>) =>
-  axiosBaseQuery({
+const createFlow = async ({ url, params, transformResponse }: Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>) => {
+  const data = await axiosBaseQuery({
     url: `${url}/browser`,
     method: 'GET',
     params: params,
     transformResponse: transformResponse,
-    data: null
-  }).then(result => ({ data: result.data }))
-    .catch(result => ({ error: result.error }))
+  })
+  return data.error ? { error: data.error } : { data: data.data }
+}
 
 const getFlow = async ({ url, params = {}, transformResponse }: Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>) => {
   const { id, ...rest } = params
   if (id) {
-    return await axiosBaseQuery({
+    const data = await axiosBaseQuery({
       url: `${url}/flows`,
       method: 'GET',
       params: params,
       transformResponse: transformResponse,
-      data: null
-    }).then(result => ({ data: result.data }))
-      .catch(result => {
-        if (result?.error?.status === 410) {
-          return createFlow({
-            url,
-            transformResponse,
-            params: { ...rest }
-          })
-        } else {
-          return { error: result.error }
-        }
+    })
+    if (data.error?.status === 410) {
+      return createFlow({
+        url,
+        transformResponse,
+        params: { ...rest }
       })
+    } else {
+      return data.error ? { error: data.error } : { data: data.data }
+    }
   } else {
-    return await createFlow({
+    return createFlow({
       url,
       transformResponse,
       params: { ...rest }

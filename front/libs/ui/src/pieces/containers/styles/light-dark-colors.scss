@@ -22,7 +22,6 @@
     /* Drop Shadows & Borders */
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
     --window-drop-shadow2: var(--window-drop-shadow-color) 0px 0px 12px;
-    --header-box-shadow: var(--header-box-shadow-color) 0px 1px 1px 2px;
     --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 14px;
     // --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0 0px 1px;
 
@@ -156,6 +155,7 @@
         --scroll-shadow: hsl(0, 0%, 3%), transparent;
         --dropdown-box-shadow-color: hsl(0, 0%, 4%);
         --antd-drop-shadow-color: hsl(0, 0%, 0%);
+        --header-box-shadow: var(--header-box-shadow-color) 0px 1px 1px 2px;
 
         --low-elevation-drop-shadow-color: rgba(255, 255, 255, 0.1);
         --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
@@ -286,11 +286,12 @@
         // Drop Shadows & Borders
         --window-drop-shadow-color: hsl(0, 0%, 93%);
         --wafer-drop-shadow-color: hsl(0, 0%, 80%);
-        // --header-box-shadow-color: hsl(0, 0%, 47%);
         --new-item-drop-shadow-color: hsl(0, 0%, 93%);
         --scroll-shadow: hsl(0, 0%, 97%), transparent;
         --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);
         --antd-drop-shadow-color: var(--dropdown-box-shadow-color);
+        // --header-box-shadow-color: hsl(0, 0%, 47%);
+        // --header-box-shadow: var(--header-box-shadow-color) 0px 1px 16px 0px;
 
         --active-wafer-indicator: var(--blue-medium);
 
