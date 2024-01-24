@@ -2,11 +2,11 @@ import { useState, useEffect, useRef } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import dayjs from 'dayjs'
+import { ChevronLeft, ChevronRight } from '@geist-ui/icons'
 
 import './styles/MonthPicker.scss'
 import { useGetMeQuery } from '@features/userSlice'
 import { SmallArrowButton, FadedTextButton, DropDownDiv, IconButton3, useAccessEsc } from '@ledget/ui'
-import { ArrowIcon } from '@ledget/media'
 
 export const monthMappings: [string | number, string | number][] = [
     ['Jan', 'January'],
@@ -169,10 +169,10 @@ const MonthPicker = ({ darkMode = false }) => {
                     <span>{monthMappings[parseInt(searchParams.get('month') || '1') - 1][1]} {searchParams.get('year')}</span>
                 </FadedTextButton>
                 <IconButton3 onClick={() => handleArrowClick(-1)}>
-                    <ArrowIcon size={'.8em'} rotation={90} stroke={'currentColor'} />
+                    <ChevronLeft className='icon' />
                 </IconButton3>
                 <IconButton3 onClick={() => handleArrowClick(1)}>
-                    <ArrowIcon size={'.8em'} rotation={-90} stroke={'currentColor'} />
+                    <ChevronRight className='icon' />
                 </IconButton3>
             </div>
             <DropDownDiv

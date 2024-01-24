@@ -1,6 +1,7 @@
 
+import { Check } from '@geist-ui/icons'
+
 import { ElementType, ComponentPropsWithoutRef } from 'react'
-import { CheckMark } from '@ledget/media'
 import { PolymorphicComponentProps } from '../../types/helpers'
 
 import './styles/bill-cat-label.scss'
@@ -52,7 +53,7 @@ export const BillCatLabel = <C extends ElementType = 'div'>(props: PolymorphicCo
       </div>
       {checked &&
         <div>
-          {checked && <CheckMark stroke={'currentColor'} size={'.75em'} />}
+          {checked && <Check size={'1.25em'} />}
         </div>}
       {children}
     </Component>

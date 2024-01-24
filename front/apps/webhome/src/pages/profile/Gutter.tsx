@@ -9,11 +9,12 @@ import {
     IconButton,
     useAccessEsc
 } from '@ledget/ui'
-import { Profile1, Shield, Settings, Link, Hamburger } from '@ledget/media'
+import { Hamburger } from '@ledget/media'
 import { useGetMeQuery } from '@features/userSlice'
 import { useScreenContext } from '@context/context'
 import { useGutterContext } from './Window'
 import { useColorScheme } from '@ledget/ui'
+import { Shield, Link, User } from '@geist-ui/icons'
 
 const tabs = ['details', 'connections', 'security']
 
@@ -21,14 +22,14 @@ const NavList = () => {
     const rootPath = useLocation().pathname.split("/")[2]
     const navigate = useNavigate()
 
-    const Icon = (props: { name: string, fill: string }) => {
+    const Icon = (props: { name: string, stroke: string }) => {
         switch (props.name) {
             case "settings":
-                return <Settings {...props} />
+                return <User {...props} className='icon' />
             case 'connections':
-                return <Link {...props} />
+                return <Link {...props} className='icon' />
             case "security":
-                return <Shield {...props} />
+                return <Shield {...props} className='icon' />
             default:
                 return null
         }
@@ -45,7 +46,7 @@ const NavList = () => {
                 onKeyDown={(e) => { e.key === "Enter" && navigate(route) }}
                 className={`slim side-nav-item ${rootPath === route ? "current" : ''}`}
             >
-                <div><Icon name={route} fill={'currentColor'} /></div>
+                <div><Icon name={route} stroke={'currentColor'} /></div>
                 <div>
                     {route.charAt(0).toUpperCase() + route.slice(1)}
                 </div>
@@ -68,7 +69,7 @@ const Profile = () => {
             className={`side-nav-item ${location.pathname === "/profile/details" ? "current" : ''}`}
             id="profile"
         >
-            <div><Profile1 width="1.6em" height="1.6em" fill={'currentColor'} /></div>
+            <div><User size="1.6em" stroke={'currentColor'} /></div>
             <div>
                 <span>{`${user?.name.first}'s`} Ledget</span>
                 <br />

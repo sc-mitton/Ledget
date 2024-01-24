@@ -44,7 +44,7 @@ $scroll-bar-padding: .5em;
         // Header and add button
         &>div:nth-child(2) {
             display: flex;
-            gap: .25em;
+            gap: .5em;
             align-items: center;
 
             h4 {
@@ -325,6 +325,13 @@ $scroll-bar-padding: .5em;
             align-items: center;
             justify-content: center;
 
+            &.is_paid {
+                opacity: 1;
+            }
+
+            &.not_paid {
+                opacity: .4;
+            }
         }
     }
 }

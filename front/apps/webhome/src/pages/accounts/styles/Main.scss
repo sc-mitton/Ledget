@@ -22,10 +22,6 @@ $wafer-container-padding: .75rem;
             align-items: center;
             gap: .25em;
         }
-
-        &>div * {
-            font-weight: var(--fw-bold);
-        }
     }
 
 
@@ -180,8 +176,8 @@ $wafer-container-padding: .75rem;
         left: 50%;
         transform: translateX(-50%);
         bottom: -.75em;
-        width: 25%;
-        height: 4px;
+        width: 35%;
+        height: 2px;
         border-radius: var(--border-radius1);
         background-color: var(--active-wafer-indicator);
     }
@@ -486,7 +482,7 @@ $borderRadius2: var(--border-radius2);
 
     .account-wafers,
     .skeleton-account-wafers {
-        height: calc($wafer-height + 2 * $wafer-container-padding - .5em);
+        height: calc($wafer-height + 2 * $wafer-container-padding - .25em);
     }
 
     .account-wafers--container {

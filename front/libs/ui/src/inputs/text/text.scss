@@ -50,6 +50,15 @@
         width: 100%;
     }
 
+    svg {
+        border-radius: var(--border-radius1);
+        padding: .125em;
+    }
+
+    svg:hover {
+        cursor: pointer;
+    }
+
 }
 
 .menu-text-input-container {

@@ -2,11 +2,11 @@ import { useRef, useEffect, useState, useId, ComponentProps, ComponentPropsWitho
 
 import { Listbox } from '@headlessui/react'
 import { Control, useController, UseControllerReturn, FieldError } from 'react-hook-form'
+import { ChevronDown, Check } from '@geist-ui/icons'
 
 import './baked-selects.scss'
 import { DropDownDiv } from '../../animations/animations'
 import { InputButton } from '../../buttons/buttons'
-import { ArrowIcon, CheckMark } from '@ledget/media'
 import { DropdownItem } from "../../pieces/containers/containers"
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators'
 import { FormErrorTip } from '../../pieces/form-errors/form-errors'
@@ -153,9 +153,9 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
                     <span>{`${props.labelPrefix + ' '}${label}`}</span>
                     {val
                       ? props.withCheckMarkIndicator
-                        ? <CheckMark size={'.8em'} stroke={'currentColor'} />
-                        : <ArrowIcon size={'.8em'} stroke={'currentColor'} />
-                      : <ArrowIcon size={'.8em'} stroke={'currentColor'} />}
+                        ? <Check size={'1.25em'} />
+                        : <ChevronDown size={'1.25em'} />
+                      : <ChevronDown size={'1.25em'} />}
                   </div>
                   <FormErrorTip error={props.error} />
                 </>

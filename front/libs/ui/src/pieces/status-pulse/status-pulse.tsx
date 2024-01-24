@@ -1,6 +1,8 @@
 
+import { Check } from '@geist-ui/icons'
+
 import './status-pulse.scss'
-import { CheckMark, SmsAuthIcon, VerifyEmail, AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
+import { SmsAuthIcon, VerifyEmail, AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
 import { shuffleArray } from '../../utils/funcs'
 
 
@@ -29,8 +31,9 @@ export const TotpAppGraphic = ({ finished = false }) => {
     <div className="auth-factor-status-graphic">
       {finished &&
         <div id="success-checkmark">
-          <CheckMark
+          <Check
             stroke={'var(--blue-dark'}
+            size={'1.5em'}
           />
         </div>
       }
@@ -72,7 +75,8 @@ export const SmsVerifyStatus = ({ finished = false, }) => (
   <div className="sms-verify-status">
     {finished &&
       <div id="success-checkmark">
-        <CheckMark
+        <Check
+          size={'1.5em'}
           stroke={'var(--blue-light'}
         />
       </div>

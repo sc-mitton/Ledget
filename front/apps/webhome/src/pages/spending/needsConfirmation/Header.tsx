@@ -20,7 +20,7 @@ const CheckAllButton: FC<ButtonHTMLAttributes<HTMLButtonElement>> = (props) => (
         ariaLabel={"Confirm all items"}
     >
         <IconButton id="check-all-icon" aria-label="Check all" {...props}>
-            <CheckAll fill={'currentColor'} />
+            <CheckAll />
         </IconButton>
     </Tooltip>
 )
@@ -81,7 +81,7 @@ const NewItemsHeader = (
                 </div>
                 <div>
                     <RefreshButton
-                        fill={'currentColor'}
+                        stroke={'currentColor'}
                         hasBackground={false}
                         loading={isSyncing}
                         onClick={handleRefreshClick}

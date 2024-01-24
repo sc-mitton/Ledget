@@ -203,7 +203,7 @@ export const StaticProgressCircle = ({
   color,
   value = 0,
   size = '1.1rem',
-  strokeWidth = 5,
+  strokeWidth = 3,
   noProgress = false
 }: {
   color?: 'green' | 'blue',

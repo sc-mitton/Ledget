@@ -1,8 +1,8 @@
 import { forwardRef, ButtonHTMLAttributes, FC, useEffect, useState } from 'react'
+import { ChevronDown, Check } from '@geist-ui/icons'
 
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { TranslucentShimmerDiv } from '../pieces/shimmer/shimmer'
-import { ArrowIcon, CheckMark } from '@ledget/media'
 
 interface LoadingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     loading?: boolean;
@@ -78,11 +78,7 @@ export const withArrow = (Component: FC<any>) => {
                 {...rest}
             >
                 {children}
-                <ArrowIcon
-                    size={'.8em'}
-                    rotation={rotate}
-                    stroke={'currentColor' || stroke}
-                />
+                <ChevronDown stroke={'currentColor' || stroke} className='icon' />
             </Component>
         )
     }
@@ -106,10 +102,7 @@ export const withCheckMark = (Component: FC<any>) => {
                 {...rest}
             >
                 {children}
-                <CheckMark
-                    size={'.8em'}
-                    stroke={'currentColor' || stroke}
-                />
+                <Check size={'1em'} />
             </Component>
         )
     }
@@ -133,7 +126,7 @@ export const withLoading = (Component: FC<any>) => {
                 {loading && <TranslucentShimmerDiv />}
                 <LoadingRing visible={submitting} />
                 {!submitting && success &&
-                    <CheckMark className="checkmark--pop" stroke={'currentColor'} />
+                    <Check className="checkmark--pop" size={'1em'} />
                 }
                 <div
                     className="with-loading-ring--container"

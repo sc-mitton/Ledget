@@ -17,15 +17,9 @@ const CornerGripIcon = ({
                 y="0px"
                 aria-label="Grip Icon"
             >
-                <g>
-                    <circle fill={fill} cx="108.5" cy="108.5" r="20.9" />
-                </g>
-                <g>
-                    <circle fill={fill} cx="35.5" cy="35.5" r="20.9" />
-                </g>
-                <g>
-                    <circle fill={fill} cx="35.5" cy="108.5" r="20.9" />
-                </g>
+                <circle fill={fill} cx="108.5" cy="108.5" r="16.9" />
+                <circle fill={fill} cx="35.5" cy="35.5" r="16.9" />
+                <circle fill={fill} cx="35.5" cy="108.5" r="16.9" />
             </svg>
         </>
     )

@@ -1,8 +1,9 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
 import Picker from '@emoji-mart/react'
+import { Smile } from '@geist-ui/icons'
 
 import './styles/EmojiPicker.css'
-import { IconScaleButton, DropDownDiv } from '@ledget/ui'
+import { IconButton3, DropDownDiv } from '@ledget/ui'
 
 export type emoji = string | { native: string, [key: string]: any }
 
@@ -114,7 +115,7 @@ const EmojiButton = ({ ...rest }) => {
     const { emoji, picker, setPicker } = useContext(EmojiContext) as EmojiContextType
 
     return (
-        <IconScaleButton
+        <IconButton3
             type="button"
             onClick={(e) => {
                 e.stopPropagation()
@@ -136,8 +137,8 @@ const EmojiButton = ({ ...rest }) => {
         >
             {emoji
                 ? typeof emoji === 'string' ? emoji : emoji.native
-                : '☺'}
-        </IconScaleButton>
+                : <Smile size={'1.25em'} />}
+        </IconButton3>
     )
 }
 

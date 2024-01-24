@@ -2,7 +2,7 @@ const Delete = ({
     className = '',
     size = "1em",
     stroke = "var(--m-text)",
-    strokeWidth = "12",
+    strokeWidth = "10",
     border = 'var(--input-border-color)'
 }) => {
 
@@ -19,8 +19,9 @@ const Delete = ({
                 y="0px"
                 aria-label="Delete"
             >
-                <line stroke={stroke} strokeWidth={strokeWidth} x1="40.3" y1="72" x2="103.7" y2="72" />
-                <line stroke={stroke} strokeWidth={strokeWidth} x1="72" y1="40.3" x2="72" y2="103.7" />
+                <line stroke={stroke} strokeWidth={strokeWidth} x1="30.3" y1="72" x2="113.7" y2="72" />
+                <line stroke={stroke} strokeWidth={strokeWidth} x1="72" y1="30.3" x2="72" y2="113.7" />
+
             </svg>
         </>
     )

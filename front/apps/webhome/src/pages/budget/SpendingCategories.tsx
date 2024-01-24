@@ -18,6 +18,7 @@ import { ResponsiveLine } from '@nivo/line'
 import type { Datum } from '@nivo/line'
 import { Menu } from '@headlessui/react'
 import dayjs from 'dayjs'
+import { Plus, Edit2, Trash2 } from '@geist-ui/icons'
 
 import { TransactionItem, DeleteCategoryModal } from '@modals/index'
 import { Logo } from '@components/pieces'
@@ -43,6 +44,7 @@ import {
     useLoaded,
     CloseButton,
     IconButton,
+    IconButton3,
     ResponsiveLineContainer,
     formatCurrency,
     useNivoResponsiveBaseProps,
@@ -58,7 +60,7 @@ import {
     DropdownItem,
     useBillCatTabTheme
 } from '@ledget/ui'
-import { Plus, ArrowIcon, Ellipsis, Edit, TrashIcon } from '@ledget/media'
+import { ArrowIcon, Ellipsis } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useScreenContext } from '@context/context'
 
@@ -101,7 +103,7 @@ const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) =
                         )
                     }}
                 >
-                    <Plus stroke={'currentColor'} />
+                    <Plus className='icon' />
                 </BluePrimaryButton>
                 :
                 <BluePrimaryButton
@@ -113,7 +115,7 @@ const NewCategoryButton: React.FC<{ period: 'month' | 'year' }> = ({ period }) =
                         )
                     }}
                 >
-                    <Plus stroke={'currentColor'} />
+                    <Plus className='icon' />
                 </BluePrimaryButton>
             }
         </>
@@ -248,14 +250,14 @@ const RowHeader: FC<{ period: 'month' | 'year' }> = ({ period }) => {
                             {yearly_end.toLocaleString('default', { month: 'short', year: 'numeric' }).toUpperCase()}
                         </h4>}
                 </div>
-                <IconButton onClick={() => {
+                <IconButton3 onClick={() => {
                     navigate(
                         `${location.pathname}/new-category/${location.search}`,
                         { state: { period: period } }
                     )
                 }}>
-                    <Plus size={'.8em'} stroke={'currentColor'} />
-                </IconButton>
+                    <Plus className='icon' />
+                </IconButton3>
             </div>
             <div><AnimatedDollarCents value={totalSpent ? totalSpent : 0} /></div>
             <div>/</div>
@@ -571,7 +573,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
     const Options = () => (
         <Menu>
             {({ open }) => (
-                <div style={{ position: 'absolute', top: '.625em', right: '3em' }}>
+                <div style={{ position: 'absolute', top: '.875em', right: '3.25em' }}>
                     <Menu.Button as={IconButton}>
                         <Ellipsis rotate={90} />
                     </Menu.Button>
@@ -588,7 +590,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                             active={active}
                                             onClick={() => { setShowEditCategoryModal(true) }}
                                         >
-                                            <Edit size={'1em'} fill={'currentColor'} />
+                                            <Edit2 className='icon' />
                                             Edit
                                         </DropdownItem>
                                     )}
@@ -600,7 +602,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                                             active={active}
                                             onClick={() => { setShowDeleteModal(true) }}
                                         >
-                                            <TrashIcon size={'1em'} fill={'currentColor'} />
+                                            <Trash2 className='icon' />
                                             Delete
                                         </DropdownItem>
                                     )}

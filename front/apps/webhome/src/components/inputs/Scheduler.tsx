@@ -3,12 +3,13 @@ import React, { FC, useState, useEffect, useRef, useContext, createContext } fro
 import { UseFormRegister, FieldError } from 'react-hook-form'
 import dayjs from 'dayjs'
 import { Tab } from '@headlessui/react'
+import { ChevronDown } from '@geist-ui/icons'
+import { Calendar } from '@geist-ui/icons'
 
 import './styles/Dropdowns.css'
 import './styles/Scheduler.scss'
 import type { Bill } from '@features/billSlice'
 import { useClickClose } from '@ledget/ui'
-import { ArrowIcon } from '@ledget/media'
 import {
     SlimmestInputButton,
     InputButton,
@@ -18,7 +19,6 @@ import {
     useSchemeVar,
     TabNavList
 } from '@ledget/ui'
-import { Calendar } from '@ledget/media'
 
 
 interface Context extends Pick<Bill, 'day' | 'week' | 'month'> {
@@ -126,7 +126,7 @@ const Button: FC<React.HTMLAttributes<HTMLButtonElement> & { iconPlaceholder?: b
                             {placeholder || 'Repeats on'}
                         </span>
                     </div>}
-                <ArrowIcon size={'.8em'} stroke={'var(--m-text)'} />
+                <ChevronDown size={'1.25em'} />
                 {children}
             </Component>
         </>

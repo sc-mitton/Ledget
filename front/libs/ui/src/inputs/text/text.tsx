@@ -1,10 +1,10 @@
 import React, { forwardRef, useRef, useState } from 'react'
 import { FC } from 'react'
 
-import { VisibilityIcon } from "@ledget/media"
 import { CardElement } from '@stripe/react-stripe-js'
 import { z } from 'zod'
 import { FieldError } from 'react-hook-form'
+import { Eye, EyeOff } from '@geist-ui/icons'
 
 import './text.scss'
 import './password-input.scss'
@@ -303,8 +303,9 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>((props,
             }}
             {...rest}
           />
-          {pwdInput && inputType != 'confirm-password'
-            && <VisibilityIcon mode={visible} onClick={() => { setVisible(!visible) }} />}
+          {pwdInput && inputType != 'confirm-password' &&
+            visible ? <EyeOff size={'1.25em'} onClick={() => { setVisible(false) }} tabIndex={0} />
+            : <Eye size={'1.25em'} onClick={() => { setVisible(true) }} tabIndex={0} />}
           {error && (error.type === 'required' || error.msg?.includes('required'))
             && <FormErrorTip error={{ type: 'required' }} />}
         </TextInputWrapper>

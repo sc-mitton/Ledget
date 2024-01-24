@@ -5,10 +5,11 @@ import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 import dayjs from 'dayjs'
+import { Check } from '@geist-ui/icons'
 
 import "./styles/Window.scss"
 import TransactionModal from '@modals/TransactionItem'
-import { Ellipsis, CheckMark } from "@ledget/media"
+import { Ellipsis } from "@ledget/media"
 import Header from './Header'
 import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import { SelectCategoryBill } from '@components/dropdowns'
@@ -109,7 +110,7 @@ const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean
     if (index === 0 || expanded) {
         lightness = darkMode ? 11 : 100
     } else {
-        lightness = darkMode ? 11 - (index * 1.75) : 100 - (index * 1.5)
+        lightness = darkMode ? 11 - (index * 1.75) : 100
     }
     return `hsl(0, 0%, ${lightness}%)`
 }
@@ -193,7 +194,7 @@ const NewItem: FC<{
                         tabIndex={tabIndex}
                         className="confirm-button"
                     >
-                        <CheckMark />
+                        <Check className="icon" />
                     </IconButton>
                 </Tooltip>
                 <NarrowButton

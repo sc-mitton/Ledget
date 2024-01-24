@@ -37,7 +37,7 @@
             line-height: 3rem;
 
             * {
-                color: var(--m-text-secondary);
+                color: var(--m-header-text);
             }
         }
     }
@@ -59,7 +59,7 @@
             position: relative;
 
             * {
-                color: var(--m-text-secondary);
+                color: var(--m-header-text);
             }
 
             @mixin dot($color-var) {
@@ -79,7 +79,7 @@
             }
 
             &:nth-last-child(3) {
-                @include dot(--blue-sat);
+                @include dot(--blue-light-medium);
             }
 
             &:nth-last-child(2) {
@@ -95,7 +95,7 @@
             }
 
             &>span:last-child {
-                color: var(--m-text-quinary);
+                color: var(--m-text-tirtiary);
                 font-weight: var(--fw-regular);
                 opacity: .9;
                 white-space: nowrap;

@@ -6,12 +6,12 @@ import { Menu, RadioGroup } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
-
 import dayjs from 'dayjs'
+import { Trash2, Edit2, CheckInCircle, Circle, BellOff } from '@geist-ui/icons'
 
 import './styles/Bill.scss'
 import { billSchema } from './CreateBill'
-import { withModal, WithModalI } from '@ledget/ui'
+import { withModal } from '@ledget/ui'
 import { useGetBillsQuery, TransformedBill, useDeleteBillMutation, useUpdateBillsMutation, UpdateBill } from '@features/billSlice'
 import { Reminder } from '@features/remindersSlice'
 import { SubmitForm } from '@components/pieces'
@@ -28,7 +28,7 @@ import {
     DatePicker
 } from '@ledget/ui'
 import { extractReminders } from '@modals/CreateBill'
-import { CheckMark2, Ellipsis, TrashIcon, BellOff, Edit } from '@ledget/media'
+import { Ellipsis } from '@ledget/media'
 import {
     EmojiComboText,
     DollarRangeInput,
@@ -110,7 +110,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                             active={active}
                                             onClick={() => setAction('edit')}
                                         >
-                                            <Edit size={'1em'} fill={'currentColor'} />
+                                            <Edit2 className="icon" />
                                             <span>Edit Bill</span>
                                         </DropdownItem>
                                     )}
@@ -123,7 +123,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                             active={active}
                                             onClick={() => setAction('delete')}
                                         >
-                                            <TrashIcon fill={'currentColor'} />
+                                            <Trash2 className="icon" />
                                             <span>Delete Bill</span>
                                         </DropdownItem>
                                     )}
@@ -150,13 +150,9 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
             <div className="modal-inner-window">
                 <div>Amount</div>
                 <div>
-                    <CheckMark2
-                        size={'.9em'}
-                        style={{
-                            marginLeft: '.125em',
-                            ...(!bill.is_paid && { opacity: .3 })
-                        }}
-                    />
+                    {bill.is_paid
+                        ? <CheckInCircle size={'1em'} style={{ marginLeft: '.125em' }} />
+                        : <Circle size={'1em'} style={{ marginLeft: '.125em' }} />}
                     <div>
                         {bill.lower_amount && <><DollarCents value={bill.lower_amount} /> <span>&nbsp;-&nbsp;</span></>}
                         {bill.upper_amount && <DollarCents value={bill.upper_amount} />}

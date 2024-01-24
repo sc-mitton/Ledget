@@ -2,9 +2,9 @@ import { useState, useRef, useEffect } from 'react'
 
 import Big from 'big.js'
 import { Control, useController } from 'react-hook-form'
+import { Plus, CornerDownLeft, ChevronDown, Check } from '@geist-ui/icons'
 
 import './styles/Dropdowns.css'
-import { Plus, Return, ArrowIcon, CheckMark } from '@ledget/media'
 import ComboSelect from './ComboSelect'
 import { SlimmestInputButton, MenuTextInput, DropDownDiv, DollarCents, DropdownItem } from '@ledget/ui'
 
@@ -81,11 +81,7 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                                     role="button"
                                     aria-label="Add custom alert"
                                 >
-                                    <Return
-                                        width={'.6em'}
-                                        height={'.6em'}
-                                        stroke={"var(--m-invert-text)"}
-                                    />
+                                    <CornerDownLeft size={'1em'} />
                                 </div>
                             </>
                         )}
@@ -117,10 +113,7 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                                     marginRight: '.5em'
                                 }}
                             />
-                            <CheckMark
-                                size={'.8em'}
-                                stroke={`${selected ? 'var(--blue-dark)' : 'transparent'}`}
-                            />
+                            {selected && <Check className='icon' />}
                         </div>
                     </DropdownItem>
                 )}
@@ -165,13 +158,9 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                 </span>}
             {(selectedAlerts?.length && selectedAlerts.length > 0)
                 ?
-                <ArrowIcon
-                    stroke={'var(--m-text)'}
-                    strokeWidth={'18'}
-                    size={'.9em'}
-                />
+                <ChevronDown className='icon' />
                 :
-                <Plus strokeWidth={'18'} size={'.8em'} />
+                <Plus className='icon' />
             }
         </>
     )

@@ -6,15 +6,10 @@ import { animated } from '@react-spring/web'
 
 import './styles/header.scss'
 import { Logout, Help } from '@modals/index'
-import {
-    Profile1,
-    Profile2,
-    Help as HelpIcon,
-    LogoutIcon,
-    LedgetLogoIcon
-} from '@ledget/media'
+import { LedgetLogoIcon } from '@ledget/media'
 import { DropDownDiv, usePillAnimation, DropdownItem, useSchemeVar } from '@ledget/ui'
 import { useScreenContext } from './context'
+import { HelpCircle, LogOut, User } from '@geist-ui/icons'
 
 
 const Navigation = () => {
@@ -130,7 +125,7 @@ const DropDownMenu = ({ setModal }:
             {({ open }) => (
                 <div style={{ position: 'relative' }}>
                     <Menu.Button className="profile-button">
-                        <Profile1 />
+                        <User className='icon' />
                     </Menu.Button>
                     <DropDownDiv
                         placement='right'
@@ -141,15 +136,15 @@ const DropDownMenu = ({ setModal }:
                     >
                         <Menu.Items static>
                             <Wrapper onClick={() => navigate("/profile/details")}>
-                                <Profile2 fill={'currentColor'} />
+                                <User className='icon' />
                                 Profile
                             </Wrapper>
                             <Wrapper onClick={() => setModal("help")}>
-                                <HelpIcon fill={'currentColor'} />
+                                <HelpCircle className='icon' />
                                 Help
                             </Wrapper>
                             <Wrapper onClick={() => setModal("logout")}>
-                                <LogoutIcon id="logout-icon" fill={'currentColor'} />
+                                <LogOut className='icon' />
                                 Log out
                             </Wrapper>
                         </Menu.Items>

@@ -22,7 +22,7 @@
     transform: translateY(-50%);
     right: .375em;
     border-radius: var(--border-radius1);
-    padding: .125em;
+    height: 80%;
 
     button {
         margin: 0;
@@ -34,8 +34,6 @@
         align-items: center;
         justify-content: center;
         border-radius: var(--border-radius);
-        padding: .125em;
-        margin: -.0625em;
 
         &:hover {
             color: var(--m-text);
@@ -53,16 +51,6 @@
 
     &>div {
         flex: 1;
-    }
-}
-
-#emoji-picker-ledget--button {
-    transform: scale(1.2);
-    margin: 0 .25em;
-
-    &:hover,
-    &:focus {
-        transform: scale(1.5);
     }
 }
 

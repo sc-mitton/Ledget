@@ -1,8 +1,9 @@
 import React, { useState, Dispatch, SetStateAction, useEffect } from 'react'
 
+import { Plus, Check } from '@geist-ui/icons'
+
 import './styles/Dropdowns.css'
 import { Listbox } from '@headlessui/react'
-import { Plus, CheckMark } from '@ledget/media'
 import { SlimmestInputButton, DropDownDiv, DropdownItem } from '@ledget/ui'
 import { useGetRemindersQuery, Reminder } from '@features/remindersSlice'
 
@@ -37,8 +38,8 @@ const AddReminder = ({ value, onChange, defaultSelected }:
                         <span style={{ opacity: active ? '.5' : '0', padding: '0 .5em', fontWeight: '400' }}>before</span>
                     </div>
                     {!selected
-                        ? <Plus stroke={'currentColor'} size={'.8em'} />
-                        : <CheckMark size={'.7em'} stroke={`${selected ? 'var(--blue-dark)' : 'transparent'}`} />
+                        ? <Plus size={'1em'} />
+                        : <Check size={'1em'} />
                     }
                 </DropdownItem>
                 <div style={{ padding: '0 .5em' }}>
@@ -86,15 +87,9 @@ const AddReminder = ({ value, onChange, defaultSelected }:
                             <span>Reminder</span>
                             {selectedReminders.length > 0
                                 ?
-                                <CheckMark
-                                    stroke={'currentColor'}
-                                    size={'.7em'}
+                                <Check size={'1em'}
                                 /> :
-                                <Plus
-                                    stroke={'currentColor'}
-                                    strokeWidth={'20'}
-                                    size={".8em"}
-                                />}
+                                <Plus size={"1em"} />}
                         </Listbox.Button>
                         <Listbox.Options className="select-container" static>
                             <DropDownDiv

@@ -4,42 +4,10 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-importers:
-
-  .:
-    dependencies:
-      '@geist-ui/icons':
-        specifier: ^1.0.2
-        version: 1.0.2(@geist-ui/core@2.3.8)(react@18.2.0)
-      dayjs:
-        specifier: ^1.11.10
-        version: 1.11.10
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
-
-  ../..: {}
-
-  ../../dist/apps/webhome: {}
-
-  ../../dist/apps/webportal: {}
-
-  ../../dist/libs/media: {}
-
-  ../../dist/libs/ory: {}
-
-  ../../dist/libs/ui: {}
-
-  ../../libs/media: {}
-
-  ../../libs/ory: {}
-
-  ../../libs/ui: {}
-
-  ../webportal: {}
+dependencies:
+  '@geist-ui/icons':
+    specifier: ^1.0.2
+    version: 1.0.2(@geist-ui/core@2.3.8)(react@18.2.0)
 
 packages:
 
@@ -69,10 +37,6 @@ packages:
     dependencies:
       '@geist-ui/core': 2.3.8(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
-    dev: false
-
-  /dayjs@1.11.10:
-    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
     dev: false
 
   /js-tokens@4.0.0:

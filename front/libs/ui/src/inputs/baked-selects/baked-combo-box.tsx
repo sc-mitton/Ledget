@@ -3,11 +3,11 @@ import { useRef, useEffect, useState, useId, ComponentProps, forwardRef } from '
 import { Combobox } from '@headlessui/react';
 import { useController } from 'react-hook-form';
 import { BakedSelectProps } from './baked-list-box';
+import { ChevronDown } from '@geist-ui/icons';
 
 import './baked-selects.scss';
 import { DropDownDiv } from '../../animations/animations';
 import { TextInputWrapper } from '../text/text';
-import { ArrowIcon } from '@ledget/media';
 import { DropdownItem } from "../../pieces/containers/containers";
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
 
@@ -71,8 +71,8 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string> | BakedSelect
                 cursor: 'pointer',
               }}
             >
-              <ArrowIcon
-                size={'.8em'}
+              <ChevronDown
+                size={'1.25em'}
                 stroke={(focused && !value) ? 'var(--input-placeholder-focus)' : 'var(--m-text)'}
               />
             </Combobox.Button>

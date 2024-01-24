@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, ButtonHTMLAttributes } from 'react'
 import { useLocation, Location, useSearchParams } from 'react-router-dom'
 import { animated, useTransition, useSpringRef } from '@react-spring/web'
 import Big from 'big.js'
+import { ChevronDown } from '@geist-ui/icons'
 
 import { CornerGripButton } from '@components/buttons'
 import { Base64Logo, DollarCents, ShimmerDiv, useSpringDrag, BakedListBox } from '@ledget/ui'
@@ -12,7 +13,6 @@ import {
     Account
 } from "@features/accountsSlice"
 import pathMappings from './path-mappings'
-import { ArrowIcon } from '@ledget/media'
 
 const waferWidth = 165
 const waferPadding = 6
@@ -111,7 +111,7 @@ const WafersHeader = ({ accounts, setAccounts }: { accounts: Account[], setAccou
             {...props}
         >
             {accountsFilterOptions?.find(option => option.value === accountsFilter)?.label || ''}
-            <ArrowIcon size={'.7em'} />
+            <ChevronDown className='icon' />
         </button>
     )
 

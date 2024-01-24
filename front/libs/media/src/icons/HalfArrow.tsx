@@ -3,7 +3,7 @@ const Hamburger = ({
     className = '',
     size = "1em",
     stroke = "var(--icon-full)",
-    strokeWidth = "20"
+    strokeWidth = "14"
 }) => {
 
     return (
@@ -21,7 +21,7 @@ const Hamburger = ({
                 stroke={stroke}
                 strokeLinecap="round"
                 strokeWidth={strokeWidth}
-                points="82.1,40 127.1,85 16.9,85 "
+                points="82.1,40 127.1,85 2.9,85 "
             />
         </svg>
     )

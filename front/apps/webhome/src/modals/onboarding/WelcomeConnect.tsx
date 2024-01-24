@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
+import CheckCircle from '@geist-ui/icons/checkCircle'
+import { Plus } from '@geist-ui/icons'
 
 import './styles/Welcome.scss'
 import './styles/Main.css'
-import { Plus, CheckMark } from '@ledget/media'
 import { useBakedPlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery, PlaidItem } from '@features/plaidSlice'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
@@ -65,7 +66,7 @@ const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
                 style={{ gap: '.5em' }}
             >
                 Add Account
-                <Plus size={'.8em'} stroke={'currentColor'} />
+                <Plus size={'1em'} />
             </BluePrimaryButton>
             <ExpandableContainer expanded={!continueDisabled}>
                 <BlackPrimaryButtonWithArrow
@@ -83,19 +84,19 @@ const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
 const SecurityMessage = () => (
     <div className="checklist">
         <div>
-            <div><CheckMark /></div>
+            <div><CheckCircle className='icon' /></div>
             <div>
                 Ledget doesn't store your credentials
             </div>
         </div>
         <div>
-            <div><CheckMark /></div>
+            <div><CheckCircle className='icon' /></div>
             <div>
                 We use Plaid to connect to your financial institutions
             </div>
         </div>
         <div>
-            <div><CheckMark /></div>
+            <div><CheckCircle className='icon' /></div>
             <div>
                 Disconnect your account and your financial data at any time
             </div>

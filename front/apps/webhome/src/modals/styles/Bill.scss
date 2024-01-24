@@ -132,15 +132,15 @@
                 }
 
                 span.button {
-                    border: 1.5px solid var(--monthly-color);
+                    border: 1px solid var(--monthly-color);
                     border-radius: 50%;
                     width: .75rem;
                     height: .75rem;
                     position: relative;
 
                     &.checked::after {
-                        width: .325rem;
-                        height: .325rem;
+                        width: .2rem;
+                        height: .2rem;
                         background-color: var(--monthly-color);
                         border-radius: 50%;
                         content: '';

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
+import { Info as InfoIcon, AlertCircle, CheckInCircle } from '@geist-ui/icons'
+
 
 import './toast.scss'
-import { CheckMark3 as CheckMarkIcon, Info as InfoIcon, Alert2 } from '@ledget/media';
 import { useTransition, animated } from '@react-spring/web';
 
 export type ToastType = 'success' | 'info' | 'error';
@@ -103,14 +104,13 @@ export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], c
         >
           <div>
             {item.type === 'success' &&
-              <CheckMarkIcon
-                width={'1.25em'} height={'1.25em'}
-                fill={'var(--blue)'}
-                stroke={'var(--window'}
+              <CheckInCircle
+                className='icon'
+                stroke={'var(--blue)'}
               />
             }
-            {item.type === 'info' && <InfoIcon width={'1.25em'} height={'1.25em'} />}
-            {item.type === 'error' && <Alert2 width={'1.25em'} height={'1.25em'} fill={'var(--alert-red)'} />}
+            {item.type === 'info' && <InfoIcon className='icon' />}
+            {item.type === 'error' && <AlertCircle className='icon' fill={'var(--alert-red)'} />}
           </div>
           <div>
             <span>{item.message}</span>

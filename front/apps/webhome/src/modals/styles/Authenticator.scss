@@ -26,14 +26,15 @@
     gap: .5em;
 
     .qr-image {
-        background-color: var(--modal-inner-window);
-        padding: .5rem;
+        border: 1.5px solid var(--m-text);
+        padding: .75rem;
         border-radius: var(--border-radius25);
         display: inline-flex;
         place-content: center;
 
-        &.dark-mode {
-            background-color: white;
+        &.dark-mode img {
+            filter: invert(1);
+            mix-blend-mode: difference;
         }
 
         img {
@@ -82,7 +83,7 @@
     font-weight: var(--fw-regular);
     padding: .5rem .75rem;
     border-radius: var(--border-radius5);
-    background-color: var(--input-background);
+    border: 1px solid var(--m-text);
 }
 
 #code-setup--container button svg {

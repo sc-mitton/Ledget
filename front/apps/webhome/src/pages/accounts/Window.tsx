@@ -7,10 +7,10 @@ import { AnimatePresence, motion } from 'framer-motion'
 import './styles/Window.scss'
 import './styles/Main.scss'
 import Transactions from './Transactions'
+import { CreditCard, Clock, TrendingUp } from '@geist-ui/icons'
 
 import NotFound from '@pages/notFound/NotFound'
 import { RefreshButton, usePillAnimation, useSchemeVar } from '@ledget/ui'
-import { DepositsIcon, ClockIcon, StocksIcon, CardIcon } from '@ledget/media'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
@@ -18,18 +18,20 @@ import { useTransactionsSyncMutation } from '@features/transactionsSlice'
 import { AccountWafers } from './AccountWafers'
 import { NotImplimentedMessage } from '@components/pieces'
 import { useScreenContext } from '@context/context'
+import { DepositsIcon } from '@ledget/media'
+
 
 const getNavIcon = (key = '', isCurrent: boolean) => {
 
     switch (key) {
         case 'deposits':
-            return <DepositsIcon fill={'currentColor'} />
+            return <DepositsIcon stroke={'currentColor'} />
         case 'credit':
-            return <CardIcon fill={'currentColor'} />
+            return <CreditCard stroke={'currentColor'} className='icon' />
         case 'investments':
-            return <StocksIcon fill={'currentColor'} />
+            return <TrendingUp stroke={'currentColor'} className='icon' />
         case 'loans':
-            return <ClockIcon fill={'currentColor'} />
+            return <Clock stroke={'currentColor'} className='icon' />
         default:
             return null
     }
@@ -157,7 +159,7 @@ const Header = () => {
                     <animated.span style={props} />
                     {isSuccessLoadingAccounts && accountsData?.accounts.length > 0 &&
                         <RefreshButton
-                            fill={'var(--m-text)'}
+                            stroke={'var(--m-text)'}
                             loading={isSyncing}
                             onClick={() => {
                                 syncTransactions({})

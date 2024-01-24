@@ -1,13 +1,13 @@
 import React, { FC, useRef, useEffect, useState, HTMLProps } from 'react'
 
 import { useController, Control } from 'react-hook-form'
+import { ChevronUp, ChevronDown } from '@geist-ui/icons'
 
 import './styles/Text.scss'
 import Emoji from './Emoji'
 import { EmojiProps, emoji } from './Emoji'
 import { formatCurrency, makeIntCurrencyFromStr } from '@ledget/ui'
-import { IconButton, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
-import { ArrowIcon } from '@ledget/media'
+import { IconButton3, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
 
 
 export const EmojiComboText = (props:
@@ -112,22 +112,22 @@ const decrement: IncrementFunction = ({ val, setVal, field, withCents }) => {
 
 const IncrementDecrementButton = ({ val, setVal, field, withCents = true }: IncrementDecrement) => (
     <div className="increment-arrows--container">
-        <IconButton
+        <IconButton3
             type="button"
             onClick={() => increment({ val, setVal, field, withCents })}
             aria-label="increment"
             tabIndex={-1}
         >
-            <ArrowIcon size={'.75em'} rotation={-180} stroke={'currentColor'} />
-        </IconButton>
-        <IconButton
+            <ChevronUp size={'1.25em'} />
+        </IconButton3>
+        <IconButton3
             type="button"
             onClick={() => decrement({ val, setVal, field, withCents })}
             aria-label="decrement"
             tabIndex={-1}
         >
-            <ArrowIcon size={'.75em'} stroke={'currentColor'} />
-        </IconButton>
+            <ChevronDown size={'1.25em'} />
+        </IconButton3>
     </div>
 )
 

@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import './styles/Mfa.scss'
 import { useGetMeQuery, useUpdateUserMutation } from '@features/userSlice'
 import { CircleIconButton, GrayButton, BlueSlimButton, Tooltip, BlueTextButton } from '@ledget/ui'
-import { QrIcon, SmsAuthIcon, Plus } from '@ledget/media'
-
+import { QrIcon } from '@ledget/media'
+import { MessageSquare, Plus } from '@geist-ui/icons'
 
 const SmsAuth = ({ user }) => {
     const navigate = useNavigate()
@@ -15,7 +15,7 @@ const SmsAuth = ({ user }) => {
                 ?
                 <>
                     <div id="sms-auth-set-up">
-                        <SmsAuthIcon width={'1.5em'} height={'1.5em'} />
+                        <MessageSquare className='icon' />
                         <div>
                             <span>SMS Verification</span>
                             <span>Added {formatDate(user.mfa_enabled_on)}</span>
@@ -30,7 +30,7 @@ const SmsAuth = ({ user }) => {
                 :
                 <>
                     <div id="sms-auth-not-set-up">
-                        <SmsAuthIcon width={'1.5em'} height={'1.5em'} />
+                        <MessageSquare className='icon' />
                         <span
                             style={{ marginLeft: '-.125em' }}
                         >
@@ -38,8 +38,8 @@ const SmsAuth = ({ user }) => {
                         </span>
                     </div>
                     <div>
-                        <CircleIconButton onClick={() => navigate('/profile/security/otp-setup')}>
-                            <Plus size={'.7em'} />
+                        <CircleIconButton onClick={() => navigate('/profile/security/otp-setup')} darker={true}>
+                            <Plus size={'1em'} />
                         </CircleIconButton>
                     </div>
                 </>
@@ -89,8 +89,8 @@ const AuthenticatorApp = ({ user }) => {
                         <QrIcon width={'1.25em'} height={'1.25em'} />
                         <span>Authenticator App</span>
                     </div>
-                    <CircleIconButton onClick={() => navigate('/profile/security/authenticator-setup')} >
-                        <Plus size={'.7em'} />
+                    <CircleIconButton onClick={() => navigate('/profile/security/authenticator-setup')} darker={true} >
+                        <Plus size={'1em'} />
                     </CircleIconButton>
                 </>
             }

@@ -10,11 +10,12 @@ import {
 
 import { Combobox } from "@headlessui/react"
 import { useController, Control } from 'react-hook-form'
+import { Search, ChevronDown } from '@geist-ui/icons'
+
 
 import './SelectCategoryBill.scss'
 import { Category, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useLazyGetBillsQuery } from '@features/billSlice'
-import { SearchIcon, ArrowIcon } from '@ledget/media'
 import { LoadingRingDiv, DropDownDiv, useAccessEsc, BillCatLabel } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
@@ -124,7 +125,7 @@ function SelectCategoryBillBody(props: I) {
         >
             <div className="category-select--container">
                 <div>
-                    <SearchIcon />
+                    <Search size={'1.25em'} />
                     <Combobox.Input
                         autoFocus
                         ref={inputRef}
@@ -255,7 +256,7 @@ export const FullSelectCategoryBill =
                             </>
                         }
                     </div>
-                    <ArrowIcon size={'.8em'} stroke={'currentColor'} />
+                    <ChevronDown size={'1.25em'} />
                     {children}
                 </SelectorComponent>
                 <div>

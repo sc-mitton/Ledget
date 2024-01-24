@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { ArrowDown, ArrowUp } from '@geist-ui/icons'
+
 import './styles/Footer.scss'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 import {
@@ -18,7 +20,6 @@ import {
 } from '@features/billSlice'
 import { EditBudgetCategories, EditBudgetBills } from '@modals/index'
 import { PillOptionButton, FadedTextButton } from '@ledget/ui'
-import { BackArrow } from '@ledget/media'
 
 const Footer = () => {
     const dispatch = useAppDispatch()
@@ -61,12 +62,9 @@ const Footer = () => {
                         }}
                     >
                         <span>$</span>
-                        <BackArrow
-                            stroke={'currentColor'}
-                            rotate={(billSorting === 'amount-asc' || categorySorting === 'amount-asc') ? 90 : -90}
-                            size={'.75em'}
-                            strokeWidth={'16'}
-                        />
+                        {billSorting === 'amount-desc'
+                            ? <ArrowDown size={'1em'} />
+                            : <ArrowUp size={'1em'} />}
                     </PillOptionButton>
                     <PillOptionButton
                         aria-label="Sort bills by amount"

@@ -5,6 +5,7 @@ import { animated } from '@react-spring/web'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Check, Plus } from '@geist-ui/icons'
 
 import './styles/Items.scss'
 import { TabView, BottomButtons } from './Reusables'
@@ -19,8 +20,8 @@ import {
     FormErrorTip,
     IconButton,
 } from '@ledget/ui'
+import { Recommendations } from '@ledget/media'
 import { extractReminders } from '@modals/CreateBill'
-import { CheckMark, Recommendations, Plus } from '@ledget/media'
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'required' }),
@@ -198,7 +199,7 @@ const CutomTabPanel = () => {
                 </div>
                 <div>
                     <IconButton>
-                        <CheckMark />
+                        <Check className='icon' />
                     </IconButton>
                 </div>
             </div>
@@ -217,7 +218,7 @@ const AddSuggestedCustomBills = () => (
         <Tab.List className="custom-suggested-tabs">
             <Tab>
                 Custom
-                <Plus size={'.8em'} />
+                <Plus className='icon' />
             </Tab>
             <Tab>
                 Suggested

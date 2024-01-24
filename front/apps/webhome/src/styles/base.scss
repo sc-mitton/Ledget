@@ -249,12 +249,15 @@ button:focus-visible {
     box-shadow: var(--accessible-focus-drop-shadow);
 }
 
-// @media screen and (max-width: 450px) {
-//     .dashboard {
-//         padding: .5em;
-//         width: calc(100% - .5em);
-//     }
-// }
+svg:focus-visible {
+    outline: none;
+    box-shadow: var(--accessible-focus-drop-shadow);
+}
+
+svg.icon {
+    width: 1.25em;
+    height: 1.25em;
+}
 
 /* --------------------------------- Windows & Dashboard -------------------------------- */
 
@@ -373,7 +376,7 @@ ul hr {
     align-items: center;
     border-radius: .25em;
     position: absolute;
-    top: .5em;
+    top: .75em;
     right: 3em;
     z-index: 10;
 

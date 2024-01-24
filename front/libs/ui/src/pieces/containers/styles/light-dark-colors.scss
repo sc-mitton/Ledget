@@ -108,6 +108,7 @@
         --input-placeholder-focus: color-mix(in srgb, var(--blue-sat), var(--blue-dark) 50%);
 
         // Text
+        --m-header-text: hsl(0, 0%, 100%);
         --m-text: hsl(0, 0%, 90%);
         --m-invert-text: hsl(0, 0%, 10%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), black 20%);
@@ -120,6 +121,7 @@
         --input-placeholder2: rgb(115, 115, 117);
 
         /* Font Weights */
+        --fw-feather-light: 300;
         --fw-light: 300;
         --fw-regular: 400;
         --fw-bold: 400;
@@ -150,7 +152,7 @@
         // Drop Shadows & Borders
         --window-drop-shadow-color: hsl(0, 0%, 4%);
         --header-box-shadow-color: hsl(0, 0%, 11%);
-        --new-item-drop-shadow-color: hsl(0, 0%, 3%);
+        // --new-item-drop-shadow-color: hsl(0, 0%, 6%);
         --wafer-drop-shadow-color: hsl(0, 0%, 14%);
         --scroll-shadow: hsl(0, 0%, 3%), transparent;
         --dropdown-box-shadow-color: hsl(0, 0%, 4%);
@@ -235,8 +237,6 @@
         --dropdown-background: hsl(0, 0%, 98%);
         --dropdown-item-background: hsl(0, 0%, 90%);
 
-        // --new-item-border: hsl(0, 0%, 92%);
-
         // Inputs
         --input-background: hsl(0, 0%, 92%);
         --input-border-hover-color: hsl(0, 0%, 78%);
@@ -245,7 +245,7 @@
 
         // Text
         --m-header-text: hsl(0, 0%, 0%);
-        --m-text: hsl(0, 0%, 5%);
+        --m-text: hsl(0, 0%, 20%);
         --m-invert-text: hsl(0, 0%, 97%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), white 20%);
         --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 40%);
@@ -257,6 +257,7 @@
         --input-placeholder2: hsl(0, 0%, 65%);
 
         /* Font Weights */
+        --fw-feather-light: 300;
         --fw-light: 400;
         --fw-regular: 400;
         --fw-bold: 500;
@@ -286,12 +287,13 @@
         // Drop Shadows & Borders
         --window-drop-shadow-color: hsl(0, 0%, 93%);
         --wafer-drop-shadow-color: hsl(0, 0%, 80%);
-        --new-item-drop-shadow-color: hsl(0, 0%, 93%);
+        --new-item-drop-shadow-color: hsl(0, 0%, 96%);
         --scroll-shadow: hsl(0, 0%, 97%), transparent;
         --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);
         --antd-drop-shadow-color: var(--dropdown-box-shadow-color);
         // --header-box-shadow-color: hsl(0, 0%, 47%);
         // --header-box-shadow: var(--header-box-shadow-color) 0px 1px 16px 0px;
+        // --new-item-border: hsl(0, 0%, 95%);
 
         --active-wafer-indicator: var(--blue-medium);
 

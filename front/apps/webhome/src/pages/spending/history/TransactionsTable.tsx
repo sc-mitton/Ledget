@@ -1,7 +1,7 @@
 import { useRef, Fragment, useEffect, useState } from 'react'
 
 import dayjs from 'dayjs'
-import { useSearchParams } from 'react-router-dom'
+import { ChevronRight } from '@geist-ui/icons'
 
 import './styles/TransactionsTable.scss'
 import TransactionModal from '@modals/TransactionItem'
@@ -9,7 +9,7 @@ import { useLazyGetTransactionsQuery, useGetTransactionsQuery, Transaction } fro
 import { Logo } from '@components/pieces'
 import { DollarCents, InfiniteScrollDiv, TransactionShimmer, useColorScheme } from '@ledget/ui'
 import { ShadowedContainer } from '@components/pieces'
-import { EmptyListImage, ArrowIcon, EmptyListDark } from '@ledget/media'
+import { EmptyListImage, EmptyListDark } from '@ledget/media'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useAppSelector } from '@hooks/store'
 import { selectFilteredFetchedConfirmedTransactions } from '@features/transactionsSlice'
@@ -69,12 +69,7 @@ const List = ({ setFocusedTransaction }:
                 </div>
                 <div>
                   <div><DollarCents value={transaction.amount} /></div>
-                  <ArrowIcon
-                    stroke={'currentColor'}
-                    size={'.8em'}
-                    strokeWidth={'18'}
-                    rotation={-90}
-                  />
+                  <ChevronRight className="icon" />
                 </div>
               </div>
             </Fragment>

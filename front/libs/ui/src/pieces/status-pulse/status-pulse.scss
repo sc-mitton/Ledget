@@ -226,7 +226,7 @@ $inner-circle-positive: var(--blue-light-hover);
     display: grid;
     grid-template-columns: repeat(3, minmax(min-content, max-content));
     grid-template-rows: repeat(1, minmax(min-content, max-content));
-    gap: .25em;
+    gap: .375em;
     padding: 2.5em;
     position: relative;
     z-index: 0;
@@ -235,7 +235,7 @@ $inner-circle-positive: var(--blue-light-hover);
 .keypad-graphic-status div {
     width: 1.2em;
     height: 1.2em;
-    color: var(--m-invert-text);
+    border: 1px solid var(--m-text);
     border-radius: 50%;
     font-size: .875rem;
     font-weight: var(--fw-light);
@@ -244,7 +244,6 @@ $inner-circle-positive: var(--blue-light-hover);
     align-items: center;
     justify-content: center;
     clip-path: circle(50% at 50% 50%);
-    background-color: var(--m-text);
 }
 
 .keypad-graphic-status>div:last-child {

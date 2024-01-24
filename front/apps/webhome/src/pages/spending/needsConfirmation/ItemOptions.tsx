@@ -1,7 +1,8 @@
 import { useRef, useEffect, useState } from 'react'
 
+import { Plus, Info as DetailsIcon, ArrowLeft, ArrowRight } from '@geist-ui/icons'
+
 import { DropdownItem } from '@ledget/ui'
-import { Split, Plus, Info as DetailsIcon } from "@ledget/media"
 
 interface ItemOptionsMenuProps {
     handlers: (() => void)[]
@@ -65,7 +66,10 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                     onClick={() => { props.handlers[0]() }}
                     aria-label="Split"
                 >
-                    <Split fill={'currentColor'} /> Split
+                    <div style={{ marginLeft: '-.25em' }}>
+                        <ArrowLeft size={'.8em'} strokeWidth={2} /><ArrowRight size={'.8em'} strokeWidth={2} />
+                    </div>
+                    Split
                 </DropdownItem>
                 <DropdownItem
                     as='li'
@@ -76,7 +80,7 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                     onClick={() => { props.handlers[1]() }}
                     aria-label="New monthly bill"
                 >
-                    <Plus size={'.9em'} stroke={'currentColor'} /> New monthly bill
+                    <Plus className='icon' /> New monthly bill
                 </DropdownItem>
                 <DropdownItem
                     as='li'
@@ -87,7 +91,7 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                     onClick={() => { props.handlers[2]() }}
                     aria-label="New yearly bill"
                 >
-                    <Plus size={'.9em'} stroke={'currentColor'} /> New yearly bill
+                    <Plus className='icon' /> New yearly bill
                 </DropdownItem>
                 <DropdownItem
                     as='li'
@@ -96,7 +100,7 @@ const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
                     tabIndex={-1}
                     aria-label="Details"
                 >
-                    <DetailsIcon fill={'currentColor'} />
+                    <DetailsIcon className='icon' />
                     Details
                 </DropdownItem>
             </ul>

@@ -5,10 +5,13 @@ import _ from 'lodash.groupby'
 import './styles/Devices.scss'
 import { Disclosure } from '@headlessui/react'
 import { useDeleteRememberedDeviceMutation, } from '@features/authSlice'
-import { Device as DeviceType, User } from '@features/userSlice'
+import { Device as DeviceType } from '@features/userSlice'
 import { IconButtonSubmit, Tooltip } from '@ledget/ui'
-import { ArrowIcon, LogoutIcon, LocationIcon, ComputerIcon, PhoneIcon } from '@ledget/media'
+
+import { LocationIcon, ComputerIcon } from '@ledget/media'
+import { ChevronDown, LogOut, Smartphone } from '@geist-ui/icons'
 import { ReAuthProtected } from '@utils/withReAuth'
+
 
 const formatDateTime = (date: string | number) => {
     const d = new Date(date)
@@ -59,7 +62,7 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
                         >
                             <div className="device-icon">
                                 {iconKey === 'is_pc' && <ComputerIcon />}
-                                {iconKey === 'is_mobile' && <PhoneIcon />}
+                                {iconKey === 'is_mobile' && <Smartphone className="smart-phone-icon" />}
                                 {!iconKey && <ComputerIcon />}
                             </div>
                             <div className="device-info">
@@ -73,7 +76,7 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
                                 </div>
                             </div>
                             <div className={`discolsure-indicator ${open ? 'open' : ''}`}>
-                                <ArrowIcon />
+                                <ChevronDown />
                             </div>
                         </Disclosure.Button>
                         <Disclosure.Panel className={`device-sessions ${open ? 'open' : ''}`} ref={panelRef}>
@@ -105,7 +108,7 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
                                                             submitting={processingDelete && current}
                                                             onClick={() => reAuth()}
                                                         >
-                                                            <LogoutIcon />
+                                                            <LogOut />
                                                         </IconButtonSubmit>
                                                     </Tooltip>
                                                 )}

@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 
 import './styles/Authentication.css'
-import { LockIcon } from '@ledget/media'
 import { BlueSlimButton } from '@ledget/ui'
 import { useGetMeQuery } from '@features/userSlice'
+import { Lock } from '@geist-ui/icons'
 
 const PasswordReset = () => {
     const { data: user } = useGetMeQuery()
@@ -26,7 +26,7 @@ const PasswordReset = () => {
             <h4 className="header2">Authentication</h4>
             <div className="inner-window" id="authentication-methods">
                 <div className="authentication-method">
-                    <div><LockIcon /></div>
+                    <div><Lock className='icon' /></div>
                     <div>
                         <span>Password</span>
                         {user.password_last_changed &&

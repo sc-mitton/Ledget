@@ -2,20 +2,16 @@ import { FC, useState, forwardRef, ButtonHTMLAttributes, useEffect } from 'react
 
 import './buttons.scss';
 import {
-  ExpandIcon,
-  ArrowIcon,
   FacebookLogo,
-  CloseIcon,
   GoogleLogo,
-  CopyIcon,
   Delete,
   ReplayIcon,
-  CheckMark,
   Plus
 } from '@ledget/media'
 import { Tooltip } from '../pieces/tooltip/tooltip'
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'
+import { X, Copy, ChevronDown, ChevronsDown, Check } from '@geist-ui/icons'
 
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')
 export const BlackPrimaryButton = ButtonWithClassName('btn-chcl btn3')
@@ -65,14 +61,14 @@ export const BlueTextButton = ButtonWithClassName('btn-blue-text')
 export const SmallArrowButton = ({ type = '', ...rest }) => (
   <button className="arrow-nav" {...rest}>
     <div>
-      <ArrowIcon stroke='currentColor' scale={.7} rotation={type === "back" ? 90 : -90} />
+      <ChevronDown stroke='currentColor' size={'1.25em'} />
     </div>
   </button>
 )
 
 export const ExpandButton = ({
   flipped = false,
-  size = '.7em',
+  size = '1.25em',
   hasBackground = true,
   ...rest
 }) => (
@@ -83,7 +79,7 @@ export const ExpandButton = ({
     {...rest}
   >
     <div className={`expand-button--icon ${flipped ? 'flipped' : ''} `}>
-      <ExpandIcon stroke={"currentColor"} size={size} />
+      <ChevronsDown size={size} />
     </div >
   </button>
 )
@@ -108,7 +104,7 @@ export const GoogleLoginButton = ({ ...props }) => (
 
 export const CloseButton =
   forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { size?: string }>((props, ref) => {
-    const { size, className, ...rest } = props
+    const { size = '1.25em', className, ...rest } = props
 
     return (
       <button
@@ -116,21 +112,21 @@ export const CloseButton =
         className={`btn-gr btn btn-icon close-btn ${className ? className : ''}`}
         {...rest}
       >
-        <CloseIcon size={size} stroke={'currentColor'} />
+        <X size={size} stroke={'currentColor'} />
       </button>
     )
   })
 
 export const CircleIconButton =
   forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { size?: string, darker?: boolean }>((props, ref) => {
-    const { style, className, darker, size = '1.375em', ...rest } = props
+    const { style, className, darker, ...rest } = props
     return (
       <button
         ref={ref}
         className={`btn circle-icon-btn
           ${darker ? 'darker' : ''}
           ${className ? className : ''}`}
-        style={{ borderRadius: '50%', width: size, height: size, ...style }}
+        style={{ borderRadius: '50%', ...style }}
         {...rest}
       >
         {props.children}
@@ -144,11 +140,11 @@ export const BackButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText
       <button className="btn btn-2slim back-btn" {...rest}>
         <svg width="20" height="20" viewBox="0 0 20 20">
           <g transform={'translate(19, 20) rotate(-180)'}>
-            <path className="arrow-tail" d="M5 10L12.5 10" stroke="currentColor" strokeWidth="2"
+            <path className="arrow-tail" d="M5 10L14.5 10" stroke="currentColor" strokeWidth="1"
               strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            <path className="arrow-head" d="M8 14L12 10" stroke="currentColor" strokeWidth="2"
+            <path className="arrow-head" d="M8 14L12 10" stroke="currentColor" strokeWidth="1"
               strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            <path className="arrow-head" d="M12 10L8 6" stroke="currentColor" strokeWidth="2"
+            <path className="arrow-head" d="M12 10L8 6" stroke="currentColor" strokeWidth="1"
               strokeLinecap="round" strokeLinejoin="round" fill="none" />
           </g>
         </svg>
@@ -161,7 +157,7 @@ export const BackButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText
 export const CopyButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText?: boolean }>
   = ({ withText = true, ...rest }) => (
     <button className="copy-btn" {...rest}>
-      <CopyIcon />
+      <Copy size={'1.25em'} />
       {withText && 'Copy'}
     </button>
   )
@@ -218,13 +214,12 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
         Resend
         <div className="resend-icon">
           {success ? (
-            <CheckMark
+            <Check
               className="resend-btn-success-icon"
-              stroke={'currentColor'}
-              size={'.8em'}
+              size={'1.25em'}
             />
           ) : (
-            <ReplayIcon fill={'currentColor'} size={'1.1em'} />
+            <ReplayIcon stroke={'currentColor'} size={'1.1em'} />
           )}
         </div>
       </button>
@@ -232,7 +227,7 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
   }
 )
 
-export const RefreshButton = ({ fill = 'currentColor', hasBackground = true, loading = false, onClick = () => { }, ...rest }) => {
+export const RefreshButton = ({ stroke = 'currentColor', hasBackground = true, loading = false, onClick = () => { }, ...rest }) => {
   const [active, setActive] = useState(false)
 
   useEffect(() => {
@@ -261,7 +256,7 @@ export const RefreshButton = ({ fill = 'currentColor', hasBackground = true, loa
           {...rest}
         >
           {loading && <LoadingRing visible={true} className="refresh-loading-ring" />}
-          {(active || !loading) && <ReplayIcon fill={fill} />}
+          {(active || !loading) && <ReplayIcon stroke={stroke} />}
         </CircleIconButton>
         :
         <IconButton
@@ -274,7 +269,7 @@ export const RefreshButton = ({ fill = 'currentColor', hasBackground = true, loa
           {...rest}
         >
           <LoadingRing visible={loading} />
-          <div style={{ opacity: loading ? 0 : 1 }}><ReplayIcon fill={fill} /></div>
+          <div style={{ opacity: loading ? 0 : 1 }}><ReplayIcon stroke={stroke} /></div>
         </IconButton>
       }
     </Tooltip>

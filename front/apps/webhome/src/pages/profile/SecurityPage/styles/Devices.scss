@@ -81,9 +81,18 @@
     display: flex;
     align-items: center;
 
+    .smart-phone-icon {
+        margin: 0 .625em;
+    }
+
     img {
-        width: 3.5rem;
-        height: 3.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    svg {
+        width: 1.5rem;
+        height: 1.5rem;
     }
 
 }
@@ -93,7 +102,7 @@
     margin-left: -.125em;
 
     svg {
-        margin-right: .25em;
+        margin-left: -.25em;
         padding-top: .125em;
     }
 }

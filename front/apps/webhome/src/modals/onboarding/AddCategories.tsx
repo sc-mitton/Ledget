@@ -1,10 +1,11 @@
-import { useRef, useState, useId, useEffect, Fragment } from 'react'
+import { useRef, useState, useEffect, Fragment } from 'react'
 
 import { animated } from '@react-spring/web'
 import { Tab } from '@headlessui/react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Edit2, Plus, Check } from '@geist-ui/icons'
 
 import { TabView, BottomButtons } from './Reusables'
 import { GripButton } from '@components/buttons'
@@ -21,7 +22,7 @@ import {
     formatCurrency,
     makeIntCurrencyFromStr
 } from '@ledget/ui'
-import { Recommendations, Plus, CheckMark, Edit } from '@ledget/media'
+import { Recommendations } from '@ledget/media'
 import { useItemsContext, ItemsProvider, Period } from "./ItemsContext"
 import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
 
@@ -140,7 +141,7 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
                                             autoFocus={true}
                                         />
                                         : <><DollarCents value={item?.limit_amount || 0} withCents={false} />
-                                            <Edit size={'.8em'} /></>}
+                                            <Edit2 className="icon" /></>}
                                 </button>
                             </div >
                             <DeleteButton
@@ -255,9 +256,7 @@ const CustomTabPanel = () => {
                     </LimitAmountInput>
                 </div>
                 <div>
-                    <IconButton>
-                        <CheckMark />
-                    </IconButton>
+                    <IconButton><Check className="icon" /></IconButton>
                 </div>
             </div>
         </Tab.Panel>

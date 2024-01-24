@@ -13,6 +13,7 @@ import {
     useSpringRef
 } from '@react-spring/web'
 import dayjs from 'dayjs'
+import { Filter } from '@geist-ui/icons'
 
 import './styles/Header.scss'
 import { useGetAccountsQuery } from '@features/accountsSlice'
@@ -24,7 +25,6 @@ import {
     clearConfirmedTransactionFilter
 } from '@features/transactionsSlice'
 import { useLazyGetCategoriesQuery } from '@features/categorySlice'
-import { Funnel } from '@ledget/media'
 import { FullSelectCategoryBill } from '@components/dropdowns'
 import { LimitAmountInput } from '@components/inputs'
 import {
@@ -313,8 +313,8 @@ const HistoryHeader = () => {
     return (
         <>
             <div className="window-header" id="history-header">
-                <div><h2>History</h2></div>
-                <div className="header-btns">
+                <div>
+                    <h3>History</h3>
                     <Tooltip
                         msg="Filter"
                         ariaLabel="Filter"
@@ -334,7 +334,7 @@ const HistoryHeader = () => {
                                 setUnconfirmedStackExpanded(false)
                             }}
                         >
-                            <Funnel />
+                            <Filter size={'1.1em'} />
                         </IconButton>
                     </Tooltip>
                 </div>

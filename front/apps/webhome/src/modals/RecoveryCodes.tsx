@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
+import { Download, Copy } from '@geist-ui/icons'
 
 import './styles/RecoveryCodes.scss'
 import { BlueSubmitButton, BluePrimaryButton, SlideMotionDiv } from '@ledget/ui'
 import { withSmallModal } from '@ledget/ui'
 import { withReAuth } from '@utils/index'
 import { useFlow } from '@ledget/ory'
-import { DownloadIcon, CopyIcon } from '@ledget/media'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 
 export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
@@ -124,7 +124,7 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
                     }}
                 >
                     Download
-                    <DownloadIcon stroke={'currentColor'} />
+                    <Download className="icon" />
                 </BlueSubmitButton>
                 <BlueSubmitButton
                     type="button"
@@ -136,7 +136,7 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
                     }}
                 >
                     Copy
-                    <CopyIcon fill={'currentColor'} />
+                    <Copy className="icon" />
                 </BlueSubmitButton>
             </div>
         </div>

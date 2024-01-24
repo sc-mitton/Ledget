@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect, useCallback, HTMLProps, createContext, useContext, memo } from 'react';
 
 import dayjs, { Dayjs } from 'dayjs';
+import { Calendar as CalendarIcon, X, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@geist-ui/icons'
 
 import './date-picker.scss'
 import { DropDownDiv } from '../../animations/animations';
-import { Calendar as CalendarIcon, HalfArrow, CloseIcon, ArrowIcon, DoubleArrow } from '@ledget/media'
+import { HalfArrow } from '@ledget/media'
 import { TextInputWrapper } from '../text/text';
 import { Tooltip } from '../../pieces/tooltip/tooltip';
 import { IconButton3, CircleIconButton, PrimaryTextButton } from '../../buttons/buttons';
@@ -462,10 +463,10 @@ const DayMonthYearPicker = () => {
       <div>
         <div>
           <IconButton3 onClick={(e) => handleSeek(e, -1, 'fast')}>
-            <DoubleArrow rotation={90} size={'.8em'} stroke={'currentColor'} />
+            <ChevronsLeft size="1.25em" />
           </IconButton3>
           {view !== 'year' && <IconButton3 onClick={(e) => handleSeek(e, -1, 'slow')}>
-            <ArrowIcon rotation={90} size={'.8em'} stroke={'currentColor'} />
+            <ChevronLeft size="1.25em" />
           </IconButton3>}
         </div>
         {focusedInputIndex === 0 && pickerType === 'range' && view === 'day' &&
@@ -501,10 +502,10 @@ const DayMonthYearPicker = () => {
           </div>}
         <div>
           {view !== 'year' && <IconButton3 onClick={(e) => handleSeek(e, 1, 'slow')}>
-            <ArrowIcon rotation={-90} size={'.8em'} stroke={'currentColor'} />
+            <ChevronRight size="1.25em" />
           </IconButton3>}
           <IconButton3 onClick={(e) => handleSeek(e, 1, 'fast')}>
-            <DoubleArrow rotation={-90} size={'.8em'} stroke={'currentColor'} />
+            <ChevronsRight size="1.25em" />
           </IconButton3>
         </div>
       </div>
@@ -721,7 +722,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
             />
           </>
         }
-        <CalendarIcon fill={'currentColor'} size={'1em'} />
+        <CalendarIcon size={'1em'} />
         {selectedValue &&
           <CircleIconButton
             className="clear-input-button"
@@ -730,7 +731,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
             size={'1.25em'}
             onClick={() => { setSelectedValue(undefined) }}
           >
-            <CloseIcon stroke={'currentColor'} size={'.6em'} />
+            <X size={'.8em'} />
           </CircleIconButton>}
       </TextInputWrapper>
       <DropDownDiv

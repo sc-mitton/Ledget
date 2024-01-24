@@ -4,6 +4,7 @@ import Big from 'big.js'
 import { Menu } from '@headlessui/react'
 import { AnimatePresence } from 'framer-motion'
 import dayjs from 'dayjs'
+import { Check, Trash2, Edit2, ArrowLeft, ArrowRight } from '@geist-ui/icons'
 
 import './styles/TransactionItem.scss'
 import { Transaction } from '@features/transactionsSlice'
@@ -19,7 +20,7 @@ import {
 } from '@features/transactionsSlice'
 import { Bill } from "@features/billSlice";
 import { Category, isCategory } from "@features/categorySlice";
-import { Split, Edit, CheckMark, TrashIcon, Ellipsis } from '@ledget/media'
+import { Ellipsis } from '@ledget/media'
 import { SplitTransactionInput } from '@components/split'
 import {
     DropDownDiv,
@@ -32,7 +33,6 @@ import {
     IconButton,
     AutoResizeTextArea
 } from '@ledget/ui'
-import { set } from 'react-hook-form'
 
 
 type Action = 'split'
@@ -62,7 +62,9 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                             active={active}
                                             onClick={() => setAction('split')}
                                         >
-                                            <Split fill={'currentColor'} />
+                                            <div style={{ marginLeft: '-.25em' }}>
+                                                <ArrowLeft size={'.8em'} strokeWidth={2} /><ArrowRight size={'.8em'} strokeWidth={2} />
+                                            </div>
                                             <span>Split</span>
                                         </DropdownItem>
                                     )}
@@ -259,7 +261,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                 {focusedNoteId &&
                     <Tooltip msg={'Save'} ariaLabel={'save'}>
                         <CircleIconButton onClick={() => handleTextAreaBlur()}>
-                            <CheckMark stroke={'currentColor'} size={'.8em'} />
+                            <Check size={'1.1em'} />
                         </CircleIconButton>
                     </Tooltip>}
                 {focusedNoteId && focusedNoteId !== 'new' &&
@@ -270,7 +272,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                         </span>
                         <Tooltip msg={'Delete'} ariaLabel={'delete'}>
                             <CircleIconButton onClick={() => { handleTrashButtonClick() }}>
-                                <TrashIcon fill={'currentColor'} size={'.9em'} />
+                                <Trash2 size={'1.1em'} />
                             </CircleIconButton>
                         </Tooltip></>}
                 <div>
@@ -507,7 +509,7 @@ const TransactionModal = withModal<{ item: Transaction, splitMode?: boolean }>((
                     </div>
                     : <button onClick={() => setEdit(true)}>
                         {preferredName || item?.preferred_name || item?.name}
-                        <Edit size={'.8em'} fill={'currentColor'} />
+                        <Edit2 size={'1em'} />
                     </button>}
                 {item.pending &&
                     <div className='pending'>Pending</div>}

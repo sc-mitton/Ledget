@@ -80,6 +80,30 @@ header {
             }
         }
     }
+
+    &.small .profile-button {
+        color: var(--white);
+    }
+
+    &:not(.small) {
+        .profile-button {
+            position: relative;
+            color: var(--black);
+
+            &::after {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                top: 50%;
+                right: 50%;
+                transform: translate(50%, -50%);
+                width: 1.875em;
+                height: 1.875em;
+                background-color: var(--white);
+                border-radius: 50%;
+            }
+        }
+    }
 }
 
 /* ------------------------------ Dropdown Menu ----------------------------- */
@@ -129,7 +153,7 @@ header {
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    gap: .375em;
+    gap: .5em;
     list-style-type: none;
     padding: 0;
     position: relative;

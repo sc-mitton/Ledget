@@ -12,6 +12,12 @@
     transition: color .2s ease-in-out;
 }
 
+@mixin transition-border-top-bottom($value) {
+    border-bottom: 1.5px solid $value;
+    border-top: 1.5px solid $value;
+    transition: border-color .2s ease-in-out;
+}
+
 .ledget-datepicker {
     display: flex;
     align-items: center;
@@ -232,19 +238,22 @@
         }
 
         &.selected::after {
-            opacity: .15;
+            opacity: .5;
             transition: opacity .2s ease-in-out .3s;
         }
 
         &.selected.active::after {
-            opacity: .3;
+            opacity: 1;
             transition: opacity .2s ease-in-out;
         }
 
         &.terminus-start::after,
-        &.terminus-end:after,
+        &.terminus-end:after {
+            @include transition-background(var(--blue-light-medium));
+        }
+
         &.selected::after {
-            @include transition-background(var(--blue-medium));
+            @include transition-border-top-bottom(var(--blue));
         }
 
         &.terminus-start::after {

@@ -3,7 +3,7 @@ const Hamburger = ({
     className = '',
     size = "1em",
     stroke = "var(--icon-full)",
-    strokeWidth = "16"
+    strokeWidth = "10"
 }) => {
 
     return (

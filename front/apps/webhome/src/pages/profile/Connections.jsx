@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext, Fragment } from 'react'
 
-import { Plus, Edit } from '@ledget/media'
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
@@ -25,6 +24,8 @@ import {
     Base64Logo
 } from '@ledget/ui'
 import { withReAuth } from '@utils'
+import { Edit2, Plus } from '@geist-ui/icons'
+
 
 const DeleteContext = React.createContext()
 
@@ -262,12 +263,12 @@ const MainHeader = ({ onPlus }) => {
                         onClick={() => setEditing(!editing)}
                         aria-label="Edit institution connections"
                     >
-                        <Edit />
+                        <Edit2 className='icon' />
                     </IconButton>}
                 {plaidItems?.length === 0
-                    ? <button onClick={onPlus}><Plus /></button>
+                    ? <button onClick={onPlus}><Plus className='icon' /></button>
                     : <IconButton onClick={onPlus} aria-label="Add institution connection">
-                        <Plus />
+                        <Plus className='icon' />
                     </IconButton>}
             </div>
         </div>

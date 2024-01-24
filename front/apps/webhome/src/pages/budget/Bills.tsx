@@ -2,6 +2,7 @@ import { useMemo, useEffect, useState, useRef, forwardRef } from 'react';
 
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from '@hooks/store';
+import { Plus, Calendar as CalendarIcon, CheckInCircle, Circle } from '@geist-ui/icons'
 
 import './styles/Bills.scss'
 import {
@@ -10,14 +11,13 @@ import {
 } from '@features/billSlice';
 import {
     DollarCents,
-    IconButton,
+    IconButton3,
     ExpandButton,
     DropDownDiv,
     useAccessEsc,
     ShimmerText,
     BillCatLabel,
 } from '@ledget/ui';
-import { Calendar as CalendarIcon, CheckMark2, Plus } from '@ledget/media'
 import { useScreenContext } from '@context/context';
 
 
@@ -182,16 +182,16 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                     {selectedDate.getFullYear()} BILLS
                 </h4>
                 {showCalendarIcon &&
-                    <IconButton
+                    <IconButton3
                         ref={buttonRef}
                         onClick={() => setShowCalendar(!showCalendar)}
                         tabIndex={0}
                         aria-label="Show calendar"
                         aria-haspopup="true"
                     >
-                        <CalendarIcon size={'1em'} />
-                    </IconButton>}
-                <IconButton
+                        <CalendarIcon className="icon" />
+                    </IconButton3>}
+                <IconButton3
                     onClick={() => {
                         navigate({
                             pathname: '/budget/new-bill',
@@ -200,8 +200,8 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                     }}
                     aria-label="Add bill"
                 >
-                    <Plus size={'.8em'} />
-                </IconButton>
+                    <Plus className='icon' />
+                </IconButton3>
             </div>
             <div>
                 <ExpandButton
@@ -209,7 +209,6 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                     hasBackground={false}
                     onClick={() => { setCollapsed(!collapsed) }}
                     aria-label="Collapse bills"
-                    size={'.85em'}
                 />
             </div>
         </>
@@ -269,7 +268,11 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                                 </span>
                             </BillCatLabel>
                             <div><DollarCents value={bill.upper_amount} /></div>
-                            <div><CheckMark2 style={{ opacity: bill?.is_paid ? 1 : .15 }} /></div>
+                            <div className={`${bill.is_paid ? 'is_paid' : 'not_paid'}`}>
+                                {bill.is_paid
+                                    ? <CheckInCircle size={'1em'} />
+                                    : <Circle size={'1em'} />}
+                            </div>
                         </div>
                     )
                 })}

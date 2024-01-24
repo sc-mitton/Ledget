@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
+import { Edit2 } from '@geist-ui/icons'
 
 import './styles/Account.scss'
-import { CardIcon } from '@ledget/media'
 import {
     useGetMeQuery,
     useGetPaymentMethodQuery,
@@ -23,8 +23,8 @@ import {
     BakedSwitch,
     useColorScheme
 } from '@ledget/ui'
-import { Edit } from '@ledget/media'
 import { UpdatePersonalInfo } from '@modals/index'
+import { CreditCard } from '@geist-ui/icons'
 
 
 const getStatusColor = (subscription: Subscription) => {
@@ -238,16 +238,14 @@ const PaymentMethod = () => {
                 </div>
             </div>
             <div id="card-info--container" className="inner-window">
-                <div>Card</div>
-                <div>
-                    <div >
-                        {data && `${data.brand.charAt(0).toUpperCase()}`}
-                        {data && `${data.brand.slice(1)}`}
-                        &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
-                        {data && `${data.last4}`}
-                    </div>
-                    <div>{`Exp. ${expDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}`}</div>
+                <CreditCard className='icon' />
+                <div >
+                    {data && `${data.brand.charAt(0).toUpperCase()}`}
+                    {data && `${data.brand.slice(1)}`}
+                    &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
+                    {data && `${data.last4}`}
                 </div>
+                <div>{`Exp. ${expDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}`}</div>
             </div>
         </section>
     )
@@ -303,7 +301,7 @@ const Account = () => {
                                 onClick={() => setEditPersonalInfoModal(true)}
                                 aria-label="Edit personal info"
                             >
-                                <Edit size={'.8rem'} />
+                                <Edit2 className='icon' />
                             </IconButton>
                         </Info>
                         <Plan />

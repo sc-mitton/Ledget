@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import { filterNodesByGroups, isUiNodeInputAttributes } from '@ory/integrations/ui'
+import { HelpCircle } from '@geist-ui/icons'
 
-import { PasskeyIcon, HelpIcon } from "@ledget/media"
+import { PasskeyIcon } from "@ledget/media"
 import './styles/PasswordlessFormSection.css'
 import { GrayWideButton } from '@ledget/ui'
 
@@ -65,7 +66,7 @@ const PasswordlessForm = ({ flow = { flow }, helpIcon = true, children }) => {
                 tabIndex={0}
                 type="button"
             >
-                <HelpIcon />
+                <HelpCircle size={'1.25em'} />
             </button >
         )
     }
