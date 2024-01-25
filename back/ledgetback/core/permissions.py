@@ -7,6 +7,7 @@ from rest_framework.status import HTTP_401_UNAUTHORIZED
 from rest_framework.permissions import BasePermission
 from django.contrib.auth.models import AnonymousUser
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 from django.conf import settings
 import stripe
 
@@ -32,9 +33,18 @@ class IsAuthenticated(BasePermission):
         session_aal = getattr(request.user, 'session_aal', None)
 
         if request.user.mfa_method == 'totp':
-            return device_aal == 'aal2' or session_aal == 'aal2'
+            if device_aal == 'aal2' or session_aal == 'aal2':
+                return True
+            else:
+                print('here')
+                raise ValidationError({'message': "Device must have aal2 level session",
+                                      'code': "AAL2_REQUIRED"})
         elif request.user.mfa_method == 'otp':
-            return device_aal == 'aal15'
+            if device_aal == 'aal15' or session_aal == 'aal15':
+                return True
+            else:
+                raise ValidationError({'message': "Device must be aal15 level session",
+                                      'code': "AAL15_REQUIRED"})
         else:
             return device_aal == 'aal1' or device_aal == 'aal2'
 

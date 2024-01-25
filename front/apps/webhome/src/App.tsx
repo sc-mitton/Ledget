@@ -37,12 +37,11 @@ import { ScreenProvider } from '@context/index'
 import { useScreenContext } from '@context/index';
 
 const PrivateRoute = () => {
-    const { isSuccess, isLoading } = useGetMeQuery()
+    const { isSuccess, isLoading, error } = useGetMeQuery()
 
     useEffect(() => {
         // Check the condition for redirection here
         if (!isSuccess && !isLoading) {
-            // Redirect to the specified URL
             window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL
         }
     }, [isSuccess, isLoading])

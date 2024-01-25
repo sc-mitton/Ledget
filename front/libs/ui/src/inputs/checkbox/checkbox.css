@@ -48,7 +48,6 @@
     height: .875rem;
     font-size: .75rem;
     transform: scale(1);
-    border: 1.5px solid transparent;
     background-color: var(--btn-light-gray);
     border-radius: var(--border-radius);
     transition: all 0.3s ease;
@@ -80,7 +79,7 @@
 }
 
 .checkbox-input:checked+.checkbox span:first-child svg {
-    stroke: var(--m-invert-text);
+    stroke: var(--white);
     animation: draw 0.5s ease-in-out forwards;
 }
 

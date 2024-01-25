@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import { filterNodesByGroups, isUiNodeInputAttributes } from '@ory/integrations/ui'
-import { HelpCircle } from '@geist-ui/icons'
+import { HelpCircle, Key } from '@geist-ui/icons'
 
 import { PasskeyIcon } from "@ledget/media"
 import './styles/PasswordlessFormSection.css'
@@ -103,7 +103,7 @@ const PasswordlessForm = ({ flow = { flow }, helpIcon = true, children }) => {
                                             disabled={attrs.disabled}
                                             {...submit}
                                         >
-                                            <PasskeyIcon />
+                                            <Key className='icon' />
                                             <div style={{ marginLeft: '.25em' }}>Passkey</div>
                                         </GrayWideButton>
                                         {helpIcon && <WrappedHelpIcon />}
@@ -151,7 +151,7 @@ export const PasskeySignIn = () => {
                     name="webauthn_register_trigger"
                     value="webauthn"
                 >
-                    <PasskeyIcon />
+                    <Key className='icon' />
                     <div style={{ marginLeft: '.25em' }}>Passkey</div>
                 </GrayWideButton>
             </div>

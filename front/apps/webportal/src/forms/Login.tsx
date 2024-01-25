@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
+import axios from "axios"
 
 import './style/Login.scss'
 import SocialAuth from "./SocialAuth"
@@ -94,6 +95,7 @@ const LookupSecretPrompt = () => {
         <div className="mfa-prompt--container">
             <span>Or use a&nbsp;</span>
             <button
+                type="button"
                 onClick={() => {
                     searchParams.set('mfa', 'lookup_secret')
                     setSearchParams(searchParams)
@@ -183,7 +185,7 @@ interface OryFormWrapperProps {
 }
 
 const OryFormWrapper = ({ children, onSubmit, flow, errMsg, email, setEmail }: OryFormWrapperProps) => {
-    const [searchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
 
     return (
@@ -198,8 +200,9 @@ const OryFormWrapper = ({ children, onSubmit, flow, errMsg, email, setEmail }: O
                     type="button"
                     withText={Boolean(searchParams.get('mfa'))}
                     onClick={() => {
-                        if (searchParams.get('mfa') === 'lookup_secret') {
-                            navigate(-1)
+                        if (searchParams.get('mfa')) {
+                            searchParams.delete('mfa')
+                            setSearchParams(searchParams)
                         } else if (searchParams.get('aal') === 'aal1') {
                             setEmail(undefined)
                         } else {
@@ -207,7 +210,7 @@ const OryFormWrapper = ({ children, onSubmit, flow, errMsg, email, setEmail }: O
                         }
                     }}
                 >
-                    {searchParams.get('mfa') ? 'back' : email}
+                    {searchParams.get('mfa') ? '' : email}
                 </BackButton>
             </div>
             {errMsg && <FormError msg={errMsg} />}
@@ -222,10 +225,11 @@ const Login = () => {
     const navigate = useNavigate()
 
     const [email, setEmail] = useState<string>()
+    const [healthCheckResult, setHealthCheckResult] = useState<'aal2_required' | 'aal15_required' | 'healthy'>()
 
     const [createOtp, { data: otp, isLoading: creatingOtp, isSuccess: createdOtp }] = useCreateOtpMutation()
     const [verifyOtp, { isSuccess: otpVerified, isLoading: verifyingOtp, isError: isOtpVerifyError }] = useVerifyOtpMutation()
-    const [refreshDevices, { isLoading: isRefreshingDevices, isSuccess: devicesRefreshedSuccess }] = useRefreshDevicesMutation()
+    const [refreshDevices, { isLoading: isRefreshingDevices, isSuccess: devicesRefreshedSuccess }, refreshDevicesError] = useRefreshDevicesMutation()
 
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
@@ -242,14 +246,50 @@ const Login = () => {
         errMsg
     } = flowStatus
 
+    // In the event that a user has logged in with their first factor,
+    // but they require a 2nd factor, the app will redirect the user to the
+    // login page and we want to automatically go to the 2nd factor step.
+    // No flows should be fetched until this is first checked, since this always
+    // needs to happen first.
+    useEffect(() => {
+        axios.get(import.meta.env.VITE_LEDGET_API_URI + 'user/me', { withCredentials: true }).then(res => {
+            window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+        }).catch(err => {
+            if (err?.response?.data?.code === 'AAL2_REQUIRED') {
+                console.log('here1')
+                setHealthCheckResult('aal2_required')
+            } else if (err?.response?.data?.code === 'AAL15_REQUIRED') {
+                console.log('here2')
+                setHealthCheckResult('aal15_required')
+            } else {
+                setHealthCheckResult('healthy')
+            }
+        })
+    }, [])
+
+    // After health check result, set proper mfa if needed
+    useEffect(() => {
+        if (healthCheckResult === 'aal2_required') {
+            searchParams.set('mfa', 'totp')
+            setSearchParams(searchParams)
+        } else if (healthCheckResult === 'aal15_required') {
+            searchParams.set('mfa', 'otp')
+            setSearchParams(searchParams)
+        } else {
+            fetchFlow({ aal: 'aal1' })
+        }
+    }, [healthCheckResult])
+
+    // Fetching the flow logic
     useEffect(() => {
         const mfa = searchParams.get('mfa')
         const aal = searchParams.get('aal')
+        if (!healthCheckResult) return
 
         if (!mfa && aal !== 'aal2') {
-            fetchFlow({ aal: 'aal1', refresh: true })
+            fetchFlow({ aal: 'aal1' })
         } else if (mfa === 'totp') {
-            fetchFlow({ aal: 'aal2', refresh: true })
+            fetchFlow({ aal: 'aal2' })
         } else {
             createOtp()
         }
@@ -270,19 +310,29 @@ const Login = () => {
         }
     }, [isCompleteSuccess, otpVerified])
 
+    // Watch for complete devices error indicating mfa is needed
+    useEffect(() => {
+        if (refreshDevicesError === 'totp') {
+            searchParams.set('mfa', 'totp')
+            setSearchParams(searchParams)
+        } else if (refreshDevicesError === 'otp') {
+            searchParams.set('mfa', 'otp')
+            setSearchParams(searchParams)
+        }
+    }, [refreshDevicesError])
+
     // Handle Login Finished
     useEffect(() => {
-        let timeout: NodeJS.Timeout
         if (devicesRefreshedSuccess) {
             if (searchParams.get('mfa')) {
-                setTimeout(() => {
+                const timeout = setTimeout(() => {
                     window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
                 }, 1000)
+                return () => clearTimeout(timeout)
             } else {
                 window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
             }
         }
-        return () => clearTimeout(timeout)
     }, [devicesRefreshedSuccess])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -323,7 +373,7 @@ const Login = () => {
                     />
                 </SlideMotionDiv>
                 :
-                <JiggleDiv jiggle={isCompleteError || isOtpVerifyError} className="wrapper-window">
+                <JiggleDiv jiggle={isCompleteError || isOtpVerifyError} className="wrapper-window" key={`${searchParams.get('mfa')}`}>
                     {/* 1st Factor */}
                     {!searchParams.get('mfa') &&
                         <SlideMotionDiv
@@ -339,7 +389,7 @@ const Login = () => {
                     }
                     {/* Totp 2nd Factor */}
                     {['totp', 'lookup_secret'].includes(searchParams.get('mfa') || '') &&
-                        <SlideMotionDiv className='nested-window' key="aal2-step" position={'last'}>
+                        <SlideMotionDiv className='nested-window' key={`${searchParams.get('mfa')}`} position={'last'}>
                             <OryFormWrapper {...oryFormArgs}>
                                 <TotpMfa finished={devicesRefreshedSuccess} />
                             </OryFormWrapper>
@@ -347,13 +397,13 @@ const Login = () => {
                     }
                     {/* Otp 2nd Factor */}
                     {searchParams.get('mfa') === 'otp' &&
-                        <SlideMotionDiv className='nested-window' key="aal2-step" position={'last'}>
+                        <SlideMotionDiv className='nested-window' key={`${searchParams.get('mfa')}`} position={'last'}>
                             <OtpMfa finished={devicesRefreshedSuccess} />
                         </SlideMotionDiv>
                     }
                     {/* Recovery Code 2nd Factor */}
                     {searchParams.get('mfa') === 'lookup_secret' &&
-                        <SlideMotionDiv className='nested-window' key="aal2-step" position={'last'}>
+                        <SlideMotionDiv className='nested-window' key={`${searchParams.get('mfa')}`} position={'last'}>
                             <OryFormWrapper {...oryFormArgs}>
                                 <RecoveryMfa finished={devicesRefreshedSuccess} />
                             </OryFormWrapper>

@@ -90,6 +90,10 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
         if (args) {
             aal = args.aal
             refresh = args.refresh
+            if (aal) {
+                searchParams.set('aal', aal)
+                setSearchParams(searchParams)
+            }
         }
 
         let flowId = searchParams.get('flow')

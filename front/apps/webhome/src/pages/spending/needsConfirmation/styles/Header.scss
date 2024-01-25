@@ -34,7 +34,6 @@
     }
 
     #number-of-items {
-        font-weight: var(--fw-regular);
         margin-right: .75em;
         position: relative;
         padding: 0 .25em;
@@ -52,7 +51,7 @@
         &>span {
             position: relative;
             z-index: 1;
-            font-weight: var(--fw-regular);
+            font-weight: var(--fw-bold);
         }
 
         &::after {

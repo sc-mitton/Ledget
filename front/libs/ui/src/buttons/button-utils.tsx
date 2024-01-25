@@ -1,5 +1,5 @@
 import { forwardRef, ButtonHTMLAttributes, FC, useEffect, useState } from 'react'
-import { ChevronDown, Check } from '@geist-ui/icons'
+import { ChevronDown, ChevronRight, Check } from '@geist-ui/icons'
 
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { TranslucentShimmerDiv } from '../pieces/shimmer/shimmer'
@@ -78,7 +78,7 @@ export const withArrow = (Component: FC<any>) => {
                 {...rest}
             >
                 {children}
-                <ChevronDown stroke={'currentColor' || stroke} className='icon' />
+                <ChevronRight size={'1.25em'} stroke={'currentColor' || stroke} className='icon' />
             </Component>
         )
     }

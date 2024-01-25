@@ -18,7 +18,7 @@
     --black: hsl(0, 0%, 0%);
 
     /* Drop Shadows & Borders */
-    --window-drop-shadow2: var(--window-drop-shadow-color) 0px 0px 12px;
+    --window-drop-shadow2: var(--window-drop-shadow2-color) 0px 0px 20px;
     --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 14px;
     --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0 0px 1px;
 
@@ -127,7 +127,7 @@
         /* Font Weights */
         --fw-feather-light: 300;
         --fw-light: 300;
-        --fw-regular: 400;
+        --fw-regular: 300;
         --fw-bold: 400;
         --letter-spacing: .45px;
 
@@ -191,7 +191,7 @@
         --blue: #d4dbf4;
 
         --window-h: 240;
-        --window-s: 10%;
+        --window-s: 0%;
 
         --blue-h: 223;
         --green-h: 162;
@@ -237,6 +237,7 @@
         --window2: hsl(var(--window-h), var(--window-s), 96%);
         // --window-drop-shadow-color: hsl(0, 0%, 80%);
         // --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 16px 0px;
+        --window-drop-shadow2-color: hsl(0, 0%, 85%);
 
         --window-rgb: 244, 244, 246;
         --side-window: var(--window);
