@@ -3,52 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import './styles/Mfa.scss'
 import { useGetMeQuery } from '@features/userSlice'
 import { useLazyGetSettingsFlowQuery } from '@features/orySlice'
-import { CircleIconButton, GrayButton, BlueSlimButton, Tooltip, BlueTextButton } from '@ledget/ui'
+import { CircleIconButton, BlueSlimButton, Tooltip, BlueTextButton } from '@ledget/ui'
 import { QrIcon } from '@ledget/media'
-import { MessageSquare, Plus } from '@geist-ui/icons'
 import { useEffect } from 'react'
-
-const SmsAuth = ({ user }) => {
-    const navigate = useNavigate()
-
-    return (
-        <div className="mfa-settings--container">
-            {user.mfa_device === 'sms'
-                ?
-                <>
-                    <div id="sms-auth-set-up">
-                        <MessageSquare className='icon' />
-                        <div>
-                            <span>SMS Verification</span>
-                            <span>Added {formatDate(user.mfa_enabled_on)}</span>
-                        </div>
-                    </div>
-                    <GrayButton
-                        onClick={() => navigate('/profile/security/delete-sms-verification')}
-                    >
-                        remove
-                    </GrayButton>
-                </>
-                :
-                <>
-                    <div id="sms-auth-not-set-up">
-                        <MessageSquare className='icon' />
-                        <span
-                            style={{ marginLeft: '-.125em' }}
-                        >
-                            Text Verification
-                        </span>
-                    </div>
-                    <div>
-                        <CircleIconButton onClick={() => navigate('/profile/security/otp-setup')} darker={true}>
-                            <Plus size={'1em'} />
-                        </CircleIconButton>
-                    </div>
-                </>
-            }
-        </div>
-    )
-}
 
 const AuthenticatorApp = ({ user }) => {
     const navigate = useNavigate()
@@ -119,7 +76,6 @@ const Mfa = () => {
             </div>
             <div className="inner-window" id="mfa-options--container">
                 <AuthenticatorApp user={user} />
-                <SmsAuth user={user} />
             </div>
             {user.mfa_method === 'totp' &&
                 <div><Tooltip msg={'Recovery codes'} ariaLabel={'Recovery codes'}>

@@ -200,42 +200,6 @@ class DeviceSerializer(serializers.ModelSerializer):
         return representation
 
 
-class OtpSerializer(serializers.Serializer):
-    phone = serializers.CharField(required=False)
-    country_code = serializers.CharField(required=False)
-    code = serializers.CharField(required=False)
-
-    def validate_phone(self, value):
-        if not len(value) > 0 and len(value) <= 20:
-            raise ValidationError('Invalid phone number.')
-        if len(value) > 0 and not self.initial_data.get('country_code'):
-            raise ValidationError('Country code is required.')
-        return value
-
-    def validate_code(self, value):
-        if len(value) != 6:
-            raise ValidationError('Invalid code.')
-        return value
-
-    def validate_country_code(self, value):
-        if not len(value) > 0 and len(value) <= 5:
-            raise ValidationError('Invalid country code.')
-        if len(value) > 0 and not self.initial_data.get('phone'):
-            raise ValidationError('Phone number is required.')
-        return value
-
-    def get_field_kwargs(self, field_name):
-        '''Make phone required on post, and code required on get'''
-
-        kwargs = super().get_field_kwargs(field_name)
-        if self.context['request'].method == 'POST':
-            kwargs['required'] = field_name == 'phone'
-        elif self.context['request'].method == 'GET':
-            kwargs['required'] = field_name == 'code'
-
-        return kwargs
-
-
 class EmailSerializer(serializers.Serializer):
     text = serializers.CharField(required=False)
     detail = serializers.CharField(required=False)

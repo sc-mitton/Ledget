@@ -39,12 +39,6 @@ class IsAuthenticated(BasePermission):
                 print('here')
                 raise ValidationError({'message': "Device must have aal2 level session",
                                       'code': "AAL2_REQUIRED"})
-        elif request.user.mfa_method == 'otp':
-            if device_aal == 'aal15' or session_aal == 'aal15':
-                return True
-            else:
-                raise ValidationError({'message': "Device must be aal15 level session",
-                                      'code': "AAL15_REQUIRED"})
         else:
             return device_aal == 'aal1' or device_aal == 'aal2'
 

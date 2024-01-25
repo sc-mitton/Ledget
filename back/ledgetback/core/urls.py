@@ -2,7 +2,6 @@ from django.urls import path, include
 from core.views import service as service_views
 from core.views.user import UserView, EmailView
 from core.views.device import (
-     OtpView,
      DeviceView,
      DestroyDeviceView,
 )
@@ -31,9 +30,6 @@ urlpatterns = [
 
      path('next_invoice', service_views.NextInvoice.as_view(),
           name='next_invoice'),
-
-     path('otp', OtpView.as_view(), name='otp_create'),
-     path('otp/<str:otp_id>', OtpView.as_view(), name='otp_verify'),
 
      path('', include('budget.urls')),
      path('', include('financials.urls')),

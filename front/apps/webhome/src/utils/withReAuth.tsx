@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
 import './ReAuth.css'
 import { useSearchParams, useLocation } from 'react-router-dom'
@@ -8,11 +8,8 @@ import { BlueSubmitButton, withSmallModal } from '@ledget/ui'
 import { useGetMeQuery, User } from '@features/userSlice'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import {
-    useCreateOtpMutation,
-    useVerifyOtpMutation,
     selectSessionIsFreshAal1,
     aal1ReAuthed,
-    aal15ReAuthed,
     aal2ReAuthed
 } from '@features/authSlice'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
@@ -184,68 +181,6 @@ const Totp = () => {
     )
 }
 
-const Otp = () => {
-    const dispatch = useAppDispatch()
-    const [searchParams, setSearchParams] = useSearchParams()
-    const { data: user } = useGetMeQuery()
-    const [createOtp, { data: otp, isLoading: creatingOtp, isSuccess: createdOtp, isError: isCreateOtpError }] = useCreateOtpMutation()
-    const [verifyOtp, { isSuccess: otpVerified, isLoading: verifyingOtp, isError: isOtpVerifyError }] = useVerifyOtpMutation()
-
-    useEffect(() => {
-        user && createOtp({ phone: user.phone_number || undefined })
-    }, [])
-
-    useEffect(() => {
-        if (otp?.id) {
-            searchParams.set('id', otp.id)
-            setSearchParams(searchParams)
-        }
-    }, [createdOtp])
-
-    useEffect(() => {
-        let timeout: NodeJS.Timeout
-        if (otpVerified) {
-            timeout = setTimeout(() => {
-                dispatch({ type: aal15ReAuthed })
-            }, 1000)
-        }
-        return () => clearTimeout(timeout)
-    }, [otpVerified])
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        const data = Object.fromEntries(new FormData(e.target as any) as any)
-        verifyOtp({
-            data: { 'code': data.code },
-            id: searchParams.get('id')
-        })
-    }
-
-    return (
-        <form onSubmit={handleSubmit} className="reauth-form">
-            <div>
-                <h4>Enter the code sent to your phone</h4>
-            </div>
-            <div>
-                <div className="graphic">
-                    <SmsVerifyStatus finished={otpVerified} />
-                </div>
-                <JiggleDiv jiggle={isOtpVerifyError}>
-                    <Otc colorful={false} />
-                </JiggleDiv>
-                {isCreateOtpError && <ErrorFetchingFlow />}
-            </div>
-            <div>
-                <LightBlueWideButton
-                    loading={creatingOtp}
-                    submitting={verifyingOtp}
-                >
-                    Confirm
-                </LightBlueWideButton>
-            </div>
-        </form>
-    )
-}
-
 export const ReAuthModal = withSmallModal((props) => {
     const [searchParams] = useSearchParams()
     const loaded = useLoaded(100)
@@ -268,14 +203,6 @@ export const ReAuthModal = withSmallModal((props) => {
                     position={'last'}
                 >
                     <Totp />
-                </SlideMotionDiv>
-            }
-            {searchParams.get('aal') === 'aal15' &&
-                <SlideMotionDiv
-                    key='aal15'
-                    position={'last'}
-                >
-                    <Otp />
                 </SlideMotionDiv>
             }
         </AnimatePresence >

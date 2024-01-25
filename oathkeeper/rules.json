@@ -961,60 +961,6 @@
       "authorizer": {
          "handler": "allow"
       },
-      "id": "otp_create",
-      "match": {
-         "methods": [
-            "POST"
-         ],
-         "url": "https://localhost/api/v1/otp"
-      },
-      "mutators": [
-         {
-            "handler": "id_token"
-         }
-      ],
-      "version": "v0.36.0-beta.4"
-   },
-   {
-      "authenticators": [
-         {
-            "forward_http_headers": [
-               "X-Forwarded-For",
-               "Authorization"
-            ],
-            "handler": "cookie_session"
-         }
-      ],
-      "authorizer": {
-         "handler": "allow"
-      },
-      "id": "otp_verify",
-      "match": {
-         "methods": [
-            "GET"
-         ],
-         "url": "https://localhost/api/v1/otp/<[a-zA-Z0-9-]+>"
-      },
-      "mutators": [
-         {
-            "handler": "id_token"
-         }
-      ],
-      "version": "v0.36.0-beta.4"
-   },
-   {
-      "authenticators": [
-         {
-            "forward_http_headers": [
-               "X-Forwarded-For",
-               "Authorization"
-            ],
-            "handler": "cookie_session"
-         }
-      ],
-      "authorizer": {
-         "handler": "allow"
-      },
       "id": "accounts",
       "match": {
          "methods": [

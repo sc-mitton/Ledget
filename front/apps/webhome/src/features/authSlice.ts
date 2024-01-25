@@ -60,20 +60,6 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'DELETE',
             }),
             invalidatesTags: ['Device'],
-        }),
-        createOtp: builder.mutation<{ id: string }, { phone?: string }>({
-            query: (data) => ({
-                url: 'otp',
-                method: 'POST',
-                body: data,
-            }),
-        }),
-        verifyOtp: builder.mutation({
-            query: ({ data, id }) => ({
-                url: `otp/${id}`,
-                method: 'GET',
-                body: data,
-            }),
         })
     })
 })
@@ -89,7 +75,5 @@ export const selectSessionIsFreshAal1 = (state: RootState) => {
 
 export const {
     useAddRememberedDeviceMutation,
-    useDeleteRememberedDeviceMutation,
-    useCreateOtpMutation,
-    useVerifyOtpMutation
+    useDeleteRememberedDeviceMutation
 } = extendedApiSlice

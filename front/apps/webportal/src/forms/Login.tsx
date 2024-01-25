@@ -31,7 +31,6 @@ import {
 import { useFlow } from '@ledget/ory'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 import { useRefreshDevicesMutation } from '@features/deviceSlice'
-import { useCreateOtpMutation, useVerifyOtpMutation } from '@features/otpSlice'
 
 
 const schema = z.object({
@@ -152,19 +151,6 @@ const RecoveryMfa = ({ finished }: { finished: boolean }) => {
     )
 }
 
-const OtpMfa = ({ finished }: { finished: boolean }) => (
-    <>
-        <div className="mfa-container">
-            <SmsVerifyStatus finished={finished} />
-            <h4>Enter the code sent to your phone</h4>
-            <LookupSecretPrompt />
-            <div style={{ margin: '.75em 0' }}>
-                <Otc colorful={false} />
-            </div>
-        </div>
-    </>
-)
-
 const Password = () => (
     <div id="password-auth--container">
         <PasswordInput autoFocus required />
@@ -227,8 +213,6 @@ const Login = () => {
     const [email, setEmail] = useState<string>()
     const [healthCheckResult, setHealthCheckResult] = useState<'aal2_required' | 'aal15_required' | 'healthy'>()
 
-    const [createOtp, { data: otp, isLoading: creatingOtp, isSuccess: createdOtp }] = useCreateOtpMutation()
-    const [verifyOtp, { isSuccess: otpVerified, isLoading: verifyingOtp, isError: isOtpVerifyError }] = useVerifyOtpMutation()
     const [refreshDevices, { isLoading: isRefreshingDevices, isSuccess: devicesRefreshedSuccess }, refreshDevicesError] = useRefreshDevicesMutation()
 
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
@@ -272,9 +256,6 @@ const Login = () => {
         if (healthCheckResult === 'aal2_required') {
             searchParams.set('mfa', 'totp')
             setSearchParams(searchParams)
-        } else if (healthCheckResult === 'aal15_required') {
-            searchParams.set('mfa', 'otp')
-            setSearchParams(searchParams)
         } else {
             fetchFlow({ aal: 'aal1' })
         }
@@ -290,33 +271,20 @@ const Login = () => {
             fetchFlow({ aal: 'aal1' })
         } else if (mfa === 'totp') {
             fetchFlow({ aal: 'aal2' })
-        } else {
-            createOtp()
         }
     }, [searchParams.get('mfa')])
 
-    // Set otp id search params
-    useEffect(() => {
-        if (createdOtp) {
-            searchParams.set('id', otp.id)
-            setSearchParams(searchParams)
-        }
-    }, [createdOtp])
-
     // Refresh devices on finishing login steps
     useEffect(() => {
-        if (isCompleteSuccess || errId === 'session_already_available' || otpVerified) {
+        if (isCompleteSuccess || errId === 'session_already_available') {
             refreshDevices()
         }
-    }, [isCompleteSuccess, otpVerified])
+    }, [isCompleteSuccess])
 
     // Watch for complete devices error indicating mfa is needed
     useEffect(() => {
         if (refreshDevicesError === 'totp') {
             searchParams.set('mfa', 'totp')
-            setSearchParams(searchParams)
-        } else if (refreshDevicesError === 'otp') {
-            searchParams.set('mfa', 'otp')
             setSearchParams(searchParams)
         }
     }, [refreshDevicesError])
@@ -337,12 +305,7 @@ const Login = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (searchParams.get('aal')) {
-            submit(e)
-        } else {
-            const data = Object.fromEntries(new FormData(e.target as any) as any)
-            verifyOtp({ id: searchParams.get('id'), data: data.code })
-        }
+        submit(e)
     }
 
     const oryFormArgs = {
@@ -368,12 +331,11 @@ const Login = () => {
                         </LinkArrowButton>
                     </div>
                     <WindowLoadingBar
-                        visible={[verifyingOtp, creatingOtp, isGettingFlow,
-                            isCompletingFlow, isRefreshingDevices].some(Boolean)}
+                        visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)}
                     />
                 </SlideMotionDiv>
                 :
-                <JiggleDiv jiggle={isCompleteError || isOtpVerifyError} className="wrapper-window" key={`${searchParams.get('mfa')}`}>
+                <JiggleDiv jiggle={isCompleteError} className="wrapper-window" key={`${searchParams.get('mfa')}`}>
                     {/* 1st Factor */}
                     {!searchParams.get('mfa') &&
                         <SlideMotionDiv
@@ -395,12 +357,6 @@ const Login = () => {
                             </OryFormWrapper>
                         </SlideMotionDiv>
                     }
-                    {/* Otp 2nd Factor */}
-                    {searchParams.get('mfa') === 'otp' &&
-                        <SlideMotionDiv className='nested-window' key={`${searchParams.get('mfa')}`} position={'last'}>
-                            <OtpMfa finished={devicesRefreshedSuccess} />
-                        </SlideMotionDiv>
-                    }
                     {/* Recovery Code 2nd Factor */}
                     {searchParams.get('mfa') === 'lookup_secret' &&
                         <SlideMotionDiv className='nested-window' key={`${searchParams.get('mfa')}`} position={'last'}>
@@ -410,8 +366,7 @@ const Login = () => {
                         </SlideMotionDiv>
                     }
                     <WindowLoadingBar
-                        visible={[verifyingOtp, creatingOtp, isGettingFlow,
-                            isCompletingFlow, isRefreshingDevices].some(Boolean)}
+                        visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)}
                     />
                 </JiggleDiv>
             }

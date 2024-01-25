@@ -11,7 +11,7 @@ export interface User {
     password_last_changed: string,
     last_login: string,
     created_on: string,
-    mfa_method: null | 'totp' | 'otp'
+    mfa_method: null | 'totp'
     mfa_enabled_on: string | null,
     phone_number: string | null,
     phone_country_code: string | null,

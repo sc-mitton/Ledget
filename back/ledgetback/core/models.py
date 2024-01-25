@@ -37,7 +37,6 @@ class User(models.Model):
 
     class MfaMethod(models.TextChoices):
         TOTP = 'totp', _('TOTP')
-        OTP = 'otp', _('OTP')
 
     id = models.UUIDField(primary_key=True, editable=False)
     is_active = models.BooleanField(default=True)  # tombstone
@@ -63,7 +62,6 @@ class User(models.Model):
     mfa_method = models.CharField(choices=MfaMethod.choices,
                                   null=True, default=None, max_length=4)
     mfa_enabled_on = models.DateTimeField(null=True, default=None)
-    last_otp_verification = models.DateTimeField(null=True, default=None)
     phone_number = models.CharField(max_length=20, null=True, default=None)
     phone_country_code = models.CharField(max_length=5, null=True, default=None)
     yearly_anchor = models.DateTimeField(null=True, default=None)
@@ -158,8 +156,6 @@ class User(models.Model):
     def highest_aal(self):
         if self.mfa_method == 'totp':
             return 'aal2'
-        elif self.mfa_method == 'otp':
-            return 'aal15'
         else:
             return 'aal1'
 
