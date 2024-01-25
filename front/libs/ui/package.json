@@ -19,6 +19,7 @@
     "@types/use-persisted-state": "^0.3.4",
     "@use-gesture/react": "^10.2.27",
     "antd": "^5.12.1",
+    "big.js": "^6.2.1",
     "color": "^4.2.3",
     "dayjs": "^1.11.10",
     "framer-motion": "^10.16.4",

@@ -90,7 +90,7 @@ $background: var(--window);
         overflow-y: auto;
         width: calc(100% + .75em);
         box-sizing: border-box;
-        padding: 0 .125em;
+        padding: .25em .125em;
         padding-bottom: .5em;
         max-height: 100%;
         position: relative;
@@ -123,10 +123,6 @@ $background: var(--window);
 
         &:not(.header) {
             transform: translateY(-.5em);
-
-            &:not(:last-child) {
-                @include table-dividers(-.625em);
-            }
         }
 
         &:first-child>div {
@@ -142,14 +138,10 @@ $background: var(--window);
         }
 
         &>div.spanned {
-            // cover 2-5 columns
-            // grid-column: 2 / span ;
             align-self: center;
-
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            // padding-right: .125em;
             padding-right: .875em;
         }
 
@@ -158,6 +150,10 @@ $background: var(--window);
             align-items: center;
             font-weight: var(--fw-regular);
             z-index: 0;
+
+            h4 {
+                font-weight: var(--fw-regular);
+            }
 
             @include header-styles;
 
@@ -269,8 +265,6 @@ $background: var(--window);
         &:not(:first-child):not(:last-of-type)>div {
             position: relative;
             z-index: 0;
-
-            // @include table-dividers(0);
 
             &:first-child::after {
                 left: .375em;
@@ -524,7 +518,6 @@ $background: var(--window);
 
             &:not(:last-child):not(:first-child)>div {
                 position: relative;
-                @include table-dividers(0);
             }
         }
     }

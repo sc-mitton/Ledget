@@ -66,23 +66,6 @@ header {
                 visibility: hidden;
             }
         }
-
-
-        .nav-item {
-            opacity: .6;
-        }
-
-        .current-nav-item {
-            opacity: 1;
-
-            a {
-                color: var(--white);
-            }
-        }
-    }
-
-    .profile-button {
-        color: var(--white);
     }
 }
 
@@ -154,12 +137,8 @@ header {
     z-index: 1;
 }
 
-.nav-item a {
-    color: var(--white);
-}
-
 .current-nav-item a {
-    color: var(--black);
+    opacity: 1;
 }
 
 .nav-item a,
@@ -172,7 +151,7 @@ header {
 
 .nav-item {
     background-color: transparent;
-    opacity: 1;
+    opacity: .4;
 }
 
 .nav-item:hover {

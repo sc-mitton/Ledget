@@ -581,20 +581,9 @@ button.disabled-hover:hover svg {
     border-radius: var(--border-radius3);
     font-weight: var(--fw-regular);
     padding: .1em 0;
-    min-width: 5ch;
+    min-width: 6ch;
     display: flex;
     place-content: center;
-
-    &.non-clr {
-        background-color: var(--btn-light-gray);
-        transition: all .2s ease;
-
-
-        &:hover {
-            background-color: var(--btn-light-gray);
-            transition: all .2s ease;
-        }
-    }
 
     * {
         color: var(--btn-gray);
@@ -602,27 +591,19 @@ button.disabled-hover:hover svg {
 
 
     &:hover {
-        background-color: transparent;
         transition: all .2s ease;
 
         * {
             color: var(--m-text);
         }
     }
-
-    &.btn-clr {
-        padding: .3em 0;
-    }
-
-    &>div {
-        display: flex;
-        place-content: center;
-    }
 }
 
 .expand-button--icon {
     transform: rotate(0deg);
     transition: transform .5s ease-out;
+    display: flex;
+    place-content: center;
 
     &.flipped {
         transition: transform .5s ease-out;

@@ -54,7 +54,7 @@ const BudgetSummary = () => {
             </div>
             <div className="budget-summary--container">
                 <div>
-                    <h2>Total Spent</h2>
+                    <h3>total spent</h3>
                     <div>
                         <AnimatedDollarCents
                             value={loadingCategories || loadingBills
@@ -69,21 +69,21 @@ const BudgetSummary = () => {
                             value={Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber()}
                             withCents={false}
                         />
-                        <span>monthly spending left</span>
+                        <span>spending left</span>
                     </div>
                     <div>
                         <AnimatedDollarCents
                             value={Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() || 0}
                             withCents={false}
                         />
-                        <span>yearly spending left</span>
+                        <span>spending left</span>
                     </div>
                     <div>
                         <span>
                             {monthly_bills_paid + yearly_bills_paid}
                             /{number_of_monthly_bills + number_of_yearly_bills}
                         </span>
-                        <span>scheduled bills paid</span>
+                        <span>bills paid</span>
                     </div>
                 </div>
             </div>

@@ -31,7 +31,7 @@ export const Shimmer = (props: ShimmerProps) => {
             className="loading-shimmer"
           >
             <div
-              className={`shimmer`}
+              className={`shimmer ${isDark ? 'dark-mode' : ''}`}
               style={{ '--shimmer-lightness': `${(isDark || darkMode) ? 99 - lightness : lightness}%` } as React.CSSProperties}
             />
           </animated.div>

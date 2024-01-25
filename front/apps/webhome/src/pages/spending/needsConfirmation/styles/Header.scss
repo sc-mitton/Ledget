@@ -42,7 +42,7 @@
 
         button,
         span {
-            color: var(--m-dark6);
+            color: var(--m-invert-text);
         }
 
         &+span {
@@ -64,9 +64,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: var(--btn-light-gray-hover);
+            background-color: var(--blue-dark);
             border-radius: 50%;
-            opacity: .6;
         }
     }
 }

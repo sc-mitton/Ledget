@@ -166,10 +166,10 @@ const MonthPicker = ({ darkMode = false }) => {
                     <span>{monthMappings[parseInt(searchParams.get('month') || '1') - 1][1]} {searchParams.get('year')}</span>
                 </FadedTextButton>
                 <IconButton3 onClick={() => handleArrowClick(-1)}>
-                    <ChevronLeft className='icon' />
+                    <ChevronLeft className='icon' stroke={'currentColor'} />
                 </IconButton3>
                 <IconButton3 onClick={() => handleArrowClick(1)}>
-                    <ChevronRight className='icon' />
+                    <ChevronRight className='icon' stroke={'currentColor'} />
                 </IconButton3>
             </div>
             <DropDownDiv

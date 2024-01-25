@@ -5,8 +5,6 @@ export const orySlice = apiSlice.injectEndpoints({
     endpoints: (builder) => generateEndpoints(builder),
 })
 
-console.log('orySlice', orySlice)
-
 export const {
     useLazyGetSettingsFlowQuery,
     useCompleteSettingsFlowMutation,

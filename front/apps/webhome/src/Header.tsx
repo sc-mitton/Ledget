@@ -1,52 +1,26 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 
 import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
-import { animated } from '@react-spring/web'
 
 import './styles/header.scss'
 import { Logout, Help } from '@modals/index'
 import { LedgetLogoIcon } from '@ledget/media'
-import { DropDownDiv, usePillAnimation, DropdownItem, useSchemeVar } from '@ledget/ui'
+import { DropDownDiv, DropdownItem } from '@ledget/ui'
 import { useScreenContext } from './context'
 import { HelpCircle, LogOut, User } from '@geist-ui/icons'
-
+import { useColorScheme } from '@ledget/ui'
 
 const Navigation = () => {
     const tabs = [
         { name: "budget", path: "budget" },
         { name: "accounts", path: "accounts/deposits" }
     ]
-    const backgroundColor = useSchemeVar('--header-pill')
     const { screenSize } = useScreenContext()
 
     const location = useLocation()
     const navigate = useNavigate()
     const navListRef = useRef<HTMLUListElement>(null)
-    const [tabsSpring] = usePillAnimation({
-        ref: navListRef,
-        update: [location.pathname],
-        refresh: [screenSize],
-        querySelectall: '[role=link]',
-        find: (element) => {
-            return (element.firstChild as any)?.getAttribute('aria-current') === 'page'
-        },
-        styles: {
-            borderRadius: 'var(--border-radius3)',
-            backgroundColor: backgroundColor
-        },
-    })
-
-    const [showPill, setShowPill] = useState<boolean>(false)
-
-    useEffect(() => {
-        const rootPath = location.pathname.split("/")[1]
-        if (!['budget', 'accounts', 'spending'].includes(rootPath)) {
-            setShowPill(false)
-        } else {
-            setShowPill(true)
-        }
-    }, [location.pathname])
 
     return (
         <nav className="header-nav">
@@ -90,7 +64,6 @@ const Navigation = () => {
                         </a>
                     </li>
                 }
-                {showPill && <animated.span style={tabsSpring} />}
             </ul>
         </nav>
     )
@@ -158,6 +131,7 @@ const DropDownMenu = ({ setModal }:
 function Header() {
     const [modal, setModal] = useState<Modal>()
     const { screenSize } = useScreenContext()
+    const { isDark } = useColorScheme()
 
     const Modal = ({ selection }: { selection?: Modal }) => {
         switch (selection) {
@@ -176,7 +150,7 @@ function Header() {
 
     return (
         <>
-            <header className={`${screenSize !== 'large' ? 'narrow' : ''} ${screenSize === 'small' ? 'small' : ''}`}>
+            <header className={`${screenSize !== 'large' ? 'narrow' : ''} ${screenSize === 'small' ? 'small' : ''} ${isDark ? 'dark-mode' : ''}`}>
                 <div>
                     <div><LedgetLogoIcon /></div>
                     <div><Navigation /></div>

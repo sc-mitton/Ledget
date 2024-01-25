@@ -7,16 +7,21 @@
     padding: 0 .625em;
 
     &:not(.dark) {
-        // border: 1.5px solid var(--blue-light);
-        background-color: var(--blue-light);
         margin-left: -.5em;
 
-        &>div:first-child>button * {
-            color: var(--blue-medium-dark);
-            opacity: 1;
+        &>div:first-child button {
+            color: var(--m-text);
+
+            span {
+                color: var(--m-text);
+            }
 
             &:hover {
-                color: var(--blue-medium);
+                color: var(--m-text-tirtiary);
+
+                span {
+                    color: var(--m-text-tirtiary);
+                }
             }
         }
     }
@@ -24,7 +29,7 @@
     &.dark {
         border: 1.75px solid var(--btn-light-gray);
 
-        &>div:first-child>button * {
+        &>div:first-child button {
             color: var(--m-text-tirtiary);
 
             &:hover {
@@ -42,11 +47,6 @@
             font-size: 1.1em;
             line-height: 1em;
             padding: .25em;
-            color: var(--m-text-quinary);
-
-            &:hover {
-                color: var(--m-text);
-            }
         }
     }
 }

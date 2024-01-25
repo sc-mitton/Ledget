@@ -67,7 +67,10 @@ const _getContainerHeight = (length: number, expanded: boolean) => {
 const _getOpacity = (index: number, expanded: boolean) => {
     const belowStackMax = index > stackMax
     if (!expanded && index == 1) {
-        return .9
+        return .6
+    }
+    if (!expanded && index == 2) {
+        return .4
     }
     return (!expanded && belowStackMax && index !== 0) ? 0 : 1
 }
@@ -106,12 +109,7 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
 }
 
 const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean) => {
-    let lightness: number
-    if (index === 0 || expanded) {
-        lightness = darkMode ? 11 : 100
-    } else {
-        lightness = darkMode ? 11 - (index * 1.75) : 100
-    }
+    const lightness = darkMode ? 11 : 100
     return `hsl(0, 0%, ${lightness}%)`
 }
 
@@ -194,7 +192,7 @@ const NewItem: FC<{
                         tabIndex={tabIndex}
                         className="confirm-button"
                     >
-                        <Check className="icon" />
+                        <Check className="icon" strokeWidth={2} />
                     </IconButton>
                 </Tooltip>
                 <NarrowButton
@@ -561,7 +559,10 @@ const NeedsConfirmationWindow = () => {
             <ExpandableContainer
                 className='new-items-expand-button--container'
                 expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
-                <ExpandButton onClick={() => setUnconfirmedStackExpanded(!unconfirmedStackExpanded)} flipped={unconfirmedStackExpanded} />
+                <ExpandButton
+                    hasBackground={false}
+                    onClick={() => setUnconfirmedStackExpanded(!unconfirmedStackExpanded)} flipped={unconfirmedStackExpanded}
+                />
             </ExpandableContainer>
             {showTransactionModal && focusedItem &&
                 <TransactionModal

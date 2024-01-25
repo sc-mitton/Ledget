@@ -13,11 +13,11 @@
 }
 
 .budget-summary--container {
-    margin: 1.5em 0 1em 0;
+    margin: 1em 0 .75em 0;
     display: flex;
     align-items: flex-end;
     flex-wrap: wrap;
-    gap: .875em;
+    gap: 1.5em;
     mask-image: linear-gradient(to right, black 0%, black 90%, transparent);
     overflow: hidden;
     flex-grow: 0;
@@ -28,8 +28,12 @@
 
         h2,
         h3 {
-            color: var(--m-text-quinary);
-            font-weight: var(--fw-regular);
+            font-weight: var(--fw-light);
+            color: var(--m-text-secondary);
+        }
+
+        h2 {
+            font-size: 1.25rem;
         }
 
         &>div {
@@ -43,10 +47,12 @@
     }
 
 
+    $gap: 3em;
+
     &>div:last-child {
         display: flex;
         align-items: baseline;
-        gap: 1em;
+        gap: $gap;
         margin-left: .125em;
         flex-grow: 1;
         margin-bottom: .25em;
@@ -78,6 +84,17 @@
                 }
             }
 
+            &:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                top: .25em;
+                bottom: .25em;
+                right: calc($gap /2 * -1 + .5em);
+                width: 1.5px;
+                border-radius: 1px;
+                background-color: var(--border-color);
+            }
+
             &:nth-last-child(3) {
                 @include dot(--blue-light-medium);
             }
@@ -95,8 +112,8 @@
             }
 
             &>span:last-child {
-                color: var(--m-text-tirtiary);
-                font-weight: var(--fw-regular);
+                font-weight: var(--fw-light);
+                color: var(--m-text-secondary);
                 opacity: .9;
                 white-space: nowrap;
             }

@@ -21,19 +21,17 @@ export const ColorSchemeProvider = ({ children }: { children: React.ReactNode })
   const [isDark, setIsDark] = useState(false)
   const isDarkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)').matches
 
-  useEffect(() => {
-    const persistedColorScheme = localStorage.getItem('color-scheme')
-    if (persistedColorScheme) {
-      setIsDark(persistedColorScheme === 'dark')
-    } else {
-      setIsDark(isDarkModeMediaQuery)
-    }
-  }, [isDarkModeMediaQuery])
+  const persistedColorScheme = localStorage.getItem('color-scheme')
+  if (persistedColorScheme) {
+    setIsDark(persistedColorScheme === 'dark')
+  } else {
+    setIsDark(isDarkModeMediaQuery)
+  }
 
-  const setDarkMode = useCallback((mode: boolean) => {
+  const setDarkMode = (mode: boolean) => {
     localStorage.setItem('color-scheme', mode ? 'dark' : 'light')
     setIsDark(mode)
-  }, [])
+  }
 
   return (
     <ColorModeContext.Provider value={{ isDark, setDarkMode }}>

@@ -58,9 +58,11 @@
         &:last-child button {
             min-width: 6ch;
             opacity: .9;
+            font-weight: var(--fw-feather-light);
 
             span {
                 color: inherit;
+                font-weight: var(--fw-feather-light);
             }
         }
     }

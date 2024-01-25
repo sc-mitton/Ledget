@@ -41,6 +41,8 @@ $scroll-bar-padding: .5em;
         flex-grow: 1;
         position: relative;
 
+
+
         // Header and add button
         &>div:nth-child(2) {
             display: flex;
@@ -49,6 +51,7 @@ $scroll-bar-padding: .5em;
 
             h4 {
                 margin-top: .1em;
+                font-weight: var(--fw-regular);
             }
         }
 
