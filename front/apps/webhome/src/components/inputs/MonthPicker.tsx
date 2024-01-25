@@ -148,10 +148,7 @@ const MonthPicker = ({ darkMode = false }) => {
         const currentYear = searchParams.get('year') || `${new Date().getFullYear()}`
         const currentMonth = searchParams.get('month') || `${new Date().getMonth() + 1}`
         const d = dayjs(`${currentYear}-${currentMonth}-01`)
-        console.log(d.format('YYYY-MM-DD'))
         const next = d.add(direction, 'month')
-
-        console.log('next', next.format('YYYY-MM-DD'))
 
         if (dateOptions[next.year()]?.includes(next.month() + 1)) {
             searchParams.set('month', `${next.month() + 1}`)

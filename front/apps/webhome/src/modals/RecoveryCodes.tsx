@@ -5,8 +5,8 @@ import { AnimatePresence } from 'framer-motion'
 import { Download, Copy } from '@geist-ui/icons'
 
 import './styles/RecoveryCodes.scss'
-import { BlueSubmitButton, BluePrimaryButton, SlideMotionDiv } from '@ledget/ui'
-import { withSmallModal } from '@ledget/ui'
+import { BlueSubmitButton, BluePrimaryButton, SlideMotionDiv, LoadingMessage } from '@ledget/ui'
+import { withSmallModal, ExpandableContainer } from '@ledget/ui'
 import { withReAuth } from '@utils/index'
 import { useFlow } from '@ledget/ory'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
@@ -15,24 +15,23 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
     const [searchParams] = useSearchParams()
     const [recoveryCodes, setRecoveryCodes] = useState([])
     const location = useLocation()
+    const [loading, setLoading] = useState(true)
+    const [generatingNewCodes, setGeneratingNewCodes] = useState(false)
 
-    const [confirmSecrets, { isError: secretsSavedError }
-    ] = useCompleteSettingsFlowMutation()
-    const [getSecrets, {
-        // either generate or retrieve
-        data: recoveryCodesFlow,
-        error: codesFetchError,
-        isSuccess: codesAreFetched,
-        isError: isCodesFetchError,
-        isLoading: isFetchingSecrets,
-    }] = useCompleteSettingsFlowMutation()
-
-    const { flow, fetchFlow, flowStatus } = useFlow(
+    const {
+        flow,
+        fetchFlow,
+        flowStatus,
+        completeFlow: completeSettingsFlow,
+        resetCompleteFlow,
+        mutationCacheKey
+    } = useFlow(
         useLazyGetSettingsFlowQuery,
         useCompleteSettingsFlowMutation,
         'settings'
     )
-    const { isGetFlowSuccess, isGettingFlow, errId } = flowStatus
+
+    const { isCompleteSuccess: isCompleteSettingsFlowSuccess, errId } = flowStatus
 
     const handleDownload = () => {
         const codes = recoveryCodes.join('\n')
@@ -50,11 +49,12 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
     }
 
     const confirmedSavedCodes = () => {
-        const csrf_token = (recoveryCodesFlow as any).ui.nodes.find((node: any) =>
+        const csrf_token_node = flow?.ui?.nodes?.find((node: any) =>
             node.attributes.name === 'csrf_token'
-        ).attributes.value
+        )?.attributes
+        const csrf_token = (csrf_token_node as any)?.value
 
-        confirmSecrets({
+        completeSettingsFlow({
             params: { flow: searchParams.get('flow') },
             data: {
                 csrf_token: csrf_token,
@@ -64,14 +64,14 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
         })
     }
 
-    // Get initial flow (will be getting from from search params
-    // if on the authenticator setup modal)
+    // Fetch settings flow on mount
     useEffect(() => { fetchFlow() }, [])
 
-    // Get current recovery codes after flow is fetched
+    // Regenerate or view recovery codes after flow is fetched
     useEffect(() => {
-        if (isGetFlowSuccess) {
-            getSecrets({
+        if (flowStatus.isGetFlowSuccess) {
+            setLoading(false)
+            mutationCacheKey && completeSettingsFlow({
                 params: { flow: searchParams.get('flow') || flow?.id },
                 data: {
                     csrf_token: flow?.csrf_token,
@@ -83,27 +83,42 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
                 }
             })
         }
-    }, [isGetFlowSuccess])
+    }, [flowStatus.isGetFlowSuccess, mutationCacheKey])
 
     // Extract recovery codes from flow
     // and save the codes if we're in the autenticator setup
     useEffect(() => {
-        if (codesAreFetched) {
-            (recoveryCodesFlow as any).ui.nodes.find((node: any) => {
+        if (isCompleteSettingsFlowSuccess) {
+            flow?.ui.nodes.find((node: any) => {
                 if (node.attributes.id === 'lookup_secret_codes') {
                     setRecoveryCodes(node.attributes.text.text.split(','))
                     return true
                 }
             })
+
+            // Lower this flag if new codes were being generated and now they're available
+            if (generatingNewCodes) {
+                const timeout = setTimeout(() => {
+                    setGeneratingNewCodes(false)
+                }, 3000)
+                return () => clearTimeout(timeout)
+            }
         }
-    }, [codesAreFetched])
+    }, [isCompleteSettingsFlowSuccess])
 
     // Close on any errors fetching flow or codes
     useEffect(() => {
-        if (secretsSavedError || isCodesFetchError) {
-            // props.onFinish()
+        if (errId === 4000001) {
+            resetCompleteFlow()
+            completeSettingsFlow({
+                params: { flow: searchParams.get('flow') || flow?.id },
+                data: { csrf_token: flow?.csrf_token, method: 'lookup_secret', lookup_secret_regenerate: true }
+            })
+            setGeneratingNewCodes(true)
+        } else if (errId) {
+            props.onFinish()
         }
-    }, [secretsSavedError, isCodesFetchError])
+    }, [errId])
 
     return (
         <div id="recovery-codes--container">
@@ -116,7 +131,7 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
             >
                 <BlueSubmitButton
                     type="button"
-                    loading={isGettingFlow || isFetchingSecrets}
+                    loading={loading}
                     className="recovery-codes-button"
                     onClick={(e) => {
                         handleDownload()
@@ -128,7 +143,7 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
                 </BlueSubmitButton>
                 <BlueSubmitButton
                     type="button"
-                    loading={isGettingFlow || isFetchingSecrets}
+                    loading={loading}
                     className="recovery-codes-button"
                     onClick={() => {
                         handleCopy()
@@ -139,6 +154,10 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
                     <Copy className="icon" />
                 </BlueSubmitButton>
             </div>
+            <ExpandableContainer expanded={generatingNewCodes}>
+                <span>No recovery codes found,</span>
+                <LoadingMessage message="generating new codes" />
+            </ExpandableContainer>
         </div>
     )
 }

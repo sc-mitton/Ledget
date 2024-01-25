@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 
 import './styles/Mfa.scss'
-import { useGetMeQuery, useUpdateUserMutation } from '@features/userSlice'
+import { useGetMeQuery } from '@features/userSlice'
+import { useLazyGetSettingsFlowQuery } from '@features/orySlice'
 import { CircleIconButton, GrayButton, BlueSlimButton, Tooltip, BlueTextButton } from '@ledget/ui'
 import { QrIcon } from '@ledget/media'
 import { MessageSquare, Plus } from '@geist-ui/icons'
+import { useEffect } from 'react'
 
 const SmsAuth = ({ user }) => {
     const navigate = useNavigate()
@@ -50,13 +52,14 @@ const SmsAuth = ({ user }) => {
 
 const AuthenticatorApp = ({ user }) => {
     const navigate = useNavigate()
-    const [updateUser] = useUpdateUserMutation()
 
     const formatDate = (date) => {
         const d = new Date(date)
         const options = { month: 'short', day: 'numeric', year: 'numeric' }
         return d.toLocaleDateString('en-US', options)
     }
+
+    useEffect(() => { console.log('useLazyGetSettingsFlowQuery', useLazyGetSettingsFlowQuery) }, [])
 
     return (
         <div className="mfa-settings--container">

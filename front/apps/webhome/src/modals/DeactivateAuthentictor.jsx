@@ -13,8 +13,8 @@ import { useFlow } from '@ledget/ory'
 const DeactivateAuthenticator = (props) => {
     const [updateUser] = useUpdateUserMutation()
     const [searchParams] = useSearchParams()
-    const unLinkTotpForm = useRef(null)
     const [submitted, setSubmitted] = useState(false)
+
     const [forgetRecoveryCodes, { isSuccess: isCodesDeleted, isLoading: isDeletingCodes }] = useCompleteSettingsFlowMutation()
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetSettingsFlowQuery,
@@ -23,7 +23,7 @@ const DeactivateAuthenticator = (props) => {
     )
     const {
         isGettingFlow,
-        isCompleteSuccess,
+        isCompleteSuccess: isUnlinkSuccess,
         isCompletingFlow,
         errorFetchingFlow,
         isCompleteError,
@@ -34,29 +34,34 @@ const DeactivateAuthenticator = (props) => {
 
     // Close modal on success
     useEffect(() => {
-        if (isCompleteSuccess && submitted) {
+        if (isCodesDeleted && submitted) {
             updateUser({ mfa_method: null })
             const timeout = setTimeout(() => {
                 props.closeModal()
             }, 1000)
             return () => clearTimeout(timeout)
         }
-    }, [isCompleteSuccess])
+    }, [isCodesDeleted])
 
     // Delete recovery codes first before unlinking totp device
     const handleUnlinkSubmit = (e) => {
         e.preventDefault()
         setSubmitted(true)
-        forgetRecoveryCodes({
-            data: {
-                csrf_token: flow?.csrf_token,
-                method: 'lookup_secret',
-                lookup_secret_disable: true,
-            },
-            params: { flow: searchParams.get('flow') }
-        })
         submit(e)
     }
+
+    useEffect(() => {
+        if (isUnlinkSuccess) {
+            forgetRecoveryCodes({
+                data: {
+                    csrf_token: flow?.csrf_token,
+                    method: 'lookup_secret',
+                    lookup_secret_disable: true,
+                },
+                params: { flow: searchParams.get('flow') }
+            })
+        }
+    }, [isUnlinkSuccess])
 
     return (
         <>
@@ -75,7 +80,7 @@ const DeactivateAuthenticator = (props) => {
                             <BlueSubmitButton
                                 name="method"
                                 value="totp"
-                                success={isCompleteSuccess}
+                                success={isCodesDeleted}
                                 submitting={isCompletingFlow || isDeletingCodes}
                             >
                                 Yes

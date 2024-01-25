@@ -70,8 +70,8 @@ const PassWord = ({ onCancel }: { onCancel: () => void }) => {
         <form onSubmit={submit} className="reauth-form">
             <div>
                 {['setup', 'change', 'delete'].some((word) => location.pathname.includes(word))
-                    ? 'To make this change, first confirm your password'
-                    : 'First confirm your password'
+                    ? 'Confirm your password to make this change'
+                    : 'Confirm your password'
                 }
             </div>
             <div>

@@ -42,14 +42,14 @@ $inner-circle-positive: var(--blue-light-hover);
 
         &.negative {
             background-color: $inner-circle-negative;
-            opacity: .05;
+            opacity: 0;
             animation: status-pulse 4s ease-in-out infinite;
         }
 
         &.color-default-positive,
         &.positive {
             background-color: $inner-circle-positive;
-            opacity: .05;
+            opacity: 0;
             transition: all .5s ease-out;
         }
 
@@ -62,14 +62,14 @@ $inner-circle-positive: var(--blue-light-hover);
 
         &.negative {
             background-color: $outer-circle-negative;
-            opacity: .1;
+            opacity: .07;
             animation: status-pulse 4s ease-in-out infinite;
         }
 
         &.color-default-positive,
         &.positive {
             background-color: $outer-circle-positive;
-            opacity: .1;
+            opacity: .07;
             transition: all .5s ease-out;
         }
 

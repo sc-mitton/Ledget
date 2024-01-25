@@ -21,7 +21,6 @@ const Delete = ({
             >
                 <line stroke={stroke} strokeWidth={strokeWidth} x1="30.3" y1="72" x2="113.7" y2="72" />
                 <line stroke={stroke} strokeWidth={strokeWidth} x1="72" y1="30.3" x2="72" y2="113.7" />
-
             </svg>
         </>
     )

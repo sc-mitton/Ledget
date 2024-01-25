@@ -134,7 +134,6 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
                   <PlusButton
                     type='button'
                     onClick={() => {
-                      console.log('here')
                       append({ category: '', amount: 0 })
                     }}
                   />}

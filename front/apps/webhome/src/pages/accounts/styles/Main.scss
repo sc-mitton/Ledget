@@ -79,6 +79,7 @@ $wafer-container-padding: .75rem;
 .account-wafers {
     z-index: 0;
     position: relative;
+    padding: .125em 0;
 
     &::after {
         content: '';
@@ -482,7 +483,7 @@ $borderRadius2: var(--border-radius2);
 
     .account-wafers,
     .skeleton-account-wafers {
-        height: calc($wafer-height + 2 * $wafer-container-padding - .25em);
+        height: calc($wafer-height + 2 * $wafer-container-padding - .5em);
     }
 
     .account-wafers--container {

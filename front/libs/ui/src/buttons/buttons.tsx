@@ -11,7 +11,7 @@ import {
 import { Tooltip } from '../pieces/tooltip/tooltip'
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'
-import { X, Copy, ChevronDown, ChevronsDown, Check } from '@geist-ui/icons'
+import { X, Copy, ChevronDown, ChevronsDown, Check, Circle } from '@geist-ui/icons'
 
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')
 export const BlackPrimaryButton = ButtonWithClassName('btn-chcl btn3')
@@ -104,16 +104,16 @@ export const GoogleLoginButton = ({ ...props }) => (
 
 export const CloseButton =
   forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { size?: string }>((props, ref) => {
-    const { size = '1.25em', className, ...rest } = props
+    const { size = '1.125em', className, ...rest } = props
 
     return (
-      <button
+      <CircleIconButton
         ref={ref}
-        className={`btn-gr btn btn-icon close-btn ${className ? className : ''}`}
+        className={`close-btn ${className ? className : ''}`}
         {...rest}
       >
         <X size={size} stroke={'currentColor'} />
-      </button>
+      </CircleIconButton>
     )
   })
 
@@ -171,7 +171,7 @@ export const PlusButton: FC<ButtonHTMLAttributes<HTMLButtonElement>>
 
 export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> &
 { fill?: string, stroke?: string, show?: boolean, drawable?: boolean, size?: `${number}em` }>
-  = ({ className, show, fill, stroke, drawable = true, size = '1.2em', ...rest }) => (
+  = ({ className, show, fill, stroke, drawable = true, size = '1em', ...rest }) => (
     <CircleIconButton
       className={`delete-button${show ? '-show' : ''}
         ${drawable ? 'drawable' : 'not-drawable'}

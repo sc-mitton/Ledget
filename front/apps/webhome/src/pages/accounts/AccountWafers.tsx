@@ -147,7 +147,6 @@ export const FilledWafers = () => {
 
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
-    const [turnOffBottomMask, setTurnOffBottomMask] = useState(false)
     const [freezeWaferAnimation, setFreezeWaferAnimation] = useState(false)
 
     const waferApi = useSpringRef()
@@ -234,13 +233,7 @@ export const FilledWafers = () => {
         <div className="account-wafers--container window">
             {['deposits', 'credit'].includes(location.pathname.split('/')[2])
                 && <WafersHeader setAccounts={setAccounts} accounts={accounts} />}
-            <div
-                className="account-wafers"
-                onScroll={(e) => {
-                    const scrollContainer = e.target as HTMLDivElement
-                    setTurnOffBottomMask(scrollContainer.scrollWidth - scrollContainer.scrollLeft <= scrollContainer.clientWidth)
-                }}
-            >
+            <div className="account-wafers">
                 {transitions((style, account) => {
                     const institution = data?.institutions.find((item: any) => item.id === account.institution_id)
                     const nameIsLong = account.official_name.length > 18

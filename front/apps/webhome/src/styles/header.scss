@@ -81,28 +81,8 @@ header {
         }
     }
 
-    &.small .profile-button {
+    .profile-button {
         color: var(--white);
-    }
-
-    &:not(.small) {
-        .profile-button {
-            position: relative;
-            color: var(--black);
-
-            &::after {
-                content: '';
-                position: absolute;
-                z-index: -1;
-                top: 50%;
-                right: 50%;
-                transform: translate(50%, -50%);
-                width: 1.875em;
-                height: 1.875em;
-                background-color: var(--white);
-                border-radius: 50%;
-            }
-        }
     }
 }
 
@@ -137,8 +117,8 @@ header {
     flex-direction: column;
     display: flex;
     text-align: left;
-    top: 2.5em;
-    margin-left: .75em;
+    top: 2.125em;
+    margin-left: 1em;
     @include dropdown-arrow;
 
     button {

@@ -59,3 +59,46 @@
         transform: rotate(360deg);
     }
 }
+
+@mixin loading-dot {
+    width: 0.25em;
+    height: 0.25em;
+    border-radius: 50%;
+    background-color: var(--m-text);
+}
+
+.loading-message {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5em;
+
+    span:first-child {
+        @include loading-dot;
+        animation: cycle-pulse 1.5s infinite;
+    }
+
+    span:nth-child(2) {
+        @include loading-dot;
+        animation: cycle-pulse 1.5s infinite 0.25s;
+    }
+
+    span:nth-child(3) {
+        @include loading-dot;
+        animation: cycle-pulse 1.5s infinite .5s;
+    }
+}
+
+@keyframes cycle-pulse {
+    0% {
+        opacity: .2;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: .2;
+    }
+}

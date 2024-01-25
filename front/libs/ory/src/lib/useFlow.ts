@@ -52,7 +52,7 @@ const extractData: React.FormEventHandler<HTMLFormElement> = (event) => {
 
 export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<OryGetFlowEndpoint<TFlow>>, mutation: UseMutation<OryCompleteFlowEndpoint<TFlow>>, flowType: TFlow) => {
     const [errMsg, setErrMsg] = useState<string[]>()
-    const [errId, setErrId] = useState('')
+    const [errId, setErrId] = useState<string | number>('')
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
     const [mutationCacheKey, setMutationCacheKey] = useState<string>('')
@@ -64,7 +64,7 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
             error: getFlowError,
             isError: isGetFlowError,
             isLoading: isGettingFlow,
-            isSuccess: isGetFlowSuccess
+            isSuccess: isGetFlowSuccess,
         }
     ] = query()
     const [
@@ -74,8 +74,10 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
             error: completeError,
             isLoading: isCompletingFlow,
             isError: isCompleteError,
-            isSuccess: isCompleteSuccess
-        }
+            isSuccess: isCompleteSuccess,
+            isUninitialized: isCompleteUninitialized,
+            reset: resetCompleteFlow,
+        },
     ] = mutation({ fixedCacheKey: mutationCacheKey })
     // Fixed cache key because sometimes we reauth before going to a
     // target component, and we don't want the mutation results to carry
@@ -98,8 +100,7 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
             aal: aal,
             id: flowId
         }
-        setMutationCacheKey(`${flowId}${aal}`)
-        getFlow({ params: params } as any)
+        getFlow({ params: params } as any, true)
     }
 
     const submit: React.FormEventHandler<HTMLFormElement> = (event) => {
@@ -110,6 +111,12 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
         completeFlow({ data: data, params: { flow: flowId } } as any)
     }
 
+    useEffect(() => {
+        if (searchParams.get('flow')) {
+            setMutationCacheKey(`${searchParams.get('flow')}${searchParams.get('aal') || ''}`)
+        }
+    }, [searchParams])
+
     // Update search params
     useEffect(() => {
         if (isGetFlowSuccess) {
@@ -117,7 +124,6 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
                 searchParams.set('flow', flow?.id)
                 setSearchParams(searchParams)
             }
-            setMutationCacheKey(`${searchParams.get('flow')}${searchParams.get('aal') || ''}`)
         }
     }, [isGetFlowSuccess, flow])
 
@@ -128,7 +134,7 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
         const errorData = completeError?.data || getFlowError?.data
         const status = completeError?.status || getFlowError?.status
 
-        const errorMessages = errorData.data?.ui?.messages
+        const errorMessages = errorData?.ui?.messages
 
         if (errorMessages) {
             setErrMsg(formatErrorMessages(errorMessages))
@@ -198,6 +204,7 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
         completeFlow,
         submit,
         result,
+        resetCompleteFlow,
         flowStatus: {
             errMsg,
             errId,
@@ -207,7 +214,9 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
             completeError,
             isCompletingFlow,
             isCompleteError,
-            isCompleteSuccess
-        }
+            isCompleteSuccess,
+            isCompleteUninitialized,
+        },
+        mutationCacheKey
     }
 }

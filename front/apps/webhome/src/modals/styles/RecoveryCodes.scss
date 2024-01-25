@@ -1,32 +1,42 @@
 #recovery-codes--container {
     display: flex;
     flex-direction: column;
+    width: 100%;
+
+    &>div:nth-of-type(2) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1em;
+    }
 }
 
-#recovery-codes--container span {
-    margin: 1em 0;
-}
 
 #recovery-codes-save--container {
     display: flex;
     justify-content: center;
     gap: .525em;
-    margin: 1.25em;
-}
+    width: 100%;
+    margin-top: 1.5em;
 
-#recovery-codes-save--container button {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    max-width: 7.5em;
-}
+    span {
+        margin: 1em 0;
+    }
 
-#recovery-codes-save--container button svg {
-    margin-left: .375em;
-}
+    button {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        max-width: 8em;
+    }
 
-#recovery-codes-save--container button {
-    float: center;
+    button svg {
+        margin-left: .375em;
+    }
+
+    button {
+        float: center;
+    }
 }
 
 #select-code-action--container {

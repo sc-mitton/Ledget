@@ -1,6 +1,5 @@
-import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import { EndpointBuilder, MutationDefinition, QueryDefinition } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import { LoginFlow, SettingsFlow, RegistrationFlow, LogoutFlow, VerificationFlow, RecoveryFlow } from '@ory/client'
 
 
@@ -10,17 +9,8 @@ const endpointRootNames = [
 
 export type EndpointRootNames = typeof endpointRootNames[number]
 
-type TransformedSettingsFlow = SettingsFlow & { csrf_token: string }
-type TransformedLoginFlow = LoginFlow & { csrf_token: string }
-type TransformedRegistrationFlow = RegistrationFlow & { csrf_token: string }
-type TransformedLogoutFlow = LogoutFlow & { csrf_token: string }
-type TransformedVerificationFlow = VerificationFlow & { csrf_token: string }
-type TransformedRecoveryFlow = RecoveryFlow & { csrf_token: string }
-
-type OryQueryError = {
-  status: number,
-  data: any
-}
+type FlowTypes = SettingsFlow | LoginFlow | RegistrationFlow | LogoutFlow | VerificationFlow | RecoveryFlow
+type TransformedFlow<F extends FlowTypes> = F & { csrf_token: string }
 
 type AxiosBaseQueryConfig = {
   url: string
@@ -32,12 +22,12 @@ type AxiosBaseQueryConfig = {
 }
 
 type FlowType<T extends EndpointRootNames> =
-  T extends 'settings' ? TransformedSettingsFlow :
-  T extends 'login' ? TransformedLoginFlow :
-  T extends 'registration' ? TransformedRegistrationFlow :
-  T extends 'logout' ? TransformedLogoutFlow :
-  T extends 'verification' ? TransformedVerificationFlow :
-  T extends 'recovery' ? TransformedRecoveryFlow :
+  T extends 'settings' ? TransformedFlow<SettingsFlow> :
+  T extends 'login' ? TransformedFlow<LoginFlow> :
+  T extends 'registration' ? TransformedFlow<RegistrationFlow> :
+  T extends 'logout' ? TransformedFlow<LogoutFlow> :
+  T extends 'verification' ? TransformedFlow<VerificationFlow> :
+  T extends 'recovery' ? TransformedFlow<RecoveryFlow> :
   never
 
 type TOryEndpoint<TName extends EndpointRootNames, TType extends 'get' | 'complete'> =
@@ -124,29 +114,20 @@ const getFlow = async ({ url, params = {}, transformResponse }: Omit<AxiosBaseQu
   }
 }
 
-const completeFlow = async ({ url, data, params }: Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>) =>
-  await axiosBaseQuery({
+const completeFlow = async ({ url, data, params }: Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>) => {
+  const responseData = await axiosBaseQuery({
     url: `${url}`,
     method: 'POST',
     data: data,
     params: params
-  }).then(result => ({ data: result.data }))
-    .catch(result => result)
+  })
+  return responseData.error ? { error: responseData.error } : { data: responseData.data }
+}
 
 const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>) => {
   const endpoints = {} as OryEndpointDefenitions
 
   endpointRootNames.forEach((endpoint) => {
-    if (endpoint === 'logout') {
-      endpoints['getUpdatedLogoutFlow'] = builder.query<any, any>({
-        queryFn: (arg: any) => axiosBaseQuery({
-          url: '/self-service/logout',
-          method: 'GET',
-          params: { token: arg.token },
-        })
-      })
-      return
-    }
 
     const baseEndpointName = `${endpoint.charAt(0).toUpperCase()}${endpoint.slice(1)}`
     const getEndpointName = `get${baseEndpointName}Flow` as GetEndpointName<typeof endpoint>
@@ -173,6 +154,17 @@ const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>) => {
         }
       })
     })
+
+    if (endpoint === 'logout') {
+      endpoints['getUpdatedLogoutFlow'] = builder.query<any, any>({
+        queryFn: (arg: any) => axiosBaseQuery({
+          url: '/self-service/logout',
+          method: 'GET',
+          params: { token: arg.token },
+        })
+      })
+      return
+    }
 
     endpoints[completeEndpointNameName] = builder.mutation<any, any>({
       queryFn: (arg) => completeFlow({

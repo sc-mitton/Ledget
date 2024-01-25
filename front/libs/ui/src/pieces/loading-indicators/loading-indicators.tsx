@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes } from 'react'
-import './loading-indicators.css'
+import './loading-indicators.scss'
 import { useTransition, animated } from '@react-spring/web'
 
 
@@ -50,3 +50,13 @@ export const LoadingRingDiv: FC<HTMLAttributes<HTMLDivElement> & { loading: bool
       </div>
     )
   }
+
+export const LoadingMessage = ({ message = 'Loading' }) => {
+
+  return (
+    <div className="loading-message">
+      {message}
+      <span /><span /><span />
+    </div>
+  )
+}
