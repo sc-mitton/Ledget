@@ -275,15 +275,19 @@ svg.icon {
     scrollbar-width: none;
 }
 
+.dashboard.extra-small .window {
+    padding: var(--window-padding-extra-small);
+}
+
+.dashboard.extra-small .main-window {
+    padding: 1.5em;
+}
+
 .main-window {
     padding: 3em 2em;
     height: calc(100% - 4em);
     overflow: auto;
     scrollbar-width: none;
-}
-
-.dashboard.extra-small .window {
-    padding: var(--window-padding-extra-small);
 }
 
 .window {

@@ -21,7 +21,7 @@ import { useScreenContext } from '@context/context'
 import { DepositsIcon } from '@ledget/media'
 
 
-const getNavIcon = (key = '', isCurrent: boolean) => {
+const _getNavIcon = (key = '', isCurrent: boolean) => {
 
     switch (key) {
         case 'deposits':
@@ -37,7 +37,7 @@ const getNavIcon = (key = '', isCurrent: boolean) => {
     }
 }
 
-const getNavLabel = (key = '') => {
+const _getNavLabel = (key = '') => {
     switch (key) {
         case 'deposits':
             return 'Deposits'
@@ -52,7 +52,7 @@ const getNavLabel = (key = '') => {
     }
 }
 
-const getNavHeaderPhrase = (key = '') => {
+const _getNavHeaderPhrase = (key = '') => {
     switch (key) {
         case 'deposits':
             return 'Your Accounts'
@@ -75,6 +75,7 @@ const Header = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const currentPath = location.pathname.split('/')[2]
+    const { screenSize } = useScreenContext()
 
     const [syncTransactions, {
         isSuccess: isTransactionsSyncSuccess,
@@ -139,7 +140,7 @@ const Header = () => {
     return (
         <>
             <div className='window-header'>
-                <h2>{getNavHeaderPhrase(currentPath)}</h2>
+                <h2>{_getNavHeaderPhrase(currentPath)}</h2>
             </div>
             <div id="accounts-header-nav">
                 <ul ref={ref}>
@@ -151,8 +152,8 @@ const Header = () => {
                             tabIndex={0}
                             onClick={() => location.pathname !== `/accounts/${path}` && navigate(`/accounts/${path}`)}
                         >
-                            {getNavIcon(path, currentPath === path)}
-                            {getNavLabel(path)}
+                            {_getNavIcon(path, currentPath === path)}
+                            {screenSize !== 'extra-small' && <span>{_getNavLabel(path)}</span>}
                         </li>
                     ))
                     }

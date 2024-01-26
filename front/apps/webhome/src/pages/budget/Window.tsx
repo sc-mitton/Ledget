@@ -51,14 +51,14 @@ function Window() {
     return (
         <>
             <div id="budget-window" className={`main-window ${screenSize === 'small' ? 'small-screen' : ''}`}>
-                <div>
+                {/* <div>
                     <BudgetSummary />
                     <div>
                         <SpendingCategories />
                         <Bills />
                         <Footer />
                     </div>
-                </div>
+                </div> */}
             </div>
             {screenSize === 'extra-large' && <Spending />}
             <Outlet />

@@ -95,7 +95,7 @@ const App = () => {
                 <ZoomMotionDiv
                     key={location.pathname.split('/')[1]}
                     style={{ flexGrow: '1' }}
-                    className="dashboard"
+                    className={`dashboard ${screenSize ? screenSize : ''}`}
                     ref={ref}
                 >
                     <Routes location={location} key={location.pathname.split('/')[1]}>

@@ -12,8 +12,27 @@ $wafer-container-padding: .75rem;
     background-color: var(--window2);
 
     .account-wafers--header {
-        display: inline-block;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
         font-size: 1.125rem;
+        flex-grow: 1;
+        height: 100%;
+
+        &>div {
+            font-weight: var(--fw-regular);
+            font-size: 1.5em;
+
+            &:nth-child(3) {
+                font-size: 1em;
+                margin-top: .75em;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
+        }
 
         button {
             font-size: .95rem;
@@ -24,25 +43,20 @@ $wafer-container-padding: .75rem;
         }
     }
 
+    &.extra-small {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+
 
     * {
         scrollbar-width: none;
     }
 }
 
-.skeleton-account-wafers--container>div:first-child,
-.account-wafers--container>div:first-child {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    flex-direction: column;
-}
 
-.skeleton-account-wafers--container>div:first-child>div,
-.account-wafers--container>div:first-child>div {
-    font-weight: var(--fw-regular);
-    font-size: 1.375em;
-}
+
 
 .add-accounts-btn--container {
     width: 100%;
@@ -52,6 +66,17 @@ $wafer-container-padding: .75rem;
     justify-content: center;
     flex-direction: column;
     gap: .75em;
+}
+
+.small-screen-account-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &>div {
+        display: flex;
+        gap: .5em;
+    }
 }
 
 /* --------------------------------- Wafers --------------------------------- */
@@ -319,11 +344,24 @@ $wafer-container-padding: .75rem;
 .transactions--container {
     flex-grow: 1;
     position: relative;
-    overflow: hidden;
     min-height: 20em;
 
-    &.small {
-        min-height: 32em;
+    &.extra-small {
+        .transactions--table {
+            right: -.75em;
+            padding-right: 1em;
+
+            /* all name cells */
+            &>div:nth-child(2n)>div:first-child {
+                padding-left: .5em;
+                padding-right: 1.75em;
+            }
+
+            /* all amount cells */
+            &>div:nth-child(2n)>div:last-child {
+                padding-right: .5em;
+            }
+        }
     }
 
     &.loading {
@@ -365,6 +403,7 @@ $borderRadius2: var(--border-radius2);
     position: absolute;
     z-index: 100;
     inset: 0;
+    right: -1.5em;
     overflow: auto;
     scrollbar-gutter: stable;
     display: grid;
@@ -372,7 +411,7 @@ $borderRadius2: var(--border-radius2);
     grid-auto-rows: minmax(auto, 5rem);
     grid-template-rows: min-content;
     row-gap: .75em;
-    padding: .75em .75em .5em .5em;
+    padding-right: 2em;
 
     &>div:nth-child(2n) {
         display: contents;
@@ -424,16 +463,12 @@ $borderRadius2: var(--border-radius2);
                 align-items: baseline;
             }
 
-            &>div:first-child .pending {
-                background-color: var(--btn-feather-light-gray-hover);
-                border-radius: var(--border-radius1);
-                padding: 0 .5em;
-                font-size: .75rem;
-                color: var(--m-text-secondary);
-                // font-weight: var(--fw-light);
+            // Date and category emojis
+            &>div:first-child {
+                display: flex;
+                align-items: center;
             }
 
-            // Date and category emojis
             &>div:last-child span {
                 color: var(--m-text-tirtiary);
                 font-weight: var(--fw-light);
@@ -459,99 +494,5 @@ $borderRadius2: var(--border-radius2);
         content: '';
         height: .25em;
         bottom: -.25em;
-    }
-}
-
-/* ------------------------------- Responsive ------------------------------- */
-
-@media (max-width: 700px) {
-    .wafer-balance--container {
-        margin-top: 0;
-    }
-
-    .account-wafer--container,
-    .skeleton-account-wafer--container {
-        height: calc($wafer-height - .5em);
-    }
-
-
-    .account-wafers--container,
-    .skeleton-account-wafers--container {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-
-    .account-wafers,
-    .skeleton-account-wafers {
-        height: calc($wafer-height + 2 * $wafer-container-padding - .5em);
-    }
-
-    .account-wafers--container {
-
-        // Balance header container
-        &>div:first-child {
-            padding-top: 0;
-            width: min-content;
-            display: inline-flex;
-            // flex-direction: row;
-            align-items: flex-end;
-            justify-content: flex-start;
-            // gap: .5em;
-            margin: .25em .125em .75em .25em;
-        }
-
-        // All accounts balance */
-        &>div:first-child>div {
-            font-weight: var(--fw-regular);
-        }
-
-        &>div:first-child {
-            padding-bottom: 0;
-            align-items: baseline;
-            margin-left: .5em;
-
-            &>div:first-child {
-                padding: 0 .375em;
-                border-radius: var(--border-radius1);
-
-                button {
-                    margin-left: -.5em;
-                    display: flex;
-                    justify-content: space-between;
-                }
-            }
-
-            &>div:last-child {
-                font-size: 1.5em;
-                order: 0;
-            }
-        }
-
-        .account-wafers {
-            order: 1;
-        }
-    }
-
-    .transactions--header {
-        margin-top: 1em;
-        padding-right: 2.25em;
-
-        &>div {
-            font-size: .875em;
-        }
-    }
-
-    .transactions--table {
-
-        /* all name cells */
-        &>div:nth-child(2n)>div:first-child {
-            padding-left: .5em;
-            padding-right: 1.75em;
-        }
-
-        /* all amount cells */
-        &>div:nth-child(2n)>div:last-child {
-            padding-right: .5em;
-        }
     }
 }

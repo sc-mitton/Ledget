@@ -96,10 +96,11 @@ export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'>) => {
       <div
         style={{
           width: `${length}ch`,
-          height: '2.5ch',
+          fontSize: 'inherit',
+          height: '1em',
           margin: '2px 0',
           borderRadius: 'var(--border-radius1)',
-          backgroundColor: 'var(--inner-window)',
+          backgroundColor: 'var(--shimmer-text-background)',
           position: 'relative',
           ...style,
         }}
@@ -107,6 +108,41 @@ export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'>) => {
         <Shimmer shimmering={shimmering} darkMode={darkMode} {...rest} />
       </div>
     </>
+  )
+}
+
+export const ShimmerTextDiv = (props: HTMLProps<HTMLDivElement> & Omit<ColoredShimmerProps, 'color'>) => {
+  const {
+    shimmering = false,
+    length = 12,
+    style = {} as React.CSSProperties,
+    darkMode,
+    children,
+    ...rest
+  } = props
+
+  return (
+    <div {...rest}>
+      <>
+        {shimmering
+          ?
+          <div
+            style={{
+              width: `${length}ch`,
+              fontSize: 'inherit',
+              height: '1em',
+              margin: '2px 0',
+              borderRadius: 'var(--border-radius1)',
+              backgroundColor: 'var(--shimmer-text-background)',
+              position: 'relative',
+              ...style,
+            }}
+          >
+            <Shimmer shimmering={shimmering} darkMode={darkMode} {...rest} />
+          </div>
+          : { children }}
+      </>
+    </div>
   )
 }
 

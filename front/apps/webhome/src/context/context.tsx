@@ -1,8 +1,9 @@
 import React, { createContext, ReactNode, useEffect, useContext, useState } from 'react'
 
+type ScreenSize = 'small' | 'medium' | 'large' | 'extra-large' | 'extra-small'
 
 const ScreenContext = createContext<{
-    screenSize: 'small' | 'medium' | 'large' | 'extra-large'
+    screenSize: ScreenSize
     screenWidth: number | undefined
 } | undefined
 >(undefined)
@@ -15,13 +16,15 @@ export const useScreenContext = () => {
     return context
 }
 export const ScreenProvider = ({ children }: { children: ReactNode }) => {
-    const [screenSize, setScreenSize] = useState<'small' | 'medium' | 'large' | 'extra-large'>('large')
+    const [screenSize, setScreenSize] = useState<ScreenSize>('large')
     const [screenWidth, setScreenWidth] = useState<number>()
 
     useEffect(() => {
         let timeout: NodeJS.Timeout
         const handleResize = () => {
-            if (window.innerWidth < 768) {
+            if (window.innerWidth < 600) {
+                setScreenSize('extra-small')
+            } else if (window.innerWidth < 768) {
                 setScreenSize('small')
             } else if (window.innerWidth < 1024) {
                 setScreenSize('medium')

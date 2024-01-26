@@ -113,6 +113,9 @@
         --input-focus-dropshadow-color: color-mix(in srgb, var(--blue), var(--window) 50%);
         --input-placeholder-focus: color-mix(in srgb, var(--blue-sat), var(--blue-dark) 50%);
 
+        // Shimmer
+        --shimmer-text-background: hsl(0, 0%, 8%);
+
         // Text
         --m-header-text: hsl(0, 0%, 100%);
         --m-text: hsl(0, 0%, 90%);
@@ -268,6 +271,9 @@
         --input-border-hover-color: hsl(0, 0%, 78%);
         --input-focus-dropshadow-color: var(--blue-light);
         --input-placeholder-focus: var(--blue-light-medium);
+
+        // Shimmer
+        --shimmer-text-background: hsl(0, 0%, 90%);
 
         // Text
         --m-header-text: hsl(0, 0%, 0%);

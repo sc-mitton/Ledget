@@ -12,10 +12,6 @@
     .window {
         position: relative;
     }
-
-    &.small .window {
-        padding: .625em .75em;
-    }
 }
 
 #accounts-header-nav {
@@ -50,21 +46,9 @@
             background-color: var(--btn-feather-light-gray-hover);
             transition: background-color 0.5s ease-in-out;
         }
-    }
-}
 
-@media (max-width: 600px) {
-
-    #accounts-header-nav {
-
-        ul li svg {
-            visibility: collapse;
-            width: 0;
-            margin: 0;
-        }
-
-        ul li {
-            gap: 0;
+        &>:last-child {
+            margin-left: .5em;
         }
     }
 }

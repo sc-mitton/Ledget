@@ -150,7 +150,7 @@ function Header() {
 
     return (
         <>
-            <header className={`${screenSize !== 'large' ? 'narrow' : ''} ${screenSize === 'small' ? 'small' : ''} ${isDark ? 'dark-mode' : ''}`}>
+            <header className={`${screenSize !== 'large' ? 'narrow' : ''} ${screenSize === 'extra-small' ? 'extra-small' : ''} ${isDark ? 'dark-mode' : ''}`}>
                 <div>
                     <div><LedgetLogoIcon /></div>
                     <div><Navigation /></div>

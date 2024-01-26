@@ -6,9 +6,10 @@ import dayjs from 'dayjs'
 
 import TransactionModal from '@modals/TransactionItem'
 import { useLazyGetTransactionsQuery, useGetTransactionQueryState, Transaction } from '@features/transactionsSlice'
-import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv, useLoaded } from '@ledget/ui'
+import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv, useLoaded, Tooltip } from '@ledget/ui'
 import pathMappings from './path-mappings'
 import { useScreenContext } from '@context/context'
+import { Hourglass } from '@ledget/media'
 
 const TransactionModalContent = createContext<{
     item: Transaction | undefined,
@@ -94,7 +95,7 @@ const UnenrichedTable: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
         <>
             <InfiniteScrollDiv
                 animate={loaded && fetchMorePulse}
-                className={`transactions--container ${isLoadingTransactions ? 'loading' : ''} ${screenSize === 'small' ? 'small' : ''}`}
+                className={`transactions--container ${isLoadingTransactions ? 'loading' : ''} ${screenSize ? screenSize : ''}`}
                 ref={containerRef}
             >
                 {skeleton
@@ -114,10 +115,7 @@ const UnenrichedTable: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
                         }
                     </div>
                     :
-                    <ShadowScrollDiv
-                        className='transactions--table not-skeleton'
-                        onScroll={handleScroll}
-                    >
+                    <ShadowScrollDiv className='transactions--table not-skeleton' onScroll={handleScroll}>
                         {children}
                     </ShadowScrollDiv>
                 }
@@ -191,8 +189,10 @@ export const Transactions = () => {
                             >
                                 <div>
                                     <div>
+                                        {transaction.pending &&
+                                            <Tooltip msg="Pending" type='right'><Hourglass className='icon' /></Tooltip>
+                                        }
                                         <span>{transaction.preferred_name || transaction.name}</span>
-                                        {transaction.pending && <span className='pending'>Pending</span>}
                                     </div>
                                     <div>
                                         <span>{date.toLocaleString('default', { month: 'numeric', day: 'numeric', year: 'numeric' })}</span>
