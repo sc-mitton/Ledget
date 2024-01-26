@@ -12,6 +12,7 @@
     /* Paddings */
     --input-padding: .525em 1em;
     --window-padding: 2em;
+    --window-padding-extra-small: 1em;
 }
 
 @import './animations.scss';
@@ -23,6 +24,7 @@
 
 * {
     scrollbar-width: thin;
+    scrollbar-color: var(--btn-light-gray) transparent;
 }
 
 body {
@@ -278,6 +280,10 @@ svg.icon {
     height: calc(100% - 4em);
     overflow: auto;
     scrollbar-width: none;
+}
+
+.dashboard.extra-small .window {
+    padding: var(--window-padding-extra-small);
 }
 
 .window {

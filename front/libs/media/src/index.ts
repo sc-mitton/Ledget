@@ -21,16 +21,15 @@ export { default as QrIcon } from './icons/QrIcon';
 export { default as LocationIcon } from './icons/LocationIcon';
 export { default as VerifyEmail } from './icons/VerifyEmail';
 export { default as FaceIcon } from './icons/FaceIcon';
-export { default as SmsAuthIcon } from './icons/SmsAuth';
 export { default as RelinkIcon } from './icons/Relink';
 export { default as ComputerIcon } from './icons/Computer';
 export { default as CornerGrip } from './icons/CornerGrip';
-export { default as SmsAuthIcon2 } from './icons/SmsAuth2';
 export { default as LedgetLogo } from './brand/Logo'
 export { default as LedgetLogoIcon } from './brand/LogoIcon'
 export { default as LogoIcon2 } from './brand/LogoIcon2'
 export { default as Hamburger } from './icons/Hamburger';
 export { default as HalfArrow } from './icons/HalfArrow';
+export { default as Hourglass } from './icons/Hourglass';
 
 export { default as EmptyListImage } from './images/EmptyList';
 export { default as EmptyListDark } from './images/EmptyListDark';

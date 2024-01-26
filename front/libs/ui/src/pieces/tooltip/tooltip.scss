@@ -31,7 +31,7 @@
     @else if $placement ==right {
         bottom: -50%;
         right: 0%;
-        transform: translateX(50%) scale($scale);
+        transform: translateX(calc(100% + .125em)) scale($scale);
     }
 }
 
@@ -47,6 +47,7 @@
     font-size: .75rem;
     opacity: 0;
     transition: transform 0.2s, opacity 0.2s;
+    font-weight: var(--fw-bold);
 
     &.top {
         @include transform(top, false);
