@@ -2,7 +2,7 @@
 
 const Refresh = ({
     className = '',
-    size = "1.25em",
+    size = "1.125em",
     stroke = "var(--icon-full)",
 }) => {
     return (

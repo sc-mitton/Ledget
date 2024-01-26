@@ -65,6 +65,7 @@
         --blue-medium: hsl(var(--blue-h), 45%, 45%);
         --blue-medium-hover: hsl(var(--blue-h), 45%, 40%);
         --blue: hsl(var(--blue-h), 25%, 35%);
+        --blue-steel-gray: hsl(var(--blue-h), 25%, 35%);
         --blue-sat: hsl(var(--blue-h), 55%, 55%);
         --blue-medium-dark: hsl(var(--blue-h), 25%, 70%);
         --blue-dark: hsl(var(--blue-h), 25%, 90%);
@@ -80,17 +81,18 @@
         --green-dark: hsl(var(--green-h), 30%, 80%);
 
         // Windows
+        --inner-window: hsl(0, 0%, 10%);
+        --modal-inner-window: var(--inner-window);
+        --overlay: hsl(0, 0%, 10%);
+
         --window-background-color: hsl(0, 0%, 2%);
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
         --window-background-color-portal: hsl(0, 0%, 2%);
         --window: hsl(0, 0%, 7%);
-        --window2: hsl(0, 0%, 11%);
+        --window2: var(--inner-window);
         --window-rgb: 28, 28, 28;
         --side-window: hsl(0, 0%, 6%);
 
-        --inner-window: hsl(0, 0%, 10%);
-        --modal-inner-window: var(--inner-window);
-        --overlay: hsl(0, 0%, 10%);
 
         --wafer-background: hsl(0, 0%, 3%);
         --dropdown-background: hsl(0, 0%, 14%);
@@ -216,6 +218,7 @@
         --blue-medium: hsl(var(--blue-h), 92%, 62%);
         --blue-medium-hover: hsl(var(--blue-h), 92%, 57%);
         --blue: hsl(var(--blue-h), 82%, 52%);
+        --blue-steel-gray: hsl(var(--blue-h), 32%, 85%);
         --blue-sat: hsl(var(--blue-h), 82%, 50%);
         --blue-medium-dark: hsl(var(--blue-h), 82%, 37%);
         --blue-dark: hsl(var(--blue-h), 82%, 22%);
@@ -234,7 +237,7 @@
         --window-background-color-portal: hsl(0, 0%, 95%);
 
         --window: hsl(var(--window-h), var(--window-s), 96%);
-        --window2: hsl(var(--window-h), var(--window-s), 96%);
+        --window2: var(--inner-window);
         // --window-drop-shadow-color: hsl(0, 0%, 80%);
         // --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 16px 0px;
         --window-drop-shadow2-color: hsl(0, 0%, 85%);

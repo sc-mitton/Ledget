@@ -484,7 +484,7 @@ const NeedsConfirmationWindow = () => {
     }
 
     return (
-        <>
+        <div id='needs-confirmation-stack'>
             <Header onConfirmAll={handleConfirmAll} />
             <InfiniteScrollDiv
                 id="new-items"
@@ -569,7 +569,7 @@ const NeedsConfirmationWindow = () => {
                     item={focusedItem}
                     splitMode={showTransactionModal.split}
                     onClose={() => setShowTransactionModal(undefined)} />}
-        </ >
+        </ div>
     )
 }
 

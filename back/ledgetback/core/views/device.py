@@ -87,5 +87,3 @@ class DestroyDeviceView(DestroyAPIView):
         obj = Device.objects.get(id=self.kwargs['id'])
         self.check_object_permissions(self.request, obj)
         return obj
-
-

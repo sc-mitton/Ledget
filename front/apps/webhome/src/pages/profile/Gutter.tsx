@@ -159,14 +159,15 @@ const Gutter = () => {
 
     return (
         <>
-            <div id='hamburger'>
-                <IconButton
-                    onClick={() => { screenSize === 'small' && setOpen(!open) }}
-                    ref={buttonRef}
-                >
-                    <Hamburger size={'1.2em'} />
-                </IconButton>
-            </div>
+            {screenSize === 'small' &&
+                <div id='hamburger'>
+                    <IconButton
+                        onClick={() => { screenSize === 'small' && setOpen(!open) }}
+                        ref={buttonRef}
+                    >
+                        <Hamburger size={'1.2em'} />
+                    </IconButton>
+                </div>}
             <animated.nav
                 style={navProps}
                 id='gutter'

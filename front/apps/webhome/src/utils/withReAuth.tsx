@@ -23,11 +23,8 @@ import {
     SlideMotionDiv,
     JiggleDiv,
     TotpAppGraphic,
-    SmsVerifyStatus,
     RecoveryCodeGraphic,
-    Otc,
     BackButton,
-    LightBlueWideButton,
     useLoaded,
     BlueTextButton
 } from '@ledget/ui'
@@ -222,7 +219,7 @@ interface WithReAuthI {
     onClose?: () => void
 }
 
-const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal' | 'onClose'>) => {
+const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal'> & { onClose?: () => void }) => {
     const { data: user } = useGetMeQuery()
     const [searchParams, setSearchParams] = useSearchParams()
     const reAuthed = useAppSelector(state => state.auth.reAuthed)
@@ -235,7 +232,7 @@ const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal
     // object in the redux store
     useEffect(() => {
         const sessionIsFresh = Date.now() - (reAuthed.at || 0) < 1000 * 60 * 9
-        const aalGood = user?.highest_aal === 'aal1' ? reAuthed.level : user?.highest_aal === reAuthed.level
+        const aalGood = (user?.highest_aal === 'aal1' || requiredAal === 'aal1') ? Boolean(reAuthed.level) : user?.highest_aal === reAuthed.level
         let interval: NodeJS.Timeout
 
         // If requirements are met, start the poller to check freshness
@@ -280,39 +277,48 @@ export const ReAuthProtected = ({ children, requiredAal, onReAuth }: {
     const [showReAuthModal, setShowReAuthModal] = useState(false)
     const [isReAuthing, setIsReAuthing] = useState(false)
     const [current, setCurrent] = useState(false)
+    const [, setSearchParams] = useSearchParams()
 
     const { data: user } = useGetMeQuery()
-    const isReAuthed = useReauthCheck({ requiredAal: requiredAal || user?.highest_aal || 'aal1', onClose: () => { setShowReAuthModal(false) } })
-
-    // When the user successfully re-auths, close the modal and
-    // run the onReAuth function
-    useEffect(() => {
-        if (isReAuthed && showReAuthModal) {
-            onReAuth()
-            setShowReAuthModal(false)
-        }
-    }, [isReAuthed])
+    // onClose callback not necessary since the protected action is executed immediately
+    const isReAuthed = useReauthCheck({ requiredAal: requiredAal || user?.highest_aal || 'aal1' })
 
     // When the user initiates whatever action requires a re-auth,
     // first check to see if they are already authed recently. If not,
     // show the reauth modal form
     useEffect(() => {
-        if (isReAuthed && isReAuthing) {
-            onReAuth()
-        } else if (isReAuthing) {
-            setShowReAuthModal(true)
+        if (isReAuthing) {
+            if (!isReAuthed) {
+                setShowReAuthModal(true)
+            } else {
+                onReAuth()
+            }
         }
     }, [isReAuthing])
+
+    // Once the user has re-authed, execute the onReauth, and clean up
+    useEffect(() => {
+        if (isReAuthed) {
+            onReAuth()
+            setIsReAuthing(false)
+            setShowReAuthModal(false)
+        }
+    }, [isReAuthed])
 
     return (
         <>
             {showReAuthModal &&
-                <ReAuthModal onClose={() => setShowReAuthModal(false)} />}
+                <ReAuthModal onClose={() => {
+                    setSearchParams({})
+                    setIsReAuthing(false)
+                    setShowReAuthModal(false)
+                }} />}
             {children({
                 reAuth: () => {
                     setIsReAuthing(true)
                     setCurrent(true)
-                }, current
+                },
+                current
             })}
         </>
     )

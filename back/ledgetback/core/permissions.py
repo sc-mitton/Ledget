@@ -36,7 +36,6 @@ class IsAuthenticated(BasePermission):
             if device_aal == 'aal2' or session_aal == 'aal2':
                 return True
             else:
-                print('here')
                 raise ValidationError({'message': "Device must have aal2 level session",
                                       'code': "AAL2_REQUIRED"})
         else:
@@ -89,10 +88,7 @@ class BaseFreshSessionClass(BasePermission):
 
     def check_session_is_fresh(self, request, aal):
         try:
-            if aal == 'aal15':
-                seconds_since_last_login = self.get_last_aal15_login_delta(request)
-            else:
-                seconds_since_last_login = self.get_last_ory_login_delta(request, aal)
+            seconds_since_last_login = self.get_last_ory_login_delta(request, aal)
         except Exception as e:
             logger.error(f'Error checking session freshness: {e}')
             return False

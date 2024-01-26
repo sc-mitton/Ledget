@@ -13,7 +13,6 @@
             "canceled_on": null,
             "mfa_method": null,
             "mfa_enabled_on": null,
-            "last_otp_verification": null,
             "phone_number": null,
             "phone_country_code": null,
             "yearly_anchor": null
@@ -33,7 +32,6 @@
             "canceled_on": "2023-10-01T05:32:29.781Z",
             "mfa_method": "totp",
             "mfa_enabled_on": "2023-09-28T19:00:03.587Z",
-            "last_otp_verification": null,
             "phone_number": null,
             "phone_country_code": null,
             "yearly_anchor": null

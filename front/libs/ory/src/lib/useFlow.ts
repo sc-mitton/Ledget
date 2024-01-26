@@ -86,25 +86,28 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
     const fetchFlow = (args: { aal?: string, refresh?: boolean } | void) => {
         // If the aal param is different, this means a new flow is needed
         // and the search param flow id can't be used
-        let aal, refresh
-        if (args) {
-            aal = args.aal
-            refresh = args.refresh
-            if (aal) {
-                searchParams.set('aal', aal)
-                setSearchParams(searchParams)
-            }
-        }
 
-        let flowId = searchParams.get('flow')
-        setSearchParams(searchParams)
+        const aal = args?.aal
+        const refresh = args?.refresh
+        const flowId = searchParams.get('flow')
+
+        if (aal === 'aal2' && aal !== searchParams.get('aal')) {
+            searchParams.delete('flow')
+            setSearchParams(searchParams)
+            setMutationCacheKey('')
+        }
+        if (aal) {
+            searchParams.set('aal', aal)
+            setSearchParams(searchParams)
+        }
 
         const params = {
-            refresh: refresh,
-            aal: aal,
-            id: flowId
+            ...(aal === 'aal2' && aal !== searchParams.get('aal') ? { id: flowId } : {}),
+            ...(aal ? { aal: aal } : {}),
+            ...(refresh ? { refresh: true } : {}),
         }
-        getFlow({ params: params } as any, true)
+
+        getFlow({ params: params }, true)
     }
 
     const submit: React.FormEventHandler<HTMLFormElement> = (event) => {
@@ -159,10 +162,10 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
             }
             case 403: {
                 // Session is too old usually, and we need to start a new flow
-                console.warn("sdkError 403")
-                searchParams.delete('flow')
-                setSearchParams(searchParams)
-                navigate(0)
+                // console.warn("sdkError 403")
+                // searchParams.delete('flow')
+                // setSearchParams(searchParams)
+                // navigate(0)
                 break
             }
             case 422: {

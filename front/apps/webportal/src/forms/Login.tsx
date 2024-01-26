@@ -24,9 +24,7 @@ import {
     JiggleDiv,
     LinkArrowButton,
     TotpAppGraphic,
-    RecoveryCodeGraphic,
-    SmsVerifyStatus,
-    Otc
+    RecoveryCodeGraphic
 } from "@ledget/ui"
 import { useFlow } from '@ledget/ory'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
@@ -129,7 +127,7 @@ const TotpMfa = ({ finished }: { finished: boolean }) => {
     )
 }
 
-const RecoveryMfa = ({ finished }: { finished: boolean }) => {
+const LookupSecretMfa = ({ finished }: { finished: boolean }) => {
     const [searchParams] = useSearchParams()
 
     return (
@@ -182,22 +180,22 @@ const OryFormWrapper = ({ children, onSubmit, flow, errMsg, email, setEmail }: O
                         ? '2-Step Verification'
                         : 'Welcome Back'}
                 </h3>
-                <BackButton
-                    type="button"
-                    withText={Boolean(searchParams.get('mfa'))}
-                    onClick={() => {
-                        if (searchParams.get('mfa')) {
-                            searchParams.delete('mfa')
-                            setSearchParams(searchParams)
-                        } else if (searchParams.get('aal') === 'aal1') {
-                            setEmail(undefined)
-                        } else {
-                            navigate('/login')
-                        }
-                    }}
-                >
-                    {searchParams.get('mfa') ? '' : email}
-                </BackButton>
+                {searchParams.get('mfa') !== 'totp' &&
+                    <BackButton
+                        type="button"
+                        withText={Boolean(searchParams.get('mfa'))}
+                        onClick={() => {
+                            if (searchParams.get('mfa')) {
+                                navigate(-1)
+                            } else if (searchParams.get('aal') === 'aal1') {
+                                setEmail(undefined)
+                            } else {
+                                navigate('/login')
+                            }
+                        }}
+                    >
+                        {searchParams.get('mfa') ? '' : email}
+                    </BackButton>}
             </div>
             {errMsg && <FormError msg={errMsg} />}
             {children}
@@ -213,7 +211,7 @@ const Login = () => {
     const [email, setEmail] = useState<string>()
     const [healthCheckResult, setHealthCheckResult] = useState<'aal2_required' | 'aal15_required' | 'healthy'>()
 
-    const [refreshDevices, { isLoading: isRefreshingDevices, isSuccess: devicesRefreshedSuccess }, refreshDevicesError] = useRefreshDevicesMutation()
+    const [refreshDevices, { isLoading: isRefreshingDevices, isSuccess: devicesRefreshedSuccess, error: refreshDevicesError }] = useRefreshDevicesMutation()
 
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
         useLazyGetLoginFlowQuery,
@@ -240,10 +238,8 @@ const Login = () => {
             window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
         }).catch(err => {
             if (err?.response?.data?.code === 'AAL2_REQUIRED') {
-                console.log('here1')
                 setHealthCheckResult('aal2_required')
             } else if (err?.response?.data?.code === 'AAL15_REQUIRED') {
-                console.log('here2')
                 setHealthCheckResult('aal15_required')
             } else {
                 setHealthCheckResult('healthy')
@@ -257,7 +253,7 @@ const Login = () => {
             searchParams.set('mfa', 'totp')
             setSearchParams(searchParams)
         } else {
-            fetchFlow({ aal: 'aal1' })
+            fetchFlow({ aal: 'aal1', refresh: true })
         }
     }, [healthCheckResult])
 
@@ -268,9 +264,9 @@ const Login = () => {
         if (!healthCheckResult) return
 
         if (!mfa && aal !== 'aal2') {
-            fetchFlow({ aal: 'aal1' })
+            fetchFlow({ aal: 'aal1', refresh: true })
         } else if (mfa === 'totp') {
-            fetchFlow({ aal: 'aal2' })
+            fetchFlow({ aal: 'aal2', refresh: true })
         }
     }, [searchParams.get('mfa')])
 
@@ -283,7 +279,7 @@ const Login = () => {
 
     // Watch for complete devices error indicating mfa is needed
     useEffect(() => {
-        if (refreshDevicesError === 'totp') {
+        if (refreshDevicesError?.data?.error === 'totp') {
             searchParams.set('mfa', 'totp')
             setSearchParams(searchParams)
         }
@@ -297,8 +293,6 @@ const Login = () => {
                     window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
                 }, 1000)
                 return () => clearTimeout(timeout)
-            } else {
-                window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
             }
         }
     }, [devicesRefreshedSuccess])
@@ -330,18 +324,16 @@ const Login = () => {
                             Recover Account
                         </LinkArrowButton>
                     </div>
-                    <WindowLoadingBar
-                        visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)}
-                    />
+                    <WindowLoadingBar visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)} />
                 </SlideMotionDiv>
                 :
-                <JiggleDiv jiggle={isCompleteError} className="wrapper-window" key={`${searchParams.get('mfa')}`}>
+                <JiggleDiv jiggle={isCompleteError} className="wrapper-window">
                     {/* 1st Factor */}
                     {!searchParams.get('mfa') &&
                         <SlideMotionDiv
                             className='nested-window'
-                            key="aal1-step"
-                            position={searchParams.get('mfa') ? 'first' : 'last'}
+                            key="password-login"
+                            position={isCompleteSuccess ? 'first' : 'last'}
                         >
                             <OryFormWrapper {...oryFormArgs}>
                                 <Password />
@@ -350,8 +342,8 @@ const Login = () => {
                         </SlideMotionDiv>
                     }
                     {/* Totp 2nd Factor */}
-                    {['totp', 'lookup_secret'].includes(searchParams.get('mfa') || '') &&
-                        <SlideMotionDiv className='nested-window' key={`${searchParams.get('mfa')}`} position={'last'}>
+                    {searchParams.get('mfa') === 'totp' &&
+                        <SlideMotionDiv className='nested-window' key='mfa-totp' position={'last'}>
                             <OryFormWrapper {...oryFormArgs}>
                                 <TotpMfa finished={devicesRefreshedSuccess} />
                             </OryFormWrapper>
@@ -359,9 +351,9 @@ const Login = () => {
                     }
                     {/* Recovery Code 2nd Factor */}
                     {searchParams.get('mfa') === 'lookup_secret' &&
-                        <SlideMotionDiv className='nested-window' key={`${searchParams.get('mfa')}`} position={'last'}>
+                        <SlideMotionDiv className='nested-window' key='lookup-secret' position={'last'}>
                             <OryFormWrapper {...oryFormArgs}>
-                                <RecoveryMfa finished={devicesRefreshedSuccess} />
+                                <LookupSecretMfa finished={devicesRefreshedSuccess} />
                             </OryFormWrapper>
                         </SlideMotionDiv>
                     }

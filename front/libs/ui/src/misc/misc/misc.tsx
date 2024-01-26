@@ -82,7 +82,7 @@ export const AnimatedDollarCents = ({ value = 0, withCents = true, ...rest }:
 
   const slotsApi = useSpringRef()
   const transitions = useTransition(slots, {
-    from: (item) => {
+    from: (item: string) => {
       const y = !isNaN(Number(slotRefs.current[item])) ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%` : '0em'
       return {
         maxWidth: loaded ? '0ch' : '1ch',

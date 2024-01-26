@@ -8,7 +8,6 @@
     flex-direction: column;
     align-items: center;
 
-
     // Collapse/Expand styling
     transition: min-width 0.3s ease-in-out, max-width 0.3s ease-in-out;
 
@@ -35,7 +34,6 @@
     }
 
     // End Collapse/Expand styling
-
     .needs-confirmation-indicator {
         position: absolute;
         opacity: 0;
@@ -102,5 +100,24 @@
         position: relative;
         height: 100%;
         width: 100%;
+    }
+
+    &:not(.extra-large) {
+
+        &>div:last-child {
+            gap: 1em;
+
+            &>div:nth-child(1) {
+                background-color: var(--window2);
+                border-radius: var(--border-radius3);
+                padding: 1em;
+            }
+
+            &>div:nth-child(2) {
+                background-color: var(--window);
+                border-radius: var(--border-radius3);
+                padding: 1em;
+            }
+        }
     }
 }

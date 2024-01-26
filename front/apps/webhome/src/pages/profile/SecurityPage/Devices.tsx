@@ -76,7 +76,7 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
                                 </div>
                             </div>
                             <div className={`discolsure-indicator ${open ? 'open' : ''}`}>
-                                <ChevronDown />
+                                <ChevronDown className='icon' />
                             </div>
                         </Disclosure.Button>
                         <Disclosure.Panel className={`device-sessions ${open ? 'open' : ''}`} ref={panelRef}>
@@ -108,7 +108,7 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
                                                             submitting={processingDelete && current}
                                                             onClick={() => reAuth()}
                                                         >
-                                                            <LogOut />
+                                                            <LogOut className='icon' />
                                                         </IconButtonSubmit>
                                                     </Tooltip>
                                                 )}

@@ -16,8 +16,6 @@ const AuthenticatorApp = ({ user }) => {
         return d.toLocaleDateString('en-US', options)
     }
 
-    useEffect(() => { console.log('useLazyGetSettingsFlowQuery', useLazyGetSettingsFlowQuery) }, [])
-
     return (
         <div className="mfa-settings--container">
             {user.mfa_method === 'totp'
