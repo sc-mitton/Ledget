@@ -2,7 +2,7 @@
 import { Check } from '@geist-ui/icons'
 
 import './status-pulse.scss'
-import { SmsAuthIcon, VerifyEmail, AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
+import { VerifyEmail, AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
 import { shuffleArray } from '../../utils/funcs'
 
 
@@ -70,25 +70,6 @@ export const KeyPadGraphic = ({ finished = false }) => {
   )
 
 }
-
-export const SmsVerifyStatus = ({ finished = false, }) => (
-  <div className="sms-verify-status">
-    {finished &&
-      <div id="success-checkmark">
-        <Check
-          size={'1.5em'}
-          stroke={'var(--blue-light'}
-        />
-      </div>
-    }
-    <SmsAuthIcon
-      width={'3.5em'}
-      height={'3.5em'}
-      fill={'var(--btn-dark-gray'}
-    />
-    <StatusPulse positive={finished} size="medium" />
-  </div>
-)
 
 export const VerificationStatusGraphic = ({ finished = false }) => (
   <div id='verify-graphic--container'>
