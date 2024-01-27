@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef, ButtonHTMLAttributes } from 'react'
 
 import { useLocation, Location, useSearchParams } from 'react-router-dom'
-import { animated, useTransition, useSpringRef } from '@react-spring/web'
+import { animated, useTransition, useSpringRef, useSpring, useChain } from '@react-spring/web'
 import Big from 'big.js'
 import { ChevronDown, Grid } from '@geist-ui/icons'
 
 import { CornerGripButton } from '@components/buttons'
-import { Base64Logo, DollarCents, ShimmerDiv, useSpringDrag, BakedListBox, IconButton3, ShimmerTextDiv } from '@ledget/ui'
+import { Base64Logo, DollarCents, ShimmerDiv, useSpringDrag, BakedListBox, IconButton3, ShimmerTextDiv, Tooltip, CloseButton } from '@ledget/ui'
 import {
     useGetAccountsQuery,
     useUpdateAccountsMutation,
@@ -27,14 +27,15 @@ const _filterAccounts = (accounts: any[], location: Location) => {
 
 type SelectOption = { value: string, filterType: 'institution' | 'deposit-type' | 'meta', label: string }
 
-const AccountWafer = ({ account, active, institution, onClick }: { account: Account, institution?: Institution, active: boolean, onClick: (arg: string) => void }) => {
+const AccountWafer = ({ account, institution, onClick }: { account: Account, institution?: Institution, onClick: (arg: string) => void }) => {
     const nameIsLong = account.official_name.length > 18
+    const [searchParams] = useSearchParams()
 
     return (
         <div
             tabIndex={0}
             key={account.account_id}
-            className={`account-wafer ${active ? 'active' : 'inactive'}`}
+            className={`account-wafer ${searchParams.get('account') === account.account_id ? 'active' : 'inactive'}`}
         >
             <CornerGripButton
                 id={`${account.account_id}`}
@@ -71,7 +72,6 @@ const AccountWafer = ({ account, active, institution, onClick }: { account: Acco
     )
 }
 
-
 const SkeletonLargeScreenWafers = () => (
     <div className="skeleton-wafers">
         {Array(4).fill(0).map((_, index) => (
@@ -89,10 +89,6 @@ const SkeletonLargeScreenWafers = () => (
         ))}
     </div>
 )
-
-const SkeletonSmallScreenWafers = () => {
-    return (<div></div>)
-}
 
 const FilledLargScreenWafers = ({ accounts, institutions }: { accounts: Account[], institutions?: Institution[] }) => {
     const [updateOrder, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useUpdateAccountsMutation()
@@ -130,14 +126,6 @@ const FilledLargScreenWafers = ({ accounts, institutions }: { accounts: Account[
         }
         return () => { clearTimeout(timeout) }
     }, [isUpdateSuccess, isUpdating])
-
-    // Set first account on get accounts success
-    useEffect(() => {
-        const account = accounts.filter((account: any) =>
-            account.type === pathMappings.getAccountType(location))[0]
-        searchParams.set('account', account?.account_id)
-        setSearchParams(searchParams)
-    }, [location.pathname.split('/')[2], accounts])
 
     // Start initial animation
     useEffect(() => {
@@ -180,34 +168,96 @@ const FilledLargScreenWafers = ({ accounts, institutions }: { accounts: Account[
 
     return (
         <div className="account-wafers">
-            {transitions((style, account) => {
-                const institution = institutions?.find((item: any) => item.id === account.institution_id)
-                return (
-                    <animated.div
-                        style={style}
-                        className="account-wafer--container"
-                        {...bind(account.account_id)}
-                    >
-                        <AccountWafer
-                            account={account}
-                            institution={institution}
-                            active={account.account_id === searchParams.get('account')}
-                            onClick={handleClick}
-                        />
-                    </animated.div>
-                )
-            })}
+            {transitions((style, account) => (
+                <animated.div
+                    style={style}
+                    className="account-wafer--container"
+                    {...bind(account.account_id)}
+                >
+                    <AccountWafer
+                        account={account}
+                        institution={institutions?.find((item: any) => item.id === account.institution_id)}
+                        onClick={handleClick}
+                    />
+                </animated.div>
+            ))}
         </div>
     )
 }
 
+const MosaicWafers = ({ accounts, institutions, visible, onClose }: { accounts: Account[], institutions?: Institution[], visible: boolean, onClose: () => void }) => {
+
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const containerApi = useSpringRef()
+    const containerProps = useSpring({
+        top: '1em',
+        right: 0,
+        width: visible ? '100%' : '0%',
+        height: visible ? '100%' : '0%',
+        opacity: visible ? 1 : 0,
+        ref: containerApi,
+        config: { tension: 200, friction: 20 }
+    })
+
+    const waferApi = useSpringRef()
+    const waferTransitions = useTransition(accounts, {
+        from: (item: any, index: number) => ({
+
+        }),
+        enter: (item: any, index: number) => ({
+
+        }),
+        immediate: !visible,
+        ref: waferApi
+    })
+
+    useEffect(() => {
+        containerApi.start()
+        waferApi.start()
+    }, [visible])
+
+    const handleClick = (id: string) => {
+        searchParams.set('account', id)
+        setSearchParams(searchParams)
+        waferApi.start((index: any, item: any) => {
+            if (item._item.account_id === id) {
+                return ({
+                    to: async (next: any) => {
+                        await next({ scale: .95 })
+                        await next({ scale: 1 })
+                    },
+                    config: { duration: 100 }
+                })
+            }
+        })
+    }
+    return (
+        <animated.div id='mosaic-wafers--container' style={containerProps}>
+            <CloseButton onClick={onClose} aria-label='Close accounts view' />
+            {/* {waferTransitions((style, account) => (
+                <animated.div style={style}>
+                    <AccountWafer
+                        account={account}
+                        institution={institutions?.find((item: any) => item.id === account.institution_id)}
+                        onClick={handleClick}
+                    />
+                </animated.div>
+            ))} */}
+        </animated.div>
+    )
+}
+
 export function AccountWafers() {
+    const location = useLocation()
+    const [searchParams, setSearchParams] = useSearchParams()
+
     const { data, isSuccess } = useGetAccountsQuery()
     const { screenSize } = useScreenContext()
     const [accounts, setAccounts] = useState<Account[]>()
-    const location = useLocation()
     const [accountsFilter, setAccountsFilter] = useState<SelectOption['value']>()
     const [accountsFilterOptions, setAccountsFilterOptions] = useState<SelectOption[]>()
+    const [institutionId, setInstitutionId] = useState<string>()
     const [mosaicView, setMosaicView] = useState(false)
 
     const listref = useRef<HTMLDivElement>(null)
@@ -241,10 +291,19 @@ export function AccountWafers() {
         }
     }, [location.pathname, isSuccess])
 
+    // Set first account on get accounts success
+    useEffect(() => {
+        const account = accounts?.filter((account: any) =>
+            account.type === pathMappings.getAccountType(location))[0]
+        searchParams.set('account', account?.account_id || '')
+        setSearchParams(searchParams)
+        setInstitutionId(account?.institution_id)
+    }, [location.pathname.split('/')[2], accounts])
+
     // Filter accounts
     useEffect(() => {
         if (isSuccess) {
-            const filteredAccounts = data?.accounts.filter((account: any) => {
+            setAccounts(data?.accounts.filter((account: any) => {
                 const filter = accountsFilterOptions?.find(f => f.value === accountsFilter)
                 if (filter?.filterType === 'institution') {
                     return account.institution_id === accountsFilter && account.type === pathMappings.getAccountType(location)
@@ -253,8 +312,7 @@ export function AccountWafers() {
                 } else if (filter?.filterType === 'meta') {
                     return account.type === pathMappings.getAccountType(location)
                 }
-            })
-            setAccounts(filteredAccounts || [])
+            }) || [])
         }
     }, [accountsFilter, isSuccess, location.pathname])
 
@@ -270,36 +328,54 @@ export function AccountWafers() {
     )
 
     return (
-        <div className={`account-wafers--container window ${screenSize}`}>
-            <div className="account-wafers--header">
-                <div ref={listref}>
-                    <BakedListBox
-                        defaultValue={accountsFilterOptions?.[0].value}
-                        options={accountsFilterOptions}
-                        value={accountsFilter}
-                        onChange={setAccountsFilter}
-                        dividerKey='filterType'
-                        placement='left'
-                        dropdownStyle={{
-                            minWidth: (listref.current?.offsetWidth || 100) * 1.5,
-                            marginLeft: '-.75em'
-                        }}
-                        as={Button}
-                    />
+        <>
+            <div className={`account-wafers--container window ${screenSize}`}>
+                <div className="account-wafers--header">
+                    <ShimmerTextDiv shimmering={Boolean(!accounts)} length={12} >
+                        <BakedListBox
+                            defaultValue={accountsFilterOptions?.[0].value}
+                            options={accountsFilterOptions}
+                            value={accountsFilter}
+                            onChange={setAccountsFilter}
+                            dividerKey='filterType'
+                            placement='left'
+                            dropdownStyle={{
+                                minWidth: (listref.current?.offsetWidth || 100) * 1.5,
+                                marginLeft: '-.75em'
+                            }}
+                            as={Button}
+                        />
+                    </ShimmerTextDiv>
+                    <ShimmerTextDiv shimmering={Boolean(!accounts)} length={16} >
+                        <DollarCents value={accounts?.reduce((acc, account) => acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
+                    </ShimmerTextDiv>
                 </div>
-                <div>
-                    <DollarCents value={accounts?.reduce((acc, account) => acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
-                </div>
-                {screenSize === 'extra-small' &&
+                {screenSize !== 'extra-small'
+                    && (accounts ? <FilledLargScreenWafers accounts={accounts} institutions={data?.institutions} /> : <SkeletonLargeScreenWafers />)}
+            </div>
+            {screenSize === 'extra-small' &&
+                <ShimmerTextDiv shimmering={Boolean(!accounts)} length={12} className="single-account-header">
                     <div>
-                        <div><span>I</span><span>Account Name</span><span>$</span></div>
-                        <IconButton3 onClick={() => setMosaicView(!mosaicView)}>
+                        <Base64Logo
+                            size='1.25em'
+                            data={data?.institutions?.find(i => i.id === institutionId)?.logo}
+                            alt={data?.institutions?.find(i => i.id === institutionId)?.name.charAt(0).toUpperCase() || 'A'}
+                        />
+                        <span>
+                            {data?.accounts?.find(a => a.account_id === searchParams.get('account'))?.official_name || ''}
+                        </span>
+                        <div>
+                            <DollarCents value={data?.accounts?.find(a => a.account_id === searchParams.get('account'))?.balances.current || ''} />
+                        </div>
+                    </div>
+                    <Tooltip msg="Show accounts" type='left'>
+                        <IconButton3 onClick={() => setMosaicView(!mosaicView)} aria-label='Show accounts'>
                             <Grid className='icon' />
                         </IconButton3>
-                    </div>}
-            </div>
-            {screenSize !== 'extra-small'
-                && (accounts ? <FilledLargScreenWafers accounts={accounts} institutions={data?.institutions} /> : <SkeletonLargeScreenWafers />)}
-        </div>
+                    </Tooltip>
+                </ShimmerTextDiv>}
+            {screenSize === 'extra-small' &&
+                <MosaicWafers accounts={accounts || []} institutions={data?.institutions} visible={mosaicView} onClose={() => setMosaicView(false)} />}
+        </>
     )
 }

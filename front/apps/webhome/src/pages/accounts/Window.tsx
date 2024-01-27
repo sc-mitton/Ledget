@@ -179,35 +179,35 @@ function Window() {
 
     return (
         <div id="accounts-window" className={`main-window  ${screenSize === 'small' ? 'small' : ''}`}>
+            <Header />
             <div>
-                <Header />
                 <AccountWafers />
-            </div>
-            <AnimatePresence mode="wait">
-                <motion.div
-                    className='window'
-                    key={location.pathname.split('/')[2]}
-                    initial={{
-                        opacity: 0,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flexGrow: 1,
-                    }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                >
-                    <Routes
-                        location={location}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        className='window'
                         key={location.pathname.split('/')[2]}
+                        initial={{
+                            opacity: 0,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            flexGrow: 1,
+                        }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                     >
-                        <Route path="deposits" element={<Transactions />} />
-                        <Route path="investments" element={<NotImplimentedMessage />} />
-                        <Route path="credit" element={<Transactions />} />
-                        <Route path="loans" element={<NotImplimentedMessage />} />
-                        <Route path="*" element={<NotFound hasBackground={false} />} />
-                    </Routes>
-                </motion.div>
-            </AnimatePresence>
+                        <Routes
+                            location={location}
+                            key={location.pathname.split('/')[2]}
+                        >
+                            <Route path="deposits" element={<Transactions />} />
+                            <Route path="investments" element={<NotImplimentedMessage />} />
+                            <Route path="credit" element={<Transactions />} />
+                            <Route path="loans" element={<NotImplimentedMessage />} />
+                            <Route path="*" element={<NotFound hasBackground={false} />} />
+                        </Routes>
+                    </motion.div>
+                </AnimatePresence>
+            </div>
         </div>
     )
 }

@@ -7,14 +7,13 @@ $wafer-container-padding: .75rem;
     grid-template-columns: auto 1fr;
     gap: 1.5em;
     width: auto;
-    margin-top: 1.5em;
+    margin-top: 1em;
     padding: 1em 1.5em;
     background-color: var(--window2);
 
     .account-wafers--header {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
         justify-content: center;
         font-size: 1.125rem;
         flex-grow: 1;
@@ -22,15 +21,10 @@ $wafer-container-padding: .75rem;
 
         &>div {
             font-weight: var(--fw-regular);
-            font-size: 1.5em;
 
-            &:nth-child(3) {
-                font-size: 1em;
-                margin-top: .75em;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                width: 100%;
+            // total balance div
+            &:nth-child(2) {
+                font-size: 1.5em;
             }
         }
 
@@ -55,8 +49,29 @@ $wafer-container-padding: .75rem;
     }
 }
 
+.single-account-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: -1em;
+    margin: .5em 0 0em 0;
+    padding: 0 .25em;
 
+    &>div {
+        display: flex;
+        align-items: center;
+        gap: .625em;
 
+        div {
+            font-size: 1rem;
+            font-weight: var(--fw-bold);
+
+            :first-child span {
+                font-size: 1rem;
+            }
+        }
+    }
+}
 
 .add-accounts-btn--container {
     width: 100%;
@@ -75,7 +90,19 @@ $wafer-container-padding: .75rem;
 
     &>div {
         display: flex;
-        gap: .5em;
+    }
+}
+
+#mosaic-wafers--container {
+    background-color: var(--window);
+    position: absolute;
+    z-index: 200;
+    border-radius: var(--border-radius3);
+
+    &>button {
+        position: absolute;
+        top: 1em;
+        right: 1em;
     }
 }
 

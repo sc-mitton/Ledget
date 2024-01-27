@@ -1,4 +1,4 @@
-import { FC, HTMLProps } from 'react'
+import { HTMLProps, forwardRef } from 'react'
 
 import './shimmer.scss';
 import { useTransition, animated } from '@react-spring/web'
@@ -82,11 +82,12 @@ export const ColoredShimmer = (props: ColoredShimmerProps) => {
   )
 }
 
-export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'>) => {
+export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'> & { backgroundColor?: string }) => {
   const {
     shimmering = false,
     length = 12,
     style = {} as React.CSSProperties,
+    backgroundColor = 'var(--shimmer-text-background)',
     darkMode,
     ...rest
   } = props
@@ -100,7 +101,7 @@ export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'>) => {
           height: '1em',
           margin: '2px 0',
           borderRadius: 'var(--border-radius1)',
-          backgroundColor: 'var(--shimmer-text-background)',
+          backgroundColor: backgroundColor,
           position: 'relative',
           ...style,
         }}
@@ -111,7 +112,8 @@ export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'>) => {
   )
 }
 
-export const ShimmerTextDiv = (props: HTMLProps<HTMLDivElement> & Omit<ColoredShimmerProps, 'color'>) => {
+// export const ShimmerTextDiv = (props: HTMLProps<HTMLDivElement> & Omit<ColoredShimmerProps, 'color'>) => {
+export const ShimmerTextDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & Omit<ColoredShimmerProps, 'color'>>((props, ref) => {
   const {
     shimmering = false,
     length = 12,
@@ -140,11 +142,12 @@ export const ShimmerTextDiv = (props: HTMLProps<HTMLDivElement> & Omit<ColoredSh
           >
             <Shimmer shimmering={shimmering} darkMode={darkMode} {...rest} />
           </div>
-          : { children }}
+          : children
+        }
       </>
     </div>
   )
-}
+})
 
 type TransactionShimmerProps = HTMLProps<HTMLDivElement> & Omit<ColoredShimmerProps, 'color'>
 
@@ -152,11 +155,11 @@ export const TransactionShimmer = ({ shimmering = true, ...rest }: TransactionSh
   <>
     <div >
       <div style={{ display: 'flex', flexDirection: 'column', gap: '.125em' }}>
-        <ShimmerText length={25} shimmering={shimmering} {...rest} />
-        <ShimmerText length={10} shimmering={shimmering}  {...rest} />
+        <ShimmerText length={25} shimmering={shimmering} {...rest} backgroundColor={'var(--input-background)'} />
+        <ShimmerText length={10} shimmering={shimmering}  {...rest} backgroundColor={'var(--input-background)'} />
       </div>
       <div>
-        <ShimmerText length={10} shimmering={shimmering}  {...rest} />
+        <ShimmerText length={10} shimmering={shimmering}  {...rest} backgroundColor={'var(--input-background)'} />
       </div>
     </div>
   </>

@@ -90,6 +90,9 @@ $duration: .2s;
     z-index: 0;
     border-right: none;
     transition: z-index 0s linear calc($delay * 2);
+    border-radius: inherit;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 
     ul {
         opacity: 0;

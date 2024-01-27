@@ -86,9 +86,11 @@ const Gutter = () => {
     const location = useLocation()
     const backgroundColor = useSchemeVar('--blue-light')
     const [open, setOpen] = useGutterContext()
-    const [updatePill, setUpdatePill] = useState(false)
     const { screenSize } = useScreenContext()
     const { isDark } = useColorScheme()
+
+    const [updatePill, setUpdatePill] = useState(false)
+    const [smallScreenMode, setSmallScreenMode] = useState(false)
 
     const [props] = usePillAnimation({
         ref: ulRef,
@@ -102,9 +104,9 @@ const Gutter = () => {
         }
     })
 
-    const navProps = useSpring({
+    const gutterProps = useSpring({
         flex: open ? 1 : 0,
-        ...(screenSize === 'small'
+        ...(smallScreenMode
             ? {
                 left: 0,
                 right: open ? '20%' : '0%',
@@ -120,22 +122,22 @@ const Gutter = () => {
         paddingTop: open ? '0.75em' : '0em',
         paddingBottom: open ? '0.75em' : '0em',
         marginTop: open
-            ? screenSize !== 'small' ? '.5em' : '0em'
+            ? !smallScreenMode ? '.5em' : '0em'
             : '0em',
         marginBottom: open
-            ? screenSize !== 'small' ? '1em' : '0em'
+            ? !smallScreenMode ? '1em' : '0em'
             : '0em',
         config: { duration: 200 },
         delay: open ? 0 : 200,
         onRest: () => setUpdatePill(!updatePill),
-        immediate: screenSize !== 'small'
+        immediate: !smallScreenMode
     })
 
     useAccessEsc({
         refs: [buttonRef, ulRef],
         visible: open,
         setVisible: () => {
-            if (screenSize === 'small') {
+            if (smallScreenMode) {
                 setOpen(false)
             }
         }
@@ -143,35 +145,36 @@ const Gutter = () => {
 
     // Close gutter on screen resize to small
     useEffect(() => {
-        if (screenSize === 'small') {
-            setOpen(false)
-        } else {
+        if (screenSize !== 'small' && screenSize !== 'extra-small') {
+            setSmallScreenMode(false)
             setOpen(true)
+        } else {
+            setSmallScreenMode(true)
+            setOpen(false)
         }
     }, [screenSize])
 
-    // On page navigation, if in small screen, close gutter
     useEffect(() => {
-        if (screenSize === 'small') {
+        if (smallScreenMode) {
             setOpen(false)
         }
-    }, [location.pathname])
+    }, [location.pathname, smallScreenMode])
 
     return (
         <>
-            {screenSize === 'small' &&
+            {smallScreenMode &&
                 <div id='hamburger'>
                     <IconButton
-                        onClick={() => { screenSize === 'small' && setOpen(!open) }}
+                        onClick={() => { setOpen(!open) }}
                         ref={buttonRef}
                     >
                         <Hamburger size={'1.2em'} />
                     </IconButton>
                 </div>}
             <animated.nav
-                style={navProps}
+                style={gutterProps}
                 id='gutter'
-                className={`${open ? 'open' : ''} ${screenSize === 'small' ? 'small-screen' : ''}`}
+                className={`${open ? 'open' : ''} ${smallScreenMode ? 'small-screen' : ''}`}
             >
                 <ul ref={ulRef}>
                     <Profile />
