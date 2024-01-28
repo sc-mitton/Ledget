@@ -3,21 +3,34 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
 
 @import '@styles/table-mixins';
 
+$scrollbar-padding: .75em;
+
+.needs-confirmation-stack {
+    min-width: 23rem;
+    padding: 1em;
+}
+
 #new-items {
     position: relative;
     background: radial-gradient(ellipse, rgba(14, 7, 7, .02) 1%, transparent 50%);
     overflow: visible;
 
+
     &>div:first-child {
         margin: 0 auto;
         max-width: $window-max-width;
+        width: calc(100% + $scrollbar-padding);
+    }
+
+    * {
+        scrollbar-color: var(--btn-medium-gray) transparent;
     }
 }
 
 .new-items-expand-button--container {
     position: relative;
     z-index: 0;
-    height: 0em;
+    height: .125em;
     transition: height .2s ease-out;
     width: 100%;
 
@@ -47,6 +60,7 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
     padding: $new-item-padding;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
+    margin-right: $scrollbar-padding;
 
     &::after {
         content: '';

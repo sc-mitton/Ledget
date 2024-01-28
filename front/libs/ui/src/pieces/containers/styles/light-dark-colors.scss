@@ -25,13 +25,13 @@
     --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px 1px 1px;
     --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 3px 12px;
     --input-drop-shadow: var(--input-drop-shadow-color) 0px 1px 0px .3px;
-    --dropdown-box-shadow: var(--dropdown-box-shadow-color) 0px 3px 12px;
+    --dropdown-box-shadow: var(--dropdown-box-shadow-color) 0px 0px 24px;
     --antd-drop-shadow: var(--antd-drop-shadow-color) 0 3px 12px;
 
     --accessible-focus-drop-shadow: 0 0 0 1.5px var(--blue-light-medium);
     --active-wafer-drop-shadow: color-mix(in srgb, var(--monthly-hlight) 80%, var(--monthly-color)) 0px 0px 12px;
 
-    --subtle-border: .75px solid var(--border-color-dimmest);
+    --subtle-border: .75px solid var(--border-color-ultra-dim);
 
 }
 
@@ -95,13 +95,13 @@
         --side-window: hsl(0, 0%, 6%);
 
 
-        --wafer-background: hsl(0, 0%, 3%);
+        --wafer-background: hsl(0, 0%, 1%);
         --dropdown-background: hsl(0, 0%, 14%);
         --dropdown-item-background: hsl(0, 0%, 22%);
 
         // New Item
         // --new-item-border: hsl(0, 0%, 11%);
-        // --new-item-drop-shadow-color: hsl(0, 0%, 6%);
+        // --new-item-drop-shadow-color: hsl(0, 0%, 14%);
 
         // Header
         --header-background: hsl(240, 38%, 3%);
@@ -178,10 +178,11 @@
 
         --active-wafer-indicator: var(--blue-sat);
 
-        --border-color-dimmest: rgb(255, 255, 255, .05);
-        --border-color: rgb(255, 255, 255, .09);
+        --border-color-ultra-dim: rgb(255, 255, 255, .07);
+        --border-color-dim: rgb(255, 255, 255, .11);
+        --border-color: rgb(255, 255, 255, .17);
         --institution-logo-border: rgb(255, 255, 255, .3);
-        --toast-border: 1px solid var(--border-color);
+        --toast-border: 1px solid var(--border-color-dim);
         --gray-button-border: hsl(0, 0%, 23%);
         // --sidewindow-border-color: hsl(0, 0%, 12%);
 
@@ -241,10 +242,10 @@
         --window-background-color: hsl(0, 0%, 100%);
         --window-background-color-portal: hsl(0, 0%, 95%);
 
-        --window: hsl(var(--window-h), var(--window-s), 96%);
+        --window: hsl(var(--window-h), var(--window-s), 97%);
         --window2: var(--inner-window);
         --window-no-background: var(--window-background-color);
-        // --window-drop-shadow-color: hsl(0, 0%, 80%);
+        // --window-drop-shadow-color: hsl(0, 0%, 93%);
         // --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 16px 0px;
         --window-drop-shadow2-color: hsl(0, 0%, 85%);
 
@@ -254,7 +255,7 @@
         --modal-inner-window: hsl(0, 0%, 94%);
         --overlay: hsl(0, 0%, 20%);
 
-        --wafer-background: hsl(0, 0%, 100%);
+        --wafer-background: hsl(0, 0%, 25%);
         --dropdown-background: hsl(0, 0%, 98%);
         --dropdown-item-background: hsl(0, 0%, 90%);
 
@@ -332,8 +333,9 @@
         --input-drop-shadow-color: rgba(0, 0, 0, 0.07);
         --toast-box-shadow: var(--mid-elevation-drop-shadow);
 
-        --border-color-dimmest: rgb(0, 0, 0, .06);
-        --border-color: rgb(0, 0, 0, .09);
+        --border-color-ultra-dim: rgb(0, 0, 0, .06);
+        --border-color-dim: rgb(0, 0, 0, .09);
+        --border-color: rgb(0, 0, 0, .15);
         --institution-logo-border: rgb(0, 0, 0, .2);
         --toast-border: transparent;
         --gray-button-border: hsl(0, 0%, 86%);

@@ -120,7 +120,7 @@ $wafer-container-padding: .75rem;
     .mosaic-account-wafer--container {
         width: 100%;
         padding: 1em;
-        border: 1.5px solid var(--border-color-dimmest);
+        border: 1.5px solid var(--border-color-ultra-dim);
         border-radius: var(--border-radius25);
         position: absolute;
         box-sizing: border-box;
@@ -133,7 +133,7 @@ $wafer-container-padding: .75rem;
         }
 
         &:not(.active):hover {
-            border: 1.5px solid var(--btn-light-gray);
+            border: 1.5px solid var(--border-color);
             transition: all .2s ease-out;
         }
     }
@@ -284,6 +284,10 @@ $wafer-container-padding: .75rem;
     display: flex;
     flex-direction: column;
 
+    * {
+        color: var(--white);
+    }
+
     &>button:first-child {
         visibility: hidden;
         opacity: 0;
@@ -363,7 +367,7 @@ $wafer-container-padding: .75rem;
         .wafer-meta--container {
             opacity: .8;
             font-size: .8rem;
-            font-weight: var(--fw-light);
+            font-weight: var(--fw-feather-light);
             display: flex;
             gap: .25em;
             align-items: center;
@@ -378,7 +382,7 @@ $wafer-container-padding: .75rem;
             div * {
                 font-size: 1rem;
                 letter-spacing: .0625em;
-                font-weight: var(--fw-light);
+                font-weight: var(--fw-feather-light);
             }
         }
     }
@@ -505,7 +509,7 @@ $wafer-container-padding: .75rem;
 }
 
 /* Border bottom for all cells except last child */
-$subtleBorderColor: var(--border-color-dimmest);
+$subtleBorderColor: var(--border-color-ultra-dim);
 $borderRadius2: var(--border-radius2);
 
 .transactions--table {

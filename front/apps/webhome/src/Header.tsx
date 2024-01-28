@@ -2,21 +2,21 @@ import React, { useState, useRef } from 'react'
 
 import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
+import { HelpCircle, LogOut, User, Bell, Sun, Moon } from '@geist-ui/icons'
 
 import './styles/header.scss'
 import { Logout, Help } from '@modals/index'
 import { LedgetLogoIcon } from '@ledget/media'
 import { DropDownDiv, DropdownItem } from '@ledget/ui'
 import { useScreenContext } from './context'
-import { HelpCircle, LogOut, User } from '@geist-ui/icons'
 import { useColorScheme } from '@ledget/ui'
+import { NotificationsDropdownMenu } from '@pages/notifications'
 
 const Navigation = () => {
     const tabs = [
         { name: "budget", path: "budget" },
         { name: "accounts", path: "accounts/deposits" }
     ]
-    const { screenSize } = useScreenContext()
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -45,25 +45,6 @@ const Navigation = () => {
                         </a>
                     </li>
                 ))}
-                {screenSize !== 'extra-large' &&
-                    <li
-                        className={`${location.pathname === "/spending" ? "current-" : ""}nav-item`}
-                        role="link"
-                        tabIndex={0}
-                        onClick={() => location.pathname !== '/spending' && navigate("/spending")}
-                        onKeyDown={(e) => { if (e.key === "Enter") { navigate("/spending") } }}
-                    >
-                        <a
-                            onClick={(e) => {
-                                e.preventDefault()
-                                navigate("/spending")
-                            }}
-                            aria-current={location.pathname.split('/')[1] === "spending" ? "page" : undefined}
-                        >
-                            Spending
-                        </a>
-                    </li>
-                }
             </ul>
         </nav>
     )
@@ -71,7 +52,7 @@ const Navigation = () => {
 
 type Modal = "help" | "logout"
 
-const DropDownMenu = ({ setModal }:
+const ProfileDropdownMenu = ({ setModal }:
     { setModal: React.Dispatch<React.SetStateAction<Modal | undefined>> }) => {
     const navigate = useNavigate()
 
@@ -131,7 +112,7 @@ const DropDownMenu = ({ setModal }:
 function Header() {
     const [modal, setModal] = useState<Modal>()
     const { screenSize } = useScreenContext()
-    const { isDark } = useColorScheme()
+    const { isDark, setDarkMode } = useColorScheme()
 
     const Modal = ({ selection }: { selection?: Modal }) => {
         switch (selection) {
@@ -150,11 +131,21 @@ function Header() {
 
     return (
         <>
-            <header className={`${screenSize !== 'large' ? 'narrow' : ''} ${screenSize === 'extra-small' ? 'extra-small' : ''} ${isDark ? 'dark-mode' : ''}`}>
+            <header className={`${screenSize} ${isDark ? 'dark-mode' : ''}`}>
                 <div>
                     <div><LedgetLogoIcon /></div>
                     <div><Navigation /></div>
-                    <DropDownMenu setModal={setModal} />
+                    <div>
+                        {isDark
+                            ? <button onClick={() => setDarkMode(false)}>
+                                <Moon className='icon' />
+                            </button>
+                            : <button onClick={() => setDarkMode(true)}>
+                                <Sun className='icon' />
+                            </button>}
+                        <NotificationsDropdownMenu id='notifications' />
+                        <ProfileDropdownMenu setModal={setModal} />
+                    </div>
                 </div>
             </header>
             <Modal selection={modal} />

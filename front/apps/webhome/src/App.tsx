@@ -1,23 +1,14 @@
 import { useEffect, useRef, lazy, Suspense } from 'react'
 
-import { Routes, Outlet, Navigate, Route, useLocation, useNavigate } from 'react-router-dom'
+import { Routes, Outlet, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import "./styles/base.scss";
 import Header from './Header'
 import NotFound from '@pages/notFound/NotFound'
-
-//`
 import Budget from '@pages/budget/Window'
-import Spending from '@pages/spending/Window'
-
-//
 import Profile from '@pages/profile/Window'
-
-//
 import Accounts from '@pages/accounts/Window'
-
-
 import {
     ZoomMotionDiv,
     Toast,
@@ -107,9 +98,6 @@ const App = () => {
                                 <Route path="verify-email" element={<ForceVerification />} />
                                 <Route path="welcome/*" element={<OnboardingModal />} />
                             </Route>
-                            <Route path="spending" element={
-                                screenSize !== 'extra-large' ? <Spending /> : <Navigate to="/budget" />
-                            } />
                             <Route path="accounts/*" element={<Accounts />} />
                             <Route path="profile/*" element={<Profile />} />
                             <Route path="*" element={<NotFound />} />

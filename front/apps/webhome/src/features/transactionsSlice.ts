@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk, PayloadAction, createSelector } from '@r
 
 import { apiSlice } from '@api/apiSlice'
 import { Category, addTransaction2Cat, SplitCategory } from '@features/categorySlice'
-import { TransactionFilterSchema } from '@pages/spending/history/Header'
+import { TransactionFilterSchema } from '@pages/notifications/history/Header'
 import { addTransaction2Bill } from '@features/billSlice'
 import type { Bill } from '@features/billSlice'
 import type { RootState } from './store'

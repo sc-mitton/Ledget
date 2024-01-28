@@ -111,7 +111,7 @@
         display: flex;
         justify-content: space-between;
         padding-bottom: .625em;
-        border-bottom: 1.5px solid var(--border-color);
+        border-bottom: 1.5px solid var(--border-color-dim);
 
         &>div:not(:first-child):not(:last-child) {
             flex-grow: 1;

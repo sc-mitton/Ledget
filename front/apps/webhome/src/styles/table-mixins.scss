@@ -8,11 +8,11 @@
         height: 1px;
 
         @if $dashed {
-            border-bottom: $width dashed var(--border-color-dimmest);
+            border-bottom: $width dashed var(--border-color-ultra-dim);
         }
 
         @else {
-            border-bottom: $width solid var(--border-color-dimmest);
+            border-bottom: $width solid var(--border-color-ultra-dim);
         }
     }
 }

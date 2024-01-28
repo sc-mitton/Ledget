@@ -2,26 +2,13 @@ import { useState, useEffect, useRef } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import dayjs from 'dayjs'
-import { ChevronLeft, ChevronRight } from '@geist-ui/icons'
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@geist-ui/icons'
 
 import './styles/MonthPicker.scss'
 import { useGetMeQuery } from '@features/userSlice'
-import { SmallArrowButton, FadedTextButton, DropDownDiv, IconButton3, useAccessEsc } from '@ledget/ui'
-
-export const monthMappings: [string | number, string | number][] = [
-    ['Jan', 'January'],
-    ['Feb', 'February'],
-    ['Mar', 'March'],
-    ['Apr', 'April'],
-    ['May', 'May'],
-    ['Jun', 'June'],
-    ['Jul', 'July'],
-    ['Aug', 'August'],
-    ['Sep', 'September'],
-    ['Oct', 'October'],
-    ['Nov', 'November'],
-    ['Dec', 'December'],
-]
+import { FadedTextButton, DropDownDiv, IconButton3, useAccessEsc } from '@ledget/ui'
+import { changeBudgetMonthYear } from '@features/uiSlice'
+import { useAppDispatch } from '@hooks/store'
 
 const MonthPicker = ({ darkMode = false }) => {
     const { data: user, isSuccess: userIsFetched } = useGetMeQuery()
@@ -127,20 +114,19 @@ const MonthPicker = ({ darkMode = false }) => {
                         setSearchParams(searchParams)
                     }}
                 >
-                    {monthMappings[month - 1][0]}
+                    {dayjs().month(month - 1).format('MMM')}
                 </button>
             )
         })
     }
 
-    const incrementYear = () => {
-        if (pickerYear < new Date().getFullYear())
-            setPickerYear(pickerYear + 1)
-    }
-
-    const decrementYear = () => {
-        if (pickerYear > new Date(user?.created_on || new Date()).getFullYear())
-            setPickerYear(pickerYear - 1)
+    const seekYear = (direction: 1 | -1, amount: 1 | 5,) => {
+        const newYear = pickerYear + amount * direction
+        if (direction === 1 && newYear <= new Date().getFullYear()) {
+            setPickerYear(newYear)
+        } else if (direction === -1 && newYear >= new Date(user?.created_on || new Date()).getFullYear()) {
+            setPickerYear(newYear)
+        }
     }
 
     const handleArrowClick = (direction: 1 | -1) => {
@@ -156,6 +142,7 @@ const MonthPicker = ({ darkMode = false }) => {
             setSearchParams(searchParams)
         }
     }
+
     return (
         <div id="month-picker" ref={monthPickerRef} className={darkMode ? 'dark' : ''}>
             <div ref={buttonRef}>
@@ -163,7 +150,7 @@ const MonthPicker = ({ darkMode = false }) => {
                     onClick={() => { setShowPicker(!showPicker) }}
                     aria-label="Open month picker"
                 >
-                    <span>{monthMappings[parseInt(searchParams.get('month') || '1') - 1][1]} {searchParams.get('year')}</span>
+                    <span>{dayjs().month(parseInt(searchParams.get('month') || '1') - 1).format('MMMM')}</span>
                 </FadedTextButton>
                 <IconButton3 onClick={() => handleArrowClick(-1)}>
                     <ChevronLeft className='icon' stroke={'currentColor'} />
@@ -173,30 +160,40 @@ const MonthPicker = ({ darkMode = false }) => {
                 </IconButton3>
             </div>
             <DropDownDiv
-                placement="middle"
+                placement="left"
                 visible={showPicker}
                 id="picker-container"
             >
                 <div >
                     <div id="year-navigation">
-                        <SmallArrowButton
-                            type="back"
-                            onClick={decrementYear}
+                        <IconButton3
+                            onClick={() => seekYear(-1, 5)}
                             aria-label="Decrement year"
-                        />
+                        >
+                            <ChevronsLeft className='icon' stroke={'currentColor'} />
+                        </IconButton3>
+                        <IconButton3
+                            onClick={() => seekYear(-1, 1)}
+                            aria-label="Decrement year"
+                        ><ChevronLeft className='icon' stroke={'currentColor'} /></IconButton3>
                         <div>{pickerYear}</div>
-                        <SmallArrowButton
-                            type="forward"
-                            onClick={incrementYear}
+                        <IconButton3
+                            onClick={() => seekYear(1, 1)}
                             aria-label="Increment year"
-                        />
+                        ><ChevronRight className='icon' stroke={'currentColor'} /></IconButton3>
+                        <IconButton3
+                            onClick={() => seekYear(1, 5)}
+                            aria-label="Increment year"
+                        >
+                            <ChevronsRight className='icon' stroke={'currentColor'} />
+                        </IconButton3>
                     </div>
                     <div className="month-picker-grid">
                         {renderMonths()}
                     </div>
                 </div>
-            </DropDownDiv>
-        </div>
+            </DropDownDiv >
+        </div >
     )
 }
 

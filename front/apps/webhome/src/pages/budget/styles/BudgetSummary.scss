@@ -13,7 +13,7 @@
 }
 
 .budget-summary--container {
-    margin: 1.5em 0 .75em 0;
+    margin: .75em 0;
     display: flex;
     align-items: flex-end;
     flex-wrap: wrap;
@@ -29,7 +29,7 @@
         h2,
         h3 {
             font-weight: var(--fw-light);
-            color: var(--m-text-quaternary);
+            // color: var(--m-text-quaternary);
         }
 
         h2 {
@@ -92,7 +92,7 @@
                 right: calc($gap /2 * -1 + .5em);
                 width: 1.5px;
                 border-radius: 1px;
-                background-color: var(--border-color);
+                background-color: var(--border-color-dim);
             }
 
             &:nth-last-child(3) {
@@ -108,12 +108,12 @@
                     font-size: 1.25rem;
                 }
 
-                @include dot(--btn-light-gray-hover);
+                @include dot(--btn-gray);
             }
 
             &>span:last-child {
                 font-weight: var(--fw-light);
-                color: var(--m-text-quaternary);
+                // color: var(--m-text-quaternary);
                 opacity: .9;
                 white-space: nowrap;
             }

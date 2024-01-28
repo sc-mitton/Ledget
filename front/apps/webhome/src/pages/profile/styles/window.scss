@@ -125,7 +125,7 @@ $duration: .2s;
 
     &.open {
         z-index: 0;
-        border-right: 2px solid var(--border-color-dimmest);
+        border-right: 2px solid var(--border-color-ultra-dim);
         transition: z-index 0s linear 0s;
 
         &.small-screen {

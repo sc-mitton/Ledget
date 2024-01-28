@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useAppSelector } from "./store"
+import { selectBudgetMonthYear } from '@features/uiSlice'
 
 interface DateRange {
     start: number
@@ -9,8 +10,8 @@ interface DateRange {
 
 export const useGetStartEndQueryParams = (arg?: { month?: number, year?: number }): DateRange => {
     const { month, year } = arg || {}
-    const [searchParams] = useSearchParams()
 
+    const { month: storedMonth, year: storedYear } = useAppSelector(selectBudgetMonthYear)
     const [start, setStart] = useState(0)
     const [end, setEnd] = useState(0)
 
@@ -20,13 +21,13 @@ export const useGetStartEndQueryParams = (arg?: { month?: number, year?: number 
             const end = Math.floor(new Date(year, month, 0).getTime() / 1000)
             setStart(start)
             setEnd(end)
-        } else if (searchParams.get('month') && searchParams.get('year')) {
-            const year = parseInt(searchParams.get('year')!)
-            const month = parseInt(searchParams.get('month')!)
+        } else if (storedMonth && storedYear) {
+            const year = storedYear
+            const month = storedYear
             setStart(Math.floor(new Date(year, month - 1, 1).getTime() / 1000))
             setEnd(Math.floor(new Date(year, month, 0).getTime() / 1000))
         }
-    }, [month, year, searchParams.get('month'), searchParams.get('year')])
+    }, [month, year, storedMonth, storedYear])
 
     return { start, end }
 }

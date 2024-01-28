@@ -7,10 +7,8 @@ import { useAppDispatch, useAppSelector } from '@hooks/store'
 import dayjs from 'dayjs'
 import { Check } from '@geist-ui/icons'
 
-import "./styles/Window.scss"
-import TransactionModal from '@modals/TransactionItem'
+import "./styles/Stack.scss"
 import { Ellipsis } from "@ledget/media"
-import Header from './Header'
 import { SelectCategoryBill } from '@components/dropdowns'
 import { Logo } from '@components/pieces'
 import ItemOptions from "./ItemOptions"
@@ -102,20 +100,12 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
     }
 }
 
-const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean, smallScreen: boolean) => {
+const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean) => {
     let lightness: number
-    if (smallScreen) {
-        if (index === 0 || expanded) {
-            lightness = darkMode ? 8 : 100
-        } else {
-            lightness = darkMode ? 8 - (index * 1.75) : 98
-        }
+    if (index === 0 || expanded) {
+        lightness = darkMode ? 8 : 100
     } else {
-        if (index === 0 || expanded) {
-            lightness = darkMode ? 11 : 100
-        } else {
-            lightness = darkMode ? 11 - (index * 2) : 98
-        }
+        lightness = darkMode ? 8 + (index * 2) : 98
     }
 
     return `hsl(0, 0%, ${lightness}%)`
@@ -216,12 +206,11 @@ const NewItem: FC<{
     )
 }
 
-const NeedsConfirmationWindow = () => {
+export const NeedsConfirmationStack = () => {
     const [searchParams] = useSearchParams()
     const loaded = useLoaded()
     const [showMenu, setShowMenu] = useState(false)
     const [showBillCatSelect, setShowBillCatSelect] = useState(false)
-    const [showTransactionModal, setShowTransactionModal] = useState<{ split: boolean }>()
     const [billCatSelectVal, setBillCatSelectVal] = useState<Category | Bill | undefined>()
     const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(undefined)
     const [menuPos, setMenuPos] = useState<{ x: number, y: number } | undefined>()
@@ -235,7 +224,6 @@ const NeedsConfirmationWindow = () => {
     const { isDark } = useColorScheme()
     const navigate = useNavigate()
     const location = useLocation()
-    const { screenSize } = useScreenContext()
 
     const [confirmTransactions] = useConfirmTransactionsMutation()
     const unconfirmedTransactions = useAppSelector(
@@ -254,7 +242,7 @@ const NeedsConfirmationWindow = () => {
 
     const [
         fetchTransactions,
-        { data: transactionsData, isSuccess, isFetching: isFetchingTransactions }
+        { data: transactionsData, isSuccess }
     ] = useLazyGetUnconfirmedTransactionsQuery()
     const newItemsRef = useRef<HTMLDivElement>(null)
 
@@ -284,7 +272,7 @@ const NeedsConfirmationWindow = () => {
                 // top: getTop(index, false),
                 y: _getY(index, unconfirmedStackExpanded, false),
                 transform: `scale(${_getScale(index, unconfirmedStackExpanded, false)})`,
-                backgroundColor: _getBackGroundColor(index, unconfirmedStackExpanded, isDark, screenSize !== 'extra-large'),
+                backgroundColor: _getBackGroundColor(index, unconfirmedStackExpanded, isDark),
             }),
             enter: (item, index) => ({
                 y: _getY(index, unconfirmedStackExpanded, true),
@@ -300,7 +288,7 @@ const NeedsConfirmationWindow = () => {
                 transform: `scale(${_getScale(index, unconfirmedStackExpanded)})`,
                 zIndex: `${(unconfirmedTransactions!.length - index)}`,
                 opacity: _getOpacity(index, unconfirmedStackExpanded),
-                backgroundColor: _getBackGroundColor(index, unconfirmedStackExpanded, isDark, screenSize !== 'extra-large'),
+                backgroundColor: _getBackGroundColor(index, unconfirmedStackExpanded, isDark),
             }),
             onRest: () => {
                 unconfirmedStackExpanded
@@ -493,8 +481,7 @@ const NeedsConfirmationWindow = () => {
     }
 
     return (
-        <div id='needs-confirmation-stack'>
-            <Header onConfirmAll={handleConfirmAll} />
+        <div className='needs-confirmation-stack'>
             <InfiniteScrollDiv
                 id="new-items"
                 ref={newItemsRef}
@@ -544,7 +531,7 @@ const NeedsConfirmationWindow = () => {
                     pos={menuPos}
                 >
                     <ItemOptions handlers={[
-                        () => { setShowTransactionModal({ split: true }) },
+                        () => { },
                         () => {
                             navigate({
                                 pathname: '/budget/new-bill',
@@ -559,7 +546,7 @@ const NeedsConfirmationWindow = () => {
                             }, { state: { period: 'year', upper_amount: focusedItem?.amount, name: focusedItem?.name } }),
                                 setShowMenu(false)
                         },
-                        () => { setShowTransactionModal({ split: false }) },
+                        () => { },
                     ]} />
                 </AbsPosMenu>
             </InfiniteScrollDiv >
@@ -571,13 +558,6 @@ const NeedsConfirmationWindow = () => {
                     onClick={() => setUnconfirmedStackExpanded(!unconfirmedStackExpanded)} flipped={unconfirmedStackExpanded}
                 />
             </ExpandableContainer>
-            {showTransactionModal && focusedItem &&
-                <TransactionModal
-                    item={focusedItem}
-                    splitMode={showTransactionModal.split}
-                    onClose={() => setShowTransactionModal(undefined)} />}
         </ div>
     )
 }
-
-export default NeedsConfirmationWindow

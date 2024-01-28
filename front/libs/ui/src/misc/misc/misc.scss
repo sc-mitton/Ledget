@@ -4,7 +4,6 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    border: 1px solid var(--inner-window);
 
     img {
         position: relative;
@@ -62,6 +61,7 @@
     position: relative;
     overflow: hidden;
     mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+    padding-right: .01em;
 
     .slots {
         position: absolute;

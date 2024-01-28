@@ -161,7 +161,7 @@ const Form = withModal((props) => {
                             <DatePicker
                                 disabled={[undefined, dayjs()]}
                                 placeholder="Expires"
-                                format="MM/DD/YYYY"
+                                format="M/D/YYYY"
                                 aria-label='Expiration date'
                                 onChange={(e) => { props.field.onChange(e?.toISOString()) }}
                             />

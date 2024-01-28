@@ -1,4 +1,4 @@
-$gap: calc(.375em + 2vw);
+$gap: calc(.75em + 2vw);
 $bill-flex-grid-gap: calc(.25em + .5vw);
 $bill-item-padding: .25em .75em;
 $window-padding: $bill-flex-grid-gap;
@@ -16,9 +16,38 @@ $scroll-bar-padding: .5em;
 .bills-summary-window {
     flex: 1 2 0;
     display: flex;
+    position: relative;
 
     &.collapsed {
         flex: 0 1 0;
+
+        &>div:first-child button {
+            opacity: 1;
+            transition: opacity .2s ease-out .2s;
+        }
+    }
+
+    &>div:first-child {
+        position: absolute;
+        top: 1.25em;
+        right: .375em;
+        left: 50%;
+        height: 1.5em;
+
+        &:hover>button {
+            opacity: 1;
+            transition: opacity .2s ease-out;
+        }
+
+        &>button {
+            position: absolute;
+            right: 0;
+            z-index: 100;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity .2s ease-out;
+        }
     }
 }
 
@@ -36,12 +65,10 @@ $scroll-bar-padding: .5em;
     &>div:first-child {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         gap: .25em;
         flex-grow: 1;
         position: relative;
-
-
 
         // Header and add button
         &>div:nth-child(2) {
@@ -49,10 +76,6 @@ $scroll-bar-padding: .5em;
             gap: .5em;
             align-items: center;
 
-            h4 {
-                margin-top: .1em;
-                font-weight: var(--fw-regular);
-            }
         }
 
         // Container Around Calendar Dropdown
@@ -61,42 +84,10 @@ $scroll-bar-padding: .5em;
             top: 1em;
             position: relative;
         }
-
-        &>div:nth-child(3) {
-            opacity: 1;
-            flex-grow: 1;
-            display: flex;
-            gap: 0em;
-            justify-content: flex-end;
-            align-items: center;
-            margin-right: -.125em;
-
-            &>button:first-child {
-                opacity: 0;
-                transition: opacity .2s ease-out;
-            }
-
-            &:hover>button {
-                opacity: 1;
-                transition: opacity .2s ease-out;
-            }
-
-            &:hover,
-            &:focus-within {
-                opacity: 1;
-            }
-        }
-    }
-
-    // Width styling for screen size
-    &.small-screen>div:nth-child(2) {
-        width: calc(100% + $scroll-bar-padding * 1.25);
     }
 
     // Div around the calendar and bill items
     &>div:nth-child(2) {
-        width: calc(100% - .5em);
-
         margin-top: .25em;
         display: flex;
         justify-content: space-between;
@@ -142,14 +133,16 @@ $scroll-bar-padding: .5em;
 }
 
 // Calendar container
+.small-screen .calendar {
+    padding: .75em;
+}
+
 .calendar {
     display: inline-grid;
     grid-template-columns: repeat(7, auto);
     justify-self: center;
-    row-gap: .75em;
+    row-gap: .625em;
     column-gap: 1.25em;
-    margin-left: .375em;
-    padding: .5em;
 
     // Days of week markers
     &>div:nth-child(-n+7) {
@@ -261,7 +254,6 @@ $scroll-bar-padding: .5em;
     overflow-y: hidden;
     overflow-x: auto;
     scrollbar-width: none;
-    margin-top: .5em;
     max-height: clamp(calc(3 * (1em + $bill-flex-grid-gap*2)),
             calc(5 * (1em + $bill-flex-grid-gap*2 + 1vh)),
             calc(100% - $bill-flex-grid-gap * 2),
@@ -273,13 +265,7 @@ $scroll-bar-padding: .5em;
     gap: $item-row-gap;
     transition: all .3s ease-in-out;
     padding-bottom: 1em;
-    padding-right: $scroll-bar-padding;
-
-    &:not(.small-screen) {
-        &>div:not(:nth-child(5n)):not(:last-child) {
-            @include table-dividers(-.625em);
-        }
-    }
+    padding-right: .0625em;
 
     &.small-screen {
         grid-auto-flow: row;
@@ -290,7 +276,7 @@ $scroll-bar-padding: .5em;
         max-height: 15em;
 
         &>div:not(:last-child) {
-            @include table-dividers(-.625em);
+            @include table-dividers(-.5em);
         }
 
     }

@@ -10,3 +10,6 @@ type NumericRange<
     = START_ARR['length'] extends END
     ? ACC | END
     : NumericRange<[...START_ARR, 1], END, ACC | START_ARR['length']>
+
+
+type Zero2Ten = NumericRange<[], 10>

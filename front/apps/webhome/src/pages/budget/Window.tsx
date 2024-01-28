@@ -45,7 +45,6 @@ function Window() {
                 Math.floor(new Date(year, month, 0).getTime() / 1000)
             ]
         }))
-
     }, [searchParams.get('year'), searchParams.get('month')])
 
     return (
@@ -60,7 +59,6 @@ function Window() {
                     </div>
                 </div>
             </div>
-            {screenSize === 'extra-large' && <Spending />}
             <Outlet />
         </>
     )

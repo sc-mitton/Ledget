@@ -53,7 +53,7 @@ const List = ({ setFocusedTransaction }:
                     <div>{transaction.preferred_name || transaction.name}</div>
                     <div>
                       <span>
-                        {dayjs(transaction.datetime || transaction.date).format('MM/DD')}
+                        {dayjs(transaction.datetime || transaction.date).format('M/D')}
                       </span>
                       {transaction.categories?.map((category) => (
                         <span className={`emoji ${category.period}`}>

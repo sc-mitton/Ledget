@@ -4,7 +4,7 @@
 }
 
 .authentication-method:not(:last-child) {
-    border-bottom: 1.5px solid var(--border-color-dimmest);
+    border-bottom: 1.5px solid var(--border-color-ultra-dim);
 }
 
 .authentication-method {

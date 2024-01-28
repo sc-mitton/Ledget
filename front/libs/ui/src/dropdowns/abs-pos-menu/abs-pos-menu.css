@@ -19,7 +19,7 @@
     left: 2.75rem;
     display: inline-block;
     border-right: .4375rem solid transparent;
-    border-bottom: .4375rem solid var(--border-color-dimmest);
+    border-bottom: .4375rem solid var(--border-color-ultra-dim);
     border-left: .4375rem solid transparent;
     content: '';
 }

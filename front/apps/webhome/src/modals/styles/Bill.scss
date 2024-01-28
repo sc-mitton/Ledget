@@ -139,8 +139,8 @@
                     position: relative;
 
                     &.checked::after {
-                        width: .2rem;
-                        height: .2rem;
+                        width: .25rem;
+                        height: .25rem;
                         background-color: var(--monthly-color);
                         border-radius: 50%;
                         content: '';

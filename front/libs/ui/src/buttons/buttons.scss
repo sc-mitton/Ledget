@@ -131,6 +131,7 @@
 
 .btn-icon3 {
     color: var(--m-text-secondary);
+    border-radius: 2px;
 
     &:hover {
         color: var(--m-text);
@@ -202,17 +203,10 @@
     box-shadow: var(--btn-drop-shadow);
     background-color: var(--btn-feather-light-gray);
     transition: all .3s ease;
-    color: var(--btn-gray);
 
     &:hover {
         background-color: var(--btn-feather-light-gray-hover);
         transition: all .3s ease;
-        color: var(--btn-gray-hover);
-        color: var(--m-text);
-
-        * {
-            color: var(--m-text);
-        }
     }
 
     &.selected {

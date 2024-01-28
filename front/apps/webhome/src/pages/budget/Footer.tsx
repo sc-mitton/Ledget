@@ -63,8 +63,8 @@ const Footer = () => {
                     >
                         <span>$</span>
                         {billSorting === 'amount-desc'
-                            ? <ArrowDown size={'1em'} />
-                            : <ArrowUp size={'1em'} />}
+                            ? <ArrowDown size={'1em'} strokeWidth={2} />
+                            : <ArrowUp size={'1em'} strokeWidth={2} />}
                     </PillOptionButton>
                     <PillOptionButton
                         aria-label="Sort bills by amount"
