@@ -115,7 +115,7 @@ const UnenrichedTable: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
                         }
                     </div>
                     :
-                    <ShadowScrollDiv className='transactions--table not-skeleton' onScroll={handleScroll}>
+                    <ShadowScrollDiv className={`transactions--table not-skeleton ${screenSize ? screenSize : ''}`} onScroll={handleScroll}>
                         {children}
                     </ShadowScrollDiv>
                 }

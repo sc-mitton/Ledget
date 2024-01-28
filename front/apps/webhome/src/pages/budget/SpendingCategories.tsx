@@ -651,7 +651,7 @@ const CategoryDetail = ({ category }: { category: Category }) => {
                 />}
             <Options />
             <h2>{`${category.emoji}`}&nbsp;&nbsp;{`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}</h2>
-            <div className={`category-detail ${screenSize === 'small' ? 'small' : ''}`}>
+            <div className={`category-detail ${['small', 'extra-small'].includes(screenSize) ? 'small' : ''}`}>
                 <div>
                     <ResponsiveLineContainer>
                         {window && <WindowSelection />}
@@ -785,16 +785,16 @@ const SpendingCategories = () => {
     return (
         <div
             id="spending-categories-window"
-            className={`window ${screenSize === 'small' ? 'tabbed' : ''}`}
+            className={`window ${['small', 'extra-small'].includes(screenSize) ? 'tabbed' : ''}`}
             ref={ref}
         >
             <AnimatePresence mode='wait'>
                 {!detailedCategory
                     ?
-                    <FadeInOutDiv className={`all-categories-table ${screenSize === 'small' ? 'tab-view' : 'column-view'}`} immediate={!loaded} key="all-categories">
+                    <FadeInOutDiv className={`all-categories-table ${['small', 'extra-small'].includes(screenSize) ? 'tab-view' : 'column-view'}`} immediate={!loaded} key="all-categories">
                         {(isLoading || isUninitialized)
                             ? <SkeletonRows numberOfRows={skeletonRowCount} />
-                            : screenSize === 'small'
+                            : ['small', 'extra-small'].includes(screenSize)
                                 ? <TabView categories={categories} />
                                 : <ColumnView categories={categories} />
                         }
@@ -802,7 +802,7 @@ const SpendingCategories = () => {
                     :
                     <FadeInOutDiv
                         key="category-detail"
-                        className={`category-detail--container ${screenSize === 'small' ? 'tabbed' : ''}`}
+                        className={`category-detail--container ${['small', 'extra-small'].includes(screenSize) ? 'tabbed' : ''}`}
                     >
                         <CategoryDetail category={detailedCategory} />
                     </FadeInOutDiv>

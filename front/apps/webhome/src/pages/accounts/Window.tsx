@@ -184,7 +184,7 @@ function Window() {
                 <AccountWafers />
                 <AnimatePresence mode="wait">
                     <motion.div
-                        className='window'
+                        className={`${screenSize !== 'extra-small' ? 'window' : 'window-no-background'}`}
                         key={location.pathname.split('/')[2]}
                         initial={{
                             opacity: 0,

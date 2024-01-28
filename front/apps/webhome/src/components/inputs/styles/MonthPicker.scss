@@ -8,19 +8,20 @@
 
     &:not(.dark) {
         margin-left: -.5em;
+        background-color: var(--blue-light);
 
         &>div:first-child button {
-            color: var(--m-text);
+            color: var(--blue-medium-dark);
 
             span {
-                color: var(--m-text);
+                color: var(--blue-medium-dark);
             }
 
             &:hover {
-                color: var(--m-text-tirtiary);
+                color: var(--blue-medium);
 
                 span {
-                    color: var(--m-text-tirtiary);
+                    color: var(--blue-medium);
                 }
             }
         }

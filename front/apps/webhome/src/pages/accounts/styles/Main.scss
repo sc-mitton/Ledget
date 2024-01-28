@@ -1,6 +1,8 @@
 $wafer-height: 6rem;
 $wafer-container-padding: .75rem;
 
+@import '@styles/table-mixins.scss';
+
 .account-wafers--container,
 .skeleton-account-wafers--container {
     display: grid;
@@ -54,20 +56,19 @@ $wafer-container-padding: .75rem;
     align-items: center;
     justify-content: space-between;
     margin-bottom: -1em;
-    margin: .5em 0 0em 0;
-    padding: 0 .25em;
+    margin: .25em 0 1em 0;
+    padding: 0 .5em 0 .375em;
 
     &>div {
         display: flex;
         align-items: center;
-        gap: .625em;
+        gap: 1.25em;
 
         div {
-            font-size: 1rem;
-            font-weight: var(--fw-bold);
+            font-size: 1.125rem;
 
-            :first-child span {
-                font-size: 1rem;
+            &>div span {
+                font-weight: var(--fw-bold);
             }
         }
     }
@@ -94,15 +95,91 @@ $wafer-container-padding: .75rem;
 }
 
 #mosaic-wafers--container {
-    background-color: var(--window);
+    background-color: var(--window-background-color);
     position: absolute;
     z-index: 200;
     border-radius: var(--border-radius3);
 
+    &>div {
+        position: absolute;
+        top: 3em;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1em;
+    }
+
     &>button {
         position: absolute;
         top: 1em;
-        right: 1em;
+        right: 0em;
+    }
+
+    .mosaic-account-wafer--container {
+        width: 100%;
+        padding: 1em;
+        border: 1.5px solid var(--border-color-dimmest);
+        border-radius: var(--border-radius25);
+        position: absolute;
+        box-sizing: border-box;
+        background-color: var(--window-background-color);
+        transition: all .2s ease-out;
+
+        &.active {
+            border: 1.5px solid var(--blue-light-medium);
+            transition: all .2s ease-out;
+        }
+
+        &:not(.active):hover {
+            border: 1.5px solid var(--btn-light-gray);
+            transition: all .2s ease-out;
+        }
+    }
+
+    .mosaic-account-wafer {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        cursor: pointer;
+
+        &>div>button {
+            width: 0;
+            transition: width .2s ease-out;
+        }
+
+        &>div:hover>button {
+            width: 1.5em;
+            transition: width .2s ease-out;
+            cursor: grip;
+        }
+
+        &>div:nth-child(2) {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: .75em;
+
+            span:last-child {
+                display: flex;
+                align-items: center;
+
+                span {
+                    font-size: .75em;
+                }
+            }
+
+            &>div {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        // Balance
+        &>div:last-child {
+            font-size: 1.125rem;
+        }
     }
 }
 
@@ -197,15 +274,12 @@ $wafer-container-padding: .75rem;
     margin: 0 .25em;
 }
 
-.account-wafer {
-    background-color: var(--wafer-background);
-}
-
 .skeleton-account-wafer {
     background-color: var(--window);
 }
 
 .account-wafer {
+    background-color: var(--wafer-background);
     box-shadow: var(--wafer-drop-shadow);
     display: flex;
     flex-direction: column;
@@ -372,22 +446,30 @@ $wafer-container-padding: .75rem;
     flex-grow: 1;
     position: relative;
     min-height: 20em;
+    background-color: inherit;
 
     &.extra-small {
         .transactions--table {
             right: -.75em;
             padding-right: 1em;
+            row-gap: 1.25em;
 
             /* all name cells */
             &>div:nth-child(2n)>div:first-child {
                 padding-left: .5em;
-                padding-right: 1.75em;
+                padding-right: 3.5em;
             }
 
             /* all amount cells */
             &>div:nth-child(2n)>div:last-child {
                 padding-right: .5em;
+                justify-content: flex-end;
             }
+
+            &>div:nth-child(2n):not(:last-child)>div {
+                @include table-dividers(-.5em, false, 1.5px);
+            }
+
         }
     }
 
@@ -402,12 +484,12 @@ $wafer-container-padding: .75rem;
     align-items: flex-start;
     position: sticky;
     top: .375em;
+    background-color: inherit;
 
     span {
         padding: 0 .75em 0 .25em;
         color: var(--m-text-quinary);
-        background-color: var(--window);
-        box-shadow: var(--window) 0 0 .25em .125em;
+        background-color: inherit;
 
         &:first-child {
             position: relative;
@@ -439,19 +521,18 @@ $borderRadius2: var(--border-radius2);
     grid-template-rows: min-content;
     row-gap: .75em;
     padding-right: 2em;
+    background-color: inherit;
 
     &>div:nth-child(2n) {
         display: contents;
     }
 
-    &>div:nth-child(2n):not(:last-child)>div::after {
-        content: '';
-        position: absolute;
-        bottom: -.375em;
-        left: 0;
-        width: 100%;
-        height: 1.25px;
-        background-color: $subtleBorderColor;
+    &>div:nth-child(2n):not(:last-child)>div {
+        @include table-dividers(-.375em, false, 1.5px);
+    }
+
+    &.extra-small.not-skeleton>div:nth-child(2n):hover>div {
+        background-color: var(--transaction-hover-background-dim);
     }
 
     &.not-skeleton>div:nth-child(2n):hover>div {
@@ -459,18 +540,18 @@ $borderRadius2: var(--border-radius2);
         cursor: pointer;
     }
 
-    >div.transaction-shimmer:nth-child(2n + 3):hover>div {
+    &>div.transaction-shimmer:nth-child(2n + 3):hover>div {
         background-color: transparent;
         cursor: default;
     }
 
-    >div:nth-child(2n + 2) {
+    &>div:nth-child(2n + 2) {
         padding: .25em 0;
         padding-right: .75em;
         padding-left: .25em;
     }
 
-    >div:nth-child(2n)>div {
+    &>div:nth-child(2n)>div {
         position: relative;
         z-index: 0;
 
@@ -494,14 +575,19 @@ $borderRadius2: var(--border-radius2);
             &>div:first-child {
                 display: flex;
                 align-items: center;
+
+                span {
+                    color: var(--m-text-secondary);
+                }
             }
 
             &>div:last-child span {
-                color: var(--m-text-tirtiary);
+                color: var(--m-text-quaternary);
                 font-weight: var(--fw-light);
             }
         }
 
+        // Amount
         &:last-child {
             padding: .25em;
             padding-right: .75em;
@@ -514,12 +600,5 @@ $borderRadius2: var(--border-radius2);
 
     .debit * {
         color: var(--debit-text)
-    }
-
-    // Spacer
-    &>div:last-child::after {
-        content: '';
-        height: .25em;
-        bottom: -.25em;
     }
 }

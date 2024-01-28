@@ -49,7 +49,7 @@ const BudgetSummary = () => {
 
     return (
         <>
-            <div id="month-picker--container" className={`${screenSize === 'small' ? 'small-screen' : ''}`}>
+            <div id="month-picker--container" className={`${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}>
                 <MonthPicker darkMode={isDark} />
             </div>
             <div className="budget-summary--container">

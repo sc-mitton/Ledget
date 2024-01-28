@@ -1,12 +1,22 @@
-import { useState, useEffect, useRef, ButtonHTMLAttributes } from 'react'
+import { useState, useEffect, useRef, ButtonHTMLAttributes, useLayoutEffect } from 'react'
 
 import { useLocation, Location, useSearchParams } from 'react-router-dom'
 import { animated, useTransition, useSpringRef, useSpring, useChain } from '@react-spring/web'
 import Big from 'big.js'
-import { ChevronDown, Grid } from '@geist-ui/icons'
+import { ChevronDown, List } from '@geist-ui/icons'
 
-import { CornerGripButton } from '@components/buttons'
-import { Base64Logo, DollarCents, ShimmerDiv, useSpringDrag, BakedListBox, IconButton3, ShimmerTextDiv, Tooltip, CloseButton } from '@ledget/ui'
+import { GripButton, CornerGripButton } from '@components/buttons'
+import {
+    Base64Logo,
+    DollarCents,
+    ShimmerDiv,
+    useSpringDrag,
+    BakedListBox,
+    IconButton3,
+    ShimmerTextDiv,
+    Tooltip,
+    CloseButton,
+} from '@ledget/ui'
 import {
     useGetAccountsQuery,
     useUpdateAccountsMutation,
@@ -34,7 +44,6 @@ const AccountWafer = ({ account, institution, onClick }: { account: Account, ins
     return (
         <div
             tabIndex={0}
-            key={account.account_id}
             className={`account-wafer ${searchParams.get('account') === account.account_id ? 'active' : 'inactive'}`}
         >
             <CornerGripButton
@@ -72,6 +81,25 @@ const AccountWafer = ({ account, institution, onClick }: { account: Account, ins
     )
 }
 
+const MosaicAccountWafer = ({ account, institution, onClick }: { account: Account, institution?: Institution, onClick: (arg: string) => void }) => (
+    <div className="mosaic-account-wafer" tabIndex={0} role='button' onClick={() => { onClick(account.account_id) }}>
+        <div><GripButton /></div>
+        <div>
+            <Base64Logo data={institution?.logo} alt={institution?.name.charAt(0).toUpperCase() || 'A'} />
+            <div>
+                <span>{account.official_name}</span>
+                <span>
+                    <span>&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;</span>
+                    {account.mask}
+                </span>
+            </div>
+        </div>
+        <div>
+            <DollarCents value={Big(account.balances.current).times(100).toNumber()} />
+        </div>
+    </div>
+)
+
 const SkeletonLargeScreenWafers = () => (
     <div className="skeleton-wafers">
         {Array(4).fill(0).map((_, index) => (
@@ -95,6 +123,7 @@ const FilledLargScreenWafers = ({ accounts, institutions }: { accounts: Account[
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
     const [freezeWaferAnimation, setFreezeWaferAnimation] = useState(false)
+    const order = useRef(_filterAccounts(accounts || [], location).map((item) => item.account_id))
 
     const waferApi = useSpringRef()
     const transitions = useTransition(accounts, {
@@ -132,7 +161,10 @@ const FilledLargScreenWafers = ({ accounts, institutions }: { accounts: Account[
         waferApi.start()
     }, [location.pathname, accounts])
 
-    const order = useRef(_filterAccounts(accounts || [], location).map((item) => item.account_id))
+    useEffect(() => {
+        order.current = _filterAccounts(accounts || [], location).map((item) => item.account_id)
+    }, [accounts, location.pathname])
+
     const bind = useSpringDrag({
         order: order,
         indexCol: 'account_id',
@@ -188,7 +220,9 @@ const FilledLargScreenWafers = ({ accounts, institutions }: { accounts: Account[
 const MosaicWafers = ({ accounts, institutions, visible, onClose }: { accounts: Account[], institutions?: Institution[], visible: boolean, onClose: () => void }) => {
 
     const [searchParams, setSearchParams] = useSearchParams()
-
+    const containerRef = useRef<HTMLDivElement>(null)
+    const waferHeight = 72
+    const waferGap = 16
     const containerApi = useSpringRef()
     const containerProps = useSpring({
         top: '1em',
@@ -203,14 +237,33 @@ const MosaicWafers = ({ accounts, institutions, visible, onClose }: { accounts: 
     const waferApi = useSpringRef()
     const waferTransitions = useTransition(accounts, {
         from: (item: any, index: number) => ({
-
+            y: index * (waferHeight + waferGap),
+            zIndex: 0,
+            opacity: 0,
         }),
-        enter: (item: any, index: number) => ({
-
+        to: (item: any, index: number) => ({
+            y: index * (waferHeight + waferGap),
+            opacity: 1,
         }),
+        update: { opacity: visible ? 1 : 0 },
         immediate: !visible,
         ref: waferApi
     })
+
+    const order = useRef(accounts.map((item) => item.account_id))
+    const bind = useSpringDrag({
+        order: order,
+        indexCol: 'account_id',
+        style: { axis: 'y', size: 68, padding: 16 },
+        api: waferApi
+    })
+
+    // Update order on accounts change
+    useEffect(() => {
+        order.current = accounts.map((item) => item.account_id)
+    }, [accounts])
+
+    useChain([containerApi, waferApi], [0, 0])
 
     useEffect(() => {
         containerApi.start()
@@ -232,18 +285,30 @@ const MosaicWafers = ({ accounts, institutions, visible, onClose }: { accounts: 
             }
         })
     }
+
     return (
-        <animated.div id='mosaic-wafers--container' style={containerProps}>
+        <animated.div
+            id='mosaic-wafers--container'
+            style={containerProps}
+            ref={containerRef}
+        >
+            <div>
+                {waferTransitions((style, account) => (
+                    visible &&
+                    <animated.div
+                        {...bind(account.account_id)}
+                        style={style}
+                        className={`mosaic-account-wafer--container ${searchParams.get('account') === account.account_id ? 'active' : 'inactive'}`}
+                    >
+                        <MosaicAccountWafer
+                            account={account}
+                            institution={institutions?.find((item: any) => item.id === account.institution_id)}
+                            onClick={handleClick}
+                        />
+                    </animated.div>
+                ))}
+            </div>
             <CloseButton onClick={onClose} aria-label='Close accounts view' />
-            {/* {waferTransitions((style, account) => (
-                <animated.div style={style}>
-                    <AccountWafer
-                        account={account}
-                        institution={institutions?.find((item: any) => item.id === account.institution_id)}
-                        onClick={handleClick}
-                    />
-                </animated.div>
-            ))} */}
         </animated.div>
     )
 }
@@ -261,6 +326,10 @@ export function AccountWafers() {
     const [mosaicView, setMosaicView] = useState(false)
 
     const listref = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        setMosaicView(false)
+    }, [searchParams.get('account')])
 
     // Set filter options
     useEffect(() => {
@@ -357,25 +426,31 @@ export function AccountWafers() {
                 <ShimmerTextDiv shimmering={Boolean(!accounts)} length={12} className="single-account-header">
                     <div>
                         <Base64Logo
-                            size='1.25em'
+                            size='1em'
                             data={data?.institutions?.find(i => i.id === institutionId)?.logo}
                             alt={data?.institutions?.find(i => i.id === institutionId)?.name.charAt(0).toUpperCase() || 'A'}
                         />
-                        <span>
-                            {data?.accounts?.find(a => a.account_id === searchParams.get('account'))?.official_name || ''}
-                        </span>
                         <div>
-                            <DollarCents value={data?.accounts?.find(a => a.account_id === searchParams.get('account'))?.balances.current || ''} />
+                            <span>
+                                {data?.accounts?.find(a => a.account_id === searchParams.get('account'))?.official_name || ''}
+                            </span>
+                            <div>
+                                <DollarCents value={data?.accounts?.find(a => a.account_id === searchParams.get('account'))?.balances.current || ''} />
+                            </div>
                         </div>
                     </div>
                     <Tooltip msg="Show accounts" type='left'>
                         <IconButton3 onClick={() => setMosaicView(!mosaicView)} aria-label='Show accounts'>
-                            <Grid className='icon' />
+                            <List size={'1.375em'} />
                         </IconButton3>
                     </Tooltip>
                 </ShimmerTextDiv>}
             {screenSize === 'extra-small' &&
-                <MosaicWafers accounts={accounts || []} institutions={data?.institutions} visible={mosaicView} onClose={() => setMosaicView(false)} />}
+                <MosaicWafers
+                    accounts={accounts || []}
+                    institutions={data?.institutions}
+                    visible={mosaicView}
+                    onClose={() => setMosaicView(false)} />}
         </>
     )
 }

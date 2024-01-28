@@ -52,15 +52,13 @@ function Profile() {
     const { screenSize } = useScreenContext()
 
     return (
-        <div id="profile-window--container" className='main-window'>
+        <div id="profile-window--container" className={`${screenSize === 'extra-small' ? 'window-no-background' : 'window'}`}>
+            <Gutter />
             <ShimmerDiv
-                className={`window
-                ${open ? 'with-open-gutter' : ''}
-                ${screenSize === 'small' ? 'small-screen' : ''}`}
+                className={`${open ? 'with-open-gutter' : ''} ${screenSize}`}
                 id="profile-window"
                 shimmering={userLoading}
             >
-                <Gutter />
                 <AnimatePresence mode="wait">
                     <motion.div
                         initial={{ opacity: 0 }}

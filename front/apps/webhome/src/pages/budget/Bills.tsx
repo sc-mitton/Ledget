@@ -238,7 +238,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
 
     return (
         <div
-            className={`bills-box ${screenSize === 'small' ? 'small-screen' : ''}`}
+            className={`bills-box ${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}
             aria-expanded={!collapsed}
             style={{
                 '--number-of-bills': bills?.length! / 2 || 0,
@@ -312,7 +312,7 @@ const BillsWindow = () => {
             className={`window bills-summary-window ${collapsed ? 'collapsed' : ''}`}
             ref={ref}
         >
-            <div className={`calendar-bills--container ${collapsed ? 'collapsed' : ''} ${screenSize === 'small' ? 'small-screen' : ''}`}>
+            <div className={`calendar-bills--container ${collapsed ? 'collapsed' : ''} ${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}>
                 <div style={{ marginLeft: showCalendar ? '.125em' : '' }}>
                     <Header
                         showCalendarIcon={!showCalendar}

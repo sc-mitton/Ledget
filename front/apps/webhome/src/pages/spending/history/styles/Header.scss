@@ -2,6 +2,7 @@
     z-index: 1;
     padding: 1em 1.5em 0 1.5em;
     width: calc(100% - 3em);
+    background-color: inherit;
 
     // Filter button and label
     &>div:first-child {
@@ -32,9 +33,10 @@ $padding: 1.5em;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-color: inherit;
 
     &.extra-large {
-        background-color: var(--side-window);
+        background-color: inherit;
     }
 
     &>div {
@@ -42,11 +44,11 @@ $padding: 1.5em;
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: var(--side-window);
+        background-color: inherit;
     }
 
     form {
-        background-color: var(--side-window);
+        background-color: inherit;
         border-radius: var(--border-radius3);
         border: 1px solid var(--window-border);
         padding: 1.5em;

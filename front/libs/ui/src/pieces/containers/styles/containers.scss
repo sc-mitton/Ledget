@@ -21,24 +21,24 @@ $box-shadow-color: var(--blue-light);
     &::after {
         content: '';
         position: absolute;
+        z-index: 1000;
         bottom: 0;
         left: 0;
         right: 0;
         margin: 0 auto;
         border-radius: 50%;
-        background-color: var(--blue-light-hover);
-        animation: fetching-more .7s ease-out forwards;
+        background-color: var(--blue-light);
+        animation: fetching-more .8s ease-out forwards;
     }
 }
 
 @keyframes fetching-more {
     0% {
         opacity: 0;
-        width: 0%;
+        // width: 0%;
         height: 0%;
         min-height: 0em;
         transform: translateY(calc(100% + 2em));
-        box-shadow: $box-shadow-color 0 0 0 2em;
     }
 
     50% {
@@ -47,11 +47,10 @@ $box-shadow-color: var(--blue-light);
 
     100% {
         opacity: 0;
-        width: 100%;
+        // width: 100%;
         height: 30%;
         min-height: 5em;
         transform: translateY(60%);
-        box-shadow: $box-shadow-color 0 0 0 2em;
     }
 }
 

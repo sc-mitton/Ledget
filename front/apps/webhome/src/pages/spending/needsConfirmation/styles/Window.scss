@@ -6,7 +6,7 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
 #new-items {
     position: relative;
     background: radial-gradient(ellipse, rgba(14, 7, 7, .02) 1%, transparent 50%);
-    width: 100%;
+    overflow: visible;
 
     &>div:first-child {
         margin: 0 auto;
@@ -17,6 +17,14 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
 .new-items-expand-button--container {
     position: relative;
     z-index: 0;
+    height: 0em;
+    transition: height .2s ease-out;
+    width: 100%;
+
+    &:hover {
+        height: 1.25em;
+        transition: height .2s ease-out;
+    }
 
     button {
         opacity: 0;
@@ -39,7 +47,6 @@ $new-item-padding: 1.125em 1.125em 1.125em .875em;
     padding: $new-item-padding;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    margin: 0 .75em;
 
     &::after {
         content: '';

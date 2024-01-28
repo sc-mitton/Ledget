@@ -315,6 +315,10 @@ svg.icon {
     max-width: 23.5rem;
 }
 
+.window-no-background {
+    background-color: var(--window-no-background);
+}
+
 .window-header {
     padding-bottom: 1em;
     padding-left: .25em;

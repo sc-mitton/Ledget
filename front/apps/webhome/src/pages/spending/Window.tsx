@@ -11,6 +11,7 @@ import { ExpandButton } from '@ledget/ui'
 import { selectUnconfirmedTransactions } from '@features/transactionsSlice'
 import { toggleSpendingSideBar, selectSpendingSideBarCollapsed } from '@features/uiSlice'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
+import { useColorScheme } from '@ledget/ui'
 
 const NeedsConfirmationIndicator = () => {
     const [searchParams] = useSearchParams()
@@ -31,6 +32,7 @@ const Spending = () => {
     const { screenSize } = useScreenContext()
     const collapsed = useAppSelector(selectSpendingSideBarCollapsed)
     const dispatch = useAppDispatch()
+    const { isDark } = useColorScheme()
 
     return (
         <SpendingViewContextProvider
@@ -40,7 +42,7 @@ const Spending = () => {
                 unconfirmedStackExpanded,
                 setUnconfirmedStackExpanded
             }}>
-            <div id="spending-window" className={`${screenSize ? screenSize : ''} ${collapsed ? 'collapsed' : ''}`}>
+            <div id="spending-window" className={`${screenSize ? screenSize : ''} ${collapsed ? 'collapsed' : ''} ${isDark ? 'dark-mode' : ''}`}>
                 <div>
                     <ExpandButton flipped={!collapsed} onClick={() => { dispatch(toggleSpendingSideBar()) }} />
                 </div>

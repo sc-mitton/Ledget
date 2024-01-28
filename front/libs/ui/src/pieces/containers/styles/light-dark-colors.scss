@@ -90,6 +90,7 @@
         --window-background-color-portal: hsl(0, 0%, 2%);
         --window: hsl(0, 0%, 7%);
         --window2: var(--inner-window);
+        --window-no-background: var(--window-background-color);
         --window-rgb: 28, 28, 28;
         --side-window: hsl(0, 0%, 6%);
 
@@ -100,7 +101,7 @@
 
         // New Item
         // --new-item-border: hsl(0, 0%, 11%);
-        --new-item-drop-shadow-color: hsl(0, 0%, 6%);
+        // --new-item-drop-shadow-color: hsl(0, 0%, 6%);
 
         // Header
         --header-background: hsl(240, 38%, 3%);
@@ -158,6 +159,7 @@
         --negative-pulse-inner: rgba(255, 255, 255, .7);
 
         --transaction-hover-background: hsl(0, 0%, 11%);
+        --transaction-hover-background-dim: hsl(0, 0%, 7%);
 
         // Drop Shadows & Borders
         --window-drop-shadow-color: hsl(0, 0%, 4%);
@@ -241,6 +243,7 @@
 
         --window: hsl(var(--window-h), var(--window-s), 96%);
         --window2: var(--inner-window);
+        --window-no-background: var(--window-background-color);
         // --window-drop-shadow-color: hsl(0, 0%, 80%);
         // --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 16px 0px;
         --window-drop-shadow2-color: hsl(0, 0%, 85%);
@@ -264,7 +267,7 @@
 
         // New Item
         // --new-item-border: hsl(0, 0%, 93%);
-        --new-item-drop-shadow-color: hsl(var(--window-h), var(--window-s), 92%);
+        --new-item-drop-shadow-color: hsl(var(--window-h), var(--window-s), 93%);
 
         // Inputs
         --input-background: hsl(var(--window-h), var(--window-s), 92%);
@@ -310,6 +313,8 @@
         --btn-black: hsl(var(--window-h), var(--window-s), 15%);
 
         --transaction-hover-background: hsl(240, 10%, 92%);
+        --transaction-hover-background-dim: hsl(240, 10%, 96%);
+
         --default-pill-background: hsl(0, 0%, 98%);
         --default-tab-background: hsl(0, 0%, 90%);
 

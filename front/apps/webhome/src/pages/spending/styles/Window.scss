@@ -104,19 +104,23 @@
 
     &:not(.extra-large) {
 
+        &:not(.dark-mode)>div:last-child>div:nth-child(1) {
+            background-color: var(--inner-window);
+        }
+
         &>div:last-child {
-            gap: 1em;
+            gap: .5em;
 
             &>div:nth-child(1) {
-                background-color: var(--window2);
+                // background-color: var(--side-window);
                 border-radius: var(--border-radius3);
-                padding: 1em;
+                padding: .5em;
             }
 
             &>div:nth-child(2) {
-                background-color: var(--window);
+                background-color: var(--window-background-color);
                 border-radius: var(--border-radius3);
-                padding: 1em;
+                padding: 1em 0;
             }
         }
     }

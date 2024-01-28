@@ -13,11 +13,11 @@
 }
 
 .budget-summary--container {
-    margin: 1em 0 .75em 0;
+    margin: 1.5em 0 .75em 0;
     display: flex;
     align-items: flex-end;
     flex-wrap: wrap;
-    gap: 1.5em;
+    gap: 1em;
     mask-image: linear-gradient(to right, black 0%, black 90%, transparent);
     overflow: hidden;
     flex-grow: 0;
@@ -29,7 +29,7 @@
         h2,
         h3 {
             font-weight: var(--fw-light);
-            color: var(--m-text-secondary);
+            color: var(--m-text-quaternary);
         }
 
         h2 {
@@ -113,7 +113,7 @@
 
             &>span:last-child {
                 font-weight: var(--fw-light);
-                color: var(--m-text-secondary);
+                color: var(--m-text-quaternary);
                 opacity: .9;
                 white-space: nowrap;
             }

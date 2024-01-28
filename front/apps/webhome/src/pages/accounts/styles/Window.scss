@@ -8,11 +8,12 @@
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        gap: 1em;
+        gap: 1.5em;
         position: relative;
     }
 
-    .window {
+    .window,
+    .window-no-background {
         position: relative;
     }
 }
@@ -39,7 +40,8 @@
             gap: .5em;
         }
 
-        li[aria-current="true"] {
+        li[aria-current="true"],
+        li[aria-current="true"] span {
             background-color: transparent;
             transition: background-color 0.5s ease-in-out;
             color: var(--blue-medium-dark);

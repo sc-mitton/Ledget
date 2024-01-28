@@ -11,7 +11,6 @@ import "./styles/Window.scss"
 import TransactionModal from '@modals/TransactionItem'
 import { Ellipsis } from "@ledget/media"
 import Header from './Header'
-import ShadowedContainer from '@components/pieces/ShadowedContainer'
 import { SelectCategoryBill } from '@components/dropdowns'
 import { Logo } from '@components/pieces'
 import ItemOptions from "./ItemOptions"
@@ -43,6 +42,7 @@ import type { Transaction } from '@features/transactionsSlice'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useFilterFormContext } from '../context'
 import { useColorScheme } from '@ledget/ui'
+import { useScreenContext } from '@context/context'
 
 // Sizing (in ems)
 const translate = 1
@@ -66,12 +66,6 @@ const _getContainerHeight = (length: number, expanded: boolean) => {
 
 const _getOpacity = (index: number, expanded: boolean) => {
     const belowStackMax = index > stackMax
-    if (!expanded && index == 1) {
-        return .6
-    }
-    if (!expanded && index == 2) {
-        return .4
-    }
     return (!expanded && belowStackMax && index !== 0) ? 0 : 1
 }
 
@@ -108,8 +102,22 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
     }
 }
 
-const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean) => {
-    const lightness = darkMode ? 11 : 100
+const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean, smallScreen: boolean) => {
+    let lightness: number
+    if (smallScreen) {
+        if (index === 0 || expanded) {
+            lightness = darkMode ? 8 : 100
+        } else {
+            lightness = darkMode ? 8 - (index * 1.75) : 98
+        }
+    } else {
+        if (index === 0 || expanded) {
+            lightness = darkMode ? 11 : 100
+        } else {
+            lightness = darkMode ? 11 - (index * 2) : 98
+        }
+    }
+
     return `hsl(0, 0%, ${lightness}%)`
 }
 
@@ -227,6 +235,7 @@ const NeedsConfirmationWindow = () => {
     const { isDark } = useColorScheme()
     const navigate = useNavigate()
     const location = useLocation()
+    const { screenSize } = useScreenContext()
 
     const [confirmTransactions] = useConfirmTransactionsMutation()
     const unconfirmedTransactions = useAppSelector(
@@ -275,7 +284,7 @@ const NeedsConfirmationWindow = () => {
                 // top: getTop(index, false),
                 y: _getY(index, unconfirmedStackExpanded, false),
                 transform: `scale(${_getScale(index, unconfirmedStackExpanded, false)})`,
-                backgroundColor: _getBackGroundColor(index, unconfirmedStackExpanded, isDark),
+                backgroundColor: _getBackGroundColor(index, unconfirmedStackExpanded, isDark, screenSize !== 'extra-large'),
             }),
             enter: (item, index) => ({
                 y: _getY(index, unconfirmedStackExpanded, true),
@@ -291,7 +300,7 @@ const NeedsConfirmationWindow = () => {
                 transform: `scale(${_getScale(index, unconfirmedStackExpanded)})`,
                 zIndex: `${(unconfirmedTransactions!.length - index)}`,
                 opacity: _getOpacity(index, unconfirmedStackExpanded),
-                backgroundColor: _getBackGroundColor(index, unconfirmedStackExpanded, isDark),
+                backgroundColor: _getBackGroundColor(index, unconfirmedStackExpanded, isDark, screenSize !== 'extra-large'),
             }),
             onRest: () => {
                 unconfirmedStackExpanded
@@ -492,31 +501,29 @@ const NeedsConfirmationWindow = () => {
                 onMouseLeave={() => flushConfirmedQue()}
             >
                 <div>
-                    <ShadowedContainer showShadow={unconfirmedStackExpanded}>
-                        <animated.div style={containerProps} onScroll={handleScroll}>
-                            {(isSuccess && unconfirmedTransactions) &&
-                                <>
-                                    {itemTransitions((style, item, obj, index) => {
-                                        if (!item) return null
-                                        return (
-                                            <NewItem
-                                                item={item}
-                                                style={style}
-                                                updatedBillCat={
-                                                    transactionUpdates[item.transaction_id]?.categories
-                                                    || transactionUpdates[item.transaction_id]?.bill
-                                                }
-                                                onBillCat={(e, item) => handleBillCatClick(e, item)}
-                                                onEllipsis={(e, item) => handleEllipsis(e, item)}
-                                                handleConfirm={handleItemConfirm}
-                                                tabIndex={unconfirmedStackExpanded || index === 0 ? 0 : -1}
-                                            />
-                                        )
-                                    })}
-                                </>
-                            }
-                        </animated.div >
-                    </ShadowedContainer>
+                    <animated.div style={containerProps} onScroll={handleScroll}>
+                        {(isSuccess && unconfirmedTransactions) &&
+                            <>
+                                {itemTransitions((style, item, obj, index) => {
+                                    if (!item) return null
+                                    return (
+                                        <NewItem
+                                            item={item}
+                                            style={style}
+                                            updatedBillCat={
+                                                transactionUpdates[item.transaction_id]?.categories
+                                                || transactionUpdates[item.transaction_id]?.bill
+                                            }
+                                            onBillCat={(e, item) => handleBillCatClick(e, item)}
+                                            onEllipsis={(e, item) => handleEllipsis(e, item)}
+                                            handleConfirm={handleItemConfirm}
+                                            tabIndex={unconfirmedStackExpanded || index === 0 ? 0 : -1}
+                                        />
+                                    )
+                                })}
+                            </>
+                        }
+                    </animated.div >
                 </div>
                 <AbsPosMenu
                     show={showBillCatSelect}
