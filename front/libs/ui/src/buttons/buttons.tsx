@@ -240,10 +240,7 @@ export const RefreshButton = ({ stroke = 'currentColor', hasBackground = true, l
   }, [active])
 
   return (
-    <Tooltip
-      msg={"Refresh"}
-      ariaLabel={"Refresh list"}
-    >
+    <Tooltip msg={"Refresh"} ariaLabel={"Refresh list"}>
       {hasBackground
         ?
         <CircleIconButton
@@ -269,7 +266,7 @@ export const RefreshButton = ({ stroke = 'currentColor', hasBackground = true, l
           {...rest}
         >
           <LoadingRing visible={loading} />
-          <div style={{ opacity: loading ? 0 : 1 }}><ReplayIcon stroke={stroke} /></div>
+          <ReplayIcon stroke={stroke} />
         </IconButton>
       }
     </Tooltip>

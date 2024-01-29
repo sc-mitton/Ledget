@@ -8,7 +8,7 @@ import { DropDownDiv } from '../../animations/animations';
 import { HalfArrow } from '@ledget/media'
 import { TextInputWrapper } from '../text/text';
 import { Tooltip } from '../../pieces/tooltip/tooltip';
-import { IconButton3, CircleIconButton, PrimaryTextButton } from '../../buttons/buttons';
+import { IconButton3, CircleIconButton, BlueTextButton, FadedTextButton } from '../../buttons/buttons';
 import { useAccessEsc } from '../../modal/with-modal/with-modal';
 
 
@@ -22,9 +22,18 @@ type TSelectedValue<T extends TPicker> =
 
 type BaseDatePickerProps = {
   name?: string
+  period: 'day' | 'month' | 'year'
   format?: 'MM/DD/YYYY' | 'M/D/YYYY' | 'MM/DD/YY' | 'DD/MM/YYYY' | 'DD/MM/YY'
   closeOnSelect?: boolean
-}
+} & ({
+  hideInputElement: true,
+  dropdownVisible: boolean,
+  setDropdownVisible: React.Dispatch<React.SetStateAction<boolean>>,
+} | {
+  hideInputElement: false,
+  dropdownVisible?: never
+  setDropdownVisible?: never,
+})
 
 type DatePickerProps<T extends TPicker> =
   T extends 'range'
@@ -43,9 +52,9 @@ type DatePickerProps<T extends TPicker> =
     onChange?: (value?: Dayjs) => void
   } & BaseDatePickerProps
 
-type UnenrichedDatePickerProps<T extends TPicker> = Partial<Pick<DatePickerProps<T>, 'pickerType'>> & Omit<DatePickerProps<T>, 'pickerType'>
-
-type DatePickerContextProps<T extends TPicker> = Pick<DatePickerProps<T>, 'defaultValue' | 'disabled' | 'pickerType'>
+type P = 'defaultValue' | 'disabled' | 'pickerType' | 'period'
+type UnenrichedDatePickerProps<T extends TPicker> = Omit<DatePickerProps<T>, P>
+type DatePickerContextProps<T extends TPicker> = Pick<DatePickerProps<T>, P>
 
 type TDatePickerContext<TP extends TPicker> =
   (TP extends 'range'
@@ -97,7 +106,7 @@ type YearsMonthsProps = {
 // Context
 const datePickerContext = createContext<TDatePickerContext<TPicker> | undefined>(undefined)
 
-const DatePickerContextProvider = <TP extends TPicker>({ children, pickerType, disabled, defaultValue }:
+const DatePickerContextProvider = <TP extends TPicker>({ children, pickerType, disabled, defaultValue, period }:
   DatePickerContextProps<TP> & { children: React.ReactNode }) => {
 
   const [selectedValue, setSelectedValue] = useState<typeof defaultValue>()
@@ -118,7 +127,8 @@ const DatePickerContextProvider = <TP extends TPicker>({ children, pickerType, d
         pickerType,
         disabled,
         inputTouchCount,
-        setInputTouchCount
+        setInputTouchCount,
+        period
       } as any}
     >
       {children}
@@ -185,7 +195,7 @@ const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
               ? focusedInputIndex === 0
                 ? djs.isAfter(active) && djs.isBefore(selectedValue?.[1], 'year')
                 : djs.isBefore(active) && djs.isAfter(selectedValue?.[0], 'year')
-              : djs.isAfter(active)
+              : false
             : false
           const isSelected = pickerType === 'range'
             ? selectedValue?.every(v => v)
@@ -196,17 +206,14 @@ const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
           return (<PickerCell
             onClick={() => { onSelect(djs) }}
             extraPadded={true}
-
             onMouseEnter={() => setActive(djs)}
             isDisabled={isDisabled}
             isActive={isActive}
-
+            isSelected={isSelected}
             isActiveTerminusEnd={pickerType === 'range' && focusedInputIndex === 1 && djs.isSame(active, 'year') && djs.isAfter(selectedValue?.[0], 'year')}
             isActiveTerminusStart={pickerType === 'range' && focusedInputIndex === 0 && djs.isSame(active, 'year') && djs.isBefore(selectedValue?.[1], 'year')}
-
-            isSelected={isSelected}
-            isTerminusStart={pickerType === 'range' && selectedValue?.[0] && djs.isSame(selectedValue[0], 'year')}
-            isTerminusEnd={pickerType === 'range' && selectedValue?.[1] && djs.isSame(selectedValue[1], 'year')}
+            isTerminusStart={pickerType === 'range' ? selectedValue?.[0] && djs.isSame(selectedValue[0], 'year') : djs.isSame(selectedValue, 'year')}
+            isTerminusEnd={pickerType === 'range' ? selectedValue?.[1] && djs.isSame(selectedValue[1], 'year') : djs.isSame(selectedValue, 'year')}
           >
             {djs.format('YYYY')}
           </PickerCell>)
@@ -225,7 +232,7 @@ const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
 
 const Months = ({ windowCenter, onSelect }: YearsMonthsProps) => {
   const [activeMonth, setActiveMonth] = useState<Dayjs>()
-  const { selectedValue, setSelectedValue, pickerType, focusedInputIndex, inputTouchCount, disabled } = useDatePickerContext()
+  const { selectedValue, pickerType, focusedInputIndex } = useDatePickerContext()
 
   return (
     <div
@@ -240,17 +247,27 @@ const Months = ({ windowCenter, onSelect }: YearsMonthsProps) => {
               ? djs.isAfter(activeMonth, 'month') && djs.isBefore(selectedValue?.[1], 'month')
               : djs.isBefore(activeMonth, 'month') && djs.isAfter(selectedValue?.[0], 'month')
             : false
+          const isSelected =
+            pickerType === 'range'
+              ? selectedValue?.every(v => v)
+                ? djs.isAfter(selectedValue?.[0], 'month') && djs.isBefore(selectedValue?.[1], 'month')
+                : false
+              : false
 
           return (
             <PickerCell
               onMouseEnter={() => setActiveMonth(djs)}
               isActive={isActive}
               isDisabled={false}
-              onClick={() => { onSelect(djs) }}
+              onClick={() => {
+                onSelect(djs)
+
+              }}
+              isSelected={isSelected}
               isActiveTerminusEnd={pickerType === 'range' && focusedInputIndex === 1 && djs.isSame(activeMonth, 'month') && djs.isAfter(selectedValue?.[0], 'day')}
               isActiveTerminusStart={pickerType === 'range' && focusedInputIndex === 0 && djs.isSame(activeMonth, 'month') && djs.isBefore(selectedValue?.[1], 'day')}
-              isTerminusStart={pickerType === 'range' && djs.isSame(selectedValue?.[0], 'month')}
-              isTerminusEnd={pickerType === 'range' && djs.isSame(selectedValue?.[1], 'month')}
+              isTerminusStart={pickerType === 'range' ? djs.isSame(selectedValue?.[0], 'month') : djs.isSame(selectedValue, 'month')}
+              isTerminusEnd={pickerType === 'range' ? djs.isSame(selectedValue?.[1], 'month') : djs.isSame(selectedValue, 'month')}
               extraPadded={true}
             >
               {djs.month(i).format('MMM')}
@@ -430,9 +447,9 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
 
 const DayMonthYearPicker = () => {
 
-  const { pickerType, selectedValue, focusedInputIndex } = useDatePickerContext()
+  const { pickerType, selectedValue, focusedInputIndex, period } = useDatePickerContext()
 
-  const [view, setView] = useState<'day' | 'month' | 'year'>('day')
+  const [view, setView] = useState<'day' | 'month' | 'year'>(period)
   const [windowCenter, setWindowCenter] = useState<Dayjs>()
   const [activeCell, setActiveCell] = useState<Dayjs>()
 
@@ -541,7 +558,7 @@ const DayMonthYearPicker = () => {
             windowCenter={windowCenter || dayjs()}
             onSelect={(month) => {
               setWindowCenter(month)
-              setView('day')
+              !['month', 'year'].includes(period) && setView('day')
             }}
           />}
 
@@ -554,18 +571,18 @@ const DayMonthYearPicker = () => {
             windowCenter={windowCenter || dayjs()}
             onSelect={(month) => {
               setWindowCenter(month)
-              setView('month')
+              period !== 'year' && setView('month')
             }}
           />}
       </div>
       <div>
-        <PrimaryTextButton
+        <BlueTextButton
           type='button'
           onClick={() => { setWindowCenter(dayjs()) }}
           aria-label='Go to today'
         >
           Today
-        </PrimaryTextButton>
+        </BlueTextButton>
       </div>
     </div>
   )
@@ -590,11 +607,9 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   const startInputRef = useRef<HTMLInputElement>(null)
   const endInputRef = useRef<HTMLInputElement>(null)
 
-  useAccessEsc({
-    visible: showPicker,
-    setVisible: setShowPicker,
-    refs: [dropdownRef, inputContainerRef]
-  })
+  useAccessEsc(props.dropdownVisible !== undefined && props.setDropdownVisible !== undefined
+    ? { refs: [dropdownRef], visible: props.dropdownVisible, setVisible: props.setDropdownVisible }
+    : { refs: [dropdownRef, inputContainerRef], visible: showPicker, setVisible: setShowPicker })
 
   // Once the value has been selected, if closeOnSelect is true, close the picker
   useEffect(() => {
@@ -680,7 +695,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
 
   return (
     <div className='ledget-datepicker--container' style={{ display: verticlePlacement === 'top' ? 'flex' : '' }}>
-      <TextInputWrapper
+      {!props.hideInputElement && <TextInputWrapper
         focused={showPicker}
         className={`ledget-datepicker
           ${pickerType === 'range' ? selectedValue?.some(v => v) ? 'filled' : '' : selectedValue ? 'filled' : ''}
@@ -733,10 +748,10 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
           >
             <X size={'.8em'} />
           </CircleIconButton>}
-      </TextInputWrapper>
+      </TextInputWrapper>}
       <DropDownDiv
         ref={dropdownRef}
-        visible={showPicker}
+        visible={props.dropdownVisible !== undefined ? props.dropdownVisible : showPicker}
         placement={placement}
         verticlePlacement={verticlePlacement}
         onClick={() => {
@@ -754,19 +769,15 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
 }
 
 export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<PT>) {
-  const {
-    disabled,
-    pickerType = 'date',
-    defaultValue,
-  } = props
 
-  const args = { ...props, pickerType } as UnenrichedDatePickerProps<TPicker>
+  const { pickerType, period, disabled, defaultValue, ...args } = props
 
   return (
     <DatePickerContextProvider
       disabled={disabled}
       pickerType={pickerType}
       defaultValue={defaultValue}
+      period={period}
     >
       <UnenrichedDatePicker {...args} />
     </DatePickerContextProvider>
@@ -774,10 +785,12 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
 }
 
 const defaultProps: DatePickerProps<TPicker> = {
+  period: 'day',
   pickerType: 'date',
   format: 'M/D/YYYY',
   placeholder: 'Select',
-  closeOnSelect: true
+  closeOnSelect: true,
+  hideInputElement: false,
 }
 
 DatePicker.defaultProps = defaultProps

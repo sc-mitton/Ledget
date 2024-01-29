@@ -22,7 +22,7 @@ import {
     BillCatLabel,
     AbsPosMenu
 } from "@ledget/ui"
-import { formatDateOrRelativeDate, InfiniteScrollDiv, useLoaded } from '@ledget/ui'
+import { formatDateOrRelativeDate, InfiniteScrollDiv, useLoaded, useColorScheme, LoadingRing } from '@ledget/ui'
 import { Category, isCategory, SplitCategory, addTransaction2Cat } from '@features/categorySlice'
 import { Bill, isBill, addTransaction2Bill } from '@features/billSlice'
 import {
@@ -39,8 +39,6 @@ import {
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useFilterFormContext } from '../context'
-import { useColorScheme } from '@ledget/ui'
-import { useScreenContext } from '@context/context'
 
 // Sizing (in ems)
 const translate = 1
@@ -103,9 +101,9 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
 const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean) => {
     let lightness: number
     if (index === 0 || expanded) {
-        lightness = darkMode ? 8 : 100
+        lightness = darkMode ? 7 : 100
     } else {
-        lightness = darkMode ? 8 + (index * 2) : 98
+        lightness = darkMode ? 7 + (index * 1.5) : 100
     }
 
     return `hsl(0, 0%, ${lightness}%)`

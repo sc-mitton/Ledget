@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from '@hooks/store';
 import { PayloadAction } from "@reduxjs/toolkit";
 
@@ -23,9 +23,12 @@ export const uiSlice = createSlice({
     },
 })
 
-export const selectBudgetMonthYear = (state: RootState) => ({
-    month: state.ui.budgetMonth,
-    year: state.ui.budgetYear,
-})
+const selectMonth = (state: RootState) => state.ui.budgetMonth;
+const selectYear = (state: RootState) => state.ui.budgetYear;
+
+export const selectBudgetMonthYear = createSelector(
+    [selectMonth, selectYear],
+    (month, year) => ({ month, year })
+)
 
 export const { changeBudgetMonthYear } = uiSlice.actions

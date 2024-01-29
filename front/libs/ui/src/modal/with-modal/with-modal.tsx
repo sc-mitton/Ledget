@@ -19,6 +19,10 @@ export function useAccessEsc({ refs, visible, setVisible }: I) {
 
       let shouldClose = true
       for (const ref of refs) {
+        if ((event.target as any)?.ariaHasPopup) {
+          shouldClose = false
+          break
+        }
         if (ref.current === null) {
           shouldClose = false
           break

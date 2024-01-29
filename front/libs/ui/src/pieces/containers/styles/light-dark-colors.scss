@@ -67,6 +67,7 @@
         --blue: hsl(var(--blue-h), 25%, 35%);
         --blue-steel-gray: hsl(var(--blue-h), 25%, 35%);
         --blue-sat: hsl(var(--blue-h), 55%, 55%);
+        --blue-sat-hover: hsl(var(--blue-h), 55%, 65%);
         --blue-medium-dark: hsl(var(--blue-h), 25%, 70%);
         --blue-dark: hsl(var(--blue-h), 25%, 90%);
         --blue-dark-hover: hsl(var(--blue-h), 25%, 85%);
@@ -96,7 +97,7 @@
 
 
         --wafer-background: hsl(0, 0%, 1%);
-        --dropdown-background: hsl(0, 0%, 14%);
+        --dropdown-background: hsl(0, 0%, 12%);
         --dropdown-item-background: hsl(0, 0%, 22%);
 
         // New Item
@@ -226,6 +227,7 @@
         --blue: hsl(var(--blue-h), 82%, 52%);
         --blue-steel-gray: hsl(var(--blue-h), 32%, 85%);
         --blue-sat: hsl(var(--blue-h), 82%, 50%);
+        --blue-sat-hover: hsl(var(--blue-h), 82%, 70%);
         --blue-medium-dark: hsl(var(--blue-h), 82%, 37%);
         --blue-dark: hsl(var(--blue-h), 82%, 22%);
         --blue-ultra-dark: hsl(var(--blue-h), 82%, 12%);
@@ -268,7 +270,7 @@
 
         // New Item
         // --new-item-border: hsl(0, 0%, 93%);
-        --new-item-drop-shadow-color: hsl(var(--window-h), var(--window-s), 93%);
+        --new-item-drop-shadow-color: hsl(var(--window-h), var(--window-s), 91%);
 
         // Inputs
         --input-background: hsl(var(--window-h), var(--window-s), 92%);

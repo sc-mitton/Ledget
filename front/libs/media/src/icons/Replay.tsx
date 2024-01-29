@@ -2,7 +2,7 @@
 
 const Refresh = ({
     className = '',
-    size = "1.125em",
+    size = "1.375em",
     stroke = "var(--icon-full)",
 }) => {
     return (
@@ -20,8 +20,8 @@ const Refresh = ({
                 height: size,
             }}
         >
-            <path fill='none' stroke={stroke} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" d="M107.6,55.5c4.7,6.9,7.4,15.2,7.4,24.2c0,23.8-19.3,43.2-43.2,43.2s-43.2-19.3-43.2-43.2S48,36.5,71.8,36.5h19.3" />
-            <polyline fill='none' stroke={stroke} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" points="68.4,13.8 91.1,36.5 68.4,59.1" />
+            <path fill='none' stroke={stroke} strokeWidth={10} strokeLinecap="round" strokeLinejoin="round" d="M103.8,56.9c4.2,6.2,6.6,13.6,6.6,21.6c0,21.3-17.2,38.6-38.6,38.6S33.2,99.8,33.2,78.5s17.3-38.6,38.6-38.6 H89" />
+            <polyline fill='none' stroke={stroke} strokeWidth={10} strokeLinecap="round" strokeLinejoin="round" points="68.8,19.6 89,39.9 68.8,60.1" />
         </svg>
 
     )

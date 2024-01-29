@@ -1,4 +1,6 @@
 
+import dayjs from "dayjs"
+
 import { useEffect, useState } from "react"
 import { useAppSelector } from "./store"
 import { selectBudgetMonthYear } from '@features/uiSlice'
@@ -22,10 +24,10 @@ export const useGetStartEndQueryParams = (arg?: { month?: number, year?: number 
             setStart(start)
             setEnd(end)
         } else if (storedMonth && storedYear) {
-            const year = storedYear
-            const month = storedYear
-            setStart(Math.floor(new Date(year, month - 1, 1).getTime() / 1000))
-            setEnd(Math.floor(new Date(year, month, 0).getTime() / 1000))
+            const start = dayjs().month(storedMonth - 1).year(storedYear).startOf('month').unix()
+            const end = dayjs().month(storedMonth - 1).year(storedYear).endOf('month').unix()
+            setStart(start)
+            setEnd(end)
         }
     }, [month, year, storedMonth, storedYear])
 

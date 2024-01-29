@@ -491,7 +491,7 @@ $wafer-container-padding: .75rem;
     background-color: inherit;
 
     span {
-        padding: 0 .75em 0 .25em;
+        padding: 0 .5em 0 .25em;
         color: var(--m-text-quinary);
         background-color: inherit;
 
@@ -514,7 +514,7 @@ $borderRadius2: var(--border-radius2);
 
 .transactions--table {
     position: absolute;
-    z-index: 100;
+    z-index: 0;
     inset: 0;
     right: -1.5em;
     overflow: auto;

@@ -130,7 +130,7 @@
 }
 
 .btn-icon3 {
-    color: var(--m-text-secondary);
+    color: var(--m-text-quaternary);
     border-radius: 2px;
 
     &:hover {
@@ -344,10 +344,10 @@
     }
 
     &:hover {
-        color: var(--blue-light-medium);
+        color: var(--blue-sat-hover);
 
         * {
-            color: var(--blue-light-medium);
+            color: var(--blue-sat-hover);
         }
     }
 }
@@ -795,9 +795,15 @@ button.disabled-hover:hover svg {
     position: relative;
 }
 
-.refresh-btn.active svg,
-.refresh-btn-clr.active svg {
-    animation: spin .3s ease-in-out forwards;
+.refresh-btn,
+.refresh-btn-clr {
+    &.loading>svg {
+        opacity: 0;
+    }
+
+    &.active svg {
+        animation: spin .3s ease-in-out forwards;
+    }
 }
 
 @keyframes spin {

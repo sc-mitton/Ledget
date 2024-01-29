@@ -1,0 +1,45 @@
+.month-picker {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    &--container {
+        display: flex;
+        align-items: center;
+        gap: .125em;
+        margin-bottom: .5em;
+        border-radius: var(--border-radius4);
+        padding: .125em .25em .125em .75em;
+    }
+
+    &.dark {
+        &>.month-picker--container {
+            border: 1.75px solid var(--btn-light-gray);
+
+            button {
+                color: var(--m-text-quaternary)
+            }
+
+            button:hover {
+                color: var(--m-text)
+            }
+        }
+    }
+
+    &:not(.dark) {
+        &>.month-picker--container {
+
+            &>button:first-child {
+                margin-left: -.375em;
+            }
+
+            button {
+                opacity: 1;
+            }
+
+            button:hover {
+                opacity: .6;
+            }
+        }
+    }
+}

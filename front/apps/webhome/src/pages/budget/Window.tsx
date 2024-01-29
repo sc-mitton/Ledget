@@ -10,7 +10,6 @@ import Bills from './Bills'
 import { setConfirmedTransactionFilter } from '@features/transactionsSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useScreenContext } from '@context/context'
-import Spending from '@pages/spending/Window'
 import Footer from './Footer'
 
 function Window() {

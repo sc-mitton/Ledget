@@ -28,6 +28,10 @@ header {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+
+            &::after {
+                display: none;
+            }
         }
     }
 
@@ -52,7 +56,18 @@ header {
             flex-grow: 1;
             display: flex;
             justify-content: flex-end;
-            margin-right: 1em;
+            margin-right: 2.75em;
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                right: -1em;
+                top: .25em;
+                bottom: .25em;
+                width: 1.5px;
+                background-color: var(--m-text-secondary);
+            }
         }
 
         // Icons in menu (dark mode, notifications, profile)
@@ -75,28 +90,8 @@ header {
 
     margin-left: 1em;
 
-    button {
+    &>button {
         width: 100%;
-    }
-}
-
-/* ----------------------- Notifications Dropdown Menu ---------------------- */
-
-#notifications {
-    &>button.active {
-        position: relative;
-
-        &::after {
-            content: '';
-            position: absolute;
-            top: -.2em;
-            right: .0625em;
-            width: .375em;
-            height: .375em;
-            border-radius: 50%;
-            border: var(--header-background) 1.5px solid;
-            background-color: var(--blue-sat);
-        }
     }
 }
 
@@ -148,10 +143,6 @@ header {
 .nav-item:hover {
     background-color: var(--header-pill-hover);
     transition: all 0.3s;
-}
-
-.current-nav-item * {
-    font-weight: var(--fw-bold);
 }
 
 @media (max-width: 1079px) {

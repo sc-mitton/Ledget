@@ -117,7 +117,7 @@
             flex-grow: 1;
 
             button:hover {
-                color: var(--blue);
+                color: var(--blue-sat);
             }
         }
 
@@ -198,7 +198,7 @@
 
         &:hover:not(.active):not(.disabled):not(.active-terminus-start):not(.active-terminus-end):not(.terminus-start):not(.terminus-end)::after {
             @include transition-background(var(--btn-light-gray));
-            border-radius: var(--border-radius1);
+            border-radius: var(--border-radius2);
             left: .25em;
             right: .25em;
         }
@@ -211,15 +211,15 @@
         &.active-terminus-end:not(.terminus-end):not(.terminus-start):not(.disabled):not(.today):not(.selected)::after {
             border: 1px dashed var(--blue-medium);
             border-left: none;
-            border-top-right-radius: var(--border-radius1);
-            border-bottom-right-radius: var(--border-radius1);
+            border-top-right-radius: var(--border-radius2);
+            border-bottom-right-radius: var(--border-radius2);
         }
 
         &.active-terminus-start:not(.terminus-end):not(.terminus-start):not(.disabled):not(.today):not(.selected)::after {
             border: 1px dashed var(--blue-medium);
             border-right: none;
-            border-top-left-radius: var(--border-radius1);
-            border-bottom-left-radius: var(--border-radius1);
+            border-top-left-radius: var(--border-radius2);
+            border-bottom-left-radius: var(--border-radius2);
         }
 
         &.today::before {
@@ -247,9 +247,13 @@
             transition: opacity .2s ease-in-out;
         }
 
-        &.terminus-start::after,
-        &.terminus-end:after {
-            @include transition-background(var(--blue-light-medium));
+        &.terminus-start,
+        &.terminus-end {
+            color: var(--white);
+
+            &::after {
+                @include transition-background(var(--blue-light-medium));
+            }
         }
 
         &.selected::after {
@@ -257,14 +261,14 @@
         }
 
         &.terminus-start::after {
-            border-top-left-radius: var(--border-radius1);
-            border-bottom-left-radius: var(--border-radius1);
+            border-top-left-radius: var(--border-radius2);
+            border-bottom-left-radius: var(--border-radius2);
             left: .2em;
         }
 
         &.terminus-end::after {
-            border-top-right-radius: var(--border-radius1);
-            border-bottom-right-radius: var(--border-radius1);
+            border-top-right-radius: var(--border-radius2);
+            border-bottom-right-radius: var(--border-radius2);
             right: .2em;
         }
 
@@ -278,10 +282,6 @@
     &>div:last-child {
         display: flex;
         justify-content: center;
-
-        &>button:last-child {
-            margin-left: .5em;
-        }
     }
 
 }

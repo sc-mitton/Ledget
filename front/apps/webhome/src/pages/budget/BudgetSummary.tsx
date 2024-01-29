@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
 
 import './styles/BudgetSummary.scss'
-import MonthPicker from '@components/inputs/MonthPicker'
+import { MonthPicker } from './MonthPicker'
 import { SelectCategoryBillMetaData, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { selectBillMetaData, useLazyGetBillsQuery } from '@features/billSlice'
 import { useAppSelector } from '@hooks/store'

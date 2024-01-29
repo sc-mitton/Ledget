@@ -86,7 +86,6 @@ const ProfileDropdownMenu = ({ setModal }:
                         arrow='right'
                         className='profile-dropdown'
                         visible={open}
-                        transformOrigin='center'
                     >
                         <Menu.Items static>
                             <Wrapper onClick={() => navigate("/profile/details")}>
