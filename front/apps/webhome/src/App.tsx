@@ -19,9 +19,11 @@ import {
     CreateBill,
     ForceVerification,
     BillModal,
-    OnboardingModal
+    OnboardingModal,
+    TransactionItem
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
+import { selectTransactionModal, clearTransactionModal } from '@features/uiSlice';
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 import { ScreenProvider } from '@context/index'
@@ -61,6 +63,7 @@ const App = () => {
     const ref = useRef<HTMLDivElement>(null)
     const { data: user } = useGetMeQuery()
     const toastStack = useAppSelector(toastStackSelector)
+    const transactionModal = useAppSelector(selectTransactionModal)
     const dispatch = useAppDispatch()
     const { screenSize } = useScreenContext()
 
@@ -105,6 +108,12 @@ const App = () => {
                     </Routes>
                 </ZoomMotionDiv>
             </AnimatePresence>
+            {transactionModal.item &&
+                <TransactionItem
+                    item={transactionModal.item}
+                    splitMode={transactionModal.splitMode}
+                    onClose={() => dispatch(clearTransactionModal())}
+                />}
             <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />
         </>
     )

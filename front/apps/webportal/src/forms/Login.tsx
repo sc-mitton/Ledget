@@ -293,6 +293,8 @@ const Login = () => {
                     window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
                 }, 1000)
                 return () => clearTimeout(timeout)
+            } else {
+                window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
             }
         }
     }, [devicesRefreshedSuccess])

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import dayjs, { Dayjs } from 'dayjs'
@@ -41,12 +41,12 @@ export const MonthPicker = ({ darkMode = false }) => {
         }
     }, [month, year])
 
-    const seekYear = (direction: 1 | -1, amount: 1 | 5,) => {
-        const newYear = date.add(direction * amount, 'year').year()
-        if (direction === 1 && newYear <= new Date().getFullYear()) {
-            setDate(dayjs().year(newYear))
-        } else if (direction === -1 && newYear >= new Date(user?.created_on || new Date()).getFullYear()) {
-            setDate(dayjs().year(newYear))
+    const seek = (direction: 1 | -1, amount: 1 | 5,) => {
+        const newDjs = date.add(direction * amount, 'month')
+        if (direction === 1 && newDjs.isBefore(dayjs())) {
+            setDate(newDjs)
+        } else if (direction === -1 && newDjs.isAfter(dayjs(user?.created_on))) {
+            setDate(newDjs)
         }
     }
 
@@ -65,10 +65,10 @@ export const MonthPicker = ({ darkMode = false }) => {
                         onClick={(e) => setShowDatePicker(!showDatePicker)}>
                         {date.format('MMMM YYYY')}
                     </button>}
-                <button onClick={() => seekYear(-1, 1)}>
+                <button onClick={() => seek(-1, 1)}>
                     <ChevronLeft className='icon' />
                 </button>
-                <button onClick={() => seekYear(1, 1)}>
+                <button onClick={() => seek(1, 1)}>
                     <ChevronRight className='icon' />
                 </button>
             </div>
@@ -76,6 +76,8 @@ export const MonthPicker = ({ darkMode = false }) => {
                 period='month'
                 hideInputElement={true}
                 dropdownVisible={showDatePicker}
+                disabled={[[undefined, dayjs(user?.created_on)], [dayjs().add(1, 'month'), undefined]]}
+                omitDisabled={true}
                 setDropdownVisible={setShowDatePicker}
                 defaultValue={date}
                 onChange={(date) => date && setDate(date)}

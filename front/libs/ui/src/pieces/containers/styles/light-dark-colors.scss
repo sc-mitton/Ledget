@@ -31,8 +31,6 @@
     --accessible-focus-drop-shadow: 0 0 0 1.5px var(--blue-light-medium);
     --active-wafer-drop-shadow: color-mix(in srgb, var(--monthly-hlight) 80%, var(--monthly-color)) 0px 0px 12px;
 
-    --subtle-border: .75px solid var(--border-color-ultra-dim);
-
 }
 
 :root {
@@ -97,12 +95,12 @@
 
 
         --wafer-background: hsl(0, 0%, 1%);
-        --dropdown-background: hsl(0, 0%, 12%);
-        --dropdown-item-background: hsl(0, 0%, 22%);
+        --dropdown-background: var(--window);
+        --dropdown-item-background: hsl(0, 0%, 12%);
 
         // New Item
         // --new-item-border: hsl(0, 0%, 11%);
-        // --new-item-drop-shadow-color: hsl(0, 0%, 14%);
+        --new-item-drop-shadow-color: hsl(0, 0%, 7%);
 
         // Header
         --header-background: hsl(240, 38%, 3%);

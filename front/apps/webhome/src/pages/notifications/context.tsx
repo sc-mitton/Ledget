@@ -5,6 +5,8 @@ interface IFilterContext {
     setShowFilterForm: React.Dispatch<React.SetStateAction<boolean>>
     unconfirmedStackExpanded: boolean
     setUnconfirmedStackExpanded: React.Dispatch<React.SetStateAction<boolean>>
+    confirmAll: boolean
+    setConfirmAll: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const SpendingViewContext = createContext<IFilterContext | null>(null)
@@ -20,6 +22,7 @@ export const useFilterFormContext = () => {
 export const SpendingViewContextProvider = ({ children }: { children: ReactNode }) => {
     const [showFilterForm, setShowFilterForm] = useState(false)
     const [unconfirmedStackExpanded, setUnconfirmedStackExpanded] = useState(false)
+    const [confirmAll, setConfirmAll] = useState(false)
 
     return (
         <SpendingViewContext.Provider
@@ -27,7 +30,9 @@ export const SpendingViewContextProvider = ({ children }: { children: ReactNode 
                 showFilterForm,
                 setShowFilterForm,
                 unconfirmedStackExpanded,
-                setUnconfirmedStackExpanded
+                setUnconfirmedStackExpanded,
+                confirmAll,
+                setConfirmAll,
             }}
         >
             {children}

@@ -10,7 +10,7 @@ import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { NeedsConfirmationStack } from './needs-confirmation/Stack'
-import { SpendingViewContextProvider } from './context'
+import { SpendingViewContextProvider, useFilterFormContext } from './context'
 
 const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
     const { start, end } = useGetStartEndQueryParams()
@@ -25,6 +25,7 @@ const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
         data: syncResult
     }] = useTransactionsSyncMutation()
     const dispatch = useAppDispatch()
+    const { setConfirmAll } = useFilterFormContext()
 
     useAccessEsc({
         refs: [dropdownRef, buttonRef],
@@ -53,50 +54,59 @@ const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
     }, [isSyncError])
 
     return (
-        <SpendingViewContextProvider>
-            <div style={{ position: 'relative' }} {...props} id='notifications-dropdown'>
-                <button
-                    ref={buttonRef}
-                    className={`${tCountData?.count ? 'active' : ''}`}
-                    onClick={() => setShowDropdown(!showDropdown)}
-                >
-                    <Bell className='icon' />
-                </button>
-                <DropDownDiv
-                    ref={dropdownRef}
-                    placement='right'
-                    arrow='right'
-                    className='profile-dropdown'
-                    visible={showDropdown}
-                    style={{ borderRadius: '.75rem' }}
-                >
-                    <div className='header'>
-                        <ul>
-                            <li>
-                                <span className='count'>{tCountData?.count}</span>
-                                New Items
-                            </li>
-                            {/* <li>History</li> */}
-                        </ul>
-                        <div>
-                            <Tooltip msg="Confirm all" ariaLabel="Confirm all">
-                                <IconButton>
-                                    <CheckAll />
-                                </IconButton>
-                            </Tooltip>
-                            <RefreshButton
-                                stroke={'currentColor'}
-                                hasBackground={false}
-                                loading={isSyncing}
-                                onClick={() => syncTransactions({})}
-                            />
-                        </div>
+        <div style={{ position: 'relative' }} {...props} id='notifications-dropdown'>
+            <button
+                ref={buttonRef}
+                className={`${tCountData?.count ? 'active' : ''}`}
+                onClick={() => setShowDropdown(!showDropdown)}
+            >
+                <Bell className='icon' />
+            </button>
+            <DropDownDiv
+                ref={dropdownRef}
+                placement='right'
+                arrow='right'
+                className='profile-dropdown'
+                visible={showDropdown}
+                style={{ borderRadius: '.75rem' }}
+            >
+                <div className='header'>
+                    <ul>
+                        <li>
+                            <span className='count'>{tCountData?.count}</span>
+                            New Items
+                        </li>
+                        {/* <li>Messages</li> */}
+                        <li>History</li>
+                    </ul>
+                    <div>
+                        <Tooltip msg="Confirm all" ariaLabel="Confirm all">
+                            <IconButton
+                                onClick={() => setConfirmAll(true)}
+                                disabled={tCountData?.count === 0}
+                            >
+                                <CheckAll />
+                            </IconButton>
+                        </Tooltip>
+                        <RefreshButton
+                            stroke={'currentColor'}
+                            hasBackground={false}
+                            loading={isSyncing}
+                            onClick={() => syncTransactions({})}
+                        />
                     </div>
-                    <NeedsConfirmationStack />
-                </DropDownDiv>
-            </div>
-        </SpendingViewContextProvider>
+                </div>
+                <NeedsConfirmationStack />
+            </DropDownDiv>
+        </div>
     )
 }
 
-export default NotificationsDropdownMenu
+export default function (props: HTMLProps<HTMLDivElement>) {
+
+    return (
+        <SpendingViewContextProvider>
+            <NotificationsDropdownMenu {...props} />
+        </SpendingViewContextProvider>
+    )
+}

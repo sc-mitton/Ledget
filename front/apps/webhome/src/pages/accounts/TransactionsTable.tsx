@@ -4,38 +4,16 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
 import dayjs from 'dayjs'
 
-import TransactionModal from '@modals/TransactionItem'
-import { useLazyGetTransactionsQuery, useGetTransactionQueryState, Transaction } from '@features/transactionsSlice'
+import { useAppDispatch } from '@hooks/store'
+import { setTransactionModal } from '@features/uiSlice'
+import { useLazyGetTransactionsQuery, useGetTransactionQueryState } from '@features/transactionsSlice'
 import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv, useLoaded, Tooltip } from '@ledget/ui'
 import pathMappings from './path-mappings'
 import { useScreenContext } from '@context/context'
 import { Hourglass } from '@ledget/media'
 
-const TransactionModalContent = createContext<{
-    item: Transaction | undefined,
-    setItem: (item: Transaction | undefined) => void,
-}>({
-    item: undefined,
-    setItem: () => { },
-})
-
-const TransactionModalProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [transactionModalItem, setTransactionModalItem] = useState<Transaction>()
-
-    const value = {
-        item: transactionModalItem,
-        setItem: setTransactionModalItem,
-    }
-
-    return (
-        <TransactionModalContent.Provider value={value}>
-            {children}
-        </TransactionModalContent.Provider>
-    )
-}
 
 const UnenrichedTable: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
-    const { item: transactionModalItem, setItem: setTransactionModalItem } = useContext(TransactionModalContent)
 
     const containerRef = useRef<HTMLDivElement>(null)
     const [fetchMorePulse, setFetchMorePulse] = useState(false)
@@ -120,33 +98,23 @@ const UnenrichedTable: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
                     </ShadowScrollDiv>
                 }
             </InfiniteScrollDiv>
-            {transactionModalItem &&
-                <TransactionModal
-                    item={transactionModalItem}
-                    onClose={() => setTransactionModalItem(undefined)}
-                />}
         </>
     )
 }
 
-export const TransactionsTable: FC<HTMLProps<HTMLDivElement>>
-    = ({ children }) => {
-        return (
-            <TransactionModalProvider>
-                <UnenrichedTable>
-                    {children}
-                </UnenrichedTable>
-            </TransactionModalProvider>
-        )
-    }
+export const TransactionsTable: FC<HTMLProps<HTMLDivElement>> = ({ children }) => (
+    <UnenrichedTable>
+        {children}
+    </UnenrichedTable>
+)
 
 export const Transactions = () => {
     const [searchParams] = useSearchParams()
-    const { setItem: setTransactionModalItem } = useContext(TransactionModalContent)
 
     let previousMonth: number | null = null
     let previousYear: number | null = null
     const location = useLocation()
+    const dispatch = useAppDispatch()
 
     const {
         data: transactionsData,
@@ -185,7 +153,7 @@ export const Transactions = () => {
                             <div
                                 key={transaction.transaction_id}
                                 role="button"
-                                onClick={() => setTransactionModalItem(transaction)}
+                                onClick={() => { dispatch(setTransactionModal({ item: transaction })) }}
                             >
                                 <div>
                                     <div>

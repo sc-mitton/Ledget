@@ -22,6 +22,7 @@ import {
     BillCatLabel,
     AbsPosMenu
 } from "@ledget/ui"
+import { setTransactionModal } from '@features/uiSlice'
 import { formatDateOrRelativeDate, InfiniteScrollDiv, useLoaded, useColorScheme, LoadingRing } from '@ledget/ui'
 import { Category, isCategory, SplitCategory, addTransaction2Cat } from '@features/categorySlice'
 import { Bill, isBill, addTransaction2Bill } from '@features/billSlice'
@@ -101,9 +102,9 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
 const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean) => {
     let lightness: number
     if (index === 0 || expanded) {
-        lightness = darkMode ? 7 : 100
+        lightness = darkMode ? 10 : 100
     } else {
-        lightness = darkMode ? 7 + (index * 1.5) : 100
+        lightness = darkMode ? 10 - (index * 1) : 100
     }
 
     return `hsl(0, 0%, ${lightness}%)`
@@ -218,7 +219,7 @@ export const NeedsConfirmationStack = () => {
             JSON.parse(sessionStorage.getItem('transactionUpdates') || '{}')
         )
     const { start, end } = useGetStartEndQueryParams()
-    const { setShowFilterForm, unconfirmedStackExpanded, setUnconfirmedStackExpanded } = useFilterFormContext()
+    const { setShowFilterForm, unconfirmedStackExpanded, setUnconfirmedStackExpanded, confirmAll, setConfirmAll } = useFilterFormContext()
     const { isDark } = useColorScheme()
     const navigate = useNavigate()
     const location = useLocation()
@@ -298,6 +299,7 @@ export const NeedsConfirmationStack = () => {
                 friction: loaded ? 22 : 40,
                 mass: 1
             },
+            immediate: !loaded && unconfirmedStackExpanded,
             ref: itemsApi
         }
     )
@@ -386,55 +388,58 @@ export const NeedsConfirmationStack = () => {
 
     // Send the updates to the backend whist updating the category
     // and bill metadata in the store.
-    const handleConfirmAll = () => {
-        itemsApi.start((index: any, item: any) => ({
-            x: 100,
-            opacity: 0,
-            delay: index * 50,
-            config: { duration: 130 },
-        }))
+    useEffect(() => {
+        if (confirmAll) {
+            itemsApi.start((index: any, item: any) => ({
+                x: 100,
+                opacity: 0,
+                delay: index * 50,
+                config: { duration: 130 },
+            }))
 
-        // Dispatch confirm for all items
-        setTimeout(() => {
-            const confirmed: ConfirmedQueue = []
-            for (let transaction of unconfirmedTransactions) {
-                const updatedCategories = transactionUpdates[transaction.transaction_id]?.categories
-                const updatedBillId = transactionUpdates[transaction.transaction_id]?.bill?.id
-                const predictedCategories = [{ ...transaction.predicted_category, fraction: 1 }]
-                const predictedBillId = transaction.predicted_bill?.id
+            // Dispatch confirm for all items
+            setTimeout(() => {
+                const confirmed: ConfirmedQueue = []
+                for (let transaction of unconfirmedTransactions) {
+                    const updatedCategories = transactionUpdates[transaction.transaction_id]?.categories
+                    const updatedBillId = transactionUpdates[transaction.transaction_id]?.bill?.id
+                    const predictedCategories = [{ ...transaction.predicted_category, fraction: 1 }]
+                    const predictedBillId = transaction.predicted_bill?.id
 
-                let ready2ConfirmItem: QueueItemWithCategory | QueueItemWithBill
-                if ((updatedCategories && !updatedBillId) || predictedCategories) {
-                    ready2ConfirmItem = {
-                        transaction: transaction,
-                        categories: updatedCategories || predictedCategories as SplitCategory[],
+                    let ready2ConfirmItem: QueueItemWithCategory | QueueItemWithBill
+                    if ((updatedCategories && !updatedBillId) || predictedCategories) {
+                        ready2ConfirmItem = {
+                            transaction: transaction,
+                            categories: updatedCategories || predictedCategories as SplitCategory[],
+                        }
+                    } else {
+                        ready2ConfirmItem = {
+                            transaction: transaction,
+                            bill: updatedBillId || predictedBillId,
+                        }
                     }
-                } else {
-                    ready2ConfirmItem = {
-                        transaction: transaction,
-                        bill: updatedBillId || predictedBillId,
+
+                    if (ready2ConfirmItem.bill) {
+                        dispatch(addTransaction2Bill({ billId: ready2ConfirmItem.bill, amount: ready2ConfirmItem.transaction.amount }))
+                    } else if (ready2ConfirmItem.categories) {
+                        for (let category of ready2ConfirmItem.categories) {
+                            dispatch(addTransaction2Cat({ categoryId: category.id, amount: ready2ConfirmItem.transaction.amount }))
+                        }
                     }
+                    dispatch(removeUnconfirmedTransaction(transaction.transaction_id))
+                    confirmed.push(ready2ConfirmItem)
                 }
-
-                if (ready2ConfirmItem.bill) {
-                    dispatch(addTransaction2Bill({ billId: ready2ConfirmItem.bill, amount: ready2ConfirmItem.transaction.amount }))
-                } else if (ready2ConfirmItem.categories) {
-                    for (let category of ready2ConfirmItem.categories) {
-                        dispatch(addTransaction2Cat({ categoryId: category.id, amount: ready2ConfirmItem.transaction.amount }))
-                    }
-                }
-                dispatch(removeUnconfirmedTransaction(transaction.transaction_id))
-                confirmed.push(ready2ConfirmItem)
-            }
-            confirmTransactions(confirmed.map((item) => ({
-                transaction_id: item.transaction.transaction_id,
-                splits: item.categories
-                    ? item.categories.map((cat) => ({ category: cat.id, fraction: cat.fraction }))
-                    : undefined,
-                bill: item.bill
-            })))
-        }, 130 + unconfirmedTransactions.length * 50)
-    }
+                confirmTransactions(confirmed.map((item) => ({
+                    transaction_id: item.transaction.transaction_id,
+                    splits: item.categories
+                        ? item.categories.map((cat) => ({ category: cat.id, fraction: cat.fraction }))
+                        : undefined,
+                    bill: item.bill
+                })))
+            }, 130 + unconfirmedTransactions.length * 50)
+        }
+        return () => { setConfirmAll(false) }
+    }, [confirmAll])
 
     const flushConfirmedQue = () => {
         if (confirmedTransactions.length > 0) {
@@ -529,7 +534,9 @@ export const NeedsConfirmationStack = () => {
                     pos={menuPos}
                 >
                     <ItemOptions handlers={[
-                        () => { },
+                        () => {
+                            focusedItem && dispatch(setTransactionModal({ item: focusedItem, splitMode: true }))
+                        },
                         () => {
                             navigate({
                                 pathname: '/budget/new-bill',
@@ -544,7 +551,9 @@ export const NeedsConfirmationStack = () => {
                             }, { state: { period: 'year', upper_amount: focusedItem?.amount, name: focusedItem?.name } }),
                                 setShowMenu(false)
                         },
-                        () => { },
+                        () => {
+                            focusedItem && dispatch(setTransactionModal({ item: focusedItem }))
+                        },
                     ]} />
                 </AbsPosMenu>
             </InfiniteScrollDiv >

@@ -471,7 +471,7 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
 
 const TransactionModal = withModal<{ item: Transaction, splitMode?: boolean }>(({ item, splitMode }) => {
     const loaded = useLoaded(1000)
-    const [action, setAction] = useState<Action | undefined>()
+    const [action, setAction] = useState<Action | undefined>(splitMode ? 'split' : undefined)
     const [edit, setEdit] = useState(false)
     const [preferredName, setPreferredName] = useState<string | undefined>()
     const [updateTransaction] = useUpdateTransactionMutation()

@@ -380,7 +380,7 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
                         control={control}
                         render={(props) => (
                             <DatePicker
-                                disabled={[undefined, dayjs()]}
+                                disabled={[[undefined, dayjs()]]}
                                 placeholder="Expires"
                                 format="M/D/YYYY"
                                 aria-label='Expiration date'
