@@ -162,9 +162,14 @@ $wafer-container-padding: .75rem;
 
         &>div:nth-child(2) {
             flex-grow: 1;
+            flex-shrink: 1;
             display: flex;
             align-items: center;
             gap: .75em;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-right: 2em;
+            mask-image: linear-gradient(to right, black 0%, black calc(100% - 1em), transparent);
 
             span:last-child {
                 display: flex;

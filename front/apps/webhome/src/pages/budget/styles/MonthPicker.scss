@@ -28,8 +28,8 @@
 
     &:not(.dark) {
         &>.month-picker--container {
-            font-size: 1rem;
-
+            // background-color: var(--window);
+            // padding: .125em .5em .125em 1.25em;
 
             &>button:first-child {
                 margin-left: -.375em;

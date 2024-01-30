@@ -74,7 +74,7 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
                             style={{ flexBasis: nameFlexBasis }}
                         >
                             <BillCatLabel
-                                name={item?.name || ''}
+                                labelName={item?.name || ''}
                                 emoji={item?.emoji}
                                 color={item?.period === 'month' ? 'blue' : 'green'}
                                 slim={true}

@@ -144,7 +144,7 @@ function SelectCategoryBillBody(props: I) {
                                     <BillCatLabel
                                         slim={true}
                                         color={billcat.period === 'month' ? 'blue' : 'green'}
-                                        name={billcat.name}
+                                        labelName={billcat.name}
                                         emoji={billcat.emoji}
                                         checked={selected}
                                         active={active}
@@ -238,7 +238,7 @@ export const FullSelectCategoryBill =
                                                 key={v.id}
                                                 slim={true}
                                                 color={v.period === 'month' ? 'blue' : 'green'}
-                                                name={v.name}
+                                                labelName={v.name}
                                                 tint={true}
                                                 hoverable={false}
                                             />
@@ -247,7 +247,7 @@ export const FullSelectCategoryBill =
                                     : <BillCatLabel
                                         slim={true}
                                         color={value.period === 'month' ? 'blue' : 'green'}
-                                        name={value.name}
+                                        labelName={value.name}
                                         emoji={value.emoji}
                                         tint={true}
                                         hoverable={false}

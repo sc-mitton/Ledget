@@ -52,7 +52,7 @@ const Bills = ({ period, onBillClick }: {
               <div>
                 <BillCatLabel
                   key={bill.id}
-                  name={bill.name}
+                  labelName={bill.name}
                   emoji={bill.emoji}
                   color={bill.period === 'month' ? 'blue' : 'green'}
                   onClick={() => onBillClick(bill.id)}

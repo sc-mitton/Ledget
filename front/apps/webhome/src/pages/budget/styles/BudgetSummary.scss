@@ -8,7 +8,7 @@
         left: 50%;
         transform: translateX(-50%);
         margin-left: 0;
-        top: 1.25em;
+        top: 1em;
     }
 }
 
@@ -17,8 +17,7 @@
     display: flex;
     align-items: flex-end;
     flex-wrap: wrap;
-    gap: 1em;
-    mask-image: linear-gradient(to right, black 0%, black 90%, transparent);
+    gap: 3em;
     overflow: hidden;
     flex-grow: 0;
     flex-shrink: 0;
@@ -46,7 +45,16 @@
     }
 
 
-    $gap: 3em;
+    $gap: 5em;
+
+    &.extra-small {
+        gap: 1em;
+
+        &>div:last-child>div:nth-child(-n+3) {
+            flex-grow: 1;
+            margin-left: .75em;
+        }
+    }
 
     &>div:last-child {
         display: flex;
@@ -54,7 +62,7 @@
         gap: $gap;
         margin-left: .125em;
         flex-grow: 1;
-        margin-bottom: .25em;
+        margin-bottom: .375em;
 
         &>div:nth-child(-n+3) {
             font-size: 1.25rem;
@@ -69,13 +77,11 @@
             }
 
             @mixin dot($color-var) {
-                margin-left: 1.5em;
 
                 &::before {
                     content: '';
                     position: absolute;
                     top: .375em;
-                    // transform: translateY(-50%);
                     left: -.75em;
                     width: .375rem;
                     height: .375rem;
@@ -89,7 +95,7 @@
                 position: absolute;
                 top: .5em;
                 bottom: .5em;
-                right: calc($gap /2 * -1 + .5em);
+                right: calc($gap /2 * -1 + 1em);
                 width: 1.5px;
                 border-radius: 1px;
                 background-color: var(--border-color-dim);

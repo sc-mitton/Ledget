@@ -8,7 +8,7 @@ import { FilterForm } from './Filter'
 import { setTransactionModal } from '@features/uiSlice'
 import { useLazyGetTransactionsQuery, useGetTransactionsQuery } from "@features/transactionsSlice"
 import { Logo } from '@components/pieces'
-import { DollarCents, InfiniteScrollDiv, LoadingRingDiv } from '@ledget/ui'
+import { DollarCents, InfiniteScrollDiv, LoadingRingDiv, BillCatEmojiLabel } from '@ledget/ui'
 import { ShadowedContainer } from '@components/pieces'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
@@ -83,14 +83,9 @@ export function History() {
                                             </div>
                                             <div>
                                                 {transaction.bill &&
-                                                    <span className={`emoji ${transaction.bill.period}`}>
-                                                        {transaction.bill.emoji}
-                                                    </span>}
+                                                    <BillCatEmojiLabel emoji={transaction.bill.emoji} name={transaction.bill.name} />}
                                                 {transaction.categories?.map((category) => (
-                                                    <span className={`emoji ${category.period}`}>
-                                                        {category.emoji}
-                                                    </span>
-                                                ))}
+                                                    <BillCatEmojiLabel emoji={category.emoji} name={category.name} />))}
                                             </div>
                                             <div className={`${transaction.amount < 0 ? 'debit' : ''}`}>
                                                 <div><DollarCents value={transaction.amount} /></div>

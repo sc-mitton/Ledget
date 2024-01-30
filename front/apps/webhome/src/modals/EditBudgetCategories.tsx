@@ -149,7 +149,7 @@ const Categories = ({ period, setDeletedItems }: {
                         <div>
                             <BillCatLabel
                                 as='div'
-                                name={item?.name}
+                                labelName={item?.name}
                                 emoji={item?.emoji}
                                 color={item?.period === 'month' ? 'blue' : 'green'}
                                 slim={true}

@@ -431,7 +431,7 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
                         as='button'
                         ref={buttonContainerRef}
                         color={billCat?.period === 'month' ? 'blue' : 'green'}
-                        name={billCat?.name || ''}
+                        labelName={billCat?.name || ''}
                         emoji={billCat?.emoji}
                         slim={true}
                         onClick={() => { setShowBillCatSelect(!showBillCatSelect) }}
@@ -456,7 +456,7 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
                     <div key={cat.id}>
                         <BillCatLabel
                             color={cat.period === 'month' ? 'blue' : 'green'}
-                            name={cat.name}
+                            labelName={cat.name}
                             emoji={cat.emoji}
                             slim={true}
                             hoverable={itemIsSplit}

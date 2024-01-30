@@ -47,12 +47,12 @@
         --blue-h: 226;
         --green-h: 170;
 
-        --monthly-background-color: hsl(var(--blue-h), 45%, 38%);
-        --monthly-hover-background-color: hsl(var(--blue-h), 45%, 30%);
-        --monthly-background-color-darker: hsl(var(--blue-h), 45%, 38%);
+        --monthly-background-color: hsl(var(--blue-h), 45%, 30%);
+        --monthly-hover-background-color: hsl(var(--blue-h), 45%, 25%);
+        --monthly-background-color-darker: hsl(var(--blue-h), 45%, 20%);
         --monthly-color: hsl(var(--blue-h), 45%, 95%);
-        --yearly-background-color: hsl(var(--green-h), 30%, 27%);
-        --yearly-hover-background-color: hsl(var(--green-h), 50%, 20%);
+        --yearly-background-color: hsl(var(--green-h), 30%, 17%);
+        --yearly-hover-background-color: hsl(var(--green-h), 30%, 13%);
         --yearly-background-color-darker: hsl(var(--green-h), 50%, 20%);
         --yearly-color: hsl(var(--green-h), 30%, 95%);
 
@@ -204,17 +204,17 @@
         --green-h: 162;
 
         // Budget Item Pallet
-        --monthly-background-color: hsl(var(--blue-h), 80%, 93%);
-        --monthly-background-color-darker: hsl(var(--blue-h), 80%, 86%);
-        --monthly-hover-background-color: hsl(var(--blue-h), 80%, 87%);
-        --monthly-color: hsl(var(--blue-h), 80%, 40%);
+        --monthly-background-color: hsl(var(--blue-h), 90%, 86%);
+        --monthly-background-color-darker: hsl(var(--blue-h), 90%, 70%);
+        --monthly-hover-background-color: hsl(var(--blue-h), 90%, 80%);
+        --monthly-color: hsl(var(--blue-h), 80%, 20%);
         --monthly-color-faded: hsl(var(--blue-h), 80%, 30%);
 
-        --yearly-background-color: hsl(var(--green-h), 60%, 89%);
-        --yearly-background-color-darker: hsl(var(--green-h), 66%, 80%);
-        --yearly-hover-background-color: hsl(var(--green-h), 60%, 84%);
-        --yearly-color: hsl(var(--green-h), 60%, 30%);
-        --yearly-color-faded: hsl(var(--green-h), 60%, 20%);
+        --yearly-background-color: hsl(var(--green-h), 50%, 75%);
+        --yearly-background-color-darker: hsl(var(--green-h), 50%, 65%);
+        --yearly-hover-background-color: hsl(var(--green-h), 50%, 70%);
+        --yearly-color: hsl(var(--green-h), 60%, 20%);
+        --yearly-color-faded: hsl(var(--green-h), 60%, 30%);
 
         // Blue Green Pallet
         --blue-light: hsl(var(--blue-h), 80%, 90%);

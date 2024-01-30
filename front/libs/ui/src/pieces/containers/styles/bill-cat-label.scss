@@ -7,11 +7,17 @@
 
 .bill-cat-label {
     justify-content: space-between;
+    padding: .1875em .75em;
+    border-radius: var(--border-radius2);
 }
 
-.bill-cat-label {
-    border-radius: var(--border-radius2);
-    padding: .1875em .75em;
+.bill-cat-label-emoji {
+    padding: .125em .375em;
+    border-radius: var(--border-radius4);
+}
+
+.bill-cat-label,
+.bill-cat-label-emoji {
     position: relative;
 
     &>div {

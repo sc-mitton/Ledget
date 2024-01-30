@@ -251,7 +251,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                             }}
                         >
                             <BillCatLabel
-                                name={bill.name}
+                                labelName={bill.name}
                                 emoji={bill.emoji}
                                 slim={true}
                                 color={bill.period === 'month' ? 'blue' : 'green'}
@@ -282,7 +282,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                             }}
                         >
                             <BillCatLabel
-                                name={bill.name}
+                                labelName={bill.name}
                                 emoji={bill.emoji}
                                 slim={true}
                                 color={bill.period === 'month' ? 'blue' : 'green'}
@@ -313,7 +313,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                             }}
                         >
                             <BillCatLabel
-                                name={bill.name}
+                                labelName={bill.name}
                                 emoji={bill.emoji}
                                 slim={true}
                                 color={bill.period === 'month' ? 'blue' : 'green'}
@@ -344,7 +344,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                             }}
                         >
                             <BillCatLabel
-                                name={bill.name}
+                                labelName={bill.name}
                                 emoji={bill.emoji}
                                 slim={true}
                                 color={bill.period === 'month' ? 'blue' : 'green'}
@@ -375,7 +375,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                             }}
                         >
                             <BillCatLabel
-                                name={bill.name}
+                                labelName={bill.name}
                                 emoji={bill.emoji}
                                 slim={true}
                                 color={bill.period === 'month' ? 'blue' : 'green'}
@@ -406,7 +406,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                             }}
                         >
                             <BillCatLabel
-                                name={bill.name}
+                                labelName={bill.name}
                                 emoji={bill.emoji}
                                 slim={true}
                                 color={bill.period === 'month' ? 'blue' : 'green'}
@@ -437,7 +437,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                             }}
                         >
                             <BillCatLabel
-                                name={bill.name}
+                                labelName={bill.name}
                                 emoji={bill.emoji}
                                 slim={true}
                                 color={bill.period === 'month' ? 'blue' : 'green'}
@@ -468,7 +468,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                             }}
                         >
                             <BillCatLabel
-                                name={bill.name}
+                                labelName={bill.name}
                                 emoji={bill.emoji}
                                 slim={true}
                                 color={bill.period === 'month' ? 'blue' : 'green'}
@@ -499,7 +499,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                             }}
                         >
                             <BillCatLabel
-                                name={bill.name}
+                                labelName={bill.name}
                                 emoji={bill.emoji}
                                 slim={true}
                                 color={bill.period === 'month' ? 'blue' : 'green'}

@@ -115,7 +115,7 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
                                 style={{ flexBasis: getLongestLength(items, 'name') + 6 }}
                             >
                                 <BillCatLabel
-                                    name={item?.name || ''}
+                                    labelName={item?.name || ''}
                                     emoji={item?.emoji}
                                     slim={true}
                                     color={period === 'month' ? 'blue' : 'green'}
@@ -278,7 +278,7 @@ const SuggestedTabPanel = () => {
                         <BillCatLabel
                             as='button'
                             key={item.name}
-                            name={item.name}
+                            labelName={item.name}
                             emoji={item.emoji}
                             color={periodTabIndex === 0 ? 'blue' : 'green'}
                             onClick={() => {
@@ -298,7 +298,7 @@ const SuggestedTabPanel = () => {
                         <BillCatLabel
                             as='button'
                             key={item.name}
-                            name={item.name}
+                            labelName={item.name}
                             emoji={item.emoji}
                             color={periodTabIndex === 0 ? 'blue' : 'green'}
                             onClick={() => {

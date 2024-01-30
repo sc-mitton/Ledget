@@ -178,7 +178,7 @@ const NewItem: FC<{
             </div>
             <div className='new-item-icons' >
                 <BillCatLabel
-                    name={name}
+                    labelName={name}
                     slim={true}
                     as='button'
                     color={color}

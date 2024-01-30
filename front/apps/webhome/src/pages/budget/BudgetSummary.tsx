@@ -52,7 +52,7 @@ const BudgetSummary = () => {
             <div id="month-picker--container" className={`${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}>
                 <MonthPicker darkMode={isDark} />
             </div>
-            <div className="budget-summary--container">
+            <div className={`budget-summary--container ${screenSize}`}>
                 <div>
                     <h3>Total Spent</h3>
                     <div>

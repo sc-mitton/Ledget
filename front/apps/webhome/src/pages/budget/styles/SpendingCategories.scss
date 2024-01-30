@@ -6,10 +6,10 @@ $window-padding: $bill-flex-grid-gap;
 
 $row-padding: .375em;
 $label-padding: calc($row-padding/2) .75em;
-$column-gap: 1.5em;
+$column-gap: 2em;
 $background: var(--window);
 
-#spending-categories-window {
+.spending-categories {
     flex: 2 1 0;
     width: 100%;
     max-height: 100%;
@@ -18,9 +18,122 @@ $background: var(--window);
     justify-content: flex-start;
     // Aprx. 5 rows
     // the 2em comes from the bottom buttons space
-    min-height: calc(3.5 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.75em);
+    min-height: calc(5 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.75em);
     position: relative;
     z-index: 0;
+    gap: 1em;
+
+    &--container {
+        display: flex;
+        gap: $column-gap;
+        align-items: flex-start;
+        max-height: 100%;
+        background-color: inherit;
+    }
+
+    .column {
+        flex: 1;
+        overflow-y: scroll;
+        scrollbar-width: none;
+        height: 100%;
+        background-color: inherit;
+        position: relative;
+
+        &--header {
+            display: flex;
+            align-items: center;
+            gap: .5em;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: inherit;
+            display: flex;
+            align-items: center;
+            padding-bottom: 1em;
+        }
+
+        &--grid {
+            display: grid;
+            grid-template-columns: 1fr auto auto auto auto;
+            row-gap: $item-row-gap;
+            background-color: inherit;
+
+            &>div {
+                position: relative;
+
+                @mixin dot($background-color) {
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: .875em;
+                        transform: translate(-50%, -50%);
+                        width: .625em;
+                        height: .625em;
+                        border-radius: 50%;
+                        background-color: $background-color;
+                    }
+                }
+
+                // Total Cell
+                &:first-child {
+                    position: relative;
+                    padding-left: 2.5em;
+
+                    &.month {
+                        @include dot(var(--monthly-background-color));
+                    }
+
+                    &.year {
+                        @include dot(var(--yearly-background-color));
+                    }
+                }
 
 
+                // Emoji + name columns
+                &:nth-child(5n+1) {
+                    display: flex;
+                    align-items: center;
+                }
+
+                // Name  emoji columns
+                &:nth-child(5n+1) {
+                    gap: .75em;
+                    z-index: 0;
+                    position: relative;
+                    padding-right: 1em;
+                    overflow: hidden;
+                    mask-image: linear-gradient(to right, black, black calc(100% - 1em), transparent);
+                }
+
+                // Progress circle
+                &:not(.column--header):nth-child(5n) {
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    padding-right: 1em;
+                }
+
+                // Spent of column
+                &:nth-child(5n+3) {
+                    display: flex;
+                    padding: 0 1.25em;
+                    color: var(--m-text-quaternary);
+                    font-size: .875em;
+                    display: flex;
+                    padding-top: .125em;
+                }
+
+                &:nth-child(5n+4) {
+                    padding-right: 1em;
+
+                    span.no-limit {
+                        display: flex;
+                        padding-left: .37s5em;
+                    }
+                }
+            }
+
+        }
+    }
 }
