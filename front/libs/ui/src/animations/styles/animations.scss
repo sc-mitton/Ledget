@@ -38,6 +38,7 @@
 
 .dropdown.arrow-right::before {
     position: absolute;
+    z-index: -1;
     top: -.45em;
     right: 1.125em;
     display: inline-block;
@@ -49,6 +50,7 @@
 
 .dropdown.arrow-right::after {
     position: absolute;
+    z-index: -1;
     top: -.375em;
     right: 1.125em;
     display: inline-block;

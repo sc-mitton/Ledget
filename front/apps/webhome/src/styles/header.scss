@@ -16,7 +16,7 @@ header {
         }
     }
 
-    &.dark-mode {
+    &.dark-mode>div>div:first-child {
         img {
             filter: grayscale(100%);
         }
@@ -87,7 +87,6 @@ header {
     display: flex;
     text-align: left;
     top: 2.125em;
-
     margin-left: 1em;
 
     &>button {

@@ -10,6 +10,7 @@ interface UiState {
         item?: Transaction
         splitMode?: boolean
     }
+    notificationsTabIndex?: number
 }
 
 const initialState: UiState = {
@@ -18,7 +19,8 @@ const initialState: UiState = {
     transactionModal: {
         item: undefined,
         splitMode: false
-    }
+    },
+    notificationsTabIndex: undefined
 }
 
 export const uiSlice = createSlice({
@@ -36,6 +38,9 @@ export const uiSlice = createSlice({
         clearTransactionModal: (state) => {
             state.transactionModal.item = undefined;
             state.transactionModal.splitMode = false;
+        },
+        setNotificationsTabIndex: (state, action: PayloadAction<number>) => {
+            state.notificationsTabIndex = action.payload;
         }
     },
 })
@@ -48,6 +53,8 @@ export const selectBudgetMonthYear = createSelector(
     (month, year) => ({ month, year })
 )
 
+export const selectNotificationsTabIndex = (state: RootState) => state.ui.notificationsTabIndex;
 export const selectTransactionModal = (state: RootState) => state.ui.transactionModal;
+export const selectTransactionModalItem = (state: RootState) => state.ui.transactionModal.item;
 
-export const { changeBudgetMonthYear, setTransactionModal, clearTransactionModal } = uiSlice.actions
+export const { changeBudgetMonthYear, setTransactionModal, clearTransactionModal, setNotificationsTabIndex } = uiSlice.actions

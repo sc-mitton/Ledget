@@ -56,7 +56,7 @@ export const MonthPicker = ({ darkMode = false }) => {
                 {darkMode
                     ? <FadedTextButton
                         onClick={() => setShowDatePicker(!showDatePicker)}
-                        aria-aria-haspopup='true'
+                        aria-haspopup='true'
                     >
                         {date.format('MMMM YYYY')}
                     </FadedTextButton>

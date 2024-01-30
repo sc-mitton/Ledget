@@ -20,10 +20,14 @@ import {
     Tooltip,
     DollarCents,
     BillCatLabel,
-    AbsPosMenu
+    AbsPosMenu,
+    formatDateOrRelativeDate,
+    InfiniteScrollDiv,
+    useLoaded,
+    useColorScheme,
+    LoadingRingDiv
 } from "@ledget/ui"
 import { setTransactionModal } from '@features/uiSlice'
-import { formatDateOrRelativeDate, InfiniteScrollDiv, useLoaded, useColorScheme, LoadingRing } from '@ledget/ui'
 import { Category, isCategory, SplitCategory, addTransaction2Cat } from '@features/categorySlice'
 import { Bill, isBill, addTransaction2Bill } from '@features/billSlice'
 import {
@@ -241,7 +245,7 @@ export const NeedsConfirmationStack = () => {
 
     const [
         fetchTransactions,
-        { data: transactionsData, isSuccess }
+        { data: transactionsData, isSuccess, isLoading: isFetchingTransactions }
     ] = useLazyGetUnconfirmedTransactionsQuery()
     const newItemsRef = useRef<HTMLDivElement>(null)
 
@@ -484,7 +488,7 @@ export const NeedsConfirmationStack = () => {
     }
 
     return (
-        <div className='needs-confirmation-stack'>
+        <LoadingRingDiv className='needs-confirmation-stack' loading={isFetchingTransactions}>
             <InfiniteScrollDiv
                 id="new-items"
                 ref={newItemsRef}
@@ -565,6 +569,6 @@ export const NeedsConfirmationStack = () => {
                     onClick={() => setUnconfirmedStackExpanded(!unconfirmedStackExpanded)} flipped={unconfirmedStackExpanded}
                 />
             </ExpandableContainer>
-        </ div>
+        </ LoadingRingDiv>
     )
 }

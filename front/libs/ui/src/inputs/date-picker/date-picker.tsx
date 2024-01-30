@@ -10,7 +10,7 @@ import { TextInputWrapper } from '../text/text';
 import { Tooltip } from '../../pieces/tooltip/tooltip';
 import { IconButton3, CircleIconButton, BlueTextButton } from '../../buttons/buttons';
 import { useAccessEsc } from '../../modal/with-modal/with-modal';
-
+import { useLoaded } from '../../utils/hooks';
 
 // Types
 type TPicker = 'date' | 'range';
@@ -27,6 +27,7 @@ type BaseDatePickerProps = {
   closeOnSelect?: boolean
   omitDisabled?: boolean
   disabled?: [Dayjs | undefined, Dayjs | undefined][]
+  autoFocus?: boolean
 } & ({
   hideInputElement: true,
   dropdownVisible: boolean,
@@ -192,7 +193,7 @@ const checkDisabled = (point: Dayjs, period: DatePickerProps<TPicker>['period'],
 }
 
 const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
-  const { pickerType, selectedValue, focusedInputIndex, inputTouchCount, disabled, omitDisabled } = useDatePickerContext()
+  const { pickerType, selectedValue, focusedInputIndex, inputTouchCount, disabled, omitDisabled, period } = useDatePickerContext()
 
   const [active, setActive] = useState<Dayjs>()
 
@@ -222,7 +223,7 @@ const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
             : selectedValue?.[0] && djs.isBefore(selectedValue?.[0], 'year')
           : false
         const ignoreUnSelectable = pickerType === 'range' && (!selectedValue?.[focusedInputIndex || 0] || inputTouchCount[focusedInputIndex || 0] < 1)
-        const isDisabled = checkDisabled(djs, 'month', disabled)
+        const isDisabled = checkDisabled(djs, period, disabled)
 
         return (
           omitDisabled && isDisabled
@@ -248,7 +249,7 @@ const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
 
 const Months = ({ windowCenter, onSelect }: YearsMonthsProps) => {
   const [activeMonth, setActiveMonth] = useState<Dayjs>()
-  const { selectedValue, pickerType, focusedInputIndex, disabled, omitDisabled, inputTouchCount } = useDatePickerContext()
+  const { selectedValue, pickerType, focusedInputIndex, disabled, omitDisabled, inputTouchCount, period } = useDatePickerContext()
 
   return (
     <div className="month-calendar" onMouseLeave={() => setActiveMonth(undefined)}>
@@ -272,7 +273,7 @@ const Months = ({ windowCenter, onSelect }: YearsMonthsProps) => {
               : selectedValue?.[0] && djs.isBefore(selectedValue?.[0], 'month')
             : false
           const ignoreUnSelectable = pickerType === 'range' && (!selectedValue?.[focusedInputIndex || 0] || inputTouchCount[focusedInputIndex || 0] < 1)
-          const isDisabled = checkDisabled(djs, 'month', disabled)
+          const isDisabled = checkDisabled(djs, period, disabled)
 
           return (
             omitDisabled && isDisabled
@@ -307,6 +308,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
     omitDisabled,
     inputTouchCount,
     focusedInputIndex,
+    period
   } = useDatePickerContext()
   const [firstDay, setFirstDay] = useState<Dayjs>()
   const [days, setDays] = useState<number[]>()
@@ -358,7 +360,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
             ? selectedValue?.[1] && day.isAfter(selectedValue?.[1], 'day')
             : selectedValue?.[0] && day.isBefore(selectedValue?.[0], 'day')
           : false
-        const isDisabled = checkDisabled(day, 'day', disabled)
+        const isDisabled = checkDisabled(day, period, disabled)
         const isActive = activeDay && !isOverflow
           ? pickerType === 'range'
             ? focusedInputIndex === 0
@@ -576,6 +578,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   const [verticlePlacement, setVerticlePlacement] = useState<'top' | 'bottom'>('bottom')
   const startInputRef = useRef<HTMLInputElement>(null)
   const endInputRef = useRef<HTMLInputElement>(null)
+  const loaded = useLoaded(200)
 
   useAccessEsc(props.dropdownVisible !== undefined && props.setDropdownVisible !== undefined
     ? { refs: [dropdownRef], visible: props.dropdownVisible, setVisible: props.setDropdownVisible }
@@ -591,6 +594,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   }, [selectedValue])
 
   useEffect(() => {
+    if (!loaded) return
 
     if (pickerType === 'range') {
       if (!selectedValue?.[0] && !selectedValue?.[1]) {
