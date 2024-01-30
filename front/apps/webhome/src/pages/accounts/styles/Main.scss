@@ -43,6 +43,11 @@ $wafer-container-padding: .75rem;
         display: flex;
         flex-direction: column;
         gap: 1em;
+        background-color: var(--blue-light);
+
+        * {
+            color: var(--blue-dark);
+        }
     }
 
 

@@ -93,9 +93,9 @@ const SpendingCategories = () => {
     return (
         <div
             id="spending-categories-window"
-            className={`${['small', 'extra-small'].includes(screenSize) ? 'tabbed' : ''}`}
+            className={`${['small', 'extra-small'].includes(screenSize) ? 'tabbed' : ''} window`}
         >
-
+            <h4>Spending Categories</h4>
         </div>
     )
 }

@@ -16,10 +16,12 @@ header {
         }
     }
 
-    &.dark-mode>div>div:first-child {
-        img {
-            filter: grayscale(100%);
-        }
+    &.dark-mode>div>div:first-child img {
+        filter: grayscale(100%);
+    }
+
+    &:not(.dark-mode)>div>div:first-child img {
+        filter: grayscale(100%);
     }
 
     &.small,
@@ -136,7 +138,7 @@ header {
 
 .nav-item {
     background-color: transparent;
-    opacity: .6;
+    opacity: .4;
 }
 
 .nav-item:hover {

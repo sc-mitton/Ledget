@@ -28,8 +28,7 @@
 
         h2,
         h3 {
-            font-weight: var(--fw-light);
-            // color: var(--m-text-quaternary);
+            color: var(--m-text-quinary);
         }
 
         h2 {
@@ -59,8 +58,9 @@
 
         &>div:nth-child(-n+3) {
             font-size: 1.25rem;
-            gap: .25em;
+            gap: 0em;
             display: flex;
+            flex-direction: column;
             align-items: baseline;
             position: relative;
 
@@ -69,14 +69,14 @@
             }
 
             @mixin dot($color-var) {
-                margin-left: .75em;
+                margin-left: 1.5em;
 
                 &::before {
                     content: '';
                     position: absolute;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    left: -.625em;
+                    top: .375em;
+                    // transform: translateY(-50%);
+                    left: -.75em;
                     width: .375rem;
                     height: .375rem;
                     border-radius: 50%;
@@ -87,8 +87,8 @@
             &:not(:last-child)::after {
                 content: '';
                 position: absolute;
-                top: .25em;
-                bottom: .25em;
+                top: .5em;
+                bottom: .5em;
                 right: calc($gap /2 * -1 + .5em);
                 width: 1.5px;
                 border-radius: 1px;
@@ -103,19 +103,20 @@
                 @include dot(--green-sat);
             }
 
-            &:last-child {
-                span:first-child {
-                    font-size: 1.25rem;
-                }
-
+            &:nth-last-child(1) {
                 @include dot(--btn-gray);
             }
 
-            &>span:last-child {
-                font-weight: var(--fw-light);
-                // color: var(--m-text-quaternary);
-                opacity: .9;
+            &>span:first-child {
+                font-weight: var(--fw-bold);
+                color: var(--m-text-quinary);
+                font-size: .8rem;
                 white-space: nowrap;
+            }
+
+
+            &>span:last-child {
+                font-size: 1.25rem;
             }
         }
     }

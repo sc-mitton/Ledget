@@ -202,7 +202,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                                 </span>
                             ))}
                         </>
-                        : <BellOff size={'1.1em'} fill={'var(--btn-gray-hover)'} />
+                        : <BellOff size={'1.1em'} />
                     }
                 </div>
 

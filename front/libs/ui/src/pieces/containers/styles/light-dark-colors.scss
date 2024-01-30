@@ -198,7 +198,7 @@
         --blue: #d4dbf4;
 
         --window-h: 240;
-        --window-s: 0%;
+        --window-s: 10%;
 
         --blue-h: 223;
         --green-h: 162;
@@ -268,7 +268,7 @@
 
         // New Item
         // --new-item-border: hsl(0, 0%, 93%);
-        --new-item-drop-shadow-color: hsl(var(--window-h), var(--window-s), 91%);
+        --new-item-drop-shadow-color: hsl(var(--window-h), var(--window-s), 100%);
 
         // Inputs
         --input-background: hsl(var(--window-h), var(--window-s), 92%);

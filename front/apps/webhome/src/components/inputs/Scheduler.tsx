@@ -477,7 +477,7 @@ const DayWeekPicker = () => {
     } = usePickerContext()
 
     const ref = useRef<HTMLDivElement>(null)
-    const pillBackgroundColor = useSchemeVar('--btn-light-gray-hover')
+    const pillBackgroundColor = useSchemeVar('--input-background')
 
     useEffect(() => {
         open ? ref.current?.focus() : ref.current?.blur()

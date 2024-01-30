@@ -17,7 +17,7 @@
             border: 1.75px solid var(--btn-light-gray);
 
             button {
-                color: var(--m-text-quaternary)
+                color: var(--m-text-secondary)
             }
 
             button:hover {
@@ -28,9 +28,12 @@
 
     &:not(.dark) {
         &>.month-picker--container {
+            font-size: 1rem;
+
 
             &>button:first-child {
                 margin-left: -.375em;
+                font-weight: var(--fw-bold);
             }
 
             button {
@@ -38,7 +41,7 @@
             }
 
             button:hover {
-                opacity: .6;
+                opacity: .7;
             }
         }
     }

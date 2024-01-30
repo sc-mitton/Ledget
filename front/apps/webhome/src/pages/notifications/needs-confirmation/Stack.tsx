@@ -105,13 +105,16 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
 
 const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean) => {
     let lightness: number
+    const hue = darkMode ? 0 : 240
+    const saturation = darkMode ? '0%' : '10%'
+
     if (index === 0 || expanded) {
-        lightness = darkMode ? 10 : 100
+        lightness = darkMode ? 11 : 94
     } else {
-        lightness = darkMode ? 10 - (index * 1) : 100
+        lightness = darkMode ? 11 - (index * 1.5) : 94 + (index * 1.25)
     }
 
-    return `hsl(0, 0%, ${lightness}%)`
+    return `hsl(${hue}, ${saturation}, ${lightness}%)`
 }
 
 const NewItem: FC<{

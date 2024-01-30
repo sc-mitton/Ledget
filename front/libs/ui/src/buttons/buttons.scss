@@ -250,11 +250,11 @@
 }
 
 .btn-faded-text {
-    color: var(--m-text-tirtiary);
+    color: var(--m-text-secondary);
     transition: all .3s ease;
 
     * {
-        color: var(--m-text-tirtiary);
+        color: var(--m-text-secondary);
         transition: all .3s ease;
     }
 
@@ -733,7 +733,7 @@ button.disabled-hover:hover svg {
         left: 50%;
         transform: translate(-50%, -50%);
         border-radius: 50%;
-        background-color: var(--btn-light-gray);
+        background-color: var(--btn-feather-light-gray);
         z-index: 0;
         transition: background-color ease-in-out .2s;
     }
@@ -752,7 +752,7 @@ button.disabled-hover:hover svg {
         color: var(--icon-full);
 
         &::after {
-            background-color: var(--btn-light-gray-hover);
+            background-color: var(--btn-feather-light-gray-hover);
             transition: background-color ease-in-out .2s;
         }
     }

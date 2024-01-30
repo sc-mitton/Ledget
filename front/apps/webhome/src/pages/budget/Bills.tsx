@@ -180,6 +180,7 @@ const Header = ({ collapsed, showCalendarIcon = false }:
                 <h4>
                     {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
                     {selectedDate.getFullYear()} BILLS
+                    {/* Bills */}
                 </h4>
                 {showCalendarIcon &&
                     <IconButton3
