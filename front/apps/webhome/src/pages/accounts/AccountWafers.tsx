@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, ButtonHTMLAttributes, useLayoutEffect } from 'react'
+import { useState, useEffect, useRef, ButtonHTMLAttributes } from 'react'
 
 import { useLocation, Location, useSearchParams } from 'react-router-dom'
 import { animated, useTransition, useSpringRef, useSpring, useChain } from '@react-spring/web'
 import Big from 'big.js'
-import { ChevronDown, List } from '@geist-ui/icons'
+import { ChevronDown, Menu } from '@geist-ui/icons'
 
 import { GripButton, CornerGripButton } from '@components/buttons'
 import {
@@ -16,6 +16,7 @@ import {
     ShimmerTextDiv,
     Tooltip,
     CloseButton,
+    useColorScheme,
 } from '@ledget/ui'
 import {
     useGetAccountsQuery,
@@ -324,6 +325,7 @@ export function AccountWafers() {
     const [accountsFilterOptions, setAccountsFilterOptions] = useState<SelectOption[]>()
     const [institutionId, setInstitutionId] = useState<string>()
     const [mosaicView, setMosaicView] = useState(false)
+    const { isDark } = useColorScheme()
 
     const listref = useRef<HTMLDivElement>(null)
 
@@ -398,9 +400,9 @@ export function AccountWafers() {
 
     return (
         <>
-            <div className={`account-wafers--container window ${screenSize}`}>
+            <div className={`account-wafers--container ${screenSize}`}>
                 <div className="account-wafers--header">
-                    <ShimmerTextDiv shimmering={Boolean(!accounts)} length={12} >
+                    <ShimmerTextDiv shimmering={Boolean(!accounts)} length={12} style={!isDark ? { backgroundColor: 'var(--btn-medium-gray)' } : {}}>
                         <BakedListBox
                             defaultValue={accountsFilterOptions?.[0].value}
                             options={accountsFilterOptions}
@@ -415,7 +417,7 @@ export function AccountWafers() {
                             as={Button}
                         />
                     </ShimmerTextDiv>
-                    <ShimmerTextDiv shimmering={Boolean(!accounts)} length={16} >
+                    <ShimmerTextDiv shimmering={Boolean(!accounts)} length={16} style={!isDark ? { backgroundColor: 'var(--btn-medium-gray)' } : {}}>
                         <DollarCents value={accounts?.reduce((acc, account) => acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
                     </ShimmerTextDiv>
                 </div>
@@ -441,7 +443,7 @@ export function AccountWafers() {
                     </div>
                     <Tooltip msg="Show accounts" type='left'>
                         <IconButton3 onClick={() => setMosaicView(!mosaicView)} aria-label='Show accounts'>
-                            <List size={'1.375em'} />
+                            <Menu size={'1.375em'} />
                         </IconButton3>
                     </Tooltip>
                 </ShimmerTextDiv>}

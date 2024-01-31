@@ -80,17 +80,17 @@
 }
 
 .btn-ultra-slim {
-    padding: 0em .25em;
+    padding: 0em .375em;
     border-radius: var(--border-radius2);
 }
 
 .btn-medium-slim {
-    padding: .125em .375em;
+    padding: .125em .5em;
     border-radius: var(--border-radius2);
 }
 
 .btn-slim {
-    padding: .25em .625em;
+    padding: .25em .75em;
     border-radius: var(--border-radius2);
 }
 
@@ -726,10 +726,11 @@ button.disabled-hover:hover svg {
 .circle-icon-btn {
     position: relative;
     overflow: visible;
+    z-index: 0;
 
     svg {
         position: relative;
-        z-index: 1;
+        z-index: 0;
     }
 
     &::after {
@@ -741,18 +742,18 @@ button.disabled-hover:hover svg {
         left: 50%;
         transform: translate(-50%, -50%);
         border-radius: 50%;
-        background-color: var(--btn-feather-light-gray);
-        z-index: 0;
+        background-color: var(--btn-light-gray);
+        z-index: -1;
         transition: background-color ease-in-out .2s;
     }
 
     &.darker::after {
-        background-color: var(--btn-light-gray-hover);
+        background-color: var(--btn-light-gray);
         transition: background-color ease-in-out .2s;
     }
 
     &.darker:hover::after {
-        background-color: var(--btn-medium-gray);
+        background-color: var(--btn-light-gray-hover);
         transition: background-color ease-in-out .2s;
     }
 

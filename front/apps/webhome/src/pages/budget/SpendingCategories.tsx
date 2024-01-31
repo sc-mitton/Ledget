@@ -1,7 +1,4 @@
-import {
-    Fragment,
-    useEffect,
-} from 'react'
+import { Fragment, useEffect, useRef } from 'react'
 
 import { Tab } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom'
@@ -43,9 +40,18 @@ const ColumnHeader = ({ period }: { period: 'month' | 'year' }) => {
     )
 }
 
+const SkeletonCategories = ({ length, period }: { length: number, period: 'month' | 'year' }) => (
+    <>
+        {Array.from({ length: length }).map((_, i) => (
+            <ColoredShimmer className='category-shimmer' shimmering={true} color={period === 'month' ? 'blue' : 'green'} />
+        ))}
+    </>
+)
+
 const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 'year', includeHeader?: boolean }) => {
     const { start, end } = useGetStartEndQueryParams()
     const [fetchCategories, { data: categoriesData, isLoading }] = useLazyGetCategoriesQuery()
+    const columnRef = useRef<HTMLDivElement>(null)
 
     const {
         monthly_spent,
@@ -70,59 +76,63 @@ const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 
     }, [start && end])
 
     return (
-        <div className='column'>
-            {includeHeader && <ColumnHeader period={period} />}
-            <div className='column--grid'>
-                <div className={`${period}`}>
-                    Total
+        <>
+            {isLoading
+                ? <div className='column skeleton'>
+                    <SkeletonCategories length={(columnRef.current?.offsetHeight || 200 / 30) || 5} period={period} />
                 </div>
-                <div>
-                    <AnimatedDollarCents value={totalSpent ? totalSpent : 0} withCents={false} />
-                </div>
-                <div>spent of</div>
-                <div>
-                    <DollarCents value={totalLimit ? totalLimit : '0.00'} withCents={false} />
-                </div>
-                <div>
-                    <StaticProgressCircle
-                        color={period === 'year' ? 'green' : 'blue'}
-                        value={totalLimit && totalSpent ? Math.round(totalSpent / totalLimit * 100) / 100 : 0}
-                    />
-                </div>
-                {isLoading
-                    ? <ColoredShimmer shimmering={true} color={period === 'month' ? 'blue' : 'green'} />
-                    : categoriesData?.filter(c => c.period === period).map((category) => {
-                        return (
-                            <>
-                                <div>
-                                    <BillCatEmojiLabel
-                                        emoji={category.emoji}
-                                        color={period === 'month' ? 'blue' : 'green'}
-                                        key={category.id}
-                                    />
-                                    {`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}
-                                </div>
+                : <div className='column' ref={columnRef}>
+                    {includeHeader && <ColumnHeader period={period} />}
+                    <div className='column--grid'>
+                        <div className={`${period}`}>
+                            Total
+                        </div>
+                        <div>
+                            <AnimatedDollarCents value={totalSpent ? totalSpent : 0} withCents={false} />
+                        </div>
+                        <div>spent of</div>
+                        <div>
+                            <DollarCents value={totalLimit ? totalLimit : '0.00'} withCents={false} />
+                        </div>
+                        <div>
+                            <StaticProgressCircle
+                                color={period === 'year' ? 'green' : 'blue'}
+                                value={totalLimit && totalSpent ? Math.round(totalSpent / totalLimit * 100) / 100 : 0}
+                            />
+                        </div>
+                        {categoriesData?.filter(c => c.period === period).map((category) => {
+                            return (
+                                <>
+                                    <div>
+                                        <BillCatEmojiLabel
+                                            emoji={category.emoji}
+                                            color={period === 'month' ? 'blue' : 'green'}
+                                            key={category.id}
+                                        />
+                                        {`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}
+                                    </div>
 
-                                <div>
-                                    <DollarCents value={category.amount_spent} withCents={false} />
-                                </div>
-                                <div>spent of</div>
-                                <div>
-                                    {category.limit_amount !== null
-                                        ? <DollarCents value={category.limit_amount} withCents={false} />
-                                        : <span className='no-limit'> &#8212; </span>}
-                                </div>
-                                <div>
-                                    <StaticProgressCircle
-                                        value={Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100}
-                                        color={category.period === 'year' ? 'green' : 'blue'}
-                                    />
-                                </div>
-                            </>
-                        )
-                    })}
-            </div>
-        </div>
+                                    <div>
+                                        <DollarCents value={category.amount_spent} withCents={false} />
+                                    </div>
+                                    <div>spent of</div>
+                                    <div>
+                                        {category.limit_amount !== null
+                                            ? <DollarCents value={category.limit_amount} withCents={false} />
+                                            : <span className='no-limit'> &#8212; </span>}
+                                    </div>
+                                    <div>
+                                        <StaticProgressCircle
+                                            value={Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100}
+                                            color={category.period === 'year' ? 'green' : 'blue'}
+                                        />
+                                    </div>
+                                </>
+                            )
+                        })}
+                    </div>
+                </div>}
+        </>
     )
 }
 

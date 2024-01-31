@@ -79,7 +79,7 @@ const ProfileDropdownMenu = ({ setModal }:
             {({ open }) => (
                 <div style={{ position: 'relative' }}>
                     <Menu.Button className="profile-button">
-                        <User className='icon' />
+                        <User className='icon' stroke={'var(--white)'} />
                     </Menu.Button>
                     <DropDownDiv
                         placement='right'
@@ -137,10 +137,10 @@ function Header() {
                     <div>
                         {isDark
                             ? <button onClick={() => setDarkMode(false)}>
-                                <Moon className='icon' />
+                                <Moon className='icon' stroke={'var(--white)'} />
                             </button>
                             : <button onClick={() => setDarkMode(true)}>
-                                <Sun className='icon' />
+                                <Sun className='icon' stroke={'var(--white)'} />
                             </button>}
                         <NotificationsDropdownMenu id='notifications' />
                         <ProfileDropdownMenu setModal={setModal} />

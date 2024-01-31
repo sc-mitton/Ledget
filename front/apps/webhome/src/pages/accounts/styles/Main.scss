@@ -12,6 +12,7 @@ $wafer-container-padding: .75rem;
     margin-top: 1em;
     padding: 1em 1.5em;
     background-color: var(--window2);
+    border-radius: var(--border-radius3);
 
     .account-wafers--header {
         display: flex;
@@ -43,10 +44,10 @@ $wafer-container-padding: .75rem;
         display: flex;
         flex-direction: column;
         gap: 1em;
-        background-color: var(--blue-light);
+        background-color: var(--blue-medium);
 
         * {
-            color: var(--blue-dark);
+            color: var(--white);
         }
     }
 
@@ -62,7 +63,7 @@ $wafer-container-padding: .75rem;
     justify-content: space-between;
     margin-bottom: -1em;
     margin: .25em 0 1em 0;
-    padding: 0 .5em 0 .375em;
+    padding: 0 .5em 0 .25em;
 
     &>div {
         display: flex;
@@ -70,11 +71,7 @@ $wafer-container-padding: .75rem;
         gap: 1.25em;
 
         div {
-            font-size: 1.125rem;
-
-            &>div span {
-                font-weight: var(--fw-bold);
-            }
+            font-size: 1.25rem;
         }
     }
 }

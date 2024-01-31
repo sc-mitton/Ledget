@@ -6,7 +6,7 @@ $window-padding: $bill-flex-grid-gap;
 
 $row-padding: .375em;
 $label-padding: calc($row-padding/2) .75em;
-$column-gap: 3em;
+$column-gap: 4em;
 $background: var(--window);
 
 .spending-categories {
@@ -61,6 +61,12 @@ $background: var(--window);
         background-color: inherit;
         position: relative;
 
+        &.skeleton {
+            display: flex;
+            flex-direction: column;
+            gap: .5em;
+        }
+
         &--header {
             display: flex;
             align-items: center;
@@ -80,6 +86,10 @@ $background: var(--window);
             row-gap: $item-row-gap;
             background-color: inherit;
 
+            .category-shimmer {
+                grid-column: 1/span 4;
+            }
+
             &>div {
                 position: relative;
 
@@ -88,7 +98,7 @@ $background: var(--window);
                         content: '';
                         position: absolute;
                         top: 50%;
-                        left: .85em;
+                        left: .75em;
                         transform: translate(-50%, -50%);
                         width: .625em;
                         height: .625em;
@@ -100,7 +110,7 @@ $background: var(--window);
                 // Total Cell
                 &:first-child {
                     position: relative;
-                    padding-left: 2.5em;
+                    padding-left: 2.2em;
 
                     &.month {
                         @include dot(var(--monthly-background-color));

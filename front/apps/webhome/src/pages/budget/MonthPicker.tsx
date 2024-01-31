@@ -58,12 +58,12 @@ export const MonthPicker = ({ darkMode = false }) => {
                         onClick={() => setShowDatePicker(!showDatePicker)}
                         aria-haspopup='true'
                     >
-                        {date.format('MMMM YYYY')}
+                        {date.format('MMM YYYY')}
                     </FadedTextButton>
                     : <button
                         aria-haspopup='true'
                         onClick={(e) => setShowDatePicker(!showDatePicker)}>
-                        {date.format('MMMM YYYY')}
+                        {date.format('MMM YYYY')}
                     </button>}
                 <button onClick={() => seek(-1, 1)}>
                     <ChevronLeft className='icon' />

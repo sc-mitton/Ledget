@@ -70,7 +70,7 @@ const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
                 className={`${tCountData?.count ? 'active' : ''}`}
                 onClick={() => setShowDropdown(!showDropdown)}
             >
-                <Bell className='icon' />
+                <Bell className='icon' stroke={'var(--white)'} />
             </button>
             <DropDownDiv
                 ref={dropdownRef}

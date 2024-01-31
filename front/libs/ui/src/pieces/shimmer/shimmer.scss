@@ -10,10 +10,12 @@ $green-shimmer-background: linear-gradient(115deg, transparent 30%, var(--yearly
 }
 
 .colored-loading-shimmer.green {
+    opacity: .5;
     background-color: var(--yearly-background-color);
 }
 
 .colored-loading-shimmer.blue {
+    opacity: .5;
     background-color: var(--monthly-background-color);
 }
 

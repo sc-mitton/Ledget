@@ -195,26 +195,25 @@
         --alert-red: #f35050;
         --red-rgb: 243, 80, 80;
         --dark-red: #8b2424;
-        --blue: #d4dbf4;
 
-        --window-h: 240;
-        --window-s: 10%;
+        --steel-blue-h: 240;
+        --steel-blue-s: 10%;
 
         --blue-h: 223;
-        --green-h: 162;
+        --green-h: 139;
 
         // Budget Item Pallet
-        --monthly-background-color: hsl(var(--blue-h), 90%, 86%);
+        --monthly-background-color: hsl(var(--blue-h), 87%, 72%);
         --monthly-background-color-darker: hsl(var(--blue-h), 90%, 70%);
-        --monthly-hover-background-color: hsl(var(--blue-h), 90%, 80%);
-        --monthly-color: hsl(var(--blue-h), 80%, 20%);
-        --monthly-color-faded: hsl(var(--blue-h), 80%, 30%);
+        --monthly-hover-background-color: hsl(var(--blue-h), 92%, 65%);
+        --monthly-color: hsl(0, 0%, 100%);
+        --monthly-color-faded: hsl(0, 0%, 100%);
 
-        --yearly-background-color: hsl(var(--green-h), 50%, 75%);
-        --yearly-background-color-darker: hsl(var(--green-h), 50%, 65%);
+        --yearly-background-color: hsl(var(--green-h), 67%, 80%);
+        --yearly-background-color-darker: hsl(var(--green-h), 72%, 70%);
         --yearly-hover-background-color: hsl(var(--green-h), 50%, 70%);
-        --yearly-color: hsl(var(--green-h), 60%, 20%);
-        --yearly-color-faded: hsl(var(--green-h), 60%, 30%);
+        --yearly-color: hsl(0, 0%, 100%);
+        --yearly-color-faded: hsl(0, 0%, 100%);
 
         // Blue Green Pallet
         --blue-light: hsl(var(--blue-h), 80%, 90%);
@@ -239,39 +238,39 @@
         --green-dark: hsl(var(--green-h), 30%, 22%);
 
         // Windows
-        --window-background-color: hsl(0, 0%, 100%);
+        --window-background-color: hsl(240, 10%, 98%);
         --window-background-color-portal: hsl(0, 0%, 95%);
 
-        --window: hsl(var(--window-h), var(--window-s), 96%);
-        --window2: var(--inner-window);
+        --window: hsl(0, 0%, 100%);
+        --window2: hsl(var(--steel-blue-h), 10%, 92%);
         --window-no-background: var(--window-background-color);
-        // --window-drop-shadow-color: hsl(0, 0%, 93%);
-        // --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 16px 0px;
+        --window-drop-shadow-color: hsl(0, 0%, 93%);
+        --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 16px 0px;
         --window-drop-shadow2-color: hsl(0, 0%, 85%);
 
         --window-rgb: 244, 244, 246;
         --side-window: var(--window);
-        --inner-window: hsl(240, 9%, 93%);
+        --inner-window: hsl(var(--steel-blue-h), 9%, 95%);
         --modal-inner-window: hsl(0, 0%, 94%);
         --overlay: hsl(0, 0%, 20%);
 
-        --wafer-background: hsl(0, 0%, 25%);
+        --wafer-background: hsl(0, 0%, 10%);
         --dropdown-background: hsl(0, 0%, 98%);
-        --dropdown-item-background: hsl(0, 0%, 90%);
+        --dropdown-item-background: hsl(0, 0%, 93%);
 
         // Header
-        --header-background: var(--window-background-color);
+        --header-background: hsl(0, 0%, 10%);
         --header-pill: hsl(0, 0%, 10%);
-        --header-pill-hover: hsl(0, 0%, 90%);
+        --header-pill-hover: hsl(0, 0%, 20%);
         --header-box-shadow-color: hsl(0, 0%, 90%);
         --header-box-shadow: var(--header-box-shadow-color) 0px 1px 16px 0px;
 
         // New Item
         // --new-item-border: hsl(0, 0%, 93%);
-        --new-item-drop-shadow-color: hsl(var(--window-h), var(--window-s), 100%);
+        --new-item-drop-shadow-color: hsl(var(--steel-blue-h), var(--steel-blue-s), 90%);
 
         // Inputs
-        --input-background: hsl(var(--window-h), var(--window-s), 92%);
+        --input-background: hsl(0, 0%, 92%);
         --input-border-hover-color: hsl(0, 0%, 78%);
         --input-focus-dropshadow-color: var(--blue-light);
         --input-placeholder-focus: var(--blue-light-medium);
@@ -281,13 +280,13 @@
 
         // Text
         --m-header-text: hsl(0, 0%, 0%);
-        --m-text: hsl(0, 0%, 20%);
+        --m-text: hsl(0, 0%, 0%);
         --m-invert-text: hsl(0, 0%, 97%);
-        --m-text-secondary: color-mix(in srgb, var(--m-text), white 20%);
-        --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 40%);
-        --m-text-quaternary: color-mix(in srgb, var(--m-text), white 50%);
-        --m-text-quinary: color-mix(in srgb, var(--m-text), white 60%);
-        --m-text-senary: color-mix(in srgb, var(--m-text), white 70%);
+        --m-text-secondary: color-mix(in srgb, var(--m-text), white 30%);
+        --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 50%);
+        --m-text-quaternary: color-mix(in srgb, var(--m-text), white 60%);
+        --m-text-quinary: color-mix(in srgb, var(--m-text), white 70%);
+        --m-text-senary: color-mix(in srgb, var(--m-text), white 80%);
 
         --input-placeholder: hsl(0, 0%, 38%);
         --input-placeholder2: hsl(0, 0%, 65%);
@@ -301,20 +300,20 @@
 
         // Icons & Buttons
         --icon-full: var(--m-text);
-        --btn-feather-light-gray: hsl(var(--window-h), var(--window-s), 94%);
-        --btn-feather-light-gray-hover: hsl(var(--window-h), var(--window-s), 88%);
-        --btn-light-gray: hsl(var(--window-h), var(--window-s), 90%);
-        --btn-light-gray-hover: hsl(var(--window-h), var(--window-s), 84%);
-        --btn-medium-gray: hsl(var(--window-h), var(--window-s), 80%);
-        --btn-medium-gray-hover: hsl(var(--window-h), var(--window-s), 75%);
-        --btn-gray: hsl(var(--window-h), var(--window-s), 50%);
-        --btn-gray-hover: hsl(var(--window-h), var(--window-s), 45%);
-        --btn-dark-gray: hsl(var(--window-h), var(--window-s), 20%);
-        --btn-dark-gray-hover: hsl(var(--window-h), var(--window-s), 14%);
-        --btn-black: hsl(var(--window-h), var(--window-s), 15%);
+        --btn-feather-light-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 94%);
+        --btn-feather-light-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 88%);
+        --btn-light-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 90%);
+        --btn-light-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 84%);
+        --btn-medium-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 80%);
+        --btn-medium-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 75%);
+        --btn-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 50%);
+        --btn-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 45%);
+        --btn-dark-gray: hsl(0, 0%, 20%);
+        --btn-dark-gray-hover: hsl(0, 0%, 14%);
+        --btn-black: hsl(0, 0%, 15%);
 
-        --transaction-hover-background: hsl(240, 10%, 92%);
-        --transaction-hover-background-dim: hsl(240, 10%, 96%);
+        --transaction-hover-background: hsl(0, 0%, 95%);
+        --transaction-hover-background-dim: hsl(0, 0%, 92%);
 
         --default-pill-background: hsl(0, 0%, 98%);
         --default-tab-background: hsl(0, 0%, 90%);

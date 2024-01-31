@@ -28,7 +28,7 @@ export const LightBlueWideButton = withLoading(ButtonWithClassName('btn-blue btn
 export const BlackSlimButton = ButtonWithClassName('btn-chcl btn-medium-slim')
 export const BlackSlimButton2 = ButtonWithClassName('btn-chcl btn-medium-slim')
 export const BlueSlimButton2 = ButtonWithClassName('btn-blue btn-medium-slim')
-export const BlueSlimButton = ButtonWithClassName('btn-blue btn-slim')
+export const BlueSlimButton = ButtonWithClassName('btn-blue btn-ultra-slim')
 export const SlimButton = ButtonWithClassName('btn-clr btn-medium-slim')
 export const NarrowButton = ButtonWithClassName('btn-clr btn-narrow')
 export const IconButton = ButtonWithClassName('btn-clr btn-icon')
@@ -49,11 +49,11 @@ export const BlackSubmitButton = withLoading(BlackPrimaryButton)
 export const BlueSubmitButton = withLoading(BluePrimaryButton)
 export const BlackCheckSubmitButton = withCheckMark(BlackSubmitButton)
 export const BlueCheckSubmitButton = withCheckMark(BlueSubmitButton)
-export const GrnSlimArrowButton = withArrow(ButtonWithClassName('btn-grn2 btn-slim'))
-export const BlueSlimArrowButton = withArrow(ButtonWithClassName('btn-blue btn-slim'))
+export const GrnSlimArrowButton = withArrow(ButtonWithClassName('btn-grn2 btn-ultra-slim'))
+export const BlueSlimArrowButton = withArrow(ButtonWithClassName('btn-blue btn-ultra-slim'))
 export const GreenSlimArrowSubmit = withLoading(GrnSlimArrowButton)
-export const RedButton = withLoading(ButtonWithClassName('btn-red btn-2slim'))
-export const PrimaryTextButton = ButtonWithClassName('btn-primary-blue-text btn-2slim')
+export const RedButton = withLoading(ButtonWithClassName('btn-red btn-slim'))
+export const PrimaryTextButton = ButtonWithClassName('btn-primary-blue-text btn-slim')
 export const IconButtonSubmit = withLoading(IconButton)
 export const LinkArrowButton = withArrow(ButtonWithClassName('btn-icon2'))
 export const FadedTextButton = ButtonWithClassName('btn-faded-text')
@@ -177,6 +177,7 @@ export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> &
       className={`delete-button${show ? '-show' : ''}
         ${drawable ? 'drawable' : 'not-drawable'}
         ${className ? className : ''}`}
+      darker={true}
       {...rest}
     >
       <Delete

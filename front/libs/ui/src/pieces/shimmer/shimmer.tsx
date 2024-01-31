@@ -44,6 +44,7 @@ interface ColoredShimmerProps extends ShimmerProps {
   length?: number
   color?: 'blue' | 'green'
   style?: React.CSSProperties
+  className?: string
 }
 
 export const ColoredShimmer = (props: ColoredShimmerProps) => {
@@ -55,6 +56,7 @@ export const ColoredShimmer = (props: ColoredShimmerProps) => {
     style = {},
     lightness,
     darkMode,
+    className,
     ...rest
   } = props
 
@@ -62,11 +64,11 @@ export const ColoredShimmer = (props: ColoredShimmerProps) => {
     <>
       <div
         {...rest}
-        className={`colored-loading-shimmer ${color}`}
+        className={`colored-loading-shimmer ${color} ${className ? className : ''}`}
         style={{
           width: '100%',
-          height: '2.25em',
-          margin: '2px 0',
+          height: '1.5em',
+          margin: '.5em 0',
           borderRadius: 'var(--border-radius1)',
           position: 'relative',
           ...style,

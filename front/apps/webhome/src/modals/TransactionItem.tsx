@@ -260,7 +260,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
             >
                 {focusedNoteId &&
                     <Tooltip msg={'Save'} ariaLabel={'save'}>
-                        <CircleIconButton onClick={() => handleTextAreaBlur()}>
+                        <CircleIconButton onClick={() => handleTextAreaBlur()} darker={true}>
                             <Check size={'1.1em'} />
                         </CircleIconButton>
                     </Tooltip>}
@@ -271,7 +271,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                             {dayjs(notes.find(n => n.id === focusedNoteId)?.datetime).format('h:mma M/DD/YY')}
                         </span>
                         <Tooltip msg={'Delete'} ariaLabel={'delete'}>
-                            <CircleIconButton onClick={() => { handleTrashButtonClick() }}>
+                            <CircleIconButton onClick={() => { handleTrashButtonClick() }} darker={true}>
                                 <Trash2 size={'1.1em'} />
                             </CircleIconButton>
                         </Tooltip></>}

@@ -6,10 +6,13 @@
     &--container {
         display: flex;
         align-items: center;
-        gap: .125em;
         margin-bottom: .5em;
         border-radius: var(--border-radius4);
-        padding: .125em .5em .125em 1.25em;
+        padding: .125em .5em .125em 1em;
+    }
+
+    &>.month-picker--container>button:first-child {
+        margin-right: .25em;
     }
 
     &.dark {
@@ -28,17 +31,18 @@
 
     &:not(.dark) {
         &>.month-picker--container {
-            // background-color: var(--window);
-            // padding: .125em .5em .125em 1.25em;
-            border: 1.75px solid var(--btn-light-gray);
+            background-color: var(--btn-dark-gray);
+            padding: .125em .375em .125em 1em;
+            // border: 1.25px solid var(--btn-dark-gray);
+            margin-left: -.25em;
 
             &>button:first-child {
-                margin-left: -.375em;
-                font-weight: var(--fw-bold);
+                color: var(--m-invert-text);
             }
 
             button {
                 opacity: 1;
+                color: var(--m-invert-text);
             }
 
             button:hover {

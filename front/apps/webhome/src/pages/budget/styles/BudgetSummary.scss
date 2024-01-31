@@ -1,76 +1,69 @@
 #month-picker--container {
     position: absolute;
     top: 1.5em;
-    margin-left: -.5em;
-    z-index: 100;
-
-    &.small-screen {
-        left: 50%;
-        transform: translateX(-50%);
-        margin-left: 0;
-        top: 1em;
-    }
+    z-index: 1;
+    top: 1em;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .budget-summary--container {
-    margin: .75em 0;
     display: flex;
     align-items: flex-end;
+    justify-content: center;
+    gap: 1em;
     flex-wrap: wrap;
-    gap: 3em;
     overflow: hidden;
     flex-grow: 0;
     flex-shrink: 0;
+    position: relative;
+    z-index: 0;
+    margin-top: 0em;
 
     &>div:first-child {
-        margin-right: 1em;
-
-        h2,
-        h3 {
-            color: var(--m-text-quinary);
-        }
-
-        h2 {
-            font-size: 1.25rem;
-        }
+        display: flex;
+        align-items: center;
+        flex-direction: column;
 
         &>div {
-            font-size: 2.5rem;
+            font-size: 2.25rem;
             line-height: 3rem;
 
             * {
                 color: var(--m-header-text);
             }
         }
+
+        h3 {
+            color: var(--m-text-quinary);
+        }
     }
 
-
-    $gap: 5em;
 
     &.extra-small {
         gap: 1em;
+        margin-top: 1.5em;
 
         &>div:last-child>div:nth-child(-n+3) {
             flex-grow: 1;
-            margin-left: .75em;
         }
     }
+
+    $gap: 2em;
 
     &>div:last-child {
         display: flex;
         align-items: baseline;
-        gap: $gap;
-        margin-left: .125em;
-        flex-grow: 1;
         margin-bottom: .375em;
+        gap: $gap;
 
         &>div:nth-child(-n+3) {
-            font-size: 1.25rem;
-            gap: 0em;
+            font-size: 1.125rem;
+            gap: .25em;
             display: flex;
-            flex-direction: column;
             align-items: baseline;
             position: relative;
+            margin-left: 1em;
 
             * {
                 color: var(--m-header-text);
@@ -81,24 +74,14 @@
                 &::before {
                     content: '';
                     position: absolute;
-                    top: .375em;
+                    top: 50%;
+                    transform: translateY(-50%);
                     left: -.75em;
                     width: .375rem;
                     height: .375rem;
                     border-radius: 50%;
                     background-color: var($color-var);
                 }
-            }
-
-            &:not(:last-child)::after {
-                content: '';
-                position: absolute;
-                top: .5em;
-                bottom: .5em;
-                right: calc($gap /2 * -1 + 1em);
-                width: 1.5px;
-                border-radius: 1px;
-                background-color: var(--border-color-dim);
             }
 
             &:nth-last-child(3) {
@@ -113,7 +96,7 @@
                 @include dot(--m-text-quaternary);
             }
 
-            &>span:first-child {
+            &>span:last-child {
                 font-weight: var(--fw-bold);
                 color: var(--m-text-quinary);
                 font-size: .8rem;
@@ -121,8 +104,8 @@
             }
 
 
-            &>span:last-child {
-                font-size: 1.25rem;
+            &>span:first-child {
+                font-size: 1.125rem;
             }
         }
     }

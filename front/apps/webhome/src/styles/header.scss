@@ -1,7 +1,7 @@
 header {
     background-color: var(--header-background);
     box-shadow: var(--header-box-shadow);
-    z-index: 1;
+    z-index: 100;
     position: sticky;
     top: 0;
     position: relative;
@@ -16,12 +16,8 @@ header {
         }
     }
 
-    &.dark-mode>div>div:first-child img {
-        filter: grayscale(100%);
-    }
-
-    &:not(.dark-mode)>div>div:first-child img {
-        filter: grayscale(100%);
+    &>div>div:first-child img {
+        filter: grayscale(100%) brightness(0) invert(1);
     }
 
     &.small,
@@ -122,6 +118,10 @@ header {
     cursor: pointer;
     border-radius: var(--border-radius3);
     z-index: 1;
+
+    * {
+        color: var(--white);
+    }
 }
 
 .current-nav-item a {

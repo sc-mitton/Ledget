@@ -49,12 +49,11 @@ const BudgetSummary = () => {
 
     return (
         <>
-            <div id="month-picker--container" className={`${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}>
+            <div id="month-picker--container" className={`${screenSize}`}>
                 <MonthPicker darkMode={isDark} />
             </div>
             <div className={`budget-summary--container ${screenSize}`}>
                 <div>
-                    <h3>Total Spent</h3>
                     <div>
                         <AnimatedDollarCents
                             value={loadingCategories || loadingBills
@@ -62,29 +61,9 @@ const BudgetSummary = () => {
                                 : (total_yearly_spent + total_monthly_spent)}
                         />
                     </div>
+                    <h3>spent</h3>
                 </div>
                 <div>
-                    <div>
-                        <span>spending left</span>
-                        <AnimatedDollarCents
-                            value={Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber()}
-                            withCents={false}
-                        />
-                    </div>
-                    <div>
-                        <span>spending left</span>
-                        <AnimatedDollarCents
-                            value={Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() || 0}
-                            withCents={false}
-                        />
-                    </div>
-                    <div>
-                        <span>bills paid</span>
-                        <span>
-                            {monthly_bills_paid + yearly_bills_paid}
-                            /{number_of_monthly_bills + number_of_yearly_bills}
-                        </span>
-                    </div>
                 </div>
             </div>
         </>
