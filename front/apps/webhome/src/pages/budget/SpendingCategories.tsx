@@ -19,6 +19,8 @@ import {
     IconButton3,
     BillCatEmojiLabel,
 } from '@ledget/ui'
+import { useAppDispatch } from '@hooks/store'
+import { setCategoryModal } from '@features/uiSlice'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useScreenContext } from '@context/context'
 
@@ -52,6 +54,7 @@ const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 
     const { start, end } = useGetStartEndQueryParams()
     const [fetchCategories, { data: categoriesData, isLoading }] = useLazyGetCategoriesQuery()
     const columnRef = useRef<HTMLDivElement>(null)
+    const dispatch = useAppDispatch()
 
     const {
         monthly_spent,
@@ -105,9 +108,11 @@ const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 
                                 <>
                                     <div>
                                         <BillCatEmojiLabel
+                                            as='button'
                                             emoji={category.emoji}
                                             color={period === 'month' ? 'blue' : 'green'}
                                             key={category.id}
+                                            onClick={() => { dispatch(setCategoryModal({ category: category })) }}
                                         />
                                         {`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}
                                     </div>

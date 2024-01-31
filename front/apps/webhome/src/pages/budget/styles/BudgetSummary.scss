@@ -1,6 +1,6 @@
 #month-picker--container {
     position: absolute;
-    top: 1.5em;
+    top: 1.25em;
     z-index: 1;
     top: 1em;
     left: 50%;
@@ -35,6 +35,7 @@
         }
 
         h3 {
+            margin-left: .5em;
             color: var(--m-text-quinary);
         }
     }
@@ -42,7 +43,7 @@
 
     &.extra-small {
         gap: 1em;
-        margin-top: 1.5em;
+        margin-top: 1.25em;
 
         &>div:last-child>div:nth-child(-n+3) {
             flex-grow: 1;

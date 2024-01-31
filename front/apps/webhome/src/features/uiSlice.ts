@@ -1,7 +1,8 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from '@hooks/store';
 import { PayloadAction } from "@reduxjs/toolkit";
-import { Transaction } from "./transactionsSlice";
+import { Transaction } from "./transactionsSlice"
+import { Category } from "./categorySlice";
 
 interface UiState {
     budgetMonth?: number
@@ -9,6 +10,9 @@ interface UiState {
     transactionModal: {
         item?: Transaction
         splitMode?: boolean
+    }
+    categoryModal: {
+        category?: Category
     }
     notificationsTabIndex?: number
 }
@@ -19,6 +23,9 @@ const initialState: UiState = {
     transactionModal: {
         item: undefined,
         splitMode: false
+    },
+    categoryModal: {
+        category: undefined,
     },
     notificationsTabIndex: undefined
 }
@@ -41,7 +48,13 @@ export const uiSlice = createSlice({
         },
         setNotificationsTabIndex: (state, action: PayloadAction<number>) => {
             state.notificationsTabIndex = action.payload;
-        }
+        },
+        setCategoryModal: (state, action: PayloadAction<{ category: Category }>) => {
+            state.categoryModal.category = action.payload.category;
+        },
+        clearCategoryModal: (state) => {
+            state.categoryModal.category = undefined;
+        },
     },
 })
 
@@ -56,5 +69,13 @@ export const selectBudgetMonthYear = createSelector(
 export const selectNotificationsTabIndex = (state: RootState) => state.ui.notificationsTabIndex;
 export const selectTransactionModal = (state: RootState) => state.ui.transactionModal;
 export const selectTransactionModalItem = (state: RootState) => state.ui.transactionModal.item;
+export const selectCategoryModal = (state: RootState) => state.ui.categoryModal;
 
-export const { changeBudgetMonthYear, setTransactionModal, clearTransactionModal, setNotificationsTabIndex } = uiSlice.actions
+export const {
+    changeBudgetMonthYear,
+    setTransactionModal,
+    clearTransactionModal,
+    setNotificationsTabIndex,
+    clearCategoryModal,
+    setCategoryModal
+} = uiSlice.actions

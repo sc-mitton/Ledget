@@ -61,7 +61,7 @@ const BudgetSummary = () => {
                                 : (total_yearly_spent + total_monthly_spent)}
                         />
                     </div>
-                    <h3>spent</h3>
+                    <h3>total spent</h3>
                 </div>
                 <div>
                 </div>
