@@ -73,6 +73,7 @@ export const MonthPicker = ({ darkMode = false }) => {
                 </button>
             </div>
             <DatePicker
+                placement='middle'
                 period='month'
                 hideInputElement={true}
                 dropdownVisible={showDatePicker}

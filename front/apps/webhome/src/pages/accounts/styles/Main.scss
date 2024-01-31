@@ -523,7 +523,7 @@ $borderRadius2: var(--border-radius2);
     position: absolute;
     z-index: 0;
     inset: 0;
-    right: -1.5em;
+    right: -1.25em;
     overflow: auto;
     scrollbar-gutter: stable;
     display: grid;
@@ -531,7 +531,7 @@ $borderRadius2: var(--border-radius2);
     grid-auto-rows: minmax(auto, 5rem);
     grid-template-rows: min-content;
     row-gap: .75em;
-    padding-right: 2em;
+    padding-right: 1.5em;
     background-color: inherit;
 
     &>div:nth-child(2n) {

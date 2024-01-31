@@ -402,7 +402,14 @@ export function AccountWafers() {
         <>
             <div className={`account-wafers--container ${screenSize}`}>
                 <div className="account-wafers--header">
-                    <ShimmerTextDiv shimmering={Boolean(!accounts)} length={12} style={!isDark ? { backgroundColor: 'var(--btn-medium-gray)' } : {}}>
+                    <ShimmerTextDiv
+                        shimmering={Boolean(!accounts)}
+                        length={12}
+                        style={screenSize === 'extra-small'
+                            ? { backgroundColor: 'var(--blue-light)' }
+                            : !isDark ? { backgroundColor: 'var(--btn-medium-gray)' } : {}
+                        }
+                    >
                         <BakedListBox
                             defaultValue={accountsFilterOptions?.[0].value}
                             options={accountsFilterOptions}
@@ -417,7 +424,14 @@ export function AccountWafers() {
                             as={Button}
                         />
                     </ShimmerTextDiv>
-                    <ShimmerTextDiv shimmering={Boolean(!accounts)} length={16} style={!isDark ? { backgroundColor: 'var(--btn-medium-gray)' } : {}}>
+                    <ShimmerTextDiv
+                        shimmering={Boolean(!accounts)}
+                        length={16}
+                        style={screenSize === 'extra-small'
+                            ? { backgroundColor: 'var(--blue-light-medium)' }
+                            : !isDark ? { backgroundColor: 'var(--btn-medium-gray)' } : {}
+                        }
+                    >
                         <DollarCents value={accounts?.reduce((acc, account) => acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
                     </ShimmerTextDiv>
                 </div>

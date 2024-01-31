@@ -24,6 +24,7 @@
         display: flex;
         align-items: center;
         flex-direction: column;
+        margin-left: .5em;
 
         &>div {
             font-size: 2.25rem;
@@ -37,6 +38,7 @@
         h3 {
             margin-left: .5em;
             color: var(--m-text-quinary);
+            font-weight: 400;
         }
     }
 

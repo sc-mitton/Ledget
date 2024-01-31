@@ -210,7 +210,7 @@
         --monthly-color-faded: hsl(0, 0%, 100%);
 
         --yearly-background-color: hsl(var(--green-h), 67%, 80%);
-        --yearly-background-color-darker: hsl(var(--green-h), 72%, 70%);
+        --yearly-background-color-darker: hsl(var(--green-h), 62%, 60%);
         --yearly-hover-background-color: hsl(var(--green-h), 50%, 70%);
         --yearly-color: hsl(0, 0%, 100%);
         --yearly-color-faded: hsl(0, 0%, 100%);
@@ -241,11 +241,11 @@
         --window-background-color: hsl(240, 10%, 98%);
         --window-background-color-portal: hsl(0, 0%, 95%);
 
-        --window: hsl(0, 0%, 100%);
+        --window: hsl(240, 10%, 100%);
         --window2: hsl(var(--steel-blue-h), 10%, 92%);
         --window-no-background: var(--window-background-color);
         --window-drop-shadow-color: hsl(0, 0%, 93%);
-        --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 16px 0px;
+        --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
         --window-drop-shadow2-color: hsl(0, 0%, 85%);
 
         --window-rgb: 244, 244, 246;
@@ -254,7 +254,7 @@
         --modal-inner-window: hsl(0, 0%, 94%);
         --overlay: hsl(0, 0%, 20%);
 
-        --wafer-background: hsl(0, 0%, 10%);
+        --wafer-background: hsl(0, 0%, 20%);
         --dropdown-background: hsl(0, 0%, 98%);
         --dropdown-item-background: hsl(0, 0%, 93%);
 

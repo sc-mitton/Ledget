@@ -76,7 +76,7 @@
         }
 
         &.tint {
-            background-color: var(--yearly-background-color);
+            background-color: var(--yearly-background-color-darker);
 
             &.hoverable:hover,
             &.hoverable.active {
@@ -101,7 +101,7 @@
         }
 
         &.tint {
-            background-color: var(--yearly-background-color);
+            background-color: var(--yearly-background-color-darker);
 
             &.hoverable:hover,
             &.hoverable.active {

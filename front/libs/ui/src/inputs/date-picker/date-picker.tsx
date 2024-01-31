@@ -28,6 +28,7 @@ type BaseDatePickerProps = {
   omitDisabled?: boolean
   disabled?: [Dayjs | undefined, Dayjs | undefined][]
   autoFocus?: boolean
+  placement?: 'left' | 'right' | 'middle'
 } & ({
   hideInputElement: true,
   dropdownVisible: boolean,
@@ -574,7 +575,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   const [showPicker, setShowPicker] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const inputContainerRef = useRef<HTMLDivElement>(null)
-  const [placement, setPlacement] = useState<'left' | 'right'>('left')
+  const [placement, setPlacement] = useState<'left' | 'right' | 'middle'>(props.placement || 'left')
   const [verticlePlacement, setVerticlePlacement] = useState<'top' | 'bottom'>('bottom')
   const startInputRef = useRef<HTMLInputElement>(null)
   const endInputRef = useRef<HTMLInputElement>(null)
@@ -651,6 +652,8 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   // If the left side of the dropdown div is on the right
   // side of the screen, put it on the left, otherwise put it on the right
   useEffect(() => {
+    if (props.placement) return
+
     if (inputContainerRef.current) {
       const rect = inputContainerRef.current.getBoundingClientRect()
       rect.left > window.innerWidth / 2 ? setPlacement('right') : setPlacement('left')
