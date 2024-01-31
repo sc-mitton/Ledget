@@ -44,7 +44,7 @@
         li[aria-current="true"] span {
             background-color: transparent;
             transition: background-color 0.5s ease-in-out;
-            color: var(--blue-medium-dark);
+            color: var(--white);
         }
 
         li:not([aria-current="true"]):hover {

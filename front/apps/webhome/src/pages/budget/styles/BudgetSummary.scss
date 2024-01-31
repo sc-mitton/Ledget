@@ -110,7 +110,7 @@
             }
 
             &:nth-last-child(1) {
-                @include dot(--btn-gray);
+                @include dot(--m-text-quaternary);
             }
 
             &>span:first-child {

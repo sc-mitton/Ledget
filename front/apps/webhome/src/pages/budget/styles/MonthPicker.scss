@@ -9,7 +9,7 @@
         gap: .125em;
         margin-bottom: .5em;
         border-radius: var(--border-radius4);
-        padding: .125em .25em .125em .75em;
+        padding: .125em .5em .125em 1.25em;
     }
 
     &.dark {
@@ -30,6 +30,7 @@
         &>.month-picker--container {
             // background-color: var(--window);
             // padding: .125em .5em .125em 1.25em;
+            border: 1.75px solid var(--btn-light-gray);
 
             &>button:first-child {
                 margin-left: -.375em;

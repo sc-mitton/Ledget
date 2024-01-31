@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState, useRef, forwardRef } from 'react';
 
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from '@hooks/store';
-import { Plus, Calendar as CalendarIcon, CheckCircle, Circle } from '@geist-ui/icons'
+import { Plus, Calendar as CalendarIcon, CheckCircle, Circle, ChevronsDown } from '@geist-ui/icons'
 
 import './styles/Bills.scss'
 import {
@@ -12,7 +12,6 @@ import {
 import {
     DollarCents,
     IconButton3,
-    ExpandButton,
     DropDownDiv,
     useAccessEsc,
     ShimmerText,
@@ -138,8 +137,8 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
     )
 })
 
-const Header = ({ collapsed, showCalendarIcon = false }:
-    { collapsed: boolean, showCalendarIcon: boolean }) => {
+const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
+    { collapsed: boolean, showCalendarIcon: boolean, setCollapsed: React.Dispatch<React.SetStateAction<boolean>> }) => {
     const [searchParams, setSearchParams] = useSearchParams()
     const selectedDate = new Date(
         parseInt(searchParams.get('year') || `${new Date().getFullYear()}`),
@@ -165,33 +164,13 @@ const Header = ({ collapsed, showCalendarIcon = false }:
     })
 
     return (
-        <>
+        <div style={{ marginLeft: showCalendar ? '.125em' : '' }} className='bills--header'>
             <div>
-                <DropDownDiv
-                    placement='left'
-                    visible={showCalendar}
-                    ref={dropdownRef}
-                    style={{ borderRadius: 'var(--border-radius25)' }}
-                >
-                    <Calendar ref={calendarRef} />
-                </DropDownDiv>
-            </div>
-            <div style={{ marginLeft: !showCalendarIcon ? '-.375em' : '' }}>
                 <h4>
                     {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
                     {selectedDate.getFullYear()} BILLS
                     {/* Bills */}
                 </h4>
-                {showCalendarIcon &&
-                    <IconButton3
-                        ref={buttonRef}
-                        onClick={() => setShowCalendar(!showCalendar)}
-                        tabIndex={0}
-                        aria-label="Show calendar"
-                        aria-haspopup="true"
-                    >
-                        <CalendarIcon className="icon" />
-                    </IconButton3>}
                 <IconButton3
                     onClick={() => {
                         navigate({
@@ -204,7 +183,36 @@ const Header = ({ collapsed, showCalendarIcon = false }:
                     <Plus className='icon' />
                 </IconButton3>
             </div>
-        </>
+            <div>
+                {showCalendarIcon &&
+                    <IconButton3
+                        ref={buttonRef}
+                        onClick={() => setShowCalendar(!showCalendar)}
+                        tabIndex={0}
+                        aria-label="Show calendar"
+                        aria-haspopup="true"
+                    >
+                        <CalendarIcon className="icon" />
+                    </IconButton3>}
+                <DropDownDiv
+                    placement='right'
+                    visible={showCalendar}
+                    ref={dropdownRef}
+                    style={{ borderRadius: 'var(--border-radius25)' }}
+                >
+                    <Calendar ref={calendarRef} />
+                </DropDownDiv>
+            </div>
+            <div>
+                <IconButton3
+                    onClick={() => setCollapsed(!collapsed)}
+                    aria-label={collapsed ? 'Expand' : 'Collapse'}
+                    className={`${collapsed ? 'rotated' : ''}`}
+                >
+                    <ChevronsDown className='icon' />
+                </IconButton3>
+            </div>
+        </div>
     )
 }
 
@@ -221,7 +229,6 @@ const SkeletonBills = () => (
         </>
     </div>
 )
-
 
 const Bills = ({ collapsed }: { collapsed: boolean }) => {
     const bills = useAppSelector(selectBills)
@@ -269,258 +276,9 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                         </div>
                     )
                 })}
-            {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
-                .map((bill, i) => {
-                    return (
-                        <div
-                            key={i} className={`${bill.period}ly-bill`}
-                            role="button"
-                            onClick={() => {
-                                navigate(`${location.pathname}/bill${location.search}`, {
-                                    state: { billId: bill.id }
-                                })
-                            }}
-                        >
-                            <BillCatLabel
-                                labelName={bill.name}
-                                emoji={bill.emoji}
-                                slim={true}
-                                color={bill.period === 'month' ? 'blue' : 'green'}
-                            >
-                                <span>
-                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                </span>
-                            </BillCatLabel>
-                            <div><DollarCents value={bill.upper_amount} /></div>
-                            <div className={`${bill.is_paid ? 'is_paid' : 'not_paid'}`}>
-                                {bill.is_paid
-                                    ? <CheckCircle size={'1em'} />
-                                    : <Circle size={'1em'} />}
-                            </div>
-                        </div>
-                    )
-                })}
-            {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
-                .map((bill, i) => {
-                    return (
-                        <div
-                            key={i} className={`${bill.period}ly-bill`}
-                            role="button"
-                            onClick={() => {
-                                navigate(`${location.pathname}/bill${location.search}`, {
-                                    state: { billId: bill.id }
-                                })
-                            }}
-                        >
-                            <BillCatLabel
-                                labelName={bill.name}
-                                emoji={bill.emoji}
-                                slim={true}
-                                color={bill.period === 'month' ? 'blue' : 'green'}
-                            >
-                                <span>
-                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                </span>
-                            </BillCatLabel>
-                            <div><DollarCents value={bill.upper_amount} /></div>
-                            <div className={`${bill.is_paid ? 'is_paid' : 'not_paid'}`}>
-                                {bill.is_paid
-                                    ? <CheckCircle size={'1em'} />
-                                    : <Circle size={'1em'} />}
-                            </div>
-                        </div>
-                    )
-                })}
-            {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
-                .map((bill, i) => {
-                    return (
-                        <div
-                            key={i} className={`${bill.period}ly-bill`}
-                            role="button"
-                            onClick={() => {
-                                navigate(`${location.pathname}/bill${location.search}`, {
-                                    state: { billId: bill.id }
-                                })
-                            }}
-                        >
-                            <BillCatLabel
-                                labelName={bill.name}
-                                emoji={bill.emoji}
-                                slim={true}
-                                color={bill.period === 'month' ? 'blue' : 'green'}
-                            >
-                                <span>
-                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                </span>
-                            </BillCatLabel>
-                            <div><DollarCents value={bill.upper_amount} /></div>
-                            <div className={`${bill.is_paid ? 'is_paid' : 'not_paid'}`}>
-                                {bill.is_paid
-                                    ? <CheckCircle size={'1em'} />
-                                    : <Circle size={'1em'} />}
-                            </div>
-                        </div>
-                    )
-                })}
-            {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
-                .map((bill, i) => {
-                    return (
-                        <div
-                            key={i} className={`${bill.period}ly-bill`}
-                            role="button"
-                            onClick={() => {
-                                navigate(`${location.pathname}/bill${location.search}`, {
-                                    state: { billId: bill.id }
-                                })
-                            }}
-                        >
-                            <BillCatLabel
-                                labelName={bill.name}
-                                emoji={bill.emoji}
-                                slim={true}
-                                color={bill.period === 'month' ? 'blue' : 'green'}
-                            >
-                                <span>
-                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                </span>
-                            </BillCatLabel>
-                            <div><DollarCents value={bill.upper_amount} /></div>
-                            <div className={`${bill.is_paid ? 'is_paid' : 'not_paid'}`}>
-                                {bill.is_paid
-                                    ? <CheckCircle size={'1em'} />
-                                    : <Circle size={'1em'} />}
-                            </div>
-                        </div>
-                    )
-                })}
-            {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
-                .map((bill, i) => {
-                    return (
-                        <div
-                            key={i} className={`${bill.period}ly-bill`}
-                            role="button"
-                            onClick={() => {
-                                navigate(`${location.pathname}/bill${location.search}`, {
-                                    state: { billId: bill.id }
-                                })
-                            }}
-                        >
-                            <BillCatLabel
-                                labelName={bill.name}
-                                emoji={bill.emoji}
-                                slim={true}
-                                color={bill.period === 'month' ? 'blue' : 'green'}
-                            >
-                                <span>
-                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                </span>
-                            </BillCatLabel>
-                            <div><DollarCents value={bill.upper_amount} /></div>
-                            <div className={`${bill.is_paid ? 'is_paid' : 'not_paid'}`}>
-                                {bill.is_paid
-                                    ? <CheckCircle size={'1em'} />
-                                    : <Circle size={'1em'} />}
-                            </div>
-                        </div>
-                    )
-                })}
-            {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
-                .map((bill, i) => {
-                    return (
-                        <div
-                            key={i} className={`${bill.period}ly-bill`}
-                            role="button"
-                            onClick={() => {
-                                navigate(`${location.pathname}/bill${location.search}`, {
-                                    state: { billId: bill.id }
-                                })
-                            }}
-                        >
-                            <BillCatLabel
-                                labelName={bill.name}
-                                emoji={bill.emoji}
-                                slim={true}
-                                color={bill.period === 'month' ? 'blue' : 'green'}
-                            >
-                                <span>
-                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                </span>
-                            </BillCatLabel>
-                            <div><DollarCents value={bill.upper_amount} /></div>
-                            <div className={`${bill.is_paid ? 'is_paid' : 'not_paid'}`}>
-                                {bill.is_paid
-                                    ? <CheckCircle size={'1em'} />
-                                    : <Circle size={'1em'} />}
-                            </div>
-                        </div>
-                    )
-                })}
-            {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
-                .map((bill, i) => {
-                    return (
-                        <div
-                            key={i} className={`${bill.period}ly-bill`}
-                            role="button"
-                            onClick={() => {
-                                navigate(`${location.pathname}/bill${location.search}`, {
-                                    state: { billId: bill.id }
-                                })
-                            }}
-                        >
-                            <BillCatLabel
-                                labelName={bill.name}
-                                emoji={bill.emoji}
-                                slim={true}
-                                color={bill.period === 'month' ? 'blue' : 'green'}
-                            >
-                                <span>
-                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                </span>
-                            </BillCatLabel>
-                            <div><DollarCents value={bill.upper_amount} /></div>
-                            <div className={`${bill.is_paid ? 'is_paid' : 'not_paid'}`}>
-                                {bill.is_paid
-                                    ? <CheckCircle size={'1em'} />
-                                    : <Circle size={'1em'} />}
-                            </div>
-                        </div>
-                    )
-                })}
-            {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
-                .map((bill, i) => {
-                    return (
-                        <div
-                            key={i} className={`${bill.period}ly-bill`}
-                            role="button"
-                            onClick={() => {
-                                navigate(`${location.pathname}/bill${location.search}`, {
-                                    state: { billId: bill.id }
-                                })
-                            }}
-                        >
-                            <BillCatLabel
-                                labelName={bill.name}
-                                emoji={bill.emoji}
-                                slim={true}
-                                color={bill.period === 'month' ? 'blue' : 'green'}
-                            >
-                                <span>
-                                    {new Date(bill.date).toLocaleString('en-us', { month: 'numeric', day: 'numeric' }).replace('/', '-')}
-                                </span>
-                            </BillCatLabel>
-                            <div><DollarCents value={bill.upper_amount} /></div>
-                            <div className={`${bill.is_paid ? 'is_paid' : 'not_paid'}`}>
-                                {bill.is_paid
-                                    ? <CheckCircle size={'1em'} />
-                                    : <Circle size={'1em'} />}
-                            </div>
-                        </div>
-                    )
-                })}
         </div>
     )
 }
-
 
 const BillsWindow = () => {
     const [searchParams] = useSearchParams()
@@ -549,25 +307,9 @@ const BillsWindow = () => {
     }, [ref.current])
 
     return (
-        <div
-            className={`window bills-summary-window ${collapsed ? 'collapsed' : ''}`}
-            ref={ref}
-        >
-            <div>
-                <ExpandButton
-                    flipped={collapsed}
-                    hasBackground={false}
-                    onClick={() => { setCollapsed(!collapsed) }}
-                    aria-label="Collapse bills"
-                />
-            </div>
+        <div className={`window bills-summary-window ${collapsed ? 'collapsed' : ''}`} ref={ref}>
             <div className={`calendar-bills--container ${collapsed ? 'collapsed' : ''} ${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}>
-                <div style={{ marginLeft: showCalendar ? '.125em' : '' }}>
-                    <Header
-                        showCalendarIcon={!showCalendar}
-                        collapsed={collapsed}
-                    />
-                </div>
+                <Header showCalendarIcon={!showCalendar} collapsed={collapsed} setCollapsed={setCollapsed} />
                 <div>
                     {showCalendar && <Calendar />}
                     {isLoading ? <SkeletonBills /> : <Bills collapsed={collapsed} />}

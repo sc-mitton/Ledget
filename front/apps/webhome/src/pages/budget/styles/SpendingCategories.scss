@@ -6,7 +6,7 @@ $window-padding: $bill-flex-grid-gap;
 
 $row-padding: .375em;
 $label-padding: calc($row-padding/2) .75em;
-$column-gap: 2em;
+$column-gap: 3em;
 $background: var(--window);
 
 .spending-categories {
@@ -31,8 +31,30 @@ $background: var(--window);
         background-color: inherit;
     }
 
+    &.tabbed {
+
+        &>.spending-categories--container {
+            flex-direction: column;
+            gap: calc($column-gap/3);
+
+            &>div:last-child {
+                width: 100%;
+            }
+        }
+    }
+
+    div[role='tablist'] {
+        display: flex;
+        gap: 1em;
+
+        button[aria-selected='false'] {
+            opacity: .5;
+        }
+    }
+
     .column {
         flex: 1;
+        width: 100%;
         overflow-y: scroll;
         scrollbar-width: none;
         height: 100%;
@@ -66,7 +88,7 @@ $background: var(--window);
                         content: '';
                         position: absolute;
                         top: 50%;
-                        left: .875em;
+                        left: .85em;
                         transform: translate(-50%, -50%);
                         width: .625em;
                         height: .625em;
@@ -111,7 +133,6 @@ $background: var(--window);
                     display: flex;
                     justify-content: flex-end;
                     align-items: center;
-                    padding-right: 1em;
                 }
 
                 // Spent of column
@@ -129,7 +150,7 @@ $background: var(--window);
 
                     span.no-limit {
                         display: flex;
-                        padding-left: .37s5em;
+                        padding-left: .25em;
                     }
                 }
             }

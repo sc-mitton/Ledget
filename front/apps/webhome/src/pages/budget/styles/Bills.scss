@@ -26,29 +26,6 @@ $scroll-bar-padding: .5em;
             transition: opacity .2s ease-out .2s;
         }
     }
-
-    &>div:first-child {
-        position: absolute;
-        top: 1.25em;
-        right: .375em;
-        left: 50%;
-        height: 1.5em;
-
-        &:hover>button {
-            opacity: 1;
-            transition: opacity .2s ease-out;
-        }
-
-        &>button {
-            position: absolute;
-            right: 0;
-            z-index: 100;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0;
-            transition: opacity .2s ease-out;
-        }
-    }
 }
 
 .calendar-bills--container {
@@ -60,31 +37,6 @@ $scroll-bar-padding: .5em;
     gap: .5em;
     transition: gap .2s ease-out .1s;
     height: min-content;
-
-    // Header
-    &>div:first-child {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        gap: .25em;
-        flex-grow: 1;
-        position: relative;
-
-        // Header and add button
-        &>div:nth-child(2) {
-            display: flex;
-            gap: .5em;
-            align-items: center;
-
-        }
-
-        // Container Around Calendar Dropdown
-        &>div:first-child {
-            height: 100%;
-            top: 1em;
-            position: relative;
-        }
-    }
 
     // Div around the calendar and bill items
     &>div:nth-child(2) {
@@ -130,6 +82,57 @@ $scroll-bar-padding: .5em;
         }
     }
 
+}
+
+.bills--header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: .5em;
+
+    &>div:first-child {
+        display: flex;
+        gap: .375em;
+        align-items: center;
+    }
+
+    &>div:nth-child(2) {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        align-items: flex-end;
+
+        &>div {
+            top: 2.75em;
+        }
+    }
+
+    &>div:last-child {
+        button {
+            margin-left: 0;
+            transform: scale(0);
+            max-width: 0;
+            transition: all .2s ease-out;
+
+            &.rotated svg {
+                transform: rotate(180deg);
+                transition: transform .2s ease-out;
+            }
+
+            svg {
+                transform: rotate(0deg);
+                transition: transform .2s ease-out;
+            }
+        }
+    }
+
+    &:hover>div:last-child {
+        button {
+            transform: scale(1);
+            margin-left: .5em;
+            max-width: 2em;
+            transition: all .2s ease-out;
+        }
+    }
 }
 
 // Calendar container
@@ -277,6 +280,10 @@ $scroll-bar-padding: .5em;
 
         &>div:not(:last-child) {
             @include table-dividers(-.5em);
+        }
+
+        &>div {
+            width: 100%;
         }
 
     }

@@ -79,19 +79,18 @@
     border-radius: var(--border-radius2);
 }
 
+.btn-ultra-slim {
+    padding: 0em .25em;
+    border-radius: var(--border-radius2);
+}
+
+.btn-medium-slim {
+    padding: .125em .375em;
+    border-radius: var(--border-radius2);
+}
+
 .btn-slim {
-    padding: 0 .5em;
-    border-radius: var(--border-radius2);
-}
-
-.btn-2slim {
-    padding: .125em .75em;
-    border-radius: var(--border-radius2);
-    gap: .25em;
-}
-
-.btn-3slim {
-    padding: .125em 1em;
+    padding: .25em .625em;
     border-radius: var(--border-radius2);
 }
 
@@ -349,6 +348,15 @@
         * {
             color: var(--blue-sat-hover);
         }
+    }
+}
+
+.btn-bordered {
+    border: 1.5px solid var(--btn-light-gray);
+    gap: .5em;
+
+    &:hover {
+        border: 1.5px solid var(--btn-light-gray-hover);
     }
 }
 

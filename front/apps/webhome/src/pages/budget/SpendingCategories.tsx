@@ -1,72 +1,51 @@
-import React, {
-    FC,
-    memo,
+import {
     Fragment,
-    useMemo,
-    useState,
-    useRef,
     useEffect,
-    createContext,
-    useContext
 } from 'react'
 
-import Big from 'big.js'
 import { Tab } from '@headlessui/react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
-import { ResponsiveLine } from '@nivo/line'
-import type { Datum } from '@nivo/line'
-import { Menu } from '@headlessui/react'
+import { useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
-import { Plus, Edit2, Trash2 } from '@geist-ui/icons'
+import { Plus } from '@geist-ui/icons'
 
-import { TransactionItem, DeleteCategoryModal } from '@modals/index'
-import { Logo } from '@components/pieces'
 import { useAppSelector } from '@hooks/store'
 import './styles/SpendingCategories.scss'
-import type { Category } from '@features/categorySlice'
-import { useLazyGetTransactionsQuery, Transaction } from '@features/transactionsSlice'
-import { EditCategory as EditCategoryModal } from '@modals/index'
 import {
     useLazyGetCategoriesQuery,
     SelectCategoryBillMetaData,
-    selectCategories,
-    useGetCategorySpendingHistoryQuery,
 } from '@features/categorySlice'
 import {
     DollarCents,
     AnimatedDollarCents,
     StaticProgressCircle,
-    BluePrimaryButton,
     ColoredShimmer,
-    PillOptionButton,
-    FadeInOutDiv,
-    useLoaded,
     IconButton3,
-    ResponsiveLineContainer,
-    formatCurrency,
-    useNivoResponsiveBaseProps,
-    useNivoResponsiveLineTheme,
-    ChartTip,
-    DropDownDiv,
-    LoadingRing,
-    ShimmerDiv,
-    ShadowScrollDiv,
-    BakedListBox,
-    BillCatLabel,
     BillCatEmojiLabel,
-    TabNavList,
-    DropdownItem,
-    useBillCatTabTheme
 } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useScreenContext } from '@context/context'
 
+const ColumnHeader = ({ period }: { period: 'month' | 'year' }) => {
+    const navigate = useNavigate()
 
-const CategoriesColumn = ({ period }: { period: 'month' | 'year' }) => {
+    return (
+        <div className='column--header'>
+            <h4>{`${period.toUpperCase()}LY SPENDING`}</h4>
+            <IconButton3 onClick={() => {
+                navigate(
+                    `${location.pathname}/new-category/${location.search}`,
+                    { state: { period: period } }
+                )
+            }}>
+                <Plus className='icon' />
+            </IconButton3>
+        </div>
+    )
+}
+
+const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 'year', includeHeader?: boolean }) => {
     const { start, end } = useGetStartEndQueryParams()
     const [fetchCategories, { data: categoriesData, isLoading }] = useLazyGetCategoriesQuery()
-    const navigate = useNavigate()
 
     const {
         monthly_spent,
@@ -85,7 +64,6 @@ const CategoriesColumn = ({ period }: { period: 'month' | 'year' }) => {
         ? new Date(yearly_start.getFullYear() + 1, yearly_start.getMonth() - 1, 1)
         : null
 
-
     useEffect(() => {
         if (start && end)
             fetchCategories({ start: start, end: end }, true)
@@ -93,17 +71,7 @@ const CategoriesColumn = ({ period }: { period: 'month' | 'year' }) => {
 
     return (
         <div className='column'>
-            <div className='column--header'>
-                <h4>{`${period.toUpperCase()}LY SPENDING`}</h4>
-                <IconButton3 onClick={() => {
-                    navigate(
-                        `${location.pathname}/new-category/${location.search}`,
-                        { state: { period: period } }
-                    )
-                }}>
-                    <Plus className='icon' />
-                </IconButton3>
-            </div>
+            {includeHeader && <ColumnHeader period={period} />}
             <div className='column--grid'>
                 <div className={`${period}`}>
                     Total
@@ -159,19 +127,18 @@ const CategoriesColumn = ({ period }: { period: 'month' | 'year' }) => {
 }
 
 const TabView = () => {
-
     return (
         <Tab.Group>
             <Tab.List>
-                <Tab>Monthly Spending</Tab>
-                <Tab>Yearly Spending</Tab>
+                <Tab><h4>MONTHLY</h4></Tab>
+                <Tab><h4>YEARLY</h4></Tab>
             </Tab.List>
-            <Tab.Panels>
-                <Tab.Panel>
-                    <CategoriesColumn period='month' />
+            <Tab.Panels as={Fragment}>
+                <Tab.Panel as={Fragment}>
+                    <CategoriesColumn period='month' includeHeader={false} />
                 </Tab.Panel>
                 <Tab.Panel>
-                    <CategoriesColumn period='year' />
+                    <CategoriesColumn period='year' includeHeader={false} />
                 </Tab.Panel>
             </Tab.Panels>
         </Tab.Group>

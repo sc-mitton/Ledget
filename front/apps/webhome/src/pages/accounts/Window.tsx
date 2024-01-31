@@ -87,7 +87,7 @@ const Header = () => {
         data: accountsData,
         isSuccess: isSuccessLoadingAccounts
     } = useGetAccountsQuery()
-    const [backgroundColor] = useSchemeVar(['--blue-light'])
+    const [backgroundColor] = useSchemeVar(['--blue-medium'])
 
     const [props] = usePillAnimation({
         ref: ref,
