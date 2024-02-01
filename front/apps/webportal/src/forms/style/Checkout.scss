@@ -27,7 +27,6 @@
 }
 
 #prices-container {
-    border: 1.5px solid var(--blue-light);
     background-color: var(--blue-light-hover);
     border-top-left-radius: var(--border-radius3);
     border-top-right-radius: var(--border-radius3);
@@ -71,8 +70,9 @@
 #subscription-radios--container {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-direction: row;
-    padding: 1.75em 4em;
+    padding: 1.75em 4em 1em 4em;
 }
 
 #subscription-radios--container input[type="radio"] {
@@ -286,10 +286,11 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
 
     #prices-container {
         border-radius: 0;
+        background-color: transparent;
     }
 
     #prices-container-header {
-        height: 1.5em;
+        height: 3.5em;
     }
 
     #prices-container-header svg {

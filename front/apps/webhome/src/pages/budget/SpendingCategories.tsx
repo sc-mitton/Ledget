@@ -10,6 +10,7 @@ import './styles/SpendingCategories.scss'
 import {
     useLazyGetCategoriesQuery,
     SelectCategoryBillMetaData,
+    selectCategories
 } from '@features/categorySlice'
 import {
     DollarCents,
@@ -18,11 +19,11 @@ import {
     ColoredShimmer,
     IconButton3,
     BillCatEmojiLabel,
+    useScreenContext
 } from '@ledget/ui'
 import { useAppDispatch } from '@hooks/store'
 import { setCategoryModal } from '@features/uiSlice'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
-import { useScreenContext } from '@context/context'
 
 const ColumnHeader = ({ period }: { period: 'month' | 'year' }) => {
     const navigate = useNavigate()
@@ -55,6 +56,7 @@ const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 
     const [fetchCategories, { data: categoriesData, isLoading }] = useLazyGetCategoriesQuery()
     const columnRef = useRef<HTMLDivElement>(null)
     const dispatch = useAppDispatch()
+    const categories = useAppSelector(selectCategories)
 
     const {
         monthly_spent,
@@ -103,7 +105,7 @@ const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 
                                 value={totalLimit && totalSpent ? Math.round(totalSpent / totalLimit * 100) / 100 : 0}
                             />
                         </div>
-                        {categoriesData?.filter(c => c.period === period).map((category) => {
+                        {categories?.filter(c => c.period === period).map((category) => {
                             return (
                                 <>
                                     <div>

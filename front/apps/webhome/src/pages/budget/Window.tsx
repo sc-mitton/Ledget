@@ -9,7 +9,7 @@ import SpendingCategories from './SpendingCategories'
 import Bills from './Bills'
 import { setConfirmedTransactionFilter } from '@features/transactionsSlice'
 import { useAppDispatch } from '@hooks/store'
-import { useScreenContext } from '@context/context'
+import { useScreenContext } from '@ledget/ui'
 import Footer from './Footer'
 
 function Window() {

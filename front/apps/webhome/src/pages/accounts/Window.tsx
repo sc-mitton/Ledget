@@ -10,14 +10,13 @@ import Transactions from './Transactions'
 import { CreditCard, Clock, TrendingUp } from '@geist-ui/icons'
 
 import NotFound from '@pages/notFound/NotFound'
-import { RefreshButton, usePillAnimation, useSchemeVar } from '@ledget/ui'
+import { RefreshButton, usePillAnimation, useSchemeVar, useScreenContext } from '@ledget/ui'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
 import { AccountWafers } from './AccountWafers'
 import { NotImplimentedMessage } from '@components/pieces'
-import { useScreenContext } from '@context/context'
 import { DepositsIcon } from '@ledget/media'
 
 

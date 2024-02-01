@@ -43,9 +43,20 @@
     border-radius: .75em;
     padding: 0 .5em;
     min-height: 1em;
+    background-color: var(--btn-light-gray);
+    border: 1.5px solid transparent;
+    min-width: 6ch;
+
+    &:hover {
+        background-color: var(--btn-light-gray-hover);
+    }
 
     &:disabled {
         cursor: default;
+    }
+
+    &.selected {
+        border: 1.5px solid var(--blue-medium);
     }
 }
 

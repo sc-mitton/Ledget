@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 import { CardElement } from '@stripe/react-stripe-js'
 import { z } from 'zod'
-import { FieldError } from 'react-hook-form'
+import { FieldError, Control } from 'react-hook-form'
 import { Eye, EyeOff } from '@geist-ui/icons'
 
 import './text.scss'
@@ -206,11 +206,11 @@ export const baseBillingSchema = z.object({
 interface CityStateZipInputsProps {
   errors: any,
   register: (name: string, options?: any) => any,
-  field: any,
+  control: Control<any>
   loading: boolean
 }
 
-export const CityStateZipInputs = ({ errors, register, field, loading }: CityStateZipInputsProps) => {
+export const CityStateZipInputs = ({ errors, register, control, loading }: CityStateZipInputsProps) => {
 
   const hasErrorMsg = (field: string) => {
     return errors[field]?.message && !errors[field]?.message.includes('required')
@@ -228,7 +228,7 @@ export const CityStateZipInputs = ({ errors, register, field, loading }: CitySta
         <div id="state-container">
           {loading
             ? <InputShimmerDiv />
-            : <SelectProvence field={field} errors={errors} />}
+            : <SelectProvence control={control} errors={errors} />}
         </div>
         <div id="zip-container">
           {loading

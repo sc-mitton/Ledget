@@ -1,5 +1,5 @@
 const StripeLogo = ({
-    fill = 'var(--btn-mid-gray)',
+    fill = 'var(--btn-gray)',
     size = '2em'
 }) => {
 

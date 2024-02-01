@@ -86,61 +86,32 @@ $scroll-bar-padding: .5em;
 
 .bills--header {
     display: flex;
-    justify-content: space-between;
+    position: relative;
+    align-items: flex-end;
     padding-bottom: .5em;
 
+
     &>div:first-child {
-        display: flex;
-        gap: .375em;
-        align-items: center;
-    }
-
-    &>div:nth-child(3) {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        justify-content: center;
-
-        &>button {
-            margin-left: .5em;
-        }
-
-        &>div {
-            top: 2.75em;
-        }
+        position: absolute;
+        bottom: 0;
+        left: -.5em;
     }
 
     &>div:nth-child(2) {
         flex-grow: 1;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-
-        button {
-            margin-left: 0;
-            transform: scale(0);
-            max-width: 0;
-            transition: all .2s ease-out;
-
-            &.rotated svg {
-                transform: rotate(180deg);
-                transition: transform .2s ease-out;
-            }
-
-            svg {
-                transform: rotate(0deg);
-                transition: transform .2s ease-out;
-            }
-        }
+        gap: .5em;
     }
 
-    &:hover>div:nth-child(2) {
-        button {
-            transform: scale(1);
-            margin-left: .5em;
-            max-width: 2em;
-            transition: all .2s ease-out;
-        }
+    &>div:last-child {
+        opacity: 0;
+        transition: opacity .2s ease-out;
+    }
+
+    &:hover>div:last-child {
+        opacity: 1;
+        transition: opacity .2s ease-out;
     }
 }
 

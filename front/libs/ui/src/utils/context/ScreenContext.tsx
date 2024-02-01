@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useEffect, useContext, useState } from 'react'
+import { createContext, ReactNode, useEffect, useContext, useState } from 'react'
 
 type ScreenSize = 'small' | 'medium' | 'large' | 'extra-large' | 'extra-small'
 

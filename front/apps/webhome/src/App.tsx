@@ -12,7 +12,9 @@ import Accounts from '@pages/accounts/Window'
 import {
     ZoomMotionDiv,
     Toast,
-    ColorSchemedMain
+    ColorSchemedMain,
+    ScreenProvider,
+    useScreenContext
 } from '@ledget/ui'
 import {
     CreateCategory,
@@ -27,8 +29,6 @@ import { useGetMeQuery } from '@features/userSlice'
 import { selectTransactionModal, clearTransactionModal, selectCategoryModal, clearCategoryModal } from '@features/uiSlice';
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
-import { ScreenProvider } from '@context/index'
-import { useScreenContext } from '@context/index';
 
 const PrivateRoute = () => {
     const { isSuccess, isLoading, error } = useGetMeQuery()

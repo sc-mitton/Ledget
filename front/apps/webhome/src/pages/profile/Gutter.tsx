@@ -7,11 +7,11 @@ import {
     usePillAnimation,
     useSchemeVar,
     IconButton,
-    useAccessEsc
+    useAccessEsc,
+    useScreenContext
 } from '@ledget/ui'
 import { Hamburger } from '@ledget/media'
 import { useGetMeQuery } from '@features/userSlice'
-import { useScreenContext } from '@context/context'
 import { useGutterContext } from './Window'
 import { useColorScheme } from '@ledget/ui'
 import { Shield, Link, User } from '@geist-ui/icons'

@@ -30,6 +30,7 @@ export { default as LogoIcon2 } from './brand/LogoIcon2'
 export { default as Hamburger } from './icons/Hamburger';
 export { default as HalfArrow } from './icons/HalfArrow';
 export { default as Hourglass } from './icons/Hourglass';
+export { default as FilterLines } from './icons/FilterLines';
 
 export { default as EmptyListImage } from './images/EmptyList';
 export { default as EmptyListDark } from './images/EmptyListDark';

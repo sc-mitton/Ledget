@@ -14,7 +14,7 @@ main {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: .75rem 2.75rem;
+    padding: .75rem 1.25rem;
     box-sizing: border-box;
     width: 100%;
     background-color: var(--window);
@@ -93,6 +93,7 @@ main {
         box-shadow: none;
         position: static;
         border: none;
+        background-color: transparent;
     }
 
     .subheader {

@@ -17,6 +17,7 @@ import {
     Tooltip,
     CloseButton,
     useColorScheme,
+    useScreenContext
 } from '@ledget/ui'
 import {
     useGetAccountsQuery,
@@ -25,7 +26,6 @@ import {
     Institution
 } from "@features/accountsSlice"
 import pathMappings from './path-mappings'
-import { useScreenContext } from '@context/context'
 
 const waferWidth = 165
 const waferPadding = 6

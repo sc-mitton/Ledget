@@ -55,14 +55,28 @@
             }
         }
 
-        &:last-child button {
-            min-width: 6ch;
-            opacity: .9;
-            font-weight: var(--fw-light);
+        &:last-child {
+            margin-right: .25em;
+        }
+    }
 
-            span {
-                color: inherit;
-                font-weight: var(--fw-light);
+    #filter-buttons {
+        display: flex;
+        gap: .5em;
+        margin-right: .5em;
+
+        button {
+            opacity: 0;
+            transform: scale(0);
+            transition: opacity .2s ease-in-out, transform .2s ease-in-out;
+        }
+
+        &.show {
+            button {
+
+                opacity: 1;
+                transform: scale(1);
+                transition: opacity .2s ease-in-out, transform .2s ease-in-out;
             }
         }
     }

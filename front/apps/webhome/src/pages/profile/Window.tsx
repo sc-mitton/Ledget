@@ -19,8 +19,7 @@ import {
     RecoveryCodes
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
-import { ShimmerDiv } from '@ledget/ui'
-import { useScreenContext } from '@context/context'
+import { ShimmerDiv, useScreenContext } from '@ledget/ui'
 
 const GutterContext = createContext<[
     boolean,

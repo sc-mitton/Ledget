@@ -35,3 +35,4 @@ export * from './utils/hooks';
 export * from './pieces/containers/ResponsiveLine';
 export * from './themes/themes';
 export * from './themes/Tooltip';
+export * from './utils/context/ScreenContext'

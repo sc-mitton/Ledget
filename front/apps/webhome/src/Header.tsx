@@ -8,8 +8,7 @@ import './styles/header.scss'
 import { Logout, Help } from '@modals/index'
 import { LedgetLogoIcon } from '@ledget/media'
 import { DropDownDiv, DropdownItem } from '@ledget/ui'
-import { useScreenContext } from './context'
-import { useColorScheme } from '@ledget/ui'
+import { useColorScheme, useScreenContext } from '@ledget/ui'
 import { NotificationsDropdownMenu } from '@pages/notifications'
 
 const Navigation = () => {

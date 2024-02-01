@@ -14,6 +14,13 @@
 .bill-cat-label-emoji {
     padding: 0em .25em;
     border-radius: var(--border-radius4);
+    min-width: .625em;
+    min-height: .625em;
+
+    &.empty {
+        margin-left: .45em;
+        margin-right: .45em;
+    }
 }
 
 .bill-cat-label,

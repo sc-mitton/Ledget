@@ -7,9 +7,8 @@ import dayjs from 'dayjs'
 import { useAppDispatch } from '@hooks/store'
 import { setTransactionModal } from '@features/uiSlice'
 import { useLazyGetTransactionsQuery, useGetTransactionQueryState } from '@features/transactionsSlice'
-import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv, useLoaded, Tooltip } from '@ledget/ui'
+import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv, useLoaded, Tooltip, useScreenContext } from '@ledget/ui'
 import pathMappings from './path-mappings'
-import { useScreenContext } from '@context/context'
 import { Hourglass } from '@ledget/media'
 
 

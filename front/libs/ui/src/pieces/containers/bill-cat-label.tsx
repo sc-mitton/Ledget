@@ -90,12 +90,7 @@ export const BillCatEmojiLabel = <C extends ElementType = 'div'>(props: Polymorp
   return (
     <Component
       {...rest}
-      className={`bill-cat-label-emoji
-      ${color}
-      ${hoverable ? 'hoverable' : ''}
-      ${tint ? 'tint' : ''}
-      ${active ? 'active' : ''}`
-      }
+      className={`bill-cat-label-emoji ${color} ${hoverable ? 'hoverable' : ''} ${tint ? 'tint' : ''} ${active ? 'active' : ''} ${!emoji ? 'empty' : ''}`}
     >
       <div>
         {emoji && <span>{emoji || ''}</span>}

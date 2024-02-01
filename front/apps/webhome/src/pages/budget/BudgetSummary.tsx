@@ -9,10 +9,9 @@ import { MonthPicker } from './MonthPicker'
 import { SelectCategoryBillMetaData, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { selectBillMetaData, useLazyGetBillsQuery } from '@features/billSlice'
 import { useAppSelector } from '@hooks/store'
-import { AnimatedDollarCents } from '@ledget/ui'
+import { AnimatedDollarCents, useScreenContext } from '@ledget/ui'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { useColorScheme } from '@ledget/ui'
-import { useScreenContext } from '@context/context'
 
 const BudgetSummary = () => {
     const [searchParams] = useSearchParams()

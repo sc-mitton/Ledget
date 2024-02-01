@@ -4,8 +4,9 @@ import Big from 'big.js'
 import { ResponsiveLine } from '@nivo/line'
 import type { Datum } from '@nivo/line'
 import { Menu } from '@headlessui/react'
-import { Edit2, Trash2, ChevronRight, ZeroConfig } from '@geist-ui/icons'
+import { Edit2, Trash2, ChevronRight } from '@geist-ui/icons'
 import dayjs from 'dayjs'
+import { ZeroConfig } from '@components/pieces'
 import { AnimatePresence } from 'framer-motion'
 
 import { EditCategory } from './EditCategory'
@@ -333,14 +334,10 @@ const CategoryDetails = (props: { category: Category }) => {
                         }
                     </ResponsiveLineContainer>
                 </div>
-                <LoadingRingDiv loading={isLoadingTransactionsData} id='transactions' className='inner-window' onScroll={handleScroll}>
+                <div id='transactions' className={`${isLoadingTransactionsData ? '' : 'inner-window'}`} onScroll={handleScroll}>
                     {transactionsData?.results?.length === 0
-                        ?
-                        <div id="transactions--empty">
-                            <div><ZeroConfig size={'1em'} /></div>
-                        </div>
-                        :
-                        <div id='transactions--grid'>
+                        ? !isLoadingTransactionsData && <ZeroConfig />
+                        : <div id='transactions--grid'>
                             {transactionsData?.results?.map(transaction => (
                                 <div
                                     key={transaction.transaction_id}
@@ -359,7 +356,7 @@ const CategoryDetails = (props: { category: Category }) => {
                             ))}
                         </div>
                     }
-                </LoadingRingDiv>
+                </div>
             </div>
         </div >
     )

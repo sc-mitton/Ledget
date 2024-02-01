@@ -16,8 +16,8 @@ import {
     useAccessEsc,
     ShimmerText,
     BillCatLabel,
+    useScreenContext
 } from '@ledget/ui';
-import { useScreenContext } from '@context/context';
 
 
 function getDaysInMonth(year: number, month: number): Date[] {
@@ -166,11 +166,31 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
     return (
         <div style={{ marginLeft: showCalendar ? '.125em' : '' }} className='bills--header'>
             <div>
+                <DropDownDiv
+                    placement='left'
+                    visible={showCalendar}
+                    ref={dropdownRef}
+                    style={{ borderRadius: 'var(--border-radius25)' }}
+                >
+                    <Calendar ref={calendarRef} />
+                </DropDownDiv>
+            </div>
+            <div>
                 <h4>
                     {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
                     {selectedDate.getFullYear()} BILLS
                     {/* Bills */}
                 </h4>
+                {showCalendarIcon &&
+                    <IconButton3
+                        ref={buttonRef}
+                        onClick={() => setShowCalendar(!showCalendar)}
+                        tabIndex={0}
+                        aria-label="Show calendar"
+                        aria-haspopup="true"
+                    >
+                        <CalendarIcon className="icon" />
+                    </IconButton3>}
                 <IconButton3
                     onClick={() => {
                         navigate({
@@ -191,26 +211,6 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                 >
                     <ChevronsDown className='icon' />
                 </IconButton3>
-            </div>
-            <div>
-                {showCalendarIcon &&
-                    <IconButton3
-                        ref={buttonRef}
-                        onClick={() => setShowCalendar(!showCalendar)}
-                        tabIndex={0}
-                        aria-label="Show calendar"
-                        aria-haspopup="true"
-                    >
-                        <CalendarIcon className="icon" />
-                    </IconButton3>}
-                <DropDownDiv
-                    placement='right'
-                    visible={showCalendar}
-                    ref={dropdownRef}
-                    style={{ borderRadius: 'var(--border-radius25)' }}
-                >
-                    <Calendar ref={calendarRef} />
-                </DropDownDiv>
             </div>
         </div>
     )

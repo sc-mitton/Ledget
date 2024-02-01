@@ -299,7 +299,7 @@ export const PillOptionButton = forwardRef<HTMLButtonElement, ButtonHTMLAttribut
     <button
       aria-selected={isSelected}
       ref={ref}
-      className={`btn-small-pill btn btn-gr2 ${isSelected ? 'selected' : ''} ${className ? className : ''}`}
+      className={`btn-small-pill btn ${isSelected ? 'selected' : ''} ${className ? className : ''}`}
       {...rest}
     >
       {children}
