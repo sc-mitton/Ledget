@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
+import { ThumbsDown, ThumbsUp } from '@geist-ui/icons'
 
 import './styles/BudgetSummary.scss'
 import { MonthPicker } from './MonthPicker'
@@ -46,51 +47,72 @@ const BudgetSummary = () => {
 
     const { isDark } = useColorScheme()
     const { screenSize } = useScreenContext()
+    const [carouselIndex, setCarouselIndex] = useState(0)
+
+    const updateCarouselIndex = (e: React.UIEvent<HTMLDivElement>) => {
+        const target = e.target as HTMLDivElement
+        const scrollLeft = target.scrollLeft
+        const width = target.clientWidth
+        const index = Math.round(scrollLeft / width)
+        setCarouselIndex(index)
+    }
 
     return (
         <>
-            <div className={`budget-summary--container ${screenSize}`}>
-                <div>
-                    <div id="month-picker--container" className={`${screenSize}`}>
-                        <MonthPicker darkMode={isDark} />
-                    </div>
-                    <div>
-                        <AnimatedDollarCents
-                            // value={loadingCategories || loadingBills
-                            //     ? 0
-                            //     : (total_yearly_spent + total_monthly_spent)}
-                            value={248951}
-                        />
-                        <span>total spending</span>
-                    </div>
+            <div className={`budget-summary--container ${screenSize} ${isDark ? 'dark-mode' : ''}`}>
+                <div id="month-picker--container" className={`${screenSize}`}>
+                    <MonthPicker darkMode={isDark} />
                 </div>
-                <div>
-                    <div>
-                        <div>
-                            <AnimatedDollarCents
-                                value={Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber()}
-                            // withCents={false}
-                            />
+                <div className='slider'>
+                    <div className='slides' onScroll={updateCarouselIndex}>
+                        <div className='slide' id='slide-1'>
+                            <div>
+                                <AnimatedDollarCents
+                                    value={loadingCategories || loadingBills
+                                        ? 0
+                                        : (total_yearly_spent + total_monthly_spent)}
+                                />
+                            </div>
+                            <span>total spending</span>
                         </div>
-                        <span>spending left</span>
-                    </div>
-                    <div>
-                        <div>
-                            <AnimatedDollarCents
-                                value={Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() || 0}
-                            // withCents={false}
-                            />
-                        </div>
-                        <span>spending left</span>
-                    </div>
-                    <div>
-                        <div>
-                            <span>
-                                {monthly_bills_paid + yearly_bills_paid}
-                                /{number_of_monthly_bills + number_of_yearly_bills}
+                        <div className='slide' id='slide-2'>
+                            <div>
+                                <AnimatedDollarCents
+                                    value={Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber()}
+                                    withCents={false}
+                                />
+                            </div>
+                            <span>{
+                                Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber() > 0
+                                    ? 'monthly spending left'
+                                    : 'over monthly limit'}
                             </span>
                         </div>
-                        <span>bills paid</span>
+                        <div className='slide' id='slide-3'>
+                            <div>
+                                <AnimatedDollarCents
+                                    value={Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() || 0}
+                                    withCents={false}
+                                />
+                            </div>
+                            <span>{
+                                Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() > 0
+                                    ? 'yearly spending left'
+                                    : 'over yearly limit'}
+                            </span>
+                        </div>
+                        <div className='slide' id='slide-4'>
+                            <div>
+                                {monthly_bills_paid + yearly_bills_paid}
+                                /{number_of_monthly_bills + number_of_yearly_bills}
+                            </div>
+                            <span>bills paid</span>
+                        </div>
+                    </div>
+                    <div className='jump-links'>
+                        {Array.from({ length: 4 }, (_, i) => i).map((i) => (
+                            <a href={`#slide-${i + 1}`} key={i} className={carouselIndex === i ? 'active' : ''} />
+                        ))}
                     </div>
                 </div>
             </div>

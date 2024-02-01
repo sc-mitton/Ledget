@@ -113,8 +113,8 @@ $scroll-bar-padding: .5em;
     &>div:nth-child(2) {
         flex-grow: 1;
         display: flex;
-        flex-direction: column;
-        align-items: flex-end;
+        align-items: center;
+        justify-content: flex-end;
 
         button {
             margin-left: 0;
@@ -273,11 +273,21 @@ $scroll-bar-padding: .5em;
     display: grid;
     grid-auto-flow: column;
     grid-template-rows: repeat($number-of-bill-rows, minmax(0, min-content));
-    grid-auto-columns: 50%;
-    gap: $item-row-gap;
+    grid-auto-columns: calc(50% - $item-column-gap);
+    row-gap: $item-row-gap;
+    column-gap: $item-column-gap;
     transition: all .3s ease-in-out;
     padding-bottom: 1em;
     padding-right: .0625em;
+
+    &:not(.small-screent) {
+        scroll-snap-type: inline mandatory;
+        grid-auto-columns: calc(50% - $item-column-gap/2);
+
+        &>div {
+            scroll-snap-align: start;
+        }
+    }
 
     &.small-screen {
         grid-auto-flow: row;
@@ -302,7 +312,7 @@ $scroll-bar-padding: .5em;
         cursor: pointer;
         box-sizing: border-box;
         border-radius: var(--border-radius1);
-        width: calc(100% - $bill-flex-grid-gap - .25em);
+
         display: flex;
         justify-content: space-between;
         align-items: center;

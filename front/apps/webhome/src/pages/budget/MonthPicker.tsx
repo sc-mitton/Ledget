@@ -53,13 +53,13 @@ export const MonthPicker = ({ darkMode = false }) => {
     return (
         <div className={`month-picker ${darkMode ? 'dark' : ''}`}>
             <div className='month-picker--container'>
+                <button onClick={() => seek(-1, 1)}>
+                    <ChevronLeft size={'1.125em'} strokeWidth={2} />
+                </button>
                 <button
                     aria-haspopup='true'
                     onClick={(e) => setShowDatePicker(!showDatePicker)}>
                     {date.format('MMM YYYY')}
-                </button>
-                <button onClick={() => seek(-1, 1)}>
-                    <ChevronLeft size={'1.125em'} strokeWidth={2} />
                 </button>
                 <button onClick={() => seek(1, 1)}>
                     <ChevronRight size={'1.125em'} strokeWidth={2} />

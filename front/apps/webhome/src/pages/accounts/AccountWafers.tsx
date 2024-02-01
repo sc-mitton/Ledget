@@ -82,25 +82,6 @@ const AccountWafer = ({ account, institution, onClick }: { account: Account, ins
     )
 }
 
-const MosaicAccountWafer = ({ account, institution, onClick }: { account: Account, institution?: Institution, onClick: (arg: string) => void }) => (
-    <div className="mosaic-account-wafer" tabIndex={0} role='button' onClick={() => { onClick(account.account_id) }}>
-        <div><GripButton /></div>
-        <div>
-            <Base64Logo data={institution?.logo} alt={institution?.name.charAt(0).toUpperCase() || 'A'} />
-            <div>
-                <span>{account.official_name}</span>
-                <span>
-                    <span>&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;</span>
-                    {account.mask}
-                </span>
-            </div>
-        </div>
-        <div>
-            <DollarCents value={Big(account.balances.current).times(100).toNumber()} />
-        </div>
-    </div>
-)
-
 const SkeletonLargeScreenWafers = () => (
     <div className="skeleton-wafers">
         {Array(4).fill(0).map((_, index) => (
@@ -119,7 +100,7 @@ const SkeletonLargeScreenWafers = () => (
     </div>
 )
 
-const FilledLargScreenWafers = ({ accounts, institutions }: { accounts: Account[], institutions?: Institution[] }) => {
+const HorizontalWafers = ({ accounts, institutions }: { accounts: Account[], institutions?: Institution[] }) => {
     const [updateOrder, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useUpdateAccountsMutation()
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -218,7 +199,7 @@ const FilledLargScreenWafers = ({ accounts, institutions }: { accounts: Account[
     )
 }
 
-const MosaicWafers = ({ accounts, institutions, visible, onClose }: { accounts: Account[], institutions?: Institution[], visible: boolean, onClose: () => void }) => {
+const VerticalAccountList = ({ accounts, institutions, visible, onClose }: { accounts: Account[], institutions?: Institution[], visible: boolean, onClose: () => void }) => {
 
     const [searchParams, setSearchParams] = useSearchParams()
     const containerRef = useRef<HTMLDivElement>(null)
@@ -294,20 +275,36 @@ const MosaicWafers = ({ accounts, institutions, visible, onClose }: { accounts: 
             ref={containerRef}
         >
             <div>
-                {waferTransitions((style, account) => (
-                    visible &&
-                    <animated.div
-                        {...bind(account.account_id)}
-                        style={style}
-                        className={`mosaic-account-wafer--container ${searchParams.get('account') === account.account_id ? 'active' : 'inactive'}`}
-                    >
-                        <MosaicAccountWafer
-                            account={account}
-                            institution={institutions?.find((item: any) => item.id === account.institution_id)}
-                            onClick={handleClick}
-                        />
-                    </animated.div>
-                ))}
+                {waferTransitions((style, account) => {
+                    const institution = institutions?.find((item: any) => item.id === account.institution_id)
+                    return (
+                        <>
+                            {visible &&
+                                <animated.div
+                                    {...bind(account.account_id)}
+                                    style={style}
+                                    className={`mosaic-account-wafer--container ${searchParams.get('account') === account.account_id ? 'active' : 'inactive'}`}
+                                >
+                                    <div className="mosaic-account-wafer" tabIndex={0} role='button' onClick={() => { handleClick(account.account_id) }}>
+                                        <div><GripButton /></div>
+                                        <div>
+                                            <Base64Logo data={institution?.logo} alt={institution?.name.charAt(0).toUpperCase() || 'A'} />
+                                            <div>
+                                                <span>{account.official_name}</span>
+                                                <span>
+                                                    <span>&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;</span>
+                                                    {account.mask}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <DollarCents value={Big(account.balances.current).times(100).toNumber()} />
+                                        </div>
+                                    </div>
+                                </animated.div>}
+                        </>
+                    )
+                })}
             </div>
             <CloseButton onClick={onClose} aria-label='Close accounts view' />
         </animated.div>
@@ -436,7 +433,7 @@ export function AccountWafers() {
                     </ShimmerTextDiv>
                 </div>
                 {screenSize !== 'extra-small'
-                    && (accounts ? <FilledLargScreenWafers accounts={accounts} institutions={data?.institutions} /> : <SkeletonLargeScreenWafers />)}
+                    && (accounts ? <HorizontalWafers accounts={accounts} institutions={data?.institutions} /> : <SkeletonLargeScreenWafers />)}
             </div>
             {screenSize === 'extra-small' &&
                 <ShimmerTextDiv shimmering={Boolean(!accounts)} length={12} className="single-account-header">
@@ -462,7 +459,7 @@ export function AccountWafers() {
                     </Tooltip>
                 </ShimmerTextDiv>}
             {screenSize === 'extra-small' &&
-                <MosaicWafers
+                <VerticalAccountList
                     accounts={accounts || []}
                     institutions={data?.institutions}
                     visible={mosaicView}

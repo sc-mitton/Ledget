@@ -6,6 +6,7 @@
     &--container {
         display: flex;
         align-items: center;
+        gap: .5em;
         border-radius: var(--border-radius4);
         padding: .125em 0em;
     }
@@ -18,7 +19,7 @@
             transition: opacity .2s ease-in-out;
 
             &:first-child {
-                margin-right: .5em;
+                // margin-right: .5em;
             }
         }
 

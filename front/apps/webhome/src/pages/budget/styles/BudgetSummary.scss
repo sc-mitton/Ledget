@@ -1,7 +1,7 @@
 @mixin bottom-floor-text {
     margin-top: -.25em;
     color: var(--white);
-    opacity: .8;
+    opacity: .9;
     white-space: nowrap;
 }
 
@@ -10,58 +10,79 @@ $gap: 2.75em;
 .budget-summary--container {
     display: flex;
     padding: 1em 2em 1em 1em;
-    align-items: flex-end;
+    align-items: center;
+    flex-direction: column;
     flex-wrap: wrap;
-    background-color: var(--blue-medium);
     border-radius: var(--border-radius3);
-    margin-bottom: 1em;
-    gap: $gap;
 
-    &>div:last-child {
-        display: flex;
-        gap: $gap;
+    &:not(.dark-mode) {
+        margin-bottom: 1em;
+        background-color: var(--blue-medium);
+    }
+
+
+    .slider {
+        width: 300px;
+        overflow: hidden;
+    }
+
+    .slides {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 300px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        scroll-behavior: smooth;
+        overscroll-behavior: contain;
 
         &>div {
-            display: flex;
-            flex-direction: column;
-        }
-
-        &>div>div,
-        &>div>div>span:first-child {
-            font-size: 1.5rem;
-
-            * {
-                color: var(--white);
-            }
-        }
-
-        &>div>span:last-child {
-            @include bottom-floor-text;
+            scroll-snap-align: start;
         }
     }
 
-    // Total Spent
-    &>div:first-child {
+    .slide {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: .75em;
+
         &>div {
             font-size: 2rem;
-
-            * {
-                color: var(--white);
-            }
         }
 
-        #month-picker--container {
-            margin-right: .25em;
+        &>div span,
+        &>div {
+            color: var(--white);
         }
 
-        &>div:last-child {
-            display: flex;
-            flex-direction: column;
-
-            &>span:last-child {
-                @include bottom-floor-text;
-            }
+        &>span {
+            margin-top: -.125em;
+            color: var(--white);
+            opacity: .8;
+            white-space: nowrap;
         }
     }
 
+    .jump-links {
+        display: flex;
+        justify-content: center;
+        gap: .5em;
+
+        a {
+            width: .4em;
+            height: .4em;
+            border-radius: 50%;
+            background-color: var(--white);
+            opacity: .5;
+            transition: opacity .3s;
+            cursor: pointer;
+
+            &.active {
+                opacity: 1;
+                transition: opacity .3s;
+            }
+        }
+    }
 }
