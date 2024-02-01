@@ -1,13 +1,13 @@
 import { useEffect, useState, Fragment } from 'react'
 
 import dayjs from 'dayjs'
-import { ChevronRight, ZeroConfig } from '@geist-ui/icons'
+import { ChevronRight } from '@geist-ui/icons'
 
 import './styles/History.scss'
 import { FilterForm } from './Filter'
 import { setTransactionModal } from '@features/uiSlice'
 import { useLazyGetTransactionsQuery, useGetTransactionsQuery } from "@features/transactionsSlice"
-import { Logo } from '@components/pieces'
+import { InsitutionLogo, ZeroConfig } from '@components/pieces'
 import { DollarCents, InfiniteScrollDiv, LoadingRingDiv, BillCatEmojiLabel } from '@ledget/ui'
 import { ShadowedContainer } from '@components/pieces'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -59,49 +59,47 @@ export function History() {
                 ? <FilterForm />
                 : <ShadowedContainer className="transactions-history-table--container" >
                     <LoadingRingDiv loading={isLoading}>
-                        <InfiniteScrollDiv
-                            animate={isFetchingMore}
-                            className={`transactions-history--table ${isLoading ? 'skeleton' : ''}`}
-                            onScroll={handleScroll}
-                        >
-                            {transactionsData?.map((transaction) => {
-                                const date = new Date(transaction.datetime || transaction.date)
-                                date.getUTCMonth() !== monthholder ? newMonth = true : newMonth = false
-                                monthholder = date.getMonth()
-                                return (
-                                    <Fragment key={transaction.transaction_id}>
-                                        <div className="month-header">
-                                            {newMonth && <div>
-                                                {date.toLocaleString('default', { month: 'short', year: 'numeric' })}
-                                            </div>}
-                                        </div>
-                                        <div role="button" onClick={() => dispatch(setTransactionModal({ item: transaction }))}>
-                                            <div><Logo accountId={transaction.account} size={'1.5em'} /></div>
-                                            <div>{transaction.preferred_name || transaction.name}</div>
-                                            <div>
-                                                {dayjs(transaction.datetime || transaction.date).format('MMM DD, YYYY')}
+                        {!transactionsData?.length && !isLoading && !isError
+                            ? <ZeroConfig />
+                            : <InfiniteScrollDiv
+                                animate={isFetchingMore}
+                                className={`transactions-history--table ${isLoading ? 'skeleton' : ''}`}
+                                onScroll={handleScroll}
+                            >
+                                {transactionsData?.map((transaction) => {
+                                    const date = new Date(transaction.datetime || transaction.date)
+                                    date.getUTCMonth() !== monthholder ? newMonth = true : newMonth = false
+                                    monthholder = date.getMonth()
+                                    return (
+                                        <Fragment key={transaction.transaction_id}>
+                                            <div className="month-header">
+                                                {newMonth && <div>
+                                                    {date.toLocaleString('default', { month: 'short', year: 'numeric' })}
+                                                </div>}
                                             </div>
-                                            <div>
-                                                {transaction.bill &&
-                                                    <BillCatEmojiLabel emoji={transaction.bill.emoji} name={transaction.bill.name} />}
-                                                {transaction.categories?.map((category) => (
-                                                    <BillCatEmojiLabel emoji={category.emoji} name={category.name} />))}
+                                            <div role="button" onClick={() => dispatch(setTransactionModal({ item: transaction }))}>
+                                                <div><InsitutionLogo accountId={transaction.account} size={'1.5em'} /></div>
+                                                <div>{transaction.preferred_name || transaction.name}</div>
+                                                <div>
+                                                    {dayjs(transaction.datetime || transaction.date).format('MMM DD, YYYY')}
+                                                </div>
+                                                <div>
+                                                    {transaction.bill &&
+                                                        <BillCatEmojiLabel emoji={transaction.bill.emoji} name={transaction.bill.name} />}
+                                                    {transaction.categories?.map((category) => (
+                                                        <BillCatEmojiLabel emoji={category.emoji} name={category.name} />))}
+                                                </div>
+                                                <div className={`${transaction.amount < 0 ? 'debit' : ''}`}>
+                                                    <div><DollarCents value={transaction.amount} /></div>
+                                                    <ChevronRight className="icon" />
+                                                </div>
                                             </div>
-                                            <div className={`${transaction.amount < 0 ? 'debit' : ''}`}>
-                                                <div><DollarCents value={transaction.amount} /></div>
-                                                <ChevronRight className="icon" />
-                                            </div>
-                                        </div>
-                                    </Fragment>
-                                )
-                            })}
-                        </InfiniteScrollDiv>
+                                        </Fragment>
+                                    )
+                                })}
+                            </InfiniteScrollDiv>}
                     </LoadingRingDiv>
                 </ShadowedContainer >}
-            {!transactionsData?.length && !isLoading && !isError &&
-                <div id='empty-list-icon--container'>
-                    <ZeroConfig className='icon' />
-                </div>}
         </div>
     )
 }

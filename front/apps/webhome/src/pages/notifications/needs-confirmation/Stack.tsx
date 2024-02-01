@@ -10,7 +10,7 @@ import { Check } from '@geist-ui/icons'
 import "./styles/Stack.scss"
 import { Ellipsis } from "@ledget/media"
 import { SelectCategoryBill } from '@components/dropdowns'
-import { Logo } from '@components/pieces'
+import { InsitutionLogo, ZeroConfig } from '@components/pieces'
 import ItemOptions from "./ItemOptions"
 import {
     NarrowButton,
@@ -39,7 +39,8 @@ import {
     ConfirmedQueue,
     QueueItemWithCategory,
     QueueItemWithBill,
-    removeUnconfirmedTransaction
+    removeUnconfirmedTransaction,
+    useGetTransactionsCountQuery
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
@@ -162,7 +163,7 @@ const NewItem: FC<{
         >
             <div className='new-item-data'>
                 <div>
-                    <Logo accountId={item.account} />
+                    <InsitutionLogo accountId={item.account} />
                 </div>
                 <div>
                     <div>
@@ -228,6 +229,8 @@ export const NeedsConfirmationStack = () => {
     const { isDark } = useColorScheme()
     const navigate = useNavigate()
     const location = useLocation()
+    const { data: tCountData, isSuccess: isGetTransactionsCountSuccess } =
+        useGetTransactionsCountQuery({ confirmed: false, start, end }, { skip: !start || !end })
 
     const [confirmTransactions] = useConfirmTransactionsMutation()
     const unconfirmedTransactions = useAppSelector(
@@ -490,86 +493,90 @@ export const NeedsConfirmationStack = () => {
 
     return (
         <LoadingRingDiv className='needs-confirmation-stack' loading={isFetchingTransactions}>
-            <InfiniteScrollDiv
-                id="new-items"
-                ref={newItemsRef}
-                onMouseLeave={() => flushConfirmedQue()}
-            >
-                <div>
-                    <animated.div style={containerProps} onScroll={handleScroll}>
-                        {(isSuccess && unconfirmedTransactions) &&
-                            <>
-                                {itemTransitions((style, item, obj, index) => {
-                                    if (!item) return null
-                                    return (
-                                        <NewItem
-                                            item={item}
-                                            style={style}
-                                            updatedBillCat={
-                                                transactionUpdates[item.transaction_id]?.categories
-                                                || transactionUpdates[item.transaction_id]?.bill
-                                            }
-                                            onBillCat={(e, item) => handleBillCatClick(e, item)}
-                                            onEllipsis={(e, item) => handleEllipsis(e, item)}
-                                            handleConfirm={handleItemConfirm}
-                                            tabIndex={unconfirmedStackExpanded || index === 0 ? 0 : -1}
-                                        />
-                                    )
-                                })}
-                            </>
-                        }
-                    </animated.div >
-                </div>
-                <AbsPosMenu
-                    show={showBillCatSelect}
-                    setShow={setShowBillCatSelect}
-                    pos={billCatSelectPos}
-                    topArrow={false}
-                >
-                    <SelectCategoryBill
-                        value={billCatSelectVal}
-                        onChange={setBillCatSelectVal}
-                        month={new Date(start).getMonth() + 1}
-                        year={new Date(start).getFullYear()}
-                    />
-                </AbsPosMenu>
-                <AbsPosMenu
-                    show={showMenu}
-                    setShow={setShowMenu}
-                    pos={menuPos}
-                >
-                    <ItemOptions handlers={[
-                        () => {
-                            focusedItem && dispatch(setTransactionModal({ item: focusedItem, splitMode: true }))
-                        },
-                        () => {
-                            navigate({
-                                pathname: '/budget/new-bill',
-                                search: location.search,
-                            }, { state: { period: 'month', upper_amount: focusedItem?.amount, name: focusedItem?.name } }),
-                                setShowMenu(false)
-                        },
-                        () => {
-                            navigate({
-                                pathname: '/budget/new-bill',
-                                search: location.search,
-                            }, { state: { period: 'year', upper_amount: focusedItem?.amount, name: focusedItem?.name } }),
-                                setShowMenu(false)
-                        },
-                        () => {
-                            focusedItem && dispatch(setTransactionModal({ item: focusedItem }))
-                        },
-                    ]} />
-                </AbsPosMenu>
-            </InfiniteScrollDiv >
-            <ExpandableContainer
-                className='new-items-expand-button--container'
-                expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
-                <ExpandButton
-                    hasBackground={false}
-                    onClick={() => setUnconfirmedStackExpanded(!unconfirmedStackExpanded)} flipped={unconfirmedStackExpanded}
-                />
-            </ExpandableContainer>
+            {tCountData?.count === 0 && isGetTransactionsCountSuccess
+                ? <ZeroConfig />
+                : <>
+                    <InfiniteScrollDiv
+                        id="new-items"
+                        ref={newItemsRef}
+                        onMouseLeave={() => flushConfirmedQue()}
+                    >
+                        <div>
+                            <animated.div style={containerProps} onScroll={handleScroll}>
+                                {(isSuccess && unconfirmedTransactions) &&
+                                    <>
+                                        {itemTransitions((style, item, obj, index) => {
+                                            if (!item) return null
+                                            return (
+                                                <NewItem
+                                                    item={item}
+                                                    style={style}
+                                                    updatedBillCat={
+                                                        transactionUpdates[item.transaction_id]?.categories
+                                                        || transactionUpdates[item.transaction_id]?.bill
+                                                    }
+                                                    onBillCat={(e, item) => handleBillCatClick(e, item)}
+                                                    onEllipsis={(e, item) => handleEllipsis(e, item)}
+                                                    handleConfirm={handleItemConfirm}
+                                                    tabIndex={unconfirmedStackExpanded || index === 0 ? 0 : -1}
+                                                />
+                                            )
+                                        })}
+                                    </>
+                                }
+                            </animated.div >
+                        </div>
+                        <AbsPosMenu
+                            show={showBillCatSelect}
+                            setShow={setShowBillCatSelect}
+                            pos={billCatSelectPos}
+                            topArrow={false}
+                        >
+                            <SelectCategoryBill
+                                value={billCatSelectVal}
+                                onChange={setBillCatSelectVal}
+                                month={new Date(start).getMonth() + 1}
+                                year={new Date(start).getFullYear()}
+                            />
+                        </AbsPosMenu>
+                        <AbsPosMenu
+                            show={showMenu}
+                            setShow={setShowMenu}
+                            pos={menuPos}
+                        >
+                            <ItemOptions handlers={[
+                                () => {
+                                    focusedItem && dispatch(setTransactionModal({ item: focusedItem, splitMode: true }))
+                                },
+                                () => {
+                                    navigate({
+                                        pathname: '/budget/new-bill',
+                                        search: location.search,
+                                    }, { state: { period: 'month', upper_amount: focusedItem?.amount, name: focusedItem?.name } }),
+                                        setShowMenu(false)
+                                },
+                                () => {
+                                    navigate({
+                                        pathname: '/budget/new-bill',
+                                        search: location.search,
+                                    }, { state: { period: 'year', upper_amount: focusedItem?.amount, name: focusedItem?.name } }),
+                                        setShowMenu(false)
+                                },
+                                () => {
+                                    focusedItem && dispatch(setTransactionModal({ item: focusedItem }))
+                                },
+                            ]} />
+                        </AbsPosMenu>
+                    </InfiniteScrollDiv >
+                    <ExpandableContainer
+                        className='new-items-expand-button--container'
+                        expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
+                        <ExpandButton
+                            hasBackground={false}
+                            onClick={() => setUnconfirmedStackExpanded(!unconfirmedStackExpanded)} flipped={unconfirmedStackExpanded}
+                        />
+                    </ExpandableContainer>
+                </>}
         </ LoadingRingDiv>
     )
 }

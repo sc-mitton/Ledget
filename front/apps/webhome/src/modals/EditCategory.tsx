@@ -5,14 +5,13 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import './styles/Forms.scss'
-import { withModal } from '@ledget/ui'
 import { useUpdateCategoriesMutation, Category } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect, emoji } from '@components/inputs'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { FormErrorTip } from '@ledget/ui'
 import { schema as categoryFormSchema } from './CreateCategory'
 
-const EditCategory = withModal<{ category: Category }>((props) => {
+export const EditCategory = (props: { category: Category, onClose: () => void }) => {
     const [emoji, setEmoji] = useState<emoji>()
     const [updateCategory, { isSuccess: categoryIsUpdated, isLoading: isUpdatingCategory }] = useUpdateCategoriesMutation()
 
@@ -31,7 +30,7 @@ const EditCategory = withModal<{ category: Category }>((props) => {
         let timeout: NodeJS.Timeout
         if (categoryIsUpdated) {
             timeout = setTimeout(() => {
-                props.closeModal()
+                props.onClose()
             }, 1000)
         }
     }, [categoryIsUpdated])
@@ -108,11 +107,9 @@ const EditCategory = withModal<{ category: Category }>((props) => {
                 <SubmitForm
                     success={categoryIsUpdated}
                     submitting={isUpdatingCategory}
-                    onCancel={() => props.closeModal()}
+                    onCancel={() => props.onClose()}
                 />
             </form>
         </div>
     )
-})
-
-export default EditCategory
+}

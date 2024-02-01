@@ -80,7 +80,7 @@
 }
 
 .btn-ultra-slim {
-    padding: 0em .375em;
+    padding: 0em .5em;
     border-radius: var(--border-radius2);
 }
 
@@ -761,7 +761,7 @@ button.disabled-hover:hover svg {
         color: var(--icon-full);
 
         &::after {
-            background-color: var(--btn-feather-light-gray-hover);
+            background-color: var(--btn-light-gray-hover);
             transition: background-color ease-in-out .2s;
         }
     }

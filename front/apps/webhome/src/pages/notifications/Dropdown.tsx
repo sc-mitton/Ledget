@@ -86,7 +86,8 @@ const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
                             <div className='header'>
                                 <Tab.List as='ul'>
                                     <Tab as='li'>
-                                        <span className='count'>{tCountData?.count}</span>
+                                        {tCountData?.count! > 0 &&
+                                            <span className='count'>{tCountData?.count}</span>}
                                         New Items
                                     </Tab>
                                     <Tab as='li'>

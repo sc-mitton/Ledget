@@ -1,16 +1,15 @@
 
-import { withSmallModal } from '@ledget/ui'
 import { Category, useRemoveCategoriesMutation } from '@features/categorySlice'
 import { SubmitForm } from '@components/pieces'
 import { useEffect } from 'react'
 
-const Modal = withSmallModal<{ category: Category }>((props) => {
+export const DeleteCategory = (props: { category: Category, onClose: () => void }) => {
     const [deleteCategory, { isSuccess, isLoading }] = useRemoveCategoriesMutation()
 
     useEffect(() => {
         if (isSuccess) {
             const timeout = setTimeout(() => {
-                props.closeModal()
+                props.onClose()
             }, 1000)
             return () => clearTimeout(timeout)
         }
@@ -27,10 +26,8 @@ const Modal = withSmallModal<{ category: Category }>((props) => {
                 onClick={() => { deleteCategory([props.category.id]) }}
                 submitting={isLoading}
                 success={isSuccess}
-                onCancel={() => props.closeModal()}
+                onCancel={() => props.onClose()}
             />
         </div>
     )
-})
-
-export default Modal
+}
