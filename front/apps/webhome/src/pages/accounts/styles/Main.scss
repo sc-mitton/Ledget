@@ -46,7 +46,9 @@ $wafer-container-padding: .75rem;
         gap: 1em;
         background-color: var(--blue-medium);
 
-        * {
+        button,
+        button svg,
+        .account-wafers--header>div:last-child * {
             color: var(--white);
         }
     }

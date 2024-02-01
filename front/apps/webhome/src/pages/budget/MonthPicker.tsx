@@ -53,23 +53,16 @@ export const MonthPicker = ({ darkMode = false }) => {
     return (
         <div className={`month-picker ${darkMode ? 'dark' : ''}`}>
             <div className='month-picker--container'>
-                {darkMode
-                    ? <FadedTextButton
-                        onClick={() => setShowDatePicker(!showDatePicker)}
-                        aria-haspopup='true'
-                    >
-                        {date.format('MMM YYYY')}
-                    </FadedTextButton>
-                    : <button
-                        aria-haspopup='true'
-                        onClick={(e) => setShowDatePicker(!showDatePicker)}>
-                        {date.format('MMM YYYY')}
-                    </button>}
+                <button
+                    aria-haspopup='true'
+                    onClick={(e) => setShowDatePicker(!showDatePicker)}>
+                    {date.format('MMM YYYY')}
+                </button>
                 <button onClick={() => seek(-1, 1)}>
-                    <ChevronLeft className='icon' />
+                    <ChevronLeft size={'1.125em'} strokeWidth={2} />
                 </button>
                 <button onClick={() => seek(1, 1)}>
-                    <ChevronRight className='icon' />
+                    <ChevronRight size={'1.125em'} strokeWidth={2} />
                 </button>
             </div>
             <DatePicker

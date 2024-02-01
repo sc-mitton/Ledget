@@ -6,48 +6,25 @@
     &--container {
         display: flex;
         align-items: center;
-        margin-bottom: .5em;
         border-radius: var(--border-radius4);
-        padding: .125em .5em .125em 1em;
+        padding: .125em 0em;
     }
 
-    &>.month-picker--container>button:first-child {
-        margin-right: .25em;
-    }
+    &>.month-picker--container {
 
-    &.dark {
-        &>.month-picker--container {
-            border: 1.75px solid var(--btn-light-gray);
+        button {
+            opacity: 1;
+            color: var(--white);
+            transition: opacity .2s ease-in-out;
 
-            button {
-                color: var(--m-text-secondary)
-            }
-
-            button:hover {
-                color: var(--m-text)
+            &:first-child {
+                margin-right: .5em;
             }
         }
-    }
 
-    &:not(.dark) {
-        &>.month-picker--container {
-            background-color: var(--btn-dark-gray);
-            padding: .125em .375em .125em 1em;
-            // border: 1.25px solid var(--btn-dark-gray);
-            margin-left: -.25em;
-
-            &>button:first-child {
-                color: var(--m-invert-text);
-            }
-
-            button {
-                opacity: 1;
-                color: var(--m-invert-text);
-            }
-
-            button:hover {
-                opacity: .7;
-            }
+        button:hover {
+            opacity: .7;
+            transition: opacity .2s ease-in-out;
         }
     }
 }

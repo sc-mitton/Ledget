@@ -1,114 +1,65 @@
-#month-picker--container {
-    position: absolute;
-    top: 1.25em;
-    z-index: 1;
-    top: 1em;
-    left: 50%;
-    transform: translateX(-50%);
+@mixin bottom-floor-text {
+    margin-top: -.25em;
+    color: var(--white);
+    opacity: .8;
+    white-space: nowrap;
 }
+
+$gap: 2.75em;
 
 .budget-summary--container {
     display: flex;
+    padding: 1em 2em 1em 1em;
     align-items: flex-end;
-    justify-content: center;
-    gap: 1em;
     flex-wrap: wrap;
-    overflow: hidden;
-    flex-grow: 0;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 0;
-    margin-top: 0em;
-
-    &>div:first-child {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        margin-left: .5em;
-
-        &>div {
-            font-size: 2.25rem;
-            line-height: 3rem;
-
-            * {
-                color: var(--m-header-text);
-            }
-        }
-
-        h3 {
-            margin-left: .5em;
-            color: var(--m-text-quinary);
-            font-weight: 400;
-        }
-    }
-
-
-    &.extra-small {
-        gap: 1em;
-        margin-top: 1.25em;
-
-        &>div:last-child>div:nth-child(-n+3) {
-            flex-grow: 1;
-        }
-    }
-
-    $gap: 2em;
+    background-color: var(--blue-medium);
+    border-radius: var(--border-radius3);
+    margin-bottom: 1em;
+    gap: $gap;
 
     &>div:last-child {
         display: flex;
-        align-items: baseline;
-        margin-bottom: .375em;
         gap: $gap;
 
-        &>div:nth-child(-n+3) {
-            font-size: 1.125rem;
-            gap: .25em;
+        &>div {
             display: flex;
-            align-items: baseline;
-            position: relative;
-            margin-left: 1em;
+            flex-direction: column;
+        }
+
+        &>div>div,
+        &>div>div>span:first-child {
+            font-size: 1.5rem;
 
             * {
-                color: var(--m-header-text);
+                color: var(--white);
             }
+        }
 
-            @mixin dot($color-var) {
+        &>div>span:last-child {
+            @include bottom-floor-text;
+        }
+    }
 
-                &::before {
-                    content: '';
-                    position: absolute;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    left: -.75em;
-                    width: .375rem;
-                    height: .375rem;
-                    border-radius: 50%;
-                    background-color: var($color-var);
-                }
+    // Total Spent
+    &>div:first-child {
+        &>div {
+            font-size: 2rem;
+
+            * {
+                color: var(--white);
             }
+        }
 
-            &:nth-last-child(3) {
-                @include dot(--blue-light-medium);
-            }
+        #month-picker--container {
+            margin-right: .25em;
+        }
 
-            &:nth-last-child(2) {
-                @include dot(--green-sat);
-            }
-
-            &:nth-last-child(1) {
-                @include dot(--m-text-quaternary);
-            }
+        &>div:last-child {
+            display: flex;
+            flex-direction: column;
 
             &>span:last-child {
-                font-weight: var(--fw-bold);
-                color: var(--m-text-quinary);
-                font-size: .8rem;
-                white-space: nowrap;
-            }
-
-
-            &>span:first-child {
-                font-size: 1.125rem;
+                @include bottom-floor-text;
             }
         }
     }

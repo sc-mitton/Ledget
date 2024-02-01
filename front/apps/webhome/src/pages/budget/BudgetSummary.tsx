@@ -49,21 +49,49 @@ const BudgetSummary = () => {
 
     return (
         <>
-            <div id="month-picker--container" className={`${screenSize}`}>
-                <MonthPicker darkMode={isDark} />
-            </div>
             <div className={`budget-summary--container ${screenSize}`}>
                 <div>
+                    <div id="month-picker--container" className={`${screenSize}`}>
+                        <MonthPicker darkMode={isDark} />
+                    </div>
                     <div>
                         <AnimatedDollarCents
-                            value={loadingCategories || loadingBills
-                                ? 0
-                                : (total_yearly_spent + total_monthly_spent)}
+                            // value={loadingCategories || loadingBills
+                            //     ? 0
+                            //     : (total_yearly_spent + total_monthly_spent)}
+                            value={248951}
                         />
+                        <span>total spending</span>
                     </div>
-                    <h3>total spent</h3>
                 </div>
                 <div>
+                    <div>
+                        <div>
+                            <AnimatedDollarCents
+                                value={Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber()}
+                            // withCents={false}
+                            />
+                        </div>
+                        <span>spending left</span>
+                    </div>
+                    <div>
+                        <div>
+                            <AnimatedDollarCents
+                                value={Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() || 0}
+                            // withCents={false}
+                            />
+                        </div>
+                        <span>spending left</span>
+                    </div>
+                    <div>
+                        <div>
+                            <span>
+                                {monthly_bills_paid + yearly_bills_paid}
+                                /{number_of_monthly_bills + number_of_yearly_bills}
+                            </span>
+                        </div>
+                        <span>bills paid</span>
+                    </div>
                 </div>
             </div>
         </>
