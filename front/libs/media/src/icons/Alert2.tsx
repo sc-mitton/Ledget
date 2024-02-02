@@ -2,7 +2,8 @@ const Alert2 = ({
     width = "1em",
     height = "1em",
     className = '',
-    fill = '#F47788'
+    fill = 'var(--alert-red)',
+    fill2 = 'var(--white)'
 }) => {
 
     return (
@@ -13,9 +14,9 @@ const Alert2 = ({
             className={className}
             aria-label="Alert"
         >
-            <path fill={fill} d="M16,0.1c-8.8,0-16,7.2-16,16s7.2,16,16,16s16-7.2,16-16S24.8,0.1,16,0.1z M18.5,25.7c0,0.4-0.3,0.6-0.6,0.6
-                    h-3.7c-0.4,0-0.6-0.3-0.6-0.6V22c0-0.4,0.3-0.6,0.6-0.6h3.7c0.4,0,0.6,0.3,0.6,0.6V25.7z M18.6,18.2c0,0.4-0.3,0.7-0.6,0.7h-3.8
-                    c-0.4,0-0.6-0.3-0.6-0.7V6.7c0-0.4,0.3-0.7,0.6-0.7H18c0.4,0,0.6,0.3,0.6,0.7V18.2z"/>
+            <path fill={fill} d="M16,0.1c-8.8,0-16,7.2-16,16s7.2,16,16,16s16-7.2,16-16S24.8,0.1,16,0.1z" />
+            <circle fill={fill2} cx="16" cy="24.9" r="2.1" />
+            <line stroke={fill2} strokeWidth={3} strokeLinecap="round" x1="16" y1="18.5" x2="16" y2="6.9" />
         </svg >
     )
 }

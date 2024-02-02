@@ -19,7 +19,7 @@ import {
     selectBillsSorting
 } from '@features/billSlice'
 import { EditBudgetCategories, EditBudgetBills } from '@modals/index'
-import { PillOptionButton, FadedTextButton, IconButton3 } from '@ledget/ui'
+import { PillOptionButton, FadedTextButton, IconButton3, Tooltip } from '@ledget/ui'
 import { FilterLines } from '@ledget/media'
 
 const Footer = () => {
@@ -98,10 +98,12 @@ const Footer = () => {
                             a-z
                         </PillOptionButton>
                     </div>
-                    <IconButton3
-                        onClick={() => { setShowFilterButtons(!showFilterButtons) }}>
-                        <FilterLines stroke={(billSorting !== 'date' || categorySorting !== 'default') ? 'var(--blue-medium)' : 'currentColor'} />
-                    </IconButton3>
+                    <Tooltip msg="Filter" ariaLabel="Filter">
+                        <IconButton3
+                            onClick={() => { setShowFilterButtons(!showFilterButtons) }}>
+                            <FilterLines stroke={(billSorting !== 'date' || categorySorting !== 'default') ? 'var(--blue-medium)' : 'currentColor'} />
+                        </IconButton3>
+                    </Tooltip>
                 </div>
             </div>
         </>

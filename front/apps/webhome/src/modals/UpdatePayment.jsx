@@ -39,15 +39,9 @@ const Modal = withModal((props) => {
 
     const { register, handleSubmit, formState: { errors }, control, clearErrors } =
         useForm({ resolver: zodResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
-    const { field: stateField } = useController({ name: 'state', control })
 
     // Force fetch setup intent on mount
     useEffect(() => { getSetupIntent() }, [])
-
-    // Clear state field error on change
-    useEffect(() => {
-        stateField.value && clearErrors('state')
-    }, [stateField.value])
 
     useEffect(() => {
         !isUpdatingPayment && setSubmitting(false)
@@ -109,7 +103,7 @@ const Modal = withModal((props) => {
                     <CityStateZipInputs
                         register={register}
                         errors={errors}
-                        field={stateField}
+                        control={control}
                         loading={fetchingSetupIntent}
                     />
                     <h4>Card</h4>

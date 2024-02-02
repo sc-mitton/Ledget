@@ -114,15 +114,11 @@
     align-items: center;
     width: 100%;
     box-sizing: border-box;
+    gap: .75em;
 
     input {
         width: 100%;
     }
-
-    &>div:not(:last-child) {
-        margin-right: .75em;
-    }
-
 }
 
 #city-container,

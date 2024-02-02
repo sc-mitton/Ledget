@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useId, ComponentProps, forwardRef } from 'react';
+import { useRef, useEffect, useState, useId } from 'react';
 
 import { Combobox } from '@headlessui/react';
 import { useController } from 'react-hook-form';
@@ -6,6 +6,7 @@ import { BakedSelectProps } from './baked-list-box';
 import { ChevronDown } from '@geist-ui/icons';
 
 import './baked-selects.scss';
+import { FormErrorTip } from '../../pieces/form-errors/form-errors';
 import { DropDownDiv } from '../../animations/animations';
 import { TextInputWrapper } from '../text/text';
 import { DropdownItem } from "../../pieces/containers/containers";
@@ -76,6 +77,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string>, 'as'> & { sl
                 stroke={(focused && !value) ? 'var(--input-placeholder-focus)' : 'var(--m-text)'}
               />
             </Combobox.Button>
+            {props.error && <FormErrorTip error={props.error} />}
           </TextInputWrapper>
           <div className="provence-options--container">
             <DropDownDiv

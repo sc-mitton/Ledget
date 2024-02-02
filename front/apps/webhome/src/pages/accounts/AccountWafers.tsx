@@ -403,7 +403,7 @@ export function AccountWafers() {
                         shimmering={Boolean(!accounts)}
                         length={12}
                         style={screenSize === 'extra-small'
-                            ? { backgroundColor: 'var(--blue-light)' }
+                            ? { backgroundColor: 'var(--blue-light-medium)' }
                             : !isDark ? { backgroundColor: 'var(--btn-medium-gray)' } : {}
                         }
                     >
