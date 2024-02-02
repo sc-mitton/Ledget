@@ -4,6 +4,7 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
 import dayjs from 'dayjs'
 
+import './styles/Transactions.scss'
 import { useAppDispatch } from '@hooks/store'
 import { setTransactionModal } from '@features/uiSlice'
 import { useLazyGetTransactionsQuery, useGetTransactionQueryState } from '@features/transactionsSlice'

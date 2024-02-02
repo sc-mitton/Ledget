@@ -1,0 +1,165 @@
+@import '@styles/table-mixins.scss';
+
+/* ------------------------------ Transactions ------------------------------ */
+
+.transactions--container {
+    flex-grow: 1;
+    position: relative;
+    min-height: 20em;
+    background-color: inherit;
+
+    &.extra-small {
+        .transactions--table {
+            right: -.75em;
+            padding-right: 1em;
+            row-gap: 1.25em;
+
+            /* all name cells */
+            &>div:nth-child(2n)>div:first-child {
+                padding-left: .5em;
+                padding-right: 3.5em;
+            }
+
+            /* all amount cells */
+            &>div:nth-child(2n)>div:last-child {
+                padding-right: .5em;
+                justify-content: flex-end;
+            }
+
+            &>div:nth-child(2n):not(:last-child)>div {
+                @include table-dividers(-.5em, false, 1.5px);
+            }
+
+        }
+    }
+
+    &.loading {
+        border-radius: var(--border-radius3);
+    }
+}
+
+.month-delimiter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: sticky;
+    top: .375em;
+    background-color: inherit;
+    height: min-content;
+
+    span {
+        padding: 0 .5em 0 .25em;
+        color: var(--m-text-quinary);
+        background-color: inherit;
+
+        &:first-child {
+            position: relative;
+            z-index: 0;
+        }
+
+        &:last-child {
+            font-size: .875em;
+            position: relative;
+            z-index: 1;
+        }
+    }
+}
+
+/* Border bottom for all cells except last child */
+$subtleBorderColor: var(--border-color-ultra-dim);
+$borderRadius2: var(--border-radius2);
+
+.transactions--table {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    right: -1.25em;
+    overflow: auto;
+    scrollbar-gutter: stable;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-auto-rows: minmax(auto, 5rem);
+    grid-template-rows: min-content;
+    row-gap: .75em;
+    padding-right: 1.5em;
+    background-color: inherit;
+
+    &>div:nth-child(2n) {
+        display: contents;
+    }
+
+    &>div:nth-child(2n):not(:last-child)>div {
+        @include table-dividers(-.375em, false, 1.5px);
+    }
+
+    &.extra-small.not-skeleton>div:nth-child(2n):hover>div {
+        background-color: var(--transaction-hover-background-dim);
+    }
+
+    &.not-skeleton>div:nth-child(2n):hover>div {
+        background-color: var(--transaction-hover-background);
+        cursor: pointer;
+    }
+
+    &>div.transaction-shimmer:nth-child(2n + 3):hover>div {
+        background-color: transparent;
+        cursor: default;
+    }
+
+    &>div:nth-child(2n + 2) {
+        padding: .25em 0;
+        padding-right: .75em;
+        padding-left: .25em;
+    }
+
+    &>div:nth-child(2n)>div {
+        position: relative;
+        z-index: 0;
+
+        // Name, date, category, pending
+        &:first-child {
+            padding: .25em;
+            padding-left: .75em;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-top-left-radius: $borderRadius2;
+            border-bottom-left-radius: $borderRadius2;
+
+            &>div {
+                display: flex;
+                gap: .375em;
+                align-items: baseline;
+            }
+
+            // Date and category emojis
+            &>div:first-child {
+                display: flex;
+                align-items: center;
+
+                span {
+                    color: var(--m-text-secondary);
+                }
+            }
+
+            &>div:last-child span {
+                color: var(--m-text-quaternary);
+                font-weight: var(--fw-light);
+            }
+        }
+
+        // Amount
+        &:last-child {
+            padding: .25em;
+            padding-right: .75em;
+            display: flex;
+            align-items: center;
+            border-top-right-radius: $borderRadius2;
+            border-bottom-right-radius: $borderRadius2;
+        }
+    }
+
+    .debit * {
+        color: var(--debit-text)
+    }
+}
