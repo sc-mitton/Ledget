@@ -499,6 +499,7 @@ $wafer-container-padding: .75rem;
     position: sticky;
     top: .375em;
     background-color: inherit;
+    height: min-content;
 
     span {
         padding: 0 .5em 0 .25em;

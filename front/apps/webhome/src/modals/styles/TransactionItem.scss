@@ -104,10 +104,6 @@
                 align-items: center;
             }
 
-            &>div:nth-child(2n+1) {
-                font-weight: var(--fw-bold);
-            }
-
             &>div:nth-child(2n),
             &>div:nth-child(2n) * {
                 color: var(--m-text-secondary);
@@ -121,10 +117,6 @@
         align-items: center;
         gap: .75em;
         position: relative;
-
-        &>div {
-            font-weight: var(--fw-bold);
-        }
 
         #bill-cat-selector--container {
             display: flex;

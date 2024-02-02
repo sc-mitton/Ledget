@@ -320,6 +320,10 @@ svg.icon {
     margin: -.125em;
 }
 
+.dashboard.extra-small .inner-window {
+    background-color: var(--inner-window-small-screen);
+}
+
 .modal-inner-window {
     background-color: var(--modal-inner-window);
     border-radius: var(--inner-window-border-radius);
