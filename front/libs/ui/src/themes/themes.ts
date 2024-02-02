@@ -57,7 +57,7 @@ export const useNivoResponsiveLineTheme = (): Theme => {
         grid: {
             line: {
                 stroke: borderColor,
-                strokeWidth: 1.5,
+                strokeWidth: 1,
                 strokeDasharray: '2, 2',
                 fill: mTextSecondary,
             },

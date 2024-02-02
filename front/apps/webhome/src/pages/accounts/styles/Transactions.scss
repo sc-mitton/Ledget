@@ -38,33 +38,6 @@
     }
 }
 
-.month-delimiter {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    position: sticky;
-    top: .375em;
-    background-color: inherit;
-    height: min-content;
-
-    span {
-        padding: 0 .5em 0 .25em;
-        color: var(--m-text-quinary);
-        background-color: inherit;
-
-        &:first-child {
-            position: relative;
-            z-index: 0;
-        }
-
-        &:last-child {
-            font-size: .875em;
-            position: relative;
-            z-index: 1;
-        }
-    }
-}
-
 /* Border bottom for all cells except last child */
 $subtleBorderColor: var(--border-color-ultra-dim);
 $borderRadius2: var(--border-radius2);
@@ -86,6 +59,34 @@ $borderRadius2: var(--border-radius2);
 
     &>div:nth-child(2n) {
         display: contents;
+    }
+
+    // Month Delimiter
+    &>div:nth-child(2n + 1) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: sticky;
+        top: .375em;
+        background-color: inherit;
+        height: min-content;
+
+        span {
+            padding: 0 .5em 0 .25em;
+            color: var(--m-text-quinary);
+            background-color: inherit;
+
+            &:first-child {
+                position: relative;
+                z-index: 0;
+            }
+
+            &:last-child {
+                font-size: .875em;
+                position: relative;
+                z-index: 1;
+            }
+        }
     }
 
     &>div:nth-child(2n):not(:last-child)>div {

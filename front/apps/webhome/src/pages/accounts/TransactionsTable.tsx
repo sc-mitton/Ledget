@@ -146,7 +146,7 @@ export const Transactions = () => {
 
                     return (
                         <Fragment key={transaction.transaction_id}>
-                            <div className={newMonth ? 'month-delimiter' : ''}>
+                            <div>
                                 <span>{newMonth && `${date.toLocaleString('default', { month: 'short' })}`}</span>
                                 <span>{newYear && `${date.toLocaleString('default', { year: 'numeric' })}`}</span>
                             </div>
