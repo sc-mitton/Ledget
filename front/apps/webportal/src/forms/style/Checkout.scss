@@ -27,7 +27,7 @@
 }
 
 #prices-container {
-    background-color: var(--blue-light-hover);
+    background-color: var(--blue-medium);
     border-top-left-radius: var(--border-radius3);
     border-top-right-radius: var(--border-radius3);
     position: relative;
@@ -73,6 +73,10 @@
     align-items: center;
     flex-direction: row;
     padding: 1.75em 4em 1em 4em;
+
+    span {
+        color: var(--white);
+    }
 }
 
 #subscription-radios--container input[type="radio"] {
@@ -92,19 +96,25 @@
 }
 
 input[type="radio"]:checked+.subscription-radio--container {
-    box-shadow: inset 0 0 1px 1px var(--blue-dark);
+    box-shadow: inset 0 0 1px 1px var(--white);
 }
 
 input[type="radio"]:not(:checked)+.subscription-radio--container {
-    box-shadow: inset 0 0 3px 1px var(--monthly-color);
-    opacity: .6;
+    box-shadow: inset 0 0 1px 1px var(--white);
+    opacity: .5;
+    transition: opacity .2s ease-in-out;
+}
+
+input[type="radio"]:not(:checked)+.subscription-radio--container:hover {
+    opacity: .7;
+    transition: opacity .2s ease-in-out;
 }
 
 .dog-ear {
     position: absolute;
     top: -1px;
     right: -1px;
-    background-color: var(--blue-dark);
+    background-color: var(--white);
     width: 2.875rem;
     height: 2.875rem;
     transform: translate(50%, -50%) rotate(45deg);
@@ -115,10 +125,11 @@ input[type="radio"]:checked+.subscription-radio--container .dog-ear {
 }
 
 input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
-    background-color: var(--monthly-color);
+    background-color: var(--white);
 }
 
 .dog-ear svg {
+    color: var(--blue-medium);
     position: absolute;
     top: 2em;
     left: 1em;
@@ -275,6 +286,10 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
         margin: 0 auto;
         margin-top: 10%;
         margin-bottom: 10%;
+    }
+
+    .dog-ear svg {
+        color: var(--window-background-color);
     }
 
     #verification-window {

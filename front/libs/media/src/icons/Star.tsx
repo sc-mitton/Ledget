@@ -4,7 +4,7 @@ const Star = ({
     className = '',
     width = ".7em",
     height = ".7em",
-    fill = "var(--icon-full)",
+    fill = "currentColor",
 }) => {
     return (
         <svg

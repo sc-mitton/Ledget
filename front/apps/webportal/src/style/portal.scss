@@ -129,6 +129,17 @@ button {
 }
 
 
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--btn-light-gray) transparent;
+}
+
 /* --------------------------------- Inputs --------------------------------- */
 label {
     margin-bottom: .25rem;

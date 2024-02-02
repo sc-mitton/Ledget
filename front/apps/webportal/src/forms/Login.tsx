@@ -14,7 +14,7 @@ import { PasskeySignIn } from "./inputs/PasswordlessForm"
 import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces/index"
 import {
-    DarkWideButton,
+    MainButton,
     Checkbox,
     FormError,
     PasswordInput,
@@ -77,7 +77,7 @@ const EmailForm = ({ flow, setEmail, socialSubmit }: EmailFormProps) => {
                             {...register('remember')}
                         />
                     </div>
-                    <DarkWideButton>Continue</DarkWideButton>
+                    <MainButton>Continue</MainButton>
                 </div>
             </form >
             <SocialAuth flow={flow} submit={socialSubmit} />
@@ -120,9 +120,9 @@ const TotpMfa = ({ finished }: { finished: boolean }) => {
                     placeholder='Code'
                 />
             </div>
-            <DarkWideButton name="method" value={searchParams.get('mfa') || ''}>
+            <MainButton name="method" value={searchParams.get('mfa') || ''}>
                 Submit
-            </DarkWideButton>
+            </MainButton>
         </>
     )
 }
@@ -142,9 +142,9 @@ const LookupSecretMfa = ({ finished }: { finished: boolean }) => {
                     placeholder='Code'
                 />
             </div>
-            <DarkWideButton name="method" value={searchParams.get('mfa') || ''}>
+            <MainButton name="method" value={searchParams.get('mfa') || ''}>
                 Submit
-            </DarkWideButton>
+            </MainButton>
         </>
     )
 }
@@ -152,9 +152,9 @@ const LookupSecretMfa = ({ finished }: { finished: boolean }) => {
 const Password = () => (
     <div id="password-auth--container">
         <PasswordInput autoFocus required />
-        <DarkWideButton name="method" value="password">
+        <MainButton name="method" value="password">
             Sign In
-        </DarkWideButton>
+        </MainButton>
         {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
     </div>
 )

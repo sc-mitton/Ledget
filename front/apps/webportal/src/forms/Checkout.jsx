@@ -14,7 +14,7 @@ import { useGetPricesQuery } from '@features/pricesSlice'
 import { WindowLoadingBar } from '../pieces'
 import { Star } from '@ledget/media'
 import {
-    DarkWideButton,
+    MainButton,
     CardInput,
     FormError,
     NameOnCardInput,
@@ -58,7 +58,7 @@ const PriceRadios = ({ register }) => {
                                 <div className="subscription-radio--container">
                                     {p.nickname.toLowerCase() == 'year' &&
                                         <div className="dog-ear">
-                                            <Star fill={'var(--blue-light)'} />
+                                            <Star fill={'currentColor'} />
                                         </div>
                                     }
                                     <span className="nickname">{p.nickname}</span>
@@ -251,7 +251,7 @@ const Form = (props) => {
                     <div id="text-inputs--container">
                         <h4>Billing Info</h4>
                         <NameOnCardInput {...register('name')} errors={errors} />
-                        <CityStateZipInputs errors={errors} register={register} field={stateField} />
+                        <CityStateZipInputs errors={errors} register={register} control={control} />
                         <h4>Card</h4>
                         <CardInput
                             requiredError={cardNotEnteredError}
@@ -269,9 +269,9 @@ const Form = (props) => {
                             unit_amount={unit_amount}
                             trial_period_days={trial_period_days}
                         />
-                        <DarkWideButton form={'billing-form'}>
+                        <MainButton form={'billing-form'}>
                             {`Start ${trial_period_days}-day Free Trial`}
-                        </DarkWideButton>
+                        </MainButton>
                     </div>
                 </div>
             </form >

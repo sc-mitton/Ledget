@@ -12,7 +12,7 @@ import { DropdownItem } from "../../pieces/containers/containers";
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
 
 
-export const BakedComboBox = (props: Omit<BakedSelectProps<string> | BakedSelectProps<string>, 'as'> & { WrapperComponent: React.ElementType, slim?: boolean }) => {
+export const BakedComboBox = (props: Omit<BakedSelectProps<string>, 'as'> & { slim?: boolean }) => {
   const id = useId()
   const [value, onChange] = useState<any>()
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -55,7 +55,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string> | BakedSelect
     >
       {({ open }) => (
         <>
-          <props.WrapperComponent ref={inputRef} className="baked-combo-list-wrapper" slim={props.slim}>
+          <TextInputWrapper ref={inputRef} className="baked-combo-list-wrapper" slim={props.slim}>
             <Combobox.Input
               onChange={(event) => setQuery(event.target.value)}
               onFocus={() => setFocused(true)}
@@ -76,7 +76,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string> | BakedSelect
                 stroke={(focused && !value) ? 'var(--input-placeholder-focus)' : 'var(--m-text)'}
               />
             </Combobox.Button>
-          </props.WrapperComponent>
+          </TextInputWrapper>
           <div className="provence-options--container">
             <DropDownDiv
               placement="left"
@@ -134,7 +134,6 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string> | BakedSelect
 
 BakedComboBox.defaultProps = {
   withCheckMarkIndicator: false,
-  WrapperComponent: TextInputWrapper,
   labelPrefix: '',
   labelKey: 'label',
   valueKey: 'value',

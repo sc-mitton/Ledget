@@ -155,25 +155,26 @@
     padding: .125em;
 }
 
-.btn-dark {
-    background-color: var(--blue-medium);
+.btn-main {
+    background-color: var(--btn-main);
     color: var(--white);
     transition: all .3s ease;
 
     &:hover {
         transition: all .3s ease;
-        background-color: var(--blue-medium-hover);
+        background-color: var(--btn-main-hover);
     }
 }
 
 .btn-chcl {
-    background-color: var(--blue-medium);
-    color: var(--white);
+    background-color: var(--btn-chcl);
+    color: var(--m-invert-text);
+    font-weight: var(--fw-bold);
     transition: all .3s ease;
 
     &:hover {
         transition: all .3s ease;
-        background-color: var(--blue-medium-hover);
+        background-color: var(--btn-chcl-hover);
     }
 }
 
