@@ -54,10 +54,9 @@ const SkeletonCategories = ({ length, period }: { length: number, period: 'month
     </>
 )
 
-const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 'year', includeHeader?: boolean }) => {
+const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year', includeHeader?: boolean }) => {
     const { start, end } = useGetStartEndQueryParams()
     const [fetchCategories, { isLoading }] = useLazyGetCategoriesQuery()
-    const columnRef = useRef<HTMLDivElement>(null)
     const dispatch = useAppDispatch()
     const categories = useAppSelector(selectCategories)
 
@@ -82,16 +81,16 @@ const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 
         if (start && end)
             fetchCategories({ start: start, end: end }, true)
     }, [start && end])
+    const ref = useRef<HTMLDivElement>(null)
 
     return (
         <>
             {isLoading
-                ? <div className='column skeleton'>
-                    <SkeletonCategories length={(columnRef.current?.offsetHeight || 200 / 30) || 5} period={period} />
-                </div>
-                : <div className='column' ref={columnRef}>
+                ? <SkeletonCategories length={5} period={period} />
+                :
+                <>
                     {includeHeader && <ColumnHeader period={period} />}
-                    <div className='column--grid'>
+                    <div className='categories' ref={ref}>
                         <div className={`${period}`}>
                             Total
                         </div>
@@ -141,7 +140,8 @@ const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 
                             )
                         })}
                     </div>
-                </div>}
+                </>
+            }
         </>
     )
 }
@@ -149,10 +149,10 @@ const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 
 const TabView = () => {
     const navigate = useNavigate()
     return (
-        <Tab.Group>
+        <Tab.Group as='div' className='column'>
             {({ selectedIndex }) => (
                 <>
-                    <Tab.List>
+                    <Tab.List className='column--header'>
                         <Tab><h4>MONTHLY</h4></Tab>
                         <Tab><h4>YEARLY</h4></Tab>
                         <IconButton3
@@ -171,10 +171,10 @@ const TabView = () => {
                     </Tab.List>
                     <Tab.Panels as={Fragment}>
                         <Tab.Panel as={Fragment}>
-                            <CategoriesColumn period='month' includeHeader={false} />
+                            <Categories period='month' includeHeader={false} />
                         </Tab.Panel>
                         <Tab.Panel>
-                            <CategoriesColumn period='year' includeHeader={false} />
+                            <Categories period='year' includeHeader={false} />
                         </Tab.Panel>
                     </Tab.Panels>
                 </>
@@ -192,8 +192,12 @@ const SpendingCategories = () => {
                 {['small', 'extra-small'].includes(screenSize)
                     ? <TabView />
                     : <>
-                        <CategoriesColumn period='month' />
-                        <CategoriesColumn period='year' />
+                        <div className='column'>
+                            <Categories period='month' />
+                        </div>
+                        <div className='column'>
+                            <Categories period='year' />
+                        </div>
                     </>}
             </div>
         </div>

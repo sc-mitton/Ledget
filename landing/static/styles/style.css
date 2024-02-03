@@ -126,8 +126,8 @@ a {
 }
 
 .nav-container li {
-    padding: .5em .75em;
-    border-radius: var(--border-radius3);
+    padding: .25em .75em;
+    border-radius: 2em;
 }
 
 .nav-container a {
@@ -162,8 +162,8 @@ a {
 
 .auth-button {
     margin: 0 .5em;
-    padding: .375em .5em .375em .75em;
-    border-radius: 1em;
+    padding: .25em .5em .25em .75em;
+    border-radius: 1.5em;
     background-color: var(--btn-medium-gray);
     display: flex;
     align-items: center;

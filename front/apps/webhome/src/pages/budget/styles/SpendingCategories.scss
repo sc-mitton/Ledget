@@ -86,7 +86,7 @@ $background: var(--window);
             padding-bottom: 1em;
         }
 
-        &--grid {
+        .categories {
             display: grid;
             grid-template-columns: 1fr auto auto auto auto;
             row-gap: $item-row-gap;
