@@ -86,33 +86,12 @@ const Footer = () => {
                         </PillOptionButton>
                         <PillOptionButton
                             aria-label="Sort bills by amount"
-                            isSelected={billSorting === 'alpha-asc' || categorySorting === 'alpha-asc'}
+                            isSelected={['alpha-asc', 'alpha-desc'].includes(billSorting)}
                             onClick={() => {
-                                if (billSorting === 'alpha-asc' || categorySorting === 'alpha-asc') {
-                                    dispatch(sortBillsByDate())
-                                    dispatch(sortCategoriesDefault())
-                                } else {
-                                    dispatch(sortBillsByAlphaAsc())
-                                    dispatch(sortCategoriesAlphaAsc())
-                                }
+                                billSorting === 'alpha-desc' ? dispatch(sortBillsByDate()) : billSorting === 'alpha-asc' ? dispatch(sortBillsByAlphaDesc()) : dispatch(sortBillsByAlphaAsc())
                             }}
                         >
-                            a-z
-                        </PillOptionButton>
-                        <PillOptionButton
-                            aria-label="Sort bills by amount"
-                            isSelected={billSorting === 'alpha-desc' || categorySorting === 'alpha-desc'}
-                            onClick={() => {
-                                if (billSorting === 'alpha-desc' || categorySorting === 'alpha-desc') {
-                                    dispatch(sortBillsByDate())
-                                    dispatch(sortCategoriesDefault())
-                                } else {
-                                    dispatch(sortBillsByAlphaDesc())
-                                    dispatch(sortCategoriesAlphaDesc())
-                                }
-                            }}
-                        >
-                            z-a
+                            {billSorting === 'alpha-desc' ? 'z-a' : 'a-z'}
                         </PillOptionButton>
                     </div>
                     <Tooltip msg="Filter" ariaLabel="Filter">

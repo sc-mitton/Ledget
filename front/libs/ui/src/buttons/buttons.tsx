@@ -254,7 +254,7 @@ export const RefreshButton = ({ stroke = 'currentColor', hasBackground = true, l
           aria-label="Refresh"
           {...rest}
         >
-          {loading && <LoadingRing visible={true} className="refresh-loading-ring" />}
+          {!active && loading && <LoadingRing visible={true} className="refresh-loading-ring" />}
           {(active || !loading) && <ReplayIcon stroke={stroke} />}
         </CircleIconButton>
         :
@@ -267,7 +267,7 @@ export const RefreshButton = ({ stroke = 'currentColor', hasBackground = true, l
           }}
           {...rest}
         >
-          <LoadingRing visible={loading} />
+          <LoadingRing visible={!active && loading} />
           <ReplayIcon stroke={stroke} />
         </IconButton>
       }

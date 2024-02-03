@@ -110,7 +110,7 @@ export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], c
               />
             }
             {item.type === 'info' && <InfoIcon className='icon' />}
-            {item.type === 'error' && <AlertCircle className='icon' fill={'var(--alert-red)'} />}
+            {item.type === 'error' && <AlertCircle className='icon' />}
           </div>
           <div>
             <span>{item.message}</span>

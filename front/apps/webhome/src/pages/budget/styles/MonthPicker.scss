@@ -15,12 +15,7 @@
 
         button {
             opacity: 1;
-            color: var(--white);
             transition: opacity .2s ease-in-out;
-
-            &:first-child {
-                // margin-right: .5em;
-            }
         }
 
         button:hover {

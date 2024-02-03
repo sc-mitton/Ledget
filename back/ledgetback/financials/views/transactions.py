@@ -49,12 +49,16 @@ transaction_fields = [
 filter_target_fields = [
     f for f in transaction_fields if f not in Transaction.ignored_plaid_fields
 ]
-NOT_SPEND_PRIMARY = [
-    'INCOME',
-]
+NOT_SPEND_PRIMARY = ['INCOME']
 NOT_SPEND_DETAIL = [
     'TRANSFER_IN_ACCOUNT_TRANSFER',
-    'LOAN_PAYMENTS_CREDIT_CARD_PAYMENT'
+    'LOAN_PAYMENTS_CREDIT_CARD_PAYMENT',
+    'TRANSFER_IN_CASH_ADVANCES_AND_LOANS',
+    'TRANSFER_IN_DEPOSIT',
+    'TRANSFER_IN_INVESTMENT_AND_RETIREMENT_FUNDS',
+    'TRANSFER_IN_SAVINGS',
+    'TRANSFER_IN_OTHER_TRANSFER_IN',
+    'TRANSFER_OUT_SAVINGS',
 ]
 
 
@@ -84,7 +88,10 @@ def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict
         if unfiltered.get('personal_finance_category', {}) \
                      .get('primary', '').upper() in NOT_SPEND_PRIMARY or \
            unfiltered.get('personal_finance_category', {}) \
-                     .get('detailed', '').upper() in NOT_SPEND_DETAIL:
+                     .get('detailed', '').upper() in NOT_SPEND_DETAIL or \
+           (unfiltered.get('personal_finance_category', {})
+                     .get('detailed', '').upper() == 'TRANSFER_OUT_ACCOUNT_TRANSFER' and
+           all('THIRD PARTY' != c.upper() for c in unfiltered.get('category'))):
             filtered['is_spend'] = False
 
         return filtered

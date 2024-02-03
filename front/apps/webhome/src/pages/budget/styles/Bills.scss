@@ -106,6 +106,16 @@ $scroll-bar-padding: .5em;
     &>div:last-child {
         opacity: 0;
         transition: opacity .2s ease-out;
+
+        button {
+            svg {
+                transform: rotate(0deg);
+            }
+
+            &.rotated svg {
+                transform: rotate(180deg);
+            }
+        }
     }
 
     &:hover>div:last-child {
@@ -123,7 +133,7 @@ $scroll-bar-padding: .5em;
     display: inline-grid;
     grid-template-columns: repeat(7, auto);
     justify-self: center;
-    row-gap: .625em;
+    row-gap: .75em;
     column-gap: 1.25em;
 
     // Days of week markers
@@ -247,7 +257,6 @@ $scroll-bar-padding: .5em;
     row-gap: $item-row-gap;
     column-gap: $item-column-gap;
     transition: all .3s ease-in-out;
-    padding-bottom: 1em;
     padding-right: .0625em;
 
     &:not(.small-screent) {

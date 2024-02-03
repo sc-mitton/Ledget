@@ -207,17 +207,16 @@
         --blue-h: 230;
         --green-h: 130;
 
-        --monthly-h: 230;
-        --yearly-h: 130;
+        --monthly-h: 225;
+        --yearly-h: 150;
 
         // Budget Item Pallet
-        --monthly-background-color: hsl(var(--monthly-h), 60%, 70%);
-        --monthly-background-color-darker: hsl(var(--monthly-h), 60%, 60%);
-        --monthly-hover-background-color: hsl(var(--monthly-h), 60%, 75%);
+        --monthly-background-color: hsl(var(--monthly-h), 100%, 70%);
+        --monthly-background-color-darker: hsl(var(--monthly-h), 100%, 60%);
+        --monthly-hover-background-color: hsl(var(--monthly-h), 100%, 75%);
         --monthly-color: hsl(0, 0%, 100%);
         --monthly-color-faded: hsl(0, 0%, 100%);
 
-        --col: #9c9cf0;
         --yearly-background-color: hsl(var(--yearly-h), 50%, 70%);
         --yearly-background-color-darker: hsl(var(--yearly-h), 50%, 60%);
         --yearly-hover-background-color: hsl(var(--yearly-h), 50%, 80%);
@@ -228,7 +227,7 @@
         --blue-light: hsl(var(--blue-h), 70%, 90%);
         --blue-light-hover: hsl(var(--blue-h), 70%, 85%);
         --blue-light-medium: hsl(var(--blue-h), 70%, 75%);
-        --blue-medium: hsl(var(--blue-h), 30%, 50%);
+        --blue-medium: hsl(var(--blue-h), 50%, 50%);
         --blue-medium-hover: hsl(var(--blue-h), 30%, 73%);
         --blue: hsl(var(--blue-h), 30%, 52%);
         --blue-steel-gray: hsl(var(--blue-h), 32%, 85%);

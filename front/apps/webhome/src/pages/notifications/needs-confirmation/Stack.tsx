@@ -212,7 +212,7 @@ const NewItem: FC<{
 }
 
 export const NeedsConfirmationStack = () => {
-    const loaded = useLoaded()
+    const loaded = useLoaded(1000)
     const [showMenu, setShowMenu] = useState(false)
     const [showBillCatSelect, setShowBillCatSelect] = useState(false)
     const [billCatSelectVal, setBillCatSelectVal] = useState<Category | Bill | undefined>()
@@ -323,8 +323,9 @@ export const NeedsConfirmationStack = () => {
         if (unconfirmedTransactions.length >= 0) {
             itemsApi.start()
             containerApi.start({
-                height: _getContainerHeight(unconfirmedTransactions.length, unconfirmedStackExpanded)
-            } as any)
+                height: _getContainerHeight(unconfirmedTransactions.length, unconfirmedStackExpanded),
+                immediate: !loaded
+            })
         }
         setShowFilterForm(false)
     }, [unconfirmedStackExpanded, unconfirmedTransactions])
