@@ -16,7 +16,8 @@ import {
     useAccessEsc,
     ShimmerText,
     BillCatLabel,
-    useScreenContext
+    useScreenContext,
+    Tooltip
 } from '@ledget/ui';
 
 
@@ -191,26 +192,30 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                     >
                         <CalendarIcon className="icon" />
                     </IconButton3>}
-                <IconButton3
-                    onClick={() => {
-                        navigate({
-                            pathname: '/budget/new-bill',
-                            search: location.search
-                        })
-                    }}
-                    aria-label="Add bill"
-                >
-                    <Plus className='icon' />
-                </IconButton3>
+                <Tooltip msg='Add bill'>
+                    <IconButton3
+                        onClick={() => {
+                            navigate({
+                                pathname: '/budget/new-bill',
+                                search: location.search
+                            })
+                        }}
+                        aria-label="Add bill"
+                    >
+                        <Plus className='icon' />
+                    </IconButton3>
+                </Tooltip>
             </div>
             <div>
-                <IconButton3
-                    onClick={() => setCollapsed(!collapsed)}
-                    aria-label={collapsed ? 'Expand' : 'Collapse'}
-                    className={`${collapsed ? 'rotated' : ''}`}
-                >
-                    <ChevronsDown className='icon' />
-                </IconButton3>
+                <Tooltip msg={collapsed ? 'Expand' : 'Collapse'}>
+                    <IconButton3
+                        onClick={() => setCollapsed(!collapsed)}
+                        aria-label={collapsed ? 'Expand' : 'Collapse'}
+                        className={`${collapsed ? 'rotated' : ''}`}
+                    >
+                        <ChevronsDown className='icon' />
+                    </IconButton3>
+                </Tooltip>
             </div>
         </div>
     )

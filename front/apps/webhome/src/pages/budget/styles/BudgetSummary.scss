@@ -48,14 +48,18 @@ $gap: 2.75em;
         align-items: center;
         margin-bottom: .75em;
 
-        &>div {
+        &>div:first-child {
             font-size: 2rem;
         }
 
-        &>span {
+        &>div:last-child {
             margin-top: -.125em;
             opacity: .8;
             white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: .25em;
+
         }
     }
 

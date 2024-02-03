@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
-import { ThumbsDown, ThumbsUp } from '@geist-ui/icons'
+import { AlertCircle } from '@geist-ui/icons'
 
 import './styles/BudgetSummary.scss'
 import { MonthPicker } from './MonthPicker'
@@ -81,11 +81,11 @@ const BudgetSummary = () => {
                                     withCents={false}
                                 />
                             </div>
-                            <span>{
-                                Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber() > 0
-                                    ? 'monthly spending left'
-                                    : 'over monthly limit'}
-                            </span>
+                            <div>
+                                <span>{Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber() > 0 ? 'monthly spending left' : 'over monthly limit'}</span>
+                                {Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber() <= 0 && (
+                                    <AlertCircle size={'1.125em'} />)}
+                            </div>
                         </div>
                         <div className='slide' id='slide-3'>
                             <div>
@@ -94,11 +94,11 @@ const BudgetSummary = () => {
                                     withCents={false}
                                 />
                             </div>
-                            <span>{
-                                Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() > 0
-                                    ? 'yearly spending left'
-                                    : 'over yearly limit'}
-                            </span>
+                            <div>
+                                <span>{Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() > 0 ? 'yearly spending left' : 'over yearly limit'}</span>
+                                {Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() <= 0 && (
+                                    <AlertCircle size={'1.125em'} />)}
+                            </div>
                         </div>
                         <div className='slide' id='slide-4'>
                             <div>

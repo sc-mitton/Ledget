@@ -19,7 +19,8 @@ import {
     ColoredShimmer,
     IconButton3,
     BillCatEmojiLabel,
-    useScreenContext
+    useScreenContext,
+    Tooltip
 } from '@ledget/ui'
 import { useAppDispatch } from '@hooks/store'
 import { setCategoryModal } from '@features/uiSlice'
@@ -31,14 +32,16 @@ const ColumnHeader = ({ period }: { period: 'month' | 'year' }) => {
     return (
         <div className='column--header'>
             <h4>{`${period.toUpperCase()}LY SPENDING`}</h4>
-            <IconButton3 onClick={() => {
-                navigate(
-                    `${location.pathname}/new-category/${location.search}`,
-                    { state: { period: period } }
-                )
-            }}>
-                <Plus className='icon' />
-            </IconButton3>
+            <Tooltip msg={`Add ${period}ly category`} >
+                <IconButton3 onClick={() => {
+                    navigate(
+                        `${location.pathname}/new-category/${location.search}`,
+                        { state: { period: period } }
+                    )
+                }}>
+                    <Plus className='icon' />
+                </IconButton3>
+            </Tooltip>
         </div>
     )
 }

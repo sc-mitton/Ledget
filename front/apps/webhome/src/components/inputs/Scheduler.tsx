@@ -134,19 +134,10 @@ const Button: FC<React.HTMLAttributes<HTMLButtonElement> & { iconPlaceholder?: b
     )
 }
 
-const options = [
-    { label: 'Day', value: 'day', default: true },
-    { label: 'Week', value: 'week', default: false },
-]
-
-
-// How many days are in each month
-const daysMap = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] as const
-
 const DayPicker = () => {
 
     const { setOpen, day, setDay, month } = usePickerContext()
-    const [numberOfDays, setNumberOfDays] = useState<number>(daysMap[month || 0])
+    const [numberOfDays, setNumberOfDays] = useState<number>(dayjs().month(month || 0).daysInMonth())
     const [activeDay, setActiveDay] = useState<typeof day>(0)
     const ref = useRef<HTMLDivElement>(null)
 
@@ -170,7 +161,7 @@ const DayPicker = () => {
     )
 
     useEffect(() => {
-        setNumberOfDays(daysMap[month || 0])
+        setNumberOfDays(dayjs().month(month || 0).daysInMonth())
     }, [month])
 
     const Row = ({ number }: { number: number }) => (

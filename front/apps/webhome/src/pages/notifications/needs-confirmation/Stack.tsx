@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState, useEffect, useRef } from 'react'
 
-import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
@@ -394,7 +394,7 @@ export const NeedsConfirmationStack = () => {
         })
     }
 
-    // Send the updates to the backend whist updating the category
+    // Send the updates to the backend whilst updating the category
     // and bill metadata in the store.
     useEffect(() => {
         if (confirmAll) {
@@ -450,6 +450,7 @@ export const NeedsConfirmationStack = () => {
     }, [confirmAll])
 
     const flushConfirmedQue = () => {
+        console.log('confirmedTransactions', confirmedTransactions)
         if (confirmedTransactions.length > 0) {
             confirmTransactions(confirmedTransactions.map((item) => ({
                 transaction_id: item.transaction.transaction_id,
@@ -533,10 +534,12 @@ export const NeedsConfirmationStack = () => {
                             topArrow={false}
                         >
                             <SelectCategoryBill
+                                includeCategories={true}
+                                includeBills={true}
                                 value={billCatSelectVal}
                                 onChange={setBillCatSelectVal}
-                                month={new Date(start).getMonth() + 1}
-                                year={new Date(start).getFullYear()}
+                                month={dayjs(start * 1000).month() + 1}
+                                year={dayjs(start * 1000).year()}
                             />
                         </AbsPosMenu>
                         <AbsPosMenu
@@ -552,15 +555,28 @@ export const NeedsConfirmationStack = () => {
                                     navigate({
                                         pathname: '/budget/new-bill',
                                         search: location.search,
-                                    }, { state: { period: 'month', upper_amount: focusedItem?.amount, name: focusedItem?.name } }),
-                                        setShowMenu(false)
+                                    }, {
+                                        state: {
+                                            period: 'month',
+                                            upper_amount: focusedItem?.amount,
+                                            name: focusedItem?.name,
+                                            day: dayjs(focusedItem?.datetime || focusedItem?.date).date()
+                                        },
+                                    }), setShowMenu(false)
                                 },
                                 () => {
                                     navigate({
                                         pathname: '/budget/new-bill',
                                         search: location.search,
-                                    }, { state: { period: 'year', upper_amount: focusedItem?.amount, name: focusedItem?.name } }),
-                                        setShowMenu(false)
+                                    }, {
+                                        state: {
+                                            period: 'year',
+                                            upper_amount: focusedItem?.amount,
+                                            name: focusedItem?.name,
+                                            day: dayjs(focusedItem?.datetime || focusedItem?.date).date(),
+                                            month: dayjs(focusedItem?.datetime || focusedItem?.date).month() + 1
+                                        },
+                                    }), setShowMenu(false)
                                 },
                                 () => {
                                     focusedItem && dispatch(setTransactionModal({ item: focusedItem }))

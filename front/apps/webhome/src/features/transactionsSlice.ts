@@ -1,6 +1,8 @@
 
 import { createSlice, createAsyncThunk, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
+import dayjs from 'dayjs'
+
 import { apiSlice } from '@api/apiSlice'
 import { Category, addTransaction2Cat, SplitCategory } from '@features/categorySlice'
 import { TransactionFilterSchema } from '@pages/notifications/history/Filter'
@@ -429,6 +431,6 @@ export const selectConfirmedTransactions = createSelector(
     [selectConfirmedQue, selectDateYear],
     (confirmedQue, date) => confirmedQue.filter(item => {
         const itemDate = new Date(item.transaction.datetime || item.transaction.date)
-        return itemDate.getFullYear() === date.year && itemDate.getMonth() + 1 === date.month
+        return itemDate.getUTCFullYear() === date.year && itemDate.getUTCMonth() + 1 === date.month
     })
 )

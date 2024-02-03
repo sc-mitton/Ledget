@@ -123,6 +123,12 @@ const Form = withModal((props) => {
                         {billPeriod !== 'once' &&
                             <div>
                                 <BillScheduler
+                                    defaultValue={{
+                                        day: location.state?.day,
+                                        week: location.state?.week,
+                                        weekDay: location.state?.weekDay,
+                                        month: location.state?.month
+                                    }}
                                     billPeriod={billPeriod}
                                     error={errors.day}
                                     register={register}
