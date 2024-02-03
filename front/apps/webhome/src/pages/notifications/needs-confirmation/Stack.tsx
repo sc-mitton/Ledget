@@ -212,7 +212,6 @@ const NewItem: FC<{
 }
 
 export const NeedsConfirmationStack = () => {
-    const [searchParams] = useSearchParams()
     const loaded = useLoaded()
     const [showMenu, setShowMenu] = useState(false)
     const [showBillCatSelect, setShowBillCatSelect] = useState(false)
@@ -235,14 +234,14 @@ export const NeedsConfirmationStack = () => {
     const [confirmTransactions] = useConfirmTransactionsMutation()
     const unconfirmedTransactions = useAppSelector(
         state => selectUnconfirmedTransactions(state, {
-            month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
-            year: parseInt(searchParams.get('year')!) || new Date().getFullYear()
+            month: dayjs(start * 1000).month() + 1,
+            year: dayjs(start * 1000).year()
         }), shallowEqual
     )
     const confirmedTransactions = useAppSelector(
         state => selectConfirmedTransactions(state, {
-            month: parseInt(searchParams.get('month')!) || new Date().getMonth() + 1,
-            year: parseInt(searchParams.get('year')!) || new Date().getFullYear()
+            month: dayjs(start * 1000).month() + 1,
+            year: dayjs(start * 1000).year()
         }), shallowEqual
     )
     const dispatch = useAppDispatch()

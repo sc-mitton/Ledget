@@ -9,15 +9,12 @@ const DesertImage = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: '70%',
                 textAlign: 'center',
             }}
         >
             <img
                 style={{
-                    marginBottom: '-70px',
-                    height: '23em',
-                    width: '23em',
+                    height: '10em',
                 }}
                 src={Desert} alt="desert"
             />

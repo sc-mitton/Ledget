@@ -14,7 +14,8 @@ import {
     DollarRangeInput,
     AddReminder,
     BillScheduler,
-    PeriodSelect
+    PeriodSelect,
+    emoji
 } from '@components/inputs'
 import { Checkbox } from '@ledget/ui'
 import { useAddnewBillMutation } from '@features/billSlice'
@@ -23,7 +24,8 @@ import { Reminder } from '@features/remindersSlice'
 
 export const billSchema = z.object({
     name: z.string().toLowerCase().min(1, { message: 'required' }).max(50, { message: 'Name is too long.' }),
-    lower_amount: z.number(),
+    emoji: z.string().optional(),
+    lower_amount: z.number().optional(),
     upper_amount: z.number().min(1, { message: 'required' }),
     period: z.enum(['once', 'month', 'year']),
     day: z.coerce.number().min(1).max(31).optional(),
@@ -74,6 +76,7 @@ const Form = withModal((props) => {
     const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation()
     const [rangeMode, setRangeMode] = useState(false)
     const location = useLocation()
+    const [emoji, setEmoji] = useState<emoji>()
 
     const { register, handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof billSchema>>({
         resolver: zodResolver(billSchema),
@@ -89,8 +92,9 @@ const Form = withModal((props) => {
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
 
         handleSubmit((data) => {
+            const em = typeof emoji === 'string' ? emoji : emoji?.native
             const reminders = extractReminders(e)
-            addNewBill({ reminders, ...data })
+            addNewBill({ reminders, ...data, emoji: em })
         })(e)
     }
 
@@ -130,6 +134,8 @@ const Form = withModal((props) => {
 
                 <div>
                     <EmojiComboText
+                        emoji={emoji}
+                        setEmoji={setEmoji}
                         name="name"
                         placeholder="Name"
                         register={register}

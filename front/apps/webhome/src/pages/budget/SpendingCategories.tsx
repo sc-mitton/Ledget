@@ -53,7 +53,7 @@ const SkeletonCategories = ({ length, period }: { length: number, period: 'month
 
 const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 'year', includeHeader?: boolean }) => {
     const { start, end } = useGetStartEndQueryParams()
-    const [fetchCategories, { data: categoriesData, isLoading }] = useLazyGetCategoriesQuery()
+    const [fetchCategories, { isLoading }] = useLazyGetCategoriesQuery()
     const columnRef = useRef<HTMLDivElement>(null)
     const dispatch = useAppDispatch()
     const categories = useAppSelector(selectCategories)
@@ -144,20 +144,38 @@ const CategoriesColumn = ({ period, includeHeader = true }: { period: 'month' | 
 }
 
 const TabView = () => {
+    const navigate = useNavigate()
     return (
         <Tab.Group>
-            <Tab.List>
-                <Tab><h4>MONTHLY</h4></Tab>
-                <Tab><h4>YEARLY</h4></Tab>
-            </Tab.List>
-            <Tab.Panels as={Fragment}>
-                <Tab.Panel as={Fragment}>
-                    <CategoriesColumn period='month' includeHeader={false} />
-                </Tab.Panel>
-                <Tab.Panel>
-                    <CategoriesColumn period='year' includeHeader={false} />
-                </Tab.Panel>
-            </Tab.Panels>
+            {({ selectedIndex }) => (
+                <>
+                    <Tab.List>
+                        <Tab><h4>MONTHLY</h4></Tab>
+                        <Tab><h4>YEARLY</h4></Tab>
+                        <IconButton3
+                            onClick={() => {
+                                selectedIndex === 0
+                                    ? navigate(
+                                        `${location.pathname}/new-category/${location.search}`,
+                                        { state: { period: 'month' } })
+                                    : navigate(
+                                        `${location.pathname}/new-category/${location.search}`,
+                                        { state: { period: 'year' } })
+                            }}
+                        >
+                            <Plus className='icon' />
+                        </IconButton3>
+                    </Tab.List>
+                    <Tab.Panels as={Fragment}>
+                        <Tab.Panel as={Fragment}>
+                            <CategoriesColumn period='month' includeHeader={false} />
+                        </Tab.Panel>
+                        <Tab.Panel>
+                            <CategoriesColumn period='year' includeHeader={false} />
+                        </Tab.Panel>
+                    </Tab.Panels>
+                </>
+            )}
         </Tab.Group>
     )
 }

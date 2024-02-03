@@ -40,12 +40,12 @@
 /* --------------------------------- Shapes --------------------------------- */
 
 .btn-small-pill {
-    border-radius: .75em;
+    border-radius: 2em;
     padding: 0 .5em;
     min-height: 1em;
     background-color: var(--btn-light-gray);
     border: 1.5px solid transparent;
-    min-width: 6ch;
+    min-width: 7ch;
 
     &:hover {
         background-color: var(--btn-light-gray-hover);

@@ -3,7 +3,7 @@ const Alert2 = ({
     height = "1em",
     className = '',
     fill = 'var(--alert-red)',
-    fill2 = 'var(--white)'
+    fill2 = 'var(--m-invert-text)'
 }) => {
 
     return (
@@ -15,8 +15,8 @@ const Alert2 = ({
             aria-label="Alert"
         >
             <path fill={fill} d="M16,0.1c-8.8,0-16,7.2-16,16s7.2,16,16,16s16-7.2,16-16S24.8,0.1,16,0.1z" />
-            <circle fill={fill2} cx="16" cy="24.9" r="2.1" />
-            <line stroke={fill2} strokeWidth={3} strokeLinecap="round" x1="16" y1="18.5" x2="16" y2="6.9" />
+            <circle fill={fill2} cx="16" cy="24.9" r="2.4" />
+            <line stroke={fill2} strokeWidth={4} strokeLinecap="round" x1="16" y1="18.5" x2="16" y2="6.9" />
         </svg >
     )
 }

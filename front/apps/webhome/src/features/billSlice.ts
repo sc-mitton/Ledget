@@ -137,7 +137,7 @@ type initialState = {
     yearly_bills_amount_remaining: number,
     total_monthly_bills_amount: number,
     total_yearly_bills_amount: number,
-    sortedBy: 'alpha' | 'date' | 'amount-asc' | 'amount-desc'
+    sortedBy: 'alpha-asc' | 'alpha-desc' | 'date' | 'amount-asc' | 'amount-desc'
 }
 
 export function isBill(obj: any | undefined): obj is Bill {
@@ -179,13 +179,21 @@ export const billSlice = createSlice({
                 }
             }
         },
-        sortBillsByAlpha: (state) => {
+        sortBillsByAlphaAsc: (state) => {
             state.bills.sort((a, b) => {
                 const nameA = a.name.toUpperCase()
                 const nameB = b.name.toUpperCase()
                 return nameA.localeCompare(nameB)
             })
-            state.sortedBy = 'alpha'
+            state.sortedBy = 'alpha-asc'
+        },
+        sortBillsByAlphaDesc: (state) => {
+            state.bills.sort((a, b) => {
+                const nameA = a.name.toUpperCase()
+                const nameB = b.name.toUpperCase()
+                return nameB.localeCompare(nameA)
+            })
+            state.sortedBy = 'alpha-desc'
         },
         sortBillsByDate: (state) => {
             state.bills.sort((a, b) => {
@@ -261,7 +269,8 @@ export const billSlice = createSlice({
 
 export const {
     addTransaction2Bill,
-    sortBillsByAlpha,
+    sortBillsByAlphaAsc,
+    sortBillsByAlphaDesc,
     sortBillsByDate,
     sortBillsByAmountAsc,
     sortBillsByAmountDesc

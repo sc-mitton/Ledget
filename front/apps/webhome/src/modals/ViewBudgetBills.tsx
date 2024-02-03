@@ -1,9 +1,9 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 import { Tab } from '@headlessui/react'
-import { useSearchParams } from 'react-router-dom'
 import dayjs from 'dayjs'
 import { AnimatePresence } from 'framer-motion'
+import { ArrowUp, ArrowDown } from '@geist-ui/icons'
 
 import './styles/EditBudgetItems.scss'
 import { useGetBillsQuery } from '@features/billSlice'
@@ -15,8 +15,10 @@ import {
   getDaySuffix,
   DollarCents,
   SlideMotionDiv,
-  BackButton
+  BackButton,
+  FadedTextButton
 } from '@ledget/ui'
+import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 
 
 const getScheduleDescription = (day?: number, week?: number, weekDay?: number, month?: number, year?: number) => {
@@ -31,14 +33,15 @@ const getScheduleDescription = (day?: number, week?: number, weekDay?: number, m
   }
 }
 
-const Bills = ({ period, onBillClick }: {
+const Bills = ({ period, onBillClick, billOrder }: {
   period: 'month' | 'year',
-  onBillClick: (id: string) => void
+  onBillClick: (id: string) => void,
+  billOrder?: 'amount-desc' | 'amount-asc' | 'alpha-desc' | 'alpha-asc'
 }) => {
-  const [searchParams] = useSearchParams()
+  const { start, end } = useGetStartEndQueryParams()
   const { data: bills } = useGetBillsQuery({
-    month: searchParams.get('month') || undefined,
-    year: searchParams.get('year') || undefined
+    month: dayjs(start * 1000).month() + 1,
+    year: dayjs(start * 1000).year(),
   })
 
   return (
@@ -47,27 +50,40 @@ const Bills = ({ period, onBillClick }: {
         ? <div style={{ opacity: .5 }}>No {period}ly bills to display</div>
         :
         <div className="bills-grid">
-          {bills?.filter(b => b.period === period).map((bill) => (
-            <>
-              <div>
-                <BillCatLabel
-                  key={bill.id}
-                  labelName={bill.name}
-                  emoji={bill.emoji}
-                  color={bill.period === 'month' ? 'blue' : 'green'}
-                  onClick={() => onBillClick(bill.id)}
-                  tint={true}
-                />
-              </div>
-              <div>
+          {bills?.filter(b => b.period === period)
+            .sort((a, b) => {
+              if (billOrder === 'amount-desc') {
+                return a.upper_amount - b.upper_amount
+              } else if (billOrder === 'amount-asc') {
+                return b.upper_amount - a.upper_amount
+              } else if (billOrder === 'alpha-desc') {
+                return b.name.localeCompare(a.name)
+              } else if (billOrder === 'alpha-asc') {
+                return a.name.localeCompare(b.name)
+              } else {
+                return 0
+              }
+            }).map((bill) => (
+              <>
                 <div>
-                  {bill.lower_amount ? <div><DollarCents value={bill.lower_amount} /> - </div> : <div></div>}
-                  {bill.upper_amount ? <div><DollarCents value={bill.upper_amount} /></div> : <div></div>}
+                  <BillCatLabel
+                    key={bill.id}
+                    labelName={bill.name}
+                    emoji={bill.emoji}
+                    color={bill.period === 'month' ? 'blue' : 'green'}
+                    onClick={() => onBillClick(bill.id)}
+                    tint={true}
+                  />
                 </div>
-                {<div>{getScheduleDescription(bill.day, bill.week, bill.week_day, bill.month, bill.year)}</div>}
-              </div>
-            </>
-          ))}
+                <div>
+                  <div>
+                    {bill.lower_amount ? <div><DollarCents value={bill.lower_amount} /> - </div> : <div></div>}
+                    {bill.upper_amount ? <div><DollarCents value={bill.upper_amount} /></div> : <div></div>}
+                  </div>
+                  {<div>{getScheduleDescription(bill.day, bill.week, bill.week_day, bill.month, bill.year)}</div>}
+                </div>
+              </>
+            ))}
         </div>}
     </div>
   )
@@ -75,6 +91,7 @@ const Bills = ({ period, onBillClick }: {
 
 const EditBills = withModal((props) => {
   const [inspectedBill, setInspectedBill] = useState<string | null>(null)
+  const [order, setOrder] = useState<'amount-desc' | 'amount-asc' | 'alpha-desc' | 'alpha-asc'>()
 
   return (
     <AnimatePresence mode='wait'>
@@ -90,15 +107,29 @@ const EditBills = withModal((props) => {
                 </div>
                 <Tab.Panels as={Fragment}>
                   <Tab.Panel as={Fragment}>
-                    <Bills period={'month'} onBillClick={setInspectedBill} />
+                    <Bills period={'month'} onBillClick={setInspectedBill} billOrder={order} />
                   </Tab.Panel>
                   <Tab.Panel as={Fragment}>
-                    <Bills period={'year'} onBillClick={setInspectedBill} />
+                    <Bills period={'year'} onBillClick={setInspectedBill} billOrder={order} />
                   </Tab.Panel>
                 </Tab.Panels>
               </>
             )}
           </Tab.Group>
+          <div id='order-buttons'>
+            <FadedTextButton
+              onClick={() => { order === 'amount-desc' ? setOrder('amount-asc') : order === 'amount-asc' ? setOrder(undefined) : setOrder('amount-desc') }}
+              className={`${order === 'amount-desc' || order === 'amount-asc' ? 'active' : ''}`}
+            >
+              <span>$</span>{order === 'amount-desc' ? <ArrowUp size={'1em'} /> : <ArrowDown size={'1em'} />}
+            </FadedTextButton>
+            <FadedTextButton
+              onClick={() => { order === 'alpha-desc' ? setOrder(undefined) : order === 'alpha-asc' ? setOrder('alpha-desc') : setOrder('alpha-asc') }}
+              className={`${order === 'alpha-asc' || order === 'alpha-desc' ? 'active' : ''}`}
+            >
+              {order === 'alpha-desc' ? 'z-a' : 'a-z'}
+            </FadedTextButton>
+          </div>
         </SlideMotionDiv>
         :
         <SlideMotionDiv className="inspected-bill--container" key={inspectedBill} position='last'>

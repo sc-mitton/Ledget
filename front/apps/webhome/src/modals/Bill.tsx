@@ -211,14 +211,14 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
     )
 }
 
-const DeleteBill = ({ bill, onCancel, onDelete }: { bill: TransformedBill, onCancel: () => void, onDelete: () => void }) => {
+const DeleteBill = ({ bill, onCancel, onDelete }: { bill?: TransformedBill, onCancel: () => void, onDelete: () => void }) => {
     const [deleteBill, { isLoading: isDeleting, isSuccess: isDeleteSuccess }] = useDeleteBillMutation()
     const [value, setValue] = useState('all' as 'all' | 'single' | 'complement')
 
     const onSubmit = (e: any) => {
         e.preventDefault()
         deleteBill({
-            billId: bill.id,
+            billId: bill?.id || '',
             data: { instances: value }
         })
     }
@@ -232,8 +232,8 @@ const DeleteBill = ({ bill, onCancel, onDelete }: { bill: TransformedBill, onCan
     return (
         <form id="delete-bill" onSubmit={onSubmit}>
             <RadioGroup id="radios" value={value} onChange={setValue}>
-                <RadioGroup.Label className={bill.period}>
-                    <h3>Delete {`${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`} Bill</h3>
+                <RadioGroup.Label className={bill?.period}>
+                    <h3>Delete {`${bill?.name.charAt(0).toUpperCase()}${bill?.name.slice(1) || ''}`} Bill</h3>
                 </RadioGroup.Label>
                 <RadioGroup.Option value="single" className="radio-option">
                     {({ checked }) => (

@@ -5,14 +5,16 @@ import { ArrowDown, ArrowUp } from '@geist-ui/icons'
 import './styles/Footer.scss'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 import {
-    sortCategoriesAlpha,
+    sortCategoriesAlphaAsc,
+    sortCategoriesAlphaDesc,
     sortCategoriesAmountAsc,
     sortCategoriesAmountDesc,
     sortCategoriesDefault,
     selectCategoriesSorting
 } from '@features/categorySlice'
 import {
-    sortBillsByAlpha,
+    sortBillsByAlphaAsc,
+    sortBillsByAlphaDesc,
     sortBillsByDate,
     sortBillsByAmountAsc,
     sortBillsByAmountDesc,
@@ -84,24 +86,39 @@ const Footer = () => {
                         </PillOptionButton>
                         <PillOptionButton
                             aria-label="Sort bills by amount"
-                            isSelected={billSorting === 'alpha' || categorySorting === 'alpha'}
+                            isSelected={billSorting === 'alpha-asc' || categorySorting === 'alpha-asc'}
                             onClick={() => {
-                                if (billSorting === 'alpha' || categorySorting === 'alpha') {
+                                if (billSorting === 'alpha-asc' || categorySorting === 'alpha-asc') {
                                     dispatch(sortBillsByDate())
                                     dispatch(sortCategoriesDefault())
                                 } else {
-                                    dispatch(sortBillsByAlpha())
-                                    dispatch(sortCategoriesAlpha())
+                                    dispatch(sortBillsByAlphaAsc())
+                                    dispatch(sortCategoriesAlphaAsc())
                                 }
                             }}
                         >
                             a-z
                         </PillOptionButton>
+                        <PillOptionButton
+                            aria-label="Sort bills by amount"
+                            isSelected={billSorting === 'alpha-desc' || categorySorting === 'alpha-desc'}
+                            onClick={() => {
+                                if (billSorting === 'alpha-desc' || categorySorting === 'alpha-desc') {
+                                    dispatch(sortBillsByDate())
+                                    dispatch(sortCategoriesDefault())
+                                } else {
+                                    dispatch(sortBillsByAlphaDesc())
+                                    dispatch(sortCategoriesAlphaDesc())
+                                }
+                            }}
+                        >
+                            z-a
+                        </PillOptionButton>
                     </div>
                     <Tooltip msg="Filter" ariaLabel="Filter">
                         <IconButton3
                             onClick={() => { setShowFilterButtons(!showFilterButtons) }}>
-                            <FilterLines stroke={(billSorting !== 'date' || categorySorting !== 'default') ? 'var(--blue-medium)' : 'currentColor'} />
+                            <FilterLines stroke={(billSorting !== 'date' || categorySorting !== 'default') ? 'var(--blue-sat)' : 'currentColor'} />
                         </IconButton3>
                     </Tooltip>
                 </div>

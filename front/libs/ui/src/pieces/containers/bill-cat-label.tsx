@@ -1,6 +1,9 @@
 
 import { Check } from '@geist-ui/icons'
 
+import tolower from 'lodash.tolower'
+import startcase from 'lodash.startcase'
+
 import { ElementType, ComponentPropsWithoutRef } from 'react'
 import { PolymorphicComponentProps } from '../../types/helpers'
 
@@ -59,7 +62,7 @@ export const BillCatLabel = <C extends ElementType = 'div'>(props: PolymorphicCo
     >
       <div>
         {emoji && <span>{emoji || ''}</span>}
-        <span>{labelName.charAt(0).toUpperCase() + labelName.slice(1)}</span>
+        <span>{startcase(tolower(labelName))}</span>
       </div>
       {checked &&
         <div>

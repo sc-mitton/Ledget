@@ -138,7 +138,7 @@ type initialState = {
     limit_amount_monthly: number,
     limit_amount_yearly: number,
     oldest_yearly_category_created: string,
-    sorted: 'default' | 'alpha' | 'amount-asc' | 'amount-desc',
+    sorted: 'default' | 'alpha-asc' | 'alpha-desc' | 'amount-asc' | 'amount-desc',
 }
 
 export const categorySlice = createSlice({
@@ -175,9 +175,13 @@ export const categorySlice = createSlice({
                 }
             }
         },
-        sortCategoriesAlpha: (state) => {
+        sortCategoriesAlphaAsc: (state) => {
             state.categories?.sort((a, b) => a.name.localeCompare(b.name))
-            state.sorted = 'alpha'
+            state.sorted = 'alpha-asc'
+        },
+        sortCategoriesAlphaDesc: (state) => {
+            state.categories?.sort((a, b) => b.name.localeCompare(a.name))
+            state.sorted = 'alpha-desc'
         },
         sortCategoriesAmountAsc: (state) => {
             state.categories?.sort((a, b) => (a.limit_amount || 0) - (b.limit_amount || 0))
@@ -239,7 +243,8 @@ export const categorySlice = createSlice({
 
 export const {
     addTransaction2Cat,
-    sortCategoriesAlpha,
+    sortCategoriesAlphaAsc,
+    sortCategoriesAlphaDesc,
     sortCategoriesAmountAsc,
     sortCategoriesAmountDesc,
     sortCategoriesDefault

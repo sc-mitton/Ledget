@@ -13,21 +13,29 @@ import { useAppDispatch, useAppSelector } from '@hooks/store'
 export const MonthPicker = ({ darkMode = false }) => {
     const { data: user } = useGetMeQuery()
 
-    const [date, setDate] = useState<Dayjs>(dayjs())
+    const [date, setDate] = useState<Dayjs>()
     const dispatch = useAppDispatch()
     const [searchParams, setSearchParams] = useSearchParams()
     const [showDatePicker, setShowDatePicker] = useState(false)
     const { month, year } = useAppSelector(selectBudgetMonthYear)
 
-    // On date value change, update the search params, and dispatch the change to the redux store
+    // Initial mount
+    useEffect(() => {
+        const y = parseInt(searchParams.get('year') || '') || year || dayjs().year()
+        const m = parseInt(searchParams.get('month') || '') || month || dayjs().month() + 1
+        searchParams.set('month', `${m}`)
+        searchParams.set('year', `${y}`)
+        setSearchParams(searchParams)
+        dispatch(changeBudgetMonthYear({ month: m, year: y }))
+    }, [])
+
+
     useEffect(() => {
         if (date) {
-            const year = date.year()
-            const month = date.month() + 1
-            searchParams.set('month', `${month}`)
-            searchParams.set('year', `${year}`)
+            searchParams.set('month', `${date.month() + 1}`)
+            searchParams.set('year', `${date.year()}`)
             setSearchParams(searchParams)
-            dispatch(changeBudgetMonthYear({ month, year }))
+            dispatch(changeBudgetMonthYear({ month: date.month() + 1, year: date.year() }))
         }
     }, [date])
 
@@ -42,10 +50,10 @@ export const MonthPicker = ({ darkMode = false }) => {
     }, [month, year])
 
     const seek = (direction: 1 | -1, amount: 1 | 5,) => {
-        const newDjs = date.add(direction * amount, 'month')
-        if (direction === 1 && newDjs.isBefore(dayjs())) {
+        const newDjs = date?.add(direction * amount, 'month')
+        if (direction === 1 && newDjs?.isBefore(dayjs())) {
             setDate(newDjs)
-        } else if (direction === -1 && newDjs.isAfter(dayjs(user?.created_on))) {
+        } else if (direction === -1 && newDjs?.isAfter(dayjs(user?.created_on))) {
             setDate(newDjs)
         }
     }
@@ -59,7 +67,7 @@ export const MonthPicker = ({ darkMode = false }) => {
                 <button
                     aria-haspopup='true'
                     onClick={(e) => setShowDatePicker(!showDatePicker)}>
-                    {date.format('MMM YYYY')}
+                    {date?.format('MMM YYYY')}
                 </button>
                 <button onClick={() => seek(1, 1)}>
                     <ChevronRight size={'1.125em'} strokeWidth={2} />

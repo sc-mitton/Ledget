@@ -22,9 +22,7 @@ import plaid
 #     TransactionsRecurringGetRequest
 # )
 from plaid.model.transactions_sync_request import TransactionsSyncRequest
-from plaid.model.transactions_sync_request_options import (
-    TransactionsSyncRequestOptions
-)
+from plaid.model.transactions_sync_request_options import TransactionsSyncRequestOptions
 
 from core.permissions import IsAuthedVerifiedSubscriber, IsObjectOwner
 from core.clients import create_plaid_client
@@ -51,20 +49,12 @@ transaction_fields = [
 filter_target_fields = [
     f for f in transaction_fields if f not in Transaction.ignored_plaid_fields
 ]
-NOT_SPEND_CATEGORIES = [
+NOT_SPEND_PRIMARY = [
     'INCOME',
-    'TRANSFER_OUT',
-    'TRANSFER_IN'
 ]
 NOT_SPEND_DETAIL = [
+    'TRANSFER_IN_ACCOUNT_TRANSFER',
     'LOAN_PAYMENTS_CREDIT_CARD_PAYMENT'
-]
-RECURRING_IGNORE_TYPES = [
-    'INCOME_INTEREST_EARNED',
-    'TRANSFER_OUT',
-    'TRANSFER_IN',
-    'LOAN_PAYMENTS',
-    'BANK_FEES'
 ]
 
 
@@ -92,7 +82,7 @@ def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict
                 filtered.update(**unfiltered[nested_field])
 
         if unfiltered.get('personal_finance_category', {}) \
-                     .get('primary', '').upper() in NOT_SPEND_CATEGORIES or \
+                     .get('primary', '').upper() in NOT_SPEND_PRIMARY or \
            unfiltered.get('personal_finance_category', {}) \
                      .get('detailed', '').upper() in NOT_SPEND_DETAIL:
             filtered['is_spend'] = False

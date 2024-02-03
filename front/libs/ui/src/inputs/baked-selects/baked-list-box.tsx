@@ -92,6 +92,7 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
     if (props.onChange && value) props.onChange(value as any)
   }, [value])
 
+  // Set default value if any
   useEffect(() => {
     if (!value) {
       const defaultOp = props.options?.find((op) => {
@@ -99,7 +100,11 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
       })
       onChange(
         props.defaultValue
-          ? props.defaultValue
+          ? Array.isArray(props.defaultValue)
+            ? props.defaultValue.map(op => typeof op === 'string' ? op : op[props.valueKey || 'value'])
+            : typeof props.defaultValue === 'string'
+              ? props.defaultValue
+              : props.defaultValue[props.valueKey || 'value']
           : typeof defaultOp === 'string'
             ? defaultOp
             : defaultOp?.[props.valueKey || 'value']

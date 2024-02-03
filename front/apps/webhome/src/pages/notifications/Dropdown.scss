@@ -7,6 +7,10 @@
         margin-left: 1em;
     }
 
+    div[role='tabpanel'] {
+        margin-top: .5em;
+    }
+
     .header {
         display: flex;
         position: relative;
