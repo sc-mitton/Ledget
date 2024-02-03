@@ -98,6 +98,10 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         bill = self.get_object()
         self._unlink_transactions(bill, which_instances)
 
+        if bill.created_on.month == now.month and bill.created_on.year == now.year:
+            bill.delete()
+            return
+
         if which_instances == 'all':
             bill.removed_on = dbtz.now()
         elif which_instances == 'composit':
@@ -131,10 +135,13 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         month=month, year=year
             -> selects once bills for the month
         '''
-        is_paid_annotation = Exists(Transaction.objects.filter(bill=OuterRef('pk')))
+        is_paid_annotation = Exists(
+            Transaction.objects.filter(
+                date__month=month,
+                date__year=year,
+                bill=OuterRef('pk')))
 
-        monthly_qset = Bill.objects \
-                           .filter(
+        monthly_qset = Bill.objects.filter(
                                Q(expires__gte=dbtz.now()) | Q(expires__isnull=True),
                                Q(removed_on__month__gt=month) |
                                Q(removed_on__isnull=True),
@@ -220,7 +227,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
     def spending_history(self, request, pk=None):
         monthly_amounts_spent = Transaction.objects.filter(
                 transactioncategory__category__id=pk,
-                transactioncategory__category__usercategory__user=self.request.user.id
+                transactioncategory__category__usercategory__user=self.request.user.id,
             ).annotate(
                 month=ExtractMonth('datetime'),
                 year=ExtractYear('datetime')

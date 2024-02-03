@@ -469,7 +469,7 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
     )
 }
 
-const TransactionModal = withModal<{ item: Transaction, splitMode?: boolean }>(({ item, splitMode }) => {
+export const TransactionModalContent = (({ item, splitMode }: { item: Transaction, splitMode?: boolean }) => {
     const loaded = useLoaded(1000)
     const [action, setAction] = useState<Action | undefined>(splitMode ? 'split' : undefined)
     const [edit, setEdit] = useState(false)
@@ -537,6 +537,10 @@ const TransactionModal = withModal<{ item: Transaction, splitMode?: boolean }>((
             </AnimatePresence>
         </>
     )
+})
+
+const TransactionModal = withModal<{ item: Transaction, splitMode?: boolean }>(({ item, splitMode }) => {
+    return <TransactionModalContent item={item} splitMode={splitMode} />
 })
 
 export default TransactionModal

@@ -12,9 +12,10 @@ import { AnimatePresence } from 'framer-motion'
 import { EditCategory } from './EditCategory'
 import { DeleteCategory } from './DeleteCategoryModal'
 import { useGetCategorySpendingHistoryQuery } from '@features/categorySlice'
-import { useLazyGetTransactionsQuery } from '@features/transactionsSlice'
+import { useLazyGetTransactionsQuery, Transaction } from '@features/transactionsSlice'
 import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import { InsitutionLogo } from '@components/pieces'
+import { TransactionModalContent } from './TransactionItem'
 import {
     withModal,
     ChartTip,
@@ -29,9 +30,8 @@ import {
     IconButton,
     DropDownDiv,
     DropdownItem,
-    LoadingRingDiv,
     SlideMotionDiv,
-    BackButton
+    BackButton,
 } from '@ledget/ui'
 import { Ellipsis } from '@ledget/media'
 import { Category } from '@features/categorySlice'
@@ -186,7 +186,7 @@ const Options = ({ onEdit, onDelete }: { onEdit: () => void, onDelete: () => voi
     </Menu >
 )
 
-const CategoryDetails = (props: { category: Category }) => {
+const CategoryDetails = (props: { category: Category, setTransactionItem: React.Dispatch<React.SetStateAction<Transaction | undefined>> }) => {
     const { start, end } = useGetStartEndQueryParams()
     const {
         data: spendingSummaryData,
@@ -341,7 +341,7 @@ const CategoryDetails = (props: { category: Category }) => {
                             {transactionsData?.results?.map(transaction => (
                                 <div
                                     key={transaction.transaction_id}
-                                    onClick={() => { }}
+                                    onClick={() => { props.setTransactionItem(transaction) }}
                                 >
                                     <div><InsitutionLogo accountId={transaction.account} size={'1.125em'} /></div>
                                     <div>{transaction.preferred_name || transaction.name}</div>
@@ -350,7 +350,7 @@ const CategoryDetails = (props: { category: Category }) => {
                                     </div>
                                     <div className={`${transaction.amount < 0 ? 'debit' : ''}`}>
                                         <div><DollarCents value={transaction.amount} /></div>
-                                        <ChevronRight size={'1em'} />
+                                        <div><ChevronRight size={'1em'} /></div>
                                     </div>
                                 </div>
                             ))}
@@ -364,16 +364,17 @@ const CategoryDetails = (props: { category: Category }) => {
 
 const CategoryModal = withModal<{ category: Category }>((props) => {
     const [view, setView] = useState<'detail' | 'edit' | 'delete'>('detail')
+    const [transactionItem, setTransactionItem] = useState<Transaction>()
 
     return (
         <AnimatePresence mode='wait'>
-            {view === 'detail' &&
+            {view === 'detail' && !transactionItem &&
                 <SlideMotionDiv key='category-detail' position='first'>
                     <Options
                         onEdit={() => setView('edit')}
                         onDelete={() => setView('delete')}
                     />
-                    <CategoryDetails category={props.category} />
+                    <CategoryDetails category={props.category} setTransactionItem={setTransactionItem} />
                 </SlideMotionDiv>}
             {view === 'edit' &&
                 <SlideMotionDiv key='edit-category' position='last'>
@@ -383,6 +384,12 @@ const CategoryModal = withModal<{ category: Category }>((props) => {
                 <SlideMotionDiv key='delete-category' position='last'>
                     <DeleteCategory category={props.category} onClose={() => setView('detail')} />
                 </SlideMotionDiv>}
+            {transactionItem &&
+                <>
+                    <BackButton onClick={() => setTransactionItem(undefined)} />
+                    <TransactionModalContent item={transactionItem} />
+                </>}
+
         </AnimatePresence>
     )
 })
