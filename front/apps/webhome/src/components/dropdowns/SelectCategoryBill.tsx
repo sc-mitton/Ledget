@@ -18,7 +18,7 @@ import { Category, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useLazyGetBillsQuery } from '@features/billSlice'
 import { LoadingRingDiv, DropDownDiv, useAccessEsc, BillCatLabel } from '@ledget/ui'
 import { useAppSelector } from '@hooks/store'
-import { selectBudgetMonthYear } from '@features/uiSlice'
+import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 
 interface IBase {
     includeBills?: boolean;

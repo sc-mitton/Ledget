@@ -3,12 +3,12 @@ import { useMemo, useEffect, useState, useRef, forwardRef } from 'react';
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from '@hooks/store';
 import { Plus, Calendar as CalendarIcon, CheckCircle, Circle, ChevronsDown } from '@geist-ui/icons'
+import dayjs from 'dayjs';
 
 import './styles/Bills.scss'
-import {
-    useGetBillsQuery,
-    selectBills,
-} from '@features/billSlice';
+import { useGetBillsQuery, useLazyGetBillsQuery } from '@features/billSlice';
+import { selectBudgetItemsSort } from '@features/uiSlice';
+import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import {
     DollarCents,
     IconButton3,
@@ -21,39 +21,19 @@ import {
 } from '@ledget/ui';
 
 
-function getDaysInMonth(year: number, month: number): Date[] {
-    // JavaScript months are 0-based, so we subtract 1 from the provided month.
-    const date = new Date(year, month - 1, 1);
-    const days = [];
-
-    while (date.getMonth() === month - 1) {
-        days.push(new Date(date));
-        date.setDate(date.getDate() + 1);
-    }
-
-    return days;
-}
-
 const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((props, ref) => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const { } = useGetBillsQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
-    })
-    const bills = useAppSelector(selectBills)
+    const { month, year } = useAppSelector(selectBudgetMonthYear)
+    const { data: bills } = useGetBillsQuery({ month, year }, { skip: !month || !year })
 
-    const selectedDate = new Date(
-        parseInt(searchParams.get('year') || `${new Date().getFullYear()}`),
-        parseInt(searchParams.get('month') || `${new Date().getMonth() + 1}`) - 1,
-    )
-
-    const days = getDaysInMonth(selectedDate.getFullYear(), selectedDate.getMonth() + 1)
+    const selectedDate = dayjs().month(parseInt(searchParams.get('month') || `${new Date().getMonth() + 1}`) - 1)
+        .year(parseInt(searchParams.get('year') || `${new Date().getFullYear()}`))
 
     const monthlyBillCountEachDay: number[] = useMemo(() => {
         const counts: number[] = Array(31).fill(0)
         const numBills = bills?.length || 0
         for (let i = 0; i < numBills; i++) {
-            if (bills[i].period !== 'month') {
+            if (bills?.[i].period !== 'month') {
                 continue
             }
             const date = new Date(bills[i].date!)
@@ -64,9 +44,9 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
 
     const yearlyBillCountEachDay: number[] = useMemo(() => {
         const counts: number[] = Array(31).fill(0)
-        const numBills = bills.length || 0
+        const numBills = bills?.length || 0
         for (let i = 0; i < numBills; i++) {
-            if (bills[i].period !== 'year') {
+            if (bills?.[i].period !== 'year') {
                 continue
             }
             const date = new Date(bills![i].date!)
@@ -84,33 +64,28 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
             <div>Th</div>
             <div>Fr</div>
             <div>Sa</div>
-            {Array.from(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']).map((day, i) => {
-                if (day !== days[0].toLocaleString('en-us', { weekday: 'long' })) {
-                    return <div key={i}></div>
-                } else {
-                    return
-                }
-            })}
-            {days.map((day, i) => {
+            {Array.from({ length: selectedDate.date(1).day() }).map((_, i) => <div key={i}></div>)}
+            {Array.from({ length: selectedDate.daysInMonth() }).map((day, i) => {
+                const djs = dayjs(selectedDate).date(i + 1)
                 return (
                     // Cell
                     <div
                         key={i}
                         className={`
                             ${monthlyBillCountEachDay[i] > 0 || yearlyBillCountEachDay[i] > 0 ? 'hoverable' : ''}
-                            ${searchParams.get('day') && searchParams.get('day') === `${day.getDate()}` ? 'selected' : ''}
+                            ${searchParams.get('day') && searchParams.get('day') === `${djs.date()}` ? 'selected' : ''}
                         `}
                         tabIndex={monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1 ? 0 : -1}
                         role={monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1 ? 'button' : undefined}
-                        aria-label={`${day.toLocaleString('en-us', { month: 'long' })} ${day.getDate()} bills`}
+                        aria-label={`${djs.format('MMMM YYYY')} bills`}
                         onClick={() => {
-                            searchParams.get('day') && searchParams.get('day') === `${day.getDate()}`
+                            searchParams.get('day') && searchParams.get('day') === `${djs.date()}`
                                 ? searchParams.delete('day')
-                                : searchParams.set('day', `${day.getDate()}`)
+                                : searchParams.set('day', `${djs.date()}`)
                             setSearchParams(searchParams)
                         }}
                     >
-                        <span>{day.getDate()}</span>
+                        <span>{djs.date()}</span>
                         {(monthlyBillCountEachDay[i] > 1 || yearlyBillCountEachDay[i] > 1) &&
                             <div role="tooltip">
                                 {monthlyBillCountEachDay[i] > 0 &&
@@ -221,7 +196,6 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
     )
 }
 
-
 const SkeletonBills = () => (
     <div
         className='bills-box'
@@ -236,7 +210,10 @@ const SkeletonBills = () => (
 )
 
 const Bills = ({ collapsed }: { collapsed: boolean }) => {
-    const bills = useAppSelector(selectBills)
+    const { month, year } = useAppSelector(selectBudgetMonthYear)
+    const { data: bills } = useGetBillsQuery({ month, year }, { skip: !month || !year })
+    const sort = useAppSelector(selectBudgetItemsSort)
+
     const { screenSize } = useScreenContext()
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
@@ -247,11 +224,23 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
             aria-expanded={!collapsed}
             style={{
                 '--number-of-bills': bills?.length! / 2 || 0,
-                ...(bills?.length <= 10 ? {} : {})
+                ...(bills?.length || 0 <= 10 ? {} : {})
             } as React.CSSProperties}
         >
-            {bills.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
-                .map((bill, i) => {
+            {bills?.filter(bill => new Date(bill.date).getDate() === (parseInt(searchParams.get('day')!) || new Date(bill.date).getDate()))
+                .sort((a, b) => {
+                    if (sort === 'alpha-asc') {
+                        return a.name.localeCompare(b.name)
+                    } else if (sort === 'alpha-des') {
+                        return b.name.localeCompare(a.name)
+                    } else if (sort === 'amount-asc') {
+                        return a.upper_amount - b.upper_amount
+                    } else if (sort === 'amount-des') {
+                        return b.upper_amount - a.upper_amount
+                    } else {
+                        return 0
+                    }
+                }).map((bill, i) => {
                     return (
                         <div
                             key={i} className={`${bill.period}ly-bill`}
@@ -286,11 +275,8 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
 }
 
 const BillsWindow = () => {
-    const [searchParams] = useSearchParams()
-    const { isLoading } = useGetBillsQuery({
-        month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-        year: searchParams.get('year') || `${new Date().getFullYear()}`,
-    })
+    const { month, year } = useAppSelector(selectBudgetMonthYear)
+    const { isLoading } = useGetBillsQuery({ month, year }, { skip: !month || !year })
     const [collapsed, setCollapsed] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
     const [showCalendar, setShowCalendar] = useState(true)

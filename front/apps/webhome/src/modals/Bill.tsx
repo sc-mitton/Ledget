@@ -12,6 +12,7 @@ import { Trash2, Edit2, CheckInCircle, Circle, BellOff } from '@geist-ui/icons'
 import './styles/Bill.scss'
 import { billSchema } from './CreateBill'
 import { withModal } from '@ledget/ui'
+import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { useGetBillsQuery, TransformedBill, useDeleteBillMutation, useUpdateBillsMutation, UpdateBill } from '@features/billSlice'
 import { Reminder } from '@features/remindersSlice'
 import { SubmitForm } from '@components/pieces'
@@ -36,6 +37,7 @@ import {
     AddReminder,
     emoji
 } from '@components/inputs'
+import { useAppSelector } from '@hooks/store'
 
 interface ModalContentProps {
     billId?: string
@@ -404,11 +406,8 @@ export const BillModalContent = (props: ModalContentProps) => {
     const id = useId()
     const loaded = useLoaded(100)
     const [action, setAction] = useState<Action>('none')
-    const [searchParams] = useSearchParams()
-    const { data: bills } = useGetBillsQuery({
-        month: searchParams.get('month') || undefined,
-        year: searchParams.get('year') || undefined
-    })
+    const { month, year } = useAppSelector(selectBudgetMonthYear)
+    const { data: bills } = useGetBillsQuery({ month, year }, { skip: !month || !year })
     const location = useLocation()
     const bill = bills?.find(bill => bill.id === location.state?.billId || props.billId)
 

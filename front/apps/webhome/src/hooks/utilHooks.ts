@@ -3,7 +3,7 @@ import dayjs from "dayjs"
 
 import { useEffect, useState } from "react"
 import { useAppSelector } from "./store"
-import { selectBudgetMonthYear } from '@features/uiSlice'
+import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 
 interface DateRange {
     start: number

@@ -6,7 +6,7 @@ import { z } from 'zod'
 import Big from 'big.js'
 
 import { useAppSelector } from '@hooks/store'
-import { selectBudgetMonthYear } from '@features/uiSlice'
+import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { SubmitForm } from '@components/pieces'
 import { Transaction, useConfirmTransactionsMutation } from '@features/transactionsSlice'
 import { useGetCategoriesQuery } from '@features/categorySlice';

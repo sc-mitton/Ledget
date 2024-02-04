@@ -28,7 +28,7 @@ import {
     DatePicker
 } from '@ledget/ui'
 import { useFilterFormContext } from '../context';
-import { selectBudgetMonthYear } from '@features/uiSlice';
+import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { useGetStartEndQueryParams } from '@hooks/index'
 

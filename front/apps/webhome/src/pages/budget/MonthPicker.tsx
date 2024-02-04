@@ -6,8 +6,8 @@ import { ChevronLeft, ChevronRight } from '@geist-ui/icons'
 
 import './styles/MonthPicker.scss'
 import { useGetMeQuery } from '@features/userSlice'
-import { FadedTextButton, DatePicker } from '@ledget/ui'
-import { changeBudgetMonthYear, selectBudgetMonthYear } from '@features/uiSlice'
+import { DatePicker } from '@ledget/ui'
+import { setBudgetMonthYear, selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 
 export const MonthPicker = ({ darkMode = false }) => {
@@ -26,7 +26,7 @@ export const MonthPicker = ({ darkMode = false }) => {
         searchParams.set('month', `${m}`)
         searchParams.set('year', `${y}`)
         setSearchParams(searchParams)
-        dispatch(changeBudgetMonthYear({ month: m, year: y }))
+        dispatch(setBudgetMonthYear({ month: m, year: y }))
     }, [])
 
 
@@ -35,7 +35,7 @@ export const MonthPicker = ({ darkMode = false }) => {
             searchParams.set('month', `${date.month() + 1}`)
             searchParams.set('year', `${date.year()}`)
             setSearchParams(searchParams)
-            dispatch(changeBudgetMonthYear({ month: date.month() + 1, year: date.year() }))
+            dispatch(setBudgetMonthYear({ month: date.month() + 1, year: date.year() }))
         }
     }, [date])
 

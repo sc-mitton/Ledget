@@ -7,11 +7,10 @@ import { Plus } from '@geist-ui/icons'
 
 import { useAppSelector } from '@hooks/store'
 import './styles/SpendingCategories.scss'
-import {
-    useLazyGetCategoriesQuery,
-    SelectCategoryBillMetaData,
-    selectCategories
-} from '@features/categorySlice'
+import { useGetCategoriesQuery } from '@features/categorySlice'
+import { selectCategoryMetaData, selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
+import { selectBudgetItemsSort } from '@features/uiSlice'
+import { setCategoryModal } from '@features/modalSlice'
 import {
     DollarCents,
     AnimatedDollarCents,
@@ -23,8 +22,7 @@ import {
     Tooltip
 } from '@ledget/ui'
 import { useAppDispatch } from '@hooks/store'
-import { setCategoryModal } from '@features/uiSlice'
-import { selectBudgetMonthYear } from '@features/uiSlice'
+
 
 const ColumnHeader = ({ period }: { period: 'month' | 'year' }) => {
     const navigate = useNavigate()
@@ -56,9 +54,8 @@ const SkeletonCategories = ({ length, period }: { length: number, period: 'month
 
 const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year', includeHeader?: boolean }) => {
     const { month, year } = useAppSelector(selectBudgetMonthYear)
-    const [fetchCategories, { isLoading }] = useLazyGetCategoriesQuery()
+    const { data: categories, isLoading } = useGetCategoriesQuery({ month, year }, { skip: !month || !year })
     const dispatch = useAppDispatch()
-    const categories = useAppSelector(selectCategories)
 
     const {
         monthly_spent,
@@ -66,7 +63,7 @@ const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year'
         limit_amount_monthly,
         limit_amount_yearly,
         oldest_yearly_category_created
-    } = useAppSelector(SelectCategoryBillMetaData)
+    } = useAppSelector(selectCategoryMetaData)
 
     const totalSpent = period === 'month' ? monthly_spent : yearly_spent
     const totalLimit = period === 'month' ? limit_amount_monthly : limit_amount_yearly
@@ -76,11 +73,7 @@ const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year'
     const yearly_end = yearly_start
         ? new Date(yearly_start.getFullYear() + 1, yearly_start.getMonth() - 1, 1)
         : null
-
-    useEffect(() => {
-        if (month && year)
-            fetchCategories({ month, year }, true)
-    }, [month && year])
+    const sort = useAppSelector(selectBudgetItemsSort)
     const ref = useRef<HTMLDivElement>(null)
 
     return (
@@ -107,38 +100,51 @@ const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year'
                                 value={totalLimit && totalSpent ? Math.round(totalSpent / totalLimit * 100) / 100 : 0}
                             />
                         </div>
-                        {categories?.filter(c => c.period === period).map((category) => {
-                            return (
-                                <>
-                                    <div>
-                                        <BillCatEmojiLabel
-                                            as='button'
-                                            emoji={category.emoji}
-                                            color={period === 'month' ? 'blue' : 'green'}
-                                            key={category.id}
-                                            onClick={() => { dispatch(setCategoryModal({ category: category })) }}
-                                        />
-                                        {`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}
-                                    </div>
+                        {categories?.filter(c => c.period === period)
+                            .sort((a, b) => {
+                                if (sort === 'amount-des') {
+                                    return b.amount_spent - a.amount_spent
+                                } else if (sort === 'amount-asc') {
+                                    return a.amount_spent - b.amount_spent
+                                } else if (sort === 'alpha-des') {
+                                    return a.name.localeCompare(b.name)
+                                } else if (sort === 'alpha-asc') {
+                                    return b.name.localeCompare(a.name)
+                                } else {
+                                    return 0
+                                }
+                            }).map((category) => {
+                                return (
+                                    <Fragment key={category.id}>
+                                        <div>
+                                            <BillCatEmojiLabel
+                                                as='button'
+                                                emoji={category.emoji}
+                                                color={period === 'month' ? 'blue' : 'green'}
+                                                key={category.id}
+                                                onClick={() => { dispatch(setCategoryModal({ category: category })) }}
+                                            />
+                                            {`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}
+                                        </div>
 
-                                    <div>
-                                        <DollarCents value={category.amount_spent} withCents={false} />
-                                    </div>
-                                    <div>spent of</div>
-                                    <div>
-                                        {category.limit_amount !== null
-                                            ? <DollarCents value={category.limit_amount} withCents={false} />
-                                            : <span className='no-limit'> &#8212; </span>}
-                                    </div>
-                                    <div>
-                                        <StaticProgressCircle
-                                            value={Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100}
-                                            color={category.period === 'year' ? 'green' : 'blue'}
-                                        />
-                                    </div>
-                                </>
-                            )
-                        })}
+                                        <div>
+                                            <DollarCents value={category.amount_spent} withCents={false} />
+                                        </div>
+                                        <div>spent of</div>
+                                        <div>
+                                            {category.limit_amount !== null
+                                                ? <DollarCents value={category.limit_amount} withCents={false} />
+                                                : <span className='no-limit'> &#8212; </span>}
+                                        </div>
+                                        <div>
+                                            <StaticProgressCircle
+                                                value={Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100}
+                                                color={category.period === 'year' ? 'green' : 'blue'}
+                                            />
+                                        </div>
+                                    </Fragment>
+                                )
+                            })}
                     </div>
                 </>
             }

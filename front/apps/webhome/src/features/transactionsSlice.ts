@@ -1,12 +1,10 @@
 
 import { createSlice, createAsyncThunk, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
-import dayjs from 'dayjs'
-
 import { apiSlice } from '@api/apiSlice'
-import { Category, addTransaction2Cat, SplitCategory } from '@features/categorySlice'
+import { Category, SplitCategory } from '@features/categorySlice'
 import { TransactionFilterSchema } from '@pages/notifications/history/Filter'
-import { addTransaction2Bill } from '@features/billSlice'
+import { addTransaction2Cat, addTransaction2Bill } from '@features/budgetItemMetaDataSlice'
 import type { Bill } from '@features/billSlice'
 import type { RootState } from './store'
 import type { DeepPartial } from '@utils/types'
@@ -384,8 +382,8 @@ export const confirmAndUpdateMetaData = createAsyncThunk(
         dispatch(confirmStack.actions.confirmTransaction({ transaction, categories, bill }));
 
         if (categories && categories.length > 0) {
-            for (const { id, fraction } of categories) {
-                dispatch(addTransaction2Cat({ categoryId: id, amount: transaction.amount * fraction }));
+            for (const { id, fraction, period } of categories) {
+                dispatch(addTransaction2Cat({ categoryId: id, amount: transaction.amount * fraction, period }));
             }
         } else if (bill) {
             dispatch(addTransaction2Bill({ billId: bill, amount: transaction.amount }));

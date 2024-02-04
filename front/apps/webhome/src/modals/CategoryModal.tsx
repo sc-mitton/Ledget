@@ -14,7 +14,7 @@ import { DeleteCategory } from './DeleteCategoryModal'
 import { useGetCategorySpendingHistoryQuery } from '@features/categorySlice'
 import { useLazyGetTransactionsQuery, Transaction } from '@features/transactionsSlice'
 import { useAppSelector } from '@hooks/store'
-import { selectBudgetMonthYear } from '@features/uiSlice'
+import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { InsitutionLogo } from '@components/pieces'
 import { TransactionModalContent } from './TransactionItem'
 import {

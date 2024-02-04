@@ -26,7 +26,7 @@ import {
     CategoryModal
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
-import { selectTransactionModal, clearTransactionModal, selectCategoryModal, clearCategoryModal } from '@features/uiSlice';
+import { selectTransactionModal, clearTransactionModal, selectCategoryModal, clearCategoryModal } from '@features/modalSlice';
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 

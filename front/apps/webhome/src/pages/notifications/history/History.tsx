@@ -5,7 +5,7 @@ import { ChevronRight } from '@geist-ui/icons'
 
 import './styles/History.scss'
 import { FilterForm } from './Filter'
-import { setTransactionModal } from '@features/uiSlice'
+import { setTransactionModal } from '@features/modalSlice'
 import { useLazyGetTransactionsQuery, useGetTransactionsQuery } from "@features/transactionsSlice"
 import { InsitutionLogo, ZeroConfig } from '@components/pieces'
 import { DollarCents, InfiniteScrollDiv, LoadingRingDiv, BillCatEmojiLabel } from '@ledget/ui'

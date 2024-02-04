@@ -10,7 +10,7 @@ import { selectNotificationsTabIndex, setNotificationsTabIndex } from '@features
 import { useGetTransactionsCountQuery, useTransactionsSyncMutation } from '@features/transactionsSlice'
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
-import { selectBudgetMonthYear } from '@features/uiSlice'
+import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { NeedsConfirmationStack } from './needs-confirmation/Stack'
 import { History } from './history/History'
 import { SpendingViewContextProvider, useFilterFormContext } from './context'

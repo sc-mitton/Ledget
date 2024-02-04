@@ -19,7 +19,7 @@ import {
   FadedTextButton
 } from '@ledget/ui'
 import { useAppSelector } from '@hooks/store'
-import { selectBudgetMonthYear } from '@features/uiSlice'
+import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 
 
 const getScheduleDescription = (day?: number, week?: number, weekDay?: number, month?: number, year?: number) => {
@@ -40,7 +40,7 @@ const Bills = ({ period, onBillClick, billOrder }: {
   billOrder?: 'amount-desc' | 'amount-asc' | 'alpha-desc' | 'alpha-asc'
 }) => {
   const { month, year } = useAppSelector(selectBudgetMonthYear)
-  const { data: bills } = useGetBillsQuery({ month, year })
+  const { data: bills } = useGetBillsQuery({ month, year }, { skip: !month || !year })
 
   return (
     <div className="view-all-bills" key="all-bills">

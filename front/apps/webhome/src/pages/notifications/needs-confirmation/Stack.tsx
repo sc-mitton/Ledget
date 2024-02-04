@@ -27,9 +27,10 @@ import {
     useColorScheme,
     LoadingRingDiv
 } from "@ledget/ui"
-import { setTransactionModal } from '@features/uiSlice'
-import { Category, isCategory, SplitCategory, addTransaction2Cat } from '@features/categorySlice'
-import { Bill, isBill, addTransaction2Bill } from '@features/billSlice'
+import { setTransactionModal } from '@features/modalSlice'
+import { Category, isCategory, SplitCategory } from '@features/categorySlice'
+import { addTransaction2Cat, addTransaction2Bill, selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
+import { Bill, isBill } from '@features/billSlice'
 import {
     useLazyGetUnconfirmedTransactionsQuery,
     confirmAndUpdateMetaData,
@@ -43,7 +44,6 @@ import {
     useGetTransactionsCountQuery
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
-import { selectBudgetMonthYear } from '@features/uiSlice'
 import { useFilterFormContext } from '../context'
 
 // Sizing (in ems)
@@ -253,8 +253,6 @@ export const NeedsConfirmationStack = () => {
         }
     }, [month, year])
 
-    // Animation hooks/effects
-    const itemsApi = useSpringRef()
 
     const [containerProps, containerApi] = useSpring(() => ({
         position: 'relative',
@@ -265,6 +263,7 @@ export const NeedsConfirmationStack = () => {
         overflowY: 'hidden',
     } as React.CSSProperties))
 
+    const itemsApi = useSpringRef()
     const itemTransitions = useTransition(
         unconfirmedTransactions,
         {
@@ -372,7 +371,7 @@ export const NeedsConfirmationStack = () => {
                     x: 100,
                     opacity: 0,
                     config: { duration: 130 },
-                    onRest: () => {
+                    onStart: () => {
                         dispatch(confirmAndUpdateMetaData({
                             transaction: transaction,
                             categories: (updatedCategories && !updatedBillId)
@@ -388,6 +387,7 @@ export const NeedsConfirmationStack = () => {
         })
     }
 
+    // Confirm All
     // Send the updates to the backend whilst updating the category
     // and bill metadata in the store.
     useEffect(() => {
@@ -422,10 +422,18 @@ export const NeedsConfirmationStack = () => {
                     }
 
                     if (ready2ConfirmItem.bill) {
-                        dispatch(addTransaction2Bill({ billId: ready2ConfirmItem.bill, amount: ready2ConfirmItem.transaction.amount }))
+                        dispatch(addTransaction2Bill({
+                            billId: ready2ConfirmItem.bill,
+                            amount: ready2ConfirmItem.transaction.amount
+
+                        }))
                     } else if (ready2ConfirmItem.categories) {
                         for (let category of ready2ConfirmItem.categories) {
-                            dispatch(addTransaction2Cat({ categoryId: category.id, amount: ready2ConfirmItem.transaction.amount }))
+                            dispatch(addTransaction2Cat({
+                                categoryId: category.id,
+                                amount: ready2ConfirmItem.transaction.amount,
+                                period: category.period
+                            }))
                         }
                     }
                     dispatch(removeUnconfirmedTransaction(transaction.transaction_id))

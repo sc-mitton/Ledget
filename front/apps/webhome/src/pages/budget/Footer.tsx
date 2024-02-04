@@ -4,30 +4,14 @@ import { ArrowDown, ArrowUp } from '@geist-ui/icons'
 
 import './styles/Footer.scss'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
-import {
-    sortCategoriesAlphaAsc,
-    sortCategoriesAlphaDesc,
-    sortCategoriesAmountAsc,
-    sortCategoriesAmountDesc,
-    sortCategoriesDefault,
-    selectCategoriesSorting
-} from '@features/categorySlice'
-import {
-    sortBillsByAlphaAsc,
-    sortBillsByAlphaDesc,
-    sortBillsByDate,
-    sortBillsByAmountAsc,
-    sortBillsByAmountDesc,
-    selectBillsSorting
-} from '@features/billSlice'
+import { setBudgetItemsSort, selectBudgetItemsSort } from '@features/uiSlice'
 import { EditBudgetCategories, EditBudgetBills } from '@modals/index'
 import { PillOptionButton, FadedTextButton, IconButton3, Tooltip } from '@ledget/ui'
 import { FilterLines } from '@ledget/media'
 
 const Footer = () => {
     const dispatch = useAppDispatch()
-    const categorySorting = useAppSelector(selectCategoriesSorting)
-    const billSorting = useAppSelector(selectBillsSorting)
+    const budgetItemSorting = useAppSelector(selectBudgetItemsSort)
     const [modal, setModal] = useState<'categories' | 'bills' | ''>('')
     const filterButtonsContainer = useRef<HTMLDivElement>(null)
     const [showFilterButtons, setShowFilterButtons] = useState(false)
@@ -63,41 +47,42 @@ const Footer = () => {
                 <div ref={filterButtonsContainer}>
                     <div id='filter-buttons' className={`${showFilterButtons ? 'show' : ''}`}>
                         <PillOptionButton
-                            isSelected={['amount-desc', 'amount-asc'].includes(billSorting)
-                                || ['amount-desc', 'amount-asc'].includes(categorySorting)}
+                            isSelected={budgetItemSorting && ['amount-desc', 'amount-asc'].includes(budgetItemSorting)}
                             onClick={() => {
-                                if (!['amount-desc', 'amount-asc'].includes(billSorting)
-                                    || !['amount-desc', 'amount-asc'].includes(categorySorting)) {
-                                    dispatch(sortBillsByAmountDesc())
-                                    dispatch(sortCategoriesAmountDesc())
-                                } else if (billSorting === 'amount-desc' || categorySorting === 'amount-desc') {
-                                    dispatch(sortBillsByAmountAsc())
-                                    dispatch(sortCategoriesAmountAsc())
+                                if (!budgetItemSorting) {
+                                    dispatch(setBudgetItemsSort('amount-des'))
+                                } else if (budgetItemSorting === 'amount-des') {
+                                    dispatch(setBudgetItemsSort('amount-asc'))
                                 } else {
-                                    dispatch(sortBillsByDate())
-                                    dispatch(sortCategoriesDefault())
+                                    dispatch(setBudgetItemsSort('default'))
                                 }
                             }}
                         >
                             <span>$</span>
-                            {billSorting === 'amount-desc'
+                            {budgetItemSorting === 'amount-des'
                                 ? <ArrowDown size={'1em'} strokeWidth={1.5} />
                                 : <ArrowUp size={'1em'} strokeWidth={1.5} />}
                         </PillOptionButton>
                         <PillOptionButton
                             aria-label="Sort bills by amount"
-                            isSelected={['alpha-asc', 'alpha-desc'].includes(billSorting)}
+                            isSelected={budgetItemSorting && ['alpha-desc', 'alpha-asc'].includes(budgetItemSorting)}
                             onClick={() => {
-                                billSorting === 'alpha-desc' ? dispatch(sortBillsByDate()) : billSorting === 'alpha-asc' ? dispatch(sortBillsByAlphaDesc()) : dispatch(sortBillsByAlphaAsc())
+                                if (!budgetItemSorting) {
+                                    dispatch(setBudgetItemsSort('alpha-des'))
+                                } else if (budgetItemSorting === 'alpha-des') {
+                                    dispatch(setBudgetItemsSort('alpha-asc'))
+                                } else {
+                                    dispatch(setBudgetItemsSort('default'))
+                                }
                             }}
                         >
-                            {billSorting === 'alpha-desc' ? 'z-a' : 'a-z'}
+                            {budgetItemSorting === 'alpha-des' ? 'z-a' : 'a-z'}
                         </PillOptionButton>
                     </div>
                     <Tooltip msg="Filter" ariaLabel="Filter">
                         <IconButton3
                             onClick={() => { setShowFilterButtons(!showFilterButtons) }}>
-                            <FilterLines stroke={(billSorting !== 'date' || categorySorting !== 'default') ? 'var(--blue-sat)' : 'currentColor'} />
+                            <FilterLines stroke={(budgetItemSorting !== 'default') ? 'var(--blue-sat)' : 'currentColor'} />
                         </IconButton3>
                     </Tooltip>
                 </div>

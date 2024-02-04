@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 
 import './styles/Transactions.scss'
 import { useAppDispatch } from '@hooks/store'
-import { setTransactionModal } from '@features/uiSlice'
+import { setTransactionModal } from '@features/modalSlice'
 import { useLazyGetTransactionsQuery, useGetTransactionQueryState } from '@features/transactionsSlice'
 import { TransactionShimmer, DollarCents, InfiniteScrollDiv, ShadowScrollDiv, useLoaded, Tooltip, useScreenContext } from '@ledget/ui'
 import pathMappings from './path-mappings'

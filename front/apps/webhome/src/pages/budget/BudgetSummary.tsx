@@ -1,48 +1,33 @@
 import React, { useEffect, useState } from 'react'
-
-import { useSearchParams } from 'react-router-dom'
 import Big from 'big.js'
 import { AlertCircle } from '@geist-ui/icons'
 
 import './styles/BudgetSummary.scss'
 import { MonthPicker } from './MonthPicker'
-import { SelectCategoryBillMetaData, useLazyGetCategoriesQuery } from '@features/categorySlice'
-import { selectBillMetaData, useLazyGetBillsQuery } from '@features/billSlice'
+import { useGetCategoriesQuery } from '@features/categorySlice'
+import { useGetBillsQuery } from '@features/billSlice'
 import { useAppSelector } from '@hooks/store'
 import { AnimatedDollarCents, useScreenContext } from '@ledget/ui'
-import { selectBudgetMonthYear } from '@features/uiSlice'
+import { selectBudgetMonthYear, selectCategoryMetaData, selectBillMetaData } from '@features/budgetItemMetaDataSlice'
 import { useColorScheme } from '@ledget/ui'
 
 const BudgetSummary = () => {
-    const [searchParams] = useSearchParams()
     const { month, year } = useAppSelector(selectBudgetMonthYear)
 
-    const [getCategories, { isLoading: loadingCategories }] = useLazyGetCategoriesQuery()
-    const [getBills, { isLoading: loadingBills }] = useLazyGetBillsQuery()
+    const { isLoading: loadingCategories } = useGetCategoriesQuery({ month, year }, { skip: !month || !year })
+    const { isLoading: loadingBills } = useGetBillsQuery({ month, year }, { skip: !month || !year })
     const {
         monthly_spent,
         yearly_spent,
-        total_monthly_spent,
-        total_yearly_spent,
         limit_amount_monthly,
         limit_amount_yearly,
-    } = useAppSelector(SelectCategoryBillMetaData)
+    } = useAppSelector(selectCategoryMetaData)
     const {
         monthly_bills_paid,
         yearly_bills_paid,
         number_of_monthly_bills,
         number_of_yearly_bills,
     } = useAppSelector(selectBillMetaData)
-
-    useEffect(() => {
-        if (month && year) {
-            getCategories({ month, year })
-            getBills({
-                month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
-                year: searchParams.get('year') || `${new Date().getFullYear()}`,
-            })
-        }
-    }, [month, year])
 
     const { isDark } = useColorScheme()
     const { screenSize } = useScreenContext()
@@ -66,11 +51,7 @@ const BudgetSummary = () => {
                     <div className='slides' onScroll={updateCarouselIndex}>
                         <div className='slide' id='slide-1'>
                             <div>
-                                <AnimatedDollarCents
-                                    value={loadingCategories || loadingBills
-                                        ? 0
-                                        : (total_yearly_spent + total_monthly_spent)}
-                                />
+                                <AnimatedDollarCents value={loadingCategories || loadingBills ? 0 : Big(yearly_spent).add(monthly_spent).toNumber()} />
                             </div>
                             <span>total spending</span>
                         </div>
@@ -110,7 +91,7 @@ const BudgetSummary = () => {
                     </div>
                     <div className='jump-links'>
                         {Array.from({ length: 4 }, (_, i) => i).map((i) => (
-                            <a href={`#slide-${i + 1}`} key={i} className={carouselIndex === i ? 'active' : ''} />
+                            <a href={`#slide-${i + 1}`} key={`carousel-${i}`} className={carouselIndex === i ? 'active' : ''} />
                         ))}
                     </div>
                 </div>
