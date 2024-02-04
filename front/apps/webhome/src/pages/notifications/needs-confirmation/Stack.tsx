@@ -43,7 +43,7 @@ import {
     useGetTransactionsCountQuery
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
-import { useGetStartEndQueryParams } from '@hooks/utilHooks'
+import { selectBudgetMonthYear } from '@features/uiSlice'
 import { useFilterFormContext } from '../context'
 
 // Sizing (in ems)
@@ -223,26 +223,20 @@ export const NeedsConfirmationStack = () => {
         useState<{ [key: string]: { categories?: SplitCategory[], bill?: Bill } }>(
             JSON.parse(sessionStorage.getItem('transactionUpdates') || '{}')
         )
-    const { start, end } = useGetStartEndQueryParams()
+    const { month, year } = useAppSelector(selectBudgetMonthYear)
     const { setShowFilterForm, unconfirmedStackExpanded, setUnconfirmedStackExpanded, confirmAll, setConfirmAll } = useFilterFormContext()
     const { isDark } = useColorScheme()
     const navigate = useNavigate()
     const location = useLocation()
     const { data: tCountData, isSuccess: isGetTransactionsCountSuccess } =
-        useGetTransactionsCountQuery({ confirmed: false, start, end }, { skip: !start || !end })
+        useGetTransactionsCountQuery({ confirmed: false, month, year }, { skip: !month || !year })
 
     const [confirmTransactions] = useConfirmTransactionsMutation()
     const unconfirmedTransactions = useAppSelector(
-        state => selectUnconfirmedTransactions(state, {
-            month: dayjs(start * 1000).month() + 1,
-            year: dayjs(start * 1000).year()
-        }), shallowEqual
+        state => selectUnconfirmedTransactions(state, { month: month || new Date().getMonth(), year: year || new Date().getFullYear() }), shallowEqual
     )
     const confirmedTransactions = useAppSelector(
-        state => selectConfirmedTransactions(state, {
-            month: dayjs(start * 1000).month() + 1,
-            year: dayjs(start * 1000).year()
-        }), shallowEqual
+        state => selectConfirmedTransactions(state, { month: month || new Date().getMonth(), year: year || new Date().getFullYear() }), shallowEqual
     )
     const dispatch = useAppDispatch()
 
@@ -254,10 +248,10 @@ export const NeedsConfirmationStack = () => {
 
     // Initial fetch when query params change
     useEffect(() => {
-        if (start && end) {
-            fetchTransactions({ start, end, offset: 0 }, true)
+        if (month && year) {
+            fetchTransactions({ month, year, offset: 0 }, true)
         }
-    }, [start, end])
+    }, [month, year])
 
     // Animation hooks/effects
     const itemsApi = useSpringRef()
@@ -486,7 +480,7 @@ export const NeedsConfirmationStack = () => {
     const handleScroll = (e: any) => {
         // Once the bottom is reached, then fetch the next list of items
         if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight) {
-            transactionsData?.next && fetchTransactions({ start, end, offset: transactionsData?.next })
+            transactionsData?.next && fetchTransactions({ month, year, offset: transactionsData?.next })
         }
         setShowMenu(false)
         setShowBillCatSelect(false)
@@ -538,8 +532,8 @@ export const NeedsConfirmationStack = () => {
                                 includeBills={true}
                                 value={billCatSelectVal}
                                 onChange={setBillCatSelectVal}
-                                month={dayjs(start * 1000).month() + 1}
-                                year={dayjs(start * 1000).year()}
+                                month={month}
+                                year={year}
                             />
                         </AbsPosMenu>
                         <AbsPosMenu

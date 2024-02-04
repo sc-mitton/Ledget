@@ -13,7 +13,8 @@ import { EditCategory } from './EditCategory'
 import { DeleteCategory } from './DeleteCategoryModal'
 import { useGetCategorySpendingHistoryQuery } from '@features/categorySlice'
 import { useLazyGetTransactionsQuery, Transaction } from '@features/transactionsSlice'
-import { useGetStartEndQueryParams } from '@hooks/utilHooks'
+import { useAppSelector } from '@hooks/store'
+import { selectBudgetMonthYear } from '@features/uiSlice'
 import { InsitutionLogo } from '@components/pieces'
 import { TransactionModalContent } from './TransactionItem'
 import {
@@ -187,7 +188,7 @@ const Options = ({ onEdit, onDelete }: { onEdit: () => void, onDelete: () => voi
 )
 
 const CategoryDetails = (props: { category: Category, setTransactionItem: React.Dispatch<React.SetStateAction<Transaction | undefined>> }) => {
-    const { start, end } = useGetStartEndQueryParams()
+    const { month, year } = useAppSelector(selectBudgetMonthYear)
     const {
         data: spendingSummaryData,
         isSuccess: spendingSummaryDataIsFetched
@@ -206,18 +207,15 @@ const CategoryDetails = (props: { category: Category, setTransactionItem: React.
 
     // Initial fetching Transactions
     useEffect(() => {
-        if (start && end) {
+        if (month && year) {
             getTransactions({
                 confirmed: true,
-                start: props.category.period === 'month'
-                    ? start
-                    : new Date(start * 1000).setFullYear(new Date(start * 1000).getFullYear() - 1) / 1000,
-                end,
+                ...(props.category.period === 'month' ? { month, year } : { year }),
                 category: props.category.id,
             }, true)
 
         }
-    }, [start, end])
+    }, [month, year])
 
     useEffect(() => {
         if (!spendingSummaryData)
@@ -285,8 +283,7 @@ const CategoryDetails = (props: { category: Category, setTransactionItem: React.
         if (bottom && transactionsData?.next) {
             getTransactions({
                 confirmed: true,
-                start: start,
-                end: end,
+                ...(props.category.period === 'month' ? { month, year } : { year }),
                 category: props.category.id,
                 offset: transactionsData.next,
                 limit: transactionsData.limit,
@@ -312,7 +309,7 @@ const CategoryDetails = (props: { category: Category, setTransactionItem: React.
                         /> : '—'}
                 </div>
                 <span className={`${props.category.period === 'month' ? 'month' : 'year'}`}>
-                    {dayjs(end * 1000).format('MMM YYYY')}
+                    {month && year && dayjs().month(month).year(year).format('MMM YYYY')}
                 </span>
             </div>
             <div id={`graph-and-details`}>

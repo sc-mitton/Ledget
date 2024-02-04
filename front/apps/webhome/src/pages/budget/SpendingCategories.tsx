@@ -24,7 +24,7 @@ import {
 } from '@ledget/ui'
 import { useAppDispatch } from '@hooks/store'
 import { setCategoryModal } from '@features/uiSlice'
-import { useGetStartEndQueryParams } from '@hooks/utilHooks'
+import { selectBudgetMonthYear } from '@features/uiSlice'
 
 const ColumnHeader = ({ period }: { period: 'month' | 'year' }) => {
     const navigate = useNavigate()
@@ -55,7 +55,7 @@ const SkeletonCategories = ({ length, period }: { length: number, period: 'month
 )
 
 const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year', includeHeader?: boolean }) => {
-    const { start, end } = useGetStartEndQueryParams()
+    const { month, year } = useAppSelector(selectBudgetMonthYear)
     const [fetchCategories, { isLoading }] = useLazyGetCategoriesQuery()
     const dispatch = useAppDispatch()
     const categories = useAppSelector(selectCategories)
@@ -78,9 +78,9 @@ const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year'
         : null
 
     useEffect(() => {
-        if (start && end)
-            fetchCategories({ start: start, end: end }, true)
-    }, [start && end])
+        if (month && year)
+            fetchCategories({ month, year }, true)
+    }, [month && year])
     const ref = useRef<HTMLDivElement>(null)
 
     return (

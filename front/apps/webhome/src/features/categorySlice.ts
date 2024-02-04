@@ -30,9 +30,11 @@ export interface SplitCategory extends Category {
 }
 
 interface CategoryQueryParams {
-    start?: number;
-    end?: number;
+    month?: number;
+    year?: number;
     spending?: boolean;
+    start?: number
+    end?: number
 }
 
 interface CategorySpendingHistory {
@@ -203,7 +205,7 @@ export const categorySlice = createSlice({
                 // If the query was just fetching the categories, and not getting
                 // the amount spent, then skip updating the state
                 const originalArgs = action.meta.arg.originalArgs
-                if ((!originalArgs?.start && !originalArgs?.end) || originalArgs?.spending === false) {
+                if ((!originalArgs?.month && !originalArgs?.year) || originalArgs?.spending === false) {
                     return
                 }
 

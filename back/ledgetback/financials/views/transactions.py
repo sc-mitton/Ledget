@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections import OrderedDict
 import pytz
 
@@ -350,28 +350,37 @@ class TransactionViewSet(ModelViewSet):
             self.check_object_permissions(request, item)
         return plaid_items
 
-    def _extract_start_end_args(self) -> dict:
+    def _extract_date_boundaries(self) -> dict:
         params = self.request.query_params
         start = params.get('start', None)
         end = params.get('end', None)
+        month = params.get('month', None)
+        year = params.get('year', None)
 
-        if not start or not end:
-            return {}
+        if month and year:
+            try:
+                start = datetime(int(year), int(month), 1, tzinfo=pytz.utc)
+                end = start.replace(day=28) + timedelta(days=4)
+                end = end - timedelta(days=end.day)
+            except ValueError:
+                raise ValidationError('Invalid date format')
+            return {'date__gte': start, 'date__lt': end}
+        elif start and end:
+            try:
+                start = datetime.fromtimestamp(int(start), tz=pytz.utc).date()
+                end = datetime.fromtimestamp(int(end), tz=pytz.utc).date()
+            except ValueError:
+                raise ValidationError('Invalid date format')
+            return {'date__gte': start, 'date__lte': end}
 
-        try:
-            start = datetime.fromtimestamp(int(start), tz=pytz.utc).date()
-            end = datetime.fromtimestamp(int(end), tz=pytz.utc).date()
-        except ValueError:
-            raise ValidationError('Invalid date format')
-
-        return {'date__gte': start, 'date__lte': end}
+        return {}
 
     def _exract_filter_args(self):
         query_params = self.request.query_params
 
         result = {'account__plaid_item__user_id':
                   str(self.request.user.id)}
-        result.update(self._extract_start_end_args())
+        result.update(self._extract_date_boundaries())
 
         # If querying for unconfirmed transactions
         if query_params.get('confirmed') != 'true':

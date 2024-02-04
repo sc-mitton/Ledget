@@ -10,12 +10,12 @@ import { SelectCategoryBillMetaData, useLazyGetCategoriesQuery } from '@features
 import { selectBillMetaData, useLazyGetBillsQuery } from '@features/billSlice'
 import { useAppSelector } from '@hooks/store'
 import { AnimatedDollarCents, useScreenContext } from '@ledget/ui'
-import { useGetStartEndQueryParams } from '@hooks/utilHooks'
+import { selectBudgetMonthYear } from '@features/uiSlice'
 import { useColorScheme } from '@ledget/ui'
 
 const BudgetSummary = () => {
     const [searchParams] = useSearchParams()
-    const { start, end } = useGetStartEndQueryParams()
+    const { month, year } = useAppSelector(selectBudgetMonthYear)
 
     const [getCategories, { isLoading: loadingCategories }] = useLazyGetCategoriesQuery()
     const [getBills, { isLoading: loadingBills }] = useLazyGetBillsQuery()
@@ -35,14 +35,14 @@ const BudgetSummary = () => {
     } = useAppSelector(selectBillMetaData)
 
     useEffect(() => {
-        if (start && end) {
-            getCategories({ start, end })
+        if (month && year) {
+            getCategories({ month, year })
             getBills({
                 month: searchParams.get('month') || `${new Date().getMonth() + 1}`,
                 year: searchParams.get('year') || `${new Date().getFullYear()}`,
             })
         }
-    }, [start, end])
+    }, [month, year])
 
     const { isDark } = useColorScheme()
     const { screenSize } = useScreenContext()

@@ -18,7 +18,8 @@ import {
   BackButton,
   FadedTextButton
 } from '@ledget/ui'
-import { useGetStartEndQueryParams } from '@hooks/utilHooks'
+import { useAppSelector } from '@hooks/store'
+import { selectBudgetMonthYear } from '@features/uiSlice'
 
 
 const getScheduleDescription = (day?: number, week?: number, weekDay?: number, month?: number, year?: number) => {
@@ -38,11 +39,8 @@ const Bills = ({ period, onBillClick, billOrder }: {
   onBillClick: (id: string) => void,
   billOrder?: 'amount-desc' | 'amount-asc' | 'alpha-desc' | 'alpha-asc'
 }) => {
-  const { start, end } = useGetStartEndQueryParams()
-  const { data: bills } = useGetBillsQuery({
-    month: dayjs(start * 1000).month() + 1,
-    year: dayjs(start * 1000).year(),
-  })
+  const { month, year } = useAppSelector(selectBudgetMonthYear)
+  const { data: bills } = useGetBillsQuery({ month, year })
 
   return (
     <div className="view-all-bills" key="all-bills">

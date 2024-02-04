@@ -188,11 +188,11 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
 
     def get_queryset(self):
 
-        start = self.request.query_params.get('start', None)
-        end = self.request.query_params.get('end', None)
+        month = self.request.query_params.get('month', None)
+        year = self.request.query_params.get('year', None)
 
-        if start and end:
-            return self._get_timesliced_categories_qset(start, end)
+        if month and year:
+            return self._get_timesliced_categories_qset(int(month), int(year))
         else:
             return self._get_categories_qset()
 
@@ -339,11 +339,12 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
 
         return qset
 
-    def _get_timesliced_categories_qset(self, start: str, end: str):
+    def _get_timesliced_categories_qset(self, month: int, year: int):
 
         try:
-            start = datetime.fromtimestamp(int(start), tz=pytz.utc)
-            end = datetime.fromtimestamp(int(end), tz=pytz.utc)
+            start = datetime(year, month, 1, tzinfo=pytz.utc)
+            end = start.replace(day=28) + timedelta(days=4)
+            end = end - timedelta(days=end.day)
         except ValueError:
             return Response(
                 data={'error': 'Invalid date format'},

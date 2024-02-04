@@ -63,6 +63,8 @@ export interface GetTransactionsParams {
     confirmed?: boolean
     start?: number
     end?: number
+    month?: number
+    year?: number
     limit_amount_lower?: string | number
     limit_amount_upper?: string | number
     items?: string[]
@@ -415,12 +417,13 @@ export const useGetTransactionQueryState = extendedApiSlice.endpoints.getTransac
 const selectUnconfirmed = (state: RootState) => state.confirmStack.unconfirmed
 const selectConfirmedQue = (state: RootState) => state.confirmStack.confirmedQue
 const selectDateYear = (state: RootState, date: { year: number, month: number }) => date
+const selectMonthYear = (state: RootState, date: { year: number, month: number }) => date
 export const selectFilteredFetchedConfirmedTransactions = (state: RootState) => state.filteredFetchedonfirmedTransactions.filtered
 export const selectConfirmedTransactionFilter = (state: RootState) => state.filteredFetchedonfirmedTransactions.filter
 export const selectConfirmedLength = (state: RootState) => state.confirmStack.confirmedQue.length
 
 export const selectUnconfirmedTransactions = createSelector(
-    [selectUnconfirmed, selectDateYear],
+    [selectUnconfirmed, selectMonthYear],
     (unconfirmed, date) => unconfirmed.filter(item => {
         const itemDate = new Date(item.datetime || item.date)
         return itemDate.getUTCFullYear() === date.year && itemDate.getUTCMonth() + 1 === date.month

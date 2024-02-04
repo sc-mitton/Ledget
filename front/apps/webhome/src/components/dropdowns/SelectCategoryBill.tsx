@@ -17,7 +17,8 @@ import './SelectCategoryBill.scss'
 import { Category, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useLazyGetBillsQuery } from '@features/billSlice'
 import { LoadingRingDiv, DropDownDiv, useAccessEsc, BillCatLabel } from '@ledget/ui'
-import { useGetStartEndQueryParams } from '@hooks/utilHooks'
+import { useAppSelector } from '@hooks/store'
+import { selectBudgetMonthYear } from '@features/uiSlice'
 
 interface IBase {
     includeBills?: boolean;
@@ -45,7 +46,7 @@ type I = I1 | I2
 
 function SelectCategoryBillBody(props: I) {
     const [query, setQuery] = useState('')
-    const { start, end } = useGetStartEndQueryParams({ month: props.month, year: props.year })
+    const { month, year } = useAppSelector(selectBudgetMonthYear)
     const [getCategories, {
         data: categoryData,
         isLoading: isFetchingCategories,
@@ -61,21 +62,14 @@ function SelectCategoryBillBody(props: I) {
 
     useEffect(() => {
         if (props.activeBeginning && props.activeEnding) {
-            getCategories({
-                start: props.activeBeginning,
-                end: props.activeEnding,
-                spending: false
-            })
+            getCategories({ month, year, spending: false })
             getBills({
                 month: new Date(props.activeBeginning).getMonth() + 1,
                 year: new Date(props.activeBeginning).getFullYear()
             })
         } else {
-            getCategories({ start, end, spending: false })
-            getBills({
-                month: new Date(start).getMonth() + 1,
-                year: new Date(start).getFullYear()
-            })
+            getCategories({ month, year, spending: false })
+            getBills({ month, year })
         }
 
     }, [props.activeBeginning, props.activeEnding, props.month, props.year])

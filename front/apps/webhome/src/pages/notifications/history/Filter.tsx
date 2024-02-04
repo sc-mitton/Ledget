@@ -28,8 +28,9 @@ import {
     DatePicker
 } from '@ledget/ui'
 import { useFilterFormContext } from '../context';
-import { useGetStartEndQueryParams } from '@hooks/utilHooks';
+import { selectBudgetMonthYear } from '@features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
+import { useGetStartEndQueryParams } from '@hooks/index'
 
 
 const filterSchema = z.object({

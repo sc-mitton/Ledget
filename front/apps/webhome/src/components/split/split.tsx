@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Big from 'big.js'
 
+import { useAppSelector } from '@hooks/store'
+import { selectBudgetMonthYear } from '@features/uiSlice'
 import { SubmitForm } from '@components/pieces'
 import { Transaction, useConfirmTransactionsMutation } from '@features/transactionsSlice'
 import { useGetCategoriesQuery } from '@features/categorySlice';
@@ -12,7 +14,6 @@ import { InputButton } from '@ledget/ui'
 import { LimitAmountInput } from '@components/inputs'
 import { FullSelectCategoryBill } from '@components/dropdowns'
 import { FormErrorTip, AnimatedDollarCents, DeleteButton, PlusButton } from '@ledget/ui'
-import { useGetStartEndQueryParams } from '@hooks/utilHooks'
 import './split.scss';
 
 
@@ -52,11 +53,9 @@ const TotalLeft = ({ control, amount, error }: { control: Control<SplitsSchema>,
 
 export function SplitTransactionInput({ item, onCancel }: { item: Transaction, onCancel: () => void }) {
   const [confirmTransactions, { isSuccess: isUpdateSuccess, isLoading: isUpdating }] = useConfirmTransactionsMutation()
-  const { start, end } = useGetStartEndQueryParams({
-    month: new Date(item.datetime).getMonth() + 1,
-    year: new Date(item.datetime).getFullYear()
-  })
-  const { data: categoriesData } = useGetCategoriesQuery({ start, end, spending: false })
+  const { month, year } = useAppSelector(selectBudgetMonthYear)
+
+  const { data: categoriesData } = useGetCategoriesQuery({ month, year, spending: false })
 
   const { handleSubmit, formState: { errors }, control } = useForm<SplitsSchema>({
     mode: 'onSubmit',

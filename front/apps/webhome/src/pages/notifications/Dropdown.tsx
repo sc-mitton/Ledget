@@ -10,14 +10,14 @@ import { selectNotificationsTabIndex, setNotificationsTabIndex } from '@features
 import { useGetTransactionsCountQuery, useTransactionsSyncMutation } from '@features/transactionsSlice'
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
-import { useGetStartEndQueryParams } from '@hooks/utilHooks'
+import { selectBudgetMonthYear } from '@features/uiSlice'
 import { NeedsConfirmationStack } from './needs-confirmation/Stack'
 import { History } from './history/History'
 import { SpendingViewContextProvider, useFilterFormContext } from './context'
 
 const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
-    const { start, end } = useGetStartEndQueryParams()
-    const { data: tCountData } = useGetTransactionsCountQuery({ confirmed: false, start, end }, { skip: !start || !end })
+    const { month, year } = useAppSelector(selectBudgetMonthYear)
+    const { data: tCountData } = useGetTransactionsCountQuery({ confirmed: false, month, year }, { skip: !month || !year })
     const [showDropdown, setShowDropdown] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
     const buttonRef = useRef<HTMLButtonElement>(null)
