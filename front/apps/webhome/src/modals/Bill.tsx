@@ -1,6 +1,6 @@
 import { useId, useState, useEffect } from 'react'
 
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Menu, RadioGroup } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -8,12 +8,14 @@ import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
 import dayjs from 'dayjs'
 import { Trash2, Edit2, CheckInCircle, Circle, BellOff } from '@geist-ui/icons'
+import startCase from 'lodash.startcase'
+import toLower from 'lodash.tolower'
 
 import './styles/Bill.scss'
 import { billSchema } from './CreateBill'
 import { withModal } from '@ledget/ui'
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
-import { useGetBillsQuery, TransformedBill, useDeleteBillMutation, useUpdateBillsMutation, UpdateBill } from '@features/billSlice'
+import { useGetBillsQuery, TransformedBill, useDeleteBillMutation, useUpdateBillsMutation, UpdateBill, Bill } from '@features/billSlice'
 import { Reminder } from '@features/remindersSlice'
 import { SubmitForm } from '@components/pieces'
 import {
@@ -35,14 +37,10 @@ import {
     DollarRangeInput,
     BillScheduler,
     AddReminder,
-    emoji
+    emoji,
 } from '@components/inputs'
 import { useAppSelector } from '@hooks/store'
 
-interface ModalContentProps {
-    billId?: string
-    onClose?: () => void
-}
 
 const getRepeatsDescription = ({ day, week, week_day, month, year }:
     { day: number | undefined, week: number | undefined, week_day: number | undefined, month: number | undefined, year: number | undefined }) => {
@@ -274,8 +272,9 @@ const DeleteBill = ({ bill, onCancel, onDelete }: { bill?: TransformedBill, onCa
 
 const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, onCancel: () => void, onUpdateSuccess: () => void }) => {
     const [updateBill, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useUpdateBillsMutation()
-    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<z.infer<typeof billSchema>>({
-        resolver: zodResolver(billSchema)
+    const { register, handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof billSchema>>({
+        resolver: zodResolver(billSchema),
+        defaultValues: { name: startCase(toLower(bill?.name)) }
     })
 
     const [emoji, setEmoji] = useState<emoji>()
@@ -307,7 +306,6 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
 
     // Set values on load
     useEffect(() => {
-        setValue('name', `${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`)
         setEmoji(bill.emoji)
     }, [])
 
@@ -324,6 +322,7 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
 
     return (
         <form onSubmit={submitForm}>
+            <input type="hidden" {...register('period')} value={bill.period} />
             <div id="bill-edit">
                 <h3>Edit Bill</h3>
                 <hr />
@@ -402,6 +401,12 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
     )
 }
 
+
+interface ModalContentProps {
+    bill: TransformedBill
+    onClose: () => void
+}
+
 export const BillModalContent = (props: ModalContentProps) => {
     const id = useId()
     const loaded = useLoaded(100)
@@ -409,7 +414,6 @@ export const BillModalContent = (props: ModalContentProps) => {
     const { month, year } = useAppSelector(selectBudgetMonthYear)
     const { data: bills } = useGetBillsQuery({ month, year }, { skip: !month || !year })
     const location = useLocation()
-    const bill = bills?.find(bill => bill.id === location.state?.billId || props.billId)
 
     return (
         <div id="bill-modal--content">
@@ -417,23 +421,23 @@ export const BillModalContent = (props: ModalContentProps) => {
             <AnimatePresence mode="wait">
                 {action === 'none' &&
                     <SlideMotionDiv position={loaded ? 'first' : 'fixed'} key={id}>
-                        <BillInfo bill={bill!} />
+                        <BillInfo bill={props.bill} />
                     </SlideMotionDiv>}
                 {action === 'edit' &&
                     <SlideMotionDiv position={'last'} key={`${id}1`}>
                         <EditBill
-                            bill={bill!}
+                            bill={props.bill}
                             onCancel={() => { setAction('none') }}
-                            onUpdateSuccess={() => { props.onClose && props.onClose() }}
+                            onUpdateSuccess={() => { props.onClose() }}
                         />
                     </SlideMotionDiv>
                 }
                 {action === 'delete' &&
                     <SlideMotionDiv position={'last'} key={`${id}2`}>
                         <DeleteBill
-                            bill={bill!}
+                            bill={props.bill}
                             onCancel={() => { setAction('none') }}
-                            onDelete={() => { props.onClose && props.onClose() }}
+                            onDelete={() => { props.onClose() }}
                         />
                     </SlideMotionDiv>
                 }
@@ -442,20 +446,19 @@ export const BillModalContent = (props: ModalContentProps) => {
     )
 }
 
-const BillModal = withModal<ModalContentProps>((props) => (BillModalContent(props)))
-
-
-export default function (props: ModalContentProps) {
-    const navigate = useNavigate()
+const BillModal = withModal<ModalContentProps>((props) => {
 
     return (
-        <BillModal
-            billId={props.billId}
-            maxWidth={'20rem'}
+        <BillModalContent
+            bill={props.bill}
             onClose={() => {
-                props.onClose && props.onClose()
-                navigate(-1)
+                props.closeModal()
+                props.onClose()
             }}
         />
     )
+})
+
+export default function (props: ModalContentProps) {
+    return <BillModal maxWidth='25em' {...props} />
 }

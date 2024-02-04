@@ -132,7 +132,7 @@
                 }
 
                 span.button {
-                    border: 1px solid var(--blue);
+                    border: 1px solid var(--blue-sat);
                     border-radius: 50%;
                     width: .75rem;
                     height: .75rem;
@@ -141,7 +141,7 @@
                     &.checked::after {
                         width: .25rem;
                         height: .25rem;
-                        background-color: var(--blue);
+                        background-color: var(--blue-sat);
                         border-radius: 50%;
                         content: '';
                         position: absolute;

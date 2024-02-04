@@ -26,7 +26,14 @@ import {
     CategoryModal
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
-import { selectTransactionModal, clearTransactionModal, selectCategoryModal, clearCategoryModal } from '@features/modalSlice';
+import {
+    selectTransactionModal,
+    clearTransactionModal,
+    selectCategoryModal,
+    clearCategoryModal,
+    selectBillModal,
+    clearBillModal
+} from '@features/modalSlice';
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 
@@ -66,6 +73,7 @@ const App = () => {
     const toastStack = useAppSelector(toastStackSelector)
     const transactionModal = useAppSelector(selectTransactionModal)
     const categoryModal = useAppSelector(selectCategoryModal)
+    const billModal = useAppSelector(selectBillModal)
     const dispatch = useAppDispatch()
     const { screenSize } = useScreenContext()
 
@@ -99,7 +107,6 @@ const App = () => {
                             <Route path="budget" element={<Budget />} >
                                 <Route path="new-category" element={<CreateCategory />} />
                                 <Route path="new-bill" element={<CreateBill />} />
-                                <Route path="bill" element={<BillModal />} />
                                 <Route path="verify-email" element={<ForceVerification />} />
                                 <Route path="welcome/*" element={<OnboardingModal />} />
                             </Route>
@@ -120,6 +127,11 @@ const App = () => {
                 <CategoryModal
                     category={categoryModal.category}
                     onClose={() => dispatch(clearCategoryModal())}
+                />}
+            {billModal.bill &&
+                <BillModal
+                    bill={billModal.bill}
+                    onClose={() => dispatch(clearBillModal())}
                 />}
             <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />
         </>

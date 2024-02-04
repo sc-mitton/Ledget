@@ -4,7 +4,7 @@ import { RootState } from '@hooks/store';
 import { PayloadAction } from "@reduxjs/toolkit";
 import { Transaction } from "./transactionsSlice"
 import { Category } from "./categorySlice";
-
+import { TransformedBill } from "./billSlice";
 
 interface InitialState {
     transactionModal: {
@@ -14,11 +14,15 @@ interface InitialState {
     categoryModal: {
         category?: Category
     }
+    billModal: {
+        bill?: TransformedBill
+    }
 }
 
 const initialState: InitialState = {
     transactionModal: {},
     categoryModal: {},
+    billModal: {}
 }
 
 export const modalSlice = createSlice({
@@ -39,6 +43,12 @@ export const modalSlice = createSlice({
         clearCategoryModal: (state) => {
             state.categoryModal.category = undefined;
         },
+        setBillModal: (state, action: PayloadAction<{ bill: TransformedBill }>) => {
+            state.billModal.bill = action.payload.bill;
+        },
+        clearBillModal: (state) => {
+            state.billModal.bill = undefined;
+        },
     },
 })
 
@@ -47,7 +57,15 @@ export const modalSlice = createSlice({
 export const selectTransactionModal = (state: RootState) => state.modal.transactionModal;
 export const selectTransactionModalItem = (state: RootState) => state.modal.transactionModal.item;
 export const selectCategoryModal = (state: RootState) => state.modal.categoryModal;
+export const selectBillModal = (state: RootState) => state.modal.billModal;
 
-export const { setTransactionModal, clearTransactionModal, setCategoryModal, clearCategoryModal } = modalSlice.actions;
+export const {
+    setTransactionModal,
+    clearTransactionModal,
+    setCategoryModal,
+    clearCategoryModal,
+    setBillModal,
+    clearBillModal
+} = modalSlice.actions;
 
 export default modalSlice.reducer;

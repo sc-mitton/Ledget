@@ -1,14 +1,16 @@
 import { useMemo, useEffect, useState, useRef, forwardRef } from 'react';
 
-import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
+import { useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '@hooks/store';
 import { Plus, Calendar as CalendarIcon, CheckCircle, Circle, ChevronsDown } from '@geist-ui/icons'
 import dayjs from 'dayjs';
 
 import './styles/Bills.scss'
-import { useGetBillsQuery, useLazyGetBillsQuery } from '@features/billSlice';
+import { useAppDispatch } from '@hooks/store';
+import { useGetBillsQuery } from '@features/billSlice';
 import { selectBudgetItemsSort } from '@features/uiSlice';
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
+import { setBillModal } from '@features/modalSlice';
 import {
     DollarCents,
     IconButton3,
@@ -115,7 +117,7 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
 
 const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
     { collapsed: boolean, showCalendarIcon: boolean, setCollapsed: React.Dispatch<React.SetStateAction<boolean>> }) => {
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
     const selectedDate = new Date(
         parseInt(searchParams.get('year') || `${new Date().getFullYear()}`),
         parseInt(searchParams.get('month') || `${new Date().getMonth() + 1}`) - 1,
@@ -124,8 +126,8 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
     const dropdownRef = useRef<HTMLDivElement>(null)
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [showCalendar, setShowCalendar] = useState(false)
-    const navigate = useNavigate()
     const location = useLocation()
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (showCalendar) {
@@ -215,7 +217,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
     const sort = useAppSelector(selectBudgetItemsSort)
 
     const { screenSize } = useScreenContext()
-    const navigate = useNavigate()
+    const dispatch = useAppDispatch()
     const [searchParams] = useSearchParams()
 
     return (
@@ -245,11 +247,7 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                         <div
                             key={i} className={`${bill.period}ly-bill`}
                             role="button"
-                            onClick={() => {
-                                navigate(`${location.pathname}/bill${location.search}`, {
-                                    state: { billId: bill.id }
-                                })
-                            }}
+                            onClick={() => { dispatch(setBillModal({ bill: bill })) }}
                         >
                             <BillCatLabel
                                 labelName={bill.name}
