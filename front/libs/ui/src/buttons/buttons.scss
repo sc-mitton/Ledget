@@ -623,10 +623,25 @@ button.disabled-hover:hover svg {
     }
 }
 
-.btn-fb svg,
-.btn-google svg {
-    padding: 0;
-    margin: 0;
+.btn-fb,
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2em;
+    padding: .375em;
+    transition: all .3s ease;
+    border: 1.25px solid var(--btn-medium-gray);
+
+    &:hover {
+        border-color: var(--btn-gray);
+        transition: all .3s ease;
+    }
+
+    svg {
+        padding: 0;
+        margin: 0;
+    }
 }
 
 .arrow-nav {

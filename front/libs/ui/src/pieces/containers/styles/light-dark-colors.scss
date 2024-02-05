@@ -228,8 +228,9 @@
         --blue-light-hover: hsl(var(--blue-h), 70%, 85%);
         --blue-light-medium: hsl(var(--blue-h), 70%, 75%);
         --blue-medium: hsl(var(--blue-h), 50%, 50%);
-        --blue-medium-hover: hsl(var(--blue-h), 30%, 73%);
-        --blue: hsl(var(--blue-h), 30%, 52%);
+        --blue-medium-hover: hsl(var(--blue-h), 50%, 73%);
+        --blue: hsl(var(--blue-h), 50%, 52%);
+        --blue-hover: hsl(var(--blue-h), 50%, 60%);
         --blue-steel-gray: hsl(var(--blue-h), 32%, 85%);
         --blue-sat: hsl(var(--blue-h), 82%, 60%);
         --blue-sat-hover: hsl(var(--blue-h), 82%, 70%);
@@ -237,8 +238,8 @@
         --blue-dark: hsl(var(--blue-h), 32%, 22%);
         --blue-ultra-dark: hsl(var(--blue-h), 32%, 15%);
         --blue-ultra-dark-hover: hsl(var(--blue-h), 32%, 8%);
-        --btn-main: var(--blue-ultra-dark);
-        --btn-main-hover: var(--blue-ultra-dark-hover);
+        --btn-main: var(--blue);
+        --btn-main-hover: var(--blue-hover);
         --btn-chcl: hsl(0, 0%, 10%);
         --btn-chcl-hover: hsl(0, 0%, 15%);
 

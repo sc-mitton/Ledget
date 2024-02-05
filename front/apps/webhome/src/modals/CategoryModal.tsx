@@ -33,6 +33,7 @@ import {
     DropdownItem,
     SlideMotionDiv,
     BackButton,
+    stringLimit
 } from '@ledget/ui'
 import { Ellipsis } from '@ledget/media'
 import { Category } from '@features/categorySlice'
@@ -341,9 +342,9 @@ const CategoryDetails = (props: { category: Category, setTransactionItem: React.
                                     onClick={() => { props.setTransactionItem(transaction) }}
                                 >
                                     <div><InsitutionLogo accountId={transaction.account} size={'1.125em'} /></div>
-                                    <div>{transaction.preferred_name || transaction.name}</div>
+                                    <div>{stringLimit(transaction.preferred_name || transaction.name, 30)}</div>
                                     <div>
-                                        {dayjs(transaction.datetime || transaction.date).format('MMM DD, YYYY')}
+                                        <span>{dayjs(transaction.datetime || transaction.date).format('MMM DD, YYYY')}</span>
                                     </div>
                                     <div className={`${transaction.amount < 0 ? 'debit' : ''}`}>
                                         <div><DollarCents value={transaction.amount} /></div>

@@ -145,7 +145,12 @@
 
                     &:nth-child(4n+3) {
                         flex-grow: 1;
-                        color: var(--m-text-tirtiary);
+                        display: flex;
+                        justify-content: center;
+
+                        span {
+                            color: var(--m-text-tirtiary);
+                        }
                     }
 
                     &:nth-child(4n+4) {

@@ -149,3 +149,7 @@ export const mapWeekDayNumberToName = (day: number) => {
             return 'Saturday'
     }
 }
+
+export const stringLimit = (str: string, limit: number) => {
+    return str.length > limit ? str.slice(0, limit) + '...' : str
+}

@@ -86,21 +86,21 @@ export const ExpandButton = ({
 )
 
 export const FacebookLoginButton = ({ ...props }) => (
-  <GrayWideButton
+  <button
     className="btn-fb"
     {...props}
   >
     <FacebookLogo />
-  </GrayWideButton>
+  </button>
 )
 
 export const GoogleLoginButton = ({ ...props }) => (
-  <GrayWideButton
+  <button
     className="btn-google"
     {...props}
   >
     <GoogleLogo />
-  </GrayWideButton>
+  </button>
 )
 
 export const CloseButton =
