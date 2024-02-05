@@ -63,6 +63,10 @@ const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
         tabIndex && dispatch(setNotificationsTabIndex(tabIndex))
     }, [tabIndex])
 
+    useEffect(() => {
+        console.log('showFilterForm', showFilterForm)
+    }, [showFilterForm])
+
     return (
         <div style={{ position: 'relative' }} {...props} className='notifications-dropdown'>
             <button
@@ -114,9 +118,7 @@ const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
                                     {selectedIndex === 1 && (
                                         <>
                                             <Tooltip msg="Filter" ariaLabel="Filter">
-                                                <IconButton
-                                                    onClick={() => { setShowFilterForm(!showFilterForm) }}
-                                                    disabled={tCountData?.count === 0}>
+                                                <IconButton onClick={() => setShowFilterForm(!showFilterForm)}>
                                                     <Filter size={'1.125em'} />
                                                 </IconButton>
                                             </Tooltip>

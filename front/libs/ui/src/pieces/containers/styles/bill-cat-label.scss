@@ -14,17 +14,59 @@
 .bill-cat-label-emoji {
     padding: 0em .25em;
     border-radius: var(--border-radius4);
-    min-width: .625em;
-    min-height: .625em;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &.empty {
         margin-left: .45em;
         margin-right: .45em;
     }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 1.5em;
+        height: 1.5em;
+        border-radius: inherit;
+        background-color: var(--m-background);
+        z-index: -1;
+    }
+
+    &.blue::after {
+        background-color: var(--monthly-background-color);
+    }
+
+    &.green::after {
+        background-color: var(--yearly-background-color);
+    }
+
+    &.green-blue::after {
+        background-color: var(--yearly-background-color);
+    }
+
+    &.hoverable {
+        cursor: pointer;
+
+        &.blue:hover::after {
+            background-color: var(--monthly-hover-background-color);
+        }
+
+        &.green:hover::after {
+            background-color: var(--yearly-hover-background-color);
+        }
+
+        &.green-blue:hover::after {
+            background-color: var(--yearly-hover-background-color);
+        }
+    }
 }
 
-.bill-cat-label,
-.bill-cat-label-emoji {
+.bill-cat-label {
     position: relative;
 
     &>div {

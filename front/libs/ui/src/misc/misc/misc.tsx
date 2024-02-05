@@ -52,9 +52,7 @@ export const Base64Logo = (props: Base64LogoProps) => {
 export const DollarCents = ({ value = 0, style = {}, withCents = true }:
   { value: string | number, isDebit?: boolean, style?: React.CSSProperties, [key: string]: any }
 ) => {
-  const str = formatCurrency({
-    val: typeof value === 'string' ? value.replace(/^-/, '') : Math.abs(value),
-  })
+  const str = formatCurrency(typeof value === 'string' ? value.replace(/^-/, '') : Math.abs(value))
   const isDebit = Number(value) < 0
 
   return (
@@ -109,7 +107,7 @@ export const AnimatedDollarCents = ({ value = 0, withCents = true, ...rest }:
   })
 
   useEffect(() => {
-    let newVal = formatCurrency({ val: value, withCents }).replace(/^\$/, '')
+    let newVal = formatCurrency(value, withCents).replace(/^\$/, '')
 
     // If updating slots or upsizing (setting new slotRef values)
     if (newVal.length >= slots.length) {
@@ -160,10 +158,8 @@ export const AnimatedDollarCents = ({ value = 0, withCents = true, ...rest }:
             className='slot--container'
           >
             {'$.,'.includes(slotRefs.current[item])
-              ?
-              <span>{slotRefs.current[item]}</span>
-              :
-              <>
+              ? <span>{slotRefs.current[item]}</span>
+              : <>
                 <span>9</span>
                 <span>8</span>
                 <span>7</span>
@@ -180,11 +176,11 @@ export const AnimatedDollarCents = ({ value = 0, withCents = true, ...rest }:
         ))}
       </div>
       <span>
-        {`${formatCurrency({ val: value }).split('.')[0]}`}
+        {`${formatCurrency(value).split('.')[0]}`}
       </span>
       {withCents &&
         <span>
-          {`.${formatCurrency({ val: value }).split('.')[1]}`}
+          {`.${formatCurrency(value).split('.')[1]}`}
         </span>
       }
     </div>

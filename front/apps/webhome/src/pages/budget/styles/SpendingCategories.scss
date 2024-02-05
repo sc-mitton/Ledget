@@ -89,6 +89,7 @@ $background: var(--window);
         .categories {
             display: grid;
             grid-template-columns: 1fr auto auto auto auto;
+            grid-auto-rows: minmax(1.5em, auto);
             row-gap: $item-row-gap;
             background-color: inherit;
             max-height: 100%;

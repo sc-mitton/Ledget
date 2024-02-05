@@ -91,7 +91,7 @@ const increment: IncrementFunction = ({ val, setVal, field, withCents }) => {
     }
 
     field?.onChange(newVal)
-    setVal(formatCurrency({ val: newVal, withCents }))
+    setVal(formatCurrency(newVal, withCents))
 }
 
 const decrement: IncrementFunction = ({ val, setVal, field, withCents }) => {
@@ -107,7 +107,7 @@ const decrement: IncrementFunction = ({ val, setVal, field, withCents }) => {
         newVal = 0
     }
     field?.onChange(newVal)
-    setVal(formatCurrency({ val: newVal, withCents }))
+    setVal(formatCurrency(newVal, withCents))
 }
 
 const IncrementDecrementButton = ({ val, setVal, field, withCents = true }: IncrementDecrement) => (
@@ -158,8 +158,8 @@ export const HeadlessLimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
         // set field value to default if present
         useEffect(() => {
             if (defaultValue) {
-                field.onChange(formatCurrency({ val: defaultValue, withCents }))
-                setVal(formatCurrency({ val: defaultValue, withCents }))
+                field.onChange(formatCurrency(defaultValue, withCents))
+                setVal(formatCurrency(defaultValue, withCents))
             }
         }, [defaultValue])
 
@@ -188,7 +188,7 @@ export const HeadlessLimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
                         }
                     }}
                     onChange={(e) => {
-                        setVal(formatCurrency({ val: e.target.value, withCents }))
+                        setVal(formatCurrency(e.target.value, withCents))
                     }}
                     onFocus={(e) => {
                         if (e.target.value.length <= 1 || val === '$0') {
@@ -234,8 +234,8 @@ export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
         // set field value to default if present
         useEffect(() => {
             if (defaultValue) {
-                field.onChange(formatCurrency({ val: defaultValue, withCents }))
-                setVal(formatCurrency({ val: defaultValue, withCents }))
+                field.onChange(formatCurrency(defaultValue, withCents))
+                setVal(formatCurrency(defaultValue, withCents))
             }
         }, [defaultValue])
 
@@ -274,7 +274,7 @@ export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
                             }
                         }}
                         onChange={(e) => {
-                            setVal(formatCurrency({ val: e.target.value, withCents }))
+                            setVal(formatCurrency(e.target.value, withCents))
                         }}
                         onFocus={(e) => {
                             if (e.target.value.length <= 1 || val === '$0') {

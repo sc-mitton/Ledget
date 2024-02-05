@@ -55,7 +55,7 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
 
     const chartMargin = useMemo<{ top: number, right: number, bottom: number, left: number }>(() => {
         const margin = { top: 0, right: 16, bottom: 0, left: 0 }
-        const largestYAxisLabel = formatCurrency({ val: maxY, withCents: false })
+        const largestYAxisLabel = formatCurrency(maxY, false)
 
         const rootElement = document.documentElement;
         const computedStyle = getComputedStyle(rootElement);
@@ -95,7 +95,7 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
             axisLeft={{
                 tickValues: 4,
                 tickPadding: xaxisPadding,
-                format: (value: number) => formatCurrency({ val: value, withCents: false })
+                format: (value: number) => formatCurrency(value, false)
             }}
             areaBaselineValue={minY}
             tooltip={({ point }) => (

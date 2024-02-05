@@ -126,7 +126,6 @@ const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year'
                                             />
                                             {`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}
                                         </div>
-
                                         <div>
                                             <DollarCents value={category.amount_spent} withCents={false} />
                                         </div>

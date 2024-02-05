@@ -63,9 +63,12 @@ const BudgetSummary = () => {
                                 />
                             </div>
                             <div>
-                                <span>{Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber() > 0 ? 'monthly spending left' : 'over monthly limit'}</span>
-                                {Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber() <= 0 && (
-                                    <AlertCircle size={'1.125em'} />)}
+                                {Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber() <= 0
+                                    ? <>
+                                        <span>over monthly limit</span>
+                                        <AlertCircle size={'1.125em'} />
+                                    </>
+                                    : <span>monthly spending left</span>}
                             </div>
                         </div>
                         <div className='slide' id='slide-3'>
@@ -76,9 +79,12 @@ const BudgetSummary = () => {
                                 />
                             </div>
                             <div>
-                                <span>{Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() > 0 ? 'yearly spending left' : 'over yearly limit'}</span>
-                                {Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() <= 0 && (
-                                    <AlertCircle size={'1.125em'} />)}
+                                {Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() <= 0
+                                    ? <>
+                                        <span>over yearly limit</span>
+                                        <AlertCircle size={'1.125em'} />
+                                    </>
+                                    : <span>yearly spending left</span>}
                             </div>
                         </div>
                         <div className='slide' id='slide-4'>

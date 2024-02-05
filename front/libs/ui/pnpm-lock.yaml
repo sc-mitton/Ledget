@@ -4,22 +4,45 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  '@geist-ui/icons':
-    specifier: ^1.0.2
-    version: 1.0.2(@geist-ui/core@2.3.8)(react@18.2.0)
-  '@types/lodash.startcase':
-    specifier: ^4.4.9
-    version: 4.4.9
-  '@types/lodash.tolower':
-    specifier: ^4.1.9
-    version: 4.1.9
-  lodash.startcase:
-    specifier: ^4.4.0
-    version: 4.4.0
-  lodash.tolower:
-    specifier: ^4.1.2
-    version: 4.1.2
+importers:
+
+  .:
+    dependencies:
+      '@geist-ui/icons':
+        specifier: ^1.0.2
+        version: 1.0.2(@geist-ui/core@2.3.8)(react@18.2.0)
+      '@types/lodash.startcase':
+        specifier: ^4.4.9
+        version: 4.4.9
+      '@types/lodash.tolower':
+        specifier: ^4.1.9
+        version: 4.1.9
+      lodash.startcase:
+        specifier: ^4.4.0
+        version: 4.4.0
+      lodash.tolower:
+        specifier: ^4.1.2
+        version: 4.1.2
+
+  ../..: {}
+
+  ../../apps/webhome: {}
+
+  ../../apps/webportal: {}
+
+  ../../dist/apps/webhome: {}
+
+  ../../dist/apps/webportal: {}
+
+  ../../dist/libs/media: {}
+
+  ../../dist/libs/ory: {}
+
+  ../../dist/libs/ui: {}
+
+  ../media: {}
+
+  ../ory: {}
 
 packages:
 

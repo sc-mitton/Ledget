@@ -125,12 +125,17 @@ $scroll-bar-padding: 1em;
                 border-radius: var(--border-radius2) 0 0 var(--border-radius2);
                 display: flex;
                 align-items: center;
-                padding-right: 1em;
+                padding-right: .625em;
                 flex-wrap: nowrap;
+            }
+
+            &:nth-child(2) {
+                padding-right: 1em;
             }
 
             &:nth-child(3) {
                 color: var(--m-text-tirtiary);
+                text-align: center;
             }
 
             @mixin background-circle($color) {
@@ -168,7 +173,7 @@ $scroll-bar-padding: 1em;
         &>div:last-child {
             display: flex;
             align-items: center;
-            justify-content: right;
+            justify-content: center;
             padding-right: .125em;
 
             &.debit * {

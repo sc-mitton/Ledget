@@ -69,7 +69,7 @@ export function History() {
                                 {transactionsData?.map((transaction) => {
                                     const date = new Date(transaction.datetime || transaction.date)
                                     date.getUTCMonth() !== monthholder ? newMonth = true : newMonth = false
-                                    monthholder = date.getMonth()
+                                    monthholder = date.getUTCMonth()
                                     return (
                                         <Fragment key={transaction.transaction_id}>
                                             <div className="month-header">
@@ -78,10 +78,11 @@ export function History() {
                                                 </div>}
                                             </div>
                                             <div role="button" onClick={() => dispatch(setTransactionModal({ item: transaction }))}>
-                                                <div><InsitutionLogo accountId={transaction.account} size={'1.5em'} /></div>
-                                                <div>{transaction.preferred_name || transaction.name}</div>
+                                                <div><InsitutionLogo accountId={transaction.account} size={'1.25em'} /></div>
+                                                <div>{transaction.preferred_name?.slice(0, 20) || transaction.name.slice(0, 20)}
+                                                    {`${(transaction.preferred_name && transaction.preferred_name?.length > 20) || transaction.name.length > 20 ? '...' : ''}`}</div>
                                                 <div>
-                                                    {dayjs(transaction.datetime || transaction.date).format('MMM DD, YYYY')}
+                                                    {dayjs(transaction.datetime || transaction.date).format('M/D/YYYY')}
                                                 </div>
                                                 <div>
                                                     {transaction.bill &&

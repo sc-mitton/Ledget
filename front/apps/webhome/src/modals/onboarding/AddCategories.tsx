@@ -129,7 +129,7 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
                                 >
                                     {editAmountIndex === index
                                         ? <input
-                                            value={formatCurrency({ val: editValue || 0, withCents: false })}
+                                            value={formatCurrency(editValue || 0, false)}
                                             onChange={handleEditAmount}
                                             onFocus={() => setEditValue(item?.limit_amount || 0)}
                                             onBlur={() => finalizeEditAmountChange(index)}

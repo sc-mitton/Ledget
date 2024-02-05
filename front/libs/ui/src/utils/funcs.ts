@@ -6,27 +6,28 @@ export const formatName = (name: string) => (
     }).join(' ')
 )
 
-export const formatCurrency = ({ val, withCents = true }: { val: number | string | undefined, withCents?: boolean }) => {
-    if (val === undefined || val === null) return ''
+export const formatCurrency = (val: number | string | undefined, withCents = true) => {
 
-    // First get val in integer form
-    let value: string
-    typeof val === 'string'
-        ? val.includes('.') ? value = val : value = `${val}.00`
-        : value = `${val}`
+    if (val === undefined || val === null) return withCents ? '$0.00' : '$0'
 
-    const replaceNonNumeric = /[^0-9]/g
-    const replaceLeadingZeros = /^0+(?=\d)/
-    const currencyAmount = /^0+$/.test(value)
-        ? 0
-        : parseInt(value.replace(replaceNonNumeric, '').replace(replaceLeadingZeros, ''))
+    const currencyAmount = typeof val === 'string'
+        ? makeIntCurrencyFromStr(val)
+        : val
 
-    const formatter = new Intl.NumberFormat('en-US', {
+    const noCentsFormatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
-        minimumFractionDigits: withCents ? 2 : 0
+        minimumFractionDigits: 0
     })
-    return formatter.format(currencyAmount / 100)
+    const withCentsFormatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2
+    })
+
+    return withCents
+        ? withCentsFormatter.format(currencyAmount / 100)
+        : noCentsFormatter.format(Math.floor(currencyAmount / 100))
 }
 
 // Takes in a string currency and returns an integer
