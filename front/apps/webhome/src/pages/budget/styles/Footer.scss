@@ -67,6 +67,8 @@
             gap: .5em;
             margin-right: .5em;
             cursor: pointer;
+            opacity: .7;
+            transition: opacity .2s ease-in-out;
         }
 
         button {
@@ -76,6 +78,12 @@
         }
 
         &:hover {
+            &>div {
+                opacity: 1;
+                transition: opacity .2s ease-in-out;
+
+            }
+
             button {
 
                 opacity: 1;

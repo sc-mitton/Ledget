@@ -448,7 +448,7 @@ export function AccountWafers() {
                                 {data?.accounts?.find(a => a.account_id === searchParams.get('account'))?.official_name || ''}
                             </span>
                             <div>
-                                <DollarCents value={data?.accounts?.find(a => a.account_id === searchParams.get('account'))?.balances.current || ''} />
+                                <DollarCents value={Big(data?.accounts?.find(a => a.account_id === searchParams.get('account'))?.balances.current || '').times(100).toNumber()} />
                             </div>
                         </div>
                     </div>

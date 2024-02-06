@@ -24,11 +24,11 @@ export const InfiniteScrollDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivEle
 const getMaskImage = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
   switch (string) {
     case 'top':
-      return 'linear-gradient(to bottom, transparent 0%, black 16px, black calc(100% - 0px), transparent)'
+      return 'linear-gradient(to bottom, transparent 0%, black 12px, black calc(100% - 0px), transparent)'
     case 'bottom':
-      return 'linear-gradient(to bottom, transparent 0%, black 0px, black calc(100% - 16px), transparent)'
+      return 'linear-gradient(to bottom, transparent 0%, black 0px, black calc(100% - 12px), transparent)'
     case 'bottom-top':
-      return 'linear-gradient(to bottom, transparent 0%, black 16px, black calc(100% - 16px), transparent)'
+      return 'linear-gradient(to bottom, transparent 0%, black 12px, black calc(100% - 12px), transparent)'
     default:
       return ''
   }
