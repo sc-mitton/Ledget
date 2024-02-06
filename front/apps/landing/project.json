@@ -3,25 +3,6 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/landing",
   "projectType": "application",
-  "targets": {
-    "serve": {
-      "executor": "@nx/next:server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "acme:build",
-        "dev": true
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "acme:build:development",
-          "dev": true
-        },
-        "production": {
-          "buildTarget": "acme:build:production",
-          "dev": false
-        }
-      }
-    }
-  },
+  "targets": {},
   "tags": []
 }

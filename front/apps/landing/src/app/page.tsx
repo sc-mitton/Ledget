@@ -1,6 +1,6 @@
-import styles from './index.module.scss';
+import styles from './page.module.scss';
 
-export function Index() {
+export default async function Index() {
   /*
    * Replace the elements below with your own.
    *
@@ -467,5 +467,3 @@ export function Index() {
     </div>
   );
 }
-
-export default Index;
