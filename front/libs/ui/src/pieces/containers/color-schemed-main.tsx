@@ -1,5 +1,5 @@
 import { useColorScheme } from "../../utils/hooks/use-color-scheme/use-color-scheme"
-import './styles/light-dark-colors.scss'
+import '../../themes/styles/ledget-theme.scss'
 
 export function ColorSchemedMain({ children }: { children: React.ReactNode }) {
   const { isDark } = useColorScheme()

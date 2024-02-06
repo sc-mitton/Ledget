@@ -4,7 +4,6 @@ import Image from 'next/image'
 import ledgetLogo from '@/assets/logo.svg'
 import styles from '@/styles/Layout.module.scss'
 
-
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <>

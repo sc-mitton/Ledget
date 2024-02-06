@@ -20,6 +20,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@ledget/ui": [
+        "../libs/ui/src"
+      ],
     }
   },
   "include": [
