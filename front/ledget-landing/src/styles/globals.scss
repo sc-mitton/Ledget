@@ -1,0 +1,32 @@
+img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  /* remove extra space below image */
+}
+
+body {
+  font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+  font-size: .875rem;
+  height: 100%;
+}
+
+div,
+p,
+span,
+a,
+input,
+label,
+button,
+textarea,
+select,
+option {
+  font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+  font-size: .875rem;
+  color: var(--m-text);
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
