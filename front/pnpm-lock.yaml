@@ -489,7 +489,7 @@ importers:
         specifier: ~0.32.0
         version: 0.32.4(@vitest/ui@0.32.4)(jsdom@22.1.0)(sass@1.68.0)
 
-  ledget-landing:
+  landing:
     dependencies:
       '@headlessui/react':
         specifier: ^1.7.17
