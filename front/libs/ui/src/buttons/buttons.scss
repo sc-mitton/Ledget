@@ -189,12 +189,12 @@
 }
 
 .btn-blue {
-    background-color: var(--blue-light);
-    color: var(--blue-dark);
+    background-color: var(--blue-medium);
+    color: var(--white);
     transition: all .3s ease;
 
     &:hover {
-        background-color: var(--blue-light-hover);
+        background-color: var(--blue-medium-hover);
         transition: all .3s ease;
     }
 }

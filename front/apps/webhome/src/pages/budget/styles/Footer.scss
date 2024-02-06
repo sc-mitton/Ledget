@@ -61,9 +61,13 @@
     }
 
     #filter-buttons {
-        display: flex;
-        gap: .5em;
-        margin-right: .5em;
+
+        &>div {
+            display: flex;
+            gap: .5em;
+            margin-right: .5em;
+            cursor: pointer;
+        }
 
         button {
             opacity: 0;
@@ -71,7 +75,7 @@
             transition: opacity .2s ease-in-out, transform .2s ease-in-out;
         }
 
-        &.show {
+        &:hover {
             button {
 
                 opacity: 1;

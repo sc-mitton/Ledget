@@ -68,6 +68,11 @@ $scroll-bar-padding: .5em;
             z-index: -1;
             transition: max-height .3s ease-out, opacity .2s ease-out, z-index 0s ease-out .3s;
         }
+
+        .bills--header {
+            margin-bottom: 0;
+            transition: margin-bottom .2s ease-out;
+        }
     }
 
     // Sort buttons container
@@ -88,11 +93,12 @@ $scroll-bar-padding: .5em;
     display: flex;
     position: relative;
     align-items: flex-end;
-
+    margin-bottom: .5em;
+    transition: margin-bottom .2s ease-out;
 
     &>div:first-child {
         position: absolute;
-        bottom: 0;
+        bottom: -.5em;
         left: -.5em;
     }
 
@@ -105,6 +111,8 @@ $scroll-bar-padding: .5em;
 
     &>div:last-child {
         opacity: 0;
+        display: flex;
+        align-items: center;
         transition: opacity .2s ease-out;
 
         button {

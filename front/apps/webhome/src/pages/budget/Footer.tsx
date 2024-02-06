@@ -14,19 +14,6 @@ const Footer = () => {
     const budgetItemSorting = useAppSelector(selectBudgetItemsSort)
     const [modal, setModal] = useState<'categories' | 'bills' | ''>('')
     const filterButtonsContainer = useRef<HTMLDivElement>(null)
-    const [showFilterButtons, setShowFilterButtons] = useState(false)
-
-    useEffect(() => {
-        const handleClick = (e: MouseEvent) => {
-            if (filterButtonsContainer.current && !filterButtonsContainer.current.contains(e.target as Node)) {
-                setShowFilterButtons(false)
-            }
-        }
-        document.addEventListener('click', handleClick)
-        return () => {
-            document.removeEventListener('click', handleClick)
-        }
-    }, [filterButtonsContainer])
 
     return (
         <>
@@ -44,8 +31,8 @@ const Footer = () => {
                         </FadedTextButton>
                     </div>
                 </div>
-                <div ref={filterButtonsContainer}>
-                    <div id='filter-buttons' className={`${showFilterButtons ? 'show' : ''}`}>
+                <div id='filter-buttons'>
+                    <div>
                         <PillOptionButton
                             isSelected={budgetItemSorting && ['amount-desc', 'amount-asc'].includes(budgetItemSorting)}
                             onClick={() => {
@@ -79,12 +66,11 @@ const Footer = () => {
                             {budgetItemSorting === 'alpha-des' ? 'z-a' : 'a-z'}
                         </PillOptionButton>
                     </div>
-                    <Tooltip msg="Filter" ariaLabel="Filter">
-                        <IconButton3
-                            onClick={() => { setShowFilterButtons(!showFilterButtons) }}>
+                    <div>
+                        <Tooltip msg="Filter" ariaLabel="Filter">
                             <FilterLines stroke={(budgetItemSorting !== 'default') ? 'var(--blue-sat)' : 'currentColor'} />
-                        </IconButton3>
-                    </Tooltip>
+                        </Tooltip>
+                    </div>
                 </div>
             </div>
         </>

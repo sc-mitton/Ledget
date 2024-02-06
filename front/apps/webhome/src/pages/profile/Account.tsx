@@ -15,13 +15,13 @@ import {
 } from '@features/userSlice'
 import {
     BlueSlimButton,
-    BlueSlimArrowButton,
+    BlueSlimSubmitButton,
     ShimmerDiv,
     DropDownDiv,
     IconButton,
     DropdownItem,
     BakedSwitch,
-    useColorScheme
+    useColorScheme,
 } from '@ledget/ui'
 import { UpdatePersonalInfo } from '@modals/index'
 import { CreditCard } from '@geist-ui/icons'
@@ -127,9 +127,9 @@ const ChangePlanMenu = () => {
             {({ open }) => (
                 <>
                     <Menu.Button as={'div'}>
-                        <BlueSlimArrowButton submitting={isLoading} rotate={0} >
+                        <BlueSlimSubmitButton submitting={isLoading} rotate={0} >
                             change
-                        </BlueSlimArrowButton>
+                        </BlueSlimSubmitButton>
                     </Menu.Button>
                     <div style={{ position: 'relative' }}>
                         <DropDownDiv
@@ -173,12 +173,9 @@ const Plan = () => {
                         {subscription ? getStatus(subscription) : ''}
                     </span>
                 </div>
-                <div>
-                    <ChangePlanMenu />
-                </div>
             </div>
-            <div className="inner-window">
-                <div id="invoice-details--container">
+            <div className="inner-window" id="invoice-details--container">
+                <div>
                     <div>Renews</div>
                     {subscription &&
                         <>
@@ -207,6 +204,9 @@ const Plan = () => {
                         })}
                     </div>
                 </div>
+                <div>
+                    <ChangePlanMenu />
+                </div>
             </div>
         </section>
     )
@@ -228,24 +228,24 @@ const PaymentMethod = () => {
                 <div>
                     <h4>Payment Method</h4>
                 </div>
-                <div>
-                    <BlueSlimButton
-                        aria-label="Change plan"
-                        onClick={() => navigate("/profile/details/update-payment")}
-                    >
-                        update
-                    </BlueSlimButton>
-                </div>
             </div>
             <div id="card-info--container" className="inner-window">
-                <CreditCard className='icon' />
-                <div >
-                    {data && `${data.brand.charAt(0).toUpperCase()}`}
-                    {data && `${data.brand.slice(1)}`}
-                    &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
-                    {data && `${data.last4}`}
+                <div>
+                    <CreditCard className='icon' />
+                    <div >
+                        {data && `${data.brand.charAt(0).toUpperCase()}`}
+                        {data && `${data.brand.slice(1)}`}
+                        &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
+                        {data && `${data.last4}`}
+                    </div>
+                    <div>{`Exp. ${expDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}`}</div>
                 </div>
-                <div>{`Exp. ${expDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}`}</div>
+                <BlueSlimButton
+                    aria-label="Change plan"
+                    onClick={() => navigate("/profile/details/update-payment")}
+                >
+                    update
+                </BlueSlimButton>
             </div>
         </section>
     )

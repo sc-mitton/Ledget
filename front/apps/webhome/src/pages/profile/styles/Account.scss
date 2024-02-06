@@ -11,6 +11,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        padding-right: .25em;
 
         &>div:first-child {
             display: flex;
@@ -72,9 +73,13 @@
 
 #card-info--container {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: .75em;
+    justify-content: space-between;
+
+    &>div {
+        display: flex;
+        align-items: center;
+        gap: .75em;
+    }
 }
 
 
@@ -84,17 +89,23 @@
 
 
 #invoice-details--container {
-    display: grid;
-    grid-template-columns: minmax(auto, max-content) 1fr;
-    gap: .5em;
-    column-gap: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    &>div:nth-child(2n) {
-        color: var(--m-text-secondary);
-    }
+    &>div:first-child {
+        display: grid;
+        grid-template-columns: minmax(auto, max-content) 1fr;
+        gap: .5em;
+        column-gap: 1em;
 
-    &>div {
-        white-space: nowrap;
+        &>div:nth-child(2n) {
+            color: var(--m-text-secondary);
+        }
+
+        &>div {
+            white-space: nowrap;
+        }
     }
 }
 
