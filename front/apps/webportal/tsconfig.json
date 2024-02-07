@@ -1,18 +1,42 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
-    "allowJs": false,
+    "allowJs": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "types": ["vite/client"]
+    "types": [
+      "vite/client",
+      "vitest"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@api/*": [
+        "src/api/*"
+      ],
+      "@features/*": [
+        "src/features/*"
+      ],
+      "@pieces/*": [
+        "src/pieces/*"
+      ],
+      "@ledget/ui": [
+        "../../libs/ui/src"
+      ],
+      "@ledget/media": [
+        "../../libs/media/src"
+      ],
+      "@ledget/ory": [
+        "../../libs/ory/src"
+      ],
+    },
   },
   "files": [],
   "include": [],
   "references": [
     {
       "path": "./tsconfig.app.json"
-    }
+    },
   ],
   "extends": "../../tsconfig.base.json"
 }

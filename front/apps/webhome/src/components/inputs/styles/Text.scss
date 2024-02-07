@@ -1,0 +1,96 @@
+.limit-amount--container {
+
+    &:focus-within>div>button,
+    &.valid>div>button,
+    &>div>button:hover {
+        color: var(--m-text);
+        transition: color .2s ease;
+    }
+
+    &:not(.valid):not(:focus-within):not(:hover)>div>button {
+        color: var(--input-placeholder2);
+        transition: color .2s ease;
+    }
+}
+
+.increment-arrows--container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: .375em;
+    border-radius: var(--border-radius1);
+    height: 80%;
+
+    button {
+        margin: 0;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius);
+
+        &:hover {
+            color: var(--m-text);
+        }
+    }
+}
+
+.dollar-range-input--container {
+    display: flex;
+    justify-content: space-between;
+    gap: .75em;
+    align-items: center;
+    width: 100%;
+    position: relative;
+
+    &>div {
+        flex: 1;
+    }
+}
+
+@function calculate_scale($keyframe) {
+    @return calc(0.1 * sin(20 * $keyframe - 3.14) * exp(-7*$keyframe) + 1);
+}
+
+// Define keyframes for split-left animation
+@keyframes split-left {
+    @for $i from 0 through 10 {
+        $percent: 0% + $i * 10%;
+
+        #{$percent} {
+            transform: scaleX(calculate_scale($i/10));
+            transform-origin: left;
+        }
+    }
+}
+
+// Define keyframes for split-right animation
+@keyframes split-right {
+    @for $i from 0 through 10 {
+        $percent: 0% + $i * 10%;
+
+        #{$percent} {
+            transform: scaleX(calculate_scale($i/10));
+            transform-origin: right;
+        }
+    }
+}
+
+.dollar-range-input--container.range-mode {
+
+    &>div:first-child {
+        transform: scaleX(1);
+        animation: split-left .7s ease-out;
+    }
+
+    &>div:last-child {
+        transform: scaleX(1);
+        animation: split-right .7s ease-out;
+    }
+}

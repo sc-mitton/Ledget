@@ -1,13 +1,16 @@
-import { StrictMode } from 'react';
-import * as ReactDOM from 'react-dom/client';
+import React from 'react'
+import * as ReactDOMClient from 'react-dom/client'
+import { ColorSchemeProvider } from '@ledget/ui'
 
-import App from './app/app';
+import App from './app/app'
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+
+const root = ReactDOMClient.createRoot(document?.getElementById('root') as HTMLElement)
+
 root.render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+  <React.StrictMode>
+    <ColorSchemeProvider>
+      <App />
+    </ColorSchemeProvider>
+  </React.StrictMode>,
+)

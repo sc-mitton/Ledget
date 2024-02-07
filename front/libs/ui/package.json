@@ -8,5 +8,30 @@
       "import": "./index.mjs",
       "require": "./index.js"
     }
+  },
+  "dependencies": {
+    "@geist-ui/icons": "^1.0.2",
+    "@headlessui/react": "^1.7.14",
+    "@nivo/core": "^0.83.1",
+    "@nivo/line": "^0.83.1",
+    "@react-spring/web": "^9.7.2",
+    "@stripe/react-stripe-js": "^2.3.1",
+    "@types/lodash.startcase": "^4.4.9",
+    "@types/lodash.tolower": "^4.1.9",
+    "@use-gesture/react": "^10.2.27",
+    "antd": "^5.12.1",
+    "big.js": "^6.2.1",
+    "color": "^4.2.3",
+    "dayjs": "^1.11.10",
+    "framer-motion": "^10.16.4",
+    "lodash.clamp": "^4.0.3",
+    "lodash.startcase": "^4.4.0",
+    "lodash.tolower": "^4.1.2",
+    "react-hook-form": "^7.48.2",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/color": "^3.0.4",
+    "@types/lodash.clamp": "^4.0.7"
   }
 }

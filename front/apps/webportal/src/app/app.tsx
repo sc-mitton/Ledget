@@ -1,14 +1,25 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.scss';
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux';
 
-import NxWelcome from './nx-welcome';
+import "@styles/base.scss"
+import "@styles/portal.scss"
+import Routes from './Routes'
+import store from '@features/store'
+import { ColorSchemedMain, ScreenProvider } from '@ledget/ui'
 
-export function App() {
+function App() {
+
   return (
-    <div>
-      <NxWelcome title="webportal" />
-    </div>
-  );
+    <ScreenProvider>
+      <ColorSchemedMain>
+        <Provider store={store}>
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </Provider>
+      </ColorSchemedMain>
+    </ScreenProvider>
+  )
 }
 
-export default App;
+export default App
