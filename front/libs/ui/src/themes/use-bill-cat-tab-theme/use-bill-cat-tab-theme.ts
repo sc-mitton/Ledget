@@ -1,5 +1,5 @@
 
-import { useSchemeVar } from '../../utils/hooks/use-scheme-var/use-scheme-var';
+import { useSchemeVar } from '../hooks/use-scheme-var/use-scheme-var';
 
 export function useBillCatTabTheme() {
   const [

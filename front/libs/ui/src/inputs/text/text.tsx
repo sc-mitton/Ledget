@@ -12,7 +12,7 @@ import { FormErrorTip, FormError } from '../../pieces/form-errors/form-errors'
 import { SelectProvence } from '../select-provence/select-provence'
 import { InputShimmerDiv } from '../../pieces/shimmer/shimmer'
 import { useStripeCardTheme } from '../../themes/themes'
-import { useColorScheme } from '../../utils/hooks/use-color-scheme/use-color-scheme'
+import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme'
 
 
 export interface TextInputWrapperProps extends React.HTMLProps<HTMLDivElement> {

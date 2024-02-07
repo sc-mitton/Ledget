@@ -1,8 +1,8 @@
 
 import React from 'react'
 import Image from 'next/image'
-import ledgetLogo from '@/assets/logo.svg'
-import styles from '@/styles/Layout.module.scss'
+import ledgetLogo from '../assets/logo.svg'
+import styles from './styles/layout.module.scss'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (

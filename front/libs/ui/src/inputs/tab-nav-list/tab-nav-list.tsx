@@ -5,7 +5,7 @@ import { animated } from '@react-spring/web'
 
 import './tab-nav-list.scss';
 import { usePillAnimation } from '../../animations/use-pill-animation/use-pill-animation'
-import useSchemeVar from '../../utils/hooks/use-scheme-var/use-scheme-var';
+import useSchemeVar from '../../themes/hooks/use-scheme-var/use-scheme-var';
 
 
 interface TabStyle {

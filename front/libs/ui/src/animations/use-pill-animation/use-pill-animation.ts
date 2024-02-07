@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { useSpring, useSpringRef } from '@react-spring/web'
-import { useSchemeVar } from '@ledget/ui'
+import { useSchemeVar } from '../../themes/hooks/use-scheme-var/use-scheme-var'
 
 interface Props {
   ref: React.RefObject<HTMLElement>

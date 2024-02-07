@@ -3,7 +3,7 @@ import { HTMLProps, forwardRef } from 'react'
 import './shimmer.scss';
 import { useTransition, animated } from '@react-spring/web'
 import { TextInputWrapper } from '../../inputs/text/text'
-import { useColorScheme } from '../../utils/hooks/use-color-scheme/use-color-scheme'
+import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme'
 import React from 'react';
 
 

@@ -1,7 +1,7 @@
 
 import { Theme } from "@nivo/core"
 import { LineSvgProps } from '@nivo/line';
-import { useSchemeVar } from '../utils/hooks/use-scheme-var/use-scheme-var'
+import { useSchemeVar } from './hooks/use-scheme-var/use-scheme-var'
 
 // Define the type for your base props
 type NivoResponsiveLineBaseProps = Omit<LineSvgProps, 'data'>
