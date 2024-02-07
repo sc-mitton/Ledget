@@ -6,7 +6,7 @@ import SignUpWindow from '@forms/SignUp'
 import CheckoutWindow from '@forms/Checkout'
 import VerificationWindow from '@forms/Verification'
 import RecoverWindow from '@forms/Recovery'
-import Header from './Header'
+import Header from './header'
 import { SendRegisteredToCheckout } from '@utils'
 
 function AnimatedRoutes() {

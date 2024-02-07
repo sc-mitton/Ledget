@@ -1,0 +1,15 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "paths": {
+      "@ledget/ui": [
+        "../../libs/ui/src"
+      ],
+      "@ledget/media": [
+        "../../libs/media/src"
+      ],
+    }
+  }
+}

@@ -1,0 +1,27 @@
+---
+import Header from '../components/header.astro';
+import '../styles/globals.scss';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Ledget</title>
+  </head>
+  <body>
+    <Header />
+    <main class="main">
+      <slot />
+    </main>
+  </body>
+  <script>
+    const isDarkModeMediaQuery = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+    const colorScheme = isDarkModeMediaQuery ? 'dark' : 'light';
+    document.querySelector('.main')?.classList.add(`${colorScheme}`);
+  </script>
+</html>
