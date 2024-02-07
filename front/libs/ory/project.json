@@ -1,0 +1,8 @@
+{
+  "name": "ory",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ory/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}
