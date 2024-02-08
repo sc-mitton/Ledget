@@ -1,23 +1,24 @@
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux';
 
+import Header from './header'
 import "@styles/base.scss"
 import "@styles/portal.scss"
 import Routes from './Routes'
 import store from '@features/store'
-import { ColorSchemedMain, ScreenProvider } from '@ledget/ui'
+import { ColorSchemedDiv, ScreenProvider } from '@ledget/ui'
 
 function App() {
 
   return (
     <ScreenProvider>
-      <ColorSchemedMain>
+      <ColorSchemedDiv className='full-screen'>
         <Provider store={store}>
           <BrowserRouter>
             <Routes />
           </BrowserRouter>
         </Provider>
-      </ColorSchemedMain>
+      </ColorSchemedDiv>
     </ScreenProvider>
   )
 }

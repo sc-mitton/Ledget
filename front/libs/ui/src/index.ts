@@ -2,7 +2,7 @@ export * from './inputs/date-picker/date-picker';
 export * from './pieces/containers/AutoResizeTextArea';
 export * from './themes/use-bill-cat-tab-theme/use-bill-cat-tab-theme';
 export * from './themes/hooks/use-scheme-var/use-scheme-var';
-export * from './themes/color-schemed-main';
+export * from './themes/color-schemed-div';
 export * from './themes/hooks/use-color-scheme/use-color-scheme';
 export * from './pieces/containers/bill-cat-label';
 export * from './dropdowns/abs-pos-menu/abs-pos-menu';

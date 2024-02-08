@@ -42,6 +42,10 @@ body {
 
 main {
     height: 100%;
+}
+
+.full-screen-div {
+    height: 100%;
     margin: 0;
     background-color: var(--window-background-color);
     overflow-y: auto;

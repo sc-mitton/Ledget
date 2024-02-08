@@ -1,0 +1,34 @@
+.arrow-link {
+    padding: .25em .5em .25em .75em;
+    border-radius: 1.5em;
+    border: 1.25px solid var(--m-text);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background-color: transparent;
+
+    svg {
+        path:first-child {
+            stroke-dasharray: 50;
+            stroke-dashoffset: 50;
+            transition: stroke-dashoffset 0.2s ease-in;
+            transition: all 0.2s ease-in;
+        }
+
+        path:not(:first-child) {
+            transition: all 0.2s ease-in;
+        }
+    }
+
+    &:hover svg {
+        path:first-child {
+            stroke-dashoffset: 0;
+            transition: all 0.2s ease-in;
+        }
+
+        path:not(:first-child) {
+            transform: translateX(.1875em);
+            transition: all 0.2s ease-in;
+        }
+    }
+}

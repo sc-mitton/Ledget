@@ -69,12 +69,16 @@ button {
 
 main {
     height: 100%;
+}
+
+.full-screen {
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
 
 /* Accessibility Focus Styling */
-main:focus-visible {
+.full-screen-div:focus-visible {
     outline: none;
     box-shadow: inset 0 0 2px 2px var(--light-blue);
 }

@@ -1,0 +1,42 @@
+---
+interface Props {
+  className: string;
+  text: string;
+  hrefTarget: string;
+}
+
+import '../../styles/links.scss';
+const { className, text, hrefTarget } = Astro.props;
+---
+
+<a
+  class=`arrow-link ${className}`
+  href={hrefTarget}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <span>{text}</span>
+  <svg width="20" height="20" viewBox="0 0 20 20">
+    <path
+      d="M5 10L13.125 10"
+      stroke="currentColor"
+      stroke-width="1.25"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"></path>
+    <path
+      d="M8 14L12 10"
+      stroke="currentColor"
+      stroke-width="1.25"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"></path>
+    <path
+      d="M12 10L8 6"
+      stroke="currentColor"
+      stroke-width="1.25"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"></path>
+  </svg>
+</a>

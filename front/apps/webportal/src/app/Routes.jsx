@@ -15,29 +15,31 @@ function AnimatedRoutes() {
     return (
         <>
             <Header />
-            <AnimatePresence mode="wait">
-                <motion.div
-                    className='page'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    key={location.pathname}
-                    transition={{
-                        opacity: { duration: .15, ease: "easeIn" }
-                    }}
-                >
-                    <Routes location={location} key={location.pathname.split('/')[1]} >
-                        <Route path="/" element={<SendRegisteredToCheckout />}>
-                            <Route exact path="/" element={<Navigate to="/login" />} />
-                            <Route exact path="/login" element={<LoginWindow />} />
-                            <Route exact path="/recovery" element={<RecoverWindow />} />
-                        </Route>
-                        <Route path="/register" element={<SignUpWindow />} />
-                        <Route path="/verification" element={<VerificationWindow />} />
-                        <Route path="/checkout" element={<CheckoutWindow />} />
-                    </Routes>
-                </motion.div >
-            </AnimatePresence>
+            <main>
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        className='page'
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        key={location.pathname}
+                        transition={{
+                            opacity: { duration: .15, ease: "easeIn" }
+                        }}
+                    >
+                        <Routes location={location} key={location.pathname.split('/')[1]} >
+                            <Route path="/" element={<SendRegisteredToCheckout />}>
+                                <Route exact path="/" element={<Navigate to="/login" />} />
+                                <Route exact path="/login" element={<LoginWindow />} />
+                                <Route exact path="/recovery" element={<RecoverWindow />} />
+                            </Route>
+                            <Route path="/register" element={<SignUpWindow />} />
+                            <Route path="/verification" element={<VerificationWindow />} />
+                            <Route path="/checkout" element={<CheckoutWindow />} />
+                        </Routes>
+                    </motion.div >
+                </AnimatePresence>
+            </main>
         </>
     )
 }

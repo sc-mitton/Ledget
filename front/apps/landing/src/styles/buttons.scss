@@ -1,0 +1,35 @@
+.app-download-button {
+    border: 1.5px solid var(--m-text);
+    border-radius: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: .375em .75em;
+    gap: .5em;
+    min-width: 11rem;
+    transition: border-color .3s;
+
+    &:hover {
+        border-color: var(--blue-medium);
+        transition: border-color .3s;
+    }
+
+    img {
+        height: 1.75rem;
+        width: 1.75rem;
+    }
+
+    &>div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        &>span:last-child {
+            font-weight: 600;
+        }
+    }
+
+    path {
+        fill: var(--m-text);
+    }
+}

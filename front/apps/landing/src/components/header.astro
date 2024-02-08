@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
-import Logo from '../../public/assets/logo.svg';
+import Logo from '../assets/logo.svg';
 import '../styles/header.scss';
+import ActionLink from './links/arrow-link.astro';
 ---
 
 <header>
@@ -22,34 +23,7 @@ import '../styles/header.scss';
         </ul>
       </nav>
       <div>
-        <a href="/">
-          <button class="sign-in">
-            <span>Sign In</span>
-            <svg width="20" height="20" viewBox="0 0 20 20">
-              <path
-                d="M5 10L13.125 10"
-                stroke="black"
-                stroke-width="1.25"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                fill="none"></path>
-              <path
-                d="M8 14L12 10"
-                stroke="black"
-                stroke-width="1.25"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                fill="none"></path>
-              <path
-                d="M12 10L8 6"
-                stroke="black"
-                stroke-width="1.25"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                fill="none"></path>
-            </svg>
-          </button>
-        </a>
+        <ActionLink text="Sign In" className="sign-in" hrefTarget="/" />
       </div>
     </div>
   </div>

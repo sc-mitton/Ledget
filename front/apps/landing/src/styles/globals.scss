@@ -8,6 +8,18 @@ body {
     margin: 0 auto;
 }
 
+.color-scheme {
+    width: 100%;
+    height: 100%;
+    background-color: var(--window-background-color);
+
+    &>div {
+        width: calc(100% - 2rem);
+        max-width: 70rem;
+        margin: 0 auto;
+    }
+}
+
 div,
 p,
 span,
@@ -20,9 +32,27 @@ select,
 option {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     font-size: .875rem;
+    color: var(--m-text);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    color: var(--m-text-header);
 }
 
 a {
     text-decoration: none;
     cursor: pointer;
+}
+
+button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
 }

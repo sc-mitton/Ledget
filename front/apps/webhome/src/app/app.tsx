@@ -12,7 +12,7 @@ import Accounts from '@pages/accounts/Window'
 import {
   ZoomMotionDiv,
   Toast,
-  ColorSchemedMain,
+  ColorSchemedDiv,
   ScreenProvider,
   useScreenContext
 } from '@ledget/ui'
@@ -94,7 +94,6 @@ const App = () => {
 
   return (
     <>
-      <Header />
       <AnimatePresence mode="wait">
         <ZoomMotionDiv
           key={location.pathname.split('/')[1]}
@@ -144,14 +143,17 @@ const EnrichedApp = () => {
   return (
     <ScreenProvider>
       {!isLoading &&
-        <ColorSchemedMain>
-          <Routes>
-            <Route path="/" element={<PrivateRoute />} >
-              <Route path="/*" element={<App />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </ColorSchemedMain >
+        <ColorSchemedDiv className='full-screen-div'>
+          <Header />
+          <main>
+            <Routes>
+              <Route path="/" element={<PrivateRoute />} >
+                <Route path="/*" element={<App />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </main>
+        </ColorSchemedDiv >
       }
     </ScreenProvider>
   )

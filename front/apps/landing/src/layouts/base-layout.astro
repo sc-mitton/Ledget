@@ -12,16 +12,20 @@ import '../styles/globals.scss';
     <title>Ledget</title>
   </head>
   <body>
-    <Header />
-    <main class="main">
-      <slot />
-    </main>
+    <div class="color-scheme">
+      <div>
+        <Header />
+        <main>
+          <slot />
+        </main>
+      </div>
+    </div>
   </body>
   <script>
     const isDarkModeMediaQuery = window.matchMedia(
       '(prefers-color-scheme: dark)'
     ).matches;
     const colorScheme = isDarkModeMediaQuery ? 'dark' : 'light';
-    document.querySelector('.main')?.classList.add(`${colorScheme}`);
+    document.querySelector('.color-scheme')?.classList.add(`${colorScheme}`);
   </script>
 </html>

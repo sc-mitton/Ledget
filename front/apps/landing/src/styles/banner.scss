@@ -1,0 +1,54 @@
+.banner {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h1 {
+        font-size: 4.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .sub-header {
+        font-size: 1.75rem;
+        font-weight: 400;
+        color: var(--m-text-secondary);
+    }
+}
+
+.buttons {
+    margin-top: 1.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    width: min-content;
+
+    &>div {
+        display: flex;
+        gap: 1em;
+    }
+}
+
+
+.cta {
+    background-color: var(--blue-medium);
+    padding: .75em 1em;
+    color: var(--white);
+    font-size: 1rem;
+    transition: background-color .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+    border: none;
+
+    * {
+        color: var(--white);
+    }
+
+    &:hover {
+        background-color: var(--blue-medium-hover);
+        transition: background-color .3s;
+    }
+}

@@ -34,7 +34,7 @@
 }
 
 :root {
-    main.dark {
+    div.dark {
 
         --mute-red: hsl(352, 98%, 90%);
         --hover-red: hsl(352, 95%, 85%);
@@ -71,10 +71,12 @@
         --blue-dark-hover: hsl(var(--blue-h), 25%, 85%);
         --blue-ultra-dark: hsl(var(--blue-h), 85%, 90%);
         --blue-ultra-dark-hover: hsl(var(--blue-h), 85%, 80%);
-        --btn-main: var(--blue-medium);
-        --btn-main-hover: var(--blue-medium-hover);
+        --btn-div: var(--blue-medium);
+        --btn-div-hover: var(--blue-medium-hover);
         --btn-chcl: hsl(0, 0%, 90%);
         --btn-chcl-hover: hsl(0, 0%, 85%);
+        --btn-main: var(--blue-ultra-dark);
+        --btn-main-hover: var(--blue-ultra-dark-hover);
 
         --green-light: hsl(var(--green-h), 30%, 27%);
         --green-light-hover: hsl(var(--green-h), 30%, 22%);
@@ -193,7 +195,7 @@
         @include common;
     }
 
-    main.light {
+    div.light {
 
         --mute-red: #fe8797;
         --hover-red: #fb6a7e;
@@ -229,7 +231,7 @@
         --blue-light-medium: hsl(var(--blue-h), 70%, 75%);
         --blue-light-medium-hover: hsl(var(--blue-h), 70%, 70%);
         --blue-medium: hsl(var(--blue-h), 50%, 50%);
-        --blue-medium-hover: hsl(var(--blue-h), 50%, 60%);
+        --blue-medium-hover: hsl(var(--blue-h), 50%, 55%);
         --blue: hsl(var(--blue-h), 50%, 52%);
         --blue-hover: hsl(var(--blue-h), 50%, 60%);
         --blue-steel-gray: hsl(var(--blue-h), 32%, 85%);
@@ -239,10 +241,12 @@
         --blue-dark: hsl(var(--blue-h), 32%, 22%);
         --blue-ultra-dark: hsl(var(--blue-h), 32%, 15%);
         --blue-ultra-dark-hover: hsl(var(--blue-h), 32%, 8%);
-        --btn-main: var(--blue);
-        --btn-main-hover: var(--blue-hover);
+        --btn-div: var(--blue);
+        --btn-div-hover: var(--blue-hover);
         --btn-chcl: hsl(0, 0%, 10%);
         --btn-chcl-hover: hsl(0, 0%, 15%);
+        --btn-main: var(--blue);
+        --btn-main-hover: var(--blue-hover);
 
         --green-light: hsl(var(--green-h), 80%, 95%);
         --green-light-hover: hsl(var(--green-h), 80%, 90%);

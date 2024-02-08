@@ -38,13 +38,8 @@
         a {
             font-weight: var(--fw-regular);
             position: relative;
-            color: #000;
             text-decoration: none;
             margin: 0 .5em;
-        }
-
-        &:hover {
-            color: #000;
         }
 
         a::before {
@@ -56,7 +51,7 @@
             border-radius: 2px;
             bottom: 0;
             left: 0;
-            background-color: #000;
+            background-color: var(--m-text);
             transform: scaleX(0);
             transition: all 0.15s ease;
         }
@@ -78,41 +73,5 @@
         max-width: 110%;
         cursor: default;
         transform: scale(1.2);
-    }
-}
-
-.sign-in {
-    margin: 0 .5em;
-    padding: .25em .5em .25em .75em;
-    border-radius: 1.5em;
-    border: 1.25px solid black;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    background-color: transparent;
-
-    svg {
-        path:first-child {
-            stroke-dasharray: 50;
-            stroke-dashoffset: 50;
-            transition: stroke-dashoffset 0.2s ease-in;
-            transition: all 0.2s ease-in;
-        }
-
-        path:not(:first-child) {
-            transition: all 0.2s ease-in;
-        }
-    }
-
-    &:hover svg {
-        path:first-child {
-            stroke-dashoffset: 0;
-            transition: all 0.2s ease-in;
-        }
-
-        path:not(:first-child) {
-            transform: translateX(.1875em);
-            transition: all 0.2s ease-in;
-        }
     }
 }
