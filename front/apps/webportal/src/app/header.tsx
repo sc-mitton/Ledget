@@ -18,7 +18,9 @@ const Header = () => {
     return (
         <header id="top-header">
             <div>
-                <LedgetLogo darkMode={isDark} />
+                <a href="/login" tabIndex={0} aria-label="login page">
+                    <LedgetLogo darkMode={isDark} />
+                </a>
             </div>
             <div>
                 {splitPath[splitPath.length - 1] === 'register'

@@ -2,6 +2,13 @@
     text-align: left;
     font-size: 1.125rem;
     font-weight: var(--fw-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#passkey-modal-content svg {
+    margin: .5em 0 1em 0;
 }
 
 #passkey-modal-text {
@@ -10,25 +17,20 @@
     padding: 0 1.25em;
 }
 
+#passkey-modal-content h2,
+#passkey-modal-content h3 {
+    color: var(--blue-medium);
+    font-weight: var(--fw-regular);
+}
+
 #passkey-modal-content h2 {
-    color: var(--monthly-color);
     text-align: center;
 }
 
-#passkey-modal-content div:first-child {
-    margin-bottom: 1.25em;
-    margin-top: 1.25em;
+#passkey-modal-content>div:first-child {
     height: 3.125rem;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-#passkey-modal-content div:first-child img {
-    height: 1em;
-    transform: scale(1.2);
-}
-
-#passkey-modal-content svg {
-    transform: scale(3);
 }

@@ -1,8 +1,8 @@
 
-import { Check } from '@geist-ui/icons'
+import { Check, Mail } from '@geist-ui/icons'
 
 import './status-pulse.scss'
-import { VerifyEmail, AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
+import { AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
 import { shuffleArray } from '../../utils/funcs'
 
 
@@ -73,7 +73,7 @@ export const KeyPadGraphic = ({ finished = false }) => {
 
 export const VerificationStatusGraphic = ({ finished = false }) => (
   <div id='verify-graphic--container'>
-    <VerifyEmail />
+    <Mail size={'3em'} strokeWidth={1} />
     <div id="verification-pulse-status">
       <StatusPulse
         positive={finished}

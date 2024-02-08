@@ -11,7 +11,6 @@ import SocialAuth from "./SocialAuth"
 import ledgetapi from '@api/axios'
 import { WindowLoadingBar } from "@pieces"
 import PasswordlessForm from "./inputs/PasswordlessForm"
-import CsrfToken from "./inputs/CsrfToken"
 import PasskeyInfoModal from '@modals/PassKey'
 import {
     MainButton,
@@ -45,12 +44,10 @@ const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
             <WindowLoadingBar visible={flowStatus.isGettingFlow} />
             <div className="window-header">
                 <h2>Create Account</h2>
-                <h4>Step 1 of 4</h4>
+                <span>Step 1 of 4</span>
             </div>
             <form
-                onSubmit={handleSubmit((e) =>
-                    setUserInfo(e)
-                )}
+                onSubmit={handleSubmit((e) => setUserInfo(e))}
                 className="sign-up-form"
                 noValidate
             >
@@ -83,7 +80,7 @@ const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
                     {...register('email')}
                     errors={errors}
                 />
-                <CsrfToken csrf={flow?.csrf_token} />
+                <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
                 {errors.email?.type !== 'required' &&
                     <div className="signup-error-container">
                         <FormError msg={errors.email?.message} />
@@ -118,17 +115,14 @@ const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }
             <WindowLoadingBar visible={flowStatus.isCompletingFlow} />
             <div className="window-header">
                 {typeof (PublicKeyCredential) != "undefined"
-                    ?
-                    <h2>Sign In Method</h2>
-                    :
-                    <h2>Create a Password</h2>
-                }
+                    ? <h2>Sign In Method</h2>
+                    : <h2>Create a Password</h2>}
                 <div id="step--container">
                     <BackButton
                         withText={false}
                         onClick={() => setUserInfo({})}
                     />
-                    <h4>Step 2 of 4</h4>
+                    <span>Step 2 of 4</span>
                 </div>
             </div>
             <form
@@ -148,7 +142,7 @@ const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }
                     {...register('password')}
                 />
                 <FormError msg={errors.password?.message} />
-                <CsrfToken csrf={flow?.csrf_token} />
+                <input type='hidden' name='csrf_token' value={flow?.csrf_token} />
                 <input type='hidden' name='traits.email' value={userInfo.email} />
                 <input type='hidden' name='traits.name.first' value={userInfo.firstName} />
                 <input type='hidden' name='traits.name.last' value={userInfo.lastName} />

@@ -11,7 +11,6 @@ import axios from "axios"
 import './style/Login.scss'
 import SocialAuth from "./SocialAuth"
 import { PasskeySignIn } from "./inputs/PasswordlessForm"
-import CsrfToken from "./inputs/CsrfToken"
 import { WindowLoadingBar } from "@pieces/index"
 import {
     MainButton,
@@ -199,7 +198,7 @@ const OryFormWrapper = ({ children, onSubmit, flow, errMsg, email, setEmail }: O
             </div>
             {errMsg && <FormError msg={errMsg} />}
             {children}
-            <CsrfToken csrf={flow?.csrf_token} />
+            <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
         </form>
     )
 }

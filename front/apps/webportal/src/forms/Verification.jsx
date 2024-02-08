@@ -92,7 +92,7 @@ const Verification = () => {
             <WindowLoadingBar visible={isGettingFlow || isCompletingFlow} />
             <div className="window-header">
                 <h2>Verify Email Address</h2>
-                <h4>Step 3 of 4</h4>
+                <span>Step 3 of 4</span>
             </div>
             <div id="verification--container">
                 <VerificationStatusGraphic finished={codeIsCorrect} />

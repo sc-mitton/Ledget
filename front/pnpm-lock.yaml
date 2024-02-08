@@ -41,6 +41,9 @@ dependencies:
   '@stripe/stripe-js':
     specifier: ^1.50.0
     version: 1.54.2
+  '@types/big.js':
+    specifier: ^6.2.2
+    version: 6.2.2
   '@types/js-cookie':
     specifier: ^3.0.4
     version: 3.0.6
@@ -3579,6 +3582,10 @@ packages:
     dependencies:
       '@babel/types': 7.23.9
     dev: true
+
+  /@types/big.js@6.2.2:
+    resolution: {integrity: sha512-e2cOW9YlVzFY2iScnGBBkplKsrn2CsObHQ2Hiw4V1sSyiGbgWL8IyqE3zFi1Pt5o1pdAtYkDAIsF3KKUPjdzaA==}
+    dev: false
 
   /@types/cacheable-request@6.0.3:
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}

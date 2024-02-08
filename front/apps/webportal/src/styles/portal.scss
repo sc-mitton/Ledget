@@ -20,6 +20,16 @@ main {
     background-color: var(--window);
     box-shadow: rgba(149, 157, 165, 0.7) 1px 0px 2px;
     z-index: 100;
+
+    &>div:first-child {
+        a {
+            border-bottom: none;
+
+            &:before {
+                height: 0;
+            }
+        }
+    }
 }
 
 #top-header * {

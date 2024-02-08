@@ -167,17 +167,13 @@ class SubscriptionView(GenericAPIView):
               customer=request.user.customer.id,
               **serializer.validated_data
             )
+            pending_setup_intent = stripe_subscription.pending_setup_intent
+            return Response({
+                'client_secret': pending_setup_intent.client_secret,
+                'identifier': self.request.user.traits['email']},
+                HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, HTTP_400_BAD_REQUEST)
-
-        pending_setup_intent = stripe_subscription.pending_setup_intent
-        if pending_setup_intent:
-            return Response(
-                {'client_secret': pending_setup_intent.client_secret},
-                HTTP_200_OK
-            )
-        else:
-            return Response(status=HTTP_200_OK)
 
     @stripe_error_handler
     def _get_stripe_subscription(self, customer_id):

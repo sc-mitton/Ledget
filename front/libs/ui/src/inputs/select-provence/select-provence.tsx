@@ -3,7 +3,6 @@ import { Control } from "react-hook-form";
 
 import './select-provence.scss'
 import { states as provences } from './provences-data'
-import { FormErrorTip } from "../../pieces/form-errors/form-errors";
 import BakedComboBox from "../baked-selects/baked-combo-box";
 
 export const SelectProvence = ({ control, errors }: { control: Control, errors: any }) => (
@@ -14,5 +13,6 @@ export const SelectProvence = ({ control, errors }: { control: Control, errors: 
     control={control}
     placement="left"
     options={provences}
+
   />
 )

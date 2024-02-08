@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@stripe/react-stripe-js": "^2.3.0",
     "@stripe/stripe-js": "^1.50.0",
+    "@types/big.js": "^6.2.2",
     "@types/js-cookie": "^3.0.4",
     "@types/lodash.groupby": "^4.6.9",
     "@types/lodash.startcase": "^4.4.9",

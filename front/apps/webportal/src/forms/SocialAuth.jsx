@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 
 import { useLocation } from "react-router-dom"
 
-import CsrfToken from "./inputs/CsrfToken"
 import { FacebookLoginButton, GoogleLoginButton } from "@ledget/ui"
 
 function SocialAuth({ flow, submit }) {
@@ -65,7 +64,7 @@ function SocialAuth({ flow, submit }) {
                     <SocialLoginButtons />
                     : <DefaultButtons />
                 }
-                <CsrfToken csrf={flow?.csrf_token} />
+                <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
             </form>
         </div>
     )

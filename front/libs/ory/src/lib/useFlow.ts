@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import { useSearchParams, useNavigate } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 
 
 import { UseLazyQuery, UseMutation } from "@reduxjs/toolkit/dist/query/react/buildHooks";
@@ -54,7 +54,6 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
     const [errMsg, setErrMsg] = useState<string[]>()
     const [errId, setErrId] = useState<string | number>('')
     const [searchParams, setSearchParams] = useSearchParams()
-    const navigate = useNavigate()
     const [mutationCacheKey, setMutationCacheKey] = useState<string>('')
 
     const [

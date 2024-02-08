@@ -1,8 +1,8 @@
 import { apiSlice } from '@api/apiSlice'
 
-apiSlice.injectEndpoints({
+export const deviceSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        refreshDevices: builder.mutation({
+        refreshDevices: builder.mutation<void, void>({
             query: () => ({
                 url: 'devices',
                 method: 'POST',
@@ -11,4 +11,4 @@ apiSlice.injectEndpoints({
     })
 })
 
-export const { useRefreshDevicesMutation } = apiSlice
+export const { useRefreshDevicesMutation } = deviceSlice

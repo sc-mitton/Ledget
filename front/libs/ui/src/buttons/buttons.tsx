@@ -139,7 +139,7 @@ export const CircleIconButton =
 export const BackButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText?: boolean }>
   = ({ children, withText = true, ...rest }) => (
     <div>
-      <button className="btn btn-2slim back-btn" {...rest}>
+      <button className="btn btn-ultra-slim back-btn" {...rest}>
         <svg width="20" height="20" viewBox="0 0 20 20">
           <g transform={'translate(19, 20) rotate(-180)'}>
             <path className="arrow-tail" d="M5 10L14.5 10" stroke="currentColor" strokeWidth="1"

@@ -15,7 +15,7 @@
     align-items: center;
 
     &.inside-form {
-        margin-left: .625em;
+        margin-left: 0em;
     }
 
     svg {
@@ -28,7 +28,6 @@
     }
 
 }
-
 
 .form-error {
     display: inline-block;

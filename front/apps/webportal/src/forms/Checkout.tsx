@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { useState, useRef } from 'react'
 
-import { useForm, useController } from 'react-hook-form'
+import { useForm, useController, UseFormRegister } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
+import dayjs from 'dayjs'
 
 import './style/Checkout.scss'
 import ledgetapi from '@api/axios'
@@ -19,19 +20,20 @@ import {
     FormError,
     NameOnCardInput,
     CityStateZipInputs,
-    baseBillingSchema
+    baseBillingSchema,
+    DollarCents
 } from '@ledget/ui'
 import { LogoIcon2, StripeLogo } from '@ledget/media'
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
 const schema = baseBillingSchema.extend({
-    name: z.string().min(1, { message: 'required' })
+    name: z.string().min(1, { message: 'required' }),
+    price: z.string().min(1, { message: 'required' }),
 }).refine((data) => data.name.split(' ').length > 1, {
     message: 'Please enter your full name'
 })
 
-const PriceRadios = ({ register }) => {
+const PriceRadios = ({ register }: { register: UseFormRegister<z.infer<typeof schema>> }) => {
     const { data: prices } = useGetPricesQuery()
 
     return (
@@ -48,7 +50,6 @@ const PriceRadios = ({ register }) => {
                                 htmlFor={`price-${i}`}
                             >
                                 <input
-                                    name='price'
                                     type="radio"
                                     value={p.id}
                                     id={`price-${i}`}
@@ -79,41 +80,24 @@ const PriceRadios = ({ register }) => {
     )
 }
 
-const OrderSummary = ({ unit_amount, trial_period_days }) => {
-
-    const getDaySuffix = (day) => {
-        if (day >= 11 && day <= 13) {
-            return "th";
-        }
-        switch (day % 10) {
-            case 1:
-                return "st"
-            case 2:
-                return "nd"
-            case 3:
-                return "rd"
-            default:
-                return "th"
-        }
+const getDaySuffix = (day: number) => {
+    if (day >= 11 && day <= 13) {
+        return "th";
     }
-
-    const getTrialEndString = () => {
-        const currentDate = new Date()
-        const futureDate = new Date(
-            currentDate.getTime() + (trial_period_days * 24 * 60 * 60 * 1000)
-        )
-
-        const months = [
-            "Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.",
-            "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."
-        ]
-
-        const day = futureDate.getDate()
-        const month = months[futureDate.getMonth()];
-        const suffix = getDaySuffix(day)
-
-        return `${month} ${day}${suffix}`
+    switch (day % 10) {
+        case 1:
+            return "st"
+        case 2:
+            return "nd"
+        case 3:
+            return "rd"
+        default:
+            return "th"
     }
+}
+
+const OrderSummary = ({ unit_amount, trial_period_days }: { unit_amount?: number, trial_period_days?: number }) => {
+    const firstCharge = dayjs().add(trial_period_days || 0, 'day')
 
     return (
         <div className="order-summary-container">
@@ -121,11 +105,11 @@ const OrderSummary = ({ unit_amount, trial_period_days }) => {
                 <tbody>
                     <tr>
                         <td>First Charge:</td>
-                        <td>{getTrialEndString()}</td>
+                        <td>{firstCharge.format('MMM, D')}{getDaySuffix(firstCharge.date())}</td>
                     </tr>
                     <tr>
                         <td>Amount:</td>
-                        <td>{`\$${unit_amount / 100}.`}<span>00</span></td>
+                        <td><DollarCents value={unit_amount || 0} /></td>
                     </tr>
                 </tbody>
             </table>
@@ -133,22 +117,23 @@ const OrderSummary = ({ unit_amount, trial_period_days }) => {
     )
 }
 
-const Form = (props) => {
+const Form = (props: { id: string }) => {
     const { data: prices } = useGetPricesQuery()
     const stripe = useStripe()
     const elements = useElements()
-    const clientSecretRef = useRef(JSON.parse(sessionStorage.getItem('clientSecret') || null))
-    const [trial_period_days, setTrial_period_days] = useState(undefined)
-    const [unit_amount, setUnit_amount] = useState(undefined)
+    const clientSecretRef = useRef<string>('')
+    const identifierRef = useRef<string>('')
+    const [trial_period_days, setTrial_period_days] = useState<number>()
+    const [unit_amount, setUnit_amount] = useState<number>()
 
     const [processing, setProcessing] = useState(false)
     const [cardEntered, setCardEntered] = useState(false)
     const [cardNotEnteredError, setCardNotEnteredError] = useState(false)
-    const [cardErrMsg, setCardErrMsg] = useState(null)
-    const [errMsg, setErrMsg] = useState(null)
+    const [cardErrMsg, setCardErrMsg] = useState<string>()
+    const [errMsg, setErrMsg] = useState<string>()
 
     const { register, watch, handleSubmit, formState: { errors }, control, clearErrors } =
-        useForm({ resolver: zodResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
+        useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema), mode: 'onSubmit', reValidateMode: 'onBlur' })
     const { field: stateField } = useController({ name: 'state', control })
 
     useEffect(() => { stateField.value && clearErrors('state') }, [stateField.value])
@@ -156,8 +141,8 @@ const Form = (props) => {
     useEffect(() => {
         if (prices) {
             const price = prices.find(p => p.id === watch('price'))
-            setTrial_period_days(price.metadata.trial_period_days)
-            setUnit_amount(price.unit_amount)
+            setTrial_period_days(price?.metadata.trial_period_days)
+            setUnit_amount(price?.unit_amount)
         }
     }, [watch('price'), prices])
 
@@ -173,60 +158,57 @@ const Form = (props) => {
             })
     }
 
-    const createSubscription = async (data) => {
+    const createSubscription = async (data: z.infer<typeof schema>) => {
         await ledgetapi.post('subscription', {
             price_id: data.price,
             trial_period_days: trial_period_days
+        }).then((response) => {
+            if (response.status === 200) {
+                clientSecretRef.current = response.data.client_secret
+                identifierRef.current = response.data.identifier
+            } else {
+                setErrMsg('Something went wrong. Please try again later.')
+            }
+        }).catch((error) => {
+            setErrMsg('Something went wrong. Please try again later.')
         })
-            .then((response) => {
-                if (response.status === 200) {
-                    sessionStorage.setItem("clientSecret", JSON.stringify(response.data.client_secret))
-                    clientSecretRef.current = response.data.client_secret
-                } else {
-                    setErrMsg('Something went wrong. Please try again later.')
-                }
-            }).catch((error) => {
-                if (error.response?.status !== 422) {
-                    setErrMsg('Something went wrong. Please try again later.')
-                }
-            })
     }
 
-    const confirmSetup = async (data) => {
-        const result = await stripe.confirmCardSetup(
+    const confirmSetup = async (data: z.infer<typeof schema>) => {
+        const result = await stripe?.confirmCardSetup(
             clientSecretRef.current,
             {
                 payment_method: {
-                    card: elements.getElement(CardElement),
+                    card: elements?.getElement(CardElement)!,
                     billing_details: {
                         name: data.name,
-                        email: JSON.parse(sessionStorage.getItem("identifier")),
+                        email: identifierRef.current,
                         address: {
                             city: data.city,
                             state: data.state,
                             postal_code: data.zip,
-                            country: data.country
+                            country: 'US'
                         }
                     }
                 }
             }
         )
 
-        if (result.error) {
+        if (result?.error) {
             setCardErrMsg(result.error?.message)
         } else {
             window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
         }
     }
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: z.infer<typeof schema>) => {
         setProcessing(true)
         try {
             if (!clientSecretRef.current) {
                 await createCustomer()
                 await createSubscription(data)
             }
-            if (clientSecretRef.current) {
+            if (clientSecretRef.current && identifierRef.current) {
                 await confirmSetup(data)
             }
         } catch (err) {
@@ -236,10 +218,10 @@ const Form = (props) => {
         }
     }
 
-    const submitBillingForm = (e) => {
+    const submitBillingForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         !cardEntered && setCardNotEnteredError(true)
-        handleSubmit((data) => onSubmit(data))(e)
+        handleSubmit((data) => { onSubmit(data) })(e)
     }
 
     return (
@@ -251,9 +233,15 @@ const Form = (props) => {
                     <div id="text-inputs--container">
                         <h4>Billing Info</h4>
                         <NameOnCardInput {...register('name')} errors={errors} />
-                        <CityStateZipInputs errors={errors} register={register} control={control} />
+                        <CityStateZipInputs
+                            loading={processing}
+                            errors={errors}
+                            register={register as any}
+                            control={control}
+                        />
                         <h4>Card</h4>
                         <CardInput
+                            loading={processing}
                             requiredError={cardNotEnteredError}
                             onComplete={() => setCardEntered(true)}
                             clearError={() => setCardNotEnteredError(false)}
@@ -287,11 +275,12 @@ export const cardOptions = {
 
 const CheckoutWindow = () => {
     const { isLoading } = useGetPricesQuery()
+    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
     return (
         <>
             {!isLoading &&
-                <Elements stripe={stripePromise} options={cardOptions}>
+                <Elements stripe={stripePromise as any} options={cardOptions}>
                     <div id="checkout-window" className="window">
                         <Form id="billing-form" />
                         <div className="stripe-logo-container">
