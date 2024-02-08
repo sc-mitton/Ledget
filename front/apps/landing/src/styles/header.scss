@@ -1,3 +1,5 @@
+@import './mixins.scss';
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -7,6 +9,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @include width-standard();
 
     &>div:first-child {
         display: flex;
@@ -63,14 +66,19 @@
 }
 
 .logo {
-    width: 6.25em;
-    height: 100%;
     display: flex;
     align-items: center;
+    height: 1.75em;
+
+    a {
+        display: flex;
+        align-items: center;
+        gap: .25em;
+        font-size: 1.125rem;
+    }
 
     img {
-        max-height: 110%;
-        max-width: 110%;
+        width: 1.75em;
         cursor: default;
         transform: scale(1.2);
     }

@@ -1,5 +1,8 @@
+@import './mixins.scss';
+
 .banner {
-    height: 80vh;
+    @include width-standard;
+    min-height: 85vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -8,11 +11,13 @@
         font-size: 4.5rem;
         font-weight: 600;
         margin-bottom: 1rem;
+        line-height: 4.75rem;
     }
 
     .sub-header {
-        font-size: 1.75rem;
-        font-weight: 400;
+        font-size: 1.5rem;
+        margin-bottom: .5em;
+        font-weight: var(--fw-light);
         color: var(--m-text-secondary);
     }
 }
@@ -21,21 +26,30 @@
     margin-top: 1.5em;
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
+    align-items: center;
     width: min-content;
 
     &>div {
+        margin: 1.5em 0 .75em 0;
         display: flex;
         gap: 1em;
+    }
+
+    &>span {
+        margin-left: .5em;
+        color: var(--blue-sat);
+        padding: 0em .5em;
+        border-radius: 8px;
     }
 }
 
 
 .cta {
+    width: 100%;
+    box-sizing: border-box;
     background-color: var(--blue-medium);
     padding: .75em 1em;
     color: var(--white);
-    font-size: 1rem;
     transition: background-color .3s;
     display: flex;
     align-items: center;
@@ -44,6 +58,7 @@
     border: none;
 
     * {
+        font-size: 1rem;
         color: var(--white);
     }
 

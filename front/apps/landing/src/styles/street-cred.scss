@@ -1,0 +1,10 @@
+@import './mixins.scss';
+
+.street-cred {
+    min-height: 15em;
+    background-color: var(--blue-medium);
+
+    &>div {
+        @include width-standard;
+    }
+}
