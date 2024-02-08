@@ -1,7 +1,7 @@
 .arrow-link {
     padding: .25em .5em .25em .75em;
     border-radius: 1.5em;
-    border: 1.25px solid var(--m-text);
+    border: 1px solid var(--m-text);
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -16,14 +16,14 @@
         }
 
         path:not(:first-child) {
-            transition: all 0.2s ease-in;
+            transition: all 0.2s ease-in .1s;
         }
     }
 
     &:hover svg {
         path:first-child {
             stroke-dashoffset: 0;
-            transition: all 0.2s ease-in;
+            transition: all 0.2s ease-in .1s;
         }
 
         path:not(:first-child) {

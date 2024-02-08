@@ -8,14 +8,14 @@
     justify-content: center;
 
     h1 {
-        font-size: 4.5rem;
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
         font-weight: 600;
         margin-bottom: 1rem;
-        line-height: 4.75rem;
+        line-height: clamp(2.75rem, 5.25vw, 4.75rem);
     }
 
     .sub-header {
-        font-size: 1.5rem;
+        font-size: clamp(1rem, 1.5vw, 1.5rem);
         margin-bottom: .5em;
         font-weight: var(--fw-light);
         color: var(--m-text-secondary);
@@ -40,6 +40,16 @@
         color: var(--blue-sat);
         padding: 0em .5em;
         border-radius: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .banner {
+        align-items: center;
+
+        h1 {
+            text-align: center;
+        }
     }
 }
 

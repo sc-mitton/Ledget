@@ -1,5 +1,5 @@
 .app-download-button {
-    border: 1.5px solid var(--m-text);
+    border: 1px solid var(--m-text);
     border-radius: 1em;
     display: flex;
     align-items: center;
@@ -10,7 +10,7 @@
     transition: border-color .3s;
 
     &:hover {
-        border-color: var(--blue-medium);
+        border-color: var(--blue-light-medium);
         transition: border-color .3s;
     }
 
