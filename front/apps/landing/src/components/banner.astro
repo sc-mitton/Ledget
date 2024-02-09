@@ -1,22 +1,39 @@
 ---
 import '../styles/banner.scss';
+import { Image } from 'astro:assets';
+import MobileLight from '../../public/mobile-light.png';
+import MobileDark from '../../public/mobile-dark.png';
+import WebLight from '../../public/web-light.png';
+import WebDark from '../../public/web-dark.png';
+
 import PlayStoreButton from './buttons/play-store.astro';
 import AppStoreButton from './buttons/app-store.astro';
 import ArrowLink from './links/arrow-link.astro';
 ---
 
 <div class="banner">
-  <h1>Simplify Your <br /> Finances</h1>
-  <span class="sub-header">
-    Organize your personal spending and bills, and
-    <br />see all of your money in one place.
-  </span>
-  <div class="buttons">
-    <ArrowLink hrefTarget="/" text="Try for Free" className="cta" />
-    <div>
-      <PlayStoreButton />
-      <AppStoreButton />
+  <div>
+    <h1>Simplify Your <br /> Finances</h1>
+    <span class="sub-header">
+      Organize your personal spending and bills, and
+      <br />see all of your money in one place.
+    </span>
+    <div class="buttons">
+      <ArrowLink hrefTarget="/" text="Try for Free" className="cta" />
+      <div>
+        <PlayStoreButton />
+        <AppStoreButton />
+      </div>
+      <span>coming soon</span>
     </div>
-    <span>coming soon</span>
   </div>
+  <div class="banner--products">
+    <div>
+      <Image src={WebDark} alt="Web Dark" />
+    </div>
+    <div>
+      <Image src={MobileDark} alt="Mobile Dark" />
+    </div>
+  </div>
+  <script></script>
 </div>

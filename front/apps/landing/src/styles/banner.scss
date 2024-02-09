@@ -4,8 +4,8 @@
     @include width-standard;
     min-height: 85vh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
 
     h1 {
         font-size: clamp(2.5rem, 5vw, 4.5rem);
@@ -14,12 +14,85 @@
         line-height: clamp(2.75rem, 5.25vw, 4.75rem);
     }
 
-    .sub-header {
-        font-size: clamp(1rem, 1.5vw, 1.5rem);
-        margin-bottom: .5em;
-        font-weight: var(--fw-light);
-        color: var(--m-text-secondary);
+    &--products {
+        position: relative;
+        flex-grow: 1;
+        height: 100%;
+
+        &>div {
+            background-color: var(--window-background-color);
+            padding: 1em;
+            border: 1px solid var(--border-color);
+        }
+
+
+        &>div:first-child {
+            position: absolute;
+            left: 75%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            border-radius: 1.25em;
+            transition: all .5s;
+
+            &:hover {
+                z-index: 2;
+                left: 60%;
+                transition: all .5s;
+
+                img {
+                    max-width: 42em;
+                    transition: all .5s;
+                }
+
+                &+div {
+                    transform: scale(.8) translate(-50%, -60%);
+                    transition: all .5s;
+                }
+            }
+
+            img {
+                max-width: 30em;
+                height: auto;
+                transition: all .5s;
+            }
+        }
+
+        &>div:last-child {
+            position: absolute;
+            left: 45%;
+            top: 50%;
+            z-index: 1;
+            padding-top: 2em;
+            padding-bottom: 2em;
+            border-radius: 1.75em;
+            transform: scale(1) translate(-50%, -50%);
+            transition: all .5s;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: .5em;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 33%;
+                height: .125em;
+                background-color: var(--border-color);
+                border-radius: 1.5em;
+            }
+
+            img {
+                max-width: 18em;
+                height: auto;
+            }
+        }
     }
+}
+
+.sub-header {
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+    font-weight: var(--fw-light);
+    color: var(--m-text-secondary);
 }
 
 .buttons {
@@ -47,9 +120,19 @@
     .banner {
         align-items: center;
 
+        &>div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+
         h1 {
             text-align: center;
         }
+
+
     }
 }
 
