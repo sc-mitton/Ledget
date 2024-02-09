@@ -113,37 +113,35 @@ const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year'
                                 } else {
                                     return 0
                                 }
-                            }).map((category) => {
-                                return (
-                                    <Fragment key={category.id}>
-                                        <div>
-                                            <BillCatEmojiLabel
-                                                as='button'
-                                                emoji={category.emoji}
-                                                color={period === 'month' ? 'blue' : 'green'}
-                                                key={category.id}
-                                                onClick={() => { dispatch(setCategoryModal({ category: category })) }}
-                                            />
-                                            {`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}
-                                        </div>
-                                        <div>
-                                            <DollarCents value={category.amount_spent} withCents={false} />
-                                        </div>
-                                        <div>spent of</div>
-                                        <div>
-                                            {category.limit_amount !== null
-                                                ? <DollarCents value={category.limit_amount} withCents={false} />
-                                                : <span className='no-limit'> &#8212; </span>}
-                                        </div>
-                                        <div>
-                                            <StaticProgressCircle
-                                                value={Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100}
-                                                color={category.period === 'year' ? 'green' : 'blue'}
-                                            />
-                                        </div>
-                                    </Fragment>
-                                )
-                            })}
+                            }).map((category, i) => (
+                                <Fragment key={category.id}>
+                                    <div>
+                                        <BillCatEmojiLabel
+                                            as='button'
+                                            emoji={category.emoji}
+                                            color={period === 'month' ? 'blue' : 'green'}
+                                            key={category.id}
+                                            onClick={() => { dispatch(setCategoryModal({ category: category })) }}
+                                        />
+                                        {`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}
+                                    </div>
+                                    <div>
+                                        <DollarCents value={category.amount_spent} withCents={false} />
+                                    </div>
+                                    <div>spent of</div>
+                                    <div>
+                                        {category.limit_amount !== null
+                                            ? <DollarCents value={category.limit_amount} withCents={false} />
+                                            : <span className='no-limit'> &#8212; </span>}
+                                    </div>
+                                    <div>
+                                        <StaticProgressCircle
+                                            value={Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100}
+                                            color={category.period === 'year' ? 'green' : 'blue'}
+                                        />
+                                    </div>
+                                </Fragment>
+                            ))}
                     </div>
                 </>
             }
