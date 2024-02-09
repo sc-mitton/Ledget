@@ -20,7 +20,14 @@ main {
 .color-scheme {
     width: 100%;
     height: 100%;
-    background-color: var(--window-background-color);
+
+    &.dark {
+        background-color: var(--window-background-color);
+    }
+
+    &.light {
+        background-color: var(--inner-window);
+    }
 
     &>div {
         margin: 0 auto;

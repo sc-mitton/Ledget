@@ -22,11 +22,40 @@
         &>div {
             background-color: var(--window-background-color);
             padding: 1em;
-            border: 1px solid var(--border-color);
+        }
+
+        &.dark {
+            &>div {
+                border: 1px solid var(--border-color);
+            }
+
+            .web.light {
+                visibility: hidden;
+            }
+
+            .mobile.light {
+                visibility: hidden;
+            }
+        }
+
+        &.light {
+
+            &>div {
+                border: 1.5px solid var(--m-text-senary);
+                box-shadow: 0 0 30px 0px var(--inner-window);
+            }
+
+            .web.dark {
+                visibility: hidden;
+            }
+
+            .mobile.dark {
+                visibility: hidden;
+            }
         }
 
 
-        &>div:first-child {
+        .web {
             position: absolute;
             left: 75%;
             top: 50%;
@@ -46,7 +75,7 @@
                 }
 
                 &+div {
-                    transform: scale(.8) translate(-50%, -60%);
+                    transform: scale(.8) translate(-50%, -62%);
                     transition: all .5s;
                 }
             }
@@ -58,7 +87,7 @@
             }
         }
 
-        &>div:last-child {
+        .mobile {
             position: absolute;
             left: 45%;
             top: 50%;
